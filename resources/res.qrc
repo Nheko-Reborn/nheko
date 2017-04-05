@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/left-chevron.png</file>
+        <file>icons/left-angle.png</file>
+        <file>icons/add-file.png</file>
+        <file>icons/send-button.png</file>
+        <file>icons/cog.png</file>
+        <file>icons/search.png</file>
+        <file>icons/plus-symbol.png</file>
+        <file>icons/clip-dark.png</file>
+        <file>icons/share-dark.png</file>
+        <file>icons/user-shape.png</file>
+    </qresource>
+
+    <qresource prefix="/fonts">
+        <file>fonts/OpenSans-Light.ttf</file>
+        <file>fonts/OpenSans-LightItalic.ttf</file>
+        <file>fonts/OpenSans-Regular.ttf</file>
+        <file>fonts/OpenSans-Italic.ttf</file>
+        <file>fonts/OpenSans-Bold.ttf</file>
+        <file>fonts/OpenSans-BoldItalic.ttf</file>
+        <file>fonts/OpenSans-Semibold.ttf</file>
+        <file>fonts/OpenSans-SemiboldItalic.ttf</file>
+        <file>fonts/OpenSans-ExtraBold.ttf</file>
+        <file>fonts/OpenSans-ExtraBoldItalic.ttf</file>
+    </qresource>
+</RCC>

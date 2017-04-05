@@ -1,0 +1,22 @@
+---
+Language: Cpp
+AccessModifierOffset: -8
+AlignAfterOpenBracket: true
+AlignEscapedNewlinesLeft: false
+AlignTrailingComments: false
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+BasedOnStyle: Google
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBraces: Linux
+BreakConstructorInitializersBeforeComma: true
+ColumnLimit: 0
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ContinuationIndentWidth: 8
+IndentCaseLabels: false
+IndentWidth: 8
+MaxEmptyLinesToKeep: 1
+PointerAlignment: Right
+UseTab: Always
