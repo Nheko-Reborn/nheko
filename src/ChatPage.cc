@@ -50,6 +50,9 @@ ChatPage::ChatPage(QWidget *parent)
 
 	user_info_widget_ = new UserInfoWidget(ui->sideBarTopWidget);
 
+	sync_timer_ = new QTimer(this);
+	connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
+
 	connect(room_list_,
 		SIGNAL(roomChanged(const RoomInfo &)),
 		this,
@@ -147,8 +150,6 @@ void ChatPage::initialSyncCompleted(SyncResponse response)
 	view_manager_->initialize(response.rooms());
 	room_list_->setInitialRooms(response.rooms());
 
-	sync_timer_ = new QTimer(this);
-	connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
 	sync_timer_->start(sync_interval_);
 }
 

@@ -13,6 +13,8 @@ tags
 *.dll
 *.dylib
 
+vgcore.*
+
 # Qt-es
 
 /.qmake.cache
