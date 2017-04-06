@@ -31,7 +31,7 @@ ELSE("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
             COMMAND ${GIT} rev-parse --short HEAD
             OUTPUT_VARIABLE GIT_OUT OUTPUT_STRIP_TRAILING_WHITESPACE
         )
-        SET(PATCH_OUT "0-git${GIT_OUT}")
+        SET(PATCH_OUT "0-${GIT_OUT}")
     ELSE(GIT)
         SET(PATCH_OUT "0")
     ENDIF(GIT)

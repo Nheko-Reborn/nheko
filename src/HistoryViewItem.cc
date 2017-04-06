@@ -20,7 +20,7 @@
 
 #include "HistoryViewItem.h"
 
-HistoryViewItem::HistoryViewItem(Event event, bool with_sender, QString color, QWidget *parent)
+HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QString &color, QWidget *parent)
     : QWidget(parent)
 {
 	QString sender = "";

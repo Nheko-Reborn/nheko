@@ -40,7 +40,7 @@ public:
 	inline void setAvatar(const QImage &avatar_image);
 
 signals:
-	void clicked(RoomInfo info_);
+	void clicked(const RoomInfo &info_);
 
 public slots:
 	void setPressedState(bool state);

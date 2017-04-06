@@ -28,7 +28,7 @@ class HistoryViewItem : public QWidget
 {
 	Q_OBJECT
 public:
-	HistoryViewItem(Event event, bool with_sender, QString color, QWidget *parent = 0);
+	HistoryViewItem(const Event &event, bool with_sender, const QString &color, QWidget *parent = 0);
 	~HistoryViewItem();
 
 private:

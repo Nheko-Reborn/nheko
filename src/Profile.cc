@@ -22,17 +22,7 @@
 #include "Deserializable.h"
 #include "Profile.h"
 
-QUrl ProfileResponse::getAvatarUrl()
-{
-	return avatar_url_;
-}
-
-QString ProfileResponse::getDisplayName()
-{
-	return display_name_;
-}
-
-void ProfileResponse::deserialize(QJsonDocument data) throw(DeserializationException)
+void ProfileResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
 {
 	if (!data.isObject())
 		throw DeserializationException("Profile response is not a JSON object");

@@ -27,17 +27,17 @@
 class Event : public Deserializable
 {
 public:
-	QJsonObject content() const;
-	QJsonObject unsigned_content() const;
+	inline QJsonObject content() const;
+	inline QJsonObject unsigned_content() const;
 
-	QString sender() const;
-	QString state_key() const;
-	QString type() const;
-	QString eventId() const;
+	inline QString sender() const;
+	inline QString state_key() const;
+	inline QString type() const;
+	inline QString eventId() const;
 
-	uint64_t timestamp() const;
+	inline uint64_t timestamp() const;
 
-	void deserialize(QJsonValue data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
 
 private:
 	QJsonObject content_;
@@ -51,24 +51,64 @@ private:
 	uint64_t origin_server_ts_;
 };
 
+inline QJsonObject Event::content() const
+{
+	return content_;
+}
+
+inline QJsonObject Event::unsigned_content() const
+{
+	return unsigned_;
+}
+
+inline QString Event::sender() const
+{
+	return sender_;
+}
+
+inline QString Event::state_key() const
+{
+	return state_key_;
+}
+
+inline QString Event::type() const
+{
+	return type_;
+}
+
+inline QString Event::eventId() const
+{
+	return event_id_;
+}
+
+inline uint64_t Event::timestamp() const
+{
+	return origin_server_ts_;
+}
+
 class State : public Deserializable
 {
 public:
-	void deserialize(QJsonValue data) throw(DeserializationException) override;
-	QList<Event> events() const;
+	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
+	inline QList<Event> events() const;
 
 private:
 	QList<Event> events_;
 };
 
+inline QList<Event> State::events() const
+{
+	return events_;
+}
+
 class Timeline : public Deserializable
 {
 public:
-	QList<Event> events() const;
-	QString previousBatch() const;
-	bool limited() const;
+	inline QList<Event> events() const;
+	inline QString previousBatch() const;
+	inline bool limited() const;
 
-	void deserialize(QJsonValue data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
 
 private:
 	QList<Event> events_;
@@ -76,14 +116,29 @@ private:
 	bool limited_;
 };
 
+inline QList<Event> Timeline::events() const
+{
+	return events_;
+}
+
+inline QString Timeline::previousBatch() const
+{
+	return prev_batch_;
+}
+
+inline bool Timeline::limited() const
+{
+	return limited_;
+}
+
 // TODO: Add support for ehpmeral, account_data, undread_notifications
 class JoinedRoom : public Deserializable
 {
 public:
-	State state() const;
-	Timeline timeline() const;
+	inline State state() const;
+	inline Timeline timeline() const;
 
-	void deserialize(QJsonValue data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
 
 private:
 	State state_;
@@ -93,27 +148,52 @@ private:
 	/* UnreadNotifications unread_notifications_; */
 };
 
+inline State JoinedRoom::state() const
+{
+	return state_;
+}
+
+inline Timeline JoinedRoom::timeline() const
+{
+	return timeline_;
+}
+
 // TODO: Add support for invited and left rooms.
 class Rooms : public Deserializable
 {
 public:
-	QMap<QString, JoinedRoom> join() const;
-	void deserialize(QJsonValue data) throw(DeserializationException) override;
+	inline QMap<QString, JoinedRoom> join() const;
+	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
 
 private:
 	QMap<QString, JoinedRoom> join_;
 };
 
+inline QMap<QString, JoinedRoom> Rooms::join() const
+{
+	return join_;
+}
+
 class SyncResponse : public Deserializable
 {
 public:
-	void deserialize(QJsonDocument data) throw(DeserializationException) override;
-	QString nextBatch() const;
-	Rooms rooms() const;
+	void deserialize(const QJsonDocument &data) throw(DeserializationException) override;
+	inline QString nextBatch() const;
+	inline Rooms rooms() const;
 
 private:
 	QString next_batch_;
 	Rooms rooms_;
 };
+
+inline Rooms SyncResponse::rooms() const
+{
+	return rooms_;
+}
+
+inline QString SyncResponse::nextBatch() const
+{
+	return next_batch_;
+}
 
 #endif  // SYNC_H

@@ -42,10 +42,6 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
 	connect(this, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResponse(QNetworkReply *)));
 }
 
-MatrixClient::~MatrixClient()
-{
-}
-
 void MatrixClient::onVersionsResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
@@ -289,7 +285,7 @@ void MatrixClient::sync()
 	reply->setProperty("endpoint", Endpoint::Sync);
 }
 
-void MatrixClient::sendTextMessage(QString roomid, QString msg)
+void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg)
 {
 	QUrlQuery query;
 	query.addQueryItem("access_token", token_);

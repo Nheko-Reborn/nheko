@@ -38,13 +38,13 @@ private:
 class Deserializable
 {
 public:
-	virtual void deserialize(QJsonValue) throw(DeserializationException)
+	virtual void deserialize(const QJsonValue &) throw(DeserializationException)
 	{
 	}
-	virtual void deserialize(QJsonObject) throw(DeserializationException)
+	virtual void deserialize(const QJsonObject &) throw(DeserializationException)
 	{
 	}
-	virtual void deserialize(QJsonDocument) throw(DeserializationException)
+	virtual void deserialize(const QJsonDocument &) throw(DeserializationException)
 	{
 	}
 };

@@ -32,12 +32,11 @@ class MatrixClient : public QNetworkAccessManager
 	Q_OBJECT
 public:
 	MatrixClient(QString server, QObject *parent = 0);
-	~MatrixClient();
 
 	// Client API.
 	void initialSync();
 	void sync();
-	void sendTextMessage(QString roomid, QString msg);
+	void sendTextMessage(const QString &roomid, const QString &msg);
 	void login(const QString &username, const QString &password);
 	void registerUser(const QString &username, const QString &password);
 	void versions();
@@ -49,22 +48,22 @@ public slots:
 	// Profile
 	void getOwnProfile();
 
-	inline void setServer(QString server);
-	inline void setAccessToken(QString token);
+	inline void setServer(const QString &server);
+	inline void setAccessToken(const QString &token);
 	inline void setNextBatchToken(const QString &next_batch);
 
 signals:
 	// Emitted after a error during the login.
-	void loginError(QString error);
+	void loginError(const QString &error);
 
 	// Emitted after succesfull user login. A new access token is returned by the server.
-	void loginSuccess(QString user_id, QString home_server, QString token);
+	void loginSuccess(const QString &userid, const QString &homeserver, const QString &token);
 
 	// Returned profile data for the user's account.
-	void getOwnProfileResponse(QUrl avatar_url, QString display_name);
-	void initialSyncCompleted(SyncResponse response);
-	void syncCompleted(SyncResponse response);
-	void messageSent(QString event_id, int txn_id);
+	void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
+	void initialSyncCompleted(const SyncResponse &response);
+	void syncCompleted(const SyncResponse &response);
+	void messageSent(const QString &event_id, const int txn_id);
 
 private slots:
 	void onResponse(QNetworkReply *reply);
@@ -111,12 +110,12 @@ inline QString MatrixClient::getHomeServer()
 	return server_;
 }
 
-inline void MatrixClient::setServer(QString server)
+inline void MatrixClient::setServer(const QString &server)
 {
 	server_ = "https://" + server;
 }
 
-inline void MatrixClient::setAccessToken(QString token)
+inline void MatrixClient::setAccessToken(const QString &token)
 {
 	token_ = token;
 }

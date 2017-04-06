@@ -33,10 +33,10 @@ class HistoryView : public QWidget
 
 public:
 	explicit HistoryView(QWidget *parent = 0);
-	explicit HistoryView(QList<Event> events, QWidget *parent = 0);
+	explicit HistoryView(const QList<Event> &events, QWidget *parent = 0);
 	~HistoryView();
 
-	void addHistoryItem(Event event, QString color, bool with_sender);
+	void addHistoryItem(const Event &event, const QString &color, bool with_sender);
 	void addEvents(const QList<Event> &events);
 
 public slots:

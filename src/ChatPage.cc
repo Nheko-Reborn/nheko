@@ -124,7 +124,7 @@ void ChatPage::startSync()
 	matrix_client_->sync();
 }
 
-void ChatPage::setOwnAvatar(QByteArray img)
+void ChatPage::setOwnAvatar(const QByteArray &img)
 {
 	if (img.size() == 0)
 		return;
@@ -134,7 +134,7 @@ void ChatPage::setOwnAvatar(QByteArray img)
 	user_info_widget_->setAvatar(pixmap.toImage());
 }
 
-void ChatPage::syncCompleted(SyncResponse response)
+void ChatPage::syncCompleted(const SyncResponse &response)
 {
 	matrix_client_->setNextBatchToken(response.nextBatch());
 
@@ -142,7 +142,7 @@ void ChatPage::syncCompleted(SyncResponse response)
 	view_manager_->sync(response.rooms());
 }
 
-void ChatPage::initialSyncCompleted(SyncResponse response)
+void ChatPage::initialSyncCompleted(const SyncResponse &response)
 {
 	if (!response.nextBatch().isEmpty())
 		matrix_client_->setNextBatchToken(response.nextBatch());
@@ -210,7 +210,7 @@ void ChatPage::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
 	});
 }
 
-void ChatPage::updateOwnProfileInfo(QUrl avatar_url, QString display_name)
+void ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name)
 {
 	QSettings settings;
 	auto userid = settings.value("auth/user_id").toString();

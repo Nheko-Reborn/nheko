@@ -24,12 +24,7 @@
 #include "Deserializable.h"
 #include "Sync.h"
 
-QString SyncResponse::nextBatch() const
-{
-	return next_batch_;
-}
-
-void SyncResponse::deserialize(QJsonDocument data) throw(DeserializationException)
+void SyncResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
 {
 	if (!data.isObject())
 		throw DeserializationException("Sync response is not a JSON object");
@@ -46,17 +41,7 @@ void SyncResponse::deserialize(QJsonDocument data) throw(DeserializationExceptio
 	next_batch_ = object.value("next_batch").toString();
 }
 
-Rooms SyncResponse::rooms() const
-{
-	return rooms_;
-}
-
-QMap<QString, JoinedRoom> Rooms::join() const
-{
-	return join_;
-}
-
-void Rooms::deserialize(QJsonValue data) throw(DeserializationException)
+void Rooms::deserialize(const QJsonValue &data) throw(DeserializationException)
 {
 	if (!data.isObject())
 		throw DeserializationException("Rooms value is not a JSON object");
@@ -96,17 +81,7 @@ void Rooms::deserialize(QJsonValue data) throw(DeserializationException)
 	}
 }
 
-State JoinedRoom::state() const
-{
-	return state_;
-}
-
-Timeline JoinedRoom::timeline() const
-{
-	return timeline_;
-}
-
-void JoinedRoom::deserialize(QJsonValue data) throw(DeserializationException)
+void JoinedRoom::deserialize(const QJsonValue &data) throw(DeserializationException)
 {
 	if (!data.isObject())
 		throw DeserializationException("JoinedRoom is not a JSON object");
@@ -137,42 +112,7 @@ void JoinedRoom::deserialize(QJsonValue data) throw(DeserializationException)
 	timeline_.deserialize(object.value("timeline"));
 }
 
-QJsonObject Event::content() const
-{
-	return content_;
-}
-
-QJsonObject Event::unsigned_content() const
-{
-	return unsigned_;
-}
-
-QString Event::sender() const
-{
-	return sender_;
-}
-
-QString Event::state_key() const
-{
-	return state_key_;
-}
-
-QString Event::type() const
-{
-	return type_;
-}
-
-QString Event::eventId() const
-{
-	return event_id_;
-}
-
-uint64_t Event::timestamp() const
-{
-	return origin_server_ts_;
-}
-
-void Event::deserialize(QJsonValue data) throw(DeserializationException)
+void Event::deserialize(const QJsonValue &data) throw(DeserializationException)
 {
 	if (!data.isObject())
 		throw DeserializationException("Event is not a JSON object");
@@ -212,12 +152,7 @@ void Event::deserialize(QJsonValue data) throw(DeserializationException)
 	origin_server_ts_ = object.value("origin_server_ts").toDouble();
 }
 
-QList<Event> State::events() const
-{
-	return events_;
-}
-
-void State::deserialize(QJsonValue data) throw(DeserializationException)
+void State::deserialize(const QJsonValue &data) throw(DeserializationException)
 {
 	if (!data.isArray())
 		throw DeserializationException("State is not a JSON array");
@@ -237,22 +172,7 @@ void State::deserialize(QJsonValue data) throw(DeserializationException)
 	}
 }
 
-QList<Event> Timeline::events() const
-{
-	return events_;
-}
-
-QString Timeline::previousBatch() const
-{
-	return prev_batch_;
-}
-
-bool Timeline::limited() const
-{
-	return limited_;
-}
-
-void Timeline::deserialize(QJsonValue data) throw(DeserializationException)
+void Timeline::deserialize(const QJsonValue &data) throw(DeserializationException)
 {
 	if (!data.isObject())
 		throw DeserializationException("Timeline is not a JSON object");

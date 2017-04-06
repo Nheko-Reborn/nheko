@@ -27,7 +27,14 @@ $ sudo pacman -S qt5-base cmake gcc
 
 #### Building
 
-Run `make build`. The `nheko` binary will be located in the `build` directory.
+Run
+
+```bash
+cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release # Default is Debug.
+make -C build
+```
+
+The `nheko` binary will be located in the `build` directory.
 
 #### Contributing
 

@@ -42,32 +42,7 @@ QByteArray LoginRequest::serialize()
 	return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
 
-void LoginRequest::setPassword(QString password)
-{
-	password_ = password;
-}
-
-void LoginRequest::setUser(QString username)
-{
-	user_ = username;
-}
-
-QString LoginResponse::getAccessToken()
-{
-	return access_token_;
-}
-
-QString LoginResponse::getHomeServer()
-{
-	return home_server_;
-}
-
-QString LoginResponse::getUserId()
-{
-	return user_id_;
-}
-
-void LoginResponse::deserialize(QJsonDocument data) throw(DeserializationException)
+void LoginResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
 {
 	if (!data.isObject())
 		throw DeserializationException("Login response is not a JSON object");

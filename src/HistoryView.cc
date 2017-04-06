@@ -50,7 +50,7 @@ const QList<QString> HistoryView::COLORS({"#FFF46E",
 					  "#a2b636",
 					  "#4BBE2E"});
 
-HistoryView::HistoryView(QList<Event> events, QWidget *parent)
+HistoryView::HistoryView(const QList<Event> &events, QWidget *parent)
     : QWidget(parent)
 {
 	init();
@@ -133,7 +133,7 @@ void HistoryView::init()
 		SLOT(sliderRangeChanged(int, int)));
 }
 
-void HistoryView::addHistoryItem(Event event, QString color, bool with_sender)
+void HistoryView::addHistoryItem(const Event &event, const QString &color, bool with_sender)
 {
 	// TODO: Probably create another function instead of passing the flag.
 	HistoryViewItem *item = new HistoryViewItem(event, with_sender, color, scroll_widget_);

@@ -26,14 +26,24 @@
 class ProfileResponse : public Deserializable
 {
 public:
-	void deserialize(QJsonDocument data) throw(DeserializationException) override;
+	void deserialize(const QJsonDocument &data) throw(DeserializationException) override;
 
-	QUrl getAvatarUrl();
-	QString getDisplayName();
+	inline QUrl getAvatarUrl();
+	inline QString getDisplayName();
 
 private:
 	QUrl avatar_url_;
 	QString display_name_;
 };
+
+inline QUrl ProfileResponse::getAvatarUrl()
+{
+	return avatar_url_;
+}
+
+inline QString ProfileResponse::getDisplayName()
+{
+	return display_name_;
+}
 
 #endif  // PROFILE_H

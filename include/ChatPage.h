@@ -50,10 +50,10 @@ public:
 
 public slots:
 	// Updates the user info box.
-	void updateOwnProfileInfo(QUrl avatar_url, QString display_name);
+	void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
 	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
-	void initialSyncCompleted(SyncResponse response);
-	void syncCompleted(SyncResponse response);
+	void initialSyncCompleted(const SyncResponse &response);
+	void syncCompleted(const SyncResponse &response);
 	void changeTopRoomInfo(const RoomInfo &info);
 	void sendTextMessage(const QString &msg);
 	void messageSent(const QString event_id, int txn_id);
@@ -62,7 +62,7 @@ public slots:
 private:
 	Ui::ChatPage *ui;
 
-	void setOwnAvatar(QByteArray img);
+	void setOwnAvatar(const QByteArray &img);
 
 	RoomList *room_list_;
 	HistoryViewManager *view_manager_;
