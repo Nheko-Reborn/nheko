@@ -38,7 +38,7 @@ public:
 	void sync();
 	void sendTextMessage(const QString &roomid, const QString &msg);
 	void login(const QString &username, const QString &password);
-	void registerUser(const QString &username, const QString &password);
+	void registerUser(const QString &username, const QString &password, const QString &server);
 	void versions();
 
 	inline QString getHomeServer();
@@ -53,11 +53,11 @@ public slots:
 	inline void setNextBatchToken(const QString &next_batch);
 
 signals:
-	// Emitted after a error during the login.
 	void loginError(const QString &error);
+	void registerError(const QString &error);
 
-	// Emitted after succesfull user login. A new access token is returned by the server.
 	void loginSuccess(const QString &userid, const QString &homeserver, const QString &token);
+	void registerSuccess(const QString &userid, const QString &homeserver, const QString &token);
 
 	// Returned profile data for the user's account.
 	void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);

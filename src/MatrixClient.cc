@@ -27,6 +27,7 @@
 #include "Login.h"
 #include "MatrixClient.h"
 #include "Profile.h"
+#include "Register.h"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
     : QNetworkAccessManager(parent)
@@ -70,14 +71,10 @@ void MatrixClient::onLoginResponse(QNetworkReply *reply)
 		return;
 	}
 
-	if (status_code != 200) {
-		qDebug() << "Login response: status code " << status_code;
-
-		if (status_code >= 400) {
-			qWarning() << "Login error: " << reply->errorString();
-			emit loginError("An unknown error occured. Please try again.");
-			return;
-		}
+	if (status_code >= 400) {
+		qWarning() << "Login error: " << reply->errorString();
+		emit loginError("An unknown error occured. Please try again.");
+		return;
 	}
 
 	auto data = reply->readAll();
@@ -100,7 +97,31 @@ void MatrixClient::onRegisterResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
-	qDebug() << "Handling the register response";
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	auto data = reply->readAll();
+	auto json = QJsonDocument::fromJson(data);
+
+	if (status == 0 || status >= 400) {
+		if (json.isObject() && json.object().contains("error"))
+			emit registerError(json.object().value("error").toString());
+		else
+			emit registerError(reply->errorString());
+
+		return;
+	}
+
+	RegisterResponse response;
+
+	try {
+		response.deserialize(json);
+		emit registerSuccess(response.getUserId(),
+				     response.getHomeServer(),
+				     response.getAccessToken());
+	} catch (DeserializationException &e) {
+		qWarning() << "Register" << e.what();
+		emit registerError("Received malformed response.");
+	}
 }
 
 void MatrixClient::onGetOwnProfileResponse(QNetworkReply *reply)
@@ -123,7 +144,7 @@ void MatrixClient::onGetOwnProfileResponse(QNetworkReply *reply)
 		response.deserialize(json);
 		emit getOwnProfileResponse(response.getAvatarUrl(), response.getDisplayName());
 	} catch (DeserializationException &e) {
-		qWarning() << "Profile malformed response" << e.what();
+		qWarning() << "Profile:" << e.what();
 	}
 }
 
@@ -209,7 +230,7 @@ void MatrixClient::onSendTextMessageResponse(QNetworkReply *reply)
 	auto object = json.object();
 
 	if (!object.contains("event_id")) {
-		qDebug() << "SendTextMessage: missnig event_id from response";
+		qDebug() << "SendTextMessage: missing event_id from response";
 		return;
 	}
 
@@ -230,14 +251,19 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 		break;
 	case Endpoint::Register:
 		onRegisterResponse(reply);
+		break;
 	case Endpoint::GetOwnProfile:
 		onGetOwnProfileResponse(reply);
+		break;
 	case Endpoint::InitialSync:
 		onInitialSyncResponse(reply);
+		break;
 	case Endpoint::Sync:
 		onSyncResponse(reply);
+		break;
 	case Endpoint::SendTextMessage:
 		onSendTextMessageResponse(reply);
+		break;
 	default:
 		break;
 	}
@@ -255,6 +281,26 @@ void MatrixClient::login(const QString &username, const QString &password)
 
 	QNetworkReply *reply = post(request, body.serialize());
 	reply->setProperty("endpoint", Endpoint::Login);
+}
+
+void MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server)
+{
+	setServer(server);
+
+	QUrlQuery query;
+	query.addQueryItem("kind", "user");
+
+	QUrl endpoint(server_);
+	endpoint.setPath(api_url_ + "/register");
+	endpoint.setQuery(query);
+
+	QNetworkRequest request(QString(endpoint.toEncoded()));
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+	RegisterRequest body(user, pass);
+
+	QNetworkReply *reply = post(request, body.serialize());
+	reply->setProperty("endpoint", Endpoint::Register);
 }
 
 void MatrixClient::sync()

@@ -57,6 +57,11 @@ MainWindow::MainWindow(QWidget *parent)
 		this,
 		SLOT(matrixRegister(const QString &, const QString &, const QString &)));
 
+	connect(matrix_client_,
+		SIGNAL(registerError(const QString &)),
+		register_page_,
+		SLOT(registerError(const QString &)));
+
 	connect(matrix_client_, SIGNAL(loginError(QString)), login_page_, SLOT(loginError(QString)));
 	connect(matrix_client_,
 		SIGNAL(loginSuccess(QString, QString, QString)),
@@ -66,8 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::matrixLogin(const QString &username, const QString &password, const QString &home_server)
 {
-	qDebug() << "About to login into Matrix";
-	qDebug() << "Userame: " << username;
+	qDebug() << "Logging in..." << username;
 
 	matrix_client_->setServer(home_server);
 	matrix_client_->login(username, password);
@@ -88,9 +92,8 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 
 void MainWindow::matrixRegister(const QString &username, const QString &password, const QString &server)
 {
-	Q_UNUSED(password);
-
 	qDebug() << "Registering" << username << "at" << server;
+	matrix_client_->registerUser(username, password, server);
 }
 
 void MainWindow::showWelcomePage()

@@ -70,6 +70,7 @@ set(SRC_FILES
     src/RoomInfo.cc
     src/RoomInfoListItem.cc
     src/RoomList.cc
+    src/Register.cc
     src/RegisterPage.cc
     src/SlidingStackWidget.cc
     src/Sync.cc
@@ -108,6 +109,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/LoginPage.h
     include/MainWindow.h
     include/MatrixClient.h
+    include/Register.h
     include/RegisterPage.h
     include/RoomInfoListItem.h
     include/RoomList.h

@@ -25,15 +25,15 @@
 void ProfileResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
 {
 	if (!data.isObject())
-		throw DeserializationException("Profile response is not a JSON object");
+		throw DeserializationException("Response is not a JSON object");
 
 	QJsonObject object = data.object();
 
 	if (object.value("avatar_url") == QJsonValue::Undefined)
-		throw DeserializationException("Profile: missing avatar_url param");
+		throw DeserializationException("Missing avatar_url param");
 
 	if (object.value("displayname") == QJsonValue::Undefined)
-		throw DeserializationException("Profile: missing displayname param");
+		throw DeserializationException("Missing displayname param");
 
 	avatar_url_ = QUrl(object.value("avatar_url").toString());
 	display_name_ = object.value("displayname").toString();
