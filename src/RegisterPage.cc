@@ -56,7 +56,7 @@ RegisterPage::RegisterPage(QWidget *parent)
 
 	form_layout_ = new QVBoxLayout();
 	form_layout_->setSpacing(20);
-	form_layout_->setContentsMargins(0, 00, 0, 60);
+	form_layout_->setContentsMargins(0, 0, 0, 40);
 	form_widget_->setLayout(form_layout_);
 
 	form_wrapper_->addStretch(1);
@@ -92,7 +92,10 @@ RegisterPage::RegisterPage(QWidget *parent)
 
 	button_layout_ = new QHBoxLayout();
 	button_layout_->setSpacing(0);
-	button_layout_->setContentsMargins(0, 0, 0, 50);
+	button_layout_->setContentsMargins(0, 0, 0, 30);
+
+	error_label_ = new QLabel(this);
+	error_label_->setStyleSheet("margin-bottom: 20px; color: #E22826; font-size: 11pt;");
 
 	register_button_ = new RaisedButton("REGISTER", this);
 	register_button_->setBackgroundColor(QColor("#171919"));
@@ -110,9 +113,10 @@ RegisterPage::RegisterPage(QWidget *parent)
 	top_layout_->addStretch(1);
 	top_layout_->addLayout(logo_layout_);
 	top_layout_->addLayout(form_wrapper_);
-	top_layout_->addStretch(2);
+	top_layout_->addStretch(1);
 	top_layout_->addLayout(button_layout_);
 	top_layout_->addStretch(1);
+	top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
 
 	connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
 	connect(register_button_, SIGNAL(clicked()), this, SLOT(onRegisterButtonClicked()));
@@ -134,24 +138,23 @@ void RegisterPage::onBackButtonClicked()
 	emit backButtonClicked();
 }
 
+void RegisterPage::registerError(const QString &msg)
+{
+	error_label_->setText(msg);
+}
+
 void RegisterPage::onRegisterButtonClicked()
 {
+	error_label_->setText("");
+
 	if (!username_input_->hasAcceptableInput()) {
-		QString text("Invalid username");
-		QPoint point = username_input_->mapToGlobal(username_input_->rect().topRight());
-		QToolTip::showText(point, text);
+		registerError("Invalid username");
 	} else if (!password_input_->hasAcceptableInput()) {
-		QString text("Password is not long enough");
-		QPoint point = password_input_->mapToGlobal(password_input_->rect().topRight());
-		QToolTip::showText(point, text);
+		registerError("Password is not long enough (min 8 chars)");
 	} else if (password_input_->text() != password_confirmation_->text()) {
-		QString text("Passwords don't match");
-		QPoint point = password_confirmation_->mapToGlobal(password_confirmation_->rect().topRight());
-		QToolTip::showText(point, text);
+		registerError("Passwords don't match");
 	} else if (!server_input_->hasAcceptableInput()) {
-		QString text("Invalid server name");
-		QPoint point = server_input_->mapToGlobal(server_input_->rect().topRight());
-		QToolTip::showText(point, text);
+		registerError("Invalid server name");
 	} else {
 		QString username = username_input_->text();
 		QString password = password_input_->text();

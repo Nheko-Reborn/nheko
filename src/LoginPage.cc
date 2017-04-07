@@ -55,7 +55,7 @@ LoginPage::LoginPage(QWidget *parent)
 
 	form_layout_ = new QVBoxLayout();
 	form_layout_->setSpacing(20);
-	form_layout_->setContentsMargins(0, 00, 0, 30);
+	form_layout_->setContentsMargins(0, 0, 0, 30);
 	form_widget_->setLayout(form_layout_);
 
 	form_wrapper_->addStretch(1);

@@ -88,8 +88,9 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 
 void MainWindow::matrixRegister(const QString &username, const QString &password, const QString &server)
 {
-	qDebug() << "About to register to Matrix";
-	qDebug() << "Username: " << username << " Password: " << password << " Server: " << server;
+	Q_UNUSED(password);
+
+	qDebug() << "Registering" << username << "at" << server;
 }
 
 void MainWindow::showWelcomePage()

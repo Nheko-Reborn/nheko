@@ -43,6 +43,10 @@ signals:
 	// responsible for the actual registering on the remote Matrix server.
 	void registerUser(const QString &username, const QString &password, const QString &server);
 
+public slots:
+	// Display registration specific errors to the user.
+	void registerError(const QString &msg);
+
 private slots:
 	void onBackButtonClicked();
 	void onRegisterButtonClicked();
@@ -55,6 +59,7 @@ private:
 	QHBoxLayout *button_layout_;
 
 	QLabel *logo_;
+	QLabel *error_label_;
 
 	FlatButton *back_button_;
 	RaisedButton *register_button_;
