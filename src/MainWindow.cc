@@ -89,6 +89,7 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 	int index = sliding_stack_->getWidgetIndex(chat_page_);
 	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
 
+	login_page_->reset();
 	chat_page_->bootstrap(userid, homeserver, token);
 }
 

@@ -137,6 +137,12 @@ void LoginPage::onLoginButtonClicked()
 	}
 }
 
+void LoginPage::reset()
+{
+	username_input_->clear();
+	password_input_->clear();
+}
+
 void LoginPage::onBackButtonClicked()
 {
 	emit backButtonClicked();

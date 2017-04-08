@@ -36,6 +36,8 @@ public:
 	explicit LoginPage(QWidget *parent = 0);
 	~LoginPage();
 
+	void reset();
+
 signals:
 	void backButtonClicked();
 
