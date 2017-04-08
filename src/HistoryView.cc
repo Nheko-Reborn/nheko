@@ -63,6 +63,14 @@ HistoryView::HistoryView(QWidget *parent)
 	init();
 }
 
+void HistoryView::clear()
+{
+	nick_colors_.clear();
+
+	for (const auto msg : scroll_layout_->children())
+		msg->deleteLater();
+}
+
 void HistoryView::sliderRangeChanged(int min, int max)
 {
 	Q_UNUSED(min);
@@ -80,9 +88,7 @@ QString HistoryView::chooseRandomColor()
 
 void HistoryView::addEvents(const QList<Event> &events)
 {
-	for (int i = 0; i < events.size(); i++) {
-		auto event = events[i];
-
+	for (const auto &event : events) {
 		if (event.type() == "m.room.message") {
 			auto msg_type = event.content().value("msgtype").toString();
 
@@ -97,8 +103,6 @@ void HistoryView::addEvents(const QList<Event> &events)
 
 				addHistoryItem(event, color, with_sender);
 				last_sender_ = event.sender();
-			} else {
-				qDebug() << "Ignoring message" << msg_type;
 			}
 		}
 	}

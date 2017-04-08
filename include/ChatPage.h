@@ -48,6 +48,9 @@ public:
 	// Initialize all the components of the UI.
 	void bootstrap(QString userid, QString homeserver, QString token);
 
+signals:
+	void close();
+
 public slots:
 	// Updates the user info box.
 	void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
@@ -58,6 +61,7 @@ public slots:
 	void sendTextMessage(const QString &msg);
 	void messageSent(const QString event_id, int txn_id);
 	void startSync();
+	void logout();
 
 private:
 	Ui::ChatPage *ui;

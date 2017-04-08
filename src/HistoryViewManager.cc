@@ -37,6 +37,17 @@ HistoryViewManager::~HistoryViewManager()
 {
 }
 
+void HistoryViewManager::clearAll()
+{
+	for (const auto &view: views_) {
+		view->clear();
+		removeWidget(view);
+		view->deleteLater();
+	}
+
+	views_.clear();
+}
+
 void HistoryViewManager::initialize(const Rooms &rooms)
 {
 	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {

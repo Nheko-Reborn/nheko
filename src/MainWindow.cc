@@ -57,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
 		this,
 		SLOT(matrixRegister(const QString &, const QString &, const QString &)));
 
+	connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
+
 	connect(matrix_client_,
 		SIGNAL(registerError(const QString &)),
 		register_page_,

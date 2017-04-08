@@ -44,9 +44,11 @@ public:
 	inline QString getHomeServer();
 	inline void incrementTransactionId();
 
+	void reset();
+
 public slots:
-	// Profile
 	void getOwnProfile();
+	void logout();
 
 	inline void setServer(const QString &server);
 	inline void setAccessToken(const QString &token);
@@ -55,6 +57,8 @@ public slots:
 signals:
 	void loginError(const QString &error);
 	void registerError(const QString &error);
+
+	void loggedOut();
 
 	void loginSuccess(const QString &userid, const QString &homeserver, const QString &token);
 	void registerSuccess(const QString &userid, const QString &homeserver, const QString &token);
@@ -74,6 +78,7 @@ private:
 		GetProfile,
 		InitialSync,
 		Login,
+		Logout,
 		Register,
 		SendTextMessage,
 		Sync,
@@ -82,6 +87,7 @@ private:
 
 	// Response handlers.
 	void onLoginResponse(QNetworkReply *reply);
+	void onLogoutResponse(QNetworkReply *reply);
 	void onRegisterResponse(QNetworkReply *reply);
 	void onVersionsResponse(QNetworkReply *reply);
 	void onGetOwnProfileResponse(QNetworkReply *reply);

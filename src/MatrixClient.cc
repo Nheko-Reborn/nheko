@@ -43,6 +43,15 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
 	connect(this, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResponse(QNetworkReply *)));
 }
 
+void MatrixClient::reset()
+{
+	next_batch_ = "";
+	server_ = "";
+	token_ = "";
+
+	txn_id_ = 0;
+}
+
 void MatrixClient::onVersionsResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
@@ -91,6 +100,20 @@ void MatrixClient::onLoginResponse(QNetworkReply *reply)
 		qWarning() << "Malformed JSON response" << e.what();
 		emit loginError("Malformed response. Possibly not a Matrix server");
 	}
+}
+
+void MatrixClient::onLogoutResponse(QNetworkReply *reply)
+{
+	reply->deleteLater();
+
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	if (status != 200) {
+		qWarning() << "Logout error: " << reply->errorString();
+		return;
+	}
+
+	emit loggedOut();
 }
 
 void MatrixClient::onRegisterResponse(QNetworkReply *reply)
@@ -249,6 +272,9 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 	case Endpoint::Login:
 		onLoginResponse(reply);
 		break;
+	case Endpoint::Logout:
+		onLogoutResponse(reply);
+		break;
 	case Endpoint::Register:
 		onRegisterResponse(reply);
 		break;
@@ -281,6 +307,23 @@ void MatrixClient::login(const QString &username, const QString &password)
 
 	QNetworkReply *reply = post(request, body.serialize());
 	reply->setProperty("endpoint", Endpoint::Login);
+}
+
+void MatrixClient::logout()
+{
+	QUrlQuery query;
+	query.addQueryItem("access_token", token_);
+
+	QUrl endpoint(server_);
+	endpoint.setPath(api_url_ + "/logout");
+	endpoint.setQuery(query);
+
+	QNetworkRequest request(endpoint);
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+	QJsonObject body{};
+	QNetworkReply *reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
+	reply->setProperty("endpoint", Endpoint::Logout);
 }
 
 void MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server)

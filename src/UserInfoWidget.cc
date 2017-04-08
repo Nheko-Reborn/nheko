@@ -24,7 +24,6 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
     , userid_("@user:homeserver.org")
 {
 	QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-
 	setSizePolicy(sizePolicy);
 	setMinimumSize(QSize(0, 65));
 
@@ -65,24 +64,33 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
 	buttonLayout_ = new QHBoxLayout();
 
-	settingsButton_ = new FlatButton(this);
-	settingsButton_->setForegroundColor(QColor("#ebebeb"));
-	settingsButton_->setCursor(QCursor(Qt::PointingHandCursor));
-	settingsButton_->setStyleSheet("width: 30px; height: 30px;");
+	logoutButton_ = new FlatButton(this);
+	logoutButton_->setForegroundColor(QColor("#ebebeb"));
+	logoutButton_->setCursor(QCursor(Qt::PointingHandCursor));
+	logoutButton_->setStyleSheet("width: 30px; height: 30px;");
 
 	QIcon icon;
-	icon.addFile(":/icons/icons/user-shape.png", QSize(), QIcon::Normal, QIcon::Off);
+	icon.addFile(":/icons/icons/power-button-off.png", QSize(), QIcon::Normal, QIcon::Off);
 
-	settingsButton_->setIcon(icon);
-	settingsButton_->setIconSize(QSize(16, 16));
+	logoutButton_->setIcon(icon);
+	logoutButton_->setIconSize(QSize(16, 16));
 
-	buttonLayout_->addWidget(settingsButton_);
+	buttonLayout_->addWidget(logoutButton_);
 
 	topLayout_->addLayout(buttonLayout_);
+
+	connect(logoutButton_, SIGNAL(clicked()), this, SIGNAL(logout()));
 }
 
 UserInfoWidget::~UserInfoWidget()
 {
+}
+
+void UserInfoWidget::reset()
+{
+	displayNameLabel_->setText("");
+	userIdLabel_->setText("");
+	userAvatar_->setLetter(QChar('?'));
 }
 
 void UserInfoWidget::setAvatar(const QImage &img)

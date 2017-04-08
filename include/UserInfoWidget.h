@@ -38,6 +38,11 @@ public:
 	void setDisplayName(const QString &name);
 	void setUserId(const QString &userid);
 
+	void reset();
+
+signals:
+	void logout();
+
 private:
 	Avatar *userAvatar_;
 
@@ -46,7 +51,7 @@ private:
 	QVBoxLayout *textLayout_;
 	QHBoxLayout *buttonLayout_;
 
-	FlatButton *settingsButton_;
+	FlatButton *logoutButton_;
 
 	QLabel *displayNameLabel_;
 	QLabel *userIdLabel_;

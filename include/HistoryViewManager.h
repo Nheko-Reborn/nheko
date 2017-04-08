@@ -36,6 +36,7 @@ public:
 
 	void initialize(const Rooms &rooms);
 	void sync(const Rooms &rooms);
+	void clearAll();
 
 public slots:
 	void setHistoryView(const RoomInfo &info);

@@ -77,6 +77,13 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	setLayout(top_layout_);
 }
 
+void TopRoomBar::reset()
+{
+	name_label_->setText("");
+	topic_label_->setText("");
+	avatar_->setLetter(QChar('?'));
+}
+
 void TopRoomBar::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);

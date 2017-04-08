@@ -10,6 +10,7 @@
         <file>icons/clip-dark.png</file>
         <file>icons/share-dark.png</file>
         <file>icons/user-shape.png</file>
+        <file>icons/power-button-off.png</file>
     </qresource>
 
     <qresource prefix="/fonts">

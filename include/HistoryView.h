@@ -38,6 +38,7 @@ public:
 
 	void addHistoryItem(const Event &event, const QString &color, bool with_sender);
 	void addEvents(const QList<Event> &events);
+	void clear();
 
 public slots:
 	void sliderRangeChanged(int min, int max);

@@ -40,6 +40,8 @@ public:
 	inline void updateRoomName(const QString &name);
 	inline void updateRoomTopic(const QString &topic);
 
+	void reset();
+
 protected:
 	void paintEvent(QPaintEvent *event) override;
 

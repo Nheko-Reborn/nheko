@@ -53,6 +53,9 @@ ChatPage::ChatPage(QWidget *parent)
 	sync_timer_ = new QTimer(this);
 	connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
 
+	connect(user_info_widget_, SIGNAL(logout()), matrix_client_, SLOT(logout()));
+	connect(matrix_client_, SIGNAL(loggedOut()), this, SLOT(logout()));
+
 	connect(room_list_,
 		SIGNAL(roomChanged(const RoomInfo &)),
 		this,
@@ -92,6 +95,29 @@ ChatPage::ChatPage(QWidget *parent)
 		SIGNAL(messageSent(QString, int)),
 		this,
 		SLOT(messageSent(QString, int)));
+}
+
+void ChatPage::logout()
+{
+	sync_timer_->stop();
+
+	QSettings settings;
+	settings.remove("auth/access_token");
+	settings.remove("auth/home_server");
+	settings.remove("auth/user_id");
+	settings.remove("client/transaction_id");
+
+	// Clear the environment.
+	room_list_->clear();
+	view_manager_->clearAll();
+
+	top_bar_->reset();
+	user_info_widget_->reset();
+	matrix_client_->reset();
+
+	room_avatars_.clear();
+
+	emit close();
 }
 
 void ChatPage::messageSent(QString event_id, int txn_id)

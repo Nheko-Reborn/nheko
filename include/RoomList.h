@@ -39,9 +39,10 @@ public:
 	explicit RoomList(QWidget *parent = 0);
 	~RoomList();
 
-	void appendRoom(QString name);
 	void setInitialRooms(const Rooms &rooms);
 	void updateRoomAvatar(const QString &roomid, const QImage &avatar_image);
+	void clear();
+
 	RoomInfo extractRoomInfo(const State &room_state);
 
 signals:
@@ -54,7 +55,7 @@ public slots:
 private:
 	Ui::RoomList *ui;
 
-	QMap<QString, RoomInfoListItem *> available_rooms_;
+	QMap<QString, RoomInfoListItem *> rooms_;
 };
 
 #endif  // ROOMLIST_H
