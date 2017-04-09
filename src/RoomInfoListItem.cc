@@ -26,7 +26,7 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
     : QWidget(parent)
     , info_(info)
     , is_pressed_(false)
-    , max_height_(65)
+    , max_height_(60)
 {
 	normal_style_ =
 		"QWidget { background-color: #5d6565; color: #ebebeb;"
@@ -62,19 +62,18 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 
 	roomAvatar_ = new Avatar(avatarWidget_);
 	roomAvatar_->setLetter(QChar(info_.name()[0]));
+	roomAvatar_->setSize(max_height_ - 20);
 	avatarLayout_->addWidget(roomAvatar_);
 
-	roomName_ = new QLabel(textWidget_);
-	roomName_->setText(info_.name());
-	roomName_->setMaximumSize(230, max_height_ / 2);
-	roomName_->setStyleSheet("font-weight: 500; font-size: 11.5pt");
-	roomName_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+	roomName_ = new QLabel(info_.name(), textWidget_);
+	roomName_->setMaximumSize(parent->width() - 10, 20);
+	roomName_->setStyleSheet("font-weight: 500; font-size: 14px;");
+	roomName_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	roomTopic_ = new QLabel(textWidget_);
-	roomTopic_->setText(info_.topic());
-	roomTopic_->setMaximumSize(230, max_height_ / 2);
-	roomTopic_->setStyleSheet("color: #c9c9c9; font-size: 10pt");
-	roomTopic_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+	roomTopic_ = new QLabel(info_.topic(), textWidget_);
+	roomTopic_->setMaximumSize(parent->width() - 10, 20);
+	roomTopic_->setStyleSheet("color: #c9c9c9; font-size: 12px");
+	roomTopic_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	textLayout_->addWidget(roomName_);
 	textLayout_->addWidget(roomTopic_);
@@ -82,8 +81,8 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 	topLayout_->addWidget(avatarWidget_);
 	topLayout_->addWidget(textWidget_);
 
-	setElidedText(roomName_, info_.name(), 220);
-	setElidedText(roomTopic_, info_.topic(), 220);
+	setElidedText(roomName_, info_.name(), parent->width() - 10);
+	setElidedText(roomTopic_, info_.topic(), parent->width() - 10);
 
 	QPainterPath path;
 	path.addRoundedRect(rect(), 0, 0);

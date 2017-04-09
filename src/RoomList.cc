@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QLabel>
+#include <QRegularExpression>
 
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
@@ -64,6 +65,10 @@ RoomInfo RoomList::extractRoomInfo(const State &room_state)
 				info.setName(event.content().value("alias").toString());
 		}
 	}
+
+	// Sanitize info for print.
+	info.setTopic(info.topic().replace(QRegularExpression("[\\s\\n\\r]+"), " "));
+	info.setName(info.name().replace(QRegularExpression("[\\s\\n\\r]+"), " "));
 
 	return info;
 }
