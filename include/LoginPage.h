@@ -73,7 +73,7 @@ private:
 	QHBoxLayout *form_wrapper_;
 	QVBoxLayout *form_layout_;
 
-	TextField *username_input_;
+	TextField *matrixid_input_;
 	TextField *password_input_;
 
 	InputValidator *matrix_id_validator_;

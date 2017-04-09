@@ -62,10 +62,11 @@ LoginPage::LoginPage(QWidget *parent)
 	form_wrapper_->addWidget(form_widget_);
 	form_wrapper_->addStretch(1);
 
-	username_input_ = new TextField();
-	username_input_->setLabel("Username");
-	username_input_->setInkColor("#577275");
-	username_input_->setBackgroundColor("#f9f9f9");
+	matrixid_input_ = new TextField();
+	matrixid_input_->setLabel("Matrix ID");
+	matrixid_input_->setInkColor("#577275");
+	matrixid_input_->setBackgroundColor("#f9f9f9");
+	matrixid_input_->setPlaceholderText("e.g @joe:matrix.org");
 
 	password_input_ = new TextField();
 	password_input_->setLabel("Password");
@@ -73,7 +74,7 @@ LoginPage::LoginPage(QWidget *parent)
 	password_input_->setBackgroundColor("#f9f9f9");
 	password_input_->setEchoMode(QLineEdit::Password);
 
-	form_layout_->addWidget(username_input_, Qt::AlignHCenter, 0);
+	form_layout_->addWidget(matrixid_input_, Qt::AlignHCenter, 0);
 	form_layout_->addWidget(password_input_, Qt::AlignHCenter, 0);
 
 	button_layout_ = new QHBoxLayout();
@@ -106,10 +107,10 @@ LoginPage::LoginPage(QWidget *parent)
 
 	connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
 	connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
-	connect(username_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
+	connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
 	connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
 
-	username_input_->setValidator(matrix_id_validator_->id_);
+	matrixid_input_->setValidator(matrix_id_validator_->id_);
 
 	setLayout(top_layout_);
 }
@@ -124,13 +125,13 @@ void LoginPage::onLoginButtonClicked()
 {
 	error_label_->setText("");
 
-	if (!username_input_->hasAcceptableInput()) {
+	if (!matrixid_input_->hasAcceptableInput()) {
 		loginError("Invalid Matrix ID");
 	} else if (password_input_->text().isEmpty()) {
 		loginError("Empty password");
 	} else {
-		QString user = username_input_->text().split("@").at(0);
-		QString home_server = username_input_->text().split("@").at(1);
+		QString user = matrixid_input_->text().split(":").at(0).split("@").at(1);
+		QString home_server = matrixid_input_->text().split(":").at(1);
 		QString password = password_input_->text();
 
 		emit userLogin(user, password, home_server);
@@ -139,7 +140,7 @@ void LoginPage::onLoginButtonClicked()
 
 void LoginPage::reset()
 {
-	username_input_->clear();
+	matrixid_input_->clear();
 	password_input_->clear();
 }
 
