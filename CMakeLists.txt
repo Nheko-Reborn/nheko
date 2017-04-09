@@ -9,7 +9,6 @@ set(CMAKE_C_COMPILER gcc)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 IF(NOT CMAKE_BUILD_TYPE)
@@ -47,13 +46,9 @@ SET(PROJECT_VERSION ${CPACK_PACKAGE_VERSION})
 
 MESSAGE(STATUS "Version: ${PROJECT_VERSION}")
 
-set(CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} \
-    -std=gnu++11 \
-    -Wall \
-    -Wextra \
-    -Werror \
-    -pedantic")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall -Wextra -Werror -pedantic")
+endif()
 
 set(SRC_FILES
     src/ChatPage.cc
@@ -133,5 +128,9 @@ qt5_wrap_cpp(MOC_HEADERS
 
 qt5_add_resources(QRC resources/res.qrc)
 
-add_executable (nheko ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC})
+add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC})
 target_link_libraries (nheko Qt5::Widgets Qt5::Network)
+
+if(WIN32)
+  target_link_libraries(nheko Qt5::WinMain)
+endif(WIN32)
