@@ -190,7 +190,7 @@ void TextField::paintEvent(QPaintEvent *event)
 	pen.setColor(underlineColor());
 	painter.setPen(pen);
 	painter.setOpacity(1);
-	painter.drawLine(2.5, y, wd, y);
+	painter.drawLine(2, y, wd, y);
 
 	QBrush brush;
 	brush.setStyle(Qt::SolidPattern);

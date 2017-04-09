@@ -1,0 +1,25 @@
+language: cpp
+sudo: required
+dist: trusty
+
+matrix:
+    include:
+        - os: osx
+          osx_image: xcode7
+          compiler: clang
+        - os: osx
+          osx_image: xcode8
+          compiler: clang
+        - os: linux
+          compiler: gcc
+        - os: linux
+          compiler: clang
+install:
+    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install qt5; fi
+    - if [ $TRAVIS_OS_NAME == osx ]; then export CMAKE_PREFIX_PATH=/usr/local/opt/qt5; fi
+    - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux.sh ; fi
+before_script:
+    - if [ $TRAVIS_OS_NAME == linux ]; then source /opt/qt56/bin/qt56-env.sh; fi
+    - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
+script:
+    - make -C build -j2

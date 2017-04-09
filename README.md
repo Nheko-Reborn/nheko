@@ -1,31 +1,32 @@
 nheko
 ----
+[![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
 
-#### Features
+### Features
 
 Most of the features you'd expect from a chat application are missing right now
 but you can of course receive and send messages in the rooms that you are a member of.
 
-#### Requirements
+### Requirements
 
 Building instructions for OSX and Windows will be added.
 
-##### Linux
+#### Linux
 
 - Qt5
 - CMake v3.1 or greater
 - GCC that supports C++11.
 
-###### Arch Linux
+##### Arch Linux
 
 ```bash
 $ sudo pacman -S qt5-base cmake gcc
 ```
 
-#### Building
+### Building
 
 Run
 
@@ -36,19 +37,19 @@ make -C build
 
 The `nheko` binary will be located in the `build` directory.
 
-#### Contributing
+### Contributing
 
 Any kind of contribution to the project is greatly appreciated. You are also
 encouraged to open feature request issues.
 
-#### Screens
+### Screens
 
 Here is a screen shot to get a feel for the UI, but things will probably change.
 
 ![nheko](https://dl.dropboxusercontent.com/s/u6rsx8rsp1u2sko/screen.png)
 
 
-#### License
+### License
 
 [GPLv3]
 

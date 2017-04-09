@@ -16,6 +16,7 @@
  */
 
 #include <QDebug>
+#include <QMouseEvent>
 
 #include "Ripple.h"
 #include "RoomInfo.h"
