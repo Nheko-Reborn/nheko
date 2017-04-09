@@ -28,7 +28,7 @@ public:
 	LoginRequest();
 	LoginRequest(QString username, QString password);
 
-	QByteArray serialize();
+	QByteArray serialize() noexcept;
 
 	inline void setPassword(QString password);
 	inline void setUser(QString username);
@@ -51,7 +51,7 @@ inline void LoginRequest::setUser(QString username)
 class LoginResponse : public Deserializable
 {
 public:
-	void deserialize(const QJsonDocument &data) throw(DeserializationException) override;
+	void deserialize(const QJsonDocument &data) override;
 
 	inline QString getAccessToken();
 	inline QString getHomeServer();

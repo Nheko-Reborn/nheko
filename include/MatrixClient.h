@@ -34,21 +34,21 @@ public:
 	MatrixClient(QString server, QObject *parent = 0);
 
 	// Client API.
-	void initialSync();
-	void sync();
-	void sendTextMessage(const QString &roomid, const QString &msg);
-	void login(const QString &username, const QString &password);
-	void registerUser(const QString &username, const QString &password, const QString &server);
-	void versions();
+	void initialSync() noexcept;
+	void sync() noexcept;
+	void sendTextMessage(const QString &roomid, const QString &msg) noexcept;
+	void login(const QString &username, const QString &password) noexcept;
+	void registerUser(const QString &username, const QString &password, const QString &server) noexcept;
+	void versions() noexcept;
 
 	inline QString getHomeServer();
 	inline void incrementTransactionId();
 
-	void reset();
+	void reset() noexcept;
 
 public slots:
-	void getOwnProfile();
-	void logout();
+	void getOwnProfile() noexcept;
+	void logout() noexcept;
 
 	inline void setServer(const QString &server);
 	inline void setAccessToken(const QString &token);

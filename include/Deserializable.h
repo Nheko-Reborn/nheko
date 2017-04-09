@@ -28,7 +28,7 @@ class DeserializationException : public std::exception
 {
 public:
 	explicit DeserializationException(const std::string &msg);
-	virtual const char *what() const throw();
+	virtual const char *what() const noexcept;
 
 private:
 	std::string msg_;
@@ -38,13 +38,13 @@ private:
 class Deserializable
 {
 public:
-	virtual void deserialize(const QJsonValue &) throw(DeserializationException)
+	virtual void deserialize(const QJsonValue &)
 	{
 	}
-	virtual void deserialize(const QJsonObject &) throw(DeserializationException)
+	virtual void deserialize(const QJsonObject &)
 	{
 	}
-	virtual void deserialize(const QJsonDocument &) throw(DeserializationException)
+	virtual void deserialize(const QJsonDocument &)
 	{
 	}
 };

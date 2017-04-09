@@ -22,7 +22,7 @@
 #include "Deserializable.h"
 #include "Profile.h"
 
-void ProfileResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
+void ProfileResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Response is not a JSON object");

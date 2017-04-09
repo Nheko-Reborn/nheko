@@ -43,7 +43,7 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
 	connect(this, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResponse(QNetworkReply *)));
 }
 
-void MatrixClient::reset()
+void MatrixClient::reset() noexcept
 {
 	next_batch_ = "";
 	server_ = "";
@@ -295,7 +295,7 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 	}
 }
 
-void MatrixClient::login(const QString &username, const QString &password)
+void MatrixClient::login(const QString &username, const QString &password) noexcept
 {
 	QUrl endpoint(server_);
 	endpoint.setPath(api_url_ + "/login");
@@ -309,7 +309,7 @@ void MatrixClient::login(const QString &username, const QString &password)
 	reply->setProperty("endpoint", Endpoint::Login);
 }
 
-void MatrixClient::logout()
+void MatrixClient::logout() noexcept
 {
 	QUrlQuery query;
 	query.addQueryItem("access_token", token_);
@@ -326,7 +326,7 @@ void MatrixClient::logout()
 	reply->setProperty("endpoint", Endpoint::Logout);
 }
 
-void MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server)
+void MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server) noexcept
 {
 	setServer(server);
 
@@ -346,7 +346,7 @@ void MatrixClient::registerUser(const QString &user, const QString &pass, const 
 	reply->setProperty("endpoint", Endpoint::Register);
 }
 
-void MatrixClient::sync()
+void MatrixClient::sync() noexcept
 {
 	QJsonObject filter{{"room",
 			    QJsonObject{{"ephemeral", QJsonObject{{"limit", 0}}}}},
@@ -374,7 +374,7 @@ void MatrixClient::sync()
 	reply->setProperty("endpoint", Endpoint::Sync);
 }
 
-void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg)
+void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) noexcept
 {
 	QUrlQuery query;
 	query.addQueryItem("access_token", token_);
@@ -396,7 +396,7 @@ void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg)
 	reply->setProperty("txn_id", txn_id_);
 }
 
-void MatrixClient::initialSync()
+void MatrixClient::initialSync() noexcept
 {
 	QJsonObject filter{{"room",
 			    QJsonObject{{"timeline", QJsonObject{{"limit", 70}}},
@@ -419,7 +419,7 @@ void MatrixClient::initialSync()
 	reply->setProperty("endpoint", Endpoint::InitialSync);
 }
 
-void MatrixClient::versions()
+void MatrixClient::versions() noexcept
 {
 	QUrl endpoint(server_);
 	endpoint.setPath("/_matrix/client/versions");
@@ -430,7 +430,7 @@ void MatrixClient::versions()
 	reply->setProperty("endpoint", Endpoint::Versions);
 }
 
-void MatrixClient::getOwnProfile()
+void MatrixClient::getOwnProfile() noexcept
 {
 	// FIXME: Remove settings from the matrix client. The class should store the user's matrix ID.
 	QSettings settings;

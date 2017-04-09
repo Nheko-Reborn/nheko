@@ -32,7 +32,7 @@ LoginRequest::LoginRequest(QString username, QString password)
 {
 }
 
-QByteArray LoginRequest::serialize()
+QByteArray LoginRequest::serialize() noexcept
 {
 	QJsonObject body{
 		{"type", "m.login.password"},
@@ -42,7 +42,7 @@ QByteArray LoginRequest::serialize()
 	return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
 
-void LoginResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
+void LoginResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Login response is not a JSON object");

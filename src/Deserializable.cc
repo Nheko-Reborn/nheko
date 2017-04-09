@@ -25,7 +25,7 @@ DeserializationException::DeserializationException(const std::string &msg) : msg
 {
 }
 
-const char *DeserializationException::what() const throw()
+const char *DeserializationException::what() const noexcept
 {
 	return msg_.c_str();
 }

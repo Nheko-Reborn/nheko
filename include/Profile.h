@@ -26,7 +26,7 @@
 class ProfileResponse : public Deserializable
 {
 public:
-	void deserialize(const QJsonDocument &data) throw(DeserializationException) override;
+	void deserialize(const QJsonDocument &data) override;
 
 	inline QUrl getAvatarUrl();
 	inline QString getDisplayName();

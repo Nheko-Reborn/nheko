@@ -37,7 +37,7 @@ public:
 
 	inline uint64_t timestamp() const;
 
-	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) override;
 
 private:
 	QJsonObject content_;
@@ -89,7 +89,7 @@ inline uint64_t Event::timestamp() const
 class State : public Deserializable
 {
 public:
-	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) override;
 	inline QList<Event> events() const;
 
 private:
@@ -108,7 +108,7 @@ public:
 	inline QString previousBatch() const;
 	inline bool limited() const;
 
-	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) override;
 
 private:
 	QList<Event> events_;
@@ -138,7 +138,7 @@ public:
 	inline State state() const;
 	inline Timeline timeline() const;
 
-	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) override;
 
 private:
 	State state_;
@@ -163,7 +163,7 @@ class Rooms : public Deserializable
 {
 public:
 	inline QMap<QString, JoinedRoom> join() const;
-	void deserialize(const QJsonValue &data) throw(DeserializationException) override;
+	void deserialize(const QJsonValue &data) override;
 
 private:
 	QMap<QString, JoinedRoom> join_;
@@ -177,7 +177,7 @@ inline QMap<QString, JoinedRoom> Rooms::join() const
 class SyncResponse : public Deserializable
 {
 public:
-	void deserialize(const QJsonDocument &data) throw(DeserializationException) override;
+	void deserialize(const QJsonDocument &data)  override;
 	inline QString nextBatch() const;
 	inline Rooms rooms() const;
 

@@ -24,7 +24,7 @@
 #include "Deserializable.h"
 #include "Sync.h"
 
-void SyncResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
+void SyncResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Sync response is not a JSON object");
@@ -41,7 +41,7 @@ void SyncResponse::deserialize(const QJsonDocument &data) throw(DeserializationE
 	next_batch_ = object.value("next_batch").toString();
 }
 
-void Rooms::deserialize(const QJsonValue &data) throw(DeserializationException)
+void Rooms::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Rooms value is not a JSON object");
@@ -81,7 +81,7 @@ void Rooms::deserialize(const QJsonValue &data) throw(DeserializationException)
 	}
 }
 
-void JoinedRoom::deserialize(const QJsonValue &data) throw(DeserializationException)
+void JoinedRoom::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("JoinedRoom is not a JSON object");
@@ -112,7 +112,7 @@ void JoinedRoom::deserialize(const QJsonValue &data) throw(DeserializationExcept
 	timeline_.deserialize(object.value("timeline"));
 }
 
-void Event::deserialize(const QJsonValue &data) throw(DeserializationException)
+void Event::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Event is not a JSON object");
@@ -152,7 +152,7 @@ void Event::deserialize(const QJsonValue &data) throw(DeserializationException)
 	origin_server_ts_ = object.value("origin_server_ts").toDouble();
 }
 
-void State::deserialize(const QJsonValue &data) throw(DeserializationException)
+void State::deserialize(const QJsonValue &data)
 {
 	if (!data.isArray())
 		throw DeserializationException("State is not a JSON array");
@@ -172,7 +172,7 @@ void State::deserialize(const QJsonValue &data) throw(DeserializationException)
 	}
 }
 
-void Timeline::deserialize(const QJsonValue &data) throw(DeserializationException)
+void Timeline::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Timeline is not a JSON object");

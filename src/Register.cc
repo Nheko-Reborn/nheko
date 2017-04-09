@@ -32,7 +32,7 @@ RegisterRequest::RegisterRequest(const QString &username, const QString &passwor
 {
 }
 
-QByteArray RegisterRequest::serialize()
+QByteArray RegisterRequest::serialize() noexcept
 {
 	QJsonObject body{
 		{"username", user_},
@@ -41,7 +41,7 @@ QByteArray RegisterRequest::serialize()
 	return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
 
-void RegisterResponse::deserialize(const QJsonDocument &data) throw(DeserializationException)
+void RegisterResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Response is not a JSON object");
