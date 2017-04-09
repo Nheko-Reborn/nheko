@@ -2,6 +2,9 @@ language: cpp
 sudo: required
 dist: trusty
 
+notifications:
+    email: false
+
 matrix:
     include:
         - os: osx
