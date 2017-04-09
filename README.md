@@ -12,13 +12,11 @@ but you can of course receive and send messages in the rooms that you are a memb
 
 ### Requirements
 
-Building instructions for OSX and Windows will be added.
-
-#### Linux
-
-- Qt5
-- CMake v3.1 or greater
-- GCC that supports C++11.
+- Qt5 (5.8 is used for development).
+- CMake 3.1 or greater.
+- A compiler that supports C++11.
+    - Clang 3.3 (or greater).
+    - GCC 5 (or greater).
 
 ##### Arch Linux
 
@@ -26,9 +24,24 @@ Building instructions for OSX and Windows will be added.
 $ sudo pacman -S qt5-base cmake gcc
 ```
 
-### Building
+##### Ubuntu 14.04
 
-Run
+```bash
+$ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+$ sudo add-apt-repository ppa:beineri/opt-qt562-trusty
+$ sudo add-apt-repository ppa:george-edison55/cmake-3.x
+$ sudo apt-get update
+$ sudo apt-get install gcc-6 g++-6 clang qt56base cmake # or gcc-5 gcc++-5
+```
+
+##### OSX (Xcode 7 or later)
+
+```bash
+$ brew update
+$ brew install qt5
+```
+
+### Building
 
 ```bash
 cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release # Default is Debug.
@@ -36,6 +49,9 @@ make -C build
 ```
 
 The `nheko` binary will be located in the `build` directory.
+
+[Here](https://ci.appveyor.com/project/mujx/nheko/branch/master/artifacts) you can
+find development builds for Windows.
 
 ### Contributing
 
