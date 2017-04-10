@@ -116,6 +116,7 @@ void HistoryView::init()
 
 	scroll_area_ = new QScrollArea(this);
 	scroll_area_->setWidgetResizable(true);
+	scroll_area_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	scroll_widget_ = new QWidget();
 
