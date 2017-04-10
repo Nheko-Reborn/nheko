@@ -64,6 +64,7 @@ HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QSt
 		"</body>"
 		"</html>");
 	content_label_->setText(content.arg(color).arg(sender).arg(body));
+	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
 	top_layout_ = new QHBoxLayout();
 	top_layout_->setMargin(0);
