@@ -77,6 +77,16 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	setLayout(top_layout_);
 }
 
+void TopRoomBar::updateRoomAvatarFromName(const QString &name)
+{
+	QChar letter = '?';
+
+	if (name.size() > 0)
+		letter = name[0];
+
+	avatar_->setLetter(letter);
+}
+
 void TopRoomBar::reset()
 {
 	name_label_->setText("");

@@ -39,6 +39,7 @@ public:
 	inline void updateRoomAvatar(const QIcon &icon);
 	inline void updateRoomName(const QString &name);
 	inline void updateRoomTopic(const QString &topic);
+	void updateRoomAvatarFromName(const QString &name);
 
 	void reset();
 

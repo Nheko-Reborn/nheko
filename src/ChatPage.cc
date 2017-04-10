@@ -292,6 +292,8 @@ void ChatPage::changeTopRoomInfo(const RoomInfo &info)
 	if (room_avatars_.contains(info.id())) {
 		QIcon icon(room_avatars_.value(info.id()));
 		top_bar_->updateRoomAvatar(icon);
+	} else {
+		top_bar_->updateRoomAvatarFromName(info.name());
 	}
 
 	current_room_ = info;
