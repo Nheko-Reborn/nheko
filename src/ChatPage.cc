@@ -38,6 +38,7 @@ ChatPage::ChatPage(QWidget *parent)
 	content_downloader_ = new QNetworkAccessManager(parent);
 
 	room_list_ = new RoomList(this);
+	ui->sideBarMainLayout->addWidget(room_list_);
 
 	top_bar_ = new TopRoomBar(this);
 	ui->topBarLayout->addWidget(top_bar_);
@@ -49,8 +50,10 @@ ChatPage::ChatPage(QWidget *parent)
 	ui->contentLayout->addWidget(text_input_);
 
 	user_info_widget_ = new UserInfoWidget(ui->sideBarTopWidget);
+	ui->sideBarTopUserInfoLayout->addWidget(user_info_widget_);
 
 	sync_timer_ = new QTimer(this);
+	sync_timer_->setSingleShot(true);
 	connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
 
 	connect(user_info_widget_, SIGNAL(logout()), matrix_client_, SLOT(logout()));
@@ -60,12 +63,10 @@ ChatPage::ChatPage(QWidget *parent)
 		SIGNAL(roomChanged(const RoomInfo &)),
 		this,
 		SLOT(changeTopRoomInfo(const RoomInfo &)));
-
 	connect(room_list_,
 		SIGNAL(roomChanged(const RoomInfo &)),
 		view_manager_,
 		SLOT(setHistoryView(const RoomInfo &)));
-
 	connect(room_list_,
 		SIGNAL(fetchRoomAvatar(const QString &, const QUrl &)),
 		this,
@@ -76,21 +77,22 @@ ChatPage::ChatPage(QWidget *parent)
 		this,
 		SLOT(sendTextMessage(const QString &)));
 
-	ui->sideBarTopUserInfoLayout->addWidget(user_info_widget_);
-	ui->sideBarMainLayout->addWidget(room_list_);
-
 	connect(matrix_client_,
-		SIGNAL(initialSyncCompleted(SyncResponse)),
+		SIGNAL(initialSyncCompleted(const SyncResponse &)),
 		this,
-		SLOT(initialSyncCompleted(SyncResponse)));
+		SLOT(initialSyncCompleted(const SyncResponse &)));
 	connect(matrix_client_,
-		SIGNAL(syncCompleted(SyncResponse)),
+		SIGNAL(syncCompleted(const SyncResponse &)),
 		this,
-		SLOT(syncCompleted(SyncResponse)));
+		SLOT(syncCompleted(const SyncResponse &)));
 	connect(matrix_client_,
-		SIGNAL(getOwnProfileResponse(QUrl, QString)),
+		SIGNAL(syncFailed(const QString &)),
 		this,
-		SLOT(updateOwnProfileInfo(QUrl, QString)));
+		SLOT(syncFailed(const QString &)));
+	connect(matrix_client_,
+		SIGNAL(getOwnProfileResponse(const QUrl &, const QString &)),
+		this,
+		SLOT(updateOwnProfileInfo(const QUrl &, const QString &)));
 	connect(matrix_client_,
 		SIGNAL(messageSent(QString, int)),
 		this,
@@ -160,12 +162,20 @@ void ChatPage::setOwnAvatar(const QByteArray &img)
 	user_info_widget_->setAvatar(pixmap.toImage());
 }
 
+void ChatPage::syncFailed(const QString &msg)
+{
+	qWarning() << "Sync error:" << msg;
+	sync_timer_->start(sync_interval_ * 5);
+}
+
 void ChatPage::syncCompleted(const SyncResponse &response)
 {
 	matrix_client_->setNextBatchToken(response.nextBatch());
 
 	/* room_list_->sync(response.rooms()); */
 	view_manager_->sync(response.rooms());
+
+	sync_timer_->start(sync_interval_);
 }
 
 void ChatPage::initialSyncCompleted(const SyncResponse &response)

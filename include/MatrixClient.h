@@ -67,6 +67,7 @@ signals:
 	void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
 	void initialSyncCompleted(const SyncResponse &response);
 	void syncCompleted(const SyncResponse &response);
+	void syncFailed(const QString &msg);
 	void messageSent(const QString &event_id, const int txn_id);
 
 private slots:

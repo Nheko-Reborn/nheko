@@ -57,6 +57,7 @@ public slots:
 	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
 	void initialSyncCompleted(const SyncResponse &response);
 	void syncCompleted(const SyncResponse &response);
+	void syncFailed(const QString &msg);
 	void changeTopRoomInfo(const RoomInfo &info);
 	void sendTextMessage(const QString &msg);
 	void messageSent(const QString event_id, int txn_id);
