@@ -67,8 +67,8 @@ RoomInfo RoomList::extractRoomInfo(const State &room_state)
 	}
 
 	// Sanitize info for print.
-	info.setTopic(info.topic().replace(QRegularExpression("[\\s\\n\\r]+"), " "));
-	info.setName(info.name().replace(QRegularExpression("[\\s\\n\\r]+"), " "));
+	info.setTopic(info.topic().simplified());
+	info.setName(info.name().simplified());
 
 	return info;
 }

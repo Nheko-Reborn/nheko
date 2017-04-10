@@ -28,7 +28,7 @@ HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QSt
 	if (with_sender)
 		sender = event.sender().split(":")[0].split("@")[1];
 
-	auto body = event.content().value("body").toString();
+	auto body = event.content().value("body").toString().simplified();
 
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 	auto local_time = timestamp.toString("HH:mm");
