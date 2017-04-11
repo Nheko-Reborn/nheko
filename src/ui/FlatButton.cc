@@ -335,8 +335,8 @@ void FlatButton::mousePressEvent(QMouseEvent *event)
 		ripple->setRadiusEndValue(radiusEndValue);
 		ripple->setOpacityStartValue(0.35);
 		ripple->setColor(foregroundColor());
-		ripple->radiusAnimation()->setDuration(600);
-		ripple->opacityAnimation()->setDuration(1300);
+		ripple->radiusAnimation()->setDuration(250);
+		ripple->opacityAnimation()->setDuration(400);
 
 		ripple_overlay_->addRipple(ripple);
 	}
