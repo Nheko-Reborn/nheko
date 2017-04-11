@@ -29,8 +29,7 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
     , max_height_(60)
 {
 	normal_style_ =
-		"QWidget { background-color: #5d6565; color: #ebebeb;"
-		"border-bottom: 1px solid #171919;}"
+		"QWidget { color: #ebebeb; background-color: #232626; border-bottom: 1px solid #171919;}"
 		"QLabel { border: none; }";
 
 	pressed_style_ =

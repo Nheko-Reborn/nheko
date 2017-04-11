@@ -23,8 +23,8 @@ TopRoomBar::TopRoomBar(QWidget *parent)
     : QWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	setMinimumSize(QSize(0, 70));
-	setStyleSheet("background-color: #171919; color: #ebebeb;");
+	setMinimumSize(QSize(0, 65));
+	setStyleSheet("background-color: #232626; color: #ebebeb;");
 
 	top_layout_ = new QHBoxLayout();
 	top_layout_->setSpacing(10);
@@ -33,17 +33,17 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	avatar_ = new Avatar(this);
 	avatar_->setLetter(QChar('?'));
 	avatar_->setBackgroundColor(QColor("#ebebeb"));
-	avatar_->setSize(45);
+	avatar_->setSize(35);
 
 	text_layout_ = new QVBoxLayout();
 	text_layout_->setSpacing(0);
 	text_layout_->setContentsMargins(0, 0, 0, 0);
 
 	name_label_ = new QLabel(this);
-	name_label_->setStyleSheet("font-size: 11pt;");
+	name_label_->setStyleSheet("font-size: 14px; font-weight: 600;");
 
 	topic_label_ = new QLabel(this);
-	topic_label_->setStyleSheet("font-size: 10pt; color: #6c7278;");
+	topic_label_->setStyleSheet("font-size: 12px;");
 
 	text_layout_->addWidget(name_label_);
 	text_layout_->addWidget(topic_label_);
