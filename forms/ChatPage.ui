@@ -90,7 +90,7 @@
             <item>
              <widget class="QWidget" name="sideBarTopWidget" native="true">
               <property name="styleSheet">
-               <string notr="true">background-color: #1c3133;
+               <string notr="true">background-color: #2D3F3D;
 color: #ebebeb;</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_9">

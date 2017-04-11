@@ -43,15 +43,16 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	displayNameLabel_->setStyleSheet(
 		"padding: 0 9px;"
 		"color: #ebebeb;"
-		"font-size: 11pt;"
+		"font-size: 14px;"
+		"font-weight: 500;"
 		"margin-bottom: -10px;");
 	displayNameLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 
 	userIdLabel_ = new QLabel(this);
 	userIdLabel_->setStyleSheet(
 		"padding: 0 8px 8px 8px;"
-		"color: #5D6565;"
-		"font-size: 10pt;");
+		"color: #d4d2d1;"
+		"font-size: 13px");
 	userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
 	avatarLayout_->addWidget(userAvatar_);

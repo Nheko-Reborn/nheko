@@ -66,7 +66,7 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 
 	roomName_ = new QLabel(info_.name(), textWidget_);
 	roomName_->setMaximumSize(parent->width() - 10, 20);
-	roomName_->setStyleSheet("font-weight: 500; font-size: 14px;");
+	roomName_->setStyleSheet("font-weight: 400; font-size: 14px;");
 	roomName_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	roomTopic_ = new QLabel(info_.topic(), textWidget_);
