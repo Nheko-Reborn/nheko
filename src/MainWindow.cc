@@ -25,13 +25,15 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui_(new Ui::MainWindow)
-    , welcome_page_(new WelcomePage(parent))
-    , login_page_(new LoginPage(parent))
-    , register_page_(new RegisterPage(parent))
-    , chat_page_(new ChatPage(parent))
-    , matrix_client_(new MatrixClient("matrix.org", parent))
 {
 	ui_->setupUi(this);
+	client_ = QSharedPointer<MatrixClient>(new MatrixClient("matrix.org"));
+
+	welcome_page_ = new WelcomePage(this);
+
+	login_page_ = new LoginPage(client_, this);
+	register_page_ = new RegisterPage(client_, this);
+	chat_page_ = new ChatPage(client_, this);
 
 	// Initialize sliding widget manager.
 	sliding_stack_ = new SlidingStackWidget(this);
@@ -46,37 +48,14 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
 
 	connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
-	connect(login_page_,
-		SIGNAL(userLogin(const QString &, const QString &, const QString &)),
-		this,
-		SLOT(matrixLogin(const QString &, const QString &, const QString &)));
-
 	connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
-	connect(register_page_,
-		SIGNAL(registerUser(const QString &, const QString &, const QString &)),
-		this,
-		SLOT(matrixRegister(const QString &, const QString &, const QString &)));
 
 	connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
 
-	connect(matrix_client_,
-		SIGNAL(registerError(const QString &)),
-		register_page_,
-		SLOT(registerError(const QString &)));
-
-	connect(matrix_client_, SIGNAL(loginError(QString)), login_page_, SLOT(loginError(QString)));
-	connect(matrix_client_,
+	connect(client_.data(),
 		SIGNAL(loginSuccess(QString, QString, QString)),
 		this,
 		SLOT(showChatPage(QString, QString, QString)));
-}
-
-void MainWindow::matrixLogin(const QString &username, const QString &password, const QString &home_server)
-{
-	qDebug() << "Logging in..." << username;
-
-	matrix_client_->setServer(home_server);
-	matrix_client_->login(username, password);
 }
 
 void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
@@ -91,12 +70,6 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 
 	login_page_->reset();
 	chat_page_->bootstrap(userid, homeserver, token);
-}
-
-void MainWindow::matrixRegister(const QString &username, const QString &password, const QString &server)
-{
-	qDebug() << "Registering" << username << "at" << server;
-	matrix_client_->registerUser(username, password, server);
 }
 
 void MainWindow::showWelcomePage()

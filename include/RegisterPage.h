@@ -20,11 +20,13 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QSharedPointer>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include "FlatButton.h"
 #include "InputValidator.h"
+#include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "TextField.h"
 
@@ -33,23 +35,18 @@ class RegisterPage : public QWidget
 	Q_OBJECT
 
 public:
-	explicit RegisterPage(QWidget *parent = 0);
+	RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~RegisterPage();
 
 signals:
 	void backButtonClicked();
 
-	// Emitted after successful input validation. The handler should be
-	// responsible for the actual registering on the remote Matrix server.
-	void registerUser(const QString &username, const QString &password, const QString &server);
-
-public slots:
-	// Display registration specific errors to the user.
-	void registerError(const QString &msg);
-
 private slots:
 	void onBackButtonClicked();
 	void onRegisterButtonClicked();
+
+	// Display registration specific errors to the user.
+	void registerError(const QString &msg);
 
 private:
 	QVBoxLayout *top_layout_;
@@ -74,6 +71,9 @@ private:
 	TextField *server_input_;
 
 	InputValidator *validator_;
+
+	// Matrix client API provider.
+	QSharedPointer<MatrixClient> client_;
 };
 
 #endif  // REGISTERPAGE_H

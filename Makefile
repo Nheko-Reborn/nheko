@@ -1,13 +1,13 @@
-run: debug
-	./build/nheko
-
 debug:
-	@cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug
-	@make -C build -j2
+	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug
+	@cmake --build build
 
 release-debug:
-	@cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
-	@make -C build -j2
+	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	@cmake --build build
+
+run:
+	@./build/nheko
 
 clean:
 	rm -rf build

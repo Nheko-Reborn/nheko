@@ -42,7 +42,7 @@ class ChatPage : public QWidget
 	Q_OBJECT
 
 public:
-	explicit ChatPage(QWidget *parent = 0);
+	ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~ChatPage();
 
 	// Initialize all the components of the UI.
@@ -51,10 +51,10 @@ public:
 signals:
 	void close();
 
-public slots:
-	// Updates the user info box.
+private slots:
+	void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
 	void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
-	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
+	void setOwnAvatar(const QPixmap &img);
 	void initialSyncCompleted(const SyncResponse &response);
 	void syncCompleted(const SyncResponse &response);
 	void syncFailed(const QString &msg);
@@ -66,8 +66,6 @@ public slots:
 
 private:
 	Ui::ChatPage *ui;
-
-	void setOwnAvatar(const QByteArray &img);
 
 	RoomList *room_list_;
 	HistoryViewManager *view_manager_;
@@ -83,11 +81,8 @@ private:
 
 	UserInfoWidget *user_info_widget_;
 
-	// Matrix client
-	MatrixClient *matrix_client_;
-
-	// Used for one off media requests.
-	QNetworkAccessManager *content_downloader_;
+	// Matrix Client API provider.
+	QSharedPointer<MatrixClient> client_;
 };
 
 #endif  // CHATPAGE_H

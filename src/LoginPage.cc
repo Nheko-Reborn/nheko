@@ -19,10 +19,12 @@
 
 #include "LoginPage.h"
 
-LoginPage::LoginPage(QWidget *parent)
+LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
-    , matrix_id_validator_(new InputValidator(parent))
+    , client_(client)
 {
+	matrix_id_validator_ = new InputValidator(this);
+
 	top_layout_ = new QVBoxLayout();
 
 	back_layout_ = new QHBoxLayout();
@@ -105,19 +107,19 @@ LoginPage::LoginPage(QWidget *parent)
 	top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
 	top_layout_->addStretch(1);
 
+	setLayout(top_layout_);
+
 	connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
 	connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
 	connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
 	connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
+	connect(client_.data(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
 
 	matrixid_input_->setValidator(matrix_id_validator_->id_);
-
-	setLayout(top_layout_);
 }
 
 void LoginPage::loginError(QString error)
 {
-	qWarning() << "Error Message: " << error;
 	error_label_->setText(error);
 }
 
@@ -134,7 +136,8 @@ void LoginPage::onLoginButtonClicked()
 		QString home_server = matrixid_input_->text().split(":").at(1);
 		QString password = password_input_->text();
 
-		emit userLogin(user, password, home_server);
+		client_->setServer(home_server);
+		client_->login(user, password);
 	}
 }
 

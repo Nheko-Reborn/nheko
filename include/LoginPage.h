@@ -20,11 +20,13 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QSharedPointer>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include "FlatButton.h"
 #include "InputValidator.h"
+#include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "TextField.h"
 
@@ -33,7 +35,7 @@ class LoginPage : public QWidget
 	Q_OBJECT
 
 public:
-	explicit LoginPage(QWidget *parent = 0);
+	LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~LoginPage();
 
 	void reset();
@@ -41,20 +43,15 @@ public:
 signals:
 	void backButtonClicked();
 
-	// Emitted after the matrix ID validation. The handler should be
-	// responsible for performing the actual login with a remote server.
-	void userLogin(const QString &username, const QString &password, const QString home_server);
-
-public slots:
-	// Displays errors produced during the login.
-	void loginError(QString error_message);
-
 private slots:
 	// Callback for the back button.
 	void onBackButtonClicked();
 
 	// Callback for the login button.
 	void onLoginButtonClicked();
+
+	// Displays errors produced during the login.
+	void loginError(QString error_message);
 
 private:
 	QVBoxLayout *top_layout_;
@@ -77,6 +74,9 @@ private:
 	TextField *password_input_;
 
 	InputValidator *matrix_id_validator_;
+
+	// Matrix client API provider.
+	QSharedPointer<MatrixClient> client_;
 };
 
 #endif  // LOGINPAGE_H

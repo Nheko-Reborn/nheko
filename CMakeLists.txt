@@ -47,7 +47,14 @@ SET(PROJECT_VERSION ${CPACK_PACKAGE_VERSION})
 MESSAGE(STATUS "Version: ${PROJECT_VERSION}")
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall -Wextra -Werror -pedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+        -std=gnu++11 \
+        -Wall \
+        -Wextra \
+        -Werror \
+        -fdiagnostics-color=always \
+        -pedantic \
+        -Wunreachable-code")
 endif()
 
 set(SRC_FILES
@@ -104,7 +111,6 @@ qt5_wrap_cpp(MOC_HEADERS
     include/LoginPage.h
     include/MainWindow.h
     include/MatrixClient.h
-    include/Register.h
     include/RegisterPage.h
     include/RoomInfoListItem.h
     include/RoomList.h

@@ -26,12 +26,18 @@
 #include "RoomList.h"
 #include "Sync.h"
 
-RoomList::RoomList(QWidget *parent)
+RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::RoomList)
+    , client_(client)
 {
 	ui->setupUi(this);
 	ui->scrollVerticalLayout->addStretch(1);
+
+	connect(client_.data(),
+		SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
+		this,
+		SLOT(updateRoomAvatar(const QString &, const QPixmap &)));
 }
 
 RoomList::~RoomList()
@@ -85,7 +91,7 @@ void RoomList::setInitialRooms(const Rooms &rooms)
 			continue;
 
 		if (!info.avatarUrl().isEmpty())
-			emit fetchRoomAvatar(info.id(), info.avatarUrl());
+			client_->fetchRoomAvatar(info.id(), info.avatarUrl());
 
 		RoomInfoListItem *room_item = new RoomInfoListItem(info, ui->scrollArea);
 		connect(room_item,
@@ -115,7 +121,7 @@ void RoomList::highlightSelectedRoom(const RoomInfo &info)
 	}
 }
 
-void RoomList::updateRoomAvatar(const QString &roomid, const QImage &avatar_image)
+void RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
 {
 	if (!rooms_.contains(roomid)) {
 		qDebug() << "Avatar update on non existent room" << roomid;
@@ -123,5 +129,5 @@ void RoomList::updateRoomAvatar(const QString &roomid, const QImage &avatar_imag
 	}
 
 	auto list_item = rooms_.value(roomid);
-	list_item->setAvatar(avatar_image);
+	list_item->setAvatar(img.toImage());
 }

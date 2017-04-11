@@ -20,9 +20,10 @@
 
 #include "RegisterPage.h"
 
-RegisterPage::RegisterPage(QWidget *parent)
+RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
     , validator_(new InputValidator(parent))
+    , client_(client)
 {
 	top_layout_ = new QVBoxLayout();
 
@@ -125,6 +126,7 @@ RegisterPage::RegisterPage(QWidget *parent)
 	connect(password_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
 	connect(password_confirmation_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
 	connect(server_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
+	connect(client_.data(), SIGNAL(registerError(const QString &)), this, SLOT(registerError(const QString &)));
 
 	username_input_->setValidator(validator_->localpart_);
 	password_input_->setValidator(validator_->password_);
@@ -160,7 +162,7 @@ void RegisterPage::onRegisterButtonClicked()
 		QString password = password_input_->text();
 		QString server = server_input_->text();
 
-		emit registerUser(username, password, server);
+		client_->registerUser(username, password, server);
 	}
 }
 

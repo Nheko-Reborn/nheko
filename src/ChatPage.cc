@@ -28,16 +28,15 @@
 #include "Sync.h"
 #include "UserInfoWidget.h"
 
-ChatPage::ChatPage(QWidget *parent)
+ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ChatPage)
     , sync_interval_(2000)
+    , client_(client)
 {
 	ui->setupUi(this);
-	matrix_client_ = new MatrixClient("matrix.org", parent);
-	content_downloader_ = new QNetworkAccessManager(parent);
 
-	room_list_ = new RoomList(this);
+	room_list_ = new RoomList(client, this);
 	ui->sideBarMainLayout->addWidget(room_list_);
 
 	top_bar_ = new TopRoomBar(this);
@@ -56,8 +55,8 @@ ChatPage::ChatPage(QWidget *parent)
 	sync_timer_->setSingleShot(true);
 	connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
 
-	connect(user_info_widget_, SIGNAL(logout()), matrix_client_, SLOT(logout()));
-	connect(matrix_client_, SIGNAL(loggedOut()), this, SLOT(logout()));
+	connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
+	connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
 
 	connect(room_list_,
 		SIGNAL(roomChanged(const RoomInfo &)),
@@ -67,33 +66,38 @@ ChatPage::ChatPage(QWidget *parent)
 		SIGNAL(roomChanged(const RoomInfo &)),
 		view_manager_,
 		SLOT(setHistoryView(const RoomInfo &)));
-	connect(room_list_,
-		SIGNAL(fetchRoomAvatar(const QString &, const QUrl &)),
-		this,
-		SLOT(fetchRoomAvatar(const QString &, const QUrl &)));
 
 	connect(text_input_,
 		SIGNAL(sendTextMessage(const QString &)),
 		this,
 		SLOT(sendTextMessage(const QString &)));
 
-	connect(matrix_client_,
+	connect(client_.data(),
+		SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
+		this,
+		SLOT(updateTopBarAvatar(const QString &, const QPixmap &)));
+
+	connect(client_.data(),
 		SIGNAL(initialSyncCompleted(const SyncResponse &)),
 		this,
 		SLOT(initialSyncCompleted(const SyncResponse &)));
-	connect(matrix_client_,
+	connect(client_.data(),
 		SIGNAL(syncCompleted(const SyncResponse &)),
 		this,
 		SLOT(syncCompleted(const SyncResponse &)));
-	connect(matrix_client_,
+	connect(client_.data(),
 		SIGNAL(syncFailed(const QString &)),
 		this,
 		SLOT(syncFailed(const QString &)));
-	connect(matrix_client_,
+	connect(client_.data(),
 		SIGNAL(getOwnProfileResponse(const QUrl &, const QString &)),
 		this,
 		SLOT(updateOwnProfileInfo(const QUrl &, const QString &)));
-	connect(matrix_client_,
+	connect(client_.data(),
+		SIGNAL(ownAvatarRetrieved(const QPixmap &)),
+		this,
+		SLOT(setOwnAvatar(const QPixmap &)));
+	connect(client_.data(),
 		SIGNAL(messageSent(QString, int)),
 		this,
 		SLOT(messageSent(QString, int)));
@@ -115,7 +119,7 @@ void ChatPage::logout()
 
 	top_bar_->reset();
 	user_info_widget_->reset();
-	matrix_client_->reset();
+	client_->reset();
 
 	room_avatars_.clear();
 
@@ -133,33 +137,28 @@ void ChatPage::messageSent(QString event_id, int txn_id)
 void ChatPage::sendTextMessage(const QString &msg)
 {
 	auto room = current_room_;
-	matrix_client_->sendTextMessage(current_room_.id(), msg);
+	client_->sendTextMessage(current_room_.id(), msg);
 }
 
 void ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 {
 	Q_UNUSED(userid);
 
-	matrix_client_->setServer(homeserver);
-	matrix_client_->setAccessToken(token);
+	client_->setServer(homeserver);
+	client_->setAccessToken(token);
 
-	matrix_client_->getOwnProfile();
-	matrix_client_->initialSync();
+	client_->getOwnProfile();
+	client_->initialSync();
 }
 
 void ChatPage::startSync()
 {
-	matrix_client_->sync();
+	client_->sync();
 }
 
-void ChatPage::setOwnAvatar(const QByteArray &img)
+void ChatPage::setOwnAvatar(const QPixmap &img)
 {
-	if (img.size() == 0)
-		return;
-
-	QPixmap pixmap;
-	pixmap.loadFromData(img);
-	user_info_widget_->setAvatar(pixmap.toImage());
+	user_info_widget_->setAvatar(img.toImage());
 }
 
 void ChatPage::syncFailed(const QString &msg)
@@ -170,7 +169,7 @@ void ChatPage::syncFailed(const QString &msg)
 
 void ChatPage::syncCompleted(const SyncResponse &response)
 {
-	matrix_client_->setNextBatchToken(response.nextBatch());
+	client_->setNextBatchToken(response.nextBatch());
 
 	/* room_list_->sync(response.rooms()); */
 	view_manager_->sync(response.rooms());
@@ -181,7 +180,7 @@ void ChatPage::syncCompleted(const SyncResponse &response)
 void ChatPage::initialSyncCompleted(const SyncResponse &response)
 {
 	if (!response.nextBatch().isEmpty())
-		matrix_client_->setNextBatchToken(response.nextBatch());
+		client_->setNextBatchToken(response.nextBatch());
 
 	view_manager_->initialize(response.rooms());
 	room_list_->setInitialRooms(response.rooms());
@@ -189,61 +188,15 @@ void ChatPage::initialSyncCompleted(const SyncResponse &response)
 	sync_timer_->start(sync_interval_);
 }
 
-// TODO: This function should be part of the matrix client for generic media retrieval.
-void ChatPage::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
+void ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
 {
-	// TODO: move this into a Utils function
-	QList<QString> url_parts = avatar_url.toString().split("mxc://");
+	room_avatars_.insert(roomid, img);
 
-	if (url_parts.size() != 2) {
-		qDebug() << "Invalid format for room avatar " << avatar_url.toString();
+	if (current_room_.id() != roomid)
 		return;
-	}
 
-	QString media_params = url_parts[1];
-	QString media_url = QString("%1/_matrix/media/r0/download/%2")
-				    .arg(matrix_client_->getHomeServer(), media_params);
-
-	QNetworkRequest avatar_request(media_url);
-	QNetworkReply *reply = content_downloader_->get(avatar_request);
-	reply->setProperty("media_params", media_params);
-
-	connect(reply, &QNetworkReply::finished, [this, media_params, roomid, reply]() {
-		reply->deleteLater();
-
-		auto media = reply->property("media_params").toString();
-
-		if (media != media_params)
-			return;
-
-		int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-		if (status == 0) {
-			qDebug() << reply->errorString();
-			return;
-		}
-
-		if (status >= 400) {
-			qWarning() << "Request " << reply->request().url() << " returned " << status;
-			return;
-		}
-
-		auto img = reply->readAll();
-
-		if (img.size() == 0)
-			return;
-
-		QPixmap pixmap;
-		pixmap.loadFromData(img);
-		room_avatars_.insert(roomid, pixmap);
-
-		this->room_list_->updateRoomAvatar(roomid, pixmap.toImage());
-
-		if (current_room_.id() == roomid) {
-			QIcon icon(pixmap);
-			this->top_bar_->updateRoomAvatar(icon);
-		}
-	});
+	QIcon icon(img);
+	this->top_bar_->updateRoomAvatar(icon);
 }
 
 void ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name)
@@ -254,44 +207,7 @@ void ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &displ
 	user_info_widget_->setUserId(userid);
 	user_info_widget_->setDisplayName(display_name);
 
-	// TODO: move this into a Utils function
-	QList<QString> url_parts = avatar_url.toString().split("mxc://");
-
-	if (url_parts.size() != 2) {
-		qDebug() << "Invalid format for media " << avatar_url.toString();
-		return;
-	}
-
-	QString media_params = url_parts[1];
-	QString media_url = QString("%1/_matrix/media/r0/download/%2")
-				    .arg(matrix_client_->getHomeServer(), media_params);
-
-	QNetworkRequest avatar_request(media_url);
-	QNetworkReply *reply = content_downloader_->get(avatar_request);
-	reply->setProperty("media_params", media_params);
-
-	connect(reply, &QNetworkReply::finished, [this, media_params, reply]() {
-		reply->deleteLater();
-
-		auto media = reply->property("media_params").toString();
-
-		if (media != media_params)
-			return;
-
-		int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-		if (status == 0) {
-			qDebug() << reply->errorString();
-			return;
-		}
-
-		if (status >= 400) {
-			qWarning() << "Request " << reply->request().url() << " returned " << status;
-			return;
-		}
-
-		setOwnAvatar(reply->readAll());
-	});
+	client_->fetchOwnAvatar(avatar_url);
 }
 
 void ChatPage::changeTopRoomInfo(const RoomInfo &info)

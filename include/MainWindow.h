@@ -19,6 +19,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSharedPointer>
 
 #include "ChatPage.h"
 #include "LoginPage.h"
@@ -53,12 +54,6 @@ public slots:
 	// Show the chat page and start communicating with the given access token.
 	void showChatPage(QString user_id, QString home_server, QString token);
 
-	// Performs the actual login.
-	void matrixLogin(const QString &username, const QString &password, const QString &home_server);
-
-	// Performs the actual registration.
-	void matrixRegister(const QString &username, const QString &password, const QString &server);
-
 private:
 	// The UI component of the main window.
 	Ui::MainWindow *ui_;
@@ -78,7 +73,8 @@ private:
 	// The main chat area.
 	ChatPage *chat_page_;
 
-	MatrixClient *matrix_client_;
+	// Matrix Client API provider.
+	QSharedPointer<MatrixClient> client_;
 };
 
 #endif  // MAINWINDOW_H

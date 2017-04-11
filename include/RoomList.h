@@ -19,9 +19,11 @@
 #define ROOMLIST_H
 
 #include <QImage>
+#include <QSharedPointer>
 #include <QUrl>
 #include <QWidget>
 
+#include "MatrixClient.h"
 #include "RoomInfo.h"
 #include "RoomInfoListItem.h"
 #include "Sync.h"
@@ -36,26 +38,27 @@ class RoomList : public QWidget
 	Q_OBJECT
 
 public:
-	explicit RoomList(QWidget *parent = 0);
+	RoomList(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~RoomList();
 
 	void setInitialRooms(const Rooms &rooms);
-	void updateRoomAvatar(const QString &roomid, const QImage &avatar_image);
 	void clear();
 
 	RoomInfo extractRoomInfo(const State &room_state);
 
 signals:
 	void roomChanged(const RoomInfo &info);
-	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
 
 public slots:
+	void updateRoomAvatar(const QString &roomid, const QPixmap &img);
 	void highlightSelectedRoom(const RoomInfo &info);
 
 private:
 	Ui::RoomList *ui;
 
 	QMap<QString, RoomInfoListItem *> rooms_;
+
+	QSharedPointer<MatrixClient> client_;
 };
 
 #endif  // ROOMLIST_H

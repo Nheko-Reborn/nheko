@@ -40,6 +40,8 @@ public:
 	void login(const QString &username, const QString &password) noexcept;
 	void registerUser(const QString &username, const QString &password, const QString &server) noexcept;
 	void versions() noexcept;
+	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
+	void fetchOwnAvatar(const QUrl &avatar_url);
 
 	inline QString getHomeServer();
 	inline void incrementTransactionId();
@@ -63,6 +65,9 @@ signals:
 	void loginSuccess(const QString &userid, const QString &homeserver, const QString &token);
 	void registerSuccess(const QString &userid, const QString &homeserver, const QString &token);
 
+	void roomAvatarRetrieved(const QString &roomid, const QPixmap &img);
+	void ownAvatarRetrieved(const QPixmap &img);
+
 	// Returned profile data for the user's account.
 	void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
 	void initialSyncCompleted(const SyncResponse &response);
@@ -76,11 +81,13 @@ private slots:
 private:
 	enum Endpoint {
 		GetOwnProfile,
+		GetOwnAvatar,
 		GetProfile,
 		InitialSync,
 		Login,
 		Logout,
 		Register,
+		RoomAvatar,
 		SendTextMessage,
 		Sync,
 		Versions,
@@ -92,9 +99,11 @@ private:
 	void onRegisterResponse(QNetworkReply *reply);
 	void onVersionsResponse(QNetworkReply *reply);
 	void onGetOwnProfileResponse(QNetworkReply *reply);
+	void onGetOwnAvatarResponse(QNetworkReply *reply);
 	void onSendTextMessageResponse(QNetworkReply *reply);
 	void onInitialSyncResponse(QNetworkReply *reply);
 	void onSyncResponse(QNetworkReply *reply);
+	void onRoomAvatarResponse(QNetworkReply *reply);
 
 	// Client API prefix.
 	QString api_url_;

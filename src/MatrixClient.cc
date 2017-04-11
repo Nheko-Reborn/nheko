@@ -20,6 +20,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QPixmap>
 #include <QSettings>
 #include <QUrl>
 #include <QUrlQuery>
@@ -39,7 +40,6 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
 	QSettings settings;
 	txn_id_ = settings.value("client/transaction_id", 1).toInt();
 
-	// FIXME: Other QNetworkAccessManagers use the finish handler.
 	connect(this, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResponse(QNetworkReply *)));
 }
 
@@ -263,6 +263,52 @@ void MatrixClient::onSendTextMessageResponse(QNetworkReply *reply)
 	incrementTransactionId();
 }
 
+void MatrixClient::onRoomAvatarResponse(QNetworkReply *reply)
+{
+	reply->deleteLater();
+
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	if (status == 0 || status >= 400) {
+		qWarning() << reply->errorString();
+		return;
+	}
+
+	auto img = reply->readAll();
+
+	if (img.size() == 0)
+		return;
+
+	auto roomid = reply->property("roomid").toString();
+
+	QPixmap pixmap;
+	pixmap.loadFromData(img);
+
+	emit roomAvatarRetrieved(roomid, pixmap);
+}
+
+void MatrixClient::onGetOwnAvatarResponse(QNetworkReply *reply)
+{
+	reply->deleteLater();
+
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	if (status == 0 || status >= 400) {
+		qWarning() << reply->errorString();
+		return;
+	}
+
+	auto img = reply->readAll();
+
+	if (img.size() == 0)
+		return;
+
+	QPixmap pixmap;
+	pixmap.loadFromData(img);
+
+	emit ownAvatarRetrieved(pixmap);
+}
+
 void MatrixClient::onResponse(QNetworkReply *reply)
 {
 	switch (reply->property("endpoint").toInt()) {
@@ -289,6 +335,12 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 		break;
 	case Endpoint::SendTextMessage:
 		onSendTextMessageResponse(reply);
+		break;
+	case Endpoint::RoomAvatar:
+		onRoomAvatarResponse(reply);
+		break;
+	case Endpoint::GetOwnAvatar:
+		onGetOwnAvatarResponse(reply);
 		break;
 	default:
 		break;
@@ -447,4 +499,41 @@ void MatrixClient::getOwnProfile() noexcept
 
 	QNetworkReply *reply = get(request);
 	reply->setProperty("endpoint", Endpoint::GetOwnProfile);
+}
+
+void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
+{
+	QList<QString> url_parts = avatar_url.toString().split("mxc://");
+
+	if (url_parts.size() != 2) {
+		qDebug() << "Invalid format for room avatar " << avatar_url.toString();
+		return;
+	}
+
+	QString media_params = url_parts[1];
+	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer(), media_params);
+
+	QNetworkRequest avatar_request(media_url);
+
+	QNetworkReply *reply = get(avatar_request);
+	reply->setProperty("roomid", roomid);
+	reply->setProperty("endpoint", Endpoint::RoomAvatar);
+}
+
+void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
+{
+	QList<QString> url_parts = avatar_url.toString().split("mxc://");
+
+	if (url_parts.size() != 2) {
+		qDebug() << "Invalid format for media " << avatar_url.toString();
+		return;
+	}
+
+	QString media_params = url_parts[1];
+	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer(), media_params);
+
+	QNetworkRequest avatar_request(media_url);
+
+	QNetworkReply *reply = get(avatar_request);
+	reply->setProperty("endpoint", Endpoint::GetOwnAvatar);
 }
