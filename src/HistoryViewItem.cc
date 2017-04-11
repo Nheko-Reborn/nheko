@@ -32,6 +32,9 @@ HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QSt
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 	auto local_time = timestamp.toString("HH:mm");
 
+	if (event.content().value("msgtype").toString() == "m.notice")
+		body = "<i style=\"color: #565E5E\">" + body + "</i>";
+
 	time_label_ = new QLabel(this);
 	time_label_->setWordWrap(true);
 	QString msg(
@@ -58,7 +61,7 @@ HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QSt
 		"   <span style=\"font-size: 10pt; font-weight: 600; color: %1\">"
 		"   %2"
 		"   </span>"
-		"   <span style=\"font-size: 10pt;\">"
+		"   <span style=\"font-size: 10pt; color: #B1AEA5;\">"
 		"   %3"
 		"   </span>"
 		"</body>"
