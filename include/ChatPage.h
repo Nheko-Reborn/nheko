@@ -18,8 +18,6 @@
 #ifndef CHATPAGE_H
 #define CHATPAGE_H
 
-#include <QByteArray>
-#include <QNetworkAccessManager>
 #include <QPixmap>
 #include <QTimer>
 #include <QWidget>

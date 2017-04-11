@@ -19,10 +19,7 @@
 
 #include <QDebug>
 #include <QLabel>
-#include <QNetworkReply>
-#include <QNetworkRequest>
 #include <QSettings>
-#include <QWidget>
 
 #include "ChatPage.h"
 #include "Sync.h"
