@@ -44,11 +44,7 @@ public slots:
 	void sliderRangeChanged(int min, int max);
 
 private:
-	static const QList<QString> COLORS;
-
 	void init();
-
-	QString chooseRandomColor();
 
 	QVBoxLayout *top_layout_;
 	QVBoxLayout *scroll_layout_;
@@ -57,7 +53,6 @@ private:
 	QWidget *scroll_widget_;
 
 	QString last_sender_;
-	QMap<QString, QString> nick_colors_;
 };
 
 #endif  // HISTORY_VIEW_H

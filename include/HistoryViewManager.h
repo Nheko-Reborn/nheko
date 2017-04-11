@@ -38,6 +38,10 @@ public:
 	void sync(const Rooms &rooms);
 	void clearAll();
 
+	static QString chooseRandomColor();
+	static QMap<QString, QString> NICK_COLORS;
+	static const QList<QString> COLORS;
+
 public slots:
 	void setHistoryView(const RoomInfo &info);
 

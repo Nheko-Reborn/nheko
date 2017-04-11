@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <random>
+
 #include <QDebug>
 #include <QStackedWidget>
 #include <QWidget>
@@ -39,7 +41,9 @@ HistoryViewManager::~HistoryViewManager()
 
 void HistoryViewManager::clearAll()
 {
-	for (const auto &view: views_) {
+	NICK_COLORS.clear();
+
+	for (const auto &view : views_) {
 		view->clear();
 		removeWidget(view);
 		view->deleteLater();
@@ -91,4 +95,40 @@ void HistoryViewManager::setHistoryView(const RoomInfo &info)
 	auto widget = views_.value(info.id());
 
 	setCurrentWidget(widget);
+}
+
+QMap<QString, QString> HistoryViewManager::NICK_COLORS;
+
+const QList<QString> HistoryViewManager::COLORS({"#FFF46E",
+						 "#A58BFF",
+						 "#50C9BA",
+						 "#9EE6CF",
+						 "#FFDD67",
+						 "#2980B9",
+						 "#FC993C",
+						 "#2772DB",
+						 "#CB8589",
+						 "#DDE8B9",
+						 "#55A44E",
+						 "#A9EEE6",
+						 "#53B759",
+						 "#9E3997",
+						 "#5D89D5",
+						 "#BB86B7",
+						 "#50a0cf",
+						 "#3C989F",
+						 "#5A4592",
+						 "#235e5b",
+						 "#d58247",
+						 "#e0a729",
+						 "#a2b636",
+						 "#4BBE2E"});
+
+QString HistoryViewManager::chooseRandomColor()
+{
+	std::random_device random_device;
+	std::mt19937 engine{random_device()};
+	std::uniform_int_distribution<int> dist(0, HistoryViewManager::COLORS.size() - 1);
+
+	return HistoryViewManager::COLORS[dist(engine)];
 }

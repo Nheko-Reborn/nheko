@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <random>
-
 #include <QDebug>
 #include <QScrollBar>
 #include <QtWidgets/QLabel>
@@ -24,31 +22,7 @@
 
 #include "HistoryView.h"
 #include "HistoryViewItem.h"
-
-const QList<QString> HistoryView::COLORS({"#FFF46E",
-					  "#A58BFF",
-					  "#50C9BA",
-					  "#9EE6CF",
-					  "#FFDD67",
-					  "#2980B9",
-					  "#FC993C",
-					  "#2772DB",
-					  "#CB8589",
-					  "#DDE8B9",
-					  "#55A44E",
-					  "#A9EEE6",
-					  "#53B759",
-					  "#9E3997",
-					  "#5D89D5",
-					  "#BB86B7",
-					  "#50a0cf",
-					  "#3C989F",
-					  "#5A4592",
-					  "#235e5b",
-					  "#d58247",
-					  "#e0a729",
-					  "#a2b636",
-					  "#4BBE2E"});
+#include "HistoryViewManager.h"
 
 HistoryView::HistoryView(const QList<Event> &events, QWidget *parent)
     : QWidget(parent)
@@ -65,8 +39,6 @@ HistoryView::HistoryView(QWidget *parent)
 
 void HistoryView::clear()
 {
-	nick_colors_.clear();
-
 	for (const auto msg : scroll_layout_->children())
 		msg->deleteLater();
 }
@@ -77,15 +49,6 @@ void HistoryView::sliderRangeChanged(int min, int max)
 	scroll_area_->verticalScrollBar()->setValue(max);
 }
 
-QString HistoryView::chooseRandomColor()
-{
-	std::random_device random_device;
-	std::mt19937 engine{random_device()};
-	std::uniform_int_distribution<int> dist(0, HistoryView::COLORS.size() - 1);
-
-	return HistoryView::COLORS[dist(engine)];
-}
-
 void HistoryView::addEvents(const QList<Event> &events)
 {
 	for (const auto &event : events) {
@@ -94,11 +57,11 @@ void HistoryView::addEvents(const QList<Event> &events)
 
 			if (msg_type == "m.text" || msg_type == "m.notice") {
 				auto with_sender = last_sender_ != event.sender();
-				auto color = nick_colors_.value(event.sender());
+				auto color = HistoryViewManager::NICK_COLORS.value(event.sender());
 
 				if (color.isEmpty()) {
-					color = chooseRandomColor();
-					nick_colors_.insert(event.sender(), color);
+					color = HistoryViewManager::chooseRandomColor();
+					HistoryViewManager::NICK_COLORS.insert(event.sender(), color);
 				}
 
 				addHistoryItem(event, color, with_sender);
