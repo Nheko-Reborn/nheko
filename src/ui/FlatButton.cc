@@ -1,13 +1,9 @@
-
-#include <QBitmap>
 #include <QEventTransition>
 #include <QFontDatabase>
 #include <QIcon>
 #include <QMouseEvent>
-#include <QPainter>
 #include <QPainterPath>
 #include <QResizeEvent>
-#include <QSequentialAnimationGroup>
 #include <QSignalTransition>
 
 #include "FlatButton.h"
@@ -29,7 +25,6 @@ void FlatButton::init()
 	base_opacity_ = 0.13;
 	font_size_ = 10;  // 10.5;
 	use_fixed_ripple_radius_ = false;
-	halo_visible_ = false;
 
 	setStyle(&ThemeManager::instance());
 	setAttribute(Qt::WA_Hover);
@@ -80,7 +75,6 @@ void FlatButton::applyPreset(ui::ButtonPreset preset)
 	case ui::CheckablePreset:
 		setOverlayStyle(ui::NoOverlay);
 		setCheckable(true);
-		setHaloVisible(false);
 		break;
 	default:
 		break;
@@ -203,17 +197,6 @@ void FlatButton::setFontSize(qreal size)
 qreal FlatButton::fontSize() const
 {
 	return font_size_;
-}
-
-void FlatButton::setHaloVisible(bool visible)
-{
-	halo_visible_ = visible;
-	update();
-}
-
-bool FlatButton::isHaloVisible() const
-{
-	return halo_visible_;
 }
 
 void FlatButton::setOverlayStyle(ui::OverlayStyle style)
@@ -391,7 +374,6 @@ void FlatButton::paintEvent(QPaintEvent *event)
 	}
 
 	paintBackground(&painter);
-	paintHalo(&painter);
 
 	painter.setOpacity(1);
 	painter.setClipping(false);
@@ -448,27 +430,6 @@ void FlatButton::paintBackground(QPainter *painter)
 		QRect r(rect());
 		r.setHeight(static_cast<qreal>(r.height()) * checkedProgress);
 		painter->drawRect(r);
-	}
-}
-
-void FlatButton::paintHalo(QPainter *painter)
-{
-	if (!halo_visible_)
-		return;
-
-	const qreal opacity = state_machine_->haloOpacity();
-	const qreal s = state_machine_->haloScaleFactor() * state_machine_->haloSize();
-	const qreal radius = static_cast<qreal>(width()) * s;
-
-	if (isEnabled() && opacity > 0) {
-		QBrush brush;
-		brush.setStyle(Qt::SolidPattern);
-		brush.setColor(foregroundColor());
-		painter->setOpacity(opacity);
-		painter->setBrush(brush);
-		painter->setPen(Qt::NoPen);
-		const QPointF center = rect().center();
-		painter->drawEllipse(center, radius, radius);
 	}
 }
 
@@ -548,12 +509,8 @@ FlatButtonStateMachine::FlatButtonStateMachine(FlatButton *parent)
     , hovered_state_(new QState(config_state_))
     , hovered_focused_state_(new QState(config_state_))
     , pressed_state_(new QState(config_state_))
-    , halo_animation_(new QSequentialAnimationGroup(this))
     , overlay_opacity_(0)
     , checked_overlay_progress_(parent->isChecked() ? 1 : 0)
-    , halo_opacity_(0)
-    , halo_size_(0.8)
-    , halo_scale_factor_(1)
     , was_checked_(false)
 {
 	Q_ASSERT(parent);
@@ -596,33 +553,6 @@ FlatButtonStateMachine::FlatButtonStateMachine(FlatButton *parent)
 	addTransition(this, SIGNAL(buttonPressed()), hovered_state_, pressed_state_);
 	addTransition(button_, QEvent::Leave, pressed_state_, neutral_focused_state_);
 	addTransition(button_, QEvent::FocusOut, pressed_state_, hovered_state_);
-
-	neutral_state_->assignProperty(this, "haloSize", 0);
-	neutral_focused_state_->assignProperty(this, "haloSize", 0.7);
-	hovered_state_->assignProperty(this, "haloSize", 0);
-	pressed_state_->assignProperty(this, "haloSize", 4);
-	hovered_focused_state_->assignProperty(this, "haloSize", 0.7);
-
-	QPropertyAnimation *grow = new QPropertyAnimation(this);
-	QPropertyAnimation *shrink = new QPropertyAnimation(this);
-
-	grow->setTargetObject(this);
-	grow->setPropertyName("haloScaleFactor");
-	grow->setStartValue(0.56);
-	grow->setEndValue(0.63);
-	grow->setEasingCurve(QEasingCurve::InOutSine);
-	grow->setDuration(840);
-
-	shrink->setTargetObject(this);
-	shrink->setPropertyName("haloScaleFactor");
-	shrink->setStartValue(0.63);
-	shrink->setEndValue(0.56);
-	shrink->setEasingCurve(QEasingCurve::InOutSine);
-	shrink->setDuration(840);
-
-	halo_animation_->addAnimation(grow);
-	halo_animation_->addAnimation(shrink);
-	halo_animation_->setLoopCount(-1);
 }
 
 FlatButtonStateMachine::~FlatButtonStateMachine()
@@ -641,27 +571,8 @@ void FlatButtonStateMachine::setCheckedOverlayProgress(qreal opacity)
 	button_->update();
 }
 
-void FlatButtonStateMachine::setHaloOpacity(qreal opacity)
-{
-	halo_opacity_ = opacity;
-	button_->update();
-}
-
-void FlatButtonStateMachine::setHaloSize(qreal size)
-{
-	halo_size_ = size;
-	button_->update();
-}
-
-void FlatButtonStateMachine::setHaloScaleFactor(qreal factor)
-{
-	halo_scale_factor_ = factor;
-	button_->update();
-}
-
 void FlatButtonStateMachine::startAnimations()
 {
-	halo_animation_->start();
 	start();
 }
 
@@ -678,15 +589,10 @@ void FlatButtonStateMachine::setupProperties()
 	const qreal baseOpacity = button_->baseOpacity();
 
 	neutral_state_->assignProperty(this, "overlayOpacity", 0);
-	neutral_state_->assignProperty(this, "haloOpacity", 0);
 	neutral_focused_state_->assignProperty(this, "overlayOpacity", 0);
-	neutral_focused_state_->assignProperty(this, "haloOpacity", baseOpacity);
 	hovered_state_->assignProperty(this, "overlayOpacity", baseOpacity);
-	hovered_state_->assignProperty(this, "haloOpacity", 0);
 	hovered_focused_state_->assignProperty(this, "overlayOpacity", baseOpacity);
-	hovered_focused_state_->assignProperty(this, "haloOpacity", baseOpacity);
 	pressed_state_->assignProperty(this, "overlayOpacity", baseOpacity);
-	pressed_state_->assignProperty(this, "haloOpacity", 0);
 	checked_state_->assignProperty(this, "checkedOverlayProgress", 1);
 	unchecked_state_->assignProperty(this, "checkedOverlayProgress", 0);
 
@@ -746,15 +652,6 @@ void FlatButtonStateMachine::addTransition(QAbstractTransition *transition,
 
 	animation = new QPropertyAnimation(this, "overlayOpacity", this);
 	animation->setDuration(150);
-	transition->addAnimation(animation);
-
-	animation = new QPropertyAnimation(this, "haloOpacity", this);
-	animation->setDuration(170);
-	transition->addAnimation(animation);
-
-	animation = new QPropertyAnimation(this, "haloSize", this);
-	animation->setDuration(350);
-	animation->setEasingCurve(QEasingCurve::OutCubic);
 	transition->addAnimation(animation);
 
 	fromState->addTransition(transition);

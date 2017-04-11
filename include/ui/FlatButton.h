@@ -4,7 +4,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPushButton>
-#include <QSequentialAnimationGroup>
 #include <QStateMachine>
 
 #include "RippleOverlay.h"
@@ -18,9 +17,6 @@ class FlatButtonStateMachine : public QStateMachine
 
 	Q_PROPERTY(qreal overlayOpacity WRITE setOverlayOpacity READ overlayOpacity)
 	Q_PROPERTY(qreal checkedOverlayProgress WRITE setCheckedOverlayProgress READ checkedOverlayProgress)
-	Q_PROPERTY(qreal haloOpacity WRITE setHaloOpacity READ haloOpacity)
-	Q_PROPERTY(qreal haloSize WRITE setHaloSize READ haloSize)
-	Q_PROPERTY(qreal haloScaleFactor WRITE setHaloScaleFactor READ haloScaleFactor)
 
 public:
 	explicit FlatButtonStateMachine(FlatButton *parent);
@@ -28,15 +24,9 @@ public:
 
 	void setOverlayOpacity(qreal opacity);
 	void setCheckedOverlayProgress(qreal opacity);
-	void setHaloOpacity(qreal opacity);
-	void setHaloSize(qreal size);
-	void setHaloScaleFactor(qreal factor);
 
 	inline qreal overlayOpacity() const;
 	inline qreal checkedOverlayProgress() const;
-	inline qreal haloOpacity() const;
-	inline qreal haloSize() const;
-	inline qreal haloScaleFactor() const;
 
 	void startAnimations();
 	void setupProperties();
@@ -68,13 +58,8 @@ private:
 	QState *const hovered_focused_state_;
 	QState *const pressed_state_;
 
-	QSequentialAnimationGroup *const halo_animation_;
-
 	qreal overlay_opacity_;
 	qreal checked_overlay_progress_;
-	qreal halo_opacity_;
-	qreal halo_size_;
-	qreal halo_scale_factor_;
 
 	bool was_checked_;
 };
@@ -87,21 +72,6 @@ inline qreal FlatButtonStateMachine::overlayOpacity() const
 inline qreal FlatButtonStateMachine::checkedOverlayProgress() const
 {
 	return checked_overlay_progress_;
-}
-
-inline qreal FlatButtonStateMachine::haloOpacity() const
-{
-	return halo_opacity_;
-}
-
-inline qreal FlatButtonStateMachine::haloSize() const
-{
-	return halo_size_;
-}
-
-inline qreal FlatButtonStateMachine::haloScaleFactor() const
-{
-	return halo_scale_factor_;
 }
 
 class FlatButton : public QPushButton
@@ -133,7 +103,6 @@ public:
 	void setFixedRippleRadius(qreal radius);
 	void setFontSize(qreal size);
 	void setForegroundColor(const QColor &color);
-	void setHaloVisible(bool visible);
 	void setHasFixedRippleRadius(bool value);
 	void setIconPlacement(ui::ButtonIconPlacement placement);
 	void setOverlayColor(const QColor &color);
@@ -151,7 +120,6 @@ public:
 	qreal cornerRadius() const;
 	qreal baseOpacity() const;
 
-	bool isHaloVisible() const;
 	bool hasFixedRippleRadius() const;
 
 	ui::Role role() const;
@@ -175,7 +143,6 @@ protected:
 	void paintEvent(QPaintEvent *event) override;
 
 	virtual void paintBackground(QPainter *painter);
-	virtual void paintHalo(QPainter *painter);
 	virtual void paintForeground(QPainter *painter);
 	virtual void updateClipPath();
 
@@ -204,7 +171,6 @@ private:
 	qreal font_size_;
 
 	bool use_fixed_ripple_radius_;
-	bool halo_visible_;
 };
 
 #endif  // UI_FLAT_BUTTON_H

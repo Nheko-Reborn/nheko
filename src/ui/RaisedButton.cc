@@ -1,8 +1,5 @@
 #include <QEventTransition>
-#include <QGraphicsDropShadowEffect>
 #include <QPropertyAnimation>
-#include <QState>
-#include <QStateMachine>
 
 #include "RaisedButton.h"
 
