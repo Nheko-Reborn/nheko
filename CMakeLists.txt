@@ -52,9 +52,20 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         -Wall \
         -Wextra \
         -Werror \
-        -fdiagnostics-color=always \
         -pedantic \
         -Wunreachable-code")
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+
+        if (GCC_VERSION VERSION_GREATER 4.9)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always" )
+        endif()
+    endif()
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always" )
+    endif()
 endif()
 
 set(SRC_FILES

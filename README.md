@@ -16,7 +16,7 @@ but you can of course receive and send messages in the rooms that you are a memb
 - CMake 3.1 or greater.
 - A compiler that supports C++11.
     - Clang 3.3 (or greater).
-    - GCC 5 (or greater).
+    - GCC 4.8 (or greater).
 
 ##### Arch Linux
 
@@ -27,11 +27,10 @@ $ sudo pacman -S qt5-base cmake gcc
 ##### Ubuntu 14.04
 
 ```bash
-$ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 $ sudo add-apt-repository ppa:beineri/opt-qt562-trusty
 $ sudo add-apt-repository ppa:george-edison55/cmake-3.x
 $ sudo apt-get update
-$ sudo apt-get install gcc-6 g++-6 clang qt56base cmake # or gcc-5 gcc++-5
+$ sudo apt-get install qt56base cmake
 ```
 
 ##### OSX (Xcode 7 or later)
