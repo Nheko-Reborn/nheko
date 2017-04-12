@@ -192,8 +192,7 @@ void ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
 	if (current_room_.id() != roomid)
 		return;
 
-	QIcon icon(img);
-	this->top_bar_->updateRoomAvatar(icon);
+	top_bar_->updateRoomAvatar(img.toImage());
 }
 
 void ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name)

@@ -66,7 +66,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
 void TextInputWidget::onSendButtonClicked()
 {
-	auto msg_text = input_->text();
+	auto msg_text = input_->text().trimmed();
 
 	if (msg_text.isEmpty())
 		return;
