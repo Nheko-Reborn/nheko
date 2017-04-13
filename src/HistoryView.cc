@@ -174,10 +174,7 @@ void HistoryView::addUserTextMessage(const QString &body, int txn_id)
 
 	last_sender_ = user_id;
 
-	PendingMessage message = {};
-	message.txn_id = txn_id;
-	message.body = body;
-	message.widget = view_item;
+	PendingMessage message(txn_id, body, "", view_item);
 
 	pending_msgs_.push_back(message);
 }

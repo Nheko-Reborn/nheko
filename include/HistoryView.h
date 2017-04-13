@@ -34,6 +34,14 @@ struct PendingMessage {
 	QString body;
 	QString event_id;
 	HistoryViewItem *widget;
+
+	PendingMessage(int txn_id, QString body, QString event_id, HistoryViewItem *widget)
+	    : txn_id(txn_id)
+	    , body(body)
+	    , event_id(event_id)
+	    , widget(widget)
+	{
+	}
 };
 
 class HistoryView : public QWidget
