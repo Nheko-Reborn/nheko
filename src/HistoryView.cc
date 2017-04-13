@@ -17,6 +17,7 @@
 
 #include <QDebug>
 #include <QScrollBar>
+#include <QSettings>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpacerItem>
 
@@ -51,18 +52,21 @@ void HistoryView::sliderRangeChanged(int min, int max)
 
 void HistoryView::addEvents(const QList<Event> &events)
 {
+	QSettings settings;
+	auto local_user = settings.value("auth/user_id").toString();
+
 	for (const auto &event : events) {
 		if (event.type() == "m.room.message") {
 			auto msg_type = event.content().value("msgtype").toString();
 
+			if (isPendingMessage(event, local_user)) {
+				removePendingMessage(event);
+				continue;
+			}
+
 			if (msg_type == "m.text" || msg_type == "m.notice") {
 				auto with_sender = last_sender_ != event.sender();
-				auto color = HistoryViewManager::NICK_COLORS.value(event.sender());
-
-				if (color.isEmpty()) {
-					color = HistoryViewManager::chooseRandomColor();
-					HistoryViewManager::NICK_COLORS.insert(event.sender(), color);
-				}
+				auto color = HistoryViewManager::getUserColor(event.sender());
 
 				addHistoryItem(event, color, with_sender);
 				last_sender_ = event.sender();
@@ -103,9 +107,79 @@ void HistoryView::init()
 
 void HistoryView::addHistoryItem(const Event &event, const QString &color, bool with_sender)
 {
-	// TODO: Probably create another function instead of passing the flag.
 	HistoryViewItem *item = new HistoryViewItem(event, with_sender, color, scroll_widget_);
 	scroll_layout_->addWidget(item);
+}
+
+void HistoryView::updatePendingMessage(int txn_id, QString event_id)
+{
+	for (auto &msg : pending_msgs_) {
+		if (msg.txn_id == txn_id) {
+			msg.event_id = event_id;
+			break;
+		}
+	}
+}
+
+bool HistoryView::isPendingMessage(const Event &event, const QString &userid)
+{
+	if (event.sender() != userid || event.type() != "m.room.message")
+		return false;
+
+	auto msgtype = event.content().value("msgtype").toString();
+	auto body = event.content().value("body").toString();
+
+	// FIXME: should contain more checks later on for other types of messages.
+	if (msgtype != "m.text")
+		return false;
+
+	for (const auto &msg : pending_msgs_) {
+		if (msg.event_id == event.eventId() || msg.body == body)
+			return true;
+	}
+
+	return false;
+}
+
+void HistoryView::removePendingMessage(const Event &event)
+{
+	auto body = event.content().value("body").toString();
+
+	for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
+		int index = std::distance(pending_msgs_.begin(), it);
+
+		if (it->event_id == event.eventId() || it->body == body) {
+			pending_msgs_.removeAt(index);
+			break;
+		}
+	}
+}
+
+void HistoryView::addUserTextMessage(const QString &body, int txn_id)
+{
+	QSettings settings;
+	auto user_id = settings.value("auth/user_id").toString();
+
+	auto with_sender = last_sender_ != user_id;
+	auto color = HistoryViewManager::getUserColor(user_id);
+
+	HistoryViewItem *view_item;
+
+	if (with_sender)
+		view_item = new HistoryViewItem(user_id, color, body, scroll_widget_);
+	else
+		view_item = new HistoryViewItem(body, scroll_widget_);
+
+	scroll_layout_->addWidget(view_item);
+
+	last_sender_ = user_id;
+
+	PendingMessage message = {};
+	message.txn_id = txn_id;
+	message.body = body;
+	message.widget = view_item;
+
+	pending_msgs_.push_back(message);
 }
 
 HistoryView::~HistoryView()

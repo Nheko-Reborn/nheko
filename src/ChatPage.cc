@@ -39,7 +39,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	top_bar_ = new TopRoomBar(this);
 	ui->topBarLayout->addWidget(top_bar_);
 
-	view_manager_ = new HistoryViewManager(this);
+	view_manager_ = new HistoryViewManager(client, this);
 	ui->mainContentLayout->addWidget(view_manager_);
 
 	text_input_ = new TextInputWidget(this);
@@ -66,7 +66,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	connect(text_input_,
 		SIGNAL(sendTextMessage(const QString &)),
-		this,
+		view_manager_,
 		SLOT(sendTextMessage(const QString &)));
 
 	connect(client_.data(),
@@ -94,10 +94,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 		SIGNAL(ownAvatarRetrieved(const QPixmap &)),
 		this,
 		SLOT(setOwnAvatar(const QPixmap &)));
-	connect(client_.data(),
-		SIGNAL(messageSent(QString, int)),
-		this,
-		SLOT(messageSent(QString, int)));
 }
 
 void ChatPage::logout()
@@ -121,20 +117,6 @@ void ChatPage::logout()
 	room_avatars_.clear();
 
 	emit close();
-}
-
-void ChatPage::messageSent(QString event_id, int txn_id)
-{
-	Q_UNUSED(event_id);
-
-	QSettings settings;
-	settings.setValue("client/transaction_id", txn_id + 1);
-}
-
-void ChatPage::sendTextMessage(const QString &msg)
-{
-	auto room = current_room_;
-	client_->sendTextMessage(current_room_.id(), msg);
 }
 
 void ChatPage::bootstrap(QString userid, QString homeserver, QString token)

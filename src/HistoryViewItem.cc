@@ -20,35 +20,63 @@
 
 #include "HistoryViewItem.h"
 
+HistoryViewItem::HistoryViewItem(const QString &userid, const QString &color, const QString &body, QWidget *parent)
+    : QWidget(parent)
+{
+	generateTimestamp(QDateTime::currentDateTime());
+	generateBody(userid, color, body);
+	setupLayout();
+}
+
+HistoryViewItem::HistoryViewItem(const QString &body, QWidget *parent)
+    : QWidget(parent)
+{
+	generateTimestamp(QDateTime::currentDateTime());
+	generateBody(body);
+	setupLayout();
+}
+
 HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QString &color, QWidget *parent)
     : QWidget(parent)
 {
-	QString sender = "";
-
-	if (with_sender)
-		sender = event.sender().split(":")[0].split("@")[1];
-
-	auto body = event.content().value("body").toString().trimmed();
+	auto body = event.content().value("body").toString().trimmed().toHtmlEscaped();
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-	auto local_time = timestamp.toString("HH:mm");
+
+	generateTimestamp(timestamp);
 
 	if (event.content().value("msgtype").toString() == "m.notice")
 		body = "<i style=\"color: #565E5E\">" + body + "</i>";
 
-	time_label_ = new QLabel(this);
-	time_label_->setWordWrap(true);
-	QString msg(
+	if (with_sender)
+		generateBody(event.sender(), color, body);
+	else
+		generateBody(body);
+
+	setupLayout();
+}
+
+void HistoryViewItem::generateBody(const QString &body)
+{
+	content_label_ = new QLabel(this);
+	content_label_->setWordWrap(true);
+	content_label_->setAlignment(Qt::AlignTop);
+	content_label_->setStyleSheet("margin: 0;");
+	QString content(
 		"<html>"
 		"<head/>"
 		"<body>"
-		"   <span style=\"font-size: 7pt; color: #5d6565;\">"
+		"   <span style=\"font-size: 10pt; color: #B1AEA5;\">"
 		"   %1"
 		"   </span>"
 		"</body>"
 		"</html>");
-	time_label_->setText(msg.arg(local_time));
-	time_label_->setStyleSheet("margin-left: 7px; margin-right: 7px; margin-top: 0;");
-	time_label_->setAlignment(Qt::AlignTop);
+	content_label_->setText(content.arg(body));
+	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+}
+
+void HistoryViewItem::generateBody(const QString &userid, const QString &color, const QString &body)
+{
+	auto sender = userid.split(":")[0].split("@")[1];
 
 	content_label_ = new QLabel(this);
 	content_label_->setWordWrap(true);
@@ -68,10 +96,41 @@ HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QSt
 		"</html>");
 	content_label_->setText(content.arg(color).arg(sender).arg(body));
 	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+}
+
+void HistoryViewItem::generateTimestamp(const QDateTime &time)
+{
+	auto local_time = time.toString("HH:mm");
+
+	time_label_ = new QLabel(this);
+	QString msg(
+		"<html>"
+		"<head/>"
+		"<body>"
+		"   <span style=\"font-size: 7pt; color: #5d6565;\">"
+		"   %1"
+		"   </span>"
+		"</body>"
+		"</html>");
+	time_label_->setText(msg.arg(local_time));
+	time_label_->setStyleSheet("margin-left: 7px; margin-right: 7px; margin-top: 0;");
+	time_label_->setAlignment(Qt::AlignTop);
+}
+
+void HistoryViewItem::setupLayout()
+{
+	if (time_label_ == nullptr) {
+		qWarning() << "HistoryViewItem: Time label is not initialized";
+		return;
+	}
+
+	if (content_label_ == nullptr) {
+		qWarning() << "HistoryViewItem: Content label is not initialized";
+		return;
+	}
 
 	top_layout_ = new QHBoxLayout();
 	top_layout_->setMargin(0);
-
 	top_layout_->addWidget(time_label_);
 	top_layout_->addWidget(content_label_, 1);
 

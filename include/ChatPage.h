@@ -57,8 +57,6 @@ private slots:
 	void syncCompleted(const SyncResponse &response);
 	void syncFailed(const QString &msg);
 	void changeTopRoomInfo(const RoomInfo &info);
-	void sendTextMessage(const QString &msg);
-	void messageSent(const QString event_id, int txn_id);
 	void startSync();
 	void logout();
 

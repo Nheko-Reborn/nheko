@@ -19,10 +19,12 @@
 #define HISTORY_VIEW_MANAGER_H
 
 #include <QDebug>
+#include <QSharedPointer>
 #include <QStackedWidget>
 #include <QWidget>
 
 #include "HistoryView.h"
+#include "MatrixClient.h"
 #include "RoomInfo.h"
 #include "Sync.h"
 
@@ -31,7 +33,7 @@ class HistoryViewManager : public QStackedWidget
 	Q_OBJECT
 
 public:
-	HistoryViewManager(QWidget *parent);
+	HistoryViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
 	~HistoryViewManager();
 
 	void initialize(const Rooms &rooms);
@@ -39,14 +41,21 @@ public:
 	void clearAll();
 
 	static QString chooseRandomColor();
+	static QString getUserColor(const QString &userid);
 	static QMap<QString, QString> NICK_COLORS;
 	static const QList<QString> COLORS;
 
 public slots:
 	void setHistoryView(const RoomInfo &info);
+	void sendTextMessage(const QString &msg);
+
+private slots:
+	void messageSent(const QString &eventid, const QString &roomid, int txnid);
 
 private:
+	RoomInfo active_room_;
 	QMap<QString, HistoryView *> views_;
+	QSharedPointer<MatrixClient> client_;
 };
 
 #endif

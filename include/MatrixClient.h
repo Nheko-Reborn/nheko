@@ -44,6 +44,7 @@ public:
 	void fetchOwnAvatar(const QUrl &avatar_url);
 
 	inline QString getHomeServer();
+	inline int transactionId();
 	inline void incrementTransactionId();
 
 	void reset() noexcept;
@@ -73,7 +74,7 @@ signals:
 	void initialSyncCompleted(const SyncResponse &response);
 	void syncCompleted(const SyncResponse &response);
 	void syncFailed(const QString &msg);
-	void messageSent(const QString &event_id, const int txn_id);
+	void messageSent(const QString &event_id, const QString &roomid, const int txn_id);
 
 private slots:
 	void onResponse(QNetworkReply *reply);
@@ -124,6 +125,11 @@ private:
 inline QString MatrixClient::getHomeServer()
 {
 	return server_;
+}
+
+inline int MatrixClient::transactionId()
+{
+	return txn_id_;
 }
 
 inline void MatrixClient::setServer(const QString &server)

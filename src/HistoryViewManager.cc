@@ -18,14 +18,16 @@
 #include <random>
 
 #include <QDebug>
+#include <QSettings>
 #include <QStackedWidget>
 #include <QWidget>
 
 #include "HistoryView.h"
 #include "HistoryViewManager.h"
 
-HistoryViewManager::HistoryViewManager(QWidget *parent)
+HistoryViewManager::HistoryViewManager(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QStackedWidget(parent)
+    , client_(client)
 {
 	setStyleSheet(
 		"QWidget {background: #171919; color: #ebebeb;}"
@@ -33,10 +35,34 @@ HistoryViewManager::HistoryViewManager(QWidget *parent)
 		"QScrollBar::handle:vertical { border-radius : 50px; background-color : #1c3133; }"
 		"QScrollBar::add-line:vertical { border: none; background: none; }"
 		"QScrollBar::sub-line:vertical { border: none; background: none; }");
+
+	connect(client_.data(),
+		SIGNAL(messageSent(const QString &, const QString &, int)),
+		this,
+		SLOT(messageSent(const QString &, const QString &, int)));
 }
 
 HistoryViewManager::~HistoryViewManager()
 {
+}
+
+void HistoryViewManager::messageSent(const QString &event_id, const QString &roomid, int txn_id)
+{
+	// We save the latest valid transaction ID for later use.
+	QSettings settings;
+	settings.setValue("client/transaction_id", txn_id + 1);
+
+	auto view = views_[roomid];
+	view->updatePendingMessage(txn_id, event_id);
+}
+
+void HistoryViewManager::sendTextMessage(const QString &msg)
+{
+	auto room = active_room_;
+	auto view = views_[room.id()];
+
+	view->addUserTextMessage(msg, client_->transactionId());
+	client_->sendTextMessage(room.id(), msg);
 }
 
 void HistoryViewManager::clearAll()
@@ -92,6 +118,7 @@ void HistoryViewManager::setHistoryView(const RoomInfo &info)
 		return;
 	}
 
+	active_room_ = info;
 	auto widget = views_.value(info.id());
 
 	setCurrentWidget(widget);
@@ -131,4 +158,16 @@ QString HistoryViewManager::chooseRandomColor()
 	std::uniform_int_distribution<int> dist(0, HistoryViewManager::COLORS.size() - 1);
 
 	return HistoryViewManager::COLORS[dist(engine)];
+}
+
+QString HistoryViewManager::getUserColor(const QString &userid)
+{
+	auto color = NICK_COLORS.value(userid);
+
+	if (color.isEmpty()) {
+		color = chooseRandomColor();
+		NICK_COLORS.insert(userid, color);
+	}
+
+	return color;
 }

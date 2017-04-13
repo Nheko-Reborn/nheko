@@ -28,10 +28,22 @@ class HistoryViewItem : public QWidget
 {
 	Q_OBJECT
 public:
+	// For remote messages.
 	HistoryViewItem(const Event &event, bool with_sender, const QString &color, QWidget *parent = 0);
+
+	// For local messages.
+	HistoryViewItem(const QString &userid, const QString &color, const QString &body, QWidget *parent = 0);
+	HistoryViewItem(const QString &body, QWidget *parent = 0);
+
 	~HistoryViewItem();
 
 private:
+	void generateBody(const QString &body);
+	void generateBody(const QString &userid, const QString &color, const QString &body);
+	void generateTimestamp(const QDateTime &time);
+
+	void setupLayout();
+
 	QHBoxLayout *top_layout_;
 
 	QLabel *time_label_;

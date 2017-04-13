@@ -258,9 +258,8 @@ void MatrixClient::onSendTextMessageResponse(QNetworkReply *reply)
 	}
 
 	emit messageSent(object.value("event_id").toString(),
+			 reply->property("roomid").toString(),
 			 reply->property("txn_id").toInt());
-
-	incrementTransactionId();
 }
 
 void MatrixClient::onRoomAvatarResponse(QNetworkReply *reply)
@@ -446,6 +445,9 @@ void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) no
 
 	reply->setProperty("endpoint", Endpoint::SendTextMessage);
 	reply->setProperty("txn_id", txn_id_);
+	reply->setProperty("roomid", roomid);
+
+	incrementTransactionId();
 }
 
 void MatrixClient::initialSync() noexcept
