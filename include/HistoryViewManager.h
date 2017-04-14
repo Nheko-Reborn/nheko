@@ -44,6 +44,9 @@ public:
 	static QString getUserColor(const QString &userid);
 	static QMap<QString, QString> NICK_COLORS;
 
+signals:
+	void unreadMessages(QString roomid, int count);
+
 public slots:
 	void setHistoryView(const RoomInfo &info);
 	void sendTextMessage(const QString &msg);

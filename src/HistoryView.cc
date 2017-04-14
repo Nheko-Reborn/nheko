@@ -50,10 +50,12 @@ void HistoryView::sliderRangeChanged(int min, int max)
 	scroll_area_->verticalScrollBar()->setValue(max);
 }
 
-void HistoryView::addEvents(const QList<Event> &events)
+int HistoryView::addEvents(const QList<Event> &events)
 {
 	QSettings settings;
 	auto local_user = settings.value("auth/user_id").toString();
+
+	int message_count = 0;
 
 	for (const auto &event : events) {
 		if (event.type() == "m.room.message") {
@@ -70,9 +72,13 @@ void HistoryView::addEvents(const QList<Event> &events)
 
 				addHistoryItem(event, color, with_sender);
 				last_sender_ = event.sender();
+
+				message_count += 1;
 			}
 		}
 	}
+
+	return message_count;
 }
 
 void HistoryView::init()

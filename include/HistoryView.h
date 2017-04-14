@@ -54,7 +54,7 @@ public:
 	~HistoryView();
 
 	void addHistoryItem(const Event &event, const QString &color, bool with_sender);
-	void addEvents(const QList<Event> &events);
+	int addEvents(const QList<Event> &events);
 	void addUserTextMessage(const QString &msg, int txn_id);
 	void updatePendingMessage(int txn_id, QString event_id);
 	void clear();

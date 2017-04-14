@@ -52,6 +52,7 @@ signals:
 public slots:
 	void updateRoomAvatar(const QString &roomid, const QPixmap &img);
 	void highlightSelectedRoom(const RoomInfo &info);
+	void updateUnreadMessageCount(const QString &roomid, int count);
 
 private:
 	Ui::RoomList *ui;

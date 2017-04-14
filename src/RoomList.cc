@@ -81,6 +81,16 @@ RoomInfo RoomList::extractRoomInfo(const State &room_state)
 	return info;
 }
 
+void RoomList::updateUnreadMessageCount(const QString &roomid, int count)
+{
+	if (!rooms_.contains(roomid)) {
+		qWarning() << "UpdateUnreadMessageCount: Unknown roomid";
+		return;
+	}
+
+	rooms_[roomid]->updateUnreadMessageCount(count);
+}
+
 void RoomList::setInitialRooms(const Rooms &rooms)
 {
 	rooms_.clear();
@@ -116,6 +126,16 @@ void RoomList::setInitialRooms(const Rooms &rooms)
 void RoomList::highlightSelectedRoom(const RoomInfo &info)
 {
 	emit roomChanged(info);
+
+	if (!rooms_.contains(info.id())) {
+		qDebug() << "RoomList: clicked unknown roomid";
+		return;
+	}
+
+
+	// TODO: Send a read receipt for the last event.
+	auto room = rooms_[info.id()];
+	room->clearUnreadMessageCount();
 
 	for (auto it = rooms_.constBegin(); it != rooms_.constEnd(); it++) {
 		if (it.key() != info.id())

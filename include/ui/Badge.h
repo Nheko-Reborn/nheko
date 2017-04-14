@@ -30,6 +30,7 @@ public:
 	void setRelativeXPosition(qreal x);
 	void setRelativeYPosition(qreal y);
 	void setText(const QString &text);
+	void setDiameter(int diameter);
 
 	QIcon icon() const;
 	QString text() const;
@@ -40,9 +41,10 @@ public:
 	qreal relativeXPosition() const;
 	qreal relativeYPosition() const;
 
+	int diameter() const;
+
 protected:
 	void paintEvent(QPaintEvent *event) override;
-	int getDiameter() const;
 
 private:
 	void init();
@@ -55,6 +57,7 @@ private:
 	QString text_;
 
 	int padding_;
+	int diameter_;
 
 	qreal x_;
 	qreal y_;

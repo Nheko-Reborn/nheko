@@ -106,7 +106,11 @@ void HistoryViewManager::sync(const Rooms &rooms)
 		auto view = views_.value(roomid);
 		auto events = it.value().timeline().events();
 
-		view->addEvents(events);
+		int msgs_added = view->addEvents(events);
+
+		// TODO: Take into account window focus
+		if (msgs_added > 0 && roomid != active_room_.id())
+			emit unreadMessages(roomid, msgs_added);
 	}
 }
 

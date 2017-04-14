@@ -30,12 +30,14 @@ void Badge::init()
 {
 	x_ = 0;
 	y_ = 0;
-	padding_ = 10;
+	// TODO: Make padding configurable.
+	padding_ = 5;
+	diameter_ = 24;
 
 	setAttribute(Qt::WA_TransparentForMouseEvents);
 
 	QFont _font(font());
-	_font.setPointSizeF(10);
+	_font.setPointSizeF(7.5);
 	_font.setStyleName("Bold");
 
 	setFont(_font);
@@ -54,7 +56,7 @@ QIcon Badge::icon() const
 
 QSize Badge::sizeHint() const
 {
-	const int d = getDiameter();
+	const int d = diameter();
 	return QSize(d + 4, d + 4);
 }
 
@@ -141,6 +143,14 @@ void Badge::setText(const QString &text)
 	update();
 }
 
+void Badge::setDiameter(int diameter)
+{
+	if (diameter > 0) {
+		diameter_ = diameter;
+		update();
+	}
+}
+
 void Badge::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
@@ -154,13 +164,20 @@ void Badge::paintEvent(QPaintEvent *)
 	painter.setBrush(brush);
 	painter.setPen(Qt::NoPen);
 
-	const int d = getDiameter();
+	const int d = diameter();
 
 	QRectF r(0, 0, d, d);
 	r.translate(QPointF((width() - d), (height() - d)) / 2);
 
 	if (icon_.isNull()) {
+		QPen pen;
+		// TODO: Make badge width configurable.
+		pen.setWidth(1);
+		pen.setColor(textColor());
+
+		painter.setPen(pen);
 		painter.drawEllipse(r);
+
 		painter.setPen(textColor());
 		painter.setBrush(Qt::NoBrush);
 		painter.drawText(r.translated(0, -0.5), Qt::AlignCenter, text_);
@@ -176,11 +193,11 @@ void Badge::paintEvent(QPaintEvent *)
 	}
 }
 
-int Badge::getDiameter() const
+int Badge::diameter() const
 {
 	if (icon_.isNull()) {
 		return qMax(size_.width(), size_.height()) + padding_;
 	}
-	// FIXME: Move this to Theme.h as the default
-	return 24;
+
+	return diameter_;
 }

@@ -64,6 +64,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 		view_manager_,
 		SLOT(setHistoryView(const RoomInfo &)));
 
+	connect(view_manager_,
+		SIGNAL(unreadMessages(const QString &, int)),
+		room_list_,
+		SLOT(updateUnreadMessageCount(const QString &, int)));
+
 	connect(text_input_,
 		SIGNAL(sendTextMessage(const QString &)),
 		view_manager_,

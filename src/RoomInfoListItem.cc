@@ -27,6 +27,7 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
     , info_(info)
     , is_pressed_(false)
     , max_height_(60)
+    , unread_msg_count_(0)
 {
 	normal_style_ =
 		"QWidget { color: black; background-color: #f8fbfe}"
@@ -63,6 +64,16 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 	roomAvatar_->setSize(max_height_ - 20);
 	roomAvatar_->setTextColor("#555459");
 	roomAvatar_->setBackgroundColor("#d6dde3");
+
+	unreadMessagesBadge_ = new Badge(roomAvatar_);
+	unreadMessagesBadge_->setRelativePosition(12, 10);
+	unreadMessagesBadge_->setDiameter(5);
+	unreadMessagesBadge_->setBackgroundColor("#f8fbfe");
+	unreadMessagesBadge_->setTextColor("black");
+
+	// TODO: Initialize when nheko can restore messages from previous session.
+	unreadMessagesBadge_->hide();
+
 	avatarLayout_->addWidget(roomAvatar_);
 
 	roomName_ = new QLabel(info_.name(), textWidget_);
@@ -92,6 +103,20 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 	ripple_overlay_->setClipping(true);
 
 	setLayout(topLayout_);
+}
+
+void RoomInfoListItem::updateUnreadMessageCount(int count)
+{
+	unread_msg_count_ += count;
+	unreadMessagesBadge_->setText(QString::number(unread_msg_count_));
+	unreadMessagesBadge_->show();
+}
+
+void RoomInfoListItem::clearUnreadMessageCount()
+{
+	unread_msg_count_ = 0;
+	unreadMessagesBadge_->setText("");
+	unreadMessagesBadge_->hide();
 }
 
 void RoomInfoListItem::setPressedState(bool state)

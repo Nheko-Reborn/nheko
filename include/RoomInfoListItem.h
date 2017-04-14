@@ -24,6 +24,7 @@
 #include <QtWidgets/QWidget>
 
 #include "Avatar.h"
+#include "Badge.h"
 #include "RippleOverlay.h"
 #include "RoomInfo.h"
 
@@ -34,6 +35,9 @@ class RoomInfoListItem : public QWidget
 public:
 	RoomInfoListItem(RoomInfo info, QWidget *parent = 0);
 	~RoomInfoListItem();
+
+	void updateUnreadMessageCount(int count);
+	void clearUnreadMessageCount();
 
 	inline bool isPressed();
 	inline RoomInfo info();
@@ -67,12 +71,15 @@ private:
 	QLabel *roomTopic_;
 
 	Avatar *roomAvatar_;
+	Badge *unreadMessagesBadge_;
 
 	QString pressed_style_;
 	QString normal_style_;
 
 	bool is_pressed_;
+
 	int max_height_;
+	int unread_msg_count_;
 };
 
 inline bool RoomInfoListItem::isPressed()
