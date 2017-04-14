@@ -43,7 +43,6 @@ public:
 	static QString chooseRandomColor();
 	static QString getUserColor(const QString &userid);
 	static QMap<QString, QString> NICK_COLORS;
-	static const QList<QString> COLORS;
 
 public slots:
 	void setHistoryView(const RoomInfo &info);

@@ -99,8 +99,8 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	error_label_->setStyleSheet("margin-bottom: 20px; color: #E22826; font-size: 11pt;");
 
 	register_button_ = new RaisedButton("REGISTER", this);
-	register_button_->setBackgroundColor(QColor("#acc7dc"));
-	register_button_->setForegroundColor(QColor("black"));
+	register_button_->setBackgroundColor(QColor("#171919"));
+	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(350, 65);
 	register_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	register_button_->setFontSize(17);

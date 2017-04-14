@@ -59,16 +59,16 @@ WelcomePage::WelcomePage(QWidget *parent)
 	button_layout_->setContentsMargins(0, 20, 0, 80);
 
 	register_button_ = new RaisedButton("REGISTER", this);
-	register_button_->setBackgroundColor(QColor("#acc7dc"));
-	register_button_->setForegroundColor(QColor("#171919"));
+	register_button_->setBackgroundColor(QColor("#555459"));
+	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(240, 60);
 	register_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	register_button_->setFontSize(14);
 	register_button_->setCornerRadius(3);
 
 	login_button_ = new RaisedButton("LOGIN", this);
-	login_button_->setBackgroundColor(QColor("#acc7dc"));
-	login_button_->setForegroundColor(QColor("#171919"));
+	login_button_->setBackgroundColor(QColor("#555459"));
+	login_button_->setForegroundColor(QColor("white"));
 	login_button_->setMinimumSize(240, 60);
 	login_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	login_button_->setFontSize(14);

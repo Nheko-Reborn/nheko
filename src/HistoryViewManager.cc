@@ -126,38 +126,61 @@ void HistoryViewManager::setHistoryView(const RoomInfo &info)
 
 QMap<QString, QString> HistoryViewManager::NICK_COLORS;
 
-const QList<QString> HistoryViewManager::COLORS({"#FFF46E",
-						 "#A58BFF",
-						 "#50C9BA",
-						 "#9EE6CF",
-						 "#FFDD67",
-						 "#2980B9",
-						 "#FC993C",
-						 "#2772DB",
-						 "#CB8589",
-						 "#DDE8B9",
-						 "#55A44E",
-						 "#A9EEE6",
-						 "#53B759",
-						 "#9E3997",
-						 "#5D89D5",
-						 "#BB86B7",
-						 "#50a0cf",
-						 "#3C989F",
-						 "#5A4592",
-						 "#235e5b",
-						 "#d58247",
-						 "#e0a729",
-						 "#a2b636",
-						 "#4BBE2E"});
-
 QString HistoryViewManager::chooseRandomColor()
 {
 	std::random_device random_device;
 	std::mt19937 engine{random_device()};
-	std::uniform_int_distribution<int> dist(0, HistoryViewManager::COLORS.size() - 1);
+	std::uniform_real_distribution<float> dist(0, 1);
 
-	return HistoryViewManager::COLORS[dist(engine)];
+	float hue = dist(engine);
+	float saturation = 0.9;
+	float value = 0.7;
+
+	int hue_i = hue * 6;
+
+	float f = hue * 6 - hue_i;
+
+	float p = value * (1 - saturation);
+	float q = value * (1 - f * saturation);
+	float t = value * (1 - (1 - f) * saturation);
+
+	float r = 0;
+	float g = 0;
+	float b = 0;
+
+	if (hue_i == 0) {
+		r = value;
+		g = t;
+		b = p;
+	} else if (hue_i == 1) {
+		r = q;
+		g = value;
+		b = p;
+	} else if (hue_i == 2) {
+		r = p;
+		g = value;
+		b = t;
+	} else if (hue_i == 3) {
+		r = p;
+		g = q;
+		b = value;
+	} else if (hue_i == 4) {
+		r = t;
+		g = p;
+		b = value;
+	} else if (hue_i == 5) {
+		r = value;
+		g = p;
+		b = q;
+	}
+
+	int ri = r * 256;
+	int gi = g * 256;
+	int bi = b * 256;
+
+	QColor color(ri, gi, bi);
+
+	return color.name();
 }
 
 QString HistoryViewManager::getUserColor(const QString &userid)
