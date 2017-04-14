@@ -42,7 +42,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	displayNameLabel_ = new QLabel(this);
 	displayNameLabel_->setStyleSheet(
 		"padding: 0 9px;"
-		"color: #ebebeb;"
+		"color: #171919;"
 		"font-size: 14px;"
 		"font-weight: 500;"
 		"margin-bottom: -10px;");
@@ -51,7 +51,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	userIdLabel_ = new QLabel(this);
 	userIdLabel_->setStyleSheet(
 		"padding: 0 8px 8px 8px;"
-		"color: #d4d2d1;"
+		"color: #555459;"
 		"font-size: 13px");
 	userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -66,7 +66,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	buttonLayout_ = new QHBoxLayout();
 
 	logoutButton_ = new FlatButton(this);
-	logoutButton_->setForegroundColor(QColor("#ebebeb"));
+	logoutButton_->setForegroundColor(QColor("#555459"));
 	logoutButton_->setCursor(QCursor(Qt::PointingHandCursor));
 	logoutButton_->setStyleSheet("width: 30px; height: 30px;");
 

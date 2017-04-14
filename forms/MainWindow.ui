@@ -29,7 +29,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string notr="true">nheko - Matrix Desktop Client </string>
+   <string notr="true"> Nheko </string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #f9f9f9</string>

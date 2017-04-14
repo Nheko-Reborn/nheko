@@ -26,7 +26,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setCursor(Qt::ArrowCursor);
-	setStyleSheet("background-color: #171919; height: 45px;");
+	setStyleSheet("background-color: #f8fbfe; height: 45px;");
 
 	top_layout_ = new QHBoxLayout();
 	top_layout_->setSpacing(6);
@@ -37,17 +37,17 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
 	QIcon send_file_icon;
 	send_file_icon.addFile(":/icons/icons/clip-dark.png", QSize(), QIcon::Normal, QIcon::Off);
-	send_file_button_->setForegroundColor(QColor("#577275"));
+	send_file_button_->setForegroundColor(QColor("#acc7dc"));
 	send_file_button_->setIcon(send_file_icon);
 	send_file_button_->setIconSize(QSize(24, 24));
 
 	input_ = new QLineEdit(this);
 	input_->setPlaceholderText("Write a message...");
-	input_->setStyleSheet("color: #ebebeb; font-size: 10pt; border-radius: 0; padding: 2px; margin-bottom: 4px;");
+	input_->setStyleSheet("color: black; font-size: 10pt; border-radius: 0; padding: 2px; margin-bottom: 4px;");
 
 	send_message_button_ = new FlatButton(this);
 	send_message_button_->setCursor(Qt::PointingHandCursor);
-	send_message_button_->setForegroundColor(QColor("#577275"));
+	send_message_button_->setForegroundColor(QColor("#acc7dc"));
 
 	QIcon send_message_icon;
 	send_message_icon.addFile(":/icons/icons/share-dark.png", QSize(), QIcon::Normal, QIcon::Off);

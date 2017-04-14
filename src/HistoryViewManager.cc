@@ -30,9 +30,9 @@ HistoryViewManager::HistoryViewManager(QSharedPointer<MatrixClient> client, QWid
     , client_(client)
 {
 	setStyleSheet(
-		"QWidget {background: #171919; color: #ebebeb;}"
-		"QScrollBar:vertical { background-color: #171919; width: 10px; border-radius: 20px; margin: 0px 2px 0 2px; }"
-		"QScrollBar::handle:vertical { border-radius : 50px; background-color : #1c3133; }"
+		"QWidget {background: #f8fbfe; color: #e8e8e8; border: none;}"
+		"QScrollBar:vertical { background-color: #f8fbfe; width: 8px; border-radius: 20px; margin: 0px 2px 0 2px; }"
+		"QScrollBar::handle:vertical { border-radius : 50px; background-color : #d6dde3; }"
 		"QScrollBar::add-line:vertical { border: none; background: none; }"
 		"QScrollBar::sub-line:vertical { border: none; background: none; }");
 

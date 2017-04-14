@@ -27,20 +27,20 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-background-color: #171919;
+background-color: #f8fbfe;
 color: #ebebeb;
 }
 
-QScrollBar:vertical {               
-     background-color: #171919;
-     width: 10px;
+QScrollBar:vertical {
+     background-color: #f8fbfe;
+     width: 8px;
 	border-radius: 20px;
 	margin: 0px 2px 0 2px;
 }
 
 QScrollBar::handle:vertical {
 	border-radius: 50px;
-	background-color: #1c3133;
+	background-color: #d6dde3;
 }
 
 QScrollBar::add-line:vertical {

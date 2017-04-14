@@ -29,12 +29,11 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
     , max_height_(60)
 {
 	normal_style_ =
-		"QWidget { color: #ebebeb; background-color: #232626; border-bottom: 1px solid #171919;}"
+		"QWidget { color: black; background-color: #f8fbfe}"
 		"QLabel { border: none; }";
 
 	pressed_style_ =
-		"QWidget { background-color: #577275; color: #ebebeb;"
-		"border-bottom: 1px solid #171919;}"
+		"QWidget { background-color: #acc7dc; color: black;}"
 		"QLabel { border: none; }";
 
 	setStyleSheet(normal_style_);
@@ -62,6 +61,8 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 	roomAvatar_ = new Avatar(avatarWidget_);
 	roomAvatar_->setLetter(QChar(info_.name()[0]));
 	roomAvatar_->setSize(max_height_ - 20);
+	roomAvatar_->setTextColor("#555459");
+	roomAvatar_->setBackgroundColor("#d6dde3");
 	avatarLayout_->addWidget(roomAvatar_);
 
 	roomName_ = new QLabel(info_.name(), textWidget_);
@@ -71,7 +72,7 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 
 	roomTopic_ = new QLabel(info_.topic(), textWidget_);
 	roomTopic_->setMaximumSize(parent->width() - 10, 20);
-	roomTopic_->setStyleSheet("color: #c9c9c9; font-size: 12px");
+	roomTopic_->setStyleSheet("color: #171919; font-size: 12px");
 	roomTopic_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	textLayout_->addWidget(roomName_);
@@ -117,7 +118,7 @@ void RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 	Ripple *ripple = new Ripple(pos);
 
 	ripple->setRadiusEndValue(radiusEndValue);
-	ripple->setOpacityStartValue(0.35);
+	ripple->setOpacityStartValue(0.15);
 	ripple->setColor(QColor("#171919"));
 	ripple->radiusAnimation()->setDuration(300);
 	ripple->opacityAnimation()->setDuration(500);

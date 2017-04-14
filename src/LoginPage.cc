@@ -66,13 +66,13 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	matrixid_input_ = new TextField();
 	matrixid_input_->setLabel("Matrix ID");
-	matrixid_input_->setInkColor("#577275");
+	matrixid_input_->setInkColor("#555459");
 	matrixid_input_->setBackgroundColor("#f9f9f9");
 	matrixid_input_->setPlaceholderText("e.g @joe:matrix.org");
 
 	password_input_ = new TextField();
 	password_input_->setLabel("Password");
-	password_input_->setInkColor("#577275");
+	password_input_->setInkColor("#555459");
 	password_input_->setBackgroundColor("#f9f9f9");
 	password_input_->setEchoMode(QLineEdit::Password);
 
@@ -84,8 +84,8 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	button_layout_->setContentsMargins(0, 0, 0, 50);
 
 	login_button_ = new RaisedButton("LOGIN", this);
-	login_button_->setBackgroundColor(QColor("#171919"));
-	login_button_->setForegroundColor(QColor("#ebebeb"));
+	login_button_->setBackgroundColor(QColor("#acc7dc"));
+	login_button_->setForegroundColor(QColor("black"));
 	login_button_->setMinimumSize(350, 65);
 	login_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	login_button_->setFontSize(17);

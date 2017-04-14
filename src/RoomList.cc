@@ -34,6 +34,8 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
 	ui->setupUi(this);
 	ui->scrollVerticalLayout->addStretch(1);
 
+	setStyleSheet("border-top: none");
+
 	connect(client_.data(),
 		SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
 		this,

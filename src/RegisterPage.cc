@@ -66,24 +66,24 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	username_input_ = new TextField();
 	username_input_->setLabel("Username");
-	username_input_->setInkColor("#577275");
+	username_input_->setInkColor("#555459");
 	username_input_->setBackgroundColor("#f9f9f9");
 
 	password_input_ = new TextField();
 	password_input_->setLabel("Password");
-	password_input_->setInkColor("#577275");
+	password_input_->setInkColor("#555459");
 	password_input_->setBackgroundColor("#f9f9f9");
 	password_input_->setEchoMode(QLineEdit::Password);
 
 	password_confirmation_ = new TextField();
 	password_confirmation_->setLabel("Password confirmation");
-	password_confirmation_->setInkColor("#577275");
+	password_confirmation_->setInkColor("#555459");
 	password_confirmation_->setBackgroundColor("#f9f9f9");
 	password_confirmation_->setEchoMode(QLineEdit::Password);
 
 	server_input_ = new TextField();
 	server_input_->setLabel("Home Server");
-	server_input_->setInkColor("#577275");
+	server_input_->setInkColor("#555459");
 	server_input_->setBackgroundColor("#f9f9f9");
 
 	form_layout_->addWidget(username_input_, Qt::AlignHCenter, 0);
@@ -99,8 +99,8 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	error_label_->setStyleSheet("margin-bottom: 20px; color: #E22826; font-size: 11pt;");
 
 	register_button_ = new RaisedButton("REGISTER", this);
-	register_button_->setBackgroundColor(QColor("#171919"));
-	register_button_->setForegroundColor(QColor("#ebebeb"));
+	register_button_->setBackgroundColor(QColor("#acc7dc"));
+	register_button_->setForegroundColor(QColor("black"));
 	register_button_->setMinimumSize(350, 65);
 	register_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	register_button_->setFontSize(17);

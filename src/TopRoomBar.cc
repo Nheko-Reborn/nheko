@@ -24,7 +24,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setMinimumSize(QSize(0, 65));
-	setStyleSheet("background-color: #232626; color: #ebebeb;");
+	setStyleSheet("background-color: #f8fbfe; color: #171919;");
 
 	top_layout_ = new QHBoxLayout();
 	top_layout_->setSpacing(10);
@@ -32,7 +32,8 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
 	avatar_ = new Avatar(this);
 	avatar_->setLetter(QChar('?'));
-	avatar_->setBackgroundColor(QColor("#ebebeb"));
+	avatar_->setBackgroundColor(QColor("#d6dde3"));
+	avatar_->setTextColor(QColor("#555459"));
 	avatar_->setSize(35);
 
 	text_layout_ = new QVBoxLayout();
@@ -49,7 +50,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	text_layout_->addWidget(topic_label_);
 
 	settings_button_ = new FlatButton(this);
-	settings_button_->setForegroundColor(QColor("#ebebeb"));
+	settings_button_->setForegroundColor(QColor("#acc7dc"));
 	settings_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	settings_button_->setStyleSheet("width: 30px; height: 30px;");
 
@@ -59,7 +60,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	settings_button_->setIconSize(QSize(16, 16));
 
 	search_button_ = new FlatButton(this);
-	search_button_->setForegroundColor(QColor("#ebebeb"));
+	search_button_->setForegroundColor(QColor("#acc7dc"));
 	search_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	search_button_->setStyleSheet("width: 30px; height: 30px;");
 

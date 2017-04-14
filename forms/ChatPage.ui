@@ -20,7 +20,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #171919;
+   <string notr="true">background-color: #f8fbfe;
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -90,7 +90,7 @@
             <item>
              <widget class="QWidget" name="sideBarTopWidget" native="true">
               <property name="styleSheet">
-               <string notr="true">background-color: #2D3F3D;
+               <string notr="true">background-color: #d6dde3;
 color: #ebebeb;</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_9">
