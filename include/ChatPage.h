@@ -48,8 +48,10 @@ public:
 
 signals:
 	void close();
+	void changeWindowTitle(const QString &msg);
 
 private slots:
+	void showUnreadMessageNotification(int count);
 	void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
 	void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
 	void setOwnAvatar(const QPixmap &img);

@@ -42,6 +42,7 @@ public:
 	inline bool isPressed();
 	inline RoomInfo info();
 	inline void setAvatar(const QImage &avatar_image);
+	inline int unreadMessageCount();
 
 signals:
 	void clicked(const RoomInfo &info_);
@@ -81,6 +82,11 @@ private:
 	int max_height_;
 	int unread_msg_count_;
 };
+
+inline int RoomInfoListItem::unreadMessageCount()
+{
+	return unread_msg_count_;
+}
 
 inline bool RoomInfoListItem::isPressed()
 {

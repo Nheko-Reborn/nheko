@@ -64,10 +64,16 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 		view_manager_,
 		SLOT(setHistoryView(const RoomInfo &)));
 
+	// TODO: Better pass the whole RoomInfo struct instead of the roomid.
 	connect(view_manager_,
 		SIGNAL(unreadMessages(const QString &, int)),
 		room_list_,
 		SLOT(updateUnreadMessageCount(const QString &, int)));
+
+	connect(room_list_,
+		SIGNAL(totalUnreadMessageCountUpdated(int)),
+		this,
+		SLOT(showUnreadMessageNotification(int)));
 
 	connect(text_input_,
 		SIGNAL(sendTextMessage(const QString &)),
@@ -204,6 +210,15 @@ void ChatPage::changeTopRoomInfo(const RoomInfo &info)
 		top_bar_->updateRoomAvatarFromName(info.name());
 
 	current_room_ = info;
+}
+
+void ChatPage::showUnreadMessageNotification(int count)
+{
+	// TODO: Make the default title a const.
+	if (count == 0)
+		emit changeWindowTitle("nheko");
+	else
+		emit changeWindowTitle(QString("nheko (%1)").arg(count));
 }
 
 ChatPage::~ChatPage()

@@ -89,6 +89,18 @@ void RoomList::updateUnreadMessageCount(const QString &roomid, int count)
 	}
 
 	rooms_[roomid]->updateUnreadMessageCount(count);
+
+	calculateUnreadMessageCount();
+}
+
+void RoomList::calculateUnreadMessageCount()
+{
+	int total_unread_msgs = 0;
+
+	for (const auto &room : rooms_)
+		total_unread_msgs += room->unreadMessageCount();
+
+	emit totalUnreadMessageCountUpdated(total_unread_msgs);
 }
 
 void RoomList::setInitialRooms(const Rooms &rooms)
@@ -132,10 +144,11 @@ void RoomList::highlightSelectedRoom(const RoomInfo &info)
 		return;
 	}
 
-
 	// TODO: Send a read receipt for the last event.
 	auto room = rooms_[info.id()];
 	room->clearUnreadMessageCount();
+
+	calculateUnreadMessageCount();
 
 	for (auto it = rooms_.constBegin(); it != rooms_.constEnd(); it++) {
 		if (it.key() != info.id())

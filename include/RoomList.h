@@ -48,6 +48,7 @@ public:
 
 signals:
 	void roomChanged(const RoomInfo &info);
+	void totalUnreadMessageCountUpdated(int count);
 
 public slots:
 	void updateRoomAvatar(const QString &roomid, const QPixmap &img);
@@ -55,6 +56,8 @@ public slots:
 	void updateUnreadMessageCount(const QString &roomid, int count);
 
 private:
+	void calculateUnreadMessageCount();
+
 	Ui::RoomList *ui;
 
 	QMap<QString, RoomInfoListItem *> rooms_;

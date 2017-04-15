@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
 
 	connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
+	connect(chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
 
 	connect(client_.data(),
 		SIGNAL(loginSuccess(QString, QString, QString)),
