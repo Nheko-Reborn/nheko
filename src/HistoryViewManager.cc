@@ -17,6 +17,7 @@
 
 #include <random>
 
+#include <QApplication>
 #include <QDebug>
 #include <QSettings>
 #include <QStackedWidget>
@@ -108,9 +109,14 @@ void HistoryViewManager::sync(const Rooms &rooms)
 
 		int msgs_added = view->addEvents(events);
 
-		// TODO: Take into account window focus
-		if (msgs_added > 0 && roomid != active_room_.id())
-			emit unreadMessages(roomid, msgs_added);
+		if (msgs_added > 0) {
+			// TODO: When window gets active the current
+			// unread count (if any) should be cleared.
+			auto isAppActive = QApplication::activeWindow() != nullptr;
+
+			if (roomid != active_room_.id() || !isAppActive)
+				emit unreadMessages(roomid, msgs_added);
+		}
 	}
 }
 
