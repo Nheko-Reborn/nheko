@@ -24,6 +24,8 @@
 TextInputWidget::TextInputWidget(QWidget *parent)
     : QWidget(parent)
 {
+	setFont(QFont("Emoji One"));
+
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setCursor(Qt::ArrowCursor);
 	setStyleSheet("background-color: #f8fbfe; height: 45px;");

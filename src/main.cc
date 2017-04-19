@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 	QFontDatabase::addApplicationFont(":/fonts/OpenSans-SemiboldItalic.ttf");
 	QFontDatabase::addApplicationFont(":/fonts/OpenSans-ExtraBold.ttf");
 	QFontDatabase::addApplicationFont(":/fonts/OpenSans-ExtraBoldItalic.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/emojione-android.ttf");
 
 	QApplication app(argc, argv);
 

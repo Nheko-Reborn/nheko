@@ -70,7 +70,7 @@ void HistoryViewItem::generateBody(const QString &body)
 		"   </span>"
 		"</body>"
 		"</html>");
-	content_label_->setText(content.arg(body));
+	content_label_->setText(content.arg(replaceEmoji(body)));
 	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
 }
 
@@ -94,7 +94,7 @@ void HistoryViewItem::generateBody(const QString &userid, const QString &color, 
 		"   </span>"
 		"</body>"
 		"</html>");
-	content_label_->setText(content.arg(color).arg(sender).arg(body));
+	content_label_->setText(content.arg(color).arg(sender).arg(replaceEmoji(body)));
 	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
 }
 
@@ -135,6 +135,23 @@ void HistoryViewItem::setupLayout()
 	top_layout_->addWidget(content_label_, 1);
 
 	setLayout(top_layout_);
+}
+
+QString HistoryViewItem::replaceEmoji(const QString &body)
+{
+	QString fmtBody = "";
+
+	for (auto &c : body) {
+		auto code = c.unicode();
+
+		// TODO: A map should be used with the unicode codes supported by emoji one
+		if (code > 127)
+			fmtBody += "<span style=\"font-family: Emoji One; font-size: 16px\">" + QString(c) + "</span>";
+		else
+			fmtBody += c;
+	}
+
+	return fmtBody;
 }
 
 HistoryViewItem::~HistoryViewItem()

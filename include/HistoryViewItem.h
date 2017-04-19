@@ -42,6 +42,8 @@ private:
 	void generateBody(const QString &userid, const QString &color, const QString &body);
 	void generateTimestamp(const QDateTime &time);
 
+	QString replaceEmoji(const QString &body);
+
 	void setupLayout();
 
 	QHBoxLayout *top_layout_;

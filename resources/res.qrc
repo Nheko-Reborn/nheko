@@ -14,15 +14,17 @@
     </qresource>
 
     <qresource prefix="/fonts">
-        <file>fonts/OpenSans-Light.ttf</file>
-        <file>fonts/OpenSans-LightItalic.ttf</file>
-        <file>fonts/OpenSans-Regular.ttf</file>
-        <file>fonts/OpenSans-Italic.ttf</file>
-        <file>fonts/OpenSans-Bold.ttf</file>
-        <file>fonts/OpenSans-BoldItalic.ttf</file>
-        <file>fonts/OpenSans-Semibold.ttf</file>
-        <file>fonts/OpenSans-SemiboldItalic.ttf</file>
-        <file>fonts/OpenSans-ExtraBold.ttf</file>
-        <file>fonts/OpenSans-ExtraBoldItalic.ttf</file>
+        <file>fonts/OpenSans/OpenSans-Light.ttf</file>
+        <file>fonts/OpenSans/OpenSans-LightItalic.ttf</file>
+        <file>fonts/OpenSans/OpenSans-Regular.ttf</file>
+        <file>fonts/OpenSans/OpenSans-Italic.ttf</file>
+        <file>fonts/OpenSans/OpenSans-Bold.ttf</file>
+        <file>fonts/OpenSans/OpenSans-BoldItalic.ttf</file>
+        <file>fonts/OpenSans/OpenSans-Semibold.ttf</file>
+        <file>fonts/OpenSans/OpenSans-SemiboldItalic.ttf</file>
+        <file>fonts/OpenSans/OpenSans-ExtraBold.ttf</file>
+        <file>fonts/OpenSans/OpenSans-ExtraBoldItalic.ttf</file>
+
+        <file>fonts/EmojiOne/emojione-android.ttf</file>
     </qresource>
 </RCC>

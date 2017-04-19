@@ -63,6 +63,11 @@ Here is a screen shot to get a feel for the UI, but things will probably change.
 
 ![nheko](https://dl.dropboxusercontent.com/s/fw94dkpmr7azvmm/nheko.png)
 
+### Third party
+
+- [Emoji One](http://emojione.com)
+- [Open Sans](https://fonts.google.com/specimen/Open+Sans)
+
 
 ### License
 
