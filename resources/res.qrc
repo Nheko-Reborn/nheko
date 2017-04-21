@@ -13,6 +13,16 @@
         <file>icons/power-button-off.png</file>
     </qresource>
 
+    <qresource prefix="/logos">
+        <file>nheko.png</file>
+        <file>nheko-512.png</file>
+        <file>nheko-256.png</file>
+        <file>nheko-128.png</file>
+        <file>nheko-64.png</file>
+        <file>nheko-32.png</file>
+        <file>nheko-16.png</file>
+    </qresource>
+
     <qresource prefix="/fonts">
         <file>fonts/OpenSans/OpenSans-Light.ttf</file>
         <file>fonts/OpenSans/OpenSans-LightItalic.ttf</file>

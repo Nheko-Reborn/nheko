@@ -44,11 +44,11 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	back_layout_->addWidget(back_button_, 0, Qt::AlignLeft | Qt::AlignVCenter);
 	back_layout_->addStretch(1);
 
-	logo_layout_ = new QHBoxLayout();
-	logo_layout_->setContentsMargins(0, 20, 0, 20);
 	logo_ = new QLabel(this);
-	logo_->setText("nheko");
-	logo_->setStyleSheet("font-size: 22pt; font-weight: 400;");
+	logo_->setPixmap(QPixmap(":/logos/nheko-128.png"));
+
+	logo_layout_ = new QHBoxLayout();
+	logo_layout_->setContentsMargins(0, 0, 0, 20);
 	logo_layout_->addWidget(logo_, 0, Qt::AlignHCenter);
 
 	form_wrapper_ = new QHBoxLayout();
@@ -84,7 +84,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	button_layout_->setContentsMargins(0, 0, 0, 50);
 
 	login_button_ = new RaisedButton("LOGIN", this);
-	login_button_->setBackgroundColor(QColor("#171919"));
+	login_button_->setBackgroundColor(QColor("#333333"));
 	login_button_->setForegroundColor(QColor("white"));
 	login_button_->setMinimumSize(350, 65);
 	login_button_->setCursor(QCursor(Qt::PointingHandCursor));

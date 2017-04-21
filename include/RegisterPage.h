@@ -24,6 +24,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "Avatar.h"
 #include "FlatButton.h"
 #include "InputValidator.h"
 #include "MatrixClient.h"
@@ -55,7 +56,7 @@ private:
 	QHBoxLayout *logo_layout_;
 	QHBoxLayout *button_layout_;
 
-	QLabel *logo_;
+	Avatar *logo_;
 	QLabel *error_label_;
 
 	FlatButton *back_button_;

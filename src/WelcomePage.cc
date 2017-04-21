@@ -30,7 +30,7 @@ WelcomePage::WelcomePage(QWidget *parent)
 	top_layout_->setMargin(0);
 
 	intro_banner_ = new QLabel(this);
-	intro_banner_->setStyleSheet("background-color: #d6dde3;");
+	intro_banner_->setPixmap(QPixmap(":/logos/nheko-256.png"));
 	intro_banner_->setAlignment(Qt::AlignCenter);
 
 	intro_text_ = new QLabel(this);
@@ -38,28 +38,30 @@ WelcomePage::WelcomePage(QWidget *parent)
 						     "<html>"
 						     "<head/>"
 						     "<body>"
-						     "    <p align=\"center\"><span style=\" font-size:28pt;\"> nheko </span></p>"
 						     "    <p align=\"center\" style=\"margin: 0; line-height: 2pt\">"
-						     "      <span style=\" font-size:12pt; color:#6d7387;\"> "
-						     "		A desktop client for Matrix, the open protocol for decentralized communication."
+						     "      <span style=\" font-size:18px; color:#515151;\"> "
+						     "		Welcome to nheko! The desktop client for the Matrix protocol."
 						     "	    </span>"
 						     "    </p>\n"
 						     "    <p align=\"center\" style=\"margin: 1pt; line-height: 2pt;\">"
-						     "        <span style=\" font-size:12pt; color:#6d7387;\">Enjoy your stay!</span>"
+						     "        <span style=\" font-size:18px; color:#515151;\">Enjoy your stay!</span>"
 						     "    </p>"
 						     "</body>"
 						     "</html>",
 						     Q_NULLPTR));
 
+	top_layout_->addStretch(1);
 	top_layout_->addWidget(intro_banner_);
+	top_layout_->addStretch(1);
 	top_layout_->addWidget(intro_text_, 0, Qt::AlignCenter);
+	top_layout_->addStretch(1);
 
 	button_layout_ = new QHBoxLayout();
 	button_layout_->setSpacing(0);
 	button_layout_->setContentsMargins(0, 20, 0, 80);
 
 	register_button_ = new RaisedButton("REGISTER", this);
-	register_button_->setBackgroundColor(QColor("#555459"));
+	register_button_->setBackgroundColor(QColor("#333333"));
 	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(240, 60);
 	register_button_->setCursor(QCursor(Qt::PointingHandCursor));
@@ -67,7 +69,7 @@ WelcomePage::WelcomePage(QWidget *parent)
 	register_button_->setCornerRadius(3);
 
 	login_button_ = new RaisedButton("LOGIN", this);
-	login_button_->setBackgroundColor(QColor("#555459"));
+	login_button_->setBackgroundColor(QColor("#333333"));
 	login_button_->setForegroundColor(QColor("white"));
 	login_button_->setMinimumSize(240, 60);
 	login_button_->setCursor(QCursor(Qt::PointingHandCursor));

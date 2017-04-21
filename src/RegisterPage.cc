@@ -44,11 +44,12 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	back_layout_->addWidget(back_button_, 0, Qt::AlignLeft | Qt::AlignVCenter);
 	back_layout_->addStretch(1);
 
+	logo_ = new Avatar(this);
+	logo_->setImage(QImage(":/logos/nheko-128.png"));
+	logo_->setSize(80);
+
 	logo_layout_ = new QHBoxLayout();
-	logo_layout_->setContentsMargins(0, 20, 0, 20);
-	logo_ = new QLabel(this);
-	logo_->setText("nheko");
-	logo_->setStyleSheet("font-size: 22pt; font-weight: 400;");
+	logo_layout_->setMargin(0);
 	logo_layout_->addWidget(logo_, 0, Qt::AlignHCenter);
 
 	form_wrapper_ = new QHBoxLayout();
@@ -93,13 +94,13 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	button_layout_ = new QHBoxLayout();
 	button_layout_->setSpacing(0);
-	button_layout_->setContentsMargins(0, 0, 0, 30);
+	button_layout_->setMargin(0);
 
 	error_label_ = new QLabel(this);
-	error_label_->setStyleSheet("margin-bottom: 20px; color: #E22826; font-size: 11pt;");
+	error_label_->setStyleSheet("margin-bottom: 10px; color: #E22826; font-size: 11pt;");
 
 	register_button_ = new RaisedButton("REGISTER", this);
-	register_button_->setBackgroundColor(QColor("#171919"));
+	register_button_->setBackgroundColor(QColor("#333333"));
 	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(350, 65);
 	register_button_->setCursor(QCursor(Qt::PointingHandCursor));
@@ -111,7 +112,6 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	button_layout_->addStretch(1);
 
 	top_layout_->addLayout(back_layout_);
-	top_layout_->addStretch(1);
 	top_layout_->addLayout(logo_layout_);
 	top_layout_->addLayout(form_wrapper_);
 	top_layout_->addStretch(1);

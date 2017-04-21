@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
 	QFontDatabase::addApplicationFont(":/fonts/emojione-android.ttf");
 
 	QApplication app(argc, argv);
+	app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
 	QFont font("Open Sans");
 	app.setFont(font);
