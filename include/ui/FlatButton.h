@@ -133,7 +133,7 @@ public:
 
 protected:
 	enum {
-		IconPadding = 12
+		IconPadding = 0
 	};
 
 	void checkStateSet() override;

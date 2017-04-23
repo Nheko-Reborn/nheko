@@ -11,6 +11,17 @@
         <file>icons/share-dark.png</file>
         <file>icons/user-shape.png</file>
         <file>icons/power-button-off.png</file>
+        <file>icons/smile.png</file>
+
+        <file>icons/emoji-categories/people.png</file>
+        <file>icons/emoji-categories/nature.png</file>
+        <file>icons/emoji-categories/foods.png</file>
+        <file>icons/emoji-categories/activity.png</file>
+        <file>icons/emoji-categories/travel.png</file>
+        <file>icons/emoji-categories/objects.png</file>
+        <file>icons/emoji-categories/symbols.png</file>
+        <file>icons/emoji-categories/flags.png</file>
+
     </qresource>
 
     <qresource prefix="/logos">

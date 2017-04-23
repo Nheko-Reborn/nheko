@@ -472,11 +472,11 @@ void FlatButton::paintForeground(QPainter *painter)
 	QRect textGeometry(pos + QPoint(0, base.height() / 2), textSize);
 	QRect iconGeometry(pos + QPoint(0, (height() - iconSize().height()) / 2), iconSize());
 
-	if (ui::LeftIcon == icon_placement_) {
-		textGeometry.translate(iw, 0);
-	} else {
-		iconGeometry.translate(textSize.width() + IconPadding, 0);
-	}
+	/* if (ui::LeftIcon == icon_placement_) { */
+	/* 	textGeometry.translate(iw, 0); */
+	/* } else { */
+	/* 	iconGeometry.translate(textSize.width() + IconPadding, 0); */
+	/* } */
 
 	painter->drawText(textGeometry, Qt::AlignCenter, text());
 

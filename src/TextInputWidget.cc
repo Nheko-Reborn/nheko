@@ -16,10 +16,24 @@
  */
 
 #include <QDebug>
+#include <QFile>
 #include <QPainter>
 #include <QStyleOption>
 
 #include "TextInputWidget.h"
+
+FilteredTextEdit::FilteredTextEdit(QWidget *parent)
+    : QTextEdit(parent)
+{
+}
+
+void FilteredTextEdit::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+		emit enterPressed();
+	else
+		QTextEdit::keyPressEvent(event);
+}
 
 TextInputWidget::TextInputWidget(QWidget *parent)
     : QWidget(parent)
@@ -31,8 +45,8 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	setStyleSheet("background-color: #f8fbfe; height: 45px;");
 
 	top_layout_ = new QHBoxLayout();
-	top_layout_->setSpacing(6);
-	top_layout_->setContentsMargins(6, 0, 0, 0);
+	top_layout_->setSpacing(0);
+	top_layout_->setMargin(0);
 
 	send_file_button_ = new FlatButton(this);
 	send_file_button_->setCursor(Qt::PointingHandCursor);
@@ -43,9 +57,10 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	send_file_button_->setIcon(send_file_icon);
 	send_file_button_->setIconSize(QSize(24, 24));
 
-	input_ = new QLineEdit(this);
+	input_ = new FilteredTextEdit(this);
+	input_->setFixedHeight(45);
 	input_->setPlaceholderText("Write a message...");
-	input_->setStyleSheet("color: black; font-size: 10pt; border-radius: 0; padding: 2px; margin-bottom: 4px;");
+	input_->setStyleSheet("color: #333333; font-size: 13px; border-radius: 0; padding-top: 10px;");
 
 	send_message_button_ = new FlatButton(this);
 	send_message_button_->setCursor(Qt::PointingHandCursor);
@@ -56,24 +71,59 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	send_message_button_->setIcon(send_message_icon);
 	send_message_button_->setIconSize(QSize(24, 24));
 
+	emoji_button_ = new EmojiPickButton(this);
+	emoji_button_->setCursor(Qt::PointingHandCursor);
+	emoji_button_->setForegroundColor(QColor("#acc7dc"));
+
+	QIcon emoji_icon;
+	emoji_icon.addFile(":/icons/icons/smile.png", QSize(), QIcon::Normal, QIcon::Off);
+	emoji_button_->setIcon(emoji_icon);
+	emoji_button_->setIconSize(QSize(24, 24));
+
 	top_layout_->addWidget(send_file_button_);
 	top_layout_->addWidget(input_);
+	top_layout_->addWidget(emoji_button_);
 	top_layout_->addWidget(send_message_button_);
 
 	setLayout(top_layout_);
 
 	connect(send_message_button_, SIGNAL(clicked()), this, SLOT(onSendButtonClicked()));
-	connect(input_, SIGNAL(returnPressed()), send_message_button_, SIGNAL(clicked()));
+	connect(input_, SIGNAL(enterPressed()), send_message_button_, SIGNAL(clicked()));
+	connect(emoji_button_, SIGNAL(emojiSelected(const QString &)), this, SLOT(addSelectedEmoji(const QString &)));
+}
+
+void TextInputWidget::addSelectedEmoji(const QString &emoji)
+{
+	QTextCursor cursor = input_->textCursor();
+
+	QFont emoji_font("Emoji One");
+	emoji_font.setPixelSize(18);
+
+	QFont text_font("Open Sans");
+	text_font.setPixelSize(13);
+
+	QTextCharFormat charfmt;
+	charfmt.setFont(emoji_font);
+	input_->setCurrentCharFormat(charfmt);
+
+	input_->insertPlainText(emoji);
+	cursor.movePosition(QTextCursor::End);
+
+	charfmt.setFont(text_font);
+	input_->setCurrentCharFormat(charfmt);
+
+	input_->show();
 }
 
 void TextInputWidget::onSendButtonClicked()
 {
-	auto msg_text = input_->text().trimmed();
+	auto msg_text = input_->document()->toPlainText().trimmed();
 
 	if (msg_text.isEmpty())
 		return;
 
 	emit sendTextMessage(msg_text);
+
 	input_->clear();
 }
 

@@ -142,10 +142,10 @@ QString HistoryViewItem::replaceEmoji(const QString &body)
 	QString fmtBody = "";
 
 	for (auto &c : body) {
-		auto code = c.unicode();
+		int code = c.unicode();
 
-		// TODO: A map should be used with the unicode codes supported by emoji one
-		if (code > 127)
+		// TODO: Be more precise here.
+		if (code > 9000)
 			fmtBody += "<span style=\"font-family: Emoji One; font-size: 16px\">" + QString(c) + "</span>";
 		else
 			fmtBody += c;

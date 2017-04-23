@@ -71,6 +71,11 @@ endif()
 set(SRC_FILES
     src/ChatPage.cc
     src/Deserializable.cc
+    src/EmojiCategory.cc
+    src/EmojiItemDelegate.cc
+    src/EmojiPanel.cc
+    src/EmojiPickButton.cc
+    src/EmojiProvider.cc
     src/HistoryView.cc
     src/HistoryViewItem.cc
     src/HistoryViewManager.cc
@@ -116,6 +121,10 @@ qt5_wrap_ui (UI_HEADERS
 
 qt5_wrap_cpp(MOC_HEADERS
     include/ChatPage.h
+    include/EmojiCategory.h
+    include/EmojiItemDelegate.h
+    include/EmojiPanel.h
+    include/EmojiPickButton.h
     include/HistoryView.h
     include/HistoryViewItem.h
     include/HistoryViewManager.h
