@@ -5,6 +5,7 @@ nheko
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
 
+Join the discussion on Matrix [#nheko:matrix.org](https://matrix.to/#/#nheko:matrix.org).
 ### Features
 
 Most of the features you'd expect from a chat application are missing right now
