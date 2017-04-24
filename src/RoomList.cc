@@ -34,7 +34,9 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
 	ui->setupUi(this);
 	ui->scrollVerticalLayout->addStretch(1);
 
-	setStyleSheet("border-top: none");
+	setStyleSheet(
+		"QWidget { border: none; }"
+		"QScrollBar:vertical { width: 4px; margin: 2px 0; }");
 
 	connect(client_.data(),
 		SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),

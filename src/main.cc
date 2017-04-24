@@ -41,6 +41,12 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
+	app.setStyleSheet(
+		"QScrollBar:vertical { background-color: #f8fbfe; width: 8px; border: none; margin: 2px; }"
+		"QScrollBar::handle:vertical { background-color : #d6dde3; }"
+		"QScrollBar::add-line:vertical { border: none; background: none; }"
+		"QScrollBar::sub-line:vertical { border: none; background: none; }");
+
 	QFont font("Open Sans");
 	app.setFont(font);
 
