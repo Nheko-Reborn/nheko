@@ -18,7 +18,7 @@
 #include "InputValidator.h"
 
 InputValidator::InputValidator(QObject *parent)
-    : matrix_id_("@[A-Za-z0-9._%+-]+:[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}")
+    : matrix_id_("@[A-Za-z0-9._%+-]+:[A-Za-z0-9.-]{1,126}\\.[A-Za-z]{1,63}")
     , matrix_localpart_("[A-za-z0-9._%+-]{3,}")
     , matrix_password_(".{8,}")
     , server_domain_("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,126}(?!\\d+)[a-zA-Z\\d]{1,63}")
