@@ -17,13 +17,13 @@ install:
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
 
 build_script:
-    - cmake -G "Visual Studio 14 2015 Win64" -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
-    - cmake --build build
+    - cmake -G "Visual Studio 14 2015 Win64" -H. -Bbuild
+    - cmake --build build --config Release
     - ls -lh build
 
 after_build:
     - mkdir NhekoRelease
-    - copy build\Debug\nheko.exe NhekoRelease\nheko.exe
+    - copy build\Release\nheko.exe NhekoRelease\nheko.exe
     - windeployqt --release NhekoRelease\nheko.exe
     - 7z a nheko_win_64.zip .\NhekoRelease\*
 
