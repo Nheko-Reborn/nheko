@@ -131,6 +131,9 @@ void RoomList::setInitialRooms(const Rooms &rooms)
 		ui->scrollVerticalLayout->insertWidget(pos, room_item);
 	}
 
+	if (rooms_.isEmpty())
+		return;
+
 	// TODO: Move this into its own function.
 	auto first_room = rooms_.first();
 	first_room->setPressedState(true);
