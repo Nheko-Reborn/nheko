@@ -23,22 +23,20 @@
 
 int main(int argc, char *argv[])
 {
+	QApplication app(argc, argv);
+
 	QCoreApplication::setApplicationName("nheko");
 	QCoreApplication::setApplicationVersion("Ωμέγa");
 	QCoreApplication::setOrganizationName("Nheko");
 
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-Light.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-Regular.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-Italic.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-Bold.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-BoldItalic.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-Semibold.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-SemiboldItalic.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-ExtraBold.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/OpenSans-ExtraBoldItalic.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/emojione-android.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Bold.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-BoldItalic.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Semibold.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-SemiboldItalic.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/fonts/EmojiOne/emojione-android.ttf");
 
-	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
 	app.setStyleSheet(
