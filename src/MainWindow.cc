@@ -25,6 +25,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui_(new Ui::MainWindow)
+    , progress_modal_{nullptr}
+    , spinner_{nullptr}
 {
 	ui_->setupUi(this);
 	client_ = QSharedPointer<MatrixClient>(new MatrixClient("matrix.org"));
@@ -54,9 +56,37 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
 
 	connect(client_.data(),
+		SIGNAL(initialSyncCompleted(const SyncResponse &)),
+		this,
+		SLOT(removeOverlayProgressBar()));
+
+	connect(client_.data(),
 		SIGNAL(loginSuccess(QString, QString, QString)),
 		this,
 		SLOT(showChatPage(QString, QString, QString)));
+}
+
+void MainWindow::removeOverlayProgressBar()
+{
+	QTimer *timer = new QTimer(this);
+	timer->setSingleShot(true);
+
+	connect(timer, &QTimer::timeout, [=]() {
+		timer->deleteLater();
+
+		if (progress_modal_ != nullptr) {
+			progress_modal_->deleteLater();
+			progress_modal_->fadeOut();
+		}
+
+		if (progress_modal_ != nullptr)
+			spinner_->deleteLater();
+
+		progress_modal_ = nullptr;
+		spinner_ = nullptr;
+	});
+
+	timer->start(500);
 }
 
 void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
@@ -68,6 +98,17 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 
 	int index = sliding_stack_->getWidgetIndex(chat_page_);
 	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+
+	if (spinner_ == nullptr) {
+		spinner_ = new CircularProgress(this);
+		spinner_->setColor("#acc7dc");
+		spinner_->setSize(100);
+	}
+
+	if (progress_modal_ == nullptr) {
+		progress_modal_ = new OverlayModal(this, spinner_);
+		progress_modal_->fadeIn();
+	}
 
 	login_page_->reset();
 	chat_page_->bootstrap(userid, homeserver, token);

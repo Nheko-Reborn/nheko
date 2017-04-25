@@ -2,7 +2,6 @@
 #define UI_OVERLAY_WIDGET_H
 
 #include <QEvent>
-#include <QObject>
 #include <QWidget>
 
 class OverlayWidget : public QWidget
@@ -10,8 +9,7 @@ class OverlayWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit OverlayWidget(QWidget *parent = 0);
-	~OverlayWidget();
+	explicit OverlayWidget(QWidget *parent = nullptr);
 
 protected:
 	bool event(QEvent *event) override;

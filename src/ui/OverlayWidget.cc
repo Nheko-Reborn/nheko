@@ -4,12 +4,11 @@
 OverlayWidget::OverlayWidget(QWidget *parent)
     : QWidget(parent)
 {
-	if (parent)
+	if (parent) {
 		parent->installEventFilter(this);
-}
-
-OverlayWidget::~OverlayWidget()
-{
+		setGeometry(overlayGeometry());
+		raise();
+	}
 }
 
 bool OverlayWidget::event(QEvent *event)

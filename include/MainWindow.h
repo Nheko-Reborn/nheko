@@ -22,8 +22,10 @@
 #include <QSharedPointer>
 
 #include "ChatPage.h"
+#include "CircularProgress.h"
 #include "LoginPage.h"
 #include "MatrixClient.h"
+#include "OverlayModal.h"
 #include "RegisterPage.h"
 #include "SlidingStackWidget.h"
 #include "WelcomePage.h"
@@ -41,7 +43,7 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-public slots:
+private slots:
 	// Show the welcome page in the main window.
 	void showWelcomePage();
 
@@ -53,6 +55,8 @@ public slots:
 
 	// Show the chat page and start communicating with the given access token.
 	void showChatPage(QString user_id, QString home_server, QString token);
+
+	void removeOverlayProgressBar();
 
 private:
 	// The UI component of the main window.
@@ -72,6 +76,10 @@ private:
 
 	// The main chat area.
 	ChatPage *chat_page_;
+
+	// Used to hide undefined states between page transitions.
+	OverlayModal *progress_modal_;
+	CircularProgress *spinner_;
 
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;
