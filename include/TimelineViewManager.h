@@ -23,18 +23,18 @@
 #include <QStackedWidget>
 #include <QWidget>
 
-#include "HistoryView.h"
+#include "TimelineView.h"
 #include "MatrixClient.h"
 #include "RoomInfo.h"
 #include "Sync.h"
 
-class HistoryViewManager : public QStackedWidget
+class TimelineViewManager : public QStackedWidget
 {
 	Q_OBJECT
 
 public:
-	HistoryViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
-	~HistoryViewManager();
+	TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
+	~TimelineViewManager();
 
 	void initialize(const Rooms &rooms);
 	void sync(const Rooms &rooms);
@@ -56,7 +56,7 @@ private slots:
 
 private:
 	RoomInfo active_room_;
-	QMap<QString, HistoryView *> views_;
+	QMap<QString, TimelineView *> views_;
 	QSharedPointer<MatrixClient> client_;
 };
 

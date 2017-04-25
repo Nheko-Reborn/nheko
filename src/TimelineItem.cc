@@ -18,9 +18,9 @@
 #include <QDateTime>
 #include <QDebug>
 
-#include "HistoryViewItem.h"
+#include "TimelineItem.h"
 
-HistoryViewItem::HistoryViewItem(const QString &userid, const QString &color, const QString &body, QWidget *parent)
+TimelineItem::TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent)
     : QWidget(parent)
 {
 	generateTimestamp(QDateTime::currentDateTime());
@@ -28,7 +28,7 @@ HistoryViewItem::HistoryViewItem(const QString &userid, const QString &color, co
 	setupLayout();
 }
 
-HistoryViewItem::HistoryViewItem(const QString &body, QWidget *parent)
+TimelineItem::TimelineItem(const QString &body, QWidget *parent)
     : QWidget(parent)
 {
 	generateTimestamp(QDateTime::currentDateTime());
@@ -36,7 +36,7 @@ HistoryViewItem::HistoryViewItem(const QString &body, QWidget *parent)
 	setupLayout();
 }
 
-HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QString &color, QWidget *parent)
+TimelineItem::TimelineItem(const Event &event, bool with_sender, const QString &color, QWidget *parent)
     : QWidget(parent)
 {
 	auto body = event.content().value("body").toString().trimmed().toHtmlEscaped();
@@ -55,7 +55,7 @@ HistoryViewItem::HistoryViewItem(const Event &event, bool with_sender, const QSt
 	setupLayout();
 }
 
-void HistoryViewItem::generateBody(const QString &body)
+void TimelineItem::generateBody(const QString &body)
 {
 	content_label_ = new QLabel(this);
 	content_label_->setWordWrap(true);
@@ -74,7 +74,7 @@ void HistoryViewItem::generateBody(const QString &body)
 	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
 }
 
-void HistoryViewItem::generateBody(const QString &userid, const QString &color, const QString &body)
+void TimelineItem::generateBody(const QString &userid, const QString &color, const QString &body)
 {
 	auto sender = userid.split(":")[0].split("@")[1];
 
@@ -98,7 +98,7 @@ void HistoryViewItem::generateBody(const QString &userid, const QString &color, 
 	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
 }
 
-void HistoryViewItem::generateTimestamp(const QDateTime &time)
+void TimelineItem::generateTimestamp(const QDateTime &time)
 {
 	auto local_time = time.toString("HH:mm");
 
@@ -117,15 +117,15 @@ void HistoryViewItem::generateTimestamp(const QDateTime &time)
 	time_label_->setAlignment(Qt::AlignTop);
 }
 
-void HistoryViewItem::setupLayout()
+void TimelineItem::setupLayout()
 {
 	if (time_label_ == nullptr) {
-		qWarning() << "HistoryViewItem: Time label is not initialized";
+		qWarning() << "TimelineItem: Time label is not initialized";
 		return;
 	}
 
 	if (content_label_ == nullptr) {
-		qWarning() << "HistoryViewItem: Content label is not initialized";
+		qWarning() << "TimelineItem: Content label is not initialized";
 		return;
 	}
 
@@ -137,7 +137,7 @@ void HistoryViewItem::setupLayout()
 	setLayout(top_layout_);
 }
 
-QString HistoryViewItem::replaceEmoji(const QString &body)
+QString TimelineItem::replaceEmoji(const QString &body)
 {
 	QString fmtBody = "";
 
@@ -154,6 +154,6 @@ QString HistoryViewItem::replaceEmoji(const QString &body)
 	return fmtBody;
 }
 
-HistoryViewItem::~HistoryViewItem()
+TimelineItem::~TimelineItem()
 {
 }

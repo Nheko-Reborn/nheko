@@ -39,7 +39,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	top_bar_ = new TopRoomBar(this);
 	ui->topBarLayout->addWidget(top_bar_);
 
-	view_manager_ = new HistoryViewManager(client, this);
+	view_manager_ = new TimelineViewManager(client, this);
 	ui->mainContentLayout->addWidget(view_manager_);
 
 	text_input_ = new TextInputWidget(this);

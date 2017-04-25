@@ -23,10 +23,10 @@
 #include <QStackedWidget>
 #include <QWidget>
 
-#include "HistoryView.h"
-#include "HistoryViewManager.h"
+#include "TimelineView.h"
+#include "TimelineViewManager.h"
 
-HistoryViewManager::HistoryViewManager(QSharedPointer<MatrixClient> client, QWidget *parent)
+TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QStackedWidget(parent)
     , client_(client)
 {
@@ -38,11 +38,11 @@ HistoryViewManager::HistoryViewManager(QSharedPointer<MatrixClient> client, QWid
 		SLOT(messageSent(const QString &, const QString &, int)));
 }
 
-HistoryViewManager::~HistoryViewManager()
+TimelineViewManager::~TimelineViewManager()
 {
 }
 
-void HistoryViewManager::messageSent(const QString &event_id, const QString &roomid, int txn_id)
+void TimelineViewManager::messageSent(const QString &event_id, const QString &roomid, int txn_id)
 {
 	// We save the latest valid transaction ID for later use.
 	QSettings settings;
@@ -52,7 +52,7 @@ void HistoryViewManager::messageSent(const QString &event_id, const QString &roo
 	view->updatePendingMessage(txn_id, event_id);
 }
 
-void HistoryViewManager::sendTextMessage(const QString &msg)
+void TimelineViewManager::sendTextMessage(const QString &msg)
 {
 	auto room = active_room_;
 	auto view = views_[room.id()];
@@ -61,7 +61,7 @@ void HistoryViewManager::sendTextMessage(const QString &msg)
 	client_->sendTextMessage(room.id(), msg);
 }
 
-void HistoryViewManager::clearAll()
+void TimelineViewManager::clearAll()
 {
 	NICK_COLORS.clear();
 
@@ -74,14 +74,14 @@ void HistoryViewManager::clearAll()
 	views_.clear();
 }
 
-void HistoryViewManager::initialize(const Rooms &rooms)
+void TimelineViewManager::initialize(const Rooms &rooms)
 {
 	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
 		auto roomid = it.key();
 		auto events = it.value().timeline().events();
 
 		// Create a history view with the room events.
-		HistoryView *view = new HistoryView(events);
+		TimelineView *view = new TimelineView(events);
 		views_.insert(it.key(), view);
 
 		// Add the view in the widget stack.
@@ -89,7 +89,7 @@ void HistoryViewManager::initialize(const Rooms &rooms)
 	}
 }
 
-void HistoryViewManager::sync(const Rooms &rooms)
+void TimelineViewManager::sync(const Rooms &rooms)
 {
 	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
 		auto roomid = it.key();
@@ -115,7 +115,7 @@ void HistoryViewManager::sync(const Rooms &rooms)
 	}
 }
 
-void HistoryViewManager::setHistoryView(const RoomInfo &info)
+void TimelineViewManager::setHistoryView(const RoomInfo &info)
 {
 	if (!views_.contains(info.id())) {
 		qDebug() << "Room List id is not present in view manager";
@@ -129,9 +129,9 @@ void HistoryViewManager::setHistoryView(const RoomInfo &info)
 	setCurrentWidget(widget);
 }
 
-QMap<QString, QString> HistoryViewManager::NICK_COLORS;
+QMap<QString, QString> TimelineViewManager::NICK_COLORS;
 
-QString HistoryViewManager::chooseRandomColor()
+QString TimelineViewManager::chooseRandomColor()
 {
 	std::random_device random_device;
 	std::mt19937 engine{random_device()};
@@ -188,7 +188,7 @@ QString HistoryViewManager::chooseRandomColor()
 	return color.name();
 }
 
-QString HistoryViewManager::getUserColor(const QString &userid)
+QString TimelineViewManager::getUserColor(const QString &userid)
 {
 	auto color = NICK_COLORS.value(userid);
 

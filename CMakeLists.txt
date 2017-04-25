@@ -76,9 +76,9 @@ set(SRC_FILES
     src/EmojiPanel.cc
     src/EmojiPickButton.cc
     src/EmojiProvider.cc
-    src/HistoryView.cc
-    src/HistoryViewItem.cc
-    src/HistoryViewManager.cc
+    src/TimelineItem.cc
+    src/TimelineView.cc
+    src/TimelineViewManager.cc
     src/InputValidator.cc
     src/Login.cc
     src/LoginPage.cc
@@ -127,9 +127,9 @@ qt5_wrap_cpp(MOC_HEADERS
     include/EmojiItemDelegate.h
     include/EmojiPanel.h
     include/EmojiPickButton.h
-    include/HistoryView.h
-    include/HistoryViewItem.h
-    include/HistoryViewManager.h
+    include/TimelineItem.h
+    include/TimelineView.h
+    include/TimelineViewManager.h
     include/LoginPage.h
     include/MainWindow.h
     include/MatrixClient.h

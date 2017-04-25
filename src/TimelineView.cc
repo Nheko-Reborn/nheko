@@ -21,36 +21,36 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpacerItem>
 
-#include "HistoryView.h"
-#include "HistoryViewItem.h"
-#include "HistoryViewManager.h"
+#include "TimelineItem.h"
+#include "TimelineView.h"
+#include "TimelineViewManager.h"
 
-HistoryView::HistoryView(const QList<Event> &events, QWidget *parent)
+TimelineView::TimelineView(const QList<Event> &events, QWidget *parent)
     : QWidget(parent)
 {
 	init();
 	addEvents(events);
 }
 
-HistoryView::HistoryView(QWidget *parent)
+TimelineView::TimelineView(QWidget *parent)
     : QWidget(parent)
 {
 	init();
 }
 
-void HistoryView::clear()
+void TimelineView::clear()
 {
 	for (const auto msg : scroll_layout_->children())
 		msg->deleteLater();
 }
 
-void HistoryView::sliderRangeChanged(int min, int max)
+void TimelineView::sliderRangeChanged(int min, int max)
 {
 	Q_UNUSED(min);
 	scroll_area_->verticalScrollBar()->setValue(max);
 }
 
-int HistoryView::addEvents(const QList<Event> &events)
+int TimelineView::addEvents(const QList<Event> &events)
 {
 	QSettings settings;
 	auto local_user = settings.value("auth/user_id").toString();
@@ -68,7 +68,7 @@ int HistoryView::addEvents(const QList<Event> &events)
 
 			if (msg_type == "m.text" || msg_type == "m.notice") {
 				auto with_sender = last_sender_ != event.sender();
-				auto color = HistoryViewManager::getUserColor(event.sender());
+				auto color = TimelineViewManager::getUserColor(event.sender());
 
 				addHistoryItem(event, color, with_sender);
 				last_sender_ = event.sender();
@@ -81,7 +81,7 @@ int HistoryView::addEvents(const QList<Event> &events)
 	return message_count;
 }
 
-void HistoryView::init()
+void TimelineView::init()
 {
 	top_layout_ = new QVBoxLayout(this);
 	top_layout_->setSpacing(0);
@@ -111,13 +111,13 @@ void HistoryView::init()
 		SLOT(sliderRangeChanged(int, int)));
 }
 
-void HistoryView::addHistoryItem(const Event &event, const QString &color, bool with_sender)
+void TimelineView::addHistoryItem(const Event &event, const QString &color, bool with_sender)
 {
-	HistoryViewItem *item = new HistoryViewItem(event, with_sender, color, scroll_widget_);
+	TimelineItem *item = new TimelineItem(event, with_sender, color, scroll_widget_);
 	scroll_layout_->addWidget(item);
 }
 
-void HistoryView::updatePendingMessage(int txn_id, QString event_id)
+void TimelineView::updatePendingMessage(int txn_id, QString event_id)
 {
 	for (auto &msg : pending_msgs_) {
 		if (msg.txn_id == txn_id) {
@@ -127,7 +127,7 @@ void HistoryView::updatePendingMessage(int txn_id, QString event_id)
 	}
 }
 
-bool HistoryView::isPendingMessage(const Event &event, const QString &userid)
+bool TimelineView::isPendingMessage(const Event &event, const QString &userid)
 {
 	if (event.sender() != userid || event.type() != "m.room.message")
 		return false;
@@ -147,7 +147,7 @@ bool HistoryView::isPendingMessage(const Event &event, const QString &userid)
 	return false;
 }
 
-void HistoryView::removePendingMessage(const Event &event)
+void TimelineView::removePendingMessage(const Event &event)
 {
 	auto body = event.content().value("body").toString();
 
@@ -161,20 +161,20 @@ void HistoryView::removePendingMessage(const Event &event)
 	}
 }
 
-void HistoryView::addUserTextMessage(const QString &body, int txn_id)
+void TimelineView::addUserTextMessage(const QString &body, int txn_id)
 {
 	QSettings settings;
 	auto user_id = settings.value("auth/user_id").toString();
 
 	auto with_sender = last_sender_ != user_id;
-	auto color = HistoryViewManager::getUserColor(user_id);
+	auto color = TimelineViewManager::getUserColor(user_id);
 
-	HistoryViewItem *view_item;
+	TimelineItem *view_item;
 
 	if (with_sender)
-		view_item = new HistoryViewItem(user_id, color, body, scroll_widget_);
+		view_item = new TimelineItem(user_id, color, body, scroll_widget_);
 	else
-		view_item = new HistoryViewItem(body, scroll_widget_);
+		view_item = new TimelineItem(body, scroll_widget_);
 
 	scroll_layout_->addWidget(view_item);
 
@@ -185,6 +185,6 @@ void HistoryView::addUserTextMessage(const QString &body, int txn_id)
 	pending_msgs_.push_back(message);
 }
 
-HistoryView::~HistoryView()
+TimelineView::~TimelineView()
 {
 }

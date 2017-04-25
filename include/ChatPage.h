@@ -22,11 +22,11 @@
 #include <QTimer>
 #include <QWidget>
 
-#include "HistoryViewManager.h"
 #include "MatrixClient.h"
 #include "RoomInfo.h"
 #include "RoomList.h"
 #include "TextInputWidget.h"
+#include "TimelineViewManager.h"
 #include "TopRoomBar.h"
 #include "UserInfoWidget.h"
 
@@ -66,7 +66,7 @@ private:
 	Ui::ChatPage *ui;
 
 	RoomList *room_list_;
-	HistoryViewManager *view_manager_;
+	TimelineViewManager *view_manager_;
 
 	TopRoomBar *top_bar_;
 	TextInputWidget *text_input_;

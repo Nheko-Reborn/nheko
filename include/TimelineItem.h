@@ -24,18 +24,18 @@
 
 #include "Sync.h"
 
-class HistoryViewItem : public QWidget
+class TimelineItem : public QWidget
 {
 	Q_OBJECT
 public:
 	// For remote messages.
-	HistoryViewItem(const Event &event, bool with_sender, const QString &color, QWidget *parent = 0);
+	TimelineItem(const Event &event, bool with_sender, const QString &color, QWidget *parent = 0);
 
 	// For local messages.
-	HistoryViewItem(const QString &userid, const QString &color, const QString &body, QWidget *parent = 0);
-	HistoryViewItem(const QString &body, QWidget *parent = 0);
+	TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent = 0);
+	TimelineItem(const QString &body, QWidget *parent = 0);
 
-	~HistoryViewItem();
+	~TimelineItem();
 
 private:
 	void generateBody(const QString &body);

@@ -24,8 +24,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "HistoryViewItem.h"
 #include "Sync.h"
+#include "TimelineItem.h"
 
 // Contains info about a message shown in the history view
 // but not yet confirmed by the homeserver through sync.
@@ -33,9 +33,9 @@ struct PendingMessage {
 	int txn_id;
 	QString body;
 	QString event_id;
-	HistoryViewItem *widget;
+	TimelineItem *widget;
 
-	PendingMessage(int txn_id, QString body, QString event_id, HistoryViewItem *widget)
+	PendingMessage(int txn_id, QString body, QString event_id, TimelineItem *widget)
 	    : txn_id(txn_id)
 	    , body(body)
 	    , event_id(event_id)
@@ -44,14 +44,14 @@ struct PendingMessage {
 	}
 };
 
-class HistoryView : public QWidget
+class TimelineView : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit HistoryView(QWidget *parent = 0);
-	explicit HistoryView(const QList<Event> &events, QWidget *parent = 0);
-	~HistoryView();
+	explicit TimelineView(QWidget *parent = 0);
+	explicit TimelineView(const QList<Event> &events, QWidget *parent = 0);
+	~TimelineView();
 
 	void addHistoryItem(const Event &event, const QString &color, bool with_sender);
 	int addEvents(const QList<Event> &events);
