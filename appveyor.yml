@@ -15,6 +15,8 @@ build:
 install:
     - set QT_DIR=C:\Qt\5.8\msvc2015_64
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
+    - copy LICENSE .ci\windows\LICENSE.txt
+    - cinst nsis --version 3.0 -y -installArgs /D=C:\nsis
 
 build_script:
     - cmake -G "Visual Studio 14 2015 Win64" -H. -Bbuild
@@ -24,9 +26,15 @@ build_script:
 after_build:
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
-    - windeployqt --release NhekoRelease\nheko.exe
+    - windeployqt --qmldir C:\Qt\5.8\msvc2015_64\qml\ --release NhekoRelease\nheko.exe
+    - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
+    - copy C:\OpenSSL-Win64\bin\libeay32.dll .\NhekoRelease\libeay32.dll
+    - copy C:\OpenSSL-Win64\lib\libeay32.lib .\NhekoRelease\libeay32.lib
+    - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
     - 7z a nheko_win_64.zip .\NhekoRelease\*
+    - C:\nsis\makensis .ci\windows\nheko.nsi
 
 artifacts:
     - path: nheko_win_64.zip
     - path: NhekoRelease\nheko.exe
+    - path: nheko_setup.exe
