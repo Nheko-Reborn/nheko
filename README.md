@@ -62,7 +62,7 @@ encouraged to open feature request issues.
 
 Here is a screen shot to get a feel for the UI, but things will probably change.
 
-![nheko](https://dl.dropboxusercontent.com/s/whqmd4kk17mc0cg/test.png)
+![nheko](https://dl.dropboxusercontent.com/s/cs2891enrf2lqo9/nheko.jpg)
 
 ### Third party
 
