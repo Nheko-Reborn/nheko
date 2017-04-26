@@ -13,7 +13,8 @@ but you can of course receive and send messages in the rooms that you are a memb
 
 ### Requirements
 
-- Qt5 (5.8 is used for development).
+- Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
+  Freetype, which is essential to properly support emoji.
 - CMake 3.1 or greater.
 - A compiler that supports C++11.
     - Clang 3.3 (or greater).
@@ -22,16 +23,16 @@ but you can of course receive and send messages in the rooms that you are a memb
 ##### Arch Linux
 
 ```bash
-$ sudo pacman -S qt5-base cmake gcc
+$ sudo pacman -S qt5-base cmake gcc fontconfig
 ```
 
 ##### Ubuntu 14.04
 
 ```bash
-$ sudo add-apt-repository ppa:beineri/opt-qt562-trusty
+$ sudo add-apt-repository ppa:beineri/opt-qt58-trusty
 $ sudo add-apt-repository ppa:george-edison55/cmake-3.x
 $ sudo apt-get update
-$ sudo apt-get install qt56base cmake
+$ sudo apt-get install qt58base cmake
 ```
 
 ##### OSX (Xcode 7 or later)
