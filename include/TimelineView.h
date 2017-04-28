@@ -49,11 +49,13 @@ class TimelineView : public QWidget
 	Q_OBJECT
 
 public:
-	explicit TimelineView(QWidget *parent = 0);
-	explicit TimelineView(const QList<Event> &events, QWidget *parent = 0);
+	TimelineView(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+	TimelineView(const QList<Event> &events, QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~TimelineView();
 
+	// FIXME: Reduce the parameters
 	void addHistoryItem(const Event &event, const QString &color, bool with_sender);
+	void addImageItem(const QString &body, const QUrl &url, const Event &event, const QString &color, bool with_sender);
 	int addEvents(const QList<Event> &events);
 	void addUserTextMessage(const QString &msg, int txn_id);
 	void updatePendingMessage(int txn_id, QString event_id);
@@ -76,6 +78,7 @@ private:
 	QString last_sender_;
 
 	QList<PendingMessage> pending_msgs_;
+	QSharedPointer<MatrixClient> client_;
 };
 
 #endif  // HISTORY_VIEW_H

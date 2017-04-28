@@ -18,6 +18,7 @@
 #include <QDateTime>
 #include <QDebug>
 
+#include "ImageItem.h"
 #include "TimelineItem.h"
 
 TimelineItem::TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent)
@@ -34,6 +35,42 @@ TimelineItem::TimelineItem(const QString &body, QWidget *parent)
 	generateTimestamp(QDateTime::currentDateTime());
 	generateBody(body);
 	setupLayout();
+}
+
+TimelineItem::TimelineItem(ImageItem *image, const Event &event, const QString &color, QWidget *parent)
+    : QWidget(parent)
+{
+	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+	generateTimestamp(timestamp);
+	generateBody(event.sender(), color, "");
+
+	top_layout_ = new QHBoxLayout();
+	top_layout_->setMargin(0);
+	top_layout_->addWidget(time_label_);
+
+	auto right_layout = new QVBoxLayout();
+	right_layout->addWidget(content_label_);
+	right_layout->addWidget(image);
+
+	top_layout_->addLayout(right_layout);
+	top_layout_->addStretch(1);
+
+	setLayout(top_layout_);
+}
+
+TimelineItem::TimelineItem(ImageItem *image, const Event &event, QWidget *parent)
+    : QWidget(parent)
+{
+	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+	generateTimestamp(timestamp);
+
+	top_layout_ = new QHBoxLayout();
+	top_layout_->setMargin(0);
+	top_layout_->addWidget(time_label_);
+	top_layout_->addWidget(image, 1);
+	top_layout_->addStretch(1);
+
+	setLayout(top_layout_);
 }
 
 TimelineItem::TimelineItem(const Event &event, bool with_sender, const QString &color, QWidget *parent)

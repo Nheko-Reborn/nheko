@@ -76,6 +76,7 @@ set(SRC_FILES
     src/EmojiPanel.cc
     src/EmojiPickButton.cc
     src/EmojiProvider.cc
+    src/ImageItem.cc
     src/TimelineItem.cc
     src/TimelineView.cc
     src/TimelineViewManager.cc
@@ -127,6 +128,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/EmojiItemDelegate.h
     include/EmojiPanel.h
     include/EmojiPickButton.h
+    include/ImageItem.h
     include/TimelineItem.h
     include/TimelineView.h
     include/TimelineViewManager.h

@@ -23,6 +23,7 @@
 #include <QWidget>
 
 #include "Sync.h"
+#include "ImageItem.h"
 
 class TimelineItem : public QWidget
 {
@@ -34,6 +35,10 @@ public:
 	// For local messages.
 	TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent = 0);
 	TimelineItem(const QString &body, QWidget *parent = 0);
+
+	// For inline images.
+	TimelineItem(ImageItem *image, const Event &event, const QString &color, QWidget *parent);
+	TimelineItem(ImageItem *image, const Event &event, QWidget *parent);
 
 	~TimelineItem();
 

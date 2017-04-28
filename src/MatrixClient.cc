@@ -309,6 +309,30 @@ void MatrixClient::onGetOwnAvatarResponse(QNetworkReply *reply)
 	emit ownAvatarRetrieved(pixmap);
 }
 
+void MatrixClient::onImageResponse(QNetworkReply *reply)
+{
+	reply->deleteLater();
+
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	if (status == 0 || status >= 400) {
+		qWarning() << reply->errorString();
+		return;
+	}
+
+	auto img = reply->readAll();
+
+	if (img.size() == 0)
+		return;
+
+	QPixmap pixmap;
+	pixmap.loadFromData(img);
+
+	auto event_id = reply->property("event_id").toString();
+
+	emit imageDownloaded(event_id, pixmap);
+}
+
 void MatrixClient::onResponse(QNetworkReply *reply)
 {
 	switch (reply->property("endpoint").toInt()) {
@@ -326,6 +350,9 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 		break;
 	case Endpoint::GetOwnProfile:
 		onGetOwnProfileResponse(reply);
+		break;
+	case Endpoint::Image:
+		onImageResponse(reply);
 		break;
 	case Endpoint::InitialSync:
 		onInitialSyncResponse(reply);
@@ -526,6 +553,15 @@ void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url
 	QNetworkReply *reply = get(avatar_request);
 	reply->setProperty("roomid", roomid);
 	reply->setProperty("endpoint", Endpoint::RoomAvatar);
+}
+
+void MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
+{
+	QNetworkRequest image_request(url);
+
+	QNetworkReply *reply = get(image_request);
+	reply->setProperty("event_id", event_id);
+	reply->setProperty("endpoint", Endpoint::Image);
 }
 
 void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)

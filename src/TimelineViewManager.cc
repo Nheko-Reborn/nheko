@@ -81,7 +81,7 @@ void TimelineViewManager::initialize(const Rooms &rooms)
 		auto events = it.value().timeline().events();
 
 		// Create a history view with the room events.
-		TimelineView *view = new TimelineView(events);
+		TimelineView *view = new TimelineView(events, client_);
 		views_.insert(it.key(), view);
 
 		// Add the view in the widget stack.

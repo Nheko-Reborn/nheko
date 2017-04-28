@@ -21,19 +21,22 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpacerItem>
 
+#include "ImageItem.h"
 #include "TimelineItem.h"
 #include "TimelineView.h"
 #include "TimelineViewManager.h"
 
-TimelineView::TimelineView(const QList<Event> &events, QWidget *parent)
+TimelineView::TimelineView(const QList<Event> &events, QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
+    , client_{client}
 {
 	init();
 	addEvents(events);
 }
 
-TimelineView::TimelineView(QWidget *parent)
+TimelineView::TimelineView(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
+    , client_{client}
 {
 	init();
 }
@@ -74,6 +77,28 @@ int TimelineView::addEvents(const QList<Event> &events)
 				last_sender_ = event.sender();
 
 				message_count += 1;
+			} else if (msg_type == "m.image") {
+				// TODO: Move this into serialization.
+				if (!event.content().contains("url")) {
+					qWarning() << "Missing url from m.image event" << event.content();
+					continue;
+				}
+
+				if (!event.content().contains("body")) {
+					qWarning() << "Missing body from m.image event" << event.content();
+					continue;
+				}
+
+				QUrl url(event.content().value("url").toString());
+				QString body(event.content().value("body").toString());
+
+				auto with_sender = last_sender_ != event.sender();
+				auto color = TimelineViewManager::getUserColor(event.sender());
+
+				addImageItem(body, url, event, color, with_sender);
+
+				last_sender_ = event.sender();
+				message_count += 1;
 			}
 		}
 	}
@@ -109,6 +134,23 @@ void TimelineView::init()
 		SIGNAL(rangeChanged(int, int)),
 		this,
 		SLOT(sliderRangeChanged(int, int)));
+}
+
+void TimelineView::addImageItem(const QString &body,
+				const QUrl &url,
+				const Event &event,
+				const QString &color,
+				bool with_sender)
+{
+	auto image = new ImageItem(client_, event, body, url);
+
+	if (with_sender) {
+		auto item = new TimelineItem(image, event, color, scroll_widget_);
+		scroll_layout_->addWidget(item);
+	} else {
+		auto item = new TimelineItem(image, event, scroll_widget_);
+		scroll_layout_->addWidget(item);
+	}
 }
 
 void TimelineView::addHistoryItem(const Event &event, const QString &color, bool with_sender)

@@ -42,6 +42,7 @@ public:
 	void versions() noexcept;
 	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
 	void fetchOwnAvatar(const QUrl &avatar_url);
+	void downloadImage(const QString &event_id, const QUrl &url);
 
 	inline QString getHomeServer();
 	inline int transactionId();
@@ -68,6 +69,7 @@ signals:
 
 	void roomAvatarRetrieved(const QString &roomid, const QPixmap &img);
 	void ownAvatarRetrieved(const QPixmap &img);
+	void imageDownloaded(const QString &event_id, const QPixmap &img);
 
 	// Returned profile data for the user's account.
 	void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
@@ -84,6 +86,7 @@ private:
 		GetOwnProfile,
 		GetOwnAvatar,
 		GetProfile,
+		Image,
 		InitialSync,
 		Login,
 		Logout,
@@ -105,6 +108,7 @@ private:
 	void onInitialSyncResponse(QNetworkReply *reply);
 	void onSyncResponse(QNetworkReply *reply);
 	void onRoomAvatarResponse(QNetworkReply *reply);
+	void onImageResponse(QNetworkReply *reply);
 
 	// Client API prefix.
 	QString api_url_;
