@@ -34,7 +34,7 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const Event &event, co
 	setMaximumSize(max_width_, max_height_);
 	setMouseTracking(true);
 	setCursor(Qt::PointingHandCursor);
-	setStyleSheet("background-color: blue");
+	setAttribute(Qt::WA_Hover, true);
 
 	QList<QString> url_parts = url_.toString().split("mxc://");
 
@@ -163,13 +163,16 @@ void ImageItem::paintEvent(QPaintEvent *event)
 
 	painter.fillRect(QRect(0, 0, width_, height_), scaled_image_);
 
-	// Bottom text section
-	painter.fillRect(QRect(0, height_ - bottom_height_, width_, bottom_height_),
-			 QBrush(QColor(33, 33, 33, 128)));
+	if (underMouse()) {
+		// Bottom text section
+		painter.fillRect(QRect(0, height_ - bottom_height_, width_, bottom_height_),
+				 QBrush(QColor(33, 33, 33, 128)));
 
-	QString elidedText = metrics.elidedText(text_, Qt::ElideRight, width_ - 10);
+		QString elidedText = metrics.elidedText(text_, Qt::ElideRight, width_ - 10);
 
-	painter.setFont(font);
-	painter.setPen(QPen(QColor("white")));
-	painter.drawText(QPoint(5, height_ - fontHeight / 2), elidedText);
+		font.setWeight(500);
+		painter.setFont(font);
+		painter.setPen(QPen(QColor("white")));
+		painter.drawText(QPoint(5, height_ - fontHeight / 2), elidedText);
+	}
 }
