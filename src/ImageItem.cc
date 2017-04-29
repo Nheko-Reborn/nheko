@@ -23,6 +23,7 @@
 #include <QPixmap>
 
 #include "ImageItem.h"
+#include "ImageOverlayDialog.h"
 
 ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const Event &event, const QString &body, const QUrl &url, QWidget *parent)
     : QWidget(parent)
@@ -121,10 +122,12 @@ void ImageItem::mousePressEvent(QMouseEvent *event)
 	auto point = event->pos();
 
 	// Click on the text box.
-	if (QRect(0, height_ - bottom_height_, width_, bottom_height_).contains(point))
+	if (QRect(0, height_ - bottom_height_, width_, bottom_height_).contains(point)) {
 		openUrl();
-	else
-		qDebug() << "Opening image overlay. Not implemented yet.";
+	} else {
+		auto image_dialog = new ImageOverlayDialog(image_, this);
+		image_dialog->show();
+	}
 }
 
 void ImageItem::resizeEvent(QResizeEvent *event)
