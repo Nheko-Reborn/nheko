@@ -32,6 +32,12 @@ protected:
 	void mousePressEvent(QMouseEvent *event) override;
 	void paintEvent(QPaintEvent *event) override;
 
+signals:
+	void closing();
+
+private slots:
+	void closeDialog();
+
 private:
 	void scaleImage(int width, int height);
 
