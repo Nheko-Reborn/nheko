@@ -113,4 +113,6 @@ void ImageOverlayDialog::mousePressEvent(QMouseEvent *event)
 	// FIXME: The main window needs double click to regain focus.
 	if (close_button_.contains(event->pos()))
 		close();
+	else if (!content_.contains(event->pos()))
+		close();
 }
