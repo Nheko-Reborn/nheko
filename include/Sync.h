@@ -177,7 +177,7 @@ inline QMap<QString, JoinedRoom> Rooms::join() const
 class SyncResponse : public Deserializable
 {
 public:
-	void deserialize(const QJsonDocument &data)  override;
+	void deserialize(const QJsonDocument &data) override;
 	inline QString nextBatch() const;
 	inline Rooms rooms() const;
 

@@ -23,10 +23,10 @@
 #include <QStackedWidget>
 #include <QWidget>
 
-#include "TimelineView.h"
 #include "MatrixClient.h"
 #include "RoomInfo.h"
 #include "Sync.h"
+#include "TimelineView.h"
 
 class TimelineViewManager : public QStackedWidget
 {

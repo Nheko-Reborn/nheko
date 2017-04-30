@@ -22,8 +22,8 @@
 #include <QLabel>
 #include <QWidget>
 
-#include "Sync.h"
 #include "ImageItem.h"
+#include "Sync.h"
 
 class TimelineItem : public QWidget
 {

@@ -21,7 +21,8 @@
 
 #include "Deserializable.h"
 
-DeserializationException::DeserializationException(const std::string &msg) : msg_(msg)
+DeserializationException::DeserializationException(const std::string &msg)
+    : msg_(msg)
 {
 }
 
