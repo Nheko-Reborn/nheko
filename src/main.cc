@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationName("nheko");
 	QCoreApplication::setApplicationVersion("Ωμέγa");
 	QCoreApplication::setOrganizationName("Nheko");
+	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
 	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
 	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
