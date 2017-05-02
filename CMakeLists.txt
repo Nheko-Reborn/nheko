@@ -117,6 +117,8 @@ set(SRC_FILES
 )
 
 set(MATRIX_EVENTS
+    src/events/Event.cc
+
     src/events/AliasesEventContent.cc
     src/events/AvatarEventContent.cc
     src/events/CanonicalAliasEventContent.cc

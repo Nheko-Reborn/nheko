@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <QJsonArray>
 
+#include "Event.h"
+
 #include "AliasesEventContent.h"
 #include "AvatarEventContent.h"
 #include "CanonicalAliasEventContent.h"
@@ -11,6 +13,77 @@
 #include "NameEventContent.h"
 #include "PowerLevelsEventContent.h"
 #include "TopicEventContent.h"
+
+TEST(BaseEvent, Deserialization)
+{
+	// NameEventContent
+	auto data = QJsonObject{
+		{"content", QJsonObject{{"name", "Room Name"}}},
+		{"type", "m.room.name"}};
+
+	Event<NameEventContent> name_event;
+	name_event.deserialize(data);
+	EXPECT_EQ(name_event.content().name(), "Room Name");
+
+	// TopicEventContent
+	data = QJsonObject{
+		{"content", QJsonObject{{"topic", "Room Topic"}}},
+		{"type", "m.room.topic"}};
+
+	Event<TopicEventContent> topic_event;
+	topic_event.deserialize(data);
+	EXPECT_EQ(topic_event.content().topic(), "Room Topic");
+
+	// AvatarEventContent
+	data = QJsonObject{
+		{"content", QJsonObject{{"url", "https://matrix.org"}}},
+		{"type", "m.room.avatar"}};
+
+	Event<AvatarEventContent> avatar_event;
+	avatar_event.deserialize(data);
+	EXPECT_EQ(avatar_event.content().url().toString(), "https://matrix.org");
+
+	// AliasesEventContent
+	data = QJsonObject{
+		{"content", QJsonObject{{"aliases", QJsonArray{"#test:matrix.org", "#test2:matrix.org"}}}},
+		{"type", "m.room.aliases"}};
+
+	Event<AliasesEventContent> aliases_event;
+	aliases_event.deserialize(data);
+	EXPECT_EQ(aliases_event.content().aliases().size(), 2);
+
+	// CreateEventContent
+	data = QJsonObject{
+		{"content", QJsonObject{{"creator", "@alice:matrix.org"}}},
+		{"type", "m.room.create"}};
+
+	Event<CreateEventContent> create_event;
+	create_event.deserialize(data);
+	EXPECT_EQ(create_event.content().creator(), "@alice:matrix.org");
+
+	// JoinRulesEventContent
+	data = QJsonObject{
+		{"content", QJsonObject{{"join_rule", "private"}}},
+		{"type", "m.room.join_rules"}};
+
+	Event<JoinRulesEventContent> join_rules_event;
+	join_rules_event.deserialize(data);
+	EXPECT_EQ(join_rules_event.content().joinRule(), JoinRule::Private);
+}
+
+TEST(EventType, Mapping)
+{
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.aliases"}}), EventType::RoomAliases);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.avatar"}}), EventType::RoomAvatar);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.canonical_alias"}}), EventType::RoomCanonicalAlias);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.create"}}), EventType::RoomCreate);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.history_visibility"}}), EventType::RoomHistoryVisibility);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.join_rules"}}), EventType::RoomJoinRules);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.member"}}), EventType::RoomMember);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.name"}}), EventType::RoomName);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.power_levels"}}), EventType::RoomPowerLevels);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.topic"}}), EventType::RoomTopic);
+}
 
 TEST(AliasesEventContent, Deserialization)
 {
