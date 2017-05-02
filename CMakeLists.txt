@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(nheko CXX)
 
+option(BUILD_TESTS "Build all tests" OFF)
+
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
 
@@ -114,8 +116,22 @@ set(SRC_FILES
     src/ui/ThemeManager.cc
 )
 
+set(MATRIX_EVENTS
+    src/events/AliasesEventContent.cc
+    src/events/AvatarEventContent.cc
+    src/events/CanonicalAliasEventContent.cc
+    src/events/CreateEventContent.cc
+    src/events/HistoryVisibilityEventContent.cc
+    src/events/JoinRulesEventContent.cc
+    src/events/MemberEventContent.cc
+    src/events/NameEventContent.cc
+    src/events/PowerLevelsEventContent.cc
+    src/events/TopicEventContent.cc
+)
+
 include_directories(include)
 include_directories(include/ui)
+include_directories(include/events)
 
 qt5_wrap_ui (UI_HEADERS
     forms/ChatPage.ui
@@ -161,9 +177,24 @@ qt5_wrap_cpp(MOC_HEADERS
 
 qt5_add_resources(QRC resources/res.qrc)
 
-add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC})
-target_link_libraries (nheko Qt5::Widgets Qt5::Network)
+add_library(matrix_events ${MATRIX_EVENTS} src/Deserializable.cc)
+target_link_libraries(matrix_events Qt5::Core)
 
-if(WIN32)
-  target_link_libraries(nheko Qt5::WinMain)
-endif(WIN32)
+if (BUILD_TESTS)
+    enable_testing()
+
+    find_package(GTest REQUIRED)
+    include_directories(${GTEST_INCLUDE_DIRS})
+
+    add_executable(events_test tests/events.cc)
+    target_link_libraries(events_test matrix_events ${GTEST_BOTH_LIBRARIES})
+
+    add_test(MatrixEvents events_test)
+else()
+    add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC})
+    target_link_libraries (nheko matrix_events Qt5::Widgets Qt5::Network)
+
+    if(WIN32)
+        target_link_libraries(nheko Qt5::WinMain)
+    endif(WIN32)
+endif()
