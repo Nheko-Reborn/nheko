@@ -23,13 +23,13 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
-
 	QCoreApplication::setApplicationName("nheko");
 	QCoreApplication::setApplicationVersion("Ωμέγa");
 	QCoreApplication::setOrganizationName("Nheko");
 	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+	QApplication app(argc, argv);
 
 	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
 	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
