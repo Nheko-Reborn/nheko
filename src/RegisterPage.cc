@@ -66,23 +66,27 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	form_wrapper_->addStretch(1);
 
 	username_input_ = new TextField();
+	username_input_->setTextColor("#333333");
 	username_input_->setLabel("Username");
 	username_input_->setInkColor("#555459");
 	username_input_->setBackgroundColor("#f9f9f9");
 
 	password_input_ = new TextField();
+	password_input_->setTextColor("#333333");
 	password_input_->setLabel("Password");
 	password_input_->setInkColor("#555459");
 	password_input_->setBackgroundColor("#f9f9f9");
 	password_input_->setEchoMode(QLineEdit::Password);
 
 	password_confirmation_ = new TextField();
+	password_confirmation_->setTextColor("#333333");
 	password_confirmation_->setLabel("Password confirmation");
 	password_confirmation_->setInkColor("#555459");
 	password_confirmation_->setBackgroundColor("#f9f9f9");
 	password_confirmation_->setEchoMode(QLineEdit::Password);
 
 	server_input_ = new TextField();
+	server_input_->setTextColor("#333333");
 	server_input_->setLabel("Home Server");
 	server_input_->setInkColor("#555459");
 	server_input_->setBackgroundColor("#f9f9f9");

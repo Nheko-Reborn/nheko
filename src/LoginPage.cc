@@ -65,12 +65,14 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	form_wrapper_->addStretch(1);
 
 	matrixid_input_ = new TextField();
+	matrixid_input_->setTextColor("#333333");
 	matrixid_input_->setLabel("Matrix ID");
 	matrixid_input_->setInkColor("#555459");
 	matrixid_input_->setBackgroundColor("#f9f9f9");
 	matrixid_input_->setPlaceholderText("e.g @joe:matrix.org");
 
 	password_input_ = new TextField();
+	password_input_->setTextColor("#333333");
 	password_input_->setLabel("Password");
 	password_input_->setInkColor("#555459");
 	password_input_->setBackgroundColor("#f9f9f9");
