@@ -2,6 +2,7 @@
 #include <QJsonArray>
 
 #include "Event.h"
+#include "RoomEvent.h"
 
 #include "AliasesEventContent.h"
 #include "AvatarEventContent.h"
@@ -71,6 +72,61 @@ TEST(BaseEvent, Deserialization)
 	EXPECT_EQ(join_rules_event.content().joinRule(), JoinRule::Private);
 }
 
+TEST(BaseEvent, DeserializationException)
+{
+	auto data = QJsonObject{
+		{"content", QJsonObject{{"rule", "private"}}},
+		{"type", "m.room.join_rules"}};
+
+	Event<JoinRulesEventContent> event1;
+	ASSERT_THROW(event1.deserialize(data), DeserializationException);
+
+	data = QJsonObject{
+		{"contents", QJsonObject{{"join_rule", "private"}}},
+		{"type", "m.room.join_rules"}};
+
+	Event<JoinRulesEventContent> event2;
+	ASSERT_THROW(event2.deserialize(data), DeserializationException);
+}
+
+TEST(RoomEvent, Deserialization)
+{
+	auto data = QJsonObject{
+		{"content", QJsonObject{{"name", "Name"}}},
+		{"event_id", "$asdfafdf8af:matrix.org"},
+		{"room_id", "!aasdfaeae23r9:matrix.org"},
+		{"sender", "@alice:matrix.org"},
+		{"origin_server_ts", 1323238293289323LL},
+		{"type", "m.room.name"}};
+
+	RoomEvent<NameEventContent> event;
+	event.deserialize(data);
+
+	EXPECT_EQ(event.eventId(), "$asdfafdf8af:matrix.org");
+	EXPECT_EQ(event.roomId(), "!aasdfaeae23r9:matrix.org");
+	EXPECT_EQ(event.sender(), "@alice:matrix.org");
+	EXPECT_EQ(event.timestamp(), 1323238293289323);
+	EXPECT_EQ(event.content().name(), "Name");
+}
+
+TEST(RoomEvent, DeserializationException)
+{
+	auto data = QJsonObject{
+		{"content", QJsonObject{{"name", "Name"}}},
+		{"event_id", "$asdfafdf8af:matrix.org"},
+		{"room_id", "!aasdfaeae23r9:matrix.org"},
+		{"origin_server_ts", 1323238293289323LL},
+		{"type", "m.room.name"}};
+
+	RoomEvent<NameEventContent> event;
+
+	try {
+		event.deserialize(data);
+	} catch (const DeserializationException &e) {
+		ASSERT_STREQ("sender key is missing", e.what());
+	}
+}
+
 TEST(EventType, Mapping)
 {
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.aliases"}}), EventType::RoomAliases);
@@ -83,6 +139,7 @@ TEST(EventType, Mapping)
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.name"}}), EventType::RoomName);
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.power_levels"}}), EventType::RoomPowerLevels);
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.topic"}}), EventType::RoomTopic);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.unknown"}}), EventType::Unsupported);
 }
 
 TEST(AliasesEventContent, Deserialization)
