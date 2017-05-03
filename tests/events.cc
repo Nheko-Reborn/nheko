@@ -3,6 +3,7 @@
 
 #include "Event.h"
 #include "RoomEvent.h"
+#include "StateEvent.h"
 
 #include "AliasesEventContent.h"
 #include "AvatarEventContent.h"
@@ -124,6 +125,50 @@ TEST(RoomEvent, DeserializationException)
 		event.deserialize(data);
 	} catch (const DeserializationException &e) {
 		ASSERT_STREQ("sender key is missing", e.what());
+	}
+}
+
+TEST(StateEvent, Deserialization)
+{
+	auto data = QJsonObject{
+		{"content", QJsonObject{{"name", "Name"}}},
+		{"event_id", "$asdfafdf8af:matrix.org"},
+		{"state_key", "some_state_key"},
+		{"prev_content", QJsonObject{{"name", "Previous Name"}}},
+		{"room_id", "!aasdfaeae23r9:matrix.org"},
+		{"sender", "@alice:matrix.org"},
+		{"origin_server_ts", 1323238293289323LL},
+		{"type", "m.room.name"}};
+
+	StateEvent<NameEventContent> event;
+	event.deserialize(data);
+
+	EXPECT_EQ(event.eventId(), "$asdfafdf8af:matrix.org");
+	EXPECT_EQ(event.roomId(), "!aasdfaeae23r9:matrix.org");
+	EXPECT_EQ(event.sender(), "@alice:matrix.org");
+	EXPECT_EQ(event.timestamp(), 1323238293289323);
+	EXPECT_EQ(event.content().name(), "Name");
+	EXPECT_EQ(event.stateKey(), "some_state_key");
+	EXPECT_EQ(event.previousContent().name(), "Previous Name");
+}
+
+TEST(StateEvent, DeserializationException)
+{
+	auto data = QJsonObject{
+		{"content", QJsonObject{{"name", "Name"}}},
+		{"event_id", "$asdfafdf8af:matrix.org"},
+		{"prev_content", QJsonObject{{"name", "Previous Name"}}},
+		{"room_id", "!aasdfaeae23r9:matrix.org"},
+		{"sender", "@alice:matrix.org"},
+		{"origin_server_ts", 1323238293289323LL},
+		{"type", "m.room.name"}};
+
+	StateEvent<NameEventContent> event;
+
+	try {
+		event.deserialize(data);
+	} catch (const DeserializationException &e) {
+		ASSERT_STREQ("state_key key is missing", e.what());
 	}
 }
 
