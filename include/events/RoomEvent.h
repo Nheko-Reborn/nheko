@@ -23,6 +23,10 @@
 
 #include "Event.h"
 
+namespace matrix
+{
+namespace events
+{
 template <class Content>
 class RoomEvent : public Event<Content>
 {
@@ -90,5 +94,7 @@ void RoomEvent<Content>::deserialize(const QJsonValue &data)
 	sender_ = object.value("sender").toString();
 	origin_server_ts_ = object.value("origin_server_ts").toDouble();
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // MATRIX_ROOM_EVENT_H

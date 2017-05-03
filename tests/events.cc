@@ -16,6 +16,8 @@
 #include "PowerLevelsEventContent.h"
 #include "TopicEventContent.h"
 
+using namespace matrix::events;
+
 TEST(BaseEvent, Deserialization)
 {
 	// NameEventContent

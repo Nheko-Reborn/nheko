@@ -22,6 +22,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 /*
  * A topic is a short message detailing what is currently being discussed in the room.
  */
@@ -41,5 +45,7 @@ inline QString TopicEventContent::topic() const
 {
 	return topic_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // TOPIC_EVENT_CONTENT_H

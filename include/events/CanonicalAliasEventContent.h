@@ -24,6 +24,10 @@
 #include "CanonicalAliasEventContent.h"
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 /*
  * This event is used to inform the room about which alias should be considered
  * the canonical one. This could be for display purposes or as suggestion to
@@ -45,5 +49,7 @@ inline QString CanonicalAliasEventContent::alias() const
 {
 	return alias_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // CANONICAL_ALIAS_EVENT_CONTENT_H

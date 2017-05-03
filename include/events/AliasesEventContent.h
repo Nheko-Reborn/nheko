@@ -23,6 +23,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 class AliasesEventContent : public Deserializable
 {
 public:
@@ -38,5 +42,7 @@ inline QList<QString> AliasesEventContent::aliases() const
 {
 	return aliases_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // ALIASES_EVENT_CONTENT_H

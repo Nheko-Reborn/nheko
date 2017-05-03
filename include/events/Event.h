@@ -22,6 +22,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 enum EventType {
 	/// m.room.aliases
 	RoomAliases,
@@ -85,5 +89,7 @@ void Event<Content>::deserialize(const QJsonValue &data)
 
 	content_.deserialize(object.value("content"));
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // MATRIX_EVENT_H

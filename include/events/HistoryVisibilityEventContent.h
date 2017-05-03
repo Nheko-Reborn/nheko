@@ -22,6 +22,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 enum HistoryVisibility {
 	Invited,
 	Joined,
@@ -44,5 +48,7 @@ inline HistoryVisibility HistoryVisibilityEventContent::historyVisibility() cons
 {
 	return history_visibility_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // HISTORY_VISIBILITY_EVENT_CONTENT_H

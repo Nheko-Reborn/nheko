@@ -17,6 +17,8 @@
 
 #include "JoinRulesEventContent.h"
 
+using namespace matrix::events;
+
 void JoinRulesEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())

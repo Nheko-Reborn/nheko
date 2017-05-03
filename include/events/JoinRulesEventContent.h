@@ -22,6 +22,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 enum JoinRule {
 	// A user who wishes to join the room must first receive
 	// an invite to the room from someone already inside of the room.
@@ -56,5 +60,7 @@ inline JoinRule JoinRulesEventContent::joinRule() const
 {
 	return join_rule_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // JOIN_RULES_EVENT_CONTENT_H

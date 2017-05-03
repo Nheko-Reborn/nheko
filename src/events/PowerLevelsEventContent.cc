@@ -20,6 +20,8 @@
 #include "Deserializable.h"
 #include "PowerLevelsEventContent.h"
 
+using namespace matrix::events;
+
 void PowerLevelsEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())

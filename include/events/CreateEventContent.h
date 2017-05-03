@@ -22,6 +22,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 /*
  * This is the first event in a room and cannot be changed. It acts as the root of all other events.
  */
@@ -42,5 +46,7 @@ inline QString CreateEventContent::creator() const
 {
 	return creator_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // CREATE_EVENT_CONTENT_H

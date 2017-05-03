@@ -17,6 +17,8 @@
 
 #include "CreateEventContent.h"
 
+using namespace matrix::events;
+
 void CreateEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())

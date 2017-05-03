@@ -23,6 +23,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 /*
  * A picture that is associated with the room.
  */
@@ -42,5 +46,7 @@ inline QUrl AvatarEventContent::url() const
 {
 	return url_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // AVATAR_EVENT_CONTENT_H

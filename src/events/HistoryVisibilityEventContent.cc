@@ -17,6 +17,8 @@
 
 #include "HistoryVisibilityEventContent.h"
 
+using namespace matrix::events;
+
 void HistoryVisibilityEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())

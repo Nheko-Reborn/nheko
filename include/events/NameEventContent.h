@@ -22,6 +22,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 /*
  * A human-friendly room name designed to be displayed to the end-user.
  */
@@ -41,5 +45,7 @@ inline QString NameEventContent::name() const
 {
 	return name_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // NAME_EVENT_CONTENT_H

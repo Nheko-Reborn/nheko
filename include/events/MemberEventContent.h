@@ -23,6 +23,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 enum Membership {
 	// The user is banned.
 	BanState,
@@ -73,5 +77,7 @@ inline Membership MemberEventContent::membershipState() const
 {
 	return membership_state_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // MEMBER_EVENT_CONTENT_H

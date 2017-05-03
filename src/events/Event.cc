@@ -29,7 +29,7 @@
 #include "PowerLevelsEventContent.h"
 #include "TopicEventContent.h"
 
-EventType extractEventType(const QJsonObject &object)
+matrix::events::EventType matrix::events::extractEventType(const QJsonObject &object)
 {
 	if (!object.contains("type"))
 		throw DeserializationException("Missing event type");

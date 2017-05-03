@@ -19,6 +19,8 @@
 
 #include "AliasesEventContent.h"
 
+using namespace matrix::events;
+
 void AliasesEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())

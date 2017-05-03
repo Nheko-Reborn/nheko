@@ -19,6 +19,8 @@
 
 #include "MemberEventContent.h"
 
+using namespace matrix::events;
+
 void MemberEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())

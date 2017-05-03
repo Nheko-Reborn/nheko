@@ -17,6 +17,8 @@
 
 #include "CanonicalAliasEventContent.h"
 
+using namespace matrix::events;
+
 void CanonicalAliasEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())

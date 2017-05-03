@@ -23,6 +23,10 @@
 
 #include "Deserializable.h"
 
+namespace matrix
+{
+namespace events
+{
 enum PowerLevels {
 	User = 0,
 	Moderator = 50,
@@ -98,5 +102,7 @@ inline int PowerLevelsEventContent::usersDefaultLevel() const
 {
 	return users_default_;
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // POWER_LEVELS_EVENT_CONTENT_H

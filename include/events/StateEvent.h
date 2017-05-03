@@ -22,6 +22,10 @@
 
 #include "RoomEvent.h"
 
+namespace matrix
+{
+namespace events
+{
 template <class Content>
 class StateEvent : public RoomEvent<Content>
 {
@@ -63,5 +67,7 @@ void StateEvent<Content>::deserialize(const QJsonValue &data)
 	if (object.contains("prev_content"))
 		prev_content_.deserialize(object.value("prev_content"));
 }
+}  // namespace events
+}  // namespace matrix
 
 #endif  // MATRIX_STATE_EVENT_H

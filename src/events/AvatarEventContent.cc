@@ -19,6 +19,8 @@
 
 #include "AvatarEventContent.h"
 
+using namespace matrix::events;
+
 void AvatarEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
