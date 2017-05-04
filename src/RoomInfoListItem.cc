@@ -41,7 +41,7 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setAutoFillBackground(true);
 
-	setMinimumSize(parent->width(), max_height_);
+	setMaximumSize(parent->width(), max_height_);
 
 	topLayout_ = new QHBoxLayout(this);
 	topLayout_->setSpacing(0);

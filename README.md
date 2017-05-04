@@ -42,6 +42,9 @@ $ brew update
 $ brew install qt5
 ```
 
+N.B. you will need to pass `-DCMAKE_PREFIX_PATH=/usr/local/opt/qt5`
+to cmake to point it at your qt5 install (tweaking the path as needed)
+
 ### Building
 
 ```bash

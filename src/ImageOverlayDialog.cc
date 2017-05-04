@@ -23,7 +23,7 @@
 
 ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
     : QDialog{parent}
-    , image_{image}
+    , originalImage_{image}
 {
 	setMouseTracking(true);
 	setModal(false);
@@ -36,9 +36,17 @@ ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
 
 	setWindowState(Qt::WindowFullScreen);
 
-	raise();
-
 	connect(this, SIGNAL(closing()), this, SLOT(closeDialog()));
+}
+
+void ImageOverlayDialog::reject()
+{
+	// needed on macOS to recover the main menu after the dialog is closed(!)
+	// also affects KDE/Plasma.  XXX: There may be a better way of resetting the
+	// window state than this...
+	setWindowState(Qt::WindowNoState);
+
+	QDialog::reject();
 }
 
 void ImageOverlayDialog::closeDialog()
@@ -49,11 +57,11 @@ void ImageOverlayDialog::closeDialog()
 // TODO: Move this into Utils
 void ImageOverlayDialog::scaleImage(int max_width, int max_height)
 {
-	if (image_.isNull())
+	if (originalImage_.isNull())
 		return;
 
-	auto width_ratio = (double)max_width / (double)image_.width();
-	auto height_ratio = (double)max_height / (double)image_.height();
+	auto width_ratio = (double)max_width / (double)originalImage_.width();
+	auto height_ratio = (double)max_height / (double)originalImage_.height();
 
 	auto min_aspect_ratio = std::min(width_ratio, height_ratio);
 
@@ -61,14 +69,14 @@ void ImageOverlayDialog::scaleImage(int max_width, int max_height)
 	int final_height = 0;
 
 	if (min_aspect_ratio > 1) {
-		final_width = image_.width();
-		final_height = image_.height();
+		final_width = originalImage_.width();
+		final_height = originalImage_.height();
 	} else {
-		final_width = image_.width() * min_aspect_ratio;
-		final_height = image_.height() * min_aspect_ratio;
+		final_width = originalImage_.width() * min_aspect_ratio;
+		final_height = originalImage_.height() * min_aspect_ratio;
 	}
 
-	image_ = image_.scaled(final_width, final_height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	image_ = originalImage_.scaled(final_width, final_height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
 void ImageOverlayDialog::paintEvent(QPaintEvent *event)
