@@ -37,7 +37,7 @@ class SlidingStackWidget : public QStackedWidget
 
 public:
 	// Defines the animation direction.
-	enum AnimationDirection {
+	enum class AnimationDirection {
 		LEFT_TO_RIGHT,
 		RIGHT_TO_LEFT,
 		AUTOMATIC

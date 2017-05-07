@@ -72,7 +72,7 @@ int TimelineView::addEvents(const QJsonArray &events)
 	for (const auto &event : events) {
 		ty = events::extractEventType(event.toObject());
 
-		if (ty == events::RoomMessage) {
+		if (ty == events::EventType::RoomMessage) {
 			events::MessageEventType msg_type = events::extractMessageEventType(event.toObject());
 
 			if (msg_type == events::MessageEventType::Text) {

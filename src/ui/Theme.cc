@@ -49,7 +49,7 @@ void Theme::setColor(const QString &key, const QColor &color)
 	colors_.insert(key, color);
 }
 
-void Theme::setColor(const QString &key, ui::Color &color)
+void Theme::setColor(const QString &key, ui::Color color)
 {
 	static const QColor palette[] = {
 		QColor("#171919"),
@@ -69,5 +69,5 @@ void Theme::setColor(const QString &key, ui::Color &color)
 		rgba(0, 0, 0, 0),
 	};
 
-	colors_.insert(key, palette[color]);
+	colors_.insert(key, palette[static_cast<int>(color)]);
 }

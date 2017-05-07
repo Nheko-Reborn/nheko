@@ -337,7 +337,7 @@ void MatrixClient::onImageResponse(QNetworkReply *reply)
 
 void MatrixClient::onResponse(QNetworkReply *reply)
 {
-	switch (reply->property("endpoint").toInt()) {
+	switch (static_cast<Endpoint>(reply->property("endpoint").toInt())) {
 	case Endpoint::Versions:
 		onVersionsResponse(reply);
 		break;
@@ -387,7 +387,7 @@ void MatrixClient::login(const QString &username, const QString &password) noexc
 	LoginRequest body(username, password);
 
 	QNetworkReply *reply = post(request, body.serialize());
-	reply->setProperty("endpoint", Endpoint::Login);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::Login));
 }
 
 void MatrixClient::logout() noexcept
@@ -404,7 +404,7 @@ void MatrixClient::logout() noexcept
 
 	QJsonObject body{};
 	QNetworkReply *reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
-	reply->setProperty("endpoint", Endpoint::Logout);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::Logout));
 }
 
 void MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server) noexcept
@@ -424,7 +424,7 @@ void MatrixClient::registerUser(const QString &user, const QString &pass, const 
 	RegisterRequest body(user, pass);
 
 	QNetworkReply *reply = post(request, body.serialize());
-	reply->setProperty("endpoint", Endpoint::Register);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::Register));
 }
 
 void MatrixClient::sync() noexcept
@@ -452,7 +452,7 @@ void MatrixClient::sync() noexcept
 	QNetworkRequest request(QString(endpoint.toEncoded()));
 
 	QNetworkReply *reply = get(request);
-	reply->setProperty("endpoint", Endpoint::Sync);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::Sync));
 }
 
 void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) noexcept
@@ -473,7 +473,7 @@ void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) no
 
 	QNetworkReply *reply = put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
 
-	reply->setProperty("endpoint", Endpoint::SendTextMessage);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::SendTextMessage));
 	reply->setProperty("txn_id", txn_id_);
 	reply->setProperty("roomid", roomid);
 
@@ -505,7 +505,7 @@ void MatrixClient::initialSync() noexcept
 	QNetworkRequest request(QString(endpoint.toEncoded()));
 
 	QNetworkReply *reply = get(request);
-	reply->setProperty("endpoint", Endpoint::InitialSync);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::InitialSync));
 }
 
 void MatrixClient::versions() noexcept
@@ -516,7 +516,7 @@ void MatrixClient::versions() noexcept
 	QNetworkRequest request(endpoint);
 
 	QNetworkReply *reply = get(request);
-	reply->setProperty("endpoint", Endpoint::Versions);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::Versions));
 }
 
 void MatrixClient::getOwnProfile() noexcept
@@ -535,7 +535,7 @@ void MatrixClient::getOwnProfile() noexcept
 	QNetworkRequest request(QString(endpoint.toEncoded()));
 
 	QNetworkReply *reply = get(request);
-	reply->setProperty("endpoint", Endpoint::GetOwnProfile);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnProfile));
 }
 
 void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
@@ -554,7 +554,7 @@ void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url
 
 	QNetworkReply *reply = get(avatar_request);
 	reply->setProperty("roomid", roomid);
-	reply->setProperty("endpoint", Endpoint::RoomAvatar);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::RoomAvatar));
 }
 
 void MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
@@ -563,7 +563,7 @@ void MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
 
 	QNetworkReply *reply = get(image_request);
 	reply->setProperty("event_id", event_id);
-	reply->setProperty("endpoint", Endpoint::Image);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::Image));
 }
 
 void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
@@ -581,5 +581,5 @@ void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 	QNetworkRequest avatar_request(media_url);
 
 	QNetworkReply *reply = get(avatar_request);
-	reply->setProperty("endpoint", Endpoint::GetOwnAvatar);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnAvatar));
 }

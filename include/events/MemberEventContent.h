@@ -27,7 +27,7 @@ namespace matrix
 {
 namespace events
 {
-enum Membership {
+enum class Membership {
 	// The user is banned.
 	BanState,
 

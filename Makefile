@@ -15,7 +15,7 @@ lint:
 	@clang-format -i $(SRC)
 
 test:
-	@cmake -DBUILD_TESTS=ON -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Release
+	@cmake -DBUILD_TESTS=ON -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	@cmake --build build
 	@cd build && GTEST_COLOR=1 ctest --verbose
 

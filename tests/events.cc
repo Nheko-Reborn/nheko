@@ -550,18 +550,18 @@ TEST(PowerLevelsEventContent, DefaultValues)
 {
 	PowerLevelsEventContent power_levels;
 
-	EXPECT_EQ(power_levels.banLevel(), PowerLevels::Moderator);
-	EXPECT_EQ(power_levels.inviteLevel(), PowerLevels::Moderator);
-	EXPECT_EQ(power_levels.kickLevel(), PowerLevels::Moderator);
-	EXPECT_EQ(power_levels.redactLevel(), PowerLevels::Moderator);
+	EXPECT_EQ(power_levels.banLevel(), static_cast<int>(PowerLevels::Moderator));
+	EXPECT_EQ(power_levels.inviteLevel(), static_cast<int>(PowerLevels::Moderator));
+	EXPECT_EQ(power_levels.kickLevel(), static_cast<int>(PowerLevels::Moderator));
+	EXPECT_EQ(power_levels.redactLevel(), static_cast<int>(PowerLevels::Moderator));
 
-	EXPECT_EQ(power_levels.eventsDefaultLevel(), PowerLevels::User);
-	EXPECT_EQ(power_levels.usersDefaultLevel(), PowerLevels::User);
-	EXPECT_EQ(power_levels.stateDefaultLevel(), PowerLevels::Moderator);
+	EXPECT_EQ(power_levels.eventsDefaultLevel(), static_cast<int>(PowerLevels::User));
+	EXPECT_EQ(power_levels.usersDefaultLevel(), static_cast<int>(PowerLevels::User));
+	EXPECT_EQ(power_levels.stateDefaultLevel(), static_cast<int>(PowerLevels::Moderator));
 
 	// Default levels.
-	EXPECT_EQ(power_levels.userLevel("@joe:matrix.org"), PowerLevels::User);
-	EXPECT_EQ(power_levels.eventLevel("m.room.message"), PowerLevels::User);
+	EXPECT_EQ(power_levels.userLevel("@joe:matrix.org"), static_cast<int>(PowerLevels::User));
+	EXPECT_EQ(power_levels.eventLevel("m.room.message"), static_cast<int>(PowerLevels::User));
 }
 
 TEST(PowerLevelsEventContent, FullDeserialization)
@@ -618,11 +618,11 @@ TEST(PowerLevelsEventContent, PartialDeserialization)
 
 	EXPECT_EQ(power_levels.banLevel(), 1);
 	EXPECT_EQ(power_levels.inviteLevel(), 2);
-	EXPECT_EQ(power_levels.kickLevel(), PowerLevels::Moderator);
-	EXPECT_EQ(power_levels.redactLevel(), PowerLevels::Moderator);
+	EXPECT_EQ(power_levels.kickLevel(), static_cast<int>(PowerLevels::Moderator));
+	EXPECT_EQ(power_levels.redactLevel(), static_cast<int>(PowerLevels::Moderator));
 
 	EXPECT_EQ(power_levels.eventsDefaultLevel(), 5);
-	EXPECT_EQ(power_levels.stateDefaultLevel(), PowerLevels::Moderator);
+	EXPECT_EQ(power_levels.stateDefaultLevel(), static_cast<int>(PowerLevels::Moderator));
 	EXPECT_EQ(power_levels.usersDefaultLevel(), 7);
 
 	EXPECT_EQ(power_levels.userLevel("@alice:matrix.org"), 10);

@@ -145,7 +145,7 @@ void CircularProgress::paintEvent(QPaintEvent *event)
 	pen.setWidthF(width_);
 	pen.setColor(color());
 
-	if (ui::IndeterminateProgress == progress_type_) {
+	if (ui::ProgressType::IndeterminateProgress == progress_type_) {
 		QVector<qreal> pattern;
 		pattern << delegate_->dashLength() * size_ / 50 << 30 * size_ / 50;
 

@@ -26,7 +26,7 @@ namespace matrix
 {
 namespace events
 {
-enum HistoryVisibility {
+enum class HistoryVisibility {
 	Invited,
 	Joined,
 	Shared,

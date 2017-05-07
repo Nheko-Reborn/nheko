@@ -26,7 +26,7 @@ namespace matrix
 {
 namespace events
 {
-enum EventType {
+enum class EventType {
 	/// m.room.aliases
 	RoomAliases,
 	/// m.room.avatar

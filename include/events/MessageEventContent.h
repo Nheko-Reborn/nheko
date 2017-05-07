@@ -26,7 +26,7 @@ namespace matrix
 {
 namespace events
 {
-enum MessageEventType {
+enum class MessageEventType {
 	// m.audio
 	Audio,
 

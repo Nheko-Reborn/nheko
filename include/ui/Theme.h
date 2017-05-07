@@ -7,7 +7,7 @@
 
 namespace ui
 {
-enum AvatarType {
+enum class AvatarType {
 	Icon,
 	Image,
 	Letter
@@ -19,40 +19,40 @@ const int FontSize = 16;
 // Default avatar size. Width and height.
 const int AvatarSize = 40;
 
-enum ButtonPreset {
+enum class ButtonPreset {
 	FlatPreset,
 	CheckablePreset
 };
 
-enum RippleStyle {
+enum class RippleStyle {
 	CenteredRipple,
 	PositionedRipple,
 	NoRipple
 };
 
-enum OverlayStyle {
+enum class OverlayStyle {
 	NoOverlay,
 	TintedOverlay,
 	GrayOverlay
 };
 
-enum Role {
+enum class Role {
 	Default,
 	Primary,
 	Secondary
 };
 
-enum ButtonIconPlacement {
+enum class ButtonIconPlacement {
 	LeftIcon,
 	RightIcon
 };
 
-enum ProgressType {
+enum class ProgressType {
 	DeterminateProgress,
 	IndeterminateProgress
 };
 
-enum Color {
+enum class Color {
 	Black,
 	BrightWhite,
 	FadedWhite,
@@ -78,7 +78,7 @@ public:
 	QColor getColor(const QString &key) const;
 
 	void setColor(const QString &key, const QColor &color);
-	void setColor(const QString &key, ui::Color &color);
+	void setColor(const QString &key, ui::Color color);
 
 private:
 	QColor rgba(int r, int g, int b, qreal a) const;

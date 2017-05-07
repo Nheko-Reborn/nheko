@@ -82,7 +82,7 @@ private slots:
 	void onResponse(QNetworkReply *reply);
 
 private:
-	enum Endpoint {
+	enum class Endpoint {
 		GetOwnProfile,
 		GetOwnAvatar,
 		GetProfile,

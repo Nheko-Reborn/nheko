@@ -15,10 +15,10 @@ void FlatButton::init()
 {
 	ripple_overlay_ = new RippleOverlay(this);
 	state_machine_ = new FlatButtonStateMachine(this);
-	role_ = ui::Default;
-	ripple_style_ = ui::PositionedRipple;
-	icon_placement_ = ui::LeftIcon;
-	overlay_style_ = ui::GrayOverlay;
+	role_ = ui::Role::Default;
+	ripple_style_ = ui::RippleStyle::PositionedRipple;
+	icon_placement_ = ui::ButtonIconPlacement::LeftIcon;
+	overlay_style_ = ui::OverlayStyle::GrayOverlay;
 	bg_mode_ = Qt::TransparentMode;
 	fixed_ripple_radius_ = 64;
 	corner_radius_ = 3;
@@ -69,11 +69,11 @@ FlatButton::~FlatButton()
 void FlatButton::applyPreset(ui::ButtonPreset preset)
 {
 	switch (preset) {
-	case ui::FlatPreset:
-		setOverlayStyle(ui::NoOverlay);
+	case ui::ButtonPreset::FlatPreset:
+		setOverlayStyle(ui::OverlayStyle::NoOverlay);
 		break;
-	case ui::CheckablePreset:
-		setOverlayStyle(ui::NoOverlay);
+	case ui::ButtonPreset::CheckablePreset:
+		setOverlayStyle(ui::OverlayStyle::NoOverlay);
 		setCheckable(true);
 		break;
 	default:
@@ -105,11 +105,11 @@ QColor FlatButton::foregroundColor() const
 		}
 
 		switch (role_) {
-		case ui::Primary:
+		case ui::Role::Primary:
 			return ThemeManager::instance().themeColor("Blue");
-		case ui::Secondary:
+		case ui::Role::Secondary:
 			return ThemeManager::instance().themeColor("Gray");
-		case ui::Default:
+		case ui::Role::Default:
 		default:
 			return ThemeManager::instance().themeColor("Black");
 		}
@@ -127,11 +127,11 @@ QColor FlatButton::backgroundColor() const
 {
 	if (!background_color_.isValid()) {
 		switch (role_) {
-		case ui::Primary:
+		case ui::Role::Primary:
 			return ThemeManager::instance().themeColor("Blue");
-		case ui::Secondary:
+		case ui::Role::Secondary:
 			return ThemeManager::instance().themeColor("Gray");
-		case ui::Default:
+		case ui::Role::Default:
 		default:
 			return ThemeManager::instance().themeColor("Black");
 		}
@@ -143,7 +143,7 @@ QColor FlatButton::backgroundColor() const
 void FlatButton::setOverlayColor(const QColor &color)
 {
 	overlay_color_ = color;
-	setOverlayStyle(ui::TintedOverlay);
+	setOverlayStyle(ui::OverlayStyle::TintedOverlay);
 }
 
 QColor FlatButton::overlayColor() const
@@ -314,11 +314,11 @@ void FlatButton::checkStateSet()
 
 void FlatButton::mousePressEvent(QMouseEvent *event)
 {
-	if (ui::NoRipple != ripple_style_) {
+	if (ui::RippleStyle::NoRipple != ripple_style_) {
 		QPoint pos;
 		qreal radiusEndValue;
 
-		if (ui::CenteredRipple == ripple_style_) {
+		if (ui::RippleStyle::CenteredRipple == ripple_style_) {
 			pos = rect().center();
 		} else {
 			pos = event->pos();
@@ -410,8 +410,8 @@ void FlatButton::paintBackground(QPainter *painter)
 		return;
 	}
 
-	if ((ui::NoOverlay != overlay_style_) && (overlayOpacity > 0)) {
-		if (ui::TintedOverlay == overlay_style_) {
+	if ((ui::OverlayStyle::NoOverlay != overlay_style_) && (overlayOpacity > 0)) {
+		if (ui::OverlayStyle::TintedOverlay == overlay_style_) {
 			brush.setColor(overlayColor());
 		} else {
 			brush.setColor(Qt::gray);

@@ -86,9 +86,9 @@ class FlatButton : public QPushButton
 	Q_PROPERTY(qreal fontSize WRITE setFontSize READ fontSize)
 
 public:
-	explicit FlatButton(QWidget *parent = 0, ui::ButtonPreset preset = ui::FlatPreset);
-	explicit FlatButton(const QString &text, QWidget *parent = 0, ui::ButtonPreset preset = ui::FlatPreset);
-	FlatButton(const QString &text, ui::Role role, QWidget *parent = 0, ui::ButtonPreset preset = ui::FlatPreset);
+	explicit FlatButton(QWidget *parent = 0, ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
+	explicit FlatButton(const QString &text, QWidget *parent = 0, ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
+	FlatButton(const QString &text, ui::Role role, QWidget *parent = 0, ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
 	~FlatButton();
 
 	void applyPreset(ui::ButtonPreset preset);
@@ -132,9 +132,7 @@ public:
 	QSize sizeHint() const override;
 
 protected:
-	enum {
-		IconPadding = 0
-	};
+	int IconPadding = 0;
 
 	void checkStateSet() override;
 	void mousePressEvent(QMouseEvent *event) override;

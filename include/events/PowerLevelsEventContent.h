@@ -27,7 +27,7 @@ namespace matrix
 {
 namespace events
 {
-enum PowerLevels {
+enum class PowerLevels {
 	User = 0,
 	Moderator = 50,
 	Admin = 100,
@@ -55,14 +55,14 @@ public:
 	int userLevel(QString user_id) const;
 
 private:
-	int ban_ = PowerLevels::Moderator;
-	int invite_ = PowerLevels::Moderator;
-	int kick_ = PowerLevels::Moderator;
-	int redact_ = PowerLevels::Moderator;
+	int ban_ = static_cast<int>(PowerLevels::Moderator);
+	int invite_ = static_cast<int>(PowerLevels::Moderator);
+	int kick_ = static_cast<int>(PowerLevels::Moderator);
+	int redact_ = static_cast<int>(PowerLevels::Moderator);
 
-	int events_default_ = PowerLevels::User;
-	int state_default_ = PowerLevels::Moderator;
-	int users_default_ = PowerLevels::User;
+	int events_default_ = static_cast<int>(PowerLevels::User);
+	int state_default_ = static_cast<int>(PowerLevels::Moderator);
+	int users_default_ = static_cast<int>(PowerLevels::User);
 
 	QMap<QString, int> events_;
 	QMap<QString, int> users_;
