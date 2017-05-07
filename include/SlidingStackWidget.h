@@ -54,7 +54,7 @@ public slots:
 	void slideInPrevious();
 
 	// Move to a widget by index.
-	void slideInIndex(int index, enum AnimationDirection direction = AnimationDirection::AUTOMATIC);
+	void slideInIndex(int index, AnimationDirection direction = AnimationDirection::AUTOMATIC);
 
 	int getWidgetIndex(QWidget *widget);
 signals:
@@ -67,7 +67,7 @@ protected slots:
 
 protected:
 	// The method that does the main work for the widget transition.
-	void slideInWidget(QWidget *widget, enum AnimationDirection direction = AnimationDirection::AUTOMATIC);
+	void slideInWidget(QWidget *widget, AnimationDirection direction = AnimationDirection::AUTOMATIC);
 
 	// Indicates whether or not the animation is active.
 	bool active_;
@@ -79,7 +79,7 @@ protected:
 	int speed_;
 
 	// The animation type.
-	enum QEasingCurve::Type animation_type_;
+	QEasingCurve::Type animation_type_;
 
 	// Current widget's index.
 	int now_;
