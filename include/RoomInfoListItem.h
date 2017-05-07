@@ -26,26 +26,27 @@
 #include "Avatar.h"
 #include "Badge.h"
 #include "RippleOverlay.h"
-#include "RoomInfo.h"
+#include "RoomState.h"
 
 class RoomInfoListItem : public QWidget
 {
 	Q_OBJECT
 
 public:
-	RoomInfoListItem(RoomInfo info, QWidget *parent = 0);
+	RoomInfoListItem(RoomState state, QString room_id, QWidget *parent = 0);
 	~RoomInfoListItem();
 
 	void updateUnreadMessageCount(int count);
 	void clearUnreadMessageCount();
+	void setState(const RoomState &state);
 
-	inline bool isPressed();
-	inline RoomInfo info();
+	inline bool isPressed() const;
+	inline RoomState state() const;
 	inline void setAvatar(const QImage &avatar_image);
-	inline int unreadMessageCount();
+	inline int unreadMessageCount() const;
 
 signals:
-	void clicked(const RoomInfo &info_);
+	void clicked(const QString &room_id);
 
 public slots:
 	void setPressedState(bool state);
@@ -58,7 +59,8 @@ private:
 
 	RippleOverlay *ripple_overlay_;
 
-	RoomInfo info_;
+	RoomState state_;
+	QString room_id_;
 
 	QHBoxLayout *topLayout_;
 
@@ -83,19 +85,19 @@ private:
 	int unread_msg_count_;
 };
 
-inline int RoomInfoListItem::unreadMessageCount()
+inline int RoomInfoListItem::unreadMessageCount() const
 {
 	return unread_msg_count_;
 }
 
-inline bool RoomInfoListItem::isPressed()
+inline bool RoomInfoListItem::isPressed() const
 {
 	return is_pressed_;
 }
 
-inline RoomInfo RoomInfoListItem::info()
+inline RoomState RoomInfoListItem::state() const
 {
-	return info_;
+	return state_;
 }
 
 inline void RoomInfoListItem::setAvatar(const QImage &avatar_image)

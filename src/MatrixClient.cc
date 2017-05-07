@@ -194,10 +194,12 @@ void MatrixClient::onInitialSyncResponse(QNetworkReply *reply)
 
 	try {
 		response.deserialize(json);
-		emit initialSyncCompleted(response);
 	} catch (DeserializationException &e) {
 		qWarning() << "Sync malformed response" << e.what();
+		return;
 	}
+
+	emit initialSyncCompleted(response);
 }
 
 void MatrixClient::onSyncResponse(QNetworkReply *reply)

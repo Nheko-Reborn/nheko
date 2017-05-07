@@ -24,8 +24,8 @@
 #include <QWidget>
 
 #include "MatrixClient.h"
-#include "RoomInfo.h"
 #include "RoomInfoListItem.h"
+#include "RoomState.h"
 #include "Sync.h"
 
 namespace Ui
@@ -41,18 +41,18 @@ public:
 	RoomList(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~RoomList();
 
-	void setInitialRooms(const Rooms &rooms);
+	void setInitialRooms(const QMap<QString, RoomState> &states);
+	void sync(const QMap<QString, RoomState> &states);
+
 	void clear();
 
-	RoomInfo extractRoomInfo(const State &room_state);
-
 signals:
-	void roomChanged(const RoomInfo &info);
+	void roomChanged(const QString &room_id);
 	void totalUnreadMessageCountUpdated(int count);
 
 public slots:
 	void updateRoomAvatar(const QString &roomid, const QPixmap &img);
-	void highlightSelectedRoom(const RoomInfo &info);
+	void highlightSelectedRoom(const QString &room_id);
 	void updateUnreadMessageCount(const QString &roomid, int count);
 
 private:

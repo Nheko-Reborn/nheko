@@ -27,6 +27,13 @@
 #include "Sync.h"
 #include "TimelineItem.h"
 
+#include "Image.h"
+#include "Notice.h"
+#include "Text.h"
+
+namespace msgs = matrix::events::messages;
+namespace events = matrix::events;
+
 // Contains info about a message shown in the history view
 // but not yet confirmed by the homeserver through sync.
 struct PendingMessage {
@@ -50,13 +57,14 @@ class TimelineView : public QWidget
 
 public:
 	TimelineView(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-	TimelineView(const QList<Event> &events, QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+	TimelineView(const QJsonArray &events, QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~TimelineView();
 
-	// FIXME: Reduce the parameters
-	void addHistoryItem(const Event &event, const QString &color, bool with_sender);
-	void addImageItem(const QString &body, const QUrl &url, const Event &event, const QString &color, bool with_sender);
-	int addEvents(const QList<Event> &events);
+	void addHistoryItem(const events::MessageEvent<msgs::Image> &e, const QString &color, bool with_sender);
+	void addHistoryItem(const events::MessageEvent<msgs::Notice> &e, const QString &color, bool with_sender);
+	void addHistoryItem(const events::MessageEvent<msgs::Text> &e, const QString &color, bool with_sender);
+
+	int addEvents(const QJsonArray &events);
 	void addUserTextMessage(const QString &msg, int txn_id);
 	void updatePendingMessage(int txn_id, QString event_id);
 	void clear();
@@ -66,8 +74,8 @@ public slots:
 
 private:
 	void init();
-	void removePendingMessage(const Event &event);
-	bool isPendingMessage(const Event &event, const QString &userid);
+	void removePendingMessage(const events::MessageEvent<msgs::Text> &e);
+	bool isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &userid);
 
 	QVBoxLayout *top_layout_;
 	QVBoxLayout *scroll_layout_;

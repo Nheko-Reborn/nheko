@@ -25,20 +25,27 @@
 #include "ImageItem.h"
 #include "Sync.h"
 
+#include "Image.h"
+#include "MessageEvent.h"
+#include "Notice.h"
+#include "Text.h"
+
+namespace events = matrix::events;
+namespace msgs = matrix::events::messages;
+
 class TimelineItem : public QWidget
 {
 	Q_OBJECT
 public:
-	// For remote messages.
-	TimelineItem(const Event &event, bool with_sender, const QString &color, QWidget *parent = 0);
+	TimelineItem(const events::MessageEvent<msgs::Notice> &e, bool with_sender, const QString &color, QWidget *parent = 0);
+	TimelineItem(const events::MessageEvent<msgs::Text> &e, bool with_sender, const QString &color, QWidget *parent = 0);
 
 	// For local messages.
 	TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent = 0);
 	TimelineItem(const QString &body, QWidget *parent = 0);
 
-	// For inline images.
-	TimelineItem(ImageItem *image, const Event &event, const QString &color, QWidget *parent);
-	TimelineItem(ImageItem *image, const Event &event, QWidget *parent);
+	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, const QString &color, QWidget *parent);
+	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, QWidget *parent);
 
 	~TimelineItem();
 

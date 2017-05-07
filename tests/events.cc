@@ -183,6 +183,7 @@ TEST(EventType, Mapping)
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.history_visibility"}}), EventType::RoomHistoryVisibility);
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.join_rules"}}), EventType::RoomJoinRules);
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.member"}}), EventType::RoomMember);
+	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.message"}}), EventType::RoomMessage);
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.name"}}), EventType::RoomName);
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.power_levels"}}), EventType::RoomPowerLevels);
 	EXPECT_EQ(extractEventType(QJsonObject{{"type", "m.room.topic"}}), EventType::RoomTopic);

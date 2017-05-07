@@ -23,8 +23,8 @@
 #include <QWidget>
 
 #include "MatrixClient.h"
-#include "RoomInfo.h"
 #include "RoomList.h"
+#include "RoomState.h"
 #include "TextInputWidget.h"
 #include "TimelineViewManager.h"
 #include "TopRoomBar.h"
@@ -58,11 +58,13 @@ private slots:
 	void initialSyncCompleted(const SyncResponse &response);
 	void syncCompleted(const SyncResponse &response);
 	void syncFailed(const QString &msg);
-	void changeTopRoomInfo(const RoomInfo &info);
+	void changeTopRoomInfo(const QString &room_id);
 	void startSync();
 	void logout();
 
 private:
+	void updateRoomState(RoomState &room_state, const QJsonArray &events);
+
 	Ui::ChatPage *ui;
 
 	RoomList *room_list_;
@@ -74,10 +76,12 @@ private:
 	QTimer *sync_timer_;
 	int sync_interval_;
 
-	RoomInfo current_room_;
+	QString current_room_;
 	QMap<QString, QPixmap> room_avatars_;
 
 	UserInfoWidget *user_info_widget_;
+
+	QMap<QString, RoomState> state_manager_;
 
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;

@@ -15,35 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROOM_INFO_H
-#define ROOM_INFO_H
+#include "Emote.h"
 
-#include <QList>
-#include <QString>
-#include <QUrl>
+using namespace matrix::events::messages;
 
-class RoomInfo
+void Emote::deserialize(const QJsonObject &object)
 {
-public:
-	RoomInfo();
-	RoomInfo(QString name, QString topic = "", QUrl avatar_url = QUrl(""));
-
-	QString id() const;
-	QString name() const;
-	QString topic() const;
-	QUrl avatarUrl() const;
-
-	void setAvatarUrl(const QUrl &url);
-	void setId(const QString &id);
-	void setName(const QString &name);
-	void setTopic(const QString &name);
-
-private:
-	QString id_;
-	QString name_;
-	QString topic_;
-	QUrl avatar_url_;
-	QList<QString> aliases_;
-};
-
-#endif  // ROOM_INFO_H
+	if (object.value("msgtype") != "m.emote")
+		throw DeserializationException("invalid msgtype for emote");
+}

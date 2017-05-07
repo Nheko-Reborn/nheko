@@ -24,7 +24,6 @@
 #include <QWidget>
 
 #include "MatrixClient.h"
-#include "RoomInfo.h"
 #include "Sync.h"
 #include "TimelineView.h"
 
@@ -48,14 +47,14 @@ signals:
 	void unreadMessages(QString roomid, int count);
 
 public slots:
-	void setHistoryView(const RoomInfo &info);
+	void setHistoryView(const QString &room_id);
 	void sendTextMessage(const QString &msg);
 
 private slots:
 	void messageSent(const QString &eventid, const QString &roomid, int txnid);
 
 private:
-	RoomInfo active_room_;
+	QString active_room_;
 	QMap<QString, TimelineView *> views_;
 	QSharedPointer<MatrixClient> client_;
 };

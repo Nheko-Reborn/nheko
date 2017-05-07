@@ -19,12 +19,13 @@
 #include <QMouseEvent>
 
 #include "Ripple.h"
-#include "RoomInfo.h"
 #include "RoomInfoListItem.h"
+#include "RoomState.h"
 
-RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *parent)
     : QWidget(parent)
-    , info_(info)
+    , state_(state)
+    , room_id_(room_id)
     , is_pressed_(false)
     , max_height_(60)
     , unread_msg_count_(0)
@@ -43,6 +44,9 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 
 	setMaximumSize(parent->width(), max_height_);
 
+	QString room_name = state_.resolveName();
+	QString room_topic = state_.topic.content().topic().simplified();
+
 	topLayout_ = new QHBoxLayout(this);
 	topLayout_->setSpacing(0);
 	topLayout_->setMargin(0);
@@ -60,7 +64,7 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 	textLayout_->setContentsMargins(0, 5, 0, 5);
 
 	roomAvatar_ = new Avatar(avatarWidget_);
-	roomAvatar_->setLetter(QChar(info_.name()[0]));
+	roomAvatar_->setLetter(QChar(room_name[0]));
 	roomAvatar_->setSize(max_height_ - 20);
 	roomAvatar_->setTextColor("#555459");
 	roomAvatar_->setBackgroundColor("#d6dde3");
@@ -76,12 +80,12 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 
 	avatarLayout_->addWidget(roomAvatar_);
 
-	roomName_ = new QLabel(info_.name(), textWidget_);
+	roomName_ = new QLabel(room_name, textWidget_);
 	roomName_->setMaximumSize(parent->width() - max_height_, 20);
 	roomName_->setFont(QFont("Open Sans", 11));
 	roomName_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	roomTopic_ = new QLabel(info_.topic(), textWidget_);
+	roomTopic_ = new QLabel(room_topic, textWidget_);
 	roomTopic_->setMaximumSize(parent->width() - max_height_, 20);
 	roomTopic_->setFont(QFont("Open Sans", 10));
 	roomTopic_->setStyleSheet("color: #171919");
@@ -93,8 +97,8 @@ RoomInfoListItem::RoomInfoListItem(RoomInfo info, QWidget *parent)
 	topLayout_->addWidget(avatarWidget_);
 	topLayout_->addWidget(textWidget_);
 
-	setElidedText(roomName_, info_.name(), parent->width() - max_height_);
-	setElidedText(roomTopic_, info_.topic(), parent->width() - max_height_);
+	setElidedText(roomName_, room_name, parent->width() - max_height_);
+	setElidedText(roomTopic_, room_topic, parent->width() - max_height_);
 
 	QPainterPath path;
 	path.addRoundedRect(rect(), 0, 0);
@@ -131,9 +135,23 @@ void RoomInfoListItem::setPressedState(bool state)
 	}
 }
 
+void RoomInfoListItem::setState(const RoomState &new_state)
+{
+	if (state_.resolveName() != new_state.resolveName())
+		setElidedText(roomName_, new_state.resolveName(), parentWidget()->width() - max_height_);
+
+	if (state_.resolveTopic() != new_state.resolveTopic())
+		setElidedText(roomTopic_, new_state.resolveTopic(), parentWidget()->width() - max_height_);
+
+	if (new_state.avatar.content().url().toString().isEmpty())
+		roomAvatar_->setLetter(QChar(new_state.resolveName()[0]));
+
+	state_ = new_state;
+}
+
 void RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 {
-	emit clicked(info_);
+	emit clicked(room_id_);
 
 	setPressedState(true);
 

@@ -18,6 +18,7 @@
 #ifndef SYNC_H
 #define SYNC_H
 
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QMap>
 #include <QString>
@@ -90,13 +91,13 @@ class State : public Deserializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
-	inline QList<Event> events() const;
+	inline QJsonArray events() const;
 
 private:
-	QList<Event> events_;
+	QJsonArray events_;
 };
 
-inline QList<Event> State::events() const
+inline QJsonArray State::events() const
 {
 	return events_;
 }
@@ -104,19 +105,19 @@ inline QList<Event> State::events() const
 class Timeline : public Deserializable
 {
 public:
-	inline QList<Event> events() const;
+	inline QJsonArray events() const;
 	inline QString previousBatch() const;
 	inline bool limited() const;
 
 	void deserialize(const QJsonValue &data) override;
 
 private:
-	QList<Event> events_;
+	QJsonArray events_;
 	QString prev_batch_;
 	bool limited_;
 };
 
-inline QList<Event> Timeline::events() const
+inline QJsonArray Timeline::events() const
 {
 	return events_;
 }

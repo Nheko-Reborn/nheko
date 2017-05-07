@@ -50,6 +50,8 @@ matrix::events::EventType matrix::events::extractEventType(const QJsonObject &ob
 		return EventType::RoomJoinRules;
 	else if (type == "m.room.member")
 		return EventType::RoomMember;
+	else if (type == "m.room.message")
+		return EventType::RoomMessage;
 	else if (type == "m.room.name")
 		return EventType::RoomName;
 	else if (type == "m.room.power_levels")
@@ -58,4 +60,23 @@ matrix::events::EventType matrix::events::extractEventType(const QJsonObject &ob
 		return EventType::RoomTopic;
 	else
 		return EventType::Unsupported;
+}
+
+bool matrix::events::isStateEvent(EventType type)
+{
+	return type == EventType::RoomAliases ||
+	       type == EventType::RoomAvatar ||
+	       type == EventType::RoomCanonicalAlias ||
+	       type == EventType::RoomCreate ||
+	       type == EventType::RoomHistoryVisibility ||
+	       type == EventType::RoomJoinRules ||
+	       type == EventType::RoomMember ||
+	       type == EventType::RoomName ||
+	       type == EventType::RoomPowerLevels ||
+	       type == EventType::RoomTopic;
+}
+
+bool matrix::events::isMessageEvent(EventType type)
+{
+	return type == EventType::RoomMessage;
 }

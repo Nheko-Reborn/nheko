@@ -57,32 +57,6 @@ void RoomList::clear()
 	rooms_.clear();
 }
 
-RoomInfo RoomList::extractRoomInfo(const State &room_state)
-{
-	RoomInfo info;
-
-	auto events = room_state.events();
-
-	for (const auto &event : events) {
-		if (event.type() == "m.room.name") {
-			info.setName(event.content().value("name").toString());
-		} else if (event.type() == "m.room.topic") {
-			info.setTopic(event.content().value("topic").toString());
-		} else if (event.type() == "m.room.avatar") {
-			info.setAvatarUrl(QUrl(event.content().value("url").toString()));
-		} else if (event.type() == "m.room.canonical_alias") {
-			if (info.name().isEmpty())
-				info.setName(event.content().value("alias").toString());
-		}
-	}
-
-	// Sanitize info for print.
-	info.setTopic(info.topic().simplified());
-	info.setName(info.name().simplified());
-
-	return info;
-}
-
 void RoomList::updateUnreadMessageCount(const QString &roomid, int count)
 {
 	if (!rooms_.contains(roomid)) {
@@ -105,27 +79,21 @@ void RoomList::calculateUnreadMessageCount()
 	emit totalUnreadMessageCountUpdated(total_unread_msgs);
 }
 
-void RoomList::setInitialRooms(const Rooms &rooms)
+void RoomList::setInitialRooms(const QMap<QString, RoomState> &states)
 {
 	rooms_.clear();
 
-	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
-		RoomInfo info = RoomList::extractRoomInfo(it.value().state());
-		info.setId(it.key());
+	for (auto it = states.constBegin(); it != states.constEnd(); it++) {
+		auto room_id = it.key();
+		auto state = it.value();
 
-		if (info.name().isEmpty())
-			continue;
+		if (!state.avatar.content().url().toString().isEmpty())
+			client_->fetchRoomAvatar(room_id, state.avatar.content().url());
 
-		if (!info.avatarUrl().isEmpty())
-			client_->fetchRoomAvatar(info.id(), info.avatarUrl());
+		RoomInfoListItem *room_item = new RoomInfoListItem(state, room_id, ui->scrollArea);
+		connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
 
-		RoomInfoListItem *room_item = new RoomInfoListItem(info, ui->scrollArea);
-		connect(room_item,
-			SIGNAL(clicked(const RoomInfo &)),
-			this,
-			SLOT(highlightSelectedRoom(const RoomInfo &)));
-
-		rooms_.insert(it.key(), room_item);
+		rooms_.insert(room_id, room_item);
 
 		int pos = ui->scrollVerticalLayout->count() - 1;
 		ui->scrollVerticalLayout->insertWidget(pos, room_item);
@@ -134,29 +102,51 @@ void RoomList::setInitialRooms(const Rooms &rooms)
 	if (rooms_.isEmpty())
 		return;
 
-	// TODO: Move this into its own function.
 	auto first_room = rooms_.first();
 	first_room->setPressedState(true);
-	emit roomChanged(first_room->info());
+
+	emit roomChanged(rooms_.firstKey());
 }
 
-void RoomList::highlightSelectedRoom(const RoomInfo &info)
+void RoomList::sync(const QMap<QString, RoomState> &states)
 {
-	emit roomChanged(info);
+	for (auto it = states.constBegin(); it != states.constEnd(); it++) {
+		auto room_id = it.key();
+		auto state = it.value();
 
-	if (!rooms_.contains(info.id())) {
+		// TODO: Add the new room to the list.
+		if (!rooms_.contains(room_id))
+			continue;
+
+		auto room = rooms_[room_id];
+
+		auto current_avatar = room->state().avatar.content().url();
+		auto new_avatar = state.avatar.content().url();
+
+		if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
+			client_->fetchRoomAvatar(room_id, new_avatar);
+
+		room->setState(state);
+	}
+}
+
+void RoomList::highlightSelectedRoom(const QString &room_id)
+{
+	emit roomChanged(room_id);
+
+	if (!rooms_.contains(room_id)) {
 		qDebug() << "RoomList: clicked unknown roomid";
 		return;
 	}
 
 	// TODO: Send a read receipt for the last event.
-	auto room = rooms_[info.id()];
+	auto room = rooms_[room_id];
 	room->clearUnreadMessageCount();
 
 	calculateUnreadMessageCount();
 
 	for (auto it = rooms_.constBegin(); it != rooms_.constEnd(); it++) {
-		if (it.key() != info.id())
+		if (it.key() != room_id)
 			it.value()->setPressedState(false);
 	}
 }

@@ -21,6 +21,9 @@
 #include "ImageItem.h"
 #include "TimelineItem.h"
 
+namespace events = matrix::events;
+namespace msgs = matrix::events::messages;
+
 TimelineItem::TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent)
     : QWidget(parent)
 {
@@ -37,7 +40,7 @@ TimelineItem::TimelineItem(const QString &body, QWidget *parent)
 	setupLayout();
 }
 
-TimelineItem::TimelineItem(ImageItem *image, const Event &event, const QString &color, QWidget *parent)
+TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Image> &event, const QString &color, QWidget *parent)
     : QWidget(parent)
 {
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
@@ -58,7 +61,7 @@ TimelineItem::TimelineItem(ImageItem *image, const Event &event, const QString &
 	setLayout(top_layout_);
 }
 
-TimelineItem::TimelineItem(ImageItem *image, const Event &event, QWidget *parent)
+TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Image> &event, QWidget *parent)
     : QWidget(parent)
 {
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
@@ -73,16 +76,31 @@ TimelineItem::TimelineItem(ImageItem *image, const Event &event, QWidget *parent
 	setLayout(top_layout_);
 }
 
-TimelineItem::TimelineItem(const Event &event, bool with_sender, const QString &color, QWidget *parent)
+TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool with_sender, const QString &color, QWidget *parent)
     : QWidget(parent)
 {
-	auto body = event.content().value("body").toString().trimmed().toHtmlEscaped();
+	auto body = event.content().body().trimmed().toHtmlEscaped();
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 
 	generateTimestamp(timestamp);
 
-	if (event.content().value("msgtype").toString() == "m.notice")
-		body = "<i style=\"color: #565E5E\">" + body + "</i>";
+	body = "<i style=\"color: #565E5E\">" + body + "</i>";
+
+	if (with_sender)
+		generateBody(event.sender(), color, body);
+	else
+		generateBody(body);
+
+	setupLayout();
+}
+
+TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool with_sender, const QString &color, QWidget *parent)
+    : QWidget(parent)
+{
+	auto body = event.content().body().trimmed().toHtmlEscaped();
+	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+
+	generateTimestamp(timestamp);
 
 	if (with_sender)
 		generateBody(event.sender(), color, body);

@@ -89,9 +89,9 @@ set(SRC_FILES
     src/MainWindow.cc
     src/MatrixClient.cc
     src/Profile.cc
-    src/RoomInfo.cc
     src/RoomInfoListItem.cc
     src/RoomList.cc
+    src/RoomState.cc
     src/Register.cc
     src/RegisterPage.cc
     src/SlidingStackWidget.cc
@@ -126,14 +126,25 @@ set(MATRIX_EVENTS
     src/events/HistoryVisibilityEventContent.cc
     src/events/JoinRulesEventContent.cc
     src/events/MemberEventContent.cc
+    src/events/MessageEventContent.cc
     src/events/NameEventContent.cc
     src/events/PowerLevelsEventContent.cc
     src/events/TopicEventContent.cc
+
+    src/events/messages/Audio.cc
+    src/events/messages/Emote.cc
+    src/events/messages/File.cc
+    src/events/messages/Image.cc
+    src/events/messages/Location.cc
+    src/events/messages/Notice.cc
+    src/events/messages/Text.cc
+    src/events/messages/Video.cc
 )
 
 include_directories(include)
 include_directories(include/ui)
 include_directories(include/events)
+include_directories(include/events/messages)
 
 qt5_wrap_ui (UI_HEADERS
     forms/ChatPage.ui
@@ -191,7 +202,15 @@ if (BUILD_TESTS)
     add_executable(events_test tests/events.cc)
     target_link_libraries(events_test matrix_events ${GTEST_BOTH_LIBRARIES})
 
+    add_executable(event_collection_test tests/event_collection.cc)
+    target_link_libraries(event_collection_test matrix_events ${GTEST_BOTH_LIBRARIES})
+
+    add_executable(message_events tests/message_events.cc)
+    target_link_libraries(message_events matrix_events ${GTEST_BOTH_LIBRARIES})
+
     add_test(MatrixEvents events_test)
+    add_test(MatrixEventCollection event_collection_test)
+    add_test(MatrixMessageEvents message_events)
 else()
     add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC})
     target_link_libraries (nheko matrix_events Qt5::Widgets Qt5::Network)

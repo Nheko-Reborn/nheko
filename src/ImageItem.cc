@@ -25,10 +25,11 @@
 #include "ImageItem.h"
 #include "ImageOverlayDialog.h"
 
-ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const Event &event, const QString &body, const QUrl &url, QWidget *parent)
+namespace events = matrix::events;
+namespace msgs = matrix::events::messages;
+
+ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const events::MessageEvent<msgs::Image> &event, QWidget *parent)
     : QWidget(parent)
-    , url_{url}
-    , text_{body}
     , event_{event}
     , client_{client}
 {
@@ -36,6 +37,9 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const Event &event, co
 	setMouseTracking(true);
 	setCursor(Qt::PointingHandCursor);
 	setAttribute(Qt::WA_Hover, true);
+
+	url_ = event.msgContent().url();
+	text_ = event.content().body();
 
 	QList<QString> url_parts = url_.toString().split("mxc://");
 

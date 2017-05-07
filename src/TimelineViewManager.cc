@@ -54,11 +54,11 @@ void TimelineViewManager::messageSent(const QString &event_id, const QString &ro
 
 void TimelineViewManager::sendTextMessage(const QString &msg)
 {
-	auto room = active_room_;
-	auto view = views_[room.id()];
+	auto room_id = active_room_;
+	auto view = views_[room_id];
 
 	view->addUserTextMessage(msg, client_->transactionId());
-	client_->sendTextMessage(room.id(), msg);
+	client_->sendTextMessage(room_id, msg);
 }
 
 void TimelineViewManager::clearAll()
@@ -95,7 +95,7 @@ void TimelineViewManager::sync(const Rooms &rooms)
 		auto roomid = it.key();
 
 		if (!views_.contains(roomid)) {
-			qDebug() << "Ignoring event from unknown room";
+			qDebug() << "Ignoring event from unknown room" << roomid;
 			continue;
 		}
 
@@ -105,26 +105,25 @@ void TimelineViewManager::sync(const Rooms &rooms)
 		int msgs_added = view->addEvents(events);
 
 		if (msgs_added > 0) {
-			// TODO: When window gets active the current
+			// TODO: When the app window gets active the current
 			// unread count (if any) should be cleared.
 			auto isAppActive = QApplication::activeWindow() != nullptr;
 
-			if (roomid != active_room_.id() || !isAppActive)
+			if (roomid != active_room_ || !isAppActive)
 				emit unreadMessages(roomid, msgs_added);
 		}
 	}
 }
 
-void TimelineViewManager::setHistoryView(const RoomInfo &info)
+void TimelineViewManager::setHistoryView(const QString &room_id)
 {
-	if (!views_.contains(info.id())) {
-		qDebug() << "Room List id is not present in view manager";
-		qDebug() << info.name();
+	if (!views_.contains(room_id)) {
+		qDebug() << "Room ID from RoomList is not present in ViewManager" << room_id;
 		return;
 	}
 
-	active_room_ = info;
-	auto widget = views_.value(info.id());
+	active_room_ = room_id;
+	auto widget = views_.value(room_id);
 
 	setCurrentWidget(widget);
 }

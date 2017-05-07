@@ -41,6 +41,8 @@ enum EventType {
 	RoomJoinRules,
 	/// m.room.member
 	RoomMember,
+	/// m.room.message
+	RoomMessage,
 	/// m.room.name
 	RoomName,
 	/// m.room.power_levels
@@ -52,6 +54,9 @@ enum EventType {
 };
 
 EventType extractEventType(const QJsonObject &data);
+
+bool isMessageEvent(EventType type);
+bool isStateEvent(EventType type);
 
 template <class Content>
 class Event : public Deserializable

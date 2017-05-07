@@ -83,8 +83,9 @@ void RoomEvent<Content>::deserialize(const QJsonValue &data)
 	if (!object.contains("origin_server_ts"))
 		throw DeserializationException("origin_server_ts key is missing");
 
-	if (!object.contains("room_id"))
-		throw DeserializationException("room_id key is missing");
+	// FIXME: Synapse doesn't include room id?!
+	/* if (!object.contains("room_id")) */
+	/* 	throw DeserializationException("room_id key is missing"); */
 
 	if (!object.contains("sender"))
 		throw DeserializationException("sender key is missing");

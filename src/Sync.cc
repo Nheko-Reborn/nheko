@@ -157,19 +157,7 @@ void State::deserialize(const QJsonValue &data)
 	if (!data.isArray())
 		throw DeserializationException("State is not a JSON array");
 
-	QJsonArray event_array = data.toArray();
-
-	for (int i = 0; i < event_array.count(); i++) {
-		Event event;
-
-		try {
-			event.deserialize(event_array.at(i));
-			events_.push_back(event);
-		} catch (DeserializationException &e) {
-			qWarning() << e.what();
-			qWarning() << "Skipping malformed state event";
-		}
-	}
+	events_ = data.toArray();
 }
 
 void Timeline::deserialize(const QJsonValue &data)
@@ -194,17 +182,5 @@ void Timeline::deserialize(const QJsonValue &data)
 	if (!object.value("events").isArray())
 		throw DeserializationException("timeline/events is not a JSON array");
 
-	auto timeline_events = object.value("events").toArray();
-
-	for (int i = 0; i < timeline_events.count(); i++) {
-		Event event;
-
-		try {
-			event.deserialize(timeline_events.at(i));
-			events_.push_back(event);
-		} catch (DeserializationException &e) {
-			qWarning() << e.what();
-			qWarning() << "Skipping malformed timeline event";
-		}
-	}
+	events_ = object.value("events").toArray();
 }

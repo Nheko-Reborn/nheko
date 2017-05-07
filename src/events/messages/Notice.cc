@@ -15,57 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "RoomInfo.h"
+#include "Notice.h"
 
-RoomInfo::RoomInfo()
-    : name_("")
-    , topic_("")
-{
-}
+using namespace matrix::events::messages;
 
-RoomInfo::RoomInfo(QString name, QString topic, QUrl avatar_url)
-    : name_(name)
-    , topic_(topic)
-    , avatar_url_(avatar_url)
+void Notice::deserialize(const QJsonObject &object)
 {
-}
-
-QString RoomInfo::id() const
-{
-	return id_;
-}
-
-QString RoomInfo::name() const
-{
-	return name_;
-}
-
-QString RoomInfo::topic() const
-{
-	return topic_;
-}
-
-QUrl RoomInfo::avatarUrl() const
-{
-	return avatar_url_;
-}
-
-void RoomInfo::setAvatarUrl(const QUrl &url)
-{
-	avatar_url_ = url;
-}
-
-void RoomInfo::setId(const QString &id)
-{
-	id_ = id;
-}
-
-void RoomInfo::setName(const QString &name)
-{
-	name_ = name;
-}
-
-void RoomInfo::setTopic(const QString &topic)
-{
-	topic_ = topic;
+	if (object.value("msgtype") != "m.notice")
+		throw DeserializationException("invalid msgtype for notice");
 }

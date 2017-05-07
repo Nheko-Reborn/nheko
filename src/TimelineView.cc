@@ -16,17 +16,25 @@
  */
 
 #include <QDebug>
+#include <QJsonArray>
 #include <QScrollBar>
 #include <QSettings>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpacerItem>
+
+#include "Event.h"
+#include "MessageEvent.h"
+#include "MessageEventContent.h"
 
 #include "ImageItem.h"
 #include "TimelineItem.h"
 #include "TimelineView.h"
 #include "TimelineViewManager.h"
 
-TimelineView::TimelineView(const QList<Event> &events, QSharedPointer<MatrixClient> client, QWidget *parent)
+namespace events = matrix::events;
+namespace msgs = matrix::events::messages;
+
+TimelineView::TimelineView(const QJsonArray &events, QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
     , client_{client}
 {
@@ -53,52 +61,79 @@ void TimelineView::sliderRangeChanged(int min, int max)
 	scroll_area_->verticalScrollBar()->setValue(max);
 }
 
-int TimelineView::addEvents(const QList<Event> &events)
+int TimelineView::addEvents(const QJsonArray &events)
 {
 	QSettings settings;
 	auto local_user = settings.value("auth/user_id").toString();
 
 	int message_count = 0;
+	events::EventType ty;
 
 	for (const auto &event : events) {
-		if (event.type() == "m.room.message") {
-			auto msg_type = event.content().value("msgtype").toString();
+		ty = events::extractEventType(event.toObject());
 
-			if (isPendingMessage(event, local_user)) {
-				removePendingMessage(event);
+		if (ty == events::RoomMessage) {
+			events::MessageEventType msg_type = events::extractMessageEventType(event.toObject());
+
+			if (msg_type == events::MessageEventType::Text) {
+				events::MessageEvent<msgs::Text> text;
+
+				try {
+					text.deserialize(event.toObject());
+				} catch (const DeserializationException &e) {
+					qWarning() << e.what() << event;
+					continue;
+				}
+
+				if (isPendingMessage(text, local_user)) {
+					removePendingMessage(text);
+					continue;
+				}
+
+				auto with_sender = last_sender_ != text.sender();
+				auto color = TimelineViewManager::getUserColor(text.sender());
+
+				addHistoryItem(text, color, with_sender);
+				last_sender_ = text.sender();
+
+				message_count += 1;
+			} else if (msg_type == events::MessageEventType::Notice) {
+				events::MessageEvent<msgs::Notice> notice;
+
+				try {
+					notice.deserialize(event.toObject());
+				} catch (const DeserializationException &e) {
+					qWarning() << e.what() << event;
+					continue;
+				}
+
+				auto with_sender = last_sender_ != notice.sender();
+				auto color = TimelineViewManager::getUserColor(notice.sender());
+
+				addHistoryItem(notice, color, with_sender);
+				last_sender_ = notice.sender();
+
+				message_count += 1;
+			} else if (msg_type == events::MessageEventType::Image) {
+				events::MessageEvent<msgs::Image> img;
+
+				try {
+					img.deserialize(event.toObject());
+				} catch (const DeserializationException &e) {
+					qWarning() << e.what() << event;
+					continue;
+				}
+
+				auto with_sender = last_sender_ != img.sender();
+				auto color = TimelineViewManager::getUserColor(img.sender());
+
+				addHistoryItem(img, color, with_sender);
+
+				last_sender_ = img.sender();
+				message_count += 1;
+			} else if (msg_type == events::MessageEventType::Unknown) {
+				qWarning() << "Unknown message type" << event.toObject();
 				continue;
-			}
-
-			if (msg_type == "m.text" || msg_type == "m.notice") {
-				auto with_sender = last_sender_ != event.sender();
-				auto color = TimelineViewManager::getUserColor(event.sender());
-
-				addHistoryItem(event, color, with_sender);
-				last_sender_ = event.sender();
-
-				message_count += 1;
-			} else if (msg_type == "m.image") {
-				// TODO: Move this into serialization.
-				if (!event.content().contains("url")) {
-					qWarning() << "Missing url from m.image event" << event.content();
-					continue;
-				}
-
-				if (!event.content().contains("body")) {
-					qWarning() << "Missing body from m.image event" << event.content();
-					continue;
-				}
-
-				QUrl url(event.content().value("url").toString());
-				QString body(event.content().value("body").toString());
-
-				auto with_sender = last_sender_ != event.sender();
-				auto color = TimelineViewManager::getUserColor(event.sender());
-
-				addImageItem(body, url, event, color, with_sender);
-
-				last_sender_ = event.sender();
-				message_count += 1;
 			}
 		}
 	}
@@ -136,13 +171,9 @@ void TimelineView::init()
 		SLOT(sliderRangeChanged(int, int)));
 }
 
-void TimelineView::addImageItem(const QString &body,
-				const QUrl &url,
-				const Event &event,
-				const QString &color,
-				bool with_sender)
+void TimelineView::addHistoryItem(const events::MessageEvent<msgs::Image> &event, const QString &color, bool with_sender)
 {
-	auto image = new ImageItem(client_, event, body, url);
+	auto image = new ImageItem(client_, event);
 
 	if (with_sender) {
 		auto item = new TimelineItem(image, event, color, scroll_widget_);
@@ -153,7 +184,13 @@ void TimelineView::addImageItem(const QString &body,
 	}
 }
 
-void TimelineView::addHistoryItem(const Event &event, const QString &color, bool with_sender)
+void TimelineView::addHistoryItem(const events::MessageEvent<msgs::Notice> &event, const QString &color, bool with_sender)
+{
+	TimelineItem *item = new TimelineItem(event, with_sender, color, scroll_widget_);
+	scroll_layout_->addWidget(item);
+}
+
+void TimelineView::addHistoryItem(const events::MessageEvent<msgs::Text> &event, const QString &color, bool with_sender)
 {
 	TimelineItem *item = new TimelineItem(event, with_sender, color, scroll_widget_);
 	scroll_layout_->addWidget(item);
@@ -169,34 +206,25 @@ void TimelineView::updatePendingMessage(int txn_id, QString event_id)
 	}
 }
 
-bool TimelineView::isPendingMessage(const Event &event, const QString &userid)
+bool TimelineView::isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &local_userid)
 {
-	if (event.sender() != userid || event.type() != "m.room.message")
-		return false;
-
-	auto msgtype = event.content().value("msgtype").toString();
-	auto body = event.content().value("body").toString();
-
-	// FIXME: should contain more checks later on for other types of messages.
-	if (msgtype != "m.text")
+	if (e.sender() != local_userid)
 		return false;
 
 	for (const auto &msg : pending_msgs_) {
-		if (msg.event_id == event.eventId() || msg.body == body)
+		if (msg.event_id == e.eventId() || msg.body == e.content().body())
 			return true;
 	}
 
 	return false;
 }
 
-void TimelineView::removePendingMessage(const Event &event)
+void TimelineView::removePendingMessage(const events::MessageEvent<msgs::Text> &e)
 {
-	auto body = event.content().value("body").toString();
-
 	for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
 		int index = std::distance(pending_msgs_.begin(), it);
 
-		if (it->event_id == event.eventId() || it->body == body) {
+		if (it->event_id == e.eventId() || it->body == e.content().body()) {
 			pending_msgs_.removeAt(index);
 			break;
 		}
