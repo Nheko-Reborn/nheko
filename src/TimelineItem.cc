@@ -20,6 +20,7 @@
 
 #include "ImageItem.h"
 #include "TimelineItem.h"
+#include "TimelineViewManager.h"
 
 namespace events = matrix::events;
 namespace msgs = matrix::events::messages;
@@ -28,7 +29,7 @@ TimelineItem::TimelineItem(const QString &userid, const QString &color, const QS
     : QWidget(parent)
 {
 	generateTimestamp(QDateTime::currentDateTime());
-	generateBody(userid, color, body);
+	generateBody(TimelineViewManager::displayName(userid), color, body);
 	setupLayout();
 }
 
@@ -45,7 +46,7 @@ TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Im
 {
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 	generateTimestamp(timestamp);
-	generateBody(event.sender(), color, "");
+	generateBody(TimelineViewManager::displayName(event.sender()), color, "");
 
 	top_layout_ = new QHBoxLayout();
 	top_layout_->setMargin(0);
@@ -87,7 +88,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool
 	body = "<i style=\"color: #565E5E\">" + body + "</i>";
 
 	if (with_sender)
-		generateBody(event.sender(), color, body);
+		generateBody(TimelineViewManager::displayName(event.sender()), color, body);
 	else
 		generateBody(body);
 
@@ -103,7 +104,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool w
 	generateTimestamp(timestamp);
 
 	if (with_sender)
-		generateBody(event.sender(), color, body);
+		generateBody(TimelineViewManager::displayName(event.sender()), color, body);
 	else
 		generateBody(body);
 
@@ -131,7 +132,11 @@ void TimelineItem::generateBody(const QString &body)
 
 void TimelineItem::generateBody(const QString &userid, const QString &color, const QString &body)
 {
-	auto sender = userid.split(":")[0].split("@")[1];
+	auto sender = userid;
+
+	// TODO: Fix this by using a UserId type.
+	if (userid.split(":")[0].split("@").size() > 1)
+		sender = userid.split(":")[0].split("@")[1];
 
 	content_label_ = new QLabel(this);
 	content_label_->setWordWrap(true);

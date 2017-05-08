@@ -129,6 +129,7 @@ void TimelineViewManager::setHistoryView(const QString &room_id)
 }
 
 QMap<QString, QString> TimelineViewManager::NICK_COLORS;
+QMap<QString, QString> TimelineViewManager::DISPLAY_NAMES;
 
 QString TimelineViewManager::chooseRandomColor()
 {
@@ -197,4 +198,12 @@ QString TimelineViewManager::getUserColor(const QString &userid)
 	}
 
 	return color;
+}
+
+QString TimelineViewManager::displayName(const QString &userid)
+{
+	if (DISPLAY_NAMES.contains(userid))
+		return DISPLAY_NAMES.value(userid);
+
+	return userid;
 }

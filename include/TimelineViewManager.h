@@ -41,7 +41,10 @@ public:
 
 	static QString chooseRandomColor();
 	static QString getUserColor(const QString &userid);
+	static QString displayName(const QString &userid);
+
 	static QMap<QString, QString> NICK_COLORS;
+	static QMap<QString, QString> DISPLAY_NAMES;
 
 signals:
 	void unreadMessages(QString roomid, int count);

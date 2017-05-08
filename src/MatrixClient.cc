@@ -483,15 +483,14 @@ void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) no
 
 void MatrixClient::initialSync() noexcept
 {
-	QJsonArray excluded_event_types = {
-		QString("m.room.member"),
+	QJsonArray excluded_presence = {
+		QString("m.presence"),
 	};
 
 	QJsonObject filter{{"room",
 			    QJsonObject{{"timeline", QJsonObject{{"limit", 70}}},
-					{"state", QJsonObject{{"not_types", excluded_event_types}}},
 					{"ephemeral", QJsonObject{{"limit", 0}}}}},
-			   {"presence", QJsonObject{{"limit", 0}}}};
+			   {"presence", QJsonObject{{"not_types", excluded_presence}}}};
 
 	QUrlQuery query;
 	query.addQueryItem("full_state", "true");

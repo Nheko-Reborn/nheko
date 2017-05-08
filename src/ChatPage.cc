@@ -23,6 +23,7 @@
 
 #include "ChatPage.h"
 #include "Sync.h"
+#include "TimelineViewManager.h"
 #include "UserInfoWidget.h"
 
 #include "AliasesEventContent.h"
@@ -31,6 +32,7 @@
 #include "CreateEventContent.h"
 #include "HistoryVisibilityEventContent.h"
 #include "JoinRulesEventContent.h"
+#include "MemberEventContent.h"
 #include "NameEventContent.h"
 #include "PowerLevelsEventContent.h"
 #include "TopicEventContent.h"
@@ -318,6 +320,18 @@ void ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
 				events::StateEvent<events::NameEventContent> name;
 				name.deserialize(event);
 				room_state.name = name;
+				break;
+			}
+			case events::EventType::RoomMember: {
+				events::StateEvent<events::MemberEventContent> member;
+				member.deserialize(event);
+
+				auto display_name = member.content().displayName();
+
+				if (display_name.isEmpty())
+					display_name = member.stateKey();
+
+				TimelineViewManager::DISPLAY_NAMES.insert(member.stateKey(), display_name);
 				break;
 			}
 			case events::EventType::RoomPowerLevels: {
