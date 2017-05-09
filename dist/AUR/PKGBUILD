@@ -27,23 +27,23 @@ build() {
 }
 
 package() {
-	# Creating needed directories
-	install -dm755 "$pkgdir/usr/bin"
-	install -dm755 "$pkgdir/usr/share/pixmaps/"
-	install -dm755 "$pkgdir/usr/share/applications/"
+    # Creating needed directories
+    install -dm755 "$pkgdir/usr/bin"
+    install -dm755 "$pkgdir/usr/share/pixmaps/"
+    install -dm755 "$pkgdir/usr/share/applications/"
 
-	# Program
+    # Program
     install -Dm755 "$pkgname/build/nheko" "$pkgdir/usr/bin/nheko"
 
     # Desktop launcher
-	install -Dm644 "$srcdir/$pkgname/resources/nheko-256.png" "$pkgdir/usr/share/pixmaps/nheko.png"
-	install -Dm644 "$srcdir/$pkgname/resources/nheko.desktop" "$pkgdir/usr/share/applications/nheko.desktop"
+    install -Dm644 "$srcdir/$pkgname/resources/nheko-256.png" "$pkgdir/usr/share/pixmaps/nheko.png"
+    install -Dm644 "$srcdir/$pkgname/resources/nheko.desktop" "$pkgdir/usr/share/applications/nheko.desktop"
 
     # Icons
     local icon_size icon_dir
-	for icon_size in 16 32 48 64 128 256 512; do
-		icon_dir="$pkgdir/usr/share/icons/hicolor/${icon_size}x${icon_size}/apps"
-		install -d "$icon_dir"
-		install -m644 "$srcdir/$pkgname/resources/nheko-${icon_size}.png" "$icon_dir/nheko.png"
-	done
+    for icon_size in 16 32 48 64 128 256 512; do
+        icon_dir="$pkgdir/usr/share/icons/hicolor/${icon_size}x${icon_size}/apps"
+        install -d "$icon_dir"
+        install -m644 "$srcdir/$pkgname/resources/nheko-${icon_size}.png" "$icon_dir/nheko.png"
+    done
 }

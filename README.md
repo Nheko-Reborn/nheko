@@ -11,7 +11,18 @@ Join the discussion on Matrix [#nheko:matrix.org](https://matrix.to/#/#nheko:mat
 Most of the features you'd expect from a chat application are missing right now
 but you can of course receive and send messages in the rooms that you are a member of.
 
-### Requirements
+### Installation
+
+#### Arch Linux
+```bash
+pacaur -S nheko-git
+```
+
+#### Windows
+
+You can find a NSIS installer [here](https://ci.appveyor.com/project/mujx/nheko/branch/master/artifacts).
+
+### Build Requirements
 
 - Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
   Freetype, which is essential to properly support emoji.
@@ -53,9 +64,6 @@ make -C build
 ```
 
 The `nheko` binary will be located in the `build` directory.
-
-[Here](https://ci.appveyor.com/project/mujx/nheko/branch/master/artifacts) you can
-find development builds for Windows.
 
 ### Contributing
 
