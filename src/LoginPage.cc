@@ -21,19 +21,27 @@
 
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
-    , client_(client)
+    , settings_modal_{nullptr}
+    , login_settings_{nullptr}
+    , client_{client}
 {
 	matrix_id_validator_ = new InputValidator(this);
 
 	top_layout_ = new QVBoxLayout();
 
-	back_layout_ = new QHBoxLayout();
-	back_layout_->setSpacing(0);
-	back_layout_->setContentsMargins(5, 5, -1, -1);
+	top_bar_layout_ = new QHBoxLayout();
+	top_bar_layout_->setSpacing(0);
+	top_bar_layout_->setMargin(0);
 
 	back_button_ = new FlatButton(this);
 	back_button_->setMinimumSize(QSize(30, 30));
+	back_button_->setForegroundColor("#333333");
 	back_button_->setCursor(QCursor(Qt::PointingHandCursor));
+
+	advanced_settings_button_ = new FlatButton(this);
+	advanced_settings_button_->setMinimumSize(QSize(30, 30));
+	advanced_settings_button_->setForegroundColor("#333333");
+	advanced_settings_button_->setCursor(QCursor(Qt::PointingHandCursor));
 
 	QIcon icon;
 	icon.addFile(":/icons/icons/left-angle.png", QSize(), QIcon::Normal, QIcon::Off);
@@ -41,8 +49,15 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	back_button_->setIcon(icon);
 	back_button_->setIconSize(QSize(24, 24));
 
-	back_layout_->addWidget(back_button_, 0, Qt::AlignLeft | Qt::AlignVCenter);
-	back_layout_->addStretch(1);
+	QIcon advanced_settings_icon;
+	advanced_settings_icon.addFile(":/icons/icons/cog.png", QSize(), QIcon::Normal, QIcon::Off);
+
+	advanced_settings_button_->setIcon(advanced_settings_icon);
+	advanced_settings_button_->setIconSize(QSize(24, 24));
+
+	top_bar_layout_->addWidget(back_button_, 0, Qt::AlignLeft | Qt::AlignVCenter);
+	top_bar_layout_->addStretch(1);
+	top_bar_layout_->addWidget(advanced_settings_button_, 0, Qt::AlignRight | Qt::AlignVCenter);
 
 	logo_ = new QLabel(this);
 	logo_->setPixmap(QPixmap(":/logos/nheko-128.png"));
@@ -64,14 +79,14 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	form_wrapper_->addWidget(form_widget_);
 	form_wrapper_->addStretch(1);
 
-	matrixid_input_ = new TextField();
+	matrixid_input_ = new TextField(this);
 	matrixid_input_->setTextColor("#333333");
 	matrixid_input_->setLabel("Matrix ID");
 	matrixid_input_->setInkColor("#555459");
 	matrixid_input_->setBackgroundColor("#f9f9f9");
 	matrixid_input_->setPlaceholderText("e.g @joe:matrix.org");
 
-	password_input_ = new TextField();
+	password_input_ = new TextField(this);
 	password_input_->setTextColor("#333333");
 	password_input_->setLabel("Password");
 	password_input_->setInkColor("#555459");
@@ -83,7 +98,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	button_layout_ = new QHBoxLayout();
 	button_layout_->setSpacing(0);
-	button_layout_->setContentsMargins(0, 0, 0, 50);
+	button_layout_->setContentsMargins(0, 0, 0, 30);
 
 	login_button_ = new RaisedButton("LOGIN", this);
 	login_button_->setBackgroundColor(QColor("#333333"));
@@ -100,7 +115,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	error_label_ = new QLabel(this);
 	error_label_->setStyleSheet("color: #E22826; font-size: 11pt;");
 
-	top_layout_->addLayout(back_layout_);
+	top_layout_->addLayout(top_bar_layout_);
 	top_layout_->addStretch(1);
 	top_layout_->addLayout(logo_layout_);
 	top_layout_->addLayout(form_wrapper_);
@@ -116,6 +131,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
 	connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
 	connect(client_.data(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
+	connect(advanced_settings_button_, SIGNAL(clicked()), this, SLOT(showSettingsModal()));
 
 	matrixid_input_->setValidator(matrix_id_validator_->id_);
 }
@@ -135,18 +151,49 @@ void LoginPage::onLoginButtonClicked()
 		loginError("Empty password");
 	} else {
 		QString user = matrixid_input_->text().split(":").at(0).split("@").at(1);
-		QString home_server = matrixid_input_->text().split(":").at(1);
 		QString password = password_input_->text();
+
+		QString home_server = custom_domain_.isEmpty()
+					      ? matrixid_input_->text().split(":").at(1)
+					      : custom_domain_;
 
 		client_->setServer(home_server);
 		client_->login(user, password);
 	}
 }
 
+void LoginPage::showSettingsModal()
+{
+	if (login_settings_ == nullptr) {
+		login_settings_ = new LoginSettings(this);
+		connect(login_settings_, &LoginSettings::closing, this, &LoginPage::closeSettingsModal);
+	}
+
+	if (settings_modal_ == nullptr) {
+		settings_modal_ = new OverlayModal(this, login_settings_);
+		settings_modal_->setDuration(100);
+		settings_modal_->setColor(QColor(55, 55, 55, 170));
+	}
+
+	settings_modal_->fadeIn();
+}
+
+void LoginPage::closeSettingsModal(const QString &server)
+{
+	custom_domain_ = server;
+	settings_modal_->fadeOut();
+}
+
 void LoginPage::reset()
 {
 	matrixid_input_->clear();
 	password_input_->clear();
+
+	settings_modal_->deleteLater();
+	login_settings_->deleteLater();
+
+	login_settings_ = nullptr;
+	settings_modal_ = nullptr;
 }
 
 void LoginPage::onBackButtonClicked()

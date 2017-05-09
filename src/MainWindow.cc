@@ -79,7 +79,7 @@ void MainWindow::removeOverlayProgressBar()
 			progress_modal_->fadeOut();
 		}
 
-		if (progress_modal_ != nullptr)
+		if (spinner_ != nullptr)
 			spinner_->deleteLater();
 
 		progress_modal_ = nullptr;

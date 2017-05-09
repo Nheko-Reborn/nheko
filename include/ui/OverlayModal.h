@@ -50,6 +50,7 @@ private:
 inline void OverlayModal::setDuration(int duration)
 {
 	duration_ = duration;
+	animation_->setDuration(duration_);
 }
 
 inline void OverlayModal::setColor(QColor color)

@@ -26,7 +26,9 @@
 
 #include "FlatButton.h"
 #include "InputValidator.h"
+#include "LoginSettings.h"
 #include "MatrixClient.h"
+#include "OverlayModal.h"
 #include "RaisedButton.h"
 #include "TextField.h"
 
@@ -53,10 +55,14 @@ private slots:
 	// Displays errors produced during the login.
 	void loginError(QString error_message);
 
+	// Manipulate settings modal.
+	void showSettingsModal();
+	void closeSettingsModal(const QString &server);
+
 private:
 	QVBoxLayout *top_layout_;
 
-	QHBoxLayout *back_layout_;
+	QHBoxLayout *top_bar_layout_;
 	QHBoxLayout *logo_layout_;
 	QHBoxLayout *button_layout_;
 
@@ -64,6 +70,7 @@ private:
 	QLabel *error_label_;
 
 	FlatButton *back_button_;
+	FlatButton *advanced_settings_button_;
 	RaisedButton *login_button_;
 
 	QWidget *form_widget_;
@@ -72,6 +79,10 @@ private:
 
 	TextField *matrixid_input_;
 	TextField *password_input_;
+
+	OverlayModal *settings_modal_;
+	LoginSettings *login_settings_;
+	QString custom_domain_;
 
 	InputValidator *matrix_id_validator_;
 
