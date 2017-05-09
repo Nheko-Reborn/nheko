@@ -44,7 +44,7 @@ public:
 	void fetchOwnAvatar(const QUrl &avatar_url);
 	void downloadImage(const QString &event_id, const QUrl &url);
 
-	inline QString getHomeServer();
+	inline QUrl getHomeServer();
 	inline int transactionId();
 	inline void incrementTransactionId();
 
@@ -114,7 +114,7 @@ private:
 	QString api_url_;
 
 	// The Matrix server used for communication.
-	QString server_;
+	QUrl server_;
 
 	// The access token used for authentication.
 	QString token_;
@@ -126,7 +126,7 @@ private:
 	QString next_batch_;
 };
 
-inline QString MatrixClient::getHomeServer()
+inline QUrl MatrixClient::getHomeServer()
 {
 	return server_;
 }
@@ -138,7 +138,7 @@ inline int MatrixClient::transactionId()
 
 inline void MatrixClient::setServer(const QString &server)
 {
-	server_ = "https://" + server;
+	server_ = QUrl(QString("https://%1").arg(server));
 }
 
 inline void MatrixClient::setAccessToken(const QString &token)

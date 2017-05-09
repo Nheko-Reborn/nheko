@@ -49,7 +49,7 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const events::MessageE
 	}
 
 	QString media_params = url_parts[1];
-	url_ = QString("%1/_matrix/media/r0/download/%2").arg(client_.data()->getHomeServer(), media_params);
+	url_ = QString("%1/_matrix/media/r0/download/%2").arg(client_.data()->getHomeServer().toString(), media_params);
 
 	client_.data()->downloadImage(event.eventId(), url_);
 

@@ -94,9 +94,7 @@ void MatrixClient::onLoginResponse(QNetworkReply *reply)
 
 	try {
 		response.deserialize(json);
-		emit loginSuccess(response.getUserId(),
-				  response.getHomeServer(),
-				  response.getAccessToken());
+		emit loginSuccess(response.getUserId(), server_.host(), response.getAccessToken());
 	} catch (DeserializationException &e) {
 		qWarning() << "Malformed JSON response" << e.what();
 		emit loginError("Malformed response. Possibly not a Matrix server");
@@ -548,7 +546,7 @@ void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url
 	}
 
 	QString media_params = url_parts[1];
-	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer(), media_params);
+	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer().toString(), media_params);
 
 	QNetworkRequest avatar_request(media_url);
 
@@ -576,7 +574,7 @@ void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 	}
 
 	QString media_params = url_parts[1];
-	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer(), media_params);
+	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer().toString(), media_params);
 
 	QNetworkRequest avatar_request(media_url);
 
