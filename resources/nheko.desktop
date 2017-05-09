@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=nheko
+Version=0.1
+Comment=Desktop client for Matrix
+Exec=nheko
+Icon=nheko
+Type=Application
+Categories=Network;InstantMessaging;Qt;
+Encoding=UTF-8
+StartupWMClass=nheko
+Terminal=false
