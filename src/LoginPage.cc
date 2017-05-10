@@ -189,11 +189,15 @@ void LoginPage::reset()
 	matrixid_input_->clear();
 	password_input_->clear();
 
-	settings_modal_->deleteLater();
-	login_settings_->deleteLater();
+	if (settings_modal_ != nullptr) {
+		settings_modal_->deleteLater();
+		settings_modal_ = nullptr;
+	}
 
-	login_settings_ = nullptr;
-	settings_modal_ = nullptr;
+	if (login_settings_ != nullptr) {
+		login_settings_->deleteLater();
+		login_settings_ = nullptr;
+	}
 }
 
 void LoginPage::onBackButtonClicked()
