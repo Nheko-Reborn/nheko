@@ -41,8 +41,8 @@ public:
 	TimelineItem(const events::MessageEvent<msgs::Text> &e, bool with_sender, const QString &color, QWidget *parent = 0);
 
 	// For local messages.
-	TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent = 0);
-	TimelineItem(const QString &body, QWidget *parent = 0);
+	TimelineItem(const QString &userid, const QString &color, QString body, QWidget *parent = 0);
+	TimelineItem(QString body, QWidget *parent = 0);
 
 	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, const QString &color, QWidget *parent);
 	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, QWidget *parent);

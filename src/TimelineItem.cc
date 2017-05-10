@@ -17,25 +17,33 @@
 
 #include <QDateTime>
 #include <QDebug>
+#include <QRegExp>
 
 #include "ImageItem.h"
 #include "TimelineItem.h"
 #include "TimelineViewManager.h"
 
+static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
+static const QString URL_HTML = "<a href=\"\\1\" style=\"color: #333333\">\\1</a>";
+
 namespace events = matrix::events;
 namespace msgs = matrix::events::messages;
 
-TimelineItem::TimelineItem(const QString &userid, const QString &color, const QString &body, QWidget *parent)
+TimelineItem::TimelineItem(const QString &userid, const QString &color, QString body, QWidget *parent)
     : QWidget(parent)
 {
+	body.replace(URL_REGEX, URL_HTML);
+
 	generateTimestamp(QDateTime::currentDateTime());
 	generateBody(TimelineViewManager::displayName(userid), color, body);
 	setupLayout();
 }
 
-TimelineItem::TimelineItem(const QString &body, QWidget *parent)
+TimelineItem::TimelineItem(QString body, QWidget *parent)
     : QWidget(parent)
 {
+	body.replace(URL_REGEX, URL_HTML);
+
 	generateTimestamp(QDateTime::currentDateTime());
 	generateBody(body);
 	setupLayout();
@@ -85,6 +93,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool
 
 	generateTimestamp(timestamp);
 
+	body.replace(URL_REGEX, URL_HTML);
 	body = "<i style=\"color: #565E5E\">" + body + "</i>";
 
 	if (with_sender)
@@ -102,6 +111,8 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool w
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 
 	generateTimestamp(timestamp);
+
+	body.replace(URL_REGEX, URL_HTML);
 
 	if (with_sender)
 		generateBody(TimelineViewManager::displayName(event.sender()), color, body);
@@ -127,7 +138,8 @@ void TimelineItem::generateBody(const QString &body)
 		"</body>"
 		"</html>");
 	content_label_->setText(content.arg(replaceEmoji(body)));
-	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+	content_label_->setOpenExternalLinks(true);
 }
 
 void TimelineItem::generateBody(const QString &userid, const QString &color, const QString &body)
@@ -155,7 +167,8 @@ void TimelineItem::generateBody(const QString &userid, const QString &color, con
 		"</body>"
 		"</html>");
 	content_label_->setText(content.arg(color).arg(sender).arg(replaceEmoji(body)));
-	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+	content_label_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+	content_label_->setOpenExternalLinks(true);
 }
 
 void TimelineItem::generateTimestamp(const QDateTime &time)
