@@ -33,7 +33,6 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const events::MessageE
     , event_{event}
     , client_{client}
 {
-	setMaximumSize(max_width_, max_height_);
 	setMouseTracking(true);
 	setCursor(Qt::PointingHandCursor);
 	setAttribute(Qt::WA_Hover, true);
@@ -94,7 +93,7 @@ void ImageItem::scaleImage()
 		height_ = image_.height() * min_aspect_ratio;
 	}
 
-	setMinimumSize(width_, height_);
+	setFixedSize(width_, height_);
 	scaled_image_ = image_.scaled(width_, height_, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
@@ -157,9 +156,9 @@ void ImageItem::paintEvent(QPaintEvent *event)
 	if (image_.isNull()) {
 		int height = fontHeight + 10;
 
-		setMinimumSize(max_width_, fontHeight + 10);
-
 		QString elidedText = metrics.elidedText(text_, Qt::ElideRight, max_width_ - 10);
+
+		setFixedSize(metrics.width(elidedText), fontHeight + 10);
 
 		painter.setFont(font);
 		painter.setPen(QPen(QColor(66, 133, 244)));
