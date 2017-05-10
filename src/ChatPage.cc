@@ -331,7 +331,11 @@ void ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
 				if (display_name.isEmpty())
 					display_name = member.stateKey();
 
-				TimelineViewManager::DISPLAY_NAMES.insert(member.stateKey(), display_name);
+				auto current_name = TimelineViewManager::DISPLAY_NAMES.value(member.stateKey());
+
+				if (current_name.isEmpty() || current_name == member.stateKey())
+					TimelineViewManager::DISPLAY_NAMES.insert(member.stateKey(), display_name);
+
 				break;
 			}
 			case events::EventType::RoomPowerLevels: {
