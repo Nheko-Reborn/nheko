@@ -333,6 +333,32 @@ void MatrixClient::onImageResponse(QNetworkReply *reply)
 	emit imageDownloaded(event_id, pixmap);
 }
 
+void MatrixClient::onMessagesResponse(QNetworkReply *reply)
+{
+	reply->deleteLater();
+
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	if (status == 0 || status >= 400) {
+		qWarning() << reply->errorString();
+		return;
+	}
+
+	auto data = reply->readAll();
+	auto room_id = reply->property("room_id").toString();
+
+	RoomMessages msgs;
+
+	try {
+		msgs.deserialize(QJsonDocument::fromJson(data));
+	} catch (const DeserializationException &e) {
+		qWarning() << "Room messages from" << room_id << e.what();
+		return;
+	}
+
+	emit messagesRetrieved(room_id, msgs);
+}
+
 void MatrixClient::onResponse(QNetworkReply *reply)
 {
 	switch (static_cast<Endpoint>(reply->property("endpoint").toInt())) {
@@ -368,6 +394,9 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 		break;
 	case Endpoint::GetOwnAvatar:
 		onGetOwnAvatarResponse(reply);
+		break;
+	case Endpoint::Messages:
+		onMessagesResponse(reply);
 		break;
 	default:
 		break;
@@ -580,4 +609,22 @@ void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 
 	QNetworkReply *reply = get(avatar_request);
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnAvatar));
+}
+
+void MatrixClient::messages(const QString &room_id, const QString &from_token) noexcept
+{
+	QUrlQuery query;
+	query.addQueryItem("access_token", token_);
+	query.addQueryItem("from", from_token);
+	query.addQueryItem("dir", "b");
+
+	QUrl endpoint(server_);
+	endpoint.setPath(api_url_ + QString("/rooms/%1/messages").arg(room_id));
+	endpoint.setQuery(query);
+
+	QNetworkRequest request(QString(endpoint.toEncoded()));
+
+	QNetworkReply *reply = get(request);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::Messages));
+	reply->setProperty("room_id", room_id);
 }

@@ -78,10 +78,9 @@ void TimelineViewManager::initialize(const Rooms &rooms)
 {
 	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
 		auto roomid = it.key();
-		auto events = it.value().timeline().events();
 
 		// Create a history view with the room events.
-		TimelineView *view = new TimelineView(events, client_);
+		TimelineView *view = new TimelineView(it.value().timeline(), client_, it.key());
 		views_.insert(it.key(), view);
 
 		// Add the view in the widget stack.
@@ -100,9 +99,8 @@ void TimelineViewManager::sync(const Rooms &rooms)
 		}
 
 		auto view = views_.value(roomid);
-		auto events = it.value().timeline().events();
 
-		int msgs_added = view->addEvents(events);
+		int msgs_added = view->addEvents(it.value().timeline());
 
 		if (msgs_added > 0) {
 			// TODO: When the app window gets active the current
@@ -124,6 +122,7 @@ void TimelineViewManager::setHistoryView(const QString &room_id)
 
 	active_room_ = room_id;
 	auto widget = views_.value(room_id);
+	widget->scrollDown();
 
 	setCurrentWidget(widget);
 }

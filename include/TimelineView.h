@@ -51,31 +51,49 @@ struct PendingMessage {
 	}
 };
 
+// In which place new TimelineItems should be inserted.
+enum class TimelineDirection {
+	Top,
+	Bottom,
+};
+
 class TimelineView : public QWidget
 {
 	Q_OBJECT
 
 public:
-	TimelineView(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-	TimelineView(const QJsonArray &events, QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-	~TimelineView();
+	TimelineView(const Timeline &timeline, QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent = 0);
 
-	void addHistoryItem(const events::MessageEvent<msgs::Image> &e, const QString &color, bool with_sender);
-	void addHistoryItem(const events::MessageEvent<msgs::Notice> &e, const QString &color, bool with_sender);
-	void addHistoryItem(const events::MessageEvent<msgs::Text> &e, const QString &color, bool with_sender);
+	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Image> &e, const QString &color, bool with_sender);
+	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e, const QString &color, bool with_sender);
+	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e, const QString &color, bool with_sender);
 
-	int addEvents(const QJsonArray &events);
+	// Add new events at the end of the timeline.
+	int addEvents(const Timeline &timeline);
 	void addUserTextMessage(const QString &msg, int txn_id);
 	void updatePendingMessage(int txn_id, QString event_id);
+	void scrollDown();
 	void clear();
 
 public slots:
 	void sliderRangeChanged(int min, int max);
+	void sliderMoved(int position);
+
+	// Add old events at the top of the timeline.
+	void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
 
 private:
 	void init();
 	void removePendingMessage(const events::MessageEvent<msgs::Text> &e);
+	void addTimelineItem(TimelineItem *item, TimelineDirection direction);
+	void updateLastSender(const QString &user_id, TimelineDirection direction);
+
+	// Used to determine whether or not we should prefix a message with the sender's name.
+	bool isSenderRendered(const QString &user_id, TimelineDirection direction);
 	bool isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &userid);
+
+	// Return nullptr if the event couldn't be parsed.
+	TimelineItem *parseMessageEvent(const QJsonObject &event, TimelineDirection direction);
 
 	QVBoxLayout *top_layout_;
 	QVBoxLayout *scroll_layout_;
@@ -84,6 +102,19 @@ private:
 	QWidget *scroll_widget_;
 
 	QString last_sender_;
+	QString last_sender_backwards_;
+	QString room_id_;
+	QString prev_batch_token_;
+	QString local_user_;
+
+	bool isPaginationInProgress_ = false;
+	bool isInitialized = false;
+	bool isTimelineFinished = false;
+
+	const int SCROLL_BAR_GAP = 300;
+
+	int scroll_height_ = 0;
+	int previous_max_height_ = 0;
 
 	QList<PendingMessage> pending_msgs_;
 	QSharedPointer<MatrixClient> client_;

@@ -21,6 +21,7 @@
 #include <QtNetwork/QNetworkAccessManager>
 
 #include "Profile.h"
+#include "RoomMessages.h"
 #include "Sync.h"
 
 /*
@@ -43,6 +44,7 @@ public:
 	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
 	void fetchOwnAvatar(const QUrl &avatar_url);
 	void downloadImage(const QString &event_id, const QUrl &url);
+	void messages(const QString &room_id, const QString &from_token) noexcept;
 
 	inline QUrl getHomeServer();
 	inline int transactionId();
@@ -77,19 +79,21 @@ signals:
 	void syncCompleted(const SyncResponse &response);
 	void syncFailed(const QString &msg);
 	void messageSent(const QString &event_id, const QString &roomid, const int txn_id);
+	void messagesRetrieved(const QString &room_id, const RoomMessages &msgs);
 
 private slots:
 	void onResponse(QNetworkReply *reply);
 
 private:
 	enum class Endpoint {
-		GetOwnProfile,
 		GetOwnAvatar,
+		GetOwnProfile,
 		GetProfile,
 		Image,
 		InitialSync,
 		Login,
 		Logout,
+		Messages,
 		Register,
 		RoomAvatar,
 		SendTextMessage,
@@ -109,6 +113,7 @@ private:
 	void onSyncResponse(QNetworkReply *reply);
 	void onRoomAvatarResponse(QNetworkReply *reply);
 	void onImageResponse(QNetworkReply *reply);
+	void onMessagesResponse(QNetworkReply *reply);
 
 	// Client API prefix.
 	QString api_url_;

@@ -91,6 +91,7 @@ set(SRC_FILES
     src/MatrixClient.cc
     src/Profile.cc
     src/RoomInfoListItem.cc
+    src/RoomMessages.cc
     src/RoomList.cc
     src/RoomState.cc
     src/Register.cc

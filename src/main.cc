@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
 	app.setStyleSheet(
 		"QScrollBar:vertical { background-color: #f8fbfe; width: 8px; border: none; margin: 2px; }"
-		"QScrollBar::handle:vertical { background-color : #d6dde3; }"
+		"QScrollBar::handle:vertical { min-height: 40px; background-color : #d6dde3; }"
 		"QScrollBar::add-line:vertical { border: none; background: none; }"
 		"QScrollBar::sub-line:vertical { border: none; background: none; }");
 

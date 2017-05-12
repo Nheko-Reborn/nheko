@@ -108,6 +108,7 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 	if (progress_modal_ == nullptr) {
 		progress_modal_ = new OverlayModal(this, spinner_);
 		progress_modal_->fadeIn();
+		progress_modal_->setDuration(300);
 	}
 
 	login_page_->reset();
