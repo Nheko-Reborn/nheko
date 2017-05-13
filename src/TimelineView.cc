@@ -219,7 +219,10 @@ int TimelineView::addEvents(const Timeline &timeline)
 {
 	int message_count = 0;
 
-	prev_batch_token_ = timeline.previousBatch();
+	if (isInitialSync) {
+		prev_batch_token_ = timeline.previousBatch();
+		isInitialSync = false;
+	}
 
 	for (const auto &event : timeline.events()) {
 		TimelineItem *item = parseMessageEvent(event.toObject(), TimelineDirection::Bottom);

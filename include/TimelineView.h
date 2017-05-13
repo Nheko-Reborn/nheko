@@ -110,6 +110,7 @@ private:
 	bool isPaginationInProgress_ = false;
 	bool isInitialized = false;
 	bool isTimelineFinished = false;
+	bool isInitialSync = true;
 
 	const int SCROLL_BAR_GAP = 300;
 
