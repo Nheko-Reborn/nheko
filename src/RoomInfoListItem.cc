@@ -101,7 +101,7 @@ RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *pa
 	setElidedText(roomTopic_, room_topic, parent->width() - max_height_);
 
 	QPainterPath path;
-	path.addRoundedRect(rect(), 0, 0);
+	path.addRect(0, 0, parent->width(), max_height_);
 
 	ripple_overlay_ = new RippleOverlay(this);
 	ripple_overlay_->setClipPath(path);
@@ -157,13 +157,13 @@ void RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 
 	// Ripple on mouse position by default.
 	QPoint pos = event->pos();
-	qreal radiusEndValue = static_cast<qreal>(width()) / 2;
+	qreal radiusEndValue = static_cast<qreal>(width()) / 3;
 
 	Ripple *ripple = new Ripple(pos);
 
 	ripple->setRadiusEndValue(radiusEndValue);
 	ripple->setOpacityStartValue(0.15);
-	ripple->setColor(QColor("#171919"));
+	ripple->setColor(QColor("#052B49"));
 	ripple->radiusAnimation()->setDuration(300);
 	ripple->opacityAnimation()->setDuration(500);
 
