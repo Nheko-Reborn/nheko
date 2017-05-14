@@ -17,14 +17,12 @@
 
 #include "InputValidator.h"
 
-InputValidator::InputValidator(QObject *parent)
-    : matrix_id_("@[A-Za-z0-9._%+-]+:[A-Za-z0-9.-]{1,126}\\.[A-Za-z]{1,63}")
-    , matrix_localpart_("[A-za-z0-9._%+-]{3,}")
-    , matrix_password_(".{8,}")
-    , server_domain_("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,126}(?!\\d+)[a-zA-Z\\d]{1,63}")
-{
-	id_ = new QRegExpValidator(matrix_id_, parent);
-	localpart_ = new QRegExpValidator(matrix_localpart_, parent);
-	password_ = new QRegExpValidator(matrix_password_, parent);
-	domain_ = new QRegExpValidator(server_domain_, parent);
-}
+const QRegExp MXID_REGEX("@[A-Za-z0-9._%+-]+:[A-Za-z0-9.-]{1,126}\\.[A-Za-z]{1,63}");
+const QRegExp LOCALPART_REGEX("[A-za-z0-9._%+-]{3,}");
+const QRegExp PASSWORD_REGEX(".{8,}");
+const QRegExp DOMAIN_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,126}(?!\\d+)[a-zA-Z\\d]{1,63}");
+
+QRegExpValidator InputValidator::Id(MXID_REGEX);
+QRegExpValidator InputValidator::Localpart(LOCALPART_REGEX);
+QRegExpValidator InputValidator::Password(PASSWORD_REGEX);
+QRegExpValidator InputValidator::Domain(DOMAIN_REGEX);

@@ -17,6 +17,7 @@
 
 #include <QDebug>
 
+#include "InputValidator.h"
 #include "LoginPage.h"
 
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
@@ -25,8 +26,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     , login_settings_{nullptr}
     , client_{client}
 {
-	matrix_id_validator_ = new InputValidator(this);
-
 	top_layout_ = new QVBoxLayout();
 
 	top_bar_layout_ = new QHBoxLayout();
@@ -133,7 +132,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	connect(client_.data(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
 	connect(advanced_settings_button_, SIGNAL(clicked()), this, SLOT(showSettingsModal()));
 
-	matrixid_input_->setValidator(matrix_id_validator_->id_);
+	matrixid_input_->setValidator(&InputValidator::Id);
 }
 
 void LoginPage::loginError(QString error)

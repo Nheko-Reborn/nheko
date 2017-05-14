@@ -18,11 +18,11 @@
 #include <QDebug>
 #include <QToolTip>
 
+#include "InputValidator.h"
 #include "RegisterPage.h"
 
 RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
-    , validator_(new InputValidator(parent))
     , client_(client)
 {
 	top_layout_ = new QVBoxLayout();
@@ -132,9 +132,9 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	connect(server_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
 	connect(client_.data(), SIGNAL(registerError(const QString &)), this, SLOT(registerError(const QString &)));
 
-	username_input_->setValidator(validator_->localpart_);
-	password_input_->setValidator(validator_->password_);
-	server_input_->setValidator(validator_->domain_);
+	username_input_->setValidator(&InputValidator::Localpart);
+	password_input_->setValidator(&InputValidator::Password);
+	server_input_->setValidator(&InputValidator::Domain);
 
 	setLayout(top_layout_);
 }

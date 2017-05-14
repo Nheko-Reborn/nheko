@@ -26,7 +26,6 @@
 
 #include "Avatar.h"
 #include "FlatButton.h"
-#include "InputValidator.h"
 #include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "TextField.h"
@@ -70,8 +69,6 @@ private:
 	TextField *password_input_;
 	TextField *password_confirmation_;
 	TextField *server_input_;
-
-	InputValidator *validator_;
 
 	// Matrix client API provider.
 	QSharedPointer<MatrixClient> client_;

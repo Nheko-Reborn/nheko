@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATRIXIDVALIDATOR_H
-#define MATRIXIDVALIDATOR_H
+#ifndef MATRIX_INPUT_VALIDATOR_H
+#define MATRIX_INPUT_VALIDATOR_H
 
 #include <QRegExp>
 #include <QRegExpValidator>
@@ -24,26 +24,11 @@
 class InputValidator
 {
 public:
-	InputValidator(QObject *parent = 0);
-
 	// Validators for the different types of input.
-	QRegExpValidator *id_;
-	QRegExpValidator *localpart_;
-	QRegExpValidator *password_;
-	QRegExpValidator *domain_;
-
-private:
-	// Regular expression used to validate the whole matrix id.
-	const QRegExp matrix_id_;
-
-	// Regular expressino to validate the matrix localpart.
-	const QRegExp matrix_localpart_;
-
-	// Regular expression to validate a password for a matrix account.
-	const QRegExp matrix_password_;
-
-	// Regular expression to validate a domain name.
-	const QRegExp server_domain_;
+	static QRegExpValidator Id;
+	static QRegExpValidator Localpart;
+	static QRegExpValidator Password;
+	static QRegExpValidator Domain;
 };
 
-#endif  // MATRIXIDVALIDATOR_H
+#endif  // MATRIX_INPUT_VALIDATOR_H

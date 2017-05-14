@@ -25,7 +25,6 @@
 #include <QWidget>
 
 #include "FlatButton.h"
-#include "InputValidator.h"
 #include "LoginSettings.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
@@ -83,8 +82,6 @@ private:
 	OverlayModal *settings_modal_;
 	LoginSettings *login_settings_;
 	QString custom_domain_;
-
-	InputValidator *matrix_id_validator_;
 
 	// Matrix client API provider.
 	QSharedPointer<MatrixClient> client_;
