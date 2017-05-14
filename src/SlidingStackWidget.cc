@@ -106,21 +106,21 @@ void SlidingStackWidget::slideInWidget(QWidget *next_widget, AnimationDirection 
 	next_widget->raise();
 
 	// Animate both the next and now widget.
-	QPropertyAnimation *animation_now = new QPropertyAnimation(widget(now), "pos");
+	QPropertyAnimation *animation_now = new QPropertyAnimation(widget(now), "pos", this);
 
 	animation_now->setDuration(speed_);
 	animation_now->setEasingCurve(animation_type_);
 	animation_now->setStartValue(QPoint(pnow.x(), pnow.y()));
 	animation_now->setEndValue(QPoint(pnow.x() + offset_x, pnow.y()));
 
-	QPropertyAnimation *animation_next = new QPropertyAnimation(next_widget, "pos");
+	QPropertyAnimation *animation_next = new QPropertyAnimation(next_widget, "pos", this);
 
 	animation_next->setDuration(speed_);
 	animation_next->setEasingCurve(animation_type_);
 	animation_next->setStartValue(QPoint(pnext.x() - offset_x, pnext.y()));
 	animation_next->setEndValue(QPoint(pnext.x(), pnext.y()));
 
-	QParallelAnimationGroup *animation_group = new QParallelAnimationGroup;
+	QParallelAnimationGroup *animation_group = new QParallelAnimationGroup(this);
 
 	animation_group->addAnimation(animation_now);
 	animation_group->addAnimation(animation_next);
