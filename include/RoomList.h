@@ -60,7 +60,7 @@ private:
 
 	Ui::RoomList *ui;
 
-	QMap<QString, RoomInfoListItem *> rooms_;
+	QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
 
 	QSharedPointer<MatrixClient> client_;
 };

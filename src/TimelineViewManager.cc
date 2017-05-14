@@ -65,11 +65,8 @@ void TimelineViewManager::clearAll()
 {
 	NICK_COLORS.clear();
 
-	for (const auto &view : views_) {
-		view->clear();
-		removeWidget(view);
-		view->deleteLater();
-	}
+	for (auto view : views_)
+		removeWidget(view.data());
 
 	views_.clear();
 }
@@ -81,7 +78,7 @@ void TimelineViewManager::initialize(const Rooms &rooms)
 
 		// Create a history view with the room events.
 		TimelineView *view = new TimelineView(it.value().timeline(), client_, it.key());
-		views_.insert(it.key(), view);
+		views_.insert(it.key(), QSharedPointer<TimelineView>(view));
 
 		// Add the view in the widget stack.
 		addWidget(view);
@@ -124,7 +121,7 @@ void TimelineViewManager::setHistoryView(const QString &room_id)
 	auto widget = views_.value(room_id);
 	widget->scrollDown();
 
-	setCurrentWidget(widget);
+	setCurrentWidget(widget.data());
 }
 
 QMap<QString, QString> TimelineViewManager::NICK_COLORS;

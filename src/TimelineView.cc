@@ -49,12 +49,6 @@ TimelineView::TimelineView(const Timeline &timeline,
 	addEvents(timeline);
 }
 
-void TimelineView::clear()
-{
-	for (const auto msg : scroll_layout_->children())
-		msg->deleteLater();
-}
-
 void TimelineView::sliderRangeChanged(int min, int max)
 {
 	Q_UNUSED(min);

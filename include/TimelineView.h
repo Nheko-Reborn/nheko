@@ -73,7 +73,6 @@ public:
 	void addUserTextMessage(const QString &msg, int txn_id);
 	void updatePendingMessage(int txn_id, QString event_id);
 	void scrollDown();
-	void clear();
 
 public slots:
 	void sliderRangeChanged(int min, int max);

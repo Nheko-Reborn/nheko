@@ -51,9 +51,6 @@ RoomList::~RoomList()
 
 void RoomList::clear()
 {
-	for (const auto &room : rooms_)
-		room->deleteLater();
-
 	rooms_.clear();
 }
 
@@ -93,7 +90,7 @@ void RoomList::setInitialRooms(const QMap<QString, RoomState> &states)
 		RoomInfoListItem *room_item = new RoomInfoListItem(state, room_id, ui->scrollArea);
 		connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
 
-		rooms_.insert(room_id, room_item);
+		rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
 		int pos = ui->scrollVerticalLayout->count() - 1;
 		ui->scrollVerticalLayout->insertWidget(pos, room_item);

@@ -58,7 +58,7 @@ private slots:
 
 private:
 	QString active_room_;
-	QMap<QString, TimelineView *> views_;
+	QMap<QString, QSharedPointer<TimelineView>> views_;
 	QSharedPointer<MatrixClient> client_;
 };
 
