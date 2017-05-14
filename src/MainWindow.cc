@@ -16,7 +16,6 @@
  */
 
 #include "MainWindow.h"
-#include "ui_MainWindow.h"
 
 #include <QLayout>
 #include <QNetworkReply>
@@ -24,15 +23,24 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui_(new Ui::MainWindow)
     , progress_modal_{nullptr}
     , spinner_{nullptr}
 {
-	ui_->setupUi(this);
+	QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	setSizePolicy(sizePolicy);
+	setWindowTitle("nheko");
+
+	resize(1066, 600);  // 16:9 ratio
+	setMinimumSize(QSize(950, 600));
+	setStyleSheet("background-color: #f9f9f9");
+
+	QFont font("Open Sans", 12);
+	font.setStyleStrategy(QFont::PreferAntialias);
+	setFont(font);
+
 	client_ = QSharedPointer<MatrixClient>(new MatrixClient("matrix.org"));
 
 	welcome_page_ = new WelcomePage(this);
-
 	login_page_ = new LoginPage(client_, this);
 	register_page_ = new RegisterPage(client_, this);
 	chat_page_ = new ChatPage(client_, this);
@@ -153,5 +161,4 @@ void MainWindow::showRegisterPage()
 
 MainWindow::~MainWindow()
 {
-	delete ui_;
 }

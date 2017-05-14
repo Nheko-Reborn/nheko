@@ -150,7 +150,6 @@ include_directories(include/events/messages)
 
 qt5_wrap_ui (UI_HEADERS
     forms/ChatPage.ui
-    forms/MainWindow.ui
     forms/RoomList.ui
 )
 

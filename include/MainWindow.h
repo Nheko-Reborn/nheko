@@ -30,11 +30,6 @@
 #include "SlidingStackWidget.h"
 #include "WelcomePage.h"
 
-namespace Ui
-{
-class MainWindow;
-}
-
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -59,9 +54,6 @@ private slots:
 	void removeOverlayProgressBar();
 
 private:
-	// The UI component of the main window.
-	Ui::MainWindow *ui_;
-
 	// The initial welcome screen.
 	WelcomePage *welcome_page_;
 
