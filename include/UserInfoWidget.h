@@ -57,7 +57,7 @@ private:
 	QLabel *userIdLabel_;
 
 	QString display_name_;
-	QString userid_;
+	QString user_id_;
 
 	QImage avatar_image_;
 };

@@ -234,7 +234,8 @@ void ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &displ
 	user_info_widget_->setUserId(userid);
 	user_info_widget_->setDisplayName(display_name);
 
-	client_->fetchOwnAvatar(avatar_url);
+	if (avatar_url.isValid())
+		client_->fetchOwnAvatar(avatar_url);
 }
 
 void ChatPage::changeTopRoomInfo(const QString &room_id)

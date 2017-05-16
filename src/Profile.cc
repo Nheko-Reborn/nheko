@@ -29,12 +29,9 @@ void ProfileResponse::deserialize(const QJsonDocument &data)
 
 	QJsonObject object = data.object();
 
-	if (object.value("avatar_url") == QJsonValue::Undefined)
-		throw DeserializationException("Missing avatar_url param");
+	if (object.contains("avatar_url"))
+		avatar_url_ = QUrl(object.value("avatar_url").toString());
 
-	if (object.value("displayname") == QJsonValue::Undefined)
-		throw DeserializationException("Missing displayname param");
-
-	avatar_url_ = QUrl(object.value("avatar_url").toString());
-	display_name_ = object.value("displayname").toString();
+	if (object.contains("displayname"))
+		display_name_ = object.value("displayname").toString();
 }

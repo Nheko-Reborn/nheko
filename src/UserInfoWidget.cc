@@ -21,7 +21,7 @@
 UserInfoWidget::UserInfoWidget(QWidget *parent)
     : QWidget(parent)
     , display_name_("User")
-    , userid_("@user:homeserver.org")
+    , user_id_("@user:homeserver.org")
 {
 	QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 	setSizePolicy(sizePolicy);
@@ -36,8 +36,9 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
 	userAvatar_ = new Avatar(this);
 	userAvatar_->setLetter(QChar('?'));
-	userAvatar_->setSize(50);
-	userAvatar_->setMaximumSize(QSize(55, 55));
+	userAvatar_->setSize(55);
+	userAvatar_->setBackgroundColor("#f9f9f9");
+	userAvatar_->setTextColor("#333333");
 
 	displayNameLabel_ = new QLabel(this);
 	displayNameLabel_->setStyleSheet(
@@ -102,12 +103,17 @@ void UserInfoWidget::setAvatar(const QImage &img)
 
 void UserInfoWidget::setDisplayName(const QString &name)
 {
-	display_name_ = name;
-	displayNameLabel_->setText(name);
+	if (name.isEmpty())
+		display_name_ = user_id_.split(':')[0].split('@')[1];
+	else
+		display_name_ = name;
+
+	displayNameLabel_->setText(display_name_);
+	userAvatar_->setLetter(QChar(display_name_[0]));
 }
 
 void UserInfoWidget::setUserId(const QString &userid)
 {
-	userid_ = userid;
+	user_id_ = userid;
 	userIdLabel_->setText(userid);
 }
