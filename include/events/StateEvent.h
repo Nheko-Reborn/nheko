@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATRIX_STATE_EVENT_H
-#define MATRIX_STATE_EVENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -69,5 +68,3 @@ void StateEvent<Content>::deserialize(const QJsonValue &data)
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // MATRIX_STATE_EVENT_H

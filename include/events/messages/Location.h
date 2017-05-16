@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_EVENT_LOCATION_H
-#define MESSAGE_EVENT_LOCATION_H
+#pragma once
 
 #include <QJsonObject>
 
@@ -61,5 +60,3 @@ inline LocationInfo Location::info() const
 }  // namespace messages
 }  // namespace events
 }  // namespace matrix
-
-#endif  // MESSAGE_EVENT_LOCATION_H

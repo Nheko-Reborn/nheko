@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POWER_LEVELS_EVENT_CONTENT_H
-#define POWER_LEVELS_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 #include <QMap>
@@ -104,5 +103,3 @@ inline int PowerLevelsEventContent::usersDefaultLevel() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // POWER_LEVELS_EVENT_CONTENT_H

@@ -1,5 +1,4 @@
-#ifndef UI_THEME_MANAGER_H
-#define UI_THEME_MANAGER_H
+#pragma once
 
 #include <QCommonStyle>
 
@@ -29,5 +28,3 @@ inline ThemeManager &ThemeManager::instance()
 	static ThemeManager instance;
 	return instance;
 }
-
-#endif  // UI_THEME_MANAGER_H

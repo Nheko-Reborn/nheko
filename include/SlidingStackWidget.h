@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLIDINGSTACKWIDGET_H
-#define SLIDINGSTACKWIDGET_H
+#pragma once
 
 #include <QDebug>
 #include <QEasingCurve>
@@ -90,5 +89,3 @@ protected:
 	// Next widget's to show index.
 	int next_;
 };
-
-#endif  // SLIDINGSTACKWIDGET_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_VIEW_MANAGER_H
-#define HISTORY_VIEW_MANAGER_H
+#pragma once
 
 #include <QDebug>
 #include <QSharedPointer>
@@ -61,5 +60,3 @@ private:
 	QMap<QString, QSharedPointer<TimelineView>> views_;
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif

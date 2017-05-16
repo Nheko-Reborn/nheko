@@ -1,5 +1,4 @@
-#ifndef UI_THEME_H
-#define UI_THEME_H
+#pragma once
 
 #include <QColor>
 #include <QHash>
@@ -85,5 +84,3 @@ private:
 
 	QHash<QString, QColor> colors_;
 };
-
-#endif  // UI_THEME_H

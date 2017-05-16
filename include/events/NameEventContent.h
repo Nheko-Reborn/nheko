@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAME_EVENT_CONTENT_H
-#define NAME_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -47,5 +46,3 @@ inline QString NameEventContent::name() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // NAME_EVENT_CONTENT_H

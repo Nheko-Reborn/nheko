@@ -1,5 +1,4 @@
-#ifndef UI_OVERLAY_WIDGET_H
-#define UI_OVERLAY_WIDGET_H
+#pragma once
 
 #include <QEvent>
 #include <QWidget>
@@ -17,5 +16,3 @@ protected:
 
 	QRect overlayGeometry() const;
 };
-
-#endif  // UI_OVERLAY_WIDGET_H

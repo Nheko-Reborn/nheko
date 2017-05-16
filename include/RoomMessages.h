@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROOM_MESSAGES_H
-#define ROOM_MESSAGES_H
+#pragma once
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -52,5 +51,3 @@ inline QJsonArray RoomMessages::chunk() const
 {
 	return chunk_;
 }
-
-#endif  // ROOM_MESSAGES_H

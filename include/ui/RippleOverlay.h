@@ -1,5 +1,4 @@
-#ifndef UI_RIPPLE_OVERLAY_H
-#define UI_RIPPLE_OVERLAY_H
+#pragma once
 
 #include <QPainterPath>
 
@@ -54,5 +53,3 @@ inline void RippleOverlay::setClipPath(const QPainterPath &path)
 	clip_path_ = path;
 	update();
 }
-
-#endif  // UI_RIPPLE_OVERLAY_H

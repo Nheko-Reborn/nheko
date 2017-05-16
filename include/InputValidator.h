@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATRIX_INPUT_VALIDATOR_H
-#define MATRIX_INPUT_VALIDATOR_H
+#pragma once
 
 #include <QRegExp>
 #include <QRegExpValidator>
@@ -30,5 +29,3 @@ public:
 	static QRegExpValidator Password;
 	static QRegExpValidator Domain;
 };
-
-#endif  // MATRIX_INPUT_VALIDATOR_H

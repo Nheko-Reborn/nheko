@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROOMLIST_H
-#define ROOMLIST_H
+#pragma once
 
 #include <QImage>
 #include <QSharedPointer>
@@ -64,5 +63,3 @@ private:
 
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif  // ROOMLIST_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGINPAGE_H
-#define LOGINPAGE_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -86,5 +85,3 @@ private:
 	// Matrix client API provider.
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif  // LOGINPAGE_H

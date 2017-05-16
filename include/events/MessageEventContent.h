@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_EVENT_CONTENT_H
-#define MESSAGE_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -74,5 +73,3 @@ inline QString MessageEventContent::body() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // MESSAGE_EVENT_CONTENT_H

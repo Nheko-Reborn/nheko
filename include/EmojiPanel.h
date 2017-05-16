@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOJI_PANEL_H
-#define EMOJI_PANEL_H
+#pragma once
 
 #include <QFrame>
 #include <QGraphicsOpacityEffect>
@@ -66,5 +65,3 @@ private:
 
 	const int category_icon_size_ = 20;
 };
-
-#endif  // EMOJI_PANEL_H

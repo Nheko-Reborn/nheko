@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHATPAGE_H
-#define CHATPAGE_H
+#pragma once
 
 #include <QPixmap>
 #include <QTimer>
@@ -86,5 +85,3 @@ private:
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif  // CHATPAGE_H

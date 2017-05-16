@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef REGISTER_H
-#define REGISTER_H
+#pragma once
 
 #include <QJsonDocument>
 
@@ -77,5 +76,3 @@ inline QString RegisterResponse::getUserId()
 {
 	return user_id_;
 }
-
-#endif  // REGISTER_H

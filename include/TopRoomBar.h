@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOP_ROOM_BAR_H
-#define TOP_ROOM_BAR_H
+#pragma once
 
 #include <QIcon>
 #include <QImage>
@@ -78,5 +77,3 @@ inline void TopRoomBar::updateRoomTopic(const QString &topic)
 {
 	topic_label_->setText(topic);
 }
-
-#endif  // TOP_ROOM_BAR_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGIN_H
-#define LOGIN_H
+#pragma once
 
 #include <QJsonDocument>
 
@@ -77,5 +76,3 @@ inline QString LoginResponse::getUserId()
 {
 	return user_id_;
 }
-
-#endif  // LOGIN_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGE_OVERLAY_DIALOG_H
-#define IMAGE_OVERLAY_DIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QMouseEvent>
@@ -49,5 +48,3 @@ private:
 	QRect content_;
 	QRect close_button_;
 };
-
-#endif  // IMAGE_OVERLAY_DIALOG_H

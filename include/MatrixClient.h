@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATRIXCLIENT_H
-#define MATRIXCLIENT_H
+#pragma once
 
 #include <QtNetwork/QNetworkAccessManager>
 
@@ -160,5 +159,3 @@ inline void MatrixClient::incrementTransactionId()
 {
 	txn_id_ += 1;
 }
-
-#endif  // MATRIXCLIENT_H

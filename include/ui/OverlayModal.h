@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UI_OVERLAY_MODAL_H
-#define UI_OVERLAY_MODAL_H
+#pragma once
 
 #include <QGraphicsOpacityEffect>
 #include <QPaintEvent>
@@ -57,5 +56,3 @@ inline void OverlayModal::setColor(QColor color)
 {
 	color_ = color;
 }
-
-#endif  // UI_OVERLAY_MODAL_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DESERIALIZABLE_H
-#define DESERIALIZABLE_H
+#pragma once
 
 #include <exception>
 
@@ -48,5 +47,3 @@ public:
 	{
 	}
 };
-
-#endif

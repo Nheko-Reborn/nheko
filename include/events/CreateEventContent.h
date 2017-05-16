@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CREATE_EVENT_CONTENT_H
-#define CREATE_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -48,5 +47,3 @@ inline QString CreateEventContent::creator() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // CREATE_EVENT_CONTENT_H

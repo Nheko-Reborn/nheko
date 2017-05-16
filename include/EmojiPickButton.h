@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOJI_PICK_BUTTON_H
-#define EMOJI_PICK_BUTTON_H
+#pragma once
 
 #include <QEvent>
 #include <QWidget>
@@ -46,5 +45,3 @@ private:
 
 	EmojiPanel *panel_;
 };
-
-#endif  // EMOJI_PICK_BUTTON_H

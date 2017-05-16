@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGIN_SETTINGS_H
-#define LOGIN_SETTINGS_H
+#pragma once
 
 #include <QFrame>
 
@@ -36,5 +35,3 @@ private:
 	TextField *input_;
 	FlatButton *submit_button_;
 };
-
-#endif  // LOGIN_SETTINGS_H

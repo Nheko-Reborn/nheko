@@ -1,5 +1,4 @@
-#ifndef UI_FLAT_BUTTON_H
-#define UI_FLAT_BUTTON_H
+#pragma once
 
 #include <QPaintEvent>
 #include <QPainter>
@@ -170,5 +169,3 @@ private:
 
 	bool use_fixed_ripple_radius_;
 };
-
-#endif  // UI_FLAT_BUTTON_H

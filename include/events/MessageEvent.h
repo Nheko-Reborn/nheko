@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATRIX_MESSAGE_EVENT_H
-#define MATRIX_MESSAGE_EVENT_H
+#pragma once
 
 #include "MessageEventContent.h"
 #include "RoomEvent.h"
@@ -63,5 +62,3 @@ struct ThumbnailInfo {
 }  // namespace messages
 }  // namespace events
 }  // namespace matrix
-
-#endif  // MATRIX_MESSAGE_EVENT_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_VIEW_ITEM_H
-#define HISTORY_VIEW_ITEM_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -63,5 +62,3 @@ private:
 	QLabel *time_label_;
 	QLabel *content_label_;
 };
-
-#endif  // HISTORY_VIEW_ITEM_H

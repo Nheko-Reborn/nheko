@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_EVENT_CONTENT_H
-#define AVATAR_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 #include <QUrl>
@@ -48,5 +47,3 @@ inline QUrl AvatarEventContent::url() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // AVATAR_EVENT_CONTENT_H

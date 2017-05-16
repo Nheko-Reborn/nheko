@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOPIC_EVENT_CONTENT_H
-#define TOPIC_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -47,5 +46,3 @@ inline QString TopicEventContent::topic() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // TOPIC_EVENT_CONTENT_H

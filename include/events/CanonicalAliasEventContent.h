@@ -1,4 +1,3 @@
-
 /*
  * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
  *
@@ -16,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CANONICAL_ALIAS_EVENT_CONTENT_H
-#define CANONICAL_ALIAS_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -51,5 +49,3 @@ inline QString CanonicalAliasEventContent::alias() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // CANONICAL_ALIAS_EVENT_CONTENT_H

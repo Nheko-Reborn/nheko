@@ -1,5 +1,4 @@
-#ifndef UI_TEXT_FIELD_H
-#define UI_TEXT_FIELD_H
+#pragma once
 
 #include <QColor>
 #include <QLineEdit>
@@ -166,5 +165,3 @@ inline qreal TextFieldStateMachine::progress() const
 {
 	return progress_;
 }
-
-#endif  // UI_TEXT_FIELD_H

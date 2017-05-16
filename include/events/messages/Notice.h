@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_EVENT_NOTICE_H
-#define MESSAGE_EVENT_NOTICE_H
+#pragma once
 
 #include <QJsonObject>
 
@@ -36,5 +35,3 @@ public:
 }  // namespace messages
 }  // namespace events
 }  // namespace matrix
-
-#endif  // MESSAGE_EVENT_NOTICE_H

@@ -1,5 +1,4 @@
-#ifndef UI_BADGE_H
-#define UI_BADGE_H
+#pragma once
 
 #include <QColor>
 #include <QIcon>
@@ -62,5 +61,3 @@ private:
 	qreal x_;
 	qreal y_;
 };
-
-#endif  // UI_BADGE_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROFILE_H
-#define PROFILE_H
+#pragma once
 
 #include <QJsonDocument>
 #include <QUrl>
@@ -45,5 +44,3 @@ inline QString ProfileResponse::getDisplayName()
 {
 	return display_name_;
 }
-
-#endif  // PROFILE_H

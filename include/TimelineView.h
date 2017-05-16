@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_VIEW_H
-#define HISTORY_VIEW_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QList>
@@ -119,5 +118,3 @@ private:
 	QList<PendingMessage> pending_msgs_;
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif  // HISTORY_VIEW_H

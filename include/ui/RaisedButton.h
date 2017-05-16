@@ -1,5 +1,4 @@
-#ifndef UI_RAISED_BUTTON_H
-#define UI_RAISED_BUTTON_H
+#pragma once
 
 #include <QGraphicsDropShadowEffect>
 #include <QState>
@@ -27,5 +26,3 @@ private:
 	QState *pressed_state_;
 	QGraphicsDropShadowEffect *effect_;
 };
-
-#endif  // UI_RAISED_BUTTON_H

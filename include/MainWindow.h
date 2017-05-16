@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QSharedPointer>
@@ -76,5 +75,3 @@ private:
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif  // MAINWINDOW_H

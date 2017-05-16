@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TIMELINE_IMAGE_ITEM_H
-#define TIMELINE_IMAGE_ITEM_H
+#pragma once
 
 #include <QEvent>
 #include <QMouseEvent>
@@ -71,5 +70,3 @@ private:
 
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif  // TIMELINE_IMAGE_ITEM_H

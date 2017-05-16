@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROOM_STATE_H
-#define ROOM_STATE_H
+#pragma once
 
 #include <QPixmap>
 
@@ -59,5 +58,3 @@ inline QString RoomState::resolveTopic() const
 {
 	return topic.content().topic().simplified();
 }
-
-#endif  // ROOM_STATE_H

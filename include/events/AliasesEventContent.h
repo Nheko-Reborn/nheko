@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALIASES_EVENT_CONTENT_H
-#define ALIASES_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 #include <QList>
@@ -44,5 +43,3 @@ inline QList<QString> AliasesEventContent::aliases() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // ALIASES_EVENT_CONTENT_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROOMINFOLISTITEM_H
-#define ROOMINFOLISTITEM_H
+#pragma once
 
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -104,5 +103,3 @@ inline void RoomInfoListItem::setAvatar(const QImage &avatar_image)
 {
 	roomAvatar_->setImage(avatar_image);
 }
-
-#endif  // ROOMINFOLISTITEM_H

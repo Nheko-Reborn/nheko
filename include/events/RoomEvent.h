@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATRIX_ROOM_EVENT_H
-#define MATRIX_ROOM_EVENT_H
+#pragma once
 
 #include <QJsonValue>
 #include <QString>
@@ -97,5 +96,3 @@ void RoomEvent<Content>::deserialize(const QJsonValue &data)
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // MATRIX_ROOM_EVENT_H

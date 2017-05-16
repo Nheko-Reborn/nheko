@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOJI_ITEM_DELEGATE_H
-#define EMOJI_ITEM_DELEGATE_H
+#pragma once
 
 #include <QModelIndex>
 #include <QStandardItemModel>
@@ -37,5 +36,3 @@ public:
 private:
 	Emoji *data_;
 };
-
-#endif  // EMOJI_ITEM_DELEGATE_H

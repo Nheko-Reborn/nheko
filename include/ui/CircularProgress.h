@@ -1,5 +1,4 @@
-#ifndef UI_CIRCULAR_PROGRESS_H
-#define UI_CIRCULAR_PROGRESS_H
+#pragma once
 
 #include <QObject>
 #include <QProgressBar>
@@ -110,5 +109,3 @@ inline int CircularProgressDelegate::angle() const
 {
 	return angle_;
 }
-
-#endif  // UI_CIRCULAR_PROGRESS_H

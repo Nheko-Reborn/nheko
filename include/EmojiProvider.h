@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOJI_PROVIDER_H
-#define EMOJI_PROVIDER_H
+#pragma once
 
 #include <QFile>
 #include <QList>
@@ -41,5 +40,3 @@ public:
 	static const QList<Emoji> symbols;
 	static const QList<Emoji> flags;
 };
-
-#endif  // EMOJI_PROVIDER_H

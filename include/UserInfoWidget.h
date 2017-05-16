@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef USER_INFO_WIDGET_H
-#define USER_INFO_WIDGET_H
+#pragma once
 
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -61,5 +60,3 @@ private:
 
 	QImage avatar_image_;
 };
-
-#endif

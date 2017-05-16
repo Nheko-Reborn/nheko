@@ -1,5 +1,4 @@
-#ifndef UI_RIPPLE_H
-#define UI_RIPPLE_H
+#pragma once
 
 #include <QBrush>
 #include <QEasingCurve>
@@ -132,5 +131,3 @@ inline void Ripple::setDuration(int msecs)
 	radius_anim_->setDuration(msecs);
 	opacity_anim_->setDuration(msecs);
 }
-
-#endif  // UI_RIPPLE_H

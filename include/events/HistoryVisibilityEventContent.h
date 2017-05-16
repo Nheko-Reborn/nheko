@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_VISIBILITY_EVENT_CONTENT_H
-#define HISTORY_VISIBILITY_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -50,5 +49,3 @@ inline HistoryVisibility HistoryVisibilityEventContent::historyVisibility() cons
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // HISTORY_VISIBILITY_EVENT_CONTENT_H

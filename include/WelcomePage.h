@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WELCOMEPAGE_H
-#define WELCOMEPAGE_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -57,5 +56,3 @@ private:
 	RaisedButton *register_button_;
 	RaisedButton *login_button_;
 };
-
-#endif  // WELCOMEPAGE_H

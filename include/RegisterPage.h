@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef REGISTERPAGE_H
-#define REGISTERPAGE_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -73,5 +72,3 @@ private:
 	// Matrix client API provider.
 	QSharedPointer<MatrixClient> client_;
 };
-
-#endif  // REGISTERPAGE_H

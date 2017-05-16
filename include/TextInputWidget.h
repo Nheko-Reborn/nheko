@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXT_INPUT_WIDGET_H
-#define TEXT_INPUT_WIDGET_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QPaintEvent>
@@ -65,5 +64,3 @@ private:
 	FlatButton *send_message_button_;
 	EmojiPickButton *emoji_button_;
 };
-
-#endif  // TEXT_INPUT_WIDGET_H

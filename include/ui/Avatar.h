@@ -1,5 +1,4 @@
-#ifndef UI_AVATAR_H
-#define UI_AVATAR_H
+#pragma once
 
 #include <QIcon>
 #include <QImage>
@@ -47,5 +46,3 @@ private:
 	QPixmap pixmap_;
 	int size_;
 };
-
-#endif  // UI_AVATAR_H

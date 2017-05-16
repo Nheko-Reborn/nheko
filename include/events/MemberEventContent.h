@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MEMBER_EVENT_CONTENT_H
-#define MEMBER_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 #include <QUrl>
@@ -79,5 +78,3 @@ inline Membership MemberEventContent::membershipState() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // MEMBER_EVENT_CONTENT_H

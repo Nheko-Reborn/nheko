@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOJI_CATEGORY_H
-#define EMOJI_CATEGORY_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -58,5 +57,3 @@ inline void EmojiCategory::clickIndex(const QModelIndex &index)
 {
 	emit emojiSelected(index.data(Qt::UserRole).toString());
 }
-
-#endif  // EMOJI_CATEGORY_H

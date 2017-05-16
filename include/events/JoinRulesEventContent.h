@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JOIN_RULES_EVENT_CONTENT_H
-#define JOIN_RULES_EVENT_CONTENT_H
+#pragma once
 
 #include <QJsonValue>
 
@@ -62,5 +61,3 @@ inline JoinRule JoinRulesEventContent::joinRule() const
 }
 }  // namespace events
 }  // namespace matrix
-
-#endif  // JOIN_RULES_EVENT_CONTENT_H

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYNC_H
-#define SYNC_H
+#pragma once
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -196,5 +195,3 @@ inline QString SyncResponse::nextBatch() const
 {
 	return next_batch_;
 }
-
-#endif  // SYNC_H
