@@ -20,6 +20,7 @@
 
 #include <QFrame>
 #include <QGraphicsOpacityEffect>
+#include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
 #include <QScrollArea>
 #include <QWidget>
@@ -47,12 +48,21 @@ protected:
 private:
 	void showEmojiCategory(const EmojiCategory *category);
 
-	QPropertyAnimation *animation_;
+	QPropertyAnimation *opacity_anim_;
+	QPropertyAnimation *size_anim_;
 	QGraphicsOpacityEffect *opacity_;
+	QParallelAnimationGroup *animation_;
 
 	EmojiProvider emoji_provider_;
 
 	QScrollArea *scroll_area_;
+
+	// Panel dimensions.
+	const int WIDTH = 370;
+	const int HEIGHT = 350;
+
+	const int ANIMATION_DURATION = 100;
+	const int ANIMATION_OFFSET = 50;
 
 	const int category_icon_size_ = 20;
 };

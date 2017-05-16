@@ -44,8 +44,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 
 	// TODO: Make it MainWindow aware
 	auto main_frame_ = new QFrame(this);
-	main_frame_->setMinimumSize(370, 350);
-	main_frame_->setMaximumSize(370, 350);
+	main_frame_->setMaximumSize(WIDTH, HEIGHT);
 
 	auto top_layout = new QVBoxLayout(this);
 	top_layout->addWidget(main_frame_);
@@ -150,16 +149,26 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 
 	setLayout(top_layout);
 
-	// TODO: Add parallel animation with geometry
 	opacity_ = new QGraphicsOpacityEffect(this);
 	opacity_->setOpacity(1.0);
 
 	setGraphicsEffect(opacity_);
 
-	animation_ = new QPropertyAnimation(opacity_, "opacity", this);
-	animation_->setDuration(180);
-	animation_->setStartValue(1.0);
-	animation_->setEndValue(0.0);
+	opacity_anim_ = new QPropertyAnimation(opacity_, "opacity", this);
+	opacity_anim_->setDuration(ANIMATION_DURATION);
+	opacity_anim_->setStartValue(1);
+	opacity_anim_->setEndValue(0);
+
+	size_anim_ = new QPropertyAnimation(this);
+	size_anim_->setTargetObject(main_frame_);
+	size_anim_->setPropertyName("geometry");
+	size_anim_->setDuration(ANIMATION_DURATION);
+	size_anim_->setStartValue(QRect(0, 0, WIDTH, HEIGHT));
+	size_anim_->setEndValue(QRect(ANIMATION_OFFSET, ANIMATION_OFFSET, WIDTH - ANIMATION_OFFSET, HEIGHT - ANIMATION_OFFSET));
+
+	animation_ = new QParallelAnimationGroup(this);
+	animation_->addAnimation(opacity_anim_);
+	animation_->addAnimation(size_anim_);
 
 	connect(people_emoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
 	connect(people_category, &QPushButton::clicked, [this, people_emoji]() {
@@ -201,7 +210,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 		this->showEmojiCategory(flags_emoji);
 	});
 
-	connect(animation_, &QPropertyAnimation::finished, [this]() {
+	connect(animation_, &QAbstractAnimation::finished, [this]() {
 		if (animation_->direction() == QAbstractAnimation::Forward)
 			this->hide();
 	});
