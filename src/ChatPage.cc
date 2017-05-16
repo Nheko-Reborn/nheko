@@ -134,6 +134,7 @@ void ChatPage::logout()
 	user_info_widget_->reset();
 	client_->reset();
 
+	state_manager_.clear();
 	room_avatars_.clear();
 
 	emit close();
