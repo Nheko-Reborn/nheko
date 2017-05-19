@@ -17,20 +17,15 @@
 
 #pragma once
 
-#include <QImage>
+#include <QScrollArea>
 #include <QSharedPointer>
-#include <QUrl>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include "MatrixClient.h"
 #include "RoomInfoListItem.h"
 #include "RoomState.h"
 #include "Sync.h"
-
-namespace Ui
-{
-class RoomList;
-}
 
 class RoomList : public QWidget
 {
@@ -57,7 +52,10 @@ public slots:
 private:
 	void calculateUnreadMessageCount();
 
-	Ui::RoomList *ui;
+	QVBoxLayout *topLayout_;
+	QVBoxLayout *contentsLayout_;
+	QScrollArea *scrollArea_;
+	QWidget *scrollAreaContents_;
 
 	QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
 

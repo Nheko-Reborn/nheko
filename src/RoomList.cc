@@ -15,11 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ui_RoomList.h"
-
 #include <QDebug>
 #include <QJsonArray>
-#include <QLabel>
 #include <QRegularExpression>
 
 #include "RoomInfoListItem.h"
@@ -28,15 +25,38 @@
 
 RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::RoomList)
     , client_(client)
 {
-	ui->setupUi(this);
-	ui->scrollVerticalLayout->addStretch(1);
-
 	setStyleSheet(
 		"QWidget { border: none; }"
 		"QScrollBar:vertical { width: 4px; margin: 2px 0; }");
+
+	QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+	sizePolicy.setHorizontalStretch(0);
+	sizePolicy.setVerticalStretch(0);
+	setSizePolicy(sizePolicy);
+
+	setMinimumSize(QSize(0, 500));
+
+	topLayout_ = new QVBoxLayout(this);
+	topLayout_->setSpacing(0);
+	topLayout_->setMargin(0);
+
+	scrollArea_ = new QScrollArea(this);
+	scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+	scrollArea_->setWidgetResizable(true);
+	scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
+
+	scrollAreaContents_ = new QWidget();
+
+	contentsLayout_ = new QVBoxLayout(scrollAreaContents_);
+	contentsLayout_->setSpacing(0);
+	contentsLayout_->setMargin(0);
+	contentsLayout_->addStretch(1);
+
+	scrollArea_->setWidget(scrollAreaContents_);
+	topLayout_->addWidget(scrollArea_);
 
 	connect(client_.data(),
 		SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
@@ -46,7 +66,6 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 RoomList::~RoomList()
 {
-	delete ui;
 }
 
 void RoomList::clear()
@@ -87,13 +106,13 @@ void RoomList::setInitialRooms(const QMap<QString, RoomState> &states)
 		if (!state.avatar.content().url().toString().isEmpty())
 			client_->fetchRoomAvatar(room_id, state.avatar.content().url());
 
-		RoomInfoListItem *room_item = new RoomInfoListItem(state, room_id, ui->scrollArea);
+		RoomInfoListItem *room_item = new RoomInfoListItem(state, room_id, scrollArea_);
 		connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
 
 		rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
-		int pos = ui->scrollVerticalLayout->count() - 1;
-		ui->scrollVerticalLayout->insertWidget(pos, room_item);
+		int pos = contentsLayout_->count() - 1;
+		contentsLayout_->insertWidget(pos, room_item);
 	}
 
 	if (rooms_.isEmpty())

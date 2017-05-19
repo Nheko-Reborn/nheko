@@ -149,10 +149,7 @@ include_directories(include/ui)
 include_directories(include/events)
 include_directories(include/events/messages)
 
-qt5_wrap_ui (UI_HEADERS
-    forms/ChatPage.ui
-    forms/RoomList.ui
-)
+qt5_wrap_ui (UI_HEADERS forms/ChatPage.ui)
 
 qt5_wrap_cpp(MOC_HEADERS
     include/ChatPage.h
