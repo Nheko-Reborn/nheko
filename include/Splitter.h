@@ -23,13 +23,10 @@ class Splitter : public QSplitter
 {
 	Q_OBJECT
 public:
-	explicit Splitter(int first_step, int second_step, QWidget *parent = nullptr);
+	explicit Splitter(QWidget *parent = nullptr);
 
 private:
 	void onSplitterMoved(int pos, int index);
-
-	int firstStep_ = 60;
-	int secondStep_ = 300;
 
 	int moveEventLimit_ = 50;
 

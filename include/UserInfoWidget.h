@@ -42,6 +42,9 @@ public:
 signals:
 	void logout();
 
+protected:
+	void resizeEvent(QResizeEvent *event) override;
+
 private:
 	Avatar *userAvatar_;
 

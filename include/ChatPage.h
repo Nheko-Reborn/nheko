@@ -24,15 +24,11 @@
 #include "MatrixClient.h"
 #include "RoomList.h"
 #include "RoomState.h"
+#include "Splitter.h"
 #include "TextInputWidget.h"
 #include "TimelineViewManager.h"
 #include "TopRoomBar.h"
 #include "UserInfoWidget.h"
-
-namespace Ui
-{
-class ChatPage;
-}
 
 class ChatPage : public QWidget
 {
@@ -64,7 +60,20 @@ private slots:
 private:
 	void updateRoomState(RoomState &room_state, const QJsonArray &events);
 
-	Ui::ChatPage *ui;
+	QHBoxLayout *topLayout_;
+	Splitter *splitter;
+
+	QWidget *sideBar_;
+	QVBoxLayout *sideBarLayout_;
+	QVBoxLayout *sideBarTopLayout_;
+	QVBoxLayout *sideBarMainLayout_;
+	QWidget *sideBarTopWidget_;
+	QVBoxLayout *sideBarTopWidgetLayout_;
+
+	QWidget *content_;
+	QVBoxLayout *contentLayout_;
+	QHBoxLayout *topBarLayout_;
+	QVBoxLayout *mainContentLayout_;
 
 	RoomList *room_list_;
 	TimelineViewManager *view_manager_;

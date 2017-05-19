@@ -22,6 +22,7 @@
 #include "Ripple.h"
 #include "RoomInfoListItem.h"
 #include "RoomState.h"
+#include "Theme.h"
 
 RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *parent)
     : QWidget(parent)
@@ -36,7 +37,6 @@ RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *pa
 	setAttribute(Qt::WA_Hover);
 
 	setFixedHeight(maxHeight_);
-	setMaximumSize(parent->width(), maxHeight_);
 
 	QPainterPath path;
 	path.addRect(0, 0, parent->width(), height());
@@ -69,29 +69,60 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 
 	QRect avatarRegion(Padding, Padding, IconSize, IconSize);
 
-	if (isPressed_) {
-		QPen pen(QColor("white"));
-		p.setPen(pen);
-	}
-
-	auto name = metrics.elidedText(state_.resolveName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
-	p.drawText(QPoint(2 * Padding + IconSize, avatarRegion.center().y() - metrics.height() / 2), name);
-
-	if (!isPressed_) {
-		QPen pen(QColor("#5d6565"));
-		p.setPen(pen);
-	}
-
+	// Description line
 	int bottom_y = avatarRegion.center().y() + metrics.height() / 2 + Padding / 2;
-	double descPercentage = 0.95;
 
-	if (unreadMsgCount_ > 0)
-		descPercentage = 0.8;
+	if (width() > ui::sidebar::SmallSize) {
+		if (isPressed_) {
+			QPen pen(QColor("white"));
+			p.setPen(pen);
+		}
 
-	auto description = metrics.elidedText(state_.resolveTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
-	p.drawText(QPoint(2 * Padding + IconSize, bottom_y), description);
+		auto name = metrics.elidedText(state_.resolveName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
+		p.drawText(QPoint(2 * Padding + IconSize, avatarRegion.center().y() - metrics.height() / 2), name);
+
+		if (!isPressed_) {
+			QPen pen(QColor("#5d6565"));
+			p.setPen(pen);
+		}
+
+		double descPercentage = 0.95;
+
+		if (unreadMsgCount_ > 0)
+			descPercentage = 0.8;
+
+		auto description = metrics.elidedText(state_.resolveTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
+		p.drawText(QPoint(2 * Padding + IconSize, bottom_y), description);
+	}
 
 	p.setPen(Qt::NoPen);
+
+	// We using the first letter of room's name.
+	if (roomAvatar_.isNull()) {
+		QBrush brush;
+		brush.setStyle(Qt::SolidPattern);
+		brush.setColor("#eee");
+
+		p.setPen(Qt::NoPen);
+		p.setBrush(brush);
+
+		p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
+
+		font.setPixelSize(13);
+		p.setFont(font);
+		p.setPen(QColor("#333"));
+		p.setBrush(Qt::NoBrush);
+		p.drawText(avatarRegion.translated(0, -1), Qt::AlignCenter, QChar(state_.resolveName()[0]));
+	} else {
+		p.save();
+
+		QPainterPath path;
+		path.addEllipse(Padding, Padding, IconSize, IconSize);
+		p.setClipPath(path);
+
+		p.drawPixmap(avatarRegion, roomAvatar_);
+		p.restore();
+	}
 
 	if (unreadMsgCount_ > 0) {
 		QColor textColor("white");
@@ -116,6 +147,9 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 
 		QRectF r(width() - diameter - Padding, bottom_y - diameter / 2 - 5, diameter, diameter);
 
+		if (width() == ui::sidebar::SmallSize)
+			r = QRectF(width() - diameter - 5, height() - diameter - 5, diameter, diameter);
+
 		p.setPen(Qt::NoPen);
 		p.drawEllipse(r);
 
@@ -126,29 +160,6 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 
 		p.setBrush(Qt::NoBrush);
 		p.drawText(r.translated(0, -0.5), Qt::AlignCenter, QString::number(unreadMsgCount_));
-	}
-
-	// We using the first letter of room's name.
-	if (roomAvatar_.isNull()) {
-		QBrush brush;
-		brush.setStyle(Qt::SolidPattern);
-		brush.setColor("#eee");
-
-		p.setPen(Qt::NoPen);
-		p.setBrush(brush);
-
-		p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
-
-		font.setPixelSize(13);
-		p.setFont(font);
-		p.setPen(QColor("#333"));
-		p.setBrush(Qt::NoBrush);
-		p.drawText(avatarRegion.translated(0, -1), Qt::AlignCenter, QChar(state_.resolveName()[0]));
-	} else {
-		QPainterPath path;
-		path.addEllipse(Padding, Padding, IconSize, IconSize);
-		p.setClipPath(path);
-		p.drawPixmap(avatarRegion, roomAvatar_);
 	}
 }
 

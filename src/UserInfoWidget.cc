@@ -15,8 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "UserInfoWidget.h"
+#include <QDebug>
+
 #include "FlatButton.h"
+#include "UserInfoWidget.h"
 
 UserInfoWidget::UserInfoWidget(QWidget *parent)
     : QWidget(parent)
@@ -29,7 +31,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
 	topLayout_ = new QHBoxLayout(this);
 	topLayout_->setSpacing(0);
-	topLayout_->setContentsMargins(5, 5, 5, 5);
+	topLayout_->setMargin(5);
 
 	avatarLayout_ = new QHBoxLayout();
 	textLayout_ = new QVBoxLayout();
@@ -65,11 +67,12 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	topLayout_->addStretch(1);
 
 	buttonLayout_ = new QHBoxLayout();
+	buttonLayout_->setSpacing(0);
+	buttonLayout_->setMargin(0);
 
 	logoutButton_ = new FlatButton(this);
 	logoutButton_->setForegroundColor(QColor("#555459"));
 	logoutButton_->setCursor(QCursor(Qt::PointingHandCursor));
-	logoutButton_->setStyleSheet("width: 30px; height: 30px;");
 
 	QIcon icon;
 	icon.addFile(":/icons/icons/power-button-off.png", QSize(), QIcon::Normal, QIcon::Off);
@@ -86,6 +89,24 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
 UserInfoWidget::~UserInfoWidget()
 {
+}
+
+void UserInfoWidget::resizeEvent(QResizeEvent *event)
+{
+	Q_UNUSED(event);
+
+	if (width() <= ui::sidebar::SmallSize) {
+		topLayout_->setContentsMargins(0, 0, 10, 0);
+
+		userAvatar_->hide();
+		displayNameLabel_->hide();
+		userIdLabel_->hide();
+	} else {
+		topLayout_->setMargin(5);
+		userAvatar_->show();
+		displayNameLabel_->show();
+		userIdLabel_->show();
+	}
 }
 
 void UserInfoWidget::reset()

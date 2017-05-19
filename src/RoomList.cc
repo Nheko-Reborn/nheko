@@ -31,12 +31,10 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
 		"QWidget { border: none; }"
 		"QScrollBar:vertical { width: 4px; margin: 2px 0; }");
 
-	QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+	QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	sizePolicy.setHorizontalStretch(0);
 	sizePolicy.setVerticalStretch(0);
 	setSizePolicy(sizePolicy);
-
-	setMinimumSize(QSize(0, 500));
 
 	topLayout_ = new QVBoxLayout(this);
 	topLayout_->setSpacing(0);

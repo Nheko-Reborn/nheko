@@ -12,6 +12,11 @@ enum class AvatarType {
 	Letter
 };
 
+namespace sidebar
+{
+static const int SmallSize = 60;
+static const int NormalSize = 300;
+}
 // Default font size.
 const int FontSize = 16;
 

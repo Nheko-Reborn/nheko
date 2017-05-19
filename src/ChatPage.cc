@@ -15,14 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ui_ChatPage.h"
-
 #include <QDebug>
-#include <QLabel>
 #include <QSettings>
 
 #include "ChatPage.h"
+#include "Splitter.h"
 #include "Sync.h"
+#include "Theme.h"
 #include "TimelineViewManager.h"
 #include "UserInfoWidget.h"
 
@@ -43,26 +42,80 @@ namespace events = matrix::events;
 
 ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::ChatPage)
     , sync_interval_(2000)
     , client_(client)
 {
-	ui->setupUi(this);
+	resize(798, 519);
+	setStyleSheet("background-color: #f8fbfe;");
+
+	topLayout_ = new QHBoxLayout(this);
+	topLayout_->setSpacing(0);
+	topLayout_->setMargin(0);
+
+	auto splitter = new Splitter(this);
+	splitter->setHandleWidth(0);
+
+	topLayout_->addWidget(splitter);
+
+	// SideBar
+	sideBar_ = new QWidget(this);
+	sideBar_->setMinimumSize(QSize(ui::sidebar::NormalSize, 0));
+	sideBarLayout_ = new QVBoxLayout(sideBar_);
+	sideBarLayout_->setSpacing(0);
+	sideBarLayout_->setMargin(0);
+
+	sideBarTopLayout_ = new QVBoxLayout();
+	sideBarTopLayout_->setSpacing(0);
+	sideBarTopLayout_->setMargin(0);
+	sideBarMainLayout_ = new QVBoxLayout();
+	sideBarMainLayout_->setSpacing(0);
+	sideBarMainLayout_->setMargin(0);
+
+	sideBarLayout_->addLayout(sideBarTopLayout_);
+	sideBarLayout_->addLayout(sideBarMainLayout_);
+
+	sideBarTopWidget_ = new QWidget(sideBar_);
+	sideBarTopWidget_->setStyleSheet("background-color: #d6dde3; color: #ebebeb;");
+
+	sideBarTopLayout_->addWidget(sideBarTopWidget_);
+
+	sideBarTopWidgetLayout_ = new QVBoxLayout(sideBarTopWidget_);
+	sideBarTopWidgetLayout_->setSpacing(0);
+	sideBarTopWidgetLayout_->setMargin(0);
+
+	// Content
+	content_ = new QWidget(this);
+	contentLayout_ = new QVBoxLayout(content_);
+	contentLayout_->setSpacing(0);
+	contentLayout_->setMargin(0);
+
+	topBarLayout_ = new QHBoxLayout();
+	topBarLayout_->setSpacing(0);
+	mainContentLayout_ = new QVBoxLayout();
+	mainContentLayout_->setSpacing(0);
+	mainContentLayout_->setMargin(0);
+
+	contentLayout_->addLayout(topBarLayout_);
+	contentLayout_->addLayout(mainContentLayout_);
+
+	// Splitter
+	splitter->addWidget(sideBar_);
+	splitter->addWidget(content_);
 
 	room_list_ = new RoomList(client, this);
-	ui->sideBarMainLayout->addWidget(room_list_);
+	sideBarMainLayout_->addWidget(room_list_);
 
 	top_bar_ = new TopRoomBar(this);
-	ui->topBarLayout->addWidget(top_bar_);
+	topBarLayout_->addWidget(top_bar_);
 
 	view_manager_ = new TimelineViewManager(client, this);
-	ui->mainContentLayout->addWidget(view_manager_);
+	mainContentLayout_->addWidget(view_manager_);
 
 	text_input_ = new TextInputWidget(this);
-	ui->contentLayout->addWidget(text_input_);
+	contentLayout_->addWidget(text_input_);
 
-	user_info_widget_ = new UserInfoWidget(ui->sideBarTopWidget);
-	ui->sideBarTopUserInfoLayout->addWidget(user_info_widget_);
+	user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
+	sideBarTopWidgetLayout_->addWidget(user_info_widget_);
 
 	sync_timer_ = new QTimer(this);
 	sync_timer_->setSingleShot(true);
@@ -366,5 +419,4 @@ void ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
 ChatPage::~ChatPage()
 {
 	sync_timer_->stop();
-	delete ui;
 }

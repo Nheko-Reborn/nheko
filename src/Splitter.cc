@@ -18,11 +18,10 @@
 #include <QDebug>
 
 #include "Splitter.h"
+#include "Theme.h"
 
-Splitter::Splitter(int first_step, int second_step, QWidget *parent)
+Splitter::Splitter(QWidget *parent)
     : QSplitter(parent)
-    , firstStep_{first_step}
-    , secondStep_{second_step}
 {
 	connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
 }
@@ -39,7 +38,7 @@ void Splitter::onSplitterMoved(int pos, int index)
 		return;
 	}
 
-	if (s[0] == secondStep_) {
+	if (s[0] == ui::sidebar::NormalSize) {
 		rightMoveCount_ += 1;
 
 		if (rightMoveCount_ > moveEventLimit_) {
@@ -49,15 +48,13 @@ void Splitter::onSplitterMoved(int pos, int index)
 			// if we are coming from the right, the cursor should
 			// end up on the first widget.
 			if (left->rect().contains(pos)) {
-				qDebug() << "Resizing left";
-
-				left->setMinimumWidth(firstStep_);
-				left->setMaximumWidth(firstStep_);
+				left->setMinimumWidth(ui::sidebar::SmallSize);
+				left->setMaximumWidth(ui::sidebar::SmallSize);
 
 				rightMoveCount_ = 0;
 			}
 		}
-	} else if (s[0] == firstStep_) {
+	} else if (s[0] == ui::sidebar::SmallSize) {
 		leftMoveCount_ += 1;
 
 		if (leftMoveCount_ > moveEventLimit_) {
@@ -72,10 +69,8 @@ void Splitter::onSplitterMoved(int pos, int index)
 			// if we are coming from the left, the cursor should
 			// end up on the second widget.
 			if (extended.contains(pos)) {
-				qDebug() << "Resizing Right";
-
-				left->setMinimumWidth(secondStep_);
-				left->setMaximumWidth(2 * secondStep_);
+				left->setMinimumWidth(ui::sidebar::NormalSize);
+				left->setMaximumWidth(2 * ui::sidebar::NormalSize);
 
 				leftMoveCount_ = 0;
 			}
