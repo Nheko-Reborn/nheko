@@ -64,7 +64,7 @@ private:
 
 	QPixmap roomAvatar_;
 
-	bool isPressed_;
+	bool isPressed_ = false;
 
 	int maxHeight_ = 60;
 	int unreadMsgCount_ = 0;

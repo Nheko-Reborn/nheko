@@ -32,6 +32,8 @@ RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *pa
     , unreadMsgCount_(0)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	setMouseTracking(true);
+	setAttribute(Qt::WA_Hover);
 
 	setFixedHeight(maxHeight_);
 	setMaximumSize(parent->width(), maxHeight_);
@@ -55,6 +57,8 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 
 	if (isPressed_)
 		p.fillRect(rect(), QColor("#38A3D8"));
+	else if (underMouse())
+		p.fillRect(rect(), QColor(200, 200, 200, 128));
 	else
 		p.fillRect(rect(), QColor("#F8FBFE"));
 
