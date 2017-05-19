@@ -17,13 +17,8 @@
 
 #pragma once
 
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
+#include <QWidget>
 
-#include "Avatar.h"
-#include "Badge.h"
 #include "RippleOverlay.h"
 #include "RoomState.h"
 
@@ -52,46 +47,37 @@ public slots:
 
 protected:
 	void mousePressEvent(QMouseEvent *event) override;
+	void paintEvent(QPaintEvent *event) override;
 
 private:
-	void setElidedText(QLabel *label, QString text, int width);
+	const int Padding = 10;
+	const int IconSize = 45;
 
 	RippleOverlay *ripple_overlay_;
 
 	RoomState state_;
-	QString room_id_;
 
-	QHBoxLayout *topLayout_;
+	QString roomId_;
+	QString roomName_;
+	QString lastMessage_;
+	QString lastTimestamp_;
 
-	QVBoxLayout *avatarLayout_;
-	QVBoxLayout *textLayout_;
+	QPixmap roomAvatar_;
 
-	QWidget *avatarWidget_;
-	QWidget *textWidget_;
+	bool isPressed_;
 
-	QLabel *roomName_;
-	QLabel *roomTopic_;
-
-	Avatar *roomAvatar_;
-	Badge *unreadMessagesBadge_;
-
-	QString pressed_style_;
-	QString normal_style_;
-
-	bool is_pressed_;
-
-	int max_height_;
-	int unread_msg_count_;
+	int maxHeight_ = 60;
+	int unreadMsgCount_ = 0;
 };
 
 inline int RoomInfoListItem::unreadMessageCount() const
 {
-	return unread_msg_count_;
+	return unreadMsgCount_;
 }
 
 inline bool RoomInfoListItem::isPressed() const
 {
-	return is_pressed_;
+	return isPressed_;
 }
 
 inline RoomState RoomInfoListItem::state() const
@@ -99,7 +85,7 @@ inline RoomState RoomInfoListItem::state() const
 	return state_;
 }
 
-inline void RoomInfoListItem::setAvatar(const QImage &avatar_image)
+inline void RoomInfoListItem::setAvatar(const QImage &img)
 {
-	roomAvatar_->setImage(avatar_image);
+	roomAvatar_ = QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

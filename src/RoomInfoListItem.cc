@@ -17,6 +17,7 @@
 
 #include <QDebug>
 #include <QMouseEvent>
+#include <QPainter>
 
 #include "Ripple.h"
 #include "RoomInfoListItem.h"
@@ -25,133 +26,150 @@
 RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *parent)
     : QWidget(parent)
     , state_(state)
-    , room_id_(room_id)
-    , is_pressed_(false)
-    , max_height_(60)
-    , unread_msg_count_(0)
+    , roomId_(room_id)
+    , isPressed_(false)
+    , maxHeight_(60)
+    , unreadMsgCount_(0)
 {
-	normal_style_ =
-		"QWidget { color: black; background-color: #f8fbfe}"
-		"QLabel { border: none; }";
-
-	pressed_style_ =
-		"QWidget { background-color: #acc7dc; color: black;}"
-		"QLabel { border: none; }";
-
-	setStyleSheet(normal_style_);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	setAutoFillBackground(true);
 
-	setMaximumSize(parent->width(), max_height_);
-
-	QString room_name = state_.resolveName();
-	QString room_topic = state_.topic.content().topic().simplified();
-
-	topLayout_ = new QHBoxLayout(this);
-	topLayout_->setSpacing(0);
-	topLayout_->setMargin(0);
-
-	avatarWidget_ = new QWidget(this);
-	avatarWidget_->setMaximumSize(max_height_, max_height_);
-	textWidget_ = new QWidget(this);
-
-	avatarLayout_ = new QVBoxLayout(avatarWidget_);
-	avatarLayout_->setSpacing(0);
-	avatarLayout_->setContentsMargins(0, 5, 0, 5);
-
-	textLayout_ = new QVBoxLayout(textWidget_);
-	textLayout_->setSpacing(0);
-	textLayout_->setContentsMargins(0, 5, 0, 5);
-
-	roomAvatar_ = new Avatar(avatarWidget_);
-	roomAvatar_->setLetter(QChar(room_name[0]));
-	roomAvatar_->setSize(max_height_ - 20);
-	roomAvatar_->setTextColor("#555459");
-	roomAvatar_->setBackgroundColor("#d6dde3");
-
-	unreadMessagesBadge_ = new Badge(roomAvatar_);
-	unreadMessagesBadge_->setRelativePosition(12, 10);
-	unreadMessagesBadge_->setDiameter(5);
-	unreadMessagesBadge_->setBackgroundColor("#f8fbfe");
-	unreadMessagesBadge_->setTextColor("black");
-
-	// TODO: Initialize when nheko can restore messages from previous session.
-	unreadMessagesBadge_->hide();
-
-	avatarLayout_->addWidget(roomAvatar_);
-
-	roomName_ = new QLabel(room_name, textWidget_);
-	roomName_->setMaximumSize(parent->width() - max_height_, 20);
-	roomName_->setFont(QFont("Open Sans", 11));
-	roomName_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-	roomTopic_ = new QLabel(room_topic, textWidget_);
-	roomTopic_->setMaximumSize(parent->width() - max_height_, 20);
-	roomTopic_->setFont(QFont("Open Sans", 10));
-	roomTopic_->setStyleSheet("color: #171919");
-	roomTopic_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-	textLayout_->addWidget(roomName_);
-	textLayout_->addWidget(roomTopic_);
-
-	topLayout_->addWidget(avatarWidget_);
-	topLayout_->addWidget(textWidget_);
-
-	setElidedText(roomName_, room_name, parent->width() - max_height_);
-	setElidedText(roomTopic_, room_topic, parent->width() - max_height_);
+	setFixedHeight(maxHeight_);
+	setMaximumSize(parent->width(), maxHeight_);
 
 	QPainterPath path;
-	path.addRect(0, 0, parent->width(), max_height_);
+	path.addRect(0, 0, parent->width(), height());
 
 	ripple_overlay_ = new RippleOverlay(this);
 	ripple_overlay_->setClipPath(path);
 	ripple_overlay_->setClipping(true);
+}
 
-	setLayout(topLayout_);
+void RoomInfoListItem::paintEvent(QPaintEvent *event)
+{
+	Q_UNUSED(event);
+
+	QPainter p(this);
+	p.setRenderHint(QPainter::TextAntialiasing);
+	p.setRenderHint(QPainter::SmoothPixmapTransform);
+	p.setRenderHint(QPainter::Antialiasing);
+
+	if (isPressed_)
+		p.fillRect(rect(), QColor("#38A3D8"));
+	else
+		p.fillRect(rect(), QColor("#F8FBFE"));
+
+	QFont font("Open Sans", 10);
+
+	QFontMetrics metrics(font);
+	p.setFont(font);
+
+	QRect avatarRegion(Padding, Padding, IconSize, IconSize);
+
+	if (isPressed_) {
+		QPen pen(QColor("white"));
+		p.setPen(pen);
+	}
+
+	auto name = metrics.elidedText(state_.resolveName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
+	p.drawText(QPoint(2 * Padding + IconSize, avatarRegion.center().y() - metrics.height() / 2), name);
+
+	if (!isPressed_) {
+		QPen pen(QColor("#5d6565"));
+		p.setPen(pen);
+	}
+
+	int bottom_y = avatarRegion.center().y() + metrics.height() / 2 + Padding / 2;
+	double descPercentage = 0.95;
+
+	if (unreadMsgCount_ > 0)
+		descPercentage = 0.8;
+
+	auto description = metrics.elidedText(state_.resolveTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
+	p.drawText(QPoint(2 * Padding + IconSize, bottom_y), description);
+
+	p.setPen(Qt::NoPen);
+
+	if (unreadMsgCount_ > 0) {
+		QBrush brush;
+		brush.setStyle(Qt::SolidPattern);
+		brush.setColor(QColor("#38A3D8"));
+
+		p.setBrush(brush);
+		p.setPen(Qt::NoPen);
+
+		QFont msgFont("Open Sans", 8);
+		msgFont.setStyleName("Bold");
+
+		p.setFont(msgFont);
+
+		int diameter = 20;
+
+		QRectF r(width() - diameter - Padding, bottom_y - diameter / 2 - 5, diameter, diameter);
+
+		p.setPen(Qt::NoPen);
+		p.drawEllipse(r);
+
+		p.setPen(QPen(QColor("white")));
+		p.setBrush(Qt::NoBrush);
+		p.drawText(r.translated(0, -0.5), Qt::AlignCenter, QString::number(unreadMsgCount_));
+	}
+
+	// We using the first letter of room's name.
+	if (roomAvatar_.isNull()) {
+		QBrush brush;
+		brush.setStyle(Qt::SolidPattern);
+		brush.setColor("#eee");
+
+		p.setPen(Qt::NoPen);
+		p.setBrush(brush);
+
+		p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
+
+		font.setPixelSize(13);
+		p.setFont(font);
+		p.setPen(QColor("#333"));
+		p.setBrush(Qt::NoBrush);
+		p.drawText(avatarRegion.translated(0, -1), Qt::AlignCenter, QChar(state_.resolveName()[0]));
+	} else {
+		QPainterPath path;
+		path.addEllipse(Padding, Padding, IconSize, IconSize);
+		p.setClipPath(path);
+		p.drawPixmap(avatarRegion, roomAvatar_);
+	}
 }
 
 void RoomInfoListItem::updateUnreadMessageCount(int count)
 {
-	unread_msg_count_ += count;
-	unreadMessagesBadge_->setText(QString::number(unread_msg_count_));
-	unreadMessagesBadge_->show();
+	unreadMsgCount_ += count;
+	repaint();
 }
 
 void RoomInfoListItem::clearUnreadMessageCount()
 {
-	unread_msg_count_ = 0;
-	unreadMessagesBadge_->setText("");
-	unreadMessagesBadge_->hide();
+	unreadMsgCount_ = 0;
+	repaint();
 }
 
 void RoomInfoListItem::setPressedState(bool state)
 {
-	if (!is_pressed_ && state) {
-		is_pressed_ = state;
-		setStyleSheet(pressed_style_);
-	} else if (is_pressed_ && !state) {
-		is_pressed_ = state;
-		setStyleSheet(normal_style_);
+	if (!isPressed_ && state) {
+		isPressed_ = state;
+		update();
+	} else if (isPressed_ && !state) {
+		isPressed_ = state;
+		update();
 	}
 }
 
 void RoomInfoListItem::setState(const RoomState &new_state)
 {
-	if (state_.resolveName() != new_state.resolveName())
-		setElidedText(roomName_, new_state.resolveName(), parentWidget()->width() - max_height_);
-
-	if (state_.resolveTopic() != new_state.resolveTopic())
-		setElidedText(roomTopic_, new_state.resolveTopic(), parentWidget()->width() - max_height_);
-
-	if (new_state.avatar.content().url().toString().isEmpty())
-		roomAvatar_->setLetter(QChar(new_state.resolveName()[0]));
-
 	state_ = new_state;
+	repaint();
 }
 
 void RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 {
-	emit clicked(room_id_);
+	emit clicked(roomId_);
 
 	setPressedState(true);
 
@@ -163,18 +181,11 @@ void RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 
 	ripple->setRadiusEndValue(radiusEndValue);
 	ripple->setOpacityStartValue(0.15);
-	ripple->setColor(QColor("#052B49"));
-	ripple->radiusAnimation()->setDuration(300);
-	ripple->opacityAnimation()->setDuration(500);
+	ripple->setColor(QColor("white"));
+	ripple->radiusAnimation()->setDuration(200);
+	ripple->opacityAnimation()->setDuration(400);
 
 	ripple_overlay_->addRipple(ripple);
-}
-
-void RoomInfoListItem::setElidedText(QLabel *label, QString text, int width)
-{
-	QFontMetrics metrics(label->font());
-	QString elidedText = metrics.elidedText(text, Qt::ElideRight, width);
-	label->setText(elidedText);
 }
 
 RoomInfoListItem::~RoomInfoListItem()
