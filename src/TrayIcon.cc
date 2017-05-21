@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QTimer>
 
 #include "TrayIcon.h"
@@ -69,7 +70,9 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
 	quitAction_ = new QAction("Quit", parent);
 
 	connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
-	connect(quitAction_, SIGNAL(triggered()), parent, SLOT(close()));
+	connect(quitAction_, &QAction::triggered, this, [=]() {
+		QApplication::quit();
+	});
 
 	menu->addAction(viewAction_);
 	menu->addAction(quitAction_);
