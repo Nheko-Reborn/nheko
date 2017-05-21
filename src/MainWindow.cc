@@ -20,6 +20,7 @@
 #include <QLayout>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QSystemTrayIcon>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,16 +30,18 @@ MainWindow::MainWindow(QWidget *parent)
 	QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setSizePolicy(sizePolicy);
 	setWindowTitle("nheko");
+	setObjectName("MainWindow");
+	setStyleSheet("QWidget#MainWindow {background-color: #f9f9f9}");
 
 	resize(1066, 600);  // 16:9 ratio
 	setMinimumSize(QSize(950, 600));
-	setStyleSheet("background-color: #f9f9f9");
 
 	QFont font("Open Sans", 12);
 	font.setStyleStrategy(QFont::PreferAntialias);
 	setFont(font);
 
 	client_ = QSharedPointer<MatrixClient>(new MatrixClient("matrix.org"));
+	trayIcon_ = new TrayIcon(":/logos/nheko-32.png", this);
 
 	welcome_page_ = new WelcomePage(this);
 	login_page_ = new LoginPage(client_, this);
@@ -62,6 +65,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
 	connect(chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
+	connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
+
+	connect(trayIcon_,
+		SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+		this,
+		SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
 	connect(client_.data(),
 		SIGNAL(initialSyncCompleted(const SyncResponse &)),
@@ -157,6 +166,29 @@ void MainWindow::showRegisterPage()
 {
 	int index = sliding_stack_->getWidgetIndex(register_page_);
 	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	if (isVisible()) {
+		event->ignore();
+		hide();
+	}
+}
+
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	switch (reason) {
+	case QSystemTrayIcon::Trigger:
+		if (!isVisible()) {
+			show();
+		} else {
+			hide();
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 MainWindow::~MainWindow()

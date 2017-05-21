@@ -44,6 +44,7 @@ public:
 signals:
 	void close();
 	void changeWindowTitle(const QString &msg);
+	void unreadMessages(int count);
 
 private slots:
 	void showUnreadMessageNotification(int count);

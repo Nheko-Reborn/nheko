@@ -311,6 +311,8 @@ void ChatPage::changeTopRoomInfo(const QString &room_id)
 
 void ChatPage::showUnreadMessageNotification(int count)
 {
+	emit unreadMessages(count);
+
 	// TODO: Make the default title a const.
 	if (count == 0)
 		emit changeWindowTitle("nheko");

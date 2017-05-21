@@ -100,6 +100,7 @@ set(SRC_FILES
     src/Splitter.cc
     src/Sync.cc
     src/TextInputWidget.cc
+    src/TrayIcon.cc
     src/TopRoomBar.cc
     src/UserInfoWidget.cc
     src/WelcomePage.cc
@@ -171,6 +172,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/UserInfoWidget.h
     include/SlidingStackWidget.h
     include/TopRoomBar.h
+    include/TrayIcon.h
     include/TextInputWidget.h
     include/WelcomePage.h
 

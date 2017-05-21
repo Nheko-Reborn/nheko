@@ -27,6 +27,7 @@
 #include "OverlayModal.h"
 #include "RegisterPage.h"
 #include "SlidingStackWidget.h"
+#include "TrayIcon.h"
 #include "WelcomePage.h"
 
 class MainWindow : public QMainWindow
@@ -37,7 +38,13 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+protected:
+	void closeEvent(QCloseEvent *event);
+
 private slots:
+	// Handle interaction with the tray icon.
+	void iconActivated(QSystemTrayIcon::ActivationReason reason);
+
 	// Show the welcome page in the main window.
 	void showWelcomePage();
 
@@ -74,4 +81,7 @@ private:
 
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;
+
+	// Tray icon that shows the unread message count.
+	TrayIcon *trayIcon_;
 };

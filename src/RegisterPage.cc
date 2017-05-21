@@ -25,6 +25,8 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
     , client_(client)
 {
+	setStyleSheet("background-color: #f9f9f9");
+
 	top_layout_ = new QVBoxLayout();
 
 	back_layout_ = new QHBoxLayout();

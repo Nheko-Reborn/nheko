@@ -26,6 +26,8 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
     , login_settings_{nullptr}
     , client_{client}
 {
+	setStyleSheet("background-color: #f9f9f9");
+
 	top_layout_ = new QVBoxLayout();
 
 	top_bar_layout_ = new QHBoxLayout();
