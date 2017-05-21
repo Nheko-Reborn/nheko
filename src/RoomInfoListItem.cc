@@ -109,7 +109,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 
 		p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
 
-		font.setPixelSize(13);
+		font.setPointSize(13);
 		p.setFont(font);
 		p.setPen(QColor("#333"));
 		p.setBrush(Qt::NoBrush);
