@@ -36,7 +36,7 @@ public:
 	int msgCount = 0;
 
 private:
-	const int BubbleDiameter = 15;
+	const int BubbleDiameter = 17;
 
 	QIcon icon_;
 };

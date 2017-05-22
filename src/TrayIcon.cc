@@ -28,6 +28,10 @@ MsgCountComposedIcon::MsgCountComposedIcon(const QString &filename)
 
 void MsgCountComposedIcon::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
 {
+	painter->setRenderHint(QPainter::TextAntialiasing);
+	painter->setRenderHint(QPainter::SmoothPixmapTransform);
+	painter->setRenderHint(QPainter::Antialiasing);
+
 	icon_.paint(painter, rect, Qt::AlignCenter, mode, state);
 
 	if (msgCount <= 0)
@@ -42,7 +46,7 @@ void MsgCountComposedIcon::paint(QPainter *painter, const QRect &rect, QIcon::Mo
 
 	painter->setBrush(brush);
 	painter->setPen(Qt::NoPen);
-	painter->setFont(QFont("Open Sans", 7, QFont::Black));
+	painter->setFont(QFont("Open Sans", 8, QFont::Black));
 
 	QRectF bubble(rect.width() - BubbleDiameter,
 		      rect.height() - BubbleDiameter,
