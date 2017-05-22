@@ -60,6 +60,8 @@ private slots:
 	void removeOverlayProgressBar();
 
 private:
+	bool hasActiveUser();
+
 	// The initial welcome screen.
 	WelcomePage *welcome_page_;
 

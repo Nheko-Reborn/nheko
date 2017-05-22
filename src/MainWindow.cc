@@ -81,6 +81,16 @@ MainWindow::MainWindow(QWidget *parent)
 		SIGNAL(loginSuccess(QString, QString, QString)),
 		this,
 		SLOT(showChatPage(QString, QString, QString)));
+
+	QSettings settings;
+
+	if (hasActiveUser()) {
+		QString token = settings.value("auth/access_token").toString();
+		QString home_server = settings.value("auth/home_server").toString();
+		QString user_id = settings.value("auth/user_id").toString();
+
+		showChatPage(user_id, home_server, token);
+	}
 }
 
 void MainWindow::removeOverlayProgressBar()
@@ -114,7 +124,15 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 	settings.setValue("auth/user_id", userid);
 
 	int index = sliding_stack_->getWidgetIndex(chat_page_);
-	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+	int modalOpacityDuration = 300;
+
+	// If we go directly from the welcome page don't show an animation.
+	if (sliding_stack_->currentIndex() == 0) {
+		sliding_stack_->setCurrentIndex(index);
+		modalOpacityDuration = 0;
+	} else {
+		sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+	}
 
 	if (spinner_ == nullptr) {
 		spinner_ = new CircularProgress(this);
@@ -125,7 +143,7 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 	if (progress_modal_ == nullptr) {
 		progress_modal_ = new OverlayModal(this, spinner_);
 		progress_modal_->fadeIn();
-		progress_modal_->setDuration(300);
+		progress_modal_->setDuration(modalOpacityDuration);
 	}
 
 	login_page_->reset();
@@ -144,20 +162,6 @@ void MainWindow::showWelcomePage()
 
 void MainWindow::showLoginPage()
 {
-	QSettings settings;
-
-	if (settings.contains("auth/access_token") &&
-	    settings.contains("auth/home_server") &&
-	    settings.contains("auth/user_id")) {
-		QString token = settings.value("auth/access_token").toString();
-		QString home_server = settings.value("auth/home_server").toString();
-		QString user_id = settings.value("auth/user_id").toString();
-
-		showChatPage(user_id, home_server, token);
-
-		return;
-	}
-
 	int index = sliding_stack_->getWidgetIndex(login_page_);
 	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
 }
@@ -189,6 +193,15 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 	default:
 		break;
 	}
+}
+
+bool MainWindow::hasActiveUser()
+{
+	QSettings settings;
+
+	return settings.contains("auth/access_token") &&
+	       settings.contains("auth/home_server") &&
+	       settings.contains("auth/user_id");
 }
 
 MainWindow::~MainWindow()
