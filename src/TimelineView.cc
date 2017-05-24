@@ -240,6 +240,9 @@ void TimelineView::init()
 	scroll_area_->setWidgetResizable(true);
 	scroll_area_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+	scrollbar_ = new ScrollBar(scroll_area_);
+	scroll_area_->setVerticalScrollBar(scrollbar_);
+
 	scroll_widget_ = new QWidget();
 
 	scroll_layout_ = new QVBoxLayout();

@@ -23,6 +23,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "ScrollBar.h"
 #include "Sync.h"
 #include "TimelineItem.h"
 
@@ -97,6 +98,7 @@ private:
 	QVBoxLayout *scroll_layout_;
 
 	QScrollArea *scroll_area_;
+	ScrollBar *scrollbar_;
 	QWidget *scroll_widget_;
 
 	QString last_sender_;

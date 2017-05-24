@@ -27,9 +27,7 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
     : QWidget(parent)
     , client_(client)
 {
-	setStyleSheet(
-		"QWidget { border: none; }"
-		"QScrollBar:vertical { width: 4px; margin: 2px 0; }");
+	setStyleSheet("QWidget { border: none; }");
 
 	QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	sizePolicy.setHorizontalStretch(0);
@@ -42,6 +40,7 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	scrollArea_ = new QScrollArea(this);
 	scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
 	scrollArea_->setWidgetResizable(true);
 	scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);

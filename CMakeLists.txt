@@ -111,6 +111,7 @@ set(SRC_FILES
     src/ui/CircularProgress.cc
     src/ui/FlatButton.cc
     src/ui/OverlayModal.cc
+    src/ui/ScrollBar.cc
     src/ui/RaisedButton.cc
     src/ui/Ripple.cc
     src/ui/RippleOverlay.cc
@@ -181,6 +182,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/CircularProgress.h
     include/ui/FlatButton.h
     include/ui/OverlayWidget.h
+    include/ui/ScrollBar.h
     include/ui/RaisedButton.h
     include/ui/Ripple.h
     include/ui/RippleOverlay.h
