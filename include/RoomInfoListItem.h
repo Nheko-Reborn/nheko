@@ -50,8 +50,8 @@ protected:
 	void paintEvent(QPaintEvent *event) override;
 
 private:
-	const int Padding = 10;
-	const int IconSize = 45;
+	const int Padding = 7;
+	const int IconSize = 46;
 
 	RippleOverlay *ripple_overlay_;
 
@@ -66,7 +66,7 @@ private:
 
 	bool isPressed_ = false;
 
-	int maxHeight_ = 60;
+	int maxHeight_;
 	int unreadMsgCount_ = 0;
 };
 
@@ -87,5 +87,5 @@ inline RoomState RoomInfoListItem::state() const
 
 inline void RoomInfoListItem::setAvatar(const QImage &img)
 {
-	roomAvatar_ = QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	roomAvatar_ = QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }

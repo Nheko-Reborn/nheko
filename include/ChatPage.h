@@ -59,6 +59,7 @@ private slots:
 	void logout();
 
 private:
+	void updateDisplayNames(const RoomState &state);
 	void updateRoomState(RoomState &room_state, const QJsonArray &events);
 
 	QHBoxLayout *topLayout_;

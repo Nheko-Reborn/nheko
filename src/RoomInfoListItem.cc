@@ -29,7 +29,7 @@ RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *pa
     , state_(state)
     , roomId_(room_id)
     , isPressed_(false)
-    , maxHeight_(60)
+    , maxHeight_(IconSize + 2 * Padding)
     , unreadMsgCount_(0)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -71,7 +71,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 	QRect avatarRegion(Padding, Padding, IconSize, IconSize);
 
 	// Description line
-	int bottom_y = avatarRegion.center().y() + metrics.height() / 2 + Padding / 2;
+	int bottom_y = maxHeight_ - Padding - metrics.height() / 2 + Padding / 2;
 
 	if (width() > ui::sidebar::SmallSize) {
 		if (isPressed_) {
@@ -79,8 +79,8 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 			p.setPen(pen);
 		}
 
-		auto name = metrics.elidedText(state_.resolveName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
-		p.drawText(QPoint(2 * Padding + IconSize, avatarRegion.center().y() - metrics.height() / 2), name);
+		auto name = metrics.elidedText(state_.getName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
+		p.drawText(QPoint(2 * Padding + IconSize, Padding + metrics.height()), name);
 
 		if (!isPressed_) {
 			QPen pen(QColor("#5d6565"));
@@ -92,7 +92,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 		if (unreadMsgCount_ > 0)
 			descPercentage = 0.8;
 
-		auto description = metrics.elidedText(state_.resolveTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
+		auto description = metrics.elidedText(state_.getTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
 		p.drawText(QPoint(2 * Padding + IconSize, bottom_y), description);
 	}
 
@@ -113,7 +113,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 		p.setFont(font);
 		p.setPen(QColor("#333"));
 		p.setBrush(Qt::NoBrush);
-		p.drawText(avatarRegion.translated(0, -1), Qt::AlignCenter, QChar(state_.resolveName()[0]));
+		p.drawText(avatarRegion.translated(0, -1), Qt::AlignCenter, QChar(state_.getName()[0]));
 	} else {
 		p.save();
 

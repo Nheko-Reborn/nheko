@@ -220,6 +220,17 @@ void ChatPage::syncFailed(const QString &msg)
 	sync_timer_->start(sync_interval_ * 5);
 }
 
+// TODO: Should be moved in another class that manages this global list.
+void ChatPage::updateDisplayNames(const RoomState &state)
+{
+	for (const auto member : state.memberships) {
+		auto displayName = member.content().displayName();
+
+		if (!displayName.isEmpty())
+			TimelineViewManager::DISPLAY_NAMES.insert(member.stateKey(), displayName);
+	}
+}
+
 void ChatPage::syncCompleted(const SyncResponse &response)
 {
 	client_->setNextBatchToken(response.nextBatch());
@@ -234,8 +245,16 @@ void ChatPage::syncCompleted(const SyncResponse &response)
 
 		updateRoomState(room_state, it.value().state().events());
 		updateRoomState(room_state, it.value().timeline().events());
+		updateDisplayNames(room_state);
 
-		state_manager_.insert(it.key(), room_state);
+		if (state_manager_.contains(it.key())) {
+			// TODO: Use pointers instead of copying.
+			auto oldState = state_manager_[it.key()];
+			oldState.update(room_state);
+			state_manager_.insert(it.key(), oldState);
+		} else {
+			qWarning() << "New rooms cannot be added after initial sync, yet.";
+		}
 
 		if (it.key() == current_room_)
 			changeTopRoomInfo(it.key());
@@ -259,6 +278,12 @@ void ChatPage::initialSyncCompleted(const SyncResponse &response)
 
 		updateRoomState(room_state, it.value().state().events());
 		updateRoomState(room_state, it.value().timeline().events());
+
+		room_state.removeLeaveMemberships();
+		room_state.resolveName();
+		room_state.resolveAvatar();
+
+		updateDisplayNames(room_state);
 
 		state_manager_.insert(it.key(), room_state);
 	}
@@ -298,13 +323,13 @@ void ChatPage::changeTopRoomInfo(const QString &room_id)
 
 	auto state = state_manager_[room_id];
 
-	top_bar_->updateRoomName(state.resolveName());
-	top_bar_->updateRoomTopic(state.resolveTopic());
+	top_bar_->updateRoomName(state.getName());
+	top_bar_->updateRoomTopic(state.getTopic());
 
 	if (room_avatars_.contains(room_id))
 		top_bar_->updateRoomAvatar(room_avatars_.value(room_id).toImage());
 	else
-		top_bar_->updateRoomAvatarFromName(state.resolveName());
+		top_bar_->updateRoomAvatarFromName(state.getName());
 
 	current_room_ = room_id;
 }
@@ -383,15 +408,7 @@ void ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
 				events::StateEvent<events::MemberEventContent> member;
 				member.deserialize(event);
 
-				auto display_name = member.content().displayName();
-
-				if (display_name.isEmpty())
-					display_name = member.stateKey();
-
-				auto current_name = TimelineViewManager::DISPLAY_NAMES.value(member.stateKey());
-
-				if (current_name.isEmpty() || current_name == member.stateKey())
-					TimelineViewManager::DISPLAY_NAMES.insert(member.stateKey(), display_name);
+				room_state.memberships.insert(member.stateKey(), member);
 
 				break;
 			}

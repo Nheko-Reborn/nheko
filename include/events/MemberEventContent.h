@@ -28,19 +28,19 @@ namespace events
 {
 enum class Membership {
 	// The user is banned.
-	BanState,
+	Ban,
 
 	// The user has been invited.
-	InviteState,
+	Invite,
 
 	// The user has joined.
-	JoinState,
+	Join,
 
 	// The user has requested to join.
-	KnockState,
+	Knock,
 
 	// The user has left.
-	LeaveState,
+	Leave,
 };
 
 /*

@@ -100,8 +100,8 @@ void RoomList::setInitialRooms(const QMap<QString, RoomState> &states)
 		auto room_id = it.key();
 		auto state = it.value();
 
-		if (!state.avatar.content().url().toString().isEmpty())
-			client_->fetchRoomAvatar(room_id, state.avatar.content().url());
+		if (!state.getAvatar().toString().isEmpty())
+			client_->fetchRoomAvatar(room_id, state.getAvatar());
 
 		RoomInfoListItem *room_item = new RoomInfoListItem(state, room_id, scrollArea_);
 		connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
@@ -133,8 +133,8 @@ void RoomList::sync(const QMap<QString, RoomState> &states)
 
 		auto room = rooms_[room_id];
 
-		auto current_avatar = room->state().avatar.content().url();
-		auto new_avatar = state.avatar.content().url();
+		auto current_avatar = room->state().getAvatar();
+		auto new_avatar = state.getAvatar();
 
 		if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
 			client_->fetchRoomAvatar(room_id, new_avatar);

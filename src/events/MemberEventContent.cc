@@ -34,15 +34,15 @@ void MemberEventContent::deserialize(const QJsonValue &data)
 	auto value = object.value("membership").toString();
 
 	if (value == "ban")
-		membership_state_ = Membership::BanState;
+		membership_state_ = Membership::Ban;
 	else if (value == "invite")
-		membership_state_ = Membership::InviteState;
+		membership_state_ = Membership::Invite;
 	else if (value == "join")
-		membership_state_ = Membership::JoinState;
+		membership_state_ = Membership::Join;
 	else if (value == "knock")
-		membership_state_ = Membership::KnockState;
+		membership_state_ = Membership::Knock;
 	else if (value == "leave")
-		membership_state_ = Membership::LeaveState;
+		membership_state_ = Membership::Leave;
 	else
 		throw DeserializationException(QString("Unknown membership value: %1").arg(value).toUtf8().constData());
 

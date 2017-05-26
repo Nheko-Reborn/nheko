@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QPixmap>
+#include <QUrl>
 
 #include "AliasesEventContent.h"
 #include "AvatarEventContent.h"
@@ -25,6 +26,7 @@
 #include "CreateEventContent.h"
 #include "HistoryVisibilityEventContent.h"
 #include "JoinRulesEventContent.h"
+#include "MemberEventContent.h"
 #include "NameEventContent.h"
 #include "PowerLevelsEventContent.h"
 #include "TopicEventContent.h"
@@ -38,11 +40,20 @@ namespace events = matrix::events;
 class RoomState
 {
 public:
-	QString resolveName() const;
-	inline QString resolveTopic() const;
+	// Calculate room data that are not immediatly accessible. Like room name and avatar.
+	//
+	// e.g If the room is 1-on-1 name and avatar should be extracted from a user.
+	void resolveName();
+	void resolveAvatar();
 
-	QPixmap avatar_img_;
+	inline QUrl getAvatar() const;
+	inline QString getName() const;
+	inline QString getTopic() const;
 
+	void removeLeaveMemberships();
+	void update(const RoomState &state);
+
+	// The latest state events.
 	events::StateEvent<events::AliasesEventContent> aliases;
 	events::StateEvent<events::AvatarEventContent> avatar;
 	events::StateEvent<events::CanonicalAliasEventContent> canonical_alias;
@@ -52,9 +63,30 @@ public:
 	events::StateEvent<events::NameEventContent> name;
 	events::StateEvent<events::PowerLevelsEventContent> power_levels;
 	events::StateEvent<events::TopicEventContent> topic;
+
+	// Contains the m.room.member events for all the joined users.
+	QMap<QString, events::StateEvent<events::MemberEventContent>> memberships;
+
+private:
+	QUrl avatar_;
+	QString name_;
+
+	// It defines the user whose avatar is used for the room. If the room has an avatar
+	// event this should be empty.
+	QString userAvatar_;
 };
 
-inline QString RoomState::resolveTopic() const
+inline QString RoomState::getTopic() const
 {
 	return topic.content().topic().simplified();
+}
+
+inline QString RoomState::getName() const
+{
+	return name_;
+}
+
+inline QUrl RoomState::getAvatar() const
+{
+	return avatar_;
 }
