@@ -574,10 +574,17 @@ void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url
 		return;
 	}
 
-	QString media_params = url_parts[1];
-	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer().toString(), media_params);
+	QUrlQuery query;
+	query.addQueryItem("width", "512");
+	query.addQueryItem("height", "512");
+	query.addQueryItem("method", "crop");
 
-	QNetworkRequest avatar_request(media_url);
+	QString media_url = QString("%1/_matrix/media/r0/thumbnail/%2").arg(getHomeServer().toString(), url_parts[1]);
+
+	QUrl endpoint(media_url);
+	endpoint.setQuery(query);
+
+	QNetworkRequest avatar_request(endpoint);
 
 	QNetworkReply *reply = get(avatar_request);
 	reply->setProperty("roomid", roomid);
@@ -602,10 +609,17 @@ void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 		return;
 	}
 
-	QString media_params = url_parts[1];
-	QString media_url = QString("%1/_matrix/media/r0/download/%2").arg(getHomeServer().toString(), media_params);
+	QUrlQuery query;
+	query.addQueryItem("width", "512");
+	query.addQueryItem("height", "512");
+	query.addQueryItem("method", "crop");
 
-	QNetworkRequest avatar_request(media_url);
+	QString media_url = QString("%1/_matrix/media/r0/thumbnail/%2").arg(getHomeServer().toString(), url_parts[1]);
+
+	QUrl endpoint(media_url);
+	endpoint.setQuery(query);
+
+	QNetworkRequest avatar_request(endpoint);
 
 	QNetworkReply *reply = get(avatar_request);
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnAvatar));
