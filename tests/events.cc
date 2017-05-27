@@ -451,29 +451,29 @@ TEST(MemberEventContent, Deserialization)
 	auto data = QJsonObject{{"membership", "join"}};
 
 	content.deserialize(data);
-	EXPECT_EQ(content.membershipState(), Membership::JoinState);
+	EXPECT_EQ(content.membershipState(), Membership::Join);
 
 	data = QJsonObject{{"membership", "invite"}, {"displayname", "Username"}};
 
 	content.deserialize(data);
-	EXPECT_EQ(content.membershipState(), Membership::InviteState);
+	EXPECT_EQ(content.membershipState(), Membership::Invite);
 	EXPECT_EQ(content.displayName(), "Username");
 
 	data = QJsonObject{{"membership", "leave"}, {"avatar_url", "https://matrix.org"}};
 
 	content.deserialize(data);
-	EXPECT_EQ(content.membershipState(), Membership::LeaveState);
+	EXPECT_EQ(content.membershipState(), Membership::Leave);
 	EXPECT_EQ(content.avatarUrl().toString(), "https://matrix.org");
 
 	data = QJsonObject{{"membership", "ban"}};
 
 	content.deserialize(data);
-	EXPECT_EQ(content.membershipState(), Membership::BanState);
+	EXPECT_EQ(content.membershipState(), Membership::Ban);
 
 	data = QJsonObject{{"membership", "knock"}};
 
 	content.deserialize(data);
-	EXPECT_EQ(content.membershipState(), Membership::KnockState);
+	EXPECT_EQ(content.membershipState(), Membership::Knock);
 }
 
 TEST(MemberEventContent, InvalidMembership)
