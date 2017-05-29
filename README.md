@@ -34,7 +34,7 @@ You can find a NSIS installer [here](https://ci.appveyor.com/project/mujx/nheko/
 ##### Arch Linux
 
 ```bash
-$ sudo pacman -S qt5-base cmake gcc fontconfig
+$ sudo pacman -S qt5-base qt5-tools cmake gcc fontconfig
 ```
 
 ##### Ubuntu 14.04
@@ -43,7 +43,7 @@ $ sudo pacman -S qt5-base cmake gcc fontconfig
 $ sudo add-apt-repository ppa:beineri/opt-qt58-trusty
 $ sudo add-apt-repository ppa:george-edison55/cmake-3.x
 $ sudo apt-get update
-$ sudo apt-get install qt58base cmake
+$ sudo apt-get install qt58base qt58tools cmake
 ```
 
 ##### OSX (Xcode 7 or later)

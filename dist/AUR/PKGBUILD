@@ -10,7 +10,7 @@ url="https://github.com/mujx/nheko"
 license=('GPL3')
 
 depends=('qt5-base')
-makedepends=('git' 'cmake' 'gcc' 'fontconfig')
+makedepends=('git' 'cmake' 'gcc' 'fontconfig' 'qt5-tools')
 
 source=($pkgname::git+https://github.com/mujx/nheko.git)
 md5sums=('SKIP')
