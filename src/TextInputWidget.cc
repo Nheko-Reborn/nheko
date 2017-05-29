@@ -59,7 +59,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
 	input_ = new FilteredTextEdit(this);
 	input_->setFixedHeight(45);
-	input_->setPlaceholderText("Write a message...");
+	input_->setPlaceholderText(tr("Write a message..."));
 	input_->setStyleSheet("color: #333333; font-size: 13px; border-radius: 0; padding-top: 10px;");
 
 	send_message_button_ = new FlatButton(this);

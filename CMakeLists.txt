@@ -6,6 +6,7 @@ option(BUILD_TESTS "Build all tests" OFF)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
 
 set(CMAKE_C_COMPILER gcc)
 
@@ -191,6 +192,21 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/ThemeManager.h
 )
 
+FILE(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
+
+qt5_add_translation(QM_SRC ${LANG_TS_SRC})
+add_custom_target(LANG_QRC ALL DEPENDS ${QM_SRC})
+
+# Generate a qrc file for the translations
+set(_qrc ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc)
+file(WRITE ${_qrc} "<RCC> <qresource prefix=\"/translations\">")
+foreach(_lang ${QM_SRC})
+    get_filename_component(_filename ${_lang} NAME)
+    file(APPEND ${_qrc} "<file>${_filename}</file>")
+endforeach(_lang)
+file(APPEND ${_qrc} "</qresource> </RCC>")
+
+qt5_add_resources(LANG_QRC ${_qrc})
 qt5_add_resources(QRC resources/res.qrc)
 
 add_library(matrix_events ${MATRIX_EVENTS} src/Deserializable.cc)
@@ -215,7 +231,7 @@ if (BUILD_TESTS)
     add_test(MatrixEventCollection event_collection_test)
     add_test(MatrixMessageEvents message_events)
 else()
-    add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC})
+    add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC})
     target_link_libraries (nheko matrix_events Qt5::Widgets Qt5::Network)
 
     if(WIN32)

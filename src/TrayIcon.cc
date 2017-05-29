@@ -70,8 +70,8 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
 	setIcon(QIcon(icon_));
 
 	QMenu *menu = new QMenu(parent);
-	viewAction_ = new QAction("Show", parent);
-	quitAction_ = new QAction("Quit", parent);
+	viewAction_ = new QAction(tr("Show"), parent);
+	quitAction_ = new QAction(tr("Quit"), parent);
 
 	connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
 	connect(quitAction_, &QAction::triggered, this, [=]() {

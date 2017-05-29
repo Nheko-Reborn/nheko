@@ -69,27 +69,27 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	username_input_ = new TextField();
 	username_input_->setTextColor("#333333");
-	username_input_->setLabel("Username");
+	username_input_->setLabel(tr("Username"));
 	username_input_->setInkColor("#555459");
 	username_input_->setBackgroundColor("#f9f9f9");
 
 	password_input_ = new TextField();
 	password_input_->setTextColor("#333333");
-	password_input_->setLabel("Password");
+	password_input_->setLabel(tr("Password"));
 	password_input_->setInkColor("#555459");
 	password_input_->setBackgroundColor("#f9f9f9");
 	password_input_->setEchoMode(QLineEdit::Password);
 
 	password_confirmation_ = new TextField();
 	password_confirmation_->setTextColor("#333333");
-	password_confirmation_->setLabel("Password confirmation");
+	password_confirmation_->setLabel(tr("Password confirmation"));
 	password_confirmation_->setInkColor("#555459");
 	password_confirmation_->setBackgroundColor("#f9f9f9");
 	password_confirmation_->setEchoMode(QLineEdit::Password);
 
 	server_input_ = new TextField();
 	server_input_->setTextColor("#333333");
-	server_input_->setLabel("Home Server");
+	server_input_->setLabel(tr("Home Server"));
 	server_input_->setInkColor("#555459");
 	server_input_->setBackgroundColor("#f9f9f9");
 
@@ -105,7 +105,7 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	error_label_ = new QLabel(this);
 	error_label_->setStyleSheet("margin-bottom: 10px; color: #E22826; font-size: 11pt;");
 
-	register_button_ = new RaisedButton("REGISTER", this);
+	register_button_ = new RaisedButton(tr("REGISTER"), this);
 	register_button_->setBackgroundColor(QColor("#333333"));
 	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(350, 65);
@@ -156,13 +156,13 @@ void RegisterPage::onRegisterButtonClicked()
 	error_label_->setText("");
 
 	if (!username_input_->hasAcceptableInput()) {
-		registerError("Invalid username");
+		registerError(tr("Invalid username"));
 	} else if (!password_input_->hasAcceptableInput()) {
-		registerError("Password is not long enough (min 8 chars)");
+		registerError(tr("Password is not long enough (min 8 chars)"));
 	} else if (password_input_->text() != password_confirmation_->text()) {
-		registerError("Passwords don't match");
+		registerError(tr("Passwords don't match"));
 	} else if (!server_input_->hasAcceptableInput()) {
-		registerError("Invalid server name");
+		registerError(tr("Invalid server name"));
 	} else {
 		QString username = username_input_->text();
 		QString password = password_input_->text();

@@ -18,6 +18,8 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFontDatabase>
+#include <QLibraryInfo>
+#include <QTranslator>
 
 #include "MainWindow.h"
 
@@ -43,6 +45,16 @@ int main(int argc, char *argv[])
 
 	QFont font("Open Sans");
 	app.setFont(font);
+
+	QString lang = QLocale::system().name();
+
+	QTranslator qtTranslator;
+	qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+	app.installTranslator(&qtTranslator);
+
+	QTranslator appTranslator;
+	appTranslator.load("nheko_" + lang, ":/translations");
+	app.installTranslator(&appTranslator);
 
 	MainWindow w;
 

@@ -72,18 +72,18 @@ void MatrixClient::onLoginResponse(QNetworkReply *reply)
 	int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
 	if (status_code == 403) {
-		emit loginError("Wrong username or password");
+		emit loginError(tr("Wrong username or password"));
 		return;
 	}
 
 	if (status_code == 404) {
-		emit loginError("Login endpoint was not found on the server");
+		emit loginError(tr("Login endpoint was not found on the server"));
 		return;
 	}
 
 	if (status_code >= 400) {
 		qWarning() << "Login error: " << reply->errorString();
-		emit loginError("An unknown error occured. Please try again.");
+		emit loginError(tr("An unknown error occured. Please try again."));
 		return;
 	}
 
@@ -97,7 +97,7 @@ void MatrixClient::onLoginResponse(QNetworkReply *reply)
 		emit loginSuccess(response.getUserId(), server_.host(), response.getAccessToken());
 	} catch (DeserializationException &e) {
 		qWarning() << "Malformed JSON response" << e.what();
-		emit loginError("Malformed response. Possibly not a Matrix server");
+		emit loginError(tr("Malformed response. Possibly not a Matrix server"));
 	}
 }
 

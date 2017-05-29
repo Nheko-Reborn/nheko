@@ -117,28 +117,28 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 	scroll_layout_->setMargin(0);
 	scroll_area_->setWidget(scroll_widget_);
 
-	auto people_emoji = new EmojiCategory("Smileys & People", emoji_provider_.people, scroll_widget_);
+	auto people_emoji = new EmojiCategory(tr("Smileys & People"), emoji_provider_.people, scroll_widget_);
 	scroll_layout_->addWidget(people_emoji);
 
-	auto nature_emoji = new EmojiCategory("Animals & Nature", emoji_provider_.nature, scroll_widget_);
+	auto nature_emoji = new EmojiCategory(tr("Animals & Nature"), emoji_provider_.nature, scroll_widget_);
 	scroll_layout_->addWidget(nature_emoji);
 
-	auto food_emoji = new EmojiCategory("Food & Drink", emoji_provider_.food, scroll_widget_);
+	auto food_emoji = new EmojiCategory(tr("Food & Drink"), emoji_provider_.food, scroll_widget_);
 	scroll_layout_->addWidget(food_emoji);
 
-	auto activity_emoji = new EmojiCategory("Activity", emoji_provider_.activity, scroll_widget_);
+	auto activity_emoji = new EmojiCategory(tr("Activity"), emoji_provider_.activity, scroll_widget_);
 	scroll_layout_->addWidget(activity_emoji);
 
-	auto travel_emoji = new EmojiCategory("Travel & Places", emoji_provider_.travel, scroll_widget_);
+	auto travel_emoji = new EmojiCategory(tr("Travel & Places"), emoji_provider_.travel, scroll_widget_);
 	scroll_layout_->addWidget(travel_emoji);
 
-	auto objects_emoji = new EmojiCategory("Objects", emoji_provider_.objects, scroll_widget_);
+	auto objects_emoji = new EmojiCategory(tr("Objects"), emoji_provider_.objects, scroll_widget_);
 	scroll_layout_->addWidget(objects_emoji);
 
-	auto symbols_emoji = new EmojiCategory("Symbols", emoji_provider_.symbols, scroll_widget_);
+	auto symbols_emoji = new EmojiCategory(tr("Symbols"), emoji_provider_.symbols, scroll_widget_);
 	scroll_layout_->addWidget(symbols_emoji);
 
-	auto flags_emoji = new EmojiCategory("Flags", emoji_provider_.flags, scroll_widget_);
+	auto flags_emoji = new EmojiCategory(tr("Flags"), emoji_provider_.flags, scroll_widget_);
 	scroll_layout_->addWidget(flags_emoji);
 
 	content_layout->addStretch(1);
