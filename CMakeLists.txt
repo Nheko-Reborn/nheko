@@ -11,7 +11,7 @@ find_package(Qt5LinguistTools REQUIRED)
 if (Qt5Widgets_FOUND)
     if (Qt5Widgets_VERSION VERSION_LESS 5.7.0)
         message(STATUS "Qt version ${Qt5Widgets_VERSION}")
-        message(FATAL_ERROR "Minimum supported Qt5 version is 5.7!")
+        message(WARNING "Minimum supported Qt5 version is 5.7!")
     endif()
 endif(Qt5Widgets_FOUND)
 
