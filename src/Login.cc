@@ -34,10 +34,22 @@ LoginRequest::LoginRequest(QString username, QString password)
 
 QByteArray LoginRequest::serialize() noexcept
 {
+#if defined(Q_OS_MAC)
+	QString initialDeviceName("nheko on Mac OS");
+#elif defined(Q_OS_LINUX)
+	QString initialDeviceName("nheko on Linux");
+#elif defined(Q_OS_WIN)
+	QString initialDeviceName("nheko on Windows");
+#else
+	QString initialDeviceName("nheko");
+#endif
+
 	QJsonObject body{
 		{"type", "m.login.password"},
 		{"user", user_},
-		{"password", password_}};
+		{"password", password_},
+		{"initial_device_display_name", initialDeviceName},
+	};
 
 	return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
