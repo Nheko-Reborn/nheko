@@ -1,6 +1,6 @@
 nheko
 ----
-[![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko) [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master)
+[![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko) [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master) [![Translation Status](https://translate.nordgedanken.de/widgets/nheko/-/shields-badge.svg)](https://translate.nordgedanken.de/projects/nheko/nheko/)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
