@@ -25,6 +25,7 @@
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
     : QTextEdit(parent)
 {
+	setAcceptRichText(false);
 }
 
 void FilteredTextEdit::keyPressEvent(QKeyEvent *event)
