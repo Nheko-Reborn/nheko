@@ -92,9 +92,16 @@ void RoomList::calculateUnreadMessageCount()
 	emit totalUnreadMessageCountUpdated(total_unread_msgs);
 }
 
-void RoomList::setInitialRooms(const QMap<QString, RoomState> &states)
+void RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
+			       const QMap<QString, RoomState> &states)
 {
 	rooms_.clear();
+
+	if (settings.size() != states.size()) {
+		qWarning() << "Initializing room list";
+		qWarning() << "Different number of room states and room settings";
+		return;
+	}
 
 	for (auto it = states.constBegin(); it != states.constEnd(); it++) {
 		auto room_id = it.key();
@@ -103,7 +110,7 @@ void RoomList::setInitialRooms(const QMap<QString, RoomState> &states)
 		if (!state.getAvatar().toString().isEmpty())
 			client_->fetchRoomAvatar(room_id, state.getAvatar());
 
-		RoomInfoListItem *room_item = new RoomInfoListItem(state, room_id, scrollArea_);
+		RoomInfoListItem *room_item = new RoomInfoListItem(settings[room_id], state, room_id, scrollArea_);
 		connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
 
 		rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));

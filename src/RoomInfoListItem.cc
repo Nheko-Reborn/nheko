@@ -24,10 +24,14 @@
 #include "RoomState.h"
 #include "Theme.h"
 
-RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
+				   RoomState state,
+				   QString room_id,
+				   QWidget *parent)
     : QWidget(parent)
     , state_(state)
     , roomId_(room_id)
+    , roomSettings_{settings}
     , isPressed_(false)
     , maxHeight_(IconSize + 2 * Padding)
     , unreadMsgCount_(0)
@@ -44,6 +48,24 @@ RoomInfoListItem::RoomInfoListItem(RoomState state, QString room_id, QWidget *pa
 	ripple_overlay_ = new RippleOverlay(this);
 	ripple_overlay_->setClipPath(path);
 	ripple_overlay_->setClipping(true);
+
+	menu_ = new Menu(this);
+
+	toggleNotifications_ = new QAction(notificationText(), this);
+
+	connect(toggleNotifications_, &QAction::triggered, this, [=]() {
+		roomSettings_->toggleNotifications();
+	});
+
+	menu_->addAction(toggleNotifications_);
+}
+
+QString RoomInfoListItem::notificationText()
+{
+	if (roomSettings_.isNull() || roomSettings_->isNotificationsEnabled())
+		return QString(tr("Disable notifications"));
+
+	return tr("Enable notifications");
 }
 
 void RoomInfoListItem::paintEvent(QPaintEvent *event)
@@ -193,8 +215,21 @@ void RoomInfoListItem::setState(const RoomState &new_state)
 	repaint();
 }
 
+void RoomInfoListItem::contextMenuEvent(QContextMenuEvent *event)
+{
+	Q_UNUSED(event);
+
+	toggleNotifications_->setText(notificationText());
+	menu_->popup(event->globalPos());
+}
+
 void RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 {
+	if (event->buttons() == Qt::RightButton) {
+		QWidget::mousePressEvent(event);
+		return;
+	}
+
 	emit clicked(roomId_);
 
 	setPressedState(true);

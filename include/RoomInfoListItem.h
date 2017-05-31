@@ -17,9 +17,13 @@
 
 #pragma once
 
+#include <QAction>
+#include <QSharedPointer>
 #include <QWidget>
 
+#include "Menu.h"
 #include "RippleOverlay.h"
+#include "RoomSettings.h"
 #include "RoomState.h"
 
 class RoomInfoListItem : public QWidget
@@ -27,7 +31,11 @@ class RoomInfoListItem : public QWidget
 	Q_OBJECT
 
 public:
-	RoomInfoListItem(RoomState state, QString room_id, QWidget *parent = 0);
+	RoomInfoListItem(QSharedPointer<RoomSettings> settings,
+			 RoomState state,
+			 QString room_id,
+			 QWidget *parent = 0);
+
 	~RoomInfoListItem();
 
 	void updateUnreadMessageCount(int count);
@@ -48,8 +56,11 @@ public slots:
 protected:
 	void mousePressEvent(QMouseEvent *event) override;
 	void paintEvent(QPaintEvent *event) override;
+	void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
+	QString notificationText();
+
 	const int Padding = 7;
 	const int IconSize = 46;
 
@@ -63,6 +74,11 @@ private:
 	QString lastTimestamp_;
 
 	QPixmap roomAvatar_;
+
+	Menu *menu_;
+	QAction *toggleNotifications_;
+
+	QSharedPointer<RoomSettings> roomSettings_;
 
 	bool isPressed_ = false;
 

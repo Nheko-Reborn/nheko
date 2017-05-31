@@ -303,7 +303,7 @@ void ChatPage::initialSyncCompleted(const SyncResponse &response)
 	}
 
 	view_manager_->initialize(response.rooms());
-	room_list_->setInitialRooms(state_manager_);
+	room_list_->setInitialRooms(settingsManager_, state_manager_);
 
 	sync_timer_->start(sync_interval_);
 }

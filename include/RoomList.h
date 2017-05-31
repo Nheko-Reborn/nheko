@@ -35,7 +35,8 @@ public:
 	RoomList(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
 	~RoomList();
 
-	void setInitialRooms(const QMap<QString, RoomState> &states);
+	void setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
+			     const QMap<QString, RoomState> &states);
 	void sync(const QMap<QString, RoomState> &states);
 
 	void clear();

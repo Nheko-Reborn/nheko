@@ -71,17 +71,16 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	toggleNotifications_ = new QAction(tr("Disable notifications"), this);
 	connect(toggleNotifications_, &QAction::triggered, this, [=]() {
 		roomSettings_->toggleNotifications();
-
-		if (roomSettings_->isNotificationsEnabled())
-			toggleNotifications_->setText("Disable notifications");
-		else
-			toggleNotifications_->setText("Enable notifications");
-
 	});
 
 	menu_->addAction(toggleNotifications_);
 
 	connect(settingsBtn_, &QPushButton::clicked, this, [=]() {
+		if (roomSettings_->isNotificationsEnabled())
+			toggleNotifications_->setText(tr("Disable notifications"));
+		else
+			toggleNotifications_->setText(tr("Enable notifications"));
+
 		auto pos = mapToGlobal(settingsBtn_->pos());
 		menu_->popup(QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(),
 				    pos.y() + buttonSize_));
@@ -121,11 +120,6 @@ void TopRoomBar::paintEvent(QPaintEvent *event)
 void TopRoomBar::setRoomSettings(QSharedPointer<RoomSettings> settings)
 {
 	roomSettings_ = settings;
-
-	if (roomSettings_->isNotificationsEnabled())
-		toggleNotifications_->setText("Disable notifications");
-	else
-		toggleNotifications_->setText("Enable notifications");
 }
 
 TopRoomBar::~TopRoomBar()
