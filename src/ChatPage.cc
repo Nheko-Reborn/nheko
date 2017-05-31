@@ -127,10 +127,16 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
 	connect(room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
-	connect(view_manager_,
-		SIGNAL(unreadMessages(const QString &, int)),
-		room_list_,
-		SLOT(updateUnreadMessageCount(const QString &, int)));
+	connect(view_manager_, &TimelineViewManager::unreadMessages, this, [=](const QString &roomid, int count) {
+		if (!settingsManager_.contains(roomid)) {
+			qWarning() << "RoomId does not have settings" << roomid;
+			room_list_->updateUnreadMessageCount(roomid, count);
+			return;
+		}
+
+		if (settingsManager_[roomid]->isNotificationsEnabled())
+			room_list_->updateUnreadMessageCount(roomid, count);
+	});
 
 	connect(room_list_,
 		SIGNAL(totalUnreadMessageCountUpdated(int)),
@@ -173,11 +179,17 @@ void ChatPage::logout()
 {
 	sync_timer_->stop();
 
+	// Delete all config parameters.
 	QSettings settings;
-	settings.remove("auth/access_token");
-	settings.remove("auth/home_server");
-	settings.remove("auth/user_id");
-	settings.remove("client/transaction_id");
+	settings.beginGroup("auth");
+	settings.remove("");
+	settings.endGroup();
+	settings.beginGroup("client");
+	settings.remove("");
+	settings.endGroup();
+	settings.beginGroup("notifications");
+	settings.remove("");
+	settings.endGroup();
 
 	// Clear the environment.
 	room_list_->clear();
@@ -188,6 +200,7 @@ void ChatPage::logout()
 	client_->reset();
 
 	state_manager_.clear();
+	settingsManager_.clear();
 	room_avatars_.clear();
 
 	emit close();
@@ -286,6 +299,7 @@ void ChatPage::initialSyncCompleted(const SyncResponse &response)
 		updateDisplayNames(room_state);
 
 		state_manager_.insert(it.key(), room_state);
+		settingsManager_.insert(it.key(), QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
 	}
 
 	view_manager_->initialize(response.rooms());
@@ -325,6 +339,7 @@ void ChatPage::changeTopRoomInfo(const QString &room_id)
 
 	top_bar_->updateRoomName(state.getName());
 	top_bar_->updateRoomTopic(state.getTopic());
+	top_bar_->setRoomSettings(settingsManager_[room_id]);
 
 	if (room_avatars_.contains(room_id))
 		top_bar_->updateRoomAvatar(room_avatars_.value(room_id).toImage());

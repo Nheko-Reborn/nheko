@@ -21,6 +21,7 @@
 
 TopRoomBar::TopRoomBar(QWidget *parent)
     : QWidget(parent)
+    , buttonSize_{32}
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setMinimumSize(QSize(0, 65));
@@ -28,7 +29,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
 	top_layout_ = new QHBoxLayout();
 	top_layout_->setSpacing(10);
-	top_layout_->setContentsMargins(10, 10, 0, 10);
+	top_layout_->setMargin(10);
 
 	avatar_ = new Avatar(this);
 	avatar_->setLetter(QChar('?'));
@@ -49,31 +50,42 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	text_layout_->addWidget(name_label_);
 	text_layout_->addWidget(topic_label_);
 
-	settings_button_ = new FlatButton(this);
-	settings_button_->setForegroundColor(QColor("#acc7dc"));
-	settings_button_->setCursor(QCursor(Qt::PointingHandCursor));
-	settings_button_->setStyleSheet("width: 30px; height: 30px;");
+	settingsBtn_ = new FlatButton(this);
+	settingsBtn_->setForegroundColor(QColor("#acc7dc"));
+	settingsBtn_->setCursor(QCursor(Qt::PointingHandCursor));
+	settingsBtn_->setFixedSize(buttonSize_, buttonSize_);
+	settingsBtn_->setCornerRadius(buttonSize_ / 2);
 
 	QIcon settings_icon;
-	settings_icon.addFile(":/icons/icons/cog.png", QSize(), QIcon::Normal, QIcon::Off);
-	settings_button_->setIcon(settings_icon);
-	settings_button_->setIconSize(QSize(16, 16));
-
-	search_button_ = new FlatButton(this);
-	search_button_->setForegroundColor(QColor("#acc7dc"));
-	search_button_->setCursor(QCursor(Qt::PointingHandCursor));
-	search_button_->setStyleSheet("width: 30px; height: 30px;");
-
-	QIcon search_icon;
-	search_icon.addFile(":/icons/icons/search.png", QSize(), QIcon::Normal, QIcon::Off);
-	search_button_->setIcon(search_icon);
-	search_button_->setIconSize(QSize(16, 16));
+	settings_icon.addFile(":/icons/icons/vertical-ellipsis.png", QSize(), QIcon::Normal, QIcon::Off);
+	settingsBtn_->setIcon(settings_icon);
+	settingsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
 
 	top_layout_->addWidget(avatar_);
 	top_layout_->addLayout(text_layout_);
 	top_layout_->addStretch(1);
-	top_layout_->addWidget(search_button_);
-	top_layout_->addWidget(settings_button_);
+	top_layout_->addWidget(settingsBtn_);
+
+	menu_ = new Menu(this);
+
+	toggleNotifications_ = new QAction(tr("Disable notifications"), this);
+	connect(toggleNotifications_, &QAction::triggered, this, [=]() {
+		roomSettings_->toggleNotifications();
+
+		if (roomSettings_->isNotificationsEnabled())
+			toggleNotifications_->setText("Disable notifications");
+		else
+			toggleNotifications_->setText("Enable notifications");
+
+	});
+
+	menu_->addAction(toggleNotifications_);
+
+	connect(settingsBtn_, &QPushButton::clicked, this, [=]() {
+		auto pos = mapToGlobal(settingsBtn_->pos());
+		menu_->popup(QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(),
+				    pos.y() + buttonSize_));
+	});
 
 	setLayout(top_layout_);
 }
@@ -104,6 +116,16 @@ void TopRoomBar::paintEvent(QPaintEvent *event)
 
 	QPainter painter(this);
 	style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+}
+
+void TopRoomBar::setRoomSettings(QSharedPointer<RoomSettings> settings)
+{
+	roomSettings_ = settings;
+
+	if (roomSettings_->isNotificationsEnabled())
+		toggleNotifications_->setText("Disable notifications");
+	else
+		toggleNotifications_->setText("Enable notifications");
 }
 
 TopRoomBar::~TopRoomBar()

@@ -28,7 +28,7 @@
 
 EmojiPanel::EmojiPanel(QWidget *parent)
     : QWidget(parent)
-    , shadowMargin_{3}
+    , shadowMargin_{2}
     , width_{370}
     , height_{350}
     , animationDuration_{100}

@@ -23,6 +23,7 @@
 
 #include "MatrixClient.h"
 #include "RoomList.h"
+#include "RoomSettings.h"
 #include "RoomState.h"
 #include "Splitter.h"
 #include "TextInputWidget.h"
@@ -92,6 +93,7 @@ private:
 	UserInfoWidget *user_info_widget_;
 
 	QMap<QString, RoomState> state_manager_;
+	QMap<QString, QSharedPointer<RoomSettings>> settingsManager_;
 
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;

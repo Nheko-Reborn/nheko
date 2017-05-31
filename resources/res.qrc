@@ -22,6 +22,7 @@
         <file>icons/emoji-categories/symbols.png</file>
         <file>icons/emoji-categories/flags.png</file>
 
+        <file>icons/vertical-ellipsis.png</file>
     </qresource>
 
     <qresource prefix="/logos">

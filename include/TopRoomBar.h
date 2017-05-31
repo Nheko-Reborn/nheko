@@ -17,15 +17,20 @@
 
 #pragma once
 
+#include <QAction>
+#include <QDebug>
 #include <QIcon>
 #include <QImage>
 #include <QLabel>
 #include <QPaintEvent>
+#include <QSharedPointer>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include "Avatar.h"
 #include "FlatButton.h"
+#include "Menu.h"
+#include "RoomSettings.h"
 
 class TopRoomBar : public QWidget
 {
@@ -39,6 +44,7 @@ public:
 	inline void updateRoomName(const QString &name);
 	inline void updateRoomTopic(const QString &topic);
 	void updateRoomAvatarFromName(const QString &name);
+	void setRoomSettings(QSharedPointer<RoomSettings> settings);
 
 	void reset();
 
@@ -52,10 +58,16 @@ private:
 	QLabel *name_label_;
 	QLabel *topic_label_;
 
-	FlatButton *search_button_;
-	FlatButton *settings_button_;
+	QSharedPointer<RoomSettings> roomSettings_;
+
+	QMenu *menu_;
+	QAction *toggleNotifications_;
+
+	FlatButton *settingsBtn_;
 
 	Avatar *avatar_;
+
+	int buttonSize_;
 };
 
 inline void TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
