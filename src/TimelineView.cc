@@ -213,6 +213,9 @@ int TimelineView::addEvents(const Timeline &timeline)
 {
 	int message_count = 0;
 
+	QSettings settings;
+	QString localUser = settings.value("auth/user_id").toString();
+
 	if (isInitialSync) {
 		prev_batch_token_ = timeline.previousBatch();
 		isInitialSync = false;
@@ -220,10 +223,13 @@ int TimelineView::addEvents(const Timeline &timeline)
 
 	for (const auto &event : timeline.events()) {
 		TimelineItem *item = parseMessageEvent(event.toObject(), TimelineDirection::Bottom);
+		auto sender = event.toObject().value("sender").toString();
 
 		if (item != nullptr) {
-			message_count += 1;
 			addTimelineItem(item, TimelineDirection::Bottom);
+
+			if (sender != localUser)
+				message_count += 1;
 		}
 	}
 
