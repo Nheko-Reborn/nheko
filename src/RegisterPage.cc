@@ -35,7 +35,6 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	back_button_ = new FlatButton(this);
 	back_button_->setMinimumSize(QSize(30, 30));
-	back_button_->setCursor(QCursor(Qt::PointingHandCursor));
 
 	QIcon icon;
 	icon.addFile(":/icons/icons/left-angle.png", QSize(), QIcon::Normal, QIcon::Off);
@@ -109,7 +108,6 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	register_button_->setBackgroundColor(QColor("#333333"));
 	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(350, 65);
-	register_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	register_button_->setFontSize(17);
 	register_button_->setCornerRadius(3);
 

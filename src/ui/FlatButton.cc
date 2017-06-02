@@ -29,6 +29,7 @@ void FlatButton::init()
 	setStyle(&ThemeManager::instance());
 	setAttribute(Qt::WA_Hover);
 	setMouseTracking(true);
+	setCursor(QCursor(Qt::PointingHandCursor));
 
 	QPainterPath path;
 	path.addRoundedRect(rect(), corner_radius_, corner_radius_);
@@ -336,7 +337,7 @@ void FlatButton::mousePressEvent(QMouseEvent *event)
 		ripple->setOpacityStartValue(0.35);
 		ripple->setColor(foregroundColor());
 		ripple->radiusAnimation()->setDuration(250);
-		ripple->opacityAnimation()->setDuration(400);
+		ripple->opacityAnimation()->setDuration(250);
 
 		ripple_overlay_->addRipple(ripple);
 	}

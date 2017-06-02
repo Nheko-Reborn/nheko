@@ -22,6 +22,8 @@
 #include <QSettings>
 #include <QSystemTrayIcon>
 
+MainWindow *MainWindow::instance_ = nullptr;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , progress_modal_{nullptr}
@@ -148,6 +150,8 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 
 	login_page_->reset();
 	chat_page_->bootstrap(userid, homeserver, token);
+
+	instance_ = this;
 }
 
 void MainWindow::showWelcomePage()
@@ -202,6 +206,11 @@ bool MainWindow::hasActiveUser()
 	return settings.contains("auth/access_token") &&
 	       settings.contains("auth/home_server") &&
 	       settings.contains("auth/user_id");
+}
+
+MainWindow *MainWindow::instance()
+{
+	return instance_;
 }
 
 MainWindow::~MainWindow()

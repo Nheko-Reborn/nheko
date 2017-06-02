@@ -38,6 +38,8 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+	static MainWindow *instance();
+
 protected:
 	void closeEvent(QCloseEvent *event);
 
@@ -61,6 +63,8 @@ private slots:
 
 private:
 	bool hasActiveUser();
+
+	static MainWindow *instance_;
 
 	// The initial welcome screen.
 	WelcomePage *welcome_page_;

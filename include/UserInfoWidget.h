@@ -24,6 +24,8 @@
 
 #include "Avatar.h"
 #include "FlatButton.h"
+#include "LogoutDialog.h"
+#include "OverlayModal.h"
 
 class UserInfoWidget : public QWidget
 {
@@ -45,6 +47,9 @@ signals:
 protected:
 	void resizeEvent(QResizeEvent *event) override;
 
+private slots:
+	void closeLogoutDialog(bool isLoggingOut);
+
 private:
 	Avatar *userAvatar_;
 
@@ -62,4 +67,9 @@ private:
 	QString user_id_;
 
 	QImage avatar_image_;
+
+	OverlayModal *logoutModal_;
+	LogoutDialog *logoutDialog_;
+
+	int logoutButtonSize_;
 };

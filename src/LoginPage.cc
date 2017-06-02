@@ -37,12 +37,10 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	back_button_ = new FlatButton(this);
 	back_button_->setMinimumSize(QSize(30, 30));
 	back_button_->setForegroundColor("#333333");
-	back_button_->setCursor(QCursor(Qt::PointingHandCursor));
 
 	advanced_settings_button_ = new FlatButton(this);
 	advanced_settings_button_->setMinimumSize(QSize(30, 30));
 	advanced_settings_button_->setForegroundColor("#333333");
-	advanced_settings_button_->setCursor(QCursor(Qt::PointingHandCursor));
 
 	QIcon icon;
 	icon.addFile(":/icons/icons/left-angle.png", QSize(), QIcon::Normal, QIcon::Off);
@@ -105,7 +103,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	login_button_->setBackgroundColor(QColor("#333333"));
 	login_button_->setForegroundColor(QColor("white"));
 	login_button_->setMinimumSize(350, 65);
-	login_button_->setCursor(QCursor(Qt::PointingHandCursor));
 	login_button_->setFontSize(17);
 	login_button_->setCornerRadius(3);
 

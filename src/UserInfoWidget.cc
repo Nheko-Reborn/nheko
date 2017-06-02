@@ -16,14 +16,19 @@
  */
 
 #include <QDebug>
+#include <QTimer>
 
 #include "FlatButton.h"
+#include "MainWindow.h"
 #include "UserInfoWidget.h"
 
 UserInfoWidget::UserInfoWidget(QWidget *parent)
     : QWidget(parent)
     , display_name_("User")
     , user_id_("@user:homeserver.org")
+    , logoutModal_{nullptr}
+    , logoutDialog_{nullptr}
+    , logoutButtonSize_{32}
 {
 	QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 	setSizePolicy(sizePolicy);
@@ -72,19 +77,46 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
 	logoutButton_ = new FlatButton(this);
 	logoutButton_->setForegroundColor(QColor("#555459"));
-	logoutButton_->setCursor(QCursor(Qt::PointingHandCursor));
+	logoutButton_->setFixedSize(logoutButtonSize_, logoutButtonSize_);
+	logoutButton_->setCornerRadius(logoutButtonSize_ / 2);
 
 	QIcon icon;
 	icon.addFile(":/icons/icons/power-button-off.png", QSize(), QIcon::Normal, QIcon::Off);
 
 	logoutButton_->setIcon(icon);
-	logoutButton_->setIconSize(QSize(16, 16));
+	logoutButton_->setIconSize(QSize(logoutButtonSize_ / 2, logoutButtonSize_ / 2));
 
 	buttonLayout_->addWidget(logoutButton_);
 
 	topLayout_->addLayout(buttonLayout_);
 
-	connect(logoutButton_, SIGNAL(clicked()), this, SIGNAL(logout()));
+	// Show the confirmation dialog.
+	connect(logoutButton_, &QPushButton::clicked, this, [=]() {
+		if (logoutDialog_ == nullptr) {
+			logoutDialog_ = new LogoutDialog(this);
+			connect(logoutDialog_, SIGNAL(closing(bool)), this, SLOT(closeLogoutDialog(bool)));
+		}
+
+		if (logoutModal_ == nullptr) {
+			logoutModal_ = new OverlayModal(MainWindow::instance(), logoutDialog_);
+			logoutModal_->setDuration(100);
+			logoutModal_->setColor(QColor(55, 55, 55, 170));
+		}
+
+		logoutModal_->fadeIn();
+	});
+}
+
+void UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
+{
+	logoutModal_->fadeOut();
+
+	if (isLoggingOut) {
+		// Waiting for the modal to fade out.
+		QTimer::singleShot(100, this, [=]() {
+			emit logout();
+		});
+	}
 }
 
 UserInfoWidget::~UserInfoWidget()

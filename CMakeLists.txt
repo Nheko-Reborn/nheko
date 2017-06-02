@@ -94,6 +94,7 @@ set(SRC_FILES
     src/Login.cc
     src/LoginPage.cc
     src/LoginSettings.cc
+    src/LogoutDialog.cc
     src/MainWindow.cc
     src/MatrixClient.cc
     src/Profile.cc
@@ -171,6 +172,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/TimelineViewManager.h
     include/LoginPage.h
     include/LoginSettings.h
+    include/LogoutDialog.h
     include/MainWindow.h
     include/MatrixClient.h
     include/RegisterPage.h

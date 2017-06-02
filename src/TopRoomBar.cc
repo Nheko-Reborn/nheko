@@ -52,7 +52,6 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
 	settingsBtn_ = new FlatButton(this);
 	settingsBtn_->setForegroundColor(QColor("#acc7dc"));
-	settingsBtn_->setCursor(QCursor(Qt::PointingHandCursor));
 	settingsBtn_->setFixedSize(buttonSize_, buttonSize_);
 	settingsBtn_->setCornerRadius(buttonSize_ / 2);
 

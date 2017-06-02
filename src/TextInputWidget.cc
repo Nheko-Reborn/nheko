@@ -50,7 +50,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	top_layout_->setMargin(0);
 
 	send_file_button_ = new FlatButton(this);
-	send_file_button_->setCursor(Qt::PointingHandCursor);
 
 	QIcon send_file_icon;
 	send_file_icon.addFile(":/icons/icons/clip-dark.png", QSize(), QIcon::Normal, QIcon::Off);
@@ -64,7 +63,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	input_->setStyleSheet("color: #333333; font-size: 13px; border-radius: 0; padding-top: 10px;");
 
 	send_message_button_ = new FlatButton(this);
-	send_message_button_->setCursor(Qt::PointingHandCursor);
 	send_message_button_->setForegroundColor(QColor("#acc7dc"));
 
 	QIcon send_message_icon;
@@ -73,7 +71,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	send_message_button_->setIconSize(QSize(24, 24));
 
 	emoji_button_ = new EmojiPickButton(this);
-	emoji_button_->setCursor(Qt::PointingHandCursor);
 	emoji_button_->setForegroundColor(QColor("#acc7dc"));
 
 	QIcon emoji_icon;
