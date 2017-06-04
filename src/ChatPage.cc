@@ -27,6 +27,7 @@
 
 #include "AliasesEventContent.h"
 #include "AvatarEventContent.h"
+#include "AvatarProvider.h"
 #include "CanonicalAliasEventContent.h"
 #include "CreateEventContent.h"
 #include "HistoryVisibilityEventContent.h"
@@ -173,6 +174,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 		SIGNAL(ownAvatarRetrieved(const QPixmap &)),
 		this,
 		SLOT(setOwnAvatar(const QPixmap &)));
+
+	AvatarProvider::init(client);
 }
 
 void ChatPage::logout()
@@ -202,6 +205,8 @@ void ChatPage::logout()
 	state_manager_.clear();
 	settingsManager_.clear();
 	room_avatars_.clear();
+
+	AvatarProvider::clear();
 
 	emit close();
 }
@@ -300,6 +305,14 @@ void ChatPage::initialSyncCompleted(const SyncResponse &response)
 
 		state_manager_.insert(it.key(), room_state);
 		settingsManager_.insert(it.key(), QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
+
+		for (const auto membership : room_state.memberships) {
+			auto uid = membership.sender();
+			auto url = membership.content().avatarUrl();
+
+			if (!url.toString().isEmpty())
+				AvatarProvider::setAvatarUrl(uid, url);
+		}
 	}
 
 	view_manager_->initialize(response.rooms());

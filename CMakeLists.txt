@@ -78,6 +78,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 endif()
 
 set(SRC_FILES
+    src/AvatarProvider.cc
     src/ChatPage.cc
     src/Deserializable.cc
     src/EmojiCategory.cc
@@ -160,6 +161,7 @@ include_directories(include/events)
 include_directories(include/events/messages)
 
 qt5_wrap_cpp(MOC_HEADERS
+    include/AvatarProvider.h
     include/ChatPage.h
     include/EmojiCategory.h
     include/EmojiItemDelegate.h

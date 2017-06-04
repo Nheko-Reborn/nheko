@@ -41,6 +41,7 @@ public:
 	void registerUser(const QString &username, const QString &password, const QString &server) noexcept;
 	void versions() noexcept;
 	void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
+	void fetchUserAvatar(const QString &userId, const QUrl &avatarUrl);
 	void fetchOwnAvatar(const QUrl &avatar_url);
 	void downloadImage(const QString &event_id, const QUrl &url);
 	void messages(const QString &room_id, const QString &from_token) noexcept;
@@ -69,6 +70,7 @@ signals:
 	void registerSuccess(const QString &userid, const QString &homeserver, const QString &token);
 
 	void roomAvatarRetrieved(const QString &roomid, const QPixmap &img);
+	void userAvatarRetrieved(const QString &userId, const QImage &img);
 	void ownAvatarRetrieved(const QPixmap &img);
 	void imageDownloaded(const QString &event_id, const QPixmap &img);
 
@@ -95,6 +97,7 @@ private:
 		Messages,
 		Register,
 		RoomAvatar,
+		UserAvatar,
 		SendTextMessage,
 		Sync,
 		Versions,
@@ -111,6 +114,7 @@ private:
 	void onInitialSyncResponse(QNetworkReply *reply);
 	void onSyncResponse(QNetworkReply *reply);
 	void onRoomAvatarResponse(QNetworkReply *reply);
+	void onUserAvatarResponse(QNetworkReply *reply);
 	void onImageResponse(QNetworkReply *reply);
 	void onMessagesResponse(QNetworkReply *reply);
 

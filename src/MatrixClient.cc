@@ -287,6 +287,29 @@ void MatrixClient::onRoomAvatarResponse(QNetworkReply *reply)
 	emit roomAvatarRetrieved(roomid, pixmap);
 }
 
+void MatrixClient::onUserAvatarResponse(QNetworkReply *reply)
+{
+	reply->deleteLater();
+
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	if (status == 0 || status >= 400) {
+		qWarning() << reply->errorString();
+		return;
+	}
+
+	auto data = reply->readAll();
+
+	if (data.size() == 0)
+		return;
+
+	auto roomid = reply->property("userid").toString();
+
+	QImage img;
+	img.loadFromData(data);
+
+	emit userAvatarRetrieved(roomid, img);
+}
 void MatrixClient::onGetOwnAvatarResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
@@ -391,6 +414,9 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 		break;
 	case Endpoint::RoomAvatar:
 		onRoomAvatarResponse(reply);
+		break;
+	case Endpoint::UserAvatar:
+		onUserAvatarResponse(reply);
 		break;
 	case Endpoint::GetOwnAvatar:
 		onGetOwnAvatarResponse(reply);
@@ -589,6 +615,32 @@ void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url
 	QNetworkReply *reply = get(avatar_request);
 	reply->setProperty("roomid", roomid);
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::RoomAvatar));
+}
+
+void MatrixClient::fetchUserAvatar(const QString &userId, const QUrl &avatarUrl)
+{
+	QList<QString> url_parts = avatarUrl.toString().split("mxc://");
+
+	if (url_parts.size() != 2) {
+		qDebug() << "Invalid format for user avatar " << avatarUrl.toString();
+		return;
+	}
+
+	QUrlQuery query;
+	query.addQueryItem("width", "128");
+	query.addQueryItem("height", "128");
+	query.addQueryItem("method", "crop");
+
+	QString media_url = QString("%1/_matrix/media/r0/thumbnail/%2").arg(getHomeServer().toString(), url_parts[1]);
+
+	QUrl endpoint(media_url);
+	endpoint.setQuery(query);
+
+	QNetworkRequest avatar_request(endpoint);
+
+	QNetworkReply *reply = get(avatar_request);
+	reply->setProperty("userid", userId);
+	reply->setProperty("endpoint", static_cast<int>(Endpoint::UserAvatar));
 }
 
 void MatrixClient::downloadImage(const QString &event_id, const QUrl &url)

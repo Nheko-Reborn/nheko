@@ -24,6 +24,7 @@
 #include "ImageItem.h"
 #include "Sync.h"
 
+#include "Avatar.h"
 #include "Image.h"
 #include "MessageEvent.h"
 #include "Notice.h"
@@ -46,19 +47,35 @@ public:
 	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, const QString &color, QWidget *parent);
 	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, QWidget *parent);
 
+	void setUserAvatar(const QImage &pixmap);
+
 	~TimelineItem();
 
 private:
+	void init();
+
 	void generateBody(const QString &body);
 	void generateBody(const QString &userid, const QString &color, const QString &body);
 	void generateTimestamp(const QDateTime &time);
 
+	void setupAvatarLayout(const QString &userName);
+	void setupSimpleLayout();
+
 	QString replaceEmoji(const QString &body);
 
-	void setupLayout();
+	QHBoxLayout *topLayout_;
+	QVBoxLayout *sideLayout_;  // Avatar or Timestamp
+	QVBoxLayout *mainLayout_;  // Header & Message body
 
-	QHBoxLayout *top_layout_;
+	QHBoxLayout *headerLayout_;  // Username (&) Timestamp
 
-	QLabel *time_label_;
-	QLabel *content_label_;
+	Avatar *userAvatar_;
+
+	QLabel *timestamp_;
+	QLabel *userName_;
+	QLabel *body_;
+
+	QFont bodyFont_;
+	QFont usernameFont_;
+	QFont timestampFont_;
 };
