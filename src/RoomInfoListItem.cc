@@ -189,13 +189,13 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 void RoomInfoListItem::updateUnreadMessageCount(int count)
 {
 	unreadMsgCount_ += count;
-	repaint();
+	update();
 }
 
 void RoomInfoListItem::clearUnreadMessageCount()
 {
 	unreadMsgCount_ = 0;
-	repaint();
+	update();
 }
 
 void RoomInfoListItem::setPressedState(bool state)
@@ -212,7 +212,7 @@ void RoomInfoListItem::setPressedState(bool state)
 void RoomInfoListItem::setState(const RoomState &new_state)
 {
 	state_ = new_state;
-	repaint();
+	update();
 }
 
 void RoomInfoListItem::contextMenuEvent(QContextMenuEvent *event)

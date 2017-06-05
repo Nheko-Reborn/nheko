@@ -104,4 +104,5 @@ inline RoomState RoomInfoListItem::state() const
 inline void RoomInfoListItem::setAvatar(const QImage &img)
 {
 	roomAvatar_ = QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	update();
 }
