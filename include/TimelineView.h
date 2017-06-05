@@ -111,11 +111,15 @@ private:
 	bool isInitialized = false;
 	bool isTimelineFinished = false;
 	bool isInitialSync = true;
+	bool isPaginationScrollPending_ = false;
 
-	const int SCROLL_BAR_GAP = 300;
+	const int SCROLL_BAR_GAP = 400;
 
 	int scroll_height_ = 0;
 	int previous_max_height_ = 0;
+
+	int oldPosition_;
+	int oldHeight_;
 
 	QList<PendingMessage> pending_msgs_;
 	QSharedPointer<MatrixClient> client_;
