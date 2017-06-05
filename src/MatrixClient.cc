@@ -541,7 +541,7 @@ void MatrixClient::initialSync() noexcept
 	};
 
 	QJsonObject filter{{"room",
-			    QJsonObject{{"timeline", QJsonObject{{"limit", 70}}},
+			    QJsonObject{{"timeline", QJsonObject{{"limit", 20}}},
 					{"ephemeral", QJsonObject{{"limit", 0}}}}},
 			   {"presence", QJsonObject{{"not_types", excluded_presence}}}};
 
@@ -677,12 +677,13 @@ void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnAvatar));
 }
 
-void MatrixClient::messages(const QString &room_id, const QString &from_token) noexcept
+void MatrixClient::messages(const QString &room_id, const QString &from_token, int limit) noexcept
 {
 	QUrlQuery query;
 	query.addQueryItem("access_token", token_);
 	query.addQueryItem("from", from_token);
 	query.addQueryItem("dir", "b");
+	query.addQueryItem("limit", QString::number(limit));
 
 	QUrl endpoint(server_);
 	endpoint.setPath(api_url_ + QString("/rooms/%1/messages").arg(room_id));

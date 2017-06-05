@@ -76,7 +76,7 @@ void TimelineView::scrollDown()
 
 	// The first time we enter the room move the scroll bar to the bottom.
 	if (!isInitialized) {
-		scroll_area_->ensureVisible(0, scroll_widget_->size().height(), 0, 0);
+		scroll_area_->verticalScrollBar()->setValue(max);
 		isInitialized = true;
 		return;
 	}
@@ -226,11 +226,6 @@ int TimelineView::addEvents(const Timeline &timeline)
 	QSettings settings;
 	QString localUser = settings.value("auth/user_id").toString();
 
-	if (isInitialSync) {
-		prev_batch_token_ = timeline.previousBatch();
-		isInitialSync = false;
-	}
-
 	for (const auto &event : timeline.events()) {
 		TimelineItem *item = parseMessageEvent(event.toObject(), TimelineDirection::Bottom);
 		auto sender = event.toObject().value("sender").toString();
@@ -241,6 +236,13 @@ int TimelineView::addEvents(const Timeline &timeline)
 			if (sender != localUser)
 				message_count += 1;
 		}
+	}
+
+	if (isInitialSync) {
+		prev_batch_token_ = timeline.previousBatch();
+		isInitialSync = false;
+
+		client_->messages(room_id_, prev_batch_token_);
 	}
 
 	return message_count;

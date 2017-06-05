@@ -119,9 +119,10 @@ void TimelineViewManager::setHistoryView(const QString &room_id)
 
 	active_room_ = room_id;
 	auto widget = views_.value(room_id);
-	widget->scrollDown();
 
 	setCurrentWidget(widget.data());
+
+	widget->scrollDown();
 }
 
 QMap<QString, QString> TimelineViewManager::NICK_COLORS;

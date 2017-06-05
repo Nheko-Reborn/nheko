@@ -44,7 +44,7 @@ public:
 	void fetchUserAvatar(const QString &userId, const QUrl &avatarUrl);
 	void fetchOwnAvatar(const QUrl &avatar_url);
 	void downloadImage(const QString &event_id, const QUrl &url);
-	void messages(const QString &room_id, const QString &from_token) noexcept;
+	void messages(const QString &room_id, const QString &from_token, int limit = 20) noexcept;
 
 	inline QUrl getHomeServer();
 	inline int transactionId();
