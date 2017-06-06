@@ -24,6 +24,7 @@ Splitter::Splitter(QWidget *parent)
     : QSplitter(parent)
 {
 	connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
+	setChildrenCollapsible(false);
 }
 
 void Splitter::onSplitterMoved(int pos, int index)
