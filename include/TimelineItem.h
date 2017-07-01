@@ -73,6 +73,9 @@ private:
 
 	const int AvatarSize = 36;
 	const float TimestampFontRatio = 0.8;
+	const float EmojiFontRatio = 1.4;
+
+	float EmojiSize = 13;
 
 	Avatar *userAvatar_;
 

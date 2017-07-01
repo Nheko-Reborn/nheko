@@ -44,6 +44,8 @@ void TimelineItem::init()
 	const int baseWidth = fm.width('A');
 	MessageMargin = baseWidth * 1.5;
 
+	EmojiSize = this->font().pointSize() * EmojiFontRatio;
+
 	topLayout_ = new QHBoxLayout(this);
 	sideLayout_ = new QVBoxLayout();
 	mainLayout_ = new QVBoxLayout();
@@ -289,7 +291,9 @@ QString TimelineItem::replaceEmoji(const QString &body)
 
 		// TODO: Be more precise here.
 		if (code > 9000)
-			fmtBody += "<span style=\"font-family: Emoji One; font-size: 14px\">" + QString(c) + "</span>";
+			fmtBody += QString("<span style=\"font-family: Emoji One; font-size: %1px\">").arg(EmojiSize) +
+				   QString(c) +
+				   "</span>";
 		else
 			fmtBody += c;
 	}
