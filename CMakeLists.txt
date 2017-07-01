@@ -8,6 +8,10 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
+if (APPLE)
+    find_package(Qt5MacExtras REQUIRED)
+endif(APPLE)
+
 if (Qt5Widgets_FOUND)
     if (Qt5Widgets_VERSION VERSION_LESS 5.7.0)
         message(STATUS "Qt version ${Qt5Widgets_VERSION}")
@@ -243,6 +247,10 @@ if (BUILD_TESTS)
 else()
     add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC})
     target_link_libraries (nheko matrix_events Qt5::Widgets Qt5::Network)
+
+    if (APPLE)
+        target_link_libraries(nheko Qt5::MacExtras)
+    endif(APPLE)
 
     if(WIN32)
         target_link_libraries(nheko Qt5::WinMain)

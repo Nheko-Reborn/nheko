@@ -20,6 +20,10 @@
 
 #include "TrayIcon.h"
 
+#if defined(Q_OS_MAC)
+#include <QtMacExtras>
+#endif
+
 MsgCountComposedIcon::MsgCountComposedIcon(const QString &filename)
     : QIconEngine()
 {
@@ -91,10 +95,17 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
 
 void TrayIcon::setUnreadCount(int count)
 {
+#if defined(Q_OS_MAC)
+	if (count == 0)
+		QtMac::setBadgeLabelText("");
+	else
+		QtMac::setBadgeLabelText(QString::number(count));
+#else
 	MsgCountComposedIcon *tmp = static_cast<MsgCountComposedIcon *>(icon_->clone());
 	tmp->msgCount = count;
 
 	setIcon(QIcon(tmp));
 
 	icon_ = tmp;
+#endif
 }
