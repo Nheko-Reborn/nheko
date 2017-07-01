@@ -24,6 +24,11 @@
 #include "RoomState.h"
 #include "Theme.h"
 
+const float RoomInfoListItem::UnreadCountFontRatio = 0.8;
+const float RoomInfoListItem::RoomNameFontRatio = 1.1;
+const float RoomInfoListItem::RoomDescriptionFontRatio = 1.1;
+const float RoomInfoListItem::RoomAvatarLetterFontRatio = 1.8;
+
 RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
 				   RoomState state,
 				   QString room_id,
@@ -84,10 +89,9 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 	else
 		p.fillRect(rect(), QColor("#F8FBFE"));
 
-	QFont font("Open Sans", 10);
-
+	QFont font;
 	QFontMetrics metrics(font);
-	p.setFont(font);
+
 	p.setPen(QColor("#333"));
 
 	QRect avatarRegion(Padding, Padding, IconSize, IconSize);
@@ -101,6 +105,9 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 			p.setPen(pen);
 		}
 
+		font.setPointSize(this->font().pointSize() * RoomNameFontRatio);
+		p.setFont(font);
+
 		auto name = metrics.elidedText(state_.getName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
 		p.drawText(QPoint(2 * Padding + IconSize, Padding + metrics.height()), name);
 
@@ -109,10 +116,13 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 			p.setPen(pen);
 		}
 
-		double descPercentage = 0.95;
+		double descPercentage = 0.90;
 
 		if (unreadMsgCount_ > 0)
 			descPercentage = 0.8;
+
+		font.setPointSize(this->font().pointSize() * RoomDescriptionFontRatio);
+		p.setFont(font);
 
 		auto description = metrics.elidedText(state_.getTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
 		p.drawText(QPoint(2 * Padding + IconSize, bottom_y), description);
@@ -131,7 +141,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 
 		p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
 
-		font.setPointSize(13);
+		font.setPointSize(this->font().pointSize() * RoomAvatarLetterFontRatio);
 		p.setFont(font);
 		p.setPen(QColor("#333"));
 		p.setBrush(Qt::NoBrush);
@@ -158,13 +168,13 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 		if (isPressed_)
 			brush.setColor(textColor);
 
+		QFont unreadCountFont;
+		unreadCountFont.setPointSize(this->font().pointSize() * UnreadCountFontRatio);
+		unreadCountFont.setBold(true);
+
 		p.setBrush(brush);
 		p.setPen(Qt::NoPen);
-
-		QFont msgFont("Open Sans", 8);
-		msgFont.setStyleName("Bold");
-
-		p.setFont(msgFont);
+		p.setFont(unreadCountFont);
 
 		int diameter = 20;
 

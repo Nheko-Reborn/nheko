@@ -19,6 +19,7 @@
 #include <QDebug>
 #include <QFontDatabase>
 #include <QRegExp>
+#include <QTextEdit>
 
 #include "AvatarProvider.h"
 #include "ImageItem.h"
@@ -38,24 +39,35 @@ void TimelineItem::init()
 	userName_ = nullptr;
 	body_ = nullptr;
 
-	QFontDatabase db;
-
-	bodyFont_ = db.font("Open Sans", "Regular", 10);
-	usernameFont_ = db.font("Open Sans", "Bold", 10);
-	timestampFont_ = db.font("Open Sans", "Regular", 7);
+	// Initialize layout spacing variables based on the current font.
+	QFontMetrics fm(this->font());
+	const int baseWidth = fm.width('A');
+	MessageMargin = baseWidth * 1.5;
 
 	topLayout_ = new QHBoxLayout(this);
 	sideLayout_ = new QVBoxLayout();
 	mainLayout_ = new QVBoxLayout();
 	headerLayout_ = new QHBoxLayout();
 
-	topLayout_->setContentsMargins(7, 0, 0, 0);
-	topLayout_->setSpacing(9);
+	topLayout_->setContentsMargins(MessageMargin, MessageMargin, 0, 0);
+	topLayout_->setSpacing(0);
 
 	topLayout_->addLayout(sideLayout_);
 	topLayout_->addLayout(mainLayout_, 1);
+
+	sideLayout_->setMargin(0);
+	sideLayout_->setSpacing(0);
+
+	mainLayout_->setContentsMargins(baseWidth * 2, 0, 0, 0);
+	mainLayout_->setSpacing(0);
+
+	headerLayout_->setMargin(0);
+	headerLayout_->setSpacing(baseWidth / 2);
 }
 
+/* 
+ * For messages created locally. The avatar and the username are displayed. 
+ */
 TimelineItem::TimelineItem(const QString &userid, const QString &color, QString body, QWidget *parent)
     : QWidget(parent)
 {
@@ -71,12 +83,13 @@ TimelineItem::TimelineItem(const QString &userid, const QString &color, QString 
 
 	mainLayout_->addLayout(headerLayout_);
 	mainLayout_->addWidget(body_);
-	mainLayout_->setMargin(0);
-	mainLayout_->setSpacing(0);
 
 	AvatarProvider::resolve(userid, this);
 }
 
+/*
+ * For messages created locally. Only the text is displayed. 
+ */
 TimelineItem::TimelineItem(QString body, QWidget *parent)
     : QWidget(parent)
 {
@@ -90,11 +103,15 @@ TimelineItem::TimelineItem(QString body, QWidget *parent)
 	setupSimpleLayout();
 
 	mainLayout_->addWidget(body_);
-	mainLayout_->setMargin(0);
-	mainLayout_->setSpacing(2);
 }
 
-TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Image> &event, const QString &color, QWidget *parent)
+/*
+ * Used to display images. The avatar and the username are displayed.
+ */
+TimelineItem::TimelineItem(ImageItem *image,
+			   const events::MessageEvent<msgs::Image> &event,
+			   const QString &color,
+			   QWidget *parent)
     : QWidget(parent)
 {
 	init();
@@ -113,12 +130,13 @@ TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Im
 
 	mainLayout_->addLayout(headerLayout_);
 	mainLayout_->addLayout(imageLayout);
-	mainLayout_->setContentsMargins(0, 4, 0, 0);
-	mainLayout_->setSpacing(0);
 
 	AvatarProvider::resolve(event.sender(), this);
 }
 
+/*
+ * Used to display images. Only the image is displayed.
+ */
 TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Image> &event, QWidget *parent)
     : QWidget(parent)
 {
@@ -135,10 +153,11 @@ TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Im
 	imageLayout->addStretch(1);
 
 	mainLayout_->addLayout(imageLayout);
-	mainLayout_->setContentsMargins(0, 4, 0, 0);
-	mainLayout_->setSpacing(2);
 }
 
+/*
+ * Used to display remote notice messages.
+ */
 TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool with_sender, const QString &color, QWidget *parent)
     : QWidget(parent)
 {
@@ -159,22 +178,19 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool
 		setupAvatarLayout(displayName);
 
 		mainLayout_->addLayout(headerLayout_);
-		mainLayout_->addWidget(body_);
-		mainLayout_->setMargin(0);
-		mainLayout_->setSpacing(0);
 
 		AvatarProvider::resolve(event.sender(), this);
 	} else {
 		generateBody(body);
-
 		setupSimpleLayout();
-
-		mainLayout_->addWidget(body_);
-		mainLayout_->setMargin(0);
-		mainLayout_->setSpacing(2);
 	}
+
+	mainLayout_->addWidget(body_);
 }
 
+/*
+ * Used to display remote text messages.
+ */
 TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool with_sender, const QString &color, QWidget *parent)
     : QWidget(parent)
 {
@@ -189,37 +205,30 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool w
 
 	if (with_sender) {
 		auto displayName = TimelineViewManager::displayName(event.sender());
-		generateBody(displayName, color, body);
 
+		generateBody(displayName, color, body);
 		setupAvatarLayout(displayName);
 
 		mainLayout_->addLayout(headerLayout_);
-		mainLayout_->addWidget(body_);
-		mainLayout_->setMargin(0);
-		mainLayout_->setSpacing(0);
 
 		AvatarProvider::resolve(event.sender(), this);
 	} else {
 		generateBody(body);
-
 		setupSimpleLayout();
-
-		mainLayout_->addWidget(body_);
-		mainLayout_->setMargin(0);
-		mainLayout_->setSpacing(2);
 	}
+
+	mainLayout_->addWidget(body_);
 }
 
 // Only the body is displayed.
 void TimelineItem::generateBody(const QString &body)
 {
-	QString content("<span style=\"color: #171919;\">%1</span>");
+	QString content("<span style=\"color: black;\"> %1 </span>");
 
 	body_ = new QLabel(this);
 	body_->setWordWrap(true);
-	body_->setFont(bodyFont_);
 	body_->setText(content.arg(replaceEmoji(body)));
-	body_->setAlignment(Qt::AlignTop);
+	body_->setMargin(0);
 
 	body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 	body_->setOpenExternalLinks(true);
@@ -237,32 +246,38 @@ void TimelineItem::generateBody(const QString &userid, const QString &color, con
 	QString userContent("<span style=\"color: %1\"> %2 </span>");
 	QString bodyContent("<span style=\"color: #171717;\"> %1 </span>");
 
+	QFont usernameFont;
+	usernameFont.setBold(true);
+
 	userName_ = new QLabel(this);
-	userName_->setFont(usernameFont_);
+	userName_->setFont(usernameFont);
 	userName_->setText(userContent.arg(color).arg(sender));
-	userName_->setAlignment(Qt::AlignTop);
 
 	if (body.isEmpty())
 		return;
 
 	body_ = new QLabel(this);
-	body_->setFont(bodyFont_);
 	body_->setWordWrap(true);
-	body_->setAlignment(Qt::AlignTop);
 	body_->setText(bodyContent.arg(replaceEmoji(body)));
 	body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 	body_->setOpenExternalLinks(true);
+	body_->setMargin(0);
 }
 
 void TimelineItem::generateTimestamp(const QDateTime &time)
 {
 	QString msg("<span style=\"color: #5d6565;\"> %1 </span>");
 
+	QFont timestampFont;
+	timestampFont.setPointSize(this->font().pointSize() * TimestampFontRatio);
+
+	QFontMetrics fm(timestampFont);
+	int topMargin = QFontMetrics(this->font()).height() - fm.height();
+
 	timestamp_ = new QLabel(this);
-	timestamp_->setFont(timestampFont_);
+	timestamp_->setFont(timestampFont);
 	timestamp_->setText(msg.arg(time.toString("HH:mm")));
-	timestamp_->setAlignment(Qt::AlignTop);
-	timestamp_->setStyleSheet("margin-top: 2px;");
+	timestamp_->setContentsMargins(0, topMargin, 0, 0);
 }
 
 QString TimelineItem::replaceEmoji(const QString &body)
@@ -274,7 +289,7 @@ QString TimelineItem::replaceEmoji(const QString &body)
 
 		// TODO: Be more precise here.
 		if (code > 9000)
-			fmtBody += "<span style=\"font-family: Emoji One; font-size: 16px\">" + QString(c) + "</span>";
+			fmtBody += "<span style=\"font-family: Emoji One; font-size: 14px\">" + QString(c) + "</span>";
 		else
 			fmtBody += c;
 	}
@@ -284,13 +299,13 @@ QString TimelineItem::replaceEmoji(const QString &body)
 
 void TimelineItem::setupAvatarLayout(const QString &userName)
 {
-	topLayout_->setContentsMargins(7, 6, 0, 0);
+	topLayout_->setContentsMargins(MessageMargin, MessageMargin, 0, 0);
 
 	userAvatar_ = new Avatar(this);
 	userAvatar_->setLetter(QChar(userName[0]).toUpper());
 	userAvatar_->setBackgroundColor(QColor("#eee"));
 	userAvatar_->setTextColor(QColor("black"));
-	userAvatar_->setSize(32);
+	userAvatar_->setSize(AvatarSize);
 
 	// TODO: The provided user name should be a UserId class
 	if (userName[0] == '@' && userName.size() > 1)
@@ -298,20 +313,29 @@ void TimelineItem::setupAvatarLayout(const QString &userName)
 
 	sideLayout_->addWidget(userAvatar_);
 	sideLayout_->addStretch(1);
-	sideLayout_->setMargin(0);
-	sideLayout_->setSpacing(0);
 
 	headerLayout_->addWidget(userName_);
 	headerLayout_->addWidget(timestamp_, 1);
-	headerLayout_->setMargin(0);
 }
 
 void TimelineItem::setupSimpleLayout()
 {
 	sideLayout_->addWidget(timestamp_);
-	sideLayout_->addStretch(1);
 
-	topLayout_->setContentsMargins(9, 0, 0, 0);
+	// Keep only the time in plain text.
+	QTextEdit htmlText(timestamp_->text());
+	QString plainText = htmlText.toPlainText();
+
+	// Align the end of the avatar bubble with the end of the timestamp for
+	// messages with and without avatar. Otherwise their bodies would not be aligned.
+	int timestampWidth = timestamp_->fontMetrics().boundingRect(plainText).width();
+	int offset = std::max(0, AvatarSize - timestampWidth) / 2;
+
+	int defaultFontHeight = QFontMetrics(this->font()).height();
+
+	timestamp_->setAlignment(Qt::AlignTop);
+	timestamp_->setContentsMargins(offset, defaultFontHeight - timestamp_->fontMetrics().height(), offset, 0);
+	topLayout_->setContentsMargins(MessageMargin, MessageMargin / 3, 0, 0);
 }
 
 void TimelineItem::setUserAvatar(const QImage &avatar)

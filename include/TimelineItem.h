@@ -69,13 +69,14 @@ private:
 
 	QHBoxLayout *headerLayout_;  // Username (&) Timestamp
 
+	int MessageMargin;
+
+	const int AvatarSize = 36;
+	const float TimestampFontRatio = 0.8;
+
 	Avatar *userAvatar_;
 
 	QLabel *timestamp_;
 	QLabel *userName_;
 	QLabel *body_;
-
-	QFont bodyFont_;
-	QFont usernameFont_;
-	QFont timestampFont_;
 };
