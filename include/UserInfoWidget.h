@@ -72,4 +72,7 @@ private:
 	LogoutDialog *logoutDialog_;
 
 	int logoutButtonSize_;
+
+	const float DisplayNameFontRatio = 1.3;
+	const float UserIdFontRatio = 1.1;
 };

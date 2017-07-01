@@ -41,11 +41,18 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	text_layout_->setSpacing(0);
 	text_layout_->setContentsMargins(0, 0, 0, 0);
 
+	QFont font;
+	font.setPointSize(this->font().pointSize() * RoomNameFontRatio);
+	font.setBold(true);
+
 	name_label_ = new QLabel(this);
-	name_label_->setStyleSheet("font-size: 14px; font-weight: 600;");
+	name_label_->setFont(font);
+
+	font.setBold(false);
+	font.setPointSize(this->font().pointSize() * RoomDescriptionFontRatio);
 
 	topic_label_ = new QLabel(this);
-	topic_label_->setStyleSheet("font-size: 12px;");
+	topic_label_->setFont(font);
 
 	text_layout_->addWidget(name_label_);
 	text_layout_->addWidget(topic_label_);

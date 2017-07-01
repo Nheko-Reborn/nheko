@@ -47,20 +47,21 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	userAvatar_->setBackgroundColor("#f9f9f9");
 	userAvatar_->setTextColor("#333333");
 
+	QFont font;
+	font.setBold(true);
+	font.setPointSize(this->font().pointSize() * DisplayNameFontRatio);
+
 	displayNameLabel_ = new QLabel(this);
-	displayNameLabel_->setStyleSheet(
-		"padding: 0 9px;"
-		"color: #171919;"
-		"font-size: 14px;"
-		"font-weight: 500;"
-		"margin-bottom: -10px;");
+	displayNameLabel_->setFont(font);
+	displayNameLabel_->setStyleSheet("padding: 0 9px; color: #171919; margin-bottom: -10px;");
 	displayNameLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 
+	font.setBold(false);
+	font.setPointSize(this->font().pointSize() * UserIdFontRatio);
+
 	userIdLabel_ = new QLabel(this);
-	userIdLabel_->setStyleSheet(
-		"padding: 0 8px 8px 8px;"
-		"color: #555459;"
-		"font-size: 13px");
+	userIdLabel_->setFont(font);
+	userIdLabel_->setStyleSheet("padding: 0 8px 8px 8px; color: #555459;");
 	userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
 	avatarLayout_->addWidget(userAvatar_);
