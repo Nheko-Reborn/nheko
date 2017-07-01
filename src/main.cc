@@ -41,7 +41,13 @@ int main(int argc, char *argv[])
 
 	app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
-	QFont font("Open Sans");
+	QSettings settings;
+
+	// Set the default if a value has not been set.
+	if (settings.value("font/size").toInt() == 0)
+		settings.setValue("font/size", 12);
+
+	QFont font("Open Sans", settings.value("font/size").toInt());
 	app.setFont(font);
 
 	QString lang = QLocale::system().name();
