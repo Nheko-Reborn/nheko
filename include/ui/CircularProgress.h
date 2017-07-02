@@ -46,6 +46,9 @@ private:
 
 	// Circle radius.
 	int size_;
+
+	// Animation duration.
+	int duration_;
 };
 
 class CircularProgressDelegate : public QObject

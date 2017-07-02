@@ -11,6 +11,7 @@ CircularProgress::CircularProgress(QWidget *parent)
     , progress_type_{ui::ProgressType::IndeterminateProgress}
     , width_{6.25}
     , size_{64}
+    , duration_{3050}
 {
 	delegate_ = new CircularProgressDelegate(this);
 
@@ -24,11 +25,11 @@ CircularProgress::CircularProgress(QWidget *parent)
 	length_animation->setTargetObject(delegate_);
 	length_animation->setEasingCurve(QEasingCurve::InOutQuad);
 	length_animation->setStartValue(0.1);
-	length_animation->setKeyValueAt(0.15, 0.2);
+	length_animation->setKeyValueAt(0.15, 3);
 	length_animation->setKeyValueAt(0.6, 20);
 	length_animation->setKeyValueAt(0.7, 20);
 	length_animation->setEndValue(20);
-	length_animation->setDuration(2050);
+	length_animation->setDuration(duration_);
 
 	auto offset_animation = new QPropertyAnimation(this);
 	offset_animation->setPropertyName("dashOffset");
@@ -39,14 +40,14 @@ CircularProgress::CircularProgress(QWidget *parent)
 	offset_animation->setKeyValueAt(0.6, -7);
 	offset_animation->setKeyValueAt(0.7, -7);
 	offset_animation->setEndValue(-25);
-	offset_animation->setDuration(2050);
+	offset_animation->setDuration(duration_);
 
 	auto angle_animation = new QPropertyAnimation(this);
 	angle_animation->setPropertyName("angle");
 	angle_animation->setTargetObject(delegate_);
 	angle_animation->setStartValue(0);
-	angle_animation->setEndValue(719);
-	angle_animation->setDuration(2050);
+	angle_animation->setEndValue(360);
+	angle_animation->setDuration(duration_);
 
 	group->addAnimation(length_animation);
 	group->addAnimation(offset_animation);
