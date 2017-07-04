@@ -43,5 +43,5 @@ void EmojiItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 	font.setPixelSize(19);
 
 	painter->setFont(font);
-	painter->drawText(viewOption.rect, emoji);
+	painter->drawText(viewOption.rect, Qt::AlignCenter, emoji);
 }
