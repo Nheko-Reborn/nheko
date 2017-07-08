@@ -21,10 +21,9 @@
 #include "LoginPage.h"
 
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
-    : QWidget(parent)
-    , settings_modal_{nullptr}
-    , login_settings_{nullptr}
-    , client_{client}
+	: QWidget(parent)
+	, inferredServerAddress_()
+	, client_{client}
 {
 	setStyleSheet("background-color: #f9f9f9");
 
@@ -38,9 +37,8 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	back_button_->setMinimumSize(QSize(30, 30));
 	back_button_->setForegroundColor("#333333");
 
-	advanced_settings_button_ = new FlatButton(this);
-	advanced_settings_button_->setMinimumSize(QSize(30, 30));
-	advanced_settings_button_->setForegroundColor("#333333");
+	top_bar_layout_->addWidget(back_button_, 0, Qt::AlignLeft | Qt::AlignVCenter);
+	top_bar_layout_->addStretch(1);
 
 	QIcon icon;
 	icon.addFile(":/icons/icons/left-angle.png", QSize(), QIcon::Normal, QIcon::Off);
@@ -50,13 +48,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
 	QIcon advanced_settings_icon;
 	advanced_settings_icon.addFile(":/icons/icons/cog.png", QSize(), QIcon::Normal, QIcon::Off);
-
-	advanced_settings_button_->setIcon(advanced_settings_icon);
-	advanced_settings_button_->setIconSize(QSize(24, 24));
-
-	top_bar_layout_->addWidget(back_button_, 0, Qt::AlignLeft | Qt::AlignVCenter);
-	top_bar_layout_->addStretch(1);
-	top_bar_layout_->addWidget(advanced_settings_button_, 0, Qt::AlignRight | Qt::AlignVCenter);
 
 	logo_ = new QLabel(this);
 	logo_->setPixmap(QPixmap(":/logos/nheko-128.png"));
@@ -85,6 +76,19 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	matrixid_input_->setBackgroundColor("#f9f9f9");
 	matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
 
+	spinner_ = new CircularProgress(this);
+	spinner_->setColor("#acc7dc");
+	spinner_->setSize(32);
+	spinner_->setMaximumWidth(spinner_->width());
+	spinner_->hide();
+
+	errorIcon_ = new QLabel(this);
+	errorIcon_->setPixmap(QPixmap(":/icons/icons/error.png"));
+	errorIcon_->hide();
+
+	matrixidLayout_ = new QHBoxLayout();
+	matrixidLayout_->addWidget(matrixid_input_, 0, Qt::AlignVCenter);
+
 	password_input_ = new TextField(this);
 	password_input_->setTextColor("#333333");
 	password_input_->setLabel(tr("Password"));
@@ -92,8 +96,20 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	password_input_->setBackgroundColor("#f9f9f9");
 	password_input_->setEchoMode(QLineEdit::Password);
 
-	form_layout_->addWidget(matrixid_input_, Qt::AlignHCenter, 0);
+	serverInput_ = new TextField(this);
+	serverInput_->setTextColor("#333333");
+	serverInput_->setLabel("Homeserver address");
+	serverInput_->setInkColor("#555459");
+	serverInput_->setBackgroundColor("#f9f9f9");
+	serverInput_->setPlaceholderText("matrix.org");
+	serverInput_->hide();
+
+	serverLayout_ = new QHBoxLayout();
+	serverLayout_->addWidget(serverInput_, 0, Qt::AlignVCenter);
+
+	form_layout_->addLayout(matrixidLayout_);
 	form_layout_->addWidget(password_input_, Qt::AlignHCenter, 0);
+	form_layout_->addLayout(serverLayout_);
 
 	button_layout_ = new QHBoxLayout();
 	button_layout_->setSpacing(0);
@@ -128,8 +144,12 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
 	connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
 	connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
+	connect(serverInput_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
 	connect(client_.data(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
-	connect(advanced_settings_button_, SIGNAL(clicked()), this, SLOT(showSettingsModal()));
+	connect(matrixid_input_, SIGNAL(editingFinished()), this, SLOT(onMatrixIdEntered()));
+	connect(client_.data(), SIGNAL(versionError(QString)), this, SLOT(versionError(QString)));
+	connect(client_.data(), SIGNAL(versionSuccess()), this, SLOT(versionSuccess()));
+	connect(serverInput_, SIGNAL(editingFinished()), this, SLOT(onServerAddressEntered()));
 
 	matrixid_input_->setValidator(&InputValidator::Id);
 }
@@ -139,63 +159,115 @@ void LoginPage::loginError(QString error)
 	error_label_->setText(error);
 }
 
-void LoginPage::onLoginButtonClicked()
+void LoginPage::onMatrixIdEntered()
 {
 	error_label_->setText("");
 
 	if (!matrixid_input_->hasAcceptableInput()) {
 		loginError(tr("Invalid Matrix ID"));
+		return;
 	} else if (password_input_->text().isEmpty()) {
 		loginError(tr("Empty password"));
+	}
+
+	QString homeServer = matrixid_input_->text().split(":").at(1);
+	if (homeServer != inferredServerAddress_) {
+		serverInput_->hide();
+		serverLayout_->removeWidget(errorIcon_);
+		errorIcon_->hide();
+		if (serverInput_->isVisible()) {
+			matrixidLayout_->removeWidget(spinner_);
+			serverLayout_->addWidget(spinner_, 0, Qt::AlignVCenter | Qt::AlignRight);
+			spinner_->show();
+		} else {
+			serverLayout_->removeWidget(spinner_);
+			matrixidLayout_->addWidget(spinner_, 0, Qt::AlignVCenter | Qt::AlignRight);
+			spinner_->show();
+		}
+
+		inferredServerAddress_ = homeServer;
+		serverInput_->setText(homeServer);
+		client_->setServer(homeServer);
+		client_->versions();
+	}
+}
+
+void LoginPage::onServerAddressEntered()
+{
+	error_label_->setText("");
+	client_->setServer(serverInput_->text());
+	client_->versions();
+
+	serverLayout_->removeWidget(errorIcon_);
+	errorIcon_->hide();
+	serverLayout_->addWidget(spinner_, 0, Qt::AlignVCenter | Qt::AlignRight);
+	spinner_->show();
+}
+
+void LoginPage::versionError(QString error)
+{
+	// Matrix homeservers are often kept on a subdomain called 'matrix'
+	// so let's try that next, unless the address was set explicitly or the domain part of the username already points to this subdomain
+	QUrl currentServer = client_->getHomeServer();
+	QString mxidAddress = matrixid_input_->text().split(":").at(1);
+	if (currentServer.host() == inferredServerAddress_ && !currentServer.host().startsWith("matrix")) {
+		error_label_->setText("");
+		currentServer.setHost(QString("matrix.")+currentServer.host());
+		serverInput_->setText(currentServer.host());
+		client_->setServer(currentServer.host());
+		client_->versions();
+		return;
+	}
+
+	error_label_->setText(error);
+	serverInput_->show();
+
+	spinner_->hide();
+	serverLayout_->removeWidget(spinner_);
+	serverLayout_->addWidget(errorIcon_, 0, Qt::AlignVCenter | Qt::AlignRight);
+	errorIcon_->show();
+	matrixidLayout_->removeWidget(spinner_);
+}
+
+void LoginPage::versionSuccess()
+{
+	serverLayout_->removeWidget(spinner_);
+	matrixidLayout_->removeWidget(spinner_);
+	spinner_->hide();
+
+	if (serverInput_->isVisible())
+		serverInput_->hide();
+}
+
+void LoginPage::onLoginButtonClicked()
+{
+	error_label_->setText("");
+
+	if (!matrixid_input_->hasAcceptableInput()) {
+		loginError("Invalid Matrix ID");
+	} else if (password_input_->text().isEmpty()) {
+		loginError("Empty password");
 	} else {
 		QString user = matrixid_input_->text().split(":").at(0).split("@").at(1);
 		QString password = password_input_->text();
-
-		QString home_server = custom_domain_.isEmpty()
-					      ? matrixid_input_->text().split(":").at(1)
-					      : custom_domain_;
-
-		client_->setServer(home_server);
+		client_->setServer(serverInput_->text());
 		client_->login(user, password);
 	}
-}
-
-void LoginPage::showSettingsModal()
-{
-	if (login_settings_ == nullptr) {
-		login_settings_ = new LoginSettings(this);
-		connect(login_settings_, &LoginSettings::closing, this, &LoginPage::closeSettingsModal);
-	}
-
-	if (settings_modal_ == nullptr) {
-		settings_modal_ = new OverlayModal(this, login_settings_);
-		settings_modal_->setDuration(100);
-		settings_modal_->setColor(QColor(55, 55, 55, 170));
-	}
-
-	settings_modal_->fadeIn();
-}
-
-void LoginPage::closeSettingsModal(const QString &server)
-{
-	custom_domain_ = server;
-	settings_modal_->fadeOut();
 }
 
 void LoginPage::reset()
 {
 	matrixid_input_->clear();
 	password_input_->clear();
+	serverInput_->clear();
 
-	if (settings_modal_ != nullptr) {
-		settings_modal_->deleteLater();
-		settings_modal_ = nullptr;
-	}
+	spinner_->hide();
+	errorIcon_->hide();
+	serverLayout_->removeWidget(spinner_);
+	serverLayout_->removeWidget(errorIcon_);
+	matrixidLayout_->removeWidget(spinner_);
 
-	if (login_settings_ != nullptr) {
-		login_settings_->deleteLater();
-		login_settings_ = nullptr;
-	}
+	inferredServerAddress_.clear();
 }
 
 void LoginPage::onBackButtonClicked()

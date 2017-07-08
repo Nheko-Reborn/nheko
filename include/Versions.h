@@ -17,21 +17,26 @@
 
 #pragma once
 
-#include <QFrame>
+#include <QJsonDocument>
+#include <QVector>
 
-#include "FlatButton.h"
-#include "TextField.h"
+#include "Deserializable.h"
 
-class LoginSettings : public QFrame
+
+class VersionsResponse : public Deserializable
 {
-	Q_OBJECT
 public:
-	explicit LoginSettings(QWidget *parent = nullptr);
+	void deserialize(const QJsonDocument &data) override;
 
-signals:
-	void closing(const QString &server);
+	bool isVersionSupported(unsigned int major, unsigned int minor, unsigned int patch);
 
 private:
-	TextField *input_;
-	FlatButton *submit_button_;
+	struct Version_ {
+		unsigned int major_;
+		unsigned int minor_;
+		unsigned int patch_;
+	};
+
+	QVector<Version_> supported_versions_;
+
 };

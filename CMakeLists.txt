@@ -98,7 +98,6 @@ set(SRC_FILES
     src/InputValidator.cc
     src/Login.cc
     src/LoginPage.cc
-    src/LoginSettings.cc
     src/LogoutDialog.cc
     src/MainWindow.cc
     src/MatrixClient.cc
@@ -116,6 +115,7 @@ set(SRC_FILES
     src/TrayIcon.cc
     src/TopRoomBar.cc
     src/UserInfoWidget.cc
+    src/Versions.cc
     src/WelcomePage.cc
     src/main.cc
 
@@ -177,7 +177,6 @@ qt5_wrap_cpp(MOC_HEADERS
     include/TimelineView.h
     include/TimelineViewManager.h
     include/LoginPage.h
-    include/LoginSettings.h
     include/LogoutDialog.h
     include/MainWindow.h
     include/MatrixClient.h

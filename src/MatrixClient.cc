@@ -30,6 +30,7 @@
 #include "MatrixClient.h"
 #include "Profile.h"
 #include "Register.h"
+#include "Versions.h"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
     : QNetworkAccessManager(parent)
@@ -57,12 +58,34 @@ void MatrixClient::onVersionsResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
-	qDebug() << "Handling the versions response";
+	int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+	if (status_code == 404) {
+		emit versionError("Versions endpoint was not found on the server. Possibly not a Matrix server");
+		return;
+	}
+
+	if (status_code >= 400) {
+		qWarning() << "API version error: " << reply->errorString();
+		emit versionError("An unknown error occured. Please try again.");
+		return;
+	}
 
 	auto data = reply->readAll();
 	auto json = QJsonDocument::fromJson(data);
 
-	qDebug() << json;
+	VersionsResponse response;
+
+	try {
+		response.deserialize(json);
+		if (!response.isVersionSupported(0, 2, 0))
+			emit versionError("Server does not support required API version.");
+		else
+			emit versionSuccess();
+	} catch (DeserializationException &e) {
+		qWarning() << "Malformed JSON response" << e.what();
+		emit versionError("Malformed response. Possibly not a Matrix server");
+	}
 }
 
 void MatrixClient::onLoginResponse(QNetworkReply *reply)

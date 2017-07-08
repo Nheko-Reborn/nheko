@@ -63,11 +63,13 @@ public slots:
 signals:
 	void loginError(const QString &error);
 	void registerError(const QString &error);
+	void versionError(const QString &error);
 
 	void loggedOut();
 
 	void loginSuccess(const QString &userid, const QString &homeserver, const QString &token);
 	void registerSuccess(const QString &userid, const QString &homeserver, const QString &token);
+	void versionSuccess();
 
 	void roomAvatarRetrieved(const QString &roomid, const QPixmap &img);
 	void userAvatarRetrieved(const QString &userId, const QImage &img);

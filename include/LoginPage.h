@@ -23,8 +23,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "CircularProgress.h"
 #include "FlatButton.h"
-#include "LoginSettings.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RaisedButton.h"
@@ -50,12 +50,20 @@ private slots:
 	// Callback for the login button.
 	void onLoginButtonClicked();
 
+	// Callback for probing the server found in the mxid
+	void onMatrixIdEntered();
+
+	// Callback for probing the manually entered server
+	void onServerAddressEntered();
+
 	// Displays errors produced during the login.
 	void loginError(QString error_message);
 
-	// Manipulate settings modal.
-	void showSettingsModal();
-	void closeSettingsModal(const QString &server);
+	// Callback for errors produced during server probing
+	void versionError(QString error_message);
+
+	// Callback for successful server probing
+	void versionSuccess();
 
 private:
 	QVBoxLayout *top_layout_;
@@ -67,8 +75,13 @@ private:
 	QLabel *logo_;
 	QLabel *error_label_;
 
+	QHBoxLayout *serverLayout_;
+	QHBoxLayout *matrixidLayout_;
+	CircularProgress *spinner_;
+	QLabel *errorIcon_;
+	QString inferredServerAddress_;
+
 	FlatButton *back_button_;
-	FlatButton *advanced_settings_button_;
 	RaisedButton *login_button_;
 
 	QWidget *form_widget_;
@@ -77,10 +90,7 @@ private:
 
 	TextField *matrixid_input_;
 	TextField *password_input_;
-
-	OverlayModal *settings_modal_;
-	LoginSettings *login_settings_;
-	QString custom_domain_;
+	TextField *serverInput_;
 
 	// Matrix client API provider.
 	QSharedPointer<MatrixClient> client_;
