@@ -15,7 +15,13 @@ but you can of course receive and send messages in the rooms that you are a memb
 
 #### Arch Linux
 ```bash
-pacaur -S nheko-git
+$ pacaur -S nheko-git
+```
+
+#### Gentoo Linux
+```bash
+$ sudo layman -a matrix
+$ sudo emerge -a nheko
 ```
 
 #### Windows
@@ -35,6 +41,12 @@ You can find a NSIS installer [here](https://ci.appveyor.com/project/mujx/nheko/
 
 ```bash
 $ sudo pacman -S qt5-base qt5-tools cmake gcc fontconfig
+```
+
+##### Gentoo Linux
+
+```bash
+$ sudo emerge -a ">=dev-qt/qtgui-5.7.1"	media-libs/fontconfig
 ```
 
 ##### Ubuntu 14.04
