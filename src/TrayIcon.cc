@@ -70,8 +70,12 @@ QIconEngine *MsgCountComposedIcon::clone() const
 TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
     : QSystemTrayIcon(parent)
 {
+#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+	setIcon(QIcon(filename));
+#else
 	icon_ = new MsgCountComposedIcon(filename);
 	setIcon(QIcon(icon_));
+#endif
 
 	QMenu *menu = new QMenu(parent);
 	viewAction_ = new QAction(tr("Show"), parent);
@@ -95,12 +99,17 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
 
 void TrayIcon::setUnreadCount(int count)
 {
+// Use the native badge counter in MacOS.
 #if defined(Q_OS_MAC)
 	if (count == 0)
 		QtMac::setBadgeLabelText("");
 	else
 		QtMac::setBadgeLabelText(QString::number(count));
+#elif defined(Q_OS_WIN)
+// FIXME: Find a way to use Windows apis for the badge counter (if any).
 #else
+	// Custom drawing on Linux.
+	// FIXME: It doesn't seem to work on KDE.
 	MsgCountComposedIcon *tmp = static_cast<MsgCountComposedIcon *>(icon_->clone());
 	tmp->msgCount = count;
 

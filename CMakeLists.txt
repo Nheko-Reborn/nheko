@@ -4,6 +4,9 @@ project(nheko CXX)
 
 option(BUILD_TESTS "Build all tests" OFF)
 
+#
+# Discover Qt dependencies.
+#
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
@@ -19,6 +22,9 @@ if (Qt5Widgets_FOUND)
     endif()
 endif(Qt5Widgets_FOUND)
 
+#
+# Set up compiler flags.
+#
 set(CMAKE_C_COMPILER gcc)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -81,6 +87,9 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     endif()
 endif()
 
+#
+# Declare source and header files.
+#
 set(SRC_FILES
     src/AvatarProvider.cc
     src/ChatPage.cc
@@ -205,6 +214,9 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/ThemeManager.h
 )
 
+#
+# Bundle translations.
+#
 FILE(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
 
 qt5_add_translation(QM_SRC ${LANG_TS_SRC})
@@ -222,10 +234,24 @@ file(APPEND ${_qrc} "</qresource> </RCC>")
 qt5_add_resources(LANG_QRC ${_qrc})
 qt5_add_resources(QRC resources/res.qrc)
 
+#
+# Matrix events library.
+#
 add_library(matrix_events ${MATRIX_EVENTS} src/Deserializable.cc)
 target_link_libraries(matrix_events Qt5::Core)
 
+#
+# Bundle icons.
+#
+if (APPLE)
+    set(ICON_FILE resources/nheko.icns)
+    set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+endif()
+
 if (BUILD_TESTS)
+    #
+    # Build tests.
+    #
     enable_testing()
 
     find_package(GTest REQUIRED)
@@ -244,14 +270,20 @@ if (BUILD_TESTS)
     add_test(MatrixEventCollection event_collection_test)
     add_test(MatrixMessageEvents message_events)
 else()
-    add_executable (nheko ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC})
-    target_link_libraries (nheko matrix_events Qt5::Widgets Qt5::Network)
+    #
+    # Build the executable.
+    #
+    SET (NHEKO_LIBS matrix_events Qt5::Widgets Qt5::Network)
+    set (NHEKO_DEPS ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC})
 
-    if (APPLE)
-        target_link_libraries(nheko Qt5::MacExtras)
-    endif(APPLE)
-
-    if(WIN32)
-        target_link_libraries(nheko Qt5::WinMain)
-    endif(WIN32)
+    if(APPLE)
+        add_executable (nheko ${NHEKO_DEPS})
+        target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras)
+    elseif(WIN32)
+        add_executable (nheko ${ICON_FILE} ${NHEKO_DEPS})
+        target_link_libraries (nheko ${NHEKO_LIBS} Qt5::WinMain)
+    else()
+        add_executable (nheko ${NHEKO_DEPS})
+        target_link_libraries (nheko ${NHEKO_LIBS})
+    endif()
 endif()
