@@ -21,9 +21,9 @@
 #include "LoginPage.h"
 
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
-	: QWidget(parent)
-	, inferredServerAddress_()
-	, client_{client}
+    : QWidget(parent)
+    , inferredServerAddress_()
+    , client_{client}
 {
 	setStyleSheet("background-color: #f9f9f9");
 
@@ -212,7 +212,7 @@ void LoginPage::versionError(QString error)
 	QString mxidAddress = matrixid_input_->text().split(":").at(1);
 	if (currentServer.host() == inferredServerAddress_ && !currentServer.host().startsWith("matrix")) {
 		error_label_->setText("");
-		currentServer.setHost(QString("matrix.")+currentServer.host());
+		currentServer.setHost(QString("matrix.") + currentServer.host());
 		serverInput_->setText(currentServer.host());
 		client_->setServer(currentServer.host());
 		client_->versions();

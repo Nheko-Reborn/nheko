@@ -35,7 +35,7 @@ void VersionsResponse::deserialize(const QJsonDocument &data)
 		throw DeserializationException("Versions: missing version list");
 
 	auto versions = object.value("versions").toArray();
-	for (auto const &elem: versions) {
+	for (auto const &elem : versions) {
 		QString str = elem.toString();
 		QRegExp rx("r(\\d+)\\.(\\d+)\\.(\\d+)");
 
@@ -53,7 +53,7 @@ void VersionsResponse::deserialize(const QJsonDocument &data)
 
 bool VersionsResponse::isVersionSupported(unsigned int major, unsigned int minor, unsigned int patch)
 {
-	for (auto &v: supported_versions_) {
+	for (auto &v : supported_versions_) {
 		if (v.major_ == major && v.minor_ == minor && v.patch_ >= patch)
 			return true;
 	}

@@ -22,7 +22,6 @@
 
 #include "Deserializable.h"
 
-
 class VersionsResponse : public Deserializable
 {
 public:
@@ -38,5 +37,4 @@ private:
 	};
 
 	QVector<Version_> supported_versions_;
-
 };
