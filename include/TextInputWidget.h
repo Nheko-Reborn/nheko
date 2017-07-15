@@ -63,7 +63,4 @@ private:
 	FlatButton *send_file_button_;
 	FlatButton *send_message_button_;
 	EmojiPickButton *emoji_button_;
-
-	const float TextFontRatio = 1.1;
-	const float EmojiFontRatio = 1.3;
 };

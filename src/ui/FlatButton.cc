@@ -189,7 +189,7 @@ void FlatButton::setFontSize(qreal size)
 	font_size_ = size;
 
 	QFont f(font());
-	f.setPointSizeF(size);
+	f.setPixelSize(size);
 	setFont(f);
 
 	update();

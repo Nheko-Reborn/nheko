@@ -68,9 +68,6 @@ private:
 	Avatar *avatar_;
 
 	int buttonSize_;
-
-	const float RoomNameFontRatio = 1.2;
-	const float RoomDescriptionFontRatio = 1;
 };
 
 inline void TopRoomBar::updateRoomAvatar(const QImage &avatar_image)

@@ -19,15 +19,11 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include "Config.h"
 #include "Ripple.h"
 #include "RoomInfoListItem.h"
 #include "RoomState.h"
 #include "Theme.h"
-
-const float RoomInfoListItem::UnreadCountFontRatio = 0.8;
-const float RoomInfoListItem::RoomNameFontRatio = 1.1;
-const float RoomInfoListItem::RoomDescriptionFontRatio = 1.1;
-const float RoomInfoListItem::RoomAvatarLetterFontRatio = 1.8;
 
 RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
 				   RoomState state,
@@ -90,14 +86,15 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 		p.fillRect(rect(), QColor("#F8FBFE"));
 
 	QFont font;
+	font.setPixelSize(conf::fontSize);
 	QFontMetrics metrics(font);
 
 	p.setPen(QColor("#333"));
 
 	QRect avatarRegion(Padding, Padding, IconSize, IconSize);
 
-	// Description line
-	int bottom_y = maxHeight_ - Padding - metrics.height() / 2 + Padding / 2;
+	// Description line with the default font.
+	int bottom_y = maxHeight_ - Padding - Padding / 3 - metrics.ascent() / 2;
 
 	if (width() > ui::sidebar::SmallSize) {
 		if (isPressed_) {
@@ -105,11 +102,15 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 			p.setPen(pen);
 		}
 
-		font.setPointSize(this->font().pointSize() * RoomNameFontRatio);
+		font.setPixelSize(conf::roomlist::fonts::heading);
 		p.setFont(font);
 
+		// Name line.
+		QFontMetrics fontNameMetrics(font);
+		int top_y = 2 * Padding + fontNameMetrics.ascent() / 2;
+
 		auto name = metrics.elidedText(state_.getName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
-		p.drawText(QPoint(2 * Padding + IconSize, Padding + metrics.height()), name);
+		p.drawText(QPoint(2 * Padding + IconSize, top_y), name);
 
 		if (!isPressed_) {
 			QPen pen(QColor("#5d6565"));
@@ -121,7 +122,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 		if (unreadMsgCount_ > 0)
 			descPercentage = 0.8;
 
-		font.setPointSize(this->font().pointSize() * RoomDescriptionFontRatio);
+		font.setPixelSize(conf::fontSize);
 		p.setFont(font);
 
 		auto description = metrics.elidedText(state_.getTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
@@ -141,7 +142,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 
 		p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
 
-		font.setPointSize(this->font().pointSize() * RoomAvatarLetterFontRatio);
+		font.setPixelSize(conf::roomlist::fonts::bubble);
 		p.setFont(font);
 		p.setPen(QColor("#333"));
 		p.setBrush(Qt::NoBrush);
@@ -169,7 +170,7 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 			brush.setColor(textColor);
 
 		QFont unreadCountFont;
-		unreadCountFont.setPointSize(this->font().pointSize() * UnreadCountFontRatio);
+		unreadCountFont.setPixelSize(conf::roomlist::fonts::badge);
 		unreadCountFont.setBold(true);
 
 		p.setBrush(brush);

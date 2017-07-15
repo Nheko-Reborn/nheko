@@ -75,12 +75,6 @@ private:
 
 	QPixmap roomAvatar_;
 
-	// Sizes are relative to the default font size of the Widget.
-	static const float UnreadCountFontRatio;
-	static const float RoomNameFontRatio;
-	static const float RoomDescriptionFontRatio;
-	static const float RoomAvatarLetterFontRatio;
-
 	Menu *menu_;
 	QAction *toggleNotifications_;
 

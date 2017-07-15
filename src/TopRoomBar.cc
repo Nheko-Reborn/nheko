@@ -17,6 +17,7 @@
 
 #include <QStyleOption>
 
+#include "Config.h"
 #include "TopRoomBar.h"
 
 TopRoomBar::TopRoomBar(QWidget *parent)
@@ -41,18 +42,17 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	text_layout_->setSpacing(0);
 	text_layout_->setContentsMargins(0, 0, 0, 0);
 
-	QFont font;
-	font.setPointSize(this->font().pointSize() * RoomNameFontRatio);
-	font.setBold(true);
+	QFont roomFont("Open Sans SemiBold");
+	roomFont.setPixelSize(conf::topRoomBar::fonts::roomName);
 
 	name_label_ = new QLabel(this);
-	name_label_->setFont(font);
+	name_label_->setFont(roomFont);
 
-	font.setBold(false);
-	font.setPointSize(this->font().pointSize() * RoomDescriptionFontRatio);
+	QFont descriptionFont("Open Sans");
+	descriptionFont.setPixelSize(conf::topRoomBar::fonts::roomDescription);
 
 	topic_label_ = new QLabel(this);
-	topic_label_->setFont(font);
+	topic_label_->setFont(descriptionFont);
 
 	text_layout_->addWidget(name_label_);
 	text_layout_->addWidget(topic_label_);

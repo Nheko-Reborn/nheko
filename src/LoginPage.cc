@@ -17,6 +17,7 @@
 
 #include <QDebug>
 
+#include "Config.h"
 #include "InputValidator.h"
 #include "LoginPage.h"
 
@@ -119,15 +120,19 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	login_button_->setBackgroundColor(QColor("#333333"));
 	login_button_->setForegroundColor(QColor("white"));
 	login_button_->setMinimumSize(350, 65);
-	login_button_->setFontSize(17);
+	login_button_->setFontSize(20);
 	login_button_->setCornerRadius(3);
 
 	button_layout_->addStretch(1);
 	button_layout_->addWidget(login_button_);
 	button_layout_->addStretch(1);
 
+	QFont font;
+	font.setPixelSize(conf::fontSize);
+
 	error_label_ = new QLabel(this);
-	error_label_->setStyleSheet("color: #E22826; font-size: 11pt;");
+	error_label_->setFont(font);
+	error_label_->setStyleSheet("color: #E22826");
 
 	top_layout_->addLayout(top_bar_layout_);
 	top_layout_->addStretch(1);

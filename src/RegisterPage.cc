@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QToolTip>
 
+#include "Config.h"
 #include "InputValidator.h"
 #include "RegisterPage.h"
 
@@ -101,15 +102,19 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	button_layout_->setSpacing(0);
 	button_layout_->setMargin(0);
 
+	QFont font;
+	font.setPixelSize(conf::fontSize);
+
 	error_label_ = new QLabel(this);
-	error_label_->setStyleSheet("margin-bottom: 10px; color: #E22826; font-size: 11pt;");
+	error_label_->setFont(font);
+	error_label_->setStyleSheet("color: #E22826");
 
 	register_button_ = new RaisedButton(tr("REGISTER"), this);
 	register_button_->setBackgroundColor(QColor("#333333"));
 	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(350, 65);
-	register_button_->setFontSize(17);
-	register_button_->setCornerRadius(3);
+	register_button_->setFontSize(conf::btn::fontSize);
+	register_button_->setCornerRadius(conf::btn::cornerRadius);
 
 	button_layout_->addStretch(1);
 	button_layout_->addWidget(register_button_);

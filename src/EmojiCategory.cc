@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QScrollBar>
 
+#include "Config.h"
 #include "EmojiCategory.h"
 
 EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *parent)
@@ -62,12 +63,12 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
 		itemModel_->appendRow(item);
 	}
 
+	QFont font("Open Sans SemiBold");
+	font.setPixelSize(conf::fontSize);
+
 	category_ = new QLabel(category, this);
-	category_->setStyleSheet(
-		"color: #ccc;"
-		"margin: 20px 0px 15px 8px;"
-		"font-weight: 500;"
-		"font-size: 12px;");
+	category_->setFont(font);
+	category_->setStyleSheet("color: #ccc; margin: 20px 0px 15px 8px;");
 
 	auto labelLayout_ = new QHBoxLayout();
 	labelLayout_->addWidget(category_);

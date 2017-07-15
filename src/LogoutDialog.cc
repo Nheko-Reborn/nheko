@@ -18,6 +18,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+#include "Config.h"
 #include "LogoutDialog.h"
 #include "Theme.h"
 
@@ -36,17 +37,20 @@ LogoutDialog::LogoutDialog(QWidget *parent)
 	buttonLayout->setMargin(0);
 
 	confirmBtn_ = new FlatButton("OK", this);
-	confirmBtn_->setFontSize(12);
+	confirmBtn_->setFontSize(conf::btn::fontSize);
 
 	cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-	cancelBtn_->setFontSize(12);
+	cancelBtn_->setFontSize(conf::btn::fontSize);
 
 	buttonLayout->addStretch(1);
 	buttonLayout->addWidget(confirmBtn_);
 	buttonLayout->addWidget(cancelBtn_);
 
+	QFont font;
+	font.setPixelSize(conf::headerFontSize);
+
 	auto label = new QLabel(tr("Logout. Are you sure?"), this);
-	label->setFont(QFont("Open Sans", 14));
+	label->setFont(font);
 	label->setStyleSheet("color: #333333");
 
 	layout->addWidget(label);

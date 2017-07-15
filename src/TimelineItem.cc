@@ -22,6 +22,7 @@
 #include <QTextEdit>
 
 #include "AvatarProvider.h"
+#include "Config.h"
 #include "ImageItem.h"
 #include "TimelineItem.h"
 #include "TimelineViewManager.h"
@@ -39,19 +40,16 @@ void TimelineItem::init()
 	userName_ = nullptr;
 	body_ = nullptr;
 
-	// Initialize layout spacing variables based on the current font.
-	QFontMetrics fm(this->font());
-	const int baseWidth = fm.width('A');
-	MessageMargin = baseWidth * 1.5;
+	font_.setPixelSize(conf::fontSize);
 
-	EmojiSize = this->font().pointSize() * EmojiFontRatio;
+	QFontMetrics fm(font_);
 
 	topLayout_ = new QHBoxLayout(this);
 	sideLayout_ = new QVBoxLayout();
 	mainLayout_ = new QVBoxLayout();
 	headerLayout_ = new QHBoxLayout();
 
-	topLayout_->setContentsMargins(MessageMargin, MessageMargin, 0, 0);
+	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
 	topLayout_->setSpacing(0);
 
 	topLayout_->addLayout(sideLayout_);
@@ -60,11 +58,11 @@ void TimelineItem::init()
 	sideLayout_->setMargin(0);
 	sideLayout_->setSpacing(0);
 
-	mainLayout_->setContentsMargins(baseWidth * 2, 0, 0, 0);
+	mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
 	mainLayout_->setSpacing(0);
 
 	headerLayout_->setMargin(0);
-	headerLayout_->setSpacing(baseWidth / 2);
+	headerLayout_->setSpacing(conf::timeline::headerSpacing);
 }
 
 /* 
@@ -228,6 +226,7 @@ void TimelineItem::generateBody(const QString &body)
 	QString content("<span style=\"color: black;\"> %1 </span>");
 
 	body_ = new QLabel(this);
+	body_->setFont(font_);
 	body_->setWordWrap(true);
 	body_->setText(content.arg(replaceEmoji(body)));
 	body_->setMargin(0);
@@ -248,7 +247,7 @@ void TimelineItem::generateBody(const QString &userid, const QString &color, con
 	QString userContent("<span style=\"color: %1\"> %2 </span>");
 	QString bodyContent("<span style=\"color: #171717;\"> %1 </span>");
 
-	QFont usernameFont;
+	QFont usernameFont = font_;
 	usernameFont.setBold(true);
 
 	userName_ = new QLabel(this);
@@ -259,6 +258,7 @@ void TimelineItem::generateBody(const QString &userid, const QString &color, con
 		return;
 
 	body_ = new QLabel(this);
+	body_->setFont(font_);
 	body_->setWordWrap(true);
 	body_->setText(bodyContent.arg(replaceEmoji(body)));
 	body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
@@ -271,10 +271,10 @@ void TimelineItem::generateTimestamp(const QDateTime &time)
 	QString msg("<span style=\"color: #5d6565;\"> %1 </span>");
 
 	QFont timestampFont;
-	timestampFont.setPointSize(this->font().pointSize() * TimestampFontRatio);
+	timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
 
 	QFontMetrics fm(timestampFont);
-	int topMargin = QFontMetrics(this->font()).height() - fm.height();
+	int topMargin = QFontMetrics(font_).ascent() - fm.ascent();
 
 	timestamp_ = new QLabel(this);
 	timestamp_->setFont(timestampFont);
@@ -291,7 +291,7 @@ QString TimelineItem::replaceEmoji(const QString &body)
 
 		// TODO: Be more precise here.
 		if (code > 9000)
-			fmtBody += QString("<span style=\"font-family: Emoji One; font-size: %1px\">").arg(EmojiSize) +
+			fmtBody += QString("<span style=\"font-family: Emoji One; font-size: %1px\">").arg(conf::emojiSize) +
 				   QString(c) +
 				   "</span>";
 		else
@@ -303,13 +303,13 @@ QString TimelineItem::replaceEmoji(const QString &body)
 
 void TimelineItem::setupAvatarLayout(const QString &userName)
 {
-	topLayout_->setContentsMargins(MessageMargin, MessageMargin, 0, 0);
+	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
 
 	userAvatar_ = new Avatar(this);
 	userAvatar_->setLetter(QChar(userName[0]).toUpper());
 	userAvatar_->setBackgroundColor(QColor("#eee"));
 	userAvatar_->setTextColor(QColor("black"));
-	userAvatar_->setSize(AvatarSize);
+	userAvatar_->setSize(conf::timeline::avatarSize);
 
 	// TODO: The provided user name should be a UserId class
 	if (userName[0] == '@' && userName.size() > 1)
@@ -332,14 +332,13 @@ void TimelineItem::setupSimpleLayout()
 
 	// Align the end of the avatar bubble with the end of the timestamp for
 	// messages with and without avatar. Otherwise their bodies would not be aligned.
-	int timestampWidth = timestamp_->fontMetrics().boundingRect(plainText).width();
-	int offset = std::max(0, AvatarSize - timestampWidth) / 2;
+	int offset = std::max(0, conf::timeline::avatarSize - timestamp_->fontMetrics().width(plainText));
 
-	int defaultFontHeight = QFontMetrics(this->font()).height();
+	int defaultFontHeight = QFontMetrics(font_).ascent();
 
 	timestamp_->setAlignment(Qt::AlignTop);
-	timestamp_->setContentsMargins(offset, defaultFontHeight - timestamp_->fontMetrics().height(), offset, 0);
-	topLayout_->setContentsMargins(MessageMargin, MessageMargin / 3, 0, 0);
+	timestamp_->setContentsMargins(offset, defaultFontHeight - timestamp_->fontMetrics().ascent(), 0, 0);
+	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin / 3, 0, 0);
 }
 
 void TimelineItem::setUserAvatar(const QImage &avatar)

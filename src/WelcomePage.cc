@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QLayout>
 
+#include "Config.h"
 #include "WelcomePage.h"
 
 WelcomePage::WelcomePage(QWidget *parent)
@@ -61,15 +62,15 @@ WelcomePage::WelcomePage(QWidget *parent)
 	register_button_->setBackgroundColor(QColor("#333333"));
 	register_button_->setForegroundColor(QColor("white"));
 	register_button_->setMinimumSize(240, 60);
-	register_button_->setFontSize(14);
-	register_button_->setCornerRadius(3);
+	register_button_->setFontSize(conf::btn::fontSize);
+	register_button_->setCornerRadius(conf::btn::cornerRadius);
 
 	login_button_ = new RaisedButton(tr("LOGIN"), this);
 	login_button_->setBackgroundColor(QColor("#333333"));
 	login_button_->setForegroundColor(QColor("white"));
 	login_button_->setMinimumSize(240, 60);
-	login_button_->setFontSize(14);
-	login_button_->setCornerRadius(3);
+	login_button_->setFontSize(conf::btn::fontSize);
+	login_button_->setCornerRadius(conf::btn::cornerRadius);
 
 	button_spacer_ = new QSpacerItem(20, 20, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 

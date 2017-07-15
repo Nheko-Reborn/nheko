@@ -20,6 +20,7 @@
 #include <QPainter>
 #include <QStyleOption>
 
+#include "Config.h"
 #include "TextInputWidget.h"
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
@@ -58,7 +59,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	send_file_button_->setIconSize(QSize(24, 24));
 
 	QFont font;
-	font.setPointSize(this->font().pointSize() * TextFontRatio);
+	font.setPixelSize(conf::fontSize);
 
 	input_ = new FilteredTextEdit(this);
 	input_->setFixedHeight(45);
@@ -99,10 +100,10 @@ void TextInputWidget::addSelectedEmoji(const QString &emoji)
 	QTextCursor cursor = input_->textCursor();
 
 	QFont emoji_font("Emoji One");
-	emoji_font.setPointSize(this->font().pointSize() * EmojiFontRatio);
+	emoji_font.setPixelSize(conf::emojiSize);
 
 	QFont text_font("Open Sans");
-	text_font.setPixelSize(this->font().pointSize() * TextFontRatio);
+	text_font.setPixelSize(conf::fontSize);
 
 	QTextCharFormat charfmt;
 	charfmt.setFont(emoji_font);

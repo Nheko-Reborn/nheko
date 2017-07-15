@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QTimer>
 
+#include "Config.h"
 #include "FlatButton.h"
 #include "MainWindow.h"
 #include "UserInfoWidget.h"
@@ -47,20 +48,19 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	userAvatar_->setBackgroundColor("#f9f9f9");
 	userAvatar_->setTextColor("#333333");
 
-	QFont font;
-	font.setBold(true);
-	font.setPointSize(this->font().pointSize() * DisplayNameFontRatio);
+	QFont nameFont("Open Sans SemiBold");
+	nameFont.setPixelSize(conf::userInfoWidget::fonts::displayName);
 
 	displayNameLabel_ = new QLabel(this);
-	displayNameLabel_->setFont(font);
+	displayNameLabel_->setFont(nameFont);
 	displayNameLabel_->setStyleSheet("padding: 0 9px; color: #171919; margin-bottom: -10px;");
 	displayNameLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 
-	font.setBold(false);
-	font.setPointSize(this->font().pointSize() * UserIdFontRatio);
+	QFont useridFont("Open Sans");
+	useridFont.setPixelSize(conf::userInfoWidget::fonts::userid);
 
 	userIdLabel_ = new QLabel(this);
-	userIdLabel_->setFont(font);
+	userIdLabel_->setFont(useridFont);
 	userIdLabel_->setStyleSheet("padding: 0 8px 8px 8px; color: #555459;");
 	userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -129,7 +129,7 @@ void UserInfoWidget::resizeEvent(QResizeEvent *event)
 	Q_UNUSED(event);
 
 	if (width() <= ui::sidebar::SmallSize) {
-		topLayout_->setContentsMargins(0, 0, 10, 0);
+		topLayout_->setContentsMargins(0, 0, logoutButtonSize_ / 2 - 5 / 2, 0);
 
 		userAvatar_->hide();
 		displayNameLabel_->hide();
