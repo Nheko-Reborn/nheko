@@ -330,14 +330,17 @@ void TimelineItem::setupSimpleLayout()
 	QTextEdit htmlText(timestamp_->text());
 	QString plainText = htmlText.toPlainText();
 
+	timestamp_->adjustSize();
+
 	// Align the end of the avatar bubble with the end of the timestamp for
 	// messages with and without avatar. Otherwise their bodies would not be aligned.
-	int offset = std::max(0, conf::timeline::avatarSize - timestamp_->fontMetrics().width(plainText));
+	int tsWidth = timestamp_->fontMetrics().width(plainText);
+	int offset = std::max(0, conf::timeline::avatarSize - tsWidth);
 
 	int defaultFontHeight = QFontMetrics(font_).ascent();
 
 	timestamp_->setAlignment(Qt::AlignTop);
-	timestamp_->setContentsMargins(offset, defaultFontHeight - timestamp_->fontMetrics().ascent(), 0, 0);
+	timestamp_->setContentsMargins(offset + 1, defaultFontHeight - timestamp_->fontMetrics().ascent(), 0, 0);
 	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin / 3, 0, 0);
 }
 

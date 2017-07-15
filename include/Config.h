@@ -52,7 +52,7 @@ namespace timeline
 static const int msgMargin = 11;
 static const int avatarSize = 36;
 static const int headerSpacing = 5;
-static const int headerLeftMargin = 12;
+static const int headerLeftMargin = 15;
 
 namespace fonts
 {
