@@ -42,3 +42,19 @@ void JoinRulesEventContent::deserialize(const QJsonValue &data)
 	else
 		throw DeserializationException(QString("Unknown join_rule value: %1").arg(value).toUtf8().constData());
 }
+
+QJsonObject JoinRulesEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (join_rule_ == JoinRule::Invite)
+		object["join_rule"] = "invite";
+	else if (join_rule_ == JoinRule::Knock)
+		object["join_rule"] = "knock";
+	else if (join_rule_ == JoinRule::Private)
+		object["join_rule"] = "private";
+	else if (join_rule_ == JoinRule::Public)
+		object["join_rule"] = "public";
+
+	return object;
+}

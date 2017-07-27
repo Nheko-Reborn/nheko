@@ -32,12 +32,13 @@ enum class HistoryVisibility {
 	WorldReadable,
 };
 
-class HistoryVisibilityEventContent : public Deserializable
+class HistoryVisibilityEventContent : public Deserializable, public Serializable
 {
 public:
 	inline HistoryVisibility historyVisibility() const;
 
 	void deserialize(const QJsonValue &data) override;
+	QJsonObject serialize() const override;
 
 private:
 	HistoryVisibility history_visibility_;

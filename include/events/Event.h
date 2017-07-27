@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QDebug>
 #include <QJsonValue>
 
 #include "Deserializable.h"
@@ -58,13 +59,14 @@ bool isMessageEvent(EventType type);
 bool isStateEvent(EventType type);
 
 template <class Content>
-class Event : public Deserializable
+class Event : public Deserializable, public Serializable
 {
 public:
 	inline Content content() const;
 	inline EventType eventType() const;
 
 	void deserialize(const QJsonValue &data) override;
+	QJsonObject serialize() const override;
 
 private:
 	Content content_;
@@ -92,6 +94,56 @@ void Event<Content>::deserialize(const QJsonValue &data)
 	auto object = data.toObject();
 
 	content_.deserialize(object.value("content"));
+	type_ = extractEventType(object);
+}
+
+template <class Content>
+QJsonObject Event<Content>::serialize() const
+{
+	QJsonObject object;
+
+	switch (type_) {
+	case EventType::RoomAliases:
+		object["type"] = "m.room.aliases";
+		break;
+	case EventType::RoomAvatar:
+		object["type"] = "m.room.avatar";
+		break;
+	case EventType::RoomCanonicalAlias:
+		object["type"] = "m.room.canonical_alias";
+		break;
+	case EventType::RoomCreate:
+		object["type"] = "m.room.create";
+		break;
+	case EventType::RoomHistoryVisibility:
+		object["type"] = "m.room.history_visibility";
+		break;
+	case EventType::RoomJoinRules:
+		object["type"] = "m.room.join_rules";
+		break;
+	case EventType::RoomMember:
+		object["type"] = "m.room.member";
+		break;
+	case EventType::RoomMessage:
+		object["type"] = "m.room.message";
+		break;
+	case EventType::RoomName:
+		object["type"] = "m.room.name";
+		break;
+	case EventType::RoomPowerLevels:
+		object["type"] = "m.room.power_levels";
+		break;
+	case EventType::RoomTopic:
+		object["type"] = "m.room.topic";
+		break;
+	case EventType::Unsupported:
+		qWarning() << "Unsupported type to serialize";
+		break;
+	}
+
+	object["content"] = content_.serialize();
+
+	return object;
 }
 }  // namespace events
 }  // namespace matrix

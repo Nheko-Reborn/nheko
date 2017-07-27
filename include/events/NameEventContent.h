@@ -29,10 +29,11 @@ namespace events
  * A human-friendly room name designed to be displayed to the end-user.
  */
 
-class NameEventContent : public Deserializable
+class NameEventContent : public Deserializable, public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
+	QJsonObject serialize() const override;
 
 	inline QString name() const;
 

@@ -47,3 +47,9 @@ public:
 	{
 	}
 };
+
+class Serializable
+{
+public:
+	virtual QJsonObject serialize() const = 0;
+};

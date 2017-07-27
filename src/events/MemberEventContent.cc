@@ -55,3 +55,27 @@ void MemberEventContent::deserialize(const QJsonValue &data)
 	if (object.contains("displayname"))
 		display_name_ = object.value("displayname").toString();
 }
+
+QJsonObject MemberEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (membership_state_ == Membership::Ban)
+		object["membership"] = "ban";
+	else if (membership_state_ == Membership::Invite)
+		object["membership"] = "invite";
+	else if (membership_state_ == Membership::Join)
+		object["membership"] = "join";
+	else if (membership_state_ == Membership::Knock)
+		object["membership"] = "knock";
+	else if (membership_state_ == Membership::Leave)
+		object["membership"] = "leave";
+
+	if (!avatar_url_.isEmpty())
+		object["avatar_url"] = avatar_url_.toString();
+
+	if (!display_name_.isEmpty())
+		object["displayname"] = display_name_;
+
+	return object;
+}

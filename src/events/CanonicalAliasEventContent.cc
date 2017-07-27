@@ -31,3 +31,13 @@ void CanonicalAliasEventContent::deserialize(const QJsonValue &data)
 
 	alias_ = object.value("alias").toString();
 }
+
+QJsonObject CanonicalAliasEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (!alias_.isEmpty())
+		object["alias"] = alias_;
+
+	return object;
+}

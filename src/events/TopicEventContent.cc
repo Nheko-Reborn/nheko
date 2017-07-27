@@ -31,3 +31,13 @@ void TopicEventContent::deserialize(const QJsonValue &data)
 
 	topic_ = object.value("topic").toString();
 }
+
+QJsonObject TopicEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (!topic_.isEmpty())
+		object["topic"] = topic_;
+
+	return object;
+}

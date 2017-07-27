@@ -42,3 +42,19 @@ void HistoryVisibilityEventContent::deserialize(const QJsonValue &data)
 	else
 		throw DeserializationException(QString("Unknown history_visibility value: %1").arg(value).toUtf8().constData());
 }
+
+QJsonObject HistoryVisibilityEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (history_visibility_ == HistoryVisibility::Invited)
+		object["history_visibility"] = "invited";
+	else if (history_visibility_ == HistoryVisibility::Joined)
+		object["history_visibility"] = "joined";
+	else if (history_visibility_ == HistoryVisibility::Shared)
+		object["history_visibility"] = "shared";
+	else if (history_visibility_ == HistoryVisibility::WorldReadable)
+		object["history_visibility"] = "world_readable";
+
+	return object;
+}

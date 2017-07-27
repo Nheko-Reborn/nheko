@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <QDebug>
 #include <QJsonArray>
 
 #include "Event.h"
@@ -28,6 +29,7 @@ TEST(BaseEvent, Deserialization)
 	Event<NameEventContent> name_event;
 	name_event.deserialize(data);
 	EXPECT_EQ(name_event.content().name(), "Room Name");
+	EXPECT_EQ(name_event.serialize(), data);
 
 	// TopicEventContent
 	data = QJsonObject{
@@ -37,6 +39,7 @@ TEST(BaseEvent, Deserialization)
 	Event<TopicEventContent> topic_event;
 	topic_event.deserialize(data);
 	EXPECT_EQ(topic_event.content().topic(), "Room Topic");
+	EXPECT_EQ(topic_event.serialize(), data);
 
 	// AvatarEventContent
 	data = QJsonObject{
@@ -46,6 +49,7 @@ TEST(BaseEvent, Deserialization)
 	Event<AvatarEventContent> avatar_event;
 	avatar_event.deserialize(data);
 	EXPECT_EQ(avatar_event.content().url().toString(), "https://matrix.org");
+	EXPECT_EQ(avatar_event.serialize(), data);
 
 	// AliasesEventContent
 	data = QJsonObject{
@@ -55,6 +59,7 @@ TEST(BaseEvent, Deserialization)
 	Event<AliasesEventContent> aliases_event;
 	aliases_event.deserialize(data);
 	EXPECT_EQ(aliases_event.content().aliases().size(), 2);
+	EXPECT_EQ(aliases_event.serialize(), data);
 
 	// CreateEventContent
 	data = QJsonObject{
@@ -64,6 +69,7 @@ TEST(BaseEvent, Deserialization)
 	Event<CreateEventContent> create_event;
 	create_event.deserialize(data);
 	EXPECT_EQ(create_event.content().creator(), "@alice:matrix.org");
+	EXPECT_EQ(create_event.serialize(), data);
 
 	// JoinRulesEventContent
 	data = QJsonObject{
@@ -73,6 +79,7 @@ TEST(BaseEvent, Deserialization)
 	Event<JoinRulesEventContent> join_rules_event;
 	join_rules_event.deserialize(data);
 	EXPECT_EQ(join_rules_event.content().joinRule(), JoinRule::Private);
+	EXPECT_EQ(join_rules_event.serialize(), data);
 }
 
 TEST(BaseEvent, DeserializationException)
@@ -110,6 +117,7 @@ TEST(RoomEvent, Deserialization)
 	EXPECT_EQ(event.sender(), "@alice:matrix.org");
 	EXPECT_EQ(event.timestamp(), 1323238293289323);
 	EXPECT_EQ(event.content().name(), "Name");
+	EXPECT_EQ(event.serialize(), data);
 }
 
 TEST(RoomEvent, DeserializationException)
@@ -152,6 +160,7 @@ TEST(StateEvent, Deserialization)
 	EXPECT_EQ(event.content().name(), "Name");
 	EXPECT_EQ(event.stateKey(), "some_state_key");
 	EXPECT_EQ(event.previousContent().name(), "Previous Name");
+	EXPECT_EQ(event.serialize(), data);
 }
 
 TEST(StateEvent, DeserializationException)
@@ -199,6 +208,7 @@ TEST(AliasesEventContent, Deserialization)
 	content.deserialize(data);
 
 	EXPECT_EQ(content.aliases().size(), 2);
+	EXPECT_EQ(content.serialize(), data);
 }
 
 TEST(AliasesEventContent, NotAnObject)
@@ -232,6 +242,7 @@ TEST(AvatarEventContent, Deserialization)
 	content.deserialize(data);
 
 	EXPECT_EQ(content.url().toString(), "https://matrix.org/avatar.png");
+	EXPECT_EQ(content.serialize(), data);
 }
 
 TEST(AvatarEventContent, NotAnObject)
@@ -264,6 +275,7 @@ TEST(CreateEventContent, Deserialization)
 	content.deserialize(data);
 
 	EXPECT_EQ(content.creator(), "@alice:matrix.org");
+	EXPECT_EQ(content.serialize(), data);
 }
 
 TEST(CreateEventContent, NotAnObject)
@@ -419,6 +431,7 @@ TEST(CanonicalAliasEventContent, Deserialization)
 	content.deserialize(data);
 
 	EXPECT_EQ(content.alias(), "Room Alias");
+	EXPECT_EQ(content.serialize(), data);
 }
 
 TEST(CanonicalAliasEventContent, NotAnObject)
@@ -521,6 +534,7 @@ TEST(NameEventContent, Deserialization)
 	content.deserialize(data);
 
 	EXPECT_EQ(content.name(), "Room Name");
+	EXPECT_EQ(content.serialize(), data);
 }
 
 TEST(NameEventContent, NotAnObject)
@@ -599,6 +613,8 @@ TEST(PowerLevelsEventContent, FullDeserialization)
 	EXPECT_EQ(power_levels.eventLevel("m.message.text"), 8);
 	EXPECT_EQ(power_levels.eventLevel("m.message.image"), 9);
 	EXPECT_EQ(power_levels.eventLevel("m.message.gif"), 5);
+
+	EXPECT_EQ(power_levels.serialize(), data);
 }
 
 TEST(PowerLevelsEventContent, PartialDeserialization)
@@ -651,6 +667,7 @@ TEST(TopicEventContent, Deserialization)
 	content.deserialize(data);
 
 	EXPECT_EQ(content.topic(), "Room Topic");
+	EXPECT_EQ(content.serialize(), data);
 }
 
 TEST(TopicEventContent, NotAnObject)

@@ -31,3 +31,13 @@ void CreateEventContent::deserialize(const QJsonValue &data)
 
 	creator_ = object.value("creator").toString();
 }
+
+QJsonObject CreateEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (!creator_.isEmpty())
+		object["creator"] = creator_;
+
+	return object;
+}

@@ -56,10 +56,11 @@ enum class MessageEventType {
 
 MessageEventType extractMessageEventType(const QJsonObject &data);
 
-class MessageEventContent : public Deserializable
+class MessageEventContent : public Deserializable, public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
+	QJsonObject serialize() const override;
 
 	inline QString body() const;
 

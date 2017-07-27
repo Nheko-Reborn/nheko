@@ -36,6 +36,7 @@ public:
 	inline uint64_t timestamp() const;
 
 	void deserialize(const QJsonValue &data) override;
+	QJsonObject serialize() const override;
 
 private:
 	QString event_id_;
@@ -93,6 +94,19 @@ void RoomEvent<Content>::deserialize(const QJsonValue &data)
 	room_id_ = object.value("room_id").toString();
 	sender_ = object.value("sender").toString();
 	origin_server_ts_ = object.value("origin_server_ts").toDouble();
+}
+
+template <class Content>
+QJsonObject RoomEvent<Content>::serialize() const
+{
+	QJsonObject object = Event<Content>::serialize();
+
+	object["event_id"] = event_id_;
+	object["room_id"] = room_id_;
+	object["sender"] = sender_;
+	object["origin_server_ts"] = QJsonValue(static_cast<qint64>(origin_server_ts_));
+
+	return object;
 }
 }  // namespace events
 }  // namespace matrix

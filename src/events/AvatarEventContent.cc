@@ -36,3 +36,13 @@ void AvatarEventContent::deserialize(const QJsonValue &data)
 	if (!url_.isValid())
 		qWarning() << "Invalid avatar url" << url_;
 }
+
+QJsonObject AvatarEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (!url_.isEmpty())
+		object["url"] = url_.toString();
+
+	return object;
+}

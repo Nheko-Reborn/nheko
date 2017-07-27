@@ -44,10 +44,11 @@ enum class JoinRule {
  * Describes how users are allowed to join the room.
  */
 
-class JoinRulesEventContent : public Deserializable
+class JoinRulesEventContent : public Deserializable, public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
+	QJsonObject serialize() const override;
 
 	inline JoinRule joinRule() const;
 

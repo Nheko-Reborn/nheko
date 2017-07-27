@@ -31,3 +31,13 @@ void NameEventContent::deserialize(const QJsonValue &data)
 
 	name_ = object.value("name").toString();
 }
+
+QJsonObject NameEventContent::serialize() const
+{
+	QJsonObject object;
+
+	if (!name_.isEmpty())
+		object["name"] = name_;
+
+	return object;
+}

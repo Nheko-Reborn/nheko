@@ -36,3 +36,18 @@ void AliasesEventContent::deserialize(const QJsonValue &data)
 	for (const auto &alias : aliases)
 		aliases_.push_back(alias.toString());
 }
+
+QJsonObject AliasesEventContent::serialize() const
+{
+	QJsonObject object;
+
+	QJsonArray aliases;
+
+	for (const auto &alias : aliases_)
+		aliases.push_back(alias);
+
+	if (aliases.size() > 0)
+		object["aliases"] = aliases;
+
+	return object;
+}

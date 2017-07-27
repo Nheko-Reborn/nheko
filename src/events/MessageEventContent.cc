@@ -61,3 +61,11 @@ void MessageEventContent::deserialize(const QJsonValue &data)
 
 	body_ = object.value("body").toString();
 }
+
+QJsonObject MessageEventContent::serialize() const
+{
+	// TODO: Add for all the message contents.
+	QJsonObject object;
+
+	return object;
+}

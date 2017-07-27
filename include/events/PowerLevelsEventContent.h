@@ -36,10 +36,11 @@ enum class PowerLevels {
  * Defines the power levels (privileges) of users in the room.
  */
 
-class PowerLevelsEventContent : public Deserializable
+class PowerLevelsEventContent : public Deserializable, public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
+	QJsonObject serialize() const override;
 
 	inline int banLevel() const;
 	inline int inviteLevel() const;

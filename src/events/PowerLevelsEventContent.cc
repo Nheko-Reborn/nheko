@@ -65,6 +65,34 @@ void PowerLevelsEventContent::deserialize(const QJsonValue &data)
 	}
 }
 
+QJsonObject PowerLevelsEventContent::serialize() const
+{
+	QJsonObject object;
+
+	object["ban"] = ban_;
+	object["invite"] = invite_;
+	object["kick"] = kick_;
+	object["redact"] = redact_;
+
+	object["events_default"] = events_default_;
+	object["users_default"] = users_default_;
+	object["state_default"] = state_default_;
+
+	QJsonObject users;
+	QJsonObject events;
+
+	for (auto it = users_.constBegin(); it != users_.constEnd(); it++)
+		users.insert(it.key(), it.value());
+
+	for (auto it = events_.constBegin(); it != events_.constEnd(); it++)
+		events.insert(it.key(), it.value());
+
+	object["users"] = users;
+	object["events"] = events;
+
+	return object;
+}
+
 int PowerLevelsEventContent::eventLevel(QString event_type) const
 {
 	if (events_.contains(event_type))

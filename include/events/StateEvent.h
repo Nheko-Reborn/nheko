@@ -33,6 +33,7 @@ public:
 	inline Content previousContent() const;
 
 	void deserialize(const QJsonValue &data);
+	QJsonObject serialize() const;
 
 private:
 	QString state_key_;
@@ -65,6 +66,21 @@ void StateEvent<Content>::deserialize(const QJsonValue &data)
 
 	if (object.contains("prev_content"))
 		prev_content_.deserialize(object.value("prev_content"));
+}
+
+template <class Content>
+QJsonObject StateEvent<Content>::serialize() const
+{
+	QJsonObject object = RoomEvent<Content>::serialize();
+
+	object["state_key"] = state_key_;
+
+	auto prev = prev_content_.serialize();
+
+	if (!prev.isEmpty())
+		object["prev_content"] = prev;
+
+	return object;
 }
 }  // namespace events
 }  // namespace matrix
