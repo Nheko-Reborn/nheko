@@ -16,6 +16,7 @@
  */
 
 #include <QDebug>
+#include <QJsonArray>
 #include <QSettings>
 
 #include "RoomState.h"
@@ -149,4 +150,142 @@ void RoomState::update(const RoomState &state)
 
 	if (needsAvatarCalculation)
 		resolveAvatar();
+}
+
+QJsonObject RoomState::serialize() const
+{
+	QJsonObject obj;
+
+	if (!aliases.eventId().isEmpty())
+		obj["aliases"] = aliases.serialize();
+
+	if (!avatar.eventId().isEmpty())
+		obj["avatar"] = avatar.serialize();
+
+	if (!canonical_alias.eventId().isEmpty())
+		obj["canonical_alias"] = canonical_alias.serialize();
+
+	if (!create.eventId().isEmpty())
+		obj["create"] = create.serialize();
+
+	if (!history_visibility.eventId().isEmpty())
+		obj["history_visibility"] = history_visibility.serialize();
+
+	if (!join_rules.eventId().isEmpty())
+		obj["join_rules"] = join_rules.serialize();
+
+	if (!name.eventId().isEmpty())
+		obj["name"] = name.serialize();
+
+	if (!power_levels.eventId().isEmpty())
+		obj["power_levels"] = power_levels.serialize();
+
+	if (!topic.eventId().isEmpty())
+		obj["topic"] = topic.serialize();
+
+	return obj;
+}
+
+void RoomState::parse(const QJsonObject &object)
+{
+	// FIXME: Make this less versbose.
+	
+	if (object.contains("aliases")) {
+		events::StateEvent<events::AliasesEventContent> event;
+
+		try {
+			event.deserialize(object["aliases"]);
+			aliases = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - aliases" << e.what();
+		}
+	}
+
+	if (object.contains("avatar")) {
+		events::StateEvent<events::AvatarEventContent> event;
+
+		try {
+			event.deserialize(object["avatar"]);
+			avatar = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - avatar" << e.what();
+		}
+	}
+
+	if (object.contains("canonical_alias")) {
+		events::StateEvent<events::CanonicalAliasEventContent> event;
+
+		try {
+			event.deserialize(object["canonical_alias"]);
+			canonical_alias = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - canonical_alias" << e.what();
+		}
+	}
+
+	if (object.contains("create")) {
+		events::StateEvent<events::CreateEventContent> event;
+
+		try {
+			event.deserialize(object["create"]);
+			create = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - create" << e.what();
+		}
+	}
+
+	if (object.contains("history_visibility")) {
+		events::StateEvent<events::HistoryVisibilityEventContent> event;
+
+		try {
+			event.deserialize(object["history_visibility"]);
+			history_visibility = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - history_visibility" << e.what();
+		}
+	}
+
+	if (object.contains("join_rules")) {
+		events::StateEvent<events::JoinRulesEventContent> event;
+
+		try {
+			event.deserialize(object["join_rules"]);
+			join_rules = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - join_rules" << e.what();
+		}
+	}
+
+	if (object.contains("name")) {
+		events::StateEvent<events::NameEventContent> event;
+
+		try {
+			event.deserialize(object["name"]);
+			name = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - name" << e.what();
+		}
+	}
+
+	if (object.contains("power_levels")) {
+		events::StateEvent<events::PowerLevelsEventContent> event;
+
+		try {
+			event.deserialize(object["power_levels"]);
+			power_levels = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - power_levels" << e.what();
+		}
+	}
+
+	if (object.contains("topic")) {
+		events::StateEvent<events::TopicEventContent> event;
+
+		try {
+			event.deserialize(object["topic"]);
+			topic = event;
+		} catch (const DeserializationException &e) {
+			qWarning() << "RoomState::parse - topic" << e.what();
+		}
+	}
 }

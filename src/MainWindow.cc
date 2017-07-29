@@ -76,10 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
 		this,
 		SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-	connect(client_.data(),
-		SIGNAL(initialSyncCompleted(const SyncResponse &)),
-		this,
-		SLOT(removeOverlayProgressBar()));
+	connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
 
 	connect(client_.data(),
 		SIGNAL(loginSuccess(QString, QString, QString)),

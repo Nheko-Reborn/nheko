@@ -85,6 +85,18 @@ void TimelineViewManager::initialize(const Rooms &rooms)
 	}
 }
 
+void TimelineViewManager::initialize(const QList<QString> &rooms)
+{
+	for (const auto &roomid : rooms) {
+		// Create a history view without any events.
+		TimelineView *view = new TimelineView(client_, roomid);
+		views_.insert(roomid, QSharedPointer<TimelineView>(view));
+
+		// Add the view in the widget stack.
+		addWidget(view);
+	}
+}
+
 void TimelineViewManager::sync(const Rooms &rooms)
 {
 	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
@@ -118,11 +130,12 @@ void TimelineViewManager::setHistoryView(const QString &room_id)
 	}
 
 	active_room_ = room_id;
-	auto widget = views_.value(room_id);
+	auto view = views_.value(room_id);
 
-	setCurrentWidget(widget.data());
+	setCurrentWidget(view.data());
 
-	widget->scrollDown();
+	view->fetchHistory();
+	view->scrollDown();
 }
 
 QMap<QString, QString> TimelineViewManager::NICK_COLORS;

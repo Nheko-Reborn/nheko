@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QJsonDocument>
 #include <QPixmap>
 #include <QUrl>
 
@@ -45,6 +46,7 @@ public:
 	// e.g If the room is 1-on-1 name and avatar should be extracted from a user.
 	void resolveName();
 	void resolveAvatar();
+	void parse(const QJsonObject &object);
 
 	inline QUrl getAvatar() const;
 	inline QString getName() const;
@@ -52,6 +54,8 @@ public:
 
 	void removeLeaveMemberships();
 	void update(const RoomState &state);
+
+	QJsonObject serialize() const;
 
 	// The latest state events.
 	events::StateEvent<events::AliasesEventContent> aliases;

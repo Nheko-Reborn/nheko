@@ -1,0 +1,3 @@
+[submodule "libs/lmdbxx"]
+	path = libs/lmdbxx
+	url = https://github.com/bendiken/lmdbxx

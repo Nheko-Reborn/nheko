@@ -21,6 +21,7 @@
 #include <QTimer>
 #include <QWidget>
 
+#include "Cache.h"
 #include "MatrixClient.h"
 #include "RoomList.h"
 #include "RoomSettings.h"
@@ -43,6 +44,7 @@ public:
 	void bootstrap(QString userid, QString homeserver, QString token);
 
 signals:
+	void contentLoaded();
 	void close();
 	void changeWindowTitle(const QString &msg);
 	void unreadMessages(int count);
@@ -62,6 +64,7 @@ private slots:
 private:
 	void updateDisplayNames(const RoomState &state);
 	void updateRoomState(RoomState &room_state, const QJsonArray &events);
+	void loadStateFromCache();
 
 	QHBoxLayout *topLayout_;
 	Splitter *splitter;
@@ -97,4 +100,7 @@ private:
 
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;
+
+	// LMDB wrapper.
+	QSharedPointer<Cache> cache_;
 };

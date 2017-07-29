@@ -49,6 +49,18 @@ TimelineView::TimelineView(const Timeline &timeline,
 	addEvents(timeline);
 }
 
+TimelineView::TimelineView(QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent)
+    : QWidget(parent)
+    , room_id_{room_id}
+    , client_{client}
+{
+	QSettings settings;
+	local_user_ = settings.value("auth/user_id").toString();
+
+	init();
+	client_->messages(room_id_, "");
+}
+
 void TimelineView::sliderRangeChanged(int min, int max)
 {
 	Q_UNUSED(min);
@@ -64,8 +76,26 @@ void TimelineView::sliderRangeChanged(int min, int max)
 
 		int currentHeight = scroll_widget_->size().height();
 		int diff = currentHeight - oldHeight_;
+		int newPosition = oldPosition_ + diff;
 
-		scroll_area_->verticalScrollBar()->setValue(oldPosition_ + diff);
+		// Keep the scroll bar to the bottom if we are coming from
+		// an scrollbar without height i.e scrollbar->value() == 0
+		if (oldPosition_ == 0)
+			newPosition = max;
+
+		scroll_area_->verticalScrollBar()->setValue(newPosition);
+		fetchHistory();
+	}
+}
+
+void TimelineView::fetchHistory()
+{
+	bool hasEnoughMessages = scroll_area_->verticalScrollBar()->value() != 0;
+
+	if (!hasEnoughMessages && !isTimelineFinished && !isPaginationInProgress_) {
+		isPaginationInProgress_ = true;
+		client_->messages(room_id_, prev_batch_token_);
+		scroll_area_->verticalScrollBar()->setValue(scroll_area_->verticalScrollBar()->maximum());
 	}
 }
 
@@ -139,8 +169,10 @@ void TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages
 	oldPosition_ = scroll_area_->verticalScrollBar()->value();
 	oldHeight_ = scroll_widget_->size().height();
 
-	for (const auto &item : items)
+	for (const auto &item : items) {
+		item->adjustSize();
 		addTimelineItem(item, TimelineDirection::Top);
+	}
 
 	prev_batch_token_ = msgs.end();
 	isPaginationInProgress_ = false;
@@ -164,6 +196,11 @@ TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, Timeline
 				return nullptr;
 			}
 
+			if (isDuplicate(text.eventId()))
+				return nullptr;
+
+			eventIds_[text.eventId()] = true;
+
 			if (isPendingMessage(text, local_user_)) {
 				removePendingMessage(text);
 				return nullptr;
@@ -186,6 +223,12 @@ TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, Timeline
 				return nullptr;
 			}
 
+			if (isDuplicate(notice.eventId()))
+				return nullptr;
+			;
+
+			eventIds_[notice.eventId()] = true;
+
 			auto with_sender = isSenderRendered(notice.sender(), direction);
 			updateLastSender(notice.sender(), direction);
 
@@ -202,6 +245,11 @@ TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, Timeline
 				qWarning() << e.what() << event;
 				return nullptr;
 			}
+
+			if (isDuplicate(img.eventId()))
+				return nullptr;
+
+			eventIds_[img.eventId()] = true;
 
 			auto with_sender = isSenderRendered(img.sender(), direction);
 			updateLastSender(img.sender(), direction);

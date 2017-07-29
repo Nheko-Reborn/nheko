@@ -63,6 +63,7 @@ class TimelineView : public QWidget
 
 public:
 	TimelineView(const Timeline &timeline, QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent = 0);
+	TimelineView(QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent = 0);
 
 	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Image> &e, const QString &color, bool with_sender);
 	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e, const QString &color, bool with_sender);
@@ -72,6 +73,7 @@ public:
 	int addEvents(const Timeline &timeline);
 	void addUserTextMessage(const QString &msg, int txn_id);
 	void updatePendingMessage(int txn_id, QString event_id);
+	void fetchHistory();
 	void scrollDown();
 
 public slots:
@@ -90,6 +92,7 @@ private:
 	// Used to determine whether or not we should prefix a message with the sender's name.
 	bool isSenderRendered(const QString &user_id, TimelineDirection direction);
 	bool isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &userid);
+	inline bool isDuplicate(const QString &event_id);
 
 	// Return nullptr if the event couldn't be parsed.
 	TimelineItem *parseMessageEvent(const QJsonObject &event, TimelineDirection direction);
@@ -121,6 +124,13 @@ private:
 	int oldPosition_;
 	int oldHeight_;
 
+	// The events currently rendered. Used for duplicate detection.
+	QMap<QString, bool> eventIds_;
 	QList<PendingMessage> pending_msgs_;
 	QSharedPointer<MatrixClient> client_;
 };
+
+inline bool TimelineView::isDuplicate(const QString &event_id)
+{
+	return eventIds_.contains(event_id);
+}

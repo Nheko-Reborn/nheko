@@ -5,6 +5,15 @@ project(nheko CXX)
 option(BUILD_TESTS "Build all tests" OFF)
 
 #
+# LMDB
+#
+find_path (LMDB_INCLUDE_DIR NAMES lmdb.h PATHS "$ENV{LMDB_DIR}/include")
+find_library (LMDB_LIBRARY NAMES lmdb PATHS "$ENV{LMDB_DIR}/lib" )
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(LMDB DEFAULT_MSG LMDB_INCLUDE_DIR LMDB_LIBRARY)
+
+#
 # Discover Qt dependencies.
 #
 find_package(Qt5Widgets REQUIRED)
@@ -93,6 +102,7 @@ endif()
 set(SRC_FILES
     src/AvatarProvider.cc
     src/ChatPage.cc
+    src/Cache.cc
     src/Deserializable.cc
     src/EmojiCategory.cc
     src/EmojiItemDelegate.cc
@@ -172,6 +182,7 @@ include_directories(include)
 include_directories(include/ui)
 include_directories(include/events)
 include_directories(include/events/messages)
+include_directories(libs/lmdbxx)
 
 qt5_wrap_cpp(MOC_HEADERS
     include/AvatarProvider.h
@@ -273,7 +284,7 @@ else()
     #
     # Build the executable.
     #
-    SET (NHEKO_LIBS matrix_events Qt5::Widgets Qt5::Network)
+    set (NHEKO_LIBS matrix_events Qt5::Widgets Qt5::Network ${LMDB_LIBRARY})
     set (NHEKO_DEPS ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC})
 
     if(APPLE)

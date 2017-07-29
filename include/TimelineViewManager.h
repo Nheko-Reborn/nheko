@@ -34,7 +34,10 @@ public:
 	TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
 	~TimelineViewManager();
 
+	// Initialize with timeline events.
 	void initialize(const Rooms &rooms);
+	// Empty initialization.
+	void initialize(const QList<QString> &rooms);
 	void sync(const Rooms &rooms);
 	void clearAll();
 
