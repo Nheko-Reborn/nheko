@@ -15,13 +15,13 @@ but you can of course receive and send messages in the rooms that you are a memb
 
 #### Arch Linux
 ```bash
-$ pacaur -S nheko-git
+pacaur -S nheko-git
 ```
 
 #### Gentoo Linux
 ```bash
-$ sudo layman -a matrix
-$ sudo emerge -a nheko
+sudo layman -a matrix
+sudo emerge -a nheko
 ```
 
 #### Windows
@@ -33,6 +33,7 @@ You can find a NSIS installer [here](https://ci.appveyor.com/project/mujx/nheko/
 - Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
   Freetype, which is essential to properly support emoji.
 - CMake 3.1 or greater.
+- [LMDB](https://symas.com/lightning-memory-mapped-database/).
 - A compiler that supports C++11.
     - Clang 3.3 (or greater).
     - GCC 4.8 (or greater).
@@ -40,35 +41,49 @@ You can find a NSIS installer [here](https://ci.appveyor.com/project/mujx/nheko/
 ##### Arch Linux
 
 ```bash
-$ sudo pacman -S qt5-base qt5-tools cmake gcc fontconfig
+sudo pacman -S qt5-base qt5-tools cmake gcc fontconfig lmdb
 ```
 
 ##### Gentoo Linux
 
 ```bash
-$ sudo emerge -a ">=dev-qt/qtgui-5.7.1"	media-libs/fontconfig
+sudo emerge -a ">=dev-qt/qtgui-5.7.1" media-libs/fontconfig
 ```
 
-##### Ubuntu 14.04
+##### Ubuntu (e.g 14.04)
 
 ```bash
-$ sudo add-apt-repository ppa:beineri/opt-qt58-trusty
-$ sudo add-apt-repository ppa:george-edison55/cmake-3.x
-$ sudo apt-get update
-$ sudo apt-get install qt58base qt58tools cmake
+sudo add-apt-repository ppa:beineri/opt-qt58-trusty
+sudo add-apt-repository ppa:george-edison55/cmake-3.x
+sudo apt-get update
+sudo apt-get install qt58base qt58tools cmake liblmdb-dev
 ```
 
 ##### OSX (Xcode 7 or later)
 
 ```bash
-$ brew update
-$ brew install qt5
+brew update
+brew install qt5 lmdb
 ```
 
 N.B. you will need to pass `-DCMAKE_PREFIX_PATH=/usr/local/opt/qt5`
 to cmake to point it at your qt5 install (tweaking the path as needed)
 
 ### Building
+
+Clone the repo with its submodules
+
+```bash
+git clone --recursive https://github.com/mujx/nheko
+```
+or 
+```bash
+git clone https://github.com/mujx/nheko
+cd nheko
+git submodule update --init
+```
+
+and then use the following
 
 ```bash
 cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release # Default is Debug.
