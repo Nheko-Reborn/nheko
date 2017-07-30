@@ -39,6 +39,7 @@ public:
 	~MainWindow();
 
 	static MainWindow *instance();
+	void saveCurrentWindowSize();
 
 protected:
 	void closeEvent(QCloseEvent *event);
@@ -63,6 +64,7 @@ private slots:
 
 private:
 	bool hasActiveUser();
+	void restoreWindowSize();
 
 	static MainWindow *instance_;
 

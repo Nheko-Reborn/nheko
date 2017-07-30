@@ -11,6 +11,16 @@ static const int fontSize = 12;
 static const int emojiSize = 14;
 static const int headerFontSize = 21;
 
+// Window geometry.
+namespace window
+{
+static const int height = 600;
+static const int width = 1066;
+
+static const int minHeight = 600;
+static const int minWidth = 950;
+}
+
 // Button settings.
 namespace btn
 {

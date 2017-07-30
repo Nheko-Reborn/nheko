@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Config.h"
 #include "MainWindow.h"
 
 #include <QLayout>
@@ -35,10 +36,11 @@ MainWindow::MainWindow(QWidget *parent)
 	setObjectName("MainWindow");
 	setStyleSheet("QWidget#MainWindow {background-color: #f9f9f9}");
 
-	resize(1066, 600);  // 16:9 ratio
-	setMinimumSize(QSize(950, 600));
+	restoreWindowSize();
+	setMinimumSize(QSize(conf::window::minWidth, conf::window::minHeight));
 
-	QFont font("Open Sans", 12);
+	QFont font("Open Sans");
+	font.setPixelSize(conf::fontSize);
 	font.setStyleStrategy(QFont::PreferAntialias);
 	setFont(font);
 
@@ -93,6 +95,27 @@ MainWindow::MainWindow(QWidget *parent)
 
 		showChatPage(user_id, home_server, token);
 	}
+}
+
+void MainWindow::restoreWindowSize()
+{
+	QSettings settings;
+	int savedWidth = settings.value("window/width").toInt();
+	int savedheight = settings.value("window/height").toInt();
+
+	if (savedWidth == 0 || savedheight == 0)
+		resize(conf::window::width, conf::window::height);
+	else
+		resize(savedWidth, savedheight);
+}
+
+void MainWindow::saveCurrentWindowSize()
+{
+	QSettings settings;
+	QSize current = size();
+
+	settings.setValue("window/width", current.width());
+	settings.setValue("window/height", current.height());
 }
 
 void MainWindow::removeOverlayProgressBar()

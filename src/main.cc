@@ -70,5 +70,7 @@ int main(int argc, char *argv[])
 	w.move(x, y);
 	w.show();
 
+	QObject::connect(&app, &QApplication::aboutToQuit, &w, &MainWindow::saveCurrentWindowSize);
+
 	return app.exec();
 }
