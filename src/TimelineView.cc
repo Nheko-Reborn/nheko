@@ -327,7 +327,7 @@ void TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection directi
 	if (direction == TimelineDirection::Bottom)
 		scroll_layout_->addWidget(item);
 	else
-		scroll_layout_->insertWidget(0, item);
+		scroll_layout_->insertWidget(1, item);
 }
 
 void TimelineView::updatePendingMessage(int txn_id, QString event_id)
