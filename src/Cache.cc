@@ -225,5 +225,5 @@ QString Cache::nextBatchToken()
 
 	txn.commit();
 
-	return QString::fromUtf8(token.data<const char>());
+	return QString::fromUtf8(token.data(), token.size());
 }
