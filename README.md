@@ -92,6 +92,18 @@ make -C build
 
 The `nheko` binary will be located in the `build` directory.
 
+##### Nix
+
+Download the repo as mentioned above and run
+
+```bash
+nix-build
+```
+
+in the project folder. This will output a binary to `result/bin/nheko`.
+
+You can also install nheko by running `nix-env -f . -i`
+
 ### Contributing
 
 Any kind of contribution to the project is greatly appreciated. You are also
