@@ -42,6 +42,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 		"QScrollBar::sub-line:vertical { border: none; background: none; }");
 
 	setAttribute(Qt::WA_TranslucentBackground, true);
+	setAttribute(Qt::WA_ShowWithoutActivating, true);
 	setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
 
 	auto mainWidget = new QWidget(this);
