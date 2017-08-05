@@ -59,7 +59,7 @@ sudo apt-get update
 sudo apt-get install qt58base qt58tools cmake liblmdb-dev
 ```
 
-##### OSX (Xcode 7 or later)
+##### OSX (Xcode 8 or later)
 
 ```bash
 brew update
