@@ -220,8 +220,6 @@ void ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 		cache_ = QSharedPointer<Cache>(new Cache(userid));
 	} catch (const std::exception &e) {
 		qCritical() << e.what();
-	} catch (const lmdb::error &e) {
-		qCritical() << e.what();
 	}
 
 	if (cache_->isInitialized())
