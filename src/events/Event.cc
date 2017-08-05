@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Event.h"
+#include "events/Event.h"
 
 #include "AliasesEventContent.h"
 #include "AvatarEventContent.h"
