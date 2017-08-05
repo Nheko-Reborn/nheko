@@ -102,7 +102,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	splitter->addWidget(sideBar_);
 	splitter->addWidget(content_);
 
-	room_list_ = new RoomList(client, this);
+	room_list_ = new RoomList(client, sideBar_);
 	sideBarMainLayout_->addWidget(room_list_);
 
 	top_bar_ = new TopRoomBar(this);

@@ -69,6 +69,16 @@ QString RoomInfoListItem::notificationText()
 	return tr("Enable notifications");
 }
 
+void RoomInfoListItem::resizeEvent(QResizeEvent *)
+{
+	// Update ripple's clipping path.
+	QPainterPath path;
+	path.addRect(0, 0, width(), height());
+
+	ripple_overlay_->setClipPath(path);
+	ripple_overlay_->setClipping(true);
+}
+
 void RoomInfoListItem::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);

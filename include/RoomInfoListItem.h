@@ -56,13 +56,14 @@ public slots:
 protected:
 	void mousePressEvent(QMouseEvent *event) override;
 	void paintEvent(QPaintEvent *event) override;
+	void resizeEvent(QResizeEvent *event) override;
 	void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
 	QString notificationText();
 
 	const int Padding = 7;
-	const int IconSize = 46;
+	const int IconSize = 48;
 
 	RippleOverlay *ripple_overlay_;
 

@@ -73,12 +73,12 @@ public:
 	int addEvents(const Timeline &timeline);
 	void addUserTextMessage(const QString &msg, int txn_id);
 	void updatePendingMessage(int txn_id, QString event_id);
-	void fetchHistory();
 	void scrollDown();
 
 public slots:
 	void sliderRangeChanged(int min, int max);
 	void sliderMoved(int position);
+	void fetchHistory();
 
 	// Add old events at the top of the timeline.
 	void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
@@ -117,6 +117,8 @@ private:
 	bool isPaginationScrollPending_ = false;
 
 	const int SCROLL_BAR_GAP = 400;
+
+	QTimer *paginationTimer_;
 
 	int scroll_height_ = 0;
 	int previous_max_height_ = 0;

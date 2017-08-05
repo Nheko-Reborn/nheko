@@ -65,8 +65,10 @@ void TimelineView::sliderRangeChanged(int min, int max)
 {
 	Q_UNUSED(min);
 
-	if (!scroll_area_->verticalScrollBar()->isVisible())
+	if (!scroll_area_->verticalScrollBar()->isVisible()) {
+		scroll_area_->verticalScrollBar()->setValue(max);
 		return;
+	}
 
 	if (max - scroll_area_->verticalScrollBar()->value() < SCROLL_BAR_GAP)
 		scroll_area_->verticalScrollBar()->setValue(max);
@@ -84,7 +86,6 @@ void TimelineView::sliderRangeChanged(int min, int max)
 			newPosition = max;
 
 		scroll_area_->verticalScrollBar()->setValue(newPosition);
-		fetchHistory();
 	}
 }
 
@@ -92,11 +93,14 @@ void TimelineView::fetchHistory()
 {
 	bool hasEnoughMessages = scroll_area_->verticalScrollBar()->value() != 0;
 
-	if (!hasEnoughMessages && !isTimelineFinished && !isPaginationInProgress_) {
+	if (!hasEnoughMessages && !isTimelineFinished) {
 		isPaginationInProgress_ = true;
 		client_->messages(room_id_, prev_batch_token_);
-		scroll_area_->verticalScrollBar()->setValue(scroll_area_->verticalScrollBar()->maximum());
+		paginationTimer_->start(500);
+		return;
 	}
+
+	paginationTimer_->stop();
 }
 
 void TimelineView::scrollDown()
@@ -169,10 +173,8 @@ void TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages
 	oldPosition_ = scroll_area_->verticalScrollBar()->value();
 	oldHeight_ = scroll_widget_->size().height();
 
-	for (const auto &item : items) {
-		item->adjustSize();
+	for (const auto &item : items)
 		addTimelineItem(item, TimelineDirection::Top);
-	}
 
 	prev_batch_token_ = msgs.end();
 	isPaginationInProgress_ = false;
@@ -322,6 +324,9 @@ void TimelineView::init()
 	top_layout_->addWidget(scroll_area_);
 
 	setLayout(top_layout_);
+
+	paginationTimer_ = new QTimer(this);
+	connect(paginationTimer_, &QTimer::timeout, this, &TimelineView::fetchHistory);
 
 	connect(client_.data(), &MatrixClient::messagesRetrieved, this, &TimelineView::addBackwardsEvents);
 
