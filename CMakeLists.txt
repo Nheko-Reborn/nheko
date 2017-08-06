@@ -178,13 +178,13 @@ set(MATRIX_EVENTS
     src/events/messages/Video.cc
 )
 
-include_directories(${LMDB_INCLUDE_DIR})
-
 include_directories(include)
 include_directories(include/ui)
 include_directories(include/events)
 include_directories(include/events/messages)
+
 include_directories(libs/lmdbxx)
+include_directories(${LMDB_INCLUDE_DIR})
 
 qt5_wrap_cpp(MOC_HEADERS
     include/AvatarProvider.h
