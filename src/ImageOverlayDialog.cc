@@ -15,43 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QDebug>
+#include <QDesktopWidget>
 #include <QPainter>
+#include <QScreen>
 #include <QTimer>
 
 #include "ImageOverlayDialog.h"
 
 ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
-    : QDialog{parent}
+    : QWidget{parent}
     , originalImage_{image}
 {
 	setMouseTracking(true);
-	setModal(false);
+	setParent(0);
 
 	setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
 
 	setAttribute(Qt::WA_NoSystemBackground, true);
 	setAttribute(Qt::WA_TranslucentBackground, true);
 	setAttribute(Qt::WA_DeleteOnClose, true);
-
 	setWindowState(Qt::WindowFullScreen);
 
-	connect(this, SIGNAL(closing()), this, SLOT(closeDialog()));
-}
+	screen_ = QApplication::desktop()->availableGeometry();
 
-void ImageOverlayDialog::reject()
-{
-	// needed on macOS to recover the main menu after the dialog is closed(!)
-	// also affects KDE/Plasma.  XXX: There may be a better way of resetting the
-	// window state than this...
-	setWindowState(Qt::WindowNoState);
+	move(QApplication::desktop()->mapToGlobal(screen_.topLeft()));
+	resize(screen_.size());
 
-	QDialog::reject();
-}
+	connect(this, SIGNAL(closing()), this, SLOT(close()));
 
-void ImageOverlayDialog::closeDialog()
-{
-	QTimer::singleShot(100, this, &ImageOverlayDialog::reject);
+	raise();
 }
 
 // TODO: Move this into Utils
@@ -87,15 +81,15 @@ void ImageOverlayDialog::paintEvent(QPaintEvent *event)
 	painter.setRenderHint(QPainter::Antialiasing);
 
 	// Full screen overlay.
-	painter.fillRect(rect(), QColor(55, 55, 55, 170));
+	painter.fillRect(QRect(0, 0, screen_.width(), screen_.height()), QColor(55, 55, 55, 170));
 
 	// Left and Right margins
-	int outer_margin = rect().width() * 0.12;
+	int outer_margin = screen_.width() * 0.12;
 	int buttonSize = 36;
 	int margin = outer_margin * 0.1;
 
-	int max_width = rect().width() - 2 * outer_margin;
-	int max_height = rect().height();
+	int max_width = screen_.width() - 2 * outer_margin;
+	int max_height = screen_.height();
 
 	scaleImage(max_width, max_height);
 
@@ -103,7 +97,7 @@ void ImageOverlayDialog::paintEvent(QPaintEvent *event)
 	int diff_y = max_height - image_.height();
 
 	content_ = QRect(outer_margin + diff_x / 2, diff_y / 2, image_.width(), image_.height());
-	close_button_ = QRect(rect().width() - margin - buttonSize, margin, buttonSize, buttonSize);
+	close_button_ = QRect(screen_.width() - margin - buttonSize, margin, buttonSize, buttonSize);
 
 	// Draw main content_.
 	painter.drawPixmap(content_, image_);

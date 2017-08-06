@@ -21,13 +21,11 @@
 #include <QMouseEvent>
 #include <QPixmap>
 
-class ImageOverlayDialog : public QDialog
+class ImageOverlayDialog : public QWidget
 {
 	Q_OBJECT
 public:
 	ImageOverlayDialog(QPixmap image, QWidget *parent = nullptr);
-
-	void reject() override;
 
 protected:
 	void mousePressEvent(QMouseEvent *event) override;
@@ -35,9 +33,6 @@ protected:
 
 signals:
 	void closing();
-
-private slots:
-	void closeDialog();
 
 private:
 	void scaleImage(int width, int height);
@@ -47,4 +42,5 @@ private:
 
 	QRect content_;
 	QRect close_button_;
+	QRect screen_;
 };
