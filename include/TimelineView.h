@@ -29,6 +29,7 @@
 
 #include "Image.h"
 #include "Notice.h"
+#include "RoomInfoListItem.h"
 #include "Text.h"
 
 namespace msgs = matrix::events::messages;
@@ -83,11 +84,15 @@ public slots:
 	// Add old events at the top of the timeline.
 	void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
 
+signals:
+	void updateLastTimelineMessage(const QString &user, const DescInfo &info);
+
 private:
 	void init();
 	void removePendingMessage(const events::MessageEvent<msgs::Text> &e);
 	void addTimelineItem(TimelineItem *item, TimelineDirection direction);
 	void updateLastSender(const QString &user_id, TimelineDirection direction);
+	void notifyForLastEvent();
 
 	// Used to determine whether or not we should prefix a message with the sender's name.
 	bool isSenderRendered(const QString &user_id, TimelineDirection direction);

@@ -135,10 +135,34 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 		font.setPixelSize(conf::fontSize);
 		p.setFont(font);
 
-		auto description = metrics.elidedText(state_.getTopic(), Qt::ElideRight, width() * descPercentage - 2 * Padding - IconSize);
-		p.drawText(QPoint(2 * Padding + IconSize, bottom_y), description);
+		auto msgStampWidth = QFontMetrics(font).width(lastMsgInfo_.timestamp) + 5;
+
+		// The limit is the space between the end of the avatar and the start of the timestamp.
+		int usernameLimit = std::max(0, width() - 3 * Padding - msgStampWidth - IconSize - 20);
+		auto userName = metrics.elidedText(lastMsgInfo_.username, Qt::ElideRight, usernameLimit);
+
+		font.setBold(true);
+		p.setFont(font);
+		p.drawText(QPoint(2 * Padding + IconSize, bottom_y), userName);
+
+		int nameWidth = QFontMetrics(font).width(userName);
+
+		font.setBold(false);
+		p.setFont(font);
+
+		// The limit is the space between the end of the username and the start of the timestamp.
+		int descriptionLimit = std::max(0, width() - 3 * Padding - msgStampWidth - IconSize - nameWidth - 5);
+		auto description = metrics.elidedText(lastMsgInfo_.body, Qt::ElideRight, descriptionLimit);
+		p.drawText(QPoint(2 * Padding + IconSize + nameWidth, bottom_y), description);
+
+		// We either show the bubble or the last message timestamp.
+		if (unreadMsgCount_ == 0) {
+			font.setBold(true);
+			p.drawText(QPoint(width() - Padding - msgStampWidth, bottom_y), lastMsgInfo_.timestamp);
+		}
 	}
 
+	font.setBold(false);
 	p.setPen(Qt::NoPen);
 
 	// We using the first letter of room's name.

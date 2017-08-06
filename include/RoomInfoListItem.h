@@ -26,6 +26,12 @@
 #include "RoomSettings.h"
 #include "RoomState.h"
 
+struct DescInfo {
+	QString username;
+	QString body;
+	QString timestamp;
+};
+
 class RoomInfoListItem : public QWidget
 {
 	Q_OBJECT
@@ -46,6 +52,7 @@ public:
 	inline RoomState state() const;
 	inline void setAvatar(const QImage &avatar_image);
 	inline int unreadMessageCount() const;
+	inline void setDescriptionMessage(const DescInfo &info);
 
 signals:
 	void clicked(const QString &room_id);
@@ -71,8 +78,8 @@ private:
 
 	QString roomId_;
 	QString roomName_;
-	QString lastMessage_;
-	QString lastTimestamp_;
+
+	DescInfo lastMsgInfo_;
 
 	QPixmap roomAvatar_;
 
@@ -106,4 +113,9 @@ inline void RoomInfoListItem::setAvatar(const QImage &img)
 {
 	roomAvatar_ = QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	update();
+}
+
+inline void RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
+{
+	lastMsgInfo_ = info;
 }

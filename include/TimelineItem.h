@@ -28,6 +28,7 @@
 #include "Image.h"
 #include "MessageEvent.h"
 #include "Notice.h"
+#include "RoomInfoListItem.h"
 #include "Text.h"
 
 namespace events = matrix::events;
@@ -48,6 +49,7 @@ public:
 	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, QWidget *parent);
 
 	void setUserAvatar(const QImage &pixmap);
+	inline DescInfo descriptionMessage() const;
 
 	~TimelineItem();
 
@@ -57,11 +59,14 @@ private:
 	void generateBody(const QString &body);
 	void generateBody(const QString &userid, const QString &color, const QString &body);
 	void generateTimestamp(const QDateTime &time);
+	QString descriptiveTime(const QDateTime &then);
 
 	void setupAvatarLayout(const QString &userName);
 	void setupSimpleLayout();
 
 	QString replaceEmoji(const QString &body);
+
+	DescInfo descriptionMsg_;
 
 	QHBoxLayout *topLayout_;
 	QVBoxLayout *sideLayout_;  // Avatar or Timestamp
@@ -77,3 +82,8 @@ private:
 	QLabel *userName_;
 	QLabel *body_;
 };
+
+inline DescInfo TimelineItem::descriptionMessage() const
+{
+	return descriptionMsg_;
+}

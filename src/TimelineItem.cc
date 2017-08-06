@@ -72,6 +72,7 @@ TimelineItem::TimelineItem(const QString &userid, const QString &color, QString 
     : QWidget(parent)
 {
 	init();
+	descriptionMsg_ = {"You: ", body, descriptiveTime(QDateTime::currentDateTime())};
 
 	body.replace(URL_REGEX, URL_HTML);
 	auto displayName = TimelineViewManager::displayName(userid);
@@ -94,6 +95,7 @@ TimelineItem::TimelineItem(QString body, QWidget *parent)
     : QWidget(parent)
 {
 	init();
+	descriptionMsg_ = {"You: ", body, descriptiveTime(QDateTime::currentDateTime())};
 
 	body.replace(URL_REGEX, URL_HTML);
 
@@ -119,6 +121,10 @@ TimelineItem::TimelineItem(ImageItem *image,
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 	auto displayName = TimelineViewManager::displayName(event.sender());
 
+	descriptionMsg_ = {displayName,
+			   " sent an image",
+			   descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+
 	generateTimestamp(timestamp);
 	generateBody(displayName, color, "");
 
@@ -141,6 +147,9 @@ TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Im
     : QWidget(parent)
 {
 	init();
+	descriptionMsg_ = {TimelineViewManager::displayName(event.sender()),
+			   " sent an image",
+			   descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 	generateTimestamp(timestamp);
@@ -162,6 +171,10 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool
     : QWidget(parent)
 {
 	init();
+	descriptionMsg_ = {
+		TimelineViewManager::displayName(event.sender()),
+		" sent a notification",
+		descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
 	auto body = event.content().body().trimmed().toHtmlEscaped();
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
@@ -198,6 +211,11 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool w
 
 	auto body = event.content().body().trimmed().toHtmlEscaped();
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+
+	descriptionMsg_ = {
+		TimelineViewManager::displayName(event.sender()),
+		QString(": %1").arg(body),
+		descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
 	generateTimestamp(timestamp);
 
@@ -350,6 +368,23 @@ void TimelineItem::setUserAvatar(const QImage &avatar)
 		return;
 
 	userAvatar_->setImage(avatar);
+}
+
+QString TimelineItem::descriptiveTime(const QDateTime &then)
+{
+	auto now = QDateTime::currentDateTime();
+
+	auto days = then.daysTo(now);
+
+	if (days == 0) {
+		return then.toString("HH:mm");
+	} else if (days < 2) {
+		return QString("Yesterday");
+	} else if (days < 365) {
+		return then.toString("dd/MM");
+	}
+
+	return then.toString("dd/MM/yy");
 }
 
 TimelineItem::~TimelineItem()

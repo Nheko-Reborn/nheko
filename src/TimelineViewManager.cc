@@ -80,6 +80,11 @@ void TimelineViewManager::initialize(const Rooms &rooms)
 		TimelineView *view = new TimelineView(it.value().timeline(), client_, it.key());
 		views_.insert(it.key(), QSharedPointer<TimelineView>(view));
 
+		connect(view,
+			&TimelineView::updateLastTimelineMessage,
+			this,
+			&TimelineViewManager::updateRoomsLastMessage);
+
 		// Add the view in the widget stack.
 		addWidget(view);
 	}
@@ -91,6 +96,11 @@ void TimelineViewManager::initialize(const QList<QString> &rooms)
 		// Create a history view without any events.
 		TimelineView *view = new TimelineView(client_, roomid);
 		views_.insert(roomid, QSharedPointer<TimelineView>(view));
+
+		connect(view,
+			&TimelineView::updateLastTimelineMessage,
+			this,
+			&TimelineViewManager::updateRoomsLastMessage);
 
 		// Add the view in the widget stack.
 		addWidget(view);

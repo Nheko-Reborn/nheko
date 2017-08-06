@@ -138,6 +138,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 			room_list_->updateUnreadMessageCount(roomid, count);
 	});
 
+	connect(view_manager_,
+		&TimelineViewManager::updateRoomsLastMessage,
+		room_list_,
+		&RoomList::updateRoomDescription);
+
 	connect(room_list_,
 		SIGNAL(totalUnreadMessageCountUpdated(int)),
 		this,

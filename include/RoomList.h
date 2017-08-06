@@ -49,6 +49,7 @@ public slots:
 	void updateRoomAvatar(const QString &roomid, const QPixmap &img);
 	void highlightSelectedRoom(const QString &room_id);
 	void updateUnreadMessageCount(const QString &roomid, int count);
+	void updateRoomDescription(const QString &roomid, const DescInfo &info);
 
 private:
 	void calculateUnreadMessageCount();

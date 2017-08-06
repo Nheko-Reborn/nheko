@@ -179,6 +179,10 @@ void TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages
 	prev_batch_token_ = msgs.end();
 	isPaginationInProgress_ = false;
 	isPaginationScrollPending_ = true;
+
+	// Exclude the top stretch.
+	if (!msgs.chunk().isEmpty() && scroll_layout_->count() > 1)
+		notifyForLastEvent();
 }
 
 TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection direction)
@@ -294,6 +298,10 @@ int TimelineView::addEvents(const Timeline &timeline)
 
 		client_->messages(room_id_, prev_batch_token_);
 	}
+
+	// Exclude the top stretch.
+	if (!timeline.events().isEmpty() && scroll_layout_->count() > 1)
+		notifyForLastEvent();
 
 	return message_count;
 }
@@ -440,4 +448,15 @@ void TimelineView::addUserTextMessage(const QString &body, int txn_id)
 	PendingMessage message(txn_id, body, "", view_item);
 
 	pending_msgs_.push_back(message);
+}
+
+void TimelineView::notifyForLastEvent()
+{
+	auto lastItem = scroll_layout_->itemAt(scroll_layout_->count() - 1);
+	auto *lastTimelineItem = qobject_cast<TimelineItem *>(lastItem->widget());
+
+	if (lastTimelineItem)
+		emit updateLastTimelineMessage(room_id_, lastTimelineItem->descriptionMessage());
+	else
+		qWarning() << "Cast to TimelineView failed" << room_id_;
 }

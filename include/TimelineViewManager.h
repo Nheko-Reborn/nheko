@@ -23,6 +23,7 @@
 #include <QWidget>
 
 #include "MatrixClient.h"
+#include "RoomInfoListItem.h"
 #include "Sync.h"
 #include "TimelineView.h"
 
@@ -50,6 +51,7 @@ public:
 
 signals:
 	void unreadMessages(QString roomid, int count);
+	void updateRoomsLastMessage(const QString &user, const DescInfo &info);
 
 public slots:
 	void setHistoryView(const QString &room_id);

@@ -174,10 +174,19 @@ void RoomList::highlightSelectedRoom(const QString &room_id)
 void RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
 {
 	if (!rooms_.contains(roomid)) {
-		qDebug() << "Avatar update on non existent room" << roomid;
+		qWarning() << "Avatar update on non existent room" << roomid;
 		return;
 	}
 
-	auto list_item = rooms_.value(roomid);
-	list_item->setAvatar(img.toImage());
+	rooms_.value(roomid)->setAvatar(img.toImage());
+}
+
+void RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
+{
+	if (!rooms_.contains(roomid)) {
+		qWarning() << "Description update on non existent room" << roomid << info.body;
+		return;
+	}
+
+	rooms_.value(roomid)->setDescriptionMessage(info);
 }
