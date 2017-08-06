@@ -127,11 +127,6 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 			p.setPen(pen);
 		}
 
-		double descPercentage = 0.90;
-
-		if (unreadMsgCount_ > 0)
-			descPercentage = 0.8;
-
 		font.setPixelSize(conf::fontSize);
 		p.setFont(font);
 
