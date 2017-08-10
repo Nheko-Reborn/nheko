@@ -1,23 +1,30 @@
 # Maintainer: Konstantinos Sideris <siderisk at auth dot gr>
 
 pkgname=nheko-git
-pkgver=0.1.0.e78e43c86a39
+pkgver=0.1.0.r174.c428ef4b
 pkgrel=1
 pkgdesc="Desktop client for the Matrix protocol"
-arch=('i686' 'x86_64')
+arch=("i686" "x86_64")
 
 url="https://github.com/mujx/nheko"
-license=('GPL3')
+license=("GPL3")
 
-depends=('qt5-base')
-makedepends=('git' 'cmake' 'gcc' 'fontconfig' 'qt5-tools')
+depends=("qt5-base" "lmdb")
+makedepends=("git" "cmake" "gcc" "fontconfig" "qt5-tools")
 
-source=($pkgname::git+https://github.com/mujx/nheko.git)
-md5sums=('SKIP')
+source=($pkgname::git://github.com/mujx/nheko.git git://github.com/bendiken/lmdbxx.git)
+md5sums=("SKIP" "SKIP")
+
+prepare() {
+  cd "$pkgname"
+  git submodule init
+  git config submodule.lmdbxx.url $srcdir/libs/lmdbxx
+  git submodule update
+}
 
 pkgver() {
     cd "$pkgname"
-    printf "0.1.0.%s" "$(git rev-parse --short HEAD)"
+    printf "0.1.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
