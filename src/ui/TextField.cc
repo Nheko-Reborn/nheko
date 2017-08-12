@@ -10,19 +10,22 @@
 TextField::TextField(QWidget *parent)
     : QLineEdit(parent)
 {
+	// Get rid of the focus border on macOS.
+	setAttribute(Qt::WA_MacShowFocusRect, 0);
+
 	state_machine_ = new TextFieldStateMachine(this);
 	label_ = 0;
-	label_font_size_ = 9.5;
+	label_font_size_ = 13;
 	show_label_ = false;
 	background_color_ = QColor("white");
 
 	setFrame(false);
 	setAttribute(Qt::WA_Hover);
 	setMouseTracking(true);
-	setTextMargins(0, 2, 0, 4);
+	setTextMargins(0, 4, 0, 6);
 
-	QFontDatabase db;
-	QFont font(db.font("Open Sans", "Regular", 11));
+	QFont font("Open Sans");
+	font.setPixelSize(12);
 	setFont(font);
 
 	state_machine_->start();
