@@ -109,8 +109,8 @@ private:
 	ScrollBar *scrollbar_;
 	QWidget *scroll_widget_;
 
-	QString last_sender_;
-	QString last_sender_backwards_;
+	QString lastSender_;
+	QString firstSender_;
 	QString room_id_;
 	QString prev_batch_token_;
 	QString local_user_;

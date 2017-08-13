@@ -28,6 +28,7 @@
 
 struct DescInfo {
 	QString username;
+	QString userid;
 	QString body;
 	QString timestamp;
 };

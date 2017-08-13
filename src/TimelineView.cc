@@ -153,7 +153,6 @@ void TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages
 	}
 
 	isTimelineFinished = false;
-	last_sender_backwards_.clear();
 	QList<TimelineItem *> items;
 
 	// Parse in reverse order to determine where we should not show sender's name.
@@ -183,6 +182,11 @@ void TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages
 	// Exclude the top stretch.
 	if (!msgs.chunk().isEmpty() && scroll_layout_->count() > 1)
 		notifyForLastEvent();
+
+	// If this batch is the first being rendered (i.e the first and the last events
+	// originate from this batch), set the last sender.
+	if (lastSender_.isEmpty() && !items.isEmpty())
+		lastSender_ = items.constFirst()->descriptionMessage().userid;
 }
 
 TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection direction)
@@ -279,12 +283,11 @@ int TimelineView::addEvents(const Timeline &timeline)
 
 	for (const auto &event : timeline.events()) {
 		TimelineItem *item = parseMessageEvent(event.toObject(), TimelineDirection::Bottom);
-		auto sender = event.toObject().value("sender").toString();
 
 		if (item != nullptr) {
 			addTimelineItem(item, TimelineDirection::Bottom);
 
-			if (sender != localUser)
+			if (localUser != event.toObject().value("sender").toString())
 				message_count += 1;
 		}
 	}
@@ -342,17 +345,17 @@ void TimelineView::init()
 void TimelineView::updateLastSender(const QString &user_id, TimelineDirection direction)
 {
 	if (direction == TimelineDirection::Bottom)
-		last_sender_ = user_id;
+		lastSender_ = user_id;
 	else
-		last_sender_backwards_ = user_id;
+		firstSender_ = user_id;
 }
 
 bool TimelineView::isSenderRendered(const QString &user_id, TimelineDirection direction)
 {
 	if (direction == TimelineDirection::Bottom)
-		return last_sender_ != user_id;
+		return lastSender_ != user_id;
 	else
-		return last_sender_backwards_ != user_id;
+		return firstSender_ != user_id;
 }
 
 TimelineItem *TimelineView::createTimelineItem(const events::MessageEvent<msgs::Image> &event, const QString &color, bool with_sender)
@@ -428,7 +431,7 @@ void TimelineView::addUserTextMessage(const QString &body, int txn_id)
 	QSettings settings;
 	auto user_id = settings.value("auth/user_id").toString();
 
-	auto with_sender = last_sender_ != user_id;
+	auto with_sender = lastSender_ != user_id;
 	auto color = TimelineViewManager::getUserColor(user_id);
 
 	TimelineItem *view_item;
@@ -440,7 +443,7 @@ void TimelineView::addUserTextMessage(const QString &body, int txn_id)
 
 	scroll_layout_->addWidget(view_item);
 
-	last_sender_ = user_id;
+	lastSender_ = user_id;
 
 	PendingMessage message(txn_id, body, "", view_item);
 
