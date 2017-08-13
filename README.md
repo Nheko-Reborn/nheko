@@ -95,7 +95,7 @@ The `nheko` binary will be located in the `build` directory.
 ##### MacOS
 
 You can create an app bundle with `make app`. The output will be located at
-`dist/MacOS/Nheko.app` which you can be copied to `/Applications/Nheko.app`.
+`dist/MacOS/Nheko.app` which can be copied to `/Applications/Nheko.app`.
 
 You can also create a disk image with `make dmg`. The output will be located at
 `dist/MacOS/Nheko.dmg`
