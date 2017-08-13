@@ -213,10 +213,9 @@ TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, Timeline
 			}
 
 			auto with_sender = isSenderRendered(text.sender(), direction);
-			updateLastSender(text.sender(), direction);
-
 			auto color = TimelineViewManager::getUserColor(text.sender());
-			last_sender_ = text.sender();
+
+			updateLastSender(text.sender(), direction);
 
 			return createTimelineItem(text, color, with_sender);
 		} else if (msg_type == events::MessageEventType::Notice) {
@@ -236,10 +235,9 @@ TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, Timeline
 			eventIds_[notice.eventId()] = true;
 
 			auto with_sender = isSenderRendered(notice.sender(), direction);
-			updateLastSender(notice.sender(), direction);
-
 			auto color = TimelineViewManager::getUserColor(notice.sender());
-			last_sender_ = notice.sender();
+
+			updateLastSender(notice.sender(), direction);
 
 			return createTimelineItem(notice, color, with_sender);
 		} else if (msg_type == events::MessageEventType::Image) {
@@ -258,10 +256,9 @@ TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, Timeline
 			eventIds_[img.eventId()] = true;
 
 			auto with_sender = isSenderRendered(img.sender(), direction);
-			updateLastSender(img.sender(), direction);
-
 			auto color = TimelineViewManager::getUserColor(img.sender());
-			last_sender_ = img.sender();
+
+			updateLastSender(img.sender(), direction);
 
 			return createTimelineItem(img, color, with_sender);
 		} else if (msg_type == events::MessageEventType::Unknown) {
