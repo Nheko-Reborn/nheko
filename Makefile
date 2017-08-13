@@ -1,13 +1,18 @@
+APP_NAME = nheko
+
+MAC_DIST_DIR = dist/MacOS
+APP_TEMPLATE = $(MAC_DIST_DIR)/Nheko.app
+
 SRC := $(shell find include src -type f -type f \( -iname "*.cc" -o -iname "*.h" \))
+
 
 # Linux specific helpers
 debug:
 	@cmake -DBUILD_TESTS=OFF -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug
 	@cmake --build build
 
-
 release-debug:
-	@cmake -DBUILD_TESTS=OFF -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	@cmake -DBUILD_TESTS=OFF -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	@cmake --build build
 
 test:
@@ -15,24 +20,19 @@ test:
 	@cmake --build build
 	@cd build && GTEST_COLOR=1 ctest --verbose
 
-# MacOS specific helpers
-mdebug:
-	@cmake -DBUILD_TESTS=OFF \
-		-H. \
-		-GNinja \
-		-Bbuild \
-		-DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 \
-		-DCMAKE_BUILD_TYPE=Debug
-	@cmake --build build
+app: release-debug $(APP_TEMPLATE)
+	@cp -fp ./build/$(APP_NAME) $(APP_TEMPLATE)/Contents/MacOS
+	@echo "Created '$(APP_NAME).app' in '$(APP_TEMPLATE)'"
 
-mrelease:
-	@cmake -DBUILD_TESTS=OFF \
-		-H. \
-		-GNinja \
-		-Bbuild \
-		-DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 \
-		-DCMAKE_BUILD_TYPE=RelWithDebInfo
-	@cmake --build build
+app-install: app
+	cp -rf $(APP_TEMPLATE) /Applications/Nheko.app
+
+dmg: app
+	hdiutil create $(MAC_DIST_DIR)/Nheko.dmg \
+		-volname "$(APP_NAME)" \
+		-fs HFS+ \
+		-srcfolder $(MAC_DIST_DIR) \
+		-ov -format UDZO
 
 run:
 	@./build/nheko
@@ -44,4 +44,4 @@ lint:
 clean:
 	rm -rf build
 
-.PHONY: build
+.PHONY: build app dmg

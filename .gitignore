@@ -75,3 +75,5 @@ Temporary Items
 # Nix
 result
 
+*.dmg
+dist/MacOS/nheko.app/Contents/MacOS/nheko
