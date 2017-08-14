@@ -125,6 +125,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
 
 	connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
+	connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
 	connect(room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
 	connect(view_manager_, &TimelineViewManager::unreadMessages, this, [=](const QString &roomid, int count) {

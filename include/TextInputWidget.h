@@ -46,6 +46,7 @@ public:
 
 public slots:
 	void onSendButtonClicked();
+	inline void focusLineEdit();
 
 private slots:
 	void addSelectedEmoji(const QString &emoji);
@@ -64,3 +65,8 @@ private:
 	FlatButton *send_message_button_;
 	EmojiPickButton *emoji_button_;
 };
+
+inline void TextInputWidget::focusLineEdit()
+{
+	input_->setFocus();
+}
