@@ -166,8 +166,12 @@ void RoomList::highlightSelectedRoom(const QString &room_id)
 	calculateUnreadMessageCount();
 
 	for (auto it = rooms_.constBegin(); it != rooms_.constEnd(); it++) {
-		if (it.key() != room_id)
+		if (it.key() != room_id) {
 			it.value()->setPressedState(false);
+		} else {
+			it.value()->setPressedState(true);
+			scrollArea_->ensureWidgetVisible(qobject_cast<QWidget *>(it.value().data()));
+		}
 	}
 }
 

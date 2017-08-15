@@ -23,6 +23,7 @@
 
 #include "Cache.h"
 #include "MatrixClient.h"
+#include "QuickSwitcher.h"
 #include "RoomList.h"
 #include "RoomSettings.h"
 #include "RoomState.h"
@@ -61,10 +62,14 @@ private slots:
 	void startSync();
 	void logout();
 
+protected:
+	void keyPressEvent(QKeyEvent *event) override;
+
 private:
 	void updateDisplayNames(const RoomState &state);
 	void updateRoomState(RoomState &room_state, const QJsonArray &events);
 	void loadStateFromCache();
+	void showQuickSwitcher();
 
 	QHBoxLayout *topLayout_;
 	Splitter *splitter;
@@ -97,6 +102,9 @@ private:
 
 	QMap<QString, RoomState> state_manager_;
 	QMap<QString, QSharedPointer<RoomSettings>> settingsManager_;
+
+	QuickSwitcher *quickSwitcher_ = nullptr;
+	OverlayModal *quickSwitcherModal_ = nullptr;
 
 	// Matrix Client API provider.
 	QSharedPointer<MatrixClient> client_;

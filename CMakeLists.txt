@@ -136,6 +136,7 @@ set(SRC_FILES
     src/UserInfoWidget.cc
     src/Versions.cc
     src/WelcomePage.cc
+    src/QuickSwitcher.cc
     src/main.cc
 
     src/ui/Avatar.cc
@@ -211,6 +212,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/TopRoomBar.h
     include/TrayIcon.h
     include/TextInputWidget.h
+    include/QuickSwitcher.h
     include/WelcomePage.h
 
     include/ui/Avatar.h

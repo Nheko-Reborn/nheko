@@ -25,7 +25,7 @@ app: release-debug $(APP_TEMPLATE)
 	@echo "Created '$(APP_NAME).app' in '$(APP_TEMPLATE)'"
 
 app-install: app
-	cp -rf $(APP_TEMPLATE) /Applications/Nheko.app
+	cp -Rf $(APP_TEMPLATE) /Applications/
 
 dmg: app
 	hdiutil create $(MAC_DIST_DIR)/Nheko.dmg \

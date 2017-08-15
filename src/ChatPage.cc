@@ -32,6 +32,7 @@
 #include "CreateEventContent.h"
 #include "HistoryVisibilityEventContent.h"
 #include "JoinRulesEventContent.h"
+#include "MainWindow.h"
 #include "MemberEventContent.h"
 #include "NameEventContent.h"
 #include "PowerLevelsEventContent.h"
@@ -561,6 +562,41 @@ void ChatPage::loadStateFromCache()
 	emit contentLoaded();
 
 	sync_timer_->start(sync_interval_);
+}
+
+void ChatPage::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_K) {
+		if (event->modifiers() == Qt::ControlModifier)
+			showQuickSwitcher();
+	}
+}
+
+void ChatPage::showQuickSwitcher()
+{
+	if (quickSwitcher_ == nullptr) {
+		quickSwitcher_ = new QuickSwitcher(this);
+
+		connect(quickSwitcher_, &QuickSwitcher::roomSelected, room_list_, &RoomList::highlightSelectedRoom);
+		connect(quickSwitcher_, &QuickSwitcher::closing, this, [=]() {
+			if (this->quickSwitcherModal_ != nullptr)
+				this->quickSwitcherModal_->fadeOut();
+		});
+	}
+
+	if (quickSwitcherModal_ == nullptr) {
+		quickSwitcherModal_ = new OverlayModal(MainWindow::instance(), quickSwitcher_);
+		quickSwitcherModal_->setDuration(0);
+		quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
+	}
+
+	QMap<QString, QString> rooms;
+
+	for (auto it = state_manager_.constBegin(); it != state_manager_.constEnd(); ++it)
+		rooms.insert(it.value().getName(), it.key());
+
+	quickSwitcher_->setRoomList(rooms);
+	quickSwitcherModal_->fadeIn();
 }
 
 ChatPage::~ChatPage()
