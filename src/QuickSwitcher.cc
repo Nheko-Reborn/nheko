@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAbstractItemView>
 #include <QCompleter>
 #include <QDebug>
 #include <QStringListModel>
@@ -39,17 +38,12 @@ RoomSearchInput::focusNextPrevChild(bool next)
 void
 RoomSearchInput::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Tab) {
-		auto completer = this->completer();
-
-		if (completer) {
-			// Enable the current item if its valid.
-			completer->popup()->setCurrentIndex(completer->currentIndex());
-
-			if (!completer->setCurrentRow(completer->currentRow() + 1))
-				completer->setCurrentRow(0);
-		}
-
+	if (event->key() == Qt::Key_Tab || event->key() == Qt::Key_Down) {
+		emit selectNextCompletion();
+		event->accept();
+		return;
+	} else if (event->key() == Qt::Key_Up) {
+		emit selectPreviousCompletion();
 		event->accept();
 		return;
 	}
@@ -57,11 +51,18 @@ RoomSearchInput::keyPressEvent(QKeyEvent *event)
 	TextField::keyPressEvent(event);
 }
 
+void
+RoomSearchInput::hideEvent(QHideEvent *event)
+{
+	emit hiding();
+	TextField::hideEvent(event);
+}
+
 QuickSwitcher::QuickSwitcher(QWidget *parent)
   : QFrame(parent)
 {
-	setMaximumWidth(400);
-	setStyleSheet("background-color: #f9f9f9");
+	setMaximumWidth(450);
+	setStyleSheet("background-color: white");
 
 	QFont font;
 	font.setPixelSize(20);
@@ -70,17 +71,56 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
 	roomSearch_->setFont(font);
 	roomSearch_->setPlaceholderText(tr("Find a room..."));
 
-	QStringList wordList;
-	QCompleter *completer = new QCompleter(wordList, this);
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-
-	roomSearch_->setCompleter(completer);
+	completer_ = new QCompleter();
+	completer_->setCaseSensitivity(Qt::CaseInsensitive);
+	completer_->setCompletionMode(QCompleter::PopupCompletion);
+	completer_->setWidget(this);
 
 	topLayout_ = new QVBoxLayout(this);
-	topLayout_->setMargin(20);
-	topLayout_->setSpacing(0);
 	topLayout_->addWidget(roomSearch_);
 
+	connect(completer_, SIGNAL(highlighted(QString)), roomSearch_, SLOT(setText(QString)));
+	connect(roomSearch_, &QLineEdit::textEdited, this, [=](const QString &prefix) {
+		if (prefix.isEmpty()) {
+			completer_->popup()->hide();
+			selection_ = -1;
+			return;
+		}
+
+		if (prefix != completer_->completionPrefix()) {
+			completer_->setCompletionPrefix(prefix);
+			selection_ = -1;
+		}
+
+		completer_->popup()->setWindowFlags(completer_->popup()->windowFlags() | Qt::ToolTip |
+						    Qt::NoDropShadowWindowHint);
+		completer_->popup()->setAttribute(Qt::WA_ShowWithoutActivating);
+		completer_->complete();
+	});
+
+	connect(roomSearch_, &RoomSearchInput::selectNextCompletion, this, [=]() {
+		selection_ += 1;
+
+		if (!completer_->setCurrentRow(selection_)) {
+			selection_ = 0;
+			completer_->setCurrentRow(selection_);
+		}
+
+		completer_->popup()->setCurrentIndex(completer_->currentIndex());
+	});
+
+	connect(roomSearch_, &RoomSearchInput::selectPreviousCompletion, this, [=]() {
+		selection_ -= 1;
+
+		if (!completer_->setCurrentRow(selection_)) {
+			selection_ = completer_->completionCount() - 1;
+			completer_->setCurrentRow(selection_);
+		}
+
+		completer_->popup()->setCurrentIndex(completer_->currentIndex());
+	});
+
+	connect(roomSearch_, &RoomSearchInput::hiding, this, [=]() { completer_->popup()->hide(); });
 	connect(roomSearch_, &QLineEdit::returnPressed, this, [=]() {
 		emit closing();
 		emit roomSelected(rooms_[this->roomSearch_->text().trimmed()]);
@@ -93,13 +133,9 @@ void
 QuickSwitcher::setRoomList(const QMap<QString, QString> &rooms)
 {
 	rooms_ = rooms;
+	QStringList items = rooms.keys();
 
-	QStringList search_items = rooms.keys();
-
-	if (!roomSearch_->completer())
-		return;
-
-	roomSearch_->completer()->setModel(new QStringListModel(search_items));
+	completer_->setModel(new QStringListModel(items));
 }
 
 void

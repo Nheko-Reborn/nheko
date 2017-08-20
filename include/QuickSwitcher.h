@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QAbstractItemView>
 #include <QFrame>
 #include <QKeyEvent>
 #include <QVBoxLayout>
@@ -29,8 +30,14 @@ class RoomSearchInput : public TextField
 public:
 	explicit RoomSearchInput(QWidget *parent = nullptr);
 
+signals:
+	void selectNextCompletion();
+	void selectPreviousCompletion();
+	void hiding();
+
 protected:
 	void keyPressEvent(QKeyEvent *event) override;
+	void hideEvent(QHideEvent *event) override;
 	bool focusNextPrevChild(bool next) override;
 };
 
@@ -51,8 +58,12 @@ protected:
 	void showEvent(QShowEvent *event) override;
 
 private:
+	// Current highlighted selection from the completer.
+	int selection_ = -1;
+
 	QVBoxLayout *topLayout_;
 	RoomSearchInput *roomSearch_;
+	QCompleter *completer_;
 
 	QMap<QString, QString> rooms_;
 };
