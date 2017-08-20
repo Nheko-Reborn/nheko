@@ -22,7 +22,7 @@
 #include "EmojiCategory.h"
 
 EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	mainLayout_ = new QVBoxLayout(this);
 	mainLayout_->setMargin(0);

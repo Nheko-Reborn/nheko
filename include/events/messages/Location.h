@@ -47,16 +47,18 @@ private:
 	LocationInfo info_;
 };
 
-inline QString Location::geoUri() const
+inline QString
+Location::geoUri() const
 {
 	return geo_uri_;
 }
 
-inline LocationInfo Location::info() const
+inline LocationInfo
+Location::info() const
 {
 	return info_;
 }
 
-}  // namespace messages
-}  // namespace events
-}  // namespace matrix
+} // namespace messages
+} // namespace events
+} // namespace matrix

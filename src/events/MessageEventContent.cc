@@ -21,7 +21,8 @@
 
 using namespace matrix::events;
 
-MessageEventType matrix::events::extractMessageEventType(const QJsonObject &data)
+MessageEventType
+matrix::events::extractMessageEventType(const QJsonObject &data)
 {
 	if (!data.contains("content"))
 		return MessageEventType::Unknown;
@@ -49,7 +50,8 @@ MessageEventType matrix::events::extractMessageEventType(const QJsonObject &data
 		return MessageEventType::Unknown;
 }
 
-void MessageEventContent::deserialize(const QJsonValue &data)
+void
+MessageEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("MessageEventContent is not a JSON object");
@@ -62,7 +64,8 @@ void MessageEventContent::deserialize(const QJsonValue &data)
 	body_ = object.value("body").toString();
 }
 
-QJsonObject MessageEventContent::serialize() const
+QJsonObject
+MessageEventContent::serialize() const
 {
 	// TODO: Add for all the message contents.
 	QJsonObject object;

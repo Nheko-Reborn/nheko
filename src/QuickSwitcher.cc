@@ -23,19 +23,21 @@
 
 #include "QuickSwitcher.h"
 
-RoomSearchInput::RoomSearchInput(QWidget* parent)
-    : TextField(parent)
+RoomSearchInput::RoomSearchInput(QWidget *parent)
+  : TextField(parent)
 {
 }
 
-bool RoomSearchInput::focusNextPrevChild(bool next)
+bool
+RoomSearchInput::focusNextPrevChild(bool next)
 {
 	Q_UNUSED(next);
 
 	return false;
 }
 
-void RoomSearchInput::keyPressEvent(QKeyEvent* event)
+void
+RoomSearchInput::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Tab) {
 		auto completer = this->completer();
@@ -55,8 +57,8 @@ void RoomSearchInput::keyPressEvent(QKeyEvent* event)
 	TextField::keyPressEvent(event);
 }
 
-QuickSwitcher::QuickSwitcher(QWidget* parent)
-    : QFrame(parent)
+QuickSwitcher::QuickSwitcher(QWidget *parent)
+  : QFrame(parent)
 {
 	setMaximumWidth(400);
 	setStyleSheet("background-color: #f9f9f9");
@@ -69,7 +71,7 @@ QuickSwitcher::QuickSwitcher(QWidget* parent)
 	roomSearch_->setPlaceholderText(tr("Find a room..."));
 
 	QStringList wordList;
-	QCompleter* completer = new QCompleter(wordList, this);
+	QCompleter *completer = new QCompleter(wordList, this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 
 	roomSearch_->setCompleter(completer);
@@ -87,7 +89,8 @@ QuickSwitcher::QuickSwitcher(QWidget* parent)
 	});
 }
 
-void QuickSwitcher::setRoomList(const QMap<QString, QString>& rooms)
+void
+QuickSwitcher::setRoomList(const QMap<QString, QString> &rooms)
 {
 	rooms_ = rooms;
 
@@ -99,12 +102,14 @@ void QuickSwitcher::setRoomList(const QMap<QString, QString>& rooms)
 	roomSearch_->completer()->setModel(new QStringListModel(search_items));
 }
 
-void QuickSwitcher::showEvent(QShowEvent*)
+void
+QuickSwitcher::showEvent(QShowEvent *)
 {
 	roomSearch_->setFocus();
 }
 
-void QuickSwitcher::keyPressEvent(QKeyEvent* event)
+void
+QuickSwitcher::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape) {
 		roomSearch_->clear();

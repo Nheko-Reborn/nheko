@@ -38,10 +38,7 @@ class RoomInfoListItem : public QWidget
 	Q_OBJECT
 
 public:
-	RoomInfoListItem(QSharedPointer<RoomSettings> settings,
-			 RoomState state,
-			 QString room_id,
-			 QWidget *parent = 0);
+	RoomInfoListItem(QSharedPointer<RoomSettings> settings, RoomState state, QString room_id, QWidget *parent = 0);
 
 	~RoomInfoListItem();
 
@@ -95,28 +92,34 @@ private:
 	int unreadMsgCount_ = 0;
 };
 
-inline int RoomInfoListItem::unreadMessageCount() const
+inline int
+RoomInfoListItem::unreadMessageCount() const
 {
 	return unreadMsgCount_;
 }
 
-inline bool RoomInfoListItem::isPressed() const
+inline bool
+RoomInfoListItem::isPressed() const
 {
 	return isPressed_;
 }
 
-inline RoomState RoomInfoListItem::state() const
+inline RoomState
+RoomInfoListItem::state() const
 {
 	return state_;
 }
 
-inline void RoomInfoListItem::setAvatar(const QImage &img)
+inline void
+RoomInfoListItem::setAvatar(const QImage &img)
 {
-	roomAvatar_ = QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	roomAvatar_ =
+		QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	update();
 }
 
-inline void RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
+inline void
+RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
 {
 	lastMsgInfo_ = info;
 }

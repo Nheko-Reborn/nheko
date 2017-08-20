@@ -51,37 +51,44 @@ private:
 	uint64_t origin_server_ts_;
 };
 
-inline QJsonObject Event::content() const
+inline QJsonObject
+Event::content() const
 {
 	return content_;
 }
 
-inline QJsonObject Event::unsigned_content() const
+inline QJsonObject
+Event::unsigned_content() const
 {
 	return unsigned_;
 }
 
-inline QString Event::sender() const
+inline QString
+Event::sender() const
 {
 	return sender_;
 }
 
-inline QString Event::state_key() const
+inline QString
+Event::state_key() const
 {
 	return state_key_;
 }
 
-inline QString Event::type() const
+inline QString
+Event::type() const
 {
 	return type_;
 }
 
-inline QString Event::eventId() const
+inline QString
+Event::eventId() const
 {
 	return event_id_;
 }
 
-inline uint64_t Event::timestamp() const
+inline uint64_t
+Event::timestamp() const
 {
 	return origin_server_ts_;
 }
@@ -96,7 +103,8 @@ private:
 	QJsonArray events_;
 };
 
-inline QJsonArray State::events() const
+inline QJsonArray
+State::events() const
 {
 	return events_;
 }
@@ -116,17 +124,20 @@ private:
 	bool limited_;
 };
 
-inline QJsonArray Timeline::events() const
+inline QJsonArray
+Timeline::events() const
 {
 	return events_;
 }
 
-inline QString Timeline::previousBatch() const
+inline QString
+Timeline::previousBatch() const
 {
 	return prev_batch_;
 }
 
-inline bool Timeline::limited() const
+inline bool
+Timeline::limited() const
 {
 	return limited_;
 }
@@ -148,12 +159,14 @@ private:
 	/* UnreadNotifications unread_notifications_; */
 };
 
-inline State JoinedRoom::state() const
+inline State
+JoinedRoom::state() const
 {
 	return state_;
 }
 
-inline Timeline JoinedRoom::timeline() const
+inline Timeline
+JoinedRoom::timeline() const
 {
 	return timeline_;
 }
@@ -169,7 +182,8 @@ private:
 	QMap<QString, JoinedRoom> join_;
 };
 
-inline QMap<QString, JoinedRoom> Rooms::join() const
+inline QMap<QString, JoinedRoom>
+Rooms::join() const
 {
 	return join_;
 }
@@ -186,12 +200,14 @@ private:
 	Rooms rooms_;
 };
 
-inline Rooms SyncResponse::rooms() const
+inline Rooms
+SyncResponse::rooms() const
 {
 	return rooms_;
 }
 
-inline QString SyncResponse::nextBatch() const
+inline QString
+SyncResponse::nextBatch() const
 {
 	return next_batch_;
 }

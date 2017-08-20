@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void File::deserialize(const QJsonObject &object)
+void
+File::deserialize(const QJsonObject &object)
 {
 	if (!object.contains("url"))
 		throw DeserializationException("messages::File url key is missing");

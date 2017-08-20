@@ -47,16 +47,18 @@ private:
 	AudioInfo info_;
 };
 
-inline QString Audio::url() const
+inline QString
+Audio::url() const
 {
 	return url_;
 }
 
-inline AudioInfo Audio::info() const
+inline AudioInfo
+Audio::info() const
 {
 	return info_;
 }
 
-}  // namespace messages
-}  // namespace events
-}  // namespace matrix
+} // namespace messages
+} // namespace events
+} // namespace matrix

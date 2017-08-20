@@ -21,13 +21,14 @@
 #include "Theme.h"
 
 Splitter::Splitter(QWidget *parent)
-    : QSplitter(parent)
+  : QSplitter(parent)
 {
 	connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
 	setChildrenCollapsible(false);
 }
 
-void Splitter::onSplitterMoved(int pos, int index)
+void
+Splitter::onSplitterMoved(int pos, int index)
 {
 	Q_UNUSED(pos);
 	Q_UNUSED(index);

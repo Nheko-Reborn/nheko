@@ -7,13 +7,12 @@ AlignTrailingComments: false
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
-BasedOnStyle: Google
+BasedOnStyle: Mozilla
 BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBraces: Linux
 BreakConstructorInitializersBeforeComma: true
-ColumnLimit: 0
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ColumnLimit: 120
 ContinuationIndentWidth: 8
 IndentCaseLabels: false
 IndentWidth: 8

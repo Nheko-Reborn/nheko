@@ -24,12 +24,13 @@
 #include "TextInputWidget.h"
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
-    : QTextEdit(parent)
+  : QTextEdit(parent)
 {
 	setAcceptRichText(false);
 }
 
-void FilteredTextEdit::keyPressEvent(QKeyEvent *event)
+void
+FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
 		emit enterPressed();
@@ -38,7 +39,7 @@ void FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 }
 
 TextInputWidget::TextInputWidget(QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	setFont(QFont("Emoji One"));
 
@@ -95,7 +96,8 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 	connect(emoji_button_, SIGNAL(emojiSelected(const QString &)), this, SLOT(addSelectedEmoji(const QString &)));
 }
 
-void TextInputWidget::addSelectedEmoji(const QString &emoji)
+void
+TextInputWidget::addSelectedEmoji(const QString &emoji)
 {
 	QTextCursor cursor = input_->textCursor();
 
@@ -118,7 +120,8 @@ void TextInputWidget::addSelectedEmoji(const QString &emoji)
 	input_->show();
 }
 
-void TextInputWidget::onSendButtonClicked()
+void
+TextInputWidget::onSendButtonClicked()
 {
 	auto msg_text = input_->document()->toPlainText().trimmed();
 
@@ -130,7 +133,8 @@ void TextInputWidget::onSendButtonClicked()
 	input_->clear();
 }
 
-void TextInputWidget::paintEvent(QPaintEvent *event)
+void
+TextInputWidget::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 

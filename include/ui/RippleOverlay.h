@@ -37,18 +37,21 @@ private:
 	bool use_clip_;
 };
 
-inline void RippleOverlay::setClipping(bool enable)
+inline void
+RippleOverlay::setClipping(bool enable)
 {
 	use_clip_ = enable;
 	update();
 }
 
-inline bool RippleOverlay::hasClipping() const
+inline bool
+RippleOverlay::hasClipping() const
 {
 	return use_clip_;
 }
 
-inline void RippleOverlay::setClipPath(const QPainterPath &path)
+inline void
+RippleOverlay::setClipPath(const QPainterPath &path)
 {
 	clip_path_ = path;
 	update();

@@ -21,7 +21,8 @@
 
 using namespace matrix::events;
 
-void AvatarEventContent::deserialize(const QJsonValue &data)
+void
+AvatarEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("AvatarEventContent is not a JSON object");
@@ -37,7 +38,8 @@ void AvatarEventContent::deserialize(const QJsonValue &data)
 		qWarning() << "Invalid avatar url" << url_;
 }
 
-QJsonObject AvatarEventContent::serialize() const
+QJsonObject
+AvatarEventContent::serialize() const
 {
 	QJsonObject object;
 

@@ -22,9 +22,9 @@
 #include "LoginPage.h"
 
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
-    : QWidget(parent)
-    , inferredServerAddress_()
-    , client_{client}
+  : QWidget(parent)
+  , inferredServerAddress_()
+  , client_{ client }
 {
 	setStyleSheet("background-color: #f9f9f9");
 
@@ -159,12 +159,14 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	matrixid_input_->setValidator(&InputValidator::Id);
 }
 
-void LoginPage::loginError(QString error)
+void
+LoginPage::loginError(QString error)
 {
 	error_label_->setText(error);
 }
 
-void LoginPage::onMatrixIdEntered()
+void
+LoginPage::onMatrixIdEntered()
 {
 	error_label_->setText("");
 
@@ -197,7 +199,8 @@ void LoginPage::onMatrixIdEntered()
 	}
 }
 
-void LoginPage::onServerAddressEntered()
+void
+LoginPage::onServerAddressEntered()
 {
 	error_label_->setText("");
 	client_->setServer(serverInput_->text());
@@ -209,10 +212,12 @@ void LoginPage::onServerAddressEntered()
 	spinner_->show();
 }
 
-void LoginPage::versionError(QString error)
+void
+LoginPage::versionError(QString error)
 {
 	// Matrix homeservers are often kept on a subdomain called 'matrix'
-	// so let's try that next, unless the address was set explicitly or the domain part of the username already points to this subdomain
+	// so let's try that next, unless the address was set explicitly or the domain part of the username already
+	// points to this subdomain
 	QUrl currentServer = client_->getHomeServer();
 	QString mxidAddress = matrixid_input_->text().split(":").at(1);
 	if (currentServer.host() == inferredServerAddress_ && !currentServer.host().startsWith("matrix")) {
@@ -234,7 +239,8 @@ void LoginPage::versionError(QString error)
 	matrixidLayout_->removeWidget(spinner_);
 }
 
-void LoginPage::versionSuccess()
+void
+LoginPage::versionSuccess()
 {
 	serverLayout_->removeWidget(spinner_);
 	matrixidLayout_->removeWidget(spinner_);
@@ -244,7 +250,8 @@ void LoginPage::versionSuccess()
 		serverInput_->hide();
 }
 
-void LoginPage::onLoginButtonClicked()
+void
+LoginPage::onLoginButtonClicked()
 {
 	error_label_->setText("");
 
@@ -260,7 +267,8 @@ void LoginPage::onLoginButtonClicked()
 	}
 }
 
-void LoginPage::reset()
+void
+LoginPage::reset()
 {
 	matrixid_input_->clear();
 	password_input_->clear();
@@ -275,7 +283,8 @@ void LoginPage::reset()
 	inferredServerAddress_.clear();
 }
 
-void LoginPage::onBackButtonClicked()
+void
+LoginPage::onBackButtonClicked()
 {
 	emit backButtonClicked();
 }

@@ -2,25 +2,25 @@
 #include "RippleOverlay.h"
 
 Ripple::Ripple(const QPoint &center, QObject *parent)
-    : QParallelAnimationGroup(parent)
-    , overlay_(0)
-    , radius_anim_(animate("radius"))
-    , opacity_anim_(animate("opacity"))
-    , radius_(0)
-    , opacity_(0)
-    , center_(center)
+  : QParallelAnimationGroup(parent)
+  , overlay_(0)
+  , radius_anim_(animate("radius"))
+  , opacity_anim_(animate("opacity"))
+  , radius_(0)
+  , opacity_(0)
+  , center_(center)
 {
 	init();
 }
 
 Ripple::Ripple(const QPoint &center, RippleOverlay *overlay, QObject *parent)
-    : QParallelAnimationGroup(parent)
-    , overlay_(overlay)
-    , radius_anim_(animate("radius"))
-    , opacity_anim_(animate("opacity"))
-    , radius_(0)
-    , opacity_(0)
-    , center_(center)
+  : QParallelAnimationGroup(parent)
+  , overlay_(overlay)
+  , radius_anim_(animate("radius"))
+  , opacity_anim_(animate("opacity"))
+  , radius_(0)
+  , opacity_(0)
+  , center_(center)
 {
 	init();
 }
@@ -29,7 +29,8 @@ Ripple::~Ripple()
 {
 }
 
-void Ripple::setRadius(qreal radius)
+void
+Ripple::setRadius(qreal radius)
 {
 	Q_ASSERT(overlay_);
 
@@ -40,7 +41,8 @@ void Ripple::setRadius(qreal radius)
 	overlay_->update();
 }
 
-void Ripple::setOpacity(qreal opacity)
+void
+Ripple::setOpacity(qreal opacity)
 {
 	Q_ASSERT(overlay_);
 
@@ -51,7 +53,8 @@ void Ripple::setOpacity(qreal opacity)
 	overlay_->update();
 }
 
-void Ripple::setColor(const QColor &color)
+void
+Ripple::setColor(const QColor &color)
 {
 	if (brush_.color() == color)
 		return;
@@ -62,7 +65,8 @@ void Ripple::setColor(const QColor &color)
 		overlay_->update();
 }
 
-void Ripple::setBrush(const QBrush &brush)
+void
+Ripple::setBrush(const QBrush &brush)
 {
 	brush_ = brush;
 
@@ -70,16 +74,16 @@ void Ripple::setBrush(const QBrush &brush)
 		overlay_->update();
 }
 
-void Ripple::destroy()
+void
+Ripple::destroy()
 {
 	Q_ASSERT(overlay_);
 
 	overlay_->removeRipple(this);
 }
 
-QPropertyAnimation *Ripple::animate(const QByteArray &property,
-				    const QEasingCurve &easing,
-				    int duration)
+QPropertyAnimation *
+Ripple::animate(const QByteArray &property, const QEasingCurve &easing, int duration)
 {
 	QPropertyAnimation *animation = new QPropertyAnimation;
 	animation->setTargetObject(this);
@@ -92,7 +96,8 @@ QPropertyAnimation *Ripple::animate(const QByteArray &property,
 	return animation;
 }
 
-void Ripple::init()
+void
+Ripple::init()
 {
 	setOpacityStartValue(0.5);
 	setOpacityEndValue(0);

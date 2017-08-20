@@ -24,7 +24,8 @@
 #include "Deserializable.h"
 #include "Sync.h"
 
-void SyncResponse::deserialize(const QJsonDocument &data)
+void
+SyncResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Sync response is not a JSON object");
@@ -41,7 +42,8 @@ void SyncResponse::deserialize(const QJsonDocument &data)
 	next_batch_ = object.value("next_batch").toString();
 }
 
-void Rooms::deserialize(const QJsonValue &data)
+void
+Rooms::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Rooms value is not a JSON object");
@@ -81,7 +83,8 @@ void Rooms::deserialize(const QJsonValue &data)
 	}
 }
 
-void JoinedRoom::deserialize(const QJsonValue &data)
+void
+JoinedRoom::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("JoinedRoom is not a JSON object");
@@ -112,7 +115,8 @@ void JoinedRoom::deserialize(const QJsonValue &data)
 	timeline_.deserialize(object.value("timeline"));
 }
 
-void Event::deserialize(const QJsonValue &data)
+void
+Event::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Event is not a JSON object");
@@ -152,7 +156,8 @@ void Event::deserialize(const QJsonValue &data)
 	origin_server_ts_ = object.value("origin_server_ts").toDouble();
 }
 
-void State::deserialize(const QJsonValue &data)
+void
+State::deserialize(const QJsonValue &data)
 {
 	if (!data.isArray())
 		throw DeserializationException("State is not a JSON array");
@@ -160,7 +165,8 @@ void State::deserialize(const QJsonValue &data)
 	events_ = data.toArray();
 }
 
-void Timeline::deserialize(const QJsonValue &data)
+void
+Timeline::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Timeline is not a JSON object");

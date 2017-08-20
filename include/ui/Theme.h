@@ -6,11 +6,7 @@
 
 namespace ui
 {
-enum class AvatarType {
-	Icon,
-	Image,
-	Letter
-};
+enum class AvatarType { Icon, Image, Letter };
 
 namespace sidebar
 {
@@ -23,38 +19,17 @@ const int FontSize = 16;
 // Default avatar size. Width and height.
 const int AvatarSize = 40;
 
-enum class ButtonPreset {
-	FlatPreset,
-	CheckablePreset
-};
+enum class ButtonPreset { FlatPreset, CheckablePreset };
 
-enum class RippleStyle {
-	CenteredRipple,
-	PositionedRipple,
-	NoRipple
-};
+enum class RippleStyle { CenteredRipple, PositionedRipple, NoRipple };
 
-enum class OverlayStyle {
-	NoOverlay,
-	TintedOverlay,
-	GrayOverlay
-};
+enum class OverlayStyle { NoOverlay, TintedOverlay, GrayOverlay };
 
-enum class Role {
-	Default,
-	Primary,
-	Secondary
-};
+enum class Role { Default, Primary, Secondary };
 
-enum class ButtonIconPlacement {
-	LeftIcon,
-	RightIcon
-};
+enum class ButtonIconPlacement { LeftIcon, RightIcon };
 
-enum class ProgressType {
-	DeterminateProgress,
-	IndeterminateProgress
-};
+enum class ProgressType { DeterminateProgress, IndeterminateProgress };
 
 enum class Color {
 	Black,
@@ -70,7 +45,7 @@ enum class Color {
 	Transparent
 };
 
-}  // namespace ui
+} // namespace ui
 
 class Theme : public QObject
 {

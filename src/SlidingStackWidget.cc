@@ -18,7 +18,7 @@
 #include "SlidingStackWidget.h"
 
 SlidingStackWidget::SlidingStackWidget(QWidget *parent)
-    : QStackedWidget(parent)
+  : QStackedWidget(parent)
 {
 	window_ = parent;
 
@@ -39,7 +39,8 @@ SlidingStackWidget::~SlidingStackWidget()
 {
 }
 
-void SlidingStackWidget::slideInNext()
+void
+SlidingStackWidget::slideInNext()
 {
 	int now = currentIndex();
 
@@ -47,7 +48,8 @@ void SlidingStackWidget::slideInNext()
 		slideInIndex(now + 1);
 }
 
-void SlidingStackWidget::slideInPrevious()
+void
+SlidingStackWidget::slideInPrevious()
 {
 	int now = currentIndex();
 
@@ -55,7 +57,8 @@ void SlidingStackWidget::slideInPrevious()
 		slideInIndex(now - 1);
 }
 
-void SlidingStackWidget::slideInIndex(int index, AnimationDirection direction)
+void
+SlidingStackWidget::slideInIndex(int index, AnimationDirection direction)
 {
 	// Take into consideration possible index overflow/undeflow.
 	if (index > count() - 1) {
@@ -69,7 +72,8 @@ void SlidingStackWidget::slideInIndex(int index, AnimationDirection direction)
 	slideInWidget(widget(index), direction);
 }
 
-void SlidingStackWidget::slideInWidget(QWidget *next_widget, AnimationDirection direction)
+void
+SlidingStackWidget::slideInWidget(QWidget *next_widget, AnimationDirection direction)
 {
 	// If an animation is currenlty executing we should wait for it to finish before
 	// another transition can start.
@@ -132,7 +136,8 @@ void SlidingStackWidget::slideInWidget(QWidget *next_widget, AnimationDirection 
 	animation_group->start();
 }
 
-void SlidingStackWidget::onAnimationFinished()
+void
+SlidingStackWidget::onAnimationFinished()
 {
 	setCurrentIndex(next_);
 
@@ -145,7 +150,8 @@ void SlidingStackWidget::onAnimationFinished()
 	emit animationFinished();
 }
 
-int SlidingStackWidget::getWidgetIndex(QWidget *widget)
+int
+SlidingStackWidget::getWidgetIndex(QWidget *widget)
 {
 	return indexOf(widget);
 }

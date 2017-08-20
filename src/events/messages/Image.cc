@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void Image::deserialize(const QJsonObject &object)
+void
+Image::deserialize(const QJsonObject &object)
 {
 	if (!object.contains("url"))
 		throw DeserializationException("messages::Image url key is missing");

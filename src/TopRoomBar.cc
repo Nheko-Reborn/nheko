@@ -21,8 +21,8 @@
 #include "TopRoomBar.h"
 
 TopRoomBar::TopRoomBar(QWidget *parent)
-    : QWidget(parent)
-    , buttonSize_{32}
+  : QWidget(parent)
+  , buttonSize_{ 32 }
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setMinimumSize(QSize(0, 65));
@@ -75,9 +75,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 	menu_ = new Menu(this);
 
 	toggleNotifications_ = new QAction(tr("Disable notifications"), this);
-	connect(toggleNotifications_, &QAction::triggered, this, [=]() {
-		roomSettings_->toggleNotifications();
-	});
+	connect(toggleNotifications_, &QAction::triggered, this, [=]() { roomSettings_->toggleNotifications(); });
 
 	menu_->addAction(toggleNotifications_);
 
@@ -88,14 +86,14 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 			toggleNotifications_->setText(tr("Enable notifications"));
 
 		auto pos = mapToGlobal(settingsBtn_->pos());
-		menu_->popup(QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(),
-				    pos.y() + buttonSize_));
+		menu_->popup(QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(), pos.y() + buttonSize_));
 	});
 
 	setLayout(top_layout_);
 }
 
-void TopRoomBar::updateRoomAvatarFromName(const QString &name)
+void
+TopRoomBar::updateRoomAvatarFromName(const QString &name)
 {
 	QChar letter = '?';
 
@@ -105,14 +103,16 @@ void TopRoomBar::updateRoomAvatarFromName(const QString &name)
 	avatar_->setLetter(letter);
 }
 
-void TopRoomBar::reset()
+void
+TopRoomBar::reset()
 {
 	name_label_->setText("");
 	topic_label_->setText("");
 	avatar_->setLetter(QChar('?'));
 }
 
-void TopRoomBar::paintEvent(QPaintEvent *event)
+void
+TopRoomBar::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 
@@ -123,7 +123,8 @@ void TopRoomBar::paintEvent(QPaintEvent *event)
 	style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }
 
-void TopRoomBar::setRoomSettings(QSharedPointer<RoomSettings> settings)
+void
+TopRoomBar::setRoomSettings(QSharedPointer<RoomSettings> settings)
 {
 	roomSettings_ = settings;
 }

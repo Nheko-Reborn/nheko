@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void Video::deserialize(const QJsonObject &object)
+void
+Video::deserialize(const QJsonObject &object)
 {
 	if (!object.contains("url"))
 		throw DeserializationException("messages::Video url key is missing");

@@ -23,7 +23,8 @@ private:
 	Theme *theme_;
 };
 
-inline ThemeManager &ThemeManager::instance()
+inline ThemeManager &
+ThemeManager::instance()
 {
 	static ThemeManager instance;
 	return instance;

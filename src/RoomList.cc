@@ -24,8 +24,8 @@
 #include "Sync.h"
 
 RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
-    : QWidget(parent)
-    , client_(client)
+  : QWidget(parent)
+  , client_(client)
 {
 	setStyleSheet("QWidget { border: none; }");
 
@@ -65,12 +65,14 @@ RoomList::~RoomList()
 {
 }
 
-void RoomList::clear()
+void
+RoomList::clear()
 {
 	rooms_.clear();
 }
 
-void RoomList::updateUnreadMessageCount(const QString &roomid, int count)
+void
+RoomList::updateUnreadMessageCount(const QString &roomid, int count)
 {
 	if (!rooms_.contains(roomid)) {
 		qWarning() << "UpdateUnreadMessageCount: Unknown roomid";
@@ -82,7 +84,8 @@ void RoomList::updateUnreadMessageCount(const QString &roomid, int count)
 	calculateUnreadMessageCount();
 }
 
-void RoomList::calculateUnreadMessageCount()
+void
+RoomList::calculateUnreadMessageCount()
 {
 	int total_unread_msgs = 0;
 
@@ -92,8 +95,9 @@ void RoomList::calculateUnreadMessageCount()
 	emit totalUnreadMessageCountUpdated(total_unread_msgs);
 }
 
-void RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-			       const QMap<QString, RoomState> &states)
+void
+RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
+			  const QMap<QString, RoomState> &states)
 {
 	rooms_.clear();
 
@@ -128,7 +132,8 @@ void RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>>
 	emit roomChanged(rooms_.firstKey());
 }
 
-void RoomList::sync(const QMap<QString, RoomState> &states)
+void
+RoomList::sync(const QMap<QString, RoomState> &states)
 {
 	for (auto it = states.constBegin(); it != states.constEnd(); it++) {
 		auto room_id = it.key();
@@ -150,7 +155,8 @@ void RoomList::sync(const QMap<QString, RoomState> &states)
 	}
 }
 
-void RoomList::highlightSelectedRoom(const QString &room_id)
+void
+RoomList::highlightSelectedRoom(const QString &room_id)
 {
 	emit roomChanged(room_id);
 
@@ -175,7 +181,8 @@ void RoomList::highlightSelectedRoom(const QString &room_id)
 	}
 }
 
-void RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
+void
+RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
 {
 	if (!rooms_.contains(roomid)) {
 		qWarning() << "Avatar update on non existent room" << roomid;
@@ -185,7 +192,8 @@ void RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
 	rooms_.value(roomid)->setAvatar(img.toImage());
 }
 
-void RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
+void
+RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
 {
 	if (!rooms_.contains(roomid)) {
 		qWarning() << "Description update on non existent room" << roomid << info.body;

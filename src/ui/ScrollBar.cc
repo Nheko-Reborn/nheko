@@ -22,8 +22,8 @@
 #include "ScrollBar.h"
 
 ScrollBar::ScrollBar(QScrollArea *area, QWidget *parent)
-    : QScrollBar(parent)
-    , area_{area}
+  : QScrollBar(parent)
+  , area_{ area }
 {
 	hideTimer_.setSingleShot(true);
 
@@ -33,7 +33,8 @@ ScrollBar::ScrollBar(QScrollArea *area, QWidget *parent)
 	setGraphicsEffect(eff);
 }
 
-void ScrollBar::fadeOut()
+void
+ScrollBar::fadeOut()
 {
 	isActive = false;
 
@@ -45,7 +46,8 @@ void ScrollBar::fadeOut()
 	anim->start(QPropertyAnimation::DeleteWhenStopped);
 }
 
-void ScrollBar::fadeIn()
+void
+ScrollBar::fadeIn()
 {
 	QPropertyAnimation *anim = new QPropertyAnimation(eff, "opacity");
 	anim->setDuration(AnimationDuration);
@@ -55,7 +57,8 @@ void ScrollBar::fadeIn()
 	anim->start(QPropertyAnimation::DeleteWhenStopped);
 }
 
-void ScrollBar::sliderChange(SliderChange change)
+void
+ScrollBar::sliderChange(SliderChange change)
 {
 	if (!isActive)
 		fadeIn();
@@ -67,7 +70,8 @@ void ScrollBar::sliderChange(SliderChange change)
 	QScrollBar::sliderChange(change);
 }
 
-void ScrollBar::paintEvent(QPaintEvent *)
+void
+ScrollBar::paintEvent(QPaintEvent *)
 {
 	if (!width() && !height()) {
 		hide();

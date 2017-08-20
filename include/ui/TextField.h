@@ -92,34 +92,40 @@ private:
 	qreal y_;
 };
 
-inline void TextFieldLabel::setColor(const QColor &color)
+inline void
+TextFieldLabel::setColor(const QColor &color)
 {
 	color_ = color;
 	update();
 }
 
-inline void TextFieldLabel::setOffset(const QPointF &pos)
+inline void
+TextFieldLabel::setOffset(const QPointF &pos)
 {
 	x_ = pos.x();
 	y_ = pos.y();
 	update();
 }
 
-inline void TextFieldLabel::setScale(qreal scale)
+inline void
+TextFieldLabel::setScale(qreal scale)
 {
 	scale_ = scale;
 	update();
 }
 
-inline QPointF TextFieldLabel::offset() const
+inline QPointF
+TextFieldLabel::offset() const
 {
 	return QPointF(x_, y_);
 }
-inline qreal TextFieldLabel::scale() const
+inline qreal
+TextFieldLabel::scale() const
 {
 	return scale_;
 }
-inline QColor TextFieldLabel::color() const
+inline QColor
+TextFieldLabel::color() const
 {
 	return color_;
 }
@@ -155,13 +161,15 @@ private:
 	qreal progress_;
 };
 
-inline void TextFieldStateMachine::setProgress(qreal progress)
+inline void
+TextFieldStateMachine::setProgress(qreal progress)
 {
 	progress_ = progress;
 	text_field_->update();
 }
 
-inline qreal TextFieldStateMachine::progress() const
+inline qreal
+TextFieldStateMachine::progress() const
 {
 	return progress_;
 }

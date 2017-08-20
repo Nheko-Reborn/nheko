@@ -8,7 +8,7 @@
 #include <QPropertyAnimation>
 
 TextField::TextField(QWidget *parent)
-    : QLineEdit(parent)
+  : QLineEdit(parent)
 {
 	// Get rid of the focus border on macOS.
 	setAttribute(Qt::WA_MacShowFocusRect, 0);
@@ -36,17 +36,20 @@ TextField::~TextField()
 {
 }
 
-void TextField::setBackgroundColor(const QColor &color)
+void
+TextField::setBackgroundColor(const QColor &color)
 {
 	background_color_ = color;
 }
 
-QColor TextField::backgroundColor() const
+QColor
+TextField::backgroundColor() const
 {
 	return background_color_;
 }
 
-void TextField::setShowLabel(bool value)
+void
+TextField::setShowLabel(bool value)
 {
 	if (show_label_ == value) {
 		return;
@@ -66,12 +69,14 @@ void TextField::setShowLabel(bool value)
 	}
 }
 
-bool TextField::hasLabel() const
+bool
+TextField::hasLabel() const
 {
 	return show_label_;
 }
 
-void TextField::setLabelFontSize(qreal size)
+void
+TextField::setLabelFontSize(qreal size)
 {
 	label_font_size_ = size;
 
@@ -83,30 +88,35 @@ void TextField::setLabelFontSize(qreal size)
 	}
 }
 
-qreal TextField::labelFontSize() const
+qreal
+TextField::labelFontSize() const
 {
 	return label_font_size_;
 }
 
-void TextField::setLabel(const QString &label)
+void
+TextField::setLabel(const QString &label)
 {
 	label_text_ = label;
 	setShowLabel(true);
 	label_->update();
 }
 
-QString TextField::label() const
+QString
+TextField::label() const
 {
 	return label_text_;
 }
 
-void TextField::setTextColor(const QColor &color)
+void
+TextField::setTextColor(const QColor &color)
 {
 	text_color_ = color;
 	setStyleSheet(QString("QLineEdit { color: %1; }").arg(color.name()));
 }
 
-QColor TextField::textColor() const
+QColor
+TextField::textColor() const
 {
 	if (!text_color_.isValid()) {
 		return QColor("black");
@@ -115,26 +125,30 @@ QColor TextField::textColor() const
 	return text_color_;
 }
 
-void TextField::setLabelColor(const QColor &color)
+void
+TextField::setLabelColor(const QColor &color)
 {
 	label_color_ = color;
 }
 
-QColor TextField::labelColor() const
+QColor
+TextField::labelColor() const
 {
 	if (!label_color_.isValid()) {
-		return QColor("#abb");  // TODO: Move this into Theme.h
+		return QColor("#abb"); // TODO: Move this into Theme.h
 	}
 
 	return label_color_;
 }
 
-void TextField::setInkColor(const QColor &color)
+void
+TextField::setInkColor(const QColor &color)
 {
 	ink_color_ = color;
 }
 
-QColor TextField::inkColor() const
+QColor
+TextField::inkColor() const
 {
 	if (!ink_color_.isValid()) {
 		return QColor("black");
@@ -143,12 +157,14 @@ QColor TextField::inkColor() const
 	return ink_color_;
 }
 
-void TextField::setUnderlineColor(const QColor &color)
+void
+TextField::setUnderlineColor(const QColor &color)
 {
 	underline_color_ = color;
 }
 
-QColor TextField::underlineColor() const
+QColor
+TextField::underlineColor() const
 {
 	if (!underline_color_.isValid()) {
 		return QColor("black");
@@ -157,7 +173,8 @@ QColor TextField::underlineColor() const
 	return underline_color_;
 }
 
-bool TextField::event(QEvent *event)
+bool
+TextField::event(QEvent *event)
 {
 	switch (event->type()) {
 	case QEvent::Resize:
@@ -173,7 +190,8 @@ bool TextField::event(QEvent *event)
 	return QLineEdit::event(event);
 }
 
-void TextField::paintEvent(QPaintEvent *event)
+void
+TextField::paintEvent(QPaintEvent *event)
 {
 	QLineEdit::paintEvent(event);
 
@@ -181,7 +199,7 @@ void TextField::paintEvent(QPaintEvent *event)
 
 	if (text().isEmpty()) {
 		painter.setOpacity(1 - state_machine_->progress());
-		//painter.fillRect(rect(), parentWidget()->palette().color(backgroundRole()));
+		// painter.fillRect(rect(), parentWidget()->palette().color(backgroundRole()));
 		painter.fillRect(rect(), backgroundColor());
 	}
 
@@ -210,7 +228,8 @@ void TextField::paintEvent(QPaintEvent *event)
 }
 
 TextFieldStateMachine::TextFieldStateMachine(TextField *parent)
-    : QStateMachine(parent), text_field_(parent)
+  : QStateMachine(parent)
+  , text_field_(parent)
 {
 	normal_state_ = new QState;
 	focused_state_ = new QState;
@@ -258,7 +277,8 @@ TextFieldStateMachine::~TextFieldStateMachine()
 {
 }
 
-void TextFieldStateMachine::setLabel(TextFieldLabel *label)
+void
+TextFieldStateMachine::setLabel(TextFieldLabel *label)
 {
 	if (label_) {
 		delete label_;
@@ -290,7 +310,8 @@ void TextFieldStateMachine::setLabel(TextFieldLabel *label)
 	setupProperties();
 }
 
-void TextFieldStateMachine::setupProperties()
+void
+TextFieldStateMachine::setupProperties()
 {
 	if (label_) {
 		const int m = text_field_->textMargins().top();
@@ -316,7 +337,8 @@ void TextFieldStateMachine::setupProperties()
 }
 
 TextFieldLabel::TextFieldLabel(TextField *parent)
-    : QWidget(parent), text_field_(parent)
+  : QWidget(parent)
+  , text_field_(parent)
 {
 	x_ = 0;
 	y_ = 26;
@@ -333,7 +355,8 @@ TextFieldLabel::~TextFieldLabel()
 {
 }
 
-void TextFieldLabel::paintEvent(QPaintEvent *)
+void
+TextFieldLabel::paintEvent(QPaintEvent *)
 {
 	if (!text_field_->hasLabel())
 		return;

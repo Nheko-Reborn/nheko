@@ -52,16 +52,18 @@ private:
 	VideoInfo info_;
 };
 
-inline QString Video::url() const
+inline QString
+Video::url() const
 {
 	return url_;
 }
 
-inline VideoInfo Video::info() const
+inline VideoInfo
+Video::info() const
 {
 	return info_;
 }
 
-}  // namespace messages
-}  // namespace events
-}  // namespace matrix
+} // namespace messages
+} // namespace events
+} // namespace matrix

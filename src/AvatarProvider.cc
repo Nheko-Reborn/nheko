@@ -23,14 +23,16 @@ QMap<QString, QImage> AvatarProvider::userAvatars_;
 QMap<QString, QUrl> AvatarProvider::avatarUrls_;
 QMap<QString, QList<TimelineItem *>> AvatarProvider::toBeResolved_;
 
-void AvatarProvider::init(QSharedPointer<MatrixClient> client)
+void
+AvatarProvider::init(QSharedPointer<MatrixClient> client)
 {
 	client_ = client;
 
 	connect(client_.data(), &MatrixClient::userAvatarRetrieved, &AvatarProvider::updateAvatar);
 }
 
-void AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
+void
+AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
 {
 	if (toBeResolved_.contains(uid)) {
 		auto items = toBeResolved_[uid];
@@ -45,7 +47,8 @@ void AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
 	userAvatars_.insert(uid, img);
 }
 
-void AvatarProvider::resolve(const QString &userId, TimelineItem *item)
+void
+AvatarProvider::resolve(const QString &userId, TimelineItem *item)
 {
 	if (userAvatars_.contains(userId)) {
 		auto img = userAvatars_[userId];
@@ -70,12 +73,14 @@ void AvatarProvider::resolve(const QString &userId, TimelineItem *item)
 	}
 }
 
-void AvatarProvider::setAvatarUrl(const QString &userId, const QUrl &url)
+void
+AvatarProvider::setAvatarUrl(const QString &userId, const QUrl &url)
 {
 	avatarUrls_.insert(userId, url);
 }
 
-void AvatarProvider::clear()
+void
+AvatarProvider::clear()
 {
 	userAvatars_.clear();
 	avatarUrls_.clear();

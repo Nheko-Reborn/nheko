@@ -17,7 +17,8 @@
 
 #include "RoomMessages.h"
 
-void RoomMessages::deserialize(const QJsonDocument &data)
+void
+RoomMessages::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("response is not a JSON object");

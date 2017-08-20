@@ -27,19 +27,18 @@
 #include "FlatButton.h"
 
 EmojiPanel::EmojiPanel(QWidget *parent)
-    : QWidget(parent)
-    , shadowMargin_{2}
-    , width_{370}
-    , height_{350}
-    , animationDuration_{100}
-    , categoryIconSize_{20}
+  : QWidget(parent)
+  , shadowMargin_{ 2 }
+  , width_{ 370 }
+  , height_{ 350 }
+  , animationDuration_{ 100 }
+  , categoryIconSize_{ 20 }
 {
-	setStyleSheet(
-		"QWidget {background: #f8fbfe; color: #e8e8e8; border: none;}"
-		"QScrollBar:vertical { background-color: #f8fbfe; width: 8px; margin: 0px 2px 0 2px; }"
-		"QScrollBar::handle:vertical { background-color: #d6dde3; min-height: 20px; }"
-		"QScrollBar::add-line:vertical { border: none; background: none; }"
-		"QScrollBar::sub-line:vertical { border: none; background: none; }");
+	setStyleSheet("QWidget {background: #f8fbfe; color: #e8e8e8; border: none;}"
+		      "QScrollBar:vertical { background-color: #f8fbfe; width: 8px; margin: 0px 2px 0 2px; }"
+		      "QScrollBar::handle:vertical { background-color: #d6dde3; min-height: 20px; }"
+		      "QScrollBar::add-line:vertical { border: none; background: none; }"
+		      "QScrollBar::sub-line:vertical { border: none; background: none; }");
 
 	setAttribute(Qt::WA_TranslucentBackground, true);
 	setAttribute(Qt::WA_ShowWithoutActivating, true);
@@ -160,9 +159,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 	animation_->setEndValue(0);
 
 	connect(peopleEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(peopleCategory, &QPushButton::clicked, [this, peopleEmoji]() {
-		this->showEmojiCategory(peopleEmoji);
-	});
+	connect(peopleCategory, &QPushButton::clicked, [this, peopleEmoji]() { this->showEmojiCategory(peopleEmoji); });
 
 	connect(natureEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
 	connect(natureCategory_, &QPushButton::clicked, [this, natureEmoji]() {
@@ -170,9 +167,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 	});
 
 	connect(foodEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(foodCategory_, &QPushButton::clicked, [this, foodEmoji]() {
-		this->showEmojiCategory(foodEmoji);
-	});
+	connect(foodCategory_, &QPushButton::clicked, [this, foodEmoji]() { this->showEmojiCategory(foodEmoji); });
 
 	connect(activityEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
 	connect(activityCategory, &QPushButton::clicked, [this, activityEmoji]() {
@@ -180,9 +175,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 	});
 
 	connect(travelEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(travelCategory, &QPushButton::clicked, [this, travelEmoji]() {
-		this->showEmojiCategory(travelEmoji);
-	});
+	connect(travelCategory, &QPushButton::clicked, [this, travelEmoji]() { this->showEmojiCategory(travelEmoji); });
 
 	connect(objectsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
 	connect(objectsCategory, &QPushButton::clicked, [this, objectsEmoji]() {
@@ -195,9 +188,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 	});
 
 	connect(flagsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(flagsCategory, &QPushButton::clicked, [this, flagsEmoji]() {
-		this->showEmojiCategory(flagsEmoji);
-	});
+	connect(flagsCategory, &QPushButton::clicked, [this, flagsEmoji]() { this->showEmojiCategory(flagsEmoji); });
 
 	connect(animation_, &QAbstractAnimation::finished, [this]() {
 		if (animation_->direction() == QAbstractAnimation::Forward)
@@ -205,7 +196,8 @@ EmojiPanel::EmojiPanel(QWidget *parent)
 	});
 }
 
-void EmojiPanel::showEmojiCategory(const EmojiCategory *category)
+void
+EmojiPanel::showEmojiCategory(const EmojiCategory *category)
 {
 	auto posToGo = category->mapToParent(QPoint()).y();
 	auto current = scrollArea_->verticalScrollBar()->value();
@@ -225,14 +217,16 @@ void EmojiPanel::showEmojiCategory(const EmojiCategory *category)
 	this->scrollArea_->ensureVisible(0, posToGo, 0, 0);
 }
 
-void EmojiPanel::leaveEvent(QEvent *event)
+void
+EmojiPanel::leaveEvent(QEvent *event)
 {
 	Q_UNUSED(event);
 
 	fadeOut();
 }
 
-void EmojiPanel::paintEvent(QPaintEvent *event)
+void
+EmojiPanel::paintEvent(QPaintEvent *event)
 {
 	QPainter p(this);
 	DropShadow::draw(p,
@@ -249,13 +243,15 @@ void EmojiPanel::paintEvent(QPaintEvent *event)
 	QWidget::paintEvent(event);
 }
 
-void EmojiPanel::fadeOut()
+void
+EmojiPanel::fadeOut()
 {
 	animation_->setDirection(QAbstractAnimation::Forward);
 	animation_->start();
 }
 
-void EmojiPanel::fadeIn()
+void
+EmojiPanel::fadeIn()
 {
 	animation_->setDirection(QAbstractAnimation::Backward);
 	animation_->start();

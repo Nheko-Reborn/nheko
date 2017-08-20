@@ -51,16 +51,18 @@ private:
 	ImageInfo info_;
 };
 
-inline QString Image::url() const
+inline QString
+Image::url() const
 {
 	return url_;
 }
 
-inline ImageInfo Image::info() const
+inline ImageInfo
+Image::info() const
 {
 	return info_;
 }
 
-}  // namespace messages
-}  // namespace events
-}  // namespace matrix
+} // namespace messages
+} // namespace events
+} // namespace matrix

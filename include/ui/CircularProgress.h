@@ -80,35 +80,41 @@ private:
 	int angle_;
 };
 
-inline void CircularProgressDelegate::setDashOffset(qreal offset)
+inline void
+CircularProgressDelegate::setDashOffset(qreal offset)
 {
 	dash_offset_ = offset;
 	progress_->update();
 }
 
-inline void CircularProgressDelegate::setDashLength(qreal length)
+inline void
+CircularProgressDelegate::setDashLength(qreal length)
 {
 	dash_length_ = length;
 	progress_->update();
 }
 
-inline void CircularProgressDelegate::setAngle(int angle)
+inline void
+CircularProgressDelegate::setAngle(int angle)
 {
 	angle_ = angle;
 	progress_->update();
 }
 
-inline qreal CircularProgressDelegate::dashOffset() const
+inline qreal
+CircularProgressDelegate::dashOffset() const
 {
 	return dash_offset_;
 }
 
-inline qreal CircularProgressDelegate::dashLength() const
+inline qreal
+CircularProgressDelegate::dashLength() const
 {
 	return dash_length_;
 }
 
-inline int CircularProgressDelegate::angle() const
+inline int
+CircularProgressDelegate::angle() const
 {
 	return angle_;
 }

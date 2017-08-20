@@ -22,11 +22,12 @@
 #include "Deserializable.h"
 
 DeserializationException::DeserializationException(const std::string &msg)
-    : msg_(msg)
+  : msg_(msg)
 {
 }
 
-const char *DeserializationException::what() const noexcept
+const char *
+DeserializationException::what() const noexcept
 {
 	return msg_.c_str();
 }

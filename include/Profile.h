@@ -35,12 +35,14 @@ private:
 	QString display_name_;
 };
 
-inline QUrl ProfileResponse::getAvatarUrl()
+inline QUrl
+ProfileResponse::getAvatarUrl()
 {
 	return avatar_url_;
 }
 
-inline QString ProfileResponse::getDisplayName()
+inline QString
+ProfileResponse::getDisplayName()
 {
 	return display_name_;
 }

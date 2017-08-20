@@ -11,7 +11,8 @@
 #include "RippleOverlay.h"
 #include "ThemeManager.h"
 
-void FlatButton::init()
+void
+FlatButton::init()
 {
 	ripple_overlay_ = new RippleOverlay(this);
 	state_machine_ = new FlatButtonStateMachine(this);
@@ -23,7 +24,7 @@ void FlatButton::init()
 	fixed_ripple_radius_ = 64;
 	corner_radius_ = 3;
 	base_opacity_ = 0.13;
-	font_size_ = 10;  // 10.5;
+	font_size_ = 10; // 10.5;
 	use_fixed_ripple_radius_ = false;
 
 	setStyle(&ThemeManager::instance());
@@ -42,21 +43,21 @@ void FlatButton::init()
 }
 
 FlatButton::FlatButton(QWidget *parent, ui::ButtonPreset preset)
-    : QPushButton(parent)
+  : QPushButton(parent)
 {
 	init();
 	applyPreset(preset);
 }
 
 FlatButton::FlatButton(const QString &text, QWidget *parent, ui::ButtonPreset preset)
-    : QPushButton(text, parent)
+  : QPushButton(text, parent)
 {
 	init();
 	applyPreset(preset);
 }
 
 FlatButton::FlatButton(const QString &text, ui::Role role, QWidget *parent, ui::ButtonPreset preset)
-    : QPushButton(text, parent)
+  : QPushButton(text, parent)
 {
 	init();
 	applyPreset(preset);
@@ -67,7 +68,8 @@ FlatButton::~FlatButton()
 {
 }
 
-void FlatButton::applyPreset(ui::ButtonPreset preset)
+void
+FlatButton::applyPreset(ui::ButtonPreset preset)
 {
 	switch (preset) {
 	case ui::ButtonPreset::FlatPreset:
@@ -82,23 +84,27 @@ void FlatButton::applyPreset(ui::ButtonPreset preset)
 	}
 }
 
-void FlatButton::setRole(ui::Role role)
+void
+FlatButton::setRole(ui::Role role)
 {
 	role_ = role;
 	state_machine_->setupProperties();
 }
 
-ui::Role FlatButton::role() const
+ui::Role
+FlatButton::role() const
 {
 	return role_;
 }
 
-void FlatButton::setForegroundColor(const QColor &color)
+void
+FlatButton::setForegroundColor(const QColor &color)
 {
 	foreground_color_ = color;
 }
 
-QColor FlatButton::foregroundColor() const
+QColor
+FlatButton::foregroundColor() const
 {
 	if (!foreground_color_.isValid()) {
 		if (bg_mode_ == Qt::OpaqueMode) {
@@ -119,12 +125,14 @@ QColor FlatButton::foregroundColor() const
 	return foreground_color_;
 }
 
-void FlatButton::setBackgroundColor(const QColor &color)
+void
+FlatButton::setBackgroundColor(const QColor &color)
 {
 	background_color_ = color;
 }
 
-QColor FlatButton::backgroundColor() const
+QColor
+FlatButton::backgroundColor() const
 {
 	if (!background_color_.isValid()) {
 		switch (role_) {
@@ -141,13 +149,15 @@ QColor FlatButton::backgroundColor() const
 	return background_color_;
 }
 
-void FlatButton::setOverlayColor(const QColor &color)
+void
+FlatButton::setOverlayColor(const QColor &color)
 {
 	overlay_color_ = color;
 	setOverlayStyle(ui::OverlayStyle::TintedOverlay);
 }
 
-QColor FlatButton::overlayColor() const
+QColor
+FlatButton::overlayColor() const
 {
 	if (!overlay_color_.isValid()) {
 		return foregroundColor();
@@ -156,12 +166,14 @@ QColor FlatButton::overlayColor() const
 	return overlay_color_;
 }
 
-void FlatButton::setDisabledForegroundColor(const QColor &color)
+void
+FlatButton::setDisabledForegroundColor(const QColor &color)
 {
 	disabled_color_ = color;
 }
 
-QColor FlatButton::disabledForegroundColor() const
+QColor
+FlatButton::disabledForegroundColor() const
 {
 	if (!disabled_color_.isValid()) {
 		return ThemeManager::instance().themeColor("FadedWhite");
@@ -170,12 +182,14 @@ QColor FlatButton::disabledForegroundColor() const
 	return disabled_color_;
 }
 
-void FlatButton::setDisabledBackgroundColor(const QColor &color)
+void
+FlatButton::setDisabledBackgroundColor(const QColor &color)
 {
 	disabled_background_color_ = color;
 }
 
-QColor FlatButton::disabledBackgroundColor() const
+QColor
+FlatButton::disabledBackgroundColor() const
 {
 	if (!disabled_background_color_.isValid()) {
 		return ThemeManager::instance().themeColor("FadedWhite");
@@ -184,7 +198,8 @@ QColor FlatButton::disabledBackgroundColor() const
 	return disabled_background_color_;
 }
 
-void FlatButton::setFontSize(qreal size)
+void
+FlatButton::setFontSize(qreal size)
 {
 	font_size_ = size;
 
@@ -195,78 +210,92 @@ void FlatButton::setFontSize(qreal size)
 	update();
 }
 
-qreal FlatButton::fontSize() const
+qreal
+FlatButton::fontSize() const
 {
 	return font_size_;
 }
 
-void FlatButton::setOverlayStyle(ui::OverlayStyle style)
+void
+FlatButton::setOverlayStyle(ui::OverlayStyle style)
 {
 	overlay_style_ = style;
 	update();
 }
 
-ui::OverlayStyle FlatButton::overlayStyle() const
+ui::OverlayStyle
+FlatButton::overlayStyle() const
 {
 	return overlay_style_;
 }
 
-void FlatButton::setRippleStyle(ui::RippleStyle style)
+void
+FlatButton::setRippleStyle(ui::RippleStyle style)
 {
 	ripple_style_ = style;
 }
 
-ui::RippleStyle FlatButton::rippleStyle() const
+ui::RippleStyle
+FlatButton::rippleStyle() const
 {
 	return ripple_style_;
 }
 
-void FlatButton::setIconPlacement(ui::ButtonIconPlacement placement)
+void
+FlatButton::setIconPlacement(ui::ButtonIconPlacement placement)
 {
 	icon_placement_ = placement;
 	update();
 }
 
-ui::ButtonIconPlacement FlatButton::iconPlacement() const
+ui::ButtonIconPlacement
+FlatButton::iconPlacement() const
 {
 	return icon_placement_;
 }
 
-void FlatButton::setCornerRadius(qreal radius)
+void
+FlatButton::setCornerRadius(qreal radius)
 {
 	corner_radius_ = radius;
 	updateClipPath();
 	update();
 }
 
-qreal FlatButton::cornerRadius() const
+qreal
+FlatButton::cornerRadius() const
 {
 	return corner_radius_;
 }
 
-void FlatButton::setBackgroundMode(Qt::BGMode mode)
+void
+FlatButton::setBackgroundMode(Qt::BGMode mode)
 {
 	bg_mode_ = mode;
 	state_machine_->setupProperties();
 }
 
-Qt::BGMode FlatButton::backgroundMode() const
+Qt::BGMode
+FlatButton::backgroundMode() const
 {
 	return bg_mode_;
 }
 
-void FlatButton::setBaseOpacity(qreal opacity)
+void
+FlatButton::setBaseOpacity(qreal opacity)
 {
 	base_opacity_ = opacity;
 	state_machine_->setupProperties();
 }
 
-qreal FlatButton::baseOpacity() const
+qreal
+FlatButton::baseOpacity() const
 {
 	return base_opacity_;
 }
 
-void FlatButton::setCheckable(bool value)
+void
+FlatButton::setCheckable(bool value)
 {
 	state_machine_->updateCheckedStatus();
 	state_machine_->setCheckedOverlayProgress(0);
@@ -274,23 +303,27 @@ void FlatButton::setCheckable(bool value)
 	QPushButton::setCheckable(value);
 }
 
-void FlatButton::setHasFixedRippleRadius(bool value)
+void
+FlatButton::setHasFixedRippleRadius(bool value)
 {
 	use_fixed_ripple_radius_ = value;
 }
 
-bool FlatButton::hasFixedRippleRadius() const
+bool
+FlatButton::hasFixedRippleRadius() const
 {
 	return use_fixed_ripple_radius_;
 }
 
-void FlatButton::setFixedRippleRadius(qreal radius)
+void
+FlatButton::setFixedRippleRadius(qreal radius)
 {
 	fixed_ripple_radius_ = radius;
 	setHasFixedRippleRadius(true);
 }
 
-QSize FlatButton::sizeHint() const
+QSize
+FlatButton::sizeHint() const
 {
 	ensurePolished();
 
@@ -307,13 +340,15 @@ QSize FlatButton::sizeHint() const
 	return QSize(w, 20 + h);
 }
 
-void FlatButton::checkStateSet()
+void
+FlatButton::checkStateSet()
 {
 	state_machine_->updateCheckedStatus();
 	QPushButton::checkStateSet();
 }
 
-void FlatButton::mousePressEvent(QMouseEvent *event)
+void
+FlatButton::mousePressEvent(QMouseEvent *event)
 {
 	if (ui::RippleStyle::NoRipple != ripple_style_) {
 		QPoint pos;
@@ -345,19 +380,22 @@ void FlatButton::mousePressEvent(QMouseEvent *event)
 	QPushButton::mousePressEvent(event);
 }
 
-void FlatButton::mouseReleaseEvent(QMouseEvent *event)
+void
+FlatButton::mouseReleaseEvent(QMouseEvent *event)
 {
 	QPushButton::mouseReleaseEvent(event);
 	state_machine_->updateCheckedStatus();
 }
 
-void FlatButton::resizeEvent(QResizeEvent *event)
+void
+FlatButton::resizeEvent(QResizeEvent *event)
 {
 	QPushButton::resizeEvent(event);
 	updateClipPath();
 }
 
-void FlatButton::paintEvent(QPaintEvent *event)
+void
+FlatButton::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event)
 
@@ -382,7 +420,8 @@ void FlatButton::paintEvent(QPaintEvent *event)
 	paintForeground(&painter);
 }
 
-void FlatButton::paintBackground(QPainter *painter)
+void
+FlatButton::paintBackground(QPainter *painter)
 {
 	const qreal overlayOpacity = state_machine_->overlayOpacity();
 	const qreal checkedProgress = state_machine_->checkedOverlayProgress();
@@ -436,7 +475,8 @@ void FlatButton::paintBackground(QPainter *painter)
 
 #define COLOR_INTERPOLATE(CH) (1 - progress) * source.CH() + progress *dest.CH()
 
-void FlatButton::paintForeground(QPainter *painter)
+void
+FlatButton::paintForeground(QPainter *painter)
 {
 	if (isEnabled()) {
 		painter->setPen(foregroundColor());
@@ -444,8 +484,7 @@ void FlatButton::paintForeground(QPainter *painter)
 
 		if (isCheckable() && progress > 0) {
 			QColor source = foregroundColor();
-			QColor dest = Qt::TransparentMode == bg_mode_ ? Qt::white
-								      : backgroundColor();
+			QColor dest = Qt::TransparentMode == bg_mode_ ? Qt::white : backgroundColor();
 			if (qFuzzyCompare(1, progress)) {
 				painter->setPen(dest);
 			} else {
@@ -488,7 +527,8 @@ void FlatButton::paintForeground(QPainter *painter)
 	painter->drawPixmap(iconGeometry, pixmap);
 }
 
-void FlatButton::updateClipPath()
+void
+FlatButton::updateClipPath()
 {
 	const qreal radius = corner_radius_;
 
@@ -498,21 +538,21 @@ void FlatButton::updateClipPath()
 }
 
 FlatButtonStateMachine::FlatButtonStateMachine(FlatButton *parent)
-    : QStateMachine(parent)
-    , button_(parent)
-    , top_level_state_(new QState(QState::ParallelStates))
-    , config_state_(new QState(top_level_state_))
-    , checkable_state_(new QState(top_level_state_))
-    , checked_state_(new QState(checkable_state_))
-    , unchecked_state_(new QState(checkable_state_))
-    , neutral_state_(new QState(config_state_))
-    , neutral_focused_state_(new QState(config_state_))
-    , hovered_state_(new QState(config_state_))
-    , hovered_focused_state_(new QState(config_state_))
-    , pressed_state_(new QState(config_state_))
-    , overlay_opacity_(0)
-    , checked_overlay_progress_(parent->isChecked() ? 1 : 0)
-    , was_checked_(false)
+  : QStateMachine(parent)
+  , button_(parent)
+  , top_level_state_(new QState(QState::ParallelStates))
+  , config_state_(new QState(top_level_state_))
+  , checkable_state_(new QState(top_level_state_))
+  , checked_state_(new QState(checkable_state_))
+  , unchecked_state_(new QState(checkable_state_))
+  , neutral_state_(new QState(config_state_))
+  , neutral_focused_state_(new QState(config_state_))
+  , hovered_state_(new QState(config_state_))
+  , hovered_focused_state_(new QState(config_state_))
+  , pressed_state_(new QState(config_state_))
+  , overlay_opacity_(0)
+  , checked_overlay_progress_(parent->isChecked() ? 1 : 0)
+  , was_checked_(false)
 {
 	Q_ASSERT(parent);
 
@@ -522,8 +562,7 @@ FlatButtonStateMachine::FlatButtonStateMachine(FlatButton *parent)
 	addState(top_level_state_);
 	setInitialState(top_level_state_);
 
-	checkable_state_->setInitialState(parent->isChecked() ? checked_state_
-							      : unchecked_state_);
+	checkable_state_->setInitialState(parent->isChecked() ? checked_state_ : unchecked_state_);
 	QSignalTransition *transition;
 	QPropertyAnimation *animation;
 
@@ -560,24 +599,28 @@ FlatButtonStateMachine::~FlatButtonStateMachine()
 {
 }
 
-void FlatButtonStateMachine::setOverlayOpacity(qreal opacity)
+void
+FlatButtonStateMachine::setOverlayOpacity(qreal opacity)
 {
 	overlay_opacity_ = opacity;
 	button_->update();
 }
 
-void FlatButtonStateMachine::setCheckedOverlayProgress(qreal opacity)
+void
+FlatButtonStateMachine::setCheckedOverlayProgress(qreal opacity)
 {
 	checked_overlay_progress_ = opacity;
 	button_->update();
 }
 
-void FlatButtonStateMachine::startAnimations()
+void
+FlatButtonStateMachine::startAnimations()
 {
 	start();
 }
 
-void FlatButtonStateMachine::setupProperties()
+void
+FlatButtonStateMachine::setupProperties()
 {
 	QColor overlayColor;
 
@@ -600,7 +643,8 @@ void FlatButtonStateMachine::setupProperties()
 	button_->update();
 }
 
-void FlatButtonStateMachine::updateCheckedStatus()
+void
+FlatButtonStateMachine::updateCheckedStatus()
 {
 	const bool checked = button_->isChecked();
 	if (was_checked_ != checked) {
@@ -613,8 +657,8 @@ void FlatButtonStateMachine::updateCheckedStatus()
 	}
 }
 
-bool FlatButtonStateMachine::eventFilter(QObject *watched,
-					 QEvent *event)
+bool
+FlatButtonStateMachine::eventFilter(QObject *watched, QEvent *event)
 {
 	if (QEvent::FocusIn == event->type()) {
 		QFocusEvent *focusEvent = static_cast<QFocusEvent *>(event);
@@ -627,25 +671,20 @@ bool FlatButtonStateMachine::eventFilter(QObject *watched,
 	return QStateMachine::eventFilter(watched, event);
 }
 
-void FlatButtonStateMachine::addTransition(QObject *object,
-					   const char *signal,
-					   QState *fromState,
-					   QState *toState)
+void
+FlatButtonStateMachine::addTransition(QObject *object, const char *signal, QState *fromState, QState *toState)
 {
 	addTransition(new QSignalTransition(object, signal), fromState, toState);
 }
 
-void FlatButtonStateMachine::addTransition(QObject *object,
-					   QEvent::Type eventType,
-					   QState *fromState,
-					   QState *toState)
+void
+FlatButtonStateMachine::addTransition(QObject *object, QEvent::Type eventType, QState *fromState, QState *toState)
 {
 	addTransition(new QEventTransition(object, eventType), fromState, toState);
 }
 
-void FlatButtonStateMachine::addTransition(QAbstractTransition *transition,
-					   QState *fromState,
-					   QState *toState)
+void
+FlatButtonStateMachine::addTransition(QAbstractTransition *transition, QState *fromState, QState *toState)
 {
 	transition->setTargetState(toState);
 

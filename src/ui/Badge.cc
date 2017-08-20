@@ -3,20 +3,20 @@
 #include "Badge.h"
 
 Badge::Badge(QWidget *parent)
-    : OverlayWidget(parent)
+  : OverlayWidget(parent)
 {
 	init();
 }
 
 Badge::Badge(const QIcon &icon, QWidget *parent)
-    : OverlayWidget(parent)
+  : OverlayWidget(parent)
 {
 	init();
 	setIcon(icon);
 }
 
 Badge::Badge(const QString &text, QWidget *parent)
-    : OverlayWidget(parent)
+  : OverlayWidget(parent)
 {
 	init();
 	setText(text);
@@ -26,7 +26,8 @@ Badge::~Badge()
 {
 }
 
-void Badge::init()
+void
+Badge::init()
 {
 	x_ = 0;
 	y_ = 0;
@@ -44,38 +45,45 @@ void Badge::init()
 	setText("");
 }
 
-QString Badge::text() const
+QString
+Badge::text() const
 {
 	return text_;
 }
 
-QIcon Badge::icon() const
+QIcon
+Badge::icon() const
 {
 	return icon_;
 }
 
-QSize Badge::sizeHint() const
+QSize
+Badge::sizeHint() const
 {
 	const int d = diameter();
 	return QSize(d + 4, d + 4);
 }
 
-qreal Badge::relativeYPosition() const
+qreal
+Badge::relativeYPosition() const
 {
 	return y_;
 }
 
-qreal Badge::relativeXPosition() const
+qreal
+Badge::relativeXPosition() const
 {
 	return x_;
 }
 
-QPointF Badge::relativePosition() const
+QPointF
+Badge::relativePosition() const
 {
 	return QPointF(x_, y_);
 }
 
-QColor Badge::backgroundColor() const
+QColor
+Badge::backgroundColor() const
 {
 	if (!background_color_.isValid())
 		return QColor("black");
@@ -83,7 +91,8 @@ QColor Badge::backgroundColor() const
 	return background_color_;
 }
 
-QColor Badge::textColor() const
+QColor
+Badge::textColor() const
 {
 	if (!text_color_.isValid())
 		return QColor("white");
@@ -91,47 +100,55 @@ QColor Badge::textColor() const
 	return text_color_;
 }
 
-void Badge::setTextColor(const QColor &color)
+void
+Badge::setTextColor(const QColor &color)
 {
 	text_color_ = color;
 }
 
-void Badge::setBackgroundColor(const QColor &color)
+void
+Badge::setBackgroundColor(const QColor &color)
 {
 	background_color_ = color;
 }
 
-void Badge::setRelativePosition(const QPointF &pos)
+void
+Badge::setRelativePosition(const QPointF &pos)
 {
 	setRelativePosition(pos.x(), pos.y());
 }
 
-void Badge::setRelativePosition(qreal x, qreal y)
+void
+Badge::setRelativePosition(qreal x, qreal y)
 {
 	x_ = x;
 	y_ = y;
 	update();
 }
 
-void Badge::setRelativeXPosition(qreal x)
+void
+Badge::setRelativeXPosition(qreal x)
 {
 	x_ = x;
 	update();
 }
 
-void Badge::setRelativeYPosition(qreal y)
+void
+Badge::setRelativeYPosition(qreal y)
 {
 	y_ = y;
 	update();
 }
 
-void Badge::setIcon(const QIcon &icon)
+void
+Badge::setIcon(const QIcon &icon)
 {
 	icon_ = icon;
 	update();
 }
 
-void Badge::setText(const QString &text)
+void
+Badge::setText(const QString &text)
 {
 	text_ = text;
 
@@ -143,7 +160,8 @@ void Badge::setText(const QString &text)
 	update();
 }
 
-void Badge::setDiameter(int diameter)
+void
+Badge::setDiameter(int diameter)
 {
 	if (diameter > 0) {
 		diameter_ = diameter;
@@ -151,7 +169,8 @@ void Badge::setDiameter(int diameter)
 	}
 }
 
-void Badge::paintEvent(QPaintEvent *)
+void
+Badge::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
@@ -193,7 +212,8 @@ void Badge::paintEvent(QPaintEvent *)
 	}
 }
 
-int Badge::diameter() const
+int
+Badge::diameter() const
 {
 	if (icon_.isNull()) {
 		return qMax(size_.width(), size_.height()) + padding_;

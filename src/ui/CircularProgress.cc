@@ -7,11 +7,11 @@
 #include "Theme.h"
 
 CircularProgress::CircularProgress(QWidget *parent)
-    : QProgressBar{parent}
-    , progress_type_{ui::ProgressType::IndeterminateProgress}
-    , width_{6.25}
-    , size_{64}
-    , duration_{3050}
+  : QProgressBar{ parent }
+  , progress_type_{ ui::ProgressType::IndeterminateProgress }
+  , width_{ 6.25 }
+  , size_{ 64 }
+  , duration_{ 3050 }
 {
 	delegate_ = new CircularProgressDelegate(this);
 
@@ -56,47 +56,55 @@ CircularProgress::CircularProgress(QWidget *parent)
 	group->start();
 }
 
-void CircularProgress::setProgressType(ui::ProgressType type)
+void
+CircularProgress::setProgressType(ui::ProgressType type)
 {
 	progress_type_ = type;
 	update();
 }
 
-void CircularProgress::setLineWidth(qreal width)
+void
+CircularProgress::setLineWidth(qreal width)
 {
 	width_ = width;
 	update();
 	updateGeometry();
 }
 
-void CircularProgress::setSize(int size)
+void
+CircularProgress::setSize(int size)
 {
 	size_ = size;
 	update();
 	updateGeometry();
 }
 
-ui::ProgressType CircularProgress::progressType() const
+ui::ProgressType
+CircularProgress::progressType() const
 {
 	return progress_type_;
 }
 
-qreal CircularProgress::lineWidth() const
+qreal
+CircularProgress::lineWidth() const
 {
 	return width_;
 }
 
-int CircularProgress::size() const
+int
+CircularProgress::size() const
 {
 	return size_;
 }
 
-void CircularProgress::setColor(const QColor &color)
+void
+CircularProgress::setColor(const QColor &color)
 {
 	color_ = color;
 }
 
-QColor CircularProgress::color() const
+QColor
+CircularProgress::color() const
 {
 	if (!color_.isValid()) {
 		return QColor("red");
@@ -105,13 +113,15 @@ QColor CircularProgress::color() const
 	return color_;
 }
 
-QSize CircularProgress::sizeHint() const
+QSize
+CircularProgress::sizeHint() const
 {
 	const qreal s = size_ + width_ + 8;
 	return QSize(s, s);
 }
 
-void CircularProgress::paintEvent(QPaintEvent *event)
+void
+CircularProgress::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 
@@ -177,11 +187,11 @@ CircularProgress::~CircularProgress()
 }
 
 CircularProgressDelegate::CircularProgressDelegate(CircularProgress *parent)
-    : QObject(parent)
-    , progress_(parent)
-    , dash_offset_(0)
-    , dash_length_(89)
-    , angle_(0)
+  : QObject(parent)
+  , progress_(parent)
+  , dash_offset_(0)
+  , dash_length_(89)
+  , angle_(0)
 {
 	Q_ASSERT(parent);
 }

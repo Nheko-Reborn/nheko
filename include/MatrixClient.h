@@ -136,32 +136,38 @@ private:
 	QString next_batch_;
 };
 
-inline QUrl MatrixClient::getHomeServer()
+inline QUrl
+MatrixClient::getHomeServer()
 {
 	return server_;
 }
 
-inline int MatrixClient::transactionId()
+inline int
+MatrixClient::transactionId()
 {
 	return txn_id_;
 }
 
-inline void MatrixClient::setServer(const QString &server)
+inline void
+MatrixClient::setServer(const QString &server)
 {
 	server_ = QUrl(QString("https://%1").arg(server));
 }
 
-inline void MatrixClient::setAccessToken(const QString &token)
+inline void
+MatrixClient::setAccessToken(const QString &token)
 {
 	token_ = token;
 }
 
-inline void MatrixClient::setNextBatchToken(const QString &next_batch)
+inline void
+MatrixClient::setNextBatchToken(const QString &next_batch)
 {
 	next_batch_ = next_batch;
 }
 
-inline void MatrixClient::incrementTransactionId()
+inline void
+MatrixClient::incrementTransactionId()
 {
 	txn_id_ += 1;
 }

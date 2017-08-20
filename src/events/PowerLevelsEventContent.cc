@@ -22,7 +22,8 @@
 
 using namespace matrix::events;
 
-void PowerLevelsEventContent::deserialize(const QJsonValue &data)
+void
+PowerLevelsEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("PowerLevelsEventContent is not a JSON object");
@@ -65,7 +66,8 @@ void PowerLevelsEventContent::deserialize(const QJsonValue &data)
 	}
 }
 
-QJsonObject PowerLevelsEventContent::serialize() const
+QJsonObject
+PowerLevelsEventContent::serialize() const
 {
 	QJsonObject object;
 
@@ -93,7 +95,8 @@ QJsonObject PowerLevelsEventContent::serialize() const
 	return object;
 }
 
-int PowerLevelsEventContent::eventLevel(QString event_type) const
+int
+PowerLevelsEventContent::eventLevel(QString event_type) const
 {
 	if (events_.contains(event_type))
 		return events_[event_type];
@@ -101,7 +104,8 @@ int PowerLevelsEventContent::eventLevel(QString event_type) const
 	return events_default_;
 }
 
-int PowerLevelsEventContent::userLevel(QString userid) const
+int
+PowerLevelsEventContent::userLevel(QString userid) const
 {
 	if (users_.contains(userid))
 		return users_[userid];

@@ -23,21 +23,21 @@
 #include "Register.h"
 
 RegisterRequest::RegisterRequest(const QString &username, const QString &password)
-    : user_(username)
-    , password_(password)
+  : user_(username)
+  , password_(password)
 {
 }
 
-QByteArray RegisterRequest::serialize() noexcept
+QByteArray
+RegisterRequest::serialize() noexcept
 {
-	QJsonObject body{
-		{"username", user_},
-		{"password", password_}};
+	QJsonObject body{ { "username", user_ }, { "password", password_ } };
 
 	return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
 
-void RegisterResponse::deserialize(const QJsonDocument &data)
+void
+RegisterResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Response is not a JSON object");

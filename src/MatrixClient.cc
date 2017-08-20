@@ -33,7 +33,7 @@
 #include "Versions.h"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
-    : QNetworkAccessManager(parent)
+  : QNetworkAccessManager(parent)
 {
 	server_ = "https://" + server;
 	api_url_ = "/_matrix/client/r0";
@@ -45,7 +45,8 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
 	connect(this, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResponse(QNetworkReply *)));
 }
 
-void MatrixClient::reset() noexcept
+void
+MatrixClient::reset() noexcept
 {
 	next_batch_ = "";
 	server_ = "";
@@ -54,7 +55,8 @@ void MatrixClient::reset() noexcept
 	txn_id_ = 0;
 }
 
-void MatrixClient::onVersionsResponse(QNetworkReply *reply)
+void
+MatrixClient::onVersionsResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -88,7 +90,8 @@ void MatrixClient::onVersionsResponse(QNetworkReply *reply)
 	}
 }
 
-void MatrixClient::onLoginResponse(QNetworkReply *reply)
+void
+MatrixClient::onLoginResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -124,7 +127,8 @@ void MatrixClient::onLoginResponse(QNetworkReply *reply)
 	}
 }
 
-void MatrixClient::onLogoutResponse(QNetworkReply *reply)
+void
+MatrixClient::onLogoutResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -138,7 +142,8 @@ void MatrixClient::onLogoutResponse(QNetworkReply *reply)
 	emit loggedOut();
 }
 
-void MatrixClient::onRegisterResponse(QNetworkReply *reply)
+void
+MatrixClient::onRegisterResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -160,16 +165,15 @@ void MatrixClient::onRegisterResponse(QNetworkReply *reply)
 
 	try {
 		response.deserialize(json);
-		emit registerSuccess(response.getUserId(),
-				     response.getHomeServer(),
-				     response.getAccessToken());
+		emit registerSuccess(response.getUserId(), response.getHomeServer(), response.getAccessToken());
 	} catch (DeserializationException &e) {
 		qWarning() << "Register" << e.what();
 		emit registerError("Received malformed response.");
 	}
 }
 
-void MatrixClient::onGetOwnProfileResponse(QNetworkReply *reply)
+void
+MatrixClient::onGetOwnProfileResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -193,7 +197,8 @@ void MatrixClient::onGetOwnProfileResponse(QNetworkReply *reply)
 	}
 }
 
-void MatrixClient::onInitialSyncResponse(QNetworkReply *reply)
+void
+MatrixClient::onInitialSyncResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -223,7 +228,8 @@ void MatrixClient::onInitialSyncResponse(QNetworkReply *reply)
 	emit initialSyncCompleted(response);
 }
 
-void MatrixClient::onSyncResponse(QNetworkReply *reply)
+void
+MatrixClient::onSyncResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -251,7 +257,8 @@ void MatrixClient::onSyncResponse(QNetworkReply *reply)
 	}
 }
 
-void MatrixClient::onSendTextMessageResponse(QNetworkReply *reply)
+void
+MatrixClient::onSendTextMessageResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -286,7 +293,8 @@ void MatrixClient::onSendTextMessageResponse(QNetworkReply *reply)
 			 reply->property("txn_id").toInt());
 }
 
-void MatrixClient::onRoomAvatarResponse(QNetworkReply *reply)
+void
+MatrixClient::onRoomAvatarResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -310,7 +318,8 @@ void MatrixClient::onRoomAvatarResponse(QNetworkReply *reply)
 	emit roomAvatarRetrieved(roomid, pixmap);
 }
 
-void MatrixClient::onUserAvatarResponse(QNetworkReply *reply)
+void
+MatrixClient::onUserAvatarResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -333,7 +342,8 @@ void MatrixClient::onUserAvatarResponse(QNetworkReply *reply)
 
 	emit userAvatarRetrieved(roomid, img);
 }
-void MatrixClient::onGetOwnAvatarResponse(QNetworkReply *reply)
+void
+MatrixClient::onGetOwnAvatarResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -355,7 +365,8 @@ void MatrixClient::onGetOwnAvatarResponse(QNetworkReply *reply)
 	emit ownAvatarRetrieved(pixmap);
 }
 
-void MatrixClient::onImageResponse(QNetworkReply *reply)
+void
+MatrixClient::onImageResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -379,7 +390,8 @@ void MatrixClient::onImageResponse(QNetworkReply *reply)
 	emit imageDownloaded(event_id, pixmap);
 }
 
-void MatrixClient::onMessagesResponse(QNetworkReply *reply)
+void
+MatrixClient::onMessagesResponse(QNetworkReply *reply)
 {
 	reply->deleteLater();
 
@@ -405,7 +417,8 @@ void MatrixClient::onMessagesResponse(QNetworkReply *reply)
 	emit messagesRetrieved(room_id, msgs);
 }
 
-void MatrixClient::onResponse(QNetworkReply *reply)
+void
+MatrixClient::onResponse(QNetworkReply *reply)
 {
 	switch (static_cast<Endpoint>(reply->property("endpoint").toInt())) {
 	case Endpoint::Versions:
@@ -452,7 +465,8 @@ void MatrixClient::onResponse(QNetworkReply *reply)
 	}
 }
 
-void MatrixClient::login(const QString &username, const QString &password) noexcept
+void
+MatrixClient::login(const QString &username, const QString &password) noexcept
 {
 	QUrl endpoint(server_);
 	endpoint.setPath(api_url_ + "/login");
@@ -466,7 +480,8 @@ void MatrixClient::login(const QString &username, const QString &password) noexc
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::Login));
 }
 
-void MatrixClient::logout() noexcept
+void
+MatrixClient::logout() noexcept
 {
 	QUrlQuery query;
 	query.addQueryItem("access_token", token_);
@@ -483,7 +498,8 @@ void MatrixClient::logout() noexcept
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::Logout));
 }
 
-void MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server) noexcept
+void
+MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server) noexcept
 {
 	setServer(server);
 
@@ -503,11 +519,11 @@ void MatrixClient::registerUser(const QString &user, const QString &pass, const 
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::Register));
 }
 
-void MatrixClient::sync() noexcept
+void
+MatrixClient::sync() noexcept
 {
-	QJsonObject filter{{"room",
-			    QJsonObject{{"ephemeral", QJsonObject{{"limit", 0}}}}},
-			   {"presence", QJsonObject{{"limit", 0}}}};
+	QJsonObject filter{ { "room", QJsonObject{ { "ephemeral", QJsonObject{ { "limit", 0 } } } } },
+			    { "presence", QJsonObject{ { "limit", 0 } } } };
 
 	QUrlQuery query;
 	query.addQueryItem("set_presence", "online");
@@ -532,7 +548,8 @@ void MatrixClient::sync() noexcept
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::Sync));
 }
 
-void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) noexcept
+void
+MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) noexcept
 {
 	QUrlQuery query;
 	query.addQueryItem("access_token", token_);
@@ -541,9 +558,7 @@ void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) no
 	endpoint.setPath(api_url_ + QString("/rooms/%1/send/m.room.message/%2").arg(roomid).arg(txn_id_));
 	endpoint.setQuery(query);
 
-	QJsonObject body{
-		{"msgtype", "m.text"},
-		{"body", msg}};
+	QJsonObject body{ { "msgtype", "m.text" }, { "body", msg } };
 
 	QNetworkRequest request(QString(endpoint.toEncoded()));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -557,16 +572,17 @@ void MatrixClient::sendTextMessage(const QString &roomid, const QString &msg) no
 	incrementTransactionId();
 }
 
-void MatrixClient::initialSync() noexcept
+void
+MatrixClient::initialSync() noexcept
 {
 	QJsonArray excluded_presence = {
 		QString("m.presence"),
 	};
 
-	QJsonObject filter{{"room",
-			    QJsonObject{{"timeline", QJsonObject{{"limit", 20}}},
-					{"ephemeral", QJsonObject{{"limit", 0}}}}},
-			   {"presence", QJsonObject{{"not_types", excluded_presence}}}};
+	QJsonObject filter{ { "room",
+			      QJsonObject{ { "timeline", QJsonObject{ { "limit", 20 } } },
+					   { "ephemeral", QJsonObject{ { "limit", 0 } } } } },
+			    { "presence", QJsonObject{ { "not_types", excluded_presence } } } };
 
 	QUrlQuery query;
 	query.addQueryItem("full_state", "true");
@@ -584,7 +600,8 @@ void MatrixClient::initialSync() noexcept
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::InitialSync));
 }
 
-void MatrixClient::versions() noexcept
+void
+MatrixClient::versions() noexcept
 {
 	QUrl endpoint(server_);
 	endpoint.setPath("/_matrix/client/versions");
@@ -595,7 +612,8 @@ void MatrixClient::versions() noexcept
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::Versions));
 }
 
-void MatrixClient::getOwnProfile() noexcept
+void
+MatrixClient::getOwnProfile() noexcept
 {
 	// FIXME: Remove settings from the matrix client. The class should store the user's matrix ID.
 	QSettings settings;
@@ -614,7 +632,8 @@ void MatrixClient::getOwnProfile() noexcept
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnProfile));
 }
 
-void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
+void
+MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
 {
 	QList<QString> url_parts = avatar_url.toString().split("mxc://");
 
@@ -640,7 +659,8 @@ void MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::RoomAvatar));
 }
 
-void MatrixClient::fetchUserAvatar(const QString &userId, const QUrl &avatarUrl)
+void
+MatrixClient::fetchUserAvatar(const QString &userId, const QUrl &avatarUrl)
 {
 	QList<QString> url_parts = avatarUrl.toString().split("mxc://");
 
@@ -666,7 +686,8 @@ void MatrixClient::fetchUserAvatar(const QString &userId, const QUrl &avatarUrl)
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::UserAvatar));
 }
 
-void MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
+void
+MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
 {
 	QNetworkRequest image_request(url);
 
@@ -675,7 +696,8 @@ void MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::Image));
 }
 
-void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
+void
+MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 {
 	QList<QString> url_parts = avatar_url.toString().split("mxc://");
 
@@ -700,7 +722,8 @@ void MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 	reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnAvatar));
 }
 
-void MatrixClient::messages(const QString &room_id, const QString &from_token, int limit) noexcept
+void
+MatrixClient::messages(const QString &room_id, const QString &from_token, int limit) noexcept
 {
 	QUrlQuery query;
 	query.addQueryItem("access_token", token_);

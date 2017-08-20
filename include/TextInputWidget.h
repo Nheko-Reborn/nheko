@@ -66,7 +66,8 @@ private:
 	EmojiPickButton *emoji_button_;
 };
 
-inline void TextInputWidget::focusLineEdit()
+inline void
+TextInputWidget::focusLineEdit()
 {
 	input_->setFocus();
 }

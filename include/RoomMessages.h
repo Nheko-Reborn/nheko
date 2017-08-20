@@ -37,17 +37,20 @@ private:
 	QJsonArray chunk_;
 };
 
-inline QString RoomMessages::start() const
+inline QString
+RoomMessages::start() const
 {
 	return start_;
 }
 
-inline QString RoomMessages::end() const
+inline QString
+RoomMessages::end() const
 {
 	return end_;
 }
 
-inline QJsonArray RoomMessages::chunk() const
+inline QJsonArray
+RoomMessages::chunk() const
 {
 	return chunk_;
 }

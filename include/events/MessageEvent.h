@@ -24,7 +24,7 @@ namespace matrix
 {
 namespace events
 {
-template <class MsgContent>
+template<class MsgContent>
 class MessageEvent : public RoomEvent<MessageEventContent>
 {
 public:
@@ -36,14 +36,16 @@ private:
 	MsgContent msg_content_;
 };
 
-template <class MsgContent>
-inline MsgContent MessageEvent<MsgContent>::msgContent() const
+template<class MsgContent>
+inline MsgContent
+MessageEvent<MsgContent>::msgContent() const
 {
 	return msg_content_;
 }
 
-template <class MsgContent>
-void MessageEvent<MsgContent>::deserialize(const QJsonValue &data)
+template<class MsgContent>
+void
+MessageEvent<MsgContent>::deserialize(const QJsonValue &data)
 {
 	RoomEvent<MessageEventContent>::deserialize(data);
 
@@ -59,6 +61,6 @@ struct ThumbnailInfo {
 
 	QString mimetype;
 };
-}  // namespace messages
-}  // namespace events
-}  // namespace matrix
+} // namespace messages
+} // namespace events
+} // namespace matrix

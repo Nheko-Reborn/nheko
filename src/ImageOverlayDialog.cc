@@ -25,8 +25,8 @@
 #include "ImageOverlayDialog.h"
 
 ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
-    : QWidget{parent}
-    , originalImage_{image}
+  : QWidget{ parent }
+  , originalImage_{ image }
 {
 	setMouseTracking(true);
 	setParent(0);
@@ -49,7 +49,8 @@ ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
 }
 
 // TODO: Move this into Utils
-void ImageOverlayDialog::scaleImage(int max_width, int max_height)
+void
+ImageOverlayDialog::scaleImage(int max_width, int max_height)
 {
 	if (originalImage_.isNull())
 		return;
@@ -73,7 +74,8 @@ void ImageOverlayDialog::scaleImage(int max_width, int max_height)
 	image_ = originalImage_.scaled(final_width, final_height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
-void ImageOverlayDialog::paintEvent(QPaintEvent *event)
+void
+ImageOverlayDialog::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 
@@ -115,7 +117,8 @@ void ImageOverlayDialog::paintEvent(QPaintEvent *event)
 	painter.drawLine(center + QPointF(15, -15), center - QPointF(15, -15));
 }
 
-void ImageOverlayDialog::mousePressEvent(QMouseEvent *event)
+void
+ImageOverlayDialog::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() != Qt::LeftButton)
 		return;

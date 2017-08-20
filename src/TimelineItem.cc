@@ -33,7 +33,8 @@ static const QString URL_HTML = "<a href=\"\\1\" style=\"color: #333333\">\\1</a
 namespace events = matrix::events;
 namespace msgs = matrix::events::messages;
 
-void TimelineItem::init()
+void
+TimelineItem::init()
 {
 	userAvatar_ = nullptr;
 	timestamp_ = nullptr;
@@ -65,14 +66,14 @@ void TimelineItem::init()
 	headerLayout_->setSpacing(conf::timeline::headerSpacing);
 }
 
-/* 
- * For messages created locally. The avatar and the username are displayed. 
+/*
+ * For messages created locally. The avatar and the username are displayed.
  */
 TimelineItem::TimelineItem(const QString &userid, const QString &color, QString body, QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	init();
-	descriptionMsg_ = {"You: ", userid, body, descriptiveTime(QDateTime::currentDateTime())};
+	descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
 
 	body.replace(URL_REGEX, URL_HTML);
 	auto displayName = TimelineViewManager::displayName(userid);
@@ -89,16 +90,16 @@ TimelineItem::TimelineItem(const QString &userid, const QString &color, QString 
 }
 
 /*
- * For messages created locally. Only the text is displayed. 
+ * For messages created locally. Only the text is displayed.
  */
 TimelineItem::TimelineItem(QString body, QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	QSettings settings;
 	auto userid = settings.value("auth/user_id").toString();
 
 	init();
-	descriptionMsg_ = {"You: ", userid, body, descriptiveTime(QDateTime::currentDateTime())};
+	descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
 
 	body.replace(URL_REGEX, URL_HTML);
 
@@ -117,7 +118,7 @@ TimelineItem::TimelineItem(ImageItem *image,
 			   const events::MessageEvent<msgs::Image> &event,
 			   const QString &color,
 			   QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	init();
 
@@ -125,11 +126,10 @@ TimelineItem::TimelineItem(ImageItem *image,
 	auto displayName = TimelineViewManager::displayName(event.sender());
 
 	QSettings settings;
-	descriptionMsg_ = {
-		event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-		event.sender(),
-		" sent an image",
-		descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+	descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+			    event.sender(),
+			    " sent an image",
+			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
 	generateTimestamp(timestamp);
 	generateBody(displayName, color, "");
@@ -150,18 +150,17 @@ TimelineItem::TimelineItem(ImageItem *image,
  * Used to display images. Only the image is displayed.
  */
 TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Image> &event, QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	init();
 
 	auto displayName = TimelineViewManager::displayName(event.sender());
 
 	QSettings settings;
-	descriptionMsg_ = {
-		event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-		event.sender(),
-		" sent an image",
-		descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+	descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+			    event.sender(),
+			    " sent an image",
+			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 	generateTimestamp(timestamp);
@@ -179,15 +178,17 @@ TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Im
 /*
  * Used to display remote notice messages.
  */
-TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool with_sender, const QString &color, QWidget *parent)
-    : QWidget(parent)
+TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
+			   bool with_sender,
+			   const QString &color,
+			   QWidget *parent)
+  : QWidget(parent)
 {
 	init();
-	descriptionMsg_ = {
-		TimelineViewManager::displayName(event.sender()),
-		event.sender(),
-		" sent a notification",
-		descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+	descriptionMsg_ = { TimelineViewManager::displayName(event.sender()),
+			    event.sender(),
+			    " sent a notification",
+			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
 	auto body = event.content().body().trimmed().toHtmlEscaped();
 	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
@@ -217,8 +218,11 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event, bool
 /*
  * Used to display remote text messages.
  */
-TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool with_sender, const QString &color, QWidget *parent)
-    : QWidget(parent)
+TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
+			   bool with_sender,
+			   const QString &color,
+			   QWidget *parent)
+  : QWidget(parent)
 {
 	init();
 
@@ -227,11 +231,10 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool w
 	auto displayName = TimelineViewManager::displayName(event.sender());
 
 	QSettings settings;
-	descriptionMsg_ = {
-		event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-		event.sender(),
-		QString(": %1").arg(body),
-		descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+	descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+			    event.sender(),
+			    QString(": %1").arg(body),
+			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
 	generateTimestamp(timestamp);
 
@@ -255,7 +258,8 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event, bool w
 }
 
 // Only the body is displayed.
-void TimelineItem::generateBody(const QString &body)
+void
+TimelineItem::generateBody(const QString &body)
 {
 	QString content("<span style=\"color: black;\"> %1 </span>");
 
@@ -270,7 +274,8 @@ void TimelineItem::generateBody(const QString &body)
 }
 
 // The username/timestamp is displayed along with the message body.
-void TimelineItem::generateBody(const QString &userid, const QString &color, const QString &body)
+void
+TimelineItem::generateBody(const QString &userid, const QString &color, const QString &body)
 {
 	auto sender = userid;
 
@@ -300,7 +305,8 @@ void TimelineItem::generateBody(const QString &userid, const QString &color, con
 	body_->setMargin(0);
 }
 
-void TimelineItem::generateTimestamp(const QDateTime &time)
+void
+TimelineItem::generateTimestamp(const QDateTime &time)
 {
 	QString msg("<span style=\"color: #5d6565;\"> %1 </span>");
 
@@ -316,7 +322,8 @@ void TimelineItem::generateTimestamp(const QDateTime &time)
 	timestamp_->setContentsMargins(0, topMargin, 0, 0);
 }
 
-QString TimelineItem::replaceEmoji(const QString &body)
+QString
+TimelineItem::replaceEmoji(const QString &body)
 {
 	QString fmtBody = "";
 
@@ -325,9 +332,9 @@ QString TimelineItem::replaceEmoji(const QString &body)
 
 		// TODO: Be more precise here.
 		if (code > 9000)
-			fmtBody += QString("<span style=\"font-family: Emoji One; font-size: %1px\">").arg(conf::emojiSize) +
-				   QString(c) +
-				   "</span>";
+			fmtBody += QString("<span style=\"font-family: Emoji One; font-size: %1px\">")
+					   .arg(conf::emojiSize) +
+				   QString(c) + "</span>";
 		else
 			fmtBody += c;
 	}
@@ -335,7 +342,8 @@ QString TimelineItem::replaceEmoji(const QString &body)
 	return fmtBody;
 }
 
-void TimelineItem::setupAvatarLayout(const QString &userName)
+void
+TimelineItem::setupAvatarLayout(const QString &userName)
 {
 	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
 
@@ -356,7 +364,8 @@ void TimelineItem::setupAvatarLayout(const QString &userName)
 	headerLayout_->addWidget(timestamp_, 1);
 }
 
-void TimelineItem::setupSimpleLayout()
+void
+TimelineItem::setupSimpleLayout()
 {
 	sideLayout_->addWidget(timestamp_);
 
@@ -378,7 +387,8 @@ void TimelineItem::setupSimpleLayout()
 	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin / 3, 0, 0);
 }
 
-void TimelineItem::setUserAvatar(const QImage &avatar)
+void
+TimelineItem::setUserAvatar(const QImage &avatar)
 {
 	if (userAvatar_ == nullptr)
 		return;
@@ -386,7 +396,8 @@ void TimelineItem::setUserAvatar(const QImage &avatar)
 	userAvatar_->setImage(avatar);
 }
 
-QString TimelineItem::descriptiveTime(const QDateTime &then)
+QString
+TimelineItem::descriptiveTime(const QDateTime &then)
 {
 	auto now = QDateTime::currentDateTime();
 

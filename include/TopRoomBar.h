@@ -70,26 +70,28 @@ private:
 	int buttonSize_;
 };
 
-inline void TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
+inline void
+TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
 {
 	avatar_->setImage(avatar_image);
 }
 
-inline void TopRoomBar::updateRoomAvatar(const QIcon &icon)
+inline void
+TopRoomBar::updateRoomAvatar(const QIcon &icon)
 {
 	avatar_->setIcon(icon);
 }
 
-inline void TopRoomBar::updateRoomName(const QString &name)
+inline void
+TopRoomBar::updateRoomName(const QString &name)
 {
-	QString elidedText = QFontMetrics(name_label_->font())
-				     .elidedText(name, Qt::ElideRight, width() * 0.8);
+	QString elidedText = QFontMetrics(name_label_->font()).elidedText(name, Qt::ElideRight, width() * 0.8);
 	name_label_->setText(elidedText);
 }
 
-inline void TopRoomBar::updateRoomTopic(const QString &topic)
+inline void
+TopRoomBar::updateRoomTopic(const QString &topic)
 {
-	QString elidedText = QFontMetrics(topic_label_->font())
-				     .elidedText(topic, Qt::ElideRight, width() * 0.8);
+	QString elidedText = QFontMetrics(topic_label_->font()).elidedText(topic, Qt::ElideRight, width() * 0.8);
 	topic_label_->setText(elidedText);
 }

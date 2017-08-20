@@ -38,9 +38,9 @@ TimelineView::TimelineView(const Timeline &timeline,
 			   QSharedPointer<MatrixClient> client,
 			   const QString &room_id,
 			   QWidget *parent)
-    : QWidget(parent)
-    , room_id_{room_id}
-    , client_{client}
+  : QWidget(parent)
+  , room_id_{ room_id }
+  , client_{ client }
 {
 	QSettings settings;
 	local_user_ = settings.value("auth/user_id").toString();
@@ -50,9 +50,9 @@ TimelineView::TimelineView(const Timeline &timeline,
 }
 
 TimelineView::TimelineView(QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent)
-    : QWidget(parent)
-    , room_id_{room_id}
-    , client_{client}
+  : QWidget(parent)
+  , room_id_{ room_id }
+  , client_{ client }
 {
 	QSettings settings;
 	local_user_ = settings.value("auth/user_id").toString();
@@ -61,7 +61,8 @@ TimelineView::TimelineView(QSharedPointer<MatrixClient> client, const QString &r
 	client_->messages(room_id_, "");
 }
 
-void TimelineView::sliderRangeChanged(int min, int max)
+void
+TimelineView::sliderRangeChanged(int min, int max)
 {
 	Q_UNUSED(min);
 
@@ -89,7 +90,8 @@ void TimelineView::sliderRangeChanged(int min, int max)
 	}
 }
 
-void TimelineView::fetchHistory()
+void
+TimelineView::fetchHistory()
 {
 	bool hasEnoughMessages = scroll_area_->verticalScrollBar()->value() != 0;
 
@@ -103,7 +105,8 @@ void TimelineView::fetchHistory()
 	paginationTimer_->stop();
 }
 
-void TimelineView::scrollDown()
+void
+TimelineView::scrollDown()
 {
 	int current = scroll_area_->verticalScrollBar()->value();
 	int max = scroll_area_->verticalScrollBar()->maximum();
@@ -120,7 +123,8 @@ void TimelineView::scrollDown()
 		scroll_area_->verticalScrollBar()->setValue(max);
 }
 
-void TimelineView::sliderMoved(int position)
+void
+TimelineView::sliderMoved(int position)
 {
 	if (!scroll_area_->verticalScrollBar()->isVisible())
 		return;
@@ -142,7 +146,8 @@ void TimelineView::sliderMoved(int position)
 	}
 }
 
-void TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msgs)
+void
+TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msgs)
 {
 	if (room_id_ != room_id)
 		return;
@@ -189,7 +194,8 @@ void TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages
 		lastSender_ = items.constFirst()->descriptionMessage().userid;
 }
 
-TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection direction)
+TimelineItem *
+TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection direction)
 {
 	events::EventType ty = events::extractEventType(event);
 
@@ -274,7 +280,8 @@ TimelineItem *TimelineView::parseMessageEvent(const QJsonObject &event, Timeline
 	return nullptr;
 }
 
-int TimelineView::addEvents(const Timeline &timeline)
+int
+TimelineView::addEvents(const Timeline &timeline)
 {
 	int message_count = 0;
 
@@ -306,7 +313,8 @@ int TimelineView::addEvents(const Timeline &timeline)
 	return message_count;
 }
 
-void TimelineView::init()
+void
+TimelineView::init()
 {
 	top_layout_ = new QVBoxLayout(this);
 	top_layout_->setSpacing(0);
@@ -339,10 +347,14 @@ void TimelineView::init()
 	connect(client_.data(), &MatrixClient::messagesRetrieved, this, &TimelineView::addBackwardsEvents);
 
 	connect(scroll_area_->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));
-	connect(scroll_area_->verticalScrollBar(), SIGNAL(rangeChanged(int, int)), this, SLOT(sliderRangeChanged(int, int)));
+	connect(scroll_area_->verticalScrollBar(),
+		SIGNAL(rangeChanged(int, int)),
+		this,
+		SLOT(sliderRangeChanged(int, int)));
 }
 
-void TimelineView::updateLastSender(const QString &user_id, TimelineDirection direction)
+void
+TimelineView::updateLastSender(const QString &user_id, TimelineDirection direction)
 {
 	if (direction == TimelineDirection::Bottom)
 		lastSender_ = user_id;
@@ -350,7 +362,8 @@ void TimelineView::updateLastSender(const QString &user_id, TimelineDirection di
 		firstSender_ = user_id;
 }
 
-bool TimelineView::isSenderRendered(const QString &user_id, TimelineDirection direction)
+bool
+TimelineView::isSenderRendered(const QString &user_id, TimelineDirection direction)
 {
 	if (direction == TimelineDirection::Bottom)
 		return lastSender_ != user_id;
@@ -358,7 +371,8 @@ bool TimelineView::isSenderRendered(const QString &user_id, TimelineDirection di
 		return firstSender_ != user_id;
 }
 
-TimelineItem *TimelineView::createTimelineItem(const events::MessageEvent<msgs::Image> &event, const QString &color, bool with_sender)
+TimelineItem *
+TimelineView::createTimelineItem(const events::MessageEvent<msgs::Image> &event, const QString &color, bool with_sender)
 {
 	auto image = new ImageItem(client_, event);
 
@@ -371,19 +385,24 @@ TimelineItem *TimelineView::createTimelineItem(const events::MessageEvent<msgs::
 	return item;
 }
 
-TimelineItem *TimelineView::createTimelineItem(const events::MessageEvent<msgs::Notice> &event, const QString &color, bool with_sender)
+TimelineItem *
+TimelineView::createTimelineItem(const events::MessageEvent<msgs::Notice> &event,
+				 const QString &color,
+				 bool with_sender)
 {
 	TimelineItem *item = new TimelineItem(event, with_sender, color, scroll_widget_);
 	return item;
 }
 
-TimelineItem *TimelineView::createTimelineItem(const events::MessageEvent<msgs::Text> &event, const QString &color, bool with_sender)
+TimelineItem *
+TimelineView::createTimelineItem(const events::MessageEvent<msgs::Text> &event, const QString &color, bool with_sender)
 {
 	TimelineItem *item = new TimelineItem(event, with_sender, color, scroll_widget_);
 	return item;
 }
 
-void TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
+void
+TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 {
 	if (direction == TimelineDirection::Bottom)
 		scroll_layout_->addWidget(item);
@@ -391,7 +410,8 @@ void TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection directi
 		scroll_layout_->insertWidget(1, item);
 }
 
-void TimelineView::updatePendingMessage(int txn_id, QString event_id)
+void
+TimelineView::updatePendingMessage(int txn_id, QString event_id)
 {
 	for (auto &msg : pending_msgs_) {
 		if (msg.txn_id == txn_id) {
@@ -401,7 +421,8 @@ void TimelineView::updatePendingMessage(int txn_id, QString event_id)
 	}
 }
 
-bool TimelineView::isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &local_userid)
+bool
+TimelineView::isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &local_userid)
 {
 	if (e.sender() != local_userid)
 		return false;
@@ -414,7 +435,8 @@ bool TimelineView::isPendingMessage(const events::MessageEvent<msgs::Text> &e, c
 	return false;
 }
 
-void TimelineView::removePendingMessage(const events::MessageEvent<msgs::Text> &e)
+void
+TimelineView::removePendingMessage(const events::MessageEvent<msgs::Text> &e)
 {
 	for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
 		int index = std::distance(pending_msgs_.begin(), it);
@@ -426,7 +448,8 @@ void TimelineView::removePendingMessage(const events::MessageEvent<msgs::Text> &
 	}
 }
 
-void TimelineView::addUserTextMessage(const QString &body, int txn_id)
+void
+TimelineView::addUserTextMessage(const QString &body, int txn_id)
 {
 	QSettings settings;
 	auto user_id = settings.value("auth/user_id").toString();
@@ -450,7 +473,8 @@ void TimelineView::addUserTextMessage(const QString &body, int txn_id)
 	pending_msgs_.push_back(message);
 }
 
-void TimelineView::notifyForLastEvent()
+void
+TimelineView::notifyForLastEvent()
 {
 	auto lastItem = scroll_layout_->itemAt(scroll_layout_->count() - 1);
 	auto *lastTimelineItem = qobject_cast<TimelineItem *>(lastItem->widget());

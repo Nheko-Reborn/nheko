@@ -38,8 +38,14 @@ class TimelineItem : public QWidget
 {
 	Q_OBJECT
 public:
-	TimelineItem(const events::MessageEvent<msgs::Notice> &e, bool with_sender, const QString &color, QWidget *parent = 0);
-	TimelineItem(const events::MessageEvent<msgs::Text> &e, bool with_sender, const QString &color, QWidget *parent = 0);
+	TimelineItem(const events::MessageEvent<msgs::Notice> &e,
+		     bool with_sender,
+		     const QString &color,
+		     QWidget *parent = 0);
+	TimelineItem(const events::MessageEvent<msgs::Text> &e,
+		     bool with_sender,
+		     const QString &color,
+		     QWidget *parent = 0);
 
 	// For local messages.
 	TimelineItem(const QString &userid, const QString &color, QString body, QWidget *parent = 0);
@@ -69,10 +75,10 @@ private:
 	DescInfo descriptionMsg_;
 
 	QHBoxLayout *topLayout_;
-	QVBoxLayout *sideLayout_;  // Avatar or Timestamp
-	QVBoxLayout *mainLayout_;  // Header & Message body
+	QVBoxLayout *sideLayout_; // Avatar or Timestamp
+	QVBoxLayout *mainLayout_; // Header & Message body
 
-	QHBoxLayout *headerLayout_;  // Username (&) Timestamp
+	QHBoxLayout *headerLayout_; // Username (&) Timestamp
 
 	Avatar *userAvatar_;
 
@@ -83,7 +89,8 @@ private:
 	QLabel *body_;
 };
 
-inline DescInfo TimelineItem::descriptionMessage() const
+inline DescInfo
+TimelineItem::descriptionMessage() const
 {
 	return descriptionMsg_;
 }

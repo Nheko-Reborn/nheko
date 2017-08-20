@@ -21,7 +21,7 @@
 #include "EmojiItemDelegate.h"
 
 EmojiItemDelegate::EmojiItemDelegate(QObject *parent)
-    : QStyledItemDelegate(parent)
+  : QStyledItemDelegate(parent)
 {
 	data_ = new Emoji;
 }
@@ -31,7 +31,8 @@ EmojiItemDelegate::~EmojiItemDelegate()
 	delete data_;
 }
 
-void EmojiItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void
+EmojiItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	Q_UNUSED(index);
 

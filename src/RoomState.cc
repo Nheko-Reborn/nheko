@@ -23,7 +23,8 @@
 
 namespace events = matrix::events;
 
-void RoomState::resolveName()
+void
+RoomState::resolveName()
 {
 	name_ = "Empty Room";
 	userAvatar_.clear();
@@ -69,7 +70,8 @@ void RoomState::resolveName()
 		name_ = QString("%1 and %2 others").arg(name_).arg(memberships.size());
 }
 
-void RoomState::resolveAvatar()
+void
+RoomState::resolveAvatar()
 {
 	if (userAvatar_.isEmpty()) {
 		avatar_ = avatar.content().url();
@@ -84,7 +86,8 @@ void RoomState::resolveAvatar()
 }
 
 // Should be used only after initial sync.
-void RoomState::removeLeaveMemberships()
+void
+RoomState::removeLeaveMemberships()
 {
 	for (auto it = memberships.begin(); it != memberships.end();) {
 		if (it.value().content().membershipState() == events::Membership::Leave) {
@@ -95,7 +98,8 @@ void RoomState::removeLeaveMemberships()
 	}
 }
 
-void RoomState::update(const RoomState &state)
+void
+RoomState::update(const RoomState &state)
 {
 	bool needsNameCalculation = false;
 	bool needsAvatarCalculation = false;
@@ -152,7 +156,8 @@ void RoomState::update(const RoomState &state)
 		resolveAvatar();
 }
 
-QJsonObject RoomState::serialize() const
+QJsonObject
+RoomState::serialize() const
 {
 	QJsonObject obj;
 
@@ -186,10 +191,11 @@ QJsonObject RoomState::serialize() const
 	return obj;
 }
 
-void RoomState::parse(const QJsonObject &object)
+void
+RoomState::parse(const QJsonObject &object)
 {
 	// FIXME: Make this less versbose.
-	
+
 	if (object.contains("aliases")) {
 		events::StateEvent<events::AliasesEventContent> event;
 

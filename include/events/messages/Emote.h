@@ -32,6 +32,6 @@ class Emote : public Deserializable
 public:
 	void deserialize(const QJsonObject &obj) override;
 };
-}  // namespace messages
-}  // namespace events
-}  // namespace matrix
+} // namespace messages
+} // namespace events
+} // namespace matrix

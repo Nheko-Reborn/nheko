@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void Emote::deserialize(const QJsonObject &object)
+void
+Emote::deserialize(const QJsonObject &object)
 {
 	if (object.value("msgtype") != "m.emote")
 		throw DeserializationException("invalid msgtype for emote");

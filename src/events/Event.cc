@@ -29,7 +29,8 @@
 #include "PowerLevelsEventContent.h"
 #include "TopicEventContent.h"
 
-matrix::events::EventType matrix::events::extractEventType(const QJsonObject &object)
+matrix::events::EventType
+matrix::events::extractEventType(const QJsonObject &object)
 {
 	if (!object.contains("type"))
 		throw DeserializationException("Missing event type");
@@ -62,21 +63,18 @@ matrix::events::EventType matrix::events::extractEventType(const QJsonObject &ob
 		return EventType::Unsupported;
 }
 
-bool matrix::events::isStateEvent(EventType type)
+bool
+matrix::events::isStateEvent(EventType type)
 {
-	return type == EventType::RoomAliases ||
-	       type == EventType::RoomAvatar ||
-	       type == EventType::RoomCanonicalAlias ||
-	       type == EventType::RoomCreate ||
-	       type == EventType::RoomHistoryVisibility ||
-	       type == EventType::RoomJoinRules ||
-	       type == EventType::RoomMember ||
-	       type == EventType::RoomName ||
-	       type == EventType::RoomPowerLevels ||
+	return type == EventType::RoomAliases || type == EventType::RoomAvatar ||
+	       type == EventType::RoomCanonicalAlias || type == EventType::RoomCreate ||
+	       type == EventType::RoomHistoryVisibility || type == EventType::RoomJoinRules ||
+	       type == EventType::RoomMember || type == EventType::RoomName || type == EventType::RoomPowerLevels ||
 	       type == EventType::RoomTopic;
 }
 
-bool matrix::events::isMessageEvent(EventType type)
+bool
+matrix::events::isMessageEvent(EventType type)
 {
 	return type == EventType::RoomMessage;
 }

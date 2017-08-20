@@ -19,7 +19,8 @@
 
 using namespace matrix::events;
 
-void JoinRulesEventContent::deserialize(const QJsonValue &data)
+void
+JoinRulesEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("JoinRulesEventContent is not a JSON object");
@@ -43,7 +44,8 @@ void JoinRulesEventContent::deserialize(const QJsonValue &data)
 		throw DeserializationException(QString("Unknown join_rule value: %1").arg(value).toUtf8().constData());
 }
 
-QJsonObject JoinRulesEventContent::serialize() const
+QJsonObject
+JoinRulesEventContent::serialize() const
 {
 	QJsonObject object;
 

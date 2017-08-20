@@ -21,7 +21,8 @@
 
 using namespace matrix::events;
 
-void AliasesEventContent::deserialize(const QJsonValue &data)
+void
+AliasesEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("AliasesEventContent is not a JSON object");
@@ -37,7 +38,8 @@ void AliasesEventContent::deserialize(const QJsonValue &data)
 		aliases_.push_back(alias.toString());
 }
 
-QJsonObject AliasesEventContent::serialize() const
+QJsonObject
+AliasesEventContent::serialize() const
 {
 	QJsonObject object;
 

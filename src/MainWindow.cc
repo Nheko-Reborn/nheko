@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
 #include "MainWindow.h"
+#include "Config.h"
 
 #include <QLayout>
 #include <QNetworkReply>
@@ -26,9 +26,9 @@
 MainWindow *MainWindow::instance_ = nullptr;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , progress_modal_{nullptr}
-    , spinner_{nullptr}
+  : QMainWindow(parent)
+  , progress_modal_{ nullptr }
+  , spinner_{ nullptr }
 {
 	QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setSizePolicy(sizePolicy);
@@ -94,7 +94,8 @@ MainWindow::MainWindow(QWidget *parent)
 	}
 }
 
-void MainWindow::restoreWindowSize()
+void
+MainWindow::restoreWindowSize()
 {
 	QSettings settings;
 	int savedWidth = settings.value("window/width").toInt();
@@ -106,7 +107,8 @@ void MainWindow::restoreWindowSize()
 		resize(savedWidth, savedheight);
 }
 
-void MainWindow::saveCurrentWindowSize()
+void
+MainWindow::saveCurrentWindowSize()
 {
 	QSettings settings;
 	QSize current = size();
@@ -115,7 +117,8 @@ void MainWindow::saveCurrentWindowSize()
 	settings.setValue("window/height", current.height());
 }
 
-void MainWindow::removeOverlayProgressBar()
+void
+MainWindow::removeOverlayProgressBar()
 {
 	QTimer *timer = new QTimer(this);
 	timer->setSingleShot(true);
@@ -138,7 +141,8 @@ void MainWindow::removeOverlayProgressBar()
 	timer->start(500);
 }
 
-void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
+void
+MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 {
 	QSettings settings;
 	settings.setValue("auth/access_token", token);
@@ -174,7 +178,8 @@ void MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 	instance_ = this;
 }
 
-void MainWindow::showWelcomePage()
+void
+MainWindow::showWelcomePage()
 {
 	int index = sliding_stack_->getWidgetIndex(welcome_page_);
 
@@ -184,19 +189,22 @@ void MainWindow::showWelcomePage()
 		sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
 }
 
-void MainWindow::showLoginPage()
+void
+MainWindow::showLoginPage()
 {
 	int index = sliding_stack_->getWidgetIndex(login_page_);
 	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
 }
 
-void MainWindow::showRegisterPage()
+void
+MainWindow::showRegisterPage()
 {
 	int index = sliding_stack_->getWidgetIndex(register_page_);
 	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void
+MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (isVisible()) {
 		event->ignore();
@@ -204,7 +212,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	}
 }
 
-void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+void
+MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	switch (reason) {
 	case QSystemTrayIcon::Trigger:
@@ -219,16 +228,17 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 	}
 }
 
-bool MainWindow::hasActiveUser()
+bool
+MainWindow::hasActiveUser()
 {
 	QSettings settings;
 
-	return settings.contains("auth/access_token") &&
-	       settings.contains("auth/home_server") &&
+	return settings.contains("auth/access_token") && settings.contains("auth/home_server") &&
 	       settings.contains("auth/user_id");
 }
 
-MainWindow *MainWindow::instance()
+MainWindow *
+MainWindow::instance()
 {
 	return instance_;
 }

@@ -24,12 +24,12 @@
 #include "UserInfoWidget.h"
 
 UserInfoWidget::UserInfoWidget(QWidget *parent)
-    : QWidget(parent)
-    , display_name_("User")
-    , user_id_("@user:homeserver.org")
-    , logoutModal_{nullptr}
-    , logoutDialog_{nullptr}
-    , logoutButtonSize_{32}
+  : QWidget(parent)
+  , display_name_("User")
+  , user_id_("@user:homeserver.org")
+  , logoutModal_{ nullptr }
+  , logoutDialog_{ nullptr }
+  , logoutButtonSize_{ 32 }
 {
 	QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 	setSizePolicy(sizePolicy);
@@ -108,15 +108,14 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 	});
 }
 
-void UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
+void
+UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
 {
 	logoutModal_->fadeOut();
 
 	if (isLoggingOut) {
 		// Waiting for the modal to fade out.
-		QTimer::singleShot(100, this, [=]() {
-			emit logout();
-		});
+		QTimer::singleShot(100, this, [=]() { emit logout(); });
 	}
 }
 
@@ -124,7 +123,8 @@ UserInfoWidget::~UserInfoWidget()
 {
 }
 
-void UserInfoWidget::resizeEvent(QResizeEvent *event)
+void
+UserInfoWidget::resizeEvent(QResizeEvent *event)
 {
 	Q_UNUSED(event);
 
@@ -142,20 +142,23 @@ void UserInfoWidget::resizeEvent(QResizeEvent *event)
 	}
 }
 
-void UserInfoWidget::reset()
+void
+UserInfoWidget::reset()
 {
 	displayNameLabel_->setText("");
 	userIdLabel_->setText("");
 	userAvatar_->setLetter(QChar('?'));
 }
 
-void UserInfoWidget::setAvatar(const QImage &img)
+void
+UserInfoWidget::setAvatar(const QImage &img)
 {
 	avatar_image_ = img;
 	userAvatar_->setImage(img);
 }
 
-void UserInfoWidget::setDisplayName(const QString &name)
+void
+UserInfoWidget::setDisplayName(const QString &name)
 {
 	if (name.isEmpty())
 		display_name_ = user_id_.split(':')[0].split('@')[1];
@@ -166,7 +169,8 @@ void UserInfoWidget::setDisplayName(const QString &name)
 	userAvatar_->setLetter(QChar(display_name_[0]));
 }
 
-void UserInfoWidget::setUserId(const QString &userid)
+void
+UserInfoWidget::setUserId(const QString &userid)
 {
 	user_id_ = userid;
 	userIdLabel_->setText(userid);

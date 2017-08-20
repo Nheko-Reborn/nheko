@@ -46,12 +46,14 @@ private:
 	QString userId_;
 };
 
-inline void Cache::unmount()
+inline void
+Cache::unmount()
 {
 	isMounted_ = false;
 }
 
-inline QString Cache::memberDbName(const QString &roomid)
+inline QString
+Cache::memberDbName(const QString &roomid)
 {
 	return QString("m.%1").arg(roomid);
 }

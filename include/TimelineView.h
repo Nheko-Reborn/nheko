@@ -44,10 +44,10 @@ struct PendingMessage {
 	TimelineItem *widget;
 
 	PendingMessage(int txn_id, QString body, QString event_id, TimelineItem *widget)
-	    : txn_id(txn_id)
-	    , body(body)
-	    , event_id(event_id)
-	    , widget(widget)
+	  : txn_id(txn_id)
+	  , body(body)
+	  , event_id(event_id)
+	  , widget(widget)
 	{
 	}
 };
@@ -63,12 +63,21 @@ class TimelineView : public QWidget
 	Q_OBJECT
 
 public:
-	TimelineView(const Timeline &timeline, QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent = 0);
+	TimelineView(const Timeline &timeline,
+		     QSharedPointer<MatrixClient> client,
+		     const QString &room_id,
+		     QWidget *parent = 0);
 	TimelineView(QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent = 0);
 
-	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Image> &e, const QString &color, bool with_sender);
-	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e, const QString &color, bool with_sender);
-	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e, const QString &color, bool with_sender);
+	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Image> &e,
+					 const QString &color,
+					 bool with_sender);
+	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e,
+					 const QString &color,
+					 bool with_sender);
+	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e,
+					 const QString &color,
+					 bool with_sender);
 
 	// Add new events at the end of the timeline.
 	int addEvents(const Timeline &timeline);
@@ -137,7 +146,8 @@ private:
 	QSharedPointer<MatrixClient> client_;
 };
 
-inline bool TimelineView::isDuplicate(const QString &event_id)
+inline bool
+TimelineView::isDuplicate(const QString &event_id)
 {
 	return eventIds_.contains(event_id);
 }

@@ -23,8 +23,8 @@
 #include "RegisterPage.h"
 
 RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
-    : QWidget(parent)
-    , client_(client)
+  : QWidget(parent)
+  , client_(client)
 {
 	setStyleSheet("background-color: #f9f9f9");
 
@@ -144,17 +144,20 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	setLayout(top_layout_);
 }
 
-void RegisterPage::onBackButtonClicked()
+void
+RegisterPage::onBackButtonClicked()
 {
 	emit backButtonClicked();
 }
 
-void RegisterPage::registerError(const QString &msg)
+void
+RegisterPage::registerError(const QString &msg)
 {
 	error_label_->setText(msg);
 }
 
-void RegisterPage::onRegisterButtonClicked()
+void
+RegisterPage::onRegisterButtonClicked()
 {
 	error_label_->setText("");
 

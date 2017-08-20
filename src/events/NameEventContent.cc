@@ -19,7 +19,8 @@
 
 using namespace matrix::events;
 
-void NameEventContent::deserialize(const QJsonValue &data)
+void
+NameEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("NameEventContent is not a JSON object");
@@ -32,7 +33,8 @@ void NameEventContent::deserialize(const QJsonValue &data)
 	name_ = object.value("name").toString();
 }
 
-QJsonObject NameEventContent::serialize() const
+QJsonObject
+NameEventContent::serialize() const
 {
 	QJsonObject object;
 

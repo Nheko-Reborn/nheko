@@ -37,12 +37,14 @@ private:
 	QString password_;
 };
 
-inline void RegisterRequest::setPassword(QString password)
+inline void
+RegisterRequest::setPassword(QString password)
 {
 	password_ = password;
 }
 
-inline void RegisterRequest::setUser(QString username)
+inline void
+RegisterRequest::setUser(QString username)
 {
 	user_ = username;
 }
@@ -62,17 +64,20 @@ private:
 	QString user_id_;
 };
 
-inline QString RegisterResponse::getAccessToken()
+inline QString
+RegisterResponse::getAccessToken()
 {
 	return access_token_;
 }
 
-inline QString RegisterResponse::getHomeServer()
+inline QString
+RegisterResponse::getHomeServer()
 {
 	return home_server_;
 }
 
-inline QString RegisterResponse::getUserId()
+inline QString
+RegisterResponse::getUserId()
 {
 	return user_id_;
 }

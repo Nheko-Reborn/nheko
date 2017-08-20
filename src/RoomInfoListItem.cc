@@ -29,13 +29,13 @@ RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
 				   RoomState state,
 				   QString room_id,
 				   QWidget *parent)
-    : QWidget(parent)
-    , state_(state)
-    , roomId_(room_id)
-    , roomSettings_{settings}
-    , isPressed_(false)
-    , maxHeight_(IconSize + 2 * Padding)
-    , unreadMsgCount_(0)
+  : QWidget(parent)
+  , state_(state)
+  , roomId_(room_id)
+  , roomSettings_{ settings }
+  , isPressed_(false)
+  , maxHeight_(IconSize + 2 * Padding)
+  , unreadMsgCount_(0)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setMouseTracking(true);
@@ -54,14 +54,13 @@ RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
 
 	toggleNotifications_ = new QAction(notificationText(), this);
 
-	connect(toggleNotifications_, &QAction::triggered, this, [=]() {
-		roomSettings_->toggleNotifications();
-	});
+	connect(toggleNotifications_, &QAction::triggered, this, [=]() { roomSettings_->toggleNotifications(); });
 
 	menu_->addAction(toggleNotifications_);
 }
 
-QString RoomInfoListItem::notificationText()
+QString
+RoomInfoListItem::notificationText()
 {
 	if (roomSettings_.isNull() || roomSettings_->isNotificationsEnabled())
 		return QString(tr("Disable notifications"));
@@ -69,7 +68,8 @@ QString RoomInfoListItem::notificationText()
 	return tr("Enable notifications");
 }
 
-void RoomInfoListItem::resizeEvent(QResizeEvent *)
+void
+RoomInfoListItem::resizeEvent(QResizeEvent *)
 {
 	// Update ripple's clipping path.
 	QPainterPath path;
@@ -79,7 +79,8 @@ void RoomInfoListItem::resizeEvent(QResizeEvent *)
 	ripple_overlay_->setClipping(true);
 }
 
-void RoomInfoListItem::paintEvent(QPaintEvent *event)
+void
+RoomInfoListItem::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 
@@ -119,7 +120,8 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 		QFontMetrics fontNameMetrics(font);
 		int top_y = 2 * Padding + fontNameMetrics.ascent() / 2;
 
-		auto name = metrics.elidedText(state_.getName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
+		auto name =
+			metrics.elidedText(state_.getName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
 		p.drawText(QPoint(2 * Padding + IconSize, top_y), name);
 
 		if (!isPressed_) {
@@ -226,19 +228,22 @@ void RoomInfoListItem::paintEvent(QPaintEvent *event)
 	}
 }
 
-void RoomInfoListItem::updateUnreadMessageCount(int count)
+void
+RoomInfoListItem::updateUnreadMessageCount(int count)
 {
 	unreadMsgCount_ += count;
 	update();
 }
 
-void RoomInfoListItem::clearUnreadMessageCount()
+void
+RoomInfoListItem::clearUnreadMessageCount()
 {
 	unreadMsgCount_ = 0;
 	update();
 }
 
-void RoomInfoListItem::setPressedState(bool state)
+void
+RoomInfoListItem::setPressedState(bool state)
 {
 	if (!isPressed_ && state) {
 		isPressed_ = state;
@@ -249,13 +254,15 @@ void RoomInfoListItem::setPressedState(bool state)
 	}
 }
 
-void RoomInfoListItem::setState(const RoomState &new_state)
+void
+RoomInfoListItem::setState(const RoomState &new_state)
 {
 	state_ = new_state;
 	update();
 }
 
-void RoomInfoListItem::contextMenuEvent(QContextMenuEvent *event)
+void
+RoomInfoListItem::contextMenuEvent(QContextMenuEvent *event)
 {
 	Q_UNUSED(event);
 
@@ -263,7 +270,8 @@ void RoomInfoListItem::contextMenuEvent(QContextMenuEvent *event)
 	menu_->popup(event->globalPos());
 }
 
-void RoomInfoListItem::mousePressEvent(QMouseEvent *event)
+void
+RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 {
 	if (event->buttons() == Qt::RightButton) {
 		QWidget::mousePressEvent(event);

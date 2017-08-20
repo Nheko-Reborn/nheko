@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void Location::deserialize(const QJsonObject &object)
+void
+Location::deserialize(const QJsonObject &object)
 {
 	if (!object.contains("geo_uri"))
 		throw DeserializationException("messages::Location geo_uri key is missing");

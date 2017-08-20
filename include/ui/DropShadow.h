@@ -30,7 +30,8 @@ public:
 		gradient.setStart(right0);
 		gradient.setFinalStop(right1);
 		painter.setBrush(QBrush(gradient));
-		painter.drawRoundRect(QRectF(QPointF(width - margin * radius, margin), QPointF(width, height - margin)), 0.0, 0.0);
+		painter.drawRoundRect(
+			QRectF(QPointF(width - margin * radius, margin), QPointF(width, height - margin)), 0.0, 0.0);
 
 		// Left
 		QPointF left0(margin, height / 2);
@@ -54,7 +55,8 @@ public:
 		gradient.setStart(bottom0);
 		gradient.setFinalStop(bottom1);
 		painter.setBrush(QBrush(gradient));
-		painter.drawRoundRect(QRectF(QPointF(margin, height - margin), QPointF(width - margin, height)), 0.0, 0.0);
+		painter.drawRoundRect(
+			QRectF(QPointF(margin, height - margin), QPointF(width - margin, height)), 0.0, 0.0);
 
 		// BottomRight
 		QPointF bottomright0(width - margin, height - margin);
@@ -95,6 +97,7 @@ public:
 		// Widget
 		painter.setBrush(QBrush("#FFFFFF"));
 		painter.setRenderHint(QPainter::Antialiasing);
-		painter.drawRoundRect(QRectF(QPointF(margin, margin), QPointF(width - margin, height - margin)), radius, radius);
+		painter.drawRoundRect(
+			QRectF(QPointF(margin, margin), QPointF(width - margin, height - margin)), radius, radius);
 	}
 };

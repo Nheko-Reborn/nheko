@@ -32,7 +32,9 @@ enum class HistoryVisibility {
 	WorldReadable,
 };
 
-class HistoryVisibilityEventContent : public Deserializable, public Serializable
+class HistoryVisibilityEventContent
+  : public Deserializable
+  , public Serializable
 {
 public:
 	inline HistoryVisibility historyVisibility() const;
@@ -44,9 +46,10 @@ private:
 	HistoryVisibility history_visibility_;
 };
 
-inline HistoryVisibility HistoryVisibilityEventContent::historyVisibility() const
+inline HistoryVisibility
+HistoryVisibilityEventContent::historyVisibility() const
 {
 	return history_visibility_;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

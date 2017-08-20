@@ -80,17 +80,20 @@ private:
 	QString userAvatar_;
 };
 
-inline QString RoomState::getTopic() const
+inline QString
+RoomState::getTopic() const
 {
 	return topic.content().topic().simplified();
 }
 
-inline QString RoomState::getName() const
+inline QString
+RoomState::getName() const
 {
 	return name_;
 }
 
-inline QUrl RoomState::getAvatar() const
+inline QUrl
+RoomState::getAvatar() const
 {
 	return avatar_;
 }

@@ -53,21 +53,24 @@ private:
 	FileInfo info_;
 };
 
-inline QString File::filename() const
+inline QString
+File::filename() const
 {
 	return filename_;
 }
 
-inline QString File::url() const
+inline QString
+File::url() const
 {
 	return url_;
 }
 
-inline FileInfo File::info() const
+inline FileInfo
+File::info() const
 {
 	return info_;
 }
 
-}  // namespace messages
-}  // namespace events
-}  // namespace matrix
+} // namespace messages
+} // namespace events
+} // namespace matrix

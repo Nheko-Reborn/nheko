@@ -5,7 +5,7 @@
 #include "Avatar.h"
 
 Avatar::Avatar(QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	size_ = ui::AvatarSize;
 	type_ = ui::AvatarType::Letter;
@@ -23,7 +23,8 @@ Avatar::~Avatar()
 {
 }
 
-QColor Avatar::textColor() const
+QColor
+Avatar::textColor() const
 {
 	if (!text_color_.isValid())
 		return QColor("black");
@@ -31,7 +32,8 @@ QColor Avatar::textColor() const
 	return text_color_;
 }
 
-QColor Avatar::backgroundColor() const
+QColor
+Avatar::backgroundColor() const
 {
 	if (!text_color_.isValid())
 		return QColor("white");
@@ -39,33 +41,38 @@ QColor Avatar::backgroundColor() const
 	return background_color_;
 }
 
-int Avatar::size() const
+int
+Avatar::size() const
 {
 	return size_;
 }
 
-QSize Avatar::sizeHint() const
+QSize
+Avatar::sizeHint() const
 {
 	return QSize(size_ + 2, size_ + 2);
 }
 
-void Avatar::setTextColor(const QColor &color)
+void
+Avatar::setTextColor(const QColor &color)
 {
 	text_color_ = color;
 }
 
-void Avatar::setBackgroundColor(const QColor &color)
+void
+Avatar::setBackgroundColor(const QColor &color)
 {
 	background_color_ = color;
 }
 
-void Avatar::setSize(int size)
+void
+Avatar::setSize(int size)
 {
 	size_ = size;
 
 	if (!image_.isNull()) {
-		pixmap_ = QPixmap::fromImage(
-			image_.scaled(size_, size_, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		pixmap_ =
+			QPixmap::fromImage(image_.scaled(size_, size_, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	}
 
 	QFont _font(font());
@@ -75,30 +82,33 @@ void Avatar::setSize(int size)
 	update();
 }
 
-void Avatar::setLetter(const QChar &letter)
+void
+Avatar::setLetter(const QChar &letter)
 {
 	letter_ = letter;
 	type_ = ui::AvatarType::Letter;
 	update();
 }
 
-void Avatar::setImage(const QImage &image)
+void
+Avatar::setImage(const QImage &image)
 {
 	image_ = image;
 	type_ = ui::AvatarType::Image;
-	pixmap_ = QPixmap::fromImage(
-		image_.scaled(size_, size_, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	pixmap_ = QPixmap::fromImage(image_.scaled(size_, size_, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	update();
 }
 
-void Avatar::setIcon(const QIcon &icon)
+void
+Avatar::setIcon(const QIcon &icon)
 {
 	icon_ = icon;
 	type_ = ui::AvatarType::Icon;
 	update();
 }
 
-void Avatar::paintEvent(QPaintEvent *)
+void
+Avatar::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);

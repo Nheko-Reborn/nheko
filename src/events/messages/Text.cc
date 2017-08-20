@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void Text::deserialize(const QJsonObject &object)
+void
+Text::deserialize(const QJsonObject &object)
 {
 	if (object.value("msgtype") != "m.text")
 		throw DeserializationException("invalid msgtype for text");

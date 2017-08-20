@@ -27,8 +27,8 @@
 #include "TimelineViewManager.h"
 
 TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent)
-    : QStackedWidget(parent)
-    , client_(client)
+  : QStackedWidget(parent)
+  , client_(client)
 {
 	setStyleSheet("QWidget { background: #f8fbfe; color: #e8e8e8; border: none;}");
 
@@ -42,7 +42,8 @@ TimelineViewManager::~TimelineViewManager()
 {
 }
 
-void TimelineViewManager::messageSent(const QString &event_id, const QString &roomid, int txn_id)
+void
+TimelineViewManager::messageSent(const QString &event_id, const QString &roomid, int txn_id)
 {
 	// We save the latest valid transaction ID for later use.
 	QSettings settings;
@@ -52,7 +53,8 @@ void TimelineViewManager::messageSent(const QString &event_id, const QString &ro
 	view->updatePendingMessage(txn_id, event_id);
 }
 
-void TimelineViewManager::sendTextMessage(const QString &msg)
+void
+TimelineViewManager::sendTextMessage(const QString &msg)
 {
 	auto room_id = active_room_;
 	auto view = views_[room_id];
@@ -61,7 +63,8 @@ void TimelineViewManager::sendTextMessage(const QString &msg)
 	client_->sendTextMessage(room_id, msg);
 }
 
-void TimelineViewManager::clearAll()
+void
+TimelineViewManager::clearAll()
 {
 	NICK_COLORS.clear();
 
@@ -71,7 +74,8 @@ void TimelineViewManager::clearAll()
 	views_.clear();
 }
 
-void TimelineViewManager::initialize(const Rooms &rooms)
+void
+TimelineViewManager::initialize(const Rooms &rooms)
 {
 	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
 		auto roomid = it.key();
@@ -90,7 +94,8 @@ void TimelineViewManager::initialize(const Rooms &rooms)
 	}
 }
 
-void TimelineViewManager::initialize(const QList<QString> &rooms)
+void
+TimelineViewManager::initialize(const QList<QString> &rooms)
 {
 	for (const auto &roomid : rooms) {
 		// Create a history view without any events.
@@ -107,7 +112,8 @@ void TimelineViewManager::initialize(const QList<QString> &rooms)
 	}
 }
 
-void TimelineViewManager::sync(const Rooms &rooms)
+void
+TimelineViewManager::sync(const Rooms &rooms)
 {
 	for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
 		auto roomid = it.key();
@@ -132,7 +138,8 @@ void TimelineViewManager::sync(const Rooms &rooms)
 	}
 }
 
-void TimelineViewManager::setHistoryView(const QString &room_id)
+void
+TimelineViewManager::setHistoryView(const QString &room_id)
 {
 	if (!views_.contains(room_id)) {
 		qDebug() << "Room ID from RoomList is not present in ViewManager" << room_id;
@@ -151,10 +158,11 @@ void TimelineViewManager::setHistoryView(const QString &room_id)
 QMap<QString, QString> TimelineViewManager::NICK_COLORS;
 QMap<QString, QString> TimelineViewManager::DISPLAY_NAMES;
 
-QString TimelineViewManager::chooseRandomColor()
+QString
+TimelineViewManager::chooseRandomColor()
 {
 	std::random_device random_device;
-	std::mt19937 engine{random_device()};
+	std::mt19937 engine{ random_device() };
 	std::uniform_real_distribution<float> dist(0, 1);
 
 	float hue = dist(engine);
@@ -208,7 +216,8 @@ QString TimelineViewManager::chooseRandomColor()
 	return color.name();
 }
 
-QString TimelineViewManager::getUserColor(const QString &userid)
+QString
+TimelineViewManager::getUserColor(const QString &userid)
 {
 	auto color = NICK_COLORS.value(userid);
 
@@ -220,7 +229,8 @@ QString TimelineViewManager::getUserColor(const QString &userid)
 	return color;
 }
 
-QString TimelineViewManager::displayName(const QString &userid)
+QString
+TimelineViewManager::displayName(const QString &userid)
 {
 	if (DISPLAY_NAMES.contains(userid))
 		return DISPLAY_NAMES.value(userid);

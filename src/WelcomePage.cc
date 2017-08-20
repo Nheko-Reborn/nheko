@@ -22,7 +22,7 @@
 #include "WelcomePage.h"
 
 WelcomePage::WelcomePage(QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -86,12 +86,14 @@ WelcomePage::WelcomePage(QWidget *parent)
 	connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
 }
 
-void WelcomePage::onLoginButtonClicked()
+void
+WelcomePage::onLoginButtonClicked()
 {
 	emit userLogin();
 }
 
-void WelcomePage::onRegisterButtonClicked()
+void
+WelcomePage::onRegisterButtonClicked()
 {
 	emit userRegister();
 }

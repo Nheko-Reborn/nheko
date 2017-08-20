@@ -26,7 +26,9 @@ namespace matrix
 {
 namespace events
 {
-class AliasesEventContent : public Deserializable, public Serializable
+class AliasesEventContent
+  : public Deserializable
+  , public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
@@ -38,9 +40,10 @@ private:
 	QList<QString> aliases_;
 };
 
-inline QList<QString> AliasesEventContent::aliases() const
+inline QList<QString>
+AliasesEventContent::aliases() const
 {
 	return aliases_;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

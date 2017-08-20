@@ -20,12 +20,13 @@
 #include "EmojiPickButton.h"
 
 EmojiPickButton::EmojiPickButton(QWidget *parent)
-    : FlatButton(parent)
-    , panel_{nullptr}
+  : FlatButton(parent)
+  , panel_{ nullptr }
 {
 }
 
-void EmojiPickButton::enterEvent(QEvent *e)
+void
+EmojiPickButton::enterEvent(QEvent *e)
 {
 	Q_UNUSED(e);
 
@@ -47,7 +48,8 @@ void EmojiPickButton::enterEvent(QEvent *e)
 	panel_->show();
 }
 
-void EmojiPickButton::leaveEvent(QEvent *e)
+void
+EmojiPickButton::leaveEvent(QEvent *e)
 {
 	Q_UNUSED(e);
 

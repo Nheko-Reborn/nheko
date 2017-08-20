@@ -36,7 +36,9 @@ enum class PowerLevels {
  * Defines the power levels (privileges) of users in the room.
  */
 
-class PowerLevelsEventContent : public Deserializable, public Serializable
+class PowerLevelsEventContent
+  : public Deserializable
+  , public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
@@ -68,39 +70,46 @@ private:
 	QMap<QString, int> users_;
 };
 
-inline int PowerLevelsEventContent::banLevel() const
+inline int
+PowerLevelsEventContent::banLevel() const
 {
 	return ban_;
 }
 
-inline int PowerLevelsEventContent::inviteLevel() const
+inline int
+PowerLevelsEventContent::inviteLevel() const
 {
 	return invite_;
 }
 
-inline int PowerLevelsEventContent::kickLevel() const
+inline int
+PowerLevelsEventContent::kickLevel() const
 {
 	return kick_;
 }
 
-inline int PowerLevelsEventContent::redactLevel() const
+inline int
+PowerLevelsEventContent::redactLevel() const
 {
 	return redact_;
 }
 
-inline int PowerLevelsEventContent::eventsDefaultLevel() const
+inline int
+PowerLevelsEventContent::eventsDefaultLevel() const
 {
 	return events_default_;
 }
 
-inline int PowerLevelsEventContent::stateDefaultLevel() const
+inline int
+PowerLevelsEventContent::stateDefaultLevel() const
 {
 	return state_default_;
 }
 
-inline int PowerLevelsEventContent::usersDefaultLevel() const
+inline int
+PowerLevelsEventContent::usersDefaultLevel() const
 {
 	return users_default_;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

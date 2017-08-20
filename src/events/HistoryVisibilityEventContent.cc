@@ -19,7 +19,8 @@
 
 using namespace matrix::events;
 
-void HistoryVisibilityEventContent::deserialize(const QJsonValue &data)
+void
+HistoryVisibilityEventContent::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("HistoryVisibilityEventContent is not a JSON object");
@@ -40,10 +41,12 @@ void HistoryVisibilityEventContent::deserialize(const QJsonValue &data)
 	else if (value == "world_readable")
 		history_visibility_ = HistoryVisibility::WorldReadable;
 	else
-		throw DeserializationException(QString("Unknown history_visibility value: %1").arg(value).toUtf8().constData());
+		throw DeserializationException(
+			QString("Unknown history_visibility value: %1").arg(value).toUtf8().constData());
 }
 
-QJsonObject HistoryVisibilityEventContent::serialize() const
+QJsonObject
+HistoryVisibilityEventContent::serialize() const
 {
 	QJsonObject object;
 

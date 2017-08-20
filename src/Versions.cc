@@ -24,7 +24,8 @@
 #include "Deserializable.h"
 #include "Versions.h"
 
-void VersionsResponse::deserialize(const QJsonDocument &data)
+void
+VersionsResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Versions response is not a JSON object");
@@ -51,7 +52,8 @@ void VersionsResponse::deserialize(const QJsonDocument &data)
 	}
 }
 
-bool VersionsResponse::isVersionSupported(unsigned int major, unsigned int minor, unsigned int patch)
+bool
+VersionsResponse::isVersionSupported(unsigned int major, unsigned int minor, unsigned int patch)
 {
 	for (auto &v : supported_versions_) {
 		if (v.major_ == major && v.minor_ == minor && v.patch_ >= patch)

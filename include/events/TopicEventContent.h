@@ -29,7 +29,9 @@ namespace events
  * A topic is a short message detailing what is currently being discussed in the room.
  */
 
-class TopicEventContent : public Deserializable, public Serializable
+class TopicEventContent
+  : public Deserializable
+  , public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
@@ -41,9 +43,10 @@ private:
 	QString topic_;
 };
 
-inline QString TopicEventContent::topic() const
+inline QString
+TopicEventContent::topic() const
 {
 	return topic_;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

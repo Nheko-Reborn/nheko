@@ -25,12 +25,13 @@
 #endif
 
 MsgCountComposedIcon::MsgCountComposedIcon(const QString &filename)
-    : QIconEngine()
+  : QIconEngine()
 {
 	icon_ = QIcon(filename);
 }
 
-void MsgCountComposedIcon::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
+void
+MsgCountComposedIcon::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
 {
 	painter->setRenderHint(QPainter::TextAntialiasing);
 	painter->setRenderHint(QPainter::SmoothPixmapTransform);
@@ -52,23 +53,21 @@ void MsgCountComposedIcon::paint(QPainter *painter, const QRect &rect, QIcon::Mo
 	painter->setPen(Qt::NoPen);
 	painter->setFont(QFont("Open Sans", 8, QFont::Black));
 
-	QRectF bubble(rect.width() - BubbleDiameter,
-		      rect.height() - BubbleDiameter,
-		      BubbleDiameter,
-		      BubbleDiameter);
+	QRectF bubble(rect.width() - BubbleDiameter, rect.height() - BubbleDiameter, BubbleDiameter, BubbleDiameter);
 	painter->drawEllipse(bubble);
 	painter->setPen(QPen(textColor));
 	painter->setBrush(Qt::NoBrush);
 	painter->drawText(bubble, Qt::AlignCenter, QString::number(msgCount));
 }
 
-QIconEngine *MsgCountComposedIcon::clone() const
+QIconEngine *
+MsgCountComposedIcon::clone() const
 {
 	return new MsgCountComposedIcon(*this);
 }
 
 TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
-    : QSystemTrayIcon(parent)
+  : QSystemTrayIcon(parent)
 {
 #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
 	setIcon(QIcon(filename));
@@ -82,9 +81,7 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
 	quitAction_ = new QAction(tr("Quit"), parent);
 
 	connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
-	connect(quitAction_, &QAction::triggered, this, [=]() {
-		QApplication::quit();
-	});
+	connect(quitAction_, &QAction::triggered, this, [=]() { QApplication::quit(); });
 
 	menu->addAction(viewAction_);
 	menu->addAction(quitAction_);
@@ -92,12 +89,11 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
 	setContextMenu(menu);
 
 	// We wait a little for the icon to load.
-	QTimer::singleShot(500, this, [=]() {
-		show();
-	});
+	QTimer::singleShot(500, this, [=]() { show(); });
 }
 
-void TrayIcon::setUnreadCount(int count)
+void
+TrayIcon::setUnreadCount(int count)
 {
 // Use the native badge counter in MacOS.
 #if defined(Q_OS_MAC)

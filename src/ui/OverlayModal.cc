@@ -22,9 +22,9 @@
 #include "OverlayModal.h"
 
 OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
-    : OverlayWidget(parent)
-    , duration_{500}
-    , color_{QColor(55, 55, 55)}
+  : OverlayWidget(parent)
+  , duration_{ 500 }
+  , color_{ QColor(55, 55, 55) }
 {
 	setAttribute(Qt::WA_TranslucentBackground);
 
@@ -50,7 +50,8 @@ OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
 	});
 }
 
-void OverlayModal::paintEvent(QPaintEvent *event)
+void
+OverlayModal::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 
@@ -58,14 +59,16 @@ void OverlayModal::paintEvent(QPaintEvent *event)
 	painter.fillRect(rect(), color_);
 }
 
-void OverlayModal::fadeIn()
+void
+OverlayModal::fadeIn()
 {
 	animation_->setDirection(QAbstractAnimation::Backward);
 	animation_->start();
 	show();
 }
 
-void OverlayModal::fadeOut()
+void
+OverlayModal::fadeOut()
 {
 	animation_->setDirection(QAbstractAnimation::Forward);
 	animation_->start();

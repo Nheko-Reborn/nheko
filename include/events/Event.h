@@ -53,13 +53,18 @@ enum class EventType {
 	Unsupported,
 };
 
-EventType extractEventType(const QJsonObject &data);
+EventType
+extractEventType(const QJsonObject &data);
 
-bool isMessageEvent(EventType type);
-bool isStateEvent(EventType type);
+bool
+isMessageEvent(EventType type);
+bool
+isStateEvent(EventType type);
 
-template <class Content>
-class Event : public Deserializable, public Serializable
+template<class Content>
+class Event
+  : public Deserializable
+  , public Serializable
 {
 public:
 	inline Content content() const;
@@ -73,20 +78,23 @@ private:
 	EventType type_;
 };
 
-template <class Content>
-inline Content Event<Content>::content() const
+template<class Content>
+inline Content
+Event<Content>::content() const
 {
 	return content_;
 }
 
-template <class Content>
-inline EventType Event<Content>::eventType() const
+template<class Content>
+inline EventType
+Event<Content>::eventType() const
 {
 	return type_;
 }
 
-template <class Content>
-void Event<Content>::deserialize(const QJsonValue &data)
+template<class Content>
+void
+Event<Content>::deserialize(const QJsonValue &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Event is not a JSON object");
@@ -97,8 +105,9 @@ void Event<Content>::deserialize(const QJsonValue &data)
 	type_ = extractEventType(object);
 }
 
-template <class Content>
-QJsonObject Event<Content>::serialize() const
+template<class Content>
+QJsonObject
+Event<Content>::serialize() const
 {
 	QJsonObject object;
 
@@ -145,5 +154,5 @@ QJsonObject Event<Content>::serialize() const
 
 	return object;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

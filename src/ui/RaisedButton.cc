@@ -3,7 +3,8 @@
 
 #include "RaisedButton.h"
 
-void RaisedButton::init()
+void
+RaisedButton::init()
 {
 	shadow_state_machine_ = new QStateMachine(this);
 	normal_state_ = new QState;
@@ -57,13 +58,13 @@ void RaisedButton::init()
 }
 
 RaisedButton::RaisedButton(QWidget *parent)
-    : FlatButton(parent)
+  : FlatButton(parent)
 {
 	init();
 }
 
 RaisedButton::RaisedButton(const QString &text, QWidget *parent)
-    : FlatButton(parent)
+  : FlatButton(parent)
 {
 	init();
 	setText(text);
@@ -73,7 +74,8 @@ RaisedButton::~RaisedButton()
 {
 }
 
-bool RaisedButton::event(QEvent *event)
+bool
+RaisedButton::event(QEvent *event)
 {
 	if (QEvent::EnabledChange == event->type()) {
 		if (isEnabled()) {

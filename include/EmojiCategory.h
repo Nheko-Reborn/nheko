@@ -53,7 +53,8 @@ private:
 	QLabel *category_;
 };
 
-inline void EmojiCategory::clickIndex(const QModelIndex &index)
+inline void
+EmojiCategory::clickIndex(const QModelIndex &index)
 {
 	emit emojiSelected(index.data(Qt::UserRole).toString());
 }

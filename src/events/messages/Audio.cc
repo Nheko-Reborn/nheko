@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void Audio::deserialize(const QJsonObject &object)
+void
+Audio::deserialize(const QJsonObject &object)
 {
 	if (!object.contains("url"))
 		throw DeserializationException("url key is missing");

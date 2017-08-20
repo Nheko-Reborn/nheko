@@ -31,11 +31,11 @@ static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val transactionID("transaction_id");
 
 Cache::Cache(const QString &userId)
-    : env_{nullptr}
-    , stateDb_{0}
-    , roomDb_{0}
-    , isMounted_{false}
-    , userId_{userId}
+  : env_{ nullptr }
+  , stateDb_{ 0 }
+  , roomDb_{ 0 }
+  , isMounted_{ false }
+  , userId_{ userId }
 {
 	auto statePath = QString("%1/%2/state")
 				 .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
@@ -51,7 +51,8 @@ Cache::Cache(const QString &userId)
 		qDebug() << "[cache] First time initializing LMDB";
 
 		if (!QDir().mkpath(statePath)) {
-			throw std::runtime_error(("Unable to create state directory:" + statePath).toStdString().c_str());
+			throw std::runtime_error(
+				("Unable to create state directory:" + statePath).toStdString().c_str());
 		}
 	}
 
@@ -83,7 +84,8 @@ Cache::Cache(const QString &userId)
 	isMounted_ = true;
 }
 
-void Cache::insertRoomState(const QString &roomid, const RoomState &state)
+void
+Cache::insertRoomState(const QString &roomid, const RoomState &state)
 {
 	if (!isMounted_)
 		return;
@@ -93,11 +95,7 @@ void Cache::insertRoomState(const QString &roomid, const RoomState &state)
 	auto stateEvents = QJsonDocument(state.serialize()).toBinaryData();
 	auto id = roomid.toUtf8();
 
-	lmdb::dbi_put(
-		txn,
-		roomDb_,
-		lmdb::val(id.data(), id.size()),
-		lmdb::val(stateEvents.data(), stateEvents.size()));
+	lmdb::dbi_put(txn, roomDb_, lmdb::val(id.data(), id.size()), lmdb::val(stateEvents.data(), stateEvents.size()));
 
 	for (const auto &membership : state.memberships) {
 		lmdb::dbi membersDb = lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
@@ -111,21 +109,19 @@ void Cache::insertRoomState(const QString &roomid, const RoomState &state)
 		// We add or update (e.g invite -> join) a new user to the membership list.
 		case events::Membership::Invite:
 		case events::Membership::Join: {
-			lmdb::dbi_put(
-				txn,
-				membersDb,
-				lmdb::val(key.data(), key.size()),
-				lmdb::val(memberEvent.data(), memberEvent.size()));
+			lmdb::dbi_put(txn,
+				      membersDb,
+				      lmdb::val(key.data(), key.size()),
+				      lmdb::val(memberEvent.data(), memberEvent.size()));
 			break;
 		}
 		// We remove the user from the membership list.
 		case events::Membership::Leave:
 		case events::Membership::Ban: {
-			lmdb::dbi_del(
-				txn,
-				membersDb,
-				lmdb::val(key.data(), key.size()),
-				lmdb::val(memberEvent.data(), memberEvent.size()));
+			lmdb::dbi_del(txn,
+				      membersDb,
+				      lmdb::val(key.data(), key.size()),
+				      lmdb::val(memberEvent.data(), memberEvent.size()));
 			break;
 		}
 		case events::Membership::Knock: {
@@ -138,7 +134,8 @@ void Cache::insertRoomState(const QString &roomid, const RoomState &state)
 	txn.commit();
 }
 
-QMap<QString, RoomState> Cache::states()
+QMap<QString, RoomState>
+Cache::states()
 {
 	QMap<QString, RoomState> states;
 
@@ -166,7 +163,8 @@ QMap<QString, RoomState> Cache::states()
 
 		while (memberCursor.get(memberId, memberContent, MDB_NEXT)) {
 			auto userid = QString::fromUtf8(memberId.data(), memberId.size());
-			auto data = QJsonDocument::fromBinaryData(QByteArray(memberContent.data(), memberContent.size()));
+			auto data =
+				QJsonDocument::fromBinaryData(QByteArray(memberContent.data(), memberContent.size()));
 
 			try {
 				events::StateEvent<events::MemberEventContent> member;
@@ -194,7 +192,8 @@ QMap<QString, RoomState> Cache::states()
 	return states;
 }
 
-void Cache::setNextBatchToken(const QString &token)
+void
+Cache::setNextBatchToken(const QString &token)
 {
 	auto txn = lmdb::txn::begin(env_);
 	auto value = token.toUtf8();
@@ -204,7 +203,8 @@ void Cache::setNextBatchToken(const QString &token)
 	txn.commit();
 }
 
-bool Cache::isInitialized()
+bool
+Cache::isInitialized()
 {
 	auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 	lmdb::val token;
@@ -216,7 +216,8 @@ bool Cache::isInitialized()
 	return res;
 }
 
-QString Cache::nextBatchToken()
+QString
+Cache::nextBatchToken()
 {
 	auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 	lmdb::val token;

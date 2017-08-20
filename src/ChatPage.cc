@@ -43,9 +43,9 @@
 namespace events = matrix::events;
 
 ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
-    : QWidget(parent)
-    , sync_interval_(2000)
-    , client_(client)
+  : QWidget(parent)
+  , sync_interval_(2000)
+  , client_(client)
 {
 	setStyleSheet("background-color: #f8fbfe;");
 
@@ -168,23 +168,18 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 		SIGNAL(syncCompleted(const SyncResponse &)),
 		this,
 		SLOT(syncCompleted(const SyncResponse &)));
-	connect(client_.data(),
-		SIGNAL(syncFailed(const QString &)),
-		this,
-		SLOT(syncFailed(const QString &)));
+	connect(client_.data(), SIGNAL(syncFailed(const QString &)), this, SLOT(syncFailed(const QString &)));
 	connect(client_.data(),
 		SIGNAL(getOwnProfileResponse(const QUrl &, const QString &)),
 		this,
 		SLOT(updateOwnProfileInfo(const QUrl &, const QString &)));
-	connect(client_.data(),
-		SIGNAL(ownAvatarRetrieved(const QPixmap &)),
-		this,
-		SLOT(setOwnAvatar(const QPixmap &)));
+	connect(client_.data(), SIGNAL(ownAvatarRetrieved(const QPixmap &)), this, SLOT(setOwnAvatar(const QPixmap &)));
 
 	AvatarProvider::init(client);
 }
 
-void ChatPage::logout()
+void
+ChatPage::logout()
 {
 	sync_timer_->stop();
 
@@ -217,7 +212,8 @@ void ChatPage::logout()
 	emit close();
 }
 
-void ChatPage::bootstrap(QString userid, QString homeserver, QString token)
+void
+ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 {
 	client_->setServer(homeserver);
 	client_->setAccessToken(token);
@@ -235,24 +231,28 @@ void ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 		client_->initialSync();
 }
 
-void ChatPage::startSync()
+void
+ChatPage::startSync()
 {
 	client_->sync();
 }
 
-void ChatPage::setOwnAvatar(const QPixmap &img)
+void
+ChatPage::setOwnAvatar(const QPixmap &img)
 {
 	user_info_widget_->setAvatar(img.toImage());
 }
 
-void ChatPage::syncFailed(const QString &msg)
+void
+ChatPage::syncFailed(const QString &msg)
 {
 	qWarning() << "Sync error:" << msg;
 	sync_timer_->start(sync_interval_ * 5);
 }
 
 // TODO: Should be moved in another class that manages this global list.
-void ChatPage::updateDisplayNames(const RoomState &state)
+void
+ChatPage::updateDisplayNames(const RoomState &state)
 {
 	for (const auto member : state.memberships) {
 		auto displayName = member.content().displayName();
@@ -262,7 +262,8 @@ void ChatPage::updateDisplayNames(const RoomState &state)
 	}
 }
 
-void ChatPage::syncCompleted(const SyncResponse &response)
+void
+ChatPage::syncCompleted(const SyncResponse &response)
 {
 	// TODO: Catch exception
 	cache_->setNextBatchToken(response.nextBatch());
@@ -309,7 +310,8 @@ void ChatPage::syncCompleted(const SyncResponse &response)
 	sync_timer_->start(sync_interval_);
 }
 
-void ChatPage::initialSyncCompleted(const SyncResponse &response)
+void
+ChatPage::initialSyncCompleted(const SyncResponse &response)
 {
 	if (!response.nextBatch().isEmpty())
 		client_->setNextBatchToken(response.nextBatch());
@@ -367,7 +369,8 @@ void ChatPage::initialSyncCompleted(const SyncResponse &response)
 	emit contentLoaded();
 }
 
-void ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
+void
+ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
 {
 	room_avatars_.insert(roomid, img);
 
@@ -377,7 +380,8 @@ void ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
 	top_bar_->updateRoomAvatar(img.toImage());
 }
 
-void ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name)
+void
+ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name)
 {
 	QSettings settings;
 	auto userid = settings.value("auth/user_id").toString();
@@ -389,7 +393,8 @@ void ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &displ
 		client_->fetchOwnAvatar(avatar_url);
 }
 
-void ChatPage::changeTopRoomInfo(const QString &room_id)
+void
+ChatPage::changeTopRoomInfo(const QString &room_id)
 {
 	if (!state_manager_.contains(room_id))
 		return;
@@ -408,7 +413,8 @@ void ChatPage::changeTopRoomInfo(const QString &room_id)
 	current_room_ = room_id;
 }
 
-void ChatPage::showUnreadMessageNotification(int count)
+void
+ChatPage::showUnreadMessageNotification(int count)
 {
 	emit unreadMessages(count);
 
@@ -419,7 +425,8 @@ void ChatPage::showUnreadMessageNotification(int count)
 		emit changeWindowTitle(QString("nheko (%1)").arg(count));
 }
 
-void ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
+void
+ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
 {
 	events::EventType ty;
 
@@ -509,7 +516,8 @@ void ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
 	}
 }
 
-void ChatPage::loadStateFromCache()
+void
+ChatPage::loadStateFromCache()
 {
 	qDebug() << "Restoring state from cache";
 
@@ -564,7 +572,8 @@ void ChatPage::loadStateFromCache()
 	sync_timer_->start(sync_interval_);
 }
 
-void ChatPage::keyPressEvent(QKeyEvent *event)
+void
+ChatPage::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_K) {
 		if (event->modifiers() == Qt::ControlModifier)
@@ -572,7 +581,8 @@ void ChatPage::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void ChatPage::showQuickSwitcher()
+void
+ChatPage::showQuickSwitcher()
 {
 	if (quickSwitcher_ == nullptr) {
 		quickSwitcher_ = new QuickSwitcher(this);

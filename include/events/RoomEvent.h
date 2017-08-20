@@ -26,7 +26,7 @@ namespace matrix
 {
 namespace events
 {
-template <class Content>
+template<class Content>
 class RoomEvent : public Event<Content>
 {
 public:
@@ -46,32 +46,37 @@ private:
 	uint64_t origin_server_ts_;
 };
 
-template <class Content>
-inline QString RoomEvent<Content>::eventId() const
+template<class Content>
+inline QString
+RoomEvent<Content>::eventId() const
 {
 	return event_id_;
 }
 
-template <class Content>
-inline QString RoomEvent<Content>::roomId() const
+template<class Content>
+inline QString
+RoomEvent<Content>::roomId() const
 {
 	return room_id_;
 }
 
-template <class Content>
-inline QString RoomEvent<Content>::sender() const
+template<class Content>
+inline QString
+RoomEvent<Content>::sender() const
 {
 	return sender_;
 }
 
-template <class Content>
-inline uint64_t RoomEvent<Content>::timestamp() const
+template<class Content>
+inline uint64_t
+RoomEvent<Content>::timestamp() const
 {
 	return origin_server_ts_;
 }
 
-template <class Content>
-void RoomEvent<Content>::deserialize(const QJsonValue &data)
+template<class Content>
+void
+RoomEvent<Content>::deserialize(const QJsonValue &data)
 {
 	Event<Content>::deserialize(data);
 
@@ -96,8 +101,9 @@ void RoomEvent<Content>::deserialize(const QJsonValue &data)
 	origin_server_ts_ = object.value("origin_server_ts").toDouble();
 }
 
-template <class Content>
-QJsonObject RoomEvent<Content>::serialize() const
+template<class Content>
+QJsonObject
+RoomEvent<Content>::serialize() const
 {
 	QJsonObject object = Event<Content>::serialize();
 
@@ -108,5 +114,5 @@ QJsonObject RoomEvent<Content>::serialize() const
 
 	return object;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

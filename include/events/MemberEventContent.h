@@ -47,7 +47,9 @@ enum class Membership {
  * The current membership state of a user in the room.
  */
 
-class MemberEventContent : public Deserializable, public Serializable
+class MemberEventContent
+  : public Deserializable
+  , public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
@@ -63,19 +65,22 @@ private:
 	Membership membership_state_;
 };
 
-inline QUrl MemberEventContent::avatarUrl() const
+inline QUrl
+MemberEventContent::avatarUrl() const
 {
 	return avatar_url_;
 }
 
-inline QString MemberEventContent::displayName() const
+inline QString
+MemberEventContent::displayName() const
 {
 	return display_name_;
 }
 
-inline Membership MemberEventContent::membershipState() const
+inline Membership
+MemberEventContent::membershipState() const
 {
 	return membership_state_;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

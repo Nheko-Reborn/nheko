@@ -28,10 +28,12 @@
 namespace events = matrix::events;
 namespace msgs = matrix::events::messages;
 
-ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const events::MessageEvent<msgs::Image> &event, QWidget *parent)
-    : QWidget(parent)
-    , event_{event}
-    , client_{client}
+ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
+		     const events::MessageEvent<msgs::Image> &event,
+		     QWidget *parent)
+  : QWidget(parent)
+  , event_{ event }
+  , client_{ client }
 {
 	setMouseTracking(true);
 	setCursor(Qt::PointingHandCursor);
@@ -58,7 +60,8 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client, const events::MessageE
 		SLOT(imageDownloaded(const QString &, const QPixmap &)));
 }
 
-void ImageItem::imageDownloaded(const QString &event_id, const QPixmap &img)
+void
+ImageItem::imageDownloaded(const QString &event_id, const QPixmap &img)
 {
 	if (event_id != event_.eventId())
 		return;
@@ -66,7 +69,8 @@ void ImageItem::imageDownloaded(const QString &event_id, const QPixmap &img)
 	setImage(img);
 }
 
-void ImageItem::openUrl()
+void
+ImageItem::openUrl()
 {
 	if (url_.toString().isEmpty())
 		return;
@@ -75,7 +79,8 @@ void ImageItem::openUrl()
 		qWarning() << "Could not open url" << url_.toString();
 }
 
-void ImageItem::scaleImage()
+void
+ImageItem::scaleImage()
 {
 	if (image_.isNull())
 		return;
@@ -97,7 +102,8 @@ void ImageItem::scaleImage()
 	scaled_image_ = image_.scaled(width_, height_, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
-QSize ImageItem::sizeHint() const
+QSize
+ImageItem::sizeHint() const
 {
 	if (image_.isNull())
 		return QSize(max_width_, bottom_height_);
@@ -105,14 +111,16 @@ QSize ImageItem::sizeHint() const
 	return QSize(width_, height_);
 }
 
-void ImageItem::setImage(const QPixmap &image)
+void
+ImageItem::setImage(const QPixmap &image)
 {
 	image_ = image;
 	scaleImage();
 	update();
 }
 
-void ImageItem::mousePressEvent(QMouseEvent *event)
+void
+ImageItem::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() != Qt::LeftButton)
 		return;
@@ -133,14 +141,16 @@ void ImageItem::mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void ImageItem::resizeEvent(QResizeEvent *event)
+void
+ImageItem::resizeEvent(QResizeEvent *event)
 {
 	Q_UNUSED(event);
 
 	scaleImage();
 }
 
-void ImageItem::paintEvent(QPaintEvent *event)
+void
+ImageItem::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 

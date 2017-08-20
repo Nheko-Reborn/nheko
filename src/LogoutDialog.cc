@@ -23,7 +23,7 @@
 #include "Theme.h"
 
 LogoutDialog::LogoutDialog(QWidget *parent)
-    : QFrame(parent)
+  : QFrame(parent)
 {
 	setMaximumSize(400, 400);
 	setStyleSheet("background-color: #f9f9f9");

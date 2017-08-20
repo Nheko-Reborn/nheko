@@ -19,7 +19,8 @@
 
 using namespace matrix::events::messages;
 
-void Notice::deserialize(const QJsonObject &object)
+void
+Notice::deserialize(const QJsonObject &object)
 {
 	if (object.value("msgtype") != "m.notice")
 		throw DeserializationException("invalid msgtype for notice");

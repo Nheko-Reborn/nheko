@@ -66,67 +66,80 @@ private:
 	QBrush brush_;
 };
 
-inline void Ripple::setOverlay(RippleOverlay *overlay)
+inline void
+Ripple::setOverlay(RippleOverlay *overlay)
 {
 	overlay_ = overlay;
 }
 
-inline qreal Ripple::radius() const
+inline qreal
+Ripple::radius() const
 {
 	return radius_;
 }
 
-inline qreal Ripple::opacity() const
+inline qreal
+Ripple::opacity() const
 {
 	return opacity_;
 }
 
-inline QColor Ripple::color() const
+inline QColor
+Ripple::color() const
 {
 	return brush_.color();
 }
 
-inline QBrush Ripple::brush() const
+inline QBrush
+Ripple::brush() const
 {
 	return brush_;
 }
 
-inline QPoint Ripple::center() const
+inline QPoint
+Ripple::center() const
 {
 	return center_;
 }
 
-inline QPropertyAnimation *Ripple::radiusAnimation() const
+inline QPropertyAnimation *
+Ripple::radiusAnimation() const
 {
 	return radius_anim_;
 }
 
-inline QPropertyAnimation *Ripple::opacityAnimation() const
+inline QPropertyAnimation *
+Ripple::opacityAnimation() const
 {
 	return opacity_anim_;
 }
 
-inline void Ripple::setOpacityStartValue(qreal value)
+inline void
+Ripple::setOpacityStartValue(qreal value)
 {
 	opacity_anim_->setStartValue(value);
 }
 
-inline void Ripple::setOpacityEndValue(qreal value)
+inline void
+Ripple::setOpacityEndValue(qreal value)
 {
 	opacity_anim_->setEndValue(value);
 }
 
-inline void Ripple::setRadiusStartValue(qreal value)
+inline void
+Ripple::setRadiusStartValue(qreal value)
 {
 	radius_anim_->setStartValue(value);
 }
 
-inline void Ripple::setRadiusEndValue(qreal value)
+inline void
+Ripple::setRadiusEndValue(qreal value)
 {
 	radius_anim_->setEndValue(value);
 }
 
-inline void Ripple::setDuration(int msecs)
+inline void
+Ripple::setDuration(int msecs)
 {
 	radius_anim_->setDuration(msecs);
 	opacity_anim_->setDuration(msecs);

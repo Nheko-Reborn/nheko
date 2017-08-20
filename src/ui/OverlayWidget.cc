@@ -2,7 +2,7 @@
 #include <QEvent>
 
 OverlayWidget::OverlayWidget(QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
 	if (parent) {
 		parent->installEventFilter(this);
@@ -11,7 +11,8 @@ OverlayWidget::OverlayWidget(QWidget *parent)
 	}
 }
 
-bool OverlayWidget::event(QEvent *event)
+bool
+OverlayWidget::event(QEvent *event)
 {
 	if (!parent())
 		return QWidget::event(event);
@@ -33,7 +34,8 @@ bool OverlayWidget::event(QEvent *event)
 	return QWidget::event(event);
 }
 
-bool OverlayWidget::eventFilter(QObject *obj, QEvent *event)
+bool
+OverlayWidget::eventFilter(QObject *obj, QEvent *event)
 {
 	switch (event->type()) {
 	case QEvent::Move:
@@ -47,7 +49,8 @@ bool OverlayWidget::eventFilter(QObject *obj, QEvent *event)
 	return QWidget::eventFilter(obj, event);
 }
 
-QRect OverlayWidget::overlayGeometry() const
+QRect
+OverlayWidget::overlayGeometry() const
 {
 	QWidget *widget = parentWidget();
 

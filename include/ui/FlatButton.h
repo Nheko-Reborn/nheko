@@ -63,12 +63,14 @@ private:
 	bool was_checked_;
 };
 
-inline qreal FlatButtonStateMachine::overlayOpacity() const
+inline qreal
+FlatButtonStateMachine::overlayOpacity() const
 {
 	return overlay_opacity_;
 }
 
-inline qreal FlatButtonStateMachine::checkedOverlayProgress() const
+inline qreal
+FlatButtonStateMachine::checkedOverlayProgress() const
 {
 	return checked_overlay_progress_;
 }
@@ -86,8 +88,13 @@ class FlatButton : public QPushButton
 
 public:
 	explicit FlatButton(QWidget *parent = 0, ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
-	explicit FlatButton(const QString &text, QWidget *parent = 0, ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
-	FlatButton(const QString &text, ui::Role role, QWidget *parent = 0, ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
+	explicit FlatButton(const QString &text,
+			    QWidget *parent = 0,
+			    ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
+	FlatButton(const QString &text,
+		   ui::Role role,
+		   QWidget *parent = 0,
+		   ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
 	~FlatButton();
 
 	void applyPreset(ui::ButtonPreset preset);

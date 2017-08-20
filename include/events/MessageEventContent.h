@@ -54,9 +54,12 @@ enum class MessageEventType {
 	Unknown,
 };
 
-MessageEventType extractMessageEventType(const QJsonObject &data);
+MessageEventType
+extractMessageEventType(const QJsonObject &data);
 
-class MessageEventContent : public Deserializable, public Serializable
+class MessageEventContent
+  : public Deserializable
+  , public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
@@ -68,9 +71,10 @@ private:
 	QString body_;
 };
 
-inline QString MessageEventContent::body() const
+inline QString
+MessageEventContent::body() const
 {
 	return body_;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

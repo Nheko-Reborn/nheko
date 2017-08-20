@@ -29,7 +29,9 @@ namespace events
  * This is the first event in a room and cannot be changed. It acts as the root of all other events.
  */
 
-class CreateEventContent : public Deserializable, public Serializable
+class CreateEventContent
+  : public Deserializable
+  , public Serializable
 {
 public:
 	void deserialize(const QJsonValue &data) override;
@@ -42,9 +44,10 @@ private:
 	QString creator_;
 };
 
-inline QString CreateEventContent::creator() const
+inline QString
+CreateEventContent::creator() const
 {
 	return creator_;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix

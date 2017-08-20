@@ -27,12 +27,13 @@ LoginRequest::LoginRequest()
 }
 
 LoginRequest::LoginRequest(QString username, QString password)
-    : user_(username)
-    , password_(password)
+  : user_(username)
+  , password_(password)
 {
 }
 
-QByteArray LoginRequest::serialize() noexcept
+QByteArray
+LoginRequest::serialize() noexcept
 {
 #if defined(Q_OS_MAC)
 	QString initialDeviceName("nheko on Mac OS");
@@ -45,16 +46,17 @@ QByteArray LoginRequest::serialize() noexcept
 #endif
 
 	QJsonObject body{
-		{"type", "m.login.password"},
-		{"user", user_},
-		{"password", password_},
-		{"initial_device_display_name", initialDeviceName},
+		{ "type", "m.login.password" },
+		{ "user", user_ },
+		{ "password", password_ },
+		{ "initial_device_display_name", initialDeviceName },
 	};
 
 	return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
 
-void LoginResponse::deserialize(const QJsonDocument &data)
+void
+LoginResponse::deserialize(const QJsonDocument &data)
 {
 	if (!data.isObject())
 		throw DeserializationException("Login response is not a JSON object");

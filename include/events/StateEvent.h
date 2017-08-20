@@ -25,7 +25,7 @@ namespace matrix
 {
 namespace events
 {
-template <class Content>
+template<class Content>
 class StateEvent : public RoomEvent<Content>
 {
 public:
@@ -40,20 +40,23 @@ private:
 	Content prev_content_;
 };
 
-template <class Content>
-inline QString StateEvent<Content>::stateKey() const
+template<class Content>
+inline QString
+StateEvent<Content>::stateKey() const
 {
 	return state_key_;
 }
 
-template <class Content>
-inline Content StateEvent<Content>::previousContent() const
+template<class Content>
+inline Content
+StateEvent<Content>::previousContent() const
 {
 	return prev_content_;
 }
 
-template <class Content>
-void StateEvent<Content>::deserialize(const QJsonValue &data)
+template<class Content>
+void
+StateEvent<Content>::deserialize(const QJsonValue &data)
 {
 	RoomEvent<Content>::deserialize(data);
 
@@ -68,8 +71,9 @@ void StateEvent<Content>::deserialize(const QJsonValue &data)
 		prev_content_.deserialize(object.value("prev_content"));
 }
 
-template <class Content>
-QJsonObject StateEvent<Content>::serialize() const
+template<class Content>
+QJsonObject
+StateEvent<Content>::serialize() const
 {
 	QJsonObject object = RoomEvent<Content>::serialize();
 
@@ -82,5 +86,5 @@ QJsonObject StateEvent<Content>::serialize() const
 
 	return object;
 }
-}  // namespace events
-}  // namespace matrix
+} // namespace events
+} // namespace matrix
