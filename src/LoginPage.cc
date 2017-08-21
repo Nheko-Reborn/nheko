@@ -155,8 +155,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 	connect(client_.data(), SIGNAL(versionError(QString)), this, SLOT(versionError(QString)));
 	connect(client_.data(), SIGNAL(versionSuccess()), this, SLOT(versionSuccess()));
 	connect(serverInput_, SIGNAL(editingFinished()), this, SLOT(onServerAddressEntered()));
-
-	matrixid_input_->setValidator(&InputValidator::Id);
 }
 
 void
@@ -165,13 +163,22 @@ LoginPage::loginError(QString error)
 	error_label_->setText(error);
 }
 
+bool
+LoginPage::isMatrixIdValid()
+{
+	int pos = 0;
+	auto matrix_id = matrixid_input_->text();
+
+	return InputValidator::Id.validate(matrix_id, pos) == QValidator::Acceptable;
+}
+
 void
 LoginPage::onMatrixIdEntered()
 {
 	error_label_->setText("");
 
-	if (!matrixid_input_->hasAcceptableInput()) {
-		loginError(tr("Invalid Matrix ID"));
+	if (!isMatrixIdValid()) {
+		loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
 		return;
 	} else if (password_input_->text().isEmpty()) {
 		loginError(tr("Empty password"));
@@ -255,8 +262,8 @@ LoginPage::onLoginButtonClicked()
 {
 	error_label_->setText("");
 
-	if (!matrixid_input_->hasAcceptableInput()) {
-		loginError("Invalid Matrix ID");
+	if (!isMatrixIdValid()) {
+		loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
 	} else if (password_input_->text().isEmpty()) {
 		loginError("Empty password");
 	} else {

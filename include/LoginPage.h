@@ -66,6 +66,8 @@ private slots:
 	void versionSuccess();
 
 private:
+	bool isMatrixIdValid();
+
 	QVBoxLayout *top_layout_;
 
 	QHBoxLayout *top_bar_layout_;
