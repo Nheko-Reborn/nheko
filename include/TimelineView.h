@@ -32,122 +32,121 @@
 #include "RoomInfoListItem.h"
 #include "Text.h"
 
-namespace msgs = matrix::events::messages;
+namespace msgs   = matrix::events::messages;
 namespace events = matrix::events;
 
 // Contains info about a message shown in the history view
 // but not yet confirmed by the homeserver through sync.
 struct PendingMessage {
-	int txn_id;
-	QString body;
-	QString event_id;
-	TimelineItem *widget;
+        int txn_id;
+        QString body;
+        QString event_id;
+        TimelineItem *widget;
 
-	PendingMessage(int txn_id, QString body, QString event_id, TimelineItem *widget)
-	  : txn_id(txn_id)
-	  , body(body)
-	  , event_id(event_id)
-	  , widget(widget)
-	{
-	}
+        PendingMessage(int txn_id, QString body, QString event_id, TimelineItem *widget)
+          : txn_id(txn_id)
+          , body(body)
+          , event_id(event_id)
+          , widget(widget)
+        {
+        }
 };
 
 // In which place new TimelineItems should be inserted.
 enum class TimelineDirection {
-	Top,
-	Bottom,
+        Top,
+        Bottom,
 };
 
 class TimelineView : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	TimelineView(const Timeline &timeline,
-		     QSharedPointer<MatrixClient> client,
-		     const QString &room_id,
-		     QWidget *parent = 0);
-	TimelineView(QSharedPointer<MatrixClient> client, const QString &room_id, QWidget *parent = 0);
+        TimelineView(const Timeline &timeline,
+                     QSharedPointer<MatrixClient> client,
+                     const QString &room_id,
+                     QWidget *parent = 0);
+        TimelineView(QSharedPointer<MatrixClient> client,
+                     const QString &room_id,
+                     QWidget *parent = 0);
 
-	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Image> &e,
-					 const QString &color,
-					 bool with_sender);
-	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e,
-					 const QString &color,
-					 bool with_sender);
-	TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e,
-					 const QString &color,
-					 bool with_sender);
+        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Image> &e,
+                                         bool with_sender);
+        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e,
+                                         bool with_sender);
+        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e,
+                                         bool with_sender);
 
-	// Add new events at the end of the timeline.
-	int addEvents(const Timeline &timeline);
-	void addUserTextMessage(const QString &msg, int txn_id);
-	void updatePendingMessage(int txn_id, QString event_id);
-	void scrollDown();
+        // Add new events at the end of the timeline.
+        int addEvents(const Timeline &timeline);
+        void addUserTextMessage(const QString &msg, int txn_id);
+        void updatePendingMessage(int txn_id, QString event_id);
+        void scrollDown();
 
 public slots:
-	void sliderRangeChanged(int min, int max);
-	void sliderMoved(int position);
-	void fetchHistory();
+        void sliderRangeChanged(int min, int max);
+        void sliderMoved(int position);
+        void fetchHistory();
 
-	// Add old events at the top of the timeline.
-	void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
+        // Add old events at the top of the timeline.
+        void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
 
 signals:
-	void updateLastTimelineMessage(const QString &user, const DescInfo &info);
+        void updateLastTimelineMessage(const QString &user, const DescInfo &info);
 
 private:
-	void init();
-	void removePendingMessage(const events::MessageEvent<msgs::Text> &e);
-	void addTimelineItem(TimelineItem *item, TimelineDirection direction);
-	void updateLastSender(const QString &user_id, TimelineDirection direction);
-	void notifyForLastEvent();
+        void init();
+        void removePendingMessage(const events::MessageEvent<msgs::Text> &e);
+        void addTimelineItem(TimelineItem *item, TimelineDirection direction);
+        void updateLastSender(const QString &user_id, TimelineDirection direction);
+        void notifyForLastEvent();
 
-	// Used to determine whether or not we should prefix a message with the sender's name.
-	bool isSenderRendered(const QString &user_id, TimelineDirection direction);
-	bool isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &userid);
-	inline bool isDuplicate(const QString &event_id);
+        // Used to determine whether or not we should prefix a message with the sender's name.
+        bool isSenderRendered(const QString &user_id, TimelineDirection direction);
+        bool isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &userid);
+        inline bool isDuplicate(const QString &event_id);
 
-	// Return nullptr if the event couldn't be parsed.
-	TimelineItem *parseMessageEvent(const QJsonObject &event, TimelineDirection direction);
+        // Return nullptr if the event couldn't be parsed.
+        TimelineItem *parseMessageEvent(const QJsonObject &event, TimelineDirection direction);
 
-	QVBoxLayout *top_layout_;
-	QVBoxLayout *scroll_layout_;
+        QVBoxLayout *top_layout_;
+        QVBoxLayout *scroll_layout_;
 
-	QScrollArea *scroll_area_;
-	ScrollBar *scrollbar_;
-	QWidget *scroll_widget_;
+        QScrollArea *scroll_area_;
+        ScrollBar *scrollbar_;
+        QWidget *scroll_widget_;
 
-	QString lastSender_;
-	QString firstSender_;
-	QString room_id_;
-	QString prev_batch_token_;
-	QString local_user_;
+        QString lastSender_;
+        QString firstSender_;
+        QString room_id_;
+        QString prev_batch_token_;
+        QString local_user_;
 
-	bool isPaginationInProgress_ = false;
-	bool isInitialized = false;
-	bool isTimelineFinished = false;
-	bool isInitialSync = true;
-	bool isPaginationScrollPending_ = false;
+        bool isPaginationInProgress_    = false;
+        bool isInitialized              = false;
+        bool isTimelineFinished         = false;
+        bool isInitialSync              = true;
+        bool isPaginationScrollPending_ = false;
 
-	const int SCROLL_BAR_GAP = 400;
+        const int SCROLL_BAR_GAP = 400;
 
-	QTimer *paginationTimer_;
+        QTimer *paginationTimer_;
 
-	int scroll_height_ = 0;
-	int previous_max_height_ = 0;
+        int scroll_height_       = 0;
+        int previous_max_height_ = 0;
 
-	int oldPosition_;
-	int oldHeight_;
+        int oldPosition_;
+        int oldHeight_;
 
-	// The events currently rendered. Used for duplicate detection.
-	QMap<QString, bool> eventIds_;
-	QList<PendingMessage> pending_msgs_;
-	QSharedPointer<MatrixClient> client_;
+        // The events currently rendered. Used for duplicate detection.
+        QMap<QString, bool> eventIds_;
+        QList<PendingMessage> pending_msgs_;
+        QSharedPointer<MatrixClient> client_;
 };
 
 inline bool
 TimelineView::isDuplicate(const QString &event_id)
 {
-	return eventIds_.contains(event_id);
+        return eventIds_.contains(event_id);
 }

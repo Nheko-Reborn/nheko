@@ -1,10 +1,12 @@
 ---
 Language: Cpp
 AccessModifierOffset: -8
-AlignAfterOpenBracket: true
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: true
 AlignEscapedNewlinesLeft: false
 AlignTrailingComments: false
 AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
 BasedOnStyle: Mozilla
@@ -12,10 +14,10 @@ BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBraces: Linux
 BreakConstructorInitializersBeforeComma: true
-ColumnLimit: 120
-ContinuationIndentWidth: 8
+ColumnLimit: 100
+CompactNamespaces: false
 IndentCaseLabels: false
 IndentWidth: 8
+KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep: 1
 PointerAlignment: Right
-UseTab: Always

@@ -31,62 +31,62 @@ static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
 static const QString URL_HTML = "<a href=\"\\1\" style=\"color: #333333\">\\1</a>";
 
 namespace events = matrix::events;
-namespace msgs = matrix::events::messages;
+namespace msgs   = matrix::events::messages;
 
 void
 TimelineItem::init()
 {
-	userAvatar_ = nullptr;
-	timestamp_ = nullptr;
-	userName_ = nullptr;
-	body_ = nullptr;
+        userAvatar_ = nullptr;
+        timestamp_  = nullptr;
+        userName_   = nullptr;
+        body_       = nullptr;
 
-	font_.setPixelSize(conf::fontSize);
+        font_.setPixelSize(conf::fontSize);
 
-	QFontMetrics fm(font_);
+        QFontMetrics fm(font_);
 
-	topLayout_ = new QHBoxLayout(this);
-	sideLayout_ = new QVBoxLayout();
-	mainLayout_ = new QVBoxLayout();
-	headerLayout_ = new QHBoxLayout();
+        topLayout_    = new QHBoxLayout(this);
+        sideLayout_   = new QVBoxLayout();
+        mainLayout_   = new QVBoxLayout();
+        headerLayout_ = new QHBoxLayout();
 
-	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
-	topLayout_->setSpacing(0);
+        topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
+        topLayout_->setSpacing(0);
 
-	topLayout_->addLayout(sideLayout_);
-	topLayout_->addLayout(mainLayout_, 1);
+        topLayout_->addLayout(sideLayout_);
+        topLayout_->addLayout(mainLayout_, 1);
 
-	sideLayout_->setMargin(0);
-	sideLayout_->setSpacing(0);
+        sideLayout_->setMargin(0);
+        sideLayout_->setSpacing(0);
 
-	mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
-	mainLayout_->setSpacing(0);
+        mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
+        mainLayout_->setSpacing(0);
 
-	headerLayout_->setMargin(0);
-	headerLayout_->setSpacing(conf::timeline::headerSpacing);
+        headerLayout_->setMargin(0);
+        headerLayout_->setSpacing(conf::timeline::headerSpacing);
 }
 
 /*
  * For messages created locally. The avatar and the username are displayed.
  */
-TimelineItem::TimelineItem(const QString &userid, const QString &color, QString body, QWidget *parent)
+TimelineItem::TimelineItem(const QString &userid, QString body, QWidget *parent)
   : QWidget(parent)
 {
-	init();
-	descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
+        init();
+        descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
 
-	body.replace(URL_REGEX, URL_HTML);
-	auto displayName = TimelineViewManager::displayName(userid);
+        body.replace(URL_REGEX, URL_HTML);
+        auto displayName = TimelineViewManager::displayName(userid);
 
-	generateTimestamp(QDateTime::currentDateTime());
-	generateBody(displayName, color, body);
+        generateTimestamp(QDateTime::currentDateTime());
+        generateBody(displayName, body);
 
-	setupAvatarLayout(displayName);
+        setupAvatarLayout(displayName);
 
-	mainLayout_->addLayout(headerLayout_);
-	mainLayout_->addWidget(body_);
+        mainLayout_->addLayout(headerLayout_);
+        mainLayout_->addWidget(body_);
 
-	AvatarProvider::resolve(userid, this);
+        AvatarProvider::resolve(userid, this);
 }
 
 /*
@@ -95,323 +95,301 @@ TimelineItem::TimelineItem(const QString &userid, const QString &color, QString 
 TimelineItem::TimelineItem(QString body, QWidget *parent)
   : QWidget(parent)
 {
-	QSettings settings;
-	auto userid = settings.value("auth/user_id").toString();
+        QSettings settings;
+        auto userid = settings.value("auth/user_id").toString();
 
-	init();
-	descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
+        init();
+        descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
 
-	body.replace(URL_REGEX, URL_HTML);
+        body.replace(URL_REGEX, URL_HTML);
 
-	generateTimestamp(QDateTime::currentDateTime());
-	generateBody(body);
+        generateTimestamp(QDateTime::currentDateTime());
+        generateBody(body);
 
-	setupSimpleLayout();
+        setupSimpleLayout();
 
-	mainLayout_->addWidget(body_);
+        mainLayout_->addWidget(body_);
 }
 
 /*
  * Used to display images. The avatar and the username are displayed.
  */
 TimelineItem::TimelineItem(ImageItem *image,
-			   const events::MessageEvent<msgs::Image> &event,
-			   const QString &color,
-			   QWidget *parent)
+                           const events::MessageEvent<msgs::Image> &event,
+                           bool with_sender,
+                           QWidget *parent)
   : QWidget(parent)
 {
-	init();
+        init();
 
-	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-	auto displayName = TimelineViewManager::displayName(event.sender());
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+        auto displayName = TimelineViewManager::displayName(event.sender());
 
-	QSettings settings;
-	descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-			    event.sender(),
-			    " sent an image",
-			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+        QSettings settings;
+        descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+                            event.sender(),
+                            " sent an image",
+                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
-	generateTimestamp(timestamp);
-	generateBody(displayName, color, "");
+        generateTimestamp(timestamp);
 
-	setupAvatarLayout(displayName);
+        auto imageLayout = new QHBoxLayout();
+        imageLayout->setMargin(0);
+        imageLayout->addWidget(image);
+        imageLayout->addStretch(1);
 
-	auto imageLayout = new QHBoxLayout();
-	imageLayout->addWidget(image);
-	imageLayout->addStretch(1);
+        if (with_sender) {
+                generateBody(displayName, "");
+                setupAvatarLayout(displayName);
 
-	mainLayout_->addLayout(headerLayout_);
-	mainLayout_->addLayout(imageLayout);
+                mainLayout_->addLayout(headerLayout_);
 
-	AvatarProvider::resolve(event.sender(), this);
-}
+                AvatarProvider::resolve(event.sender(), this);
+        } else {
+                setupSimpleLayout();
+        }
 
-/*
- * Used to display images. Only the image is displayed.
- */
-TimelineItem::TimelineItem(ImageItem *image, const events::MessageEvent<msgs::Image> &event, QWidget *parent)
-  : QWidget(parent)
-{
-	init();
-
-	auto displayName = TimelineViewManager::displayName(event.sender());
-
-	QSettings settings;
-	descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-			    event.sender(),
-			    " sent an image",
-			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
-
-	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-	generateTimestamp(timestamp);
-
-	setupSimpleLayout();
-
-	auto imageLayout = new QHBoxLayout();
-	imageLayout->setMargin(0);
-	imageLayout->addWidget(image);
-	imageLayout->addStretch(1);
-
-	mainLayout_->addLayout(imageLayout);
+        mainLayout_->addLayout(imageLayout);
 }
 
 /*
  * Used to display remote notice messages.
  */
 TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
-			   bool with_sender,
-			   const QString &color,
-			   QWidget *parent)
+                           bool with_sender,
+                           QWidget *parent)
   : QWidget(parent)
 {
-	init();
-	descriptionMsg_ = { TimelineViewManager::displayName(event.sender()),
-			    event.sender(),
-			    " sent a notification",
-			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+        init();
+        descriptionMsg_ = { TimelineViewManager::displayName(event.sender()),
+                            event.sender(),
+                            " sent a notification",
+                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
-	auto body = event.content().body().trimmed().toHtmlEscaped();
-	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+        auto body      = event.content().body().trimmed().toHtmlEscaped();
+        auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 
-	generateTimestamp(timestamp);
+        generateTimestamp(timestamp);
 
-	body.replace(URL_REGEX, URL_HTML);
-	body = "<i style=\"color: #565E5E\">" + body + "</i>";
+        body.replace(URL_REGEX, URL_HTML);
+        body = "<i style=\"color: #565E5E\">" + body + "</i>";
 
-	if (with_sender) {
-		auto displayName = TimelineViewManager::displayName(event.sender());
+        if (with_sender) {
+                auto displayName = TimelineViewManager::displayName(event.sender());
 
-		generateBody(displayName, color, body);
-		setupAvatarLayout(displayName);
+                generateBody(displayName, body);
+                setupAvatarLayout(displayName);
 
-		mainLayout_->addLayout(headerLayout_);
+                mainLayout_->addLayout(headerLayout_);
 
-		AvatarProvider::resolve(event.sender(), this);
-	} else {
-		generateBody(body);
-		setupSimpleLayout();
-	}
+                AvatarProvider::resolve(event.sender(), this);
+        } else {
+                generateBody(body);
+                setupSimpleLayout();
+        }
 
-	mainLayout_->addWidget(body_);
+        mainLayout_->addWidget(body_);
 }
 
 /*
  * Used to display remote text messages.
  */
 TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
-			   bool with_sender,
-			   const QString &color,
-			   QWidget *parent)
+                           bool with_sender,
+                           QWidget *parent)
   : QWidget(parent)
 {
-	init();
+        init();
 
-	auto body = event.content().body().trimmed().toHtmlEscaped();
-	auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-	auto displayName = TimelineViewManager::displayName(event.sender());
+        auto body        = event.content().body().trimmed().toHtmlEscaped();
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+        auto displayName = TimelineViewManager::displayName(event.sender());
 
-	QSettings settings;
-	descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-			    event.sender(),
-			    QString(": %1").arg(body),
-			    descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+        QSettings settings;
+        descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+                            event.sender(),
+                            QString(": %1").arg(body),
+                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
-	generateTimestamp(timestamp);
+        generateTimestamp(timestamp);
 
-	body.replace(URL_REGEX, URL_HTML);
+        body.replace(URL_REGEX, URL_HTML);
 
-	if (with_sender) {
-		auto displayName = TimelineViewManager::displayName(event.sender());
+        if (with_sender) {
+                auto displayName = TimelineViewManager::displayName(event.sender());
 
-		generateBody(displayName, color, body);
-		setupAvatarLayout(displayName);
+                generateBody(displayName, body);
+                setupAvatarLayout(displayName);
 
-		mainLayout_->addLayout(headerLayout_);
+                mainLayout_->addLayout(headerLayout_);
 
-		AvatarProvider::resolve(event.sender(), this);
-	} else {
-		generateBody(body);
-		setupSimpleLayout();
-	}
+                AvatarProvider::resolve(event.sender(), this);
+        } else {
+                generateBody(body);
+                setupSimpleLayout();
+        }
 
-	mainLayout_->addWidget(body_);
+        mainLayout_->addWidget(body_);
 }
 
 // Only the body is displayed.
 void
 TimelineItem::generateBody(const QString &body)
 {
-	QString content("<span style=\"color: black;\"> %1 </span>");
+        QString content("<span style=\"color: black;\"> %1 </span>");
 
-	body_ = new QLabel(this);
-	body_->setFont(font_);
-	body_->setWordWrap(true);
-	body_->setText(content.arg(replaceEmoji(body)));
-	body_->setMargin(0);
+        body_ = new QLabel(this);
+        body_->setFont(font_);
+        body_->setWordWrap(true);
+        body_->setText(content.arg(replaceEmoji(body)));
+        body_->setMargin(0);
 
-	body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-	body_->setOpenExternalLinks(true);
+        body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+        body_->setOpenExternalLinks(true);
 }
 
 // The username/timestamp is displayed along with the message body.
 void
-TimelineItem::generateBody(const QString &userid, const QString &color, const QString &body)
+TimelineItem::generateBody(const QString &userid, const QString &body)
 {
-	auto sender = userid;
+        auto sender = userid;
 
-	// TODO: Fix this by using a UserId type.
-	if (userid.split(":")[0].split("@").size() > 1)
-		sender = userid.split(":")[0].split("@")[1];
+        // TODO: Fix this by using a UserId type.
+        if (userid.split(":")[0].split("@").size() > 1)
+                sender = userid.split(":")[0].split("@")[1];
 
-	QString userContent("<span style=\"color: %1\"> %2 </span>");
-	QString bodyContent("<span style=\"color: #171717;\"> %1 </span>");
+        QString userContent("<span style=\"color: #171717\"> %1 </span>");
+        QString bodyContent("<span style=\"color: #171717;\"> %1 </span>");
 
-	QFont usernameFont = font_;
-	usernameFont.setBold(true);
+        QFont usernameFont = font_;
+        usernameFont.setBold(true);
 
-	userName_ = new QLabel(this);
-	userName_->setFont(usernameFont);
-	userName_->setText(userContent.arg(color).arg(sender));
+        userName_ = new QLabel(this);
+        userName_->setFont(usernameFont);
+        userName_->setText(userContent.arg(sender));
 
-	if (body.isEmpty())
-		return;
+        if (body.isEmpty())
+                return;
 
-	body_ = new QLabel(this);
-	body_->setFont(font_);
-	body_->setWordWrap(true);
-	body_->setText(bodyContent.arg(replaceEmoji(body)));
-	body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-	body_->setOpenExternalLinks(true);
-	body_->setMargin(0);
+        body_ = new QLabel(this);
+        body_->setFont(font_);
+        body_->setWordWrap(true);
+        body_->setText(bodyContent.arg(replaceEmoji(body)));
+        body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+        body_->setOpenExternalLinks(true);
+        body_->setMargin(0);
 }
 
 void
 TimelineItem::generateTimestamp(const QDateTime &time)
 {
-	QString msg("<span style=\"color: #5d6565;\"> %1 </span>");
+        QString msg("<span style=\"color: #5d6565;\"> %1 </span>");
 
-	QFont timestampFont;
-	timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
+        QFont timestampFont;
+        timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
 
-	QFontMetrics fm(timestampFont);
-	int topMargin = QFontMetrics(font_).ascent() - fm.ascent();
+        QFontMetrics fm(timestampFont);
+        int topMargin = QFontMetrics(font_).ascent() - fm.ascent();
 
-	timestamp_ = new QLabel(this);
-	timestamp_->setFont(timestampFont);
-	timestamp_->setText(msg.arg(time.toString("HH:mm")));
-	timestamp_->setContentsMargins(0, topMargin, 0, 0);
+        timestamp_ = new QLabel(this);
+        timestamp_->setFont(timestampFont);
+        timestamp_->setText(msg.arg(time.toString("HH:mm")));
+        timestamp_->setContentsMargins(0, topMargin, 0, 0);
 }
 
 QString
 TimelineItem::replaceEmoji(const QString &body)
 {
-	QString fmtBody = "";
+        QString fmtBody = "";
 
-	for (auto &c : body) {
-		int code = c.unicode();
+        for (auto &c : body) {
+                int code = c.unicode();
 
-		// TODO: Be more precise here.
-		if (code > 9000)
-			fmtBody += QString("<span style=\"font-family: Emoji One; font-size: %1px\">")
-					   .arg(conf::emojiSize) +
-				   QString(c) + "</span>";
-		else
-			fmtBody += c;
-	}
+                // TODO: Be more precise here.
+                if (code > 9000)
+                        fmtBody += QString("<span style=\"font-family: Emoji "
+                                           "One; font-size: %1px\">")
+                                     .arg(conf::emojiSize) +
+                                   QString(c) + "</span>";
+                else
+                        fmtBody += c;
+        }
 
-	return fmtBody;
+        return fmtBody;
 }
 
 void
 TimelineItem::setupAvatarLayout(const QString &userName)
 {
-	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
+        topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
 
-	userAvatar_ = new Avatar(this);
-	userAvatar_->setLetter(QChar(userName[0]).toUpper());
-	userAvatar_->setBackgroundColor(QColor("#eee"));
-	userAvatar_->setTextColor(QColor("black"));
-	userAvatar_->setSize(conf::timeline::avatarSize);
+        userAvatar_ = new Avatar(this);
+        userAvatar_->setLetter(QChar(userName[0]).toUpper());
+        userAvatar_->setBackgroundColor(QColor("#eee"));
+        userAvatar_->setTextColor(QColor("black"));
+        userAvatar_->setSize(conf::timeline::avatarSize);
 
-	// TODO: The provided user name should be a UserId class
-	if (userName[0] == '@' && userName.size() > 1)
-		userAvatar_->setLetter(QChar(userName[1]).toUpper());
+        // TODO: The provided user name should be a UserId class
+        if (userName[0] == '@' && userName.size() > 1)
+                userAvatar_->setLetter(QChar(userName[1]).toUpper());
 
-	sideLayout_->addWidget(userAvatar_);
-	sideLayout_->addStretch(1);
+        sideLayout_->addWidget(userAvatar_);
+        sideLayout_->addStretch(1);
 
-	headerLayout_->addWidget(userName_);
-	headerLayout_->addWidget(timestamp_, 1);
+        headerLayout_->addWidget(userName_);
+        headerLayout_->addWidget(timestamp_, 1);
 }
 
 void
 TimelineItem::setupSimpleLayout()
 {
-	sideLayout_->addWidget(timestamp_);
+        sideLayout_->addWidget(timestamp_);
 
-	// Keep only the time in plain text.
-	QTextEdit htmlText(timestamp_->text());
-	QString plainText = htmlText.toPlainText();
+        // Keep only the time in plain text.
+        QTextEdit htmlText(timestamp_->text());
+        QString plainText = htmlText.toPlainText();
 
-	timestamp_->adjustSize();
+        timestamp_->adjustSize();
 
-	// Align the end of the avatar bubble with the end of the timestamp for
-	// messages with and without avatar. Otherwise their bodies would not be aligned.
-	int tsWidth = timestamp_->fontMetrics().width(plainText);
-	int offset = std::max(0, conf::timeline::avatarSize - tsWidth);
+        // Align the end of the avatar bubble with the end of the timestamp for
+        // messages with and without avatar. Otherwise their bodies would not be
+        // aligned.
+        int tsWidth = timestamp_->fontMetrics().width(plainText);
+        int offset  = std::max(0, conf::timeline::avatarSize - tsWidth);
 
-	int defaultFontHeight = QFontMetrics(font_).ascent();
+        int defaultFontHeight = QFontMetrics(font_).ascent();
 
-	timestamp_->setAlignment(Qt::AlignTop);
-	timestamp_->setContentsMargins(offset + 1, defaultFontHeight - timestamp_->fontMetrics().ascent(), 0, 0);
-	topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin / 3, 0, 0);
+        timestamp_->setAlignment(Qt::AlignTop);
+        timestamp_->setContentsMargins(
+          offset + 1, defaultFontHeight - timestamp_->fontMetrics().ascent(), 0, 0);
+        topLayout_->setContentsMargins(
+          conf::timeline::msgMargin, conf::timeline::msgMargin / 3, 0, 0);
 }
 
 void
 TimelineItem::setUserAvatar(const QImage &avatar)
 {
-	if (userAvatar_ == nullptr)
-		return;
+        if (userAvatar_ == nullptr)
+                return;
 
-	userAvatar_->setImage(avatar);
+        userAvatar_->setImage(avatar);
 }
 
 QString
 TimelineItem::descriptiveTime(const QDateTime &then)
 {
-	auto now = QDateTime::currentDateTime();
+        auto now = QDateTime::currentDateTime();
 
-	auto days = then.daysTo(now);
+        auto days = then.daysTo(now);
 
-	if (days == 0) {
-		return then.toString("HH:mm");
-	} else if (days < 2) {
-		return QString("Yesterday");
-	} else if (days < 365) {
-		return then.toString("dd/MM");
-	}
+        if (days == 0)
+                return then.toString("HH:mm");
+        else if (days < 2)
+                return QString("Yesterday");
+        else if (days < 365)
+                return then.toString("dd/MM");
 
-	return then.toString("dd/MM/yy");
+        return then.toString("dd/MM/yy");
 }
 
 TimelineItem::~TimelineItem()

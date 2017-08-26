@@ -32,65 +32,65 @@
 #include "Text.h"
 
 namespace events = matrix::events;
-namespace msgs = matrix::events::messages;
+namespace msgs   = matrix::events::messages;
 
 class TimelineItem : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	TimelineItem(const events::MessageEvent<msgs::Notice> &e,
-		     bool with_sender,
-		     const QString &color,
-		     QWidget *parent = 0);
-	TimelineItem(const events::MessageEvent<msgs::Text> &e,
-		     bool with_sender,
-		     const QString &color,
-		     QWidget *parent = 0);
+        TimelineItem(const events::MessageEvent<msgs::Notice> &e,
+                     bool with_sender,
+                     QWidget *parent = 0);
+        TimelineItem(const events::MessageEvent<msgs::Text> &e,
+                     bool with_sender,
+                     QWidget *parent = 0);
 
-	// For local messages.
-	TimelineItem(const QString &userid, const QString &color, QString body, QWidget *parent = 0);
-	TimelineItem(QString body, QWidget *parent = 0);
+        // For local messages.
+        TimelineItem(const QString &userid, QString body, QWidget *parent = 0);
+        TimelineItem(QString body, QWidget *parent = 0);
 
-	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, const QString &color, QWidget *parent);
-	TimelineItem(ImageItem *img, const events::MessageEvent<msgs::Image> &e, QWidget *parent);
+        TimelineItem(ImageItem *img,
+                     const events::MessageEvent<msgs::Image> &e,
+                     bool with_sender,
+                     QWidget *parent);
 
-	void setUserAvatar(const QImage &pixmap);
-	inline DescInfo descriptionMessage() const;
+        void setUserAvatar(const QImage &pixmap);
+        inline DescInfo descriptionMessage() const;
 
-	~TimelineItem();
+        ~TimelineItem();
 
 private:
-	void init();
+        void init();
 
-	void generateBody(const QString &body);
-	void generateBody(const QString &userid, const QString &color, const QString &body);
-	void generateTimestamp(const QDateTime &time);
-	QString descriptiveTime(const QDateTime &then);
+        void generateBody(const QString &body);
+        void generateBody(const QString &userid, const QString &body);
+        void generateTimestamp(const QDateTime &time);
+        QString descriptiveTime(const QDateTime &then);
 
-	void setupAvatarLayout(const QString &userName);
-	void setupSimpleLayout();
+        void setupAvatarLayout(const QString &userName);
+        void setupSimpleLayout();
 
-	QString replaceEmoji(const QString &body);
+        QString replaceEmoji(const QString &body);
 
-	DescInfo descriptionMsg_;
+        DescInfo descriptionMsg_;
 
-	QHBoxLayout *topLayout_;
-	QVBoxLayout *sideLayout_; // Avatar or Timestamp
-	QVBoxLayout *mainLayout_; // Header & Message body
+        QHBoxLayout *topLayout_;
+        QVBoxLayout *sideLayout_; // Avatar or Timestamp
+        QVBoxLayout *mainLayout_; // Header & Message body
 
-	QHBoxLayout *headerLayout_; // Username (&) Timestamp
+        QHBoxLayout *headerLayout_; // Username (&) Timestamp
 
-	Avatar *userAvatar_;
+        Avatar *userAvatar_;
 
-	QFont font_;
+        QFont font_;
 
-	QLabel *timestamp_;
-	QLabel *userName_;
-	QLabel *body_;
+        QLabel *timestamp_;
+        QLabel *userName_;
+        QLabel *body_;
 };
 
 inline DescInfo
 TimelineItem::descriptionMessage() const
 {
-	return descriptionMsg_;
+        return descriptionMsg_;
 }

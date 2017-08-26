@@ -29,39 +29,37 @@
 
 class TimelineViewManager : public QStackedWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
-	~TimelineViewManager();
+        TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
+        ~TimelineViewManager();
 
-	// Initialize with timeline events.
-	void initialize(const Rooms &rooms);
-	// Empty initialization.
-	void initialize(const QList<QString> &rooms);
-	void sync(const Rooms &rooms);
-	void clearAll();
+        // Initialize with timeline events.
+        void initialize(const Rooms &rooms);
+        // Empty initialization.
+        void initialize(const QList<QString> &rooms);
+        void sync(const Rooms &rooms);
+        void clearAll();
 
-	static QString chooseRandomColor();
-	static QString getUserColor(const QString &userid);
-	static QString displayName(const QString &userid);
+        static QString chooseRandomColor();
+        static QString displayName(const QString &userid);
 
-	static QMap<QString, QString> NICK_COLORS;
-	static QMap<QString, QString> DISPLAY_NAMES;
+        static QMap<QString, QString> DISPLAY_NAMES;
 
 signals:
-	void unreadMessages(QString roomid, int count);
-	void updateRoomsLastMessage(const QString &user, const DescInfo &info);
+        void unreadMessages(QString roomid, int count);
+        void updateRoomsLastMessage(const QString &user, const DescInfo &info);
 
 public slots:
-	void setHistoryView(const QString &room_id);
-	void sendTextMessage(const QString &msg);
+        void setHistoryView(const QString &room_id);
+        void sendTextMessage(const QString &msg);
 
 private slots:
-	void messageSent(const QString &eventid, const QString &roomid, int txnid);
+        void messageSent(const QString &eventid, const QString &roomid, int txnid);
 
 private:
-	QString active_room_;
-	QMap<QString, QSharedPointer<TimelineView>> views_;
-	QSharedPointer<MatrixClient> client_;
+        QString active_room_;
+        QMap<QString, QSharedPointer<TimelineView>> views_;
+        QSharedPointer<MatrixClient> client_;
 };
