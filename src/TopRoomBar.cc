@@ -24,109 +24,116 @@ TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
   , buttonSize_{ 32 }
 {
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	setMinimumSize(QSize(0, 65));
-	setStyleSheet("background-color: #f8fbfe; color: #171919;");
+        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        setMinimumSize(QSize(0, 65));
+        setStyleSheet("background-color: #f8fbfe; color: #171919;");
 
-	top_layout_ = new QHBoxLayout();
-	top_layout_->setSpacing(10);
-	top_layout_->setMargin(10);
+        topLayout_ = new QHBoxLayout();
+        topLayout_->setSpacing(10);
+        topLayout_->setMargin(10);
 
-	avatar_ = new Avatar(this);
-	avatar_->setLetter(QChar('?'));
-	avatar_->setBackgroundColor(QColor("#d6dde3"));
-	avatar_->setTextColor(QColor("#555459"));
-	avatar_->setSize(35);
+        avatar_ = new Avatar(this);
+        avatar_->setLetter(QChar('?'));
+        avatar_->setBackgroundColor(QColor("#d6dde3"));
+        avatar_->setTextColor(QColor("#555459"));
+        avatar_->setSize(35);
 
-	text_layout_ = new QVBoxLayout();
-	text_layout_->setSpacing(0);
-	text_layout_->setContentsMargins(0, 0, 0, 0);
+        textLayout_ = new QVBoxLayout();
+        textLayout_->setSpacing(0);
+        textLayout_->setContentsMargins(0, 0, 0, 0);
 
-	QFont roomFont("Open Sans SemiBold");
-	roomFont.setPixelSize(conf::topRoomBar::fonts::roomName);
+        QFont roomFont("Open Sans SemiBold");
+        roomFont.setPixelSize(conf::topRoomBar::fonts::roomName);
 
-	name_label_ = new QLabel(this);
-	name_label_->setFont(roomFont);
+        nameLabel_ = new QLabel(this);
+        nameLabel_->setFont(roomFont);
 
-	QFont descriptionFont("Open Sans");
-	descriptionFont.setPixelSize(conf::topRoomBar::fonts::roomDescription);
+        QFont descriptionFont("Open Sans");
+        descriptionFont.setPixelSize(conf::topRoomBar::fonts::roomDescription);
 
-	topic_label_ = new QLabel(this);
-	topic_label_->setFont(descriptionFont);
+        topicLabel_ = new QLabel(this);
+        topicLabel_->setFont(descriptionFont);
+        topicLabel_->setTextFormat(Qt::RichText);
+        topicLabel_->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        topicLabel_->setOpenExternalLinks(true);
 
-	text_layout_->addWidget(name_label_);
-	text_layout_->addWidget(topic_label_);
+        textLayout_->addWidget(nameLabel_);
+        textLayout_->addWidget(topicLabel_);
 
-	settingsBtn_ = new FlatButton(this);
-	settingsBtn_->setForegroundColor(QColor("#acc7dc"));
-	settingsBtn_->setFixedSize(buttonSize_, buttonSize_);
-	settingsBtn_->setCornerRadius(buttonSize_ / 2);
+        settingsBtn_ = new FlatButton(this);
+        settingsBtn_->setForegroundColor(QColor("#acc7dc"));
+        settingsBtn_->setFixedSize(buttonSize_, buttonSize_);
+        settingsBtn_->setCornerRadius(buttonSize_ / 2);
 
-	QIcon settings_icon;
-	settings_icon.addFile(":/icons/icons/vertical-ellipsis.png", QSize(), QIcon::Normal, QIcon::Off);
-	settingsBtn_->setIcon(settings_icon);
-	settingsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
+        QIcon settings_icon;
+        settings_icon.addFile(
+          ":/icons/icons/vertical-ellipsis.png", QSize(), QIcon::Normal, QIcon::Off);
+        settingsBtn_->setIcon(settings_icon);
+        settingsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
 
-	top_layout_->addWidget(avatar_);
-	top_layout_->addLayout(text_layout_);
-	top_layout_->addStretch(1);
-	top_layout_->addWidget(settingsBtn_);
+        topLayout_->addWidget(avatar_);
+        topLayout_->addLayout(textLayout_);
+        topLayout_->addStretch(1);
+        topLayout_->addWidget(settingsBtn_);
 
-	menu_ = new Menu(this);
+        menu_ = new Menu(this);
 
-	toggleNotifications_ = new QAction(tr("Disable notifications"), this);
-	connect(toggleNotifications_, &QAction::triggered, this, [=]() { roomSettings_->toggleNotifications(); });
+        toggleNotifications_ = new QAction(tr("Disable notifications"), this);
+        connect(toggleNotifications_, &QAction::triggered, this, [=]() {
+                roomSettings_->toggleNotifications();
+        });
 
-	menu_->addAction(toggleNotifications_);
+        menu_->addAction(toggleNotifications_);
 
-	connect(settingsBtn_, &QPushButton::clicked, this, [=]() {
-		if (roomSettings_->isNotificationsEnabled())
-			toggleNotifications_->setText(tr("Disable notifications"));
-		else
-			toggleNotifications_->setText(tr("Enable notifications"));
+        connect(settingsBtn_, &QPushButton::clicked, this, [=]() {
+                if (roomSettings_->isNotificationsEnabled())
+                        toggleNotifications_->setText(tr("Disable notifications"));
+                else
+                        toggleNotifications_->setText(tr("Enable notifications"));
 
-		auto pos = mapToGlobal(settingsBtn_->pos());
-		menu_->popup(QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(), pos.y() + buttonSize_));
-	});
+                auto pos = mapToGlobal(settingsBtn_->pos());
+                menu_->popup(
+                  QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(), pos.y() + buttonSize_));
+        });
 
-	setLayout(top_layout_);
+        setLayout(topLayout_);
 }
 
 void
 TopRoomBar::updateRoomAvatarFromName(const QString &name)
 {
-	QChar letter = '?';
+        QChar letter = '?';
 
-	if (name.size() > 0)
-		letter = name[0];
+        if (name.size() > 0)
+                letter = name[0];
 
-	avatar_->setLetter(letter);
+        avatar_->setLetter(letter);
 }
 
 void
 TopRoomBar::reset()
 {
-	name_label_->setText("");
-	topic_label_->setText("");
-	avatar_->setLetter(QChar('?'));
+        nameLabel_->setText("");
+        topicLabel_->setText("");
+        avatar_->setLetter(QChar('?'));
 }
 
 void
 TopRoomBar::paintEvent(QPaintEvent *event)
 {
-	Q_UNUSED(event);
+        Q_UNUSED(event);
 
-	QStyleOption option;
-	option.initFrom(this);
+        QStyleOption option;
+        option.initFrom(this);
 
-	QPainter painter(this);
-	style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+        QPainter painter(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }
 
 void
 TopRoomBar::setRoomSettings(QSharedPointer<RoomSettings> settings)
 {
-	roomSettings_ = settings;
+        roomSettings_ = settings;
 }
 
 TopRoomBar::~TopRoomBar()
