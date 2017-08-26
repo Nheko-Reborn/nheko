@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QDir>
 #include <lmdb++.h>
 
 #include "RoomState.h"
@@ -32,6 +33,7 @@ public:
         QString nextBatchToken() const;
         QMap<QString, RoomState> states();
 
+        inline void deleteData();
         inline void unmount();
         inline QString memberDbName(const QString &roomid);
 
@@ -46,6 +48,7 @@ private:
         bool isMounted_;
 
         QString userId_;
+        QString cacheDirectory_;
 };
 
 inline void
@@ -58,4 +61,11 @@ inline QString
 Cache::memberDbName(const QString &roomid)
 {
         return QString("m.%1").arg(roomid);
+}
+
+inline void
+Cache::deleteData()
+{
+        if (!cacheDirectory_.isEmpty())
+                QDir(cacheDirectory_).removeRecursively();
 }

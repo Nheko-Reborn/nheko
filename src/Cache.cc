@@ -83,7 +83,10 @@ Cache::Cache(const QString &userId)
 
         txn.commit();
 
-        isMounted_ = true;
+        isMounted_      = true;
+        cacheDirectory_ = QString("%1/%2")
+                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                            .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
 }
 
 void

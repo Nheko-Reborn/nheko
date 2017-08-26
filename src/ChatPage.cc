@@ -194,6 +194,8 @@ ChatPage::logout()
         settings.remove("");
         settings.endGroup();
 
+        cache_->deleteData();
+
         // Clear the environment.
         room_list_->clear();
         view_manager_->clearAll();
