@@ -41,59 +41,60 @@ namespace events = matrix::events;
 class RoomState
 {
 public:
-	// Calculate room data that are not immediatly accessible. Like room name and avatar.
-	//
-	// e.g If the room is 1-on-1 name and avatar should be extracted from a user.
-	void resolveName();
-	void resolveAvatar();
-	void parse(const QJsonObject &object);
+        // Calculate room data that are not immediatly accessible. Like room name and avatar.
+        //
+        // e.g If the room is 1-on-1 name and avatar should be extracted from a user.
+        void resolveName();
+        void resolveAvatar();
+        void parse(const QJsonObject &object);
 
-	inline QUrl getAvatar() const;
-	inline QString getName() const;
-	inline QString getTopic() const;
+        inline QUrl getAvatar() const;
+        inline QString getName() const;
+        inline QString getTopic() const;
 
-	void removeLeaveMemberships();
-	void update(const RoomState &state);
+        void removeLeaveMemberships();
+        void update(const RoomState &state);
+        void updateFromEvents(const QJsonArray &events);
 
-	QJsonObject serialize() const;
+        QJsonObject serialize() const;
 
-	// The latest state events.
-	events::StateEvent<events::AliasesEventContent> aliases;
-	events::StateEvent<events::AvatarEventContent> avatar;
-	events::StateEvent<events::CanonicalAliasEventContent> canonical_alias;
-	events::StateEvent<events::CreateEventContent> create;
-	events::StateEvent<events::HistoryVisibilityEventContent> history_visibility;
-	events::StateEvent<events::JoinRulesEventContent> join_rules;
-	events::StateEvent<events::NameEventContent> name;
-	events::StateEvent<events::PowerLevelsEventContent> power_levels;
-	events::StateEvent<events::TopicEventContent> topic;
+        // The latest state events.
+        events::StateEvent<events::AliasesEventContent> aliases;
+        events::StateEvent<events::AvatarEventContent> avatar;
+        events::StateEvent<events::CanonicalAliasEventContent> canonical_alias;
+        events::StateEvent<events::CreateEventContent> create;
+        events::StateEvent<events::HistoryVisibilityEventContent> history_visibility;
+        events::StateEvent<events::JoinRulesEventContent> join_rules;
+        events::StateEvent<events::NameEventContent> name;
+        events::StateEvent<events::PowerLevelsEventContent> power_levels;
+        events::StateEvent<events::TopicEventContent> topic;
 
-	// Contains the m.room.member events for all the joined users.
-	QMap<QString, events::StateEvent<events::MemberEventContent>> memberships;
+        // Contains the m.room.member events for all the joined users.
+        QMap<QString, events::StateEvent<events::MemberEventContent>> memberships;
 
 private:
-	QUrl avatar_;
-	QString name_;
+        QUrl avatar_;
+        QString name_;
 
-	// It defines the user whose avatar is used for the room. If the room has an avatar
-	// event this should be empty.
-	QString userAvatar_;
+        // It defines the user whose avatar is used for the room. If the room has an avatar
+        // event this should be empty.
+        QString userAvatar_;
 };
 
 inline QString
 RoomState::getTopic() const
 {
-	return topic.content().topic().simplified();
+        return topic.content().topic().simplified();
 }
 
 inline QString
 RoomState::getName() const
 {
-	return name_;
+        return name_;
 }
 
 inline QUrl
 RoomState::getAvatar() const
 {
-	return avatar_;
+        return avatar_;
 }

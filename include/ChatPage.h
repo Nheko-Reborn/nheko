@@ -35,80 +35,79 @@
 
 class ChatPage : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-	~ChatPage();
+        ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        ~ChatPage();
 
-	// Initialize all the components of the UI.
-	void bootstrap(QString userid, QString homeserver, QString token);
+        // Initialize all the components of the UI.
+        void bootstrap(QString userid, QString homeserver, QString token);
 
 signals:
-	void contentLoaded();
-	void close();
-	void changeWindowTitle(const QString &msg);
-	void unreadMessages(int count);
+        void contentLoaded();
+        void close();
+        void changeWindowTitle(const QString &msg);
+        void unreadMessages(int count);
 
 private slots:
-	void showUnreadMessageNotification(int count);
-	void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
-	void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
-	void setOwnAvatar(const QPixmap &img);
-	void initialSyncCompleted(const SyncResponse &response);
-	void syncCompleted(const SyncResponse &response);
-	void syncFailed(const QString &msg);
-	void changeTopRoomInfo(const QString &room_id);
-	void startSync();
-	void logout();
+        void showUnreadMessageNotification(int count);
+        void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
+        void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
+        void setOwnAvatar(const QPixmap &img);
+        void initialSyncCompleted(const SyncResponse &response);
+        void syncCompleted(const SyncResponse &response);
+        void syncFailed(const QString &msg);
+        void changeTopRoomInfo(const QString &room_id);
+        void startSync();
+        void logout();
 
 protected:
-	void keyPressEvent(QKeyEvent *event) override;
+        void keyPressEvent(QKeyEvent *event) override;
 
 private:
-	void updateDisplayNames(const RoomState &state);
-	void updateRoomState(RoomState &room_state, const QJsonArray &events);
-	void loadStateFromCache();
-	void showQuickSwitcher();
+        void updateDisplayNames(const RoomState &state);
+        void loadStateFromCache();
+        void showQuickSwitcher();
 
-	QHBoxLayout *topLayout_;
-	Splitter *splitter;
+        QHBoxLayout *topLayout_;
+        Splitter *splitter;
 
-	QWidget *sideBar_;
-	QVBoxLayout *sideBarLayout_;
-	QVBoxLayout *sideBarTopLayout_;
-	QVBoxLayout *sideBarMainLayout_;
-	QWidget *sideBarTopWidget_;
-	QVBoxLayout *sideBarTopWidgetLayout_;
+        QWidget *sideBar_;
+        QVBoxLayout *sideBarLayout_;
+        QVBoxLayout *sideBarTopLayout_;
+        QVBoxLayout *sideBarMainLayout_;
+        QWidget *sideBarTopWidget_;
+        QVBoxLayout *sideBarTopWidgetLayout_;
 
-	QWidget *content_;
-	QVBoxLayout *contentLayout_;
-	QHBoxLayout *topBarLayout_;
-	QVBoxLayout *mainContentLayout_;
+        QWidget *content_;
+        QVBoxLayout *contentLayout_;
+        QHBoxLayout *topBarLayout_;
+        QVBoxLayout *mainContentLayout_;
 
-	RoomList *room_list_;
-	TimelineViewManager *view_manager_;
+        RoomList *room_list_;
+        TimelineViewManager *view_manager_;
 
-	TopRoomBar *top_bar_;
-	TextInputWidget *text_input_;
+        TopRoomBar *top_bar_;
+        TextInputWidget *text_input_;
 
-	QTimer *sync_timer_;
-	int sync_interval_;
+        QTimer *sync_timer_;
+        int sync_interval_;
 
-	QString current_room_;
-	QMap<QString, QPixmap> room_avatars_;
+        QString current_room_;
+        QMap<QString, QPixmap> room_avatars_;
 
-	UserInfoWidget *user_info_widget_;
+        UserInfoWidget *user_info_widget_;
 
-	QMap<QString, RoomState> state_manager_;
-	QMap<QString, QSharedPointer<RoomSettings>> settingsManager_;
+        QMap<QString, RoomState> state_manager_;
+        QMap<QString, QSharedPointer<RoomSettings>> settingsManager_;
 
-	QuickSwitcher *quickSwitcher_ = nullptr;
-	OverlayModal *quickSwitcherModal_ = nullptr;
+        QuickSwitcher *quickSwitcher_     = nullptr;
+        OverlayModal *quickSwitcherModal_ = nullptr;
 
-	// Matrix Client API provider.
-	QSharedPointer<MatrixClient> client_;
+        // Matrix Client API provider.
+        QSharedPointer<MatrixClient> client_;
 
-	// LMDB wrapper.
-	QSharedPointer<Cache> cache_;
+        // LMDB wrapper.
+        QSharedPointer<Cache> cache_;
 };

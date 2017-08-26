@@ -18,25 +18,14 @@
 #include <QDebug>
 #include <QSettings>
 
+#include "AvatarProvider.h"
 #include "ChatPage.h"
+#include "MainWindow.h"
 #include "Splitter.h"
 #include "Sync.h"
 #include "Theme.h"
 #include "TimelineViewManager.h"
 #include "UserInfoWidget.h"
-
-#include "AliasesEventContent.h"
-#include "AvatarEventContent.h"
-#include "AvatarProvider.h"
-#include "CanonicalAliasEventContent.h"
-#include "CreateEventContent.h"
-#include "HistoryVisibilityEventContent.h"
-#include "JoinRulesEventContent.h"
-#include "MainWindow.h"
-#include "MemberEventContent.h"
-#include "NameEventContent.h"
-#include "PowerLevelsEventContent.h"
-#include "TopicEventContent.h"
 
 #include "StateEvent.h"
 
@@ -47,569 +36,485 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   , sync_interval_(2000)
   , client_(client)
 {
-	setStyleSheet("background-color: #f8fbfe;");
+        setStyleSheet("background-color: #f8fbfe;");
 
-	topLayout_ = new QHBoxLayout(this);
-	topLayout_->setSpacing(0);
-	topLayout_->setMargin(0);
+        topLayout_ = new QHBoxLayout(this);
+        topLayout_->setSpacing(0);
+        topLayout_->setMargin(0);
 
-	auto splitter = new Splitter(this);
-	splitter->setHandleWidth(0);
+        auto splitter = new Splitter(this);
+        splitter->setHandleWidth(0);
 
-	topLayout_->addWidget(splitter);
+        topLayout_->addWidget(splitter);
 
-	// SideBar
-	sideBar_ = new QWidget(this);
-	sideBar_->setMinimumSize(QSize(ui::sidebar::NormalSize, 0));
-	sideBarLayout_ = new QVBoxLayout(sideBar_);
-	sideBarLayout_->setSpacing(0);
-	sideBarLayout_->setMargin(0);
+        // SideBar
+        sideBar_ = new QWidget(this);
+        sideBar_->setMinimumSize(QSize(ui::sidebar::NormalSize, 0));
+        sideBarLayout_ = new QVBoxLayout(sideBar_);
+        sideBarLayout_->setSpacing(0);
+        sideBarLayout_->setMargin(0);
 
-	sideBarTopLayout_ = new QVBoxLayout();
-	sideBarTopLayout_->setSpacing(0);
-	sideBarTopLayout_->setMargin(0);
-	sideBarMainLayout_ = new QVBoxLayout();
-	sideBarMainLayout_->setSpacing(0);
-	sideBarMainLayout_->setMargin(0);
+        sideBarTopLayout_ = new QVBoxLayout();
+        sideBarTopLayout_->setSpacing(0);
+        sideBarTopLayout_->setMargin(0);
+        sideBarMainLayout_ = new QVBoxLayout();
+        sideBarMainLayout_->setSpacing(0);
+        sideBarMainLayout_->setMargin(0);
 
-	sideBarLayout_->addLayout(sideBarTopLayout_);
-	sideBarLayout_->addLayout(sideBarMainLayout_);
+        sideBarLayout_->addLayout(sideBarTopLayout_);
+        sideBarLayout_->addLayout(sideBarMainLayout_);
 
-	sideBarTopWidget_ = new QWidget(sideBar_);
-	sideBarTopWidget_->setStyleSheet("background-color: #d6dde3; color: #ebebeb;");
+        sideBarTopWidget_ = new QWidget(sideBar_);
+        sideBarTopWidget_->setStyleSheet("background-color: #d6dde3; color: #ebebeb;");
 
-	sideBarTopLayout_->addWidget(sideBarTopWidget_);
+        sideBarTopLayout_->addWidget(sideBarTopWidget_);
 
-	sideBarTopWidgetLayout_ = new QVBoxLayout(sideBarTopWidget_);
-	sideBarTopWidgetLayout_->setSpacing(0);
-	sideBarTopWidgetLayout_->setMargin(0);
+        sideBarTopWidgetLayout_ = new QVBoxLayout(sideBarTopWidget_);
+        sideBarTopWidgetLayout_->setSpacing(0);
+        sideBarTopWidgetLayout_->setMargin(0);
 
-	// Content
-	content_ = new QWidget(this);
-	contentLayout_ = new QVBoxLayout(content_);
-	contentLayout_->setSpacing(0);
-	contentLayout_->setMargin(0);
+        // Content
+        content_       = new QWidget(this);
+        contentLayout_ = new QVBoxLayout(content_);
+        contentLayout_->setSpacing(0);
+        contentLayout_->setMargin(0);
 
-	topBarLayout_ = new QHBoxLayout();
-	topBarLayout_->setSpacing(0);
-	mainContentLayout_ = new QVBoxLayout();
-	mainContentLayout_->setSpacing(0);
-	mainContentLayout_->setMargin(0);
+        topBarLayout_ = new QHBoxLayout();
+        topBarLayout_->setSpacing(0);
+        mainContentLayout_ = new QVBoxLayout();
+        mainContentLayout_->setSpacing(0);
+        mainContentLayout_->setMargin(0);
 
-	contentLayout_->addLayout(topBarLayout_);
-	contentLayout_->addLayout(mainContentLayout_);
+        contentLayout_->addLayout(topBarLayout_);
+        contentLayout_->addLayout(mainContentLayout_);
 
-	// Splitter
-	splitter->addWidget(sideBar_);
-	splitter->addWidget(content_);
+        // Splitter
+        splitter->addWidget(sideBar_);
+        splitter->addWidget(content_);
 
-	room_list_ = new RoomList(client, sideBar_);
-	sideBarMainLayout_->addWidget(room_list_);
+        room_list_ = new RoomList(client, sideBar_);
+        sideBarMainLayout_->addWidget(room_list_);
 
-	top_bar_ = new TopRoomBar(this);
-	topBarLayout_->addWidget(top_bar_);
+        top_bar_ = new TopRoomBar(this);
+        topBarLayout_->addWidget(top_bar_);
 
-	view_manager_ = new TimelineViewManager(client, this);
-	mainContentLayout_->addWidget(view_manager_);
+        view_manager_ = new TimelineViewManager(client, this);
+        mainContentLayout_->addWidget(view_manager_);
 
-	text_input_ = new TextInputWidget(this);
-	contentLayout_->addWidget(text_input_);
+        text_input_ = new TextInputWidget(this);
+        contentLayout_->addWidget(text_input_);
 
-	user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
-	sideBarTopWidgetLayout_->addWidget(user_info_widget_);
+        user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
+        sideBarTopWidgetLayout_->addWidget(user_info_widget_);
 
-	sync_timer_ = new QTimer(this);
-	sync_timer_->setSingleShot(true);
-	connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
+        sync_timer_ = new QTimer(this);
+        sync_timer_->setSingleShot(true);
+        connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
 
-	connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
-	connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
+        connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
+        connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
 
-	connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
-	connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
-	connect(room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
+        connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
+        connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
+        connect(
+          room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
-	connect(view_manager_, &TimelineViewManager::unreadMessages, this, [=](const QString &roomid, int count) {
-		if (!settingsManager_.contains(roomid)) {
-			qWarning() << "RoomId does not have settings" << roomid;
-			room_list_->updateUnreadMessageCount(roomid, count);
-			return;
-		}
+        connect(view_manager_,
+                &TimelineViewManager::unreadMessages,
+                this,
+                [=](const QString &roomid, int count) {
+                        if (!settingsManager_.contains(roomid)) {
+                                qWarning() << "RoomId does not have settings" << roomid;
+                                room_list_->updateUnreadMessageCount(roomid, count);
+                                return;
+                        }
 
-		if (settingsManager_[roomid]->isNotificationsEnabled())
-			room_list_->updateUnreadMessageCount(roomid, count);
-	});
+                        if (settingsManager_[roomid]->isNotificationsEnabled())
+                                room_list_->updateUnreadMessageCount(roomid, count);
+                });
 
-	connect(view_manager_,
-		&TimelineViewManager::updateRoomsLastMessage,
-		room_list_,
-		&RoomList::updateRoomDescription);
+        connect(view_manager_,
+                &TimelineViewManager::updateRoomsLastMessage,
+                room_list_,
+                &RoomList::updateRoomDescription);
 
-	connect(room_list_,
-		SIGNAL(totalUnreadMessageCountUpdated(int)),
-		this,
-		SLOT(showUnreadMessageNotification(int)));
+        connect(room_list_,
+                SIGNAL(totalUnreadMessageCountUpdated(int)),
+                this,
+                SLOT(showUnreadMessageNotification(int)));
 
-	connect(text_input_,
-		SIGNAL(sendTextMessage(const QString &)),
-		view_manager_,
-		SLOT(sendTextMessage(const QString &)));
+        connect(text_input_,
+                SIGNAL(sendTextMessage(const QString &)),
+                view_manager_,
+                SLOT(sendTextMessage(const QString &)));
 
-	connect(client_.data(),
-		SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
-		this,
-		SLOT(updateTopBarAvatar(const QString &, const QPixmap &)));
+        connect(client_.data(),
+                SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
+                this,
+                SLOT(updateTopBarAvatar(const QString &, const QPixmap &)));
 
-	connect(client_.data(),
-		SIGNAL(initialSyncCompleted(const SyncResponse &)),
-		this,
-		SLOT(initialSyncCompleted(const SyncResponse &)));
-	connect(client_.data(),
-		SIGNAL(syncCompleted(const SyncResponse &)),
-		this,
-		SLOT(syncCompleted(const SyncResponse &)));
-	connect(client_.data(), SIGNAL(syncFailed(const QString &)), this, SLOT(syncFailed(const QString &)));
-	connect(client_.data(),
-		SIGNAL(getOwnProfileResponse(const QUrl &, const QString &)),
-		this,
-		SLOT(updateOwnProfileInfo(const QUrl &, const QString &)));
-	connect(client_.data(), SIGNAL(ownAvatarRetrieved(const QPixmap &)), this, SLOT(setOwnAvatar(const QPixmap &)));
+        connect(client_.data(),
+                SIGNAL(initialSyncCompleted(const SyncResponse &)),
+                this,
+                SLOT(initialSyncCompleted(const SyncResponse &)));
+        connect(client_.data(),
+                SIGNAL(syncCompleted(const SyncResponse &)),
+                this,
+                SLOT(syncCompleted(const SyncResponse &)));
+        connect(client_.data(),
+                SIGNAL(syncFailed(const QString &)),
+                this,
+                SLOT(syncFailed(const QString &)));
+        connect(client_.data(),
+                SIGNAL(getOwnProfileResponse(const QUrl &, const QString &)),
+                this,
+                SLOT(updateOwnProfileInfo(const QUrl &, const QString &)));
+        connect(client_.data(),
+                SIGNAL(ownAvatarRetrieved(const QPixmap &)),
+                this,
+                SLOT(setOwnAvatar(const QPixmap &)));
 
-	AvatarProvider::init(client);
+        AvatarProvider::init(client);
 }
 
 void
 ChatPage::logout()
 {
-	sync_timer_->stop();
+        sync_timer_->stop();
 
-	// Delete all config parameters.
-	QSettings settings;
-	settings.beginGroup("auth");
-	settings.remove("");
-	settings.endGroup();
-	settings.beginGroup("client");
-	settings.remove("");
-	settings.endGroup();
-	settings.beginGroup("notifications");
-	settings.remove("");
-	settings.endGroup();
+        // Delete all config parameters.
+        QSettings settings;
+        settings.beginGroup("auth");
+        settings.remove("");
+        settings.endGroup();
+        settings.beginGroup("client");
+        settings.remove("");
+        settings.endGroup();
+        settings.beginGroup("notifications");
+        settings.remove("");
+        settings.endGroup();
 
-	// Clear the environment.
-	room_list_->clear();
-	view_manager_->clearAll();
+        // Clear the environment.
+        room_list_->clear();
+        view_manager_->clearAll();
 
-	top_bar_->reset();
-	user_info_widget_->reset();
-	client_->reset();
+        top_bar_->reset();
+        user_info_widget_->reset();
+        client_->reset();
 
-	state_manager_.clear();
-	settingsManager_.clear();
-	room_avatars_.clear();
+        state_manager_.clear();
+        settingsManager_.clear();
+        room_avatars_.clear();
 
-	AvatarProvider::clear();
+        AvatarProvider::clear();
 
-	emit close();
+        emit close();
 }
 
 void
 ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 {
-	client_->setServer(homeserver);
-	client_->setAccessToken(token);
-	client_->getOwnProfile();
+        client_->setServer(homeserver);
+        client_->setAccessToken(token);
+        client_->getOwnProfile();
 
-	try {
-		cache_ = QSharedPointer<Cache>(new Cache(userid));
-	} catch (const std::exception &e) {
-		qCritical() << e.what();
-	}
+        try {
+                cache_ = QSharedPointer<Cache>(new Cache(userid));
+        } catch (const std::exception &e) {
+                qCritical() << e.what();
+        }
 
-	if (cache_->isInitialized())
-		loadStateFromCache();
-	else
-		client_->initialSync();
+        if (cache_->isInitialized())
+                loadStateFromCache();
+        else
+                client_->initialSync();
 }
 
 void
 ChatPage::startSync()
 {
-	client_->sync();
+        client_->sync();
 }
 
 void
 ChatPage::setOwnAvatar(const QPixmap &img)
 {
-	user_info_widget_->setAvatar(img.toImage());
+        user_info_widget_->setAvatar(img.toImage());
 }
 
 void
 ChatPage::syncFailed(const QString &msg)
 {
-	qWarning() << "Sync error:" << msg;
-	sync_timer_->start(sync_interval_ * 5);
+        qWarning() << "Sync error:" << msg;
+        sync_timer_->start(sync_interval_ * 5);
 }
 
 // TODO: Should be moved in another class that manages this global list.
 void
 ChatPage::updateDisplayNames(const RoomState &state)
 {
-	for (const auto member : state.memberships) {
-		auto displayName = member.content().displayName();
+        for (const auto member : state.memberships) {
+                auto displayName = member.content().displayName();
 
-		if (!displayName.isEmpty())
-			TimelineViewManager::DISPLAY_NAMES.insert(member.stateKey(), displayName);
-	}
+                if (!displayName.isEmpty())
+                        TimelineViewManager::DISPLAY_NAMES.insert(member.stateKey(), displayName);
+        }
 }
 
 void
 ChatPage::syncCompleted(const SyncResponse &response)
 {
-	// TODO: Catch exception
-	cache_->setNextBatchToken(response.nextBatch());
-	client_->setNextBatchToken(response.nextBatch());
+        auto joined = response.rooms().join();
 
-	auto joined = response.rooms().join();
+        for (auto it = joined.constBegin(); it != joined.constEnd(); it++) {
+                RoomState room_state;
 
-	for (auto it = joined.constBegin(); it != joined.constEnd(); it++) {
-		RoomState room_state;
+                // Merge the new updates for rooms that we are tracking.
+                if (state_manager_.contains(it.key()))
+                        room_state = state_manager_[it.key()];
 
-		// Merge the new updates for rooms that we are tracking.
-		if (state_manager_.contains(it.key()))
-			room_state = state_manager_[it.key()];
+                room_state.updateFromEvents(it.value().state().events());
+                room_state.updateFromEvents(it.value().timeline().events());
 
-		updateRoomState(room_state, it.value().state().events());
-		updateRoomState(room_state, it.value().timeline().events());
-		updateDisplayNames(room_state);
+                updateDisplayNames(room_state);
 
-		try {
-			cache_->insertRoomState(it.key(), room_state);
-		} catch (const lmdb::error &e) {
-			qCritical() << e.what();
-			// Stop using the cache if an errors occurs.
-			// TODO: Should also be marked as invalid and be deleted.
-			cache_->unmount();
-		}
+                if (state_manager_.contains(it.key())) {
+                        // TODO: Use pointers instead of copying.
+                        auto oldState = state_manager_[it.key()];
+                        oldState.update(room_state);
+                        state_manager_.insert(it.key(), oldState);
+                } else {
+                        qWarning() << "New rooms cannot be added after initial sync, yet.";
+                }
 
-		if (state_manager_.contains(it.key())) {
-			// TODO: Use pointers instead of copying.
-			auto oldState = state_manager_[it.key()];
-			oldState.update(room_state);
-			state_manager_.insert(it.key(), oldState);
-		} else {
-			qWarning() << "New rooms cannot be added after initial sync, yet.";
-		}
+                if (it.key() == current_room_)
+                        changeTopRoomInfo(it.key());
+        }
 
-		if (it.key() == current_room_)
-			changeTopRoomInfo(it.key());
-	}
+        try {
+                cache_->setState(response.nextBatch(), state_manager_);
+        } catch (const lmdb::error &e) {
+                qCritical() << "The cache couldn't be updated: " << e.what();
+                // TODO: Notify the user.
+                cache_->unmount();
+        }
 
-	room_list_->sync(state_manager_);
-	view_manager_->sync(response.rooms());
+        client_->setNextBatchToken(response.nextBatch());
 
-	sync_timer_->start(sync_interval_);
+        room_list_->sync(state_manager_);
+        view_manager_->sync(response.rooms());
+
+        sync_timer_->start(sync_interval_);
 }
 
 void
 ChatPage::initialSyncCompleted(const SyncResponse &response)
 {
-	if (!response.nextBatch().isEmpty())
-		client_->setNextBatchToken(response.nextBatch());
+        auto joined = response.rooms().join();
 
-	auto joined = response.rooms().join();
+        for (auto it = joined.constBegin(); it != joined.constEnd(); it++) {
+                RoomState room_state;
 
-	// TODO: Catch exception
-	cache_->setNextBatchToken(response.nextBatch());
+                // Build the current state from the timeline and state events.
+                room_state.updateFromEvents(it.value().state().events());
+                room_state.updateFromEvents(it.value().timeline().events());
 
-	for (auto it = joined.constBegin(); it != joined.constEnd(); it++) {
-		RoomState room_state;
+                // Remove redundant memberships.
+                room_state.removeLeaveMemberships();
 
-		// Build the current state from the timeline and state events.
-		updateRoomState(room_state, it.value().state().events());
-		updateRoomState(room_state, it.value().timeline().events());
+                // Resolve room name and avatar. e.g in case of one-to-one chats.
+                room_state.resolveName();
+                room_state.resolveAvatar();
 
-		// Remove redundant memberships.
-		room_state.removeLeaveMemberships();
+                updateDisplayNames(room_state);
 
-		// Resolve room name and avatar. e.g in case of one-to-one chats.
-		room_state.resolveName();
-		room_state.resolveAvatar();
+                state_manager_.insert(it.key(), room_state);
+                settingsManager_.insert(it.key(),
+                                        QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
 
-		try {
-			cache_->insertRoomState(it.key(), room_state);
-		} catch (const lmdb::error &e) {
-			qCritical() << e.what();
-			// Stop using the cache if an errors occurs.
-			// TODO: Should also be marked as invalid and be deleted.
-			cache_->unmount();
-		}
+                for (const auto membership : room_state.memberships) {
+                        auto uid = membership.sender();
+                        auto url = membership.content().avatarUrl();
 
-		updateDisplayNames(room_state);
+                        if (!url.toString().isEmpty())
+                                AvatarProvider::setAvatarUrl(uid, url);
+                }
+        }
 
-		state_manager_.insert(it.key(), room_state);
-		settingsManager_.insert(it.key(), QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
+        try {
+                cache_->setState(response.nextBatch(), state_manager_);
+        } catch (const lmdb::error &e) {
+                qCritical() << "The cache couldn't be initialized: " << e.what();
+                cache_->unmount();
+        }
 
-		for (const auto membership : room_state.memberships) {
-			auto uid = membership.sender();
-			auto url = membership.content().avatarUrl();
+        client_->setNextBatchToken(response.nextBatch());
 
-			if (!url.toString().isEmpty())
-				AvatarProvider::setAvatarUrl(uid, url);
-		}
-	}
+        // Populate timelines with messages.
+        view_manager_->initialize(response.rooms());
 
-	// Populate timelines with messages.
-	view_manager_->initialize(response.rooms());
+        // Initialize room list.
+        room_list_->setInitialRooms(settingsManager_, state_manager_);
 
-	// Initialize room list.
-	room_list_->setInitialRooms(settingsManager_, state_manager_);
+        sync_timer_->start(sync_interval_);
 
-	sync_timer_->start(sync_interval_);
-
-	emit contentLoaded();
+        emit contentLoaded();
 }
 
 void
 ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
 {
-	room_avatars_.insert(roomid, img);
+        room_avatars_.insert(roomid, img);
 
-	if (current_room_ != roomid)
-		return;
+        if (current_room_ != roomid)
+                return;
 
-	top_bar_->updateRoomAvatar(img.toImage());
+        top_bar_->updateRoomAvatar(img.toImage());
 }
 
 void
 ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name)
 {
-	QSettings settings;
-	auto userid = settings.value("auth/user_id").toString();
+        QSettings settings;
+        auto userid = settings.value("auth/user_id").toString();
 
-	user_info_widget_->setUserId(userid);
-	user_info_widget_->setDisplayName(display_name);
+        user_info_widget_->setUserId(userid);
+        user_info_widget_->setDisplayName(display_name);
 
-	if (avatar_url.isValid())
-		client_->fetchOwnAvatar(avatar_url);
+        if (avatar_url.isValid())
+                client_->fetchOwnAvatar(avatar_url);
 }
 
 void
 ChatPage::changeTopRoomInfo(const QString &room_id)
 {
-	if (!state_manager_.contains(room_id))
-		return;
+        if (!state_manager_.contains(room_id))
+                return;
 
-	auto state = state_manager_[room_id];
+        auto state = state_manager_[room_id];
 
-	top_bar_->updateRoomName(state.getName());
-	top_bar_->updateRoomTopic(state.getTopic());
-	top_bar_->setRoomSettings(settingsManager_[room_id]);
+        top_bar_->updateRoomName(state.getName());
+        top_bar_->updateRoomTopic(state.getTopic());
+        top_bar_->setRoomSettings(settingsManager_[room_id]);
 
-	if (room_avatars_.contains(room_id))
-		top_bar_->updateRoomAvatar(room_avatars_.value(room_id).toImage());
-	else
-		top_bar_->updateRoomAvatarFromName(state.getName());
+        if (room_avatars_.contains(room_id))
+                top_bar_->updateRoomAvatar(room_avatars_.value(room_id).toImage());
+        else
+                top_bar_->updateRoomAvatarFromName(state.getName());
 
-	current_room_ = room_id;
+        current_room_ = room_id;
 }
 
 void
 ChatPage::showUnreadMessageNotification(int count)
 {
-	emit unreadMessages(count);
+        emit unreadMessages(count);
 
-	// TODO: Make the default title a const.
-	if (count == 0)
-		emit changeWindowTitle("nheko");
-	else
-		emit changeWindowTitle(QString("nheko (%1)").arg(count));
-}
-
-void
-ChatPage::updateRoomState(RoomState &room_state, const QJsonArray &events)
-{
-	events::EventType ty;
-
-	for (const auto &event : events) {
-		try {
-			ty = events::extractEventType(event.toObject());
-		} catch (const DeserializationException &e) {
-			qWarning() << e.what() << event;
-			continue;
-		}
-
-		if (!events::isStateEvent(ty))
-			continue;
-
-		try {
-			switch (ty) {
-			case events::EventType::RoomAliases: {
-				events::StateEvent<events::AliasesEventContent> aliases;
-				aliases.deserialize(event);
-				room_state.aliases = aliases;
-				break;
-			}
-			case events::EventType::RoomAvatar: {
-				events::StateEvent<events::AvatarEventContent> avatar;
-				avatar.deserialize(event);
-				room_state.avatar = avatar;
-				break;
-			}
-			case events::EventType::RoomCanonicalAlias: {
-				events::StateEvent<events::CanonicalAliasEventContent> canonical_alias;
-				canonical_alias.deserialize(event);
-				room_state.canonical_alias = canonical_alias;
-				break;
-			}
-			case events::EventType::RoomCreate: {
-				events::StateEvent<events::CreateEventContent> create;
-				create.deserialize(event);
-				room_state.create = create;
-				break;
-			}
-			case events::EventType::RoomHistoryVisibility: {
-				events::StateEvent<events::HistoryVisibilityEventContent> history_visibility;
-				history_visibility.deserialize(event);
-				room_state.history_visibility = history_visibility;
-				break;
-			}
-			case events::EventType::RoomJoinRules: {
-				events::StateEvent<events::JoinRulesEventContent> join_rules;
-				join_rules.deserialize(event);
-				room_state.join_rules = join_rules;
-				break;
-			}
-			case events::EventType::RoomName: {
-				events::StateEvent<events::NameEventContent> name;
-				name.deserialize(event);
-				room_state.name = name;
-				break;
-			}
-			case events::EventType::RoomMember: {
-				events::StateEvent<events::MemberEventContent> member;
-				member.deserialize(event);
-
-				room_state.memberships.insert(member.stateKey(), member);
-
-				break;
-			}
-			case events::EventType::RoomPowerLevels: {
-				events::StateEvent<events::PowerLevelsEventContent> power_levels;
-				power_levels.deserialize(event);
-				room_state.power_levels = power_levels;
-				break;
-			}
-			case events::EventType::RoomTopic: {
-				events::StateEvent<events::TopicEventContent> topic;
-				topic.deserialize(event);
-				room_state.topic = topic;
-				break;
-			}
-			default: {
-				continue;
-			}
-			}
-		} catch (const DeserializationException &e) {
-			qWarning() << e.what() << event;
-			continue;
-		}
-	}
+        // TODO: Make the default title a const.
+        if (count == 0)
+                emit changeWindowTitle("nheko");
+        else
+                emit changeWindowTitle(QString("nheko (%1)").arg(count));
 }
 
 void
 ChatPage::loadStateFromCache()
 {
-	qDebug() << "Restoring state from cache";
+        qDebug() << "Restoring state from cache";
 
-	try {
-		qDebug() << "Restored nextBatchToken" << cache_->nextBatchToken();
-		client_->setNextBatchToken(cache_->nextBatchToken());
-	} catch (const lmdb::error &e) {
-		qCritical() << "Failed to load next_batch_token from cache" << e.what();
-		// TODO: Clean the environment
-		return;
-	}
+        try {
+                qDebug() << "Restored nextBatchToken" << cache_->nextBatchToken();
+                client_->setNextBatchToken(cache_->nextBatchToken());
+        } catch (const lmdb::error &e) {
+                qCritical() << "Failed to load next_batch_token from cache" << e.what();
+                // TODO: Clean the environment
+                return;
+        }
 
-	// Fetch all the joined room's state.
-	auto rooms = cache_->states();
+        // Fetch all the joined room's state.
+        auto rooms = cache_->states();
 
-	for (auto it = rooms.constBegin(); it != rooms.constEnd(); it++) {
-		RoomState room_state = it.value();
+        for (auto it = rooms.constBegin(); it != rooms.constEnd(); it++) {
+                RoomState room_state = it.value();
 
-		// Clean up and prepare state for use.
-		room_state.removeLeaveMemberships();
-		room_state.resolveName();
-		room_state.resolveAvatar();
+                // Clean up and prepare state for use.
+                room_state.removeLeaveMemberships();
+                room_state.resolveName();
+                room_state.resolveAvatar();
 
-		// Update the global list with user's display names.
-		updateDisplayNames(room_state);
+                // Update the global list with user's display names.
+                updateDisplayNames(room_state);
 
-		// Save the current room state.
-		state_manager_.insert(it.key(), room_state);
+                // Save the current room state.
+                state_manager_.insert(it.key(), room_state);
 
-		// Create or restore the settings for this room.
-		settingsManager_.insert(it.key(), QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
+                // Create or restore the settings for this room.
+                settingsManager_.insert(it.key(),
+                                        QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
 
-		// Resolve user avatars.
-		for (const auto membership : room_state.memberships) {
-			auto uid = membership.sender();
-			auto url = membership.content().avatarUrl();
+                // Resolve user avatars.
+                for (const auto membership : room_state.memberships) {
+                        auto uid = membership.sender();
+                        auto url = membership.content().avatarUrl();
 
-			if (!url.toString().isEmpty())
-				AvatarProvider::setAvatarUrl(uid, url);
-		}
-	}
+                        if (!url.toString().isEmpty())
+                                AvatarProvider::setAvatarUrl(uid, url);
+                }
+        }
 
-	// Initializing empty timelines.
-	view_manager_->initialize(rooms.keys());
+        // Initializing empty timelines.
+        view_manager_->initialize(rooms.keys());
 
-	// Initialize room list from the restored state and settings.
-	room_list_->setInitialRooms(settingsManager_, state_manager_);
+        // Initialize room list from the restored state and settings.
+        room_list_->setInitialRooms(settingsManager_, state_manager_);
 
-	// Remove the spinner overlay.
-	emit contentLoaded();
+        // Remove the spinner overlay.
+        emit contentLoaded();
 
-	sync_timer_->start(sync_interval_);
+        sync_timer_->start(sync_interval_);
 }
 
 void
 ChatPage::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_K) {
-		if (event->modifiers() == Qt::ControlModifier)
-			showQuickSwitcher();
-	}
+        if (event->key() == Qt::Key_K) {
+                if (event->modifiers() == Qt::ControlModifier)
+                        showQuickSwitcher();
+        }
 }
 
 void
 ChatPage::showQuickSwitcher()
 {
-	if (quickSwitcher_ == nullptr) {
-		quickSwitcher_ = new QuickSwitcher(this);
+        if (quickSwitcher_ == nullptr) {
+                quickSwitcher_ = new QuickSwitcher(this);
 
-		connect(quickSwitcher_, &QuickSwitcher::roomSelected, room_list_, &RoomList::highlightSelectedRoom);
-		connect(quickSwitcher_, &QuickSwitcher::closing, this, [=]() {
-			if (this->quickSwitcherModal_ != nullptr)
-				this->quickSwitcherModal_->fadeOut();
-		});
-	}
+                connect(quickSwitcher_,
+                        &QuickSwitcher::roomSelected,
+                        room_list_,
+                        &RoomList::highlightSelectedRoom);
+                connect(quickSwitcher_, &QuickSwitcher::closing, this, [=]() {
+                        if (this->quickSwitcherModal_ != nullptr)
+                                this->quickSwitcherModal_->fadeOut();
+                });
+        }
 
-	if (quickSwitcherModal_ == nullptr) {
-		quickSwitcherModal_ = new OverlayModal(MainWindow::instance(), quickSwitcher_);
-		quickSwitcherModal_->setDuration(0);
-		quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
-	}
+        if (quickSwitcherModal_ == nullptr) {
+                quickSwitcherModal_ = new OverlayModal(MainWindow::instance(), quickSwitcher_);
+                quickSwitcherModal_->setDuration(0);
+                quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
+        }
 
-	QMap<QString, QString> rooms;
+        QMap<QString, QString> rooms;
 
-	for (auto it = state_manager_.constBegin(); it != state_manager_.constEnd(); ++it)
-		rooms.insert(it.value().getName(), it.key());
+        for (auto it = state_manager_.constBegin(); it != state_manager_.constEnd(); ++it)
+                rooms.insert(it.value().getName(), it.key());
 
-	quickSwitcher_->setRoomList(rooms);
-	quickSwitcherModal_->fadeIn();
+        quickSwitcher_->setRoomList(rooms);
+        quickSwitcherModal_->fadeIn();
 }
 
 ChatPage::~ChatPage()
 {
-	sync_timer_->stop();
+        sync_timer_->stop();
 }

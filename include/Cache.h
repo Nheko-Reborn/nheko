@@ -24,36 +24,38 @@
 class Cache
 {
 public:
-	Cache(const QString &userId);
+        Cache(const QString &userId);
 
-	void insertRoomState(const QString &roomid, const RoomState &state);
-	void setNextBatchToken(const QString &token);
-	bool isInitialized();
+        void setState(const QString &nextBatchToken, const QMap<QString, RoomState> &states);
+        bool isInitialized() const;
 
-	QString nextBatchToken();
-	QMap<QString, RoomState> states();
+        QString nextBatchToken() const;
+        QMap<QString, RoomState> states();
 
-	inline void unmount();
-	inline QString memberDbName(const QString &roomid);
+        inline void unmount();
+        inline QString memberDbName(const QString &roomid);
 
 private:
-	lmdb::env env_;
-	lmdb::dbi stateDb_;
-	lmdb::dbi roomDb_;
+        void setNextBatchToken(lmdb::txn &txn, const QString &token);
+        void insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state);
 
-	bool isMounted_;
+        lmdb::env env_;
+        lmdb::dbi stateDb_;
+        lmdb::dbi roomDb_;
 
-	QString userId_;
+        bool isMounted_;
+
+        QString userId_;
 };
 
 inline void
 Cache::unmount()
 {
-	isMounted_ = false;
+        isMounted_ = false;
 }
 
 inline QString
 Cache::memberDbName(const QString &roomid)
 {
-	return QString("m.%1").arg(roomid);
+        return QString("m.%1").arg(roomid);
 }

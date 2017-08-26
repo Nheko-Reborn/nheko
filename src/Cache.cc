@@ -37,194 +37,207 @@ Cache::Cache(const QString &userId)
   , isMounted_{ false }
   , userId_{ userId }
 {
-	auto statePath = QString("%1/%2/state")
-				 .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-				 .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
+        auto statePath = QString("%1/%2/state")
+                           .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                           .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
 
-	bool isInitial = !QFile::exists(statePath);
+        bool isInitial = !QFile::exists(statePath);
 
-	env_ = lmdb::env::create();
-	env_.set_mapsize(128UL * 1024UL * 1024UL); /* 128 MB */
-	env_.set_max_dbs(1024UL);
+        env_ = lmdb::env::create();
+        env_.set_mapsize(128UL * 1024UL * 1024UL); /* 128 MB */
+        env_.set_max_dbs(1024UL);
 
-	if (isInitial) {
-		qDebug() << "[cache] First time initializing LMDB";
+        if (isInitial) {
+                qDebug() << "[cache] First time initializing LMDB";
 
-		if (!QDir().mkpath(statePath)) {
-			throw std::runtime_error(
-				("Unable to create state directory:" + statePath).toStdString().c_str());
-		}
-	}
+                if (!QDir().mkpath(statePath)) {
+                        throw std::runtime_error(
+                          ("Unable to create state directory:" + statePath).toStdString().c_str());
+                }
+        }
 
-	try {
-		env_.open(statePath.toStdString().c_str());
-	} catch (const lmdb::error &e) {
-		if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
-			throw std::runtime_error("LMDB initialization failed" + std::string(e.what()));
-		}
+        try {
+                env_.open(statePath.toStdString().c_str());
+        } catch (const lmdb::error &e) {
+                if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
+                        throw std::runtime_error("LMDB initialization failed" +
+                                                 std::string(e.what()));
+                }
 
-		qWarning() << "Resetting cache due to LMDB version mismatch:" << e.what();
+                qWarning() << "Resetting cache due to LMDB version mismatch:" << e.what();
 
-		QDir stateDir(statePath);
+                QDir stateDir(statePath);
 
-		for (const auto &file : stateDir.entryList(QDir::NoDotAndDotDot)) {
-			if (!stateDir.remove(file))
-				throw std::runtime_error(("Unable to delete file " + file).toStdString().c_str());
-		}
+                for (const auto &file : stateDir.entryList(QDir::NoDotAndDotDot)) {
+                        if (!stateDir.remove(file))
+                                throw std::runtime_error(
+                                  ("Unable to delete file " + file).toStdString().c_str());
+                }
 
-		env_.open(statePath.toStdString().c_str());
-	}
+                env_.open(statePath.toStdString().c_str());
+        }
 
-	auto txn = lmdb::txn::begin(env_);
-	stateDb_ = lmdb::dbi::open(txn, "state", MDB_CREATE);
-	roomDb_ = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
+        auto txn = lmdb::txn::begin(env_);
+        stateDb_ = lmdb::dbi::open(txn, "state", MDB_CREATE);
+        roomDb_  = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
 
-	txn.commit();
+        txn.commit();
 
-	isMounted_ = true;
+        isMounted_ = true;
 }
 
 void
-Cache::insertRoomState(const QString &roomid, const RoomState &state)
+Cache::setState(const QString &nextBatchToken, const QMap<QString, RoomState> &states)
 {
-	if (!isMounted_)
-		return;
+        if (!isMounted_)
+                return;
 
-	auto txn = lmdb::txn::begin(env_);
+        auto txn = lmdb::txn::begin(env_);
 
-	auto stateEvents = QJsonDocument(state.serialize()).toBinaryData();
-	auto id = roomid.toUtf8();
+        setNextBatchToken(txn, nextBatchToken);
 
-	lmdb::dbi_put(txn, roomDb_, lmdb::val(id.data(), id.size()), lmdb::val(stateEvents.data(), stateEvents.size()));
+        for (auto it = states.constBegin(); it != states.constEnd(); it++)
+                insertRoomState(txn, it.key(), it.value());
 
-	for (const auto &membership : state.memberships) {
-		lmdb::dbi membersDb = lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
+        txn.commit();
+}
 
-		// The user_id this membership event relates to, is used
-		// as the index on the membership database.
-		auto key = membership.stateKey().toUtf8();
-		auto memberEvent = QJsonDocument(membership.serialize()).toBinaryData();
+void
+Cache::insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state)
+{
+        auto stateEvents = QJsonDocument(state.serialize()).toBinaryData();
+        auto id          = roomid.toUtf8();
 
-		switch (membership.content().membershipState()) {
-		// We add or update (e.g invite -> join) a new user to the membership list.
-		case events::Membership::Invite:
-		case events::Membership::Join: {
-			lmdb::dbi_put(txn,
-				      membersDb,
-				      lmdb::val(key.data(), key.size()),
-				      lmdb::val(memberEvent.data(), memberEvent.size()));
-			break;
-		}
-		// We remove the user from the membership list.
-		case events::Membership::Leave:
-		case events::Membership::Ban: {
-			lmdb::dbi_del(txn,
-				      membersDb,
-				      lmdb::val(key.data(), key.size()),
-				      lmdb::val(memberEvent.data(), memberEvent.size()));
-			break;
-		}
-		case events::Membership::Knock: {
-			qWarning() << "Skipping knock membership" << roomid << key;
-			break;
-		}
-		}
-	}
+        lmdb::dbi_put(txn,
+                      roomDb_,
+                      lmdb::val(id.data(), id.size()),
+                      lmdb::val(stateEvents.data(), stateEvents.size()));
 
-	txn.commit();
+        for (const auto &membership : state.memberships) {
+                lmdb::dbi membersDb =
+                  lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
+
+                // The user_id this membership event relates to, is used
+                // as the index on the membership database.
+                auto key         = membership.stateKey().toUtf8();
+                auto memberEvent = QJsonDocument(membership.serialize()).toBinaryData();
+
+                switch (membership.content().membershipState()) {
+                // We add or update (e.g invite -> join) a new user to the membership list.
+                case events::Membership::Invite:
+                case events::Membership::Join: {
+                        lmdb::dbi_put(txn,
+                                      membersDb,
+                                      lmdb::val(key.data(), key.size()),
+                                      lmdb::val(memberEvent.data(), memberEvent.size()));
+                        break;
+                }
+                // We remove the user from the membership list.
+                case events::Membership::Leave:
+                case events::Membership::Ban: {
+                        lmdb::dbi_del(txn,
+                                      membersDb,
+                                      lmdb::val(key.data(), key.size()),
+                                      lmdb::val(memberEvent.data(), memberEvent.size()));
+                        break;
+                }
+                case events::Membership::Knock: {
+                        qWarning() << "Skipping knock membership" << roomid << key;
+                        break;
+                }
+                }
+        }
 }
 
 QMap<QString, RoomState>
 Cache::states()
 {
-	QMap<QString, RoomState> states;
+        QMap<QString, RoomState> states;
 
-	auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-	auto cursor = lmdb::cursor::open(txn, roomDb_);
+        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto cursor = lmdb::cursor::open(txn, roomDb_);
 
-	std::string room;
-	std::string stateData;
+        std::string room;
+        std::string stateData;
 
-	// Retrieve all the room names.
-	while (cursor.get(room, stateData, MDB_NEXT)) {
-		auto roomid = QString::fromUtf8(room.data(), room.size());
-		auto json = QJsonDocument::fromBinaryData(QByteArray(stateData.data(), stateData.size()));
+        // Retrieve all the room names.
+        while (cursor.get(room, stateData, MDB_NEXT)) {
+                auto roomid = QString::fromUtf8(room.data(), room.size());
+                auto json =
+                  QJsonDocument::fromBinaryData(QByteArray(stateData.data(), stateData.size()));
 
-		RoomState state;
-		state.parse(json.object());
+                RoomState state;
+                state.parse(json.object());
 
-		auto memberDb = lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
-		QMap<QString, events::StateEvent<events::MemberEventContent>> members;
+                auto memberDb = lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
+                QMap<QString, events::StateEvent<events::MemberEventContent>> members;
 
-		auto memberCursor = lmdb::cursor::open(txn, memberDb);
+                auto memberCursor = lmdb::cursor::open(txn, memberDb);
 
-		std::string memberId;
-		std::string memberContent;
+                std::string memberId;
+                std::string memberContent;
 
-		while (memberCursor.get(memberId, memberContent, MDB_NEXT)) {
-			auto userid = QString::fromUtf8(memberId.data(), memberId.size());
-			auto data =
-				QJsonDocument::fromBinaryData(QByteArray(memberContent.data(), memberContent.size()));
+                while (memberCursor.get(memberId, memberContent, MDB_NEXT)) {
+                        auto userid = QString::fromUtf8(memberId.data(), memberId.size());
+                        auto data   = QJsonDocument::fromBinaryData(
+                          QByteArray(memberContent.data(), memberContent.size()));
 
-			try {
-				events::StateEvent<events::MemberEventContent> member;
-				member.deserialize(data.object());
-				members.insert(userid, member);
-			} catch (const DeserializationException &e) {
-				qWarning() << e.what();
-				qWarning() << "Fault while parsing member event" << data.object();
-				continue;
-			}
-		}
+                        try {
+                                events::StateEvent<events::MemberEventContent> member;
+                                member.deserialize(data.object());
+                                members.insert(userid, member);
+                        } catch (const DeserializationException &e) {
+                                qWarning() << e.what();
+                                qWarning() << "Fault while parsing member event" << data.object();
+                                continue;
+                        }
+                }
 
-		qDebug() << members.size() << "members for" << roomid;
+                qDebug() << members.size() << "members for" << roomid;
 
-		state.memberships = members;
-		states.insert(roomid, state);
-	}
+                state.memberships = members;
+                states.insert(roomid, state);
+        }
 
-	qDebug() << "Retrieved" << states.size() << "rooms";
+        qDebug() << "Retrieved" << states.size() << "rooms";
 
-	cursor.close();
+        cursor.close();
 
-	txn.commit();
+        txn.commit();
 
-	return states;
+        return states;
 }
 
 void
-Cache::setNextBatchToken(const QString &token)
+Cache::setNextBatchToken(lmdb::txn &txn, const QString &token)
 {
-	auto txn = lmdb::txn::begin(env_);
-	auto value = token.toUtf8();
+        auto value = token.toUtf8();
 
-	lmdb::dbi_put(txn, stateDb_, NEXT_BATCH_KEY, lmdb::val(value.data(), value.size()));
-
-	txn.commit();
+        lmdb::dbi_put(txn, stateDb_, NEXT_BATCH_KEY, lmdb::val(value.data(), value.size()));
 }
 
 bool
-Cache::isInitialized()
+Cache::isInitialized() const
 {
-	auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-	lmdb::val token;
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        lmdb::val token;
 
-	bool res = lmdb::dbi_get(txn, stateDb_, NEXT_BATCH_KEY, token);
+        bool res = lmdb::dbi_get(txn, stateDb_, NEXT_BATCH_KEY, token);
 
-	txn.commit();
+        txn.commit();
 
-	return res;
+        return res;
 }
 
 QString
-Cache::nextBatchToken()
+Cache::nextBatchToken() const
 {
-	auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-	lmdb::val token;
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        lmdb::val token;
 
-	lmdb::dbi_get(txn, stateDb_, NEXT_BATCH_KEY, token);
+        lmdb::dbi_get(txn, stateDb_, NEXT_BATCH_KEY, token);
 
-	txn.commit();
+        txn.commit();
 
-	return QString::fromUtf8(token.data(), token.size());
+        return QString::fromUtf8(token.data(), token.size());
 }
