@@ -25,6 +25,7 @@
 #include "Sync.h"
 
 #include "Avatar.h"
+#include "Emote.h"
 #include "Image.h"
 #include "MessageEvent.h"
 #include "Notice.h"
@@ -42,6 +43,9 @@ public:
                      bool with_sender,
                      QWidget *parent = 0);
         TimelineItem(const events::MessageEvent<msgs::Text> &e,
+                     bool with_sender,
+                     QWidget *parent = 0);
+        TimelineItem(const events::MessageEvent<msgs::Emote> &e,
                      bool with_sender,
                      QWidget *parent = 0);
 

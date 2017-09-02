@@ -192,6 +192,43 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
 }
 
 /*
+ * Used to display remote emote messages.
+ */
+TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
+                           bool with_sender,
+                           QWidget *parent)
+  : QWidget(parent)
+{
+        init();
+
+        auto body        = event.content().body().trimmed().toHtmlEscaped();
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+        auto displayName = TimelineViewManager::displayName(event.sender());
+        auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(body);
+
+        descriptionMsg_ = { "",
+                            event.sender(),
+                            emoteMsg,
+                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+
+        generateTimestamp(timestamp);
+        emoteMsg.replace(URL_REGEX, URL_HTML);
+
+        if (with_sender) {
+                generateBody(displayName, emoteMsg);
+                setupAvatarLayout(displayName);
+                mainLayout_->addLayout(headerLayout_);
+
+                AvatarProvider::resolve(event.sender(), this);
+        } else {
+                generateBody(emoteMsg);
+                setupSimpleLayout();
+        }
+
+        mainLayout_->addWidget(body_);
+}
+
+/*
  * Used to display remote text messages.
  */
 TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
@@ -216,8 +253,6 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
         body.replace(URL_REGEX, URL_HTML);
 
         if (with_sender) {
-                auto displayName = TimelineViewManager::displayName(event.sender());
-
                 generateBody(displayName, body);
                 setupAvatarLayout(displayName);
 

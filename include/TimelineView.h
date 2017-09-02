@@ -28,6 +28,7 @@
 #include "TimelineItem.h"
 
 #include "Image.h"
+#include "Emote.h"
 #include "Notice.h"
 #include "RoomInfoListItem.h"
 #include "Text.h"
@@ -76,6 +77,8 @@ public:
         TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e,
                                          bool with_sender);
         TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e,
+                                         bool with_sender);
+        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Emote> &e,
                                          bool with_sender);
 
         // Add new events at the end of the timeline.

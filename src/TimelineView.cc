@@ -274,6 +274,28 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
                         updateLastSender(img.sender(), direction);
 
                         return createTimelineItem(img, with_sender);
+                } else if (msg_type == events::MessageEventType::Emote) {
+                        events::MessageEvent<msgs::Emote> emote;
+
+                        try {
+                                emote.deserialize(event);
+                        } catch (const DeserializationException &e) {
+                                qWarning() << e.what() << event;
+                                return nullptr;
+                        }
+
+                        if (isDuplicate(emote.eventId()))
+                                return nullptr;
+
+                        eventIds_[emote.eventId()] = true;
+
+                        // TODO Check if it's a message waiting for validation
+
+                        auto with_sender = isSenderRendered(emote.sender(), direction);
+
+                        updateLastSender(emote.sender(), direction);
+
+                        return createTimelineItem(emote, with_sender);
                 } else if (msg_type == events::MessageEventType::Unknown) {
                         qWarning() << "Unknown message type" << event;
                         return nullptr;
@@ -398,6 +420,13 @@ TimelineView::createTimelineItem(const events::MessageEvent<msgs::Notice> &event
 
 TimelineItem *
 TimelineView::createTimelineItem(const events::MessageEvent<msgs::Text> &event, bool with_sender)
+{
+        TimelineItem *item = new TimelineItem(event, with_sender, scroll_widget_);
+        return item;
+}
+
+TimelineItem *
+TimelineView::createTimelineItem(const events::MessageEvent<msgs::Emote> &event, bool with_sender)
 {
         TimelineItem *item = new TimelineItem(event, with_sender, scroll_widget_);
         return item;
