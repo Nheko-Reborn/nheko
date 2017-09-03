@@ -121,7 +121,13 @@ MatrixClient::onLoginResponse(QNetworkReply *reply)
 
         try {
                 response.deserialize(json);
-                emit loginSuccess(response.getUserId(), server_.host(), response.getAccessToken());
+
+                auto hostname = server_.host();
+
+                if (server_.port() > 0)
+                        hostname = QString("%1:%2").arg(server_.host()).arg(server_.port());
+
+                emit loginSuccess(response.getUserId(), hostname, response.getAccessToken());
         } catch (DeserializationException &e) {
                 qWarning() << "Malformed JSON response" << e.what();
                 emit loginError(tr("Malformed response. Possibly not a Matrix server"));
