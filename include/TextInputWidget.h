@@ -25,49 +25,51 @@
 #include "EmojiPickButton.h"
 #include "FlatButton.h"
 
+static const QString EMOTE_COMMAND("/me ");
+
 class FilteredTextEdit : public QTextEdit
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	explicit FilteredTextEdit(QWidget *parent = nullptr);
-	void keyPressEvent(QKeyEvent *event);
+        explicit FilteredTextEdit(QWidget *parent = nullptr);
+        void keyPressEvent(QKeyEvent *event);
 
 signals:
-	void enterPressed();
+        void enterPressed();
 };
 
-class TextInputWidget : public QWidget
+class TextInputWidget : public QFrame
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	TextInputWidget(QWidget *parent = 0);
-	~TextInputWidget();
+        TextInputWidget(QWidget *parent = 0);
+        ~TextInputWidget();
 
 public slots:
-	void onSendButtonClicked();
-	inline void focusLineEdit();
+        void onSendButtonClicked();
+        inline void focusLineEdit();
 
 private slots:
-	void addSelectedEmoji(const QString &emoji);
+        void addSelectedEmoji(const QString &emoji);
 
 signals:
-	void sendTextMessage(QString msg);
-
-protected:
-	void paintEvent(QPaintEvent *event) override;
+        void sendTextMessage(QString msg);
+        void sendEmoteMessage(QString msg);
 
 private:
-	QHBoxLayout *top_layout_;
-	FilteredTextEdit *input_;
+        QString parseEmoteCommand(const QString &cmd);
 
-	FlatButton *send_file_button_;
-	FlatButton *send_message_button_;
-	EmojiPickButton *emoji_button_;
+        QHBoxLayout *top_layout_;
+        FilteredTextEdit *input_;
+
+        FlatButton *send_file_button_;
+        FlatButton *send_message_button_;
+        EmojiPickButton *emoji_button_;
 };
 
 inline void
 TextInputWidget::focusLineEdit()
 {
-	input_->setFocus();
+        input_->setFocus();
 }

@@ -23,6 +23,7 @@
 #include <QWidget>
 
 #include "MatrixClient.h"
+#include "MessageEvent.h"
 #include "RoomInfoListItem.h"
 #include "Sync.h"
 #include "TimelineView.h"
@@ -54,6 +55,7 @@ signals:
 public slots:
         void setHistoryView(const QString &room_id);
         void sendTextMessage(const QString &msg);
+        void sendEmoteMessage(const QString &msg);
 
 private slots:
         void messageSent(const QString &eventid, const QString &roomid, int txnid);

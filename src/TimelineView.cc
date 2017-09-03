@@ -289,7 +289,10 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         eventIds_[emote.eventId()] = true;
 
-                        // TODO Check if it's a message waiting for validation
+                        if (isPendingMessage(emote, local_user_)) {
+                                removePendingMessage(emote);
+                                return nullptr;
+                        }
 
                         auto with_sender = isSenderRendered(emote.sender(), direction);
 
@@ -452,55 +455,19 @@ TimelineView::updatePendingMessage(int txn_id, QString event_id)
         }
 }
 
-bool
-TimelineView::isPendingMessage(const events::MessageEvent<msgs::Text> &e,
-                               const QString &local_userid)
-{
-        if (e.sender() != local_userid)
-                return false;
-
-        for (const auto &msg : pending_msgs_) {
-                if (msg.event_id == e.eventId() || msg.body == e.content().body())
-                        return true;
-        }
-
-        return false;
-}
-
 void
-TimelineView::removePendingMessage(const events::MessageEvent<msgs::Text> &e)
-{
-        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
-                int index = std::distance(pending_msgs_.begin(), it);
-
-                if (it->event_id == e.eventId() || it->body == e.content().body()) {
-                        pending_msgs_.removeAt(index);
-                        break;
-                }
-        }
-}
-
-void
-TimelineView::addUserTextMessage(const QString &body, int txn_id)
+TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString &body, int txn_id)
 {
         QSettings settings;
-        auto user_id = settings.value("auth/user_id").toString();
-
+        auto user_id     = settings.value("auth/user_id").toString();
         auto with_sender = lastSender_ != user_id;
 
-        TimelineItem *view_item;
-
-        if (with_sender)
-                view_item = new TimelineItem(user_id, body, scroll_widget_);
-        else
-                view_item = new TimelineItem(body, scroll_widget_);
-
+        TimelineItem *view_item = new TimelineItem(ty, user_id, body, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
 
         lastSender_ = user_id;
 
         PendingMessage message(txn_id, body, "", view_item);
-
         pending_msgs_.push_back(message);
 }
 

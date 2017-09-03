@@ -67,46 +67,42 @@ TimelineItem::init()
 }
 
 /*
- * For messages created locally. The avatar and the username are displayed.
+ * For messages created locally.
  */
-TimelineItem::TimelineItem(const QString &userid, QString body, QWidget *parent)
+TimelineItem::TimelineItem(events::MessageEventType ty,
+                           const QString &userid,
+                           QString body,
+                           bool withSender,
+                           QWidget *parent)
   : QWidget(parent)
 {
         init();
-        descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
 
-        body.replace(URL_REGEX, URL_HTML);
         auto displayName = TimelineViewManager::displayName(userid);
+        auto timestamp   = QDateTime::currentDateTime();
 
-        generateTimestamp(QDateTime::currentDateTime());
-        generateBody(displayName, body);
-
-        setupAvatarLayout(displayName);
-
-        mainLayout_->addLayout(headerLayout_);
-        mainLayout_->addWidget(body_);
-
-        AvatarProvider::resolve(userid, this);
-}
-
-/*
- * For messages created locally. Only the text is displayed.
- */
-TimelineItem::TimelineItem(QString body, QWidget *parent)
-  : QWidget(parent)
-{
-        QSettings settings;
-        auto userid = settings.value("auth/user_id").toString();
-
-        init();
-        descriptionMsg_ = { "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime()) };
+        if (ty == events::MessageEventType::Emote) {
+                body            = QString("* %1 %2").arg(displayName).arg(body);
+                descriptionMsg_ = { "", userid, body, descriptiveTime(timestamp) };
+        } else {
+                descriptionMsg_ = {
+                        "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime())
+                };
+        }
 
         body.replace(URL_REGEX, URL_HTML);
+        generateTimestamp(timestamp);
 
-        generateTimestamp(QDateTime::currentDateTime());
-        generateBody(body);
+        if (withSender) {
+                generateBody(displayName, body);
+                setupAvatarLayout(displayName);
+                mainLayout_->addLayout(headerLayout_);
 
-        setupSimpleLayout();
+                AvatarProvider::resolve(userid, this);
+        } else {
+                generateBody(body);
+                setupSimpleLayout();
+        }
 
         mainLayout_->addWidget(body_);
 }

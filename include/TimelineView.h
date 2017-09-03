@@ -27,8 +27,9 @@
 #include "Sync.h"
 #include "TimelineItem.h"
 
-#include "Image.h"
 #include "Emote.h"
+#include "Image.h"
+#include "MessageEvent.h"
 #include "Notice.h"
 #include "RoomInfoListItem.h"
 #include "Text.h"
@@ -83,7 +84,7 @@ public:
 
         // Add new events at the end of the timeline.
         int addEvents(const Timeline &timeline);
-        void addUserTextMessage(const QString &msg, int txn_id);
+        void addUserMessage(matrix::events::MessageEventType ty, const QString &msg, int txn_id);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
 
@@ -100,14 +101,19 @@ signals:
 
 private:
         void init();
-        void removePendingMessage(const events::MessageEvent<msgs::Text> &e);
         void addTimelineItem(TimelineItem *item, TimelineDirection direction);
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
 
         // Used to determine whether or not we should prefix a message with the sender's name.
         bool isSenderRendered(const QString &user_id, TimelineDirection direction);
-        bool isPendingMessage(const events::MessageEvent<msgs::Text> &e, const QString &userid);
+
+        template<class T>
+        bool isPendingMessage(const events::MessageEvent<T> &e, const QString &userid);
+
+        template<class T>
+        void removePendingMessage(const events::MessageEvent<T> &e);
+
         inline bool isDuplicate(const QString &event_id);
 
         // Return nullptr if the event couldn't be parsed.
@@ -152,4 +158,33 @@ inline bool
 TimelineView::isDuplicate(const QString &event_id)
 {
         return eventIds_.contains(event_id);
+}
+
+template<class T>
+bool
+TimelineView::isPendingMessage(const events::MessageEvent<T> &e, const QString &local_userid)
+{
+        if (e.sender() != local_userid)
+                return false;
+
+        for (const auto &msg : pending_msgs_) {
+                if (msg.event_id == e.eventId() || msg.body == e.content().body())
+                        return true;
+        }
+
+        return false;
+}
+
+template<class T>
+void
+TimelineView::removePendingMessage(const events::MessageEvent<T> &e)
+{
+        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
+                int index = std::distance(pending_msgs_.begin(), it);
+
+                if (it->event_id == e.eventId() || it->body == e.content().body()) {
+                        pending_msgs_.removeAt(index);
+                        break;
+                }
+        }
 }

@@ -32,10 +32,8 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QW
 {
         setStyleSheet("QWidget { background: #f8fbfe; color: #e8e8e8; border: none;}");
 
-        connect(client_.data(),
-                SIGNAL(messageSent(const QString &, const QString &, int)),
-                this,
-                SLOT(messageSent(const QString &, const QString &, int)));
+        connect(
+          client_.data(), &MatrixClient::messageSent, this, &TimelineViewManager::messageSent);
 }
 
 TimelineViewManager::~TimelineViewManager()
@@ -59,8 +57,19 @@ TimelineViewManager::sendTextMessage(const QString &msg)
         auto room_id = active_room_;
         auto view    = views_[room_id];
 
-        view->addUserTextMessage(msg, client_->transactionId());
-        client_->sendTextMessage(room_id, msg);
+        view->addUserMessage(matrix::events::MessageEventType::Text, msg, client_->transactionId());
+        client_->sendRoomMessage(matrix::events::MessageEventType::Text, room_id, msg);
+}
+
+void
+TimelineViewManager::sendEmoteMessage(const QString &msg)
+{
+        auto room_id = active_room_;
+        auto view    = views_[room_id];
+
+        view->addUserMessage(
+          matrix::events::MessageEventType::Emote, msg, client_->transactionId());
+        client_->sendRoomMessage(matrix::events::MessageEventType::Emote, room_id, msg);
 }
 
 void

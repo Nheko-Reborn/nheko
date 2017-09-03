@@ -148,6 +148,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 view_manager_,
                 SLOT(sendTextMessage(const QString &)));
 
+        connect(text_input_,
+                SIGNAL(sendEmoteMessage(const QString &)),
+                view_manager_,
+                SLOT(sendEmoteMessage(const QString &)));
+
         connect(client_.data(),
                 SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
                 this,

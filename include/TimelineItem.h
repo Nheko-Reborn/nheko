@@ -50,8 +50,11 @@ public:
                      QWidget *parent = 0);
 
         // For local messages.
-        TimelineItem(const QString &userid, QString body, QWidget *parent = 0);
-        TimelineItem(QString body, QWidget *parent = 0);
+        TimelineItem(events::MessageEventType ty,
+                     const QString &userid,
+                     QString body,
+                     bool withSender,
+                     QWidget *parent = 0);
 
         TimelineItem(ImageItem *img,
                      const events::MessageEvent<msgs::Image> &e,

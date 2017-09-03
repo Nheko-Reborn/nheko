@@ -26,123 +26,133 @@
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit(parent)
 {
-	setAcceptRichText(false);
+        setAcceptRichText(false);
 }
 
 void
 FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
-		emit enterPressed();
-	else
-		QTextEdit::keyPressEvent(event);
+        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+                emit enterPressed();
+        else
+                QTextEdit::keyPressEvent(event);
 }
 
 TextInputWidget::TextInputWidget(QWidget *parent)
-  : QWidget(parent)
+  : QFrame(parent)
 {
-	setFont(QFont("Emoji One"));
+        setFont(QFont("Emoji One"));
 
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	setCursor(Qt::ArrowCursor);
-	setStyleSheet("background-color: #f8fbfe; height: 45px;");
+        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        setCursor(Qt::ArrowCursor);
+        setStyleSheet("background-color: #f8fbfe; height: 45px;");
 
-	top_layout_ = new QHBoxLayout();
-	top_layout_->setSpacing(0);
-	top_layout_->setMargin(0);
+        top_layout_ = new QHBoxLayout();
+        top_layout_->setSpacing(0);
+        top_layout_->setMargin(0);
 
-	send_file_button_ = new FlatButton(this);
+        send_file_button_ = new FlatButton(this);
 
-	QIcon send_file_icon;
-	send_file_icon.addFile(":/icons/icons/clip-dark.png", QSize(), QIcon::Normal, QIcon::Off);
-	send_file_button_->setForegroundColor(QColor("#acc7dc"));
-	send_file_button_->setIcon(send_file_icon);
-	send_file_button_->setIconSize(QSize(24, 24));
+        QIcon send_file_icon;
+        send_file_icon.addFile(":/icons/icons/clip-dark.png", QSize(), QIcon::Normal, QIcon::Off);
+        send_file_button_->setForegroundColor(QColor("#acc7dc"));
+        send_file_button_->setIcon(send_file_icon);
+        send_file_button_->setIconSize(QSize(24, 24));
 
-	QFont font;
-	font.setPixelSize(conf::fontSize);
+        QFont font;
+        font.setPixelSize(conf::fontSize);
 
-	input_ = new FilteredTextEdit(this);
-	input_->setFixedHeight(45);
-	input_->setFont(font);
-	input_->setPlaceholderText(tr("Write a message..."));
-	input_->setStyleSheet("color: #333333; border-radius: 0; padding-top: 10px;");
+        input_ = new FilteredTextEdit(this);
+        input_->setFixedHeight(45);
+        input_->setFont(font);
+        input_->setPlaceholderText(tr("Write a message..."));
+        input_->setStyleSheet("color: #333333; border-radius: 0; padding-top: 10px;");
 
-	send_message_button_ = new FlatButton(this);
-	send_message_button_->setForegroundColor(QColor("#acc7dc"));
+        send_message_button_ = new FlatButton(this);
+        send_message_button_->setForegroundColor(QColor("#acc7dc"));
 
-	QIcon send_message_icon;
-	send_message_icon.addFile(":/icons/icons/share-dark.png", QSize(), QIcon::Normal, QIcon::Off);
-	send_message_button_->setIcon(send_message_icon);
-	send_message_button_->setIconSize(QSize(24, 24));
+        QIcon send_message_icon;
+        send_message_icon.addFile(
+          ":/icons/icons/share-dark.png", QSize(), QIcon::Normal, QIcon::Off);
+        send_message_button_->setIcon(send_message_icon);
+        send_message_button_->setIconSize(QSize(24, 24));
 
-	emoji_button_ = new EmojiPickButton(this);
-	emoji_button_->setForegroundColor(QColor("#acc7dc"));
+        emoji_button_ = new EmojiPickButton(this);
+        emoji_button_->setForegroundColor(QColor("#acc7dc"));
 
-	QIcon emoji_icon;
-	emoji_icon.addFile(":/icons/icons/smile.png", QSize(), QIcon::Normal, QIcon::Off);
-	emoji_button_->setIcon(emoji_icon);
-	emoji_button_->setIconSize(QSize(24, 24));
+        QIcon emoji_icon;
+        emoji_icon.addFile(":/icons/icons/smile.png", QSize(), QIcon::Normal, QIcon::Off);
+        emoji_button_->setIcon(emoji_icon);
+        emoji_button_->setIconSize(QSize(24, 24));
 
-	top_layout_->addWidget(send_file_button_);
-	top_layout_->addWidget(input_);
-	top_layout_->addWidget(emoji_button_);
-	top_layout_->addWidget(send_message_button_);
+        top_layout_->addWidget(send_file_button_);
+        top_layout_->addWidget(input_);
+        top_layout_->addWidget(emoji_button_);
+        top_layout_->addWidget(send_message_button_);
 
-	setLayout(top_layout_);
+        setLayout(top_layout_);
 
-	connect(send_message_button_, SIGNAL(clicked()), this, SLOT(onSendButtonClicked()));
-	connect(input_, SIGNAL(enterPressed()), send_message_button_, SIGNAL(clicked()));
-	connect(emoji_button_, SIGNAL(emojiSelected(const QString &)), this, SLOT(addSelectedEmoji(const QString &)));
+        connect(send_message_button_, SIGNAL(clicked()), this, SLOT(onSendButtonClicked()));
+        connect(input_, SIGNAL(enterPressed()), send_message_button_, SIGNAL(clicked()));
+        connect(emoji_button_,
+                SIGNAL(emojiSelected(const QString &)),
+                this,
+                SLOT(addSelectedEmoji(const QString &)));
 }
 
 void
 TextInputWidget::addSelectedEmoji(const QString &emoji)
 {
-	QTextCursor cursor = input_->textCursor();
+        QTextCursor cursor = input_->textCursor();
 
-	QFont emoji_font("Emoji One");
-	emoji_font.setPixelSize(conf::emojiSize);
+        QFont emoji_font("Emoji One");
+        emoji_font.setPixelSize(conf::emojiSize);
 
-	QFont text_font("Open Sans");
-	text_font.setPixelSize(conf::fontSize);
+        QFont text_font("Open Sans");
+        text_font.setPixelSize(conf::fontSize);
 
-	QTextCharFormat charfmt;
-	charfmt.setFont(emoji_font);
-	input_->setCurrentCharFormat(charfmt);
+        QTextCharFormat charfmt;
+        charfmt.setFont(emoji_font);
+        input_->setCurrentCharFormat(charfmt);
 
-	input_->insertPlainText(emoji);
-	cursor.movePosition(QTextCursor::End);
+        input_->insertPlainText(emoji);
+        cursor.movePosition(QTextCursor::End);
 
-	charfmt.setFont(text_font);
-	input_->setCurrentCharFormat(charfmt);
+        charfmt.setFont(text_font);
+        input_->setCurrentCharFormat(charfmt);
 
-	input_->show();
+        input_->show();
 }
 
 void
 TextInputWidget::onSendButtonClicked()
 {
-	auto msg_text = input_->document()->toPlainText().trimmed();
+        auto msgText = input_->document()->toPlainText().trimmed();
 
-	if (msg_text.isEmpty())
-		return;
+        if (msgText.isEmpty())
+                return;
 
-	emit sendTextMessage(msg_text);
+        if (msgText.startsWith(EMOTE_COMMAND)) {
+                auto text = parseEmoteCommand(msgText);
 
-	input_->clear();
+                if (!text.isEmpty())
+                        emit sendEmoteMessage(text);
+        } else {
+                emit sendTextMessage(msgText);
+        }
+
+        input_->clear();
 }
 
-void
-TextInputWidget::paintEvent(QPaintEvent *event)
+QString
+TextInputWidget::parseEmoteCommand(const QString &cmd)
 {
-	Q_UNUSED(event);
+        auto text = cmd.right(cmd.size() - EMOTE_COMMAND.size()).trimmed();
 
-	QStyleOption option;
-	option.initFrom(this);
+        if (!text.isEmpty())
+                return text;
 
-	QPainter painter(this);
-	style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+        return QString("");
 }
 
 TextInputWidget::~TextInputWidget()
