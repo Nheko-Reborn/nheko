@@ -24,6 +24,10 @@
 
 #include "EmojiPickButton.h"
 #include "FlatButton.h"
+#include "Image.h"
+#include "LoadingIndicator.h"
+
+namespace msgs = matrix::events::messages;
 
 static const QString EMOTE_COMMAND("/me ");
 
@@ -48,6 +52,8 @@ public:
 
 public slots:
         void onSendButtonClicked();
+        void openFileSelection();
+        void hideUploadSpinner();
         inline void focusLineEdit();
 
 private slots:
@@ -56,16 +62,20 @@ private slots:
 signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
+        void uploadImage(QString filename);
 
 private:
+        void showUploadSpinner();
         QString parseEmoteCommand(const QString &cmd);
 
-        QHBoxLayout *top_layout_;
+        QHBoxLayout *topLayout_;
         FilteredTextEdit *input_;
 
-        FlatButton *send_file_button_;
-        FlatButton *send_message_button_;
-        EmojiPickButton *emoji_button_;
+        LoadingIndicator *spinner_;
+
+        FlatButton *sendFileBtn_;
+        FlatButton *sendMessageBtn_;
+        EmojiPickButton *emojiBtn_;
 };
 
 inline void

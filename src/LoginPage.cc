@@ -77,10 +77,10 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         matrixid_input_->setBackgroundColor("#f9f9f9");
         matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
 
-        spinner_ = new CircularProgress(this);
+        spinner_ = new LoadingIndicator(this);
         spinner_->setColor("#acc7dc");
-        spinner_->setSize(32);
-        spinner_->setMaximumWidth(spinner_->width());
+        spinner_->setFixedHeight(40);
+        spinner_->setFixedWidth(40);
         spinner_->hide();
 
         errorIcon_ = new QLabel(this);
@@ -192,11 +192,11 @@ LoginPage::onMatrixIdEntered()
                 if (serverInput_->isVisible()) {
                         matrixidLayout_->removeWidget(spinner_);
                         serverLayout_->addWidget(spinner_, 0, Qt::AlignVCenter | Qt::AlignRight);
-                        spinner_->show();
+                        spinner_->start();
                 } else {
                         serverLayout_->removeWidget(spinner_);
                         matrixidLayout_->addWidget(spinner_, 0, Qt::AlignVCenter | Qt::AlignRight);
-                        spinner_->show();
+                        spinner_->start();
                 }
 
                 inferredServerAddress_ = homeServer;
@@ -216,7 +216,7 @@ LoginPage::onServerAddressEntered()
         serverLayout_->removeWidget(errorIcon_);
         errorIcon_->hide();
         serverLayout_->addWidget(spinner_, 0, Qt::AlignVCenter | Qt::AlignRight);
-        spinner_->show();
+        spinner_->start();
 }
 
 void
@@ -240,7 +240,7 @@ LoginPage::versionError(QString error)
         error_label_->setText(error);
         serverInput_->show();
 
-        spinner_->hide();
+        spinner_->stop();
         serverLayout_->removeWidget(spinner_);
         serverLayout_->addWidget(errorIcon_, 0, Qt::AlignVCenter | Qt::AlignRight);
         errorIcon_->show();
@@ -252,7 +252,7 @@ LoginPage::versionSuccess()
 {
         serverLayout_->removeWidget(spinner_);
         matrixidLayout_->removeWidget(spinner_);
-        spinner_->hide();
+        spinner_->stop();
 
         if (serverInput_->isVisible())
                 serverInput_->hide();
@@ -282,7 +282,7 @@ LoginPage::reset()
         password_input_->clear();
         serverInput_->clear();
 
-        spinner_->hide();
+        spinner_->stop();
         errorIcon_->hide();
         serverLayout_->removeWidget(spinner_);
         serverLayout_->removeWidget(errorIcon_);

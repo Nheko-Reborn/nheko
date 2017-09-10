@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainWindow.h"
 #include "Config.h"
+#include "MainWindow.h"
 
 #include <QLayout>
 #include <QNetworkReply>
@@ -135,6 +135,8 @@ MainWindow::removeOverlayProgressBar()
                 if (spinner_ != nullptr)
                         spinner_->deleteLater();
 
+                spinner_->stop();
+
                 progress_modal_ = nullptr;
                 spinner_        = nullptr;
         });
@@ -163,9 +165,11 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
         }
 
         if (spinner_ == nullptr) {
-                spinner_ = new CircularProgress(this);
+                spinner_ = new LoadingIndicator(this);
                 spinner_->setColor("#acc7dc");
-                spinner_->setSize(100);
+                spinner_->setFixedHeight(120);
+                spinner_->setFixedWidth(120);
+                spinner_->start();
         }
 
         if (progress_modal_ == nullptr) {

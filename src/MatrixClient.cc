@@ -16,6 +16,8 @@
  */
 
 #include <QDebug>
+#include <QFile>
+#include <QImageReader>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -34,11 +36,10 @@
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
   : QNetworkAccessManager(parent)
+  , clientApiUrl_{ "/_matrix/client/r0" }
+  , mediaApiUrl_{ "/_matrix/media/r0" }
+  , server_{ "https://" + server }
 {
-        server_  = "https://" + server;
-        api_url_ = "/_matrix/client/r0";
-        token_   = "";
-
         QSettings settings;
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
 
@@ -234,6 +235,42 @@ MatrixClient::onInitialSyncResponse(QNetworkReply *reply)
         }
 
         emit initialSyncCompleted(response);
+}
+
+void
+MatrixClient::onImageUploadResponse(QNetworkReply *reply)
+{
+        reply->deleteLater();
+
+        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+        if (status == 0 || status >= 400) {
+                emit syncFailed(reply->errorString());
+                return;
+        }
+
+        auto data = reply->readAll();
+
+        if (data.isEmpty())
+                return;
+
+        auto json = QJsonDocument::fromJson(data);
+
+        if (!json.isObject()) {
+                qDebug() << "Media upload: Response is not a json object.";
+                return;
+        }
+
+        QJsonObject object = json.object();
+        if (!object.contains("content_uri")) {
+                qDebug() << "Media upload: Missing content_uri key";
+                qDebug() << object;
+                return;
+        }
+
+        emit imageUploaded(reply->property("room_id").toString(),
+                           reply->property("filename").toString(),
+                           object.value("content_uri").toString());
 }
 
 void
@@ -450,6 +487,9 @@ MatrixClient::onResponse(QNetworkReply *reply)
         case Endpoint::InitialSync:
                 onInitialSyncResponse(reply);
                 break;
+        case Endpoint::ImageUpload:
+                onImageUploadResponse(reply);
+                break;
         case Endpoint::Sync:
                 onSyncResponse(reply);
                 break;
@@ -477,7 +517,7 @@ void
 MatrixClient::login(const QString &username, const QString &password) noexcept
 {
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ + "/login");
+        endpoint.setPath(clientApiUrl_ + "/login");
 
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -495,7 +535,7 @@ MatrixClient::logout() noexcept
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ + "/logout");
+        endpoint.setPath(clientApiUrl_ + "/logout");
         endpoint.setQuery(query);
 
         QNetworkRequest request(endpoint);
@@ -515,7 +555,7 @@ MatrixClient::registerUser(const QString &user, const QString &pass, const QStri
         query.addQueryItem("kind", "user");
 
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ + "/register");
+        endpoint.setPath(clientApiUrl_ + "/register");
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
@@ -549,7 +589,7 @@ MatrixClient::sync() noexcept
         query.addQueryItem("since", next_batch_);
 
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ + "/sync");
+        endpoint.setPath(clientApiUrl_ + "/sync");
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
@@ -561,31 +601,34 @@ MatrixClient::sync() noexcept
 void
 MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
                               const QString &roomid,
-                              const QString &msg) noexcept
+                              const QString &msg,
+                              const QString &url) noexcept
 {
         QUrlQuery query;
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ +
+        endpoint.setPath(clientApiUrl_ +
                          QString("/rooms/%1/send/m.room.message/%2").arg(roomid).arg(txn_id_));
         endpoint.setQuery(query);
 
         QString msgType("");
+        QJsonObject body;
 
         switch (ty) {
         case matrix::events::MessageEventType::Text:
-                msgType = "m.text";
+                body = { { "msgtype", "m.text" }, { "body", msg } };
                 break;
         case matrix::events::MessageEventType::Emote:
-                msgType = "m.emote";
+                body = { { "msgtype", "m.emote" }, { "body", msg } };
+                break;
+        case matrix::events::MessageEventType::Image:
+                body = { { "msgtype", "m.image" }, { "body", msg }, { "url", url } };
                 break;
         default:
-                msgType = "m.text";
-                break;
+                qDebug() << "SendRoomMessage: Unknown message type for" << msg;
+                return;
         }
-
-        QJsonObject body{ { "msgtype", msgType }, { "body", msg } };
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -617,7 +660,7 @@ MatrixClient::initialSync() noexcept
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ + "/sync");
+        endpoint.setPath(clientApiUrl_ + "/sync");
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
@@ -650,7 +693,7 @@ MatrixClient::getOwnProfile() noexcept
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ + "/profile/" + userid);
+        endpoint.setPath(clientApiUrl_ + "/profile/" + userid);
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
@@ -762,7 +805,7 @@ MatrixClient::messages(const QString &room_id, const QString &from_token, int li
         query.addQueryItem("limit", QString::number(limit));
 
         QUrl endpoint(server_);
-        endpoint.setPath(api_url_ + QString("/rooms/%1/messages").arg(room_id));
+        endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/messages").arg(room_id));
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
@@ -770,4 +813,32 @@ MatrixClient::messages(const QString &room_id, const QString &from_token, int li
         QNetworkReply *reply = get(request);
         reply->setProperty("endpoint", static_cast<int>(Endpoint::Messages));
         reply->setProperty("room_id", room_id);
+}
+
+void
+MatrixClient::uploadImage(const QString &roomid, const QString &filename)
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(mediaApiUrl_ + "/upload");
+        endpoint.setQuery(query);
+
+        QFile file(filename);
+        if (!file.open(QIODevice::ReadWrite)) {
+                qDebug() << "Error while reading" << filename;
+                return;
+        }
+
+        auto imgFormat = QString(QImageReader::imageFormat(filename));
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
+        request.setHeader(QNetworkRequest::ContentTypeHeader, QString("image/%1").arg(imgFormat));
+
+        QNetworkReply *reply = post(request, file.readAll());
+        reply->setProperty("endpoint", static_cast<int>(Endpoint::ImageUpload));
+        reply->setProperty("room_id", roomid);
+        reply->setProperty("filename", filename);
 }

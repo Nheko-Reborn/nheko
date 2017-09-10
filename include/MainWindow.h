@@ -21,7 +21,7 @@
 #include <QSharedPointer>
 
 #include "ChatPage.h"
-#include "CircularProgress.h"
+#include "LoadingIndicator.h"
 #include "LoginPage.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
@@ -85,7 +85,7 @@ private:
 
         // Used to hide undefined states between page transitions.
         OverlayModal *progress_modal_;
-        CircularProgress *spinner_;
+        LoadingIndicator *spinner_;
 
         // Matrix Client API provider.
         QSharedPointer<MatrixClient> client_;

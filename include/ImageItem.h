@@ -36,6 +36,11 @@ public:
                   const events::MessageEvent<msgs::Image> &event,
                   QWidget *parent = nullptr);
 
+        ImageItem(QSharedPointer<MatrixClient> client,
+                  const QString &url,
+                  const QString &filename,
+                  QWidget *parent = nullptr);
+
         void setImage(const QPixmap &image);
 
         QSize sizeHint() const override;

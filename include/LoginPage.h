@@ -23,8 +23,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "CircularProgress.h"
 #include "FlatButton.h"
+#include "LoadingIndicator.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RaisedButton.h"
@@ -79,7 +79,7 @@ private:
 
         QHBoxLayout *serverLayout_;
         QHBoxLayout *matrixidLayout_;
-        CircularProgress *spinner_;
+        LoadingIndicator *spinner_;
         QLabel *errorIcon_;
         QString inferredServerAddress_;
 

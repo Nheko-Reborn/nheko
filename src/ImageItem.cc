@@ -18,6 +18,7 @@
 #include <QBrush>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QFileInfo>
 #include <QImage>
 #include <QPainter>
 #include <QPixmap>
@@ -59,6 +60,33 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
                 SIGNAL(imageDownloaded(const QString &, const QPixmap &)),
                 this,
                 SLOT(imageDownloaded(const QString &, const QPixmap &)));
+}
+
+ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
+                     const QString &url,
+                     const QString &filename,
+                     QWidget *parent)
+  : QWidget(parent)
+  , url_{ url }
+  , text_{ QFileInfo(filename).fileName() }
+  , client_{ client }
+{
+        setMouseTracking(true);
+        setCursor(Qt::PointingHandCursor);
+        setAttribute(Qt::WA_Hover, true);
+
+        QList<QString> url_parts = url_.toString().split("mxc://");
+
+        if (url_parts.size() != 2) {
+                qDebug() << "Invalid format for image" << url_.toString();
+                return;
+        }
+
+        QString media_params = url_parts[1];
+        url_                 = QString("%1/_matrix/media/r0/download/%2")
+                 .arg(client_.data()->getHomeServer().toString(), media_params);
+
+        setImage(QPixmap(filename));
 }
 
 void

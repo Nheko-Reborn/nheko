@@ -17,6 +17,8 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QFileDialog>
+#include <QImageReader>
 #include <QPainter>
 #include <QStyleOption>
 
@@ -47,17 +49,23 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         setCursor(Qt::ArrowCursor);
         setStyleSheet("background-color: #f8fbfe; height: 45px;");
 
-        top_layout_ = new QHBoxLayout();
-        top_layout_->setSpacing(0);
-        top_layout_->setMargin(0);
-
-        send_file_button_ = new FlatButton(this);
+        topLayout_ = new QHBoxLayout();
+        topLayout_->setSpacing(2);
+        topLayout_->setMargin(4);
 
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/clip-dark.png", QSize(), QIcon::Normal, QIcon::Off);
-        send_file_button_->setForegroundColor(QColor("#acc7dc"));
-        send_file_button_->setIcon(send_file_icon);
-        send_file_button_->setIconSize(QSize(24, 24));
+
+        sendFileBtn_ = new FlatButton(this);
+        sendFileBtn_->setForegroundColor(QColor("#acc7dc"));
+        sendFileBtn_->setIcon(send_file_icon);
+        sendFileBtn_->setIconSize(QSize(24, 24));
+
+        spinner_ = new LoadingIndicator(this);
+        spinner_->setColor("#acc7dc");
+        spinner_->setFixedHeight(40);
+        spinner_->setFixedWidth(40);
+        spinner_->hide();
 
         QFont font;
         font.setPixelSize(conf::fontSize);
@@ -68,33 +76,34 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         input_->setPlaceholderText(tr("Write a message..."));
         input_->setStyleSheet("color: #333333; border-radius: 0; padding-top: 10px;");
 
-        send_message_button_ = new FlatButton(this);
-        send_message_button_->setForegroundColor(QColor("#acc7dc"));
+        sendMessageBtn_ = new FlatButton(this);
+        sendMessageBtn_->setForegroundColor(QColor("#acc7dc"));
 
         QIcon send_message_icon;
         send_message_icon.addFile(
           ":/icons/icons/share-dark.png", QSize(), QIcon::Normal, QIcon::Off);
-        send_message_button_->setIcon(send_message_icon);
-        send_message_button_->setIconSize(QSize(24, 24));
+        sendMessageBtn_->setIcon(send_message_icon);
+        sendMessageBtn_->setIconSize(QSize(24, 24));
 
-        emoji_button_ = new EmojiPickButton(this);
-        emoji_button_->setForegroundColor(QColor("#acc7dc"));
+        emojiBtn_ = new EmojiPickButton(this);
+        emojiBtn_->setForegroundColor(QColor("#acc7dc"));
 
         QIcon emoji_icon;
         emoji_icon.addFile(":/icons/icons/smile.png", QSize(), QIcon::Normal, QIcon::Off);
-        emoji_button_->setIcon(emoji_icon);
-        emoji_button_->setIconSize(QSize(24, 24));
+        emojiBtn_->setIcon(emoji_icon);
+        emojiBtn_->setIconSize(QSize(24, 24));
 
-        top_layout_->addWidget(send_file_button_);
-        top_layout_->addWidget(input_);
-        top_layout_->addWidget(emoji_button_);
-        top_layout_->addWidget(send_message_button_);
+        topLayout_->addWidget(sendFileBtn_);
+        topLayout_->addWidget(input_);
+        topLayout_->addWidget(emojiBtn_);
+        topLayout_->addWidget(sendMessageBtn_);
 
-        setLayout(top_layout_);
+        setLayout(topLayout_);
 
-        connect(send_message_button_, SIGNAL(clicked()), this, SLOT(onSendButtonClicked()));
-        connect(input_, SIGNAL(enterPressed()), send_message_button_, SIGNAL(clicked()));
-        connect(emoji_button_,
+        connect(sendMessageBtn_, SIGNAL(clicked()), this, SLOT(onSendButtonClicked()));
+        connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
+        connect(input_, SIGNAL(enterPressed()), sendMessageBtn_, SIGNAL(clicked()));
+        connect(emojiBtn_,
                 SIGNAL(emojiSelected(const QString &)),
                 this,
                 SLOT(addSelectedEmoji(const QString &)));
@@ -153,6 +162,55 @@ TextInputWidget::parseEmoteCommand(const QString &cmd)
                 return text;
 
         return QString("");
+}
+
+void
+TextInputWidget::openFileSelection()
+{
+        QStringList supportedFiles;
+        supportedFiles << "jpeg"
+                       << "gif"
+                       << "png"
+                       << "bmp"
+                       << "tiff"
+                       << "webp";
+
+        auto fileName = QFileDialog::getOpenFileName(
+          this,
+          tr("Select an image"),
+          "",
+          tr("Image Files (*.bmp *.gif *.jpg *.jpeg *.png *.tiff *.webp)"));
+
+        if (fileName.isEmpty())
+                return;
+
+        auto imageFormat = QString(QImageReader::imageFormat(fileName));
+        if (!supportedFiles.contains(imageFormat)) {
+                qDebug() << "Unsupported image format for" << fileName;
+                return;
+        }
+
+        emit uploadImage(fileName);
+        showUploadSpinner();
+}
+
+void
+TextInputWidget::showUploadSpinner()
+{
+        topLayout_->removeWidget(sendFileBtn_);
+        sendFileBtn_->hide();
+
+        topLayout_->insertWidget(0, spinner_);
+        spinner_->start();
+}
+
+void
+TextInputWidget::hideUploadSpinner()
+{
+        topLayout_->removeWidget(spinner_);
+        topLayout_->insertWidget(0, sendFileBtn_);
+        sendFileBtn_->show();
+        spinner_->stop();
 }
 
 TextInputWidget::~TextInputWidget()
