@@ -141,7 +141,7 @@ set(SRC_FILES
 
     src/ui/Avatar.cc
     src/ui/Badge.cc
-    src/ui/CircularProgress.cc
+    src/ui/LoadingIndicator.cc
     src/ui/FlatButton.cc
     src/ui/OverlayModal.cc
     src/ui/ScrollBar.cc
@@ -217,7 +217,7 @@ qt5_wrap_cpp(MOC_HEADERS
 
     include/ui/Avatar.h
     include/ui/Badge.h
-    include/ui/CircularProgress.h
+    include/ui/LoadingIndicator.h
     include/ui/FlatButton.h
     include/ui/OverlayWidget.h
     include/ui/ScrollBar.h

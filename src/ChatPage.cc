@@ -153,6 +153,18 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 view_manager_,
                 SLOT(sendEmoteMessage(const QString &)));
 
+        connect(text_input_, &TextInputWidget::uploadImage, this, [=](QString filename) {
+                client_->uploadImage(current_room_, filename);
+        });
+
+        connect(client_.data(),
+                &MatrixClient::imageUploaded,
+                this,
+                [=](QString roomid, QString filename, QString url) {
+                        text_input_->hideUploadSpinner();
+                        view_manager_->sendImageMessage(roomid, filename, url);
+                });
+
         connect(client_.data(),
                 SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
                 this,

@@ -56,6 +56,7 @@ public slots:
         void setHistoryView(const QString &room_id);
         void sendTextMessage(const QString &msg);
         void sendEmoteMessage(const QString &msg);
+        void sendImageMessage(const QString &roomid, const QString &filename, const QString &url);
 
 private slots:
         void messageSent(const QString &eventid, const QString &roomid, int txnid);

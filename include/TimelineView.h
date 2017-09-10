@@ -85,6 +85,7 @@ public:
         // Add new events at the end of the timeline.
         int addEvents(const Timeline &timeline);
         void addUserMessage(matrix::events::MessageEventType ty, const QString &msg, int txn_id);
+        void addUserMessage(const QString &url, const QString &filename, int txn_id);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
 
@@ -108,11 +109,11 @@ private:
         // Used to determine whether or not we should prefix a message with the sender's name.
         bool isSenderRendered(const QString &user_id, TimelineDirection direction);
 
-        template<class T>
-        bool isPendingMessage(const events::MessageEvent<T> &e, const QString &userid);
-
-        template<class T>
-        void removePendingMessage(const events::MessageEvent<T> &e);
+        bool isPendingMessage(const QString &eventid,
+                              const QString &body,
+                              const QString &sender,
+                              const QString &userid);
+        void removePendingMessage(const QString &eventid, const QString &body);
 
         inline bool isDuplicate(const QString &event_id);
 
@@ -158,33 +159,4 @@ inline bool
 TimelineView::isDuplicate(const QString &event_id)
 {
         return eventIds_.contains(event_id);
-}
-
-template<class T>
-bool
-TimelineView::isPendingMessage(const events::MessageEvent<T> &e, const QString &local_userid)
-{
-        if (e.sender() != local_userid)
-                return false;
-
-        for (const auto &msg : pending_msgs_) {
-                if (msg.event_id == e.eventId() || msg.body == e.content().body())
-                        return true;
-        }
-
-        return false;
-}
-
-template<class T>
-void
-TimelineView::removePendingMessage(const events::MessageEvent<T> &e)
-{
-        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
-                int index = std::distance(pending_msgs_.begin(), it);
-
-                if (it->event_id == e.eventId() || it->body == e.content().body()) {
-                        pending_msgs_.removeAt(index);
-                        break;
-                }
-        }
 }

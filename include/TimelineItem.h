@@ -50,11 +50,14 @@ public:
                      QWidget *parent = 0);
 
         // For local messages.
+        // m.text & m.emote
         TimelineItem(events::MessageEventType ty,
                      const QString &userid,
                      QString body,
                      bool withSender,
                      QWidget *parent = 0);
+        // m.image
+        TimelineItem(ImageItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
 
         TimelineItem(ImageItem *img,
                      const events::MessageEvent<msgs::Image> &e,

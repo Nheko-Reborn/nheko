@@ -107,6 +107,39 @@ TimelineItem::TimelineItem(events::MessageEventType ty,
         mainLayout_->addWidget(body_);
 }
 
+TimelineItem::TimelineItem(ImageItem *image,
+                           const QString &userid,
+                           bool withSender,
+                           QWidget *parent)
+  : QWidget{ parent }
+{
+        init();
+
+        auto displayName = TimelineViewManager::displayName(userid);
+        auto timestamp   = QDateTime::currentDateTime();
+
+        descriptionMsg_ = { "You", userid, " sent an image", descriptiveTime(timestamp) };
+
+        generateTimestamp(timestamp);
+
+        auto imageLayout = new QHBoxLayout();
+        imageLayout->setMargin(0);
+        imageLayout->addWidget(image);
+        imageLayout->addStretch(1);
+
+        if (withSender) {
+                generateBody(displayName, "");
+                setupAvatarLayout(displayName);
+                mainLayout_->addLayout(headerLayout_);
+
+                AvatarProvider::resolve(userid, this);
+        } else {
+                setupSimpleLayout();
+        }
+
+        mainLayout_->addLayout(imageLayout);
+}
+
 /*
  * Used to display images. The avatar and the username are displayed.
  */

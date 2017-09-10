@@ -19,6 +19,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QFileInfo>
 #include <QSettings>
 #include <QStackedWidget>
 #include <QWidget>
@@ -70,6 +71,23 @@ TimelineViewManager::sendEmoteMessage(const QString &msg)
         view->addUserMessage(
           matrix::events::MessageEventType::Emote, msg, client_->transactionId());
         client_->sendRoomMessage(matrix::events::MessageEventType::Emote, room_id, msg);
+}
+
+void
+TimelineViewManager::sendImageMessage(const QString &roomid,
+                                      const QString &filename,
+                                      const QString &url)
+{
+        if (!views_.contains(roomid)) {
+                qDebug() << "Cannot send m.image message to a non-managed view";
+                return;
+        }
+
+        auto view = views_[roomid];
+
+        view->addUserMessage(url, filename, client_->transactionId());
+        client_->sendRoomMessage(
+          matrix::events::MessageEventType::Image, roomid, QFileInfo(filename).fileName(), url);
 }
 
 void

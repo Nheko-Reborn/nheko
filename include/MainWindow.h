@@ -21,7 +21,7 @@
 #include <QSharedPointer>
 
 #include "ChatPage.h"
-#include "CircularProgress.h"
+#include "LoadingIndicator.h"
 #include "LoginPage.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
@@ -32,64 +32,64 @@
 
 class MainWindow : public QMainWindow
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	explicit MainWindow(QWidget *parent = 0);
-	~MainWindow();
+        explicit MainWindow(QWidget *parent = 0);
+        ~MainWindow();
 
-	static MainWindow *instance();
-	void saveCurrentWindowSize();
+        static MainWindow *instance();
+        void saveCurrentWindowSize();
 
 protected:
-	void closeEvent(QCloseEvent *event);
+        void closeEvent(QCloseEvent *event);
 
 private slots:
-	// Handle interaction with the tray icon.
-	void iconActivated(QSystemTrayIcon::ActivationReason reason);
+        // Handle interaction with the tray icon.
+        void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
-	// Show the welcome page in the main window.
-	void showWelcomePage();
+        // Show the welcome page in the main window.
+        void showWelcomePage();
 
-	// Show the login page in the main window.
-	void showLoginPage();
+        // Show the login page in the main window.
+        void showLoginPage();
 
-	// Show the register page in the main window.
-	void showRegisterPage();
+        // Show the register page in the main window.
+        void showRegisterPage();
 
-	// Show the chat page and start communicating with the given access token.
-	void showChatPage(QString user_id, QString home_server, QString token);
+        // Show the chat page and start communicating with the given access token.
+        void showChatPage(QString user_id, QString home_server, QString token);
 
-	void removeOverlayProgressBar();
+        void removeOverlayProgressBar();
 
 private:
-	bool hasActiveUser();
-	void restoreWindowSize();
+        bool hasActiveUser();
+        void restoreWindowSize();
 
-	static MainWindow *instance_;
+        static MainWindow *instance_;
 
-	// The initial welcome screen.
-	WelcomePage *welcome_page_;
+        // The initial welcome screen.
+        WelcomePage *welcome_page_;
 
-	// The login screen.
-	LoginPage *login_page_;
+        // The login screen.
+        LoginPage *login_page_;
 
-	// The register page.
-	RegisterPage *register_page_;
+        // The register page.
+        RegisterPage *register_page_;
 
-	// A stacked widget that handles the transitions between widgets.
-	SlidingStackWidget *sliding_stack_;
+        // A stacked widget that handles the transitions between widgets.
+        SlidingStackWidget *sliding_stack_;
 
-	// The main chat area.
-	ChatPage *chat_page_;
+        // The main chat area.
+        ChatPage *chat_page_;
 
-	// Used to hide undefined states between page transitions.
-	OverlayModal *progress_modal_;
-	CircularProgress *spinner_;
+        // Used to hide undefined states between page transitions.
+        OverlayModal *progress_modal_;
+        LoadingIndicator *spinner_;
 
-	// Matrix Client API provider.
-	QSharedPointer<MatrixClient> client_;
+        // Matrix Client API provider.
+        QSharedPointer<MatrixClient> client_;
 
-	// Tray icon that shows the unread message count.
-	TrayIcon *trayIcon_;
+        // Tray icon that shows the unread message count.
+        TrayIcon *trayIcon_;
 };

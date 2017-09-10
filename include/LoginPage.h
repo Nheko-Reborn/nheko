@@ -23,8 +23,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "CircularProgress.h"
 #include "FlatButton.h"
+#include "LoadingIndicator.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RaisedButton.h"
@@ -32,68 +32,68 @@
 
 class LoginPage : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-	~LoginPage();
+        LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        ~LoginPage();
 
-	void reset();
+        void reset();
 
 signals:
-	void backButtonClicked();
+        void backButtonClicked();
 
 private slots:
-	// Callback for the back button.
-	void onBackButtonClicked();
+        // Callback for the back button.
+        void onBackButtonClicked();
 
-	// Callback for the login button.
-	void onLoginButtonClicked();
+        // Callback for the login button.
+        void onLoginButtonClicked();
 
-	// Callback for probing the server found in the mxid
-	void onMatrixIdEntered();
+        // Callback for probing the server found in the mxid
+        void onMatrixIdEntered();
 
-	// Callback for probing the manually entered server
-	void onServerAddressEntered();
+        // Callback for probing the manually entered server
+        void onServerAddressEntered();
 
-	// Displays errors produced during the login.
-	void loginError(QString error_message);
+        // Displays errors produced during the login.
+        void loginError(QString error_message);
 
-	// Callback for errors produced during server probing
-	void versionError(QString error_message);
+        // Callback for errors produced during server probing
+        void versionError(QString error_message);
 
-	// Callback for successful server probing
-	void versionSuccess();
+        // Callback for successful server probing
+        void versionSuccess();
 
 private:
-	bool isMatrixIdValid();
+        bool isMatrixIdValid();
 
-	QVBoxLayout *top_layout_;
+        QVBoxLayout *top_layout_;
 
-	QHBoxLayout *top_bar_layout_;
-	QHBoxLayout *logo_layout_;
-	QHBoxLayout *button_layout_;
+        QHBoxLayout *top_bar_layout_;
+        QHBoxLayout *logo_layout_;
+        QHBoxLayout *button_layout_;
 
-	QLabel *logo_;
-	QLabel *error_label_;
+        QLabel *logo_;
+        QLabel *error_label_;
 
-	QHBoxLayout *serverLayout_;
-	QHBoxLayout *matrixidLayout_;
-	CircularProgress *spinner_;
-	QLabel *errorIcon_;
-	QString inferredServerAddress_;
+        QHBoxLayout *serverLayout_;
+        QHBoxLayout *matrixidLayout_;
+        LoadingIndicator *spinner_;
+        QLabel *errorIcon_;
+        QString inferredServerAddress_;
 
-	FlatButton *back_button_;
-	RaisedButton *login_button_;
+        FlatButton *back_button_;
+        RaisedButton *login_button_;
 
-	QWidget *form_widget_;
-	QHBoxLayout *form_wrapper_;
-	QVBoxLayout *form_layout_;
+        QWidget *form_widget_;
+        QHBoxLayout *form_wrapper_;
+        QVBoxLayout *form_layout_;
 
-	TextField *matrixid_input_;
-	TextField *password_input_;
-	TextField *serverInput_;
+        TextField *matrixid_input_;
+        TextField *password_input_;
+        TextField *serverInput_;
 
-	// Matrix client API provider.
-	QSharedPointer<MatrixClient> client_;
+        // Matrix client API provider.
+        QSharedPointer<MatrixClient> client_;
 };

@@ -39,7 +39,8 @@ public:
         void sync() noexcept;
         void sendRoomMessage(matrix::events::MessageEventType ty,
                              const QString &roomid,
-                             const QString &msg) noexcept;
+                             const QString &msg,
+                             const QString &url = "") noexcept;
         void login(const QString &username, const QString &password) noexcept;
         void registerUser(const QString &username,
                           const QString &password,
@@ -50,6 +51,7 @@ public:
         void fetchOwnAvatar(const QUrl &avatar_url);
         void downloadImage(const QString &event_id, const QUrl &url);
         void messages(const QString &room_id, const QString &from_token, int limit = 20) noexcept;
+        void uploadImage(const QString &roomid, const QString &filename);
 
         inline QUrl getHomeServer();
         inline int transactionId();
@@ -77,6 +79,7 @@ signals:
                              const QString &homeserver,
                              const QString &token);
         void versionSuccess();
+        void imageUploaded(const QString &roomid, const QString &filename, const QString &url);
 
         void roomAvatarRetrieved(const QString &roomid, const QPixmap &img);
         void userAvatarRetrieved(const QString &userId, const QImage &img);
@@ -102,6 +105,7 @@ private:
                 GetProfile,
                 Image,
                 InitialSync,
+                ImageUpload,
                 Login,
                 Logout,
                 Messages,
@@ -118,6 +122,7 @@ private:
         void onGetOwnProfileResponse(QNetworkReply *reply);
         void onImageResponse(QNetworkReply *reply);
         void onInitialSyncResponse(QNetworkReply *reply);
+        void onImageUploadResponse(QNetworkReply *reply);
         void onLoginResponse(QNetworkReply *reply);
         void onLogoutResponse(QNetworkReply *reply);
         void onMessagesResponse(QNetworkReply *reply);
@@ -129,7 +134,10 @@ private:
         void onVersionsResponse(QNetworkReply *reply);
 
         // Client API prefix.
-        QString api_url_;
+        QString clientApiUrl_;
+
+        // Media API prefix.
+        QString mediaApiUrl_;
 
         // The Matrix server used for communication.
         QUrl server_;

@@ -223,8 +223,9 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         eventIds_[text.eventId()] = true;
 
-                        if (isPendingMessage(text, local_user_)) {
-                                removePendingMessage(text);
+                        if (isPendingMessage(
+                              text.eventId(), text.content().body(), text.sender(), local_user_)) {
+                                removePendingMessage(text.eventId(), text.content().body());
                                 return nullptr;
                         }
 
@@ -245,7 +246,6 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         if (isDuplicate(notice.eventId()))
                                 return nullptr;
-                        ;
 
                         eventIds_[notice.eventId()] = true;
 
@@ -269,6 +269,12 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         eventIds_[img.eventId()] = true;
 
+                        if (isPendingMessage(
+                              img.eventId(), img.msgContent().url(), img.sender(), local_user_)) {
+                                removePendingMessage(img.eventId(), img.msgContent().url());
+                                return nullptr;
+                        }
+
                         auto with_sender = isSenderRendered(img.sender(), direction);
 
                         updateLastSender(img.sender(), direction);
@@ -289,8 +295,11 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         eventIds_[emote.eventId()] = true;
 
-                        if (isPendingMessage(emote, local_user_)) {
-                                removePendingMessage(emote);
+                        if (isPendingMessage(emote.eventId(),
+                                             emote.content().body(),
+                                             emote.sender(),
+                                             local_user_)) {
+                                removePendingMessage(emote.eventId(), emote.content().body());
                                 return nullptr;
                         }
 
@@ -472,6 +481,24 @@ TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString 
 }
 
 void
+TimelineView::addUserMessage(const QString &url, const QString &filename, int txn_id)
+{
+        QSettings settings;
+        auto user_id     = settings.value("auth/user_id").toString();
+        auto with_sender = lastSender_ != user_id;
+
+        auto image = new ImageItem(client_, url, filename, this);
+
+        TimelineItem *view_item = new TimelineItem(image, user_id, with_sender, scroll_widget_);
+        scroll_layout_->addWidget(view_item);
+
+        lastSender_ = user_id;
+
+        PendingMessage message(txn_id, url, "", view_item);
+        pending_msgs_.push_back(message);
+}
+
+void
 TimelineView::notifyForLastEvent()
 {
         auto lastItem          = scroll_layout_->itemAt(scroll_layout_->count() - 1);
@@ -481,4 +508,34 @@ TimelineView::notifyForLastEvent()
                 emit updateLastTimelineMessage(room_id_, lastTimelineItem->descriptionMessage());
         else
                 qWarning() << "Cast to TimelineView failed" << room_id_;
+}
+
+bool
+TimelineView::isPendingMessage(const QString &eventid,
+                               const QString &body,
+                               const QString &sender,
+                               const QString &local_userid)
+{
+        if (sender != local_userid)
+                return false;
+
+        for (const auto &msg : pending_msgs_) {
+                if (msg.event_id == eventid || msg.body == body)
+                        return true;
+        }
+
+        return false;
+}
+
+void
+TimelineView::removePendingMessage(const QString &eventid, const QString &body)
+{
+        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
+                int index = std::distance(pending_msgs_.begin(), it);
+
+                if (it->event_id == eventid || it->body == body) {
+                        pending_msgs_.removeAt(index);
+                        break;
+                }
+        }
 }
