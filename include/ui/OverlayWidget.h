@@ -5,14 +5,14 @@
 
 class OverlayWidget : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	explicit OverlayWidget(QWidget *parent = nullptr);
+        explicit OverlayWidget(QWidget *parent = nullptr);
 
 protected:
-	bool event(QEvent *event) override;
-	bool eventFilter(QObject *obj, QEvent *event) override;
+        bool event(QEvent *event) override;
+        bool eventFilter(QObject *obj, QEvent *event) override;
 
-	QRect overlayGeometry() const;
+        QRect overlayGeometry() const;
 };

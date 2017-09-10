@@ -24,27 +24,27 @@ using namespace matrix::events;
 void
 AvatarEventContent::deserialize(const QJsonValue &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("AvatarEventContent is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("AvatarEventContent is not a JSON object");
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (object.value("url") == QJsonValue::Undefined)
-		throw DeserializationException("url key is missing");
+        if (object.value("url") == QJsonValue::Undefined)
+                throw DeserializationException("url key is missing");
 
-	url_ = QUrl(object.value("url").toString());
+        url_ = QUrl(object.value("url").toString());
 
-	if (!url_.isValid())
-		qWarning() << "Invalid avatar url" << url_;
+        if (!url_.isValid())
+                qWarning() << "Invalid avatar url" << url_;
 }
 
 QJsonObject
 AvatarEventContent::serialize() const
 {
-	QJsonObject object;
+        QJsonObject object;
 
-	if (!url_.isEmpty())
-		object["url"] = url_.toString();
+        if (!url_.isEmpty())
+                object["url"] = url_.toString();
 
-	return object;
+        return object;
 }

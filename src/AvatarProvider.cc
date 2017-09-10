@@ -26,63 +26,63 @@ QMap<QString, QList<TimelineItem *>> AvatarProvider::toBeResolved_;
 void
 AvatarProvider::init(QSharedPointer<MatrixClient> client)
 {
-	client_ = client;
+        client_ = client;
 
-	connect(client_.data(), &MatrixClient::userAvatarRetrieved, &AvatarProvider::updateAvatar);
+        connect(client_.data(), &MatrixClient::userAvatarRetrieved, &AvatarProvider::updateAvatar);
 }
 
 void
 AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
 {
-	if (toBeResolved_.contains(uid)) {
-		auto items = toBeResolved_[uid];
+        if (toBeResolved_.contains(uid)) {
+                auto items = toBeResolved_[uid];
 
-		// Update all the timeline items with the resolved avatar.
-		for (const auto item : items)
-			item->setUserAvatar(img);
+                // Update all the timeline items with the resolved avatar.
+                for (const auto item : items)
+                        item->setUserAvatar(img);
 
-		toBeResolved_.remove(uid);
-	}
+                toBeResolved_.remove(uid);
+        }
 
-	userAvatars_.insert(uid, img);
+        userAvatars_.insert(uid, img);
 }
 
 void
 AvatarProvider::resolve(const QString &userId, TimelineItem *item)
 {
-	if (userAvatars_.contains(userId)) {
-		auto img = userAvatars_[userId];
+        if (userAvatars_.contains(userId)) {
+                auto img = userAvatars_[userId];
 
-		item->setUserAvatar(img);
+                item->setUserAvatar(img);
 
-		return;
-	}
+                return;
+        }
 
-	if (avatarUrls_.contains(userId)) {
-		// Add the current timeline item to the waiting list for this avatar.
-		if (!toBeResolved_.contains(userId)) {
-			client_->fetchUserAvatar(userId, avatarUrls_[userId]);
+        if (avatarUrls_.contains(userId)) {
+                // Add the current timeline item to the waiting list for this avatar.
+                if (!toBeResolved_.contains(userId)) {
+                        client_->fetchUserAvatar(userId, avatarUrls_[userId]);
 
-			QList<TimelineItem *> timelineItems;
-			timelineItems.push_back(item);
+                        QList<TimelineItem *> timelineItems;
+                        timelineItems.push_back(item);
 
-			toBeResolved_.insert(userId, timelineItems);
-		} else {
-			toBeResolved_[userId].push_back(item);
-		}
-	}
+                        toBeResolved_.insert(userId, timelineItems);
+                } else {
+                        toBeResolved_[userId].push_back(item);
+                }
+        }
 }
 
 void
 AvatarProvider::setAvatarUrl(const QString &userId, const QUrl &url)
 {
-	avatarUrls_.insert(userId, url);
+        avatarUrls_.insert(userId, url);
 }
 
 void
 AvatarProvider::clear()
 {
-	userAvatars_.clear();
-	avatarUrls_.clear();
-	toBeResolved_.clear();
+        userAvatars_.clear();
+        avatarUrls_.clear();
+        toBeResolved_.clear();
 }

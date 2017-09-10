@@ -30,89 +30,89 @@ template<class Content>
 class RoomEvent : public Event<Content>
 {
 public:
-	inline QString eventId() const;
-	inline QString roomId() const;
-	inline QString sender() const;
-	inline uint64_t timestamp() const;
+        inline QString eventId() const;
+        inline QString roomId() const;
+        inline QString sender() const;
+        inline uint64_t timestamp() const;
 
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
 private:
-	QString event_id_;
-	QString room_id_;
-	QString sender_;
+        QString event_id_;
+        QString room_id_;
+        QString sender_;
 
-	uint64_t origin_server_ts_;
+        uint64_t origin_server_ts_;
 };
 
 template<class Content>
 inline QString
 RoomEvent<Content>::eventId() const
 {
-	return event_id_;
+        return event_id_;
 }
 
 template<class Content>
 inline QString
 RoomEvent<Content>::roomId() const
 {
-	return room_id_;
+        return room_id_;
 }
 
 template<class Content>
 inline QString
 RoomEvent<Content>::sender() const
 {
-	return sender_;
+        return sender_;
 }
 
 template<class Content>
 inline uint64_t
 RoomEvent<Content>::timestamp() const
 {
-	return origin_server_ts_;
+        return origin_server_ts_;
 }
 
 template<class Content>
 void
 RoomEvent<Content>::deserialize(const QJsonValue &data)
 {
-	Event<Content>::deserialize(data);
+        Event<Content>::deserialize(data);
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (!object.contains("event_id"))
-		throw DeserializationException("event_id key is missing");
+        if (!object.contains("event_id"))
+                throw DeserializationException("event_id key is missing");
 
-	if (!object.contains("origin_server_ts"))
-		throw DeserializationException("origin_server_ts key is missing");
+        if (!object.contains("origin_server_ts"))
+                throw DeserializationException("origin_server_ts key is missing");
 
-	// FIXME: Synapse doesn't include room id?!
-	/* if (!object.contains("room_id")) */
-	/* 	throw DeserializationException("room_id key is missing"); */
+        // FIXME: Synapse doesn't include room id?!
+        /* if (!object.contains("room_id")) */
+        /* 	throw DeserializationException("room_id key is missing"); */
 
-	if (!object.contains("sender"))
-		throw DeserializationException("sender key is missing");
+        if (!object.contains("sender"))
+                throw DeserializationException("sender key is missing");
 
-	event_id_ = object.value("event_id").toString();
-	room_id_ = object.value("room_id").toString();
-	sender_ = object.value("sender").toString();
-	origin_server_ts_ = object.value("origin_server_ts").toDouble();
+        event_id_         = object.value("event_id").toString();
+        room_id_          = object.value("room_id").toString();
+        sender_           = object.value("sender").toString();
+        origin_server_ts_ = object.value("origin_server_ts").toDouble();
 }
 
 template<class Content>
 QJsonObject
 RoomEvent<Content>::serialize() const
 {
-	QJsonObject object = Event<Content>::serialize();
+        QJsonObject object = Event<Content>::serialize();
 
-	object["event_id"] = event_id_;
-	object["room_id"] = room_id_;
-	object["sender"] = sender_;
-	object["origin_server_ts"] = QJsonValue(static_cast<qint64>(origin_server_ts_));
+        object["event_id"]         = event_id_;
+        object["room_id"]          = room_id_;
+        object["sender"]           = sender_;
+        object["origin_server_ts"] = QJsonValue(static_cast<qint64>(origin_server_ts_));
 
-	return object;
+        return object;
 }
 } // namespace events
 } // namespace matrix

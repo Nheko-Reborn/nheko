@@ -30,217 +30,221 @@ MainWindow::MainWindow(QWidget *parent)
   , progress_modal_{ nullptr }
   , spinner_{ nullptr }
 {
-	QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	setSizePolicy(sizePolicy);
-	setWindowTitle("nheko");
-	setObjectName("MainWindow");
-	setStyleSheet("QWidget#MainWindow {background-color: #f9f9f9}");
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        setSizePolicy(sizePolicy);
+        setWindowTitle("nheko");
+        setObjectName("MainWindow");
+        setStyleSheet("QWidget#MainWindow {background-color: #f9f9f9}");
 
-	restoreWindowSize();
-	setMinimumSize(QSize(conf::window::minWidth, conf::window::minHeight));
+        restoreWindowSize();
+        setMinimumSize(QSize(conf::window::minWidth, conf::window::minHeight));
 
-	QFont font("Open Sans");
-	font.setPixelSize(conf::fontSize);
-	font.setStyleStrategy(QFont::PreferAntialias);
-	setFont(font);
+        QFont font("Open Sans");
+        font.setPixelSize(conf::fontSize);
+        font.setStyleStrategy(QFont::PreferAntialias);
+        setFont(font);
 
-	client_ = QSharedPointer<MatrixClient>(new MatrixClient("matrix.org"));
-	trayIcon_ = new TrayIcon(":/logos/nheko-32.png", this);
+        client_   = QSharedPointer<MatrixClient>(new MatrixClient("matrix.org"));
+        trayIcon_ = new TrayIcon(":/logos/nheko-32.png", this);
 
-	welcome_page_ = new WelcomePage(this);
-	login_page_ = new LoginPage(client_, this);
-	register_page_ = new RegisterPage(client_, this);
-	chat_page_ = new ChatPage(client_, this);
+        welcome_page_  = new WelcomePage(this);
+        login_page_    = new LoginPage(client_, this);
+        register_page_ = new RegisterPage(client_, this);
+        chat_page_     = new ChatPage(client_, this);
 
-	// Initialize sliding widget manager.
-	sliding_stack_ = new SlidingStackWidget(this);
-	sliding_stack_->addWidget(welcome_page_);
-	sliding_stack_->addWidget(login_page_);
-	sliding_stack_->addWidget(register_page_);
-	sliding_stack_->addWidget(chat_page_);
+        // Initialize sliding widget manager.
+        sliding_stack_ = new SlidingStackWidget(this);
+        sliding_stack_->addWidget(welcome_page_);
+        sliding_stack_->addWidget(login_page_);
+        sliding_stack_->addWidget(register_page_);
+        sliding_stack_->addWidget(chat_page_);
 
-	setCentralWidget(sliding_stack_);
+        setCentralWidget(sliding_stack_);
 
-	connect(welcome_page_, SIGNAL(userLogin()), this, SLOT(showLoginPage()));
-	connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
+        connect(welcome_page_, SIGNAL(userLogin()), this, SLOT(showLoginPage()));
+        connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
 
-	connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
-	connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
+        connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
+        connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
 
-	connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
-	connect(chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
-	connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
+        connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
+        connect(
+          chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
+        connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
 
-	connect(trayIcon_,
-		SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-		this,
-		SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+        connect(trayIcon_,
+                SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                this,
+                SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-	connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
+        connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
 
-	connect(client_.data(),
-		SIGNAL(loginSuccess(QString, QString, QString)),
-		this,
-		SLOT(showChatPage(QString, QString, QString)));
+        connect(client_.data(),
+                SIGNAL(loginSuccess(QString, QString, QString)),
+                this,
+                SLOT(showChatPage(QString, QString, QString)));
 
-	QSettings settings;
+        QSettings settings;
 
-	if (hasActiveUser()) {
-		QString token = settings.value("auth/access_token").toString();
-		QString home_server = settings.value("auth/home_server").toString();
-		QString user_id = settings.value("auth/user_id").toString();
+        if (hasActiveUser()) {
+                QString token       = settings.value("auth/access_token").toString();
+                QString home_server = settings.value("auth/home_server").toString();
+                QString user_id     = settings.value("auth/user_id").toString();
 
-		showChatPage(user_id, home_server, token);
-	}
+                showChatPage(user_id, home_server, token);
+        }
 }
 
 void
 MainWindow::restoreWindowSize()
 {
-	QSettings settings;
-	int savedWidth = settings.value("window/width").toInt();
-	int savedheight = settings.value("window/height").toInt();
+        QSettings settings;
+        int savedWidth  = settings.value("window/width").toInt();
+        int savedheight = settings.value("window/height").toInt();
 
-	if (savedWidth == 0 || savedheight == 0)
-		resize(conf::window::width, conf::window::height);
-	else
-		resize(savedWidth, savedheight);
+        if (savedWidth == 0 || savedheight == 0)
+                resize(conf::window::width, conf::window::height);
+        else
+                resize(savedWidth, savedheight);
 }
 
 void
 MainWindow::saveCurrentWindowSize()
 {
-	QSettings settings;
-	QSize current = size();
+        QSettings settings;
+        QSize current = size();
 
-	settings.setValue("window/width", current.width());
-	settings.setValue("window/height", current.height());
+        settings.setValue("window/width", current.width());
+        settings.setValue("window/height", current.height());
 }
 
 void
 MainWindow::removeOverlayProgressBar()
 {
-	QTimer *timer = new QTimer(this);
-	timer->setSingleShot(true);
+        QTimer *timer = new QTimer(this);
+        timer->setSingleShot(true);
 
-	connect(timer, &QTimer::timeout, [=]() {
-		timer->deleteLater();
+        connect(timer, &QTimer::timeout, [=]() {
+                timer->deleteLater();
 
-		if (progress_modal_ != nullptr) {
-			progress_modal_->deleteLater();
-			progress_modal_->fadeOut();
-		}
+                if (progress_modal_ != nullptr) {
+                        progress_modal_->deleteLater();
+                        progress_modal_->fadeOut();
+                }
 
-		if (spinner_ != nullptr)
-			spinner_->deleteLater();
+                if (spinner_ != nullptr)
+                        spinner_->deleteLater();
 
-		progress_modal_ = nullptr;
-		spinner_ = nullptr;
-	});
+                progress_modal_ = nullptr;
+                spinner_        = nullptr;
+        });
 
-	timer->start(500);
+        timer->start(500);
 }
 
 void
 MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 {
-	QSettings settings;
-	settings.setValue("auth/access_token", token);
-	settings.setValue("auth/home_server", homeserver);
-	settings.setValue("auth/user_id", userid);
+        QSettings settings;
+        settings.setValue("auth/access_token", token);
+        settings.setValue("auth/home_server", homeserver);
+        settings.setValue("auth/user_id", userid);
 
-	int index = sliding_stack_->getWidgetIndex(chat_page_);
-	int modalOpacityDuration = 300;
+        int index                = sliding_stack_->getWidgetIndex(chat_page_);
+        int modalOpacityDuration = 300;
 
-	// If we go directly from the welcome page don't show an animation.
-	if (sliding_stack_->currentIndex() == 0) {
-		sliding_stack_->setCurrentIndex(index);
-		modalOpacityDuration = 0;
-	} else {
-		sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
-	}
+        // If we go directly from the welcome page don't show an animation.
+        if (sliding_stack_->currentIndex() == 0) {
+                sliding_stack_->setCurrentIndex(index);
+                modalOpacityDuration = 0;
+        } else {
+                sliding_stack_->slideInIndex(index,
+                                             SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+        }
 
-	if (spinner_ == nullptr) {
-		spinner_ = new CircularProgress(this);
-		spinner_->setColor("#acc7dc");
-		spinner_->setSize(100);
-	}
+        if (spinner_ == nullptr) {
+                spinner_ = new CircularProgress(this);
+                spinner_->setColor("#acc7dc");
+                spinner_->setSize(100);
+        }
 
-	if (progress_modal_ == nullptr) {
-		progress_modal_ = new OverlayModal(this, spinner_);
-		progress_modal_->fadeIn();
-		progress_modal_->setDuration(modalOpacityDuration);
-	}
+        if (progress_modal_ == nullptr) {
+                progress_modal_ = new OverlayModal(this, spinner_);
+                progress_modal_->fadeIn();
+                progress_modal_->setDuration(modalOpacityDuration);
+        }
 
-	login_page_->reset();
-	chat_page_->bootstrap(userid, homeserver, token);
+        login_page_->reset();
+        chat_page_->bootstrap(userid, homeserver, token);
 
-	instance_ = this;
+        instance_ = this;
 }
 
 void
 MainWindow::showWelcomePage()
 {
-	int index = sliding_stack_->getWidgetIndex(welcome_page_);
+        int index = sliding_stack_->getWidgetIndex(welcome_page_);
 
-	if (sliding_stack_->currentIndex() == sliding_stack_->getWidgetIndex(login_page_))
-		sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
-	else
-		sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+        if (sliding_stack_->currentIndex() == sliding_stack_->getWidgetIndex(login_page_))
+                sliding_stack_->slideInIndex(index,
+                                             SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
+        else
+                sliding_stack_->slideInIndex(index,
+                                             SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
 }
 
 void
 MainWindow::showLoginPage()
 {
-	int index = sliding_stack_->getWidgetIndex(login_page_);
-	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+        int index = sliding_stack_->getWidgetIndex(login_page_);
+        sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
 }
 
 void
 MainWindow::showRegisterPage()
 {
-	int index = sliding_stack_->getWidgetIndex(register_page_);
-	sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
+        int index = sliding_stack_->getWidgetIndex(register_page_);
+        sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
 }
 
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (isVisible()) {
-		event->ignore();
-		hide();
-	}
+        if (isVisible()) {
+                event->ignore();
+                hide();
+        }
 }
 
 void
 MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	switch (reason) {
-	case QSystemTrayIcon::Trigger:
-		if (!isVisible()) {
-			show();
-		} else {
-			hide();
-		}
-		break;
-	default:
-		break;
-	}
+        switch (reason) {
+        case QSystemTrayIcon::Trigger:
+                if (!isVisible()) {
+                        show();
+                } else {
+                        hide();
+                }
+                break;
+        default:
+                break;
+        }
 }
 
 bool
 MainWindow::hasActiveUser()
 {
-	QSettings settings;
+        QSettings settings;
 
-	return settings.contains("auth/access_token") && settings.contains("auth/home_server") &&
-	       settings.contains("auth/user_id");
+        return settings.contains("auth/access_token") && settings.contains("auth/home_server") &&
+               settings.contains("auth/user_id");
 }
 
 MainWindow *
 MainWindow::instance()
 {
-	return instance_;
+        return instance_;
 }
 
 MainWindow::~MainWindow()

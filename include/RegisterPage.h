@@ -31,44 +31,44 @@
 
 class RegisterPage : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-	~RegisterPage();
+        RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        ~RegisterPage();
 
 signals:
-	void backButtonClicked();
+        void backButtonClicked();
 
 private slots:
-	void onBackButtonClicked();
-	void onRegisterButtonClicked();
+        void onBackButtonClicked();
+        void onRegisterButtonClicked();
 
-	// Display registration specific errors to the user.
-	void registerError(const QString &msg);
+        // Display registration specific errors to the user.
+        void registerError(const QString &msg);
 
 private:
-	QVBoxLayout *top_layout_;
+        QVBoxLayout *top_layout_;
 
-	QHBoxLayout *back_layout_;
-	QHBoxLayout *logo_layout_;
-	QHBoxLayout *button_layout_;
+        QHBoxLayout *back_layout_;
+        QHBoxLayout *logo_layout_;
+        QHBoxLayout *button_layout_;
 
-	Avatar *logo_;
-	QLabel *error_label_;
+        Avatar *logo_;
+        QLabel *error_label_;
 
-	FlatButton *back_button_;
-	RaisedButton *register_button_;
+        FlatButton *back_button_;
+        RaisedButton *register_button_;
 
-	QWidget *form_widget_;
-	QHBoxLayout *form_wrapper_;
-	QVBoxLayout *form_layout_;
+        QWidget *form_widget_;
+        QHBoxLayout *form_wrapper_;
+        QVBoxLayout *form_layout_;
 
-	TextField *username_input_;
-	TextField *password_input_;
-	TextField *password_confirmation_;
-	TextField *server_input_;
+        TextField *username_input_;
+        TextField *password_input_;
+        TextField *password_confirmation_;
+        TextField *server_input_;
 
-	// Matrix client API provider.
-	QSharedPointer<MatrixClient> client_;
+        // Matrix client API provider.
+        QSharedPointer<MatrixClient> client_;
 };

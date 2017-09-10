@@ -22,21 +22,21 @@
 #include <QMap>
 
 struct Emoji {
-	// Unicode code.
-	QString unicode;
-	// Keyboard shortcut e.g :emoji:
-	QString shortname;
+        // Unicode code.
+        QString unicode;
+        // Keyboard shortcut e.g :emoji:
+        QString shortname;
 };
 
 class EmojiProvider
 {
 public:
-	static const QList<Emoji> people;
-	static const QList<Emoji> nature;
-	static const QList<Emoji> food;
-	static const QList<Emoji> activity;
-	static const QList<Emoji> travel;
-	static const QList<Emoji> objects;
-	static const QList<Emoji> symbols;
-	static const QList<Emoji> flags;
+        static const QList<Emoji> people;
+        static const QList<Emoji> nature;
+        static const QList<Emoji> food;
+        static const QList<Emoji> activity;
+        static const QList<Emoji> travel;
+        static const QList<Emoji> objects;
+        static const QList<Emoji> symbols;
+        static const QList<Emoji> flags;
 };

@@ -20,24 +20,24 @@
 void
 RoomMessages::deserialize(const QJsonDocument &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("response is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("response is not a JSON object");
 
-	QJsonObject object = data.object();
+        QJsonObject object = data.object();
 
-	if (!object.contains("start"))
-		throw DeserializationException("start key is missing");
+        if (!object.contains("start"))
+                throw DeserializationException("start key is missing");
 
-	if (!object.contains("end"))
-		throw DeserializationException("end key is missing");
+        if (!object.contains("end"))
+                throw DeserializationException("end key is missing");
 
-	if (!object.contains("chunk"))
-		throw DeserializationException("chunk key is missing");
+        if (!object.contains("chunk"))
+                throw DeserializationException("chunk key is missing");
 
-	if (!object.value("chunk").isArray())
-		throw DeserializationException("chunk isn't a JSON array");
+        if (!object.value("chunk").isArray())
+                throw DeserializationException("chunk isn't a JSON array");
 
-	start_ = object.value("start").toString();
-	end_ = object.value("end").toString();
-	chunk_ = object.value("chunk").toArray();
+        start_ = object.value("start").toString();
+        end_   = object.value("end").toString();
+        chunk_ = object.value("chunk").toArray();
 }

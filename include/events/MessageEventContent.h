@@ -26,32 +26,32 @@ namespace matrix
 namespace events
 {
 enum class MessageEventType {
-	// m.audio
-	Audio,
+        // m.audio
+        Audio,
 
-	// m.emote
-	Emote,
+        // m.emote
+        Emote,
 
-	// m.file
-	File,
+        // m.file
+        File,
 
-	// m.image
-	Image,
+        // m.image
+        Image,
 
-	// m.location
-	Location,
+        // m.location
+        Location,
 
-	// m.notice
-	Notice,
+        // m.notice
+        Notice,
 
-	// m.text
-	Text,
+        // m.text
+        Text,
 
-	// m.video
-	Video,
+        // m.video
+        Video,
 
-	// Unrecognized message type
-	Unknown,
+        // Unrecognized message type
+        Unknown,
 };
 
 MessageEventType
@@ -62,19 +62,19 @@ class MessageEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QString body() const;
+        inline QString body() const;
 
 private:
-	QString body_;
+        QString body_;
 };
 
 inline QString
 MessageEventContent::body() const
 {
-	return body_;
+        return body_;
 }
 } // namespace events
 } // namespace matrix

@@ -29,46 +29,46 @@ namespace events
 namespace messages
 {
 struct FileInfo {
-	int size;
+        int size;
 
-	QString mimetype;
-	QString thumbnail_url;
-	ThumbnailInfo thumbnail_info;
+        QString mimetype;
+        QString thumbnail_url;
+        ThumbnailInfo thumbnail_info;
 };
 
 class File : public Deserializable
 {
 public:
-	inline QString url() const;
-	inline QString filename() const;
+        inline QString url() const;
+        inline QString filename() const;
 
-	inline FileInfo info() const;
+        inline FileInfo info() const;
 
-	void deserialize(const QJsonObject &object) override;
+        void deserialize(const QJsonObject &object) override;
 
 private:
-	QString url_;
-	QString filename_;
+        QString url_;
+        QString filename_;
 
-	FileInfo info_;
+        FileInfo info_;
 };
 
 inline QString
 File::filename() const
 {
-	return filename_;
+        return filename_;
 }
 
 inline QString
 File::url() const
 {
-	return url_;
+        return url_;
 }
 
 inline FileInfo
 File::info() const
 {
-	return info_;
+        return info_;
 }
 
 } // namespace messages

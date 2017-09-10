@@ -28,35 +28,35 @@ namespace events
 namespace messages
 {
 struct AudioInfo {
-	uint64_t duration;
-	int size;
+        uint64_t duration;
+        int size;
 
-	QString mimetype;
+        QString mimetype;
 };
 
 class Audio : public Deserializable
 {
 public:
-	inline QString url() const;
-	inline AudioInfo info() const;
+        inline QString url() const;
+        inline AudioInfo info() const;
 
-	void deserialize(const QJsonObject &object) override;
+        void deserialize(const QJsonObject &object) override;
 
 private:
-	QString url_;
-	AudioInfo info_;
+        QString url_;
+        AudioInfo info_;
 };
 
 inline QString
 Audio::url() const
 {
-	return url_;
+        return url_;
 }
 
 inline AudioInfo
 Audio::info() const
 {
-	return info_;
+        return info_;
 }
 
 } // namespace messages

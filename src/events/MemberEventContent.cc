@@ -24,60 +24,61 @@ using namespace matrix::events;
 void
 MemberEventContent::deserialize(const QJsonValue &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("MemberEventContent is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("MemberEventContent is not a JSON object");
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (!object.contains("membership"))
-		throw DeserializationException("membership key is missing");
+        if (!object.contains("membership"))
+                throw DeserializationException("membership key is missing");
 
-	auto value = object.value("membership").toString();
+        auto value = object.value("membership").toString();
 
-	if (value == "ban")
-		membership_state_ = Membership::Ban;
-	else if (value == "invite")
-		membership_state_ = Membership::Invite;
-	else if (value == "join")
-		membership_state_ = Membership::Join;
-	else if (value == "knock")
-		membership_state_ = Membership::Knock;
-	else if (value == "leave")
-		membership_state_ = Membership::Leave;
-	else
-		throw DeserializationException(QString("Unknown membership value: %1").arg(value).toUtf8().constData());
+        if (value == "ban")
+                membership_state_ = Membership::Ban;
+        else if (value == "invite")
+                membership_state_ = Membership::Invite;
+        else if (value == "join")
+                membership_state_ = Membership::Join;
+        else if (value == "knock")
+                membership_state_ = Membership::Knock;
+        else if (value == "leave")
+                membership_state_ = Membership::Leave;
+        else
+                throw DeserializationException(
+                  QString("Unknown membership value: %1").arg(value).toUtf8().constData());
 
-	if (object.contains("avatar_url"))
-		avatar_url_ = QUrl(object.value("avatar_url").toString());
+        if (object.contains("avatar_url"))
+                avatar_url_ = QUrl(object.value("avatar_url").toString());
 
-	if (!avatar_url_.toString().isEmpty() && !avatar_url_.isValid())
-		qWarning() << "Invalid avatar url" << avatar_url_;
+        if (!avatar_url_.toString().isEmpty() && !avatar_url_.isValid())
+                qWarning() << "Invalid avatar url" << avatar_url_;
 
-	if (object.contains("displayname"))
-		display_name_ = object.value("displayname").toString();
+        if (object.contains("displayname"))
+                display_name_ = object.value("displayname").toString();
 }
 
 QJsonObject
 MemberEventContent::serialize() const
 {
-	QJsonObject object;
+        QJsonObject object;
 
-	if (membership_state_ == Membership::Ban)
-		object["membership"] = "ban";
-	else if (membership_state_ == Membership::Invite)
-		object["membership"] = "invite";
-	else if (membership_state_ == Membership::Join)
-		object["membership"] = "join";
-	else if (membership_state_ == Membership::Knock)
-		object["membership"] = "knock";
-	else if (membership_state_ == Membership::Leave)
-		object["membership"] = "leave";
+        if (membership_state_ == Membership::Ban)
+                object["membership"] = "ban";
+        else if (membership_state_ == Membership::Invite)
+                object["membership"] = "invite";
+        else if (membership_state_ == Membership::Join)
+                object["membership"] = "join";
+        else if (membership_state_ == Membership::Knock)
+                object["membership"] = "knock";
+        else if (membership_state_ == Membership::Leave)
+                object["membership"] = "leave";
 
-	if (!avatar_url_.isEmpty())
-		object["avatar_url"] = avatar_url_.toString();
+        if (!avatar_url_.isEmpty())
+                object["avatar_url"] = avatar_url_.toString();
 
-	if (!display_name_.isEmpty())
-		object["displayname"] = display_name_;
+        if (!display_name_.isEmpty())
+                object["displayname"] = display_name_;
 
-	return object;
+        return object;
 }

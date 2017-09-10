@@ -24,32 +24,32 @@ using namespace matrix::events;
 void
 AliasesEventContent::deserialize(const QJsonValue &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("AliasesEventContent is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("AliasesEventContent is not a JSON object");
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (object.value("aliases") == QJsonValue::Undefined)
-		throw DeserializationException("aliases key is missing");
+        if (object.value("aliases") == QJsonValue::Undefined)
+                throw DeserializationException("aliases key is missing");
 
-	auto aliases = object.value("aliases").toArray();
+        auto aliases = object.value("aliases").toArray();
 
-	for (const auto &alias : aliases)
-		aliases_.push_back(alias.toString());
+        for (const auto &alias : aliases)
+                aliases_.push_back(alias.toString());
 }
 
 QJsonObject
 AliasesEventContent::serialize() const
 {
-	QJsonObject object;
+        QJsonObject object;
 
-	QJsonArray aliases;
+        QJsonArray aliases;
 
-	for (const auto &alias : aliases_)
-		aliases.push_back(alias);
+        for (const auto &alias : aliases_)
+                aliases.push_back(alias);
 
-	if (aliases.size() > 0)
-		object["aliases"] = aliases;
+        if (aliases.size() > 0)
+                object["aliases"] = aliases;
 
-	return object;
+        return object;
 }

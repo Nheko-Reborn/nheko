@@ -30,7 +30,7 @@ namespace messages
 class Text : public Deserializable
 {
 public:
-	void deserialize(const QJsonObject &obj) override;
+        void deserialize(const QJsonObject &obj) override;
 };
 } // namespace messages
 } // namespace events

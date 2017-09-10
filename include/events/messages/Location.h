@@ -29,34 +29,34 @@ namespace events
 namespace messages
 {
 struct LocationInfo {
-	QString thumbnail_url;
-	ThumbnailInfo thumbnail_info;
+        QString thumbnail_url;
+        ThumbnailInfo thumbnail_info;
 };
 
 class Location : public Deserializable
 {
 public:
-	inline QString geoUri() const;
-	inline LocationInfo info() const;
+        inline QString geoUri() const;
+        inline LocationInfo info() const;
 
-	void deserialize(const QJsonObject &object) override;
+        void deserialize(const QJsonObject &object) override;
 
 private:
-	QString geo_uri_;
+        QString geo_uri_;
 
-	LocationInfo info_;
+        LocationInfo info_;
 };
 
 inline QString
 Location::geoUri() const
 {
-	return geo_uri_;
+        return geo_uri_;
 }
 
 inline LocationInfo
 Location::info() const
 {
-	return info_;
+        return info_;
 }
 
 } // namespace messages

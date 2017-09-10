@@ -23,14 +23,14 @@
 
 class LogoutDialog : public QFrame
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	explicit LogoutDialog(QWidget *parent = nullptr);
+        explicit LogoutDialog(QWidget *parent = nullptr);
 
 signals:
-	void closing(bool isLoggingOut);
+        void closing(bool isLoggingOut);
 
 private:
-	FlatButton *confirmBtn_;
-	FlatButton *cancelBtn_;
+        FlatButton *confirmBtn_;
+        FlatButton *cancelBtn_;
 };

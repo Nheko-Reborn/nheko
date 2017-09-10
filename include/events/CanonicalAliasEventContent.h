@@ -37,19 +37,19 @@ class CanonicalAliasEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QString alias() const;
+        inline QString alias() const;
 
 private:
-	QString alias_;
+        QString alias_;
 };
 
 inline QString
 CanonicalAliasEventContent::alias() const
 {
-	return alias_;
+        return alias_;
 }
 } // namespace events
 } // namespace matrix

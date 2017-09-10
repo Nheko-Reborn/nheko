@@ -26,44 +26,44 @@
 
 class RoomSearchInput : public TextField
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	explicit RoomSearchInput(QWidget *parent = nullptr);
+        explicit RoomSearchInput(QWidget *parent = nullptr);
 
 signals:
-	void selectNextCompletion();
-	void selectPreviousCompletion();
-	void hiding();
+        void selectNextCompletion();
+        void selectPreviousCompletion();
+        void hiding();
 
 protected:
-	void keyPressEvent(QKeyEvent *event) override;
-	void hideEvent(QHideEvent *event) override;
-	bool focusNextPrevChild(bool next) override;
+        void keyPressEvent(QKeyEvent *event) override;
+        void hideEvent(QHideEvent *event) override;
+        bool focusNextPrevChild(bool next) override;
 };
 
 class QuickSwitcher : public QFrame
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	explicit QuickSwitcher(QWidget *parent = nullptr);
+        explicit QuickSwitcher(QWidget *parent = nullptr);
 
-	void setRoomList(const QMap<QString, QString> &rooms);
+        void setRoomList(const QMap<QString, QString> &rooms);
 
 signals:
-	void closing();
-	void roomSelected(const QString &roomid);
+        void closing();
+        void roomSelected(const QString &roomid);
 
 protected:
-	void keyPressEvent(QKeyEvent *event) override;
-	void showEvent(QShowEvent *event) override;
+        void keyPressEvent(QKeyEvent *event) override;
+        void showEvent(QShowEvent *event) override;
 
 private:
-	// Current highlighted selection from the completer.
-	int selection_ = -1;
+        // Current highlighted selection from the completer.
+        int selection_ = -1;
 
-	QVBoxLayout *topLayout_;
-	RoomSearchInput *roomSearch_;
-	QCompleter *completer_;
+        QVBoxLayout *topLayout_;
+        RoomSearchInput *roomSearch_;
+        QCompleter *completer_;
 
-	QMap<QString, QString> rooms_;
+        QMap<QString, QString> rooms_;
 };

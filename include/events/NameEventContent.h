@@ -34,19 +34,19 @@ class NameEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QString name() const;
+        inline QString name() const;
 
 private:
-	QString name_;
+        QString name_;
 };
 
 inline QString
 NameEventContent::name() const
 {
-	return name_;
+        return name_;
 }
 } // namespace events
 } // namespace matrix

@@ -35,19 +35,19 @@ class AvatarEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QUrl url() const;
+        inline QUrl url() const;
 
 private:
-	QUrl url_;
+        QUrl url_;
 };
 
 inline QUrl
 AvatarEventContent::url() const
 {
-	return url_;
+        return url_;
 }
 } // namespace events
 } // namespace matrix

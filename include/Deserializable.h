@@ -26,36 +26,36 @@
 class DeserializationException : public std::exception
 {
 public:
-	explicit DeserializationException(const std::string &msg);
-	virtual const char *what() const noexcept;
+        explicit DeserializationException(const std::string &msg);
+        virtual const char *what() const noexcept;
 
 private:
-	std::string msg_;
+        std::string msg_;
 };
 
 // JSON response structs need to implement the interface.
 class Deserializable
 {
 public:
-	virtual void deserialize(const QJsonValue &)
-	{
-	}
-	virtual void deserialize(const QJsonObject &)
-	{
-	}
-	virtual void deserialize(const QJsonDocument &)
-	{
-	}
-	virtual ~Deserializable()
-	{
-	}
+        virtual void deserialize(const QJsonValue &)
+        {
+        }
+        virtual void deserialize(const QJsonObject &)
+        {
+        }
+        virtual void deserialize(const QJsonDocument &)
+        {
+        }
+        virtual ~Deserializable()
+        {
+        }
 };
 
 class Serializable
 {
 public:
-	virtual QJsonObject serialize() const = 0;
-	virtual ~Serializable()
-	{
-	}
+        virtual QJsonObject serialize() const = 0;
+        virtual ~Serializable()
+        {
+        }
 };

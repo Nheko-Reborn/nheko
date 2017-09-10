@@ -36,43 +36,43 @@ QByteArray
 LoginRequest::serialize() noexcept
 {
 #if defined(Q_OS_MAC)
-	QString initialDeviceName("nheko on Mac OS");
+        QString initialDeviceName("nheko on Mac OS");
 #elif defined(Q_OS_LINUX)
-	QString initialDeviceName("nheko on Linux");
+        QString initialDeviceName("nheko on Linux");
 #elif defined(Q_OS_WIN)
-	QString initialDeviceName("nheko on Windows");
+        QString initialDeviceName("nheko on Windows");
 #else
-	QString initialDeviceName("nheko");
+        QString initialDeviceName("nheko");
 #endif
 
-	QJsonObject body{
-		{ "type", "m.login.password" },
-		{ "user", user_ },
-		{ "password", password_ },
-		{ "initial_device_display_name", initialDeviceName },
-	};
+        QJsonObject body{
+                { "type", "m.login.password" },
+                { "user", user_ },
+                { "password", password_ },
+                { "initial_device_display_name", initialDeviceName },
+        };
 
-	return QJsonDocument(body).toJson(QJsonDocument::Compact);
+        return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
 
 void
 LoginResponse::deserialize(const QJsonDocument &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("Login response is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("Login response is not a JSON object");
 
-	QJsonObject object = data.object();
+        QJsonObject object = data.object();
 
-	if (object.value("access_token") == QJsonValue::Undefined)
-		throw DeserializationException("Login: missing access_token param");
+        if (object.value("access_token") == QJsonValue::Undefined)
+                throw DeserializationException("Login: missing access_token param");
 
-	if (object.value("home_server") == QJsonValue::Undefined)
-		throw DeserializationException("Login: missing home_server param");
+        if (object.value("home_server") == QJsonValue::Undefined)
+                throw DeserializationException("Login: missing home_server param");
 
-	if (object.value("user_id") == QJsonValue::Undefined)
-		throw DeserializationException("Login: missing user_id param");
+        if (object.value("user_id") == QJsonValue::Undefined)
+                throw DeserializationException("Login: missing user_id param");
 
-	access_token_ = object.value("access_token").toString();
-	home_server_ = object.value("home_server").toString();
-	user_id_ = object.value("user_id").toString();
+        access_token_ = object.value("access_token").toString();
+        home_server_  = object.value("home_server").toString();
+        user_id_      = object.value("user_id").toString();
 }

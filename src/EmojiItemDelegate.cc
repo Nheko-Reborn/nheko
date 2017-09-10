@@ -23,26 +23,28 @@
 EmojiItemDelegate::EmojiItemDelegate(QObject *parent)
   : QStyledItemDelegate(parent)
 {
-	data_ = new Emoji;
+        data_ = new Emoji;
 }
 
 EmojiItemDelegate::~EmojiItemDelegate()
 {
-	delete data_;
+        delete data_;
 }
 
 void
-EmojiItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+EmojiItemDelegate::paint(QPainter *painter,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index) const
 {
-	Q_UNUSED(index);
+        Q_UNUSED(index);
 
-	QStyleOptionViewItem viewOption(option);
+        QStyleOptionViewItem viewOption(option);
 
-	auto emoji = index.data(Qt::UserRole).toString();
+        auto emoji = index.data(Qt::UserRole).toString();
 
-	QFont font("Emoji One");
-	font.setPixelSize(19);
+        QFont font("Emoji One");
+        font.setPixelSize(19);
 
-	painter->setFont(font);
-	painter->drawText(viewOption.rect, Qt::AlignCenter, emoji);
+        painter->setFont(font);
+        painter->drawText(viewOption.rect, Qt::AlignCenter, emoji);
 }

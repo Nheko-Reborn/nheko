@@ -22,31 +22,31 @@ using namespace matrix::events::messages;
 void
 File::deserialize(const QJsonObject &object)
 {
-	if (!object.contains("url"))
-		throw DeserializationException("messages::File url key is missing");
+        if (!object.contains("url"))
+                throw DeserializationException("messages::File url key is missing");
 
-	if (!object.contains("filename"))
-		throw DeserializationException("messages::File filename key is missing");
+        if (!object.contains("filename"))
+                throw DeserializationException("messages::File filename key is missing");
 
-	if (object.value("msgtype") != "m.file")
-		throw DeserializationException("invalid msgtype for file");
+        if (object.value("msgtype") != "m.file")
+                throw DeserializationException("invalid msgtype for file");
 
-	url_ = object.value("url").toString();
+        url_ = object.value("url").toString();
 
-	if (object.contains("info")) {
-		auto file_info = object.value("info").toObject();
+        if (object.contains("info")) {
+                auto file_info = object.value("info").toObject();
 
-		info_.size = file_info.value("size").toInt();
-		info_.mimetype = file_info.value("mimetype").toString();
-		info_.thumbnail_url = file_info.value("thumbnail_url").toString();
+                info_.size          = file_info.value("size").toInt();
+                info_.mimetype      = file_info.value("mimetype").toString();
+                info_.thumbnail_url = file_info.value("thumbnail_url").toString();
 
-		if (file_info.contains("thumbnail_info")) {
-			auto thumbinfo = file_info.value("thumbnail_info").toObject();
+                if (file_info.contains("thumbnail_info")) {
+                        auto thumbinfo = file_info.value("thumbnail_info").toObject();
 
-			info_.thumbnail_info.h = thumbinfo.value("h").toInt();
-			info_.thumbnail_info.w = thumbinfo.value("w").toInt();
-			info_.thumbnail_info.size = thumbinfo.value("size").toInt();
-			info_.thumbnail_info.mimetype = thumbinfo.value("mimetype").toString();
-		}
-	}
+                        info_.thumbnail_info.h        = thumbinfo.value("h").toInt();
+                        info_.thumbnail_info.w        = thumbinfo.value("w").toInt();
+                        info_.thumbnail_info.size     = thumbinfo.value("size").toInt();
+                        info_.thumbnail_info.mimetype = thumbinfo.value("mimetype").toString();
+                }
+        }
 }

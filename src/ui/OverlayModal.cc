@@ -26,50 +26,50 @@ OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
   , duration_{ 500 }
   , color_{ QColor(55, 55, 55) }
 {
-	setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_TranslucentBackground);
 
-	auto layout = new QVBoxLayout();
-	layout->addWidget(content);
-	layout->setAlignment(Qt::AlignCenter);
+        auto layout = new QVBoxLayout();
+        layout->addWidget(content);
+        layout->setAlignment(Qt::AlignCenter);
 
-	setLayout(layout);
+        setLayout(layout);
 
-	opacity_ = new QGraphicsOpacityEffect(this);
-	setGraphicsEffect(opacity_);
+        opacity_ = new QGraphicsOpacityEffect(this);
+        setGraphicsEffect(opacity_);
 
-	opacity_->setOpacity(1);
-	animation_ = new QPropertyAnimation(opacity_, "opacity", this);
-	animation_->setStartValue(1);
-	animation_->setEndValue(0);
-	animation_->setDuration(duration_);
-	animation_->setEasingCurve(QEasingCurve::Linear);
+        opacity_->setOpacity(1);
+        animation_ = new QPropertyAnimation(opacity_, "opacity", this);
+        animation_->setStartValue(1);
+        animation_->setEndValue(0);
+        animation_->setDuration(duration_);
+        animation_->setEasingCurve(QEasingCurve::Linear);
 
-	connect(animation_, &QPropertyAnimation::finished, [this]() {
-		if (animation_->direction() == QAbstractAnimation::Forward)
-			this->close();
-	});
+        connect(animation_, &QPropertyAnimation::finished, [this]() {
+                if (animation_->direction() == QAbstractAnimation::Forward)
+                        this->close();
+        });
 }
 
 void
 OverlayModal::paintEvent(QPaintEvent *event)
 {
-	Q_UNUSED(event);
+        Q_UNUSED(event);
 
-	QPainter painter(this);
-	painter.fillRect(rect(), color_);
+        QPainter painter(this);
+        painter.fillRect(rect(), color_);
 }
 
 void
 OverlayModal::fadeIn()
 {
-	animation_->setDirection(QAbstractAnimation::Backward);
-	animation_->start();
-	show();
+        animation_->setDirection(QAbstractAnimation::Backward);
+        animation_->start();
+        show();
 }
 
 void
 OverlayModal::fadeOut()
 {
-	animation_->setDirection(QAbstractAnimation::Forward);
-	animation_->start();
+        animation_->setDirection(QAbstractAnimation::Forward);
+        animation_->start();
 }

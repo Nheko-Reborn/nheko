@@ -29,39 +29,39 @@ namespace events
 namespace messages
 {
 struct VideoInfo {
-	int h;
-	int w;
-	int size;
-	int duration;
+        int h;
+        int w;
+        int size;
+        int duration;
 
-	QString mimetype;
-	QString thumbnail_url;
-	ThumbnailInfo thumbnail_info;
+        QString mimetype;
+        QString thumbnail_url;
+        ThumbnailInfo thumbnail_info;
 };
 
 class Video : public Deserializable
 {
 public:
-	inline QString url() const;
-	inline VideoInfo info() const;
+        inline QString url() const;
+        inline VideoInfo info() const;
 
-	void deserialize(const QJsonObject &object) override;
+        void deserialize(const QJsonObject &object) override;
 
 private:
-	QString url_;
-	VideoInfo info_;
+        QString url_;
+        VideoInfo info_;
 };
 
 inline QString
 Video::url() const
 {
-	return url_;
+        return url_;
 }
 
 inline VideoInfo
 Video::info() const
 {
-	return info_;
+        return info_;
 }
 
 } // namespace messages

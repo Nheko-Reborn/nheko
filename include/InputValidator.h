@@ -23,9 +23,9 @@
 class InputValidator
 {
 public:
-	// Validators for the different types of input.
-	static QRegExpValidator Id;
-	static QRegExpValidator Localpart;
-	static QRegExpValidator Password;
-	static QRegExpValidator Domain;
+        // Validators for the different types of input.
+        static QRegExpValidator Id;
+        static QRegExpValidator Localpart;
+        static QRegExpValidator Password;
+        static QRegExpValidator Domain;
 };

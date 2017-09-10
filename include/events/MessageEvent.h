@@ -28,38 +28,38 @@ template<class MsgContent>
 class MessageEvent : public RoomEvent<MessageEventContent>
 {
 public:
-	inline MsgContent msgContent() const;
+        inline MsgContent msgContent() const;
 
-	void deserialize(const QJsonValue &data) override;
+        void deserialize(const QJsonValue &data) override;
 
 private:
-	MsgContent msg_content_;
+        MsgContent msg_content_;
 };
 
 template<class MsgContent>
 inline MsgContent
 MessageEvent<MsgContent>::msgContent() const
 {
-	return msg_content_;
+        return msg_content_;
 }
 
 template<class MsgContent>
 void
 MessageEvent<MsgContent>::deserialize(const QJsonValue &data)
 {
-	RoomEvent<MessageEventContent>::deserialize(data);
+        RoomEvent<MessageEventContent>::deserialize(data);
 
-	msg_content_.deserialize(data.toObject().value("content").toObject());
+        msg_content_.deserialize(data.toObject().value("content").toObject());
 }
 
 namespace messages
 {
 struct ThumbnailInfo {
-	int h;
-	int w;
-	int size;
+        int h;
+        int w;
+        int size;
 
-	QString mimetype;
+        QString mimetype;
 };
 } // namespace messages
 } // namespace events

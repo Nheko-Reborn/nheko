@@ -29,38 +29,38 @@ namespace events
 namespace messages
 {
 struct ImageInfo {
-	int h;
-	int w;
-	int size;
+        int h;
+        int w;
+        int size;
 
-	QString mimetype;
-	QString thumbnail_url;
-	ThumbnailInfo thumbnail_info;
+        QString mimetype;
+        QString thumbnail_url;
+        ThumbnailInfo thumbnail_info;
 };
 
 class Image : public Deserializable
 {
 public:
-	inline QString url() const;
-	inline ImageInfo info() const;
+        inline QString url() const;
+        inline ImageInfo info() const;
 
-	void deserialize(const QJsonObject &object) override;
+        void deserialize(const QJsonObject &object) override;
 
 private:
-	QString url_;
-	ImageInfo info_;
+        QString url_;
+        ImageInfo info_;
 };
 
 inline QString
 Image::url() const
 {
-	return url_;
+        return url_;
 }
 
 inline ImageInfo
 Image::info() const
 {
-	return info_;
+        return info_;
 }
 
 } // namespace messages

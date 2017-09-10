@@ -7,24 +7,24 @@
 namespace conf
 {
 // Global settings.
-static const int fontSize = 12;
-static const int emojiSize = 14;
+static const int fontSize       = 12;
+static const int emojiSize      = 14;
 static const int headerFontSize = 21;
 
 // Window geometry.
 namespace window
 {
 static const int height = 600;
-static const int width = 1066;
+static const int width  = 1066;
 
 static const int minHeight = 600;
-static const int minWidth = 950;
+static const int minWidth  = 950;
 }
 
 // Button settings.
 namespace btn
 {
-static const int fontSize = 20;
+static const int fontSize     = 20;
 static const int cornerRadius = 3;
 }
 
@@ -34,8 +34,8 @@ namespace roomlist
 namespace fonts
 {
 static const int heading = 13;
-static const int badge = 10;
-static const int bubble = 20;
+static const int badge   = 10;
+static const int bubble  = 20;
 } // namespace fonts
 } // namespace roomlist
 
@@ -44,7 +44,7 @@ namespace userInfoWidget
 namespace fonts
 {
 static const int displayName = 16;
-static const int userid = 14;
+static const int userid      = 14;
 } // namespace fonts
 } // namespace userInfoWidget
 
@@ -52,16 +52,16 @@ namespace topRoomBar
 {
 namespace fonts
 {
-static const int roomName = 15;
+static const int roomName        = 15;
 static const int roomDescription = 13;
 } // namespace fonts
 } // namespace topRoomBar
 
 namespace timeline
 {
-static const int msgMargin = 11;
-static const int avatarSize = 36;
-static const int headerSpacing = 5;
+static const int msgMargin        = 11;
+static const int avatarSize       = 36;
+static const int headerSpacing    = 5;
 static const int headerLeftMargin = 15;
 
 namespace fonts

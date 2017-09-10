@@ -27,38 +27,38 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)
   , client_(client)
 {
-	setStyleSheet("QWidget { border: none; }");
+        setStyleSheet("QWidget { border: none; }");
 
-	QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	sizePolicy.setHorizontalStretch(0);
-	sizePolicy.setVerticalStretch(0);
-	setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        setSizePolicy(sizePolicy);
 
-	topLayout_ = new QVBoxLayout(this);
-	topLayout_->setSpacing(0);
-	topLayout_->setMargin(0);
+        topLayout_ = new QVBoxLayout(this);
+        topLayout_->setSpacing(0);
+        topLayout_->setMargin(0);
 
-	scrollArea_ = new QScrollArea(this);
-	scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-	scrollArea_->setWidgetResizable(true);
-	scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
+        scrollArea_ = new QScrollArea(this);
+        scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        scrollArea_->setWidgetResizable(true);
+        scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
-	scrollAreaContents_ = new QWidget();
+        scrollAreaContents_ = new QWidget();
 
-	contentsLayout_ = new QVBoxLayout(scrollAreaContents_);
-	contentsLayout_->setSpacing(0);
-	contentsLayout_->setMargin(0);
-	contentsLayout_->addStretch(1);
+        contentsLayout_ = new QVBoxLayout(scrollAreaContents_);
+        contentsLayout_->setSpacing(0);
+        contentsLayout_->setMargin(0);
+        contentsLayout_->addStretch(1);
 
-	scrollArea_->setWidget(scrollAreaContents_);
-	topLayout_->addWidget(scrollArea_);
+        scrollArea_->setWidget(scrollAreaContents_);
+        topLayout_->addWidget(scrollArea_);
 
-	connect(client_.data(),
-		SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
-		this,
-		SLOT(updateRoomAvatar(const QString &, const QPixmap &)));
+        connect(client_.data(),
+                SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
+                this,
+                SLOT(updateRoomAvatar(const QString &, const QPixmap &)));
 }
 
 RoomList::~RoomList()
@@ -68,137 +68,140 @@ RoomList::~RoomList()
 void
 RoomList::clear()
 {
-	rooms_.clear();
+        rooms_.clear();
 }
 
 void
 RoomList::updateUnreadMessageCount(const QString &roomid, int count)
 {
-	if (!rooms_.contains(roomid)) {
-		qWarning() << "UpdateUnreadMessageCount: Unknown roomid";
-		return;
-	}
+        if (!rooms_.contains(roomid)) {
+                qWarning() << "UpdateUnreadMessageCount: Unknown roomid";
+                return;
+        }
 
-	rooms_[roomid]->updateUnreadMessageCount(count);
+        rooms_[roomid]->updateUnreadMessageCount(count);
 
-	calculateUnreadMessageCount();
+        calculateUnreadMessageCount();
 }
 
 void
 RoomList::calculateUnreadMessageCount()
 {
-	int total_unread_msgs = 0;
+        int total_unread_msgs = 0;
 
-	for (const auto &room : rooms_)
-		total_unread_msgs += room->unreadMessageCount();
+        for (const auto &room : rooms_)
+                total_unread_msgs += room->unreadMessageCount();
 
-	emit totalUnreadMessageCountUpdated(total_unread_msgs);
+        emit totalUnreadMessageCountUpdated(total_unread_msgs);
 }
 
 void
 RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-			  const QMap<QString, RoomState> &states)
+                          const QMap<QString, RoomState> &states)
 {
-	rooms_.clear();
+        rooms_.clear();
 
-	if (settings.size() != states.size()) {
-		qWarning() << "Initializing room list";
-		qWarning() << "Different number of room states and room settings";
-		return;
-	}
+        if (settings.size() != states.size()) {
+                qWarning() << "Initializing room list";
+                qWarning() << "Different number of room states and room settings";
+                return;
+        }
 
-	for (auto it = states.constBegin(); it != states.constEnd(); it++) {
-		auto room_id = it.key();
-		auto state = it.value();
+        for (auto it = states.constBegin(); it != states.constEnd(); it++) {
+                auto room_id = it.key();
+                auto state   = it.value();
 
-		if (!state.getAvatar().toString().isEmpty())
-			client_->fetchRoomAvatar(room_id, state.getAvatar());
+                if (!state.getAvatar().toString().isEmpty())
+                        client_->fetchRoomAvatar(room_id, state.getAvatar());
 
-		RoomInfoListItem *room_item = new RoomInfoListItem(settings[room_id], state, room_id, scrollArea_);
-		connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
+                RoomInfoListItem *room_item =
+                  new RoomInfoListItem(settings[room_id], state, room_id, scrollArea_);
+                connect(
+                  room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
 
-		rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
+                rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
-		int pos = contentsLayout_->count() - 1;
-		contentsLayout_->insertWidget(pos, room_item);
-	}
+                int pos = contentsLayout_->count() - 1;
+                contentsLayout_->insertWidget(pos, room_item);
+        }
 
-	if (rooms_.isEmpty())
-		return;
+        if (rooms_.isEmpty())
+                return;
 
-	auto first_room = rooms_.first();
-	first_room->setPressedState(true);
+        auto first_room = rooms_.first();
+        first_room->setPressedState(true);
 
-	emit roomChanged(rooms_.firstKey());
+        emit roomChanged(rooms_.firstKey());
 }
 
 void
 RoomList::sync(const QMap<QString, RoomState> &states)
 {
-	for (auto it = states.constBegin(); it != states.constEnd(); it++) {
-		auto room_id = it.key();
-		auto state = it.value();
+        for (auto it = states.constBegin(); it != states.constEnd(); it++) {
+                auto room_id = it.key();
+                auto state   = it.value();
 
-		// TODO: Add the new room to the list.
-		if (!rooms_.contains(room_id))
-			continue;
+                // TODO: Add the new room to the list.
+                if (!rooms_.contains(room_id))
+                        continue;
 
-		auto room = rooms_[room_id];
+                auto room = rooms_[room_id];
 
-		auto current_avatar = room->state().getAvatar();
-		auto new_avatar = state.getAvatar();
+                auto current_avatar = room->state().getAvatar();
+                auto new_avatar     = state.getAvatar();
 
-		if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
-			client_->fetchRoomAvatar(room_id, new_avatar);
+                if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
+                        client_->fetchRoomAvatar(room_id, new_avatar);
 
-		room->setState(state);
-	}
+                room->setState(state);
+        }
 }
 
 void
 RoomList::highlightSelectedRoom(const QString &room_id)
 {
-	emit roomChanged(room_id);
+        emit roomChanged(room_id);
 
-	if (!rooms_.contains(room_id)) {
-		qDebug() << "RoomList: clicked unknown roomid";
-		return;
-	}
+        if (!rooms_.contains(room_id)) {
+                qDebug() << "RoomList: clicked unknown roomid";
+                return;
+        }
 
-	// TODO: Send a read receipt for the last event.
-	auto room = rooms_[room_id];
-	room->clearUnreadMessageCount();
+        // TODO: Send a read receipt for the last event.
+        auto room = rooms_[room_id];
+        room->clearUnreadMessageCount();
 
-	calculateUnreadMessageCount();
+        calculateUnreadMessageCount();
 
-	for (auto it = rooms_.constBegin(); it != rooms_.constEnd(); it++) {
-		if (it.key() != room_id) {
-			it.value()->setPressedState(false);
-		} else {
-			it.value()->setPressedState(true);
-			scrollArea_->ensureWidgetVisible(qobject_cast<QWidget *>(it.value().data()));
-		}
-	}
+        for (auto it = rooms_.constBegin(); it != rooms_.constEnd(); it++) {
+                if (it.key() != room_id) {
+                        it.value()->setPressedState(false);
+                } else {
+                        it.value()->setPressedState(true);
+                        scrollArea_->ensureWidgetVisible(
+                          qobject_cast<QWidget *>(it.value().data()));
+                }
+        }
 }
 
 void
 RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
 {
-	if (!rooms_.contains(roomid)) {
-		qWarning() << "Avatar update on non existent room" << roomid;
-		return;
-	}
+        if (!rooms_.contains(roomid)) {
+                qWarning() << "Avatar update on non existent room" << roomid;
+                return;
+        }
 
-	rooms_.value(roomid)->setAvatar(img.toImage());
+        rooms_.value(roomid)->setAvatar(img.toImage());
 }
 
 void
 RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
 {
-	if (!rooms_.contains(roomid)) {
-		qWarning() << "Description update on non existent room" << roomid << info.body;
-		return;
-	}
+        if (!rooms_.contains(roomid)) {
+                qWarning() << "Description update on non existent room" << roomid << info.body;
+                return;
+        }
 
-	rooms_.value(roomid)->setDescriptionMessage(info);
+        rooms_.value(roomid)->setDescriptionMessage(info);
 }

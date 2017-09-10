@@ -25,29 +25,29 @@
 
 class ScrollBar : public QScrollBar
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	ScrollBar(QScrollArea *area, QWidget *parent = nullptr);
+        ScrollBar(QScrollArea *area, QWidget *parent = nullptr);
 
-	void fadeIn();
-	void fadeOut();
+        void fadeIn();
+        void fadeOut();
 
 protected:
-	void paintEvent(QPaintEvent *e) override;
-	void sliderChange(SliderChange change) override;
+        void paintEvent(QPaintEvent *e) override;
+        void sliderChange(SliderChange change) override;
 
 private:
-	int roundRadius_ = 4;
-	int handleWidth_ = 7;
-	int minHandleHeight_ = 20;
-	bool isActive;
+        int roundRadius_     = 4;
+        int handleWidth_     = 7;
+        int minHandleHeight_ = 20;
+        bool isActive;
 
-	const int AnimationDuration = 300;
-	const int Padding = 4;
+        const int AnimationDuration = 300;
+        const int Padding           = 4;
 
-	QGraphicsOpacityEffect *eff;
-	QTimer hideTimer_;
+        QGraphicsOpacityEffect *eff;
+        QTimer hideTimer_;
 
-	QScrollArea *area_;
-	QRect handle_;
+        QScrollArea *area_;
+        QRect handle_;
 };

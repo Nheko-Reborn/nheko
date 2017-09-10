@@ -22,31 +22,31 @@ using namespace matrix::events::messages;
 void
 Image::deserialize(const QJsonObject &object)
 {
-	if (!object.contains("url"))
-		throw DeserializationException("messages::Image url key is missing");
+        if (!object.contains("url"))
+                throw DeserializationException("messages::Image url key is missing");
 
-	url_ = object.value("url").toString();
+        url_ = object.value("url").toString();
 
-	if (object.value("msgtype") != "m.image")
-		throw DeserializationException("invalid msgtype for image");
+        if (object.value("msgtype") != "m.image")
+                throw DeserializationException("invalid msgtype for image");
 
-	if (object.contains("info")) {
-		auto imginfo = object.value("info").toObject();
+        if (object.contains("info")) {
+                auto imginfo = object.value("info").toObject();
 
-		info_.w = imginfo.value("w").toInt();
-		info_.h = imginfo.value("h").toInt();
-		info_.size = imginfo.value("size").toInt();
+                info_.w    = imginfo.value("w").toInt();
+                info_.h    = imginfo.value("h").toInt();
+                info_.size = imginfo.value("size").toInt();
 
-		info_.mimetype = imginfo.value("mimetype").toString();
-		info_.thumbnail_url = imginfo.value("thumbnail_url").toString();
+                info_.mimetype      = imginfo.value("mimetype").toString();
+                info_.thumbnail_url = imginfo.value("thumbnail_url").toString();
 
-		if (imginfo.contains("thumbnail_info")) {
-			auto thumbinfo = imginfo.value("thumbnail_info").toObject();
+                if (imginfo.contains("thumbnail_info")) {
+                        auto thumbinfo = imginfo.value("thumbnail_info").toObject();
 
-			info_.thumbnail_info.h = thumbinfo.value("h").toInt();
-			info_.thumbnail_info.w = thumbinfo.value("w").toInt();
-			info_.thumbnail_info.size = thumbinfo.value("size").toInt();
-			info_.thumbnail_info.mimetype = thumbinfo.value("mimetype").toString();
-		}
-	}
+                        info_.thumbnail_info.h        = thumbinfo.value("h").toInt();
+                        info_.thumbnail_info.w        = thumbinfo.value("w").toInt();
+                        info_.thumbnail_info.size     = thumbinfo.value("size").toInt();
+                        info_.thumbnail_info.mimetype = thumbinfo.value("mimetype").toString();
+                }
+        }
 }

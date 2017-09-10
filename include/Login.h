@@ -24,60 +24,60 @@
 class LoginRequest
 {
 public:
-	LoginRequest();
-	LoginRequest(QString username, QString password);
+        LoginRequest();
+        LoginRequest(QString username, QString password);
 
-	QByteArray serialize() noexcept;
+        QByteArray serialize() noexcept;
 
-	inline void setPassword(QString password);
-	inline void setUser(QString username);
+        inline void setPassword(QString password);
+        inline void setUser(QString username);
 
 private:
-	QString user_;
-	QString password_;
+        QString user_;
+        QString password_;
 };
 
 inline void
 LoginRequest::setPassword(QString password)
 {
-	password_ = password;
+        password_ = password;
 }
 
 inline void
 LoginRequest::setUser(QString username)
 {
-	user_ = username;
+        user_ = username;
 }
 
 class LoginResponse : public Deserializable
 {
 public:
-	void deserialize(const QJsonDocument &data) override;
+        void deserialize(const QJsonDocument &data) override;
 
-	inline QString getAccessToken();
-	inline QString getHomeServer();
-	inline QString getUserId();
+        inline QString getAccessToken();
+        inline QString getHomeServer();
+        inline QString getUserId();
 
 private:
-	QString access_token_;
-	QString home_server_;
-	QString user_id_;
+        QString access_token_;
+        QString home_server_;
+        QString user_id_;
 };
 
 inline QString
 LoginResponse::getAccessToken()
 {
-	return access_token_;
+        return access_token_;
 }
 
 inline QString
 LoginResponse::getHomeServer()
 {
-	return home_server_;
+        return home_server_;
 }
 
 inline QString
 LoginResponse::getUserId()
 {
-	return user_id_;
+        return user_id_;
 }

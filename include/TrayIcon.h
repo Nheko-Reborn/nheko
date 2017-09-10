@@ -28,31 +28,31 @@
 class MsgCountComposedIcon : public QIconEngine
 {
 public:
-	MsgCountComposedIcon(const QString &filename);
+        MsgCountComposedIcon(const QString &filename);
 
-	virtual void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state);
-	virtual QIconEngine *clone() const;
+        virtual void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state);
+        virtual QIconEngine *clone() const;
 
-	int msgCount = 0;
+        int msgCount = 0;
 
 private:
-	const int BubbleDiameter = 17;
+        const int BubbleDiameter = 17;
 
-	QIcon icon_;
+        QIcon icon_;
 };
 
 class TrayIcon : public QSystemTrayIcon
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	TrayIcon(const QString &filename, QWidget *parent);
+        TrayIcon(const QString &filename, QWidget *parent);
 
 public slots:
-	void setUnreadCount(int count);
+        void setUnreadCount(int count);
 
 private:
-	QAction *viewAction_;
-	QAction *quitAction_;
+        QAction *viewAction_;
+        QAction *quitAction_;
 
-	MsgCountComposedIcon *icon_;
+        MsgCountComposedIcon *icon_;
 };

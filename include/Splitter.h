@@ -21,15 +21,15 @@
 
 class Splitter : public QSplitter
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	explicit Splitter(QWidget *parent = nullptr);
+        explicit Splitter(QWidget *parent = nullptr);
 
 private:
-	void onSplitterMoved(int pos, int index);
+        void onSplitterMoved(int pos, int index);
 
-	int moveEventLimit_ = 50;
+        int moveEventLimit_ = 50;
 
-	int leftMoveCount_ = 0;
-	int rightMoveCount_ = 0;
+        int leftMoveCount_  = 0;
+        int rightMoveCount_ = 0;
 };

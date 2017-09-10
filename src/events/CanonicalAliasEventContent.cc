@@ -22,24 +22,24 @@ using namespace matrix::events;
 void
 CanonicalAliasEventContent::deserialize(const QJsonValue &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("CanonicalAliasEventContent is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("CanonicalAliasEventContent is not a JSON object");
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (object.value("alias") == QJsonValue::Undefined)
-		throw DeserializationException("alias key is missing");
+        if (object.value("alias") == QJsonValue::Undefined)
+                throw DeserializationException("alias key is missing");
 
-	alias_ = object.value("alias").toString();
+        alias_ = object.value("alias").toString();
 }
 
 QJsonObject
 CanonicalAliasEventContent::serialize() const
 {
-	QJsonObject object;
+        QJsonObject object;
 
-	if (!alias_.isEmpty())
-		object["alias"] = alias_;
+        if (!alias_.isEmpty())
+                object["alias"] = alias_;
 
-	return object;
+        return object;
 }

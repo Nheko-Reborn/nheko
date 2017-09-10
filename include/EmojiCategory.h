@@ -29,32 +29,32 @@
 
 class EmojiCategory : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	EmojiCategory(QString category, QList<Emoji> emoji, QWidget *parent = nullptr);
-	~EmojiCategory();
+        EmojiCategory(QString category, QList<Emoji> emoji, QWidget *parent = nullptr);
+        ~EmojiCategory();
 
 signals:
-	void emojiSelected(const QString &emoji);
+        void emojiSelected(const QString &emoji);
 
 private slots:
-	inline void clickIndex(const QModelIndex &);
+        inline void clickIndex(const QModelIndex &);
 
 private:
-	QVBoxLayout *mainLayout_;
+        QVBoxLayout *mainLayout_;
 
-	QStandardItemModel *itemModel_;
-	QListView *emojiListView_;
+        QStandardItemModel *itemModel_;
+        QListView *emojiListView_;
 
-	Emoji *data_;
-	EmojiItemDelegate *delegate_;
+        Emoji *data_;
+        EmojiItemDelegate *delegate_;
 
-	QLabel *category_;
+        QLabel *category_;
 };
 
 inline void
 EmojiCategory::clickIndex(const QModelIndex &index)
 {
-	emit emojiSelected(index.data(Qt::UserRole).toString());
+        emit emojiSelected(index.data(Qt::UserRole).toString());
 }

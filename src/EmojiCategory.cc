@@ -24,60 +24,60 @@
 EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *parent)
   : QWidget(parent)
 {
-	mainLayout_ = new QVBoxLayout(this);
-	mainLayout_->setMargin(0);
+        mainLayout_ = new QVBoxLayout(this);
+        mainLayout_->setMargin(0);
 
-	emojiListView_ = new QListView();
-	itemModel_ = new QStandardItemModel(this);
+        emojiListView_ = new QListView();
+        itemModel_     = new QStandardItemModel(this);
 
-	delegate_ = new EmojiItemDelegate(this);
-	data_ = new Emoji;
+        delegate_ = new EmojiItemDelegate(this);
+        data_     = new Emoji;
 
-	emojiListView_->setItemDelegate(delegate_);
-	emojiListView_->setSpacing(5);
-	emojiListView_->setModel(itemModel_);
-	emojiListView_->setViewMode(QListView::IconMode);
-	emojiListView_->setFlow(QListView::LeftToRight);
-	emojiListView_->setResizeMode(QListView::Adjust);
-	emojiListView_->verticalScrollBar()->setEnabled(false);
-	emojiListView_->horizontalScrollBar()->setEnabled(false);
+        emojiListView_->setItemDelegate(delegate_);
+        emojiListView_->setSpacing(5);
+        emojiListView_->setModel(itemModel_);
+        emojiListView_->setViewMode(QListView::IconMode);
+        emojiListView_->setFlow(QListView::LeftToRight);
+        emojiListView_->setResizeMode(QListView::Adjust);
+        emojiListView_->verticalScrollBar()->setEnabled(false);
+        emojiListView_->horizontalScrollBar()->setEnabled(false);
 
-	const int cols = 7;
-	const int rows = emoji.size() / 7;
+        const int cols = 7;
+        const int rows = emoji.size() / 7;
 
-	// TODO: Be precise here. Take the parent into consideration.
-	emojiListView_->setFixedSize(cols * 50 + 20, rows * 50 + 20);
-	emojiListView_->setGridSize(QSize(50, 50));
-	emojiListView_->setDragEnabled(false);
-	emojiListView_->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        // TODO: Be precise here. Take the parent into consideration.
+        emojiListView_->setFixedSize(cols * 50 + 20, rows * 50 + 20);
+        emojiListView_->setGridSize(QSize(50, 50));
+        emojiListView_->setDragEnabled(false);
+        emojiListView_->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	for (const auto &e : emoji) {
-		data_->unicode = e.unicode;
+        for (const auto &e : emoji) {
+                data_->unicode = e.unicode;
 
-		auto item = new QStandardItem;
-		item->setSizeHint(QSize(24, 24));
+                auto item = new QStandardItem;
+                item->setSizeHint(QSize(24, 24));
 
-		QVariant unicode(data_->unicode);
-		item->setData(unicode.toString(), Qt::UserRole);
+                QVariant unicode(data_->unicode);
+                item->setData(unicode.toString(), Qt::UserRole);
 
-		itemModel_->appendRow(item);
-	}
+                itemModel_->appendRow(item);
+        }
 
-	QFont font("Open Sans SemiBold");
-	font.setPixelSize(conf::fontSize);
+        QFont font("Open Sans SemiBold");
+        font.setPixelSize(conf::fontSize);
 
-	category_ = new QLabel(category, this);
-	category_->setFont(font);
-	category_->setStyleSheet("color: #ccc; margin: 20px 0px 15px 8px;");
+        category_ = new QLabel(category, this);
+        category_->setFont(font);
+        category_->setStyleSheet("color: #ccc; margin: 20px 0px 15px 8px;");
 
-	auto labelLayout_ = new QHBoxLayout();
-	labelLayout_->addWidget(category_);
-	labelLayout_->addStretch(1);
+        auto labelLayout_ = new QHBoxLayout();
+        labelLayout_->addWidget(category_);
+        labelLayout_->addStretch(1);
 
-	mainLayout_->addLayout(labelLayout_);
-	mainLayout_->addWidget(emojiListView_);
+        mainLayout_->addLayout(labelLayout_);
+        mainLayout_->addWidget(emojiListView_);
 
-	connect(emojiListView_, &QListView::clicked, this, &EmojiCategory::clickIndex);
+        connect(emojiListView_, &QListView::clicked, this, &EmojiCategory::clickIndex);
 }
 
 EmojiCategory::~EmojiCategory()

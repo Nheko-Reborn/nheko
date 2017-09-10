@@ -26,47 +26,47 @@
 #include "MatrixClient.h"
 
 namespace events = matrix::events;
-namespace msgs = matrix::events::messages;
+namespace msgs   = matrix::events::messages;
 
 class ImageItem : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	ImageItem(QSharedPointer<MatrixClient> client,
-		  const events::MessageEvent<msgs::Image> &event,
-		  QWidget *parent = nullptr);
+        ImageItem(QSharedPointer<MatrixClient> client,
+                  const events::MessageEvent<msgs::Image> &event,
+                  QWidget *parent = nullptr);
 
-	void setImage(const QPixmap &image);
+        void setImage(const QPixmap &image);
 
-	QSize sizeHint() const override;
+        QSize sizeHint() const override;
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
-	void mousePressEvent(QMouseEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
+        void resizeEvent(QResizeEvent *event) override;
 
 private slots:
-	void imageDownloaded(const QString &event_id, const QPixmap &img);
+        void imageDownloaded(const QString &event_id, const QPixmap &img);
 
 private:
-	void scaleImage();
-	void openUrl();
+        void scaleImage();
+        void openUrl();
 
-	int max_width_ = 500;
-	int max_height_ = 300;
+        int max_width_  = 500;
+        int max_height_ = 300;
 
-	int width_;
-	int height_;
+        int width_;
+        int height_;
 
-	QPixmap scaled_image_;
-	QPixmap image_;
+        QPixmap scaled_image_;
+        QPixmap image_;
 
-	QUrl url_;
-	QString text_;
+        QUrl url_;
+        QString text_;
 
-	int bottom_height_ = 30;
+        int bottom_height_ = 30;
 
-	events::MessageEvent<msgs::Image> event_;
+        events::MessageEvent<msgs::Image> event_;
 
-	QSharedPointer<MatrixClient> client_;
+        QSharedPointer<MatrixClient> client_;
 };

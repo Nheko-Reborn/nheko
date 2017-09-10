@@ -25,37 +25,37 @@
 LogoutDialog::LogoutDialog(QWidget *parent)
   : QFrame(parent)
 {
-	setMaximumSize(400, 400);
-	setStyleSheet("background-color: #f9f9f9");
+        setMaximumSize(400, 400);
+        setStyleSheet("background-color: #f9f9f9");
 
-	auto layout = new QVBoxLayout(this);
-	layout->setSpacing(30);
-	layout->setMargin(20);
+        auto layout = new QVBoxLayout(this);
+        layout->setSpacing(30);
+        layout->setMargin(20);
 
-	auto buttonLayout = new QHBoxLayout();
-	buttonLayout->setSpacing(0);
-	buttonLayout->setMargin(0);
+        auto buttonLayout = new QHBoxLayout();
+        buttonLayout->setSpacing(0);
+        buttonLayout->setMargin(0);
 
-	confirmBtn_ = new FlatButton("OK", this);
-	confirmBtn_->setFontSize(conf::btn::fontSize);
+        confirmBtn_ = new FlatButton("OK", this);
+        confirmBtn_->setFontSize(conf::btn::fontSize);
 
-	cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-	cancelBtn_->setFontSize(conf::btn::fontSize);
+        cancelBtn_ = new FlatButton(tr("CANCEL"), this);
+        cancelBtn_->setFontSize(conf::btn::fontSize);
 
-	buttonLayout->addStretch(1);
-	buttonLayout->addWidget(confirmBtn_);
-	buttonLayout->addWidget(cancelBtn_);
+        buttonLayout->addStretch(1);
+        buttonLayout->addWidget(confirmBtn_);
+        buttonLayout->addWidget(cancelBtn_);
 
-	QFont font;
-	font.setPixelSize(conf::headerFontSize);
+        QFont font;
+        font.setPixelSize(conf::headerFontSize);
 
-	auto label = new QLabel(tr("Logout. Are you sure?"), this);
-	label->setFont(font);
-	label->setStyleSheet("color: #333333");
+        auto label = new QLabel(tr("Logout. Are you sure?"), this);
+        label->setFont(font);
+        label->setStyleSheet("color: #333333");
 
-	layout->addWidget(label);
-	layout->addLayout(buttonLayout);
+        layout->addWidget(label);
+        layout->addLayout(buttonLayout);
 
-	connect(confirmBtn_, &QPushButton::clicked, [=]() { emit closing(true); });
-	connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false); });
+        connect(confirmBtn_, &QPushButton::clicked, [=]() { emit closing(true); });
+        connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false); });
 }

@@ -27,38 +27,38 @@
 
 class EmojiPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	EmojiPanel(QWidget *parent = nullptr);
+        EmojiPanel(QWidget *parent = nullptr);
 
-	void fadeOut();
-	void fadeIn();
+        void fadeOut();
+        void fadeIn();
 
 signals:
-	void mouseLeft();
-	void emojiSelected(const QString &emoji);
+        void mouseLeft();
+        void emojiSelected(const QString &emoji);
 
 protected:
-	void leaveEvent(QEvent *event);
-	void paintEvent(QPaintEvent *event);
+        void leaveEvent(QEvent *event);
+        void paintEvent(QPaintEvent *event);
 
 private:
-	void showEmojiCategory(const EmojiCategory *category);
+        void showEmojiCategory(const EmojiCategory *category);
 
-	QPropertyAnimation *animation_;
-	QGraphicsOpacityEffect *opacity_;
+        QPropertyAnimation *animation_;
+        QGraphicsOpacityEffect *opacity_;
 
-	EmojiProvider emoji_provider_;
+        EmojiProvider emoji_provider_;
 
-	QScrollArea *scrollArea_;
+        QScrollArea *scrollArea_;
 
-	int shadowMargin_;
+        int shadowMargin_;
 
-	// Panel dimensions.
-	int width_;
-	int height_;
+        // Panel dimensions.
+        int width_;
+        int height_;
 
-	int animationDuration_;
-	int categoryIconSize_;
+        int animationDuration_;
+        int categoryIconSize_;
 };

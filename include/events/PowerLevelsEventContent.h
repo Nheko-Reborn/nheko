@@ -27,9 +27,9 @@ namespace matrix
 namespace events
 {
 enum class PowerLevels {
-	User = 0,
-	Moderator = 50,
-	Admin = 100,
+        User      = 0,
+        Moderator = 50,
+        Admin     = 100,
 };
 
 /*
@@ -41,75 +41,75 @@ class PowerLevelsEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline int banLevel() const;
-	inline int inviteLevel() const;
-	inline int kickLevel() const;
-	inline int redactLevel() const;
+        inline int banLevel() const;
+        inline int inviteLevel() const;
+        inline int kickLevel() const;
+        inline int redactLevel() const;
 
-	inline int eventsDefaultLevel() const;
-	inline int stateDefaultLevel() const;
-	inline int usersDefaultLevel() const;
+        inline int eventsDefaultLevel() const;
+        inline int stateDefaultLevel() const;
+        inline int usersDefaultLevel() const;
 
-	int eventLevel(QString event_type) const;
-	int userLevel(QString user_id) const;
+        int eventLevel(QString event_type) const;
+        int userLevel(QString user_id) const;
 
 private:
-	int ban_ = static_cast<int>(PowerLevels::Moderator);
-	int invite_ = static_cast<int>(PowerLevels::Moderator);
-	int kick_ = static_cast<int>(PowerLevels::Moderator);
-	int redact_ = static_cast<int>(PowerLevels::Moderator);
+        int ban_    = static_cast<int>(PowerLevels::Moderator);
+        int invite_ = static_cast<int>(PowerLevels::Moderator);
+        int kick_   = static_cast<int>(PowerLevels::Moderator);
+        int redact_ = static_cast<int>(PowerLevels::Moderator);
 
-	int events_default_ = static_cast<int>(PowerLevels::User);
-	int state_default_ = static_cast<int>(PowerLevels::Moderator);
-	int users_default_ = static_cast<int>(PowerLevels::User);
+        int events_default_ = static_cast<int>(PowerLevels::User);
+        int state_default_  = static_cast<int>(PowerLevels::Moderator);
+        int users_default_  = static_cast<int>(PowerLevels::User);
 
-	QMap<QString, int> events_;
-	QMap<QString, int> users_;
+        QMap<QString, int> events_;
+        QMap<QString, int> users_;
 };
 
 inline int
 PowerLevelsEventContent::banLevel() const
 {
-	return ban_;
+        return ban_;
 }
 
 inline int
 PowerLevelsEventContent::inviteLevel() const
 {
-	return invite_;
+        return invite_;
 }
 
 inline int
 PowerLevelsEventContent::kickLevel() const
 {
-	return kick_;
+        return kick_;
 }
 
 inline int
 PowerLevelsEventContent::redactLevel() const
 {
-	return redact_;
+        return redact_;
 }
 
 inline int
 PowerLevelsEventContent::eventsDefaultLevel() const
 {
-	return events_default_;
+        return events_default_;
 }
 
 inline int
 PowerLevelsEventContent::stateDefaultLevel() const
 {
-	return state_default_;
+        return state_default_;
 }
 
 inline int
 PowerLevelsEventContent::usersDefaultLevel() const
 {
-	return users_default_;
+        return users_default_;
 }
 } // namespace events
 } // namespace matrix

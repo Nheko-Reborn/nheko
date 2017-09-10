@@ -28,40 +28,40 @@ EmojiPickButton::EmojiPickButton(QWidget *parent)
 void
 EmojiPickButton::enterEvent(QEvent *e)
 {
-	Q_UNUSED(e);
+        Q_UNUSED(e);
 
-	if (panel_ == nullptr) {
-		panel_ = new EmojiPanel(this);
-		connect(panel_, &EmojiPanel::emojiSelected, this, &EmojiPickButton::emojiSelected);
-	}
+        if (panel_ == nullptr) {
+                panel_ = new EmojiPanel(this);
+                connect(panel_, &EmojiPanel::emojiSelected, this, &EmojiPickButton::emojiSelected);
+        }
 
-	QPoint pos(rect().x(), rect().y());
-	pos = this->mapToGlobal(pos);
+        QPoint pos(rect().x(), rect().y());
+        pos = this->mapToGlobal(pos);
 
-	auto panel_size = panel_->sizeHint();
+        auto panel_size = panel_->sizeHint();
 
-	auto x = pos.x() - panel_size.width() + horizontal_distance_;
-	auto y = pos.y() - panel_size.height() - vertical_distance_;
+        auto x = pos.x() - panel_size.width() + horizontal_distance_;
+        auto y = pos.y() - panel_size.height() - vertical_distance_;
 
-	panel_->move(x, y);
-	panel_->fadeIn();
-	panel_->show();
+        panel_->move(x, y);
+        panel_->fadeIn();
+        panel_->show();
 }
 
 void
 EmojiPickButton::leaveEvent(QEvent *e)
 {
-	Q_UNUSED(e);
+        Q_UNUSED(e);
 
-	if (panel_->underMouse())
-		return;
+        if (panel_->underMouse())
+                return;
 
-	auto pos = QCursor::pos();
-	auto panel_geometry = panel_->geometry();
-	panel_geometry.adjust(0, 0, 0, vertical_distance_);
+        auto pos            = QCursor::pos();
+        auto panel_geometry = panel_->geometry();
+        panel_geometry.adjust(0, 0, 0, vertical_distance_);
 
-	if (panel_geometry.contains(pos))
-		return;
+        if (panel_geometry.contains(pos))
+                return;
 
-	panel_->fadeOut();
+        panel_->fadeOut();
 }

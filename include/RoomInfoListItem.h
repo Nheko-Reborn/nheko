@@ -27,99 +27,102 @@
 #include "RoomState.h"
 
 struct DescInfo {
-	QString username;
-	QString userid;
-	QString body;
-	QString timestamp;
+        QString username;
+        QString userid;
+        QString body;
+        QString timestamp;
 };
 
 class RoomInfoListItem : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	RoomInfoListItem(QSharedPointer<RoomSettings> settings, RoomState state, QString room_id, QWidget *parent = 0);
+        RoomInfoListItem(QSharedPointer<RoomSettings> settings,
+                         RoomState state,
+                         QString room_id,
+                         QWidget *parent = 0);
 
-	~RoomInfoListItem();
+        ~RoomInfoListItem();
 
-	void updateUnreadMessageCount(int count);
-	void clearUnreadMessageCount();
-	void setState(const RoomState &state);
+        void updateUnreadMessageCount(int count);
+        void clearUnreadMessageCount();
+        void setState(const RoomState &state);
 
-	inline bool isPressed() const;
-	inline RoomState state() const;
-	inline void setAvatar(const QImage &avatar_image);
-	inline int unreadMessageCount() const;
-	inline void setDescriptionMessage(const DescInfo &info);
+        inline bool isPressed() const;
+        inline RoomState state() const;
+        inline void setAvatar(const QImage &avatar_image);
+        inline int unreadMessageCount() const;
+        inline void setDescriptionMessage(const DescInfo &info);
 
 signals:
-	void clicked(const QString &room_id);
+        void clicked(const QString &room_id);
 
 public slots:
-	void setPressedState(bool state);
+        void setPressedState(bool state);
 
 protected:
-	void mousePressEvent(QMouseEvent *event) override;
-	void paintEvent(QPaintEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
-	void contextMenuEvent(QContextMenuEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
+        void resizeEvent(QResizeEvent *event) override;
+        void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
-	QString notificationText();
+        QString notificationText();
 
-	const int Padding = 7;
-	const int IconSize = 48;
+        const int Padding  = 7;
+        const int IconSize = 48;
 
-	RippleOverlay *ripple_overlay_;
+        RippleOverlay *ripple_overlay_;
 
-	RoomState state_;
+        RoomState state_;
 
-	QString roomId_;
-	QString roomName_;
+        QString roomId_;
+        QString roomName_;
 
-	DescInfo lastMsgInfo_;
+        DescInfo lastMsgInfo_;
 
-	QPixmap roomAvatar_;
+        QPixmap roomAvatar_;
 
-	Menu *menu_;
-	QAction *toggleNotifications_;
+        Menu *menu_;
+        QAction *toggleNotifications_;
 
-	QSharedPointer<RoomSettings> roomSettings_;
+        QSharedPointer<RoomSettings> roomSettings_;
 
-	bool isPressed_ = false;
+        bool isPressed_ = false;
 
-	int maxHeight_;
-	int unreadMsgCount_ = 0;
+        int maxHeight_;
+        int unreadMsgCount_ = 0;
 };
 
 inline int
 RoomInfoListItem::unreadMessageCount() const
 {
-	return unreadMsgCount_;
+        return unreadMsgCount_;
 }
 
 inline bool
 RoomInfoListItem::isPressed() const
 {
-	return isPressed_;
+        return isPressed_;
 }
 
 inline RoomState
 RoomInfoListItem::state() const
 {
-	return state_;
+        return state_;
 }
 
 inline void
 RoomInfoListItem::setAvatar(const QImage &img)
 {
-	roomAvatar_ =
-		QPixmap::fromImage(img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	update();
+        roomAvatar_ = QPixmap::fromImage(
+          img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        update();
 }
 
 inline void
 RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
 {
-	lastMsgInfo_ = info;
+        lastMsgInfo_ = info;
 }

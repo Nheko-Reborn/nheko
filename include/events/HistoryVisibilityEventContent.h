@@ -26,10 +26,10 @@ namespace matrix
 namespace events
 {
 enum class HistoryVisibility {
-	Invited,
-	Joined,
-	Shared,
-	WorldReadable,
+        Invited,
+        Joined,
+        Shared,
+        WorldReadable,
 };
 
 class HistoryVisibilityEventContent
@@ -37,19 +37,19 @@ class HistoryVisibilityEventContent
   , public Serializable
 {
 public:
-	inline HistoryVisibility historyVisibility() const;
+        inline HistoryVisibility historyVisibility() const;
 
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
 private:
-	HistoryVisibility history_visibility_;
+        HistoryVisibility history_visibility_;
 };
 
 inline HistoryVisibility
 HistoryVisibilityEventContent::historyVisibility() const
 {
-	return history_visibility_;
+        return history_visibility_;
 }
 } // namespace events
 } // namespace matrix

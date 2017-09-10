@@ -34,225 +34,238 @@ EmojiPanel::EmojiPanel(QWidget *parent)
   , animationDuration_{ 100 }
   , categoryIconSize_{ 20 }
 {
-	setStyleSheet("QWidget {background: #f8fbfe; color: #e8e8e8; border: none;}"
-		      "QScrollBar:vertical { background-color: #f8fbfe; width: 8px; margin: 0px 2px 0 2px; }"
-		      "QScrollBar::handle:vertical { background-color: #d6dde3; min-height: 20px; }"
-		      "QScrollBar::add-line:vertical { border: none; background: none; }"
-		      "QScrollBar::sub-line:vertical { border: none; background: none; }");
+        setStyleSheet(
+          "QWidget {background: #f8fbfe; color: #e8e8e8; border: none;}"
+          "QScrollBar:vertical { background-color: #f8fbfe; width: 8px; margin: 0px 2px 0 2px; }"
+          "QScrollBar::handle:vertical { background-color: #d6dde3; min-height: 20px; }"
+          "QScrollBar::add-line:vertical { border: none; background: none; }"
+          "QScrollBar::sub-line:vertical { border: none; background: none; }");
 
-	setAttribute(Qt::WA_TranslucentBackground, true);
-	setAttribute(Qt::WA_ShowWithoutActivating, true);
-	setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
+        setAttribute(Qt::WA_TranslucentBackground, true);
+        setAttribute(Qt::WA_ShowWithoutActivating, true);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
 
-	auto mainWidget = new QWidget(this);
-	mainWidget->setMaximumSize(width_, height_);
+        auto mainWidget = new QWidget(this);
+        mainWidget->setMaximumSize(width_, height_);
 
-	auto topLayout = new QVBoxLayout(this);
-	topLayout->addWidget(mainWidget);
-	topLayout->setMargin(shadowMargin_);
+        auto topLayout = new QVBoxLayout(this);
+        topLayout->addWidget(mainWidget);
+        topLayout->setMargin(shadowMargin_);
 
-	auto contentLayout = new QVBoxLayout(mainWidget);
-	contentLayout->setMargin(0);
+        auto contentLayout = new QVBoxLayout(mainWidget);
+        contentLayout->setMargin(0);
 
-	auto emojiCategories = new QFrame(mainWidget);
-	emojiCategories->setStyleSheet("background-color: #f2f2f2");
+        auto emojiCategories = new QFrame(mainWidget);
+        emojiCategories->setStyleSheet("background-color: #f2f2f2");
 
-	auto categoriesLayout = new QHBoxLayout(emojiCategories);
-	categoriesLayout->setSpacing(6);
-	categoriesLayout->setMargin(5);
+        auto categoriesLayout = new QHBoxLayout(emojiCategories);
+        categoriesLayout->setSpacing(6);
+        categoriesLayout->setMargin(5);
 
-	auto peopleCategory = new FlatButton(emojiCategories);
-	peopleCategory->setIcon(QIcon(":/icons/icons/emoji-categories/people.png"));
-	peopleCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	peopleCategory->setForegroundColor("gray");
+        auto peopleCategory = new FlatButton(emojiCategories);
+        peopleCategory->setIcon(QIcon(":/icons/icons/emoji-categories/people.png"));
+        peopleCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        peopleCategory->setForegroundColor("gray");
 
-	auto natureCategory_ = new FlatButton(emojiCategories);
-	natureCategory_->setIcon(QIcon(":/icons/icons/emoji-categories/nature.png"));
-	natureCategory_->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	natureCategory_->setForegroundColor("gray");
+        auto natureCategory_ = new FlatButton(emojiCategories);
+        natureCategory_->setIcon(QIcon(":/icons/icons/emoji-categories/nature.png"));
+        natureCategory_->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        natureCategory_->setForegroundColor("gray");
 
-	auto foodCategory_ = new FlatButton(emojiCategories);
-	foodCategory_->setIcon(QIcon(":/icons/icons/emoji-categories/foods.png"));
-	foodCategory_->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	foodCategory_->setForegroundColor("gray");
+        auto foodCategory_ = new FlatButton(emojiCategories);
+        foodCategory_->setIcon(QIcon(":/icons/icons/emoji-categories/foods.png"));
+        foodCategory_->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        foodCategory_->setForegroundColor("gray");
 
-	auto activityCategory = new FlatButton(emojiCategories);
-	activityCategory->setIcon(QIcon(":/icons/icons/emoji-categories/activity.png"));
-	activityCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	activityCategory->setForegroundColor("gray");
+        auto activityCategory = new FlatButton(emojiCategories);
+        activityCategory->setIcon(QIcon(":/icons/icons/emoji-categories/activity.png"));
+        activityCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        activityCategory->setForegroundColor("gray");
 
-	auto travelCategory = new FlatButton(emojiCategories);
-	travelCategory->setIcon(QIcon(":/icons/icons/emoji-categories/travel.png"));
-	travelCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	travelCategory->setForegroundColor("gray");
+        auto travelCategory = new FlatButton(emojiCategories);
+        travelCategory->setIcon(QIcon(":/icons/icons/emoji-categories/travel.png"));
+        travelCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        travelCategory->setForegroundColor("gray");
 
-	auto objectsCategory = new FlatButton(emojiCategories);
-	objectsCategory->setIcon(QIcon(":/icons/icons/emoji-categories/objects.png"));
-	objectsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	objectsCategory->setForegroundColor("gray");
+        auto objectsCategory = new FlatButton(emojiCategories);
+        objectsCategory->setIcon(QIcon(":/icons/icons/emoji-categories/objects.png"));
+        objectsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        objectsCategory->setForegroundColor("gray");
 
-	auto symbolsCategory = new FlatButton(emojiCategories);
-	symbolsCategory->setIcon(QIcon(":/icons/icons/emoji-categories/symbols.png"));
-	symbolsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	symbolsCategory->setForegroundColor("gray");
+        auto symbolsCategory = new FlatButton(emojiCategories);
+        symbolsCategory->setIcon(QIcon(":/icons/icons/emoji-categories/symbols.png"));
+        symbolsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        symbolsCategory->setForegroundColor("gray");
 
-	auto flagsCategory = new FlatButton(emojiCategories);
-	flagsCategory->setIcon(QIcon(":/icons/icons/emoji-categories/flags.png"));
-	flagsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-	flagsCategory->setForegroundColor("gray");
+        auto flagsCategory = new FlatButton(emojiCategories);
+        flagsCategory->setIcon(QIcon(":/icons/icons/emoji-categories/flags.png"));
+        flagsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
+        flagsCategory->setForegroundColor("gray");
 
-	categoriesLayout->addWidget(peopleCategory);
-	categoriesLayout->addWidget(natureCategory_);
-	categoriesLayout->addWidget(foodCategory_);
-	categoriesLayout->addWidget(activityCategory);
-	categoriesLayout->addWidget(travelCategory);
-	categoriesLayout->addWidget(objectsCategory);
-	categoriesLayout->addWidget(symbolsCategory);
-	categoriesLayout->addWidget(flagsCategory);
+        categoriesLayout->addWidget(peopleCategory);
+        categoriesLayout->addWidget(natureCategory_);
+        categoriesLayout->addWidget(foodCategory_);
+        categoriesLayout->addWidget(activityCategory);
+        categoriesLayout->addWidget(travelCategory);
+        categoriesLayout->addWidget(objectsCategory);
+        categoriesLayout->addWidget(symbolsCategory);
+        categoriesLayout->addWidget(flagsCategory);
 
-	scrollArea_ = new QScrollArea(this);
-	scrollArea_->setWidgetResizable(true);
-	scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea_ = new QScrollArea(this);
+        scrollArea_->setWidgetResizable(true);
+        scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	auto scrollWidget = new QWidget(this);
-	auto scrollLayout = new QVBoxLayout(scrollWidget);
+        auto scrollWidget = new QWidget(this);
+        auto scrollLayout = new QVBoxLayout(scrollWidget);
 
-	scrollLayout->setMargin(0);
-	scrollArea_->setWidget(scrollWidget);
+        scrollLayout->setMargin(0);
+        scrollArea_->setWidget(scrollWidget);
 
-	auto peopleEmoji = new EmojiCategory(tr("Smileys & People"), emoji_provider_.people, scrollWidget);
-	scrollLayout->addWidget(peopleEmoji);
+        auto peopleEmoji =
+          new EmojiCategory(tr("Smileys & People"), emoji_provider_.people, scrollWidget);
+        scrollLayout->addWidget(peopleEmoji);
 
-	auto natureEmoji = new EmojiCategory(tr("Animals & Nature"), emoji_provider_.nature, scrollWidget);
-	scrollLayout->addWidget(natureEmoji);
+        auto natureEmoji =
+          new EmojiCategory(tr("Animals & Nature"), emoji_provider_.nature, scrollWidget);
+        scrollLayout->addWidget(natureEmoji);
 
-	auto foodEmoji = new EmojiCategory(tr("Food & Drink"), emoji_provider_.food, scrollWidget);
-	scrollLayout->addWidget(foodEmoji);
+        auto foodEmoji = new EmojiCategory(tr("Food & Drink"), emoji_provider_.food, scrollWidget);
+        scrollLayout->addWidget(foodEmoji);
 
-	auto activityEmoji = new EmojiCategory(tr("Activity"), emoji_provider_.activity, scrollWidget);
-	scrollLayout->addWidget(activityEmoji);
+        auto activityEmoji =
+          new EmojiCategory(tr("Activity"), emoji_provider_.activity, scrollWidget);
+        scrollLayout->addWidget(activityEmoji);
 
-	auto travelEmoji = new EmojiCategory(tr("Travel & Places"), emoji_provider_.travel, scrollWidget);
-	scrollLayout->addWidget(travelEmoji);
+        auto travelEmoji =
+          new EmojiCategory(tr("Travel & Places"), emoji_provider_.travel, scrollWidget);
+        scrollLayout->addWidget(travelEmoji);
 
-	auto objectsEmoji = new EmojiCategory(tr("Objects"), emoji_provider_.objects, scrollWidget);
-	scrollLayout->addWidget(objectsEmoji);
+        auto objectsEmoji = new EmojiCategory(tr("Objects"), emoji_provider_.objects, scrollWidget);
+        scrollLayout->addWidget(objectsEmoji);
 
-	auto symbolsEmoji = new EmojiCategory(tr("Symbols"), emoji_provider_.symbols, scrollWidget);
-	scrollLayout->addWidget(symbolsEmoji);
+        auto symbolsEmoji = new EmojiCategory(tr("Symbols"), emoji_provider_.symbols, scrollWidget);
+        scrollLayout->addWidget(symbolsEmoji);
 
-	auto flagsEmoji = new EmojiCategory(tr("Flags"), emoji_provider_.flags, scrollWidget);
-	scrollLayout->addWidget(flagsEmoji);
+        auto flagsEmoji = new EmojiCategory(tr("Flags"), emoji_provider_.flags, scrollWidget);
+        scrollLayout->addWidget(flagsEmoji);
 
-	contentLayout->addStretch(1);
-	contentLayout->addWidget(scrollArea_);
-	contentLayout->addWidget(emojiCategories);
+        contentLayout->addStretch(1);
+        contentLayout->addWidget(scrollArea_);
+        contentLayout->addWidget(emojiCategories);
 
-	opacity_ = new QGraphicsOpacityEffect(this);
-	opacity_->setOpacity(1.0);
+        opacity_ = new QGraphicsOpacityEffect(this);
+        opacity_->setOpacity(1.0);
 
-	setGraphicsEffect(opacity_);
+        setGraphicsEffect(opacity_);
 
-	animation_ = new QPropertyAnimation(opacity_, "opacity", this);
-	animation_->setDuration(animationDuration_);
-	animation_->setStartValue(1);
-	animation_->setEndValue(0);
+        animation_ = new QPropertyAnimation(opacity_, "opacity", this);
+        animation_->setDuration(animationDuration_);
+        animation_->setStartValue(1);
+        animation_->setEndValue(0);
 
-	connect(peopleEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(peopleCategory, &QPushButton::clicked, [this, peopleEmoji]() { this->showEmojiCategory(peopleEmoji); });
+        connect(peopleEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(peopleCategory, &QPushButton::clicked, [this, peopleEmoji]() {
+                this->showEmojiCategory(peopleEmoji);
+        });
 
-	connect(natureEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(natureCategory_, &QPushButton::clicked, [this, natureEmoji]() {
-		this->showEmojiCategory(natureEmoji);
-	});
+        connect(natureEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(natureCategory_, &QPushButton::clicked, [this, natureEmoji]() {
+                this->showEmojiCategory(natureEmoji);
+        });
 
-	connect(foodEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(foodCategory_, &QPushButton::clicked, [this, foodEmoji]() { this->showEmojiCategory(foodEmoji); });
+        connect(foodEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(foodCategory_, &QPushButton::clicked, [this, foodEmoji]() {
+                this->showEmojiCategory(foodEmoji);
+        });
 
-	connect(activityEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(activityCategory, &QPushButton::clicked, [this, activityEmoji]() {
-		this->showEmojiCategory(activityEmoji);
-	});
+        connect(activityEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(activityCategory, &QPushButton::clicked, [this, activityEmoji]() {
+                this->showEmojiCategory(activityEmoji);
+        });
 
-	connect(travelEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(travelCategory, &QPushButton::clicked, [this, travelEmoji]() { this->showEmojiCategory(travelEmoji); });
+        connect(travelEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(travelCategory, &QPushButton::clicked, [this, travelEmoji]() {
+                this->showEmojiCategory(travelEmoji);
+        });
 
-	connect(objectsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(objectsCategory, &QPushButton::clicked, [this, objectsEmoji]() {
-		this->showEmojiCategory(objectsEmoji);
-	});
+        connect(objectsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(objectsCategory, &QPushButton::clicked, [this, objectsEmoji]() {
+                this->showEmojiCategory(objectsEmoji);
+        });
 
-	connect(symbolsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(symbolsCategory, &QPushButton::clicked, [this, symbolsEmoji]() {
-		this->showEmojiCategory(symbolsEmoji);
-	});
+        connect(symbolsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(symbolsCategory, &QPushButton::clicked, [this, symbolsEmoji]() {
+                this->showEmojiCategory(symbolsEmoji);
+        });
 
-	connect(flagsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
-	connect(flagsCategory, &QPushButton::clicked, [this, flagsEmoji]() { this->showEmojiCategory(flagsEmoji); });
+        connect(flagsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(flagsCategory, &QPushButton::clicked, [this, flagsEmoji]() {
+                this->showEmojiCategory(flagsEmoji);
+        });
 
-	connect(animation_, &QAbstractAnimation::finished, [this]() {
-		if (animation_->direction() == QAbstractAnimation::Forward)
-			this->hide();
-	});
+        connect(animation_, &QAbstractAnimation::finished, [this]() {
+                if (animation_->direction() == QAbstractAnimation::Forward)
+                        this->hide();
+        });
 }
 
 void
 EmojiPanel::showEmojiCategory(const EmojiCategory *category)
 {
-	auto posToGo = category->mapToParent(QPoint()).y();
-	auto current = scrollArea_->verticalScrollBar()->value();
+        auto posToGo = category->mapToParent(QPoint()).y();
+        auto current = scrollArea_->verticalScrollBar()->value();
 
-	if (current == posToGo)
-		return;
+        if (current == posToGo)
+                return;
 
-	// HACK
-	// If we want to go to a previous category and position the label at the top
-	// the 6*50 offset won't work because not all the categories have the same height.
-	// To ensure the category is at the top, we move to the top
-	// and go as normal to the next category.
-	if (current > posToGo)
-		this->scrollArea_->ensureVisible(0, 0, 0, 0);
+        // HACK
+        // If we want to go to a previous category and position the label at the top
+        // the 6*50 offset won't work because not all the categories have the same height.
+        // To ensure the category is at the top, we move to the top
+        // and go as normal to the next category.
+        if (current > posToGo)
+                this->scrollArea_->ensureVisible(0, 0, 0, 0);
 
-	posToGo += 6 * 50;
-	this->scrollArea_->ensureVisible(0, posToGo, 0, 0);
+        posToGo += 6 * 50;
+        this->scrollArea_->ensureVisible(0, posToGo, 0, 0);
 }
 
 void
 EmojiPanel::leaveEvent(QEvent *event)
 {
-	Q_UNUSED(event);
+        Q_UNUSED(event);
 
-	fadeOut();
+        fadeOut();
 }
 
 void
 EmojiPanel::paintEvent(QPaintEvent *event)
 {
-	QPainter p(this);
-	DropShadow::draw(p,
-			 shadowMargin_,
-			 4.0,
-			 QColor(120, 120, 120, 92),
-			 QColor(255, 255, 255, 0),
-			 0.0,
-			 1.0,
-			 0.6,
-			 width(),
-			 height());
+        QPainter p(this);
+        DropShadow::draw(p,
+                         shadowMargin_,
+                         4.0,
+                         QColor(120, 120, 120, 92),
+                         QColor(255, 255, 255, 0),
+                         0.0,
+                         1.0,
+                         0.6,
+                         width(),
+                         height());
 
-	QWidget::paintEvent(event);
+        QWidget::paintEvent(event);
 }
 
 void
 EmojiPanel::fadeOut()
 {
-	animation_->setDirection(QAbstractAnimation::Forward);
-	animation_->start();
+        animation_->setDirection(QAbstractAnimation::Forward);
+        animation_->start();
 }
 
 void
 EmojiPanel::fadeIn()
 {
-	animation_->setDirection(QAbstractAnimation::Backward);
-	animation_->start();
+        animation_->setDirection(QAbstractAnimation::Backward);
+        animation_->start();
 }

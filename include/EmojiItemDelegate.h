@@ -25,14 +25,16 @@
 
 class EmojiItemDelegate : public QStyledItemDelegate
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	explicit EmojiItemDelegate(QObject *parent = nullptr);
-	~EmojiItemDelegate();
+        explicit EmojiItemDelegate(QObject *parent = nullptr);
+        ~EmojiItemDelegate();
 
-	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const override;
 
 private:
-	Emoji *data_;
+        Emoji *data_;
 };

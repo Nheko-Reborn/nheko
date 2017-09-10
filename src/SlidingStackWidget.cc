@@ -20,19 +20,19 @@
 SlidingStackWidget::SlidingStackWidget(QWidget *parent)
   : QStackedWidget(parent)
 {
-	window_ = parent;
+        window_ = parent;
 
-	if (parent == Q_NULLPTR) {
-		qDebug() << "Using nullptr for parent";
-		window_ = this;
-	}
+        if (parent == Q_NULLPTR) {
+                qDebug() << "Using nullptr for parent";
+                window_ = this;
+        }
 
-	current_position_ = QPoint(0, 0);
-	speed_ = 400;
-	now_ = 0;
-	next_ = 0;
-	active_ = false;
-	animation_type_ = QEasingCurve::InOutCirc;
+        current_position_ = QPoint(0, 0);
+        speed_            = 400;
+        now_              = 0;
+        next_             = 0;
+        active_           = false;
+        animation_type_   = QEasingCurve::InOutCirc;
 }
 
 SlidingStackWidget::~SlidingStackWidget()
@@ -42,116 +42,116 @@ SlidingStackWidget::~SlidingStackWidget()
 void
 SlidingStackWidget::slideInNext()
 {
-	int now = currentIndex();
+        int now = currentIndex();
 
-	if (now < count() - 1)
-		slideInIndex(now + 1);
+        if (now < count() - 1)
+                slideInIndex(now + 1);
 }
 
 void
 SlidingStackWidget::slideInPrevious()
 {
-	int now = currentIndex();
+        int now = currentIndex();
 
-	if (now > 0)
-		slideInIndex(now - 1);
+        if (now > 0)
+                slideInIndex(now - 1);
 }
 
 void
 SlidingStackWidget::slideInIndex(int index, AnimationDirection direction)
 {
-	// Take into consideration possible index overflow/undeflow.
-	if (index > count() - 1) {
-		direction = AnimationDirection::RIGHT_TO_LEFT;
-		index = index % count();
-	} else if (index < 0) {
-		direction = AnimationDirection::LEFT_TO_RIGHT;
-		index = (index + count()) % count();
-	}
+        // Take into consideration possible index overflow/undeflow.
+        if (index > count() - 1) {
+                direction = AnimationDirection::RIGHT_TO_LEFT;
+                index     = index % count();
+        } else if (index < 0) {
+                direction = AnimationDirection::LEFT_TO_RIGHT;
+                index     = (index + count()) % count();
+        }
 
-	slideInWidget(widget(index), direction);
+        slideInWidget(widget(index), direction);
 }
 
 void
 SlidingStackWidget::slideInWidget(QWidget *next_widget, AnimationDirection direction)
 {
-	// If an animation is currenlty executing we should wait for it to finish before
-	// another transition can start.
-	if (active_)
-		return;
+        // If an animation is currenlty executing we should wait for it to finish before
+        // another transition can start.
+        if (active_)
+                return;
 
-	active_ = true;
+        active_ = true;
 
-	int now = currentIndex();
-	int next = indexOf(next_widget);
+        int now  = currentIndex();
+        int next = indexOf(next_widget);
 
-	if (now == next) {
-		active_ = false;
-		return;
-	}
+        if (now == next) {
+                active_ = false;
+                return;
+        }
 
-	int offset_x = frameRect().width();
+        int offset_x = frameRect().width();
 
-	next_widget->setGeometry(0, 0, offset_x, 0);
+        next_widget->setGeometry(0, 0, offset_x, 0);
 
-	if (direction == AnimationDirection::LEFT_TO_RIGHT) {
-		offset_x = -offset_x;
-	}
+        if (direction == AnimationDirection::LEFT_TO_RIGHT) {
+                offset_x = -offset_x;
+        }
 
-	QPoint pnext = next_widget->pos();
-	QPoint pnow = widget(now)->pos();
-	current_position_ = pnow;
+        QPoint pnext      = next_widget->pos();
+        QPoint pnow       = widget(now)->pos();
+        current_position_ = pnow;
 
-	// Reposition the next widget outside of the display area.
-	next_widget->move(pnext.x() - offset_x, pnext.y());
+        // Reposition the next widget outside of the display area.
+        next_widget->move(pnext.x() - offset_x, pnext.y());
 
-	// Make the widget visible.
-	next_widget->show();
-	next_widget->raise();
+        // Make the widget visible.
+        next_widget->show();
+        next_widget->raise();
 
-	// Animate both the next and now widget.
-	QPropertyAnimation *animation_now = new QPropertyAnimation(widget(now), "pos", this);
+        // Animate both the next and now widget.
+        QPropertyAnimation *animation_now = new QPropertyAnimation(widget(now), "pos", this);
 
-	animation_now->setDuration(speed_);
-	animation_now->setEasingCurve(animation_type_);
-	animation_now->setStartValue(QPoint(pnow.x(), pnow.y()));
-	animation_now->setEndValue(QPoint(pnow.x() + offset_x, pnow.y()));
+        animation_now->setDuration(speed_);
+        animation_now->setEasingCurve(animation_type_);
+        animation_now->setStartValue(QPoint(pnow.x(), pnow.y()));
+        animation_now->setEndValue(QPoint(pnow.x() + offset_x, pnow.y()));
 
-	QPropertyAnimation *animation_next = new QPropertyAnimation(next_widget, "pos", this);
+        QPropertyAnimation *animation_next = new QPropertyAnimation(next_widget, "pos", this);
 
-	animation_next->setDuration(speed_);
-	animation_next->setEasingCurve(animation_type_);
-	animation_next->setStartValue(QPoint(pnext.x() - offset_x, pnext.y()));
-	animation_next->setEndValue(QPoint(pnext.x(), pnext.y()));
+        animation_next->setDuration(speed_);
+        animation_next->setEasingCurve(animation_type_);
+        animation_next->setStartValue(QPoint(pnext.x() - offset_x, pnext.y()));
+        animation_next->setEndValue(QPoint(pnext.x(), pnext.y()));
 
-	QParallelAnimationGroup *animation_group = new QParallelAnimationGroup(this);
+        QParallelAnimationGroup *animation_group = new QParallelAnimationGroup(this);
 
-	animation_group->addAnimation(animation_now);
-	animation_group->addAnimation(animation_next);
+        animation_group->addAnimation(animation_now);
+        animation_group->addAnimation(animation_next);
 
-	connect(animation_group, SIGNAL(finished()), this, SLOT(onAnimationFinished()));
+        connect(animation_group, SIGNAL(finished()), this, SLOT(onAnimationFinished()));
 
-	next_ = next;
-	now_ = now;
-	animation_group->start();
+        next_ = next;
+        now_  = now;
+        animation_group->start();
 }
 
 void
 SlidingStackWidget::onAnimationFinished()
 {
-	setCurrentIndex(next_);
+        setCurrentIndex(next_);
 
-	// The old widget is no longer necessary so we can hide it and
-	// move it back to its original position.
-	widget(now_)->hide();
-	widget(now_)->move(current_position_);
+        // The old widget is no longer necessary so we can hide it and
+        // move it back to its original position.
+        widget(now_)->hide();
+        widget(now_)->move(current_position_);
 
-	active_ = false;
-	emit animationFinished();
+        active_ = false;
+        emit animationFinished();
 }
 
 int
 SlidingStackWidget::getWidgetIndex(QWidget *widget)
 {
-	return indexOf(widget);
+        return indexOf(widget);
 }

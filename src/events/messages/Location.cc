@@ -22,26 +22,26 @@ using namespace matrix::events::messages;
 void
 Location::deserialize(const QJsonObject &object)
 {
-	if (!object.contains("geo_uri"))
-		throw DeserializationException("messages::Location geo_uri key is missing");
+        if (!object.contains("geo_uri"))
+                throw DeserializationException("messages::Location geo_uri key is missing");
 
-	if (object.value("msgtype") != "m.location")
-		throw DeserializationException("invalid msgtype for location");
+        if (object.value("msgtype") != "m.location")
+                throw DeserializationException("invalid msgtype for location");
 
-	geo_uri_ = object.value("geo_uri").toString();
+        geo_uri_ = object.value("geo_uri").toString();
 
-	if (object.contains("info")) {
-		auto location_info = object.value("info").toObject();
+        if (object.contains("info")) {
+                auto location_info = object.value("info").toObject();
 
-		info_.thumbnail_url = location_info.value("thumbnail_url").toString();
+                info_.thumbnail_url = location_info.value("thumbnail_url").toString();
 
-		if (location_info.contains("thumbnail_info")) {
-			auto thumbinfo = location_info.value("thumbnail_info").toObject();
+                if (location_info.contains("thumbnail_info")) {
+                        auto thumbinfo = location_info.value("thumbnail_info").toObject();
 
-			info_.thumbnail_info.h = thumbinfo.value("h").toInt();
-			info_.thumbnail_info.w = thumbinfo.value("w").toInt();
-			info_.thumbnail_info.size = thumbinfo.value("size").toInt();
-			info_.thumbnail_info.mimetype = thumbinfo.value("mimetype").toString();
-		}
-	}
+                        info_.thumbnail_info.h        = thumbinfo.value("h").toInt();
+                        info_.thumbnail_info.w        = thumbinfo.value("w").toInt();
+                        info_.thumbnail_info.size     = thumbinfo.value("size").toInt();
+                        info_.thumbnail_info.mimetype = thumbinfo.value("mimetype").toString();
+                }
+        }
 }

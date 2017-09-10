@@ -23,59 +23,59 @@
 Splitter::Splitter(QWidget *parent)
   : QSplitter(parent)
 {
-	connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
-	setChildrenCollapsible(false);
+        connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
+        setChildrenCollapsible(false);
 }
 
 void
 Splitter::onSplitterMoved(int pos, int index)
 {
-	Q_UNUSED(pos);
-	Q_UNUSED(index);
+        Q_UNUSED(pos);
+        Q_UNUSED(index);
 
-	auto s = sizes();
+        auto s = sizes();
 
-	if (s.count() < 2) {
-		qWarning() << "Splitter needs at least two children";
-		return;
-	}
+        if (s.count() < 2) {
+                qWarning() << "Splitter needs at least two children";
+                return;
+        }
 
-	if (s[0] == ui::sidebar::NormalSize) {
-		rightMoveCount_ += 1;
+        if (s[0] == ui::sidebar::NormalSize) {
+                rightMoveCount_ += 1;
 
-		if (rightMoveCount_ > moveEventLimit_) {
-			auto left = widget(0);
-			auto pos = left->mapFromGlobal(QCursor::pos());
+                if (rightMoveCount_ > moveEventLimit_) {
+                        auto left = widget(0);
+                        auto pos  = left->mapFromGlobal(QCursor::pos());
 
-			// if we are coming from the right, the cursor should
-			// end up on the first widget.
-			if (left->rect().contains(pos)) {
-				left->setMinimumWidth(ui::sidebar::SmallSize);
-				left->setMaximumWidth(ui::sidebar::SmallSize);
+                        // if we are coming from the right, the cursor should
+                        // end up on the first widget.
+                        if (left->rect().contains(pos)) {
+                                left->setMinimumWidth(ui::sidebar::SmallSize);
+                                left->setMaximumWidth(ui::sidebar::SmallSize);
 
-				rightMoveCount_ = 0;
-			}
-		}
-	} else if (s[0] == ui::sidebar::SmallSize) {
-		leftMoveCount_ += 1;
+                                rightMoveCount_ = 0;
+                        }
+                }
+        } else if (s[0] == ui::sidebar::SmallSize) {
+                leftMoveCount_ += 1;
 
-		if (leftMoveCount_ > moveEventLimit_) {
-			auto left = widget(0);
-			auto right = widget(1);
-			auto pos = right->mapFromGlobal(QCursor::pos());
+                if (leftMoveCount_ > moveEventLimit_) {
+                        auto left  = widget(0);
+                        auto right = widget(1);
+                        auto pos   = right->mapFromGlobal(QCursor::pos());
 
-			// We move the start a little further so the transition isn't so abrupt.
-			auto extended = right->rect();
-			extended.translate(100, 0);
+                        // We move the start a little further so the transition isn't so abrupt.
+                        auto extended = right->rect();
+                        extended.translate(100, 0);
 
-			// if we are coming from the left, the cursor should
-			// end up on the second widget.
-			if (extended.contains(pos)) {
-				left->setMinimumWidth(ui::sidebar::NormalSize);
-				left->setMaximumWidth(2 * ui::sidebar::NormalSize);
+                        // if we are coming from the left, the cursor should
+                        // end up on the second widget.
+                        if (extended.contains(pos)) {
+                                left->setMinimumWidth(ui::sidebar::NormalSize);
+                                left->setMaximumWidth(2 * ui::sidebar::NormalSize);
 
-				leftMoveCount_ = 0;
-			}
-		}
-	}
+                                leftMoveCount_ = 0;
+                        }
+                }
+        }
 }

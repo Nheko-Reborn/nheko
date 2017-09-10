@@ -22,24 +22,24 @@ using namespace matrix::events;
 void
 NameEventContent::deserialize(const QJsonValue &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("NameEventContent is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("NameEventContent is not a JSON object");
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (object.value("name") == QJsonValue::Undefined)
-		throw DeserializationException("name key is missing");
+        if (object.value("name") == QJsonValue::Undefined)
+                throw DeserializationException("name key is missing");
 
-	name_ = object.value("name").toString();
+        name_ = object.value("name").toString();
 }
 
 QJsonObject
 NameEventContent::serialize() const
 {
-	QJsonObject object;
+        QJsonObject object;
 
-	if (!name_.isEmpty())
-		object["name"] = name_;
+        if (!name_.isEmpty())
+                object["name"] = name_;
 
-	return object;
+        return object;
 }

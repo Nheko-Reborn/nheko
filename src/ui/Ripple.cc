@@ -10,7 +10,7 @@ Ripple::Ripple(const QPoint &center, QObject *parent)
   , opacity_(0)
   , center_(center)
 {
-	init();
+        init();
 }
 
 Ripple::Ripple(const QPoint &center, RippleOverlay *overlay, QObject *parent)
@@ -22,7 +22,7 @@ Ripple::Ripple(const QPoint &center, RippleOverlay *overlay, QObject *parent)
   , opacity_(0)
   , center_(center)
 {
-	init();
+        init();
 }
 
 Ripple::~Ripple()
@@ -32,80 +32,80 @@ Ripple::~Ripple()
 void
 Ripple::setRadius(qreal radius)
 {
-	Q_ASSERT(overlay_);
+        Q_ASSERT(overlay_);
 
-	if (radius_ == radius)
-		return;
+        if (radius_ == radius)
+                return;
 
-	radius_ = radius;
-	overlay_->update();
+        radius_ = radius;
+        overlay_->update();
 }
 
 void
 Ripple::setOpacity(qreal opacity)
 {
-	Q_ASSERT(overlay_);
+        Q_ASSERT(overlay_);
 
-	if (opacity_ == opacity)
-		return;
+        if (opacity_ == opacity)
+                return;
 
-	opacity_ = opacity;
-	overlay_->update();
+        opacity_ = opacity;
+        overlay_->update();
 }
 
 void
 Ripple::setColor(const QColor &color)
 {
-	if (brush_.color() == color)
-		return;
+        if (brush_.color() == color)
+                return;
 
-	brush_.setColor(color);
+        brush_.setColor(color);
 
-	if (overlay_)
-		overlay_->update();
+        if (overlay_)
+                overlay_->update();
 }
 
 void
 Ripple::setBrush(const QBrush &brush)
 {
-	brush_ = brush;
+        brush_ = brush;
 
-	if (overlay_)
-		overlay_->update();
+        if (overlay_)
+                overlay_->update();
 }
 
 void
 Ripple::destroy()
 {
-	Q_ASSERT(overlay_);
+        Q_ASSERT(overlay_);
 
-	overlay_->removeRipple(this);
+        overlay_->removeRipple(this);
 }
 
 QPropertyAnimation *
 Ripple::animate(const QByteArray &property, const QEasingCurve &easing, int duration)
 {
-	QPropertyAnimation *animation = new QPropertyAnimation;
-	animation->setTargetObject(this);
-	animation->setPropertyName(property);
-	animation->setEasingCurve(easing);
-	animation->setDuration(duration);
+        QPropertyAnimation *animation = new QPropertyAnimation;
+        animation->setTargetObject(this);
+        animation->setPropertyName(property);
+        animation->setEasingCurve(easing);
+        animation->setDuration(duration);
 
-	addAnimation(animation);
+        addAnimation(animation);
 
-	return animation;
+        return animation;
 }
 
 void
 Ripple::init()
 {
-	setOpacityStartValue(0.5);
-	setOpacityEndValue(0);
-	setRadiusStartValue(0);
-	setRadiusEndValue(300);
+        setOpacityStartValue(0.5);
+        setOpacityEndValue(0);
+        setRadiusStartValue(0);
+        setRadiusEndValue(300);
 
-	brush_.setColor(Qt::black);
-	brush_.setStyle(Qt::SolidPattern);
+        brush_.setColor(Qt::black);
+        brush_.setStyle(Qt::SolidPattern);
 
-	connect(this, SIGNAL(finished()), this, SLOT(destroy()));
+        connect(this, SIGNAL(finished()), this, SLOT(destroy()));
 }

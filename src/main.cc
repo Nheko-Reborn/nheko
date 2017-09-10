@@ -26,52 +26,52 @@
 int
 main(int argc, char *argv[])
 {
-	QCoreApplication::setApplicationName("nheko");
-	QCoreApplication::setApplicationVersion("Ωμέγa");
-	QCoreApplication::setOrganizationName("Nheko");
-	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QCoreApplication::setApplicationName("nheko");
+        QCoreApplication::setApplicationVersion("Ωμέγa");
+        QCoreApplication::setOrganizationName("Nheko");
+        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-	QApplication app(argc, argv);
+        QApplication app(argc, argv);
 
-	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Bold.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Semibold.ttf");
-	QFontDatabase::addApplicationFont(":/fonts/fonts/EmojiOne/emojione-android.ttf");
+        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
+        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
+        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Bold.ttf");
+        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Semibold.ttf");
+        QFontDatabase::addApplicationFont(":/fonts/fonts/EmojiOne/emojione-android.ttf");
 
-	app.setWindowIcon(QIcon(":/logos/nheko.png"));
+        app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
-	QSettings settings;
+        QSettings settings;
 
-	// Set the default if a value has not been set.
-	if (settings.value("font/size").toInt() == 0)
-		settings.setValue("font/size", 12);
+        // Set the default if a value has not been set.
+        if (settings.value("font/size").toInt() == 0)
+                settings.setValue("font/size", 12);
 
-	QFont font("Open Sans", settings.value("font/size").toInt());
-	app.setFont(font);
+        QFont font("Open Sans", settings.value("font/size").toInt());
+        app.setFont(font);
 
-	QString lang = QLocale::system().name();
+        QString lang = QLocale::system().name();
 
-	QTranslator qtTranslator;
-	qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	app.installTranslator(&qtTranslator);
+        QTranslator qtTranslator;
+        qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        app.installTranslator(&qtTranslator);
 
-	QTranslator appTranslator;
-	appTranslator.load("nheko_" + lang, ":/translations");
-	app.installTranslator(&appTranslator);
+        QTranslator appTranslator;
+        appTranslator.load("nheko_" + lang, ":/translations");
+        app.installTranslator(&appTranslator);
 
-	MainWindow w;
+        MainWindow w;
 
-	// Move the MainWindow to the center
-	QRect screenGeometry = QApplication::desktop()->screenGeometry();
-	int x = (screenGeometry.width() - w.width()) / 2;
-	int y = (screenGeometry.height() - w.height()) / 2;
+        // Move the MainWindow to the center
+        QRect screenGeometry = QApplication::desktop()->screenGeometry();
+        int x                = (screenGeometry.width() - w.width()) / 2;
+        int y                = (screenGeometry.height() - w.height()) / 2;
 
-	w.move(x, y);
-	w.show();
+        w.move(x, y);
+        w.show();
 
-	QObject::connect(&app, &QApplication::aboutToQuit, &w, &MainWindow::saveCurrentWindowSize);
+        QObject::connect(&app, &QApplication::aboutToQuit, &w, &MainWindow::saveCurrentWindowSize);
 
-	return app.exec();
+        return app.exec();
 }

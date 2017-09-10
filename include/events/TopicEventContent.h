@@ -34,19 +34,19 @@ class TopicEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QString topic() const;
+        inline QString topic() const;
 
 private:
-	QString topic_;
+        QString topic_;
 };
 
 inline QString
 TopicEventContent::topic() const
 {
-	return topic_;
+        return topic_;
 }
 } // namespace events
 } // namespace matrix

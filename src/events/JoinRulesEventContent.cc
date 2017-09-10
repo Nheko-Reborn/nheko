@@ -22,41 +22,42 @@ using namespace matrix::events;
 void
 JoinRulesEventContent::deserialize(const QJsonValue &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("JoinRulesEventContent is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("JoinRulesEventContent is not a JSON object");
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (object.value("join_rule") == QJsonValue::Undefined)
-		throw DeserializationException("join_rule key is missing");
+        if (object.value("join_rule") == QJsonValue::Undefined)
+                throw DeserializationException("join_rule key is missing");
 
-	auto value = object.value("join_rule").toString();
+        auto value = object.value("join_rule").toString();
 
-	if (value == "invite")
-		join_rule_ = JoinRule::Invite;
-	else if (value == "knock")
-		join_rule_ = JoinRule::Knock;
-	else if (value == "private")
-		join_rule_ = JoinRule::Private;
-	else if (value == "public")
-		join_rule_ = JoinRule::Public;
-	else
-		throw DeserializationException(QString("Unknown join_rule value: %1").arg(value).toUtf8().constData());
+        if (value == "invite")
+                join_rule_ = JoinRule::Invite;
+        else if (value == "knock")
+                join_rule_ = JoinRule::Knock;
+        else if (value == "private")
+                join_rule_ = JoinRule::Private;
+        else if (value == "public")
+                join_rule_ = JoinRule::Public;
+        else
+                throw DeserializationException(
+                  QString("Unknown join_rule value: %1").arg(value).toUtf8().constData());
 }
 
 QJsonObject
 JoinRulesEventContent::serialize() const
 {
-	QJsonObject object;
+        QJsonObject object;
 
-	if (join_rule_ == JoinRule::Invite)
-		object["join_rule"] = "invite";
-	else if (join_rule_ == JoinRule::Knock)
-		object["join_rule"] = "knock";
-	else if (join_rule_ == JoinRule::Private)
-		object["join_rule"] = "private";
-	else if (join_rule_ == JoinRule::Public)
-		object["join_rule"] = "public";
+        if (join_rule_ == JoinRule::Invite)
+                object["join_rule"] = "invite";
+        else if (join_rule_ == JoinRule::Knock)
+                object["join_rule"] = "knock";
+        else if (join_rule_ == JoinRule::Private)
+                object["join_rule"] = "private";
+        else if (join_rule_ == JoinRule::Public)
+                object["join_rule"] = "public";
 
-	return object;
+        return object;
 }

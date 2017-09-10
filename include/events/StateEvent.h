@@ -29,62 +29,62 @@ template<class Content>
 class StateEvent : public RoomEvent<Content>
 {
 public:
-	inline QString stateKey() const;
-	inline Content previousContent() const;
+        inline QString stateKey() const;
+        inline Content previousContent() const;
 
-	void deserialize(const QJsonValue &data);
-	QJsonObject serialize() const;
+        void deserialize(const QJsonValue &data);
+        QJsonObject serialize() const;
 
 private:
-	QString state_key_;
-	Content prev_content_;
+        QString state_key_;
+        Content prev_content_;
 };
 
 template<class Content>
 inline QString
 StateEvent<Content>::stateKey() const
 {
-	return state_key_;
+        return state_key_;
 }
 
 template<class Content>
 inline Content
 StateEvent<Content>::previousContent() const
 {
-	return prev_content_;
+        return prev_content_;
 }
 
 template<class Content>
 void
 StateEvent<Content>::deserialize(const QJsonValue &data)
 {
-	RoomEvent<Content>::deserialize(data);
+        RoomEvent<Content>::deserialize(data);
 
-	auto object = data.toObject();
+        auto object = data.toObject();
 
-	if (!object.contains("state_key"))
-		throw DeserializationException("state_key key is missing");
+        if (!object.contains("state_key"))
+                throw DeserializationException("state_key key is missing");
 
-	state_key_ = object.value("state_key").toString();
+        state_key_ = object.value("state_key").toString();
 
-	if (object.contains("prev_content"))
-		prev_content_.deserialize(object.value("prev_content"));
+        if (object.contains("prev_content"))
+                prev_content_.deserialize(object.value("prev_content"));
 }
 
 template<class Content>
 QJsonObject
 StateEvent<Content>::serialize() const
 {
-	QJsonObject object = RoomEvent<Content>::serialize();
+        QJsonObject object = RoomEvent<Content>::serialize();
 
-	object["state_key"] = state_key_;
+        object["state_key"] = state_key_;
 
-	auto prev = prev_content_.serialize();
+        auto prev = prev_content_.serialize();
 
-	if (!prev.isEmpty())
-		object["prev_content"] = prev;
+        if (!prev.isEmpty())
+                object["prev_content"] = prev;
 
-	return object;
+        return object;
 }
 } // namespace events
 } // namespace matrix

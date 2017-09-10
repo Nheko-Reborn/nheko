@@ -25,86 +25,86 @@ ScrollBar::ScrollBar(QScrollArea *area, QWidget *parent)
   : QScrollBar(parent)
   , area_{ area }
 {
-	hideTimer_.setSingleShot(true);
+        hideTimer_.setSingleShot(true);
 
-	connect(&hideTimer_, &QTimer::timeout, this, &ScrollBar::fadeOut);
+        connect(&hideTimer_, &QTimer::timeout, this, &ScrollBar::fadeOut);
 
-	eff = new QGraphicsOpacityEffect(this);
-	setGraphicsEffect(eff);
+        eff = new QGraphicsOpacityEffect(this);
+        setGraphicsEffect(eff);
 }
 
 void
 ScrollBar::fadeOut()
 {
-	isActive = false;
+        isActive = false;
 
-	QPropertyAnimation *anim = new QPropertyAnimation(eff, "opacity");
-	anim->setDuration(AnimationDuration);
-	anim->setStartValue(1);
-	anim->setEndValue(0);
-	anim->setEasingCurve(QEasingCurve::Linear);
-	anim->start(QPropertyAnimation::DeleteWhenStopped);
+        QPropertyAnimation *anim = new QPropertyAnimation(eff, "opacity");
+        anim->setDuration(AnimationDuration);
+        anim->setStartValue(1);
+        anim->setEndValue(0);
+        anim->setEasingCurve(QEasingCurve::Linear);
+        anim->start(QPropertyAnimation::DeleteWhenStopped);
 }
 
 void
 ScrollBar::fadeIn()
 {
-	QPropertyAnimation *anim = new QPropertyAnimation(eff, "opacity");
-	anim->setDuration(AnimationDuration);
-	anim->setStartValue(0);
-	anim->setEndValue(1);
-	anim->setEasingCurve(QEasingCurve::Linear);
-	anim->start(QPropertyAnimation::DeleteWhenStopped);
+        QPropertyAnimation *anim = new QPropertyAnimation(eff, "opacity");
+        anim->setDuration(AnimationDuration);
+        anim->setStartValue(0);
+        anim->setEndValue(1);
+        anim->setEasingCurve(QEasingCurve::Linear);
+        anim->start(QPropertyAnimation::DeleteWhenStopped);
 }
 
 void
 ScrollBar::sliderChange(SliderChange change)
 {
-	if (!isActive)
-		fadeIn();
+        if (!isActive)
+                fadeIn();
 
-	hideTimer_.stop();
-	hideTimer_.start(1500);
-	isActive = true;
+        hideTimer_.stop();
+        hideTimer_.start(1500);
+        isActive = true;
 
-	QScrollBar::sliderChange(change);
+        QScrollBar::sliderChange(change);
 }
 
 void
 ScrollBar::paintEvent(QPaintEvent *)
 {
-	if (!width() && !height()) {
-		hide();
-		return;
-	}
+        if (!width() && !height()) {
+                hide();
+                return;
+        }
 
-	QPainter p(this);
-	p.setRenderHint(QPainter::TextAntialiasing);
-	p.setRenderHint(QPainter::Antialiasing);
-	p.setRenderHint(QPainter::SmoothPixmapTransform);
+        QPainter p(this);
+        p.setRenderHint(QPainter::TextAntialiasing);
+        p.setRenderHint(QPainter::Antialiasing);
+        p.setRenderHint(QPainter::SmoothPixmapTransform);
 
-	p.setPen(Qt::NoPen);
+        p.setPen(Qt::NoPen);
 
-	QColor bg(33, 33, 33, 30);
-	QColor handle(0, 0, 0, 80);
+        QColor bg(33, 33, 33, 30);
+        QColor handle(0, 0, 0, 80);
 
-	p.setBrush(bg);
-	QRect backgroundArea(Padding, 0, handleWidth_, height());
-	p.drawRoundedRect(backgroundArea, roundRadius_, roundRadius_);
+        p.setBrush(bg);
+        QRect backgroundArea(Padding, 0, handleWidth_, height());
+        p.drawRoundedRect(backgroundArea, roundRadius_, roundRadius_);
 
-	int areaHeight = area_->height();
-	int widgetHeight = area_->widget()->height();
+        int areaHeight   = area_->height();
+        int widgetHeight = area_->widget()->height();
 
-	double visiblePercentage = (double)areaHeight / (double)widgetHeight;
-	int handleHeight = std::max(visiblePercentage * areaHeight, (double)minHandleHeight_);
+        double visiblePercentage = (double)areaHeight / (double)widgetHeight;
+        int handleHeight = std::max(visiblePercentage * areaHeight, (double)minHandleHeight_);
 
-	if (maximum() == 0) {
-		return;
-	}
+        if (maximum() == 0) {
+                return;
+        }
 
-	int handle_y = (value() * (areaHeight - handleHeight - roundRadius_ / 2)) / maximum();
+        int handle_y = (value() * (areaHeight - handleHeight - roundRadius_ / 2)) / maximum();
 
-	p.setBrush(handle);
-	QRect handleArea(Padding, handle_y, handleWidth_, handleHeight);
-	p.drawRoundedRect(handleArea, roundRadius_, roundRadius_);
+        p.setBrush(handle);
+        QRect handleArea(Padding, handle_y, handleWidth_, handleHeight);
+        p.drawRoundedRect(handleArea, roundRadius_, roundRadius_);
 }

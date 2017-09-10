@@ -34,20 +34,20 @@ class CreateEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QString creator() const;
+        inline QString creator() const;
 
 private:
-	// The user_id of the room creator. This is set by the homeserver.
-	QString creator_;
+        // The user_id of the room creator. This is set by the homeserver.
+        QString creator_;
 };
 
 inline QString
 CreateEventContent::creator() const
 {
-	return creator_;
+        return creator_;
 }
 } // namespace events
 } // namespace matrix

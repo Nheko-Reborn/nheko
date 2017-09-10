@@ -29,5 +29,5 @@ DeserializationException::DeserializationException(const std::string &msg)
 const char *
 DeserializationException::what() const noexcept
 {
-	return msg_.c_str();
+        return msg_.c_str();
 }

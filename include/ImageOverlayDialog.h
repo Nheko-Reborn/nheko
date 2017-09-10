@@ -23,24 +23,24 @@
 
 class ImageOverlayDialog : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	ImageOverlayDialog(QPixmap image, QWidget *parent = nullptr);
+        ImageOverlayDialog(QPixmap image, QWidget *parent = nullptr);
 
 protected:
-	void mousePressEvent(QMouseEvent *event) override;
-	void paintEvent(QPaintEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
 
 signals:
-	void closing();
+        void closing();
 
 private:
-	void scaleImage(int width, int height);
+        void scaleImage(int width, int height);
 
-	QPixmap originalImage_;
-	QPixmap image_;
+        QPixmap originalImage_;
+        QPixmap image_;
 
-	QRect content_;
-	QRect close_button_;
-	QRect screen_;
+        QRect content_;
+        QRect close_button_;
+        QRect screen_;
 };

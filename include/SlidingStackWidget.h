@@ -32,56 +32,57 @@
 
 class SlidingStackWidget : public QStackedWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	// Defines the animation direction.
-	enum class AnimationDirection { LEFT_TO_RIGHT, RIGHT_TO_LEFT, AUTOMATIC };
+        // Defines the animation direction.
+        enum class AnimationDirection { LEFT_TO_RIGHT, RIGHT_TO_LEFT, AUTOMATIC };
 
-	SlidingStackWidget(QWidget *parent);
-	~SlidingStackWidget();
+        SlidingStackWidget(QWidget *parent);
+        ~SlidingStackWidget();
 
 public slots:
-	// Move to the next widget.
-	void slideInNext();
+        // Move to the next widget.
+        void slideInNext();
 
-	// Move to the previous widget.
-	void slideInPrevious();
+        // Move to the previous widget.
+        void slideInPrevious();
 
-	// Move to a widget by index.
-	void slideInIndex(int index, AnimationDirection direction = AnimationDirection::AUTOMATIC);
+        // Move to a widget by index.
+        void slideInIndex(int index, AnimationDirection direction = AnimationDirection::AUTOMATIC);
 
-	int getWidgetIndex(QWidget *widget);
+        int getWidgetIndex(QWidget *widget);
 signals:
-	// Internal signal to alert the engine for the animation's end.
-	void animationFinished();
+        // Internal signal to alert the engine for the animation's end.
+        void animationFinished();
 
 protected slots:
-	// Internal slot to handle the end of the animation.
-	void onAnimationFinished();
+        // Internal slot to handle the end of the animation.
+        void onAnimationFinished();
 
 protected:
-	// The method that does the main work for the widget transition.
-	void slideInWidget(QWidget *widget, AnimationDirection direction = AnimationDirection::AUTOMATIC);
+        // The method that does the main work for the widget transition.
+        void slideInWidget(QWidget *widget,
+                           AnimationDirection direction = AnimationDirection::AUTOMATIC);
 
-	// Indicates whether or not the animation is active.
-	bool active_;
+        // Indicates whether or not the animation is active.
+        bool active_;
 
-	// The widget currently displayed.
-	QWidget *window_;
+        // The widget currently displayed.
+        QWidget *window_;
 
-	// The speed of the animation in milliseconds.
-	int speed_;
+        // The speed of the animation in milliseconds.
+        int speed_;
 
-	// The animation type.
-	QEasingCurve::Type animation_type_;
+        // The animation type.
+        QEasingCurve::Type animation_type_;
 
-	// Current widget's index.
-	int now_;
+        // Current widget's index.
+        int now_;
 
-	// Reference point.
-	QPoint current_position_;
+        // Reference point.
+        QPoint current_position_;
 
-	// Next widget's to show index.
-	int next_;
+        // Next widget's to show index.
+        int next_;
 };

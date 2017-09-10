@@ -27,20 +27,20 @@ namespace matrix
 namespace events
 {
 enum class Membership {
-	// The user is banned.
-	Ban,
+        // The user is banned.
+        Ban,
 
-	// The user has been invited.
-	Invite,
+        // The user has been invited.
+        Invite,
 
-	// The user has joined.
-	Join,
+        // The user has joined.
+        Join,
 
-	// The user has requested to join.
-	Knock,
+        // The user has requested to join.
+        Knock,
 
-	// The user has left.
-	Leave,
+        // The user has left.
+        Leave,
 };
 
 /*
@@ -52,35 +52,35 @@ class MemberEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QUrl avatarUrl() const;
-	inline QString displayName() const;
-	inline Membership membershipState() const;
+        inline QUrl avatarUrl() const;
+        inline QString displayName() const;
+        inline Membership membershipState() const;
 
 private:
-	QUrl avatar_url_;
-	QString display_name_;
-	Membership membership_state_;
+        QUrl avatar_url_;
+        QString display_name_;
+        Membership membership_state_;
 };
 
 inline QUrl
 MemberEventContent::avatarUrl() const
 {
-	return avatar_url_;
+        return avatar_url_;
 }
 
 inline QString
 MemberEventContent::displayName() const
 {
-	return display_name_;
+        return display_name_;
 }
 
 inline Membership
 MemberEventContent::membershipState() const
 {
-	return membership_state_;
+        return membership_state_;
 }
 } // namespace events
 } // namespace matrix

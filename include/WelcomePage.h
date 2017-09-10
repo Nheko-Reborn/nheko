@@ -27,32 +27,32 @@
 
 class WelcomePage : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	explicit WelcomePage(QWidget *parent = 0);
-	~WelcomePage();
+        explicit WelcomePage(QWidget *parent = 0);
+        ~WelcomePage();
 
 signals:
-	// Notify that the user wants to login in.
-	void userLogin();
+        // Notify that the user wants to login in.
+        void userLogin();
 
-	// Notify that the user wants to register.
-	void userRegister();
+        // Notify that the user wants to register.
+        void userRegister();
 
 private slots:
-	void onLoginButtonClicked();
-	void onRegisterButtonClicked();
+        void onLoginButtonClicked();
+        void onRegisterButtonClicked();
 
 private:
-	QVBoxLayout *top_layout_;
-	QHBoxLayout *button_layout_;
+        QVBoxLayout *top_layout_;
+        QHBoxLayout *button_layout_;
 
-	QLabel *intro_banner_;
-	QLabel *intro_text_;
+        QLabel *intro_banner_;
+        QLabel *intro_text_;
 
-	QSpacerItem *button_spacer_;
+        QSpacerItem *button_spacer_;
 
-	RaisedButton *register_button_;
-	RaisedButton *login_button_;
+        RaisedButton *register_button_;
+        RaisedButton *login_button_;
 };

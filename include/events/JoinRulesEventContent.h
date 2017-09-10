@@ -26,18 +26,18 @@ namespace matrix
 namespace events
 {
 enum class JoinRule {
-	// A user who wishes to join the room must first receive
-	// an invite to the room from someone already inside of the room.
-	Invite,
+        // A user who wishes to join the room must first receive
+        // an invite to the room from someone already inside of the room.
+        Invite,
 
-	// Reserved but not yet implemented by the Matrix specification.
-	Knock,
+        // Reserved but not yet implemented by the Matrix specification.
+        Knock,
 
-	// Reserved but not yet implemented by the Matrix specification.
-	Private,
+        // Reserved but not yet implemented by the Matrix specification.
+        Private,
 
-	/// Anyone can join the room without any prior action.
-	Public,
+        /// Anyone can join the room without any prior action.
+        Public,
 };
 
 /*
@@ -49,19 +49,19 @@ class JoinRulesEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline JoinRule joinRule() const;
+        inline JoinRule joinRule() const;
 
 private:
-	JoinRule join_rule_;
+        JoinRule join_rule_;
 };
 
 inline JoinRule
 JoinRulesEventContent::joinRule() const
 {
-	return join_rule_;
+        return join_rule_;
 }
 } // namespace events
 } // namespace matrix

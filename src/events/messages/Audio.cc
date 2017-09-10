@@ -22,19 +22,19 @@ using namespace matrix::events::messages;
 void
 Audio::deserialize(const QJsonObject &object)
 {
-	if (!object.contains("url"))
-		throw DeserializationException("url key is missing");
+        if (!object.contains("url"))
+                throw DeserializationException("url key is missing");
 
-	url_ = object.value("url").toString();
+        url_ = object.value("url").toString();
 
-	if (object.value("msgtype") != "m.audio")
-		throw DeserializationException("invalid msgtype for audio");
+        if (object.value("msgtype") != "m.audio")
+                throw DeserializationException("invalid msgtype for audio");
 
-	if (object.contains("info")) {
-		auto info = object.value("info").toObject();
+        if (object.contains("info")) {
+                auto info = object.value("info").toObject();
 
-		info_.duration = info.value("duration").toInt();
-		info_.mimetype = info.value("mimetype").toString();
-		info_.size = info.value("size").toInt();
-	}
+                info_.duration = info.value("duration").toInt();
+                info_.mimetype = info.value("mimetype").toString();
+                info_.size     = info.value("size").toInt();
+        }
 }

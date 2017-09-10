@@ -31,19 +31,19 @@ class AliasesEventContent
   , public Serializable
 {
 public:
-	void deserialize(const QJsonValue &data) override;
-	QJsonObject serialize() const override;
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
 
-	inline QList<QString> aliases() const;
+        inline QList<QString> aliases() const;
 
 private:
-	QList<QString> aliases_;
+        QList<QString> aliases_;
 };
 
 inline QList<QString>
 AliasesEventContent::aliases() const
 {
-	return aliases_;
+        return aliases_;
 }
 } // namespace events
 } // namespace matrix

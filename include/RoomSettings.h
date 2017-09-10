@@ -22,34 +22,34 @@
 class RoomSettings
 {
 public:
-	RoomSettings(QString room_id)
-	{
-		path_ = QString("notifications/%1").arg(room_id);
-		isNotificationsEnabled_ = true;
+        RoomSettings(QString room_id)
+        {
+                path_                   = QString("notifications/%1").arg(room_id);
+                isNotificationsEnabled_ = true;
 
-		QSettings settings;
+                QSettings settings;
 
-		if (settings.contains(path_))
-			isNotificationsEnabled_ = settings.value(path_).toBool();
-		else
-			settings.setValue(path_, isNotificationsEnabled_);
-	};
+                if (settings.contains(path_))
+                        isNotificationsEnabled_ = settings.value(path_).toBool();
+                else
+                        settings.setValue(path_, isNotificationsEnabled_);
+        };
 
-	bool isNotificationsEnabled()
-	{
-		return isNotificationsEnabled_;
-	};
+        bool isNotificationsEnabled()
+        {
+                return isNotificationsEnabled_;
+        };
 
-	void toggleNotifications()
-	{
-		isNotificationsEnabled_ = !isNotificationsEnabled_;
+        void toggleNotifications()
+        {
+                isNotificationsEnabled_ = !isNotificationsEnabled_;
 
-		QSettings settings;
-		settings.setValue(path_, isNotificationsEnabled_);
-	}
+                QSettings settings;
+                settings.setValue(path_, isNotificationsEnabled_);
+        }
 
 private:
-	QString path_;
+        QString path_;
 
-	bool isNotificationsEnabled_;
+        bool isNotificationsEnabled_;
 };

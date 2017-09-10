@@ -27,38 +27,39 @@
 void
 VersionsResponse::deserialize(const QJsonDocument &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("Versions response is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("Versions response is not a JSON object");
 
-	QJsonObject object = data.object();
+        QJsonObject object = data.object();
 
-	if (object.value("versions") == QJsonValue::Undefined)
-		throw DeserializationException("Versions: missing version list");
+        if (object.value("versions") == QJsonValue::Undefined)
+                throw DeserializationException("Versions: missing version list");
 
-	auto versions = object.value("versions").toArray();
-	for (auto const &elem : versions) {
-		QString str = elem.toString();
-		QRegExp rx("r(\\d+)\\.(\\d+)\\.(\\d+)");
+        auto versions = object.value("versions").toArray();
+        for (auto const &elem : versions) {
+                QString str = elem.toString();
+                QRegExp rx("r(\\d+)\\.(\\d+)\\.(\\d+)");
 
-		if (rx.indexIn(str) == -1)
-			throw DeserializationException("Invalid version string in versions response");
+                if (rx.indexIn(str) == -1)
+                        throw DeserializationException(
+                          "Invalid version string in versions response");
 
-		struct Version_ v;
-		v.major_ = rx.cap(1).toUInt();
-		v.minor_ = rx.cap(2).toUInt();
-		v.patch_ = rx.cap(3).toUInt();
+                struct Version_ v;
+                v.major_ = rx.cap(1).toUInt();
+                v.minor_ = rx.cap(2).toUInt();
+                v.patch_ = rx.cap(3).toUInt();
 
-		supported_versions_.push_back(v);
-	}
+                supported_versions_.push_back(v);
+        }
 }
 
 bool
 VersionsResponse::isVersionSupported(unsigned int major, unsigned int minor, unsigned int patch)
 {
-	for (auto &v : supported_versions_) {
-		if (v.major_ == major && v.minor_ == minor && v.patch_ >= patch)
-			return true;
-	}
+        for (auto &v : supported_versions_) {
+                if (v.major_ == major && v.minor_ == minor && v.patch_ >= patch)
+                        return true;
+        }
 
-	return false;
+        return false;
 }

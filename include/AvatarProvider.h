@@ -27,21 +27,21 @@
 
 class AvatarProvider : public QObject
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	static void init(QSharedPointer<MatrixClient> client);
-	static void resolve(const QString &userId, TimelineItem *item);
-	static void setAvatarUrl(const QString &userId, const QUrl &url);
+        static void init(QSharedPointer<MatrixClient> client);
+        static void resolve(const QString &userId, TimelineItem *item);
+        static void setAvatarUrl(const QString &userId, const QUrl &url);
 
-	static void clear();
+        static void clear();
 
 private:
-	static void updateAvatar(const QString &uid, const QImage &img);
+        static void updateAvatar(const QString &uid, const QImage &img);
 
-	static QSharedPointer<MatrixClient> client_;
-	static QMap<QString, QList<TimelineItem *>> toBeResolved_;
+        static QSharedPointer<MatrixClient> client_;
+        static QMap<QString, QList<TimelineItem *>> toBeResolved_;
 
-	static QMap<QString, QImage> userAvatars_;
-	static QMap<QString, QUrl> avatarUrls_;
+        static QMap<QString, QImage> userAvatars_;
+        static QMap<QString, QUrl> avatarUrls_;
 };

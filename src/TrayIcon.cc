@@ -27,69 +27,75 @@
 MsgCountComposedIcon::MsgCountComposedIcon(const QString &filename)
   : QIconEngine()
 {
-	icon_ = QIcon(filename);
+        icon_ = QIcon(filename);
 }
 
 void
-MsgCountComposedIcon::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
+MsgCountComposedIcon::paint(QPainter *painter,
+                            const QRect &rect,
+                            QIcon::Mode mode,
+                            QIcon::State state)
 {
-	painter->setRenderHint(QPainter::TextAntialiasing);
-	painter->setRenderHint(QPainter::SmoothPixmapTransform);
-	painter->setRenderHint(QPainter::Antialiasing);
+        painter->setRenderHint(QPainter::TextAntialiasing);
+        painter->setRenderHint(QPainter::SmoothPixmapTransform);
+        painter->setRenderHint(QPainter::Antialiasing);
 
-	icon_.paint(painter, rect, Qt::AlignCenter, mode, state);
+        icon_.paint(painter, rect, Qt::AlignCenter, mode, state);
 
-	if (msgCount <= 0)
-		return;
+        if (msgCount <= 0)
+                return;
 
-	QColor backgroundColor("red");
-	QColor textColor("white");
+        QColor backgroundColor("red");
+        QColor textColor("white");
 
-	QBrush brush;
-	brush.setStyle(Qt::SolidPattern);
-	brush.setColor(backgroundColor);
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(backgroundColor);
 
-	painter->setBrush(brush);
-	painter->setPen(Qt::NoPen);
-	painter->setFont(QFont("Open Sans", 8, QFont::Black));
+        painter->setBrush(brush);
+        painter->setPen(Qt::NoPen);
+        painter->setFont(QFont("Open Sans", 8, QFont::Black));
 
-	QRectF bubble(rect.width() - BubbleDiameter, rect.height() - BubbleDiameter, BubbleDiameter, BubbleDiameter);
-	painter->drawEllipse(bubble);
-	painter->setPen(QPen(textColor));
-	painter->setBrush(Qt::NoBrush);
-	painter->drawText(bubble, Qt::AlignCenter, QString::number(msgCount));
+        QRectF bubble(rect.width() - BubbleDiameter,
+                      rect.height() - BubbleDiameter,
+                      BubbleDiameter,
+                      BubbleDiameter);
+        painter->drawEllipse(bubble);
+        painter->setPen(QPen(textColor));
+        painter->setBrush(Qt::NoBrush);
+        painter->drawText(bubble, Qt::AlignCenter, QString::number(msgCount));
 }
 
 QIconEngine *
 MsgCountComposedIcon::clone() const
 {
-	return new MsgCountComposedIcon(*this);
+        return new MsgCountComposedIcon(*this);
 }
 
 TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
   : QSystemTrayIcon(parent)
 {
 #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
-	setIcon(QIcon(filename));
+        setIcon(QIcon(filename));
 #else
-	icon_ = new MsgCountComposedIcon(filename);
-	setIcon(QIcon(icon_));
+        icon_ = new MsgCountComposedIcon(filename);
+        setIcon(QIcon(icon_));
 #endif
 
-	QMenu *menu = new QMenu(parent);
-	viewAction_ = new QAction(tr("Show"), parent);
-	quitAction_ = new QAction(tr("Quit"), parent);
+        QMenu *menu = new QMenu(parent);
+        viewAction_ = new QAction(tr("Show"), parent);
+        quitAction_ = new QAction(tr("Quit"), parent);
 
-	connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
-	connect(quitAction_, &QAction::triggered, this, [=]() { QApplication::quit(); });
+        connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
+        connect(quitAction_, &QAction::triggered, this, [=]() { QApplication::quit(); });
 
-	menu->addAction(viewAction_);
-	menu->addAction(quitAction_);
+        menu->addAction(viewAction_);
+        menu->addAction(quitAction_);
 
-	setContextMenu(menu);
+        setContextMenu(menu);
 
-	// We wait a little for the icon to load.
-	QTimer::singleShot(500, this, [=]() { show(); });
+        // We wait a little for the icon to load.
+        QTimer::singleShot(500, this, [=]() { show(); });
 }
 
 void
@@ -97,20 +103,20 @@ TrayIcon::setUnreadCount(int count)
 {
 // Use the native badge counter in MacOS.
 #if defined(Q_OS_MAC)
-	if (count == 0)
-		QtMac::setBadgeLabelText("");
-	else
-		QtMac::setBadgeLabelText(QString::number(count));
+        if (count == 0)
+                QtMac::setBadgeLabelText("");
+        else
+                QtMac::setBadgeLabelText(QString::number(count));
 #elif defined(Q_OS_WIN)
 // FIXME: Find a way to use Windows apis for the badge counter (if any).
 #else
-	// Custom drawing on Linux.
-	// FIXME: It doesn't seem to work on KDE.
-	MsgCountComposedIcon *tmp = static_cast<MsgCountComposedIcon *>(icon_->clone());
-	tmp->msgCount = count;
+        // Custom drawing on Linux.
+        // FIXME: It doesn't seem to work on KDE.
+        MsgCountComposedIcon *tmp = static_cast<MsgCountComposedIcon *>(icon_->clone());
+        tmp->msgCount             = count;
 
-	setIcon(QIcon(tmp));
+        setIcon(QIcon(tmp));
 
-	icon_ = tmp;
+        icon_ = tmp;
 #endif
 }

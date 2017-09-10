@@ -31,92 +31,95 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   , logoutDialog_{ nullptr }
   , logoutButtonSize_{ 32 }
 {
-	QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-	setSizePolicy(sizePolicy);
-	setMinimumSize(QSize(0, 65));
+        QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+        setSizePolicy(sizePolicy);
+        setMinimumSize(QSize(0, 65));
 
-	topLayout_ = new QHBoxLayout(this);
-	topLayout_->setSpacing(0);
-	topLayout_->setMargin(5);
+        topLayout_ = new QHBoxLayout(this);
+        topLayout_->setSpacing(0);
+        topLayout_->setMargin(5);
 
-	avatarLayout_ = new QHBoxLayout();
-	textLayout_ = new QVBoxLayout();
+        avatarLayout_ = new QHBoxLayout();
+        textLayout_   = new QVBoxLayout();
 
-	userAvatar_ = new Avatar(this);
-	userAvatar_->setLetter(QChar('?'));
-	userAvatar_->setSize(55);
-	userAvatar_->setBackgroundColor("#f9f9f9");
-	userAvatar_->setTextColor("#333333");
+        userAvatar_ = new Avatar(this);
+        userAvatar_->setLetter(QChar('?'));
+        userAvatar_->setSize(55);
+        userAvatar_->setBackgroundColor("#f9f9f9");
+        userAvatar_->setTextColor("#333333");
 
-	QFont nameFont("Open Sans SemiBold");
-	nameFont.setPixelSize(conf::userInfoWidget::fonts::displayName);
+        QFont nameFont("Open Sans SemiBold");
+        nameFont.setPixelSize(conf::userInfoWidget::fonts::displayName);
 
-	displayNameLabel_ = new QLabel(this);
-	displayNameLabel_->setFont(nameFont);
-	displayNameLabel_->setStyleSheet("padding: 0 9px; color: #171919; margin-bottom: -10px;");
-	displayNameLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
+        displayNameLabel_ = new QLabel(this);
+        displayNameLabel_->setFont(nameFont);
+        displayNameLabel_->setStyleSheet("padding: 0 9px; color: #171919; margin-bottom: -10px;");
+        displayNameLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 
-	QFont useridFont("Open Sans");
-	useridFont.setPixelSize(conf::userInfoWidget::fonts::userid);
+        QFont useridFont("Open Sans");
+        useridFont.setPixelSize(conf::userInfoWidget::fonts::userid);
 
-	userIdLabel_ = new QLabel(this);
-	userIdLabel_->setFont(useridFont);
-	userIdLabel_->setStyleSheet("padding: 0 8px 8px 8px; color: #555459;");
-	userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
+        userIdLabel_ = new QLabel(this);
+        userIdLabel_->setFont(useridFont);
+        userIdLabel_->setStyleSheet("padding: 0 8px 8px 8px; color: #555459;");
+        userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
-	avatarLayout_->addWidget(userAvatar_);
-	textLayout_->addWidget(displayNameLabel_);
-	textLayout_->addWidget(userIdLabel_);
+        avatarLayout_->addWidget(userAvatar_);
+        textLayout_->addWidget(displayNameLabel_);
+        textLayout_->addWidget(userIdLabel_);
 
-	topLayout_->addLayout(avatarLayout_);
-	topLayout_->addLayout(textLayout_);
-	topLayout_->addStretch(1);
+        topLayout_->addLayout(avatarLayout_);
+        topLayout_->addLayout(textLayout_);
+        topLayout_->addStretch(1);
 
-	buttonLayout_ = new QHBoxLayout();
-	buttonLayout_->setSpacing(0);
-	buttonLayout_->setMargin(0);
+        buttonLayout_ = new QHBoxLayout();
+        buttonLayout_->setSpacing(0);
+        buttonLayout_->setMargin(0);
 
-	logoutButton_ = new FlatButton(this);
-	logoutButton_->setForegroundColor(QColor("#555459"));
-	logoutButton_->setFixedSize(logoutButtonSize_, logoutButtonSize_);
-	logoutButton_->setCornerRadius(logoutButtonSize_ / 2);
+        logoutButton_ = new FlatButton(this);
+        logoutButton_->setForegroundColor(QColor("#555459"));
+        logoutButton_->setFixedSize(logoutButtonSize_, logoutButtonSize_);
+        logoutButton_->setCornerRadius(logoutButtonSize_ / 2);
 
-	QIcon icon;
-	icon.addFile(":/icons/icons/power-button-off.png", QSize(), QIcon::Normal, QIcon::Off);
+        QIcon icon;
+        icon.addFile(":/icons/icons/power-button-off.png", QSize(), QIcon::Normal, QIcon::Off);
 
-	logoutButton_->setIcon(icon);
-	logoutButton_->setIconSize(QSize(logoutButtonSize_ / 2, logoutButtonSize_ / 2));
+        logoutButton_->setIcon(icon);
+        logoutButton_->setIconSize(QSize(logoutButtonSize_ / 2, logoutButtonSize_ / 2));
 
-	buttonLayout_->addWidget(logoutButton_);
+        buttonLayout_->addWidget(logoutButton_);
 
-	topLayout_->addLayout(buttonLayout_);
+        topLayout_->addLayout(buttonLayout_);
 
-	// Show the confirmation dialog.
-	connect(logoutButton_, &QPushButton::clicked, this, [=]() {
-		if (logoutDialog_ == nullptr) {
-			logoutDialog_ = new LogoutDialog(this);
-			connect(logoutDialog_, SIGNAL(closing(bool)), this, SLOT(closeLogoutDialog(bool)));
-		}
+        // Show the confirmation dialog.
+        connect(logoutButton_, &QPushButton::clicked, this, [=]() {
+                if (logoutDialog_ == nullptr) {
+                        logoutDialog_ = new LogoutDialog(this);
+                        connect(logoutDialog_,
+                                SIGNAL(closing(bool)),
+                                this,
+                                SLOT(closeLogoutDialog(bool)));
+                }
 
-		if (logoutModal_ == nullptr) {
-			logoutModal_ = new OverlayModal(MainWindow::instance(), logoutDialog_);
-			logoutModal_->setDuration(100);
-			logoutModal_->setColor(QColor(55, 55, 55, 170));
-		}
+                if (logoutModal_ == nullptr) {
+                        logoutModal_ = new OverlayModal(MainWindow::instance(), logoutDialog_);
+                        logoutModal_->setDuration(100);
+                        logoutModal_->setColor(QColor(55, 55, 55, 170));
+                }
 
-		logoutModal_->fadeIn();
-	});
+                logoutModal_->fadeIn();
+        });
 }
 
 void
 UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
 {
-	logoutModal_->fadeOut();
+        logoutModal_->fadeOut();
 
-	if (isLoggingOut) {
-		// Waiting for the modal to fade out.
-		QTimer::singleShot(100, this, [=]() { emit logout(); });
-	}
+        if (isLoggingOut) {
+                // Waiting for the modal to fade out.
+                QTimer::singleShot(100, this, [=]() { emit logout(); });
+        }
 }
 
 UserInfoWidget::~UserInfoWidget()
@@ -126,52 +129,52 @@ UserInfoWidget::~UserInfoWidget()
 void
 UserInfoWidget::resizeEvent(QResizeEvent *event)
 {
-	Q_UNUSED(event);
+        Q_UNUSED(event);
 
-	if (width() <= ui::sidebar::SmallSize) {
-		topLayout_->setContentsMargins(0, 0, logoutButtonSize_ / 2 - 5 / 2, 0);
+        if (width() <= ui::sidebar::SmallSize) {
+                topLayout_->setContentsMargins(0, 0, logoutButtonSize_ / 2 - 5 / 2, 0);
 
-		userAvatar_->hide();
-		displayNameLabel_->hide();
-		userIdLabel_->hide();
-	} else {
-		topLayout_->setMargin(5);
-		userAvatar_->show();
-		displayNameLabel_->show();
-		userIdLabel_->show();
-	}
+                userAvatar_->hide();
+                displayNameLabel_->hide();
+                userIdLabel_->hide();
+        } else {
+                topLayout_->setMargin(5);
+                userAvatar_->show();
+                displayNameLabel_->show();
+                userIdLabel_->show();
+        }
 }
 
 void
 UserInfoWidget::reset()
 {
-	displayNameLabel_->setText("");
-	userIdLabel_->setText("");
-	userAvatar_->setLetter(QChar('?'));
+        displayNameLabel_->setText("");
+        userIdLabel_->setText("");
+        userAvatar_->setLetter(QChar('?'));
 }
 
 void
 UserInfoWidget::setAvatar(const QImage &img)
 {
-	avatar_image_ = img;
-	userAvatar_->setImage(img);
+        avatar_image_ = img;
+        userAvatar_->setImage(img);
 }
 
 void
 UserInfoWidget::setDisplayName(const QString &name)
 {
-	if (name.isEmpty())
-		display_name_ = user_id_.split(':')[0].split('@')[1];
-	else
-		display_name_ = name;
+        if (name.isEmpty())
+                display_name_ = user_id_.split(':')[0].split('@')[1];
+        else
+                display_name_ = name;
 
-	displayNameLabel_->setText(display_name_);
-	userAvatar_->setLetter(QChar(display_name_[0]));
+        displayNameLabel_->setText(display_name_);
+        userAvatar_->setLetter(QChar(display_name_[0]));
 }
 
 void
 UserInfoWidget::setUserId(const QString &userid)
 {
-	user_id_ = userid;
-	userIdLabel_->setText(userid);
+        user_id_ = userid;
+        userIdLabel_->setText(userid);
 }

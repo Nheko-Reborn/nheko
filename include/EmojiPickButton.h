@@ -25,23 +25,23 @@
 
 class EmojiPickButton : public FlatButton
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	explicit EmojiPickButton(QWidget *parent = nullptr);
+        explicit EmojiPickButton(QWidget *parent = nullptr);
 
 signals:
-	void emojiSelected(const QString &emoji);
+        void emojiSelected(const QString &emoji);
 
 protected:
-	void enterEvent(QEvent *e) override;
-	void leaveEvent(QEvent *e) override;
+        void enterEvent(QEvent *e) override;
+        void leaveEvent(QEvent *e) override;
 
 private:
-	// Vertical distance from panel's bottom.
-	int vertical_distance_ = 10;
+        // Vertical distance from panel's bottom.
+        int vertical_distance_ = 10;
 
-	// Horizontal distance from panel's bottom right corner.
-	int horizontal_distance_ = 70;
+        // Horizontal distance from panel's bottom right corner.
+        int horizontal_distance_ = 70;
 
-	EmojiPanel *panel_;
+        EmojiPanel *panel_;
 };

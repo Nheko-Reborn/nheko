@@ -31,29 +31,29 @@ RegisterRequest::RegisterRequest(const QString &username, const QString &passwor
 QByteArray
 RegisterRequest::serialize() noexcept
 {
-	QJsonObject body{ { "username", user_ }, { "password", password_ } };
+        QJsonObject body{ { "username", user_ }, { "password", password_ } };
 
-	return QJsonDocument(body).toJson(QJsonDocument::Compact);
+        return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
 
 void
 RegisterResponse::deserialize(const QJsonDocument &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("Response is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("Response is not a JSON object");
 
-	QJsonObject object = data.object();
+        QJsonObject object = data.object();
 
-	if (!object.contains("access_token"))
-		throw DeserializationException("Missing access_token param");
+        if (!object.contains("access_token"))
+                throw DeserializationException("Missing access_token param");
 
-	if (!object.contains("home_server"))
-		throw DeserializationException("Missing home_server param");
+        if (!object.contains("home_server"))
+                throw DeserializationException("Missing home_server param");
 
-	if (!object.contains("user_id"))
-		throw DeserializationException("Missing user_id param");
+        if (!object.contains("user_id"))
+                throw DeserializationException("Missing user_id param");
 
-	access_token_ = object.value("access_token").toString();
-	home_server_ = object.value("home_server").toString();
-	user_id_ = object.value("user_id").toString();
+        access_token_ = object.value("access_token").toString();
+        home_server_  = object.value("home_server").toString();
+        user_id_      = object.value("user_id").toString();
 }

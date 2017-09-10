@@ -10,7 +10,7 @@ enum class AvatarType { Icon, Image, Letter };
 
 namespace sidebar
 {
-static const int SmallSize = 60;
+static const int SmallSize  = 60;
 static const int NormalSize = 300;
 }
 // Default font size.
@@ -32,35 +32,35 @@ enum class ButtonIconPlacement { LeftIcon, RightIcon };
 enum class ProgressType { DeterminateProgress, IndeterminateProgress };
 
 enum class Color {
-	Black,
-	BrightWhite,
-	FadedWhite,
-	MediumWhite,
-	DarkGreen,
-	LightGreen,
-	BrightGreen,
-	Gray,
-	Red,
-	Blue,
-	Transparent
+        Black,
+        BrightWhite,
+        FadedWhite,
+        MediumWhite,
+        DarkGreen,
+        LightGreen,
+        BrightGreen,
+        Gray,
+        Red,
+        Blue,
+        Transparent
 };
 
 } // namespace ui
 
 class Theme : public QObject
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	explicit Theme(QObject *parent = 0);
-	~Theme();
+        explicit Theme(QObject *parent = 0);
+        ~Theme();
 
-	QColor getColor(const QString &key) const;
+        QColor getColor(const QString &key) const;
 
-	void setColor(const QString &key, const QColor &color);
-	void setColor(const QString &key, ui::Color color);
+        void setColor(const QString &key, const QColor &color);
+        void setColor(const QString &key, ui::Color color);
 
 private:
-	QColor rgba(int r, int g, int b, qreal a) const;
+        QColor rgba(int r, int g, int b, qreal a) const;
 
-	QHash<QString, QColor> colors_;
+        QHash<QString, QColor> colors_;
 };

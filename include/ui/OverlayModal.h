@@ -26,35 +26,35 @@
 class OverlayModal : public OverlayWidget
 {
 public:
-	explicit OverlayModal(QWidget *parent, QWidget *content);
+        explicit OverlayModal(QWidget *parent, QWidget *content);
 
-	void fadeIn();
-	void fadeOut();
+        void fadeIn();
+        void fadeOut();
 
 public:
-	inline void setDuration(int duration);
-	inline void setColor(QColor color);
+        inline void setDuration(int duration);
+        inline void setColor(QColor color);
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
 
 private:
-	int duration_;
-	QColor color_;
+        int duration_;
+        QColor color_;
 
-	QGraphicsOpacityEffect *opacity_;
-	QPropertyAnimation *animation_;
+        QGraphicsOpacityEffect *opacity_;
+        QPropertyAnimation *animation_;
 };
 
 inline void
 OverlayModal::setDuration(int duration)
 {
-	duration_ = duration;
-	animation_->setDuration(duration_);
+        duration_ = duration;
+        animation_->setDuration(duration_);
 }
 
 inline void
 OverlayModal::setColor(QColor color)
 {
-	color_ = color;
+        color_ = color;
 }

@@ -29,37 +29,37 @@
 
 class RoomList : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	RoomList(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-	~RoomList();
+        RoomList(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        ~RoomList();
 
-	void setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-			     const QMap<QString, RoomState> &states);
-	void sync(const QMap<QString, RoomState> &states);
+        void setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
+                             const QMap<QString, RoomState> &states);
+        void sync(const QMap<QString, RoomState> &states);
 
-	void clear();
+        void clear();
 
 signals:
-	void roomChanged(const QString &room_id);
-	void totalUnreadMessageCountUpdated(int count);
+        void roomChanged(const QString &room_id);
+        void totalUnreadMessageCountUpdated(int count);
 
 public slots:
-	void updateRoomAvatar(const QString &roomid, const QPixmap &img);
-	void highlightSelectedRoom(const QString &room_id);
-	void updateUnreadMessageCount(const QString &roomid, int count);
-	void updateRoomDescription(const QString &roomid, const DescInfo &info);
+        void updateRoomAvatar(const QString &roomid, const QPixmap &img);
+        void highlightSelectedRoom(const QString &room_id);
+        void updateUnreadMessageCount(const QString &roomid, int count);
+        void updateRoomDescription(const QString &roomid, const DescInfo &info);
 
 private:
-	void calculateUnreadMessageCount();
+        void calculateUnreadMessageCount();
 
-	QVBoxLayout *topLayout_;
-	QVBoxLayout *contentsLayout_;
-	QScrollArea *scrollArea_;
-	QWidget *scrollAreaContents_;
+        QVBoxLayout *topLayout_;
+        QVBoxLayout *contentsLayout_;
+        QScrollArea *scrollArea_;
+        QWidget *scrollAreaContents_;
 
-	QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
+        QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
 
-	QSharedPointer<MatrixClient> client_;
+        QSharedPointer<MatrixClient> client_;
 };

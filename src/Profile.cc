@@ -25,14 +25,14 @@
 void
 ProfileResponse::deserialize(const QJsonDocument &data)
 {
-	if (!data.isObject())
-		throw DeserializationException("Response is not a JSON object");
+        if (!data.isObject())
+                throw DeserializationException("Response is not a JSON object");
 
-	QJsonObject object = data.object();
+        QJsonObject object = data.object();
 
-	if (object.contains("avatar_url"))
-		avatar_url_ = QUrl(object.value("avatar_url").toString());
+        if (object.contains("avatar_url"))
+                avatar_url_ = QUrl(object.value("avatar_url").toString());
 
-	if (object.contains("displayname"))
-		display_name_ = object.value("displayname").toString();
+        if (object.contains("displayname"))
+                display_name_ = object.value("displayname").toString();
 }

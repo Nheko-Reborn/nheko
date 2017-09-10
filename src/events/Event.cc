@@ -32,49 +32,49 @@
 matrix::events::EventType
 matrix::events::extractEventType(const QJsonObject &object)
 {
-	if (!object.contains("type"))
-		throw DeserializationException("Missing event type");
+        if (!object.contains("type"))
+                throw DeserializationException("Missing event type");
 
-	auto type = object.value("type").toString();
+        auto type = object.value("type").toString();
 
-	if (type == "m.room.aliases")
-		return EventType::RoomAliases;
-	else if (type == "m.room.avatar")
-		return EventType::RoomAvatar;
-	else if (type == "m.room.canonical_alias")
-		return EventType::RoomCanonicalAlias;
-	else if (type == "m.room.create")
-		return EventType::RoomCreate;
-	else if (type == "m.room.history_visibility")
-		return EventType::RoomHistoryVisibility;
-	else if (type == "m.room.join_rules")
-		return EventType::RoomJoinRules;
-	else if (type == "m.room.member")
-		return EventType::RoomMember;
-	else if (type == "m.room.message")
-		return EventType::RoomMessage;
-	else if (type == "m.room.name")
-		return EventType::RoomName;
-	else if (type == "m.room.power_levels")
-		return EventType::RoomPowerLevels;
-	else if (type == "m.room.topic")
-		return EventType::RoomTopic;
-	else
-		return EventType::Unsupported;
+        if (type == "m.room.aliases")
+                return EventType::RoomAliases;
+        else if (type == "m.room.avatar")
+                return EventType::RoomAvatar;
+        else if (type == "m.room.canonical_alias")
+                return EventType::RoomCanonicalAlias;
+        else if (type == "m.room.create")
+                return EventType::RoomCreate;
+        else if (type == "m.room.history_visibility")
+                return EventType::RoomHistoryVisibility;
+        else if (type == "m.room.join_rules")
+                return EventType::RoomJoinRules;
+        else if (type == "m.room.member")
+                return EventType::RoomMember;
+        else if (type == "m.room.message")
+                return EventType::RoomMessage;
+        else if (type == "m.room.name")
+                return EventType::RoomName;
+        else if (type == "m.room.power_levels")
+                return EventType::RoomPowerLevels;
+        else if (type == "m.room.topic")
+                return EventType::RoomTopic;
+        else
+                return EventType::Unsupported;
 }
 
 bool
 matrix::events::isStateEvent(EventType type)
 {
-	return type == EventType::RoomAliases || type == EventType::RoomAvatar ||
-	       type == EventType::RoomCanonicalAlias || type == EventType::RoomCreate ||
-	       type == EventType::RoomHistoryVisibility || type == EventType::RoomJoinRules ||
-	       type == EventType::RoomMember || type == EventType::RoomName || type == EventType::RoomPowerLevels ||
-	       type == EventType::RoomTopic;
+        return type == EventType::RoomAliases || type == EventType::RoomAvatar ||
+               type == EventType::RoomCanonicalAlias || type == EventType::RoomCreate ||
+               type == EventType::RoomHistoryVisibility || type == EventType::RoomJoinRules ||
+               type == EventType::RoomMember || type == EventType::RoomName ||
+               type == EventType::RoomPowerLevels || type == EventType::RoomTopic;
 }
 
 bool
 matrix::events::isMessageEvent(EventType type)
 {
-	return type == EventType::RoomMessage;
+        return type == EventType::RoomMessage;
 }

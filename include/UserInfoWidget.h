@@ -29,47 +29,47 @@
 
 class UserInfoWidget : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	UserInfoWidget(QWidget *parent = 0);
-	~UserInfoWidget();
+        UserInfoWidget(QWidget *parent = 0);
+        ~UserInfoWidget();
 
-	void setAvatar(const QImage &img);
-	void setDisplayName(const QString &name);
-	void setUserId(const QString &userid);
+        void setAvatar(const QImage &img);
+        void setDisplayName(const QString &name);
+        void setUserId(const QString &userid);
 
-	void reset();
+        void reset();
 
 signals:
-	void logout();
+        void logout();
 
 protected:
-	void resizeEvent(QResizeEvent *event) override;
+        void resizeEvent(QResizeEvent *event) override;
 
 private slots:
-	void closeLogoutDialog(bool isLoggingOut);
+        void closeLogoutDialog(bool isLoggingOut);
 
 private:
-	Avatar *userAvatar_;
+        Avatar *userAvatar_;
 
-	QHBoxLayout *topLayout_;
-	QHBoxLayout *avatarLayout_;
-	QVBoxLayout *textLayout_;
-	QHBoxLayout *buttonLayout_;
+        QHBoxLayout *topLayout_;
+        QHBoxLayout *avatarLayout_;
+        QVBoxLayout *textLayout_;
+        QHBoxLayout *buttonLayout_;
 
-	FlatButton *logoutButton_;
+        FlatButton *logoutButton_;
 
-	QLabel *displayNameLabel_;
-	QLabel *userIdLabel_;
+        QLabel *displayNameLabel_;
+        QLabel *userIdLabel_;
 
-	QString display_name_;
-	QString user_id_;
+        QString display_name_;
+        QString user_id_;
 
-	QImage avatar_image_;
+        QImage avatar_image_;
 
-	OverlayModal *logoutModal_;
-	LogoutDialog *logoutDialog_;
+        OverlayModal *logoutModal_;
+        LogoutDialog *logoutDialog_;
 
-	int logoutButtonSize_;
+        int logoutButtonSize_;
 };
