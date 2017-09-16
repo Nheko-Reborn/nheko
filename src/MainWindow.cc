@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
         setSizePolicy(sizePolicy);
         setWindowTitle("nheko");
         setObjectName("MainWindow");
-        setStyleSheet("QWidget#MainWindow {background-color: #f9f9f9}");
+        setStyleSheet("QWidget#MainWindow {background-color: #fff}");
 
         restoreWindowSize();
         setMinimumSize(QSize(conf::window::minWidth, conf::window::minHeight));

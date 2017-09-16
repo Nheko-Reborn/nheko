@@ -45,7 +45,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         userAvatar_ = new Avatar(this);
         userAvatar_->setLetter(QChar('?'));
         userAvatar_->setSize(55);
-        userAvatar_->setBackgroundColor("#f9f9f9");
+        userAvatar_->setBackgroundColor("#fff");
         userAvatar_->setTextColor("#333333");
 
         QFont nameFont("Open Sans SemiBold");

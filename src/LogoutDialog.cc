@@ -26,7 +26,7 @@ LogoutDialog::LogoutDialog(QWidget *parent)
   : QFrame(parent)
 {
         setMaximumSize(400, 400);
-        setStyleSheet("background-color: #f9f9f9");
+        setStyleSheet("background-color: #fff");
 
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(30);

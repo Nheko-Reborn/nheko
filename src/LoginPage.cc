@@ -26,7 +26,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   , inferredServerAddress_()
   , client_{ client }
 {
-        setStyleSheet("background-color: #f9f9f9");
+        setStyleSheet("background-color: #fff");
 
         top_layout_ = new QVBoxLayout();
 
@@ -74,7 +74,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         matrixid_input_->setTextColor("#333333");
         matrixid_input_->setLabel(tr("Matrix ID"));
         matrixid_input_->setInkColor("#555459");
-        matrixid_input_->setBackgroundColor("#f9f9f9");
+        matrixid_input_->setBackgroundColor("#fff");
         matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
 
         spinner_ = new LoadingIndicator(this);
@@ -94,14 +94,14 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         password_input_->setTextColor("#333333");
         password_input_->setLabel(tr("Password"));
         password_input_->setInkColor("#555459");
-        password_input_->setBackgroundColor("#f9f9f9");
+        password_input_->setBackgroundColor("#fff");
         password_input_->setEchoMode(QLineEdit::Password);
 
         serverInput_ = new TextField(this);
         serverInput_->setTextColor("#333333");
         serverInput_->setLabel("Homeserver address");
         serverInput_->setInkColor("#555459");
-        serverInput_->setBackgroundColor("#f9f9f9");
+        serverInput_->setBackgroundColor("#fff");
         serverInput_->setPlaceholderText("matrix.org");
         serverInput_->hide();
 

@@ -26,7 +26,7 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)
   , client_(client)
 {
-        setStyleSheet("background-color: #f9f9f9");
+        setStyleSheet("background-color: #fff");
 
         top_layout_ = new QVBoxLayout();
 
@@ -71,27 +71,27 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         username_input_->setTextColor("#333333");
         username_input_->setLabel(tr("Username"));
         username_input_->setInkColor("#555459");
-        username_input_->setBackgroundColor("#f9f9f9");
+        username_input_->setBackgroundColor("#fff");
 
         password_input_ = new TextField();
         password_input_->setTextColor("#333333");
         password_input_->setLabel(tr("Password"));
         password_input_->setInkColor("#555459");
-        password_input_->setBackgroundColor("#f9f9f9");
+        password_input_->setBackgroundColor("#fff");
         password_input_->setEchoMode(QLineEdit::Password);
 
         password_confirmation_ = new TextField();
         password_confirmation_->setTextColor("#333333");
         password_confirmation_->setLabel(tr("Password confirmation"));
         password_confirmation_->setInkColor("#555459");
-        password_confirmation_->setBackgroundColor("#f9f9f9");
+        password_confirmation_->setBackgroundColor("#fff");
         password_confirmation_->setEchoMode(QLineEdit::Password);
 
         server_input_ = new TextField();
         server_input_->setTextColor("#333333");
         server_input_->setLabel(tr("Home Server"));
         server_input_->setInkColor("#555459");
-        server_input_->setBackgroundColor("#f9f9f9");
+        server_input_->setBackgroundColor("#fff");
 
         form_layout_->addWidget(username_input_, Qt::AlignHCenter, 0);
         form_layout_->addWidget(password_input_, Qt::AlignHCenter, 0);
