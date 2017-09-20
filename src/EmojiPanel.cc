@@ -35,8 +35,8 @@ EmojiPanel::EmojiPanel(QWidget *parent)
   , categoryIconSize_{ 20 }
 {
         setStyleSheet(
-          "QWidget {background: #f8fbfe; color: #e8e8e8; border: none;}"
-          "QScrollBar:vertical { background-color: #f8fbfe; width: 8px; margin: 0px 2px 0 2px; }"
+          "QWidget {background: #fff; color: #e8e8e8; border: none;}"
+          "QScrollBar:vertical { background-color: #fff; width: 8px; margin: 0px 2px 0 2px; }"
           "QScrollBar::handle:vertical { background-color: #d6dde3; min-height: 20px; }"
           "QScrollBar::add-line:vertical { border: none; background: none; }"
           "QScrollBar::sub-line:vertical { border: none; background: none; }");

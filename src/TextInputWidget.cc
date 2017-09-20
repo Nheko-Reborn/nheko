@@ -47,7 +47,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         setCursor(Qt::ArrowCursor);
-        setStyleSheet("background-color: #f8fbfe; height: 45px;");
+        setStyleSheet("background-color: #fff; height: 45px;");
 
         topLayout_ = new QHBoxLayout();
         topLayout_->setSpacing(2);

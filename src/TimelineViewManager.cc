@@ -31,7 +31,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QW
   : QStackedWidget(parent)
   , client_(client)
 {
-        setStyleSheet("QWidget { background: #f8fbfe; color: #e8e8e8; border: none;}");
+        setStyleSheet("QWidget { background: #fff; color: #e8e8e8; border: none;}");
 
         connect(
           client_.data(), &MatrixClient::messageSent, this, &TimelineViewManager::messageSent);

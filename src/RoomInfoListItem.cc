@@ -96,7 +96,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         else if (underMouse())
                 p.fillRect(rect(), QColor(200, 200, 200, 128));
         else
-                p.fillRect(rect(), QColor("#F8FBFE"));
+                p.fillRect(rect(), QColor("#FFF"));
 
         QFont font;
         font.setPixelSize(conf::fontSize);

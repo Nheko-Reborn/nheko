@@ -26,7 +26,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 {
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         setMinimumSize(QSize(0, 65));
-        setStyleSheet("background-color: #f8fbfe; color: #171919;");
+        setStyleSheet("background-color: #fff; color: #171919;");
 
         topLayout_ = new QHBoxLayout();
         topLayout_->setSpacing(10);

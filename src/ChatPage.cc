@@ -36,7 +36,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   , sync_interval_(2000)
   , client_(client)
 {
-        setStyleSheet("background-color: #f8fbfe;");
+        setStyleSheet("background-color: #fff;");
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
