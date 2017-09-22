@@ -90,6 +90,7 @@ TimelineItem::TimelineItem(events::MessageEventType ty,
                 };
         }
 
+        body = body.toHtmlEscaped();
         body.replace(URL_REGEX, URL_HTML);
         generateTimestamp(timestamp);
 
@@ -230,7 +231,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
 {
         init();
 
-        auto body        = event.content().body().trimmed().toHtmlEscaped();
+        auto body        = event.content().body().trimmed();
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
         auto displayName = TimelineViewManager::displayName(event.sender());
         auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(body);
@@ -241,6 +242,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
                             descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
 
         generateTimestamp(timestamp);
+        emoteMsg = emoteMsg.toHtmlEscaped();
         emoteMsg.replace(URL_REGEX, URL_HTML);
 
         if (with_sender) {
@@ -267,7 +269,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
 {
         init();
 
-        auto body        = event.content().body().trimmed().toHtmlEscaped();
+        auto body        = event.content().body().trimmed();
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
         auto displayName = TimelineViewManager::displayName(event.sender());
 
@@ -279,6 +281,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
 
         generateTimestamp(timestamp);
 
+        body = body.toHtmlEscaped();
         body.replace(URL_REGEX, URL_HTML);
 
         if (with_sender) {
