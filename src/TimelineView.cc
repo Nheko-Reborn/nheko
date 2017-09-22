@@ -167,11 +167,12 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
 
         // Parse in reverse order to determine where we should not show sender's
         // name.
-        auto it = msgs.chunk().constEnd();
-        while (it != msgs.chunk().constBegin()) {
-                --it;
+        auto ii = msgs.chunk().size();
+        while (ii != 0) {
+                --ii;
 
-                TimelineItem *item = parseMessageEvent((*it).toObject(), TimelineDirection::Top);
+                TimelineItem *item =
+                  parseMessageEvent(msgs.chunk().at(ii).toObject(), TimelineDirection::Top);
 
                 if (item != nullptr)
                         items.push_back(item);
