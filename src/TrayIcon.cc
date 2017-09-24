@@ -87,7 +87,7 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
         quitAction_ = new QAction(tr("Quit"), parent);
 
         connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
-        connect(quitAction_, &QAction::triggered, this, [=]() { QApplication::quit(); });
+        connect(quitAction_, &QAction::triggered, this, QApplication::quit);
 
         menu->addAction(viewAction_);
         menu->addAction(quitAction_);

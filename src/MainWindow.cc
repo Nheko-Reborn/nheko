@@ -22,6 +22,8 @@
 #include <QNetworkReply>
 #include <QSettings>
 #include <QSystemTrayIcon>
+#include <QShortcut>
+#include <QApplication>
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -83,6 +85,9 @@ MainWindow::MainWindow(QWidget *parent)
                 SIGNAL(loginSuccess(QString, QString, QString)),
                 this,
                 SLOT(showChatPage(QString, QString, QString)));
+
+        QShortcut *quitShortcut = new QShortcut(QKeySequence::Quit, this);
+        connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
 
         QSettings settings;
 
