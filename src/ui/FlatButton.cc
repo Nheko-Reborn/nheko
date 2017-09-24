@@ -11,6 +11,21 @@
 #include "RippleOverlay.h"
 #include "ThemeManager.h"
 
+// The ampersand is automatically set in QPushButton or QCheckbx
+// by KDEPlatformTheme plugin in Qt5. [https://bugs.kde.org/show_bug.cgi?id=337491]
+//
+// A workaroud is to add
+//
+// [Development]
+// AutoCheckAccelerators=false
+//
+// to ~/.config/kdeglobals
+static QString
+removeKDEAccelerators(QString text)
+{
+        return text.remove(QChar('&'));
+}
+
 void
 FlatButton::init()
 {
@@ -327,7 +342,7 @@ FlatButton::sizeHint() const
 {
         ensurePolished();
 
-        QSize label(fontMetrics().size(Qt::TextSingleLine, text()));
+        QSize label(fontMetrics().size(Qt::TextSingleLine, removeKDEAccelerators(text())));
 
         int w = 20 + label.width();
         int h = label.height();
@@ -500,11 +515,11 @@ FlatButton::paintForeground(QPainter *painter)
         }
 
         if (icon().isNull()) {
-                painter->drawText(rect(), Qt::AlignCenter, text());
+                painter->drawText(rect(), Qt::AlignCenter, removeKDEAccelerators(text()));
                 return;
         }
 
-        QSize textSize(fontMetrics().size(Qt::TextSingleLine, text()));
+        QSize textSize(fontMetrics().size(Qt::TextSingleLine, removeKDEAccelerators(text())));
         QSize base(size() - textSize);
 
         const int iw = iconSize().width() + IconPadding;
@@ -519,7 +534,7 @@ FlatButton::paintForeground(QPainter *painter)
         /* 	iconGeometry.translate(textSize.width() + IconPadding, 0); */
         /* } */
 
-        painter->drawText(textGeometry, Qt::AlignCenter, text());
+        painter->drawText(textGeometry, Qt::AlignCenter, removeKDEAccelerators(text()));
 
         QPixmap pixmap = icon().pixmap(iconSize());
         QPainter icon(&pixmap);
