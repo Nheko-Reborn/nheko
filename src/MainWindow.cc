@@ -18,12 +18,12 @@
 #include "MainWindow.h"
 #include "Config.h"
 
+#include <QApplication>
 #include <QLayout>
 #include <QNetworkReply>
 #include <QSettings>
-#include <QSystemTrayIcon>
 #include <QShortcut>
-#include <QApplication>
+#include <QSystemTrayIcon>
 
 MainWindow *MainWindow::instance_ = nullptr;
 
