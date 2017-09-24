@@ -17,7 +17,7 @@ matrix:
 before_install:
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/gtest.sh; fi
 install:
-    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install qt5 lmdb; fi
+    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install qt5 lmdb clang-format; fi
     - if [ $TRAVIS_OS_NAME == osx ]; then export CMAKE_PREFIX_PATH=/usr/local/opt/qt5; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/install-deps.sh; fi
 before_script:
@@ -26,3 +26,4 @@ before_script:
 script:
     - make -C build -j2
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/run-tests.sh; fi
+    - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi

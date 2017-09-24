@@ -3,9 +3,6 @@ APP_NAME = nheko
 MAC_DIST_DIR = dist/MacOS
 APP_TEMPLATE = $(MAC_DIST_DIR)/Nheko.app
 
-SRC := $(shell find include src -type f -type f \( -iname "*.cc" -o -iname "*.h" \))
-
-
 # Linux specific helpers
 debug:
 	@cmake -DBUILD_TESTS=OFF -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug
@@ -38,8 +35,7 @@ run:
 	@./build/nheko
 
 lint:
-	@clang-format -i $(SRC)
-
+	@./.ci/format.sh
 
 clean:
 	rm -rf build
