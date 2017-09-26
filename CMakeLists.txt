@@ -13,6 +13,12 @@ find_library (LMDB_LIBRARY NAMES lmdb PATHS "$ENV{LMDB_DIR}/lib" )
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(LMDB DEFAULT_MSG LMDB_INCLUDE_DIR LMDB_LIBRARY)
 
+if (NOT EXISTS "${CMAKE_SOURCE_DIR}/libs/lmdbxx/.git" )
+    message(WARNING "The git submodules are not available.")
+    message(STATUS "Running git submodule update --init --recursive ...")
+    execute_process(COMMAND git submodule update --init --recursive)
+endif()
+
 #
 # Discover Qt dependencies.
 #
