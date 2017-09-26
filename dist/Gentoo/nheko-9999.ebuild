@@ -17,9 +17,13 @@ LICENSE="GPL-3"
 SLOT="0"
 IUSE=""
 
-DEPEND=">=dev-qt/qtgui-5.7.1
-        media-libs/fontconfig"
-RDEPEND="${DEPEND}"
+RDEPEND=">=dev-qt/qtgui-5.7.1
+        >=dev-qt/qtnetwork-5.7.1
+        >=dev-qt/linguist-tools-5.7.1
+        media-libs/fontconfig
+        dev-db/lmdb"
+DEPEND="${RDEPEND}
+        dev-util/ninja"
 
 src_configure() {
     cmake-utils_src_configure
