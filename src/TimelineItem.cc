@@ -321,9 +321,11 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
 {
         auto sender = userid;
 
-        // TODO: Fix this by using a UserId type.
-        if (userid.split(":")[0].split("@").size() > 1)
-                sender = userid.split(":")[0].split("@")[1];
+        if (userid.startsWith("@")) {
+                // TODO: Fix this by using a UserId type.
+                if (userid.split(":")[0].split("@").size() > 1)
+                        sender = userid.split(":")[0].split("@")[1];
+        }
 
         QString userContent("<span style=\"color: #171717\"> %1 </span>");
         QString bodyContent("<span style=\"color: #171717;\"> %1 </span>");
