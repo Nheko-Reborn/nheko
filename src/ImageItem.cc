@@ -216,7 +216,7 @@ ImageItem::paintEvent(QPaintEvent *event)
 
                 QString elidedText = metrics.elidedText(text_, Qt::ElideRight, width_ - 10);
 
-                font.setWeight(500);
+                font.setWeight(80);
                 painter.setFont(font);
                 painter.setPen(QPen(QColor("white")));
                 painter.drawText(QPoint(5, height_ - fontHeight / 2), elidedText);
