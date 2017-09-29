@@ -32,13 +32,45 @@ SyncResponse::deserialize(const QJsonDocument &data)
 
         QJsonObject object = data.object();
 
-        if (object.value("next_batch") == QJsonValue::Undefined)
+        if (!object.contains("next_batch"))
                 throw DeserializationException("Sync: missing next_batch parameter");
 
-        if (object.value("rooms") == QJsonValue::Undefined)
-                throw DeserializationException("Sync: missing rooms parameter");
+        if (object.contains("rooms")) {
+                if (!object.value("rooms").isObject()) {
+                        throw DeserializationException("Sync: rooms is not a JSON object");
+                }
+                rooms_.deserialize(object.value("rooms"));
+        }
 
-        rooms_.deserialize(object.value("rooms"));
+        if (object.contains("presence")) {
+                if (!object.value("presence").isObject()) {
+                        throw DeserializationException("Sync: presence is not a JSON object");
+                }
+                // TODO: implement presence handling
+        }
+
+        if (object.contains("account_data")) {
+                if (!object.value("account_data").isObject()) {
+                        throw DeserializationException("Sync: account_data is not a JSON object");
+                }
+                // TODO: implement account_data handling
+        }
+
+        if (object.contains("to_device")) {
+                if (!object.value("to_device").isObject()) {
+                        throw DeserializationException("Sync: to_device is not a JSON object");
+                }
+                // TODO: implement to_device handling
+        }
+
+        // for device_lists updates (for e2e)
+        if (object.contains("device_lists")) {
+                if (!object.value("device_lists").isObject()) {
+                        throw DeserializationException("Sync: device_lists is not a JSON object");
+                }
+                // TODO: implement device_lists handling
+        }
+
         next_batch_ = object.value("next_batch").toString();
 }
 
@@ -50,36 +82,37 @@ Rooms::deserialize(const QJsonValue &data)
 
         QJsonObject object = data.toObject();
 
-        if (!object.contains("join"))
-                throw DeserializationException("rooms/join is missing");
+        if (object.contains("join")) {
+                if (!object.value("join").isObject())
+                        throw DeserializationException("rooms/join must be a JSON object");
 
-        if (!object.contains("invite"))
-                throw DeserializationException("rooms/invite is missing");
+                auto join = object.value("join").toObject();
 
-        if (!object.contains("leave"))
-                throw DeserializationException("rooms/leave is missing");
+                for (auto it = join.constBegin(); it != join.constEnd(); it++) {
+                        JoinedRoom tmp_room;
 
-        if (!object.value("join").isObject())
-                throw DeserializationException("rooms/join must be a JSON object");
-
-        if (!object.value("invite").isObject())
-                throw DeserializationException("rooms/invite must be a JSON object");
-
-        if (!object.value("leave").isObject())
-                throw DeserializationException("rooms/leave must be a JSON object");
-
-        auto join = object.value("join").toObject();
-
-        for (auto it = join.constBegin(); it != join.constEnd(); it++) {
-                JoinedRoom tmp_room;
-
-                try {
-                        tmp_room.deserialize(it.value());
-                        join_.insert(it.key(), tmp_room);
-                } catch (DeserializationException &e) {
-                        qWarning() << e.what();
-                        qWarning() << "Skipping malformed object for room" << it.key();
+                        try {
+                                tmp_room.deserialize(it.value());
+                                join_.insert(it.key(), tmp_room);
+                        } catch (DeserializationException &e) {
+                                qWarning() << e.what();
+                                qWarning() << "Skipping malformed object for room" << it.key();
+                        }
                 }
+        }
+
+        if (object.contains("invite")) {
+                if (!object.value("invite").isObject()) {
+                        throw DeserializationException("rooms/invite must be a JSON object");
+                }
+                // TODO: Implement invite handling
+        }
+
+        if (object.contains("leave")) {
+                if (!object.value("leave").isObject()) {
+                        throw DeserializationException("rooms/leave must be a JSON object");
+                }
+                // TODO: Implement leave handling
         }
 }
 
@@ -91,28 +124,64 @@ JoinedRoom::deserialize(const QJsonValue &data)
 
         QJsonObject object = data.toObject();
 
-        if (!object.contains("state"))
-                throw DeserializationException("join/state is missing");
+        if (object.contains("state")) {
+                if (!object.value("state").isObject()) {
+                        throw DeserializationException("join/state should be an object");
+                }
 
-        if (!object.contains("timeline"))
-                throw DeserializationException("join/timeline is missing");
+                QJsonObject state = object.value("state").toObject();
 
-        if (!object.contains("account_data"))
-                throw DeserializationException("join/account_data is missing");
+                if (state.contains("events")) {
+                        if (!state.value("events").isArray()) {
+                                throw DeserializationException(
+                                  "join/state/events should be an array");
+                        }
 
-        if (!object.contains("unread_notifications"))
-                throw DeserializationException("join/unread_notifications is missing");
+                        state_.deserialize(state.value("events"));
+                }
+        }
 
-        if (!object.value("state").isObject())
-                throw DeserializationException("join/state should be an object");
+        if (object.contains("timeline")) {
+                if (!object.value("timeline").isObject())
+                        throw DeserializationException("join/timeline should be an object");
+                timeline_.deserialize(object.value("timeline"));
+        }
 
-        QJsonObject state = object.value("state").toObject();
+        if (object.contains("ephemeral")) {
+                if (!object.value("ephemeral").isObject())
+                        throw DeserializationException("join/ephemeral should be an object");
 
-        if (!state.contains("events"))
-                throw DeserializationException("join/state/events is missing");
+                QJsonObject ephemeral = object.value("ephemeral").toObject();
 
-        state_.deserialize(state.value("events"));
-        timeline_.deserialize(object.value("timeline"));
+                if (ephemeral.contains("events")) {
+                        if (!ephemeral.value("events").isArray())
+                                qWarning() << "join/ephemeral/events should be an array";
+
+                        // TODO: Implement ephemeral handling
+                }
+        }
+
+        if (object.contains("account_data")) {
+                if (!object.value("account_data").isObject())
+                        throw DeserializationException("join/account_data is not a JSON object");
+                // TODO: Implement account_data handling
+        }
+
+        if (object.contains("unread_notifications")) {
+                if (!object.value("unread_notifications").isObject()) {
+                        throw DeserializationException(
+                          "join/unread_notifications is not a JSON object");
+                }
+
+                QJsonObject unreadNotifications = object.value("unread_notifications").toObject();
+
+                if (unreadNotifications.contains("highlight_count")) {
+                        // TODO: Implement unread_notifications handling
+                }
+                if (unreadNotifications.contains("notification_count")) {
+                        // TODO: Implement unread_notifications handling
+                }
+        }
 }
 
 void
