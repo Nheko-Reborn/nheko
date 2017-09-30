@@ -17,12 +17,6 @@
 
 #pragma once
 
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QSpacerItem>
-#include <QVBoxLayout>
-#include <QWidget>
-
 #include "RaisedButton.h"
 
 class WelcomePage : public QWidget
@@ -31,7 +25,6 @@ class WelcomePage : public QWidget
 
 public:
         explicit WelcomePage(QWidget *parent = 0);
-        ~WelcomePage();
 
 signals:
         // Notify that the user wants to login in.
@@ -40,19 +33,7 @@ signals:
         // Notify that the user wants to register.
         void userRegister();
 
-private slots:
-        void onLoginButtonClicked();
-        void onRegisterButtonClicked();
-
 private:
-        QVBoxLayout *top_layout_;
-        QHBoxLayout *button_layout_;
-
-        QLabel *intro_banner_;
-        QLabel *intro_text_;
-
-        QSpacerItem *button_spacer_;
-
-        RaisedButton *register_button_;
-        RaisedButton *login_button_;
+        RaisedButton *registerBtn_;
+        RaisedButton *loginBtn_;
 };

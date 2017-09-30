@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
+#include <QLabel>
 #include <QLayout>
 
 #include "Config.h"
@@ -26,79 +26,56 @@ WelcomePage::WelcomePage(QWidget *parent)
 {
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        top_layout_ = new QVBoxLayout(this);
-        top_layout_->setSpacing(0);
-        top_layout_->setMargin(0);
+        auto topLayout_ = new QVBoxLayout(this);
+        topLayout_->setSpacing(20);
 
-        intro_banner_ = new QLabel(this);
-        intro_banner_->setPixmap(QPixmap(":/logos/nheko-256.png"));
-        intro_banner_->setAlignment(Qt::AlignCenter);
+        QFont headingFont("Open Sans", 23);
+        QFont subTitleFont("Open Sans", 22);
 
-        intro_text_ = new QLabel(this);
+        auto logo_ = new QLabel(this);
+        logo_->setPixmap(QPixmap(":/logos/nheko-256.png"));
+        logo_->setAlignment(Qt::AlignCenter);
 
         QString heading(tr("Welcome to nheko! The desktop client for the Matrix protocol."));
         QString main(tr("Enjoy your stay!"));
 
-        intro_text_->setText(QString("<p align=\"center\" style=\"margin: 0; line-height: 2pt\">"
-                                     "  <span style=\" font-size:18px; color:#515151;\"> %1 </span>"
-                                     "</p>"
-                                     "<p align=\"center\" style=\"margin: 1pt; line-height: 2pt;\">"
-                                     "  <span style=\" font-size:18px; color:#515151;\"> %2 </span>"
-                                     "</p>")
-                               .arg(heading)
-                               .arg(main));
+        auto intoTxt_ = new QLabel(heading, this);
+        intoTxt_->setFont(headingFont);
+        intoTxt_->setContentsMargins(0, 20, 0, 0);
 
-        top_layout_->addStretch(1);
-        top_layout_->addWidget(intro_banner_);
-        top_layout_->addStretch(1);
-        top_layout_->addWidget(intro_text_, 0, Qt::AlignCenter);
-        top_layout_->addStretch(1);
+        auto subTitle = new QLabel(main, this);
+        subTitle->setFont(subTitleFont);
+        subTitle->setContentsMargins(0, 0, 0, 0);
 
-        button_layout_ = new QHBoxLayout();
-        button_layout_->setSpacing(0);
-        button_layout_->setContentsMargins(0, 20, 0, 80);
+        topLayout_->addStretch(1);
+        topLayout_->addWidget(logo_);
+        topLayout_->addWidget(intoTxt_, 0, Qt::AlignCenter);
+        topLayout_->addWidget(subTitle, 0, Qt::AlignCenter);
 
-        register_button_ = new RaisedButton(tr("REGISTER"), this);
-        register_button_->setBackgroundColor(QColor("#333333"));
-        register_button_->setForegroundColor(QColor("white"));
-        register_button_->setMinimumSize(240, 60);
-        register_button_->setFontSize(conf::btn::fontSize);
-        register_button_->setCornerRadius(conf::btn::cornerRadius);
+        auto btnLayout_ = new QHBoxLayout();
+        btnLayout_->setSpacing(20);
+        btnLayout_->setContentsMargins(0, 20, 0, 20);
 
-        login_button_ = new RaisedButton(tr("LOGIN"), this);
-        login_button_->setBackgroundColor(QColor("#333333"));
-        login_button_->setForegroundColor(QColor("white"));
-        login_button_->setMinimumSize(240, 60);
-        login_button_->setFontSize(conf::btn::fontSize);
-        login_button_->setCornerRadius(conf::btn::cornerRadius);
+        registerBtn_ = new RaisedButton(tr("REGISTER"), this);
+        registerBtn_->setBackgroundColor(QColor("#333333"));
+        registerBtn_->setMinimumSize(240, 65);
+        registerBtn_->setFontSize(conf::btn::fontSize);
+        registerBtn_->setCornerRadius(conf::btn::cornerRadius);
 
-        button_spacer_ =
-          new QSpacerItem(20, 20, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+        loginBtn_ = new RaisedButton(tr("LOGIN"), this);
+        loginBtn_->setBackgroundColor(QColor("#333333"));
+        loginBtn_->setMinimumSize(240, 65);
+        loginBtn_->setFontSize(conf::btn::fontSize);
+        loginBtn_->setCornerRadius(conf::btn::cornerRadius);
 
-        button_layout_->addStretch(1);
-        button_layout_->addWidget(register_button_);
-        button_layout_->addItem(button_spacer_);
-        button_layout_->addWidget(login_button_);
-        button_layout_->addStretch(1);
+        btnLayout_->addStretch(1);
+        btnLayout_->addWidget(registerBtn_);
+        btnLayout_->addWidget(loginBtn_);
+        btnLayout_->addStretch(1);
 
-        top_layout_->addLayout(button_layout_);
+        topLayout_->addLayout(btnLayout_);
+        topLayout_->addStretch(1);
 
-        connect(register_button_, SIGNAL(clicked()), this, SLOT(onRegisterButtonClicked()));
-        connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
-}
-
-void
-WelcomePage::onLoginButtonClicked()
-{
-        emit userLogin();
-}
-
-void
-WelcomePage::onRegisterButtonClicked()
-{
-        emit userRegister();
-}
-
-WelcomePage::~WelcomePage()
-{
+        connect(registerBtn_, &QPushButton::clicked, this, &WelcomePage::userRegister);
+        connect(loginBtn_, &QPushButton::clicked, this, &WelcomePage::userLogin);
 }
