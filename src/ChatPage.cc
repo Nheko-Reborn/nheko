@@ -264,6 +264,10 @@ ChatPage::setOwnAvatar(const QPixmap &img)
 void
 ChatPage::syncFailed(const QString &msg)
 {
+        // Stop if sync is not active. e.g user is logged out.
+        if (client_->getHomeServer().isEmpty())
+                return;
+
         qWarning() << "Sync error:" << msg;
         sync_timer_->start(sync_interval_ * 5);
 }

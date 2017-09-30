@@ -34,6 +34,19 @@
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;
 
+static bool
+isRedactedEvent(const QJsonObject &event)
+{
+        if (event.contains("redacted_because"))
+                return true;
+
+        if (event.contains("unsigned") &&
+            event.value("unsigned").toObject().contains("redacted_because"))
+                return true;
+
+        return false;
+}
+
 TimelineView::TimelineView(const Timeline &timeline,
                            QSharedPointer<MatrixClient> client,
                            const QString &room_id,
@@ -310,7 +323,11 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         return createTimelineItem(emote, with_sender);
                 } else if (msg_type == events::MessageEventType::Unknown) {
-                        qWarning() << "Unknown message type" << event;
+                        // TODO Handle redacted messages.
+                        // Silenced for now.
+                        if (!isRedactedEvent(event))
+                                qWarning() << "Unknown message type" << event;
+
                         return nullptr;
                 }
         }
