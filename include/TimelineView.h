@@ -133,7 +133,9 @@ private:
         QString prev_batch_token_;
         QString local_user_;
 
-        bool isPaginationInProgress_    = false;
+        bool isPaginationInProgress_ = false;
+
+        // Keeps track whether or not the user has visited the view.
         bool isInitialized              = false;
         bool isTimelineFinished         = false;
         bool isInitialSync              = true;

@@ -55,9 +55,6 @@ TimelineView::TimelineView(const Timeline &timeline,
   , room_id_{ room_id }
   , client_{ client }
 {
-        QSettings settings;
-        local_user_ = settings.value("auth/user_id").toString();
-
         init();
         addEvents(timeline);
 }
@@ -69,9 +66,6 @@ TimelineView::TimelineView(QSharedPointer<MatrixClient> client,
   , room_id_{ room_id }
   , client_{ client }
 {
-        QSettings settings;
-        local_user_ = settings.value("auth/user_id").toString();
-
         init();
         client_->messages(room_id_, "");
 }
@@ -86,6 +80,8 @@ TimelineView::sliderRangeChanged(int min, int max)
                 return;
         }
 
+        // If the scrollbar is close to the bottom and a new message
+        // is added we move the scrollbar.
         if (max - scroll_area_->verticalScrollBar()->value() < SCROLL_BAR_GAP)
                 scroll_area_->verticalScrollBar()->setValue(max);
 
@@ -96,9 +92,8 @@ TimelineView::sliderRangeChanged(int min, int max)
                 int diff          = currentHeight - oldHeight_;
                 int newPosition   = oldPosition_ + diff;
 
-                // Keep the scroll bar to the bottom if we are coming from
-                // an scrollbar without height i.e scrollbar->value() == 0
-                if (oldPosition_ == 0)
+                // Keep the scroll bar to the bottom if it hasn't been activated yet.
+                if (oldPosition_ == 0 && !scroll_area_->verticalScrollBar()->isVisible())
                         newPosition = max;
 
                 scroll_area_->verticalScrollBar()->setValue(newPosition);
@@ -108,7 +103,7 @@ TimelineView::sliderRangeChanged(int min, int max)
 void
 TimelineView::fetchHistory()
 {
-        bool hasEnoughMessages = scroll_area_->verticalScrollBar()->value() != 0;
+        bool hasEnoughMessages = scroll_area_->verticalScrollBar()->isVisible();
 
         if (!hasEnoughMessages && !isTimelineFinished) {
                 isPaginationInProgress_ = true;
@@ -371,6 +366,9 @@ TimelineView::addEvents(const Timeline &timeline)
 void
 TimelineView::init()
 {
+        QSettings settings;
+        local_user_ = settings.value("auth/user_id").toString();
+
         top_layout_ = new QVBoxLayout(this);
         top_layout_->setSpacing(0);
         top_layout_->setMargin(0);
