@@ -78,7 +78,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
 
         spinner_ = new LoadingIndicator(this);
-        spinner_->setColor("#acc7dc");
+        spinner_->setColor("#333333");
         spinner_->setFixedHeight(40);
         spinner_->setFixedWidth(40);
         spinner_->hide();

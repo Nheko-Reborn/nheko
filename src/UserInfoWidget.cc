@@ -103,7 +103,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
                 if (logoutModal_ == nullptr) {
                         logoutModal_ = new OverlayModal(MainWindow::instance(), logoutDialog_);
-                        logoutModal_->setDuration(100);
+                        logoutModal_->setDuration(0);
                         logoutModal_->setColor(QColor(55, 55, 55, 170));
                 }
 
@@ -116,10 +116,8 @@ UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
 {
         logoutModal_->fadeOut();
 
-        if (isLoggingOut) {
-                // Waiting for the modal to fade out.
-                QTimer::singleShot(100, this, [=]() { emit logout(); });
-        }
+        if (isLoggingOut)
+                emit logout();
 }
 
 UserInfoWidget::~UserInfoWidget()

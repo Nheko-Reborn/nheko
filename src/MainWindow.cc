@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainWindow.h"
 #include "Config.h"
+#include "MainWindow.h"
 
 #include <QApplication>
 #include <QLayout>
@@ -55,13 +55,13 @@ MainWindow::MainWindow(QWidget *parent)
         chat_page_     = new ChatPage(client_, this);
 
         // Initialize sliding widget manager.
-        sliding_stack_ = new SlidingStackWidget(this);
-        sliding_stack_->addWidget(welcome_page_);
-        sliding_stack_->addWidget(login_page_);
-        sliding_stack_->addWidget(register_page_);
-        sliding_stack_->addWidget(chat_page_);
+        pageStack_ = new QStackedWidget(this);
+        pageStack_->addWidget(welcome_page_);
+        pageStack_->addWidget(login_page_);
+        pageStack_->addWidget(register_page_);
+        pageStack_->addWidget(chat_page_);
 
-        setCentralWidget(sliding_stack_);
+        setCentralWidget(pageStack_);
 
         connect(welcome_page_, SIGNAL(userLogin()), this, SLOT(showLoginPage()));
         connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
@@ -157,17 +157,14 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
         settings.setValue("auth/home_server", homeserver);
         settings.setValue("auth/user_id", userid);
 
-        int index                = sliding_stack_->getWidgetIndex(chat_page_);
         int modalOpacityDuration = 300;
 
         // If we go directly from the welcome page don't show an animation.
-        if (sliding_stack_->currentIndex() == 0) {
-                sliding_stack_->setCurrentIndex(index);
+        if (pageStack_->currentIndex() == 0)
                 modalOpacityDuration = 0;
-        } else {
-                sliding_stack_->slideInIndex(index,
-                                             SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
-        }
+
+        QTimer::singleShot(
+          modalOpacityDuration + 100, this, [=]() { pageStack_->setCurrentWidget(chat_page_); });
 
         if (spinner_ == nullptr) {
                 spinner_ = new LoadingIndicator(this);
@@ -192,28 +189,19 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 void
 MainWindow::showWelcomePage()
 {
-        int index = sliding_stack_->getWidgetIndex(welcome_page_);
-
-        if (sliding_stack_->currentIndex() == sliding_stack_->getWidgetIndex(login_page_))
-                sliding_stack_->slideInIndex(index,
-                                             SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
-        else
-                sliding_stack_->slideInIndex(index,
-                                             SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+        pageStack_->setCurrentWidget(welcome_page_);
 }
 
 void
 MainWindow::showLoginPage()
 {
-        int index = sliding_stack_->getWidgetIndex(login_page_);
-        sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::LEFT_TO_RIGHT);
+        pageStack_->setCurrentWidget(login_page_);
 }
 
 void
 MainWindow::showRegisterPage()
 {
-        int index = sliding_stack_->getWidgetIndex(register_page_);
-        sliding_stack_->slideInIndex(index, SlidingStackWidget::AnimationDirection::RIGHT_TO_LEFT);
+        pageStack_->setCurrentWidget(register_page_);
 }
 
 void

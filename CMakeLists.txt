@@ -135,7 +135,6 @@ set(SRC_FILES
     src/RoomState.cc
     src/Register.cc
     src/RegisterPage.cc
-    src/SlidingStackWidget.cc
     src/Splitter.cc
     src/Sync.cc
     src/TextInputWidget.cc
@@ -216,7 +215,6 @@ qt5_wrap_cpp(MOC_HEADERS
     include/RoomList.h
     include/Splitter.h
     include/UserInfoWidget.h
-    include/SlidingStackWidget.h
     include/TopRoomBar.h
     include/TrayIcon.h
     include/TextInputWidget.h

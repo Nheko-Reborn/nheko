@@ -26,7 +26,6 @@
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RegisterPage.h"
-#include "SlidingStackWidget.h"
 #include "TrayIcon.h"
 #include "WelcomePage.h"
 
@@ -78,7 +77,7 @@ private:
         RegisterPage *register_page_;
 
         // A stacked widget that handles the transitions between widgets.
-        SlidingStackWidget *sliding_stack_;
+        QStackedWidget *pageStack_;
 
         // The main chat area.
         ChatPage *chat_page_;
