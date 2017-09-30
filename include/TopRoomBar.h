@@ -77,12 +77,14 @@ inline void
 TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
 {
         avatar_->setImage(avatar_image);
+        update();
 }
 
 inline void
 TopRoomBar::updateRoomAvatar(const QIcon &icon)
 {
         avatar_->setIcon(icon);
+        update();
 }
 
 inline void
@@ -91,6 +93,7 @@ TopRoomBar::updateRoomName(const QString &name)
         QString elidedText =
           QFontMetrics(nameLabel_->font()).elidedText(name, Qt::ElideRight, width() * 0.8);
         nameLabel_->setText(elidedText);
+        update();
 }
 
 inline void
@@ -102,4 +105,5 @@ TopRoomBar::updateRoomTopic(QString topic)
           QFontMetrics(topicLabel_->font()).elidedText(topic, Qt::ElideRight, width() * 0.6);
 
         topicLabel_->setText(topic);
+        update();
 }

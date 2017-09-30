@@ -108,6 +108,7 @@ TopRoomBar::updateRoomAvatarFromName(const QString &name)
                 letter = name[0];
 
         avatar_->setLetter(letter);
+        update();
 }
 
 void

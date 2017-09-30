@@ -156,6 +156,7 @@ UserInfoWidget::setAvatar(const QImage &img)
 {
         avatar_image_ = img;
         userAvatar_->setImage(img);
+        update();
 }
 
 void
@@ -168,6 +169,7 @@ UserInfoWidget::setDisplayName(const QString &name)
 
         displayNameLabel_->setText(display_name_);
         userAvatar_->setLetter(QChar(display_name_[0]));
+        update();
 }
 
 void
