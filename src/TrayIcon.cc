@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QTimer>
+#include <QList>
 
 #include "TrayIcon.h"
 
@@ -70,6 +71,34 @@ QIconEngine *
 MsgCountComposedIcon::clone() const
 {
         return new MsgCountComposedIcon(*this);
+}
+
+QList<QSize>
+MsgCountComposedIcon::availableSizes(QIcon::Mode mode, QIcon::State state) const
+{
+        Q_UNUSED(mode);
+        Q_UNUSED(state);
+        QList<QSize> sizes;
+        sizes.append(QSize(24, 24));
+        sizes.append(QSize(32, 32));
+        sizes.append(QSize(48, 48));
+        sizes.append(QSize(64, 64));
+        sizes.append(QSize(128, 128));
+        sizes.append(QSize(256, 256));
+        return sizes;
+}
+
+QPixmap
+MsgCountComposedIcon::pixmap(const QSize& size, QIcon::Mode mode, QIcon::State state)
+{
+        QImage img(size, QImage::Format_ARGB32);
+        img.fill(qRgba(0, 0, 0, 0));
+        QPixmap result = QPixmap::fromImage(img, Qt::NoFormatConversion);
+        {
+                QPainter painter(&result);
+                paint(&painter, QRect(QPoint(0, 0), size), mode, state);
+        }
+        return result;
 }
 
 TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
