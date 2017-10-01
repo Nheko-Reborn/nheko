@@ -20,8 +20,8 @@
 const QRegExp MXID_REGEX("@[A-Za-z0-9._%+-]+:[A-Za-z0-9.-]{1,126}\\.[A-Za-z]{1,63}");
 const QRegExp LOCALPART_REGEX("[A-za-z0-9._%+-]{3,}");
 const QRegExp PASSWORD_REGEX(".{8,}");
-const QRegExp DOMAIN_REGEX(
-  "(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,126}(?!\\d+)[a-zA-Z\\d]{1,63}");
+const QRegExp DOMAIN_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,"
+                           "126}(?!\\d+)[a-zA-Z\\d]{1,63}");
 
 QRegExpValidator InputValidator::Id(MXID_REGEX);
 QRegExpValidator InputValidator::Localpart(LOCALPART_REGEX);

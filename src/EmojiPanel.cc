@@ -34,12 +34,13 @@ EmojiPanel::EmojiPanel(QWidget *parent)
   , animationDuration_{ 100 }
   , categoryIconSize_{ 20 }
 {
-        setStyleSheet(
-          "QWidget {background: #fff; color: #e8e8e8; border: none;}"
-          "QScrollBar:vertical { background-color: #fff; width: 8px; margin: 0px 2px 0 2px; }"
-          "QScrollBar::handle:vertical { background-color: #d6dde3; min-height: 20px; }"
-          "QScrollBar::add-line:vertical { border: none; background: none; }"
-          "QScrollBar::sub-line:vertical { border: none; background: none; }");
+        setStyleSheet("QWidget {background: #fff; color: #e8e8e8; border: none;}"
+                      "QScrollBar:vertical { background-color: #fff; width: 8px; margin: 0px "
+                      "2px 0 2px; }"
+                      "QScrollBar::handle:vertical { background-color: #d6dde3; min-height: "
+                      "20px; }"
+                      "QScrollBar::add-line:vertical { border: none; background: none; }"
+                      "QScrollBar::sub-line:vertical { border: none; background: none; }");
 
         setAttribute(Qt::WA_TranslucentBackground, true);
         setAttribute(Qt::WA_ShowWithoutActivating, true);

@@ -101,19 +101,7 @@ void
 TimelineViewManager::initialize(const Rooms &rooms)
 {
         for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
-                auto roomid = it.key();
-
-                // Create a history view with the room events.
-                TimelineView *view = new TimelineView(it.value().timeline(), client_, it.key());
-                views_.insert(it.key(), QSharedPointer<TimelineView>(view));
-
-                connect(view,
-                        &TimelineView::updateLastTimelineMessage,
-                        this,
-                        &TimelineViewManager::updateRoomsLastMessage);
-
-                // Add the view in the widget stack.
-                addWidget(view);
+                addRoom(it.value(), it.key());
         }
 }
 
@@ -121,18 +109,40 @@ void
 TimelineViewManager::initialize(const QList<QString> &rooms)
 {
         for (const auto &roomid : rooms) {
-                // Create a history view without any events.
-                TimelineView *view = new TimelineView(client_, roomid);
-                views_.insert(roomid, QSharedPointer<TimelineView>(view));
-
-                connect(view,
-                        &TimelineView::updateLastTimelineMessage,
-                        this,
-                        &TimelineViewManager::updateRoomsLastMessage);
-
-                // Add the view in the widget stack.
-                addWidget(view);
+                addRoom(roomid);
         }
+}
+
+void
+TimelineViewManager::addRoom(const JoinedRoom &room, const QString &room_id)
+{
+        // Create a history view with the room events.
+        TimelineView *view = new TimelineView(room.timeline(), client_, room_id);
+        views_.insert(room_id, QSharedPointer<TimelineView>(view));
+
+        connect(view,
+                &TimelineView::updateLastTimelineMessage,
+                this,
+                &TimelineViewManager::updateRoomsLastMessage);
+
+        // Add the view in the widget stack.
+        addWidget(view);
+}
+
+void
+TimelineViewManager::addRoom(const QString &room_id)
+{
+        // Create a history view without any events.
+        TimelineView *view = new TimelineView(client_, room_id);
+        views_.insert(room_id, QSharedPointer<TimelineView>(view));
+
+        connect(view,
+                &TimelineView::updateLastTimelineMessage,
+                this,
+                &TimelineViewManager::updateRoomsLastMessage);
+
+        // Add the view in the widget stack.
+        addWidget(view);
 }
 
 void

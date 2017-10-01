@@ -171,21 +171,54 @@ JoinedRoom::timeline() const
         return timeline_;
 }
 
+class LeftRoom : public Deserializable
+{
+public:
+        inline State state() const;
+        inline Timeline timeline() const;
+
+        void deserialize(const QJsonValue &data) override;
+
+private:
+        State state_;
+        Timeline timeline_;
+};
+
+inline State
+LeftRoom::state() const
+{
+        return state_;
+}
+
+inline Timeline
+LeftRoom::timeline() const
+{
+        return timeline_;
+}
+
 // TODO: Add support for invited and left rooms.
 class Rooms : public Deserializable
 {
 public:
         inline QMap<QString, JoinedRoom> join() const;
+        inline QMap<QString, LeftRoom> leave() const;
         void deserialize(const QJsonValue &data) override;
 
 private:
         QMap<QString, JoinedRoom> join_;
+        QMap<QString, LeftRoom> leave_;
 };
 
 inline QMap<QString, JoinedRoom>
 Rooms::join() const
 {
         return join_;
+}
+
+inline QMap<QString, LeftRoom>
+Rooms::leave() const
+{
+        return leave_;
 }
 
 class SyncResponse : public Deserializable

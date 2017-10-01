@@ -57,6 +57,7 @@ public:
 
 signals:
         void clicked(const QString &room_id);
+        void leaveRoom(const QString &room_id);
 
 public slots:
         void setPressedState(bool state);
@@ -86,6 +87,7 @@ private:
 
         Menu *menu_;
         QAction *toggleNotifications_;
+        QAction *leaveRoom_;
 
         QSharedPointer<RoomSettings> roomSettings_;
 

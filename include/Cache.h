@@ -37,6 +37,8 @@ public:
         inline void unmount();
         inline QString memberDbName(const QString &roomid);
 
+        void removeRoom(const QString &roomid);
+
 private:
         void setNextBatchToken(lmdb::txn &txn, const QString &token);
         void insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state);

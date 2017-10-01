@@ -19,6 +19,7 @@
 #include <QJsonArray>
 #include <QRegularExpression>
 
+#include "MainWindow.h"
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
 #include "Sync.h"
@@ -70,6 +71,36 @@ RoomList::clear()
 }
 
 void
+RoomList::addRoom(const QSharedPointer<RoomSettings> &settings,
+                  const RoomState &state,
+                  const QString &room_id)
+{
+        RoomInfoListItem *room_item = new RoomInfoListItem(settings, state, room_id, scrollArea_);
+        connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
+        connect(room_item, &RoomInfoListItem::leaveRoom, this, &RoomList::openLeaveRoomDialog);
+
+        rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
+
+        client_->fetchRoomAvatar(room_id, state.getAvatar());
+
+        contentsLayout_->insertWidget(0, room_item);
+}
+
+void
+RoomList::removeRoom(const QString &room_id, bool reset)
+{
+        rooms_.remove(room_id);
+
+        if (rooms_.isEmpty() || !reset)
+                return;
+
+        auto first_room = rooms_.first();
+        first_room->setPressedState(true);
+
+        emit roomChanged(rooms_.firstKey());
+}
+
+void
 RoomList::updateUnreadMessageCount(const QString &roomid, int count)
 {
         if (!rooms_.contains(roomid)) {
@@ -116,6 +147,7 @@ RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &set
                   new RoomInfoListItem(settings[room_id], state, room_id, scrollArea_);
                 connect(
                   room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
+                connect(room_item, &RoomInfoListItem::leaveRoom, this, &RoomList::openLeaveRoomDialog);
 
                 rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
@@ -133,15 +165,31 @@ RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &set
 }
 
 void
+RoomList::openLeaveRoomDialog(const QString &room_id)
+{
+        leaveRoomDialog_ = new LeaveRoomDialog(this);
+        connect(leaveRoomDialog_,
+                &LeaveRoomDialog::closing, this,
+                [=](bool leaving) { closeLeaveRoomDialog(leaving, room_id); });
+
+        leaveRoomModal = new OverlayModal(MainWindow::instance(), leaveRoomDialog_);
+        leaveRoomModal->setDuration(0);
+        leaveRoomModal->setColor(QColor(55, 55, 55, 170));
+
+        leaveRoomModal->fadeIn();
+}
+
+void
 RoomList::sync(const QMap<QString, RoomState> &states)
 {
         for (auto it = states.constBegin(); it != states.constEnd(); it++) {
                 auto room_id = it.key();
                 auto state   = it.value();
 
-                // TODO: Add the new room to the list.
-                if (!rooms_.contains(room_id))
-                        continue;
+                if (!rooms_.contains(room_id)) {
+                        addRoom(
+                          QSharedPointer<RoomSettings>(new RoomSettings(room_id)), state, room_id);
+                }
 
                 auto room = rooms_[room_id];
 
@@ -202,4 +250,24 @@ RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
         }
 
         rooms_.value(roomid)->setDescriptionMessage(info);
+}
+
+void
+RoomList::closeJoinRoomDialog(bool isJoining, QString roomAlias)
+{
+        joinRoomModal_->fadeOut();
+
+        if (isJoining) {
+                client_->joinRoom(roomAlias);
+        }
+}
+
+void
+RoomList::closeLeaveRoomDialog(bool leaving, const QString &room_id)
+{
+        leaveRoomModal->fadeOut();
+
+        if (leaving) {
+                client_->leaveRoom(room_id);
+        }
 }

@@ -90,7 +90,6 @@ Rooms::deserialize(const QJsonValue &data)
 
                 for (auto it = join.constBegin(); it != join.constEnd(); it++) {
                         JoinedRoom tmp_room;
-
                         try {
                                 tmp_room.deserialize(it.value());
                                 join_.insert(it.key(), tmp_room);
@@ -112,7 +111,19 @@ Rooms::deserialize(const QJsonValue &data)
                 if (!object.value("leave").isObject()) {
                         throw DeserializationException("rooms/leave must be a JSON object");
                 }
-                // TODO: Implement leave handling
+                auto leave = object.value("leave").toObject();
+
+                for (auto it = leave.constBegin(); it != leave.constEnd(); it++) {
+                        LeftRoom tmp_room;
+
+                        try {
+                                tmp_room.deserialize(it.value());
+                                leave_.insert(it.key(), tmp_room);
+                        } catch (DeserializationException &e) {
+                                qWarning() << e.what();
+                                qWarning() << "Skipping malformed object for room" << it.key();
+                        }
+                }
         }
 }
 
@@ -182,6 +193,32 @@ JoinedRoom::deserialize(const QJsonValue &data)
                         // TODO: Implement unread_notifications handling
                 }
         }
+}
+
+void
+LeftRoom::deserialize(const QJsonValue &data)
+{
+        if (!data.isObject())
+                throw DeserializationException("LeftRoom is not a JSON object");
+
+        QJsonObject object = data.toObject();
+
+        if (!object.contains("state"))
+                throw DeserializationException("leave/state is missing");
+
+        if (!object.contains("timeline"))
+                throw DeserializationException("leave/timeline is missing");
+
+        if (!object.value("state").isObject())
+                throw DeserializationException("leave/state should be an object");
+
+        QJsonObject state = object.value("state").toObject();
+
+        if (!state.contains("events"))
+                throw DeserializationException("leave/state/events is missing");
+
+        state_.deserialize(state.value("events"));
+        timeline_.deserialize(object.value("timeline"));
 }
 
 void

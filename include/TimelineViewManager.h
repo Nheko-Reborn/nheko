@@ -40,6 +40,10 @@ public:
         void initialize(const Rooms &rooms);
         // Empty initialization.
         void initialize(const QList<QString> &rooms);
+
+        void addRoom(const JoinedRoom &room, const QString &room_id);
+        void addRoom(const QString &room_id);
+
         void sync(const Rooms &rooms);
         void clearAll();
 

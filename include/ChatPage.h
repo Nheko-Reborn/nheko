@@ -61,6 +61,8 @@ private slots:
         void changeTopRoomInfo(const QString &room_id);
         void startSync();
         void logout();
+        void addRoom(const QString &room_id);
+        void removeRoom(const QString &room_id);
 
 protected:
         void keyPressEvent(QKeyEvent *event) override;

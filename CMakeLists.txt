@@ -123,6 +123,8 @@ set(SRC_FILES
     src/TimelineView.cc
     src/TimelineViewManager.cc
     src/InputValidator.cc
+    src/JoinRoomDialog.cc
+    src/LeaveRoomDialog.cc
     src/Login.cc
     src/LoginPage.cc
     src/LogoutDialog.cc
@@ -203,9 +205,11 @@ qt5_wrap_cpp(MOC_HEADERS
     include/EmojiPickButton.h
     include/ImageItem.h
     include/ImageOverlayDialog.h
+    include/JoinRoomDialog.h
     include/TimelineItem.h
     include/TimelineView.h
     include/TimelineViewManager.h
+    include/LeaveRoomDialog.h
     include/LoginPage.h
     include/LogoutDialog.h
     include/MainWindow.h

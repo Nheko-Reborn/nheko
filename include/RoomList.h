@@ -17,12 +17,16 @@
 
 #pragma once
 
+#include <QPushButton>
 #include <QScrollArea>
 #include <QSharedPointer>
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "JoinRoomDialog.h"
+#include "LeaveRoomDialog.h"
 #include "MatrixClient.h"
+#include "OverlayModal.h"
 #include "RoomInfoListItem.h"
 #include "RoomState.h"
 #include "Sync.h"
@@ -41,6 +45,11 @@ public:
 
         void clear();
 
+        void addRoom(const QSharedPointer<RoomSettings> &settings,
+                     const RoomState &state,
+                     const QString &room_id);
+        void removeRoom(const QString &room_id, bool reset);
+
 signals:
         void roomChanged(const QString &room_id);
         void totalUnreadMessageCountUpdated(int count);
@@ -50,6 +59,9 @@ public slots:
         void highlightSelectedRoom(const QString &room_id);
         void updateUnreadMessageCount(const QString &roomid, int count);
         void updateRoomDescription(const QString &roomid, const DescInfo &info);
+        void closeJoinRoomDialog(bool isJoining, QString roomAlias);
+        void openLeaveRoomDialog(const QString &room_id);
+        void closeLeaveRoomDialog(bool leaving, const QString &room_id);
 
 private:
         void calculateUnreadMessageCount();
@@ -58,6 +70,14 @@ private:
         QVBoxLayout *contentsLayout_;
         QScrollArea *scrollArea_;
         QWidget *scrollAreaContents_;
+
+        QPushButton *joinRoomButton_;
+
+        OverlayModal *joinRoomModal_;
+        JoinRoomDialog *joinRoomDialog_;
+
+        OverlayModal *leaveRoomModal;
+        LeaveRoomDialog *leaveRoomDialog_;
 
         QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
 
