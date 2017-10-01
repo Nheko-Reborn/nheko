@@ -1,14 +1,17 @@
 nheko
 ----
-[![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko) [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master) [![Translation Status](https://translate.nordgedanken.de/widgets/nheko/-/shields-badge.svg)](https://translate.nordgedanken.de/projects/nheko/nheko/)
+[![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko)
+[![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master)
+[![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
+[![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-red.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![AUR: nheko-git](https://img.shields.io/badge/AUR-nheko--git-blue.svg)](https://aur.archlinux.org/packages/nheko-git)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
 
-Join the discussion on Matrix [#nheko:matrix.org](https://matrix.to/#/#nheko:matrix.org).
 ### Features
 
-Most of the features you'd expect from a chat application are missing right now
+Most of the features you would expect from a chat application are missing right now
 but you can of course receive and send messages in the rooms that you are a member of.
 
 ### Installation
@@ -128,11 +131,5 @@ Here is a screen shot to get a feel for the UI, but things will probably change.
 - [Emoji One](http://emojione.com)
 - [Open Sans](https://fonts.google.com/specimen/Open+Sans)
 
-
-### License
-
-[GPLv3]
-
 [Matrix]:https://matrix.org
 [Riot]:https://riot.im
-[GPLv3]:https://www.gnu.org/licenses/gpl-3.0.en.html
