@@ -147,7 +147,8 @@ RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &set
                   new RoomInfoListItem(settings[room_id], state, room_id, scrollArea_);
                 connect(
                   room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
-                connect(room_item, &RoomInfoListItem::leaveRoom, this, &RoomList::openLeaveRoomDialog);
+                connect(
+                  room_item, &RoomInfoListItem::leaveRoom, this, &RoomList::openLeaveRoomDialog);
 
                 rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
@@ -168,9 +169,9 @@ void
 RoomList::openLeaveRoomDialog(const QString &room_id)
 {
         leaveRoomDialog_ = new LeaveRoomDialog(this);
-        connect(leaveRoomDialog_,
-                &LeaveRoomDialog::closing, this,
-                [=](bool leaving) { closeLeaveRoomDialog(leaving, room_id); });
+        connect(leaveRoomDialog_, &LeaveRoomDialog::closing, this, [=](bool leaving) {
+                closeLeaveRoomDialog(leaving, room_id);
+        });
 
         leaveRoomModal = new OverlayModal(MainWindow::instance(), leaveRoomDialog_);
         leaveRoomModal->setDuration(0);

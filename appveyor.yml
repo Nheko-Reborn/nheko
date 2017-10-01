@@ -19,9 +19,8 @@ install:
     - cinst nsis --version 3.0 -y -installArgs /D=C:\nsis
 
 build_script:
-    - cmake -G "Visual Studio 14 2015 Win64" -H. -Bbuild
+    - cmake -G "Visual Studio 14 2015 Win64" -H. -Bbuild -DAPPVEYOR_BUILD=ON
     - cmake --build build --config Release
-    - ls -lh build
 
 after_build:
     - mkdir NhekoRelease
