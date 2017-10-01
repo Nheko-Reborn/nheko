@@ -64,8 +64,8 @@ MatrixClient::onVersionsResponse(QNetworkReply *reply)
         int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         if (status_code == 404) {
-                emit versionError(
-                  "Versions endpoint was not found on the server. Possibly not a Matrix server");
+                emit versionError("Versions endpoint was not found on the server. Possibly "
+                                  "not a Matrix server");
                 return;
         }
 
@@ -581,8 +581,8 @@ MatrixClient::sync() noexcept
         query.addQueryItem("access_token", token_);
 
         if (next_batch_.isEmpty()) {
-                qDebug()
-                  << "Sync requires a valid next_batch token. Initial sync should be performed.";
+                qDebug() << "Sync requires a valid next_batch token. Initial sync should "
+                            "be performed.";
                 return;
         }
 
@@ -684,8 +684,8 @@ MatrixClient::versions() noexcept
 void
 MatrixClient::getOwnProfile() noexcept
 {
-        // FIXME: Remove settings from the matrix client. The class should store the user's matrix
-        // ID.
+        // FIXME: Remove settings from the matrix client. The class should store the
+        // user's matrix ID.
         QSettings settings;
         auto userid = settings.value("auth/user_id", "").toString();
 

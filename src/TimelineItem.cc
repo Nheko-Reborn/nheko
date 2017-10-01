@@ -461,6 +461,4 @@ TimelineItem::descriptiveTime(const QDateTime &then)
         return then.toString("dd/MM/yy");
 }
 
-TimelineItem::~TimelineItem()
-{
-}
+TimelineItem::~TimelineItem() {}

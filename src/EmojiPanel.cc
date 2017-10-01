@@ -220,9 +220,9 @@ EmojiPanel::showEmojiCategory(const EmojiCategory *category)
 
         // HACK
         // If we want to go to a previous category and position the label at the top
-        // the 6*50 offset won't work because not all the categories have the same height.
-        // To ensure the category is at the top, we move to the top
-        // and go as normal to the next category.
+        // the 6*50 offset won't work because not all the categories have the same
+        // height. To ensure the category is at the top, we move to the top and go as
+        // normal to the next category.
         if (current > posToGo)
                 this->scrollArea_->ensureVisible(0, 0, 0, 0);
 

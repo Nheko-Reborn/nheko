@@ -26,7 +26,8 @@ namespace matrix
 namespace events
 {
 /*
- * A topic is a short message detailing what is currently being discussed in the room.
+ * A topic is a short message detailing what is currently being discussed in the
+ * room.
  */
 
 class TopicEventContent

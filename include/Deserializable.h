@@ -37,25 +37,15 @@ private:
 class Deserializable
 {
 public:
-        virtual void deserialize(const QJsonValue &)
-        {
-        }
-        virtual void deserialize(const QJsonObject &)
-        {
-        }
-        virtual void deserialize(const QJsonDocument &)
-        {
-        }
-        virtual ~Deserializable()
-        {
-        }
+        virtual void deserialize(const QJsonValue &) {}
+        virtual void deserialize(const QJsonObject &) {}
+        virtual void deserialize(const QJsonDocument &) {}
+        virtual ~Deserializable() {}
 };
 
 class Serializable
 {
 public:
         virtual QJsonObject serialize() const = 0;
-        virtual ~Serializable()
-        {
-        }
+        virtual ~Serializable() {}
 };

@@ -61,9 +61,7 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
                 SLOT(updateRoomAvatar(const QString &, const QPixmap &)));
 }
 
-RoomList::~RoomList()
-{
-}
+RoomList::~RoomList() {}
 
 void
 RoomList::clear()

@@ -106,7 +106,8 @@ private:
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
 
-        // Used to determine whether or not we should prefix a message with the sender's name.
+        // Used to determine whether or not we should prefix a message with the
+        // sender's name.
         bool isSenderRendered(const QString &user_id, TimelineDirection direction);
 
         bool isPendingMessage(const QString &eventid,

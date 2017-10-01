@@ -41,7 +41,8 @@ namespace events = matrix::events;
 class RoomState
 {
 public:
-        // Calculate room data that are not immediatly accessible. Like room name and avatar.
+        // Calculate room data that are not immediatly accessible. Like room name and
+        // avatar.
         //
         // e.g If the room is 1-on-1 name and avatar should be extracted from a user.
         void resolveName();
@@ -76,8 +77,8 @@ private:
         QUrl avatar_;
         QString name_;
 
-        // It defines the user whose avatar is used for the room. If the room has an avatar
-        // event this should be empty.
+        // It defines the user whose avatar is used for the room. If the room has an
+        // avatar event this should be empty.
         QString userAvatar_;
 };
 

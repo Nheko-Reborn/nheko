@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
 #include "MainWindow.h"
+#include "Config.h"
 
 #include <QApplication>
 #include <QLayout>
@@ -244,6 +244,4 @@ MainWindow::instance()
         return instance_;
 }
 
-MainWindow::~MainWindow()
-{
-}
+MainWindow::~MainWindow() {}

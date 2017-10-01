@@ -213,6 +213,4 @@ TextInputWidget::hideUploadSpinner()
         spinner_->stop();
 }
 
-TextInputWidget::~TextInputWidget()
-{
-}
+TextInputWidget::~TextInputWidget() {}

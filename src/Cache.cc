@@ -126,7 +126,8 @@ Cache::insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &s
                 auto memberEvent = QJsonDocument(membership.serialize()).toBinaryData();
 
                 switch (membership.content().membershipState()) {
-                // We add or update (e.g invite -> join) a new user to the membership list.
+                // We add or update (e.g invite -> join) a new user to the membership
+                // list.
                 case events::Membership::Invite:
                 case events::Membership::Join: {
                         lmdb::dbi_put(txn,

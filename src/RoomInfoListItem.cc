@@ -152,8 +152,8 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 font.setBold(false);
                 p.setFont(font);
 
-                // The limit is the space between the end of the username and the start of the
-                // timestamp.
+                // The limit is the space between the end of the username and the start of
+                // the timestamp.
                 int descriptionLimit =
                   std::max(0, width() - 3 * Padding - msgStampWidth - IconSize - nameWidth - 5);
                 auto description =
@@ -310,6 +310,4 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
         ripple_overlay_->addRipple(ripple);
 }
 
-RoomInfoListItem::~RoomInfoListItem()
-{
-}
+RoomInfoListItem::~RoomInfoListItem() {}

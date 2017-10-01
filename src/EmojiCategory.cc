@@ -80,6 +80,4 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
         connect(emojiListView_, &QListView::clicked, this, &EmojiCategory::clickIndex);
 }
 
-EmojiCategory::~EmojiCategory()
-{
-}
+EmojiCategory::~EmojiCategory() {}

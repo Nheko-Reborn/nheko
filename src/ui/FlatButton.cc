@@ -12,7 +12,8 @@
 #include "ThemeManager.h"
 
 // The ampersand is automatically set in QPushButton or QCheckbx
-// by KDEPlatformTheme plugin in Qt5. [https://bugs.kde.org/show_bug.cgi?id=337491]
+// by KDEPlatformTheme plugin in Qt5.
+// [https://bugs.kde.org/show_bug.cgi?id=337491]
 //
 // A workaroud is to add
 //
@@ -79,9 +80,7 @@ FlatButton::FlatButton(const QString &text, ui::Role role, QWidget *parent, ui::
         setRole(role);
 }
 
-FlatButton::~FlatButton()
-{
-}
+FlatButton::~FlatButton() {}
 
 void
 FlatButton::applyPreset(ui::ButtonPreset preset)
@@ -611,9 +610,7 @@ FlatButtonStateMachine::FlatButtonStateMachine(FlatButton *parent)
         addTransition(button_, QEvent::FocusOut, pressed_state_, hovered_state_);
 }
 
-FlatButtonStateMachine::~FlatButtonStateMachine()
-{
-}
+FlatButtonStateMachine::~FlatButtonStateMachine() {}
 
 void
 FlatButtonStateMachine::setOverlayOpacity(qreal opacity)
