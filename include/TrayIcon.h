@@ -33,7 +33,7 @@ public:
         virtual void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state);
         virtual QIconEngine *clone() const;
         virtual QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) const;
-        virtual QPixmap pixmap(const QSize& size, QIcon::Mode mode, QIcon::State state);
+        virtual QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state);
 
         int msgCount = 0;
 

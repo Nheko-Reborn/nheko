@@ -380,13 +380,11 @@ TimelineView::init()
         scrollbar_ = new ScrollBar(scroll_area_);
         scroll_area_->setVerticalScrollBar(scrollbar_);
 
-        scroll_widget_ = new QWidget();
+        scroll_widget_ = new QWidget(this);
 
-        scroll_layout_ = new QVBoxLayout();
+        scroll_layout_ = new QVBoxLayout(scroll_widget_);
         scroll_layout_->addStretch(1);
         scroll_layout_->setSpacing(0);
-
-        scroll_widget_->setLayout(scroll_layout_);
 
         scroll_area_->setWidget(scroll_widget_);
 

@@ -16,8 +16,8 @@
  */
 
 #include <QApplication>
-#include <QTimer>
 #include <QList>
+#include <QTimer>
 
 #include "TrayIcon.h"
 
@@ -89,7 +89,7 @@ MsgCountComposedIcon::availableSizes(QIcon::Mode mode, QIcon::State state) const
 }
 
 QPixmap
-MsgCountComposedIcon::pixmap(const QSize& size, QIcon::Mode mode, QIcon::State state)
+MsgCountComposedIcon::pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state)
 {
         QImage img(size, QImage::Format_ARGB32);
         img.fill(qRgba(0, 0, 0, 0));
@@ -132,15 +132,19 @@ TrayIcon::setUnreadCount(int count)
 {
 // Use the native badge counter in MacOS.
 #if defined(Q_OS_MAC)
-        if (count == 0)
-                QtMac::setBadgeLabelText("");
-        else
-                QtMac::setBadgeLabelText(QString::number(count));
+        auto labelText = count == 0 ? "" : QString::number(count);
+
+        if (labelText == QtMac::badgeLabelText())
+                return;
+
+        QtMac::setBadgeLabelText(labelText);
 #elif defined(Q_OS_WIN)
 // FIXME: Find a way to use Windows apis for the badge counter (if any).
 #else
+        if (count == icon_->msgCount)
+                return;
+
         // Custom drawing on Linux.
-        // FIXME: It doesn't seem to work on KDE.
         MsgCountComposedIcon *tmp = static_cast<MsgCountComposedIcon *>(icon_->clone());
         tmp->msgCount             = count;
 
