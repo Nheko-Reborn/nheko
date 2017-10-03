@@ -248,16 +248,23 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         client_->setAccessToken(token);
         client_->getOwnProfile();
 
+        cache_ = QSharedPointer<Cache>(new Cache(userid));
+
         try {
-                cache_ = QSharedPointer<Cache>(new Cache(userid));
-        } catch (const std::exception &e) {
-                qCritical() << e.what();
+                cache_->setup();
+
+                if (cache_->isInitialized()) {
+                        loadStateFromCache();
+                        return;
+                }
+        } catch (const lmdb::error &e) {
+                qCritical() << "Cache failure" << e.what();
+                cache_->unmount();
+                cache_->deleteData();
+                qInfo() << "Falling back to initial sync ...";
         }
 
-        if (cache_->isInitialized())
-                loadStateFromCache();
-        else
-                client_->initialSync();
+        client_->initialSync();
 }
 
 void
@@ -367,6 +374,7 @@ ChatPage::syncCompleted(const SyncResponse &response)
                 qCritical() << "The cache couldn't be updated: " << e.what();
                 // TODO: Notify the user.
                 cache_->unmount();
+                cache_->deleteData();
         }
 
         client_->setNextBatchToken(response.nextBatch());
@@ -416,6 +424,7 @@ ChatPage::initialSyncCompleted(const SyncResponse &response)
         } catch (const lmdb::error &e) {
                 qCritical() << "The cache couldn't be initialized: " << e.what();
                 cache_->unmount();
+                cache_->deleteData();
         }
 
         client_->setNextBatchToken(response.nextBatch());
@@ -492,14 +501,8 @@ ChatPage::loadStateFromCache()
 {
         qDebug() << "Restoring state from cache";
 
-        try {
-                qDebug() << "Restored nextBatchToken" << cache_->nextBatchToken();
-                client_->setNextBatchToken(cache_->nextBatchToken());
-        } catch (const lmdb::error &e) {
-                qCritical() << "Failed to load next_batch_token from cache" << e.what();
-                // TODO: Clean the environment
-                return;
-        }
+        qDebug() << "Restored nextBatchToken" << cache_->nextBatchToken();
+        client_->setNextBatchToken(cache_->nextBatchToken());
 
         // Fetch all the joined room's state.
         auto rooms = cache_->states();
@@ -612,6 +615,7 @@ ChatPage::removeRoom(const QString &room_id)
                 qCritical() << "The cache couldn't be updated: " << e.what();
                 // TODO: Notify the user.
                 cache_->unmount();
+                cache_->deleteData();
         }
         room_list_->removeRoom(room_id, room_id == current_room_);
 }

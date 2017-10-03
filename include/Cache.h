@@ -35,9 +35,9 @@ public:
 
         inline void deleteData();
         inline void unmount();
-        inline QString memberDbName(const QString &roomid);
 
         void removeRoom(const QString &roomid);
+        void setup();
 
 private:
         void setNextBatchToken(lmdb::txn &txn, const QString &token);
@@ -59,15 +59,11 @@ Cache::unmount()
         isMounted_ = false;
 }
 
-inline QString
-Cache::memberDbName(const QString &roomid)
-{
-        return QString("m.%1").arg(roomid);
-}
-
 inline void
 Cache::deleteData()
 {
+        qInfo() << "Deleting cache data";
+
         if (!cacheDirectory_.isEmpty())
                 QDir(cacheDirectory_).removeRecursively();
 }

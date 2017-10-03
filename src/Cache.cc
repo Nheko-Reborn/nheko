@@ -37,9 +37,20 @@ Cache::Cache(const QString &userId)
   , isMounted_{ false }
   , userId_{ userId }
 {
+}
+
+void
+Cache::setup()
+{
+        qDebug() << "Setting up cache";
+
         auto statePath = QString("%1/%2/state")
                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
                            .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
+
+        cacheDirectory_ = QString("%1/%2")
+                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                            .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
 
         bool isInitial = !QFile::exists(statePath);
 
@@ -48,7 +59,7 @@ Cache::Cache(const QString &userId)
         env_.set_max_dbs(1024UL);
 
         if (isInitial) {
-                qDebug() << "[cache] First time initializing LMDB";
+                qDebug() << "First time initializing LMDB";
 
                 if (!QDir().mkpath(statePath)) {
                         throw std::runtime_error(
@@ -83,10 +94,7 @@ Cache::Cache(const QString &userId)
 
         txn.commit();
 
-        isMounted_      = true;
-        cacheDirectory_ = QString("%1/%2")
-                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                            .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
+        isMounted_ = true;
 }
 
 void
@@ -156,6 +164,9 @@ Cache::insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &s
 void
 Cache::removeRoom(const QString &roomid)
 {
+        if (!isMounted_)
+                return;
+
         auto txn = lmdb::txn::begin(env_, nullptr, 0);
 
         lmdb::dbi_del(txn, roomDb_, lmdb::val(roomid.toUtf8(), roomid.toUtf8().size()), nullptr);
