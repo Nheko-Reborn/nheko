@@ -31,6 +31,7 @@
 #include "TextInputWidget.h"
 #include "TimelineViewManager.h"
 #include "TopRoomBar.h"
+#include "TypingDisplay.h"
 #include "UserInfoWidget.h"
 
 class ChatPage : public QWidget
@@ -68,6 +69,7 @@ protected:
         void keyPressEvent(QKeyEvent *event) override;
 
 private:
+        void updateTypingUsers(const QString &roomid, const QList<QString> &user_ids);
         void updateDisplayNames(const RoomState &state);
         void loadStateFromCache();
         void showQuickSwitcher();
@@ -92,6 +94,7 @@ private:
 
         TopRoomBar *top_bar_;
         TextInputWidget *text_input_;
+        TypingDisplay *typingDisplay_;
 
         QTimer *sync_timer_;
         int sync_interval_;
@@ -103,6 +106,9 @@ private:
 
         QMap<QString, RoomState> state_manager_;
         QMap<QString, QSharedPointer<RoomSettings>> settingsManager_;
+
+        // Keeps track of the users currently typing on each room.
+        QMap<QString, QList<QString>> typingUsers_;
 
         QuickSwitcher *quickSwitcher_     = nullptr;
         OverlayModal *quickSwitcherModal_ = nullptr;

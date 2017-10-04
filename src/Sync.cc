@@ -168,7 +168,21 @@ JoinedRoom::deserialize(const QJsonValue &data)
                         if (!ephemeral.value("events").isArray())
                                 qWarning() << "join/ephemeral/events should be an array";
 
-                        // TODO: Implement ephemeral handling
+                        auto ephemeralEvents = ephemeral.value("events").toArray();
+
+                        for (const auto e : ephemeralEvents) {
+                                auto obj = e.toObject();
+
+                                if (obj.contains("type") && obj.value("type") == "m.typing") {
+                                        auto ids = obj.value("content")
+                                                     .toObject()
+                                                     .value("user_ids")
+                                                     .toArray();
+
+                                        for (const auto uid : ids)
+                                                typingUserIDs_.push_back(uid.toString());
+                                }
+                        }
                 }
         }
 

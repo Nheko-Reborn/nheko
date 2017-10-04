@@ -101,8 +101,10 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         view_manager_ = new TimelineViewManager(client, this);
         mainContentLayout_->addWidget(view_manager_);
 
-        text_input_ = new TextInputWidget(this);
+        text_input_    = new TextInputWidget(this);
+        typingDisplay_ = new TypingDisplay(this);
         contentLayout_->addWidget(text_input_);
+        contentLayout_->addWidget(typingDisplay_);
 
         user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
         sideBarTopWidgetLayout_->addWidget(user_info_widget_);
@@ -116,6 +118,15 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
         connect(
           top_bar_, &TopRoomBar::leaveRoom, this, [=]() { client_->leaveRoom(current_room_); });
+
+        connect(room_list_, &RoomList::roomChanged, this, [=](const QString &roomid) {
+                QStringList users;
+
+                if (typingUsers_.contains(roomid))
+                        users = typingUsers_[roomid];
+
+                typingDisplay_->setUsers(users);
+        });
 
         connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
@@ -308,6 +319,8 @@ ChatPage::syncCompleted(const SyncResponse &response)
         auto joined = response.rooms().join();
 
         for (auto it = joined.constBegin(); it != joined.constEnd(); it++) {
+                updateTypingUsers(it.key(), it.value().typingUserIDs());
+
                 RoomState room_state;
 
                 // Merge the new updates for rooms that we are tracking.
@@ -618,6 +631,22 @@ ChatPage::removeRoom(const QString &room_id)
                 cache_->deleteData();
         }
         room_list_->removeRoom(room_id, room_id == current_room_);
+}
+
+void
+ChatPage::updateTypingUsers(const QString &roomid, const QList<QString> &user_ids)
+{
+        QStringList users;
+
+        for (const auto uid : user_ids)
+                users.append(TimelineViewManager::displayName(uid));
+
+        users.sort();
+
+        if (current_room_ == roomid)
+                typingDisplay_->setUsers(users);
+
+        typingUsers_.insert(roomid, users);
 }
 
 ChatPage::~ChatPage()

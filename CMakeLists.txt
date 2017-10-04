@@ -125,8 +125,8 @@ endif()
 #
 set(SRC_FILES
     src/AvatarProvider.cc
-    src/ChatPage.cc
     src/Cache.cc
+    src/ChatPage.cc
     src/Deserializable.cc
     src/EmojiCategory.cc
     src/EmojiItemDelegate.cc
@@ -135,9 +135,6 @@ set(SRC_FILES
     src/EmojiProvider.cc
     src/ImageItem.cc
     src/ImageOverlayDialog.cc
-    src/TimelineItem.cc
-    src/TimelineView.cc
-    src/TimelineViewManager.cc
     src/InputValidator.cc
     src/JoinRoomDialog.cc
     src/LeaveRoomDialog.cc
@@ -147,21 +144,25 @@ set(SRC_FILES
     src/MainWindow.cc
     src/MatrixClient.cc
     src/Profile.cc
-    src/RoomInfoListItem.cc
-    src/RoomMessages.cc
-    src/RoomList.cc
-    src/RoomState.cc
+    src/QuickSwitcher.cc
     src/Register.cc
     src/RegisterPage.cc
+    src/RoomInfoListItem.cc
+    src/RoomList.cc
+    src/RoomMessages.cc
+    src/RoomState.cc
     src/Splitter.cc
     src/Sync.cc
     src/TextInputWidget.cc
-    src/TrayIcon.cc
+    src/TimelineItem.cc
+    src/TimelineView.cc
+    src/TimelineViewManager.cc
     src/TopRoomBar.cc
+    src/TrayIcon.cc
+    src/TypingDisplay.cc
     src/UserInfoWidget.cc
     src/Versions.cc
     src/WelcomePage.cc
-    src/QuickSwitcher.cc
     src/main.cc
 
     src/ui/Avatar.cc
@@ -222,23 +223,24 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ImageItem.h
     include/ImageOverlayDialog.h
     include/JoinRoomDialog.h
-    include/TimelineItem.h
-    include/TimelineView.h
-    include/TimelineViewManager.h
     include/LeaveRoomDialog.h
     include/LoginPage.h
     include/LogoutDialog.h
     include/MainWindow.h
     include/MatrixClient.h
+    include/QuickSwitcher.h
     include/RegisterPage.h
     include/RoomInfoListItem.h
     include/RoomList.h
     include/Splitter.h
-    include/UserInfoWidget.h
+    include/TextInputWidget.h
+    include/TimelineItem.h
+    include/TimelineView.h
+    include/TimelineViewManager.h
     include/TopRoomBar.h
     include/TrayIcon.h
-    include/TextInputWidget.h
-    include/QuickSwitcher.h
+    include/TypingDisplay.h
+    include/UserInfoWidget.h
     include/WelcomePage.h
 
     include/ui/Avatar.h

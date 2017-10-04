@@ -142,22 +142,29 @@ Timeline::limited() const
         return limited_;
 }
 
-// TODO: Add support for ehpmeral, account_data, undread_notifications
+// TODO: Add support for account_data, undread_notifications
 class JoinedRoom : public Deserializable
 {
 public:
         inline State state() const;
         inline Timeline timeline() const;
+        inline QList<QString> typingUserIDs() const;
 
         void deserialize(const QJsonValue &data) override;
 
 private:
         State state_;
         Timeline timeline_;
-        /* Ephemeral ephemeral_; */
+        QList<QString> typingUserIDs_;
         /* AccountData account_data_; */
         /* UnreadNotifications unread_notifications_; */
 };
+
+inline QList<QString>
+JoinedRoom::typingUserIDs() const
+{
+        return typingUserIDs_;
+}
 
 inline State
 JoinedRoom::state() const

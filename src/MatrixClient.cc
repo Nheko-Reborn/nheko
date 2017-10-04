@@ -611,8 +611,9 @@ void
 MatrixClient::sync() noexcept
 {
         QJsonObject filter{ { "room",
-                              QJsonObject{ { "include_leave", true },
-                                           { "ephemeral", QJsonObject{ { "limit", 0 } } } } },
+                              QJsonObject{
+                                { "include_leave", true },
+                              } },
                             { "presence", QJsonObject{ { "limit", 0 } } } };
 
         QUrlQuery query;

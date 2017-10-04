@@ -7,9 +7,10 @@
 namespace conf
 {
 // Global settings.
-static const int fontSize       = 12;
-static const int emojiSize      = 14;
-static const int headerFontSize = 21;
+static const int fontSize                   = 12;
+static const int emojiSize                  = 14;
+static const int headerFontSize             = 21;
+static const int typingNotificationFontSize = 11;
 
 // Window geometry.
 namespace window
