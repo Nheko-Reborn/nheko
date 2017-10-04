@@ -610,11 +610,12 @@ MatrixClient::registerUser(const QString &user, const QString &pass, const QStri
 void
 MatrixClient::sync() noexcept
 {
-        QJsonObject filter{ { "room",
-                              QJsonObject{
-                                { "include_leave", true },
-                              } },
-                            { "presence", QJsonObject{ { "limit", 0 } } } };
+        QJsonObject filter{
+                { "room",
+                  QJsonObject{
+                    { "include_leave", true },
+                  } },
+        };
 
         QUrlQuery query;
         query.addQueryItem("set_presence", "online");
@@ -686,19 +687,8 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
 void
 MatrixClient::initialSync() noexcept
 {
-        QJsonArray excluded_presence = {
-                QString("m.presence"),
-        };
-
-        QJsonObject filter{ { "room",
-                              QJsonObject{ { "timeline", QJsonObject{ { "limit", 20 } } },
-                                           { "ephemeral", QJsonObject{ { "limit", 0 } } } } },
-                            { "presence", QJsonObject{ { "not_types", excluded_presence } } } };
-
         QUrlQuery query;
-        query.addQueryItem("full_state", "true");
-        query.addQueryItem("set_presence", "online");
-        query.addQueryItem("filter", QJsonDocument(filter).toJson(QJsonDocument::Compact));
+        query.addQueryItem("timeout", 0);
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
