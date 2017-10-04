@@ -45,14 +45,14 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 {
         setFont(QFont("Emoji One"));
 
-        setFixedHeight(45);
+        setFixedHeight(50);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         setCursor(Qt::ArrowCursor);
         setStyleSheet("background-color: #fff;");
 
         topLayout_ = new QHBoxLayout();
         topLayout_->setSpacing(0);
-        topLayout_->setContentsMargins(5, 15, 0, 5);
+        topLayout_->setContentsMargins(15, 0, 15, 5);
 
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/clip-dark.png", QSize(), QIcon::Normal, QIcon::Off);
@@ -69,14 +69,14 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         spinner_->hide();
 
         QFont font;
-        font.setPixelSize(conf::fontSize);
+        font.setPixelSize(conf::textInputFontSize);
 
         input_ = new FilteredTextEdit(this);
         input_->setFixedHeight(32);
         input_->setFont(font);
         input_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         input_->setPlaceholderText(tr("Write a message..."));
-        input_->setStyleSheet("color: #333333; border: none; margin: 0 5px");
+        input_->setStyleSheet("color: #333333; border: none; padding-top: 5px; margin: 0 5px");
 
         sendMessageBtn_ = new FlatButton(this);
         sendMessageBtn_->setForegroundColor(QColor("#acc7dc"));

@@ -103,8 +103,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
         text_input_    = new TextInputWidget(this);
         typingDisplay_ = new TypingDisplay(this);
-        contentLayout_->addWidget(text_input_);
         contentLayout_->addWidget(typingDisplay_);
+        contentLayout_->addWidget(text_input_);
 
         user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
         sideBarTopWidgetLayout_->addWidget(user_info_widget_);
@@ -298,7 +298,7 @@ ChatPage::syncFailed(const QString &msg)
                 return;
 
         qWarning() << "Sync error:" << msg;
-        sync_timer_->start(sync_interval_ * 5);
+        sync_timer_->start(sync_interval_);
 }
 
 // TODO: Should be moved in another class that manages this global list.

@@ -7,7 +7,7 @@
 
 TypingDisplay::TypingDisplay(QWidget *parent)
   : QWidget(parent)
-  , leftPadding_{ 57 }
+  , leftPadding_{ 24 }
 {
         QFont font;
         font.setPixelSize(conf::typingNotificationFontSize);
@@ -24,9 +24,9 @@ TypingDisplay::setUsers(const QStringList &uid)
                 text_ = uid.join(", ");
 
         if (uid.size() == 1)
-                text_ += tr(" is typing ...");
+                text_ += tr(" is typing");
         else if (uid.size() > 1)
-                text_ += tr(" are typing ...");
+                text_ += tr(" are typing");
 
         update();
 }
@@ -34,11 +34,10 @@ TypingDisplay::setUsers(const QStringList &uid)
 void
 TypingDisplay::paintEvent(QPaintEvent *)
 {
-        QPen pen(QColor("#333"));
+        QPen pen(QColor("#898989"));
 
-        QFont font;
+        QFont font("Open Sans Bold");
         font.setPixelSize(conf::typingNotificationFontSize);
-        font.setWeight(40);
         font.setItalic(true);
 
         QPainter p(this);
@@ -52,5 +51,5 @@ TypingDisplay::paintEvent(QPaintEvent *)
         QFontMetrics fm(font);
         text_ = fm.elidedText(text_, Qt::ElideRight, width() - 3 * leftPadding_);
 
-        p.drawText(region, Qt::AlignTop, text_);
+        p.drawText(region, Qt::AlignVCenter, text_);
 }
