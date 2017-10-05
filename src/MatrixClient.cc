@@ -44,6 +44,13 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
 
         connect(this, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResponse(QNetworkReply *)));
+        connect(this,
+                &QNetworkAccessManager::networkAccessibleChanged,
+                this,
+                [=](NetworkAccessibility status) {
+                        if (status != NetworkAccessibility::Accessible)
+                                setNetworkAccessible(NetworkAccessibility::Accessible);
+                });
 }
 
 void
