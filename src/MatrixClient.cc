@@ -636,6 +636,7 @@ MatrixClient::sync() noexcept
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setRawHeader("Connection", "keep-alive");
 
         QNetworkReply *reply = get(request);
         reply->setProperty("endpoint", static_cast<int>(Endpoint::Sync));
@@ -688,7 +689,7 @@ void
 MatrixClient::initialSync() noexcept
 {
         QUrlQuery query;
-        query.addQueryItem("timeout", 0);
+        query.addQueryItem("timeout", "0");
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
@@ -696,6 +697,7 @@ MatrixClient::initialSync() noexcept
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setRawHeader("Connection", "keep-alive");
 
         QNetworkReply *reply = get(request);
         reply->setProperty("endpoint", static_cast<int>(Endpoint::InitialSync));
