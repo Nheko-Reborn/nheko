@@ -139,7 +139,7 @@
     </message>
     <message>
         <location filename="../../src/RegisterPage.cc" line="163"/>
-        <source>Passwords don&apos;t match</source>
+        <source>Passwords don't match</source>
         <translation>Οι κωδικοί δεν ταιριάζουν</translation>
     </message>
     <message>
@@ -174,7 +174,7 @@
     <message>
         <location filename="../../src/WelcomePage.cc" line="38"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Καλώς ήρθες στο nheko! </translation>
+        <translation>Καλώς ήρθες στο nheko!</translation>
     </message>
     <message>
         <location filename="../../src/WelcomePage.cc" line="39"/>
