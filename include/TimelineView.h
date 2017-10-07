@@ -97,6 +97,9 @@ public slots:
         // Add old events at the top of the timeline.
         void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
 
+        // Whether or not the initial batch has been loaded.
+        bool hasLoaded();
+
 signals:
         void updateLastTimelineMessage(const QString &user, const DescInfo &info);
 
@@ -162,4 +165,10 @@ inline bool
 TimelineView::isDuplicate(const QString &event_id)
 {
         return eventIds_.contains(event_id);
+}
+
+inline bool
+TimelineView::hasLoaded()
+{
+        return scroll_layout_->count() > 1 || isTimelineFinished;
 }

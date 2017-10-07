@@ -256,3 +256,13 @@ TimelineViewManager::displayName(const QString &userid)
 
         return userid;
 }
+
+bool
+TimelineViewManager::hasLoaded() const
+{
+        for (const auto &view : views_)
+                if (!view->hasLoaded())
+                        return false;
+
+        return true;
+}

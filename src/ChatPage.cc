@@ -213,6 +213,15 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 this,
                 SLOT(removeRoom(const QString &)));
 
+        consensusTimer_ = new QTimer(this);
+        connect(consensusTimer_, &QTimer::timeout, this, [=]() {
+                if (view_manager_->hasLoaded()) {
+                        // Remove the spinner overlay.
+                        emit contentLoaded();
+                        consensusTimer_->stop();
+                }
+        });
+
         AvatarProvider::init(client);
 }
 
@@ -554,8 +563,8 @@ ChatPage::loadStateFromCache()
         // Initialize room list from the restored state and settings.
         room_list_->setInitialRooms(settingsManager_, state_manager_);
 
-        // Remove the spinner overlay.
-        emit contentLoaded();
+        // Check periodically if the timelines have been loaded.
+        consensusTimer_->start(500);
 
         sync_timer_->start(sync_interval_);
 }

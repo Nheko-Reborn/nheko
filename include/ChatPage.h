@@ -96,6 +96,7 @@ private:
         TextInputWidget *text_input_;
         TypingDisplay *typingDisplay_;
 
+        QTimer *consensusTimer_;
         QTimer *sync_timer_;
         int sync_interval_;
 

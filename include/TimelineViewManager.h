@@ -47,6 +47,9 @@ public:
         void sync(const Rooms &rooms);
         void clearAll();
 
+        // Check if all the timelines have been loaded.
+        bool hasLoaded() const;
+
         static QString chooseRandomColor();
         static QString displayName(const QString &userid);
 
