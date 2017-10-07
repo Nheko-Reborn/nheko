@@ -86,15 +86,24 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
         leaveRoom_ = new QAction(tr("Leave room"), this);
         connect(leaveRoom_, &QAction::triggered, this, [=]() {
-                leaveRoomDialog_ = new LeaveRoomDialog(this);
-                connect(
-                  leaveRoomDialog_, SIGNAL(closing(bool)), this, SLOT(closeLeaveRoomDialog(bool)));
+                if (leaveRoomDialog_.isNull()) {
+                        leaveRoomDialog_ =
+                          QSharedPointer<LeaveRoomDialog>(new LeaveRoomDialog(this));
 
-                leaveRoomModal = new OverlayModal(MainWindow::instance(), leaveRoomDialog_);
-                leaveRoomModal->setDuration(100);
-                leaveRoomModal->setColor(QColor(55, 55, 55, 170));
+                        connect(leaveRoomDialog_.data(),
+                                SIGNAL(closing(bool)),
+                                this,
+                                SLOT(closeLeaveRoomDialog(bool)));
+                }
 
-                leaveRoomModal->fadeIn();
+                if (leaveRoomModal_.isNull()) {
+                        leaveRoomModal_ = QSharedPointer<OverlayModal>(
+                          new OverlayModal(MainWindow::instance(), leaveRoomDialog_.data()));
+                        leaveRoomModal_->setDuration(0);
+                        leaveRoomModal_->setColor(QColor(30, 30, 30, 170));
+                }
+
+                leaveRoomModal_->fadeIn();
         });
 
         menu_->addAction(toggleNotifications_);
@@ -117,7 +126,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 void
 TopRoomBar::closeLeaveRoomDialog(bool leaving)
 {
-        leaveRoomModal->fadeOut();
+        leaveRoomModal_->fadeOut();
 
         if (leaving) {
                 emit leaveRoom();

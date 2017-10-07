@@ -572,21 +572,26 @@ ChatPage::keyPressEvent(QKeyEvent *event)
 void
 ChatPage::showQuickSwitcher()
 {
-        if (quickSwitcher_ == nullptr) {
-                quickSwitcher_ = new QuickSwitcher(this);
+        if (quickSwitcher_.isNull()) {
+                quickSwitcher_ = QSharedPointer<QuickSwitcher>(
+                  new QuickSwitcher(this),
+                  [=](QuickSwitcher *switcher) { switcher->deleteLater(); });
 
-                connect(quickSwitcher_,
+                connect(quickSwitcher_.data(),
                         &QuickSwitcher::roomSelected,
                         room_list_,
                         &RoomList::highlightSelectedRoom);
-                connect(quickSwitcher_, &QuickSwitcher::closing, this, [=]() {
-                        if (this->quickSwitcherModal_ != nullptr)
+
+                connect(quickSwitcher_.data(), &QuickSwitcher::closing, this, [=]() {
+                        if (!this->quickSwitcherModal_.isNull())
                                 this->quickSwitcherModal_->fadeOut();
                 });
         }
 
-        if (quickSwitcherModal_ == nullptr) {
-                quickSwitcherModal_ = new OverlayModal(MainWindow::instance(), quickSwitcher_);
+        if (quickSwitcherModal_.isNull()) {
+                quickSwitcherModal_ = QSharedPointer<OverlayModal>(
+                  new OverlayModal(MainWindow::instance(), quickSwitcher_.data()),
+                  [=](OverlayModal *modal) { modal->deleteLater(); });
                 quickSwitcherModal_->setDuration(0);
                 quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
         }

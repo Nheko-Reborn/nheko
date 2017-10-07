@@ -68,8 +68,8 @@ private:
 
         QImage avatar_image_;
 
-        OverlayModal *logoutModal_;
-        LogoutDialog *logoutDialog_;
+        QSharedPointer<OverlayModal> logoutModal_;
+        QSharedPointer<LogoutDialog> logoutDialog_;
 
         int logoutButtonSize_;
 };

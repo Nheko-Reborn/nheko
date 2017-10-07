@@ -77,8 +77,8 @@ private:
 
         FlatButton *settingsBtn_;
 
-        OverlayModal *leaveRoomModal;
-        LeaveRoomDialog *leaveRoomDialog_;
+        QSharedPointer<OverlayModal> leaveRoomModal_;
+        QSharedPointer<LeaveRoomDialog> leaveRoomDialog_;
 
         Avatar *avatar_;
 

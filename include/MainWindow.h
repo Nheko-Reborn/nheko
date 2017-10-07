@@ -83,8 +83,8 @@ private:
         ChatPage *chat_page_;
 
         // Used to hide undefined states between page transitions.
-        OverlayModal *progress_modal_;
-        LoadingIndicator *spinner_;
+        QSharedPointer<OverlayModal> progressModal_;
+        QSharedPointer<LoadingIndicator> spinner_;
 
         // Matrix Client API provider.
         QSharedPointer<MatrixClient> client_;

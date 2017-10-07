@@ -30,9 +30,10 @@ EmojiPickButton::enterEvent(QEvent *e)
 {
         Q_UNUSED(e);
 
-        if (panel_ == nullptr) {
-                panel_ = new EmojiPanel(this);
-                connect(panel_, &EmojiPanel::emojiSelected, this, &EmojiPickButton::emojiSelected);
+        if (panel_.isNull()) {
+                panel_ = QSharedPointer<EmojiPanel>(new EmojiPanel(this));
+                connect(
+                  panel_.data(), &EmojiPanel::emojiSelected, this, &EmojiPickButton::emojiSelected);
         }
 
         QPoint pos(rect().x(), rect().y());

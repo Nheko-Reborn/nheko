@@ -110,8 +110,8 @@ private:
         // Keeps track of the users currently typing on each room.
         QMap<QString, QList<QString>> typingUsers_;
 
-        QuickSwitcher *quickSwitcher_     = nullptr;
-        OverlayModal *quickSwitcherModal_ = nullptr;
+        QSharedPointer<QuickSwitcher> quickSwitcher_;
+        QSharedPointer<OverlayModal> quickSwitcherModal_;
 
         // Matrix Client API provider.
         QSharedPointer<MatrixClient> client_;

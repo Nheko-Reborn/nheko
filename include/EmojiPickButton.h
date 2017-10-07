@@ -43,5 +43,5 @@ private:
         // Horizontal distance from panel's bottom right corner.
         int horizontal_distance_ = 70;
 
-        EmojiPanel *panel_;
+        QSharedPointer<EmojiPanel> panel_;
 };

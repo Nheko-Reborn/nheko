@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainWindow.h"
 #include "Config.h"
+#include "MainWindow.h"
 
 #include <QApplication>
 #include <QLayout>
@@ -29,7 +29,7 @@ MainWindow *MainWindow::instance_ = nullptr;
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
-  , progress_modal_{ nullptr }
+  , progressModal_{ nullptr }
   , spinner_{ nullptr }
 {
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -132,18 +132,14 @@ MainWindow::removeOverlayProgressBar()
         connect(timer, &QTimer::timeout, [=]() {
                 timer->deleteLater();
 
-                if (progress_modal_ != nullptr) {
-                        progress_modal_->deleteLater();
-                        progress_modal_->fadeOut();
-                }
+                if (!progressModal_.isNull())
+                        progressModal_->fadeOut();
 
-                if (spinner_ != nullptr)
-                        spinner_->deleteLater();
+                if (!spinner_.isNull())
+                        spinner_->stop();
 
-                spinner_->stop();
-
-                progress_modal_ = nullptr;
-                spinner_        = nullptr;
+                progressModal_.reset();
+                spinner_.reset();
         });
 
         timer->start(500);
@@ -166,18 +162,22 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
         QTimer::singleShot(
           modalOpacityDuration + 100, this, [=]() { pageStack_->setCurrentWidget(chat_page_); });
 
-        if (spinner_ == nullptr) {
-                spinner_ = new LoadingIndicator(this);
+        if (spinner_.isNull()) {
+                spinner_ = QSharedPointer<LoadingIndicator>(
+                  new LoadingIndicator(this),
+                  [=](LoadingIndicator *indicator) { indicator->deleteLater(); });
                 spinner_->setColor("#acc7dc");
                 spinner_->setFixedHeight(120);
                 spinner_->setFixedWidth(120);
                 spinner_->start();
         }
 
-        if (progress_modal_ == nullptr) {
-                progress_modal_ = new OverlayModal(this, spinner_);
-                progress_modal_->fadeIn();
-                progress_modal_->setDuration(modalOpacityDuration);
+        if (progressModal_.isNull()) {
+                progressModal_ =
+                  QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
+                                               [=](OverlayModal *modal) { modal->deleteLater(); });
+                progressModal_->fadeIn();
+                progressModal_->setDuration(modalOpacityDuration);
         }
 
         login_page_->reset();

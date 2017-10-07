@@ -93,18 +93,19 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
         // Show the confirmation dialog.
         connect(logoutButton_, &QPushButton::clicked, this, [=]() {
-                if (logoutDialog_ == nullptr) {
-                        logoutDialog_ = new LogoutDialog(this);
-                        connect(logoutDialog_,
+                if (logoutDialog_.isNull()) {
+                        logoutDialog_ = QSharedPointer<LogoutDialog>(new LogoutDialog(this));
+                        connect(logoutDialog_.data(),
                                 SIGNAL(closing(bool)),
                                 this,
                                 SLOT(closeLogoutDialog(bool)));
                 }
 
-                if (logoutModal_ == nullptr) {
-                        logoutModal_ = new OverlayModal(MainWindow::instance(), logoutDialog_);
+                if (logoutModal_.isNull()) {
+                        logoutModal_ = QSharedPointer<OverlayModal>(
+                          new OverlayModal(MainWindow::instance(), logoutDialog_.data()));
                         logoutModal_->setDuration(0);
-                        logoutModal_->setColor(QColor(55, 55, 55, 170));
+                        logoutModal_->setColor(QColor(30, 30, 30, 170));
                 }
 
                 logoutModal_->fadeIn();
