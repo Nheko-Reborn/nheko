@@ -627,7 +627,7 @@ MatrixClient::sync() noexcept
         QUrlQuery query;
         query.addQueryItem("set_presence", "online");
         query.addQueryItem("filter", QJsonDocument(filter).toJson(QJsonDocument::Compact));
-        query.addQueryItem("timeout", "30000");
+        query.addQueryItem("timeout", "15000");
         query.addQueryItem("access_token", token_);
 
         if (next_batch_.isEmpty()) {

@@ -33,7 +33,6 @@ namespace events = matrix::events;
 
 ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)
-  , sync_interval_(2000)
   , client_(client)
 {
         setStyleSheet("background-color: #fff;");
@@ -109,9 +108,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
         sideBarTopWidgetLayout_->addWidget(user_info_widget_);
 
-        sync_timer_ = new QTimer(this);
-        sync_timer_->setSingleShot(true);
-        connect(sync_timer_, SIGNAL(timeout()), this, SLOT(startSync()));
+        syncTimer_ = new QTimer(this);
+        syncTimer_->setSingleShot(true);
+        connect(syncTimer_, SIGNAL(timeout()), this, SLOT(startSync()));
 
         connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
         connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
@@ -213,11 +212,19 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 this,
                 SLOT(removeRoom(const QString &)));
 
+        showContentTimer_ = new QTimer(this);
+        showContentTimer_->setSingleShot(true);
+        connect(showContentTimer_, &QTimer::timeout, this, [=]() {
+                consensusTimer_->stop();
+                emit contentLoaded();
+        });
+
         consensusTimer_ = new QTimer(this);
         connect(consensusTimer_, &QTimer::timeout, this, [=]() {
                 if (view_manager_->hasLoaded()) {
                         // Remove the spinner overlay.
                         emit contentLoaded();
+                        showContentTimer_->stop();
                         consensusTimer_->stop();
                 }
         });
@@ -228,7 +235,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 void
 ChatPage::logout()
 {
-        sync_timer_->stop();
+        syncTimer_->stop();
 
         // Delete all config parameters.
         QSettings settings;
@@ -307,7 +314,7 @@ ChatPage::syncFailed(const QString &msg)
                 return;
 
         qWarning() << "Sync error:" << msg;
-        sync_timer_->start(sync_interval_);
+        syncTimer_->start(SYNC_INTERVAL);
 }
 
 // TODO: Should be moved in another class that manages this global list.
@@ -404,7 +411,7 @@ ChatPage::syncCompleted(const SyncResponse &response)
         room_list_->sync(state_manager_);
         view_manager_->sync(response.rooms());
 
-        sync_timer_->start(sync_interval_);
+        syncTimer_->start(SYNC_INTERVAL);
 }
 
 void
@@ -457,7 +464,7 @@ ChatPage::initialSyncCompleted(const SyncResponse &response)
         // Initialize room list.
         room_list_->setInitialRooms(settingsManager_, state_manager_);
 
-        sync_timer_->start(sync_interval_);
+        syncTimer_->start(SYNC_INTERVAL);
 
         emit contentLoaded();
 }
@@ -564,9 +571,13 @@ ChatPage::loadStateFromCache()
         room_list_->setInitialRooms(settingsManager_, state_manager_);
 
         // Check periodically if the timelines have been loaded.
-        consensusTimer_->start(500);
+        consensusTimer_->start(CONSENSUS_TIMEOUT);
 
-        sync_timer_->start(sync_interval_);
+        // Show the content if consensus can't be achieved.
+        showContentTimer_->start(SHOW_CONTENT_TIMEOUT);
+
+        // Start receiving events.
+        syncTimer_->start(SYNC_INTERVAL);
 }
 
 void
@@ -665,5 +676,5 @@ ChatPage::updateTypingUsers(const QString &roomid, const QList<QString> &user_id
 
 ChatPage::~ChatPage()
 {
-        sync_timer_->stop();
+        syncTimer_->stop();
 }

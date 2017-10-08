@@ -34,6 +34,10 @@
 #include "TypingDisplay.h"
 #include "UserInfoWidget.h"
 
+constexpr int CONSENSUS_TIMEOUT    = 1000;
+constexpr int SHOW_CONTENT_TIMEOUT = 3000;
+constexpr int SYNC_INTERVAL        = 2000;
+
 class ChatPage : public QWidget
 {
         Q_OBJECT
@@ -96,9 +100,10 @@ private:
         TextInputWidget *text_input_;
         TypingDisplay *typingDisplay_;
 
+        // Safety net if consensus is not possible or too slow.
+        QTimer *showContentTimer_;
         QTimer *consensusTimer_;
-        QTimer *sync_timer_;
-        int sync_interval_;
+        QTimer *syncTimer_;
 
         QString current_room_;
         QMap<QString, QPixmap> room_avatars_;
