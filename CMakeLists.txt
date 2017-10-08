@@ -171,6 +171,7 @@ set(SRC_FILES
     src/ui/FlatButton.cc
     src/ui/OverlayModal.cc
     src/ui/ScrollBar.cc
+    src/ui/SnackBar.cc
     src/ui/RaisedButton.cc
     src/ui/Ripple.cc
     src/ui/RippleOverlay.cc
@@ -249,6 +250,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/FlatButton.h
     include/ui/OverlayWidget.h
     include/ui/ScrollBar.h
+    include/ui/SnackBar.h
     include/ui/RaisedButton.h
     include/ui/Ripple.h
     include/ui/RippleOverlay.h
@@ -292,9 +294,6 @@ if (APPLE)
 endif()
 
 if (BUILD_TESTS)
-    #
-    # Build tests.
-    #
     enable_testing()
 
     find_package(GTest REQUIRED)
@@ -312,26 +311,23 @@ if (BUILD_TESTS)
     add_test(MatrixEvents events_test)
     add_test(MatrixEventCollection event_collection_test)
     add_test(MatrixMessageEvents message_events)
-else()
-    #
-    # Build the executable.
-    #
+endif()
+
 if(APPVEYOR_BUILD)
     set (NHEKO_LIBS matrix_events Qt5::Widgets Qt5::Network lmdb)
 else()
     set (NHEKO_LIBS matrix_events Qt5::Widgets Qt5::Network ${LMDB_LIBRARY})
 endif()
 
-    set (NHEKO_DEPS ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC})
+set (NHEKO_DEPS ${OS_BUNDLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC})
 
-    if(APPLE)
-        add_executable (nheko ${NHEKO_DEPS})
-        target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras)
-    elseif(WIN32)
-        add_executable (nheko ${ICON_FILE} ${NHEKO_DEPS})
-        target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain)
-    else()
-        add_executable (nheko ${NHEKO_DEPS})
-        target_link_libraries (nheko ${NHEKO_LIBS})
-    endif()
+if(APPLE)
+    add_executable (nheko ${NHEKO_DEPS})
+    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras)
+elseif(WIN32)
+    add_executable (nheko ${ICON_FILE} ${NHEKO_DEPS})
+    target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain)
+else()
+    add_executable (nheko ${NHEKO_DEPS})
+    target_link_libraries (nheko ${NHEKO_LIBS})
 endif()
