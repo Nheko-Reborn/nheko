@@ -84,7 +84,7 @@ SnackBar::showMessage(const QString &msg)
 void
 SnackBar::onTimeout()
 {
-        offset_ -= 0.5;
+        offset_ -= 1.1;
 
         if (offset_ <= 0.0) {
                 showTimer_->stop();

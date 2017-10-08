@@ -26,6 +26,7 @@
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RegisterPage.h"
+#include "SnackBar.h"
 #include "TrayIcon.h"
 #include "WelcomePage.h"
 
@@ -91,4 +92,7 @@ private:
 
         // Tray icon that shows the unread message count.
         TrayIcon *trayIcon_;
+
+        // Notifications display.
+        QSharedPointer<SnackBar> snackBar_;
 };

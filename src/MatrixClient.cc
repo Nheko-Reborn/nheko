@@ -477,13 +477,22 @@ MatrixClient::onJoinRoomResponse(QNetworkReply *reply)
         int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
+                auto data     = reply->readAll();
+                auto response = QJsonDocument::fromJson(data);
+                auto json     = response.object();
+
+                if (json.contains("error"))
+                        emit joinFailed(json["error"].toString());
+                else
+                        qDebug() << reply->errorString();
+
                 return;
         }
 
-        auto data              = reply->readAll();
-        QJsonDocument response = QJsonDocument::fromJson(data);
-        QString room_id        = response.object()["room_id"].toString();
+        auto data     = reply->readAll();
+        auto response = QJsonDocument::fromJson(data);
+        auto room_id  = response.object()["room_id"].toString();
+
         emit joinedRoom(room_id);
 }
 
@@ -899,6 +908,7 @@ MatrixClient::joinRoom(const QString &roomIdOrAlias)
 
         QNetworkReply *reply = post(request, "{}");
         reply->setProperty("endpoint", static_cast<int>(Endpoint::JoinRoom));
+        reply->setProperty("room", roomIdOrAlias);
 }
 
 void

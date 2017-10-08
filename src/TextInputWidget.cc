@@ -148,11 +148,27 @@ TextInputWidget::onSendButtonClicked()
 
                 if (!text.isEmpty())
                         emit sendEmoteMessage(text);
+        } else if (msgText.startsWith(JOIN_COMMAND)) {
+                auto room = parseJoinCommand(msgText);
+
+                if (!room.isEmpty())
+                        emit sendJoinRoomRequest(room);
         } else {
                 emit sendTextMessage(msgText);
         }
 
         input_->clear();
+}
+
+QString
+TextInputWidget::parseJoinCommand(const QString &cmd)
+{
+        auto room = cmd.right(cmd.size() - JOIN_COMMAND.size()).trimmed();
+
+        if (!room.isEmpty())
+                return room;
+
+        return QString("");
 }
 
 QString

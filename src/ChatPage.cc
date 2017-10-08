@@ -166,10 +166,16 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 view_manager_,
                 SLOT(sendEmoteMessage(const QString &)));
 
+        connect(text_input_,
+                &TextInputWidget::sendJoinRoomRequest,
+                client_.data(),
+                &MatrixClient::joinRoom);
+
         connect(text_input_, &TextInputWidget::uploadImage, this, [=](QString filename) {
                 client_->uploadImage(current_room_, filename);
         });
 
+        connect(client_.data(), &MatrixClient::joinFailed, this, &ChatPage::showNotification);
         connect(client_.data(),
                 &MatrixClient::imageUploaded,
                 this,
@@ -203,10 +209,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 SIGNAL(ownAvatarRetrieved(const QPixmap &)),
                 this,
                 SLOT(setOwnAvatar(const QPixmap &)));
-        connect(client_.data(),
-                SIGNAL(joinedRoom(const QString &)),
-                this,
-                SLOT(addRoom(const QString &)));
+        connect(client_.data(), &MatrixClient::joinedRoom, this, [=]() {
+                emit showNotification("You joined the room.");
+        });
         connect(client_.data(),
                 SIGNAL(leftRoom(const QString &)),
                 this,
@@ -636,9 +641,9 @@ ChatPage::addRoom(const QString &room_id)
                                         QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
 
                 room_list_->addRoom(settingsManager_[room_id], state_manager_[room_id], room_id);
-
-                this->changeTopRoomInfo(room_id);
                 room_list_->highlightSelectedRoom(room_id);
+
+                changeTopRoomInfo(room_id);
         }
 }
 

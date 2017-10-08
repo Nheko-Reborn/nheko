@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
 #include "MainWindow.h"
+#include "Config.h"
 
 #include <QApplication>
 #include <QLayout>
@@ -140,6 +140,15 @@ MainWindow::removeOverlayProgressBar()
 
                 progressModal_.reset();
                 spinner_.reset();
+        });
+
+        // FIXME:  Snackbar doesn't work if it's initialized in the constructor.
+        QTimer::singleShot(100, this, [=]() {
+                snackBar_ = QSharedPointer<SnackBar>(new SnackBar(this));
+                connect(chat_page_,
+                        &ChatPage::showNotification,
+                        snackBar_.data(),
+                        &SnackBar::showMessage);
         });
 
         timer->start(500);

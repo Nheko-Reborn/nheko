@@ -30,6 +30,7 @@
 namespace msgs = matrix::events::messages;
 
 static const QString EMOTE_COMMAND("/me ");
+static const QString JOIN_COMMAND("/join ");
 
 class FilteredTextEdit : public QTextEdit
 {
@@ -63,10 +64,12 @@ signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
         void uploadImage(QString filename);
+        void sendJoinRoomRequest(const QString &room);
 
 private:
         void showUploadSpinner();
         QString parseEmoteCommand(const QString &cmd);
+        QString parseJoinCommand(const QString &cmd);
 
         QHBoxLayout *topLayout_;
         FilteredTextEdit *input_;

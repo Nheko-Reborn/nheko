@@ -93,6 +93,7 @@ signals:
         void initialSyncCompleted(const SyncResponse &response);
         void syncCompleted(const SyncResponse &response);
         void syncFailed(const QString &msg);
+        void joinFailed(const QString &msg);
         void messageSent(const QString &event_id, const QString &roomid, const int txn_id);
         void emoteSent(const QString &event_id, const QString &roomid, const int txn_id);
         void messagesRetrieved(const QString &room_id, const RoomMessages &msgs);
