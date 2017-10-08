@@ -140,10 +140,9 @@ private:
         bool isPaginationInProgress_ = false;
 
         // Keeps track whether or not the user has visited the view.
-        bool isInitialized              = false;
-        bool isTimelineFinished         = false;
-        bool isInitialSync              = true;
-        bool isPaginationScrollPending_ = false;
+        bool isInitialized      = false;
+        bool isTimelineFinished = false;
+        bool isInitialSync      = true;
 
         const int SCROLL_BAR_GAP = 400;
 

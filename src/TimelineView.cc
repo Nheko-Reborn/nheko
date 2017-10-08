@@ -85,19 +85,15 @@ TimelineView::sliderRangeChanged(int min, int max)
         if (max - scroll_area_->verticalScrollBar()->value() < SCROLL_BAR_GAP)
                 scroll_area_->verticalScrollBar()->setValue(max);
 
-        if (isPaginationScrollPending_) {
-                isPaginationScrollPending_ = false;
+        int currentHeight = scroll_widget_->size().height();
+        int diff          = currentHeight - oldHeight_;
+        int newPosition   = oldPosition_ + diff;
 
-                int currentHeight = scroll_widget_->size().height();
-                int diff          = currentHeight - oldHeight_;
-                int newPosition   = oldPosition_ + diff;
+        // Keep the scroll bar to the bottom if it hasn't been activated yet.
+        if (oldPosition_ == 0 && !scroll_area_->verticalScrollBar()->isVisible())
+                newPosition = max;
 
-                // Keep the scroll bar to the bottom if it hasn't been activated yet.
-                if (oldPosition_ == 0 && !scroll_area_->verticalScrollBar()->isVisible())
-                        newPosition = max;
-
-                scroll_area_->verticalScrollBar()->setValue(newPosition);
-        }
+        scroll_area_->verticalScrollBar()->setValue(newPosition);
 }
 
 void
@@ -173,6 +169,9 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
         isTimelineFinished = false;
         QList<TimelineItem *> items;
 
+        scroll_widget_->adjustSize();
+        scroll_widget_->update();
+
         // Parse in reverse order to determine where we should not show sender's
         // name.
         auto ii = msgs.chunk().size();
@@ -195,9 +194,8 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
         for (const auto &item : items)
                 addTimelineItem(item, TimelineDirection::Top);
 
-        prev_batch_token_          = msgs.end();
-        isPaginationInProgress_    = false;
-        isPaginationScrollPending_ = true;
+        prev_batch_token_       = msgs.end();
+        isPaginationInProgress_ = false;
 
         // Exclude the top stretch.
         if (!msgs.chunk().isEmpty() && scroll_layout_->count() > 1)
@@ -465,6 +463,9 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                 scroll_layout_->addWidget(item);
         else
                 scroll_layout_->insertWidget(1, item);
+
+        scroll_widget_->adjustSize();
+        scroll_widget_->update();
 }
 
 void
@@ -488,6 +489,9 @@ TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString 
         TimelineItem *view_item = new TimelineItem(ty, user_id, body, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
 
+        scroll_widget_->adjustSize();
+        scroll_widget_->update();
+
         lastSender_ = user_id;
 
         PendingMessage message(txn_id, body, "", view_item);
@@ -505,6 +509,9 @@ TimelineView::addUserMessage(const QString &url, const QString &filename, int tx
 
         TimelineItem *view_item = new TimelineItem(image, user_id, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
+
+        scroll_widget_->adjustSize();
+        scroll_widget_->update();
 
         lastSender_ = user_id;
 
