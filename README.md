@@ -62,6 +62,13 @@ sudo apt-get update
 sudo apt-get install qt58base qt58tools cmake liblmdb-dev
 ```
 
+##### Fedora
+On Fedora you can install package from COPR repository:
+```bash
+sudo dnf copr enable xvitaly/matrix
+sudo dnf install nheko
+```
+
 ##### OSX (Xcode 8 or later)
 
 ```bash
