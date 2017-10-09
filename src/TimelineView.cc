@@ -82,8 +82,10 @@ TimelineView::sliderRangeChanged(int min, int max)
 
         // If the scrollbar is close to the bottom and a new message
         // is added we move the scrollbar.
-        if (max - scroll_area_->verticalScrollBar()->value() < SCROLL_BAR_GAP)
+        if (max - scroll_area_->verticalScrollBar()->value() < SCROLL_BAR_GAP) {
                 scroll_area_->verticalScrollBar()->setValue(max);
+                return;
+        }
 
         int currentHeight = scroll_widget_->size().height();
         int diff          = currentHeight - oldHeight_;
@@ -94,6 +96,9 @@ TimelineView::sliderRangeChanged(int min, int max)
                 newPosition = max;
 
         scroll_area_->verticalScrollBar()->setValue(newPosition);
+
+        scroll_widget_->adjustSize();
+        scroll_widget_->update();
 }
 
 void
