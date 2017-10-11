@@ -12,13 +12,23 @@ feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IR
 ### Features
 
 Most of the features you would expect from a chat application are missing right now
-but you can of course receive and send messages in the rooms that you are a member of.
+but we are getting close to a more feature complete client.
+Specifically there is support for:
+- Joining & leaving rooms
+- Sending & receiving images and emoji.
+- Receiving typing notifications.
 
 ### Installation
 
 #### Arch Linux
 ```bash
 pacaur -S nheko-git
+```
+
+#### Fedora
+```bash
+sudo dnf copr enable xvitaly/matrix
+sudo dnf install nheko
 ```
 
 #### Gentoo Linux
@@ -29,7 +39,7 @@ sudo emerge -a nheko
 
 #### Windows
 
-You can find a NSIS installer [here](https://ci.appveyor.com/project/mujx/nheko/branch/master/artifacts).
+You can find an installer [here](https://ci.appveyor.com/project/mujx/nheko/branch/master/artifacts).
 
 ### Build Requirements
 
@@ -60,13 +70,6 @@ sudo add-apt-repository ppa:beineri/opt-qt58-trusty
 sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo apt-get update
 sudo apt-get install qt58base qt58tools cmake liblmdb-dev
-```
-
-##### Fedora
-On Fedora you can install package from COPR repository:
-```bash
-sudo dnf copr enable xvitaly/matrix
-sudo dnf install nheko
 ```
 
 ##### OSX (Xcode 8 or later)
