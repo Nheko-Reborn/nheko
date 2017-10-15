@@ -27,8 +27,7 @@ LoginRequest::LoginRequest() {}
 LoginRequest::LoginRequest(QString username, QString password)
   : user_(username)
   , password_(password)
-{
-}
+{}
 
 QByteArray
 LoginRequest::serialize() noexcept

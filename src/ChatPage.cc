@@ -60,8 +60,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         sideBarMainLayout_->setSpacing(0);
         sideBarMainLayout_->setMargin(0);
 
+        sidebarActions_ = new SideBarActions(this);
+
         sideBarLayout_->addLayout(sideBarTopLayout_);
         sideBarLayout_->addLayout(sideBarMainLayout_);
+        sideBarLayout_->addWidget(sidebarActions_);
 
         sideBarTopWidget_ = new QWidget(sideBar_);
         sideBarTopWidget_->setStyleSheet("background-color: #d6dde3; color: #ebebeb;");

@@ -22,10 +22,8 @@
 
 #include "Event.h"
 
-namespace matrix
-{
-namespace events
-{
+namespace matrix {
+namespace events {
 template<class Content>
 class RoomEvent : public Event<Content>
 {

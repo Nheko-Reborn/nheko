@@ -25,8 +25,7 @@
 RegisterRequest::RegisterRequest(const QString &username, const QString &password)
   : user_(username)
   , password_(password)
-{
-}
+{}
 
 QByteArray
 RegisterRequest::serialize() noexcept

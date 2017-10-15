@@ -45,7 +45,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 {
         setFont(QFont("Emoji One"));
 
-        setFixedHeight(50);
+        setFixedHeight(conf::textInput::height);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         setCursor(Qt::ArrowCursor);
         setStyleSheet("background-color: #fff;");
@@ -55,15 +55,13 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         topLayout_->setContentsMargins(15, 0, 15, 5);
 
         QIcon send_file_icon;
-        send_file_icon.addFile(":/icons/icons/clip-dark.png", QSize(), QIcon::Normal, QIcon::Off);
+        send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");
 
         sendFileBtn_ = new FlatButton(this);
-        sendFileBtn_->setForegroundColor(QColor("#acc7dc"));
         sendFileBtn_->setIcon(send_file_icon);
         sendFileBtn_->setIconSize(QSize(24, 24));
 
         spinner_ = new LoadingIndicator(this);
-        spinner_->setColor("#acc7dc");
         spinner_->setFixedHeight(32);
         spinner_->setFixedWidth(32);
         spinner_->hide();
@@ -79,19 +77,16 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         input_->setStyleSheet("color: #333333; border: none; padding-top: 5px; margin: 0 5px");
 
         sendMessageBtn_ = new FlatButton(this);
-        sendMessageBtn_->setForegroundColor(QColor("#acc7dc"));
 
         QIcon send_message_icon;
-        send_message_icon.addFile(
-          ":/icons/icons/share-dark.png", QSize(), QIcon::Normal, QIcon::Off);
+        send_message_icon.addFile(":/icons/icons/ui/cursor.png");
         sendMessageBtn_->setIcon(send_message_icon);
         sendMessageBtn_->setIconSize(QSize(24, 24));
 
         emojiBtn_ = new EmojiPickButton(this);
-        emojiBtn_->setForegroundColor(QColor("#acc7dc"));
 
         QIcon emoji_icon;
-        emoji_icon.addFile(":/icons/icons/smile.png", QSize(), QIcon::Normal, QIcon::Off);
+        emoji_icon.addFile(":/icons/icons/ui/smile.png");
         emojiBtn_->setIcon(emoji_icon);
         emojiBtn_->setIconSize(QSize(24, 24));
 

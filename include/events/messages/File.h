@@ -22,13 +22,11 @@
 #include "Deserializable.h"
 #include "MessageEvent.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+namespace messages {
+struct FileInfo
 {
-namespace events
-{
-namespace messages
-{
-struct FileInfo {
         int size;
 
         QString mimetype;

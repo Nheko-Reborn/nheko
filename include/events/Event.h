@@ -22,11 +22,10 @@
 
 #include "Deserializable.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+enum class EventType
 {
-namespace events
-{
-enum class EventType {
         /// m.room.aliases
         RoomAliases,
         /// m.room.avatar

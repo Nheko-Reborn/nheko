@@ -22,8 +22,7 @@
 EmojiPickButton::EmojiPickButton(QWidget *parent)
   : FlatButton(parent)
   , panel_{ nullptr }
-{
-}
+{}
 
 void
 EmojiPickButton::enterEvent(QEvent *e)

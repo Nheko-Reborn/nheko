@@ -22,10 +22,8 @@
 #include "CanonicalAliasEventContent.h"
 #include "Deserializable.h"
 
-namespace matrix
-{
-namespace events
-{
+namespace matrix {
+namespace events {
 /*
  * This event is used to inform the room about which alias should be considered
  * the canonical one. This could be for display purposes or as suggestion to

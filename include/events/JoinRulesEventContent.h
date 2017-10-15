@@ -21,11 +21,10 @@
 
 #include "Deserializable.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+enum class JoinRule
 {
-namespace events
-{
-enum class JoinRule {
         // A user who wishes to join the room must first receive
         // an invite to the room from someone already inside of the room.
         Invite,

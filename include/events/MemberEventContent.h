@@ -22,11 +22,10 @@
 
 #include "Deserializable.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+enum class Membership
 {
-namespace events
-{
-enum class Membership {
         // The user is banned.
         Ban,
 

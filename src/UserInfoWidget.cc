@@ -29,7 +29,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   , user_id_("@user:homeserver.org")
   , logoutModal_{ nullptr }
   , logoutDialog_{ nullptr }
-  , logoutButtonSize_{ 32 }
+  , logoutButtonSize_{ 20 }
 {
         QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
         setSizePolicy(sizePolicy);
@@ -77,15 +77,13 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         buttonLayout_->setMargin(0);
 
         logoutButton_ = new FlatButton(this);
-        logoutButton_->setForegroundColor(QColor("#555459"));
-        logoutButton_->setFixedSize(logoutButtonSize_, logoutButtonSize_);
         logoutButton_->setCornerRadius(logoutButtonSize_ / 2);
 
         QIcon icon;
-        icon.addFile(":/icons/icons/power-button-off.png", QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(":/icons/icons/ui/power-button-off.png");
 
         logoutButton_->setIcon(icon);
-        logoutButton_->setIconSize(QSize(logoutButtonSize_ / 2, logoutButtonSize_ / 2));
+        logoutButton_->setIconSize(QSize(logoutButtonSize_, logoutButtonSize_));
 
         buttonLayout_->addWidget(logoutButton_);
 

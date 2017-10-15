@@ -22,10 +22,8 @@
 
 #include "Deserializable.h"
 
-namespace matrix
-{
-namespace events
-{
+namespace matrix {
+namespace events {
 class AliasesEventContent
   : public Deserializable
   , public Serializable

@@ -21,10 +21,8 @@
 
 #include "Deserializable.h"
 
-namespace matrix
-{
-namespace events
-{
+namespace matrix {
+namespace events {
 /*
  * This is the first event in a room and cannot be changed. It acts as the root
  * of all other events.

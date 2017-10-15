@@ -4,12 +4,15 @@
 #include <QHash>
 #include <QObject>
 
-namespace ui
+namespace ui {
+enum class AvatarType
 {
-enum class AvatarType { Icon, Image, Letter };
+        Icon,
+        Image,
+        Letter
+};
 
-namespace sidebar
-{
+namespace sidebar {
 static const int SmallSize  = 60;
 static const int NormalSize = 300;
 }
@@ -19,19 +22,47 @@ const int FontSize = 16;
 // Default avatar size. Width and height.
 const int AvatarSize = 40;
 
-enum class ButtonPreset { FlatPreset, CheckablePreset };
+enum class ButtonPreset
+{
+        FlatPreset,
+        CheckablePreset
+};
 
-enum class RippleStyle { CenteredRipple, PositionedRipple, NoRipple };
+enum class RippleStyle
+{
+        CenteredRipple,
+        PositionedRipple,
+        NoRipple
+};
 
-enum class OverlayStyle { NoOverlay, TintedOverlay, GrayOverlay };
+enum class OverlayStyle
+{
+        NoOverlay,
+        TintedOverlay,
+        GrayOverlay
+};
 
-enum class Role { Default, Primary, Secondary };
+enum class Role
+{
+        Default,
+        Primary,
+        Secondary
+};
 
-enum class ButtonIconPlacement { LeftIcon, RightIcon };
+enum class ButtonIconPlacement
+{
+        LeftIcon,
+        RightIcon
+};
 
-enum class ProgressType { DeterminateProgress, IndeterminateProgress };
+enum class ProgressType
+{
+        DeterminateProgress,
+        IndeterminateProgress
+};
 
-enum class Color {
+enum class Color
+{
         Black,
         BrightWhite,
         FadedWhite,

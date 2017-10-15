@@ -21,11 +21,10 @@
 
 #include "Deserializable.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+enum class HistoryVisibility
 {
-namespace events
-{
-enum class HistoryVisibility {
         Invited,
         Joined,
         Shared,

@@ -22,13 +22,11 @@
 #include "Deserializable.h"
 #include "MessageEvent.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+namespace messages {
+struct LocationInfo
 {
-namespace events
-{
-namespace messages
-{
-struct LocationInfo {
         QString thumbnail_url;
         ThumbnailInfo thumbnail_info;
 };

@@ -21,10 +21,8 @@
 
 #include "Deserializable.h"
 
-namespace matrix
-{
-namespace events
-{
+namespace matrix {
+namespace events {
 /*
  * A topic is a short message detailing what is currently being discussed in the
  * room.

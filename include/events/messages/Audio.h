@@ -21,13 +21,11 @@
 
 #include "Deserializable.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+namespace messages {
+struct AudioInfo
 {
-namespace events
-{
-namespace messages
-{
-struct AudioInfo {
         uint64_t duration;
         int size;
 

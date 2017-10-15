@@ -22,11 +22,10 @@
 
 #include "Deserializable.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+enum class PowerLevels
 {
-namespace events
-{
-enum class PowerLevels {
         User      = 0,
         Moderator = 50,
         Admin     = 100,

@@ -21,7 +21,8 @@
 #include <QList>
 #include <QMap>
 
-struct Emoji {
+struct Emoji
+{
         // Unicode code.
         QString unicode;
         // Keyboard shortcut e.g :emoji:

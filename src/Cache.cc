@@ -36,8 +36,7 @@ Cache::Cache(const QString &userId)
   , roomDb_{ 0 }
   , isMounted_{ false }
   , userId_{ userId }
-{
-}
+{}
 
 void
 Cache::setup()

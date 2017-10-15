@@ -62,13 +62,11 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         textLayout_->addWidget(topicLabel_);
 
         settingsBtn_ = new FlatButton(this);
-        settingsBtn_->setForegroundColor(QColor("#acc7dc"));
         settingsBtn_->setFixedSize(buttonSize_, buttonSize_);
         settingsBtn_->setCornerRadius(buttonSize_ / 2);
 
         QIcon settings_icon;
-        settings_icon.addFile(
-          ":/icons/icons/vertical-ellipsis.png", QSize(), QIcon::Normal, QIcon::Off);
+        settings_icon.addFile(":/icons/icons/ui/vertical-ellipsis.png");
         settingsBtn_->setIcon(settings_icon);
         settingsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
 

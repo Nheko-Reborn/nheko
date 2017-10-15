@@ -21,10 +21,8 @@
 
 #include "Deserializable.h"
 
-namespace matrix
-{
-namespace events
-{
+namespace matrix {
+namespace events {
 /*
  * A human-friendly room name designed to be displayed to the end-user.
  */

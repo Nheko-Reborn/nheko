@@ -7,7 +7,8 @@
 
 #include "OverlayWidget.h"
 
-enum class SnackBarPosition {
+enum class SnackBarPosition
+{
         Bottom,
         Top,
 };

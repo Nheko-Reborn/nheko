@@ -26,7 +26,8 @@
 #include "RoomSettings.h"
 #include "RoomState.h"
 
-struct DescInfo {
+struct DescInfo
+{
         QString username;
         QString userid;
         QString body;

@@ -151,6 +151,7 @@ set(SRC_FILES
     src/RoomList.cc
     src/RoomMessages.cc
     src/RoomState.cc
+    src/SideBarActions.cc
     src/Splitter.cc
     src/Sync.cc
     src/TextInputWidget.cc
@@ -233,6 +234,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/RegisterPage.h
     include/RoomInfoListItem.h
     include/RoomList.h
+    include/SideBarActions.h
     include/Splitter.h
     include/TextInputWidget.h
     include/TimelineItem.h

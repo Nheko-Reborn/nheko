@@ -21,11 +21,10 @@
 
 #include "Deserializable.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+enum class MessageEventType
 {
-namespace events
-{
-enum class MessageEventType {
         // m.audio
         Audio,
 

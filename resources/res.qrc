@@ -1,33 +1,58 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>icons/left-chevron.png</file>
-        <file>icons/left-angle.png</file>
-        <file>icons/add-file.png</file>
-        <file>icons/send-button.png</file>
-        <file>icons/cog.png</file>
-        <file>icons/search.png</file>
-        <file>icons/plus-symbol.png</file>
-        <file>icons/clip-dark.png</file>
-        <file>icons/share-dark.png</file>
-        <file>icons/user-shape.png</file>
-        <file>icons/power-button-off.png</file>
-        <file>icons/smile.png</file>
-        <file>icons/error.png</file>
+        <file>icons/ui/cursor.png</file>
+        <file>icons/ui/cursor@2x.png</file>
+        <file>icons/ui/settings.png</file>
+        <file>icons/ui/settings@2x.png</file>
+        <file>icons/ui/smile.png</file>
+        <file>icons/ui/smile@2x.png</file>
+        <file>icons/ui/speech-bubbles-comment-option.png</file>
+        <file>icons/ui/speech-bubbles-comment-option@2x.png</file>
+        <file>icons/ui/vertical-ellipsis.png</file>
+        <file>icons/ui/vertical-ellipsis@2x.png</file>
+        <file>icons/ui/power-button-off.png</file>
+        <file>icons/ui/power-button-off@2x.png</file>
+        <file>icons/ui/plus-black-symbol.png</file>
+        <file>icons/ui/plus-black-symbol@2x.png</file>
+        <file>icons/ui/add-square-button.png</file>
+        <file>icons/ui/add-square-button@2x.png</file>
+        <file>icons/ui/cloud-storage-uploading-option.png</file>
+        <file>icons/ui/cloud-storage-uploading-option@2x.png</file>
+        <file>icons/ui/paper-clip-outline.png</file>
+        <file>icons/ui/paper-clip-outline@2x.png</file>
+        <file>icons/ui/angle-pointing-to-left.png</file>
+        <file>icons/ui/angle-pointing-to-left@2x.png</file>
 
         <file>icons/emoji-categories/people.png</file>
+        <file>icons/emoji-categories/people@2x.png</file>
         <file>icons/emoji-categories/nature.png</file>
+        <file>icons/emoji-categories/nature@2x.png</file>
         <file>icons/emoji-categories/foods.png</file>
+        <file>icons/emoji-categories/foods@2x.png</file>
         <file>icons/emoji-categories/activity.png</file>
+        <file>icons/emoji-categories/activity@2x.png</file>
         <file>icons/emoji-categories/travel.png</file>
+        <file>icons/emoji-categories/travel@2x.png</file>
         <file>icons/emoji-categories/objects.png</file>
+        <file>icons/emoji-categories/objects@2x.png</file>
         <file>icons/emoji-categories/symbols.png</file>
+        <file>icons/emoji-categories/symbols@2x.png</file>
         <file>icons/emoji-categories/flags.png</file>
-
-        <file>icons/vertical-ellipsis.png</file>
+        <file>icons/emoji-categories/flags@2x.png</file>
     </qresource>
 
     <qresource prefix="/logos">
         <file>nheko.png</file>
+
+        <file>splash.png</file>
+        <file>splash@2x.png</file>
+
+        <file>register.png</file>
+        <file>register@2x.png</file>
+
+        <file>login.png</file>
+        <file>login@2x.png</file>
+
         <file>nheko-512.png</file>
         <file>nheko-256.png</file>
         <file>nheko-128.png</file>
@@ -37,16 +62,10 @@
     </qresource>
 
     <qresource prefix="/fonts">
-        <file>fonts/OpenSans/OpenSans-Light.ttf</file>
-        <file>fonts/OpenSans/OpenSans-LightItalic.ttf</file>
         <file>fonts/OpenSans/OpenSans-Regular.ttf</file>
         <file>fonts/OpenSans/OpenSans-Italic.ttf</file>
         <file>fonts/OpenSans/OpenSans-Bold.ttf</file>
-        <file>fonts/OpenSans/OpenSans-BoldItalic.ttf</file>
         <file>fonts/OpenSans/OpenSans-Semibold.ttf</file>
-        <file>fonts/OpenSans/OpenSans-SemiboldItalic.ttf</file>
-        <file>fonts/OpenSans/OpenSans-ExtraBold.ttf</file>
-        <file>fonts/OpenSans/OpenSans-ExtraBoldItalic.ttf</file>
 
         <file>fonts/EmojiOne/emojione-android.ttf</file>
     </qresource>

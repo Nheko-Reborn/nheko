@@ -22,13 +22,11 @@
 #include "Deserializable.h"
 #include "MessageEvent.h"
 
-namespace matrix
+namespace matrix {
+namespace events {
+namespace messages {
+struct ImageInfo
 {
-namespace events
-{
-namespace messages
-{
-struct ImageInfo {
         int h;
         int w;
         int size;

@@ -176,8 +176,8 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
                   new LoadingIndicator(this),
                   [=](LoadingIndicator *indicator) { indicator->deleteLater(); });
                 spinner_->setColor("#acc7dc");
-                spinner_->setFixedHeight(120);
-                spinner_->setFixedWidth(120);
+                spinner_->setFixedHeight(100);
+                spinner_->setFixedWidth(100);
                 spinner_->start();
         }
 

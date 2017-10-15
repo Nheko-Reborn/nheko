@@ -27,6 +27,7 @@
 #include "RoomList.h"
 #include "RoomSettings.h"
 #include "RoomState.h"
+#include "SideBarActions.h"
 #include "Splitter.h"
 #include "TextInputWidget.h"
 #include "TimelineViewManager.h"
@@ -96,6 +97,7 @@ private:
 
         RoomList *room_list_;
         TimelineViewManager *view_manager_;
+        SideBarActions *sidebarActions_;
 
         TopRoomBar *top_bar_;
         TextInputWidget *text_input_;

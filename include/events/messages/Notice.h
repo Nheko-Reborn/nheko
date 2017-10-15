@@ -21,12 +21,9 @@
 
 #include "Deserializable.h"
 
-namespace matrix
-{
-namespace events
-{
-namespace messages
-{
+namespace matrix {
+namespace events {
+namespace messages {
 class Notice : public Deserializable
 {
 public:

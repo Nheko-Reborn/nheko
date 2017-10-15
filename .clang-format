@@ -5,7 +5,6 @@ AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
 AllowShortFunctionsOnASingleLine: Empty
 BasedOnStyle: Mozilla
-BreakBeforeBraces: Linux
 ColumnLimit: 100
 IndentCaseLabels: false
 IndentWidth: 8

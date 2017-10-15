@@ -4,72 +4,70 @@
 //
 // Font sizes are in pixels.
 
-namespace conf
-{
+namespace conf {
 // Global settings.
-static const int fontSize                   = 12;
-static const int textInputFontSize          = 14;
-static const int emojiSize                  = 14;
-static const int headerFontSize             = 21;
-static const int typingNotificationFontSize = 11;
+static constexpr int fontSize                   = 12;
+static constexpr int textInputFontSize          = 14;
+static constexpr int emojiSize                  = 14;
+static constexpr int headerFontSize             = 21;
+static constexpr int typingNotificationFontSize = 11;
 
 // Window geometry.
-namespace window
-{
-static const int height = 600;
-static const int width  = 1066;
+namespace window {
+static constexpr int height = 600;
+static constexpr int width  = 1066;
 
-static const int minHeight = 600;
-static const int minWidth  = 950;
+static constexpr int minHeight = height;
+static constexpr int minWidth  = 950;
+} // namespace window
+
+namespace textInput {
+static constexpr int height = 50;
+}
+
+namespace sidebarActions {
+static constexpr int height   = textInput::height;
+static constexpr int iconSize = 28;
 }
 
 // Button settings.
-namespace btn
-{
-static const int fontSize     = 20;
-static const int cornerRadius = 3;
-}
+namespace btn {
+static constexpr int fontSize     = 20;
+static constexpr int cornerRadius = 3;
+} // namespace btn
 
 // RoomList specific.
-namespace roomlist
-{
-namespace fonts
-{
-static const int heading = 13;
-static const int badge   = 10;
-static const int bubble  = 20;
+namespace roomlist {
+namespace fonts {
+static constexpr int heading = 13;
+static constexpr int badge   = 10;
+static constexpr int bubble  = 20;
 } // namespace fonts
 } // namespace roomlist
 
-namespace userInfoWidget
-{
-namespace fonts
-{
-static const int displayName = 16;
-static const int userid      = 14;
+namespace userInfoWidget {
+namespace fonts {
+static constexpr int displayName = 16;
+static constexpr int userid      = 14;
 } // namespace fonts
 } // namespace userInfoWidget
 
-namespace topRoomBar
-{
-namespace fonts
-{
-static const int roomName        = 15;
-static const int roomDescription = 13;
+namespace topRoomBar {
+namespace fonts {
+static constexpr int roomName        = 15;
+static constexpr int roomDescription = 13;
 } // namespace fonts
 } // namespace topRoomBar
 
-namespace timeline
-{
-static const int msgMargin        = 11;
-static const int avatarSize       = 36;
-static const int headerSpacing    = 5;
-static const int headerLeftMargin = 15;
+namespace timeline {
+static constexpr int msgMargin        = 11;
+static constexpr int avatarSize       = 36;
+static constexpr int headerSpacing    = 5;
+static constexpr int headerLeftMargin = 15;
 
-namespace fonts
-{
-static const int timestamp = 9;
-}
-}
+namespace fonts {
+static constexpr int timestamp = 9;
+} // namespace fonts
+} // namespace timeline
 
 } // namespace conf

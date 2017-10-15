@@ -39,7 +39,8 @@ namespace events = matrix::events;
 
 // Contains info about a message shown in the history view
 // but not yet confirmed by the homeserver through sync.
-struct PendingMessage {
+struct PendingMessage
+{
         int txn_id;
         QString body;
         QString event_id;
@@ -50,12 +51,12 @@ struct PendingMessage {
           , body(body)
           , event_id(event_id)
           , widget(widget)
-        {
-        }
+        {}
 };
 
 // In which place new TimelineItems should be inserted.
-enum class TimelineDirection {
+enum class TimelineDirection
+{
         Top,
         Bottom,
 };
