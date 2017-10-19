@@ -71,9 +71,8 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         settingsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
 
         topLayout_->addWidget(avatar_);
-        topLayout_->addLayout(textLayout_);
-        topLayout_->addStretch(1);
-        topLayout_->addWidget(settingsBtn_);
+        topLayout_->addLayout(textLayout_, 1);
+        topLayout_->addWidget(settingsBtn_, 0, Qt::AlignRight);
 
         menu_ = new Menu(this);
 
@@ -149,6 +148,9 @@ TopRoomBar::reset()
         nameLabel_->setText("");
         topicLabel_->setText("");
         avatar_->setLetter(QChar('?'));
+
+        roomName_.clear();
+        roomTopic_.clear();
 }
 
 void
@@ -161,6 +163,14 @@ TopRoomBar::paintEvent(QPaintEvent *event)
 
         QPainter painter(this);
         style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+
+        QString elidedText =
+          QFontMetrics(nameLabel_->font()).elidedText(roomName_, Qt::ElideRight, width());
+        nameLabel_->setText(elidedText);
+
+        elidedText =
+          QFontMetrics(topicLabel_->font()).elidedText(roomTopic_, Qt::ElideRight, width());
+        topicLabel_->setText(elidedText);
 }
 
 void

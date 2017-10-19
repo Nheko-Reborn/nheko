@@ -83,6 +83,9 @@ private:
         Avatar *avatar_;
 
         int buttonSize_;
+
+        QString roomName_;
+        QString roomTopic_;
 };
 
 inline void
@@ -102,9 +105,7 @@ TopRoomBar::updateRoomAvatar(const QIcon &icon)
 inline void
 TopRoomBar::updateRoomName(const QString &name)
 {
-        QString elidedText =
-          QFontMetrics(nameLabel_->font()).elidedText(name, Qt::ElideRight, width() * 0.8);
-        nameLabel_->setText(elidedText);
+        roomName_ = name;
         update();
 }
 
@@ -112,10 +113,6 @@ inline void
 TopRoomBar::updateRoomTopic(QString topic)
 {
         topic.replace(URL_REGEX, URL_HTML);
-
-        QString elidedText =
-          QFontMetrics(topicLabel_->font()).elidedText(topic, Qt::ElideRight, width() * 0.6);
-
-        topicLabel_->setText(topic);
+        roomTopic_ = topic;
         update();
 }
