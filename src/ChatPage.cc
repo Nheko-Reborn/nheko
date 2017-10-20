@@ -111,10 +111,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
         sideBarTopWidgetLayout_->addWidget(user_info_widget_);
 
-        syncTimer_ = new QTimer(this);
-        syncTimer_->setSingleShot(true);
-        connect(syncTimer_, SIGNAL(timeout()), this, SLOT(startSync()));
-
         connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
         connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
 
@@ -243,8 +239,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 void
 ChatPage::logout()
 {
-        syncTimer_->stop();
-
         // Delete all config parameters.
         QSettings settings;
         settings.beginGroup("auth");
@@ -303,12 +297,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 }
 
 void
-ChatPage::startSync()
-{
-        client_->sync();
-}
-
-void
 ChatPage::setOwnAvatar(const QPixmap &img)
 {
         user_info_widget_->setAvatar(img.toImage());
@@ -322,7 +310,7 @@ ChatPage::syncFailed(const QString &msg)
                 return;
 
         qWarning() << "Sync error:" << msg;
-        syncTimer_->start(SYNC_INTERVAL);
+        client_->sync();
 }
 
 // TODO: Should be moved in another class that manages this global list.
@@ -419,7 +407,7 @@ ChatPage::syncCompleted(const SyncResponse &response)
         room_list_->sync(state_manager_);
         view_manager_->sync(response.rooms());
 
-        syncTimer_->start(SYNC_INTERVAL);
+        client_->sync();
 }
 
 void
@@ -472,7 +460,7 @@ ChatPage::initialSyncCompleted(const SyncResponse &response)
         // Initialize room list.
         room_list_->setInitialRooms(settingsManager_, state_manager_);
 
-        syncTimer_->start(SYNC_INTERVAL);
+        client_->sync();
 
         emit contentLoaded();
 }
@@ -585,7 +573,7 @@ ChatPage::loadStateFromCache()
         showContentTimer_->start(SHOW_CONTENT_TIMEOUT);
 
         // Start receiving events.
-        syncTimer_->start(SYNC_INTERVAL);
+        client_->sync();
 }
 
 void
@@ -682,7 +670,4 @@ ChatPage::updateTypingUsers(const QString &roomid, const QList<QString> &user_id
         typingUsers_.insert(roomid, users);
 }
 
-ChatPage::~ChatPage()
-{
-        syncTimer_->stop();
-}
+ChatPage::~ChatPage() {}

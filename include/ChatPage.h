@@ -37,7 +37,6 @@
 
 constexpr int CONSENSUS_TIMEOUT    = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT = 3000;
-constexpr int SYNC_INTERVAL        = 2000;
 
 class ChatPage : public QWidget
 {
@@ -66,7 +65,6 @@ private slots:
         void syncCompleted(const SyncResponse &response);
         void syncFailed(const QString &msg);
         void changeTopRoomInfo(const QString &room_id);
-        void startSync();
         void logout();
         void addRoom(const QString &room_id);
         void removeRoom(const QString &room_id);
@@ -106,7 +104,6 @@ private:
         // Safety net if consensus is not possible or too slow.
         QTimer *showContentTimer_;
         QTimer *consensusTimer_;
-        QTimer *syncTimer_;
 
         QString current_room_;
         QMap<QString, QPixmap> room_avatars_;
