@@ -577,15 +577,6 @@ ChatPage::loadStateFromCache()
 }
 
 void
-ChatPage::keyPressEvent(QKeyEvent *event)
-{
-        if (event->key() == Qt::Key_K) {
-                if (event->modifiers() == Qt::ControlModifier)
-                        showQuickSwitcher();
-        }
-}
-
-void
 ChatPage::showQuickSwitcher()
 {
         if (quickSwitcher_.isNull()) {

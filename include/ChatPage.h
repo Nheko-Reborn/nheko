@@ -48,6 +48,7 @@ public:
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
+        void showQuickSwitcher();
 
 signals:
         void contentLoaded();
@@ -69,14 +70,10 @@ private slots:
         void addRoom(const QString &room_id);
         void removeRoom(const QString &room_id);
 
-protected:
-        void keyPressEvent(QKeyEvent *event) override;
-
 private:
         void updateTypingUsers(const QString &roomid, const QList<QString> &user_ids);
         void updateDisplayNames(const RoomState &state);
         void loadStateFromCache();
-        void showQuickSwitcher();
 
         QHBoxLayout *topLayout_;
         Splitter *splitter;

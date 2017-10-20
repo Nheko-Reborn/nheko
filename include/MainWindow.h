@@ -43,6 +43,7 @@ public:
 
 protected:
         void closeEvent(QCloseEvent *event);
+        void keyPressEvent(QKeyEvent *event);
 
 private slots:
         // Handle interaction with the tray icon.

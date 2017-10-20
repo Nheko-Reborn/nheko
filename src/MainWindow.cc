@@ -101,6 +101,15 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void
+MainWindow::keyPressEvent(QKeyEvent *e)
+{
+        if ((e->key() == Qt::Key_K) && (e->modifiers().testFlag(Qt::ControlModifier)))
+                chat_page_->showQuickSwitcher();
+        else
+                QMainWindow::keyPressEvent(e);
+}
+
+void
 MainWindow::restoreWindowSize()
 {
         QSettings settings;
