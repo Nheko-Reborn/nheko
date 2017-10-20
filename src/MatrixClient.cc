@@ -221,7 +221,7 @@ MatrixClient::onInitialSyncResponse(QNetworkReply *reply)
         int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
+                emit initialSyncFailed(reply->errorString());
                 return;
         }
 

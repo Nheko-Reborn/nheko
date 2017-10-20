@@ -73,6 +73,10 @@ MainWindow::MainWindow(QWidget *parent)
         connect(
           chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
         connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
+        connect(chat_page_, &ChatPage::showLoginPage, this, [=](const QString &msg) {
+                login_page_->loginError(msg);
+                showLoginPage();
+        });
 
         connect(trayIcon_,
                 SIGNAL(activated(QSystemTrayIcon::ActivationReason)),

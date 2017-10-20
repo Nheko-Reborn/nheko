@@ -29,6 +29,8 @@
 
 #include "StateEvent.h"
 
+constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
+
 namespace events = matrix::events;
 
 ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
@@ -192,6 +194,24 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 SIGNAL(initialSyncCompleted(const SyncResponse &)),
                 this,
                 SLOT(initialSyncCompleted(const SyncResponse &)));
+        connect(client_.data(), &MatrixClient::initialSyncFailed, this, [=](const QString &msg) {
+                initialSyncFailures += 1;
+
+                if (initialSyncFailures >= MAX_INITIAL_SYNC_FAILURES) {
+                        initialSyncFailures = 0;
+
+                        deleteConfigs();
+
+                        emit showLoginPage(msg);
+                        emit contentLoaded();
+                        return;
+                }
+
+                qWarning() << msg;
+                qWarning() << "Retrying initial sync";
+
+                client_->initialSync();
+        });
         connect(client_.data(),
                 SIGNAL(syncCompleted(const SyncResponse &)),
                 this,
@@ -239,7 +259,29 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 void
 ChatPage::logout()
 {
-        // Delete all config parameters.
+        deleteConfigs();
+
+        resetUI();
+
+        emit close();
+}
+
+void
+ChatPage::resetUI()
+{
+        room_avatars_.clear();
+        room_list_->clear();
+        settingsManager_.clear();
+        state_manager_.clear();
+        top_bar_->reset();
+        user_info_widget_->reset();
+        view_manager_->clearAll();
+        AvatarProvider::clear();
+}
+
+void
+ChatPage::deleteConfigs()
+{
         QSettings settings;
         settings.beginGroup("auth");
         settings.remove("");
@@ -253,21 +295,7 @@ ChatPage::logout()
 
         cache_->deleteData();
 
-        // Clear the environment.
-        room_list_->clear();
-        view_manager_->clearAll();
-
-        top_bar_->reset();
-        user_info_widget_->reset();
         client_->reset();
-
-        state_manager_.clear();
-        settingsManager_.clear();
-        room_avatars_.clear();
-
-        AvatarProvider::clear();
-
-        emit close();
 }
 
 void

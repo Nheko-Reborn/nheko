@@ -43,6 +43,10 @@ public:
 signals:
         void backButtonClicked();
 
+public slots:
+        // Displays errors produced during the login.
+        void loginError(QString error_message);
+
 private slots:
         // Callback for the back button.
         void onBackButtonClicked();
@@ -55,9 +59,6 @@ private slots:
 
         // Callback for probing the manually entered server
         void onServerAddressEntered();
-
-        // Displays errors produced during the login.
-        void loginError(QString error_message);
 
         // Callback for errors produced during server probing
         void versionError(QString error_message);

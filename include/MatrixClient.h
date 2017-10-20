@@ -91,6 +91,7 @@ signals:
         // Returned profile data for the user's account.
         void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
         void initialSyncCompleted(const SyncResponse &response);
+        void initialSyncFailed(const QString &msg);
         void syncCompleted(const SyncResponse &response);
         void syncFailed(const QString &msg);
         void joinFailed(const QString &msg);

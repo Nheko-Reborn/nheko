@@ -56,6 +56,7 @@ signals:
         void changeWindowTitle(const QString &msg);
         void unreadMessages(int count);
         void showNotification(const QString &msg);
+        void showLoginPage(const QString &msg);
 
 private slots:
         void showUnreadMessageNotification(int count);
@@ -74,6 +75,8 @@ private:
         void updateTypingUsers(const QString &roomid, const QList<QString> &user_ids);
         void updateDisplayNames(const RoomState &state);
         void loadStateFromCache();
+        void deleteConfigs();
+        void resetUI();
 
         QHBoxLayout *topLayout_;
         Splitter *splitter;
@@ -121,4 +124,8 @@ private:
 
         // LMDB wrapper.
         QSharedPointer<Cache> cache_;
+
+        // If the number of failures exceeds a certain threshold we
+        // return to the login page.
+        int initialSyncFailures = 0;
 };
