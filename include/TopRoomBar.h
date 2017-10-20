@@ -29,6 +29,7 @@
 
 #include "Avatar.h"
 #include "FlatButton.h"
+#include "Label.h"
 #include "LeaveRoomDialog.h"
 #include "Menu.h"
 #include "OverlayModal.h"
@@ -58,6 +59,7 @@ signals:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
 
 private slots:
         void closeLeaveRoomDialog(bool leaving);
@@ -67,7 +69,7 @@ private:
         QVBoxLayout *textLayout_;
 
         QLabel *nameLabel_;
-        QLabel *topicLabel_;
+        Label *topicLabel_;
 
         QSharedPointer<RoomSettings> roomSettings_;
 
@@ -112,7 +114,6 @@ TopRoomBar::updateRoomName(const QString &name)
 inline void
 TopRoomBar::updateRoomTopic(QString topic)
 {
-        topic.replace(URL_REGEX, URL_HTML);
         roomTopic_ = topic;
         update();
 }

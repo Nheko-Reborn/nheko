@@ -52,11 +52,15 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         QFont descriptionFont("Open Sans");
         descriptionFont.setPixelSize(conf::topRoomBar::fonts::roomDescription);
 
-        topicLabel_ = new QLabel(this);
+        topicLabel_ = new Label(this);
         topicLabel_->setFont(descriptionFont);
         topicLabel_->setTextFormat(Qt::RichText);
         topicLabel_->setTextInteractionFlags(Qt::TextBrowserInteraction);
         topicLabel_->setOpenExternalLinks(true);
+        connect(topicLabel_, &Label::clicked, [=](QMouseEvent *e) {
+                if (e->button() == Qt::LeftButton && !topicLabel_->hasSelectedText())
+                        topicLabel_->setWordWrap(!topicLabel_->wordWrap());
+        });
 
         textLayout_->addWidget(nameLabel_);
         textLayout_->addWidget(topicLabel_);
@@ -164,13 +168,32 @@ TopRoomBar::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 
+        // Number of pixels that we can move sidebar splitter per frame. If label contains text
+        // which fills entire it's width then label starts blocking it's layout from shrinking.
+        // Making label little bit shorter leaves some space for it to shrink.
+        const auto perFrameResize = 20;
+
         QString elidedText =
-          QFontMetrics(nameLabel_->font()).elidedText(roomName_, Qt::ElideRight, width());
+          QFontMetrics(nameLabel_->font())
+            .elidedText(roomName_, Qt::ElideRight, nameLabel_->width() - perFrameResize);
         nameLabel_->setText(elidedText);
 
-        elidedText =
-          QFontMetrics(topicLabel_->font()).elidedText(roomTopic_, Qt::ElideRight, width());
+        if (topicLabel_->wordWrap())
+                elidedText = roomTopic_;
+        else
+                elidedText =
+                  QFontMetrics(topicLabel_->font())
+                    .elidedText(roomTopic_, Qt::ElideRight, topicLabel_->width() - perFrameResize);
+        elidedText.replace(URL_REGEX, URL_HTML);
         topicLabel_->setText(elidedText);
+}
+
+void
+TopRoomBar::mousePressEvent(QMouseEvent *event)
+{
+        if (childAt(event->pos()) == topicLabel_) {
+                event->accept();
+        }
 }
 
 void
