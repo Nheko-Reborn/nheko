@@ -5,7 +5,6 @@ nheko
 [![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-red.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![AUR: nheko-git](https://img.shields.io/badge/AUR-nheko--git-blue.svg)](https://aur.archlinux.org/packages/nheko-git)
-[![Snap Status](https://build.snapcraft.io/badge/mujx/nheko.svg)](https://build.snapcraft.io/user/mujx/nheko)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
