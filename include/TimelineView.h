@@ -145,7 +145,7 @@ private:
         bool isTimelineFinished = false;
         bool isInitialSync      = true;
 
-        const int SCROLL_BAR_GAP = 400;
+        const int SCROLL_BAR_GAP = 200;
 
         QTimer *paginationTimer_;
 

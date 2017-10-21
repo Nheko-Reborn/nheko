@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QDebug>
 #include <QSettings>
 
@@ -413,6 +414,8 @@ ChatPage::syncCompleted(const SyncResponse &response)
 
                 if (it.key() == current_room_)
                         changeTopRoomInfo(it.key());
+
+                QApplication::processEvents();
         }
 
         auto leave = response.rooms().leave();
@@ -472,6 +475,8 @@ ChatPage::initialSyncCompleted(const SyncResponse &response)
                         if (!url.toString().isEmpty())
                                 AvatarProvider::setAvatarUrl(uid, url);
                 }
+
+                QApplication::processEvents();
         }
 
         try {

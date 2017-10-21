@@ -9,7 +9,7 @@ debug:
 	@cmake --build build
 
 release-debug:
-	@cmake -DBUILD_TESTS=OFF -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	@cmake -DBUILD_TESTS=OFF -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	@cmake --build build
 
 test:

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QDebug>
 #include <QJsonArray>
 #include <QScrollBar>
@@ -96,9 +97,6 @@ TimelineView::sliderRangeChanged(int min, int max)
                 newPosition = max;
 
         scroll_area_->verticalScrollBar()->setValue(newPosition);
-
-        scroll_widget_->adjustSize();
-        scroll_widget_->update();
 }
 
 void
@@ -174,9 +172,6 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
         isTimelineFinished = false;
         QList<TimelineItem *> items;
 
-        scroll_widget_->adjustSize();
-        scroll_widget_->update();
-
         // Parse in reverse order to determine where we should not show sender's
         // name.
         auto ii = msgs.chunk().size();
@@ -198,6 +193,8 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
 
         for (const auto &item : items)
                 addTimelineItem(item, TimelineDirection::Top);
+
+        QApplication::processEvents();
 
         prev_batch_token_       = msgs.end();
         isPaginationInProgress_ = false;
@@ -352,6 +349,8 @@ TimelineView::addEvents(const Timeline &timeline)
                 }
         }
 
+        QApplication::processEvents();
+
         if (isInitialSync) {
                 prev_batch_token_ = timeline.previousBatch();
                 isInitialSync     = false;
@@ -468,9 +467,6 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                 scroll_layout_->addWidget(item);
         else
                 scroll_layout_->insertWidget(1, item);
-
-        scroll_widget_->adjustSize();
-        scroll_widget_->update();
 }
 
 void
@@ -494,8 +490,7 @@ TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString 
         TimelineItem *view_item = new TimelineItem(ty, user_id, body, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
 
-        scroll_widget_->adjustSize();
-        scroll_widget_->update();
+        QApplication::processEvents();
 
         lastSender_ = user_id;
 
@@ -515,8 +510,7 @@ TimelineView::addUserMessage(const QString &url, const QString &filename, int tx
         TimelineItem *view_item = new TimelineItem(image, user_id, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
 
-        scroll_widget_->adjustSize();
-        scroll_widget_->update();
+        QApplication::processEvents();
 
         lastSender_ = user_id;
 
