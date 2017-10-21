@@ -1,5 +1,5 @@
 name: nheko
-version: master
+version: 0.1.0
 summary: Desktop client for the Matrix protocol
 description: |
   The motivation behind the project is to provide a native desktop app for
@@ -18,6 +18,14 @@ parts:
   nheko:
     source: .
     plugin: cmake
-    build-packages: [gcc]
+    configflags:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DBUILD_TESTS=OFF
+    build-packages:
+      - gcc
+      - g++
+      - liblmdb-dev
+      - liblmdb0
+      - qt5tools5-dev-tools
     artifacts: [nheko]
     after: [desktop-qt5]
