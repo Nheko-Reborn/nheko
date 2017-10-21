@@ -102,14 +102,21 @@ Cache::setState(const QString &nextBatchToken, const QMap<QString, RoomState> &s
         if (!isMounted_)
                 return;
 
-        auto txn = lmdb::txn::begin(env_);
+        try {
+                auto txn = lmdb::txn::begin(env_);
 
-        setNextBatchToken(txn, nextBatchToken);
+                setNextBatchToken(txn, nextBatchToken);
 
-        for (auto it = states.constBegin(); it != states.constEnd(); it++)
-                insertRoomState(txn, it.key(), it.value());
+                for (auto it = states.constBegin(); it != states.constEnd(); it++)
+                        insertRoomState(txn, it.key(), it.value());
 
-        txn.commit();
+                txn.commit();
+        } catch (const lmdb::error &e) {
+                qCritical() << "The cache couldn't be updated: " << e.what();
+
+                unmount();
+                deleteData();
+        }
 }
 
 void

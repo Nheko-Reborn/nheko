@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QSettings>
+#include <QtConcurrent>
 
 #include "AvatarProvider.h"
 #include "ChatPage.h"
@@ -196,6 +197,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 this,
                 SLOT(initialSyncCompleted(const SyncResponse &)));
         connect(client_.data(), &MatrixClient::initialSyncFailed, this, [=](const QString &msg) {
+                if (client_->getHomeServer().isEmpty()) {
+                        deleteConfigs();
+                        return;
+                }
+
                 initialSyncFailures += 1;
 
                 if (initialSyncFailures >= MAX_INITIAL_SYNC_FAILURES) {
@@ -426,14 +432,7 @@ ChatPage::syncCompleted(const SyncResponse &response)
                 }
         }
 
-        try {
-                cache_->setState(response.nextBatch(), state_manager_);
-        } catch (const lmdb::error &e) {
-                qCritical() << "The cache couldn't be updated: " << e.what();
-                // TODO: Notify the user.
-                cache_->unmount();
-                cache_->deleteData();
-        }
+        QtConcurrent::run(cache_.data(), &Cache::setState, response.nextBatch(), state_manager_);
 
         client_->setNextBatchToken(response.nextBatch());
 
@@ -479,15 +478,9 @@ ChatPage::initialSyncCompleted(const SyncResponse &response)
                 QApplication::processEvents();
         }
 
-        try {
-                cache_->setState(response.nextBatch(), state_manager_);
-        } catch (const lmdb::error &e) {
-                qCritical() << "The cache couldn't be initialized: " << e.what();
-                cache_->unmount();
-                cache_->deleteData();
-        }
-
         client_->setNextBatchToken(response.nextBatch());
+
+        QtConcurrent::run(cache_.data(), &Cache::setState, response.nextBatch(), state_manager_);
 
         // Populate timelines with messages.
         view_manager_->initialize(response.rooms());

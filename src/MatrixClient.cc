@@ -56,9 +56,9 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
 void
 MatrixClient::reset() noexcept
 {
-        next_batch_ = "";
-        server_     = "";
-        token_      = "";
+        next_batch_.clear();
+        server_.clear();
+        token_.clear();
 
         txn_id_ = 0;
 }
