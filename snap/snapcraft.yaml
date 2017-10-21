@@ -26,6 +26,6 @@ parts:
       - g++
       - liblmdb-dev
       - liblmdb0
-      - qt5tools5-dev-tools
+      - qttools5-dev-tools
     artifacts: [nheko]
     after: [desktop-qt5]
