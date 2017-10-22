@@ -104,49 +104,7 @@ signals:
         void joinedRoom(const QString &room_id);
         void leftRoom(const QString &room_id);
 
-private slots:
-        void onResponse(QNetworkReply *reply);
-
 private:
-        enum class Endpoint
-        {
-                GetOwnAvatar,
-                GetOwnProfile,
-                GetProfile,
-                Image,
-                InitialSync,
-                ImageUpload,
-                Login,
-                Logout,
-                Messages,
-                Register,
-                RoomAvatar,
-                SendRoomMessage,
-                Sync,
-                UserAvatar,
-                Versions,
-                JoinRoom,
-                LeaveRoom,
-        };
-
-        // Response handlers.
-        void onGetOwnAvatarResponse(QNetworkReply *reply);
-        void onGetOwnProfileResponse(QNetworkReply *reply);
-        void onImageResponse(QNetworkReply *reply);
-        void onInitialSyncResponse(QNetworkReply *reply);
-        void onImageUploadResponse(QNetworkReply *reply);
-        void onLoginResponse(QNetworkReply *reply);
-        void onLogoutResponse(QNetworkReply *reply);
-        void onMessagesResponse(QNetworkReply *reply);
-        void onRegisterResponse(QNetworkReply *reply);
-        void onRoomAvatarResponse(QNetworkReply *reply);
-        void onSendRoomMessage(QNetworkReply *reply);
-        void onSyncResponse(QNetworkReply *reply);
-        void onUserAvatarResponse(QNetworkReply *reply);
-        void onVersionsResponse(QNetworkReply *reply);
-        void onJoinRoomResponse(QNetworkReply *reply);
-        void onLeaveRoomResponse(QNetworkReply *reply);
-
         // Client API prefix.
         QString clientApiUrl_;
 

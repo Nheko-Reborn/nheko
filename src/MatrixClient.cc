@@ -43,7 +43,6 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
         QSettings settings;
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
 
-        connect(this, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResponse(QNetworkReply *)));
         connect(this,
                 &QNetworkAccessManager::networkAccessibleChanged,
                 this,
@@ -64,512 +63,6 @@ MatrixClient::reset() noexcept
 }
 
 void
-MatrixClient::onVersionsResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status_code == 404) {
-                emit versionError("Versions endpoint was not found on the server. Possibly "
-                                  "not a Matrix server");
-                return;
-        }
-
-        if (status_code >= 400) {
-                qWarning() << "API version error: " << reply->errorString();
-                emit versionError("An unknown error occured. Please try again.");
-                return;
-        }
-
-        auto data = reply->readAll();
-        auto json = QJsonDocument::fromJson(data);
-
-        VersionsResponse response;
-
-        try {
-                response.deserialize(json);
-                if (!response.isVersionSupported(0, 2, 0))
-                        emit versionError("Server does not support required API version.");
-                else
-                        emit versionSuccess();
-        } catch (DeserializationException &e) {
-                qWarning() << "Malformed JSON response" << e.what();
-                emit versionError("Malformed response. Possibly not a Matrix server");
-        }
-}
-
-void
-MatrixClient::onLoginResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status_code == 403) {
-                emit loginError(tr("Wrong username or password"));
-                return;
-        }
-
-        if (status_code == 404) {
-                emit loginError(tr("Login endpoint was not found on the server"));
-                return;
-        }
-
-        if (status_code >= 400) {
-                qWarning() << "Login error: " << reply->errorString();
-                emit loginError(tr("An unknown error occured. Please try again."));
-                return;
-        }
-
-        auto data = reply->readAll();
-        auto json = QJsonDocument::fromJson(data);
-
-        LoginResponse response;
-
-        try {
-                response.deserialize(json);
-
-                auto hostname = server_.host();
-
-                if (server_.port() > 0)
-                        hostname = QString("%1:%2").arg(server_.host()).arg(server_.port());
-
-                emit loginSuccess(response.getUserId(), hostname, response.getAccessToken());
-        } catch (DeserializationException &e) {
-                qWarning() << "Malformed JSON response" << e.what();
-                emit loginError(tr("Malformed response. Possibly not a Matrix server"));
-        }
-}
-
-void
-MatrixClient::onLogoutResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status != 200) {
-                qWarning() << "Logout error: " << reply->errorString();
-                return;
-        }
-
-        emit loggedOut();
-}
-
-void
-MatrixClient::onRegisterResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        auto data = reply->readAll();
-        auto json = QJsonDocument::fromJson(data);
-
-        if (status == 0 || status >= 400) {
-                if (json.isObject() && json.object().contains("error"))
-                        emit registerError(json.object().value("error").toString());
-                else
-                        emit registerError(reply->errorString());
-
-                return;
-        }
-
-        RegisterResponse response;
-
-        try {
-                response.deserialize(json);
-                emit registerSuccess(
-                  response.getUserId(), response.getHomeServer(), response.getAccessToken());
-        } catch (DeserializationException &e) {
-                qWarning() << "Register" << e.what();
-                emit registerError("Received malformed response.");
-        }
-}
-
-void
-MatrixClient::onGetOwnProfileResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        auto data = reply->readAll();
-        auto json = QJsonDocument::fromJson(data);
-
-        ProfileResponse response;
-
-        try {
-                response.deserialize(json);
-                emit getOwnProfileResponse(response.getAvatarUrl(), response.getDisplayName());
-        } catch (DeserializationException &e) {
-                qWarning() << "Profile:" << e.what();
-        }
-}
-
-void
-MatrixClient::onInitialSyncResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                emit initialSyncFailed(reply->errorString());
-                return;
-        }
-
-        auto data = reply->readAll();
-
-        if (data.isEmpty())
-                return;
-
-        auto json = QJsonDocument::fromJson(data);
-
-        SyncResponse response;
-
-        try {
-                response.deserialize(json);
-        } catch (DeserializationException &e) {
-                qWarning() << "Sync malformed response" << e.what();
-                return;
-        }
-
-        emit initialSyncCompleted(response);
-}
-
-void
-MatrixClient::onImageUploadResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                emit syncFailed(reply->errorString());
-                return;
-        }
-
-        auto data = reply->readAll();
-
-        if (data.isEmpty())
-                return;
-
-        auto json = QJsonDocument::fromJson(data);
-
-        if (!json.isObject()) {
-                qDebug() << "Media upload: Response is not a json object.";
-                return;
-        }
-
-        QJsonObject object = json.object();
-        if (!object.contains("content_uri")) {
-                qDebug() << "Media upload: Missing content_uri key";
-                qDebug() << object;
-                return;
-        }
-
-        emit imageUploaded(reply->property("room_id").toString(),
-                           reply->property("filename").toString(),
-                           object.value("content_uri").toString());
-}
-
-void
-MatrixClient::onSyncResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                emit syncFailed(reply->errorString());
-                return;
-        }
-
-        auto data = reply->readAll();
-
-        if (data.isEmpty())
-                return;
-
-        auto json = QJsonDocument::fromJson(data);
-
-        SyncResponse response;
-
-        try {
-                response.deserialize(json);
-                emit syncCompleted(response);
-        } catch (DeserializationException &e) {
-                qWarning() << "Sync malformed response" << e.what();
-        }
-}
-
-void
-MatrixClient::onSendRoomMessage(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        auto data = reply->readAll();
-
-        if (data.isEmpty())
-                return;
-
-        auto json = QJsonDocument::fromJson(data);
-
-        if (!json.isObject()) {
-                qDebug() << "Send message response is not a JSON object";
-                return;
-        }
-
-        auto object = json.object();
-
-        if (!object.contains("event_id")) {
-                qDebug() << "SendTextMessage: missing event_id from response";
-                return;
-        }
-
-        emit messageSent(object.value("event_id").toString(),
-                         reply->property("roomid").toString(),
-                         reply->property("txn_id").toInt());
-}
-
-void
-MatrixClient::onRoomAvatarResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        auto img = reply->readAll();
-
-        if (img.size() == 0)
-                return;
-
-        auto roomid = reply->property("roomid").toString();
-
-        QPixmap pixmap;
-        pixmap.loadFromData(img);
-
-        emit roomAvatarRetrieved(roomid, pixmap);
-}
-
-void
-MatrixClient::onUserAvatarResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        auto data = reply->readAll();
-
-        if (data.size() == 0)
-                return;
-
-        auto roomid = reply->property("userid").toString();
-
-        QImage img;
-        img.loadFromData(data);
-
-        emit userAvatarRetrieved(roomid, img);
-}
-void
-MatrixClient::onGetOwnAvatarResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        auto img = reply->readAll();
-
-        if (img.size() == 0)
-                return;
-
-        QPixmap pixmap;
-        pixmap.loadFromData(img);
-
-        emit ownAvatarRetrieved(pixmap);
-}
-
-void
-MatrixClient::onImageResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        auto img = reply->readAll();
-
-        if (img.size() == 0)
-                return;
-
-        QPixmap pixmap;
-        pixmap.loadFromData(img);
-
-        auto event_id = reply->property("event_id").toString();
-
-        emit imageDownloaded(event_id, pixmap);
-}
-
-void
-MatrixClient::onMessagesResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        auto data    = reply->readAll();
-        auto room_id = reply->property("room_id").toString();
-
-        RoomMessages msgs;
-
-        try {
-                msgs.deserialize(QJsonDocument::fromJson(data));
-        } catch (const DeserializationException &e) {
-                qWarning() << "Room messages from" << room_id << e.what();
-                return;
-        }
-
-        emit messagesRetrieved(room_id, msgs);
-}
-
-void
-MatrixClient::onJoinRoomResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                auto data     = reply->readAll();
-                auto response = QJsonDocument::fromJson(data);
-                auto json     = response.object();
-
-                if (json.contains("error"))
-                        emit joinFailed(json["error"].toString());
-                else
-                        qDebug() << reply->errorString();
-
-                return;
-        }
-
-        auto data     = reply->readAll();
-        auto response = QJsonDocument::fromJson(data);
-        auto room_id  = response.object()["room_id"].toString();
-
-        emit joinedRoom(room_id);
-}
-
-void
-MatrixClient::onLeaveRoomResponse(QNetworkReply *reply)
-{
-        reply->deleteLater();
-
-        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (status == 0 || status >= 400) {
-                qWarning() << reply->errorString();
-                return;
-        }
-
-        QString room_id = reply->property("room_id").toString();
-        emit leftRoom(room_id);
-}
-
-void
-MatrixClient::onResponse(QNetworkReply *reply)
-{
-        switch (static_cast<Endpoint>(reply->property("endpoint").toInt())) {
-        case Endpoint::Versions:
-                onVersionsResponse(reply);
-                break;
-        case Endpoint::Login:
-                onLoginResponse(reply);
-                break;
-        case Endpoint::Logout:
-                onLogoutResponse(reply);
-                break;
-        case Endpoint::Register:
-                onRegisterResponse(reply);
-                break;
-        case Endpoint::GetOwnProfile:
-                onGetOwnProfileResponse(reply);
-                break;
-        case Endpoint::Image:
-                onImageResponse(reply);
-                break;
-        case Endpoint::InitialSync:
-                onInitialSyncResponse(reply);
-                break;
-        case Endpoint::ImageUpload:
-                onImageUploadResponse(reply);
-                break;
-        case Endpoint::Sync:
-                onSyncResponse(reply);
-                break;
-        case Endpoint::SendRoomMessage:
-                onSendRoomMessage(reply);
-                break;
-        case Endpoint::RoomAvatar:
-                onRoomAvatarResponse(reply);
-                break;
-        case Endpoint::UserAvatar:
-                onUserAvatarResponse(reply);
-                break;
-        case Endpoint::GetOwnAvatar:
-                onGetOwnAvatarResponse(reply);
-                break;
-        case Endpoint::Messages:
-                onMessagesResponse(reply);
-                break;
-        case Endpoint::JoinRoom:
-                onJoinRoomResponse(reply);
-                break;
-        case Endpoint::LeaveRoom:
-                onLeaveRoomResponse(reply);
-                break;
-        default:
-                break;
-        }
-}
-
-void
 MatrixClient::login(const QString &username, const QString &password) noexcept
 {
         QUrl endpoint(server_);
@@ -580,8 +73,49 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
 
         LoginRequest body(username, password);
 
-        QNetworkReply *reply = post(request, body.serialize());
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::Login));
+        auto reply = post(request, body.serialize());
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status_code =
+                  reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status_code == 403) {
+                        emit loginError(tr("Wrong username or password"));
+                        return;
+                }
+
+                if (status_code == 404) {
+                        emit loginError(tr("Login endpoint was not found on the server"));
+                        return;
+                }
+
+                if (status_code >= 400) {
+                        qWarning() << "Login error: " << reply->errorString();
+                        emit loginError(tr("An unknown error occured. Please try again."));
+                        return;
+                }
+
+                auto data = reply->readAll();
+                auto json = QJsonDocument::fromJson(data);
+
+                LoginResponse response;
+
+                try {
+                        response.deserialize(json);
+
+                        auto hostname = server_.host();
+
+                        if (server_.port() > 0)
+                                hostname = QString("%1:%2").arg(server_.host()).arg(server_.port());
+
+                        emit loginSuccess(
+                          response.getUserId(), hostname, response.getAccessToken());
+                } catch (DeserializationException &e) {
+                        qWarning() << "Malformed JSON response" << e.what();
+                        emit loginError(tr("Malformed response. Possibly not a Matrix server"));
+                }
+        });
 }
 
 void
@@ -598,8 +132,20 @@ MatrixClient::logout() noexcept
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
         QJsonObject body{};
-        QNetworkReply *reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::Logout));
+        auto reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status != 200) {
+                        qWarning() << "Logout error: " << reply->errorString();
+                        return;
+                }
+
+                emit loggedOut();
+        });
 }
 
 void
@@ -618,9 +164,37 @@ MatrixClient::registerUser(const QString &user, const QString &pass, const QStri
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
         RegisterRequest body(user, pass);
+        auto reply = post(request, body.serialize());
 
-        QNetworkReply *reply = post(request, body.serialize());
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::Register));
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                auto data = reply->readAll();
+                auto json = QJsonDocument::fromJson(data);
+
+                if (status == 0 || status >= 400) {
+                        if (json.isObject() && json.object().contains("error"))
+                                emit registerError(json.object().value("error").toString());
+                        else
+                                emit registerError(reply->errorString());
+
+                        return;
+                }
+
+                RegisterResponse response;
+
+                try {
+                        response.deserialize(json);
+                        emit registerSuccess(response.getUserId(),
+                                             response.getHomeServer(),
+                                             response.getAccessToken());
+                } catch (DeserializationException &e) {
+                        qWarning() << "Register" << e.what();
+                        emit registerError("Received malformed response.");
+                }
+        });
 }
 
 void
@@ -654,8 +228,33 @@ MatrixClient::sync() noexcept
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setRawHeader("Connection", "keep-alive");
 
-        QNetworkReply *reply = get(request);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::Sync));
+        auto reply = get(request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        emit syncFailed(reply->errorString());
+                        return;
+                }
+
+                auto data = reply->readAll();
+
+                if (data.isEmpty())
+                        return;
+
+                auto json = QJsonDocument::fromJson(data);
+
+                SyncResponse response;
+
+                try {
+                        response.deserialize(json);
+                        emit syncCompleted(response);
+                } catch (DeserializationException &e) {
+                        qWarning() << "Sync malformed response" << e.what();
+                }
+        });
 }
 
 void
@@ -693,10 +292,40 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-        QNetworkReply *reply = put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::SendRoomMessage));
-        reply->setProperty("txn_id", txn_id_);
-        reply->setProperty("roomid", roomid);
+        auto reply = put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
+        auto txnId = this->txn_id_;
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, txnId]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data = reply->readAll();
+
+                if (data.isEmpty())
+                        return;
+
+                auto json = QJsonDocument::fromJson(data);
+
+                if (!json.isObject()) {
+                        qDebug() << "Send message response is not a JSON object";
+                        return;
+                }
+
+                auto object = json.object();
+
+                if (!object.contains("event_id")) {
+                        qDebug() << "SendTextMessage: missing event_id from response";
+                        return;
+                }
+
+                emit messageSent(object.value("event_id").toString(), roomid, txnId);
+        });
 
         incrementTransactionId();
 }
@@ -715,8 +344,35 @@ MatrixClient::initialSync() noexcept
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setRawHeader("Connection", "keep-alive");
 
-        QNetworkReply *reply = get(request);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::InitialSync));
+        auto reply = get(request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        emit initialSyncFailed(reply->errorString());
+                        return;
+                }
+
+                auto data = reply->readAll();
+
+                if (data.isEmpty())
+                        return;
+
+                auto json = QJsonDocument::fromJson(data);
+
+                SyncResponse response;
+
+                try {
+                        response.deserialize(json);
+                } catch (DeserializationException &e) {
+                        qWarning() << "Sync malformed response" << e.what();
+                        return;
+                }
+
+                emit initialSyncCompleted(response);
+        });
 }
 
 void
@@ -727,8 +383,39 @@ MatrixClient::versions() noexcept
 
         QNetworkRequest request(endpoint);
 
-        QNetworkReply *reply = get(request);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::Versions));
+        auto reply = get(request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status_code =
+                  reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status_code == 404) {
+                        emit versionError("Versions endpoint was not found on the server. Possibly "
+                                          "not a Matrix server");
+                        return;
+                }
+
+                if (status_code >= 400) {
+                        emit versionError("An unknown error occured. Please try again.");
+                        return;
+                }
+
+                auto data = reply->readAll();
+                auto json = QJsonDocument::fromJson(data);
+
+                VersionsResponse response;
+
+                try {
+                        response.deserialize(json);
+                        if (!response.isVersionSupported(0, 2, 0))
+                                emit versionError("Server does not support required API version.");
+                        else
+                                emit versionSuccess();
+                } catch (DeserializationException &e) {
+                        emit versionError("Malformed response. Possibly not a Matrix server");
+                }
+        });
 }
 
 void
@@ -749,7 +436,29 @@ MatrixClient::getOwnProfile() noexcept
         QNetworkRequest request(QString(endpoint.toEncoded()));
 
         QNetworkReply *reply = get(request);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnProfile));
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data = reply->readAll();
+                auto json = QJsonDocument::fromJson(data);
+
+                ProfileResponse response;
+
+                try {
+                        response.deserialize(json);
+                        emit getOwnProfileResponse(response.getAvatarUrl(),
+                                                   response.getDisplayName());
+                } catch (DeserializationException &e) {
+                        qWarning() << "Profile:" << e.what();
+                }
+        });
 }
 
 void
@@ -776,8 +485,26 @@ MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
         QNetworkRequest avatar_request(endpoint);
 
         QNetworkReply *reply = get(avatar_request);
-        reply->setProperty("roomid", roomid);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::RoomAvatar));
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto img = reply->readAll();
+
+                if (img.size() == 0)
+                        return;
+
+                QPixmap pixmap;
+                pixmap.loadFromData(img);
+
+                emit roomAvatarRetrieved(roomid, pixmap);
+        });
 }
 
 void
@@ -803,9 +530,27 @@ MatrixClient::fetchUserAvatar(const QString &userId, const QUrl &avatarUrl)
 
         QNetworkRequest avatar_request(endpoint);
 
-        QNetworkReply *reply = get(avatar_request);
-        reply->setProperty("userid", userId);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::UserAvatar));
+        auto reply = get(avatar_request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply, userId]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data = reply->readAll();
+
+                if (data.size() == 0)
+                        return;
+
+                QImage img;
+                img.loadFromData(data);
+
+                emit userAvatarRetrieved(userId, img);
+        });
 }
 
 void
@@ -813,9 +558,27 @@ MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
 {
         QNetworkRequest image_request(url);
 
-        QNetworkReply *reply = get(image_request);
-        reply->setProperty("event_id", event_id);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::Image));
+        auto reply = get(image_request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply, event_id]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto img = reply->readAll();
+
+                if (img.size() == 0)
+                        return;
+
+                QPixmap pixmap;
+                pixmap.loadFromData(img);
+
+                emit imageDownloaded(event_id, pixmap);
+        });
 }
 
 void
@@ -841,12 +604,31 @@ MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 
         QNetworkRequest avatar_request(endpoint);
 
-        QNetworkReply *reply = get(avatar_request);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::GetOwnAvatar));
+        auto reply = get(avatar_request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto img = reply->readAll();
+
+                if (img.size() == 0)
+                        return;
+
+                QPixmap pixmap;
+                pixmap.loadFromData(img);
+
+                emit ownAvatarRetrieved(pixmap);
+        });
 }
 
 void
-MatrixClient::messages(const QString &room_id, const QString &from_token, int limit) noexcept
+MatrixClient::messages(const QString &roomid, const QString &from_token, int limit) noexcept
 {
         QUrlQuery query;
         query.addQueryItem("access_token", token_);
@@ -855,14 +637,35 @@ MatrixClient::messages(const QString &room_id, const QString &from_token, int li
         query.addQueryItem("limit", QString::number(limit));
 
         QUrl endpoint(server_);
-        endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/messages").arg(room_id));
+        endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/messages").arg(roomid));
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
 
-        QNetworkReply *reply = get(request);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::Messages));
-        reply->setProperty("room_id", room_id);
+        auto reply = get(request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data = reply->readAll();
+
+                RoomMessages msgs;
+
+                try {
+                        msgs.deserialize(QJsonDocument::fromJson(data));
+                } catch (const DeserializationException &e) {
+                        qWarning() << "Room messages from" << roomid << e.what();
+                        return;
+                }
+
+                emit messagesRetrieved(roomid, msgs);
+        });
 }
 
 void
@@ -887,10 +690,38 @@ MatrixClient::uploadImage(const QString &roomid, const QString &filename)
         request.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
         request.setHeader(QNetworkRequest::ContentTypeHeader, QString("image/%1").arg(imgFormat));
 
-        QNetworkReply *reply = post(request, file.readAll());
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::ImageUpload));
-        reply->setProperty("room_id", roomid);
-        reply->setProperty("filename", filename);
+        auto reply = post(request, file.readAll());
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        emit syncFailed(reply->errorString());
+                        return;
+                }
+
+                auto data = reply->readAll();
+
+                if (data.isEmpty())
+                        return;
+
+                auto json = QJsonDocument::fromJson(data);
+
+                if (!json.isObject()) {
+                        qDebug() << "Media upload: Response is not a json object.";
+                        return;
+                }
+
+                QJsonObject object = json.object();
+                if (!object.contains("content_uri")) {
+                        qDebug() << "Media upload: Missing content_uri key";
+                        qDebug() << object;
+                        return;
+                }
+
+                emit imageUploaded(roomid, filename, object.value("content_uri").toString());
+        });
 }
 
 void
@@ -906,9 +737,31 @@ MatrixClient::joinRoom(const QString &roomIdOrAlias)
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
 
-        QNetworkReply *reply = post(request, "{}");
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::JoinRoom));
-        reply->setProperty("room", roomIdOrAlias);
+        auto reply = post(request, "{}");
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        auto data     = reply->readAll();
+                        auto response = QJsonDocument::fromJson(data);
+                        auto json     = response.object();
+
+                        if (json.contains("error"))
+                                emit joinFailed(json["error"].toString());
+                        else
+                                qDebug() << reply->errorString();
+
+                        return;
+                }
+
+                auto data     = reply->readAll();
+                auto response = QJsonDocument::fromJson(data);
+                auto room_id  = response.object()["room_id"].toString();
+
+                emit joinedRoom(room_id);
+        });
 }
 
 void
@@ -924,7 +777,18 @@ MatrixClient::leaveRoom(const QString &roomId)
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
 
-        QNetworkReply *reply = post(request, "{}");
-        reply->setProperty("room_id", roomId);
-        reply->setProperty("endpoint", static_cast<int>(Endpoint::LeaveRoom));
+        auto reply = post(request, "{}");
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomId]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                emit leftRoom(roomId);
+        });
 }
