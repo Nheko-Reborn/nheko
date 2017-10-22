@@ -49,9 +49,9 @@ public:
         void resolveAvatar();
         void parse(const QJsonObject &object);
 
-        inline QUrl getAvatar() const;
-        inline QString getName() const;
-        inline QString getTopic() const;
+        QUrl getAvatar() const { return avatar_; };
+        QString getName() const { return name_; };
+        QString getTopic() const { return topic.content().topic().simplified(); };
 
         void removeLeaveMemberships();
         void update(const RoomState &state);
@@ -81,21 +81,3 @@ private:
         // avatar event this should be empty.
         QString userAvatar_;
 };
-
-inline QString
-RoomState::getTopic() const
-{
-        return topic.content().topic().simplified();
-}
-
-inline QString
-RoomState::getName() const
-{
-        return name_;
-}
-
-inline QUrl
-RoomState::getAvatar() const
-{
-        return avatar_;
-}

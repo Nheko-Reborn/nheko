@@ -51,16 +51,11 @@ public:
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;
 
-        inline JoinRule joinRule() const;
+        JoinRule joinRule() const { return join_rule_; };
 
 private:
         JoinRule join_rule_;
 };
 
-inline JoinRule
-JoinRulesEventContent::joinRule() const
-{
-        return join_rule_;
-}
 } // namespace events
 } // namespace matrix

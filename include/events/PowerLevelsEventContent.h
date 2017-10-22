@@ -43,14 +43,14 @@ public:
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;
 
-        inline int banLevel() const;
-        inline int inviteLevel() const;
-        inline int kickLevel() const;
-        inline int redactLevel() const;
+        int banLevel() const { return ban_; };
+        int inviteLevel() const { return invite_; };
+        int kickLevel() const { return kick_; };
+        int redactLevel() const { return redact_; };
 
-        inline int eventsDefaultLevel() const;
-        inline int stateDefaultLevel() const;
-        inline int usersDefaultLevel() const;
+        int eventsDefaultLevel() const { return events_default_; };
+        int stateDefaultLevel() const { return state_default_; };
+        int usersDefaultLevel() const { return users_default_; };
 
         int eventLevel(QString event_type) const;
         int userLevel(QString user_id) const;
@@ -69,46 +69,5 @@ private:
         QMap<QString, int> users_;
 };
 
-inline int
-PowerLevelsEventContent::banLevel() const
-{
-        return ban_;
-}
-
-inline int
-PowerLevelsEventContent::inviteLevel() const
-{
-        return invite_;
-}
-
-inline int
-PowerLevelsEventContent::kickLevel() const
-{
-        return kick_;
-}
-
-inline int
-PowerLevelsEventContent::redactLevel() const
-{
-        return redact_;
-}
-
-inline int
-PowerLevelsEventContent::eventsDefaultLevel() const
-{
-        return events_default_;
-}
-
-inline int
-PowerLevelsEventContent::stateDefaultLevel() const
-{
-        return state_default_;
-}
-
-inline int
-PowerLevelsEventContent::usersDefaultLevel() const
-{
-        return users_default_;
-}
 } // namespace events
 } // namespace matrix

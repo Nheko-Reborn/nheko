@@ -202,4 +202,32 @@ TopRoomBar::setRoomSettings(QSharedPointer<RoomSettings> settings)
         roomSettings_ = settings;
 }
 
+void
+TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
+{
+        avatar_->setImage(avatar_image);
+        update();
+}
+
+void
+TopRoomBar::updateRoomAvatar(const QIcon &icon)
+{
+        avatar_->setIcon(icon);
+        update();
+}
+
+void
+TopRoomBar::updateRoomName(const QString &name)
+{
+        roomName_ = name;
+        update();
+}
+
+void
+TopRoomBar::updateRoomTopic(QString topic)
+{
+        roomTopic_ = topic;
+        update();
+}
+
 TopRoomBar::~TopRoomBar() {}

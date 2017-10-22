@@ -99,7 +99,7 @@ public slots:
         void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
 
         // Whether or not the initial batch has been loaded.
-        bool hasLoaded();
+        bool hasLoaded() { return scroll_layout_->count() > 1 || isTimelineFinished; };
 
 signals:
         void updateLastTimelineMessage(const QString &user, const DescInfo &info);
@@ -120,7 +120,7 @@ private:
                               const QString &userid);
         void removePendingMessage(const QString &eventid, const QString &body);
 
-        inline bool isDuplicate(const QString &event_id);
+        bool isDuplicate(const QString &event_id) { return eventIds_.contains(event_id); };
 
         // Return nullptr if the event couldn't be parsed.
         TimelineItem *parseMessageEvent(const QJsonObject &event, TimelineDirection direction);
@@ -160,15 +160,3 @@ private:
         QList<PendingMessage> pending_msgs_;
         QSharedPointer<MatrixClient> client_;
 };
-
-inline bool
-TimelineView::isDuplicate(const QString &event_id)
-{
-        return eventIds_.contains(event_id);
-}
-
-inline bool
-TimelineView::hasLoaded()
-{
-        return scroll_layout_->count() > 1 || isTimelineFinished;
-}

@@ -55,9 +55,9 @@ public:
         void joinRoom(const QString &roomIdOrAlias);
         void leaveRoom(const QString &roomId);
 
-        inline QUrl getHomeServer();
-        inline int transactionId();
-        inline void incrementTransactionId();
+        QUrl getHomeServer() { return server_; };
+        int transactionId() { return txn_id_; };
+        void incrementTransactionId() { txn_id_ += 1; };
 
         void reset() noexcept;
 
@@ -65,9 +65,12 @@ public slots:
         void getOwnProfile() noexcept;
         void logout() noexcept;
 
-        inline void setServer(const QString &server);
-        inline void setAccessToken(const QString &token);
-        inline void setNextBatchToken(const QString &next_batch);
+        void setServer(const QString &server)
+        {
+                server_ = QUrl(QString("https://%1").arg(server));
+        };
+        void setAccessToken(const QString &token) { token_ = token; };
+        void setNextBatchToken(const QString &next_batch) { next_batch_ = next_batch; };
 
 signals:
         void loginError(const QString &error);
@@ -162,39 +165,3 @@ private:
         // Token to be used for the next sync.
         QString next_batch_;
 };
-
-inline QUrl
-MatrixClient::getHomeServer()
-{
-        return server_;
-}
-
-inline int
-MatrixClient::transactionId()
-{
-        return txn_id_;
-}
-
-inline void
-MatrixClient::setServer(const QString &server)
-{
-        server_ = QUrl(QString("https://%1").arg(server));
-}
-
-inline void
-MatrixClient::setAccessToken(const QString &token)
-{
-        token_ = token;
-}
-
-inline void
-MatrixClient::setNextBatchToken(const QString &next_batch)
-{
-        next_batch_ = next_batch;
-}
-
-inline void
-MatrixClient::incrementTransactionId()
-{
-        txn_id_ += 1;
-}

@@ -50,11 +50,12 @@ public:
         void clearUnreadMessageCount();
         void setState(const RoomState &state);
 
-        inline bool isPressed() const;
-        inline RoomState state() const;
-        inline void setAvatar(const QImage &avatar_image);
-        inline int unreadMessageCount() const;
-        inline void setDescriptionMessage(const DescInfo &info);
+        bool isPressed() const { return isPressed_; };
+        RoomState state() const { return state_; };
+        int unreadMessageCount() const { return unreadMsgCount_; };
+
+        void setAvatar(const QImage &avatar_image);
+        void setDescriptionMessage(const DescInfo &info);
 
 signals:
         void clicked(const QString &room_id);
@@ -97,36 +98,3 @@ private:
         int maxHeight_;
         int unreadMsgCount_ = 0;
 };
-
-inline int
-RoomInfoListItem::unreadMessageCount() const
-{
-        return unreadMsgCount_;
-}
-
-inline bool
-RoomInfoListItem::isPressed() const
-{
-        return isPressed_;
-}
-
-inline RoomState
-RoomInfoListItem::state() const
-{
-        return state_;
-}
-
-inline void
-RoomInfoListItem::setAvatar(const QImage &img)
-{
-        roomAvatar_ = QPixmap::fromImage(
-          img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        update();
-}
-
-inline void
-RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
-{
-        lastMsgInfo_ = info;
-        update();
-}

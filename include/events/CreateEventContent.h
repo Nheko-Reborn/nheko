@@ -36,17 +36,12 @@ public:
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;
 
-        inline QString creator() const;
+        QString creator() const { return creator_; };
 
 private:
         // The user_id of the room creator. This is set by the homeserver.
         QString creator_;
 };
 
-inline QString
-CreateEventContent::creator() const
-{
-        return creator_;
-}
 } // namespace events
 } // namespace matrix

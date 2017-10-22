@@ -66,8 +66,8 @@ class Event
   , public Serializable
 {
 public:
-        inline Content content() const;
-        inline EventType eventType() const;
+        Content content() const;
+        EventType eventType() const;
 
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;

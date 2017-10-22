@@ -28,10 +28,10 @@ template<class Content>
 class RoomEvent : public Event<Content>
 {
 public:
-        inline QString eventId() const;
-        inline QString roomId() const;
-        inline QString sender() const;
-        inline uint64_t timestamp() const;
+        QString eventId() const;
+        QString roomId() const;
+        QString sender() const;
+        uint64_t timestamp() const;
 
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;

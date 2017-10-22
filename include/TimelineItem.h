@@ -65,7 +65,7 @@ public:
                      QWidget *parent);
 
         void setUserAvatar(const QImage &pixmap);
-        inline DescInfo descriptionMessage() const;
+        DescInfo descriptionMessage() const { return descriptionMsg_; };
 
         ~TimelineItem();
 
@@ -98,9 +98,3 @@ private:
         QLabel *userName_;
         QLabel *body_;
 };
-
-inline DescInfo
-TimelineItem::descriptionMessage() const
-{
-        return descriptionMsg_;
-}

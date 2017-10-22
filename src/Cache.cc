@@ -272,3 +272,12 @@ Cache::nextBatchToken() const
 
         return QString::fromUtf8(token.data(), token.size());
 }
+
+void
+Cache::deleteData()
+{
+        qInfo() << "Deleting cache data";
+
+        if (!cacheDirectory_.isEmpty())
+                QDir(cacheDirectory_).removeRecursively();
+}

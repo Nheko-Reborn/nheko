@@ -313,4 +313,19 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
         ripple_overlay_->addRipple(ripple);
 }
 
+void
+RoomInfoListItem::setAvatar(const QImage &img)
+{
+        roomAvatar_ = QPixmap::fromImage(
+          img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        update();
+}
+
+void
+RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
+{
+        lastMsgInfo_ = info;
+        update();
+}
+
 RoomInfoListItem::~RoomInfoListItem() {}

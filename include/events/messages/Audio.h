@@ -35,8 +35,8 @@ struct AudioInfo
 class Audio : public Deserializable
 {
 public:
-        inline QString url() const;
-        inline AudioInfo info() const;
+        QString url() const { return url_; };
+        AudioInfo info() const { return info_; };
 
         void deserialize(const QJsonObject &object) override;
 
@@ -44,18 +44,6 @@ private:
         QString url_;
         AudioInfo info_;
 };
-
-inline QString
-Audio::url() const
-{
-        return url_;
-}
-
-inline AudioInfo
-Audio::info() const
-{
-        return info_;
-}
 
 } // namespace messages
 } // namespace events

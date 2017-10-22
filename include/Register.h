@@ -29,55 +29,25 @@ public:
 
         QByteArray serialize() noexcept;
 
-        inline void setPassword(QString password);
-        inline void setUser(QString username);
+        void setPassword(QString password) { password_ = password; };
+        void setUser(QString username) { user_ = username; };
 
 private:
         QString user_;
         QString password_;
 };
 
-inline void
-RegisterRequest::setPassword(QString password)
-{
-        password_ = password;
-}
-
-inline void
-RegisterRequest::setUser(QString username)
-{
-        user_ = username;
-}
-
 class RegisterResponse : public Deserializable
 {
 public:
         void deserialize(const QJsonDocument &data) override;
 
-        inline QString getAccessToken();
-        inline QString getHomeServer();
-        inline QString getUserId();
+        QString getAccessToken() { return access_token_; };
+        QString getHomeServer() { return home_server_; };
+        QString getUserId() { return user_id_; };
 
 private:
         QString access_token_;
         QString home_server_;
         QString user_id_;
 };
-
-inline QString
-RegisterResponse::getAccessToken()
-{
-        return access_token_;
-}
-
-inline QString
-RegisterResponse::getHomeServer()
-{
-        return home_server_;
-}
-
-inline QString
-RegisterResponse::getUserId()
-{
-        return user_id_;
-}

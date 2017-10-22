@@ -33,8 +33,8 @@ public:
         QString nextBatchToken() const;
         QMap<QString, RoomState> states();
 
-        inline void deleteData();
-        inline void unmount();
+        void deleteData();
+        void unmount() { isMounted_ = false; };
 
         void removeRoom(const QString &roomid);
         void setup();
@@ -52,18 +52,3 @@ private:
         QString userId_;
         QString cacheDirectory_;
 };
-
-inline void
-Cache::unmount()
-{
-        isMounted_ = false;
-}
-
-inline void
-Cache::deleteData()
-{
-        qInfo() << "Deleting cache data";
-
-        if (!cacheDirectory_.isEmpty())
-                QDir(cacheDirectory_).removeRecursively();
-}

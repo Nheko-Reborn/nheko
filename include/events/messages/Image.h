@@ -39,8 +39,8 @@ struct ImageInfo
 class Image : public Deserializable
 {
 public:
-        inline QString url() const;
-        inline ImageInfo info() const;
+        QString url() const { return url_; };
+        ImageInfo info() const { return info_; };
 
         void deserialize(const QJsonObject &object) override;
 
@@ -48,18 +48,6 @@ private:
         QString url_;
         ImageInfo info_;
 };
-
-inline QString
-Image::url() const
-{
-        return url_;
-}
-
-inline ImageInfo
-Image::info() const
-{
-        return info_;
-}
 
 } // namespace messages
 } // namespace events

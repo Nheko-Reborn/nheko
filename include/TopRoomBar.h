@@ -45,10 +45,10 @@ public:
         TopRoomBar(QWidget *parent = 0);
         ~TopRoomBar();
 
-        inline void updateRoomAvatar(const QImage &avatar_image);
-        inline void updateRoomAvatar(const QIcon &icon);
-        inline void updateRoomName(const QString &name);
-        inline void updateRoomTopic(QString topic);
+        void updateRoomAvatar(const QImage &avatar_image);
+        void updateRoomAvatar(const QIcon &icon);
+        void updateRoomName(const QString &name);
+        void updateRoomTopic(QString topic);
         void updateRoomAvatarFromName(const QString &name);
         void setRoomSettings(QSharedPointer<RoomSettings> settings);
 
@@ -89,31 +89,3 @@ private:
         QString roomName_;
         QString roomTopic_;
 };
-
-inline void
-TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
-{
-        avatar_->setImage(avatar_image);
-        update();
-}
-
-inline void
-TopRoomBar::updateRoomAvatar(const QIcon &icon)
-{
-        avatar_->setIcon(icon);
-        update();
-}
-
-inline void
-TopRoomBar::updateRoomName(const QString &name)
-{
-        roomName_ = name;
-        update();
-}
-
-inline void
-TopRoomBar::updateRoomTopic(QString topic)
-{
-        roomTopic_ = topic;
-        update();
-}

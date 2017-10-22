@@ -38,16 +38,11 @@ public:
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;
 
-        inline QString alias() const;
+        QString alias() const { return alias_; };
 
 private:
         QString alias_;
 };
 
-inline QString
-CanonicalAliasEventContent::alias() const
-{
-        return alias_;
-}
 } // namespace events
 } // namespace matrix

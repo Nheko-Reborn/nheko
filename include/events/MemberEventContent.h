@@ -54,9 +54,9 @@ public:
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;
 
-        inline QUrl avatarUrl() const;
-        inline QString displayName() const;
-        inline Membership membershipState() const;
+        QUrl avatarUrl() const { return avatar_url_; };
+        QString displayName() const { return display_name_; };
+        Membership membershipState() const { return membership_state_; };
 
 private:
         QUrl avatar_url_;
@@ -64,22 +64,5 @@ private:
         Membership membership_state_;
 };
 
-inline QUrl
-MemberEventContent::avatarUrl() const
-{
-        return avatar_url_;
-}
-
-inline QString
-MemberEventContent::displayName() const
-{
-        return display_name_;
-}
-
-inline Membership
-MemberEventContent::membershipState() const
-{
-        return membership_state_;
-}
 } // namespace events
 } // namespace matrix

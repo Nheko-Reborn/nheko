@@ -55,7 +55,7 @@ public slots:
         void onSendButtonClicked();
         void openFileSelection();
         void hideUploadSpinner();
-        inline void focusLineEdit();
+        void focusLineEdit() { input_->setFocus(); };
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
@@ -80,9 +80,3 @@ private:
         FlatButton *sendMessageBtn_;
         EmojiPickButton *emojiBtn_;
 };
-
-inline void
-TextInputWidget::focusLineEdit()
-{
-        input_->setFocus();
-}

@@ -3,7 +3,7 @@ Language: Cpp
 AccessModifierOffset: -8
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: true
 BasedOnStyle: Mozilla
 ColumnLimit: 100
 IndentCaseLabels: false

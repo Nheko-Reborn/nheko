@@ -37,10 +37,9 @@ struct FileInfo
 class File : public Deserializable
 {
 public:
-        inline QString url() const;
-        inline QString filename() const;
-
-        inline FileInfo info() const;
+        QString url() const { return url_; };
+        QString filename() const { return filename_; };
+        FileInfo info() const { return info_; };
 
         void deserialize(const QJsonObject &object) override;
 
@@ -50,24 +49,6 @@ private:
 
         FileInfo info_;
 };
-
-inline QString
-File::filename() const
-{
-        return filename_;
-}
-
-inline QString
-File::url() const
-{
-        return url_;
-}
-
-inline FileInfo
-File::info() const
-{
-        return info_;
-}
 
 } // namespace messages
 } // namespace events

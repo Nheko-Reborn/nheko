@@ -27,30 +27,12 @@ class RoomMessages : public Deserializable
 public:
         void deserialize(const QJsonDocument &data) override;
 
-        inline QString start() const;
-        inline QString end() const;
-        inline QJsonArray chunk() const;
+        QString start() const { return start_; };
+        QString end() const { return end_; };
+        QJsonArray chunk() const { return chunk_; };
 
 private:
         QString start_;
         QString end_;
         QJsonArray chunk_;
 };
-
-inline QString
-RoomMessages::start() const
-{
-        return start_;
-}
-
-inline QString
-RoomMessages::end() const
-{
-        return end_;
-}
-
-inline QJsonArray
-RoomMessages::chunk() const
-{
-        return chunk_;
-}

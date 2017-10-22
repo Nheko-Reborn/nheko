@@ -64,16 +64,11 @@ public:
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;
 
-        inline QString body() const;
+        QString body() const { return body_; };
 
 private:
         QString body_;
 };
 
-inline QString
-MessageEventContent::body() const
-{
-        return body_;
-}
 } // namespace events
 } // namespace matrix

@@ -26,7 +26,7 @@ template<class MsgContent>
 class MessageEvent : public RoomEvent<MessageEventContent>
 {
 public:
-        inline MsgContent msgContent() const;
+        MsgContent msgContent() const;
 
         void deserialize(const QJsonValue &data) override;
 
