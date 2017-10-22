@@ -19,23 +19,11 @@ public:
         void start();
         void stop();
 
-        QColor color()
-        {
-                return color_;
-        }
-        void setColor(QColor color)
-        {
-                color_ = color;
-        }
+        QColor color() { return color_; }
+        void setColor(QColor color) { color_ = color; }
 
-        int interval()
-        {
-                return interval_;
-        }
-        void setInterval(int interval)
-        {
-                interval_ = interval;
-        }
+        int interval() { return interval_; }
+        void setInterval(int interval) { interval_ = interval; }
 
 private slots:
         void onTimeout();

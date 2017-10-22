@@ -26,10 +26,7 @@ EmojiItemDelegate::EmojiItemDelegate(QObject *parent)
         data_ = new Emoji;
 }
 
-EmojiItemDelegate::~EmojiItemDelegate()
-{
-        delete data_;
-}
+EmojiItemDelegate::~EmojiItemDelegate() { delete data_; }
 
 void
 EmojiItemDelegate::paint(QPainter *painter,

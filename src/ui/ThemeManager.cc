@@ -2,10 +2,7 @@
 
 #include "ThemeManager.h"
 
-ThemeManager::ThemeManager()
-{
-        setTheme(new Theme);
-}
+ThemeManager::ThemeManager() { setTheme(new Theme); }
 
 void
 ThemeManager::setTheme(Theme *theme)

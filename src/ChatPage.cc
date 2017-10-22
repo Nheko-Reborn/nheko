@@ -32,6 +32,7 @@
 #include "StateEvent.h"
 
 constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
+constexpr int SYNC_RETRY_TIMEOUT        = 10000;
 
 namespace events = matrix::events;
 
@@ -347,7 +348,7 @@ ChatPage::syncFailed(const QString &msg)
                 return;
 
         qWarning() << "Sync error:" << msg;
-        client_->sync();
+        QTimer::singleShot(SYNC_RETRY_TIMEOUT, this, [=]() { client_->sync(); });
 }
 
 // TODO: Should be moved in another class that manages this global list.

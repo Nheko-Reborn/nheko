@@ -35,10 +35,7 @@ public:
                         settings.setValue(path_, isNotificationsEnabled_);
         };
 
-        bool isNotificationsEnabled()
-        {
-                return isNotificationsEnabled_;
-        };
+        bool isNotificationsEnabled() { return isNotificationsEnabled_; };
 
         void toggleNotifications()
         {
