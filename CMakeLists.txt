@@ -171,6 +171,7 @@ set(SRC_FILES
     src/ui/Badge.cc
     src/ui/LoadingIndicator.cc
     src/ui/FlatButton.cc
+    src/ui/FloatingButton.cc
     src/ui/Label.cc
     src/ui/OverlayModal.cc
     src/ui/ScrollBar.cc
@@ -224,6 +225,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/EmojiItemDelegate.h
     include/EmojiPanel.h
     include/EmojiPickButton.h
+    include/ui/FloatingButton.h
     include/ImageItem.h
     include/ImageOverlayDialog.h
     include/JoinRoomDialog.h

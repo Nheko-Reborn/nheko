@@ -34,6 +34,8 @@
 #include "RoomInfoListItem.h"
 #include "Text.h"
 
+class FloatingButton;
+
 namespace msgs   = matrix::events::messages;
 namespace events = matrix::events;
 
@@ -154,6 +156,8 @@ private:
 
         int oldPosition_;
         int oldHeight_;
+
+        FloatingButton *scrollDownBtn_;
 
         TimelineDirection lastMessageDirection_;
 

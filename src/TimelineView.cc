@@ -27,6 +27,7 @@
 #include "MessageEvent.h"
 #include "MessageEventContent.h"
 
+#include "FloatingButton.h"
 #include "ImageItem.h"
 #include "TimelineItem.h"
 #include "TimelineView.h"
@@ -139,6 +140,16 @@ TimelineView::sliderMoved(int position)
 {
         if (!scroll_area_->verticalScrollBar()->isVisible())
                 return;
+
+        const int maxScroll     = scroll_area_->verticalScrollBar()->maximum();
+        const int currentScroll = scroll_area_->verticalScrollBar()->value();
+
+        if (maxScroll - currentScroll > SCROLL_BAR_GAP) {
+                scrollDownBtn_->show();
+                scrollDownBtn_->raise();
+        } else {
+                scrollDownBtn_->hide();
+        }
 
         // The scrollbar is high enough so we can start retrieving old events.
         if (position < SCROLL_BAR_GAP) {
@@ -375,6 +386,18 @@ TimelineView::init()
 {
         QSettings settings;
         local_user_ = settings.value("auth/user_id").toString();
+
+        QIcon icon;
+        icon.addFile(":/icons/icons/ui/angle-arrow-down.png");
+        scrollDownBtn_ = new FloatingButton(icon, this);
+        scrollDownBtn_->setBackgroundColor(QColor("#F5F5F5"));
+        scrollDownBtn_->setForegroundColor(QColor("black"));
+        scrollDownBtn_->hide();
+
+        connect(scrollDownBtn_, &QPushButton::clicked, this, [=]() {
+                const int max = scroll_area_->verticalScrollBar()->maximum();
+                scroll_area_->verticalScrollBar()->setValue(max);
+        });
 
         top_layout_ = new QVBoxLayout(this);
         top_layout_->setSpacing(0);
