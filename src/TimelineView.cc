@@ -96,7 +96,8 @@ TimelineView::sliderRangeChanged(int min, int max)
         if (oldPosition_ == 0 && !scroll_area_->verticalScrollBar()->isVisible())
                 newPosition = max;
 
-        scroll_area_->verticalScrollBar()->setValue(newPosition);
+        if (lastMessageDirection_ == TimelineDirection::Top)
+                scroll_area_->verticalScrollBar()->setValue(newPosition);
 }
 
 void
@@ -193,6 +194,8 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
 
         for (const auto &item : items)
                 addTimelineItem(item, TimelineDirection::Top);
+
+        lastMessageDirection_ = TimelineDirection::Top;
 
         QApplication::processEvents();
 
@@ -349,6 +352,8 @@ TimelineView::addEvents(const Timeline &timeline)
                 }
         }
 
+        lastMessageDirection_ = TimelineDirection::Bottom;
+
         QApplication::processEvents();
 
         if (isInitialSync) {
@@ -490,6 +495,8 @@ TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString 
         TimelineItem *view_item = new TimelineItem(ty, user_id, body, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
 
+        lastMessageDirection_ = TimelineDirection::Bottom;
+
         QApplication::processEvents();
 
         lastSender_ = user_id;
@@ -509,6 +516,8 @@ TimelineView::addUserMessage(const QString &url, const QString &filename, int tx
 
         TimelineItem *view_item = new TimelineItem(image, user_id, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
+
+        lastMessageDirection_ = TimelineDirection::Bottom;
 
         QApplication::processEvents();
 

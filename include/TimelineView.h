@@ -155,6 +155,8 @@ private:
         int oldPosition_;
         int oldHeight_;
 
+        TimelineDirection lastMessageDirection_;
+
         // The events currently rendered. Used for duplicate detection.
         QMap<QString, bool> eventIds_;
         QList<PendingMessage> pending_msgs_;
