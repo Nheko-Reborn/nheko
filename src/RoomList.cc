@@ -16,6 +16,7 @@
  */
 
 #include <QDebug>
+#include <QObject>
 
 #include "JoinRoomDialog.h"
 #include "LeaveRoomDialog.h"

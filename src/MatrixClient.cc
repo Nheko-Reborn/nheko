@@ -25,7 +25,6 @@
 #include <QNetworkRequest>
 #include <QPixmap>
 #include <QSettings>
-#include <QUrl>
 #include <QUrlQuery>
 
 #include "Login.h"

@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QNetworkAccessManager>
+#include <QUrl>
 
 #include "MessageEvent.h"
 
