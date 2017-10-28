@@ -41,6 +41,9 @@ namespace events = matrix::events;
 class RoomState
 {
 public:
+        RoomState();
+        RoomState(const QJsonArray &events);
+
         // Calculate room data that are not immediatly accessible. Like room name and
         // avatar.
         //
@@ -71,7 +74,8 @@ public:
         events::StateEvent<events::TopicEventContent> topic;
 
         // Contains the m.room.member events for all the joined users.
-        QMap<QString, events::StateEvent<events::MemberEventContent>> memberships;
+        using UserID = QString;
+        QMap<UserID, events::StateEvent<events::MemberEventContent>> memberships;
 
 private:
         QUrl avatar_;

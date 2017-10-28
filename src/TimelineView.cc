@@ -577,7 +577,7 @@ TimelineView::isPendingMessage(const QString &eventid,
 void
 TimelineView::removePendingMessage(const QString &eventid, const QString &body)
 {
-        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); it++) {
+        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
                 int index = std::distance(pending_msgs_.begin(), it);
 
                 if (it->event_id == eventid || it->body == body) {

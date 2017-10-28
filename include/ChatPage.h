@@ -23,6 +23,10 @@
 #include <QTimer>
 #include <QWidget>
 
+#include "MemberEventContent.h"
+#include "MessageEvent.h"
+#include "StateEvent.h"
+
 class Cache;
 class MatrixClient;
 class OverlayModal;
@@ -38,6 +42,8 @@ class TimelineViewManager;
 class TopRoomBar;
 class TypingDisplay;
 class UserInfoWidget;
+class JoinedRoom;
+class LeftRoom;
 
 constexpr int CONSENSUS_TIMEOUT    = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT = 3000;
@@ -76,8 +82,24 @@ private slots:
         void removeRoom(const QString &room_id);
 
 private:
+        using UserID      = QString;
+        using RoomStates  = QMap<UserID, RoomState>;
+        using JoinedRooms = QMap<UserID, JoinedRoom>;
+        using LeftRooms   = QMap<UserID, LeftRoom>;
+        using Membership  = matrix::events::StateEvent<matrix::events::MemberEventContent>;
+        using Memberships = QMap<UserID, Membership>;
+
+        void removeLeftRooms(const LeftRooms &rooms);
+        void updateJoinedRooms(const JoinedRooms &rooms);
+
+        Memberships getMemberships(const QJsonArray &events) const;
+        RoomStates generateMembershipDifference(const JoinedRooms &rooms,
+                                                const RoomStates &states) const;
+
         void updateTypingUsers(const QString &roomid, const QList<QString> &user_ids);
-        void updateDisplayNames(const RoomState &state);
+        void updateUserMetadata(const QJsonArray &events);
+        void updateUserDisplayName(const Membership &event);
+        void updateUserAvatarUrl(const Membership &event);
         void loadStateFromCache();
         void deleteConfigs();
         void resetUI();

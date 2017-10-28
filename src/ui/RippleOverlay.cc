@@ -48,7 +48,7 @@ RippleOverlay::paintEvent(QPaintEvent *event)
         if (use_clip_)
                 painter.setClipPath(clip_path_);
 
-        for (auto it = ripples_.constBegin(); it != ripples_.constEnd(); it++)
+        for (auto it = ripples_.constBegin(); it != ripples_.constEnd(); ++it)
                 paintRipple(&painter, *it);
 }
 

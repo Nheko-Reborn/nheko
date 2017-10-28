@@ -54,14 +54,14 @@ PowerLevelsEventContent::deserialize(const QJsonValue &data)
         if (object.value("users").isObject()) {
                 auto users = object.value("users").toObject();
 
-                for (auto it = users.constBegin(); it != users.constEnd(); it++)
+                for (auto it = users.constBegin(); it != users.constEnd(); ++it)
                         users_.insert(it.key(), it.value().toInt());
         }
 
         if (object.value("events").isObject()) {
                 auto events = object.value("events").toObject();
 
-                for (auto it = events.constBegin(); it != events.constEnd(); it++)
+                for (auto it = events.constBegin(); it != events.constEnd(); ++it)
                         events_.insert(it.key(), it.value().toInt());
         }
 }
@@ -83,10 +83,10 @@ PowerLevelsEventContent::serialize() const
         QJsonObject users;
         QJsonObject events;
 
-        for (auto it = users_.constBegin(); it != users_.constEnd(); it++)
+        for (auto it = users_.constBegin(); it != users_.constEnd(); ++it)
                 users.insert(it.key(), it.value());
 
-        for (auto it = events_.constBegin(); it != events_.constEnd(); it++)
+        for (auto it = events_.constBegin(); it != events_.constEnd(); ++it)
                 events.insert(it.key(), it.value());
 
         object["users"]  = users;

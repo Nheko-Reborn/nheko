@@ -22,6 +22,9 @@
 
 namespace events = matrix::events;
 
+RoomState::RoomState() {}
+RoomState::RoomState(const QJsonArray &events) { updateFromEvents(events); }
+
 void
 RoomState::resolveName()
 {

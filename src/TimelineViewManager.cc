@@ -100,7 +100,7 @@ TimelineViewManager::clearAll()
 void
 TimelineViewManager::initialize(const Rooms &rooms)
 {
-        for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
+        for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); ++it) {
                 addRoom(it.value(), it.key());
         }
 }
@@ -148,7 +148,7 @@ TimelineViewManager::addRoom(const QString &room_id)
 void
 TimelineViewManager::sync(const Rooms &rooms)
 {
-        for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); it++) {
+        for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); ++it) {
                 auto roomid = it.key();
 
                 if (!views_.contains(roomid)) {

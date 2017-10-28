@@ -41,7 +41,7 @@ LoadingIndicator::paintEvent(QPaintEvent *e)
 
         int capsuleRadius = (outerRadius - innerRadius) / 2;
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; ++i) {
                 QColor color = color_;
 
                 color.setAlphaF(1.0f - (i / 8.0f));

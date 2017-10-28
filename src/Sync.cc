@@ -83,7 +83,7 @@ Rooms::deserialize(const QJsonValue &data)
 
                 auto join = object.value("join").toObject();
 
-                for (auto it = join.constBegin(); it != join.constEnd(); it++) {
+                for (auto it = join.constBegin(); it != join.constEnd(); ++it) {
                         JoinedRoom tmp_room;
                         try {
                                 tmp_room.deserialize(it.value());
@@ -108,7 +108,7 @@ Rooms::deserialize(const QJsonValue &data)
                 }
                 auto leave = object.value("leave").toObject();
 
-                for (auto it = leave.constBegin(); it != leave.constEnd(); it++) {
+                for (auto it = leave.constBegin(); it != leave.constEnd(); ++it) {
                         LeftRoom tmp_room;
 
                         try {

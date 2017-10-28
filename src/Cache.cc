@@ -107,7 +107,7 @@ Cache::setState(const QString &nextBatchToken, const QMap<QString, RoomState> &s
 
                 setNextBatchToken(txn, nextBatchToken);
 
-                for (auto it = states.constBegin(); it != states.constEnd(); it++)
+                for (auto it = states.constBegin(); it != states.constEnd(); ++it)
                         insertRoomState(txn, it.key(), it.value());
 
                 txn.commit();
