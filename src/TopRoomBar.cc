@@ -17,8 +17,15 @@
 
 #include <QStyleOption>
 
+#include "Avatar.h"
 #include "Config.h"
+#include "FlatButton.h"
+#include "Label.h"
+#include "LeaveRoomDialog.h"
 #include "MainWindow.h"
+#include "Menu.h"
+#include "OverlayModal.h"
+#include "RoomSettings.h"
 #include "TopRoomBar.h"
 
 TopRoomBar::TopRoomBar(QWidget *parent)

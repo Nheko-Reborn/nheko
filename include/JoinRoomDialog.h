@@ -3,7 +3,7 @@
 #include <QFrame>
 #include <QLineEdit>
 
-#include "FlatButton.h"
+class FlatButton;
 
 class JoinRoomDialog : public QFrame
 {

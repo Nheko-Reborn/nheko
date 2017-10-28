@@ -17,12 +17,13 @@
 
 #pragma once
 
-#include <QtNetwork/QNetworkAccessManager>
+#include <QNetworkAccessManager>
 
 #include "MessageEvent.h"
-#include "Profile.h"
-#include "RoomMessages.h"
-#include "Sync.h"
+
+class SyncResponse;
+class Profile;
+class RoomMessages;
 
 /*
  * MatrixClient provides the high level API to communicate with

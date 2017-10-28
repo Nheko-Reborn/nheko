@@ -15,11 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-
 #include "Config.h"
+#include "FlatButton.h"
 #include "InputValidator.h"
+#include "LoadingIndicator.h"
 #include "LoginPage.h"
+#include "MatrixClient.h"
+#include "OverlayModal.h"
+#include "RaisedButton.h"
+#include "TextField.h"
 
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)

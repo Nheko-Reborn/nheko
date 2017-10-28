@@ -18,12 +18,12 @@
 #include <stdexcept>
 
 #include <QDebug>
-#include <QDir>
 #include <QFile>
 #include <QStandardPaths>
 
 #include "Cache.h"
 #include "MemberEventContent.h"
+#include "RoomState.h"
 
 namespace events = matrix::events;
 

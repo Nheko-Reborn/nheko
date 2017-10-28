@@ -19,7 +19,7 @@
 
 #include <QJsonDocument>
 
-#include "Deserializable.h"
+class Deserializable;
 
 class RegisterRequest
 {

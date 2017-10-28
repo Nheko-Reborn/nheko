@@ -20,7 +20,7 @@
 #include <QJsonDocument>
 #include <QVector>
 
-#include "Deserializable.h"
+class Deserializable;
 
 class VersionsResponse : public Deserializable
 {

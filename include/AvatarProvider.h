@@ -18,12 +18,11 @@
 #pragma once
 
 #include <QImage>
-#include <QObject>
 #include <QSharedPointer>
 #include <QUrl>
 
-#include "MatrixClient.h"
-#include "TimelineItem.h"
+class MatrixClient;
+class TimelineItem;
 
 class AvatarProvider : public QObject
 {

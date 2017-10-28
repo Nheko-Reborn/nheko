@@ -16,14 +16,16 @@
  */
 
 #include <QDateTime>
-#include <QDebug>
 #include <QFontDatabase>
 #include <QRegExp>
+#include <QSettings>
 #include <QTextEdit>
 
+#include "Avatar.h"
 #include "AvatarProvider.h"
 #include "Config.h"
 #include "ImageItem.h"
+#include "Sync.h"
 #include "TimelineItem.h"
 #include "TimelineViewManager.h"
 

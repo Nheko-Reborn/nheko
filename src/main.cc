@@ -19,6 +19,7 @@
 #include <QDesktopWidget>
 #include <QFontDatabase>
 #include <QLibraryInfo>
+#include <QSettings>
 #include <QTranslator>
 
 #include "MainWindow.h"

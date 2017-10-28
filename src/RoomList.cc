@@ -16,12 +16,16 @@
  */
 
 #include <QDebug>
-#include <QJsonArray>
-#include <QRegularExpression>
 
+#include "JoinRoomDialog.h"
+#include "LeaveRoomDialog.h"
 #include "MainWindow.h"
+#include "MatrixClient.h"
+#include "OverlayModal.h"
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
+#include "RoomSettings.h"
+#include "RoomState.h"
 #include "Sync.h"
 
 RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)

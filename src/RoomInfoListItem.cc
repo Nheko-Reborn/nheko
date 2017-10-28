@@ -15,14 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
 
 #include "Config.h"
+#include "Menu.h"
 #include "Ripple.h"
+#include "RippleOverlay.h"
 #include "RoomInfoListItem.h"
-#include "RoomState.h"
+#include "RoomSettings.h"
 #include "Theme.h"
 
 RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,

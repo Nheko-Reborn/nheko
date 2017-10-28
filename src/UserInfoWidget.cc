@@ -15,12 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include <QTimer>
 
+#include "Avatar.h"
 #include "Config.h"
 #include "FlatButton.h"
+#include "LogoutDialog.h"
 #include "MainWindow.h"
+#include "OverlayModal.h"
 #include "UserInfoWidget.h"
 
 UserInfoWidget::UserInfoWidget(QWidget *parent)

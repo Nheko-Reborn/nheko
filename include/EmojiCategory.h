@@ -17,15 +17,14 @@
 
 #pragma once
 
-#include <QHBoxLayout>
 #include <QLabel>
+#include <QLayout>
 #include <QListView>
 #include <QStandardItemModel>
-#include <QVBoxLayout>
-#include <QWidget>
 
 #include "EmojiItemDelegate.h"
-#include "EmojiProvider.h"
+
+class EmojiProvider;
 
 class EmojiCategory : public QWidget
 {

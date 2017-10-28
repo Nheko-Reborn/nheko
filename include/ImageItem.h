@@ -24,6 +24,7 @@
 
 #include "Image.h"
 #include "MatrixClient.h"
+#include "MessageEvent.h"
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;

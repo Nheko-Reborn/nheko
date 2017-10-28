@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QList>
+#include <QMenu>
 #include <QTimer>
 
 #include "TrayIcon.h"

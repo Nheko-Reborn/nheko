@@ -16,12 +16,7 @@
  */
 
 #include <QDebug>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
 
-#include "Deserializable.h"
 #include "Sync.h"
 
 void

@@ -17,17 +17,15 @@
 
 #pragma once
 
-#include <QHBoxLayout>
 #include <QLabel>
+#include <QLayout>
 #include <QSharedPointer>
-#include <QVBoxLayout>
-#include <QWidget>
 
-#include "Avatar.h"
-#include "FlatButton.h"
-#include "MatrixClient.h"
-#include "RaisedButton.h"
-#include "TextField.h"
+class Avatar;
+class FlatButton;
+class MatrixClient;
+class RaisedButton;
+class TextField;
 
 class RegisterPage : public QWidget
 {

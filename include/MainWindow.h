@@ -19,16 +19,18 @@
 
 #include <QMainWindow>
 #include <QSharedPointer>
+#include <QStackedWidget>
+#include <QSystemTrayIcon>
 
-#include "ChatPage.h"
-#include "LoadingIndicator.h"
-#include "LoginPage.h"
-#include "MatrixClient.h"
-#include "OverlayModal.h"
-#include "RegisterPage.h"
-#include "SnackBar.h"
-#include "TrayIcon.h"
-#include "WelcomePage.h"
+class ChatPage;
+class LoadingIndicator;
+class LoginPage;
+class MatrixClient;
+class OverlayModal;
+class RegisterPage;
+class SnackBar;
+class TrayIcon;
+class WelcomePage;
 
 class MainWindow : public QMainWindow
 {

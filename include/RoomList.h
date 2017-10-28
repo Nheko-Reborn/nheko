@@ -17,19 +17,22 @@
 
 #pragma once
 
+#include <QMap>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSharedPointer>
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "JoinRoomDialog.h"
-#include "LeaveRoomDialog.h"
-#include "MatrixClient.h"
-#include "OverlayModal.h"
-#include "RoomInfoListItem.h"
-#include "RoomState.h"
-#include "Sync.h"
+class JoinRoomDialog;
+class LeaveRoomDialog;
+class MatrixClient;
+class OverlayModal;
+class RoomInfoListItem;
+class RoomSettings;
+class RoomState;
+class Sync;
+struct DescInfo;
 
 class RoomList : public QWidget
 {

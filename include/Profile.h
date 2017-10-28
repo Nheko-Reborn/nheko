@@ -20,7 +20,7 @@
 #include <QJsonDocument>
 #include <QUrl>
 
-#include "Deserializable.h"
+class Deserializable;
 
 class ProfileResponse : public Deserializable
 {

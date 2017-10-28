@@ -20,7 +20,6 @@
 #include <QAction>
 #include <QIcon>
 #include <QIconEngine>
-#include <QMenu>
 #include <QPainter>
 #include <QRect>
 #include <QSystemTrayIcon>

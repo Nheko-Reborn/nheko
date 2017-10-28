@@ -5,9 +5,9 @@
 #include <QPushButton>
 #include <QStateMachine>
 
-#include "RippleOverlay.h"
 #include "Theme.h"
 
+class RippleOverlay;
 class FlatButton;
 
 class FlatButtonStateMachine : public QStateMachine

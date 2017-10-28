@@ -21,7 +21,6 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonValue>
 
 class DeserializationException : public std::exception
 {

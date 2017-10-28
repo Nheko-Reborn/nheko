@@ -19,7 +19,6 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QFileInfo>
-#include <QImage>
 #include <QPainter>
 #include <QPixmap>
 

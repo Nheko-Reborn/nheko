@@ -19,18 +19,16 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QWidget>
 
-#include "ImageItem.h"
-#include "Sync.h"
-
-#include "Avatar.h"
 #include "Emote.h"
 #include "Image.h"
 #include "MessageEvent.h"
 #include "Notice.h"
 #include "RoomInfoListItem.h"
 #include "Text.h"
+
+class ImageItem;
+class Avatar;
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;

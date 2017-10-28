@@ -18,22 +18,21 @@
 #pragma once
 
 #include <QAction>
-#include <QDebug>
 #include <QIcon>
 #include <QImage>
 #include <QLabel>
+#include <QMenu>
 #include <QPaintEvent>
 #include <QSharedPointer>
 #include <QVBoxLayout>
-#include <QWidget>
 
-#include "Avatar.h"
-#include "FlatButton.h"
-#include "Label.h"
-#include "LeaveRoomDialog.h"
-#include "Menu.h"
-#include "OverlayModal.h"
-#include "RoomSettings.h"
+class Avatar;
+class FlatButton;
+class Label;
+class LeaveRoomDialog;
+class Menu;
+class OverlayModal;
+class RoomSettings;
 
 static const QString URL_HTML = "<a href=\"\\1\" style=\"color: #333333\">\\1</a>";
 static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");

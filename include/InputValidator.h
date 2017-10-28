@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include <QRegExp>
 #include <QRegExpValidator>
 
 class InputValidator

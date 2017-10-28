@@ -16,11 +16,9 @@
  */
 
 #include <QPushButton>
-#include <QScrollArea>
 #include <QScrollBar>
 #include <QVBoxLayout>
 
-#include "Avatar.h"
 #include "DropShadow.h"
 #include "EmojiCategory.h"
 #include "EmojiPanel.h"

@@ -17,7 +17,9 @@
 
 #pragma once
 
-#include "RaisedButton.h"
+#include <QWidget>
+
+class RaisedButton;
 
 class WelcomePage : public QWidget
 {

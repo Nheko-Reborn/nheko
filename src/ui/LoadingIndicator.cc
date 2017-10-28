@@ -1,6 +1,5 @@
 #include "LoadingIndicator.h"
 
-#include <QDebug>
 #include <QPoint>
 #include <QtGlobal>
 

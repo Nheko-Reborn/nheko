@@ -16,11 +16,8 @@
  */
 
 #include <QApplication>
-#include <QDebug>
 #include <QDesktopWidget>
 #include <QPainter>
-#include <QScreen>
-#include <QTimer>
 
 #include "ImageOverlayDialog.h"
 

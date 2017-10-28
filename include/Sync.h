@@ -18,9 +18,7 @@
 #pragma once
 
 #include <QJsonArray>
-#include <QJsonDocument>
 #include <QMap>
-#include <QString>
 
 #include "Deserializable.h"
 

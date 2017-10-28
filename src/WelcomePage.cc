@@ -19,6 +19,7 @@
 #include <QLayout>
 
 #include "Config.h"
+#include "RaisedButton.h"
 #include "WelcomePage.h"
 
 WelcomePage::WelcomePage(QWidget *parent)

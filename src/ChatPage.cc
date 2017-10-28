@@ -21,15 +21,25 @@
 #include <QtConcurrent>
 
 #include "AvatarProvider.h"
+#include "Cache.h"
 #include "ChatPage.h"
 #include "MainWindow.h"
+#include "MatrixClient.h"
+#include "OverlayModal.h"
+#include "QuickSwitcher.h"
+#include "RoomList.h"
+#include "RoomSettings.h"
+#include "RoomState.h"
+#include "SideBarActions.h"
 #include "Splitter.h"
+#include "StateEvent.h"
 #include "Sync.h"
+#include "TextInputWidget.h"
 #include "Theme.h"
 #include "TimelineViewManager.h"
+#include "TopRoomBar.h"
+#include "TypingDisplay.h"
 #include "UserInfoWidget.h"
-
-#include "StateEvent.h"
 
 constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
 constexpr int SYNC_RETRY_TIMEOUT        = 10000;

@@ -17,9 +17,7 @@
 
 #pragma once
 
-#include <QFile>
 #include <QList>
-#include <QMap>
 
 struct Emoji
 {

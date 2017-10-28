@@ -17,16 +17,16 @@
 
 #pragma once
 
-#include <QDebug>
+#include <QMap>
 #include <QSharedPointer>
 #include <QStackedWidget>
-#include <QWidget>
 
-#include "MatrixClient.h"
-#include "MessageEvent.h"
-#include "RoomInfoListItem.h"
-#include "Sync.h"
-#include "TimelineView.h"
+class JoinedRoom;
+class MatrixClient;
+class RoomInfoListItem;
+class Rooms;
+class TimelineView;
+struct DescInfo;
 
 class TimelineViewManager : public QStackedWidget
 {

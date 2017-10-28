@@ -21,9 +21,9 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QSettings>
-#include <QStackedWidget>
-#include <QWidget>
 
+#include "MatrixClient.h"
+#include "Sync.h"
 #include "TimelineView.h"
 #include "TimelineViewManager.h"
 

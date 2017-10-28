@@ -20,8 +20,9 @@
 #include <QEvent>
 #include <QWidget>
 
-#include "EmojiPanel.h"
 #include "FlatButton.h"
+
+class EmojiPanel;
 
 class EmojiPickButton : public FlatButton
 {

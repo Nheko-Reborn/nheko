@@ -30,8 +30,11 @@
 
 #include "Login.h"
 #include "MatrixClient.h"
+#include "MessageEvent.h"
 #include "Profile.h"
 #include "Register.h"
+#include "RoomMessages.h"
+#include "Sync.h"
 #include "Versions.h"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)

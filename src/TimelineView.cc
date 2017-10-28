@@ -17,21 +17,16 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QJsonArray>
-#include <QScrollBar>
 #include <QSettings>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QSpacerItem>
-
-#include "Event.h"
-#include "MessageEvent.h"
-#include "MessageEventContent.h"
+#include <QTimer>
 
 #include "FloatingButton.h"
 #include "ImageItem.h"
+#include "RoomMessages.h"
+#include "ScrollBar.h"
+#include "Sync.h"
 #include "TimelineItem.h"
 #include "TimelineView.h"
-#include "TimelineViewManager.h"
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;

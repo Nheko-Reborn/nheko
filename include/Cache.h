@@ -20,7 +20,7 @@
 #include <QDir>
 #include <lmdb++.h>
 
-#include "RoomState.h"
+class RoomState;
 
 class Cache
 {

@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 
 #include "Config.h"
+#include "FlatButton.h"
 #include "LeaveRoomDialog.h"
 #include "Theme.h"
 

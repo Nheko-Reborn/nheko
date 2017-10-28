@@ -19,7 +19,7 @@
 
 #include <QFrame>
 
-#include "FlatButton.h"
+class FlatButton;
 
 class LogoutDialog : public QFrame
 {

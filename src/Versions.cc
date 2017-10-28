@@ -16,9 +16,6 @@
  */
 
 #include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
 #include <QRegExp>
 
 #include "Deserializable.h"

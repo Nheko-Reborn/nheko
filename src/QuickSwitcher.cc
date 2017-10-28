@@ -16,7 +16,6 @@
  */
 
 #include <QCompleter>
-#include <QDebug>
 #include <QStringListModel>
 #include <QTimer>
 

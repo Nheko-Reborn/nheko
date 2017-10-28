@@ -1,9 +1,8 @@
-#include <QDebug>
 #include <QIcon>
 
 #include "Config.h"
+#include "SideBarActions.h"
 #include "Theme.h"
-#include <SideBarActions.h>
 
 SideBarActions::SideBarActions(QWidget *parent)
   : QWidget{ parent }

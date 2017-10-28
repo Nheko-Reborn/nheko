@@ -2,7 +2,7 @@
 
 #include <QFrame>
 
-#include "FlatButton.h"
+class FlatButton;
 
 class LeaveRoomDialog : public QFrame
 {

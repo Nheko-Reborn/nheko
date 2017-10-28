@@ -1,7 +1,10 @@
+#pragma once
+
 #include <QHBoxLayout>
 #include <QResizeEvent>
+#include <QWidget>
 
-#include <FlatButton.h>
+#include "FlatButton.h"
 
 class SideBarActions : public QWidget
 {

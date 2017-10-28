@@ -1,6 +1,4 @@
-#include <QIcon>
 #include <QPainter>
-#include <QWidget>
 
 #include "Avatar.h"
 

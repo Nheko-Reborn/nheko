@@ -17,23 +17,27 @@
 
 #pragma once
 
+#include <QHBoxLayout>
+#include <QMap>
 #include <QPixmap>
 #include <QTimer>
 #include <QWidget>
 
-#include "Cache.h"
-#include "MatrixClient.h"
-#include "QuickSwitcher.h"
-#include "RoomList.h"
-#include "RoomSettings.h"
-#include "RoomState.h"
-#include "SideBarActions.h"
-#include "Splitter.h"
-#include "TextInputWidget.h"
-#include "TimelineViewManager.h"
-#include "TopRoomBar.h"
-#include "TypingDisplay.h"
-#include "UserInfoWidget.h"
+class Cache;
+class MatrixClient;
+class OverlayModal;
+class QuickSwitcher;
+class RoomList;
+class RoomSettings;
+class RoomState;
+class SideBarActions;
+class Splitter;
+class SyncResponse;
+class TextInputWidget;
+class TimelineViewManager;
+class TopRoomBar;
+class TypingDisplay;
+class UserInfoWidget;
 
 constexpr int CONSENSUS_TIMEOUT    = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT = 3000;

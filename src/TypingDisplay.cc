@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QPainter>
 #include <QPoint>
 

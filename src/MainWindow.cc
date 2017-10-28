@@ -15,15 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainWindow.h"
-#include "Config.h"
-
 #include <QApplication>
 #include <QLayout>
 #include <QNetworkReply>
 #include <QSettings>
 #include <QShortcut>
-#include <QSystemTrayIcon>
+
+#include "ChatPage.h"
+#include "Config.h"
+#include "LoadingIndicator.h"
+#include "LoginPage.h"
+#include "MainWindow.h"
+#include "MatrixClient.h"
+#include "OverlayModal.h"
+#include "RegisterPage.h"
+#include "SnackBar.h"
+#include "TrayIcon.h"
+#include "WelcomePage.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 

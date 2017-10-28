@@ -17,24 +17,23 @@
 
 #pragma once
 
-#include <QHBoxLayout>
+#include <QLayout>
 #include <QList>
 #include <QScrollArea>
-#include <QVBoxLayout>
-#include <QWidget>
-
-#include "ScrollBar.h"
-#include "Sync.h"
-#include "TimelineItem.h"
 
 #include "Emote.h"
 #include "Image.h"
 #include "MessageEvent.h"
 #include "Notice.h"
-#include "RoomInfoListItem.h"
 #include "Text.h"
 
 class FloatingButton;
+class MatrixClient;
+class RoomMessages;
+class ScrollBar;
+class Timeline;
+class TimelineItem;
+struct DescInfo;
 
 namespace msgs   = matrix::events::messages;
 namespace events = matrix::events;

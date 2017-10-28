@@ -20,10 +20,10 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QScrollArea>
-#include <QWidget>
 
-#include "EmojiCategory.h"
 #include "EmojiProvider.h"
+
+class EmojiCategory;
 
 class EmojiPanel : public QWidget
 {

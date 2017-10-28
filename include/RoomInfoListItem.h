@@ -21,10 +21,11 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "Menu.h"
-#include "RippleOverlay.h"
-#include "RoomSettings.h"
 #include "RoomState.h"
+
+class Menu;
+class RippleOverlay;
+class RoomSettings;
 
 struct DescInfo
 {

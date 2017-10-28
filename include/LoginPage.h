@@ -17,18 +17,17 @@
 
 #pragma once
 
-#include <QHBoxLayout>
 #include <QLabel>
+#include <QLayout>
 #include <QSharedPointer>
-#include <QVBoxLayout>
 #include <QWidget>
 
-#include "FlatButton.h"
-#include "LoadingIndicator.h"
-#include "MatrixClient.h"
-#include "OverlayModal.h"
-#include "RaisedButton.h"
-#include "TextField.h"
+class FlatButton;
+class LoadingIndicator;
+class MatrixClient;
+class OverlayModal;
+class RaisedButton;
+class TextField;
 
 class LoginPage : public QWidget
 {

@@ -19,6 +19,7 @@
 #include <QVBoxLayout>
 
 #include "Config.h"
+#include "FlatButton.h"
 #include "LogoutDialog.h"
 #include "Theme.h"
 
