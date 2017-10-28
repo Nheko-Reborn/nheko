@@ -16,6 +16,7 @@
  */
 
 #include "Deserializable.h"
+
 #include "Register.h"
 
 RegisterRequest::RegisterRequest(const QString &username, const QString &password)

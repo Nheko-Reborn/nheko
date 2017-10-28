@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "EmojiPanel.h"
 #include "EmojiPickButton.h"
+#include "EmojiPanel.h"
 
 EmojiPickButton::EmojiPickButton(QWidget *parent)
   : FlatButton(parent)

@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "LoginPage.h"
 #include "Config.h"
 #include "FlatButton.h"
 #include "InputValidator.h"
 #include "LoadingIndicator.h"
-#include "LoginPage.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RaisedButton.h"

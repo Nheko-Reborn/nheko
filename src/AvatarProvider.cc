@@ -21,8 +21,7 @@
 
 QSharedPointer<MatrixClient> AvatarProvider::client_;
 
-QMap<QString, QImage> AvatarProvider::userAvatars_;
-QMap<QString, QUrl> AvatarProvider::avatarUrls_;
+QMap<QString, AvatarData> AvatarProvider::avatars_;
 QMap<QString, QList<TimelineItem *>> AvatarProvider::toBeResolved_;
 
 void
@@ -46,45 +45,50 @@ AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
                 toBeResolved_.remove(uid);
         }
 
-        userAvatars_.insert(uid, img);
+        auto avatarData = avatars_[uid];
+        avatarData.img  = img;
+
+        avatars_.insert(uid, avatarData);
 }
 
 void
 AvatarProvider::resolve(const QString &userId, TimelineItem *item)
 {
-        if (userAvatars_.contains(userId)) {
-                auto img = userAvatars_[userId];
+        if (!avatars_.contains(userId))
+                return;
 
+        auto img = avatars_[userId].img;
+
+        if (!img.isNull()) {
                 item->setUserAvatar(img);
-
                 return;
         }
 
-        if (avatarUrls_.contains(userId)) {
-                // Add the current timeline item to the waiting list for this avatar.
-                if (!toBeResolved_.contains(userId)) {
-                        client_->fetchUserAvatar(userId, avatarUrls_[userId]);
+        // Add the current timeline item to the waiting list for this avatar.
+        if (!toBeResolved_.contains(userId)) {
+                client_->fetchUserAvatar(userId, avatars_[userId].url);
 
-                        QList<TimelineItem *> timelineItems;
-                        timelineItems.push_back(item);
+                QList<TimelineItem *> timelineItems;
+                timelineItems.push_back(item);
 
-                        toBeResolved_.insert(userId, timelineItems);
-                } else {
-                        toBeResolved_[userId].push_back(item);
-                }
+                toBeResolved_.insert(userId, timelineItems);
+        } else {
+                toBeResolved_[userId].push_back(item);
         }
 }
 
 void
 AvatarProvider::setAvatarUrl(const QString &userId, const QUrl &url)
 {
-        avatarUrls_.insert(userId, url);
+        AvatarData data;
+        data.url = url;
+
+        avatars_.insert(userId, data);
 }
 
 void
 AvatarProvider::clear()
 {
-        userAvatars_.clear();
-        avatarUrls_.clear();
+        avatars_.clear();
         toBeResolved_.clear();
 }

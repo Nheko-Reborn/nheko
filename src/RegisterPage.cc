@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "RegisterPage.h"
 #include "Avatar.h"
 #include "Config.h"
 #include "FlatButton.h"
 #include "InputValidator.h"
 #include "MatrixClient.h"
 #include "RaisedButton.h"
-#include "RegisterPage.h"
 #include "TextField.h"
 
 RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)

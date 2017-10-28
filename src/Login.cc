@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Deserializable.h"
 #include "Login.h"
+#include "Deserializable.h"
 
 LoginRequest::LoginRequest() {}
 
