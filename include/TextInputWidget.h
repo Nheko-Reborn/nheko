@@ -35,12 +35,20 @@ static const QString JOIN_COMMAND("/join ");
 class FilteredTextEdit : public QTextEdit
 {
         Q_OBJECT
+
+private:
+        QTimer *typingTimer_;
+
 public:
         explicit FilteredTextEdit(QWidget *parent = nullptr);
         void keyPressEvent(QKeyEvent *event);
 
+        void stopTyping();
+
 signals:
         void enterPressed();
+        void startedTyping();
+        void stoppedTyping();
 };
 
 class TextInputWidget : public QFrame
@@ -50,6 +58,8 @@ class TextInputWidget : public QFrame
 public:
         TextInputWidget(QWidget *parent = 0);
         ~TextInputWidget();
+
+        void stopTyping();
 
 public slots:
         void onSendButtonClicked();
@@ -65,6 +75,9 @@ signals:
         void sendEmoteMessage(QString msg);
         void uploadImage(QString filename);
         void sendJoinRoomRequest(const QString &room);
+
+        void startedTyping();
+        void stoppedTyping();
 
 private:
         void showUploadSpinner();

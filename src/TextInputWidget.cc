@@ -29,15 +29,37 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit(parent)
 {
         setAcceptRichText(false);
+
+        typingTimer_ = new QTimer(this);
+        typingTimer_->setInterval(1000);
+        typingTimer_->setSingleShot(true);
+
+        connect(typingTimer_, &QTimer::timeout, this, &FilteredTextEdit::stopTyping);
 }
 
 void
 FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 {
-        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+        if (!typingTimer_->isActive()) {
+                emit startedTyping();
+        }
+
+        typingTimer_->start();
+
+        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+                stopTyping();
+
                 emit enterPressed();
-        else
+        } else {
                 QTextEdit::keyPressEvent(event);
+        }
+}
+
+void
+FilteredTextEdit::stopTyping()
+{
+        typingTimer_->stop();
+        emit stoppedTyping();
 }
 
 TextInputWidget::TextInputWidget(QWidget *parent)
@@ -104,6 +126,10 @@ TextInputWidget::TextInputWidget(QWidget *parent)
                 SIGNAL(emojiSelected(const QString &)),
                 this,
                 SLOT(addSelectedEmoji(const QString &)));
+
+        connect(input_, &FilteredTextEdit::startedTyping, this, &TextInputWidget::startedTyping);
+
+        connect(input_, &FilteredTextEdit::stoppedTyping, this, &TextInputWidget::stoppedTyping);
 }
 
 void
@@ -227,3 +253,9 @@ TextInputWidget::hideUploadSpinner()
 }
 
 TextInputWidget::~TextInputWidget() {}
+
+void
+TextInputWidget::stopTyping()
+{
+        input_->stopTyping();
+}

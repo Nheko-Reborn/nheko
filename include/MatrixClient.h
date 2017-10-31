@@ -56,6 +56,8 @@ public:
         void uploadImage(const QString &roomid, const QString &filename);
         void joinRoom(const QString &roomIdOrAlias);
         void leaveRoom(const QString &roomId);
+        void sendTypingNotification(const QString &roomid, int timeoutInMillis = 20000);
+        void removeTypingNotification(const QString &roomid);
 
         QUrl getHomeServer() { return server_; };
         int transactionId() { return txn_id_; };

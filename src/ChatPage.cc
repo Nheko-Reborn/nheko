@@ -122,6 +122,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         contentLayout_->addWidget(typingDisplay_);
         contentLayout_->addWidget(text_input_);
 
+        typingRefresher_ = new QTimer(this);
+        typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
+
         user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
         sideBarTopWidgetLayout_->addWidget(user_info_widget_);
 
@@ -139,6 +142,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
                 typingDisplay_->setUsers(users);
         });
+        connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
 
         connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
@@ -158,6 +162,20 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                         if (settingsManager_[roomid]->isNotificationsEnabled())
                                 room_list_->updateUnreadMessageCount(roomid, count);
                 });
+
+        connect(text_input_, &TextInputWidget::startedTyping, this, [=]() {
+                typingRefresher_->start();
+                client_->sendTypingNotification(current_room_);
+        });
+
+        connect(text_input_, &TextInputWidget::stoppedTyping, this, [=]() {
+                typingRefresher_->stop();
+                client_->removeTypingNotification(current_room_);
+        });
+
+        connect(typingRefresher_, &QTimer::timeout, this, [=]() {
+                client_->sendTypingNotification(current_room_);
+        });
 
         connect(view_manager_,
                 &TimelineViewManager::updateRoomsLastMessage,
@@ -600,13 +618,20 @@ ChatPage::updateTypingUsers(const QString &roomid, const QList<QString> &user_id
 {
         QStringList users;
 
-        for (const auto uid : user_ids)
+        QSettings settings;
+        QString user_id = settings.value("auth/user_id").toString();
+
+        for (const auto uid : user_ids) {
+                if (uid == user_id)
+                        continue;
                 users.append(TimelineViewManager::displayName(uid));
+        }
 
         users.sort();
 
-        if (current_room_ == roomid)
+        if (current_room_ == roomid) {
                 typingDisplay_->setUsers(users);
+        }
 
         typingUsers_.insert(roomid, users);
 }

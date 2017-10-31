@@ -45,8 +45,9 @@ class UserInfoWidget;
 class JoinedRoom;
 class LeftRoom;
 
-constexpr int CONSENSUS_TIMEOUT    = 1000;
-constexpr int SHOW_CONTENT_TIMEOUT = 3000;
+constexpr int CONSENSUS_TIMEOUT      = 1000;
+constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
+constexpr int TYPING_REFRESH_TIMEOUT = 10000;
 
 class ChatPage : public QWidget
 {
@@ -141,6 +142,7 @@ private:
 
         // Keeps track of the users currently typing on each room.
         QMap<QString, QList<QString>> typingUsers_;
+        QTimer *typingRefresher_;
 
         QSharedPointer<QuickSwitcher> quickSwitcher_;
         QSharedPointer<OverlayModal> quickSwitcherModal_;
