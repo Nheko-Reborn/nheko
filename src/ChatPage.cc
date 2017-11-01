@@ -75,6 +75,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         sideBarMainLayout_->setMargin(0);
 
         sidebarActions_ = new SideBarActions(this);
+        connect(
+          sidebarActions_, &SideBarActions::showSettings, this, &ChatPage::showUserSettingsPage);
 
         sideBarLayout_->addLayout(sideBarTopLayout_);
         sideBarLayout_->addLayout(sideBarMainLayout_);

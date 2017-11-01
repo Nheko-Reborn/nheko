@@ -14,6 +14,9 @@ public:
         SideBarActions(QWidget *parent = nullptr);
         ~SideBarActions();
 
+signals:
+        void showSettings();
+
 protected:
         void resizeEvent(QResizeEvent *event) override;
 

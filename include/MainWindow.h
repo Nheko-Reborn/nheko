@@ -30,6 +30,8 @@ class OverlayModal;
 class RegisterPage;
 class SnackBar;
 class TrayIcon;
+class UserSettingsPage;
+class UserSettings;
 class WelcomePage;
 
 class MainWindow : public QMainWindow
@@ -59,6 +61,7 @@ private slots:
 
         // Show the register page in the main window.
         void showRegisterPage();
+        void showUserSettingsPage();
 
         // Show the chat page and start communicating with the given access token.
         void showChatPage(QString user_id, QString home_server, QString token);
@@ -85,6 +88,8 @@ private:
 
         // The main chat area.
         ChatPage *chat_page_;
+        UserSettingsPage *userSettingsPage_;
+        QSharedPointer<UserSettings> userSettings_;
 
         // Used to hide undefined states between page transitions.
         QSharedPointer<OverlayModal> progressModal_;

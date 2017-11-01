@@ -68,6 +68,7 @@ signals:
         void unreadMessages(int count);
         void showNotification(const QString &msg);
         void showLoginPage(const QString &msg);
+        void showUserSettingsPage();
 
 private slots:
         void showUnreadMessageNotification(int count);

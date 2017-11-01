@@ -153,6 +153,7 @@ set(SRC_FILES
     src/RoomMessages.cc
     src/RoomState.cc
     src/SideBarActions.cc
+    src/UserSettingsPage.cc
     src/Splitter.cc
     src/Sync.cc
     src/TextInputWidget.cc
@@ -181,6 +182,7 @@ set(SRC_FILES
     src/ui/RippleOverlay.cc
     src/ui/OverlayWidget.cc
     src/ui/TextField.cc
+    src/ui/ToggleButton.cc
     src/ui/Theme.cc
     src/ui/ThemeManager.cc
 )
@@ -239,6 +241,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/RoomInfoListItem.h
     include/RoomList.h
     include/SideBarActions.h
+    include/UserSettingsPage.h
     include/Splitter.h
     include/TextInputWidget.h
     include/TimelineItem.h
@@ -262,6 +265,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/Ripple.h
     include/ui/RippleOverlay.h
     include/ui/TextField.h
+    include/ui/ToggleButton.h
     include/ui/Theme.h
     include/ui/ThemeManager.h
 )

@@ -45,6 +45,8 @@ SideBarActions::SideBarActions(QWidget *parent)
         layout_->addWidget(createRoomBtn_);
         layout_->addWidget(joinRoomBtn_);
         layout_->addWidget(settingsBtn_);
+
+        connect(settingsBtn_, &QPushButton::clicked, this, &SideBarActions::showSettings);
 }
 
 SideBarActions::~SideBarActions() {}
