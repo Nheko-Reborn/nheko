@@ -94,6 +94,8 @@ MainWindow::MainWindow(QWidget *parent)
                 pageStack_->setCurrentWidget(chat_page_);
         });
 
+        connect(userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
+
         connect(trayIcon_,
                 SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 this,
@@ -112,6 +114,8 @@ MainWindow::MainWindow(QWidget *parent)
         connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
 
         QSettings settings;
+
+        trayIcon_->setVisible(userSettings_->isTrayEnabled());
 
         if (hasActiveUser()) {
                 QString token       = settings.value("auth/access_token").toString();
@@ -253,7 +257,7 @@ MainWindow::showUserSettingsPage()
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
-        if (isVisible()) {
+        if (isVisible() && userSettings_->isTrayEnabled()) {
                 event->ignore();
                 hide();
         }

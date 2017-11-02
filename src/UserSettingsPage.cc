@@ -32,7 +32,7 @@ void
 UserSettings::load()
 {
         QSettings settings;
-        isTrayEnabled_ = settings.value("user/tray", true).toBool();
+        isTrayEnabled_ = settings.value("user/window/tray", true).toBool();
         theme_         = settings.value("user/theme", "default").toString();
 }
 
@@ -41,7 +41,11 @@ UserSettings::save()
 {
         QSettings settings;
         settings.beginGroup("user");
+
+        settings.beginGroup("window");
         settings.setValue("tray", isTrayEnabled_);
+        settings.endGroup();
+
         settings.setValue("theme", theme());
         settings.endGroup();
 }
@@ -122,8 +126,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [=](const QString &text) { settings_->setTheme(text.toLower()); });
 
-        connect(trayToggle_, &Toggle::toggled, this, [=](bool isEnabled) {
-                settings_->setTray(isEnabled);
+        connect(trayToggle_, &Toggle::toggled, this, [=](bool isDisabled) {
+                settings_->setTray(!isDisabled);
+                emit trayOptionChanged(!isDisabled);
         });
 
         connect(backBtn_, &QPushButton::clicked, this, [=]() {
@@ -136,5 +141,5 @@ void
 UserSettingsPage::showEvent(QShowEvent *)
 {
         themeCombo_->setCurrentIndex((settings_->theme() == "default" ? 0 : 1));
-        trayToggle_->setState(settings_->isTrayEnabled());
+        trayToggle_->setState(!settings_->isTrayEnabled()); // Treats true as "off"
 }
