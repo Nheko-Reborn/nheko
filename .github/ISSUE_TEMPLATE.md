@@ -4,6 +4,7 @@ If you want to request a feature or ask a question, feel free to remove all the 
 
 ### System:
 
+- Nheko commit/version:
 - Operating System:
 - Qt version:
 - C++ compiler:

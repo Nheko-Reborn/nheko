@@ -94,7 +94,8 @@ MainWindow::MainWindow(QWidget *parent)
                 pageStack_->setCurrentWidget(chat_page_);
         });
 
-        connect(userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
+        connect(
+          userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
 
         connect(trayIcon_,
                 SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
