@@ -179,6 +179,10 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
         isTimelineFinished = false;
         QList<TimelineItem *> items;
 
+        // Reset the sender of the first message in the timeline
+        // cause we're about to insert a new one.
+        firstSender_.clear();
+
         // Parse in reverse order to determine where we should not show sender's
         // name.
         auto ii = msgs.chunk().size();
