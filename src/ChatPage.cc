@@ -562,6 +562,7 @@ ChatPage::showQuickSwitcher()
                 connect(quickSwitcher_.data(), &QuickSwitcher::closing, this, [=]() {
                         if (!this->quickSwitcherModal_.isNull())
                                 this->quickSwitcherModal_->fadeOut();
+                        this->text_input_->setFocus(Qt::FocusReason::PopupFocusReason);
                 });
         }
 
@@ -575,8 +576,12 @@ ChatPage::showQuickSwitcher()
 
         QMap<QString, QString> rooms;
 
-        for (auto it = state_manager_.constBegin(); it != state_manager_.constEnd(); ++it)
-                rooms.insert(it.value().getName(), it.key());
+        for (auto it = state_manager_.constBegin(); it != state_manager_.constEnd(); ++it) {
+                QString deambiguator = it.value().canonical_alias.content().alias();
+                if (deambiguator == "")
+                        deambiguator = it.key();
+                rooms.insert(it.value().getName() + " (" + deambiguator + ")", it.key());
+        }
 
         quickSwitcher_->setRoomList(rooms);
         quickSwitcherModal_->fadeIn();

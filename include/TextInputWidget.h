@@ -79,6 +79,9 @@ signals:
         void startedTyping();
         void stoppedTyping();
 
+protected:
+        void focusInEvent(QFocusEvent *event);
+
 private:
         void showUploadSpinner();
         QString parseEmoteCommand(const QString &cmd);

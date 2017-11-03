@@ -259,3 +259,9 @@ TextInputWidget::stopTyping()
 {
         input_->stopTyping();
 }
+
+void
+TextInputWidget::focusInEvent(QFocusEvent *event)
+{
+        input_->setFocus(event->reason());
+}

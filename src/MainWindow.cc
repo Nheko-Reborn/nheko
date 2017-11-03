@@ -114,6 +114,11 @@ MainWindow::MainWindow(QWidget *parent)
         QShortcut *quitShortcut = new QShortcut(QKeySequence::Quit, this);
         connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
 
+        QShortcut *quickSwitchShortcut = new QShortcut(QKeySequence("Ctrl+K"), this);
+        connect(quickSwitchShortcut, &QShortcut::activated, this, [=]() {
+                chat_page_->showQuickSwitcher();
+        });
+
         QSettings settings;
 
         trayIcon_->setVisible(userSettings_->isTrayEnabled());
@@ -125,15 +130,6 @@ MainWindow::MainWindow(QWidget *parent)
 
                 showChatPage(user_id, home_server, token);
         }
-}
-
-void
-MainWindow::keyPressEvent(QKeyEvent *e)
-{
-        if ((e->key() == Qt::Key_K) && (e->modifiers().testFlag(Qt::ControlModifier)))
-                chat_page_->showQuickSwitcher();
-        else
-                QMainWindow::keyPressEvent(e);
 }
 
 void

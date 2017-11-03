@@ -122,7 +122,16 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
           roomSearch_, &RoomSearchInput::hiding, this, [=]() { completer_->popup()->hide(); });
         connect(roomSearch_, &QLineEdit::returnPressed, this, [=]() {
                 emit closing();
-                emit roomSelected(rooms_[this->roomSearch_->text().trimmed()]);
+
+                QString text("");
+
+                if (selection_ == -1) {
+                        completer_->setCurrentRow(0);
+                        text = completer_->currentCompletion();
+                } else {
+                        text = this->roomSearch_->text().trimmed();
+                }
+                emit roomSelected(rooms_[text]);
 
                 roomSearch_->clear();
         });
