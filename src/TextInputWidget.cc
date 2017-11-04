@@ -40,11 +40,14 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
 void
 FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 {
-        if (!typingTimer_->isActive()) {
-                emit startedTyping();
-        }
+        const bool isModifier = (event->modifiers() != Qt::NoModifier);
 
-        typingTimer_->start();
+        if (!isModifier) {
+                if (!typingTimer_->isActive())
+                        emit startedTyping();
+
+                typingTimer_->start();
+        }
 
         if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
                 stopTyping();
