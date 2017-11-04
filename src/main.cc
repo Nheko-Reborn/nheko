@@ -19,10 +19,37 @@
 #include <QDesktopWidget>
 #include <QFontDatabase>
 #include <QLibraryInfo>
+#include <QNetworkProxy>
 #include <QSettings>
 #include <QTranslator>
 
 #include "MainWindow.h"
+
+void
+setupProxy()
+{
+        QSettings settings;
+
+        /**
+          To set up a SOCKS proxy:
+            [user]
+            proxy\socks\host=<>
+            proxy\socks\port=<>
+            proxy\socks\user=<>
+            proxy\socks\password=<>
+          **/
+        if (settings.contains("user/proxy/socks/host")) {
+                QNetworkProxy proxy;
+                proxy.setType(QNetworkProxy::Socks5Proxy);
+                proxy.setHostName(settings.value("user/proxy/socks/host").toString());
+                proxy.setPort(settings.value("user/proxy/socks/port").toInt());
+                if (settings.contains("user/proxy/socks/user"))
+                        proxy.setUser(settings.value("user/proxy/socks/user").toString());
+                if (settings.contains("user/proxy/socks/password"))
+                        proxy.setPassword(settings.value("user/proxy/socks/password").toString());
+                QNetworkProxy::setApplicationProxy(proxy);
+        }
+}
 
 int
 main(int argc, char *argv[])
@@ -61,6 +88,8 @@ main(int argc, char *argv[])
         QTranslator appTranslator;
         appTranslator.load("nheko_" + lang, ":/translations");
         app.installTranslator(&appTranslator);
+
+        setupProxy();
 
         MainWindow w;
 
