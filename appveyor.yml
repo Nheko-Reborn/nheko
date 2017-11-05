@@ -33,6 +33,16 @@ after_build:
     - 7z a nheko_win_64.zip .\NhekoRelease\*
     - C:\nsis\makensis .ci\windows\nheko.nsi
 
+deploy:
+    provider: GitHub
+    auth_token:
+      secure: oprXzESukFiXBeF2BXkXUlegsAQc95Ub4kc/OkoNFaYBvqpA+IGpWHmHCx5JPny/OT3Kc2Urpe2JUeGSWDHZ7UCKDjH+NzGP3uN82fHh/HiszG/Srw7+hWEHm1ve+gMK9GS8pr+yUsUrPP0UfVXlPoI4pBWa4zGi2Ndb/SqvjCgIHFLtGyoBo6CydKQ/AyWiXSMKDfJL+Dx4JLIPP4RTCBJy8ZrZ8m/a5Tgy4Ij6+djjrgYCZCEhGxSYw7xDIT/9SV8g9NkrbisqBDrILzAH8Yhe4XMRMXo88OAxV5+Vb9Rw1hrqczez6lpFDbJetv8MjofND+pSoAFwtjaL1wTFK9Ud6w4O9AuHlEQH9cGVdvsxFcosRwJVh58x51JM9ptoktqhx/HHJBTuCHCYYlHwtRwbwqnMYdLzKZG5FnujT8DG+9mcva1fL6tzW/XD505VPMWwXFC/2/pvolgAkTFFXYSALAwZlK3IgoXU8Gok/3B4iHofzQsFf6Yq3BI/88x7tVASUqiYhoKrO50+gb6pNIRCyWgGUiBEVXBp6Ziq3ORQPyQJg7i9HHUGTUu74yvGLHWLwjNQzZP/hxJZK3VlJxzyXntdOxiJc8iOzNrU+rPKBAlAaE6bQDOoniIysEgdD5BXHTLFzPvts4P1n2Ckor5/rNJ+qXR8GU+/y7e1GKU=
+    artifact: nheko_setup.exe
+    force_update: true
+    on:
+      branch: master
+      appveyor_repo_tag: true
+
 artifacts:
     - path: nheko_win_64.zip
     - path: NhekoRelease\nheko.exe
