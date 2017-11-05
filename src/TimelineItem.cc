@@ -92,6 +92,7 @@ TimelineItem::TimelineItem(events::MessageEventType ty,
         }
 
         body = body.toHtmlEscaped();
+        body.replace("\n", "<br/>");
         body.replace(URL_REGEX, URL_HTML);
         generateTimestamp(timestamp);
 
@@ -197,7 +198,8 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
                            " sent a notification",
                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
-        auto body      = event.content().body().trimmed().toHtmlEscaped();
+        auto body = event.content().body().trimmed().toHtmlEscaped();
+        body.replace("\n", "<br/>");
         auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 
         generateTimestamp(timestamp);
@@ -244,6 +246,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
 
         generateTimestamp(timestamp);
         emoteMsg = emoteMsg.toHtmlEscaped();
+        emoteMsg.replace("\n", "<br/>");
         emoteMsg.replace(URL_REGEX, URL_HTML);
 
         if (with_sender) {
@@ -283,6 +286,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
         generateTimestamp(timestamp);
 
         body = body.toHtmlEscaped();
+        body.replace("\n", "<br/>");
         body.replace(URL_REGEX, URL_HTML);
 
         if (with_sender) {
