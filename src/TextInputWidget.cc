@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QAbstractTextDocumentLayout>
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
@@ -25,9 +26,21 @@
 #include "Config.h"
 #include "TextInputWidget.h"
 
+static constexpr size_t INPUT_HISTORY_SIZE = 127;
+
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
-  : QTextEdit(parent)
+  : QTextEdit{ parent }
+  , history_index_{ 0 }
 {
+        connect(document()->documentLayout(),
+                &QAbstractTextDocumentLayout::documentSizeChanged,
+                this,
+                &FilteredTextEdit::updateGeometry);
+        QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        policy.setHeightForWidth(true);
+        setSizePolicy(policy);
+        working_history_.push_back("");
+        connect(this, &QTextEdit::textChanged, this, &FilteredTextEdit::textChanged);
         setAcceptRichText(false);
 
         typingTimer_ = new QTimer(this);
@@ -49,12 +62,40 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 typingTimer_->start();
         }
 
-        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-                stopTyping();
-
-                emit enterPressed();
-        } else {
+        switch (event->key()) {
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+                if (!(event->modifiers() & Qt::ShiftModifier)) {
+                        stopTyping();
+                        submit();
+                } else {
+                        QTextEdit::keyPressEvent(event);
+                }
+                break;
+        case Qt::Key_Up: {
+                auto initial_cursor = textCursor();
                 QTextEdit::keyPressEvent(event);
+                if (textCursor() == initial_cursor &&
+                    history_index_ + 1 < working_history_.size()) {
+                        ++history_index_;
+                        setPlainText(working_history_[history_index_]);
+                        moveCursor(QTextCursor::End);
+                }
+                break;
+        }
+        case Qt::Key_Down: {
+                auto initial_cursor = textCursor();
+                QTextEdit::keyPressEvent(event);
+                if (textCursor() == initial_cursor && history_index_ > 0) {
+                        --history_index_;
+                        setPlainText(working_history_[history_index_]);
+                        moveCursor(QTextCursor::End);
+                }
+                break;
+        }
+        default:
+                QTextEdit::keyPressEvent(event);
+                break;
         }
 }
 
@@ -63,6 +104,65 @@ FilteredTextEdit::stopTyping()
 {
         typingTimer_->stop();
         emit stoppedTyping();
+}
+
+QSize
+FilteredTextEdit::sizeHint() const
+{
+        ensurePolished();
+        auto margins = viewportMargins();
+        margins += document()->documentMargin();
+        QSize size = document()->size().toSize();
+        size.rwidth() += margins.left() + margins.right();
+        size.rheight() += margins.top() + margins.bottom();
+        return size;
+}
+
+QSize
+FilteredTextEdit::minimumSizeHint() const
+{
+        ensurePolished();
+        auto margins = viewportMargins();
+        margins += document()->documentMargin();
+        margins += contentsMargins();
+        QSize size(fontMetrics().averageCharWidth() * 10,
+                   fontMetrics().lineSpacing() + margins.top() + margins.bottom());
+        return size;
+}
+
+void
+FilteredTextEdit::submit()
+{
+        if (true_history_.size() == INPUT_HISTORY_SIZE)
+                true_history_.pop_back();
+        true_history_.push_front(toPlainText());
+        working_history_ = true_history_;
+        working_history_.push_front("");
+        history_index_ = 0;
+
+        QString text = toPlainText();
+        if (text.startsWith('/')) {
+                int command_end = text.indexOf(' ');
+                if (command_end == -1)
+                        command_end = text.size();
+                auto name = text.mid(1, command_end - 1);
+                auto args = text.mid(command_end + 1);
+                if (name.isEmpty() || name == "/") {
+                        message(args);
+                } else {
+                        command(name, args);
+                }
+        } else {
+                message(std::move(text));
+        }
+
+        clear();
+}
+
+void
+FilteredTextEdit::textChanged()
+{
+        working_history_[history_index_] = toPlainText();
 }
 
 TextInputWidget::TextInputWidget(QWidget *parent)
@@ -122,9 +222,10 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         setLayout(topLayout_);
 
-        connect(sendMessageBtn_, SIGNAL(clicked()), this, SLOT(onSendButtonClicked()));
+        connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
-        connect(input_, SIGNAL(enterPressed()), sendMessageBtn_, SIGNAL(clicked()));
+        connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
+        connect(input_, &FilteredTextEdit::command, this, &TextInputWidget::command);
         connect(emojiBtn_,
                 SIGNAL(emojiSelected(const QString &)),
                 this,
@@ -160,50 +261,13 @@ TextInputWidget::addSelectedEmoji(const QString &emoji)
 }
 
 void
-TextInputWidget::onSendButtonClicked()
+TextInputWidget::command(QString command, QString args)
 {
-        auto msgText = input_->document()->toPlainText().trimmed();
-
-        if (msgText.isEmpty())
-                return;
-
-        if (msgText.startsWith(EMOTE_COMMAND)) {
-                auto text = parseEmoteCommand(msgText);
-
-                if (!text.isEmpty())
-                        emit sendEmoteMessage(text);
-        } else if (msgText.startsWith(JOIN_COMMAND)) {
-                auto room = parseJoinCommand(msgText);
-
-                if (!room.isEmpty())
-                        emit sendJoinRoomRequest(room);
-        } else {
-                emit sendTextMessage(msgText);
+        if (command == "me") {
+                sendEmoteMessage(args);
+        } else if (command == "join") {
+                sendJoinRoomRequest(args);
         }
-
-        input_->clear();
-}
-
-QString
-TextInputWidget::parseJoinCommand(const QString &cmd)
-{
-        auto room = cmd.right(cmd.size() - JOIN_COMMAND.size()).trimmed();
-
-        if (!room.isEmpty())
-                return room;
-
-        return QString("");
-}
-
-QString
-TextInputWidget::parseEmoteCommand(const QString &cmd)
-{
-        auto text = cmd.right(cmd.size() - EMOTE_COMMAND.size()).trimmed();
-
-        if (!text.isEmpty())
-                return text;
-
-        return QString("");
 }
 
 void

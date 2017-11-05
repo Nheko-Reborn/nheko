@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <deque>
+
 #include <QHBoxLayout>
 #include <QPaintEvent>
 #include <QTextEdit>
@@ -29,26 +31,36 @@
 
 namespace msgs = matrix::events::messages;
 
-static const QString EMOTE_COMMAND("/me ");
-static const QString JOIN_COMMAND("/join ");
-
 class FilteredTextEdit : public QTextEdit
 {
         Q_OBJECT
 
-private:
-        QTimer *typingTimer_;
-
 public:
         explicit FilteredTextEdit(QWidget *parent = nullptr);
-        void keyPressEvent(QKeyEvent *event);
 
         void stopTyping();
 
+        QSize sizeHint() const override;
+        QSize minimumSizeHint() const override;
+
+        void submit();
+
 signals:
-        void enterPressed();
         void startedTyping();
         void stoppedTyping();
+        void message(QString);
+        void command(QString name, QString args);
+
+protected:
+        void keyPressEvent(QKeyEvent *event) override;
+
+private:
+        std::deque<QString> true_history_, working_history_;
+        size_t history_index_;
+        QTimer *typingTimer_;
+
+        void textChanged();
+        void afterCompletion(int);
 };
 
 class TextInputWidget : public QFrame
@@ -62,7 +74,6 @@ public:
         void stopTyping();
 
 public slots:
-        void onSendButtonClicked();
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); };
@@ -84,8 +95,7 @@ protected:
 
 private:
         void showUploadSpinner();
-        QString parseEmoteCommand(const QString &cmd);
-        QString parseJoinCommand(const QString &cmd);
+        void command(QString name, QString args);
 
         QHBoxLayout *topLayout_;
         FilteredTextEdit *input_;
