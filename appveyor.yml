@@ -34,7 +34,6 @@ after_build:
     - C:\nsis\makensis .ci\windows\nheko.nsi
 
 deploy:
-    release: "nheko 0.1.0-dev"
     description: "Development builds"
     provider: GitHub
     auth_token:
