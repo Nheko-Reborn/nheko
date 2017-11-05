@@ -2,7 +2,7 @@
 
 set -e
 
-make app
+cp -fp ./build/nheko dist/MacOS/Nheko.app/Contents/MacOS
 
 sudo macdeployqt dist/MacOS/Nheko.app -dmg
 user=$(id -nu)
