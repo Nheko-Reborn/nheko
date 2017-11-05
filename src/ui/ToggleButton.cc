@@ -12,7 +12,7 @@ Toggle::paintEvent(QPaintEvent *event)
 }
 
 Toggle::Toggle(QWidget *parent)
-  : QAbstractButton{ parent }
+  : QAbstractButton{parent}
 {
         init();
 
@@ -89,10 +89,10 @@ Toggle::setTrackColor(const QColor &color)
 }
 
 ToggleThumb::ToggleThumb(Toggle *parent)
-  : QWidget{ parent }
-  , toggle_{ parent }
-  , position_{ Position::Right }
-  , offset_{ 0 }
+  : QWidget{parent}
+  , toggle_{parent}
+  , position_{Position::Right}
+  , offset_{0}
 {
         parent->installEventFilter(this);
 }
@@ -158,8 +158,8 @@ ToggleThumb::updateOffset()
 }
 
 ToggleTrack::ToggleTrack(Toggle *parent)
-  : QWidget{ parent }
-  , toggle_{ parent }
+  : QWidget{parent}
+  , toggle_{parent}
 {
         Q_ASSERT(parent);
 

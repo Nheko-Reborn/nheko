@@ -49,8 +49,8 @@ TimelineView::TimelineView(const Timeline &timeline,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
-  , room_id_{ room_id }
-  , client_{ client }
+  , room_id_{room_id}
+  , client_{client}
 {
         init();
         addEvents(timeline);
@@ -60,8 +60,8 @@ TimelineView::TimelineView(QSharedPointer<MatrixClient> client,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
-  , room_id_{ room_id }
-  , client_{ client }
+  , room_id_{room_id}
+  , client_{client}
 {
         init();
         client_->messages(room_id_, "");

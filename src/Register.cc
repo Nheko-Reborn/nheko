@@ -27,7 +27,7 @@ RegisterRequest::RegisterRequest(const QString &username, const QString &passwor
 QByteArray
 RegisterRequest::serialize() noexcept
 {
-        QJsonObject body{ { "username", user_ }, { "password", password_ } };
+        QJsonObject body{{"username", user_}, {"password", password_}};
 
         return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }

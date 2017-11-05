@@ -26,11 +26,11 @@
 
 EmojiPanel::EmojiPanel(QWidget *parent)
   : QWidget(parent)
-  , shadowMargin_{ 2 }
-  , width_{ 370 }
-  , height_{ 350 }
-  , animationDuration_{ 100 }
-  , categoryIconSize_{ 20 }
+  , shadowMargin_{2}
+  , width_{370}
+  , height_{350}
+  , animationDuration_{100}
+  , categoryIconSize_{20}
 {
         setStyleSheet("QWidget {background: #fff; color: #e8e8e8; border: none;}"
                       "QScrollBar:vertical { background-color: #fff; width: 8px; margin: 0px "

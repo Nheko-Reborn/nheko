@@ -20,7 +20,7 @@
 
 EmojiPickButton::EmojiPickButton(QWidget *parent)
   : FlatButton(parent)
-  , panel_{ nullptr }
+  , panel_{nullptr}
 {}
 
 void

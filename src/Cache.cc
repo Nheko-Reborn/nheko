@@ -31,11 +31,11 @@ static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val transactionID("transaction_id");
 
 Cache::Cache(const QString &userId)
-  : env_{ nullptr }
-  , stateDb_{ 0 }
-  , roomDb_{ 0 }
-  , isMounted_{ false }
-  , userId_{ userId }
+  : env_{nullptr}
+  , stateDb_{0}
+  , roomDb_{0}
+  , isMounted_{false}
+  , userId_{userId}
 {}
 
 void

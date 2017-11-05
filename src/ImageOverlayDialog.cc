@@ -22,8 +22,8 @@
 #include "ImageOverlayDialog.h"
 
 ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
-  : QWidget{ parent }
-  , originalImage_{ image }
+  : QWidget{parent}
+  , originalImage_{image}
 {
         setMouseTracking(true);
         setParent(0);

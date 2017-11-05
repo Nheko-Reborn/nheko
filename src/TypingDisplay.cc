@@ -6,7 +6,7 @@
 
 TypingDisplay::TypingDisplay(QWidget *parent)
   : QWidget(parent)
-  , leftPadding_{ 24 }
+  , leftPadding_{24}
 {
         QFont font;
         font.setPixelSize(conf::typingNotificationFontSize);

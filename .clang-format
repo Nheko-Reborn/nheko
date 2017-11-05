@@ -1,5 +1,6 @@
 ---
 Language: Cpp
+Standard: Cpp11
 AccessModifierOffset: -8
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
@@ -10,3 +11,4 @@ IndentCaseLabels: false
 IndentWidth: 8
 KeepEmptyLinesAtTheStartOfBlocks: false
 PointerAlignment: Right
+Cpp11BracedListStyle: true

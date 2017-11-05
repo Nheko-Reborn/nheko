@@ -38,8 +38,8 @@ MainWindow *MainWindow::instance_ = nullptr;
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
-  , progressModal_{ nullptr }
-  , spinner_{ nullptr }
+  , progressModal_{nullptr}
+  , spinner_{nullptr}
 {
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         setSizePolicy(sizePolicy);

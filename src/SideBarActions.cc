@@ -5,7 +5,7 @@
 #include "Theme.h"
 
 SideBarActions::SideBarActions(QWidget *parent)
-  : QWidget{ parent }
+  : QWidget{parent}
 {
         setFixedHeight(conf::sidebarActions::height);
 

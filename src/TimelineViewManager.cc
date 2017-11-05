@@ -194,7 +194,7 @@ QString
 TimelineViewManager::chooseRandomColor()
 {
         std::random_device random_device;
-        std::mt19937 engine{ random_device() };
+        std::mt19937 engine{random_device()};
         std::uniform_real_distribution<float> dist(0, 1);
 
         float hue        = dist(engine);

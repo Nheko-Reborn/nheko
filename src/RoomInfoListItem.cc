@@ -33,7 +33,7 @@ RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
   : QWidget(parent)
   , state_(state)
   , roomId_(room_id)
-  , roomSettings_{ settings }
+  , roomSettings_{settings}
   , isPressed_(false)
   , maxHeight_(IconSize + 2 * Padding)
   , unreadMsgCount_(0)

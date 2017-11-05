@@ -30,7 +30,7 @@
 
 TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
-  , buttonSize_{ 32 }
+  , buttonSize_{32}
 {
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         setMinimumSize(QSize(0, 65));

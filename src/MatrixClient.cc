@@ -38,9 +38,9 @@
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
   : QNetworkAccessManager(parent)
-  , clientApiUrl_{ "/_matrix/client/r0" }
-  , mediaApiUrl_{ "/_matrix/media/r0" }
-  , server_{ "https://" + server }
+  , clientApiUrl_{"/_matrix/client/r0"}
+  , mediaApiUrl_{"/_matrix/media/r0"}
+  , server_{"https://" + server}
 {
         QSettings settings;
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
@@ -203,10 +203,10 @@ void
 MatrixClient::sync() noexcept
 {
         QJsonObject filter{
-                { "room",
-                  QJsonObject{
-                    { "include_leave", true },
-                  } },
+          {"room",
+           QJsonObject{
+             {"include_leave", true},
+           }},
         };
 
         QUrlQuery query;
@@ -278,13 +278,13 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
 
         switch (ty) {
         case matrix::events::MessageEventType::Text:
-                body = { { "msgtype", "m.text" }, { "body", msg } };
+                body = {{"msgtype", "m.text"}, {"body", msg}};
                 break;
         case matrix::events::MessageEventType::Emote:
-                body = { { "msgtype", "m.emote" }, { "body", msg } };
+                body = {{"msgtype", "m.emote"}, {"body", msg}};
                 break;
         case matrix::events::MessageEventType::Image:
-                body = { { "msgtype", "m.image" }, { "body", msg }, { "url", url } };
+                body = {{"msgtype", "m.image"}, {"body", msg}, {"url", url}};
                 break;
         default:
                 qDebug() << "SendRoomMessage: Unknown message type for" << msg;
@@ -812,7 +812,7 @@ MatrixClient::sendTypingNotification(const QString &roomid, int timeoutInMillis)
         QString msgType("");
         QJsonObject body;
 
-        body = { { "typing", true }, { "timeout", timeoutInMillis } };
+        body = {{"typing", true}, {"timeout", timeoutInMillis}};
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -837,7 +837,7 @@ MatrixClient::removeTypingNotification(const QString &roomid)
         QString msgType("");
         QJsonObject body;
 
-        body = { { "typing", false } };
+        body = {{"typing", false}};
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

@@ -32,8 +32,8 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
                      const events::MessageEvent<msgs::Image> &event,
                      QWidget *parent)
   : QWidget(parent)
-  , event_{ event }
-  , client_{ client }
+  , event_{event}
+  , client_{client}
 {
         setMouseTracking(true);
         setCursor(Qt::PointingHandCursor);
@@ -66,9 +66,9 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
                      const QString &filename,
                      QWidget *parent)
   : QWidget(parent)
-  , url_{ url }
-  , text_{ QFileInfo(filename).fileName() }
-  , client_{ client }
+  , url_{url}
+  , text_{QFileInfo(filename).fileName()}
+  , client_{client}
 {
         setMouseTracking(true);
         setCursor(Qt::PointingHandCursor);

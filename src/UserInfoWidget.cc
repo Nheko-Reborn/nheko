@@ -29,9 +29,9 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   : QWidget(parent)
   , display_name_("User")
   , user_id_("@user:homeserver.org")
-  , logoutModal_{ nullptr }
-  , logoutDialog_{ nullptr }
-  , logoutButtonSize_{ 20 }
+  , logoutModal_{nullptr}
+  , logoutDialog_{nullptr}
+  , logoutButtonSize_{20}
 {
         QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
         setSizePolicy(sizePolicy);

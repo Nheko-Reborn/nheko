@@ -23,7 +23,7 @@
 
 ScrollBar::ScrollBar(QScrollArea *area, QWidget *parent)
   : QScrollBar(parent)
-  , area_{ area }
+  , area_{area}
 {
         hideTimer_.setSingleShot(true);
 

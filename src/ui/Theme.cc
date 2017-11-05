@@ -54,15 +54,21 @@ void
 Theme::setColor(const QString &key, ui::Color color)
 {
         static const QColor palette[] = {
-                QColor("#171919"),
+          QColor("#171919"),
 
-                QColor("#EBEBEB"), QColor("#C9C9C9"), QColor("#929292"),
+          QColor("#EBEBEB"),
+          QColor("#C9C9C9"),
+          QColor("#929292"),
 
-                QColor("#1C3133"), QColor("#577275"), QColor("#46A451"),
+          QColor("#1C3133"),
+          QColor("#577275"),
+          QColor("#46A451"),
 
-                QColor("#5D6565"), QColor("#E22826"), QColor("#81B3A9"),
+          QColor("#5D6565"),
+          QColor("#E22826"),
+          QColor("#81B3A9"),
 
-                rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0),
         };
 
         colors_.insert(key, palette[static_cast<int>(color)]);

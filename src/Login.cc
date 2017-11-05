@@ -39,10 +39,10 @@ LoginRequest::serialize() noexcept
 #endif
 
         QJsonObject body{
-                { "type", "m.login.password" },
-                { "user", user_ },
-                { "password", password_ },
-                { "initial_device_display_name", initialDeviceName },
+          {"type", "m.login.password"},
+          {"user", user_},
+          {"password", password_},
+          {"initial_device_display_name", initialDeviceName},
         };
 
         return QJsonDocument(body).toJson(QJsonDocument::Compact);

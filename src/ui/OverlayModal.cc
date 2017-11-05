@@ -22,8 +22,8 @@
 
 OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
   : OverlayWidget(parent)
-  , duration_{ 500 }
-  , color_{ QColor(55, 55, 55) }
+  , duration_{500}
+  , color_{QColor(55, 55, 55)}
 {
         setAttribute(Qt::WA_TranslucentBackground);
 

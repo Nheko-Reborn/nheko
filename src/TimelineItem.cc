@@ -85,11 +85,10 @@ TimelineItem::TimelineItem(events::MessageEventType ty,
 
         if (ty == events::MessageEventType::Emote) {
                 body            = QString("* %1 %2").arg(displayName).arg(body);
-                descriptionMsg_ = { "", userid, body, descriptiveTime(timestamp) };
+                descriptionMsg_ = {"", userid, body, descriptiveTime(timestamp)};
         } else {
                 descriptionMsg_ = {
-                        "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime())
-                };
+                  "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime())};
         }
 
         body = body.toHtmlEscaped();
@@ -114,14 +113,14 @@ TimelineItem::TimelineItem(ImageItem *image,
                            const QString &userid,
                            bool withSender,
                            QWidget *parent)
-  : QWidget{ parent }
+  : QWidget{parent}
 {
         init();
 
         auto displayName = TimelineViewManager::displayName(userid);
         auto timestamp   = QDateTime::currentDateTime();
 
-        descriptionMsg_ = { "You", userid, " sent an image", descriptiveTime(timestamp) };
+        descriptionMsg_ = {"You", userid, " sent an image", descriptiveTime(timestamp)};
 
         generateTimestamp(timestamp);
 
@@ -158,10 +157,10 @@ TimelineItem::TimelineItem(ImageItem *image,
         auto displayName = TimelineViewManager::displayName(event.sender());
 
         QSettings settings;
-        descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-                            event.sender(),
-                            " sent an image",
-                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+                           event.sender(),
+                           " sent an image",
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
         generateTimestamp(timestamp);
 
@@ -193,10 +192,10 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
   : QWidget(parent)
 {
         init();
-        descriptionMsg_ = { TimelineViewManager::displayName(event.sender()),
-                            event.sender(),
-                            " sent a notification",
-                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+        descriptionMsg_ = {TimelineViewManager::displayName(event.sender()),
+                           event.sender(),
+                           " sent a notification",
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
         auto body      = event.content().body().trimmed().toHtmlEscaped();
         auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
@@ -238,10 +237,10 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
         auto displayName = TimelineViewManager::displayName(event.sender());
         auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(body);
 
-        descriptionMsg_ = { "",
-                            event.sender(),
-                            emoteMsg,
-                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+        descriptionMsg_ = {"",
+                           event.sender(),
+                           emoteMsg,
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
         generateTimestamp(timestamp);
         emoteMsg = emoteMsg.toHtmlEscaped();
@@ -276,10 +275,10 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
         auto displayName = TimelineViewManager::displayName(event.sender());
 
         QSettings settings;
-        descriptionMsg_ = { event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-                            event.sender(),
-                            QString(": %1").arg(body),
-                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp())) };
+        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+                           event.sender(),
+                           QString(": %1").arg(body),
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
         generateTimestamp(timestamp);
 

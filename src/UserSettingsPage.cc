@@ -51,15 +51,15 @@ UserSettings::save()
 }
 
 HorizontalLine::HorizontalLine(QWidget *parent)
-  : QFrame{ parent }
+  : QFrame{parent}
 {
         setFrameShape(QFrame::HLine);
         setFrameShadow(QFrame::Sunken);
 }
 
 UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidget *parent)
-  : QWidget{ parent }
-  , settings_{ settings }
+  : QWidget{parent}
+  , settings_{settings}
 {
         topLayout_ = new QVBoxLayout(this);
 

@@ -28,7 +28,7 @@
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)
   , inferredServerAddress_()
-  , client_{ client }
+  , client_{client}
 {
         setStyleSheet("background-color: #fff");
 
