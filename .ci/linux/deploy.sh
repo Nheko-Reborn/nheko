@@ -17,5 +17,4 @@ unset LD_LIBRARY_PATH
 ./linuxdeployqt*.AppImage ./appdir/*.desktop -bundle-non-qt-libs
 ./linuxdeployqt*.AppImage ./appdir/*.desktop -appimage
 
-export ARTIFACT=nheko-x86_64.AppImage
-chmod +x $ARTIFACT
+chmod +x nheko-x86_64.AppImage
