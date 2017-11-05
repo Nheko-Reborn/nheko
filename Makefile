@@ -17,6 +17,9 @@ test:
 	@cmake --build build
 	@cd build && GTEST_COLOR=1 ctest --verbose
 
+linux-appimage:
+	@./.ci/linux/deploy.sh
+
 app: release-debug $(APP_TEMPLATE)
 	@cp -fp ./build/$(APP_NAME) $(APP_TEMPLATE)/Contents/MacOS
 	@echo "Created '$(APP_NAME).app' in '$(APP_TEMPLATE)'"

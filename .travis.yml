@@ -25,5 +25,23 @@ before_script:
     - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
 script:
     - make -C build -j2
-    - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/run-tests.sh; fi
     - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
+    - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/run-tests.sh; fi
+    - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/deploy.sh; fi
+
+before_deploy:
+    - git config --global user.email "builds@travis-ci.com"
+    - git config --global user.name "Travis CI"
+    - git tag nightly -fa -m "nheko v0.1.0-dev"
+    - git push -fq https://$TOKEN@github.com/mujx/nheko --tags
+
+deploy:
+  skip_cleanup: true
+  overwrite: true
+  provider: releases
+  api_key:
+    secure: oprXzESukFiXBeF2BXkXUlegsAQc95Ub4kc/OkoNFaYBvqpA+IGpWHmHCx5JPny/OT3Kc2Urpe2JUeGSWDHZ7UCKDjH+NzGP3uN82fHh/HiszG/Srw7+hWEHm1ve+gMK9GS8pr+yUsUrPP0UfVXlPoI4pBWa4zGi2Ndb/SqvjCgIHFLtGyoBo6CydKQ/AyWiXSMKDfJL+Dx4JLIPP4RTCBJy8ZrZ8m/a5Tgy4Ij6+djjrgYCZCEhGxSYw7xDIT/9SV8g9NkrbisqBDrILzAH8Yhe4XMRMXo88OAxV5+Vb9Rw1hrqczez6lpFDbJetv8MjofND+pSoAFwtjaL1wTFK9Ud6w4O9AuHlEQH9cGVdvsxFcosRwJVh58x51JM9ptoktqhx/HHJBTuCHCYYlHwtRwbwqnMYdLzKZG5FnujT8DG+9mcva1fL6tzW/XD505VPMWwXFC/2/pvolgAkTFFXYSALAwZlK3IgoXU8Gok/3B4iHofzQsFf6Yq3BI/88x7tVASUqiYhoKrO50+gb6pNIRCyWgGUiBEVXBp6Ziq3ORQPyQJg7i9HHUGTUu74yvGLHWLwjNQzZP/hxJZK3VlJxzyXntdOxiJc8iOzNrU+rPKBAlAaE6bQDOoniIysEgdD5BXHTLFzPvts4P1n2Ckor5/rNJ+qXR8GU+/y7e1GKU=
+  file: nheko-x86_64.AppImage
+  on:
+    repo: mujx/nheko
+    tags: false
