@@ -1,9 +1,4 @@
-APP_NAME = nheko
 
-MAC_DIST_DIR = dist/MacOS
-APP_TEMPLATE = $(MAC_DIST_DIR)/Nheko.app
-
-# Linux specific helpers
 debug:
 	@cmake -DBUILD_TESTS=OFF -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug
 	@cmake --build build
@@ -20,19 +15,11 @@ test:
 linux-appimage:
 	@./.ci/linux/deploy.sh
 
-app: release-debug $(APP_TEMPLATE)
-	@cp -fp ./build/$(APP_NAME) $(APP_TEMPLATE)/Contents/MacOS
-	@echo "Created '$(APP_NAME).app' in '$(APP_TEMPLATE)'"
+macos-app: release-debug
+	@./.ci/macos/deploy.sh
 
-app-install: app
-	cp -Rf $(APP_TEMPLATE) /Applications/
-
-dmg: app
-	hdiutil create $(MAC_DIST_DIR)/Nheko.dmg \
-		-volname "$(APP_NAME)" \
-		-fs HFS+ \
-		-srcfolder $(MAC_DIST_DIR) \
-		-ov -format UDZO
+macos-app-install:
+	cp -Rf build/nheko.app /Applications
 
 run:
 	@./build/nheko

@@ -97,7 +97,7 @@ deploy:
     provider: GitHub
     auth_token:
       secure: YqB7hcM+4482eSHhtVR7ZA7N7lE78y8BC897/7UDTBQd+NWdWFW/6S+oKDie9TT7
-    artifact: nheko_setup.exe
+    artifact: .\%DIST%-installer.exe
     force_update: true
     prerelease: true
     on:
