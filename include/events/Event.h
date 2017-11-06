@@ -60,6 +60,24 @@ isMessageEvent(EventType type);
 bool
 isStateEvent(EventType type);
 
+class UnsignedData
+  : public Deserializable
+  , public Serializable
+{
+public:
+        double age() const { return age_; }
+        QString transactionId() const { return transaction_id_; }
+
+        bool isEmpty() const { return age_ <= 0 && transaction_id_.isEmpty(); }
+
+        void deserialize(const QJsonValue &data) override;
+        QJsonObject serialize() const override;
+
+private:
+        double age_ = 0;
+        QString transaction_id_;
+};
+
 template<class Content>
 class Event
   : public Deserializable
@@ -68,6 +86,7 @@ class Event
 public:
         Content content() const;
         EventType eventType() const;
+        UnsignedData unsignedData() const { return unsignedData_; }
 
         void deserialize(const QJsonValue &data) override;
         QJsonObject serialize() const override;
@@ -75,6 +94,7 @@ public:
 private:
         Content content_;
         EventType type_;
+        UnsignedData unsignedData_;
 };
 
 template<class Content>
@@ -102,6 +122,9 @@ Event<Content>::deserialize(const QJsonValue &data)
 
         content_.deserialize(object.value("content"));
         type_ = extractEventType(object);
+
+        if (object.contains("unsigned"))
+                unsignedData_.deserialize(object.value("unsigned"));
 }
 
 template<class Content>
@@ -150,6 +173,9 @@ Event<Content>::serialize() const
         }
 
         object["content"] = content_.serialize();
+
+        if (!unsignedData_.isEmpty())
+                object["unsigned"] = unsignedData_.serialize();
 
         return object;
 }

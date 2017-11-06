@@ -78,3 +78,29 @@ matrix::events::isMessageEvent(EventType type)
 {
         return type == EventType::RoomMessage;
 }
+
+void
+matrix::events::UnsignedData::deserialize(const QJsonValue &data)
+{
+        if (!data.isObject())
+                throw DeserializationException("UnsignedData is not a JSON object");
+
+        auto object = data.toObject();
+
+        transaction_id_ = object.value("transaction_id").toString();
+        age_            = object.value("age").toDouble();
+}
+
+QJsonObject
+matrix::events::UnsignedData::serialize() const
+{
+        QJsonObject object;
+
+        if (!transaction_id_.isEmpty())
+                object["transaction_id"] = transaction_id_;
+
+        if (age_ > 0)
+                object["age"] = age_;
+
+        return object;
+}
