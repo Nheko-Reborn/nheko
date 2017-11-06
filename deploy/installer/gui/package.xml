@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Nheko</DisplayName>
+    <Description>Desktop client for the Matrix protocol</Description>
+    <Version>__VERSION__</Version>
+    <ReleaseDate>__DATE__</ReleaseDate>
+    <Licenses>
+        <License name="Nheko License - GPLv3" file="license.txt" />
+    </Licenses>
+    <Default>true</Default>
+    <ForcedInstallation>true</ForcedInstallation>
+    <SortingPriority>100</SortingPriority>
+    <Script>installscript.qs</Script>
+</Package>

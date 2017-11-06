@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Nheko</Name>
+    <Version>__VERSION__</Version>
+    <Title>Nheko Installer</Title>
+    <Publisher>Mujx</Publisher>
+    <ProductUrl>https://github.com/mujx/nheko</ProductUrl>
+    <InstallerWindowIcon>nheko</InstallerWindowIcon>
+    <InstallerApplicationIcon>nheko</InstallerApplicationIcon>
+    <Logo>nheko.png</Logo>
+    <StartMenuDir>Nheko</StartMenuDir>
+    <TargetDir>@ApplicationsDir@/nheko</TargetDir>
+    <RunProgram>@TargetDir@/nheko.exe</RunProgram>
+    <ControlScript>controlscript.qs</ControlScript>
+</Installer>

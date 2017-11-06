@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Cleanup AppData and Registry</DisplayName>
+    <Description>Cleans up AppData and Registry when selected (logs you out) - Broken</Description>
+    <Version>__VERSION__</Version>
+    <ReleaseDate>__DATE__</ReleaseDate>
+    <SortingPriority>80</SortingPriority>
+    <Script>installscript.qs</Script>
+    <Checkable>false</Checkable>
+</Package>
