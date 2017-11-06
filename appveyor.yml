@@ -21,7 +21,7 @@ build_script:
     # INSTVERSION format: x.y.z
     # WINVERSION format:  9999.0.0.123/1.2.0.234
     - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.1.0
-    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=%INSTVERSION%
+    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.1.0
     - if "%APPVEYOR_REPO_TAG%"=="false" if "%APPVEYOR_REPO_BRANCH%"=="master" set INSTVERSION=9999.0
     - if "%APPVEYOR_REPO_TAG%"=="false" set WINVERSION=%INSTVERSION%.0.%APPVEYOR_BUILD_NUMBER%
     # VERSION format:     v1.2.3/v1.3.4
@@ -30,11 +30,9 @@ build_script:
     - if "%APPVEYOR_REPO_TAG%"=="true" set VERSION=%APPVEYOR_REPO_TAG_NAME%
     - if "%APPVEYOR_REPO_TAG%"=="true" set INSTVERSION=%VERSION:~1%
     - if "%APPVEYOR_REPO_TAG%"=="true" set WINVERSION=%VERSION:~1%.%APPVEYOR_BUILD_NUMBER%
-    - set DIST=nheko-%VERSION%-win64
     - set DATE=%date:~10,4%-%date:~4,2%-%date:~7,2%
     - echo %VERSION%
     - echo %INSTVERSION%
-    - echo %DIST%
     - echo %DATE%
     - cmake -G "Visual Studio 14 2015 Win64" -H. -Bbuild -DAPPVEYOR_BUILD=ON -DCMAKE_BUILD_TYPE=Release
     - cmake --build build --config Release
@@ -53,8 +51,8 @@ after_build:
     - 7z a nheko_win_64.zip .\NhekoRelease\*
     - ls -lh build\Release\
     - ls -lh NhekoRelease\
-    - mkdir %DIST%
-    - xcopy .\NhekoRelease\*.* %DIST%\*.* /s /e /c /y
+    - mkdir NhekoData
+    - xcopy .\NhekoRelease\*.* NhekoData\*.* /s /e /c /y
     #
     # Create the Qt Installer Framework version
     #
@@ -78,26 +76,26 @@ after_build:
     - copy %BUILD%\deploy\installer\cleanup\package.xml installer\packages\com.mujx.nheko.cleanup\meta
     - copy %BUILD%\deploy\installer\cleanup\installscript.qs installer\packages\com.mujx.nheko.cleanup\meta
     # Amend version and date
-    - sed -i "s/__VERSION__/%INSTVERSION%/" installer\config\config.xml
-    - sed -i "s/__VERSION__/%INSTVERSION%/" installer\packages\com.mujx.nheko\meta\package.xml
-    - sed -i "s/__VERSION__/%INSTVERSION%/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
+    - sed -i "s/__VERSION__/0.1.0/" installer\config\config.xml
+    - sed -i "s/__VERSION__/0.1.0/" installer\packages\com.mujx.nheko\meta\package.xml
+    - sed -i "s/__VERSION__/0.1.0/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
     - sed -i "s/__DATE__/%DATE%/" installer\packages\com.mujx.nheko\meta\package.xml
     - sed -i "s/__DATE__/%DATE%/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
     # Copy nheko data
-    - xcopy %DIST%\*.* installer\packages\com.mujx.nheko\data\*.* /s /e /c /y
+    - xcopy NhekoData\*.* installer\packages\com.mujx.nheko\data\*.* /s /e /c /y
     - move NhekoRelease\nheko.exe installer\packages\com.mujx.nheko\data
     - mkdir tools
     - curl -L -O https://download.qt.io/official_releases/qt-installer-framework/3.0.1/QtInstallerFramework-win-x86.exe
     - 7z x QtInstallerFramework-win-x86.exe -otools -aoa
     - set PATH=%BUILD%\tools\bin;%PATH%
-    - binarycreator.exe -f -c installer\config\config.xml -p installer\packages %DIST%-installer.exe
+    - binarycreator.exe -f -c installer\config\config.xml -p installer\packages nheko-installer.exe
 
 deploy:
     description: "Development builds"
     provider: GitHub
     auth_token:
       secure: YqB7hcM+4482eSHhtVR7ZA7N7lE78y8BC897/7UDTBQd+NWdWFW/6S+oKDie9TT7
-    artifact: .\%DIST%-installer.exe
+    artifact: nheko-installer.exe
     force_update: true
     prerelease: true
     on:
@@ -106,4 +104,4 @@ deploy:
 artifacts:
     - path: nheko_win_64.zip
     - path: NhekoRelease\nheko.exe
-    - path: .\%DIST%-installer.exe
+    - path: nheko-installer.exe
