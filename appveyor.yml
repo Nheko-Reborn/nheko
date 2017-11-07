@@ -103,5 +103,4 @@ deploy:
 
 artifacts:
     - path: nheko_win_64.zip
-    - path: NhekoRelease\nheko.exe
     - path: nheko-installer.exe

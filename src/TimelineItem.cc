@@ -198,7 +198,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
                            " sent a notification",
                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
-        auto body = event.content().body().trimmed().toHtmlEscaped();
+        auto body      = event.content().body().trimmed().toHtmlEscaped();
         auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 
         generateTimestamp(timestamp);
