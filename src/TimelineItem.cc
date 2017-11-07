@@ -92,8 +92,8 @@ TimelineItem::TimelineItem(events::MessageEventType ty,
         }
 
         body = body.toHtmlEscaped();
-        body.replace("\n", "<br/>");
         body.replace(URL_REGEX, URL_HTML);
+        body.replace("\n", "<br/>");
         generateTimestamp(timestamp);
 
         if (withSender) {
@@ -199,12 +199,12 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
                            descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
 
         auto body = event.content().body().trimmed().toHtmlEscaped();
-        body.replace("\n", "<br/>");
         auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
 
         generateTimestamp(timestamp);
 
         body.replace(URL_REGEX, URL_HTML);
+        body.replace("\n", "<br/>");
         body = "<i style=\"color: #565E5E\">" + body + "</i>";
 
         if (with_sender) {
@@ -246,8 +246,8 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
 
         generateTimestamp(timestamp);
         emoteMsg = emoteMsg.toHtmlEscaped();
-        emoteMsg.replace("\n", "<br/>");
         emoteMsg.replace(URL_REGEX, URL_HTML);
+        emoteMsg.replace("\n", "<br/>");
 
         if (with_sender) {
                 generateBody(displayName, emoteMsg);
@@ -286,8 +286,8 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
         generateTimestamp(timestamp);
 
         body = body.toHtmlEscaped();
-        body.replace("\n", "<br/>");
         body.replace(URL_REGEX, URL_HTML);
+        body.replace("\n", "<br/>");
 
         if (with_sender) {
                 generateBody(displayName, body);
