@@ -41,14 +41,11 @@ MainWindow::MainWindow(QWidget *parent)
   , progressModal_{nullptr}
   , spinner_{nullptr}
 {
-        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        setSizePolicy(sizePolicy);
         setWindowTitle("nheko");
         setObjectName("MainWindow");
         setStyleSheet("QWidget#MainWindow {background-color: #fff}");
 
         restoreWindowSize();
-        setMinimumSize(QSize(conf::window::minWidth, conf::window::minHeight));
 
         QFont font("Open Sans");
         font.setPixelSize(conf::fontSize);

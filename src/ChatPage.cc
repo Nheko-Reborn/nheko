@@ -62,7 +62,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
         // SideBar
         sideBar_ = new QFrame(this);
-        sideBar_->setMinimumSize(QSize(ui::sidebar::NormalSize, 0));
+        sideBar_->setMinimumSize(QSize(ui::sidebar::NormalSize, parent->height()));
         sideBarLayout_ = new QVBoxLayout(sideBar_);
         sideBarLayout_->setSpacing(0);
         sideBarLayout_->setMargin(0);
@@ -93,6 +93,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         // Splitter
         splitter->addWidget(sideBar_);
         splitter->addWidget(content_);
+        splitter->setSizes({ui::sidebar::NormalSize, parent->width() - ui::sidebar::NormalSize});
 
         text_input_    = new TextInputWidget(this);
         typingDisplay_ = new TypingDisplay(this);
