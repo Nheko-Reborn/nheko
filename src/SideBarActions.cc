@@ -9,9 +9,6 @@ SideBarActions::SideBarActions(QWidget *parent)
 {
         setFixedHeight(conf::sidebarActions::height);
 
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        setSizePolicy(sizePolicy);
-
         layout_ = new QHBoxLayout(this);
         layout_->setMargin(0);
 

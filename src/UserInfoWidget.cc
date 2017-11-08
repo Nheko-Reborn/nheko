@@ -33,9 +33,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   , logoutDialog_{nullptr}
   , logoutButtonSize_{20}
 {
-        QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-        setSizePolicy(sizePolicy);
-        setMinimumSize(QSize(0, 65));
+        setFixedHeight(65);
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -140,6 +138,8 @@ UserInfoWidget::resizeEvent(QResizeEvent *event)
                 displayNameLabel_->show();
                 userIdLabel_->show();
         }
+
+        QWidget::resizeEvent(event);
 }
 
 void

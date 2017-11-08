@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QFrame>
 #include <QHBoxLayout>
 #include <QMap>
 #include <QPixmap>
@@ -109,17 +110,11 @@ private:
         QHBoxLayout *topLayout_;
         Splitter *splitter;
 
-        QWidget *sideBar_;
+        QFrame *sideBar_;
         QVBoxLayout *sideBarLayout_;
-        QVBoxLayout *sideBarTopLayout_;
-        QVBoxLayout *sideBarMainLayout_;
-        QWidget *sideBarTopWidget_;
-        QVBoxLayout *sideBarTopWidgetLayout_;
 
-        QWidget *content_;
+        QFrame *content_;
         QVBoxLayout *contentLayout_;
-        QHBoxLayout *topBarLayout_;
-        QVBoxLayout *mainContentLayout_;
 
         RoomList *room_list_;
         TimelineViewManager *view_manager_;

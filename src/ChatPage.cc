@@ -61,63 +61,38 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         topLayout_->addWidget(splitter);
 
         // SideBar
-        sideBar_ = new QWidget(this);
+        sideBar_ = new QFrame(this);
         sideBar_->setMinimumSize(QSize(ui::sidebar::NormalSize, 0));
         sideBarLayout_ = new QVBoxLayout(sideBar_);
         sideBarLayout_->setSpacing(0);
         sideBarLayout_->setMargin(0);
 
-        sideBarTopLayout_ = new QVBoxLayout();
-        sideBarTopLayout_->setSpacing(0);
-        sideBarTopLayout_->setMargin(0);
-        sideBarMainLayout_ = new QVBoxLayout();
-        sideBarMainLayout_->setSpacing(0);
-        sideBarMainLayout_->setMargin(0);
-
         sidebarActions_ = new SideBarActions(this);
         connect(
           sidebarActions_, &SideBarActions::showSettings, this, &ChatPage::showUserSettingsPage);
 
-        sideBarLayout_->addLayout(sideBarTopLayout_);
-        sideBarLayout_->addLayout(sideBarMainLayout_);
+        user_info_widget_ = new UserInfoWidget(sideBar_);
+        room_list_        = new RoomList(client, sideBar_);
+
+        sideBarLayout_->addWidget(user_info_widget_);
+        sideBarLayout_->addWidget(room_list_);
         sideBarLayout_->addWidget(sidebarActions_);
 
-        sideBarTopWidget_ = new QWidget(sideBar_);
-        sideBarTopWidget_->setStyleSheet("background-color: #d6dde3; color: #ebebeb;");
-
-        sideBarTopLayout_->addWidget(sideBarTopWidget_);
-
-        sideBarTopWidgetLayout_ = new QVBoxLayout(sideBarTopWidget_);
-        sideBarTopWidgetLayout_->setSpacing(0);
-        sideBarTopWidgetLayout_->setMargin(0);
-
         // Content
-        content_       = new QWidget(this);
+        content_       = new QFrame(this);
         contentLayout_ = new QVBoxLayout(content_);
         contentLayout_->setSpacing(0);
         contentLayout_->setMargin(0);
 
-        topBarLayout_ = new QHBoxLayout();
-        topBarLayout_->setSpacing(0);
-        mainContentLayout_ = new QVBoxLayout();
-        mainContentLayout_->setSpacing(0);
-        mainContentLayout_->setMargin(0);
+        top_bar_      = new TopRoomBar(this);
+        view_manager_ = new TimelineViewManager(client, this);
 
-        contentLayout_->addLayout(topBarLayout_);
-        contentLayout_->addLayout(mainContentLayout_);
+        contentLayout_->addWidget(top_bar_);
+        contentLayout_->addWidget(view_manager_);
 
         // Splitter
         splitter->addWidget(sideBar_);
         splitter->addWidget(content_);
-
-        room_list_ = new RoomList(client, sideBar_);
-        sideBarMainLayout_->addWidget(room_list_);
-
-        top_bar_ = new TopRoomBar(this);
-        topBarLayout_->addWidget(top_bar_);
-
-        view_manager_ = new TimelineViewManager(client, this);
-        mainContentLayout_->addWidget(view_manager_);
 
         text_input_    = new TextInputWidget(this);
         typingDisplay_ = new TypingDisplay(this);
@@ -126,9 +101,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
         typingRefresher_ = new QTimer(this);
         typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
-
-        user_info_widget_ = new UserInfoWidget(sideBarTopWidget_);
-        sideBarTopWidgetLayout_->addWidget(user_info_widget_);
 
         connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
         connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
