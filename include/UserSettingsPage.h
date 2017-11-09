@@ -25,8 +25,9 @@
 
 class Toggle;
 
-constexpr int OptionMargin     = 6;
-constexpr int LayoutSideMargin = 300;
+constexpr int OptionMargin       = 6;
+constexpr int LayoutTopMargin    = 50;
+constexpr int LayoutBottomMargin = LayoutTopMargin;
 
 class UserSettings
 {
@@ -63,6 +64,7 @@ public:
 
 protected:
         void showEvent(QShowEvent *event) override;
+        void resizeEvent(QResizeEvent *event) override;
 
 signals:
         void moveBack();
@@ -71,6 +73,7 @@ signals:
 private:
         // Layouts
         QVBoxLayout *topLayout_;
+        QVBoxLayout *mainLayout_;
         QHBoxLayout *topBarLayout_;
 
         // Shared settings object.
@@ -78,4 +81,6 @@ private:
 
         Toggle *trayToggle_;
         QComboBox *themeCombo_;
+
+        int sideMargin_ = 0;
 };

@@ -107,10 +107,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         general_->setFont(QFont("Open Sans Bold", 17));
         general_->setStyleSheet("color: #5d6565");
 
-        auto mainLayout_ = new QVBoxLayout;
+        mainLayout_ = new QVBoxLayout;
         mainLayout_->setSpacing(7);
         mainLayout_->setContentsMargins(
-          LayoutSideMargin, LayoutSideMargin / 6, LayoutSideMargin, LayoutSideMargin / 6);
+          sideMargin_, LayoutTopMargin, sideMargin_, LayoutBottomMargin);
         mainLayout_->addWidget(general_, 1, Qt::AlignLeft | Qt::AlignVCenter);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(trayOptionLayout_);
@@ -142,4 +142,14 @@ UserSettingsPage::showEvent(QShowEvent *)
 {
         themeCombo_->setCurrentIndex((settings_->theme() == "default" ? 0 : 1));
         trayToggle_->setState(!settings_->isTrayEnabled()); // Treats true as "off"
+}
+
+void
+UserSettingsPage::resizeEvent(QResizeEvent *event)
+{
+        sideMargin_ = width() * 0.2;
+        mainLayout_->setContentsMargins(
+          sideMargin_, LayoutTopMargin, sideMargin_, LayoutBottomMargin);
+
+        QWidget::resizeEvent(event);
 }
