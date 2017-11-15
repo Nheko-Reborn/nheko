@@ -40,6 +40,7 @@ public:
         void initialSync() noexcept;
         void sync() noexcept;
         void sendRoomMessage(matrix::events::MessageEventType ty,
+                             int txnId,
                              const QString &roomid,
                              const QString &msg,
                              const QString &url = "") noexcept;
@@ -61,7 +62,7 @@ public:
 
         QUrl getHomeServer() { return server_; };
         int transactionId() { return txn_id_; };
-        void incrementTransactionId() { txn_id_ += 1; };
+        int incrementTransactionId() { return ++txn_id_; }; // It is incredibly important that it's incremented first.
 
         void reset() noexcept;
 
@@ -103,6 +104,7 @@ signals:
         void syncFailed(const QString &msg);
         void joinFailed(const QString &msg);
         void messageSent(const QString &event_id, const QString &roomid, const int txn_id);
+        void messageSendFailed(const QString &roomid, const int txn_id);
         void emoteSent(const QString &event_id, const QString &roomid, const int txn_id);
         void messagesRetrieved(const QString &room_id, const RoomMessages &msgs);
         void joinedRoom(const QString &room_id);

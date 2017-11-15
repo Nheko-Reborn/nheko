@@ -261,6 +261,7 @@ MatrixClient::sync() noexcept
 
 void
 MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
+                              int txnId,
                               const QString &roomid,
                               const QString &msg,
                               const QString &url) noexcept
@@ -270,7 +271,7 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
 
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ +
-                         QString("/rooms/%1/send/m.room.message/%2").arg(roomid).arg(txn_id_));
+                         QString("/rooms/%1/send/m.room.message/%2").arg(roomid).arg(txnId));
         endpoint.setQuery(query);
 
         QString msgType("");
@@ -295,7 +296,6 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
         auto reply = put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
-        auto txnId = this->txn_id_;
 
         connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, txnId]() {
                 reply->deleteLater();
@@ -304,18 +304,22 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
 
                 if (status == 0 || status >= 400) {
                         qWarning() << reply->errorString();
+                        emit messageSendFailed(roomid, txnId);
                         return;
                 }
 
                 auto data = reply->readAll();
 
-                if (data.isEmpty())
+                if (data.isEmpty()) {
+                        emit messageSendFailed(roomid, txnId);
                         return;
+                }
 
                 auto json = QJsonDocument::fromJson(data);
 
                 if (!json.isObject()) {
                         qDebug() << "Send message response is not a JSON object";
+                        emit messageSendFailed(roomid, txnId);
                         return;
                 }
 
@@ -323,13 +327,12 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
 
                 if (!object.contains("event_id")) {
                         qDebug() << "SendTextMessage: missing event_id from response";
+                        emit messageSendFailed(roomid, txnId);
                         return;
                 }
 
                 emit messageSent(object.value("event_id").toString(), roomid, txnId);
         });
-
-        incrementTransactionId();
 }
 
 void

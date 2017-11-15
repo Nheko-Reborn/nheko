@@ -165,12 +165,12 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         connect(text_input_,
                 SIGNAL(sendTextMessage(const QString &)),
                 view_manager_,
-                SLOT(sendTextMessage(const QString &)));
+                SLOT(queueTextMessage(const QString &)));
 
         connect(text_input_,
                 SIGNAL(sendEmoteMessage(const QString &)),
                 view_manager_,
-                SLOT(sendEmoteMessage(const QString &)));
+                SLOT(queueEmoteMessage(const QString &)));
 
         connect(text_input_,
                 &TextInputWidget::sendJoinRoomRequest,
@@ -187,7 +187,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 this,
                 [=](QString roomid, QString filename, QString url) {
                         text_input_->hideUploadSpinner();
-                        view_manager_->sendImageMessage(roomid, filename, url);
+                        view_manager_->queueImageMessage(roomid, filename, url);
                 });
 
         connect(client_.data(),

@@ -35,6 +35,10 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QW
 
         connect(
           client_.data(), &MatrixClient::messageSent, this, &TimelineViewManager::messageSent);
+
+        connect(
+          client_.data(), &MatrixClient::messageSendFailed,
+          this, &TimelineViewManager::messageSendFailed);
 }
 
 TimelineViewManager::~TimelineViewManager() {}
@@ -51,28 +55,32 @@ TimelineViewManager::messageSent(const QString &event_id, const QString &roomid,
 }
 
 void
-TimelineViewManager::sendTextMessage(const QString &msg)
+TimelineViewManager::messageSendFailed(const QString &roomid, int txn_id)
+{
+        auto view = views_[roomid];
+        view->handleFailedMessage(txn_id);
+}
+
+void
+TimelineViewManager::queueTextMessage(const QString &msg)
 {
         auto room_id = active_room_;
         auto view    = views_[room_id];
 
-        view->addUserMessage(matrix::events::MessageEventType::Text, msg, client_->transactionId());
-        client_->sendRoomMessage(matrix::events::MessageEventType::Text, room_id, msg);
+        view->addUserMessage(matrix::events::MessageEventType::Text, msg);
 }
 
 void
-TimelineViewManager::sendEmoteMessage(const QString &msg)
+TimelineViewManager::queueEmoteMessage(const QString &msg)
 {
         auto room_id = active_room_;
         auto view    = views_[room_id];
 
-        view->addUserMessage(
-          matrix::events::MessageEventType::Emote, msg, client_->transactionId());
-        client_->sendRoomMessage(matrix::events::MessageEventType::Emote, room_id, msg);
+        view->addUserMessage(matrix::events::MessageEventType::Emote, msg);
 }
 
 void
-TimelineViewManager::sendImageMessage(const QString &roomid,
+TimelineViewManager::queueImageMessage(const QString &roomid,
                                       const QString &filename,
                                       const QString &url)
 {
@@ -83,9 +91,7 @@ TimelineViewManager::sendImageMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage(url, filename, client_->transactionId());
-        client_->sendRoomMessage(
-          matrix::events::MessageEventType::Image, roomid, QFileInfo(filename).fileName(), url);
+        view->addUserMessage(url, filename);
 }
 
 void

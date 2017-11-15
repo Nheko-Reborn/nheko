@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QFileInfo>
 #include <QSettings>
 #include <QTimer>
 
@@ -245,9 +246,9 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         eventIds_[text.eventId()] = true;
 
-                        if (isPendingMessage(
-                              text.eventId(), text.content().body(), text.sender(), local_user_)) {
-                                removePendingMessage(text.eventId(), text.content().body());
+                        QString txnid = text.unsignedData().transactionId();
+                        if (!txnid.isEmpty() && isPendingMessage(txnid, text.sender(), local_user_)) {
+                                removePendingMessage(txnid);
                                 return nullptr;
                         }
 
@@ -291,9 +292,9 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         eventIds_[img.eventId()] = true;
 
-                        if (isPendingMessage(
-                              img.eventId(), img.msgContent().url(), img.sender(), local_user_)) {
-                                removePendingMessage(img.eventId(), img.msgContent().url());
+                        QString txnid = img.unsignedData().transactionId();
+                        if (!txnid.isEmpty() && isPendingMessage(txnid, img.sender(), local_user_)) {
+                                removePendingMessage(txnid);
                                 return nullptr;
                         }
 
@@ -317,11 +318,9 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         eventIds_[emote.eventId()] = true;
 
-                        if (isPendingMessage(emote.eventId(),
-                                             emote.content().body(),
-                                             emote.sender(),
-                                             local_user_)) {
-                                removePendingMessage(emote.eventId(), emote.content().body());
+                        QString txnid = emote.unsignedData().transactionId();
+                        if (!txnid.isEmpty() && isPendingMessage(txnid, emote.sender(), local_user_)) {
+                                removePendingMessage(txnid);
                                 return nullptr;
                         }
 
@@ -499,16 +498,16 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 void
 TimelineView::updatePendingMessage(int txn_id, QString event_id)
 {
-        for (auto &msg : pending_msgs_) {
-                if (msg.txn_id == txn_id) {
-                        msg.event_id = event_id;
-                        break;
-                }
+        if (pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
+                auto msg = pending_msgs_.dequeue();
+                msg.event_id = event_id;
+                pending_sent_msgs_.append(msg);
         }
+        sendNextPendingMessage();
 }
 
 void
-TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString &body, int txn_id)
+TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString &body)
 {
         QSettings settings;
         auto user_id     = settings.value("auth/user_id").toString();
@@ -523,12 +522,13 @@ TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString 
 
         lastSender_ = user_id;
 
-        PendingMessage message(txn_id, body, "", view_item);
-        pending_msgs_.push_back(message);
+        int txn_id = client_->incrementTransactionId();
+        PendingMessage message(ty, txn_id, body, "", "", view_item);
+        handleNewUserMessage(message);
 }
 
 void
-TimelineView::addUserMessage(const QString &url, const QString &filename, int txn_id)
+TimelineView::addUserMessage(const QString &url, const QString &filename)
 {
         QSettings settings;
         auto user_id     = settings.value("auth/user_id").toString();
@@ -545,8 +545,34 @@ TimelineView::addUserMessage(const QString &url, const QString &filename, int tx
 
         lastSender_ = user_id;
 
-        PendingMessage message(txn_id, url, "", view_item);
-        pending_msgs_.push_back(message);
+        int txn_id = client_->incrementTransactionId();
+        PendingMessage message(matrix::events::MessageEventType::Image, txn_id, url, filename, "", view_item);
+        handleNewUserMessage(message);
+}
+
+void
+TimelineView::handleNewUserMessage(PendingMessage msg)
+{
+        pending_msgs_.enqueue(msg);
+        if (pending_msgs_.size() == 1 && pending_sent_msgs_.size() == 0)
+                sendNextPendingMessage();
+}
+
+void
+TimelineView::sendNextPendingMessage()
+{
+        if (pending_msgs_.size() == 0)
+                return;
+
+        PendingMessage &m = pending_msgs_.head();
+        switch (m.ty) {
+        case matrix::events::MessageEventType::Image:
+                client_->sendRoomMessage(m.ty, m.txn_id, room_id_, QFileInfo(m.filename).fileName(), m.body);
+                break;
+        default:
+                client_->sendRoomMessage(m.ty, m.txn_id, room_id_, m.body);
+                break;
+        }
 }
 
 void
@@ -562,8 +588,7 @@ TimelineView::notifyForLastEvent()
 }
 
 bool
-TimelineView::isPendingMessage(const QString &eventid,
-                               const QString &body,
+TimelineView::isPendingMessage(const QString &txnid,
                                const QString &sender,
                                const QString &local_userid)
 {
@@ -571,7 +596,12 @@ TimelineView::isPendingMessage(const QString &eventid,
                 return false;
 
         for (const auto &msg : pending_msgs_) {
-                if (msg.event_id == eventid || msg.body == body)
+                if (QString::number(msg.txn_id) == txnid)
+                        return true;
+        }
+
+        for (const auto &msg : pending_sent_msgs_) {
+                if (QString::number(msg.txn_id) == txnid)
                         return true;
         }
 
@@ -579,14 +609,28 @@ TimelineView::isPendingMessage(const QString &eventid,
 }
 
 void
-TimelineView::removePendingMessage(const QString &eventid, const QString &body)
+TimelineView::removePendingMessage(const QString &txnid)
 {
-        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
-                int index = std::distance(pending_msgs_.begin(), it);
-
-                if (it->event_id == eventid || it->body == body) {
-                        pending_msgs_.removeAt(index);
-                        break;
+        for (auto it = pending_sent_msgs_.begin(); it != pending_sent_msgs_.end(); ++it) {
+                if (QString::number(it->txn_id) == txnid) {
+                        int index = std::distance(pending_sent_msgs_.begin(), it);
+                        pending_sent_msgs_.removeAt(index);
+                        return;
                 }
         }
+        for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
+                if (QString::number(it->txn_id) == txnid) {
+                        int index = std::distance(pending_msgs_.begin(), it);
+                        pending_msgs_.removeAt(index);
+                        return;
+                }
+        }
+}
+
+void
+TimelineView::handleFailedMessage(int txnid)
+{
+        Q_UNUSED(txnid);
+        // Note: We do this even if the message has already been echoed.
+        QTimer::singleShot(500, this, SLOT(sendNextPendingMessage()));
 }

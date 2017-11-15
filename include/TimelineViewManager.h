@@ -21,6 +21,8 @@
 #include <QSharedPointer>
 #include <QStackedWidget>
 
+#include "MessageEvent.h"
+
 class JoinedRoom;
 class MatrixClient;
 class RoomInfoListItem;
@@ -61,12 +63,13 @@ signals:
 
 public slots:
         void setHistoryView(const QString &room_id);
-        void sendTextMessage(const QString &msg);
-        void sendEmoteMessage(const QString &msg);
-        void sendImageMessage(const QString &roomid, const QString &filename, const QString &url);
+        void queueTextMessage(const QString &msg);
+        void queueEmoteMessage(const QString &msg);
+        void queueImageMessage(const QString &roomid, const QString &filename, const QString &url);
 
 private slots:
         void messageSent(const QString &eventid, const QString &roomid, int txnid);
+        void messageSendFailed(const QString &roomid, int txnid);
 
 private:
         QString active_room_;
