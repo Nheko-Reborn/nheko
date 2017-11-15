@@ -247,7 +247,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
                         eventIds_[text.eventId()] = true;
 
                         QString txnid = text.unsignedData().transactionId();
-                        if (!txnid.isEmpty() && isPendingMessage(txnid, text.sender(), local_user_)) {
+                        if (!txnid.isEmpty() &&
+                            isPendingMessage(txnid, text.sender(), local_user_)) {
                                 removePendingMessage(txnid);
                                 return nullptr;
                         }
@@ -293,7 +294,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
                         eventIds_[img.eventId()] = true;
 
                         QString txnid = img.unsignedData().transactionId();
-                        if (!txnid.isEmpty() && isPendingMessage(txnid, img.sender(), local_user_)) {
+                        if (!txnid.isEmpty() &&
+                            isPendingMessage(txnid, img.sender(), local_user_)) {
                                 removePendingMessage(txnid);
                                 return nullptr;
                         }
@@ -319,7 +321,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
                         eventIds_[emote.eventId()] = true;
 
                         QString txnid = emote.unsignedData().transactionId();
-                        if (!txnid.isEmpty() && isPendingMessage(txnid, emote.sender(), local_user_)) {
+                        if (!txnid.isEmpty() &&
+                            isPendingMessage(txnid, emote.sender(), local_user_)) {
                                 removePendingMessage(txnid);
                                 return nullptr;
                         }
@@ -499,7 +502,7 @@ void
 TimelineView::updatePendingMessage(int txn_id, QString event_id)
 {
         if (pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
-                auto msg = pending_msgs_.dequeue();
+                auto msg     = pending_msgs_.dequeue();
                 msg.event_id = event_id;
                 pending_sent_msgs_.append(msg);
         }
@@ -546,7 +549,8 @@ TimelineView::addUserMessage(const QString &url, const QString &filename)
         lastSender_ = user_id;
 
         int txn_id = client_->incrementTransactionId();
-        PendingMessage message(matrix::events::MessageEventType::Image, txn_id, url, filename, "", view_item);
+        PendingMessage message(
+          matrix::events::MessageEventType::Image, txn_id, url, filename, "", view_item);
         handleNewUserMessage(message);
 }
 
@@ -567,7 +571,8 @@ TimelineView::sendNextPendingMessage()
         PendingMessage &m = pending_msgs_.head();
         switch (m.ty) {
         case matrix::events::MessageEventType::Image:
-                client_->sendRoomMessage(m.ty, m.txn_id, room_id_, QFileInfo(m.filename).fileName(), m.body);
+                client_->sendRoomMessage(
+                  m.ty, m.txn_id, room_id_, QFileInfo(m.filename).fileName(), m.body);
                 break;
         default:
                 client_->sendRoomMessage(m.ty, m.txn_id, room_id_, m.body);

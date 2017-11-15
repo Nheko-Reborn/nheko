@@ -50,7 +50,12 @@ struct PendingMessage
         QString event_id;
         TimelineItem *widget;
 
-        PendingMessage(matrix::events::MessageEventType ty, int txn_id, QString body, QString filename, QString event_id, TimelineItem *widget)
+        PendingMessage(matrix::events::MessageEventType ty,
+                       int txn_id,
+                       QString body,
+                       QString filename,
+                       QString event_id,
+                       TimelineItem *widget)
           : ty(ty)
           , txn_id(txn_id)
           , body(body)
@@ -125,9 +130,7 @@ private:
         // sender's name.
         bool isSenderRendered(const QString &user_id, TimelineDirection direction);
 
-        bool isPendingMessage(const QString &txnid,
-                              const QString &sender,
-                              const QString &userid);
+        bool isPendingMessage(const QString &txnid, const QString &sender, const QString &userid);
         void removePendingMessage(const QString &txnid);
 
         bool isDuplicate(const QString &event_id) { return eventIds_.contains(event_id); };

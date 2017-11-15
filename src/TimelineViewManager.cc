@@ -36,9 +36,10 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QW
         connect(
           client_.data(), &MatrixClient::messageSent, this, &TimelineViewManager::messageSent);
 
-        connect(
-          client_.data(), &MatrixClient::messageSendFailed,
-          this, &TimelineViewManager::messageSendFailed);
+        connect(client_.data(),
+                &MatrixClient::messageSendFailed,
+                this,
+                &TimelineViewManager::messageSendFailed);
 }
 
 TimelineViewManager::~TimelineViewManager() {}
@@ -81,8 +82,8 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 
 void
 TimelineViewManager::queueImageMessage(const QString &roomid,
-                                      const QString &filename,
-                                      const QString &url)
+                                       const QString &filename,
+                                       const QString &url)
 {
         if (!views_.contains(roomid)) {
                 qDebug() << "Cannot send m.image message to a non-managed view";

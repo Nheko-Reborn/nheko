@@ -62,7 +62,7 @@ public:
 
         QUrl getHomeServer() { return server_; };
         int transactionId() { return txn_id_; };
-        int incrementTransactionId() { return ++txn_id_; }; // It is incredibly important that it's incremented first.
+        int incrementTransactionId() { return ++txn_id_; };
 
         void reset() noexcept;
 
