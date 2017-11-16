@@ -9,6 +9,7 @@
 class LoadingIndicator : public QWidget
 {
         Q_OBJECT
+        Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
         LoadingIndicator(QWidget *parent = 0);

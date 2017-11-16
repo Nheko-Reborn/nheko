@@ -176,7 +176,6 @@ Badge::paintEvent(QPaintEvent *)
 
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);
-        brush.setColor(isEnabled() ? backgroundColor() : QColor("#cccccc"));
 
         painter.setBrush(brush);
         painter.setPen(Qt::NoPen);

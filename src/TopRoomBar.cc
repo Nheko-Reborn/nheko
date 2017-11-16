@@ -41,8 +41,6 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
         avatar_ = new Avatar(this);
         avatar_->setLetter(QChar('?'));
-        avatar_->setBackgroundColor(QColor("#d6dde3"));
-        avatar_->setTextColor(QColor("#555459"));
         avatar_->setSize(35);
 
         textLayout_ = new QVBoxLayout();

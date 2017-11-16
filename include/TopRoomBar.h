@@ -34,7 +34,7 @@ class Menu;
 class OverlayModal;
 class RoomSettings;
 
-static const QString URL_HTML = "<a href=\"\\1\" style=\"color: #333333\">\\1</a>";
+static const QString URL_HTML = "<a href=\"\\1\">\\1</a>";
 static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
 
 class TopRoomBar : public QWidget

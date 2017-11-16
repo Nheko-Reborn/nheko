@@ -1,0 +1,39 @@
+OverlayWidget, OverlayWidget > * {
+        background-color: palette(window);
+}
+
+#mainContent, #mainContent > * {
+        background-color: palette(base);
+}
+
+TimelineView, TimelineView > *, TimelineItem, TimelineItem > * {
+        background-color: palette(base);
+}
+
+FlatButton {
+        qproperty-foregroundColor: palette(text);
+}
+
+RoomInfoListItem {
+        qproperty-highlightedBackgroundColor: palette(highlight);
+        qproperty-hoverBackgroundColor: palette(dark);
+        qproperty-backgroundColor: palette(window);
+
+        qproperty-titleColor: palette(text);
+        qproperty-subtitleColor: palette(text);
+
+        qproperty-highlightedTitleColor: palette(text);
+        qproperty-highlightedSubtitleColor: palette(text);
+}
+
+LoadingIndicator {
+        qproperty-color: palette(text);
+}
+
+#ChatPageLoadSpinner {
+        qproperty-color: #acc7dc;
+}
+
+UserInfoWidget, UserInfoWidget > * {
+        background-color: palette(window);
+}

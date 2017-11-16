@@ -27,7 +27,7 @@ LogoutDialog::LogoutDialog(QWidget *parent)
   : QFrame(parent)
 {
         setMaximumSize(400, 400);
-        setStyleSheet("background-color: #fff");
+        //        setStyleSheet("background-color: #fff");
 
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(30);
@@ -52,7 +52,7 @@ LogoutDialog::LogoutDialog(QWidget *parent)
 
         auto label = new QLabel(tr("Logout. Are you sure?"), this);
         label->setFont(font);
-        label->setStyleSheet("color: #333333");
+        //        label->setStyleSheet("color: #333333");
 
         layout->addWidget(label);
         layout->addLayout(buttonLayout);

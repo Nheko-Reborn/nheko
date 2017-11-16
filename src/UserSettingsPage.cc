@@ -72,7 +72,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         backBtn_->setIconSize(QSize(24, 24));
 
         auto heading_ = new QLabel(tr("User Settings"));
-        heading_->setFont(QFont("Open Sans Bold", 22));
+        heading_->setStyleSheet("font-weight: bold; font-size: 22px;");
 
         topBarLayout_ = new QHBoxLayout;
         topBarLayout_->setSpacing(0);
@@ -87,7 +87,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         trayToggle_    = new Toggle(this);
         trayToggle_->setActiveColor(QColor("#38A3D8"));
         trayToggle_->setInactiveColor(QColor("gray"));
-        trayLabel->setFont(QFont("Open Sans", 15));
+        trayLabel->setStyleSheet("font-size: 15px;");
 
         trayOptionLayout_->addWidget(trayLabel);
         trayOptionLayout_->addWidget(trayToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
@@ -98,14 +98,13 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         themeCombo_      = new QComboBox(this);
         themeCombo_->addItem("Default");
         themeCombo_->addItem("System");
-        themeLabel_->setFont(QFont("Open Sans", 15));
+        themeLabel_->setStyleSheet("font-size: 15px;");
 
         themeOptionLayout_->addWidget(themeLabel_);
         themeOptionLayout_->addWidget(themeCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto general_ = new QLabel(tr("GENERAL"), this);
-        general_->setFont(QFont("Open Sans Bold", 17));
-        general_->setStyleSheet("color: #5d6565");
+        general_->setStyleSheet("font-size: 17px; color: #5d6565");
 
         mainLayout_ = new QVBoxLayout;
         mainLayout_->setSpacing(7);

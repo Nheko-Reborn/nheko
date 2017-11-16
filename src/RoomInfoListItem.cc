@@ -95,18 +95,19 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         p.setRenderHint(QPainter::SmoothPixmapTransform);
         p.setRenderHint(QPainter::Antialiasing);
 
-        if (isPressed_)
-                p.fillRect(rect(), QColor("#38A3D8"));
-        else if (underMouse())
-                p.fillRect(rect(), QColor(200, 200, 200, 128));
-        else
-                p.fillRect(rect(), QColor("#FFF"));
-
         QFont font;
         font.setPixelSize(conf::fontSize);
         QFontMetrics metrics(font);
 
-        p.setPen(QColor("#333"));
+        if (isPressed_) {
+                p.fillRect(rect(), highlightedBackgroundColor_);
+        } else if (underMouse()) {
+                p.fillRect(rect(), hoverBackgroundColor_);
+        } else {
+                p.fillRect(rect(), backgroundColor_);
+        }
+
+        // p.setPen(QColor("#333"));
 
         QRect avatarRegion(Padding, Padding, IconSize, IconSize);
 
@@ -115,10 +116,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
         if (width() > ui::sidebar::SmallSize) {
                 if (isPressed_) {
-                        QPen pen(QColor("white"));
+                        QPen pen(highlightedTitleColor_);
+                        p.setPen(pen);
+                } else {
+                        QPen pen(titleColor_);
                         p.setPen(pen);
                 }
-
                 font.setPixelSize(conf::roomlist::fonts::heading);
                 p.setFont(font);
 
@@ -130,8 +133,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                   state_.getName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
                 p.drawText(QPoint(2 * Padding + IconSize, top_y), name);
 
-                if (!isPressed_) {
-                        QPen pen(QColor("#5d6565"));
+                if (isPressed_) {
+                        QPen pen(highlightedSubtitleColor_);
+                        p.setPen(pen);
+                } else {
+                        QPen pen(subtitleColor_);
                         p.setPen(pen);
                 }
 

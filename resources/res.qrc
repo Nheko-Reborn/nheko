@@ -42,7 +42,6 @@
         <file>icons/emoji-categories/flags.png</file>
         <file>icons/emoji-categories/flags@2x.png</file>
     </qresource>
-
     <qresource prefix="/logos">
         <file>nheko.png</file>
 
@@ -62,13 +61,15 @@
         <file>nheko-32.png</file>
         <file>nheko-16.png</file>
     </qresource>
-
     <qresource prefix="/fonts">
         <file>fonts/OpenSans/OpenSans-Regular.ttf</file>
         <file>fonts/OpenSans/OpenSans-Italic.ttf</file>
         <file>fonts/OpenSans/OpenSans-Bold.ttf</file>
         <file>fonts/OpenSans/OpenSans-Semibold.ttf</file>
-
         <file>fonts/EmojiOne/emojione-android.ttf</file>
+    </qresource>
+    <qresource prefix="/styles">
+        <file>styles/system.qss</file>
+        <file>styles/nheko.qss</file>
     </qresource>
 </RCC>

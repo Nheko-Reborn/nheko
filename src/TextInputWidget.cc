@@ -133,8 +133,8 @@ FilteredTextEdit::minimumSizeHint() const
 void
 FilteredTextEdit::submit()
 {
-	if (toPlainText().trimmed().isEmpty())
-		return;
+        if (toPlainText().trimmed().isEmpty())
+                return;
 
         if (true_history_.size() == INPUT_HISTORY_SIZE)
                 true_history_.pop_back();
@@ -176,7 +176,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         setFixedHeight(conf::textInput::height);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         setCursor(Qt::ArrowCursor);
-        setStyleSheet("background-color: #fff;");
 
         topLayout_ = new QHBoxLayout();
         topLayout_->setSpacing(0);
@@ -192,6 +191,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         spinner_ = new LoadingIndicator(this);
         spinner_->setFixedHeight(32);
         spinner_->setFixedWidth(32);
+        spinner_->setObjectName("FileUploadSpinner");
         spinner_->hide();
 
         QFont font;
@@ -202,7 +202,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         input_->setFont(font);
         input_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         input_->setPlaceholderText(tr("Write a message..."));
-        input_->setStyleSheet("color: #333333; border: none; padding-top: 5px; margin: 0 5px");
+        input_->setStyleSheet("border: none; padding-top: 5px;");
 
         sendMessageBtn_ = new FlatButton(this);
 
@@ -334,4 +334,13 @@ void
 TextInputWidget::focusInEvent(QFocusEvent *event)
 {
         input_->setFocus(event->reason());
+}
+
+void
+TextInputWidget::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
