@@ -133,8 +133,8 @@ FilteredTextEdit::minimumSizeHint() const
 void
 FilteredTextEdit::submit()
 {
-	if (toPlainText().trimmed().isEmpty())
-		return;
+        if (toPlainText().trimmed().isEmpty())
+                return;
 
         if (true_history_.size() == INPUT_HISTORY_SIZE)
                 true_history_.pop_back();

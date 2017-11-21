@@ -72,19 +72,22 @@ RoomList::clear()
 }
 
 void
-RoomList::addRoom(const QSharedPointer<RoomSettings> &settings,
+RoomList::addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
                   const RoomState &state,
                   const QString &room_id)
 {
-        RoomInfoListItem *room_item = new RoomInfoListItem(settings, state, room_id, scrollArea_);
+        RoomInfoListItem *room_item =
+          new RoomInfoListItem(settings[room_id], state, room_id, scrollArea_);
         connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
         connect(room_item, &RoomInfoListItem::leaveRoom, this, &RoomList::openLeaveRoomDialog);
 
         rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
-        client_->fetchRoomAvatar(room_id, state.getAvatar());
+        if (!state.getAvatar().toString().isEmpty())
+                client_->fetchRoomAvatar(room_id, state.getAvatar());
 
-        contentsLayout_->insertWidget(0, room_item);
+        int pos = contentsLayout_->count() - 1;
+        contentsLayout_->insertWidget(pos, room_item);
 }
 
 void
@@ -138,23 +141,10 @@ RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &set
         }
 
         for (auto it = states.constBegin(); it != states.constEnd(); ++it) {
-                auto room_id = it.key();
-                auto state   = it.value();
+                const auto room_id = it.key();
+                const auto state   = it.value();
 
-                if (!state.getAvatar().toString().isEmpty())
-                        client_->fetchRoomAvatar(room_id, state.getAvatar());
-
-                RoomInfoListItem *room_item =
-                  new RoomInfoListItem(settings[room_id], state, room_id, scrollArea_);
-                connect(
-                  room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
-                connect(
-                  room_item, &RoomInfoListItem::leaveRoom, this, &RoomList::openLeaveRoomDialog);
-
-                rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
-
-                int pos = contentsLayout_->count() - 1;
-                contentsLayout_->insertWidget(pos, room_item);
+                addRoom(settings, state, room_id);
         }
 
         if (rooms_.isEmpty())
@@ -189,15 +179,18 @@ RoomList::openLeaveRoomDialog(const QString &room_id)
 }
 
 void
-RoomList::sync(const QMap<QString, RoomState> &states)
+RoomList::sync(const QMap<QString, RoomState> &states,
+               QMap<QString, QSharedPointer<RoomSettings>> &settings)
+
 {
         for (auto it = states.constBegin(); it != states.constEnd(); ++it) {
                 auto room_id = it.key();
                 auto state   = it.value();
 
                 if (!rooms_.contains(room_id)) {
-                        addRoom(
-                          QSharedPointer<RoomSettings>(new RoomSettings(room_id)), state, room_id);
+                        settings.insert(room_id,
+                                        QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
+                        addRoom(settings, state, room_id);
                 }
 
                 auto room = rooms_[room_id];

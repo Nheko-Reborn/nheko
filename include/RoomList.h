@@ -44,11 +44,12 @@ public:
 
         void setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
                              const QMap<QString, RoomState> &states);
-        void sync(const QMap<QString, RoomState> &states);
+        void sync(const QMap<QString, RoomState> &states,
+                  QMap<QString, QSharedPointer<RoomSettings>> &settings);
 
         void clear();
 
-        void addRoom(const QSharedPointer<RoomSettings> &settings,
+        void addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
                      const RoomState &state,
                      const QString &room_id);
         void removeRoom(const QString &room_id, bool reset);

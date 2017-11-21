@@ -362,7 +362,7 @@ ChatPage::syncCompleted(const SyncResponse &response)
         auto stateDiff = generateMembershipDifference(response.rooms().join(), state_manager_);
         QtConcurrent::run(cache_.data(), &Cache::setState, response.nextBatch(), stateDiff);
 
-        room_list_->sync(state_manager_);
+        room_list_->sync(state_manager_, settingsManager_);
         view_manager_->sync(response.rooms());
 
         client_->setNextBatchToken(response.nextBatch());
@@ -570,7 +570,7 @@ ChatPage::addRoom(const QString &room_id)
                 settingsManager_.insert(room_id,
                                         QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
 
-                room_list_->addRoom(settingsManager_[room_id], state_manager_[room_id], room_id);
+                room_list_->addRoom(settingsManager_, state_manager_[room_id], room_id);
                 room_list_->highlightSelectedRoom(room_id);
 
                 changeTopRoomInfo(room_id);
@@ -710,7 +710,6 @@ ChatPage::updateJoinedRooms(const QMap<QString, JoinedRoom> &rooms)
 
                         state_manager_.insert(it.key(), room_state);
 
-                        // TODO Doesn't work on the sidebar.
                         settingsManager_.insert(
                           it.key(), QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
 
