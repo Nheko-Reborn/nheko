@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QFile>
 #include <QFontDatabase>
 #include <QLibraryInfo>
 #include <QNetworkProxy>
@@ -72,6 +73,21 @@ main(int argc, char *argv[])
 
         QSettings settings;
 
+        QFile stylefile;
+
+        if (!settings.contains("user/theme")) {
+                settings.setValue("user/theme", "default");
+        }
+
+        if (settings.value("user/theme").toString() == "default") {
+                stylefile.setFileName(":/styles/styles/nheko.qss");
+        } else {
+                stylefile.setFileName(":/styles/styles/system.qss");
+        }
+        stylefile.open(QFile::ReadOnly);
+        QString stylesheet = QString(stylefile.readAll());
+
+        app.setStyleSheet(stylesheet);
         // Set the default if a value has not been set.
         if (settings.value("font/size").toInt() == 0)
                 settings.setValue("font/size", 12);

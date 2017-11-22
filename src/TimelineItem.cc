@@ -30,7 +30,7 @@
 #include "TimelineViewManager.h"
 
 static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
-static const QString URL_HTML = "<a href=\"\\1\" style=\"color: #333333\">\\1</a>";
+static const QString URL_HTML = "<a href=\"\\1\">\\1</a>";
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;
@@ -205,7 +205,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
 
         body.replace(URL_REGEX, URL_HTML);
         body.replace("\n", "<br/>");
-        body = "<i style=\"color: #565E5E\">" + body + "</i>";
+        body = "<i>" + body + "</i>";
 
         if (with_sender) {
                 auto displayName = TimelineViewManager::displayName(event.sender());
@@ -308,7 +308,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
 void
 TimelineItem::generateBody(const QString &body)
 {
-        QString content("<span style=\"color: black;\"> %1 </span>");
+        QString content("<span> %1 </span>");
 
         body_ = new QLabel(this);
         body_->setFont(font_);
@@ -332,8 +332,8 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
                         sender = userid.split(":")[0].split("@")[1];
         }
 
-        QString userContent("<span style=\"color: #171717\"> %1 </span>");
-        QString bodyContent("<span style=\"color: #171717;\"> %1 </span>");
+        QString userContent("%1");
+        QString bodyContent("%1");
 
         QFont usernameFont = font_;
         usernameFont.setBold(true);
@@ -357,7 +357,7 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
 void
 TimelineItem::generateTimestamp(const QDateTime &time)
 {
-        QString msg("<span style=\"color: #5d6565;\"> %1 </span>");
+        QString msg("%1");
 
         QFont timestampFont;
         timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
@@ -369,6 +369,8 @@ TimelineItem::generateTimestamp(const QDateTime &time)
         timestamp_->setFont(timestampFont);
         timestamp_->setText(msg.arg(time.toString("HH:mm")));
         timestamp_->setContentsMargins(0, topMargin, 0, 0);
+        timestamp_->setStyleSheet(
+          QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
 }
 
 QString
@@ -399,8 +401,6 @@ TimelineItem::setupAvatarLayout(const QString &userName)
 
         userAvatar_ = new Avatar(this);
         userAvatar_->setLetter(QChar(userName[0]).toUpper());
-        userAvatar_->setBackgroundColor(QColor("#eee"));
-        userAvatar_->setTextColor(QColor("black"));
         userAvatar_->setSize(conf::timeline::avatarSize);
 
         // TODO: The provided user name should be a UserId class
@@ -467,3 +467,12 @@ TimelineItem::descriptiveTime(const QDateTime &then)
 }
 
 TimelineItem::~TimelineItem() {}
+
+void
+TimelineItem::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

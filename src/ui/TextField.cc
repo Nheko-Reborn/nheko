@@ -197,8 +197,6 @@ TextField::paintEvent(QPaintEvent *event)
 
         if (text().isEmpty()) {
                 painter.setOpacity(1 - state_machine_->progress());
-                // painter.fillRect(rect(),
-                // parentWidget()->palette().color(backgroundRole()));
                 painter.fillRect(rect(), backgroundColor());
         }
 

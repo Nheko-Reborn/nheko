@@ -49,7 +49,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)
   , client_(client)
 {
-        setStyleSheet("background-color: #fff;");
+        setObjectName("chatPage");
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -79,7 +79,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         sideBarLayout_->addWidget(sidebarActions_);
 
         // Content
-        content_       = new QFrame(this);
+        content_ = new QFrame(this);
+        content_->setObjectName("mainContent");
         contentLayout_ = new QVBoxLayout(content_);
         contentLayout_->setSpacing(0);
         contentLayout_->setMargin(0);
@@ -544,7 +545,7 @@ ChatPage::showQuickSwitcher()
                   new OverlayModal(MainWindow::instance(), quickSwitcher_.data()),
                   [=](OverlayModal *modal) { modal->deleteLater(); });
                 quickSwitcherModal_->setDuration(0);
-                quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
+                //                quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
         }
 
         QMap<QString, QString> rooms;

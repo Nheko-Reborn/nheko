@@ -32,11 +32,9 @@ EmojiPanel::EmojiPanel(QWidget *parent)
   , animationDuration_{100}
   , categoryIconSize_{20}
 {
-        setStyleSheet("QWidget {background: #fff; color: #e8e8e8; border: none;}"
-                      "QScrollBar:vertical { background-color: #fff; width: 8px; margin: 0px "
-                      "2px 0 2px; }"
-                      "QScrollBar::handle:vertical { background-color: #d6dde3; min-height: "
-                      "20px; }"
+        setStyleSheet("QWidget {border: none;}"
+                      "QScrollBar:vertical { width: 8px; margin: 0px 2px 0 2px; }"
+                      "QScrollBar::handle:vertical { min-height: 20px; }"
                       "QScrollBar::add-line:vertical { border: none; background: none; }"
                       "QScrollBar::sub-line:vertical { border: none; background: none; }");
 
@@ -55,7 +53,7 @@ EmojiPanel::EmojiPanel(QWidget *parent)
         contentLayout->setMargin(0);
 
         auto emojiCategories = new QFrame(mainWidget);
-        emojiCategories->setStyleSheet("background-color: #f2f2f2");
+        // emojiCategories->setStyleSheet("background-color: #f2f2f2");
 
         auto categoriesLayout = new QHBoxLayout(emojiCategories);
         categoriesLayout->setSpacing(6);
@@ -250,6 +248,10 @@ EmojiPanel::leaveEvent(QEvent *event)
 void
 EmojiPanel::paintEvent(QPaintEvent *event)
 {
+        Q_UNUSED(event);
+
+        QStyleOption opt;
+        opt.init(this);
         QPainter p(this);
         DropShadow::draw(p,
                          shadowMargin_,
@@ -262,7 +264,8 @@ EmojiPanel::paintEvent(QPaintEvent *event)
                          width(),
                          height());
 
-        QWidget::paintEvent(event);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+        // QWidget::paintEvent(event);
 }
 
 void

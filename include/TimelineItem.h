@@ -19,6 +19,9 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOption>
 
 #include "Emote.h"
 #include "Image.h"
@@ -66,6 +69,9 @@ public:
         DescInfo descriptionMessage() const { return descriptionMsg_; };
 
         ~TimelineItem();
+
+protected:
+        void paintEvent(QPaintEvent *event) override;
 
 private:
         void init();
