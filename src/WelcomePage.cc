@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QStyleOption>
 #include <QLabel>
 #include <QLayout>
 
@@ -82,4 +83,13 @@ WelcomePage::WelcomePage(QWidget *parent)
 
         connect(registerBtn_, &QPushButton::clicked, this, &WelcomePage::userRegister);
         connect(loginBtn_, &QPushButton::clicked, this, &WelcomePage::userLogin);
+}
+
+void
+WelcomePage::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

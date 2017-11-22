@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QStyleOption>
+
 #include "LoginPage.h"
 #include "Config.h"
 #include "FlatButton.h"
@@ -299,6 +301,15 @@ void
 LoginPage::onBackButtonClicked()
 {
         emit backButtonClicked();
+}
+
+void
+LoginPage::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 LoginPage::~LoginPage() {}

@@ -152,3 +152,12 @@ UserSettingsPage::resizeEvent(QResizeEvent *event)
 
         QWidget::resizeEvent(event);
 }
+
+void
+UserSettingsPage::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

@@ -1,5 +1,6 @@
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QStyleOption>
 
 #include "Config.h"
 #include "FlatButton.h"
@@ -42,4 +43,13 @@ LeaveRoomDialog::LeaveRoomDialog(QWidget *parent)
 
         connect(confirmBtn_, &QPushButton::clicked, [=]() { emit closing(true); });
         connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false); });
+}
+
+void
+LeaveRoomDialog::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

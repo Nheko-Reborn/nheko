@@ -28,6 +28,9 @@ class WelcomePage : public QWidget
 public:
         explicit WelcomePage(QWidget *parent = 0);
 
+protected:
+	void paintEvent(QPaintEvent *event) override;
+
 signals:
         // Notify that the user wants to login in.
         void userLogin();

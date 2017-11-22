@@ -1,7 +1,3 @@
-* {
-        color: #333;
-}
-
 QLabel {
         color: #333;
 }
@@ -9,8 +5,6 @@ QLabel {
 #chatPage, #chatPage > * { background-color: white; }
 
 TimelineView, TimelineView > * { background-color: white; }
-
-QMenu, QMenu > * { background-color: white; }
 
 FlatButton { qproperty-foregroundColor: #333; }
 
@@ -42,6 +36,10 @@ UserInfoWidget, UserInfoWidget > * {
         color: #ebebeb;
 }
 
+UserSettingsPage {
+    background-color: white;
+}
+
 Avatar {
         qproperty-textColor: black;
         qproperty-backgroundColor: #eee;
@@ -53,4 +51,29 @@ Avatar {
 
 #userIdLabel {
         color: #555459;
+}
+
+LogoutDialog {
+    background-color: white;
+    color: #333;
+}
+
+LeaveRoomDialog {
+    background-color: white;
+    color: #333;
+}
+
+WelcomePage {
+    background-color: white;
+    color: #333;
+}
+
+LoginPage {
+    background-color: white;
+    color: #333;
+}
+
+RegisterPage {
+    background-color: white;
+    color: #333;
 }

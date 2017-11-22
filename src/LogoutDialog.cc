@@ -17,6 +17,8 @@
 
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QPaintEvent>
+#include <QStyleOption>
 
 #include "Config.h"
 #include "FlatButton.h"
@@ -27,7 +29,6 @@ LogoutDialog::LogoutDialog(QWidget *parent)
   : QFrame(parent)
 {
         setMaximumSize(400, 400);
-        //        setStyleSheet("background-color: #fff");
 
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(30);
@@ -52,11 +53,19 @@ LogoutDialog::LogoutDialog(QWidget *parent)
 
         auto label = new QLabel(tr("Logout. Are you sure?"), this);
         label->setFont(font);
-        //        label->setStyleSheet("color: #333333");
 
         layout->addWidget(label);
         layout->addLayout(buttonLayout);
 
         connect(confirmBtn_, &QPushButton::clicked, [=]() { emit closing(true); });
         connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false); });
+}
+
+void
+LogoutDialog::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

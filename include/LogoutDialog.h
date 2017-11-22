@@ -27,6 +27,9 @@ class LogoutDialog : public QFrame
 public:
         explicit LogoutDialog(QWidget *parent = nullptr);
 
+protected:
+	void paintEvent(QPaintEvent *event) override;
+
 signals:
         void closing(bool isLoggingOut);
 

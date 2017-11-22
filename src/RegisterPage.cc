@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QStyleOption>
+
 #include "RegisterPage.h"
 #include "Avatar.h"
 #include "Config.h"
@@ -184,6 +186,15 @@ RegisterPage::onRegisterButtonClicked()
 
                 client_->registerUser(username, password, server);
         }
+}
+
+void
+RegisterPage::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 RegisterPage::~RegisterPage() {}
