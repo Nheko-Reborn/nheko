@@ -10,7 +10,6 @@ JoinRoomDialog::JoinRoomDialog(QWidget *parent)
   : QFrame(parent)
 {
         setMaximumSize(400, 400);
-        setStyleSheet("background-color: #fff");
 
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(30);
@@ -35,7 +34,6 @@ JoinRoomDialog::JoinRoomDialog(QWidget *parent)
 
         auto label = new QLabel(tr("Room alias to join:"), this);
         label->setFont(font);
-        label->setStyleSheet("color: #333333");
 
         roomAliasEdit_ = new QLineEdit(this);
 

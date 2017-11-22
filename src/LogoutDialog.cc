@@ -16,9 +16,9 @@
  */
 
 #include <QLabel>
-#include <QVBoxLayout>
 #include <QPaintEvent>
 #include <QStyleOption>
+#include <QVBoxLayout>
 
 #include "Config.h"
 #include "FlatButton.h"

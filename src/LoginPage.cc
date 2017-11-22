@@ -17,11 +17,11 @@
 
 #include <QStyleOption>
 
-#include "LoginPage.h"
 #include "Config.h"
 #include "FlatButton.h"
 #include "InputValidator.h"
 #include "LoadingIndicator.h"
+#include "LoginPage.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RaisedButton.h"
@@ -32,8 +32,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   , inferredServerAddress_()
   , client_{client}
 {
-        //        setStyleSheet("background-color: #fff");
-
         top_layout_ = new QVBoxLayout();
 
         top_bar_layout_ = new QHBoxLayout();
@@ -42,7 +40,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
         back_button_ = new FlatButton(this);
         back_button_->setMinimumSize(QSize(30, 30));
-        // back_button_->setForegroundColor("#333333");
 
         top_bar_layout_->addWidget(back_button_, 0, Qt::AlignLeft | Qt::AlignVCenter);
         top_bar_layout_->addStretch(1);
@@ -77,10 +74,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         form_wrapper_->addStretch(1);
 
         matrixid_input_ = new TextField(this);
-        //        matrixid_input_->setTextColor("#333333");
         matrixid_input_->setLabel(tr("Matrix ID"));
-        //        matrixid_input_->setInkColor("#555459");
-        //        matrixid_input_->setBackgroundColor("#fff");
         matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
 
         spinner_ = new LoadingIndicator(this);
@@ -97,17 +91,11 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         matrixidLayout_->addWidget(matrixid_input_, 0, Qt::AlignVCenter);
 
         password_input_ = new TextField(this);
-        //        password_input_->setTextColor("#333333");
         password_input_->setLabel(tr("Password"));
-        //        password_input_->setInkColor("#555459");
-        //        password_input_->setBackgroundColor("#fff");
         password_input_->setEchoMode(QLineEdit::Password);
 
         serverInput_ = new TextField(this);
-        //        serverInput_->setTextColor("#333333");
         serverInput_->setLabel("Homeserver address");
-        //        serverInput_->setInkColor("#555459");
-        //        serverInput_->setBackgroundColor("#fff");
         serverInput_->setPlaceholderText("matrix.org");
         serverInput_->hide();
 
@@ -123,8 +111,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         button_layout_->setContentsMargins(0, 0, 0, 30);
 
         login_button_ = new RaisedButton(tr("LOGIN"), this);
-        //        login_button_->setBackgroundColor(QColor("#333333"));
-        //        login_button_->setForegroundColor(QColor("white"));
         login_button_->setMinimumSize(350, 65);
         login_button_->setFontSize(20);
         login_button_->setCornerRadius(3);
@@ -138,7 +124,6 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
         error_label_ = new QLabel(this);
         error_label_->setFont(font);
-        //        error_label_->setStyleSheet("color: #E22826");
 
         top_layout_->addLayout(top_bar_layout_);
         top_layout_->addStretch(1);

@@ -38,7 +38,7 @@ signals:
         void emojiSelected(const QString &emoji);
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
 
 private slots:
         void clickIndex(const QModelIndex &index)

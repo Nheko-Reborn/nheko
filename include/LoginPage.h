@@ -43,7 +43,7 @@ signals:
         void backButtonClicked();
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
 
 public slots:
         // Displays errors produced during the login.

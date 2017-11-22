@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QPainter>
 #include <QScrollBar>
 #include <QStyleOption>
-#include <QPainter>
 
 #include "Config.h"
 #include "EmojiCategory.h"
@@ -69,7 +69,7 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
 
         category_ = new QLabel(category, this);
         category_->setFont(font);
-	category_->setStyleSheet("margin: 20px 0 20px 8px;");
+        category_->setStyleSheet("margin: 20px 0 20px 8px;");
 
         mainLayout_->addWidget(category_);
         mainLayout_->addWidget(emojiListView_);

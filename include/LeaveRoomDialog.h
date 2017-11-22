@@ -11,7 +11,7 @@ public:
         explicit LeaveRoomDialog(QWidget *parent = nullptr);
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
 
 signals:
         void closing(bool isLeaving);

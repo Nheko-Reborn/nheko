@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QStyleOption>
 #include <QLabel>
 #include <QLayout>
+#include <QStyleOption>
 
 #include "Config.h"
 #include "RaisedButton.h"

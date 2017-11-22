@@ -1,6 +1,6 @@
 #include <QLabel>
-#include <QVBoxLayout>
 #include <QStyleOption>
+#include <QVBoxLayout>
 
 #include "Config.h"
 #include "FlatButton.h"
@@ -11,7 +11,6 @@ LeaveRoomDialog::LeaveRoomDialog(QWidget *parent)
   : QFrame(parent)
 {
         setMaximumSize(400, 400);
-        setStyleSheet("background-color: #fff");
 
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(30);
