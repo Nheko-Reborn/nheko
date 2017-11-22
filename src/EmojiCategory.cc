@@ -16,6 +16,8 @@
  */
 
 #include <QScrollBar>
+#include <QStyleOption>
+#include <QPainter>
 
 #include "Config.h"
 #include "EmojiCategory.h"
@@ -25,6 +27,7 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
 {
         mainLayout_ = new QVBoxLayout(this);
         mainLayout_->setMargin(0);
+        mainLayout_->setSpacing(0);
 
         emojiListView_ = new QListView();
         itemModel_     = new QStandardItemModel(this);
@@ -33,7 +36,6 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
         data_     = new Emoji;
 
         emojiListView_->setItemDelegate(delegate_);
-        emojiListView_->setSpacing(5);
         emojiListView_->setModel(itemModel_);
         emojiListView_->setViewMode(QListView::IconMode);
         emojiListView_->setFlow(QListView::LeftToRight);
@@ -67,16 +69,21 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
 
         category_ = new QLabel(category, this);
         category_->setFont(font);
-        category_->setStyleSheet("color: #ccc; margin: 20px 0px 15px 8px;");
+	category_->setStyleSheet("margin: 20px 0 20px 8px;");
 
-        auto labelLayout_ = new QHBoxLayout();
-        labelLayout_->addWidget(category_);
-        labelLayout_->addStretch(1);
-
-        mainLayout_->addLayout(labelLayout_);
+        mainLayout_->addWidget(category_);
         mainLayout_->addWidget(emojiListView_);
 
         connect(emojiListView_, &QListView::clicked, this, &EmojiCategory::clickIndex);
+}
+
+void
+EmojiCategory::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 EmojiCategory::~EmojiCategory() {}

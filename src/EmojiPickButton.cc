@@ -43,7 +43,6 @@ EmojiPickButton::enterEvent(QEvent *e)
         auto y = pos.y() - panel_size.height() - vertical_distance_;
 
         panel_->move(x, y);
-        panel_->fadeIn();
         panel_->show();
 }
 
@@ -62,5 +61,5 @@ EmojiPickButton::leaveEvent(QEvent *e)
         if (panel_geometry.contains(pos))
                 return;
 
-        panel_->fadeOut();
+        panel_->hide();
 }

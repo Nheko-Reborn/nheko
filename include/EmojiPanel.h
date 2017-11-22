@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include <QGraphicsOpacityEffect>
-#include <QPropertyAnimation>
 #include <QScrollArea>
 
 #include "EmojiProvider.h"
@@ -32,9 +30,6 @@ class EmojiPanel : public QWidget
 public:
         EmojiPanel(QWidget *parent = nullptr);
 
-        void fadeOut();
-        void fadeIn();
-
 signals:
         void mouseLeft();
         void emojiSelected(const QString &emoji);
@@ -46,9 +41,6 @@ protected:
 private:
         void showEmojiCategory(const EmojiCategory *category);
 
-        QPropertyAnimation *animation_;
-        QGraphicsOpacityEffect *opacity_;
-
         EmojiProvider emoji_provider_;
 
         QScrollArea *scrollArea_;
@@ -59,6 +51,5 @@ private:
         int width_;
         int height_;
 
-        int animationDuration_;
         int categoryIconSize_;
 };

@@ -77,3 +77,15 @@ RegisterPage {
     background-color: white;
     color: #333;
 }
+
+EmojiPanel,
+EmojiPanel > * {
+    background-color: white;
+    color: #333;
+}
+
+EmojiCategory,
+EmojiCategory > * {
+    background-color: white;
+    color: #ccc;
+}
