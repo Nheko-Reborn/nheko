@@ -1,39 +1,48 @@
 QLabel {
-        color: #333;
+    color: #333;
 }
 
-#chatPage, #chatPage > * { background-color: white; }
+#chatPage,
+#chatPage > * { 
+    background-color: white; 
+}
 
-TimelineView, TimelineView > * { background-color: white; }
+TimelineView,
+TimelineView > * {
+    background-color: white; 
+}
 
-FlatButton { qproperty-foregroundColor: #333; }
+FlatButton { 
+    qproperty-foregroundColor: #333; 
+}
 
-RaisedButton { qproperty-foregroundColor: white; }
+RaisedButton { 
+    qproperty-foregroundColor: white; 
+}
 
-RoomInfoListItem
-{
-        qproperty-highlightedBackgroundColor: #38A3D8;
-        qproperty-hoverBackgroundColor: rgba(200, 200, 200, 128);
-        qproperty-backgroundColor: white;
+RoomInfoListItem {
+    qproperty-highlightedBackgroundColor: #38A3D8;
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 128);
+    qproperty-backgroundColor: white;
 
-        qproperty-titleColor: #333;
-        qproperty-subtitleColor: #5d6565;
+    qproperty-titleColor: #333;
+    qproperty-subtitleColor: #5d6565;
 
-        qproperty-highlightedTitleColor: white;
-        qproperty-highlightedSubtitleColor: white;
+    qproperty-highlightedTitleColor: white;
+    qproperty-highlightedSubtitleColor: white;
 }
 
 #ChatPageLoadSpinner {
-        qproperty-color: #acc7dc;
+    qproperty-color: #acc7dc;
 }
 
 #FileUploadSpinner {
-        qproperty-color: #333;
+    qproperty-color: #333;
 }
 
 UserInfoWidget, UserInfoWidget > * {
-        background-color: #d6dde3;
-        color: #ebebeb;
+    background-color: #d6dde3;
+    color: #ebebeb;
 }
 
 UserSettingsPage {
@@ -41,16 +50,16 @@ UserSettingsPage {
 }
 
 Avatar {
-        qproperty-textColor: black;
-        qproperty-backgroundColor: #eee;
+    qproperty-textColor: black;
+    qproperty-backgroundColor: #eee;
 }
 
 #displayNameLabel {
-        color: #171919;
+    color: #171919;
 }
 
 #userIdLabel {
-        color: #555459;
+    color: #555459;
 }
 
 LogoutDialog {
