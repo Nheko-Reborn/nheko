@@ -89,3 +89,8 @@ EmojiCategory > * {
     background-color: white;
     color: #ccc;
 }
+
+FloatingButton {
+    qproperty-backgroundColor: #efefef;
+    qproperty-foregroundColor: black;
+}
