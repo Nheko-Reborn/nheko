@@ -121,15 +121,20 @@ private slots:
 
 signals:
         void updateLastTimelineMessage(const QString &user, const DescInfo &info);
+        void clearUnreadMessageCount(const QString &room_id);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void showEvent(QShowEvent *event) override;
+        bool event(QEvent *event) override;
 
 private:
         void init();
         void addTimelineItem(TimelineItem *item, TimelineDirection direction);
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
+        void readLastEvent() const;
+        QString getLastEventId() const;
 
         // Used to determine whether or not we should prefix a message with the
         // sender's name.

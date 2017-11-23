@@ -131,6 +131,10 @@ TimelineViewManager::addRoom(const JoinedRoom &room, const QString &room_id)
                 &TimelineView::updateLastTimelineMessage,
                 this,
                 &TimelineViewManager::updateRoomsLastMessage);
+        connect(view,
+                &TimelineView::clearUnreadMessageCount,
+                this,
+                &TimelineViewManager::clearRoomMessageCount);
 
         // Add the view in the widget stack.
         addWidget(view);
@@ -147,6 +151,10 @@ TimelineViewManager::addRoom(const QString &room_id)
                 &TimelineView::updateLastTimelineMessage,
                 this,
                 &TimelineViewManager::updateRoomsLastMessage);
+        connect(view,
+                &TimelineView::clearUnreadMessageCount,
+                this,
+                &TimelineViewManager::clearRoomMessageCount);
 
         // Add the view in the widget stack.
         addWidget(view);

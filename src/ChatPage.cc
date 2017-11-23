@@ -126,6 +126,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
         connect(view_manager_,
+                &TimelineViewManager::clearRoomMessageCount,
+                room_list_,
+                &RoomList::clearRoomMessageCount);
+
+        connect(view_manager_,
                 &TimelineViewManager::unreadMessages,
                 this,
                 [=](const QString &roomid, int count) {

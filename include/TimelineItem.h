@@ -66,7 +66,8 @@ public:
                      QWidget *parent);
 
         void setUserAvatar(const QImage &pixmap);
-        DescInfo descriptionMessage() const { return descriptionMsg_; };
+        DescInfo descriptionMessage() const { return descriptionMsg_; }
+        QString eventId() const { return event_id_; }
 
         ~TimelineItem();
 
@@ -85,6 +86,7 @@ private:
         void setupSimpleLayout();
 
         QString replaceEmoji(const QString &body);
+        QString event_id_;
 
         DescInfo descriptionMsg_;
 

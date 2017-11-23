@@ -204,6 +204,18 @@ RoomList::sync(const QMap<QString, RoomState> &states,
 }
 
 void
+RoomList::clearRoomMessageCount(const QString &room_id)
+{
+        if (!rooms_.contains(room_id))
+                return;
+
+        auto room = rooms_[room_id];
+        room->clearUnreadMessageCount();
+
+        calculateUnreadMessageCount();
+}
+
+void
 RoomList::highlightSelectedRoom(const QString &room_id)
 {
         emit roomChanged(room_id);
@@ -213,9 +225,7 @@ RoomList::highlightSelectedRoom(const QString &room_id)
                 return;
         }
 
-        // TODO: Send a read receipt for the last event.
-        auto room = rooms_[room_id];
-        room->clearUnreadMessageCount();
+        clearRoomMessageCount(room_id);
 
         calculateUnreadMessageCount();
 

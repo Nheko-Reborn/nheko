@@ -59,6 +59,7 @@ public:
         void leaveRoom(const QString &roomId);
         void sendTypingNotification(const QString &roomid, int timeoutInMillis = 20000);
         void removeTypingNotification(const QString &roomid);
+        void readEvent(const QString &room_id, const QString &event_id);
 
         QUrl getHomeServer() { return server_; };
         int transactionId() { return txn_id_; };

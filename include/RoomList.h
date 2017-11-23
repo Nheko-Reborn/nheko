@@ -66,6 +66,7 @@ public slots:
         void closeJoinRoomDialog(bool isJoining, QString roomAlias);
         void openLeaveRoomDialog(const QString &room_id);
         void closeLeaveRoomDialog(bool leaving, const QString &room_id);
+        void clearRoomMessageCount(const QString &room_id);
 
 private:
         void calculateUnreadMessageCount();

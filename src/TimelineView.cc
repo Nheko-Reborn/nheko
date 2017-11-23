@@ -379,6 +379,9 @@ TimelineView::addEvents(const Timeline &timeline)
         if (!timeline.events().isEmpty() && scroll_layout_->count() > 1)
                 notifyForLastEvent();
 
+        if (isActiveWindow() && isVisible() && timeline.events().size() > 0)
+                readLastEvent();
+
         return message_count;
 }
 
@@ -647,4 +650,53 @@ TimelineView::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+TimelineView::readLastEvent() const
+{
+        const auto eventId = getLastEventId();
+
+        if (!eventId.isEmpty())
+                client_->readEvent(room_id_, eventId);
+}
+
+QString
+TimelineView::getLastEventId() const
+{
+        auto index = scroll_layout_->count();
+
+        // Search backwards for the first event that has a valid event id.
+        while (index > 0) {
+                --index;
+
+                auto lastItem          = scroll_layout_->itemAt(index);
+                auto *lastTimelineItem = qobject_cast<TimelineItem *>(lastItem->widget());
+
+                if (lastTimelineItem && !lastTimelineItem->eventId().isEmpty())
+                        return lastTimelineItem->eventId();
+        }
+
+        return QString("");
+}
+
+void
+TimelineView::showEvent(QShowEvent *event)
+{
+        readLastEvent();
+
+        QWidget::showEvent(event);
+}
+
+bool
+TimelineView::event(QEvent *event)
+{
+        if (event->type() == QEvent::WindowActivate) {
+                QTimer::singleShot(1000, this, [=]() {
+                        emit clearUnreadMessageCount(room_id_);
+                        readLastEvent();
+                });
+        }
+
+        return QWidget::event(event);
 }

@@ -58,6 +58,7 @@ public:
         static QMap<QString, QString> DISPLAY_NAMES;
 
 signals:
+        void clearRoomMessageCount(QString roomid);
         void unreadMessages(QString roomid, int count);
         void updateRoomsLastMessage(const QString &user, const DescInfo &info);
 

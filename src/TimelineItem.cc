@@ -154,6 +154,8 @@ TimelineItem::TimelineItem(ImageItem *image,
 {
         init();
 
+        event_id_ = event.eventId();
+
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
         auto displayName = TimelineViewManager::displayName(event.sender());
 
@@ -193,6 +195,9 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
   : QWidget(parent)
 {
         init();
+
+        event_id_ = event.eventId();
+
         descriptionMsg_ = {TimelineViewManager::displayName(event.sender()),
                            event.sender(),
                            " sent a notification",
@@ -234,6 +239,8 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
 {
         init();
 
+        event_id_ = event.eventId();
+
         auto body        = event.content().body().trimmed();
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
         auto displayName = TimelineViewManager::displayName(event.sender());
@@ -272,6 +279,8 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
   : QWidget(parent)
 {
         init();
+
+        event_id_ = event.eventId();
 
         auto body        = event.content().body().trimmed();
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());

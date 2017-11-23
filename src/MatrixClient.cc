@@ -847,3 +847,31 @@ MatrixClient::removeTypingNotification(const QString &roomid)
 
         put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
 }
+
+void
+MatrixClient::readEvent(const QString &room_id, const QString &event_id)
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ +
+                         QString("/rooms/%1/receipt/m.read/%2").arg(room_id).arg(event_id));
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+
+        auto reply = post(request, "{}");
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+        });
+}
