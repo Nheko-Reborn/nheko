@@ -68,6 +68,9 @@ public slots:
         void closeLeaveRoomDialog(bool leaving, const QString &room_id);
         void clearRoomMessageCount(const QString &room_id);
 
+protected:
+        void paintEvent(QPaintEvent *event) override;
+
 private:
         void calculateUnreadMessageCount();
 

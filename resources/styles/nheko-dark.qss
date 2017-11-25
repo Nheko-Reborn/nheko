@@ -12,6 +12,11 @@ TimelineView > * {
     background-color: #383c4a;
 }
 
+RoomList,
+RoomList > * {
+    background-color: #383c4a;
+}
+
 FlatButton {
     qproperty-foregroundColor: #caccd1;
     qproperty-backgroundColor: #333;

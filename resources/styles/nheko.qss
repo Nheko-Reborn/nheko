@@ -3,21 +3,26 @@ QLabel {
 }
 
 #chatPage,
-#chatPage > * { 
-    background-color: white; 
+#chatPage > * {
+    background-color: white;
 }
 
 TimelineView,
 TimelineView > * {
-    background-color: white; 
+    background-color: white;
 }
 
-FlatButton { 
-    qproperty-foregroundColor: #333; 
+RoomList,
+RoomList > * {
+    background-color: white;
 }
 
-RaisedButton { 
-    qproperty-foregroundColor: white; 
+FlatButton {
+    qproperty-foregroundColor: #333;
+}
+
+RaisedButton {
+    qproperty-foregroundColor: white;
 }
 
 RoomInfoListItem {

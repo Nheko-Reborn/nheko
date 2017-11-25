@@ -281,3 +281,12 @@ RoomList::closeLeaveRoomDialog(bool leaving, const QString &room_id)
                 client_->leaveRoom(room_id);
         }
 }
+
+void
+RoomList::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
