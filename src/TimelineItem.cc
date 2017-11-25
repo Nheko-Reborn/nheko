@@ -341,15 +341,12 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
                         sender = userid.split(":")[0].split("@")[1];
         }
 
-        QString userContent("%1");
-        QString bodyContent("%1");
-
         QFont usernameFont = font_;
         usernameFont.setBold(true);
 
         userName_ = new QLabel(this);
         userName_->setFont(usernameFont);
-        userName_->setText(userContent.arg(sender));
+        userName_->setText(sender);
 
         if (body.isEmpty())
                 return;
@@ -357,7 +354,7 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
         body_ = new QLabel(this);
         body_->setFont(font_);
         body_->setWordWrap(true);
-        body_->setText(bodyContent.arg(replaceEmoji(body)));
+        body_->setText(QString("<span> %1 </span>").arg(replaceEmoji(body)));
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
         body_->setOpenExternalLinks(true);
         body_->setMargin(0);
@@ -366,8 +363,6 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
 void
 TimelineItem::generateTimestamp(const QDateTime &time)
 {
-        QString msg("%1");
-
         QFont timestampFont;
         timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
 
@@ -376,7 +371,7 @@ TimelineItem::generateTimestamp(const QDateTime &time)
 
         timestamp_ = new QLabel(this);
         timestamp_->setFont(timestampFont);
-        timestamp_->setText(msg.arg(time.toString("HH:mm")));
+        timestamp_->setText(time.toString("HH:mm"));
         timestamp_->setContentsMargins(0, topMargin, 0, 0);
         timestamp_->setStyleSheet(
           QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
