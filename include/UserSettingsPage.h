@@ -36,8 +36,9 @@ public:
 
         void save();
         void load();
-        void setTheme(QString theme) { theme_ = theme; }
-        void setTray(bool state) { isTrayEnabled_ = state; }
+        void applyTheme();
+        void setTheme(QString theme);
+        void setTray(bool state);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
         bool isTrayEnabled() const { return isTrayEnabled_; }

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QComboBox>
 #include <QDebug>
 #include <QLabel>
@@ -33,7 +34,46 @@ UserSettings::load()
 {
         QSettings settings;
         isTrayEnabled_ = settings.value("user/window/tray", true).toBool();
-        theme_         = settings.value("user/theme", "default").toString();
+        theme_         = settings.value("user/theme", "light").toString();
+
+        applyTheme();
+}
+
+void
+UserSettings::setTheme(QString theme)
+{
+        theme_ = theme;
+        save();
+        applyTheme();
+}
+
+void
+UserSettings::setTray(bool state)
+{
+        isTrayEnabled_ = state;
+        save();
+}
+void
+UserSettings::applyTheme()
+{
+        QFile stylefile;
+        QPalette pal;
+
+        if (theme() == "light") {
+                stylefile.setFileName(":/styles/styles/nheko.qss");
+                pal.setColor(QPalette::Link, QColor("#333"));
+        } else if (theme() == "dark") {
+                stylefile.setFileName(":/styles/styles/nheko-dark.qss");
+                pal.setColor(QPalette::Link, QColor("#d7d9dc"));
+        } else {
+                stylefile.setFileName(":/styles/styles/system.qss");
+        }
+
+        stylefile.open(QFile::ReadOnly);
+        QString stylesheet = QString(stylefile.readAll());
+
+        QApplication::setPalette(pal);
+        qobject_cast<QApplication *>(QApplication::instance())->setStyleSheet(stylesheet);
 }
 
 void
