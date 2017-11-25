@@ -71,5 +71,6 @@
     <qresource prefix="/styles">
         <file>styles/system.qss</file>
         <file>styles/nheko.qss</file>
+        <file>styles/nheko-dark.qss</file>
     </qresource>
 </RCC>

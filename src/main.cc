@@ -75,15 +75,25 @@ main(int argc, char *argv[])
 
         QFile stylefile;
 
-        if (!settings.contains("user/theme")) {
-                settings.setValue("user/theme", "default");
-        }
+        if (!settings.contains("user/theme"))
+                settings.setValue("user/theme", "light");
 
-        if (settings.value("user/theme").toString() == "default") {
+        const auto theme = settings.value("user/theme", "light").toString();
+
+        QPalette pal;
+
+        if (theme == "light") {
                 stylefile.setFileName(":/styles/styles/nheko.qss");
+                pal.setColor(QPalette::Link, QColor("#333"));
+        } else if (theme == "dark") {
+                stylefile.setFileName(":/styles/styles/nheko-dark.qss");
+                pal.setColor(QPalette::Link, QColor("#d7d9dc"));
         } else {
                 stylefile.setFileName(":/styles/styles/system.qss");
         }
+
+        app.setPalette(pal);
+
         stylefile.open(QFile::ReadOnly);
         QString stylesheet = QString(stylefile.readAll());
 

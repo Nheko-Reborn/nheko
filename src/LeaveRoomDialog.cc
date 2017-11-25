@@ -35,7 +35,6 @@ LeaveRoomDialog::LeaveRoomDialog(QWidget *parent)
 
         auto label = new QLabel(tr("Are you sure you want to leave?"), this);
         label->setFont(font);
-        label->setStyleSheet("color: #333333");
 
         layout->addWidget(label);
         layout->addLayout(buttonLayout);

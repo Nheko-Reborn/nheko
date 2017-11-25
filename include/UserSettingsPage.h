@@ -39,7 +39,7 @@ public:
         void setTheme(QString theme) { theme_ = theme; }
         void setTray(bool state) { isTrayEnabled_ = state; }
 
-        QString theme() const { return !theme_.isEmpty() ? theme_ : "default"; }
+        QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
 
 private:
@@ -72,6 +72,8 @@ signals:
         void trayOptionChanged(bool value);
 
 private:
+        void restoreThemeCombo() const;
+
         // Layouts
         QVBoxLayout *topLayout_;
         QVBoxLayout *mainLayout_;

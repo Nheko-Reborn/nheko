@@ -52,7 +52,9 @@ EmojiPanel::EmojiPanel(QWidget *parent)
         contentLayout->setSpacing(0);
 
         auto emojiCategories = new QFrame(mainWidget);
-        emojiCategories->setStyleSheet("background-color: #f2f2f2");
+        emojiCategories->setStyleSheet(
+          QString("background-color: %1")
+            .arg(palette().color(QPalette::Window).darker(110).name()));
 
         auto categoriesLayout = new QHBoxLayout(emojiCategories);
         categoriesLayout->setSpacing(0);
@@ -64,49 +66,41 @@ EmojiPanel::EmojiPanel(QWidget *parent)
         icon.addFile(":/icons/icons/emoji-categories/people.png");
         peopleCategory->setIcon(icon);
         peopleCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        peopleCategory->setForegroundColor("gray");
 
         auto natureCategory_ = new FlatButton(emojiCategories);
         icon.addFile(":/icons/icons/emoji-categories/nature.png");
         natureCategory_->setIcon(icon);
         natureCategory_->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        natureCategory_->setForegroundColor("gray");
 
         auto foodCategory_ = new FlatButton(emojiCategories);
         icon.addFile(":/icons/icons/emoji-categories/foods.png");
         foodCategory_->setIcon(icon);
         foodCategory_->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        foodCategory_->setForegroundColor("gray");
 
         auto activityCategory = new FlatButton(emojiCategories);
         icon.addFile(":/icons/icons/emoji-categories/activity.png");
         activityCategory->setIcon(icon);
         activityCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        activityCategory->setForegroundColor("gray");
 
         auto travelCategory = new FlatButton(emojiCategories);
         icon.addFile(":/icons/icons/emoji-categories/travel.png");
         travelCategory->setIcon(icon);
         travelCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        travelCategory->setForegroundColor("gray");
 
         auto objectsCategory = new FlatButton(emojiCategories);
         icon.addFile(":/icons/icons/emoji-categories/objects.png");
         objectsCategory->setIcon(icon);
         objectsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        objectsCategory->setForegroundColor("gray");
 
         auto symbolsCategory = new FlatButton(emojiCategories);
         icon.addFile(":/icons/icons/emoji-categories/symbols.png");
         symbolsCategory->setIcon(icon);
         symbolsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        symbolsCategory->setForegroundColor("gray");
 
         auto flagsCategory = new FlatButton(emojiCategories);
         icon.addFile(":/icons/icons/emoji-categories/flags.png");
         flagsCategory->setIcon(icon);
         flagsCategory->setIconSize(QSize(categoryIconSize_, categoryIconSize_));
-        flagsCategory->setForegroundColor("gray");
 
         categoriesLayout->addWidget(peopleCategory);
         categoriesLayout->addWidget(natureCategory_);

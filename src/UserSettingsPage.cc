@@ -96,7 +96,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto themeLabel_ = new QLabel(tr("App theme"), this);
         themeCombo_      = new QComboBox(this);
-        themeCombo_->addItem("Default");
+        themeCombo_->addItem("Light");
+        themeCombo_->addItem("Dark");
         themeCombo_->addItem("System");
         themeLabel_->setStyleSheet("font-size: 15px;");
 
@@ -104,7 +105,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         themeOptionLayout_->addWidget(themeCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto general_ = new QLabel(tr("GENERAL"), this);
-        general_->setStyleSheet("font-size: 17px; color: #5d6565");
+        general_->setStyleSheet("font-size: 17px");
 
         mainLayout_ = new QVBoxLayout;
         mainLayout_->setSpacing(7);
@@ -139,7 +140,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 void
 UserSettingsPage::showEvent(QShowEvent *)
 {
-        themeCombo_->setCurrentIndex((settings_->theme() == "default" ? 0 : 1));
+        restoreThemeCombo();
         trayToggle_->setState(!settings_->isTrayEnabled()); // Treats true as "off"
 }
 
@@ -160,4 +161,15 @@ UserSettingsPage::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+UserSettingsPage::restoreThemeCombo() const
+{
+        if (settings_->theme() == "light")
+                themeCombo_->setCurrentIndex(0);
+        else if (settings_->theme() == "dark")
+                themeCombo_->setCurrentIndex(1);
+        else
+                themeCombo_->setCurrentIndex(2);
 }

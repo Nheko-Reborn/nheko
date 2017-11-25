@@ -1,0 +1,102 @@
+QLabel {
+    color: #caccd1;
+}
+
+#chatPage,
+#chatPage > * {
+    background-color: #383c4a;
+}
+
+TimelineView,
+TimelineView > * {
+    background-color: #383c4a;
+}
+
+FlatButton {
+    qproperty-foregroundColor: #caccd1;
+    qproperty-backgroundColor: #333;
+}
+
+RaisedButton {
+    qproperty-foregroundColor: #caccd1;
+    qproperty-backgroundColor: #333;
+}
+
+RoomInfoListItem {
+    qproperty-highlightedBackgroundColor: #5294e2;
+    qproperty-hoverBackgroundColor: #39679e;
+    qproperty-backgroundColor: #383c4a;
+
+    qproperty-titleColor: #caccd1;
+    qproperty-subtitleColor: #caccd1;
+
+    qproperty-highlightedTitleColor: #e4e5e8;
+    qproperty-highlightedSubtitleColor: #e4e5e8;
+}
+
+LoadingIndicator {
+    qproperty-color: #caccd1;
+}
+
+UserInfoWidget, UserInfoWidget > * {
+    background-color: #383c4a;
+    color: #b0b3ba;
+}
+
+UserSettingsPage {
+    background-color: #383c4a;
+}
+
+Avatar {
+    qproperty-textColor: black;
+    qproperty-backgroundColor: #b0b3ba;
+}
+
+#displayNameLabel {
+    color: #f2f2f2;
+}
+
+#userIdLabel {
+    color: #f2f2f2;
+}
+
+LogoutDialog,
+LeaveRoomDialog {
+    background-color: #383c4a;
+    color: #caccd1;
+}
+
+WelcomePage,
+LoginPage,
+RegisterPage {
+    background-color: #383c4a;
+    color: #caccd1;
+}
+
+EmojiPanel,
+EmojiPanel > * {
+    background-color: #383c4a;
+    color: #caccd1;
+}
+
+EmojiCategory,
+EmojiCategory > * {
+    background-color: #383c4a;
+    color: #caccd1;
+}
+
+FloatingButton {
+    qproperty-backgroundColor: #efefef;
+    qproperty-foregroundColor: black;
+}
+
+TextField {
+    qproperty-backgroundColor: #383c4e;
+    qproperty-inkColor: #caccd1;
+}
+
+QLineEdit,
+QTextEdit {
+    background-color: #383c4a;
+    color: #caccd1;
+}
