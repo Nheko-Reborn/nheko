@@ -18,6 +18,7 @@ class TextField : public QLineEdit
         Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
         Q_PROPERTY(QColor inkColor WRITE setInkColor READ inkColor)
         Q_PROPERTY(QColor underlineColor WRITE setUnderlineColor READ underlineColor)
+        Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
 
 public:
         explicit TextField(QWidget *parent = 0);

@@ -17,7 +17,6 @@
 
 #include <QStyleOption>
 
-#include "Avatar.h"
 #include "Config.h"
 #include "FlatButton.h"
 #include "InputValidator.h"
@@ -51,9 +50,8 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         QIcon logo;
         logo.addFile(":/logos/register.png");
 
-        logo_ = new Avatar(this);
-        logo_->setIcon(logo);
-        logo_->setSize(128);
+        logo_ = new QLabel(this);
+        logo_->setPixmap(logo.pixmap(128));
 
         logo_layout_ = new QHBoxLayout();
         logo_layout_->setMargin(0);

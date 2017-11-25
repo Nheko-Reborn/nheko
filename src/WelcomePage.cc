@@ -31,8 +31,8 @@ WelcomePage::WelcomePage(QWidget *parent)
         auto topLayout_ = new QVBoxLayout(this);
         topLayout_->setSpacing(20);
 
-        QFont headingFont("Open Sans", 22);
-        QFont subTitleFont("Open Sans", 21);
+        QFont headingFont("Open Sans", 20);
+        QFont subTitleFont("Open Sans", 19);
 
         QIcon icon;
         icon.addFile(":/logos/splash.png");

@@ -5,41 +5,70 @@ OverlayWidget > * {
 
 #mainContent,
 #mainContent > * {
-    background-color: palette(base);
+    background-color: palette(window);
 }
 
 TimelineView,
 TimelineView > *,
 TimelineItem,
 TimelineItem > * {
-    background-color: palette(base);
+    background-color: palette(window);
 }
 
 FlatButton {
     qproperty-foregroundColor: palette(text);
 }
 
+RaisedButton {
+    qproperty-foregroundColor: palette(light);
+}
+
+TextField {
+    qproperty-backgroundColor: palette(window);
+}
+
+WelcomePage,
+LoginPage,
+RegisterPage {
+    background-color: palette(window);
+}
+
 RoomInfoListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(dark);
+    qproperty-hoverBackgroundColor: palette(mid);
     qproperty-backgroundColor: palette(window);
 
     qproperty-titleColor: palette(text);
     qproperty-subtitleColor: palette(text);
 
-    qproperty-highlightedTitleColor: palette(text);
-    qproperty-highlightedSubtitleColor: palette(text);
+    qproperty-highlightedTitleColor: palette(light);
+    qproperty-highlightedSubtitleColor: palette(light);
 }
 
 LoadingIndicator {
-    qproperty-color: palette(text);
+    qproperty-color: palette(highlight);
 }
 
 #ChatPageLoadSpinner {
-    qproperty-color: #acc7dc;
+    qproperty-color: palette(light);
 }
 
 UserInfoWidget,
 UserInfoWidget > * {
+    background-color: palette(window);
+}
+
+EmojiCategory,
+EmojiCategory > * {
+    background-color: palette(window);
+}
+
+EmojiPanel,
+EmojiPanel > * {
+    background-color: palette(window);
+}
+
+QTextEdit,
+QLineEdit {
     background-color: palette(window);
 }

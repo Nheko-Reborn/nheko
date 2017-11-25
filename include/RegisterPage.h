@@ -21,7 +21,6 @@
 #include <QLayout>
 #include <QSharedPointer>
 
-class Avatar;
 class FlatButton;
 class MatrixClient;
 class RaisedButton;
@@ -55,7 +54,7 @@ private:
         QHBoxLayout *logo_layout_;
         QHBoxLayout *button_layout_;
 
-        Avatar *logo_;
+        QLabel *logo_;
         QLabel *error_label_;
 
         FlatButton *back_button_;
