@@ -15,6 +15,9 @@ test:
 linux-appimage:
 	@./.ci/linux/deploy.sh
 
+linux-install:
+	cp -f nheko*.AppImage ~/.local/bin
+
 macos-app: release-debug
 	@./.ci/macos/deploy.sh
 

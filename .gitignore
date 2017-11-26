@@ -78,3 +78,7 @@ result
 *.dmg
 dist/MacOS/nheko.app/Contents/MacOS/nheko
 .clang
+
+# AppImage
+*.AppImage
+*.AppDir
