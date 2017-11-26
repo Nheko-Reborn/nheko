@@ -370,8 +370,6 @@ TimelineView::addEvents(const Timeline &timeline)
         if (isInitialSync) {
                 prev_batch_token_ = timeline.previousBatch();
                 isInitialSync     = false;
-
-                client_->messages(room_id_, prev_batch_token_);
         }
 
         // Exclude the top stretch.
