@@ -19,6 +19,12 @@ FlatButton {
     qproperty-foregroundColor: palette(text);
 }
 
+FileItem {
+    qproperty-textColor: palette(text);
+    qproperty-backgroundColor: palette(base);
+    qproperty-iconColor: palette(window);
+}
+
 RaisedButton {
     qproperty-foregroundColor: palette(light);
 }

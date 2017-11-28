@@ -22,6 +22,12 @@ FlatButton {
     qproperty-backgroundColor: #333;
 }
 
+FileItem {
+    qproperty-textColor: #caccd1;
+    qproperty-backgroundColor: #414A59;
+    qproperty-iconColor: #caccd1;
+}
+
 RaisedButton {
     qproperty-foregroundColor: #caccd1;
     qproperty-backgroundColor: #333;

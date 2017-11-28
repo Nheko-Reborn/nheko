@@ -587,6 +587,32 @@ MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
 }
 
 void
+MatrixClient::downloadFile(const QString &event_id, const QUrl &url)
+{
+        QNetworkRequest fileRequest(url);
+
+        auto reply = get(fileRequest);
+        connect(reply, &QNetworkReply::finished, this, [this, reply, event_id]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        // TODO: Handle error
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data = reply->readAll();
+
+                if (data.size() == 0)
+                        return;
+
+                emit fileDownloaded(event_id, data);
+        });
+}
+
+void
 MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
 {
         QList<QString> url_parts = avatar_url.toString().split("mxc://");

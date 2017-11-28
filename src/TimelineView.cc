@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QTimer>
 
+#include "FileItem.h"
 #include "FloatingButton.h"
 #include "ImageItem.h"
 #include "RoomMessages.h"
@@ -331,6 +332,34 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
                         updateLastSender(emote.sender(), direction);
 
                         return createTimelineItem(emote, with_sender);
+                } else if (msg_type == events::MessageEventType::File) {
+                        events::MessageEvent<msgs::File> file;
+
+                        try {
+                                file.deserialize(event);
+                        } catch (const DeserializationException &e) {
+                                qWarning() << e.what() << event;
+                                return nullptr;
+                        }
+
+                        if (isDuplicate(file.eventId()))
+                                return nullptr;
+
+                        eventIds_[file.eventId()] = true;
+
+                        QString txnid = file.unsignedData().transactionId();
+
+                        if (!txnid.isEmpty() &&
+                            isPendingMessage(txnid, file.sender(), local_user_)) {
+                                removePendingMessage(txnid);
+                                return nullptr;
+                        }
+
+                        auto withSender = isSenderRendered(file.sender(), direction);
+
+                        updateLastSender(file.sender(), direction);
+
+                        return createTimelineItem(file, withSender);
                 } else if (msg_type == events::MessageEventType::Unknown) {
                         // TODO Handle redacted messages.
                         // Silenced for now.
@@ -465,6 +494,15 @@ TimelineView::createTimelineItem(const events::MessageEvent<msgs::Image> &event,
 {
         auto image = new ImageItem(client_, event);
         auto item  = new TimelineItem(image, event, with_sender, scroll_widget_);
+
+        return item;
+}
+
+TimelineItem *
+TimelineView::createTimelineItem(const events::MessageEvent<msgs::File> &event, bool withSender)
+{
+        auto file = new FileItem(client_, event);
+        auto item = new TimelineItem(file, event, withSender, scroll_widget_);
 
         return item;
 }

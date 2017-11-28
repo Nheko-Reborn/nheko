@@ -24,6 +24,7 @@
 #include <QStyleOption>
 
 #include "Emote.h"
+#include "File.h"
 #include "Image.h"
 #include "MessageEvent.h"
 #include "Notice.h"
@@ -31,6 +32,7 @@
 #include "Text.h"
 
 class ImageItem;
+class FileItem;
 class Avatar;
 
 namespace events = matrix::events;
@@ -62,6 +64,10 @@ public:
 
         TimelineItem(ImageItem *img,
                      const events::MessageEvent<msgs::Image> &e,
+                     bool with_sender,
+                     QWidget *parent);
+        TimelineItem(FileItem *file,
+                     const events::MessageEvent<msgs::File> &e,
                      bool with_sender,
                      QWidget *parent);
 

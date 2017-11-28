@@ -25,13 +25,11 @@ File::deserialize(const QJsonObject &object)
         if (!object.contains("url"))
                 throw DeserializationException("messages::File url key is missing");
 
-        if (!object.contains("filename"))
-                throw DeserializationException("messages::File filename key is missing");
-
         if (object.value("msgtype") != "m.file")
                 throw DeserializationException("invalid msgtype for file");
 
-        url_ = object.value("url").toString();
+        url_      = object.value("url").toString();
+        filename_ = object.value("filename").toString();
 
         if (object.contains("info")) {
                 auto file_info = object.value("info").toObject();

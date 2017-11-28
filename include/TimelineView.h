@@ -25,6 +25,7 @@
 #include <QStyleOption>
 
 #include "Emote.h"
+#include "File.h"
 #include "Image.h"
 #include "MessageEvent.h"
 #include "Notice.h"
@@ -94,6 +95,8 @@ public:
         TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e,
                                          bool with_sender);
         TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Emote> &e,
+                                         bool with_sender);
+        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::File> &e,
                                          bool with_sender);
 
         // Add new events at the end of the timeline.

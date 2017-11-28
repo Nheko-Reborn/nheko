@@ -24,6 +24,7 @@
 #include "Avatar.h"
 #include "AvatarProvider.h"
 #include "Config.h"
+#include "FileItem.h"
 #include "ImageItem.h"
 #include "Sync.h"
 #include "TimelineItem.h"
@@ -184,6 +185,46 @@ TimelineItem::TimelineItem(ImageItem *image,
         }
 
         mainLayout_->addLayout(imageLayout);
+}
+
+TimelineItem::TimelineItem(FileItem *file,
+                           const events::MessageEvent<msgs::File> &event,
+                           bool with_sender,
+                           QWidget *parent)
+  : QWidget(parent)
+{
+        init();
+
+        event_id_ = event.eventId();
+
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+        auto displayName = TimelineViewManager::displayName(event.sender());
+
+        QSettings settings;
+        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+                           event.sender(),
+                           " sent a file",
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+
+        generateTimestamp(timestamp);
+
+        auto fileLayout = new QHBoxLayout();
+        fileLayout->setContentsMargins(0, 5, 0, 0);
+        fileLayout->addWidget(file);
+        fileLayout->addStretch(1);
+
+        if (with_sender) {
+                generateBody(displayName, "");
+                setupAvatarLayout(displayName);
+
+                mainLayout_->addLayout(headerLayout_);
+
+                AvatarProvider::resolve(event.sender(), this);
+        } else {
+                setupSimpleLayout();
+        }
+
+        mainLayout_->addLayout(fileLayout);
 }
 
 /*

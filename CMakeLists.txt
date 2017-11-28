@@ -149,6 +149,7 @@ set(SRC_FILES
     src/EmojiPanel.cc
     src/EmojiPickButton.cc
     src/EmojiProvider.cc
+    src/FileItem.cc
     src/ImageItem.cc
     src/ImageOverlayDialog.cc
     src/InputValidator.cc
@@ -243,6 +244,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/EmojiPanel.h
     include/EmojiPickButton.h
     include/ui/FloatingButton.h
+    include/FileItem.h
     include/ImageItem.h
     include/ImageOverlayDialog.h
     include/JoinRoomDialog.h

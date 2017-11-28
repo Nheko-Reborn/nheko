@@ -53,6 +53,7 @@ public:
         void fetchUserAvatar(const QString &userId, const QUrl &avatarUrl);
         void fetchOwnAvatar(const QUrl &avatar_url);
         void downloadImage(const QString &event_id, const QUrl &url);
+        void downloadFile(const QString &event_id, const QUrl &url);
         void messages(const QString &room_id, const QString &from_token, int limit = 30) noexcept;
         void uploadImage(const QString &roomid, const QString &filename);
         void joinRoom(const QString &roomIdOrAlias);
@@ -96,6 +97,7 @@ signals:
         void userAvatarRetrieved(const QString &userId, const QImage &img);
         void ownAvatarRetrieved(const QPixmap &img);
         void imageDownloaded(const QString &event_id, const QPixmap &img);
+        void fileDownloaded(const QString &event_id, const QByteArray &data);
 
         // Returned profile data for the user's account.
         void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
