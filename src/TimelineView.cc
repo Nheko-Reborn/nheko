@@ -18,7 +18,6 @@
 #include <QApplication>
 #include <QDebug>
 #include <QFileInfo>
-#include <QSettings>
 #include <QTimer>
 
 #include "FileItem.h"
@@ -27,7 +26,6 @@
 #include "RoomMessages.h"
 #include "ScrollBar.h"
 #include "Sync.h"
-#include "TimelineItem.h"
 #include "TimelineView.h"
 
 namespace events = matrix::events;
@@ -570,30 +568,6 @@ TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString 
 }
 
 void
-TimelineView::addUserMessage(const QString &url, const QString &filename)
-{
-        QSettings settings;
-        auto user_id     = settings.value("auth/user_id").toString();
-        auto with_sender = lastSender_ != user_id;
-
-        auto image = new ImageItem(client_, url, filename, this);
-
-        TimelineItem *view_item = new TimelineItem(image, user_id, with_sender, scroll_widget_);
-        scroll_layout_->addWidget(view_item);
-
-        lastMessageDirection_ = TimelineDirection::Bottom;
-
-        QApplication::processEvents();
-
-        lastSender_ = user_id;
-
-        int txn_id = client_->incrementTransactionId();
-        PendingMessage message(
-          matrix::events::MessageEventType::Image, txn_id, url, filename, "", view_item);
-        handleNewUserMessage(message);
-}
-
-void
 TimelineView::handleNewUserMessage(PendingMessage msg)
 {
         pending_msgs_.enqueue(msg);
@@ -610,6 +584,7 @@ TimelineView::sendNextPendingMessage()
         PendingMessage &m = pending_msgs_.head();
         switch (m.ty) {
         case matrix::events::MessageEventType::Image:
+        case matrix::events::MessageEventType::File:
                 client_->sendRoomMessage(
                   m.ty, m.txn_id, room_id_, QFileInfo(m.filename).fileName(), m.body);
                 break;

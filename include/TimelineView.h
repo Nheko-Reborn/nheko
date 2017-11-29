@@ -17,26 +17,28 @@
 
 #pragma once
 
+#include <QApplication>
 #include <QLayout>
 #include <QList>
 #include <QQueue>
 #include <QScrollArea>
+#include <QSettings>
 #include <QStyle>
 #include <QStyleOption>
 
 #include "Emote.h"
 #include "File.h"
 #include "Image.h"
+#include "MatrixClient.h"
 #include "MessageEvent.h"
 #include "Notice.h"
 #include "Text.h"
+#include "TimelineItem.h"
 
 class FloatingButton;
-class MatrixClient;
 class RoomMessages;
 class ScrollBar;
 class Timeline;
-class TimelineItem;
 struct DescInfo;
 
 namespace msgs   = matrix::events::messages;
@@ -102,6 +104,8 @@ public:
         // Add new events at the end of the timeline.
         int addEvents(const Timeline &timeline);
         void addUserMessage(matrix::events::MessageEventType ty, const QString &msg);
+
+        template<class Widget, events::MessageEventType MsgType>
         void addUserMessage(const QString &url, const QString &filename);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
@@ -193,3 +197,28 @@ private:
         QList<PendingMessage> pending_sent_msgs_;
         QSharedPointer<MatrixClient> client_;
 };
+
+template<class Widget, events::MessageEventType MsgType>
+void
+TimelineView::addUserMessage(const QString &url, const QString &filename)
+{
+        QSettings settings;
+        auto user_id     = settings.value("auth/user_id").toString();
+        auto with_sender = lastSender_ != user_id;
+
+        auto widget = new Widget(client_, url, filename, this);
+
+        TimelineItem *view_item = new TimelineItem(widget, user_id, with_sender, scroll_widget_);
+        scroll_layout_->addWidget(view_item);
+
+        lastMessageDirection_ = TimelineDirection::Bottom;
+
+        QApplication::processEvents();
+
+        lastSender_ = user_id;
+
+        int txn_id = client_->incrementTransactionId();
+
+        PendingMessage message(MsgType, txn_id, url, filename, "", view_item);
+        handleNewUserMessage(message);
+}

@@ -85,6 +85,7 @@ signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
         void uploadImage(QString filename);
+        void uploadFile(QString filename);
         void sendJoinRoomRequest(const QString &room);
 
         void startedTyping();

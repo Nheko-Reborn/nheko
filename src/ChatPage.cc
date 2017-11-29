@@ -187,6 +187,10 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 client_->uploadImage(current_room_, filename);
         });
 
+        connect(text_input_, &TextInputWidget::uploadFile, this, [=](QString filename) {
+                client_->uploadFile(current_room_, filename);
+        });
+
         connect(client_.data(), &MatrixClient::joinFailed, this, &ChatPage::showNotification);
         connect(client_.data(),
                 &MatrixClient::imageUploaded,
@@ -194,6 +198,13 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 [=](QString roomid, QString filename, QString url) {
                         text_input_->hideUploadSpinner();
                         view_manager_->queueImageMessage(roomid, filename, url);
+                });
+        connect(client_.data(),
+                &MatrixClient::fileUploaded,
+                this,
+                [=](QString roomid, QString filename, QString url) {
+                        text_input_->hideUploadSpinner();
+                        view_manager_->queueFileMessage(roomid, filename, url);
                 });
 
         connect(client_.data(),

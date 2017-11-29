@@ -30,25 +30,16 @@
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;
 
-FileItem::FileItem(QSharedPointer<MatrixClient> client,
-                   const events::MessageEvent<msgs::File> &event,
-                   QWidget *parent)
-  : QWidget(parent)
-  , event_{event}
-  , client_{client}
+void
+FileItem::init()
 {
         setMouseTracking(true);
         setCursor(Qt::PointingHandCursor);
         setAttribute(Qt::WA_Hover, true);
 
-        url_              = event.msgContent().url();
-        text_             = event.content().body();
-        readableFileSize_ = calculateFileSize(event.msgContent().info().size);
-
         icon_.addFile(":/icons/icons/ui/arrow-pointing-down.png");
 
         QList<QString> url_parts = url_.toString().split("mxc://");
-
         if (url_parts.size() != 2) {
                 qDebug() << "Invalid format for image" << url_.toString();
                 return;
@@ -62,6 +53,20 @@ FileItem::FileItem(QSharedPointer<MatrixClient> client,
 }
 
 FileItem::FileItem(QSharedPointer<MatrixClient> client,
+                   const events::MessageEvent<msgs::File> &event,
+                   QWidget *parent)
+  : QWidget(parent)
+  , url_{event.msgContent().url()}
+  , text_{event.content().body()}
+  , event_{event}
+  , client_{client}
+{
+        readableFileSize_ = calculateFileSize(event.msgContent().info().size);
+
+        init();
+}
+
+FileItem::FileItem(QSharedPointer<MatrixClient> client,
                    const QString &url,
                    const QString &filename,
                    QWidget *parent)
@@ -70,25 +75,9 @@ FileItem::FileItem(QSharedPointer<MatrixClient> client,
   , text_{QFileInfo(filename).fileName()}
   , client_{client}
 {
-        setMouseTracking(true);
-        setCursor(Qt::PointingHandCursor);
-        setAttribute(Qt::WA_Hover, true);
+        readableFileSize_ = calculateFileSize(QFileInfo(filename).size());
 
-        // TODO: calculateFileSize
-        /* readableFileSize_ = calculateFileSize(event.msgContent().info().size); */
-
-        QList<QString> url_parts = url_.toString().split("mxc://");
-
-        icon_.addFile(":/icons/icons/ui/arrow-pointing-down.png");
-
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for image" << url_.toString();
-                return;
-        }
-
-        QString media_params = url_parts[1];
-        url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(client_.data()->getHomeServer().toString(), media_params);
+        init();
 }
 
 QString

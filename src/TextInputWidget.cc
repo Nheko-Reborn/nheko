@@ -276,30 +276,27 @@ TextInputWidget::command(QString command, QString args)
 void
 TextInputWidget::openFileSelection()
 {
-        QStringList supportedFiles;
-        supportedFiles << "jpeg"
-                       << "gif"
-                       << "png"
-                       << "bmp"
-                       << "tiff"
-                       << "webp";
+        QStringList imageExtensions;
+        imageExtensions << "jpeg"
+                        << "gif"
+                        << "png"
+                        << "bmp"
+                        << "tiff"
+                        << "webp";
 
-        auto fileName = QFileDialog::getOpenFileName(
-          this,
-          tr("Select an image"),
-          "",
-          tr("Image Files (*.bmp *.gif *.jpg *.jpeg *.png *.tiff *.webp)"));
+        auto fileName =
+          QFileDialog::getOpenFileName(this, tr("Select an file"), "", tr("All Files (*)"));
 
         if (fileName.isEmpty())
                 return;
 
-        auto imageFormat = QString(QImageReader::imageFormat(fileName));
-        if (!supportedFiles.contains(imageFormat)) {
-                qDebug() << "Unsupported image format for" << fileName;
-                return;
-        }
+        auto format = QString(QImageReader::imageFormat(fileName));
 
-        emit uploadImage(fileName);
+        if (imageExtensions.contains(format))
+                emit uploadImage(fileName);
+        else
+                emit uploadFile(fileName);
+
         showUploadSpinner();
 }
 

@@ -67,6 +67,7 @@ public slots:
         void queueTextMessage(const QString &msg);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid, const QString &filename, const QString &url);
+        void queueFileMessage(const QString &roomid, const QString &filename, const QString &url);
 
 private slots:
         void messageSent(const QString &eventid, const QString &roomid, int txnid);

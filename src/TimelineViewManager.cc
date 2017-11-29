@@ -22,6 +22,8 @@
 #include <QFileInfo>
 #include <QSettings>
 
+#include "FileItem.h"
+#include "ImageItem.h"
 #include "MatrixClient.h"
 #include "Sync.h"
 #include "TimelineView.h"
@@ -92,7 +94,22 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage(url, filename);
+        view->addUserMessage<ImageItem, matrix::events::MessageEventType::Image>(url, filename);
+}
+
+void
+TimelineViewManager::queueFileMessage(const QString &roomid,
+                                      const QString &filename,
+                                      const QString &url)
+{
+        if (!views_.contains(roomid)) {
+                qDebug() << "Cannot send m.file message to a non-managed view";
+                return;
+        }
+
+        auto view = views_[roomid];
+
+        view->addUserMessage<FileItem, matrix::events::MessageEventType::File>(url, filename);
 }
 
 void

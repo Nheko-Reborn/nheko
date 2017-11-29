@@ -15,20 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDateTime>
 #include <QFontDatabase>
 #include <QRegExp>
 #include <QSettings>
 #include <QTextEdit>
 
 #include "Avatar.h"
-#include "AvatarProvider.h"
 #include "Config.h"
 #include "FileItem.h"
 #include "ImageItem.h"
 #include "Sync.h"
 #include "TimelineItem.h"
-#include "TimelineViewManager.h"
 
 static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
 static const QString URL_HTML = "<a href=\"\\1\">\\1</a>";
@@ -119,29 +116,15 @@ TimelineItem::TimelineItem(ImageItem *image,
 {
         init();
 
-        auto displayName = TimelineViewManager::displayName(userid);
-        auto timestamp   = QDateTime::currentDateTime();
+        setupLocalWidgetLayout<ImageItem>(image, userid, "sent an image", withSender);
+}
 
-        descriptionMsg_ = {"You", userid, " sent an image", descriptiveTime(timestamp)};
+TimelineItem::TimelineItem(FileItem *file, const QString &userid, bool withSender, QWidget *parent)
+  : QWidget{parent}
+{
+        init();
 
-        generateTimestamp(timestamp);
-
-        auto imageLayout = new QHBoxLayout();
-        imageLayout->setMargin(0);
-        imageLayout->addWidget(image);
-        imageLayout->addStretch(1);
-
-        if (withSender) {
-                generateBody(displayName, "");
-                setupAvatarLayout(displayName);
-                mainLayout_->addLayout(headerLayout_);
-
-                AvatarProvider::resolve(userid, this);
-        } else {
-                setupSimpleLayout();
-        }
-
-        mainLayout_->addLayout(imageLayout);
+        setupLocalWidgetLayout<FileItem>(file, userid, "sent a file", withSender);
 }
 
 /*
@@ -169,7 +152,7 @@ TimelineItem::TimelineItem(ImageItem *image,
         generateTimestamp(timestamp);
 
         auto imageLayout = new QHBoxLayout();
-        imageLayout->setMargin(0);
+        imageLayout->setContentsMargins(0, 5, 0, 0);
         imageLayout->addWidget(image);
         imageLayout->addStretch(1);
 

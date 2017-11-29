@@ -17,12 +17,14 @@
 
 #pragma once
 
+#include <QDateTime>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOption>
 
+#include "AvatarProvider.h"
 #include "Emote.h"
 #include "File.h"
 #include "Image.h"
@@ -30,6 +32,7 @@
 #include "Notice.h"
 #include "RoomInfoListItem.h"
 #include "Text.h"
+#include "TimelineViewManager.h"
 
 class ImageItem;
 class FileItem;
@@ -61,6 +64,7 @@ public:
                      QWidget *parent = 0);
         // m.image
         TimelineItem(ImageItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
+        TimelineItem(FileItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
 
         TimelineItem(ImageItem *img,
                      const events::MessageEvent<msgs::Image> &e,
@@ -82,6 +86,12 @@ protected:
 
 private:
         void init();
+
+        template<class Widget>
+        void setupLocalWidgetLayout(Widget *widget,
+                                    const QString &userid,
+                                    const QString &msgDescription,
+                                    bool withSender);
 
         void generateBody(const QString &body);
         void generateBody(const QString &userid, const QString &body);
@@ -110,3 +120,36 @@ private:
         QLabel *userName_;
         QLabel *body_;
 };
+
+template<class Widget>
+void
+TimelineItem::setupLocalWidgetLayout(Widget *widget,
+                                     const QString &userid,
+                                     const QString &msgDescription,
+                                     bool withSender)
+{
+        auto displayName = TimelineViewManager::displayName(userid);
+        auto timestamp   = QDateTime::currentDateTime();
+
+        descriptionMsg_ = {
+          "You", userid, QString(" %1").arg(msgDescription), descriptiveTime(timestamp)};
+
+        generateTimestamp(timestamp);
+
+        auto widgetLayout = new QHBoxLayout();
+        widgetLayout->setContentsMargins(0, 5, 0, 0);
+        widgetLayout->addWidget(widget);
+        widgetLayout->addStretch(1);
+
+        if (withSender) {
+                generateBody(displayName, "");
+                setupAvatarLayout(displayName);
+                mainLayout_->addLayout(headerLayout_);
+
+                AvatarProvider::resolve(userid, this);
+        } else {
+                setupSimpleLayout();
+        }
+
+        mainLayout_->addLayout(widgetLayout);
+}

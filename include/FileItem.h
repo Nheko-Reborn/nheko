@@ -80,6 +80,7 @@ private slots:
 private:
         QString calculateFileSize(int nbytes) const;
         void openUrl();
+        void init();
 
         QUrl url_;
         QString text_;
