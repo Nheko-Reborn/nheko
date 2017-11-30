@@ -22,10 +22,12 @@
 #include "DropShadow.h"
 #include "FlatButton.h"
 
-#include "emoji/EmojiCategory.h"
-#include "emoji/EmojiPanel.h"
+#include "emoji/Category.h"
+#include "emoji/Panel.h"
 
-EmojiPanel::EmojiPanel(QWidget *parent)
+using namespace emoji;
+
+Panel::Panel(QWidget *parent)
   : QWidget(parent)
   , shadowMargin_{2}
   , width_{370}
@@ -53,9 +55,6 @@ EmojiPanel::EmojiPanel(QWidget *parent)
         contentLayout->setSpacing(0);
 
         auto emojiCategories = new QFrame(mainWidget);
-        emojiCategories->setStyleSheet(
-          QString("background-color: %1")
-            .arg(palette().color(QPalette::Window).darker(110).name()));
 
         auto categoriesLayout = new QHBoxLayout(emojiCategories);
         categoriesLayout->setSpacing(0);
@@ -124,79 +123,78 @@ EmojiPanel::EmojiPanel(QWidget *parent)
         scrollArea_->setWidget(scrollWidget);
 
         auto peopleEmoji =
-          new EmojiCategory(tr("Smileys & People"), emoji_provider_.people, scrollWidget);
+          new Category(tr("Smileys & People"), emoji_provider_.people, scrollWidget);
         scrollLayout->addWidget(peopleEmoji);
 
         auto natureEmoji =
-          new EmojiCategory(tr("Animals & Nature"), emoji_provider_.nature, scrollWidget);
+          new Category(tr("Animals & Nature"), emoji_provider_.nature, scrollWidget);
         scrollLayout->addWidget(natureEmoji);
 
-        auto foodEmoji = new EmojiCategory(tr("Food & Drink"), emoji_provider_.food, scrollWidget);
+        auto foodEmoji = new Category(tr("Food & Drink"), emoji_provider_.food, scrollWidget);
         scrollLayout->addWidget(foodEmoji);
 
-        auto activityEmoji =
-          new EmojiCategory(tr("Activity"), emoji_provider_.activity, scrollWidget);
+        auto activityEmoji = new Category(tr("Activity"), emoji_provider_.activity, scrollWidget);
         scrollLayout->addWidget(activityEmoji);
 
         auto travelEmoji =
-          new EmojiCategory(tr("Travel & Places"), emoji_provider_.travel, scrollWidget);
+          new Category(tr("Travel & Places"), emoji_provider_.travel, scrollWidget);
         scrollLayout->addWidget(travelEmoji);
 
-        auto objectsEmoji = new EmojiCategory(tr("Objects"), emoji_provider_.objects, scrollWidget);
+        auto objectsEmoji = new Category(tr("Objects"), emoji_provider_.objects, scrollWidget);
         scrollLayout->addWidget(objectsEmoji);
 
-        auto symbolsEmoji = new EmojiCategory(tr("Symbols"), emoji_provider_.symbols, scrollWidget);
+        auto symbolsEmoji = new Category(tr("Symbols"), emoji_provider_.symbols, scrollWidget);
         scrollLayout->addWidget(symbolsEmoji);
 
-        auto flagsEmoji = new EmojiCategory(tr("Flags"), emoji_provider_.flags, scrollWidget);
+        auto flagsEmoji = new Category(tr("Flags"), emoji_provider_.flags, scrollWidget);
         scrollLayout->addWidget(flagsEmoji);
 
         contentLayout->addWidget(scrollArea_);
         contentLayout->addWidget(emojiCategories);
 
-        connect(peopleEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(peopleEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(peopleCategory, &QPushButton::clicked, [this, peopleEmoji]() {
-                this->showEmojiCategory(peopleEmoji);
+                this->showCategory(peopleEmoji);
         });
 
-        connect(natureEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(natureEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(natureCategory_, &QPushButton::clicked, [this, natureEmoji]() {
-                this->showEmojiCategory(natureEmoji);
+                this->showCategory(natureEmoji);
         });
 
-        connect(foodEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(foodEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(foodCategory_, &QPushButton::clicked, [this, foodEmoji]() {
-                this->showEmojiCategory(foodEmoji);
+                this->showCategory(foodEmoji);
         });
 
-        connect(activityEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(activityEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(activityCategory, &QPushButton::clicked, [this, activityEmoji]() {
-                this->showEmojiCategory(activityEmoji);
+                this->showCategory(activityEmoji);
         });
 
-        connect(travelEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(travelEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(travelCategory, &QPushButton::clicked, [this, travelEmoji]() {
-                this->showEmojiCategory(travelEmoji);
+                this->showCategory(travelEmoji);
         });
 
-        connect(objectsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(objectsEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(objectsCategory, &QPushButton::clicked, [this, objectsEmoji]() {
-                this->showEmojiCategory(objectsEmoji);
+                this->showCategory(objectsEmoji);
         });
 
-        connect(symbolsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(symbolsEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(symbolsCategory, &QPushButton::clicked, [this, symbolsEmoji]() {
-                this->showEmojiCategory(symbolsEmoji);
+                this->showCategory(symbolsEmoji);
         });
 
-        connect(flagsEmoji, &EmojiCategory::emojiSelected, this, &EmojiPanel::emojiSelected);
+        connect(flagsEmoji, &Category::emojiSelected, this, &Panel::emojiSelected);
         connect(flagsCategory, &QPushButton::clicked, [this, flagsEmoji]() {
-                this->showEmojiCategory(flagsEmoji);
+                this->showCategory(flagsEmoji);
         });
 }
 
 void
-EmojiPanel::showEmojiCategory(const EmojiCategory *category)
+Panel::showCategory(const Category *category)
 {
         auto posToGo = category->mapToParent(QPoint()).y();
         auto current = scrollArea_->verticalScrollBar()->value();
@@ -217,13 +215,13 @@ EmojiPanel::showEmojiCategory(const EmojiCategory *category)
 }
 
 void
-EmojiPanel::leaveEvent(QEvent *)
+Panel::leaveEvent(QEvent *)
 {
         hide();
 }
 
 void
-EmojiPanel::paintEvent(QPaintEvent *event)
+Panel::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event);
 

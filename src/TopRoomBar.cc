@@ -27,8 +27,6 @@
 #include "RoomSettings.h"
 #include "TopRoomBar.h"
 
-#include "dialogs/LeaveRoomDialog.h"
-
 TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
   , buttonSize_{32}
@@ -94,7 +92,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         connect(leaveRoom_, &QAction::triggered, this, [=]() {
                 if (leaveRoomDialog_.isNull()) {
                         leaveRoomDialog_ =
-                          QSharedPointer<LeaveRoomDialog>(new LeaveRoomDialog(this));
+                          QSharedPointer<dialogs::LeaveRoom>(new dialogs::LeaveRoom(this));
 
                         connect(leaveRoomDialog_.data(),
                                 SIGNAL(closing(bool)),

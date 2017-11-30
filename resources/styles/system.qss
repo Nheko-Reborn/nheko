@@ -64,13 +64,13 @@ UserInfoWidget > * {
     background-color: palette(window);
 }
 
-EmojiCategory,
-EmojiCategory > * {
+emoji--Category,
+emoji--Category > * {
     background-color: palette(window);
 }
 
-EmojiPanel,
-EmojiPanel > * {
+emoji--Panel,
+emoji--Panel > * {
     background-color: palette(window);
 }
 

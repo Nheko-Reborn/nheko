@@ -1,22 +1,4 @@
-/*
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include <QLabel>
-#include <QPaintEvent>
 #include <QStyleOption>
 #include <QVBoxLayout>
 
@@ -24,9 +6,11 @@
 #include "FlatButton.h"
 #include "Theme.h"
 
-#include "dialogs/LogoutDialog.h"
+#include "dialogs/LeaveRoom.h"
 
-LogoutDialog::LogoutDialog(QWidget *parent)
+using namespace dialogs;
+
+LeaveRoom::LeaveRoom(QWidget *parent)
   : QFrame(parent)
 {
         setMaximumSize(400, 400);
@@ -39,7 +23,7 @@ LogoutDialog::LogoutDialog(QWidget *parent)
         buttonLayout->setSpacing(0);
         buttonLayout->setMargin(0);
 
-        confirmBtn_ = new FlatButton("OK", this);
+        confirmBtn_ = new FlatButton("LEAVE", this);
         confirmBtn_->setFontSize(conf::btn::fontSize);
 
         cancelBtn_ = new FlatButton(tr("CANCEL"), this);
@@ -52,7 +36,7 @@ LogoutDialog::LogoutDialog(QWidget *parent)
         QFont font;
         font.setPixelSize(conf::headerFontSize);
 
-        auto label = new QLabel(tr("Logout. Are you sure?"), this);
+        auto label = new QLabel(tr("Are you sure you want to leave?"), this);
         label->setFont(font);
 
         layout->addWidget(label);
@@ -63,7 +47,7 @@ LogoutDialog::LogoutDialog(QWidget *parent)
 }
 
 void
-LogoutDialog::paintEvent(QPaintEvent *)
+LeaveRoom::paintEvent(QPaintEvent *)
 {
         QStyleOption opt;
         opt.init(this);

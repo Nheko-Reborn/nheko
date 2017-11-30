@@ -17,32 +17,28 @@
 
 #pragma once
 
-#include <QEvent>
-#include <QWidget>
+#include <QList>
 
-#include "FlatButton.h"
+namespace emoji {
 
-class EmojiPanel;
-
-class EmojiPickButton : public FlatButton
+struct Emoji
 {
-        Q_OBJECT
-public:
-        explicit EmojiPickButton(QWidget *parent = nullptr);
-
-signals:
-        void emojiSelected(const QString &emoji);
-
-protected:
-        void enterEvent(QEvent *e) override;
-        void leaveEvent(QEvent *e) override;
-
-private:
-        // Vertical distance from panel's bottom.
-        int vertical_distance_ = 10;
-
-        // Horizontal distance from panel's bottom right corner.
-        int horizontal_distance_ = 70;
-
-        QSharedPointer<EmojiPanel> panel_;
+        // Unicode code.
+        QString unicode;
+        // Keyboard shortcut e.g :emoji:
+        QString shortname;
 };
+
+class Provider
+{
+public:
+        static const QList<Emoji> people;
+        static const QList<Emoji> nature;
+        static const QList<Emoji> food;
+        static const QList<Emoji> activity;
+        static const QList<Emoji> travel;
+        static const QList<Emoji> objects;
+        static const QList<Emoji> symbols;
+        static const QList<Emoji> flags;
+};
+} // namespace emoji

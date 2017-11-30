@@ -73,39 +73,27 @@ Avatar {
     color: #555459;
 }
 
-LogoutDialog {
+dialogs--Logout,
+dialogs--LeaveRoom {
     background-color: white;
     color: #333;
 }
 
-LeaveRoomDialog {
-    background-color: white;
-    color: #333;
-}
-
-WelcomePage {
-    background-color: white;
-    color: #333;
-}
-
-LoginPage {
-    background-color: white;
-    color: #333;
-}
-
+WelcomePage,
+LoginPage,
 RegisterPage {
     background-color: white;
     color: #333;
 }
 
-EmojiPanel,
-EmojiPanel > * {
-    background-color: white;
+emoji--Panel,
+emoji--Panel > * {
+    background-color: #eee;
     color: #333;
 }
 
-EmojiCategory,
-EmojiCategory > * {
+emoji--Category,
+emoji--Category > * {
     background-color: white;
     color: #ccc;
 }

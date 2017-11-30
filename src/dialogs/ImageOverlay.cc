@@ -19,9 +19,11 @@
 #include <QDesktopWidget>
 #include <QPainter>
 
-#include "dialogs/ImageOverlayDialog.h"
+#include "dialogs/ImageOverlay.h"
 
-ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
+using namespace dialogs;
+
+ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
   : QWidget{parent}
   , originalImage_{image}
 {
@@ -47,7 +49,7 @@ ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
 
 // TODO: Move this into Utils
 void
-ImageOverlayDialog::scaleImage(int max_width, int max_height)
+ImageOverlay::scaleImage(int max_width, int max_height)
 {
         if (originalImage_.isNull())
                 return;
@@ -73,7 +75,7 @@ ImageOverlayDialog::scaleImage(int max_width, int max_height)
 }
 
 void
-ImageOverlayDialog::paintEvent(QPaintEvent *event)
+ImageOverlay::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event);
 
@@ -117,7 +119,7 @@ ImageOverlayDialog::paintEvent(QPaintEvent *event)
 }
 
 void
-ImageOverlayDialog::mousePressEvent(QMouseEvent *event)
+ImageOverlay::mousePressEvent(QMouseEvent *event)
 {
         if (event->button() != Qt::LeftButton)
                 return;

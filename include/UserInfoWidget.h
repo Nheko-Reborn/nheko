@@ -20,9 +20,10 @@
 #include <QLabel>
 #include <QLayout>
 
+#include "dialogs/Logout.h"
+
 class Avatar;
 class FlatButton;
-class LogoutDialog;
 class OverlayModal;
 
 class UserInfoWidget : public QWidget
@@ -68,7 +69,7 @@ private:
         QImage avatar_image_;
 
         QSharedPointer<OverlayModal> logoutModal_;
-        QSharedPointer<LogoutDialog> logoutDialog_;
+        QSharedPointer<dialogs::Logout> logoutDialog_;
 
         int logoutButtonSize_;
 };

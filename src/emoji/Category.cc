@@ -21,9 +21,11 @@
 
 #include "Config.h"
 
-#include "emoji/EmojiCategory.h"
+#include "emoji/Category.h"
 
-EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *parent)
+using namespace emoji;
+
+Category::Category(QString category, QList<Emoji> emoji, QWidget *parent)
   : QWidget(parent)
 {
         mainLayout_ = new QVBoxLayout(this);
@@ -33,7 +35,7 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
         emojiListView_ = new QListView();
         itemModel_     = new QStandardItemModel(this);
 
-        delegate_ = new EmojiItemDelegate(this);
+        delegate_ = new ItemDelegate(this);
         data_     = new Emoji;
 
         emojiListView_->setItemDelegate(delegate_);
@@ -75,11 +77,11 @@ EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *pare
         mainLayout_->addWidget(category_);
         mainLayout_->addWidget(emojiListView_);
 
-        connect(emojiListView_, &QListView::clicked, this, &EmojiCategory::clickIndex);
+        connect(emojiListView_, &QListView::clicked, this, &Category::clickIndex);
 }
 
 void
-EmojiCategory::paintEvent(QPaintEvent *)
+Category::paintEvent(QPaintEvent *)
 {
         QStyleOption opt;
         opt.init(this);
@@ -87,4 +89,4 @@ EmojiCategory::paintEvent(QPaintEvent *)
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-EmojiCategory::~EmojiCategory() {}
+Category::~Category() {}

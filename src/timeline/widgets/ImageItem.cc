@@ -22,7 +22,7 @@
 #include <QPainter>
 #include <QPixmap>
 
-#include "dialogs/ImageOverlayDialog.h"
+#include "dialogs/ImageOverlay.h"
 #include "timeline/widgets/ImageItem.h"
 
 namespace events = matrix::events;
@@ -165,7 +165,7 @@ ImageItem::mousePressEvent(QMouseEvent *event)
         if (QRect(0, height_ - bottom_height_, width_, bottom_height_).contains(point)) {
                 openUrl();
         } else {
-                auto image_dialog = new ImageOverlayDialog(image_, this);
+                auto image_dialog = new dialogs::ImageOverlay(image_, this);
                 image_dialog->show();
         }
 }

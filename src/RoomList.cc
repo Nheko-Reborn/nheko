@@ -18,9 +18,6 @@
 #include <QDebug>
 #include <QObject>
 
-#include "dialogs/JoinRoomDialog.h"
-#include "dialogs/LeaveRoomDialog.h"
-
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
@@ -159,10 +156,10 @@ void
 RoomList::openLeaveRoomDialog(const QString &room_id)
 {
         if (leaveRoomDialog_.isNull()) {
-                leaveRoomDialog_ = QSharedPointer<LeaveRoomDialog>(new LeaveRoomDialog(this));
+                leaveRoomDialog_ = QSharedPointer<dialogs::LeaveRoom>(new dialogs::LeaveRoom(this));
 
                 connect(leaveRoomDialog_.data(),
-                        &LeaveRoomDialog::closing,
+                        &dialogs::LeaveRoom::closing,
                         this,
                         [=](bool leaving) { closeLeaveRoomDialog(leaving, room_id); });
         }

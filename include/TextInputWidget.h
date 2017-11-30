@@ -28,7 +28,7 @@
 #include "Image.h"
 #include "LoadingIndicator.h"
 
-#include "emoji/EmojiPickButton.h"
+#include "emoji/PickButton.h"
 
 namespace msgs = matrix::events::messages;
 
@@ -107,5 +107,5 @@ private:
 
         FlatButton *sendFileBtn_;
         FlatButton *sendMessageBtn_;
-        EmojiPickButton *emojiBtn_;
+        emoji::PickButton *emojiBtn_;
 };

@@ -17,9 +17,11 @@
 
 #include <QByteArray>
 
-#include "emoji/EmojiProvider.h"
+#include "emoji/Provider.h"
 
-const QList<Emoji> EmojiProvider::people = {
+using namespace emoji;
+
+const QList<Emoji> Provider::people = {
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x80"), ":grinning:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x81"), ":grin:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x82"), ":joy:"},
@@ -229,7 +231,7 @@ const QList<Emoji> EmojiProvider::people = {
   Emoji{QString::fromUtf8("\xf0\x9f\x92\xbc"), ":briefcase:"},
 };
 
-const QList<Emoji> EmojiProvider::nature = {
+const QList<Emoji> Provider::nature = {
   Emoji{QString::fromUtf8("\xf0\x9f\x99\x88"), ":see_no_evil:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x99\x89"), ":hear_no_evil:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x99\x8a"), ":speak_no_evil:"},
@@ -392,7 +394,7 @@ const QList<Emoji> EmojiProvider::nature = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\x8d"), ":bamboo:"},
 };
 
-const QList<Emoji> EmojiProvider::food = {
+const QList<Emoji> Provider::food = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x87"), ":grapes:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x88"), ":melon:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x89"), ":watermelon:"},
@@ -480,7 +482,7 @@ const QList<Emoji> EmojiProvider::food = {
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\x84"), ":spoon:"},
 };
 
-const QList<Emoji> EmojiProvider::activity = {
+const QList<Emoji> Provider::activity = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xbe"), ":space_invader:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4"), ":levitate:"},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xba"), ":fencer:"},
@@ -622,7 +624,7 @@ const QList<Emoji> EmojiProvider::activity = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\xb9"), ":bow_and_arrow:"},
 };
 
-const QList<Emoji> EmojiProvider::travel = {
+const QList<Emoji> Provider::travel = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8e"), ":race_car:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8d"), ":motorcycle:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x97\xbe"), ":japan:"},
@@ -743,7 +745,7 @@ const QList<Emoji> EmojiProvider::travel = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x81"), ":checkered_flag:"},
 };
 
-const QList<Emoji> EmojiProvider::objects = {
+const QList<Emoji> Provider::objects = {
   Emoji{QString::fromUtf8("\xe2\x98\xa0"), ":skull_crossbones:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x8c"), ":love_letter:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\xa3"), ":bomb:"},
@@ -926,7 +928,7 @@ const QList<Emoji> EmojiProvider::objects = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\xb3\xf0\x9f\x8c\x88"), ":rainbow_flag:"},
 };
 
-const QList<Emoji> EmojiProvider::symbols = {
+const QList<Emoji> Provider::symbols = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\x81\xf0\x9f\x97\xa8"), ":eye_in_speech_bubble:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x98"), ":cupid:"},
   Emoji{QString::fromUtf8("\xe2\x9d\xa4"), ":heart:"},
@@ -1204,7 +1206,7 @@ const QList<Emoji> EmojiProvider::symbols = {
   Emoji{QString::fromUtf8("\xf0\x9f\x94\xb5"), ":blue_circle:"},
 };
 
-const QList<Emoji> EmojiProvider::flags = {
+const QList<Emoji> Provider::flags = {
   Emoji{QString::fromUtf8("\xf0\x9f\x87\xa6\xf0\x9f\x87\xa8"), ":flag_ac:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x87\xa6\xf0\x9f\x87\xa9"), ":flag_ad:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x87\xa6\xf0\x9f\x87\xaa"), ":flag_ae:"},

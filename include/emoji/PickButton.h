@@ -17,23 +17,35 @@
 
 #pragma once
 
-#include <QFrame>
+#include <QEvent>
+#include <QWidget>
 
-class FlatButton;
+#include "FlatButton.h"
 
-class LogoutDialog : public QFrame
+namespace emoji {
+
+class Panel;
+
+class PickButton : public FlatButton
 {
         Q_OBJECT
 public:
-        explicit LogoutDialog(QWidget *parent = nullptr);
-
-protected:
-        void paintEvent(QPaintEvent *event) override;
+        explicit PickButton(QWidget *parent = nullptr);
 
 signals:
-        void closing(bool isLoggingOut);
+        void emojiSelected(const QString &emoji);
+
+protected:
+        void enterEvent(QEvent *e) override;
+        void leaveEvent(QEvent *e) override;
 
 private:
-        FlatButton *confirmBtn_;
-        FlatButton *cancelBtn_;
+        // Vertical distance from panel's bottom.
+        int vertical_distance_ = 10;
+
+        // Horizontal distance from panel's bottom right corner.
+        int horizontal_distance_ = 70;
+
+        QSharedPointer<Panel> panel_;
 };
+} // namespace emoji

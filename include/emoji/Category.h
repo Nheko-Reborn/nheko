@@ -17,24 +17,44 @@
 
 #pragma once
 
-#include <QModelIndex>
+#include <QLabel>
+#include <QLayout>
+#include <QListView>
 #include <QStandardItemModel>
-#include <QStyledItemDelegate>
 
-#include "EmojiProvider.h"
+#include "ItemDelegate.h"
 
-class EmojiItemDelegate : public QStyledItemDelegate
+namespace emoji {
+
+class Category : public QWidget
 {
         Q_OBJECT
 
 public:
-        explicit EmojiItemDelegate(QObject *parent = nullptr);
-        ~EmojiItemDelegate();
+        Category(QString category, QList<Emoji> emoji, QWidget *parent = nullptr);
+        ~Category();
 
-        void paint(QPainter *painter,
-                   const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const override;
+signals:
+        void emojiSelected(const QString &emoji);
+
+protected:
+        void paintEvent(QPaintEvent *event) override;
+
+private slots:
+        void clickIndex(const QModelIndex &index)
+        {
+                emit emojiSelected(index.data(Qt::UserRole).toString());
+        };
 
 private:
-        Emoji *data_;
+        QVBoxLayout *mainLayout_;
+
+        QStandardItemModel *itemModel_;
+        QListView *emojiListView_;
+
+        emoji::Emoji *data_;
+        emoji::ItemDelegate *delegate_;
+
+        QLabel *category_;
 };
+} // namespace emoji

@@ -141,17 +141,17 @@ endif()
 #
 set(SRC_FILES
     # Dialogs
-    src/dialogs/ImageOverlayDialog.cc
-    src/dialogs/JoinRoomDialog.cc
-    src/dialogs/LeaveRoomDialog.cc
-    src/dialogs/LogoutDialog.cc
+    src/dialogs/ImageOverlay.cc
+    src/dialogs/JoinRoom.cc
+    src/dialogs/LeaveRoom.cc
+    src/dialogs/Logout.cc
 
     # Emoji
-    src/emoji/EmojiCategory.cc
-    src/emoji/EmojiItemDelegate.cc
-    src/emoji/EmojiPanel.cc
-    src/emoji/EmojiPickButton.cc
-    src/emoji/EmojiProvider.cc
+    src/emoji/Category.cc
+    src/emoji/ItemDelegate.cc
+    src/emoji/Panel.cc
+    src/emoji/PickButton.cc
+    src/emoji/Provider.cc
 
     # Timeline
     src/timeline/TimelineViewManager.cc
@@ -245,17 +245,16 @@ include_directories(${LMDB_INCLUDE_DIR})
 
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
-    include/dialogs/ImageOverlayDialog.h
-    include/dialogs/JoinRoomDialog.h
-    include/dialogs/LeaveRoomDialog.h
-    include/dialogs/LogoutDialog.h
+    include/dialogs/ImageOverlay.h
+    include/dialogs/JoinRoom.h
+    include/dialogs/LeaveRoom.h
+    include/dialogs/Logout.h
 
     # Emoji
-    include/emoji/EmojiCategory.h
-    include/emoji/EmojiItemDelegate.h
-    include/emoji/EmojiPanel.h
-    include/emoji/EmojiPickButton.h
-    include/emoji/EmojiProvider.h
+    include/emoji/Category.h
+    include/emoji/ItemDelegate.h
+    include/emoji/Panel.h
+    include/emoji/PickButton.h
 
     # Timeline
     include/timeline/TimelineItem.h

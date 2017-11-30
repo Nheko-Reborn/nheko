@@ -26,10 +26,11 @@
 #include <QSharedPointer>
 #include <QVBoxLayout>
 
+#include "dialogs/LeaveRoom.h"
+
 class Avatar;
 class FlatButton;
 class Label;
-class LeaveRoomDialog;
 class Menu;
 class OverlayModal;
 class RoomSettings;
@@ -79,7 +80,7 @@ private:
         FlatButton *settingsBtn_;
 
         QSharedPointer<OverlayModal> leaveRoomModal_;
-        QSharedPointer<LeaveRoomDialog> leaveRoomDialog_;
+        QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
 
         Avatar *avatar_;
 

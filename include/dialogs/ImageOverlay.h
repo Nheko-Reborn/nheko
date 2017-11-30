@@ -17,25 +17,33 @@
 
 #pragma once
 
-#include <QList>
+#include <QDialog>
+#include <QMouseEvent>
+#include <QPixmap>
 
-struct Emoji
-{
-        // Unicode code.
-        QString unicode;
-        // Keyboard shortcut e.g :emoji:
-        QString shortname;
-};
+namespace dialogs {
 
-class EmojiProvider
+class ImageOverlay : public QWidget
 {
+        Q_OBJECT
 public:
-        static const QList<Emoji> people;
-        static const QList<Emoji> nature;
-        static const QList<Emoji> food;
-        static const QList<Emoji> activity;
-        static const QList<Emoji> travel;
-        static const QList<Emoji> objects;
-        static const QList<Emoji> symbols;
-        static const QList<Emoji> flags;
+        ImageOverlay(QPixmap image, QWidget *parent = nullptr);
+
+protected:
+        void mousePressEvent(QMouseEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
+
+signals:
+        void closing();
+
+private:
+        void scaleImage(int width, int height);
+
+        QPixmap originalImage_;
+        QPixmap image_;
+
+        QRect content_;
+        QRect close_button_;
+        QRect screen_;
 };
+} // dialogs

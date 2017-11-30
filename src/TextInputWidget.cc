@@ -211,7 +211,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         sendMessageBtn_->setIcon(send_message_icon);
         sendMessageBtn_->setIconSize(QSize(24, 24));
 
-        emojiBtn_ = new EmojiPickButton(this);
+        emojiBtn_ = new emoji::PickButton(this);
 
         QIcon emoji_icon;
         emoji_icon.addFile(":/icons/icons/ui/smile.png");

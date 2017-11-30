@@ -15,33 +15,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-#include <QPainter>
+#pragma once
 
-#include "emoji/EmojiItemDelegate.h"
+#include <QScrollArea>
 
-EmojiItemDelegate::EmojiItemDelegate(QObject *parent)
-  : QStyledItemDelegate(parent)
+#include "Provider.h"
+
+namespace emoji {
+
+class Category;
+
+class Panel : public QWidget
 {
-        data_ = new Emoji;
-}
+        Q_OBJECT
 
-EmojiItemDelegate::~EmojiItemDelegate() { delete data_; }
+public:
+        Panel(QWidget *parent = nullptr);
 
-void
-EmojiItemDelegate::paint(QPainter *painter,
-                         const QStyleOptionViewItem &option,
-                         const QModelIndex &index) const
-{
-        Q_UNUSED(index);
+signals:
+        void mouseLeft();
+        void emojiSelected(const QString &emoji);
 
-        QStyleOptionViewItem viewOption(option);
+protected:
+        void leaveEvent(QEvent *event);
+        void paintEvent(QPaintEvent *event);
 
-        auto emoji = index.data(Qt::UserRole).toString();
+private:
+        void showCategory(const Category *category);
 
-        QFont font("Emoji One");
-        font.setPixelSize(19);
+        Provider emoji_provider_;
 
-        painter->setFont(font);
-        painter->drawText(viewOption.rect, Qt::AlignCenter, emoji);
-}
+        QScrollArea *scrollArea_;
+
+        int shadowMargin_;
+
+        // Panel dimensions.
+        int width_;
+        int height_;
+
+        int categoryIconSize_;
+};
+} // namespace emoji

@@ -15,32 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include <QDebug>
+#include <QPainter>
 
-#include <QDialog>
-#include <QMouseEvent>
-#include <QPixmap>
+#include "emoji/ItemDelegate.h"
 
-class ImageOverlayDialog : public QWidget
+using namespace emoji;
+
+ItemDelegate::ItemDelegate(QObject *parent)
+  : QStyledItemDelegate(parent)
 {
-        Q_OBJECT
-public:
-        ImageOverlayDialog(QPixmap image, QWidget *parent = nullptr);
+        data_ = new Emoji;
+}
 
-protected:
-        void mousePressEvent(QMouseEvent *event) override;
-        void paintEvent(QPaintEvent *event) override;
+ItemDelegate::~ItemDelegate() { delete data_; }
 
-signals:
-        void closing();
+void
+ItemDelegate::paint(QPainter *painter,
+                    const QStyleOptionViewItem &option,
+                    const QModelIndex &index) const
+{
+        Q_UNUSED(index);
 
-private:
-        void scaleImage(int width, int height);
+        QStyleOptionViewItem viewOption(option);
 
-        QPixmap originalImage_;
-        QPixmap image_;
+        auto emoji = index.data(Qt::UserRole).toString();
 
-        QRect content_;
-        QRect close_button_;
-        QRect screen_;
-};
+        QFont font("Emoji One");
+        font.setPixelSize(19);
+
+        painter->setFont(font);
+        painter->drawText(viewOption.rect, Qt::AlignCenter, emoji);
+}

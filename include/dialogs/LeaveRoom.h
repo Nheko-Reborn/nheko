@@ -4,11 +4,13 @@
 
 class FlatButton;
 
-class LeaveRoomDialog : public QFrame
+namespace dialogs {
+
+class LeaveRoom : public QFrame
 {
         Q_OBJECT
 public:
-        explicit LeaveRoomDialog(QWidget *parent = nullptr);
+        explicit LeaveRoom(QWidget *parent = nullptr);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -20,3 +22,4 @@ private:
         FlatButton *confirmBtn_;
         FlatButton *cancelBtn_;
 };
+} // dialogs

@@ -5,11 +5,13 @@
 
 class FlatButton;
 
-class JoinRoomDialog : public QFrame
+namespace dialogs {
+
+class JoinRoom : public QFrame
 {
         Q_OBJECT
 public:
-        JoinRoomDialog(QWidget *parent = nullptr);
+        JoinRoom(QWidget *parent = nullptr);
 
 signals:
         void closing(bool isJoining, QString roomAlias);
@@ -20,3 +22,5 @@ private:
 
         QLineEdit *roomAliasEdit_;
 };
+
+} // dialogs

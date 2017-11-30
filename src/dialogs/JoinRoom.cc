@@ -5,9 +5,11 @@
 #include "FlatButton.h"
 #include "Theme.h"
 
-#include "dialogs/JoinRoomDialog.h"
+#include "dialogs/JoinRoom.h"
 
-JoinRoomDialog::JoinRoomDialog(QWidget *parent)
+using namespace dialogs;
+
+JoinRoom::JoinRoom(QWidget *parent)
   : QFrame(parent)
 {
         setMaximumSize(400, 400);

@@ -71,8 +71,8 @@ Avatar {
     color: #f2f2f2;
 }
 
-LogoutDialog,
-LeaveRoomDialog {
+dialogs--Logout,
+dialogs--LeaveRoom {
     background-color: #383c4a;
     color: #caccd1;
 }
@@ -84,14 +84,14 @@ RegisterPage {
     color: #caccd1;
 }
 
-EmojiPanel,
-EmojiPanel > * {
-    background-color: #383c4a;
+emoji--Panel,
+emoji--Panel > * {
+    background-color: #313440;
     color: #caccd1;
 }
 
-EmojiCategory,
-EmojiCategory > * {
+emoji--Category,
+emoji--Category > * {
     background-color: #383c4a;
     color: #caccd1;
 }

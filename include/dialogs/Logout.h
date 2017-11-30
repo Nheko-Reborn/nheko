@@ -17,39 +17,26 @@
 
 #pragma once
 
-#include <QScrollArea>
+#include <QFrame>
 
-#include "EmojiProvider.h"
+class FlatButton;
 
-class EmojiCategory;
+namespace dialogs {
 
-class EmojiPanel : public QWidget
+class Logout : public QFrame
 {
         Q_OBJECT
-
 public:
-        EmojiPanel(QWidget *parent = nullptr);
-
-signals:
-        void mouseLeft();
-        void emojiSelected(const QString &emoji);
+        explicit Logout(QWidget *parent = nullptr);
 
 protected:
-        void leaveEvent(QEvent *event);
-        void paintEvent(QPaintEvent *event);
+        void paintEvent(QPaintEvent *event) override;
+
+signals:
+        void closing(bool isLoggingOut);
 
 private:
-        void showEmojiCategory(const EmojiCategory *category);
-
-        EmojiProvider emoji_provider_;
-
-        QScrollArea *scrollArea_;
-
-        int shadowMargin_;
-
-        // Panel dimensions.
-        int width_;
-        int height_;
-
-        int categoryIconSize_;
+        FlatButton *confirmBtn_;
+        FlatButton *cancelBtn_;
 };
+} // dialogs

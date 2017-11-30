@@ -24,8 +24,6 @@
 #include "OverlayModal.h"
 #include "UserInfoWidget.h"
 
-#include "dialogs/LogoutDialog.h"
-
 UserInfoWidget::UserInfoWidget(QWidget *parent)
   : QWidget(parent)
   , display_name_("User")
@@ -94,7 +92,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         // Show the confirmation dialog.
         connect(logoutButton_, &QPushButton::clicked, this, [=]() {
                 if (logoutDialog_.isNull()) {
-                        logoutDialog_ = QSharedPointer<LogoutDialog>(new LogoutDialog(this));
+                        logoutDialog_ = QSharedPointer<dialogs::Logout>(new dialogs::Logout(this));
                         connect(logoutDialog_.data(),
                                 SIGNAL(closing(bool)),
                                 this,

@@ -24,7 +24,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-class JoinRoomDialog;
+#include "dialogs/LeaveRoom.h"
+
 class LeaveRoomDialog;
 class MatrixClient;
 class OverlayModal;
@@ -82,10 +83,9 @@ private:
         QPushButton *joinRoomButton_;
 
         OverlayModal *joinRoomModal_;
-        JoinRoomDialog *joinRoomDialog_;
 
         QSharedPointer<OverlayModal> leaveRoomModal_;
-        QSharedPointer<LeaveRoomDialog> leaveRoomDialog_;
+        QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
 
         QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
 
