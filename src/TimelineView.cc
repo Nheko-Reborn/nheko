@@ -16,7 +16,6 @@
  */
 
 #include <QApplication>
-#include <QDebug>
 #include <QFileInfo>
 #include <QTimer>
 
@@ -229,140 +228,22 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
         if (ty == events::EventType::RoomMessage) {
                 events::MessageEventType msg_type = events::extractMessageEventType(event);
 
+                using Emote  = events::MessageEvent<msgs::Emote>;
+                using File   = events::MessageEvent<msgs::File>;
+                using Image  = events::MessageEvent<msgs::Image>;
+                using Notice = events::MessageEvent<msgs::Notice>;
+                using Text   = events::MessageEvent<msgs::Text>;
+
                 if (msg_type == events::MessageEventType::Text) {
-                        events::MessageEvent<msgs::Text> text;
-
-                        try {
-                                text.deserialize(event);
-                        } catch (const DeserializationException &e) {
-                                qWarning() << e.what() << event;
-                                return nullptr;
-                        }
-
-                        if (isDuplicate(text.eventId()))
-                                return nullptr;
-
-                        eventIds_[text.eventId()] = true;
-
-                        QString txnid = text.unsignedData().transactionId();
-                        if (!txnid.isEmpty() &&
-                            isPendingMessage(txnid, text.sender(), local_user_)) {
-                                removePendingMessage(txnid);
-                                return nullptr;
-                        }
-
-                        auto with_sender = isSenderRendered(text.sender(), direction);
-
-                        updateLastSender(text.sender(), direction);
-
-                        using Text = events::MessageEvent<msgs::Text>;
-                        return createTimelineItem<Text>(text, with_sender);
+                        return processMessageEvent<Text>(event, direction);
                 } else if (msg_type == events::MessageEventType::Notice) {
-                        events::MessageEvent<msgs::Notice> notice;
-
-                        try {
-                                notice.deserialize(event);
-                        } catch (const DeserializationException &e) {
-                                qWarning() << e.what() << event;
-                                return nullptr;
-                        }
-
-                        if (isDuplicate(notice.eventId()))
-                                return nullptr;
-
-                        eventIds_[notice.eventId()] = true;
-
-                        auto with_sender = isSenderRendered(notice.sender(), direction);
-
-                        updateLastSender(notice.sender(), direction);
-
-                        using Notice = events::MessageEvent<msgs::Notice>;
-                        return createTimelineItem<Notice>(notice, with_sender);
+                        return processMessageEvent<Notice>(event, direction);
                 } else if (msg_type == events::MessageEventType::Image) {
-                        events::MessageEvent<msgs::Image> img;
-
-                        try {
-                                img.deserialize(event);
-                        } catch (const DeserializationException &e) {
-                                qWarning() << e.what() << event;
-                                return nullptr;
-                        }
-
-                        if (isDuplicate(img.eventId()))
-                                return nullptr;
-
-                        eventIds_[img.eventId()] = true;
-
-                        QString txnid = img.unsignedData().transactionId();
-                        if (!txnid.isEmpty() &&
-                            isPendingMessage(txnid, img.sender(), local_user_)) {
-                                removePendingMessage(txnid);
-                                return nullptr;
-                        }
-
-                        auto with_sender = isSenderRendered(img.sender(), direction);
-
-                        updateLastSender(img.sender(), direction);
-
-                        using Image = events::MessageEvent<msgs::Image>;
-                        return createTimelineItem<Image, ImageItem>(img, with_sender);
+                        return processMessageEvent<Image, ImageItem>(event, direction);
                 } else if (msg_type == events::MessageEventType::Emote) {
-                        events::MessageEvent<msgs::Emote> emote;
-
-                        try {
-                                emote.deserialize(event);
-                        } catch (const DeserializationException &e) {
-                                qWarning() << e.what() << event;
-                                return nullptr;
-                        }
-
-                        if (isDuplicate(emote.eventId()))
-                                return nullptr;
-
-                        eventIds_[emote.eventId()] = true;
-
-                        QString txnid = emote.unsignedData().transactionId();
-                        if (!txnid.isEmpty() &&
-                            isPendingMessage(txnid, emote.sender(), local_user_)) {
-                                removePendingMessage(txnid);
-                                return nullptr;
-                        }
-
-                        auto with_sender = isSenderRendered(emote.sender(), direction);
-
-                        updateLastSender(emote.sender(), direction);
-
-                        using Emote = events::MessageEvent<msgs::Emote>;
-                        return createTimelineItem<Emote>(emote, with_sender);
+                        return processMessageEvent<Emote>(event, direction);
                 } else if (msg_type == events::MessageEventType::File) {
-                        events::MessageEvent<msgs::File> file;
-
-                        try {
-                                file.deserialize(event);
-                        } catch (const DeserializationException &e) {
-                                qWarning() << e.what() << event;
-                                return nullptr;
-                        }
-
-                        if (isDuplicate(file.eventId()))
-                                return nullptr;
-
-                        eventIds_[file.eventId()] = true;
-
-                        QString txnid = file.unsignedData().transactionId();
-
-                        if (!txnid.isEmpty() &&
-                            isPendingMessage(txnid, file.sender(), local_user_)) {
-                                removePendingMessage(txnid);
-                                return nullptr;
-                        }
-
-                        auto withSender = isSenderRendered(file.sender(), direction);
-
-                        updateLastSender(file.sender(), direction);
-
-                        using File = events::MessageEvent<msgs::File>;
-                        return createTimelineItem<File, FileItem>(file, withSender);
+                        return processMessageEvent<File, FileItem>(event, direction);
                 } else if (msg_type == events::MessageEventType::Unknown) {
                         // TODO Handle redacted messages.
                         // Silenced for now.

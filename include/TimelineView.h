@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QApplication>
+#include <QDebug>
 #include <QLayout>
 #include <QList>
 #include <QQueue>
@@ -90,15 +91,6 @@ public:
                      const QString &room_id,
                      QWidget *parent = 0);
 
-        // For events with custom display widgets.
-        template<class Event, class Widget>
-        TimelineItem *createTimelineItem(const Event &event, bool withSender);
-
-        // For events without custom display widgets.
-        // TODO: All events should have custom widgets.
-        template<class Event>
-        TimelineItem *createTimelineItem(const Event &event, bool withSender);
-
         // Add new events at the end of the timeline.
         int addEvents(const Timeline &timeline);
         void addUserMessage(matrix::events::MessageEventType ty, const QString &msg);
@@ -140,6 +132,22 @@ private:
         void notifyForLastEvent();
         void readLastEvent() const;
         QString getLastEventId() const;
+
+        template<class Event, class Widget>
+        TimelineItem *processMessageEvent(const QJsonObject &event, TimelineDirection direction);
+
+        // TODO: Remove this eventually.
+        template<class Event>
+        TimelineItem *processMessageEvent(const QJsonObject &event, TimelineDirection direction);
+
+        // For events with custom display widgets.
+        template<class Event, class Widget>
+        TimelineItem *createTimelineItem(const Event &event, bool withSender);
+
+        // For events without custom display widgets.
+        // TODO: All events should have custom widgets.
+        template<class Event>
+        TimelineItem *createTimelineItem(const Event &event, bool withSender);
 
         // Used to determine whether or not we should prefix a message with the
         // sender's name.
@@ -237,4 +245,66 @@ TimelineView::createTimelineItem(const Event &event, bool withSender)
         auto item        = new TimelineItem(eventWidget, event, withSender, scroll_widget_);
 
         return item;
+}
+
+template<class Event>
+TimelineItem *
+TimelineView::processMessageEvent(const QJsonObject &data, TimelineDirection direction)
+{
+        Event event;
+
+        try {
+                event.deserialize(data);
+        } catch (const DeserializationException &e) {
+                qWarning() << e.what() << data;
+                return nullptr;
+        }
+
+        if (isDuplicate(event.eventId()))
+                return nullptr;
+
+        eventIds_[event.eventId()] = true;
+
+        QString txnid = event.unsignedData().transactionId();
+        if (!txnid.isEmpty() && isPendingMessage(txnid, event.sender(), local_user_)) {
+                removePendingMessage(txnid);
+                return nullptr;
+        }
+
+        auto with_sender = isSenderRendered(event.sender(), direction);
+
+        updateLastSender(event.sender(), direction);
+
+        return createTimelineItem<Event>(event, with_sender);
+}
+
+template<class Event, class Widget>
+TimelineItem *
+TimelineView::processMessageEvent(const QJsonObject &data, TimelineDirection direction)
+{
+        Event event;
+
+        try {
+                event.deserialize(data);
+        } catch (const DeserializationException &e) {
+                qWarning() << e.what() << data;
+                return nullptr;
+        }
+
+        if (isDuplicate(event.eventId()))
+                return nullptr;
+
+        eventIds_[event.eventId()] = true;
+
+        QString txnid = event.unsignedData().transactionId();
+        if (!txnid.isEmpty() && isPendingMessage(txnid, event.sender(), local_user_)) {
+                removePendingMessage(txnid);
+                return nullptr;
+        }
+
+        auto with_sender = isSenderRendered(event.sender(), direction);
+
+        updateLastSender(event.sender(), direction);
+
+        return createTimelineItem<Event, Widget>(event, with_sender);
 }
