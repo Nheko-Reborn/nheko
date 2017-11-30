@@ -35,10 +35,11 @@
 #include "Sync.h"
 #include "TextInputWidget.h"
 #include "Theme.h"
-#include "TimelineViewManager.h"
 #include "TopRoomBar.h"
 #include "TypingDisplay.h"
 #include "UserInfoWidget.h"
+
+#include "timeline/TimelineViewManager.h"
 
 constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
 constexpr int SYNC_RETRY_TIMEOUT        = 10000;

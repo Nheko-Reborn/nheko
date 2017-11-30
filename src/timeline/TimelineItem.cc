@@ -22,10 +22,11 @@
 
 #include "Avatar.h"
 #include "Config.h"
-#include "FileItem.h"
-#include "ImageItem.h"
 #include "Sync.h"
-#include "TimelineItem.h"
+
+#include "timeline/TimelineItem.h"
+#include "timeline/widgets/FileItem.h"
+#include "timeline/widgets/ImageItem.h"
 
 static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
 static const QString URL_HTML = "<a href=\"\\1\">\\1</a>";

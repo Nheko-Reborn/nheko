@@ -4,8 +4,9 @@
 
 #include "Config.h"
 #include "FlatButton.h"
-#include "LeaveRoomDialog.h"
 #include "Theme.h"
+
+#include "dialogs/LeaveRoomDialog.h"
 
 LeaveRoomDialog::LeaveRoomDialog(QWidget *parent)
   : QFrame(parent)

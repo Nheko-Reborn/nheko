@@ -17,7 +17,7 @@
 
 #include <QByteArray>
 
-#include "EmojiProvider.h"
+#include "emoji/EmojiProvider.h"
 
 const QList<Emoji> EmojiProvider::people = {
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x80"), ":grinning:"},

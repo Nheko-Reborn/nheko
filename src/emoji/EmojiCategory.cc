@@ -20,7 +20,8 @@
 #include <QStyleOption>
 
 #include "Config.h"
-#include "EmojiCategory.h"
+
+#include "emoji/EmojiCategory.h"
 
 EmojiCategory::EmojiCategory(QString category, QList<Emoji> emoji, QWidget *parent)
   : QWidget(parent)

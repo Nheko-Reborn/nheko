@@ -21,12 +21,13 @@
 #include "Config.h"
 #include "FlatButton.h"
 #include "Label.h"
-#include "LeaveRoomDialog.h"
 #include "MainWindow.h"
 #include "Menu.h"
 #include "OverlayModal.h"
 #include "RoomSettings.h"
 #include "TopRoomBar.h"
+
+#include "dialogs/LeaveRoomDialog.h"
 
 TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)

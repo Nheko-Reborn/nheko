@@ -18,8 +18,9 @@
 #include <QDebug>
 #include <QObject>
 
-#include "JoinRoomDialog.h"
-#include "LeaveRoomDialog.h"
+#include "dialogs/JoinRoomDialog.h"
+#include "dialogs/LeaveRoomDialog.h"
+
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"

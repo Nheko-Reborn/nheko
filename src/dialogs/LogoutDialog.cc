@@ -22,8 +22,9 @@
 
 #include "Config.h"
 #include "FlatButton.h"
-#include "LogoutDialog.h"
 #include "Theme.h"
+
+#include "dialogs/LogoutDialog.h"
 
 LogoutDialog::LogoutDialog(QWidget *parent)
   : QFrame(parent)

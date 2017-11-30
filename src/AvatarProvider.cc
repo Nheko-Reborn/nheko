@@ -17,7 +17,8 @@
 
 #include "AvatarProvider.h"
 #include "MatrixClient.h"
-#include "TimelineItem.h"
+
+#include "timeline/TimelineItem.h"
 
 QSharedPointer<MatrixClient> AvatarProvider::client_;
 

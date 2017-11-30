@@ -18,7 +18,7 @@
 #include <QDebug>
 #include <QPainter>
 
-#include "EmojiItemDelegate.h"
+#include "emoji/EmojiItemDelegate.h"
 
 EmojiItemDelegate::EmojiItemDelegate(QObject *parent)
   : QStyledItemDelegate(parent)

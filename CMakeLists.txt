@@ -140,50 +140,27 @@ endif()
 # Declare source and header files.
 #
 set(SRC_FILES
-    src/AvatarProvider.cc
-    src/Cache.cc
-    src/ChatPage.cc
-    src/Deserializable.cc
-    src/EmojiCategory.cc
-    src/EmojiItemDelegate.cc
-    src/EmojiPanel.cc
-    src/EmojiPickButton.cc
-    src/EmojiProvider.cc
-    src/FileItem.cc
-    src/ImageItem.cc
-    src/ImageOverlayDialog.cc
-    src/InputValidator.cc
-    src/JoinRoomDialog.cc
-    src/LeaveRoomDialog.cc
-    src/Login.cc
-    src/LoginPage.cc
-    src/LogoutDialog.cc
-    src/MainWindow.cc
-    src/MatrixClient.cc
-    src/Profile.cc
-    src/QuickSwitcher.cc
-    src/Register.cc
-    src/RegisterPage.cc
-    src/RoomInfoListItem.cc
-    src/RoomList.cc
-    src/RoomMessages.cc
-    src/RoomState.cc
-    src/SideBarActions.cc
-    src/UserSettingsPage.cc
-    src/Splitter.cc
-    src/Sync.cc
-    src/TextInputWidget.cc
-    src/TimelineItem.cc
-    src/TimelineView.cc
-    src/TimelineViewManager.cc
-    src/TopRoomBar.cc
-    src/TrayIcon.cc
-    src/TypingDisplay.cc
-    src/UserInfoWidget.cc
-    src/Versions.cc
-    src/WelcomePage.cc
-    src/main.cc
+    # Dialogs
+    src/dialogs/ImageOverlayDialog.cc
+    src/dialogs/JoinRoomDialog.cc
+    src/dialogs/LeaveRoomDialog.cc
+    src/dialogs/LogoutDialog.cc
 
+    # Emoji
+    src/emoji/EmojiCategory.cc
+    src/emoji/EmojiItemDelegate.cc
+    src/emoji/EmojiPanel.cc
+    src/emoji/EmojiPickButton.cc
+    src/emoji/EmojiProvider.cc
+
+    # Timeline
+    src/timeline/TimelineViewManager.cc
+    src/timeline/TimelineItem.cc
+    src/timeline/TimelineView.cc
+    src/timeline/widgets/FileItem.cc
+    src/timeline/widgets/ImageItem.cc
+
+    # UI components
     src/ui/Avatar.cc
     src/ui/Badge.cc
     src/ui/LoadingIndicator.cc
@@ -201,6 +178,36 @@ set(SRC_FILES
     src/ui/ToggleButton.cc
     src/ui/Theme.cc
     src/ui/ThemeManager.cc
+
+    src/AvatarProvider.cc
+    src/Cache.cc
+    src/ChatPage.cc
+    src/Deserializable.cc
+    src/InputValidator.cc
+    src/Login.cc
+    src/LoginPage.cc
+    src/MainWindow.cc
+    src/MatrixClient.cc
+    src/Profile.cc
+    src/QuickSwitcher.cc
+    src/Register.cc
+    src/RegisterPage.cc
+    src/RoomInfoListItem.cc
+    src/RoomList.cc
+    src/RoomMessages.cc
+    src/RoomState.cc
+    src/SideBarActions.cc
+    src/Splitter.cc
+    src/Sync.cc
+    src/TextInputWidget.cc
+    src/TopRoomBar.cc
+    src/TrayIcon.cc
+    src/TypingDisplay.cc
+    src/UserInfoWidget.cc
+    src/UserSettingsPage.cc
+    src/Versions.cc
+    src/WelcomePage.cc
+    src/main.cc
 )
 
 set(MATRIX_EVENTS
@@ -237,44 +244,33 @@ include_directories(libs/lmdbxx)
 include_directories(${LMDB_INCLUDE_DIR})
 
 qt5_wrap_cpp(MOC_HEADERS
-    include/AvatarProvider.h
-    include/ChatPage.h
-    include/EmojiCategory.h
-    include/EmojiItemDelegate.h
-    include/EmojiPanel.h
-    include/EmojiPickButton.h
-    include/ui/FloatingButton.h
-    include/FileItem.h
-    include/ImageItem.h
-    include/ImageOverlayDialog.h
-    include/JoinRoomDialog.h
-    include/LeaveRoomDialog.h
-    include/LoginPage.h
-    include/LogoutDialog.h
-    include/MainWindow.h
-    include/MatrixClient.h
-    include/QuickSwitcher.h
-    include/RegisterPage.h
-    include/RoomInfoListItem.h
-    include/RoomList.h
-    include/SideBarActions.h
-    include/UserSettingsPage.h
-    include/Splitter.h
-    include/TextInputWidget.h
-    include/TimelineItem.h
-    include/TimelineView.h
-    include/TimelineViewManager.h
-    include/TopRoomBar.h
-    include/TrayIcon.h
-    include/TypingDisplay.h
-    include/UserInfoWidget.h
-    include/WelcomePage.h
+    # Dialogs
+    include/dialogs/ImageOverlayDialog.h
+    include/dialogs/JoinRoomDialog.h
+    include/dialogs/LeaveRoomDialog.h
+    include/dialogs/LogoutDialog.h
 
+    # Emoji
+    include/emoji/EmojiCategory.h
+    include/emoji/EmojiItemDelegate.h
+    include/emoji/EmojiPanel.h
+    include/emoji/EmojiPickButton.h
+    include/emoji/EmojiProvider.h
+
+    # Timeline
+    include/timeline/TimelineItem.h
+    include/timeline/TimelineView.h
+    include/timeline/TimelineViewManager.h
+    include/timeline/widgets/FileItem.h
+    include/timeline/widgets/ImageItem.h
+
+    # UI components
     include/ui/Avatar.h
     include/ui/Badge.h
     include/ui/LoadingIndicator.h
     include/ui/FlatButton.h
     include/ui/Label.h
+    include/ui/FloatingButton.h
     include/ui/OverlayWidget.h
     include/ui/ScrollBar.h
     include/ui/SnackBar.h
@@ -285,6 +281,25 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/ToggleButton.h
     include/ui/Theme.h
     include/ui/ThemeManager.h
+
+    include/AvatarProvider.h
+    include/ChatPage.h
+    include/LoginPage.h
+    include/MainWindow.h
+    include/MatrixClient.h
+    include/QuickSwitcher.h
+    include/RegisterPage.h
+    include/RoomInfoListItem.h
+    include/RoomList.h
+    include/SideBarActions.h
+    include/Splitter.h
+    include/TextInputWidget.h
+    include/TopRoomBar.h
+    include/TrayIcon.h
+    include/TypingDisplay.h
+    include/UserInfoWidget.h
+    include/UserSettingsPage.h
+    include/WelcomePage.h
 )
 
 #

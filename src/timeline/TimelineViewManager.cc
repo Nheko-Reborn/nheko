@@ -22,12 +22,13 @@
 #include <QFileInfo>
 #include <QSettings>
 
-#include "FileItem.h"
-#include "ImageItem.h"
 #include "MatrixClient.h"
 #include "Sync.h"
-#include "TimelineView.h"
-#include "TimelineViewManager.h"
+
+#include "timeline/TimelineView.h"
+#include "timeline/TimelineViewManager.h"
+#include "timeline/widgets/FileItem.h"
+#include "timeline/widgets/ImageItem.h"
 
 TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QStackedWidget(parent)

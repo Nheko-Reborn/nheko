@@ -20,9 +20,10 @@
 #include <QVBoxLayout>
 
 #include "DropShadow.h"
-#include "EmojiCategory.h"
-#include "EmojiPanel.h"
 #include "FlatButton.h"
+
+#include "emoji/EmojiCategory.h"
+#include "emoji/EmojiPanel.h"
 
 EmojiPanel::EmojiPanel(QWidget *parent)
   : QWidget(parent)

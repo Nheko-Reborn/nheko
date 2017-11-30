@@ -22,8 +22,8 @@
 #include <QPainter>
 #include <QPixmap>
 
-#include "ImageItem.h"
-#include "ImageOverlayDialog.h"
+#include "dialogs/ImageOverlayDialog.h"
+#include "timeline/widgets/ImageItem.h"
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;

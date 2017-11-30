@@ -3,8 +3,9 @@
 
 #include "Config.h"
 #include "FlatButton.h"
-#include "JoinRoomDialog.h"
 #include "Theme.h"
+
+#include "dialogs/JoinRoomDialog.h"
 
 JoinRoomDialog::JoinRoomDialog(QWidget *parent)
   : QFrame(parent)

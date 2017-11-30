@@ -19,7 +19,7 @@
 #include <QDesktopWidget>
 #include <QPainter>
 
-#include "ImageOverlayDialog.h"
+#include "dialogs/ImageOverlayDialog.h"
 
 ImageOverlayDialog::ImageOverlayDialog(QPixmap image, QWidget *parent)
   : QWidget{parent}

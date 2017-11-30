@@ -20,10 +20,11 @@
 #include "Avatar.h"
 #include "Config.h"
 #include "FlatButton.h"
-#include "LogoutDialog.h"
 #include "MainWindow.h"
 #include "OverlayModal.h"
 #include "UserInfoWidget.h"
+
+#include "dialogs/LogoutDialog.h"
 
 UserInfoWidget::UserInfoWidget(QWidget *parent)
   : QWidget(parent)

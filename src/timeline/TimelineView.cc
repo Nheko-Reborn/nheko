@@ -19,13 +19,14 @@
 #include <QFileInfo>
 #include <QTimer>
 
-#include "FileItem.h"
 #include "FloatingButton.h"
-#include "ImageItem.h"
 #include "RoomMessages.h"
 #include "ScrollBar.h"
 #include "Sync.h"
-#include "TimelineView.h"
+
+#include "timeline/TimelineView.h"
+#include "timeline/widgets/FileItem.h"
+#include "timeline/widgets/ImageItem.h"
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;

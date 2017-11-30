@@ -24,10 +24,11 @@
 #include <QTextEdit>
 #include <QWidget>
 
-#include "EmojiPickButton.h"
 #include "FlatButton.h"
 #include "Image.h"
 #include "LoadingIndicator.h"
+
+#include "emoji/EmojiPickButton.h"
 
 namespace msgs = matrix::events::messages;
 
