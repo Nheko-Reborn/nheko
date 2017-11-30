@@ -255,7 +255,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         updateLastSender(text.sender(), direction);
 
-                        return createTimelineItem(text, with_sender);
+                        using Text = events::MessageEvent<msgs::Text>;
+                        return createTimelineItem<Text>(text, with_sender);
                 } else if (msg_type == events::MessageEventType::Notice) {
                         events::MessageEvent<msgs::Notice> notice;
 
@@ -275,7 +276,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         updateLastSender(notice.sender(), direction);
 
-                        return createTimelineItem(notice, with_sender);
+                        using Notice = events::MessageEvent<msgs::Notice>;
+                        return createTimelineItem<Notice>(notice, with_sender);
                 } else if (msg_type == events::MessageEventType::Image) {
                         events::MessageEvent<msgs::Image> img;
 
@@ -302,7 +304,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         updateLastSender(img.sender(), direction);
 
-                        return createTimelineItem(img, with_sender);
+                        using Image = events::MessageEvent<msgs::Image>;
+                        return createTimelineItem<Image, ImageItem>(img, with_sender);
                 } else if (msg_type == events::MessageEventType::Emote) {
                         events::MessageEvent<msgs::Emote> emote;
 
@@ -329,7 +332,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         updateLastSender(emote.sender(), direction);
 
-                        return createTimelineItem(emote, with_sender);
+                        using Emote = events::MessageEvent<msgs::Emote>;
+                        return createTimelineItem<Emote>(emote, with_sender);
                 } else if (msg_type == events::MessageEventType::File) {
                         events::MessageEvent<msgs::File> file;
 
@@ -357,7 +361,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
 
                         updateLastSender(file.sender(), direction);
 
-                        return createTimelineItem(file, withSender);
+                        using File = events::MessageEvent<msgs::File>;
+                        return createTimelineItem<File, FileItem>(file, withSender);
                 } else if (msg_type == events::MessageEventType::Unknown) {
                         // TODO Handle redacted messages.
                         // Silenced for now.
@@ -485,45 +490,6 @@ TimelineView::isSenderRendered(const QString &user_id, TimelineDirection directi
                 return lastSender_ != user_id;
         else
                 return firstSender_ != user_id;
-}
-
-TimelineItem *
-TimelineView::createTimelineItem(const events::MessageEvent<msgs::Image> &event, bool with_sender)
-{
-        auto image = new ImageItem(client_, event);
-        auto item  = new TimelineItem(image, event, with_sender, scroll_widget_);
-
-        return item;
-}
-
-TimelineItem *
-TimelineView::createTimelineItem(const events::MessageEvent<msgs::File> &event, bool withSender)
-{
-        auto file = new FileItem(client_, event);
-        auto item = new TimelineItem(file, event, withSender, scroll_widget_);
-
-        return item;
-}
-
-TimelineItem *
-TimelineView::createTimelineItem(const events::MessageEvent<msgs::Notice> &event, bool with_sender)
-{
-        TimelineItem *item = new TimelineItem(event, with_sender, scroll_widget_);
-        return item;
-}
-
-TimelineItem *
-TimelineView::createTimelineItem(const events::MessageEvent<msgs::Text> &event, bool with_sender)
-{
-        TimelineItem *item = new TimelineItem(event, with_sender, scroll_widget_);
-        return item;
-}
-
-TimelineItem *
-TimelineView::createTimelineItem(const events::MessageEvent<msgs::Emote> &event, bool with_sender)
-{
-        TimelineItem *item = new TimelineItem(event, with_sender, scroll_widget_);
-        return item;
 }
 
 void

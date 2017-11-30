@@ -90,16 +90,14 @@ public:
                      const QString &room_id,
                      QWidget *parent = 0);
 
-        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Image> &e,
-                                         bool with_sender);
-        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Notice> &e,
-                                         bool with_sender);
-        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Text> &e,
-                                         bool with_sender);
-        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::Emote> &e,
-                                         bool with_sender);
-        TimelineItem *createTimelineItem(const events::MessageEvent<msgs::File> &e,
-                                         bool with_sender);
+        // For events with custom display widgets.
+        template<class Event, class Widget>
+        TimelineItem *createTimelineItem(const Event &event, bool withSender);
+
+        // For events without custom display widgets.
+        // TODO: All events should have custom widgets.
+        template<class Event>
+        TimelineItem *createTimelineItem(const Event &event, bool withSender);
 
         // Add new events at the end of the timeline.
         int addEvents(const Timeline &timeline);
@@ -221,4 +219,22 @@ TimelineView::addUserMessage(const QString &url, const QString &filename)
 
         PendingMessage message(MsgType, txn_id, url, filename, "", view_item);
         handleNewUserMessage(message);
+}
+
+template<class Event>
+TimelineItem *
+TimelineView::createTimelineItem(const Event &event, bool withSender)
+{
+        TimelineItem *item = new TimelineItem(event, withSender, scroll_widget_);
+        return item;
+}
+
+template<class Event, class Widget>
+TimelineItem *
+TimelineView::createTimelineItem(const Event &event, bool withSender)
+{
+        auto eventWidget = new Widget(client_, event);
+        auto item        = new TimelineItem(eventWidget, event, withSender, scroll_widget_);
+
+        return item;
 }
