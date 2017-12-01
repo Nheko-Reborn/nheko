@@ -27,6 +27,7 @@
 #include "timeline/widgets/AudioItem.h"
 #include "timeline/widgets/FileItem.h"
 #include "timeline/widgets/ImageItem.h"
+#include "timeline/widgets/VideoItem.h"
 
 static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
 static const QString URL_HTML = "<a href=\"\\1\">\\1</a>";
@@ -139,6 +140,17 @@ TimelineItem::TimelineItem(AudioItem *audio,
         setupLocalWidgetLayout<AudioItem>(audio, userid, "sent an audio clip", withSender);
 }
 
+TimelineItem::TimelineItem(VideoItem *video,
+                           const QString &userid,
+                           bool withSender,
+                           QWidget *parent)
+  : QWidget{parent}
+{
+        init();
+
+        setupLocalWidgetLayout<VideoItem>(video, userid, "sent a video clip", withSender);
+}
+
 TimelineItem::TimelineItem(ImageItem *image,
                            const events::MessageEvent<msgs::Image> &event,
                            bool with_sender,
@@ -167,6 +179,16 @@ TimelineItem::TimelineItem(AudioItem *audio,
 {
         setupWidgetLayout<events::MessageEvent<msgs::Audio>, AudioItem>(
           audio, event, " sent an audio clip", with_sender);
+}
+
+TimelineItem::TimelineItem(VideoItem *video,
+                           const events::MessageEvent<msgs::Video> &event,
+                           bool with_sender,
+                           QWidget *parent)
+  : QWidget(parent)
+{
+        setupWidgetLayout<events::MessageEvent<msgs::Video>, VideoItem>(
+          video, event, " sent a video clip", with_sender);
 }
 
 /*

@@ -237,6 +237,7 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
                 using Image  = events::MessageEvent<msgs::Image>;
                 using Notice = events::MessageEvent<msgs::Notice>;
                 using Text   = events::MessageEvent<msgs::Text>;
+                using Video  = events::MessageEvent<msgs::Video>;
 
                 if (msg_type == events::MessageEventType::Audio) {
                         return processMessageEvent<Audio, AudioItem>(event, direction);
@@ -250,6 +251,8 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
                         return processMessageEvent<Notice>(event, direction);
                 } else if (msg_type == events::MessageEventType::Text) {
                         return processMessageEvent<Text>(event, direction);
+                } else if (msg_type == events::MessageEventType::Video) {
+                        return processMessageEvent<Video, VideoItem>(event, direction);
                 } else if (msg_type == events::MessageEventType::Unknown) {
                         // TODO Handle redacted messages.
                         // Silenced for now.

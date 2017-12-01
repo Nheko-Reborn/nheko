@@ -31,6 +31,7 @@
 #include "Image.h"
 #include "Notice.h"
 #include "Text.h"
+#include "Video.h"
 
 #include "AvatarProvider.h"
 #include "MessageEvent.h"
@@ -39,6 +40,7 @@
 
 class ImageItem;
 class AudioItem;
+class VideoItem;
 class FileItem;
 class Avatar;
 
@@ -70,6 +72,7 @@ public:
         TimelineItem(ImageItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
         TimelineItem(FileItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
         TimelineItem(AudioItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
+        TimelineItem(VideoItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
 
         TimelineItem(ImageItem *img,
                      const events::MessageEvent<msgs::Image> &e,
@@ -81,6 +84,10 @@ public:
                      QWidget *parent);
         TimelineItem(AudioItem *audio,
                      const events::MessageEvent<msgs::Audio> &e,
+                     bool with_sender,
+                     QWidget *parent);
+        TimelineItem(VideoItem *video,
+                     const events::MessageEvent<msgs::Video> &e,
                      bool with_sender,
                      QWidget *parent);
 
