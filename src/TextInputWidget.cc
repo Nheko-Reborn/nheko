@@ -20,6 +20,8 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QImageReader>
+#include <QMimeDatabase>
+#include <QMimeType>
 #include <QPainter>
 #include <QStyleOption>
 
@@ -276,24 +278,21 @@ TextInputWidget::command(QString command, QString args)
 void
 TextInputWidget::openFileSelection()
 {
-        QStringList imageExtensions;
-        imageExtensions << "jpeg"
-                        << "gif"
-                        << "png"
-                        << "bmp"
-                        << "tiff"
-                        << "webp";
-
-        auto fileName =
-          QFileDialog::getOpenFileName(this, tr("Select an file"), "", tr("All Files (*)"));
+        const auto fileName =
+          QFileDialog::getOpenFileName(this, tr("Select a file"), "", tr("All Files (*)"));
 
         if (fileName.isEmpty())
                 return;
 
-        auto format = QString(QImageReader::imageFormat(fileName));
+        QMimeDatabase db;
+        QMimeType mime = db.mimeTypeForFile(fileName, QMimeDatabase::MatchContent);
 
-        if (imageExtensions.contains(format))
+        const auto format = mime.name().split("/")[0];
+
+        if (format == "image")
                 emit uploadImage(fileName);
+        else if (format == "audio")
+                emit uploadAudio(fileName);
         else
                 emit uploadFile(fileName);
 

@@ -85,8 +85,11 @@ private slots:
 signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
+
         void uploadImage(QString filename);
         void uploadFile(QString filename);
+        void uploadAudio(QString filename);
+
         void sendJoinRoomRequest(const QString &room);
 
         void startedTyping();

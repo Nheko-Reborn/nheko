@@ -55,7 +55,7 @@ struct ThumbnailInfo
 {
         int h;
         int w;
-        int size;
+        int size = 0;
 
         QString mimetype;
 };

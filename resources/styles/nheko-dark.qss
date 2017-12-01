@@ -28,6 +28,12 @@ FileItem {
     qproperty-iconColor: #caccd1;
 }
 
+AudioItem {
+    qproperty-textColor: #caccd1;
+    qproperty-backgroundColor: #414A59;
+    qproperty-iconColor: #caccd1;
+}
+
 RaisedButton {
     qproperty-foregroundColor: #caccd1;
     qproperty-backgroundColor: #333;

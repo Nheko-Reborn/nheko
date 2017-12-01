@@ -27,7 +27,7 @@ namespace messages {
 struct AudioInfo
 {
         uint64_t duration;
-        int size;
+        int size = 0;
 
         QString mimetype;
 };

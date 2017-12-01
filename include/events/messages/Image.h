@@ -29,7 +29,7 @@ struct ImageInfo
 {
         int h;
         int w;
-        int size;
+        int size = 0;
 
         QString mimetype;
         QString thumbnail_url;

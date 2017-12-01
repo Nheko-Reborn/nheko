@@ -25,6 +25,12 @@ FileItem {
     qproperty-iconColor: palette(window);
 }
 
+AudioItem {
+    qproperty-textColor: palette(text);
+    qproperty-backgroundColor: palette(base);
+    qproperty-iconColor: palette(window);
+}
+
 RaisedButton {
     qproperty-foregroundColor: palette(light);
 }

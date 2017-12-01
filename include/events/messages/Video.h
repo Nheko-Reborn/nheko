@@ -29,7 +29,7 @@ struct VideoInfo
 {
         int h;
         int w;
-        int size;
+        int size = 0;
         int duration;
 
         QString mimetype;

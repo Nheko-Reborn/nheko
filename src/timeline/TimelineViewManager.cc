@@ -27,6 +27,7 @@
 
 #include "timeline/TimelineView.h"
 #include "timeline/TimelineViewManager.h"
+#include "timeline/widgets/AudioItem.h"
 #include "timeline/widgets/FileItem.h"
 #include "timeline/widgets/ImageItem.h"
 
@@ -111,6 +112,21 @@ TimelineViewManager::queueFileMessage(const QString &roomid,
         auto view = views_[roomid];
 
         view->addUserMessage<FileItem, matrix::events::MessageEventType::File>(url, filename);
+}
+
+void
+TimelineViewManager::queueAudioMessage(const QString &roomid,
+                                       const QString &filename,
+                                       const QString &url)
+{
+        if (!views_.contains(roomid)) {
+                qDebug() << "Cannot send m.audio message to a non-managed view";
+                return;
+        }
+
+        auto view = views_[roomid];
+
+        view->addUserMessage<AudioItem, matrix::events::MessageEventType::Audio>(url, filename);
 }
 
 void

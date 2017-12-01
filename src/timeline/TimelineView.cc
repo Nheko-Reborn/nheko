@@ -436,13 +436,19 @@ TimelineView::sendNextPendingMessage()
 
         PendingMessage &m = pending_msgs_.head();
         switch (m.ty) {
+        case matrix::events::MessageEventType::Audio:
         case matrix::events::MessageEventType::Image:
         case matrix::events::MessageEventType::File:
-                client_->sendRoomMessage(
-                  m.ty, m.txn_id, room_id_, QFileInfo(m.filename).fileName(), m.body);
+                // FIXME: Improve the API
+                client_->sendRoomMessage(m.ty,
+                                         m.txn_id,
+                                         room_id_,
+                                         QFileInfo(m.filename).fileName(),
+                                         QFileInfo(m.filename),
+                                         m.body);
                 break;
         default:
-                client_->sendRoomMessage(m.ty, m.txn_id, room_id_, m.body);
+                client_->sendRoomMessage(m.ty, m.txn_id, room_id_, m.body, QFileInfo());
                 break;
         }
 }

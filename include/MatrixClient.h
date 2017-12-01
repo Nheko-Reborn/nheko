@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QFileInfo>
 #include <QNetworkAccessManager>
 #include <QUrl>
 
@@ -43,6 +44,7 @@ public:
                              int txnId,
                              const QString &roomid,
                              const QString &msg,
+                             const QFileInfo &info,
                              const QString &url = "") noexcept;
         void login(const QString &username, const QString &password) noexcept;
         void registerUser(const QString &username,
@@ -57,6 +59,7 @@ public:
         void messages(const QString &room_id, const QString &from_token, int limit = 30) noexcept;
         void uploadImage(const QString &roomid, const QString &filename);
         void uploadFile(const QString &roomid, const QString &filename);
+        void uploadAudio(const QString &roomid, const QString &filename);
         void joinRoom(const QString &roomIdOrAlias);
         void leaveRoom(const QString &roomId);
         void sendTypingNotification(const QString &roomid, int timeoutInMillis = 20000);
@@ -94,6 +97,7 @@ signals:
         void versionSuccess();
         void imageUploaded(const QString &roomid, const QString &filename, const QString &url);
         void fileUploaded(const QString &roomid, const QString &filename, const QString &url);
+        void audioUploaded(const QString &roomid, const QString &filename, const QString &url);
 
         void roomAvatarRetrieved(const QString &roomid, const QPixmap &img);
         void userAvatarRetrieved(const QString &userId, const QImage &img);
@@ -116,6 +120,8 @@ signals:
         void leftRoom(const QString &room_id);
 
 private:
+        QNetworkReply *makeUploadRequest(const QString &filename);
+
         // Client API prefix.
         QString clientApiUrl_;
 

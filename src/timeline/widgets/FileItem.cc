@@ -94,6 +94,9 @@ FileItem::FileItem(QSharedPointer<MatrixClient> client,
 QString
 FileItem::calculateFileSize(int nbytes) const
 {
+        if (nbytes == 0)
+                return QString("");
+
         if (nbytes < 1024)
                 return QString("%1 B").arg(nbytes);
 

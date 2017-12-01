@@ -27,7 +27,7 @@ namespace events {
 namespace messages {
 struct FileInfo
 {
-        int size;
+        int size = 0;
 
         QString mimetype;
         QString thumbnail_url;
