@@ -21,20 +21,24 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPainter>
+#include <QSettings>
 #include <QStyle>
 #include <QStyleOption>
 
-#include "AvatarProvider.h"
+#include "Audio.h"
 #include "Emote.h"
 #include "File.h"
 #include "Image.h"
-#include "MessageEvent.h"
 #include "Notice.h"
-#include "RoomInfoListItem.h"
 #include "Text.h"
+
+#include "AvatarProvider.h"
+#include "MessageEvent.h"
+#include "RoomInfoListItem.h"
 #include "TimelineViewManager.h"
 
 class ImageItem;
+class AudioItem;
 class FileItem;
 class Avatar;
 
@@ -65,6 +69,7 @@ public:
         // m.image
         TimelineItem(ImageItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
         TimelineItem(FileItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
+        TimelineItem(AudioItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
 
         TimelineItem(ImageItem *img,
                      const events::MessageEvent<msgs::Image> &e,
@@ -72,6 +77,10 @@ public:
                      QWidget *parent);
         TimelineItem(FileItem *file,
                      const events::MessageEvent<msgs::File> &e,
+                     bool with_sender,
+                     QWidget *parent);
+        TimelineItem(AudioItem *audio,
+                     const events::MessageEvent<msgs::Audio> &e,
                      bool with_sender,
                      QWidget *parent);
 
@@ -92,6 +101,12 @@ private:
                                     const QString &userid,
                                     const QString &msgDescription,
                                     bool withSender);
+
+        template<class Event, class Widget>
+        void setupWidgetLayout(Widget *widget,
+                               const Event &event,
+                               const QString &msgDescription,
+                               bool withSender);
 
         void generateBody(const QString &body);
         void generateBody(const QString &userid, const QString &body);
@@ -147,6 +162,47 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
                 mainLayout_->addLayout(headerLayout_);
 
                 AvatarProvider::resolve(userid, this);
+        } else {
+                setupSimpleLayout();
+        }
+
+        mainLayout_->addLayout(widgetLayout);
+}
+
+template<class Event, class Widget>
+void
+TimelineItem::setupWidgetLayout(Widget *widget,
+                                const Event &event,
+                                const QString &msgDescription,
+                                bool withSender)
+{
+        init();
+
+        event_id_ = event.eventId();
+
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+        auto displayName = TimelineViewManager::displayName(event.sender());
+
+        QSettings settings;
+        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
+                           event.sender(),
+                           msgDescription,
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+
+        generateTimestamp(timestamp);
+
+        auto widgetLayout = new QHBoxLayout();
+        widgetLayout->setContentsMargins(0, 5, 0, 0);
+        widgetLayout->addWidget(widget);
+        widgetLayout->addStretch(1);
+
+        if (withSender) {
+                generateBody(displayName, "");
+                setupAvatarLayout(displayName);
+
+                mainLayout_->addLayout(headerLayout_);
+
+                AvatarProvider::resolve(event.sender(), this);
         } else {
                 setupSimpleLayout();
         }

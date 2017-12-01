@@ -24,31 +24,32 @@
 #include <QPainter>
 #include <QPixmap>
 
-#include "timeline/widgets/FileItem.h"
+#include "timeline/widgets/AudioItem.h"
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;
 
-constexpr int MaxWidth           = 400;
-constexpr int Height             = 70;
-constexpr int IconRadius         = 22;
-constexpr int IconDiameter       = IconRadius * 2;
-constexpr int HorizontalPadding  = 12;
-constexpr int TextPadding        = 15;
-constexpr int DownloadIconRadius = IconRadius - 4;
+constexpr int MaxWidth          = 400;
+constexpr int Height            = 70;
+constexpr int IconRadius        = 22;
+constexpr int IconDiameter      = IconRadius * 2;
+constexpr int HorizontalPadding = 12;
+constexpr int TextPadding       = 15;
+constexpr int ActionIconRadius  = IconRadius - 4;
 
 constexpr double VerticalPadding = Height - 2 * IconRadius;
 constexpr double IconYCenter     = Height / 2;
 constexpr double IconXCenter     = HorizontalPadding + IconRadius;
 
 void
-FileItem::init()
+AudioItem::init()
 {
         setMouseTracking(true);
         setCursor(Qt::PointingHandCursor);
         setAttribute(Qt::WA_Hover, true);
 
-        icon_.addFile(":/icons/icons/ui/arrow-pointing-down.png");
+        playIcon_.addFile(":/icons/icons/ui/play-sign.png");
+        pauseIcon_.addFile(":/icons/icons/ui/pause-symbol.png");
 
         QList<QString> url_parts = url_.toString().split("mxc://");
         if (url_parts.size() != 2) {
@@ -60,12 +61,24 @@ FileItem::init()
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(client_.data()->getHomeServer().toString(), media_params);
 
-        connect(client_.data(), &MatrixClient::fileDownloaded, this, &FileItem::fileDownloaded);
+        player_ = new QMediaPlayer;
+        player_->setMedia(QUrl(url_));
+        player_->setVolume(100);
+        player_->setNotifyInterval(1000);
+
+        connect(client_.data(), &MatrixClient::fileDownloaded, this, &AudioItem::fileDownloaded);
+        connect(player_, &QMediaPlayer::stateChanged, this, [=](QMediaPlayer::State state) {
+                if (state == QMediaPlayer::StoppedState) {
+                        state_ = AudioState::Play;
+                        player_->setMedia(QUrl(url_));
+                        update();
+                }
+        });
 }
 
-FileItem::FileItem(QSharedPointer<MatrixClient> client,
-                   const events::MessageEvent<msgs::File> &event,
-                   QWidget *parent)
+AudioItem::AudioItem(QSharedPointer<MatrixClient> client,
+                     const events::MessageEvent<msgs::Audio> &event,
+                     QWidget *parent)
   : QWidget(parent)
   , url_{event.msgContent().url()}
   , text_{event.content().body()}
@@ -77,10 +90,10 @@ FileItem::FileItem(QSharedPointer<MatrixClient> client,
         init();
 }
 
-FileItem::FileItem(QSharedPointer<MatrixClient> client,
-                   const QString &url,
-                   const QString &filename,
-                   QWidget *parent)
+AudioItem::AudioItem(QSharedPointer<MatrixClient> client,
+                     const QString &url,
+                     const QString &filename,
+                     QWidget *parent)
   : QWidget(parent)
   , url_{url}
   , text_{QFileInfo(filename).fileName()}
@@ -92,7 +105,7 @@ FileItem::FileItem(QSharedPointer<MatrixClient> client,
 }
 
 QString
-FileItem::calculateFileSize(int nbytes) const
+AudioItem::calculateFileSize(int nbytes) const
 {
         if (nbytes < 1024)
                 return QString("%1 B").arg(nbytes);
@@ -103,24 +116,14 @@ FileItem::calculateFileSize(int nbytes) const
         return QString("%1 MB").arg(nbytes / 1024 / 1024);
 }
 
-void
-FileItem::openUrl()
-{
-        if (url_.toString().isEmpty())
-                return;
-
-        if (!QDesktopServices::openUrl(url_))
-                qWarning() << "Could not open url" << url_.toString();
-}
-
 QSize
-FileItem::sizeHint() const
+AudioItem::sizeHint() const
 {
         return QSize(MaxWidth, Height);
 }
 
 void
-FileItem::mousePressEvent(QMouseEvent *event)
+AudioItem::mousePressEvent(QMouseEvent *event)
 {
         if (event->button() != Qt::LeftButton)
                 return;
@@ -130,19 +133,27 @@ FileItem::mousePressEvent(QMouseEvent *event)
         // Click on the download icon.
         if (QRect(HorizontalPadding, VerticalPadding / 2, IconDiameter, IconDiameter)
               .contains(point)) {
+                if (state_ == AudioState::Play) {
+                        state_ = AudioState::Pause;
+                        player_->play();
+                } else {
+                        state_ = AudioState::Play;
+                        player_->pause();
+                }
+
+                update();
+        } else {
                 filenameToSave_ = QFileDialog::getSaveFileName(this, tr("Save File"), text_);
 
                 if (filenameToSave_.isEmpty())
                         return;
 
                 client_->downloadFile(event_.eventId(), url_);
-        } else {
-                openUrl();
         }
 }
 
 void
-FileItem::fileDownloaded(const QString &event_id, const QByteArray &data)
+AudioItem::fileDownloaded(const QString &event_id, const QByteArray &data)
 {
         if (event_id != event_.eventId())
                 return;
@@ -161,7 +172,7 @@ FileItem::fileDownloaded(const QString &event_id, const QByteArray &data)
 }
 
 void
-FileItem::paintEvent(QPaintEvent *event)
+AudioItem::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event);
 
@@ -191,11 +202,17 @@ FileItem::paintEvent(QPaintEvent *event)
         painter.fillPath(circle, iconColor_);
         painter.drawPath(circle);
 
+        QIcon icon_;
+        if (state_ == AudioState::Play)
+                icon_ = playIcon_;
+        else
+                icon_ = pauseIcon_;
+
         icon_.paint(&painter,
-                    QRect(IconXCenter - DownloadIconRadius / 2,
-                          IconYCenter - DownloadIconRadius / 2,
-                          DownloadIconRadius,
-                          DownloadIconRadius),
+                    QRect(IconXCenter - ActionIconRadius / 2,
+                          IconYCenter - ActionIconRadius / 2,
+                          ActionIconRadius,
+                          ActionIconRadius),
                     Qt::AlignCenter,
                     QIcon::Normal);
 

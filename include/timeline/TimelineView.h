@@ -27,13 +27,16 @@
 #include <QStyle>
 #include <QStyleOption>
 
+#include "Audio.h"
 #include "Emote.h"
 #include "File.h"
 #include "Image.h"
-#include "MatrixClient.h"
-#include "MessageEvent.h"
 #include "Notice.h"
 #include "Text.h"
+#include "Video.h"
+
+#include "MatrixClient.h"
+#include "MessageEvent.h"
 #include "TimelineItem.h"
 
 class FloatingButton;

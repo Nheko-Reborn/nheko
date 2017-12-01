@@ -57,6 +57,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 
 if (APPLE)
     find_package(Qt5MacExtras REQUIRED)
@@ -157,8 +158,10 @@ set(SRC_FILES
     src/timeline/TimelineViewManager.cc
     src/timeline/TimelineItem.cc
     src/timeline/TimelineView.cc
+    src/timeline/widgets/AudioItem.cc
     src/timeline/widgets/FileItem.cc
     src/timeline/widgets/ImageItem.cc
+    src/timeline/widgets/VideoItem.cc
 
     # UI components
     src/ui/Avatar.cc
@@ -260,8 +263,10 @@ qt5_wrap_cpp(MOC_HEADERS
     include/timeline/TimelineItem.h
     include/timeline/TimelineView.h
     include/timeline/TimelineViewManager.h
+    include/timeline/widgets/AudioItem.h
     include/timeline/widgets/FileItem.h
     include/timeline/widgets/ImageItem.h
+    include/timeline/widgets/VideoItem.h
 
     # UI components
     include/ui/Avatar.h
@@ -357,11 +362,11 @@ set (NHEKO_DEPS ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${Q
 
 if(APPLE)
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras)
+    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras Qt5::Multimedia)
 elseif(WIN32)
     add_executable (nheko ${OS_BUNDLE} ${ICON_FILE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain)
+    target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain Qt5::Multimedia)
 else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NHEKO_LIBS})
+    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::Multimedia)
 endif()

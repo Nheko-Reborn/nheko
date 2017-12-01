@@ -25,8 +25,10 @@
 #include "Sync.h"
 
 #include "timeline/TimelineView.h"
+#include "timeline/widgets/AudioItem.h"
 #include "timeline/widgets/FileItem.h"
 #include "timeline/widgets/ImageItem.h"
+#include "timeline/widgets/VideoItem.h"
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;
@@ -229,22 +231,25 @@ TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection dire
         if (ty == events::EventType::RoomMessage) {
                 events::MessageEventType msg_type = events::extractMessageEventType(event);
 
+                using Audio  = events::MessageEvent<msgs::Audio>;
                 using Emote  = events::MessageEvent<msgs::Emote>;
                 using File   = events::MessageEvent<msgs::File>;
                 using Image  = events::MessageEvent<msgs::Image>;
                 using Notice = events::MessageEvent<msgs::Notice>;
                 using Text   = events::MessageEvent<msgs::Text>;
 
-                if (msg_type == events::MessageEventType::Text) {
-                        return processMessageEvent<Text>(event, direction);
-                } else if (msg_type == events::MessageEventType::Notice) {
-                        return processMessageEvent<Notice>(event, direction);
-                } else if (msg_type == events::MessageEventType::Image) {
-                        return processMessageEvent<Image, ImageItem>(event, direction);
+                if (msg_type == events::MessageEventType::Audio) {
+                        return processMessageEvent<Audio, AudioItem>(event, direction);
                 } else if (msg_type == events::MessageEventType::Emote) {
                         return processMessageEvent<Emote>(event, direction);
                 } else if (msg_type == events::MessageEventType::File) {
                         return processMessageEvent<File, FileItem>(event, direction);
+                } else if (msg_type == events::MessageEventType::Image) {
+                        return processMessageEvent<Image, ImageItem>(event, direction);
+                } else if (msg_type == events::MessageEventType::Notice) {
+                        return processMessageEvent<Notice>(event, direction);
+                } else if (msg_type == events::MessageEventType::Text) {
+                        return processMessageEvent<Text>(event, direction);
                 } else if (msg_type == events::MessageEventType::Unknown) {
                         // TODO Handle redacted messages.
                         // Silenced for now.

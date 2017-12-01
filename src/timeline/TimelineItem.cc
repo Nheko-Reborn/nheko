@@ -17,7 +17,6 @@
 
 #include <QFontDatabase>
 #include <QRegExp>
-#include <QSettings>
 #include <QTextEdit>
 
 #include "Avatar.h"
@@ -25,6 +24,7 @@
 #include "Sync.h"
 
 #include "timeline/TimelineItem.h"
+#include "timeline/widgets/AudioItem.h"
 #include "timeline/widgets/FileItem.h"
 #include "timeline/widgets/ImageItem.h"
 
@@ -128,47 +128,25 @@ TimelineItem::TimelineItem(FileItem *file, const QString &userid, bool withSende
         setupLocalWidgetLayout<FileItem>(file, userid, "sent a file", withSender);
 }
 
-/*
- * Used to display images. The avatar and the username are displayed.
- */
+TimelineItem::TimelineItem(AudioItem *audio,
+                           const QString &userid,
+                           bool withSender,
+                           QWidget *parent)
+  : QWidget{parent}
+{
+        init();
+
+        setupLocalWidgetLayout<AudioItem>(audio, userid, "sent an audio clip", withSender);
+}
+
 TimelineItem::TimelineItem(ImageItem *image,
                            const events::MessageEvent<msgs::Image> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
-        init();
-
-        event_id_ = event.eventId();
-
-        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-        auto displayName = TimelineViewManager::displayName(event.sender());
-
-        QSettings settings;
-        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-                           event.sender(),
-                           " sent an image",
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
-
-        generateTimestamp(timestamp);
-
-        auto imageLayout = new QHBoxLayout();
-        imageLayout->setContentsMargins(0, 5, 0, 0);
-        imageLayout->addWidget(image);
-        imageLayout->addStretch(1);
-
-        if (with_sender) {
-                generateBody(displayName, "");
-                setupAvatarLayout(displayName);
-
-                mainLayout_->addLayout(headerLayout_);
-
-                AvatarProvider::resolve(event.sender(), this);
-        } else {
-                setupSimpleLayout();
-        }
-
-        mainLayout_->addLayout(imageLayout);
+        setupWidgetLayout<events::MessageEvent<msgs::Image>, ImageItem>(
+          image, event, " sent an image", with_sender);
 }
 
 TimelineItem::TimelineItem(FileItem *file,
@@ -177,38 +155,18 @@ TimelineItem::TimelineItem(FileItem *file,
                            QWidget *parent)
   : QWidget(parent)
 {
-        init();
+        setupWidgetLayout<events::MessageEvent<msgs::File>, FileItem>(
+          file, event, " sent a file", with_sender);
+}
 
-        event_id_ = event.eventId();
-
-        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-        auto displayName = TimelineViewManager::displayName(event.sender());
-
-        QSettings settings;
-        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-                           event.sender(),
-                           " sent a file",
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
-
-        generateTimestamp(timestamp);
-
-        auto fileLayout = new QHBoxLayout();
-        fileLayout->setContentsMargins(0, 5, 0, 0);
-        fileLayout->addWidget(file);
-        fileLayout->addStretch(1);
-
-        if (with_sender) {
-                generateBody(displayName, "");
-                setupAvatarLayout(displayName);
-
-                mainLayout_->addLayout(headerLayout_);
-
-                AvatarProvider::resolve(event.sender(), this);
-        } else {
-                setupSimpleLayout();
-        }
-
-        mainLayout_->addLayout(fileLayout);
+TimelineItem::TimelineItem(AudioItem *audio,
+                           const events::MessageEvent<msgs::Audio> &event,
+                           bool with_sender,
+                           QWidget *parent)
+  : QWidget(parent)
+{
+        setupWidgetLayout<events::MessageEvent<msgs::Audio>, AudioItem>(
+          audio, event, " sent an audio clip", with_sender);
 }
 
 /*

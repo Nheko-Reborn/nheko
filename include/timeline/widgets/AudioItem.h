@@ -19,18 +19,19 @@
 
 #include <QEvent>
 #include <QIcon>
+#include <QMediaPlayer>
 #include <QMouseEvent>
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "File.h"
+#include "Audio.h"
 #include "MatrixClient.h"
 #include "MessageEvent.h"
 
 namespace events = matrix::events;
 namespace msgs   = matrix::events::messages;
 
-class FileItem : public QWidget
+class AudioItem : public QWidget
 {
         Q_OBJECT
 
@@ -38,15 +39,20 @@ class FileItem : public QWidget
         Q_PROPERTY(QColor iconColor WRITE setIconColor READ iconColor)
         Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
 
-public:
-        FileItem(QSharedPointer<MatrixClient> client,
-                 const events::MessageEvent<msgs::File> &event,
-                 QWidget *parent = nullptr);
+        Q_PROPERTY(QColor durationBackgroundColor WRITE setDurationBackgroundColor READ
+                     durationBackgroundColor)
+        Q_PROPERTY(QColor durationForegroundColor WRITE setDurationForegroundColor READ
+                     durationForegroundColor)
 
-        FileItem(QSharedPointer<MatrixClient> client,
-                 const QString &url,
-                 const QString &filename,
-                 QWidget *parent = nullptr);
+public:
+        AudioItem(QSharedPointer<MatrixClient> client,
+                  const events::MessageEvent<msgs::Audio> &event,
+                  QWidget *parent = nullptr);
+
+        AudioItem(QSharedPointer<MatrixClient> client,
+                  const QString &url,
+                  const QString &filename,
+                  QWidget *parent = nullptr);
 
         QSize sizeHint() const override;
 
@@ -54,9 +60,15 @@ public:
         void setIconColor(const QColor &color) { iconColor_ = color; }
         void setBackgroundColor(const QColor &color) { backgroundColor_ = color; }
 
+        void setDurationBackgroundColor(const QColor &color) { durationBgColor_ = color; }
+        void setDurationForegroundColor(const QColor &color) { durationFgColor_ = color; }
+
         QColor textColor() const { return textColor_; }
         QColor iconColor() const { return iconColor_; }
         QColor backgroundColor() const { return backgroundColor_; }
+
+        QColor durationBackgroundColor() const { return durationBgColor_; }
+        QColor durationForegroundColor() const { return durationFgColor_; }
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -67,20 +79,33 @@ private slots:
 
 private:
         QString calculateFileSize(int nbytes) const;
-        void openUrl();
         void init();
+
+        enum class AudioState
+        {
+                Play,
+                Pause,
+        };
+
+        AudioState state_ = AudioState::Play;
 
         QUrl url_;
         QString text_;
         QString readableFileSize_;
         QString filenameToSave_;
 
-        events::MessageEvent<msgs::File> event_;
+        events::MessageEvent<msgs::Audio> event_;
         QSharedPointer<MatrixClient> client_;
 
-        QIcon icon_;
+        QMediaPlayer *player_;
+
+        QIcon playIcon_;
+        QIcon pauseIcon_;
 
         QColor textColor_       = QColor("white");
         QColor iconColor_       = QColor("#38A3D8");
         QColor backgroundColor_ = QColor("#333");
+
+        QColor durationBgColor_ = QColor("black");
+        QColor durationFgColor_ = QColor("blue");
 };
