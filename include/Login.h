@@ -36,18 +36,3 @@ private:
         QString user_;
         QString password_;
 };
-
-class LoginResponse : public Deserializable
-{
-public:
-        void deserialize(const QJsonDocument &data) override;
-
-        QString getAccessToken() { return access_token_; };
-        QString getHomeServer() { return home_server_; };
-        QString getUserId() { return user_id_; };
-
-private:
-        QString access_token_;
-        QString home_server_;
-        QString user_id_;
-};

@@ -47,25 +47,3 @@ LoginRequest::serialize() noexcept
 
         return QJsonDocument(body).toJson(QJsonDocument::Compact);
 }
-
-void
-LoginResponse::deserialize(const QJsonDocument &data)
-{
-        if (!data.isObject())
-                throw DeserializationException("Login response is not a JSON object");
-
-        QJsonObject object = data.object();
-
-        if (object.value("access_token") == QJsonValue::Undefined)
-                throw DeserializationException("Login: missing access_token param");
-
-        if (object.value("home_server") == QJsonValue::Undefined)
-                throw DeserializationException("Login: missing home_server param");
-
-        if (object.value("user_id") == QJsonValue::Undefined)
-                throw DeserializationException("Login: missing user_id param");
-
-        access_token_ = object.value("access_token").toString();
-        home_server_  = object.value("home_server").toString();
-        user_id_      = object.value("user_id").toString();
-}

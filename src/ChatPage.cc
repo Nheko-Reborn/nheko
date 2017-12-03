@@ -260,9 +260,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 this,
                 SLOT(syncFailed(const QString &)));
         connect(client_.data(),
-                SIGNAL(getOwnProfileResponse(const QUrl &, const QString &)),
+                &MatrixClient::getOwnProfileResponse,
                 this,
-                SLOT(updateOwnProfileInfo(const QUrl &, const QString &)));
+                &ChatPage::updateOwnProfileInfo);
         connect(client_.data(),
                 SIGNAL(ownAvatarRetrieved(const QPixmap &)),
                 this,

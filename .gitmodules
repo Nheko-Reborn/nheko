@@ -1,3 +1,6 @@
 [submodule "libs/lmdbxx"]
 	path = libs/lmdbxx
 	url = https://github.com/bendiken/lmdbxx
+[submodule "libs/matrix-structs"]
+	path = libs/matrix-structs
+	url = https://github.com/mujx/matrix-structs

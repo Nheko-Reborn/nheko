@@ -31,11 +31,11 @@
 #include "Login.h"
 #include "MatrixClient.h"
 #include "MessageEvent.h"
-#include "Profile.h"
 #include "Register.h"
 #include "RoomMessages.h"
 #include "Sync.h"
-#include "Versions.h"
+
+#include "mtx.hpp"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
   : QNetworkAccessManager(parent)
@@ -99,21 +99,18 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
                         return;
                 }
 
-                auto data = reply->readAll();
-                auto json = QJsonDocument::fromJson(data);
-
-                LoginResponse response;
-
                 try {
-                        response.deserialize(json);
+                        mtx::responses::Login login =
+                          nlohmann::json::parse(reply->readAll().data());
 
                         auto hostname = server_.host();
 
                         if (server_.port() > 0)
                                 hostname = QString("%1:%2").arg(server_.host()).arg(server_.port());
 
-                        emit loginSuccess(
-                          response.getUserId(), hostname, response.getAccessToken());
+                        emit loginSuccess(QString::fromStdString(login.user_id.toString()),
+                                          hostname,
+                                          QString::fromStdString(login.access_token));
                 } catch (DeserializationException &e) {
                         qWarning() << "Malformed JSON response" << e.what();
                         emit loginError(tr("Malformed response. Possibly not a Matrix server"));
@@ -420,18 +417,12 @@ MatrixClient::versions() noexcept
                         return;
                 }
 
-                auto data = reply->readAll();
-                auto json = QJsonDocument::fromJson(data);
-
-                VersionsResponse response;
-
                 try {
-                        response.deserialize(json);
-                        if (!response.isVersionSupported(0, 2, 0))
-                                emit versionError("Server does not support required API version.");
-                        else
-                                emit versionSuccess();
-                } catch (DeserializationException &e) {
+                        mtx::responses::Versions versions =
+                          nlohmann::json::parse(reply->readAll().data());
+
+                        emit versionSuccess();
+                } catch (std::exception &e) {
                         emit versionError("Malformed response. Possibly not a Matrix server");
                 }
         });
@@ -465,16 +456,13 @@ MatrixClient::getOwnProfile() noexcept
                         return;
                 }
 
-                auto data = reply->readAll();
-                auto json = QJsonDocument::fromJson(data);
-
-                ProfileResponse response;
-
                 try {
-                        response.deserialize(json);
-                        emit getOwnProfileResponse(response.getAvatarUrl(),
-                                                   response.getDisplayName());
-                } catch (DeserializationException &e) {
+                        mtx::responses::Profile profile =
+                          nlohmann::json::parse(reply->readAll().data());
+
+                        emit getOwnProfileResponse(QUrl(QString::fromStdString(profile.avatar_url)),
+                                                   QString::fromStdString(profile.display_name));
+                } catch (std::exception &e) {
                         qWarning() << "Profile:" << e.what();
                 }
         });

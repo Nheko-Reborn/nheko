@@ -191,7 +191,6 @@ set(SRC_FILES
     src/LoginPage.cc
     src/MainWindow.cc
     src/MatrixClient.cc
-    src/Profile.cc
     src/QuickSwitcher.cc
     src/Register.cc
     src/RegisterPage.cc
@@ -208,7 +207,6 @@ set(SRC_FILES
     src/TypingDisplay.cc
     src/UserInfoWidget.cc
     src/UserSettingsPage.cc
-    src/Versions.cc
     src/WelcomePage.cc
     src/main.cc
 )
@@ -332,6 +330,8 @@ qt5_add_resources(QRC resources/res.qrc)
 add_library(matrix_events ${MATRIX_EVENTS} src/Deserializable.cc)
 target_link_libraries(matrix_events Qt5::Core)
 
+add_subdirectory(libs/matrix-structs)
+
 if (BUILD_TESTS)
     enable_testing()
 
@@ -352,10 +352,12 @@ if (BUILD_TESTS)
     add_test(MatrixMessageEvents message_events)
 endif()
 
+set(COMMON_LIBS matrix_events matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
+
 if(APPVEYOR_BUILD)
-    set (NHEKO_LIBS matrix_events Qt5::Widgets Qt5::Network Qt5::Concurrent lmdb)
+    set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
 else()
-    set (NHEKO_LIBS matrix_events Qt5::Widgets Qt5::Network Qt5::Concurrent ${LMDB_LIBRARY})
+    set(NHEKO_LIBS ${COMMON_LIBS} ${LMDB_LIBRARY})
 endif()
 
 set (NHEKO_DEPS ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC} ${META_FILES_TO_INCLUDE})
