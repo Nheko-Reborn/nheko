@@ -111,7 +111,7 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
                         emit loginSuccess(QString::fromStdString(login.user_id.toString()),
                                           hostname,
                                           QString::fromStdString(login.access_token));
-                } catch (DeserializationException &e) {
+                } catch (std::exception &e) {
                         qWarning() << "Malformed JSON response" << e.what();
                         emit loginError(tr("Malformed response. Possibly not a Matrix server"));
                 }
