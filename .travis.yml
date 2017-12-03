@@ -14,12 +14,14 @@ matrix:
           compiler: gcc
           env:
             - COMPILER=g++-6
+            - RUN_TESTS=1
           addons:
             apt:
               sources: ['ubuntu-toolchain-r-test']
               packages: ['g++-6']
         - os: linux
           compiler: clang
+          env:
             - COMPILER=clang++-5.0
           addons:
             apt:
@@ -43,7 +45,7 @@ script:
     - make -C build -j2
     - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
     - if [ $TRAVIS_OS_NAME == osx ]; then ./.ci/macos/deploy.sh; fi
-    - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/run-tests.sh; fi
+    - if [ $RUN_TESTS == 1 ]; then ./.ci/linux/run-tests.sh; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/deploy.sh; fi
 
 deploy:
