@@ -927,7 +927,7 @@ MatrixClient::readEvent(const QString &room_id, const QString &event_id)
 
         auto reply = post(request, "{}");
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        connect(reply, &QNetworkReply::finished, this, [reply]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
