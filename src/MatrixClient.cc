@@ -30,12 +30,7 @@
 
 #include "Login.h"
 #include "MatrixClient.h"
-#include "MessageEvent.h"
 #include "Register.h"
-#include "RoomMessages.h"
-#include "Sync.h"
-
-#include "mtx.hpp"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
   : QNetworkAccessManager(parent)
@@ -239,26 +234,17 @@ MatrixClient::sync() noexcept
                         return;
                 }
 
-                auto data = reply->readAll();
-
-                if (data.isEmpty())
-                        return;
-
-                auto json = QJsonDocument::fromJson(data);
-
-                SyncResponse response;
-
                 try {
-                        response.deserialize(json);
+                        mtx::responses::Sync response = nlohmann::json::parse(reply->readAll());
                         emit syncCompleted(response);
-                } catch (DeserializationException &e) {
+                } catch (std::exception &e) {
                         qWarning() << "Sync malformed response" << e.what();
                 }
         });
 }
 
 void
-MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
+MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
                               int txnId,
                               const QString &roomid,
                               const QString &msg,
@@ -283,19 +269,19 @@ MatrixClient::sendRoomMessage(matrix::events::MessageEventType ty,
         QJsonObject info = {{"size", fileinfo.size()}, {"mimetype", mime.name()}};
 
         switch (ty) {
-        case matrix::events::MessageEventType::Text:
+        case mtx::events::MessageType::Text:
                 body = {{"msgtype", "m.text"}, {"body", msg}};
                 break;
-        case matrix::events::MessageEventType::Emote:
+        case mtx::events::MessageType::Emote:
                 body = {{"msgtype", "m.emote"}, {"body", msg}};
                 break;
-        case matrix::events::MessageEventType::Image:
+        case mtx::events::MessageType::Image:
                 body = {{"msgtype", "m.image"}, {"body", msg}, {"url", url}, {"info", info}};
                 break;
-        case matrix::events::MessageEventType::File:
+        case mtx::events::MessageType::File:
                 body = {{"msgtype", "m.file"}, {"body", msg}, {"url", url}, {"info", info}};
                 break;
-        case matrix::events::MessageEventType::Audio:
+        case mtx::events::MessageType::Audio:
                 body = {{"msgtype", "m.audio"}, {"body", msg}, {"url", url}, {"info", info}};
                 break;
         default:
@@ -371,23 +357,14 @@ MatrixClient::initialSync() noexcept
                         return;
                 }
 
-                auto data = reply->readAll();
-
-                if (data.isEmpty())
-                        return;
-
-                auto json = QJsonDocument::fromJson(data);
-
-                SyncResponse response;
-
                 try {
-                        response.deserialize(json);
+                        mtx::responses::Sync response = nlohmann::json::parse(reply->readAll());
+                        emit initialSyncCompleted(response);
                 } catch (DeserializationException &e) {
                         qWarning() << "Sync malformed response" << e.what();
                         return;
                 }
 
-                emit initialSyncCompleted(response);
         });
 }
 
@@ -686,18 +663,15 @@ MatrixClient::messages(const QString &roomid, const QString &from_token, int lim
                         return;
                 }
 
-                auto data = reply->readAll();
-
-                RoomMessages msgs;
-
                 try {
-                        msgs.deserialize(QJsonDocument::fromJson(data));
-                } catch (const DeserializationException &e) {
+                        mtx::responses::Messages messages =
+                          nlohmann::json::parse(reply->readAll().data());
+
+                        emit messagesRetrieved(roomid, messages);
+                } catch (std::exception &e) {
                         qWarning() << "Room messages from" << roomid << e.what();
                         return;
                 }
-
-                emit messagesRetrieved(roomid, msgs);
         });
 }
 

@@ -25,7 +25,6 @@
 #include "RoomList.h"
 #include "RoomSettings.h"
 #include "RoomState.h"
-#include "Sync.h"
 
 RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)

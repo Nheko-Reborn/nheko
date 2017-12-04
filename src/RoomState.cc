@@ -15,15 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QSettings>
 
 #include "RoomState.h"
 
-namespace events = matrix::events;
-
 RoomState::RoomState() {}
-RoomState::RoomState(const QJsonArray &events) { updateFromEvents(events); }
+RoomState::RoomState(const mtx::responses::Timeline &timeline)
+{
+        updateFromEvents(timeline.events);
+}
+RoomState::RoomState(const mtx::responses::State &state) { updateFromEvents(state.events); }
 
 void
 RoomState::resolveName()
@@ -31,19 +35,19 @@ RoomState::resolveName()
         name_ = "Empty Room";
         userAvatar_.clear();
 
-        if (!name.content().name().isEmpty()) {
-                name_ = name.content().name().simplified();
+        if (!name.content.name.empty()) {
+                name_ = QString::fromStdString(name.content.name).simplified();
                 return;
         }
 
-        if (!canonical_alias.content().alias().isEmpty()) {
-                name_ = canonical_alias.content().alias().simplified();
+        if (!canonical_alias.content.alias.empty()) {
+                name_ = QString::fromStdString(canonical_alias.content.alias).simplified();
                 return;
         }
 
         // FIXME: Doesn't follow the spec guidelines.
-        if (aliases.content().aliases().size() != 0) {
-                name_ = aliases.content().aliases()[0].simplified();
+        if (aliases.content.aliases.size() != 0) {
+                name_ = QString::fromStdString(aliases.content.aliases[0]).simplified();
                 return;
         }
 
@@ -52,16 +56,20 @@ RoomState::resolveName()
 
         // TODO: Display names should be sorted alphabetically.
         for (const auto membership : memberships) {
-                if (membership.stateKey() == user_id)
+                const auto stateKey = QString::fromStdString(membership.second.state_key);
+
+                if (stateKey == user_id)
                         continue;
 
-                if (membership.content().membershipState() == events::Membership::Join) {
-                        userAvatar_ = membership.stateKey();
+                if (membership.second.content.membership == mtx::events::state::Membership::Join) {
+                        userAvatar_ = stateKey;
+                        auto displayName =
+                          QString::fromStdString(membership.second.content.display_name);
 
-                        if (membership.content().displayName().isEmpty())
-                                name_ = membership.stateKey();
+                        if (displayName.isEmpty())
+                                name_ = stateKey;
                         else
-                                name_ = membership.content().displayName();
+                                name_ = displayName;
 
                         break;
                 }
@@ -76,12 +84,13 @@ void
 RoomState::resolveAvatar()
 {
         if (userAvatar_.isEmpty()) {
-                avatar_ = avatar.content().url();
+                avatar_ = QString::fromStdString(avatar.content.url);
                 return;
         }
 
-        if (memberships.contains(userAvatar_)) {
-                avatar_ = memberships[userAvatar_].content().avatarUrl();
+        if (memberships.count(userAvatar_.toStdString()) != 0) {
+                avatar_ =
+                  QString::fromStdString(memberships[userAvatar_.toStdString()].content.avatar_url);
         } else {
                 qWarning() << "Setting room avatar from unknown user id" << userAvatar_;
         }
@@ -91,8 +100,8 @@ RoomState::resolveAvatar()
 void
 RoomState::removeLeaveMemberships()
 {
-        for (auto it = memberships.begin(); it != memberships.end();) {
-                if (it.value().content().membershipState() == events::Membership::Leave) {
+        for (auto it = memberships.cbegin(); it != memberships.cend();) {
+                if (it->second.content.membership == mtx::events::state::Membership::Leave) {
                         it = memberships.erase(it);
                 } else {
                         ++it;
@@ -106,49 +115,51 @@ RoomState::update(const RoomState &state)
         bool needsNameCalculation   = false;
         bool needsAvatarCalculation = false;
 
-        if (aliases.eventId() != state.aliases.eventId()) {
+        if (aliases.event_id != state.aliases.event_id)
                 aliases = state.aliases;
-        }
 
-        if (avatar.eventId() != state.avatar.eventId()) {
+        if (avatar.event_id != state.avatar.event_id) {
                 avatar                 = state.avatar;
                 needsAvatarCalculation = true;
         }
 
-        if (canonical_alias.eventId() != state.canonical_alias.eventId()) {
+        if (canonical_alias.event_id != state.canonical_alias.event_id) {
                 canonical_alias      = state.canonical_alias;
                 needsNameCalculation = true;
         }
 
-        if (create.eventId() != state.create.eventId())
+        if (create.event_id != state.create.event_id)
                 create = state.create;
-        if (history_visibility.eventId() != state.history_visibility.eventId())
+
+        if (history_visibility.event_id != state.history_visibility.event_id)
                 history_visibility = state.history_visibility;
-        if (join_rules.eventId() != state.join_rules.eventId())
+
+        if (join_rules.event_id != state.join_rules.event_id)
                 join_rules = state.join_rules;
 
-        if (name.eventId() != state.name.eventId()) {
+        if (name.event_id != state.name.event_id) {
                 name                 = state.name;
                 needsNameCalculation = true;
         }
 
-        if (power_levels.eventId() != state.power_levels.eventId())
+        if (power_levels.event_id != state.power_levels.event_id)
                 power_levels = state.power_levels;
-        if (topic.eventId() != state.topic.eventId())
+
+        if (topic.event_id != state.topic.event_id)
                 topic = state.topic;
 
-        for (auto it = state.memberships.constBegin(); it != state.memberships.constEnd(); ++it) {
-                auto membershipState = it.value().content().membershipState();
+        for (auto it = state.memberships.cbegin(); it != state.memberships.cend(); ++it) {
+                auto membershipState = it->second.content.membership;
 
-                if (it.key() == userAvatar_) {
+                if (it->first == userAvatar_.toStdString()) {
                         needsNameCalculation   = true;
                         needsAvatarCalculation = true;
                 }
 
-                if (membershipState == events::Membership::Leave)
-                        this->memberships.remove(it.key());
+                if (membershipState == mtx::events::state::Membership::Leave)
+                        this->memberships.erase(this->memberships.find(it->first));
                 else
-                        this->memberships.insert(it.key(), it.value());
+                        this->memberships.emplace(it->first, it->second);
         }
 
         if (needsNameCalculation)
@@ -158,235 +169,126 @@ RoomState::update(const RoomState &state)
                 resolveAvatar();
 }
 
-QJsonObject
+std::string
 RoomState::serialize() const
 {
-        QJsonObject obj;
+        nlohmann::json obj;
 
-        if (!aliases.eventId().isEmpty())
-                obj["aliases"] = aliases.serialize();
+        if (!aliases.event_id.empty())
+                obj["aliases"] = aliases;
 
-        if (!avatar.eventId().isEmpty())
-                obj["avatar"] = avatar.serialize();
+        if (!avatar.event_id.empty())
+                obj["avatar"] = avatar;
 
-        if (!canonical_alias.eventId().isEmpty())
-                obj["canonical_alias"] = canonical_alias.serialize();
+        if (!canonical_alias.event_id.empty())
+                obj["canonical_alias"] = canonical_alias;
 
-        if (!create.eventId().isEmpty())
-                obj["create"] = create.serialize();
+        if (!create.event_id.empty())
+                obj["create"] = create;
 
-        if (!history_visibility.eventId().isEmpty())
-                obj["history_visibility"] = history_visibility.serialize();
+        if (!history_visibility.event_id.empty())
+                obj["history_visibility"] = history_visibility;
 
-        if (!join_rules.eventId().isEmpty())
-                obj["join_rules"] = join_rules.serialize();
+        if (!join_rules.event_id.empty())
+                obj["join_rules"] = join_rules;
 
-        if (!name.eventId().isEmpty())
-                obj["name"] = name.serialize();
+        if (!name.event_id.empty())
+                obj["name"] = name;
 
-        if (!power_levels.eventId().isEmpty())
-                obj["power_levels"] = power_levels.serialize();
+        if (!power_levels.event_id.empty())
+                obj["power_levels"] = power_levels;
 
-        if (!topic.eventId().isEmpty())
-                obj["topic"] = topic.serialize();
+        if (!topic.event_id.empty())
+                obj["topic"] = topic;
 
-        return obj;
+        return obj.dump();
 }
 
 void
-RoomState::parse(const QJsonObject &object)
+RoomState::parse(const nlohmann::json &object)
 {
-        // FIXME: Make this less versbose.
-
-        if (object.contains("aliases")) {
-                events::StateEvent<events::AliasesEventContent> event;
-
+        if (object.count("aliases") != 0) {
                 try {
-                        event.deserialize(object["aliases"]);
-                        aliases = event;
-                } catch (const DeserializationException &e) {
+                        aliases = object.at("aliases")
+                                    .get<mtx::events::StateEvent<mtx::events::state::Aliases>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - aliases" << e.what();
                 }
         }
 
-        if (object.contains("avatar")) {
-                events::StateEvent<events::AvatarEventContent> event;
-
+        if (object.count("avatar") != 0) {
                 try {
-                        event.deserialize(object["avatar"]);
-                        avatar = event;
-                } catch (const DeserializationException &e) {
+                        avatar = object.at("avatar")
+                                   .get<mtx::events::StateEvent<mtx::events::state::Avatar>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - avatar" << e.what();
                 }
         }
 
-        if (object.contains("canonical_alias")) {
-                events::StateEvent<events::CanonicalAliasEventContent> event;
-
+        if (object.count("canonical_alias") != 0) {
                 try {
-                        event.deserialize(object["canonical_alias"]);
-                        canonical_alias = event;
-                } catch (const DeserializationException &e) {
+                        canonical_alias =
+                          object.at("canonical_alias")
+                            .get<mtx::events::StateEvent<mtx::events::state::CanonicalAlias>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - canonical_alias" << e.what();
                 }
         }
 
-        if (object.contains("create")) {
-                events::StateEvent<events::CreateEventContent> event;
-
+        if (object.count("create") != 0) {
                 try {
-                        event.deserialize(object["create"]);
-                        create = event;
-                } catch (const DeserializationException &e) {
+                        create = object.at("create")
+                                   .get<mtx::events::StateEvent<mtx::events::state::Create>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - create" << e.what();
                 }
         }
 
-        if (object.contains("history_visibility")) {
-                events::StateEvent<events::HistoryVisibilityEventContent> event;
-
+        if (object.count("history_visibility") != 0) {
                 try {
-                        event.deserialize(object["history_visibility"]);
-                        history_visibility = event;
-                } catch (const DeserializationException &e) {
+                        history_visibility =
+                          object.at("history_visibility")
+                            .get<mtx::events::StateEvent<mtx::events::state::HistoryVisibility>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - history_visibility" << e.what();
                 }
         }
 
-        if (object.contains("join_rules")) {
-                events::StateEvent<events::JoinRulesEventContent> event;
-
+        if (object.count("join_rules") != 0) {
                 try {
-                        event.deserialize(object["join_rules"]);
-                        join_rules = event;
-                } catch (const DeserializationException &e) {
+                        join_rules =
+                          object.at("join_rules")
+                            .get<mtx::events::StateEvent<mtx::events::state::JoinRules>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - join_rules" << e.what();
                 }
         }
 
-        if (object.contains("name")) {
-                events::StateEvent<events::NameEventContent> event;
-
+        if (object.count("name") != 0) {
                 try {
-                        event.deserialize(object["name"]);
-                        name = event;
-                } catch (const DeserializationException &e) {
+                        name = object.at("name")
+                                 .get<mtx::events::StateEvent<mtx::events::state::Name>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - name" << e.what();
                 }
         }
 
-        if (object.contains("power_levels")) {
-                events::StateEvent<events::PowerLevelsEventContent> event;
-
+        if (object.count("power_levels") != 0) {
                 try {
-                        event.deserialize(object["power_levels"]);
-                        power_levels = event;
-                } catch (const DeserializationException &e) {
+                        power_levels =
+                          object.at("power_levels")
+                            .get<mtx::events::StateEvent<mtx::events::state::PowerLevels>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - power_levels" << e.what();
                 }
         }
 
-        if (object.contains("topic")) {
-                events::StateEvent<events::TopicEventContent> event;
-
+        if (object.count("topic") != 0) {
                 try {
-                        event.deserialize(object["topic"]);
-                        topic = event;
-                } catch (const DeserializationException &e) {
+                        topic = object.at("topic")
+                                  .get<mtx::events::StateEvent<mtx::events::state::Topic>>();
+                } catch (std::exception &e) {
                         qWarning() << "RoomState::parse - topic" << e.what();
-                }
-        }
-}
-
-void
-RoomState::updateFromEvents(const QJsonArray &events)
-{
-        events::EventType ty;
-
-        for (const auto &event : events) {
-                try {
-                        ty = events::extractEventType(event.toObject());
-                } catch (const DeserializationException &e) {
-                        qWarning() << e.what() << event;
-                        continue;
-                }
-
-                if (!events::isStateEvent(ty))
-                        continue;
-
-                try {
-                        switch (ty) {
-                        case events::EventType::RoomAliases: {
-                                events::StateEvent<events::AliasesEventContent> aliases;
-                                aliases.deserialize(event);
-                                this->aliases = aliases;
-                                break;
-                        }
-                        case events::EventType::RoomAvatar: {
-                                events::StateEvent<events::AvatarEventContent> avatar;
-                                avatar.deserialize(event);
-                                this->avatar = avatar;
-                                break;
-                        }
-                        case events::EventType::RoomCanonicalAlias: {
-                                events::StateEvent<events::CanonicalAliasEventContent>
-                                  canonical_alias;
-                                canonical_alias.deserialize(event);
-                                this->canonical_alias = canonical_alias;
-                                break;
-                        }
-                        case events::EventType::RoomCreate: {
-                                events::StateEvent<events::CreateEventContent> create;
-                                create.deserialize(event);
-                                this->create = create;
-                                break;
-                        }
-                        case events::EventType::RoomHistoryVisibility: {
-                                events::StateEvent<events::HistoryVisibilityEventContent>
-                                  history_visibility;
-                                history_visibility.deserialize(event);
-                                this->history_visibility = history_visibility;
-                                break;
-                        }
-                        case events::EventType::RoomJoinRules: {
-                                events::StateEvent<events::JoinRulesEventContent> join_rules;
-                                join_rules.deserialize(event);
-                                this->join_rules = join_rules;
-                                break;
-                        }
-                        case events::EventType::RoomName: {
-                                events::StateEvent<events::NameEventContent> name;
-                                name.deserialize(event);
-                                this->name = name;
-                                break;
-                        }
-                        case events::EventType::RoomMember: {
-                                events::StateEvent<events::MemberEventContent> member;
-                                member.deserialize(event);
-
-                                this->memberships.insert(member.stateKey(), member);
-
-                                break;
-                        }
-                        case events::EventType::RoomPowerLevels: {
-                                events::StateEvent<events::PowerLevelsEventContent> power_levels;
-                                power_levels.deserialize(event);
-                                this->power_levels = power_levels;
-                                break;
-                        }
-                        case events::EventType::RoomTopic: {
-                                events::StateEvent<events::TopicEventContent> topic;
-                                topic.deserialize(event);
-                                this->topic = topic;
-                                break;
-                        }
-                        default: {
-                                continue;
-                        }
-                        }
-                } catch (const DeserializationException &e) {
-                        qWarning() << e.what() << event;
-                        continue;
                 }
         }
 }

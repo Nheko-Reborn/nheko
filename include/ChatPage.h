@@ -24,9 +24,7 @@
 #include <QTimer>
 #include <QWidget>
 
-#include "MemberEventContent.h"
-#include "MessageEvent.h"
-#include "StateEvent.h"
+#include <mtx.hpp>
 
 class Cache;
 class MatrixClient;
@@ -37,14 +35,11 @@ class RoomSettings;
 class RoomState;
 class SideBarActions;
 class Splitter;
-class SyncResponse;
 class TextInputWidget;
 class TimelineViewManager;
 class TopRoomBar;
 class TypingDisplay;
 class UserInfoWidget;
-class JoinedRoom;
-class LeftRoom;
 
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
@@ -76,8 +71,8 @@ private slots:
         void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
         void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
         void setOwnAvatar(const QPixmap &img);
-        void initialSyncCompleted(const SyncResponse &response);
-        void syncCompleted(const SyncResponse &response);
+        void initialSyncCompleted(const mtx::responses::Sync &response);
+        void syncCompleted(const mtx::responses::Sync &response);
         void syncFailed(const QString &msg);
         void changeTopRoomInfo(const QString &room_id);
         void logout();
@@ -87,25 +82,33 @@ private slots:
 private:
         using UserID      = QString;
         using RoomStates  = QMap<UserID, RoomState>;
-        using JoinedRooms = QMap<UserID, JoinedRoom>;
-        using LeftRooms   = QMap<UserID, LeftRoom>;
-        using Membership  = matrix::events::StateEvent<matrix::events::MemberEventContent>;
-        using Memberships = QMap<UserID, Membership>;
+        using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
+        using Memberships = std::map<std::string, Membership>;
+
+        using JoinedRooms = std::map<std::string, mtx::responses::JoinedRoom>;
+        using LeftRooms   = std::map<std::string, mtx::responses::LeftRoom>;
 
         void removeLeftRooms(const LeftRooms &rooms);
         void updateJoinedRooms(const JoinedRooms &rooms);
 
-        Memberships getMemberships(const QJsonArray &events) const;
         RoomStates generateMembershipDifference(const JoinedRooms &rooms,
                                                 const RoomStates &states) const;
 
-        void updateTypingUsers(const QString &roomid, const QList<QString> &user_ids);
-        void updateUserMetadata(const QJsonArray &events);
-        void updateUserDisplayName(const Membership &event);
-        void updateUserAvatarUrl(const Membership &event);
+        void updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids);
+
+        using MemberEvent = mtx::events::StateEvent<mtx::events::state::Member>;
+        void updateUserDisplayName(const MemberEvent &event);
+        void updateUserAvatarUrl(const MemberEvent &event);
+
         void loadStateFromCache();
         void deleteConfigs();
         void resetUI();
+
+        template<class Collection>
+        Memberships getMemberships(const std::vector<Collection> &events) const;
+
+        template<class Collection>
+        void updateUserMetadata(const std::vector<Collection> &collection);
 
         QHBoxLayout *topLayout_;
         Splitter *splitter;
@@ -153,3 +156,37 @@ private:
         // return to the login page.
         int initialSyncFailures = 0;
 };
+
+template<class Collection>
+void
+ChatPage::updateUserMetadata(const std::vector<Collection> &collection)
+{
+        using Member = mtx::events::StateEvent<mtx::events::state::Member>;
+
+        for (auto &event : collection) {
+                if (mpark::holds_alternative<Member>(event)) {
+                        auto member = mpark::get<Member>(event);
+
+                        updateUserAvatarUrl(member);
+                        updateUserDisplayName(member);
+                }
+        }
+}
+
+template<class Collection>
+std::map<std::string, mtx::events::StateEvent<mtx::events::state::Member>>
+ChatPage::getMemberships(const std::vector<Collection> &collection) const
+{
+        std::map<std::string, mtx::events::StateEvent<mtx::events::state::Member>> memberships;
+
+        using Member = mtx::events::StateEvent<mtx::events::state::Member>;
+
+        for (auto &event : collection) {
+                if (mpark::holds_alternative<Member>(event)) {
+                        auto member = mpark::get<Member>(event);
+                        memberships.emplace(member.state_key, member);
+                }
+        }
+
+        return memberships;
+}

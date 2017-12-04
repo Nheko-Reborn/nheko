@@ -24,12 +24,9 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "Audio.h"
 #include "MatrixClient.h"
-#include "MessageEvent.h"
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
+#include <mtx.hpp>
 
 class AudioItem : public QWidget
 {
@@ -46,7 +43,7 @@ class AudioItem : public QWidget
 
 public:
         AudioItem(QSharedPointer<MatrixClient> client,
-                  const events::MessageEvent<msgs::Audio> &event,
+                  const mtx::events::RoomEvent<mtx::events::msg::Audio> &event,
                   QWidget *parent = nullptr);
 
         AudioItem(QSharedPointer<MatrixClient> client,
@@ -94,7 +91,7 @@ private:
         QString readableFileSize_;
         QString filenameToSave_;
 
-        events::MessageEvent<msgs::Audio> event_;
+        mtx::events::RoomEvent<mtx::events::msg::Audio> event_;
         QSharedPointer<MatrixClient> client_;
 
         QMediaPlayer *player_;

@@ -21,12 +21,10 @@
 #include <QSharedPointer>
 #include <QStackedWidget>
 
-#include "MessageEvent.h"
+#include <mtx.hpp>
 
-class JoinedRoom;
 class MatrixClient;
 class RoomInfoListItem;
-class Rooms;
 class TimelineView;
 struct DescInfo;
 
@@ -39,14 +37,14 @@ public:
         ~TimelineViewManager();
 
         // Initialize with timeline events.
-        void initialize(const Rooms &rooms);
+        void initialize(const mtx::responses::Rooms &rooms);
         // Empty initialization.
         void initialize(const QList<QString> &rooms);
 
-        void addRoom(const JoinedRoom &room, const QString &room_id);
+        void addRoom(const mtx::responses::JoinedRoom &room, const QString &room_id);
         void addRoom(const QString &room_id);
 
-        void sync(const Rooms &rooms);
+        void sync(const mtx::responses::Rooms &rooms);
         void clearAll();
 
         // Check if all the timelines have been loaded.

@@ -26,9 +26,6 @@
 
 #include "timeline/widgets/AudioItem.h"
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
-
 constexpr int MaxWidth          = 400;
 constexpr int Height            = 70;
 constexpr int IconRadius        = 22;
@@ -77,15 +74,15 @@ AudioItem::init()
 }
 
 AudioItem::AudioItem(QSharedPointer<MatrixClient> client,
-                     const events::MessageEvent<msgs::Audio> &event,
+                     const mtx::events::RoomEvent<mtx::events::msg::Audio> &event,
                      QWidget *parent)
   : QWidget(parent)
-  , url_{event.msgContent().url()}
-  , text_{event.content().body()}
+  , url_{QUrl(QString::fromStdString(event.content.url))}
+  , text_{QString::fromStdString(event.content.body)}
   , event_{event}
   , client_{client}
 {
-        readableFileSize_ = calculateFileSize(event.msgContent().info().size);
+        readableFileSize_ = calculateFileSize(event.content.info.size);
 
         init();
 }
@@ -151,14 +148,14 @@ AudioItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                client_->downloadFile(event_.eventId(), url_);
+                client_->downloadFile(QString::fromStdString(event_.event_id), url_);
         }
 }
 
 void
 AudioItem::fileDownloaded(const QString &event_id, const QByteArray &data)
 {
-        if (event_id != event_.eventId())
+        if (event_id != QString::fromStdString(event_.event_id))
                 return;
 
         try {

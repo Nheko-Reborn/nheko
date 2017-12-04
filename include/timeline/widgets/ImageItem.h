@@ -22,19 +22,16 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "Image.h"
-#include "MatrixClient.h"
-#include "MessageEvent.h"
+#include <mtx.hpp>
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
+#include "MatrixClient.h"
 
 class ImageItem : public QWidget
 {
         Q_OBJECT
 public:
         ImageItem(QSharedPointer<MatrixClient> client,
-                  const events::MessageEvent<msgs::Image> &event,
+                  const mtx::events::RoomEvent<mtx::events::msg::Image> &event,
                   QWidget *parent = nullptr);
 
         ImageItem(QSharedPointer<MatrixClient> client,
@@ -72,7 +69,7 @@ private:
 
         int bottom_height_ = 30;
 
-        events::MessageEvent<msgs::Image> event_;
+        mtx::events::RoomEvent<mtx::events::msg::Image> event_;
 
         QSharedPointer<MatrixClient> client_;
 };

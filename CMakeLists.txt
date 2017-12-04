@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
 
-option(BUILD_TESTS "Build all tests" OFF)
 option(APPVEYOR_BUILD "Build on appveyor" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -122,6 +121,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         -Werror \
         -pipe \
         -pedantic \
+        -ferror-limit=3 \
         -Wunreachable-code")
 
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
@@ -200,7 +200,6 @@ set(SRC_FILES
     src/RoomState.cc
     src/SideBarActions.cc
     src/Splitter.cc
-    src/Sync.cc
     src/TextInputWidget.cc
     src/TopRoomBar.cc
     src/TrayIcon.cc
@@ -211,35 +210,8 @@ set(SRC_FILES
     src/main.cc
 )
 
-set(MATRIX_EVENTS
-    src/events/Event.cc
-
-    src/events/AliasesEventContent.cc
-    src/events/AvatarEventContent.cc
-    src/events/CanonicalAliasEventContent.cc
-    src/events/CreateEventContent.cc
-    src/events/HistoryVisibilityEventContent.cc
-    src/events/JoinRulesEventContent.cc
-    src/events/MemberEventContent.cc
-    src/events/MessageEventContent.cc
-    src/events/NameEventContent.cc
-    src/events/PowerLevelsEventContent.cc
-    src/events/TopicEventContent.cc
-
-    src/events/messages/Audio.cc
-    src/events/messages/Emote.cc
-    src/events/messages/File.cc
-    src/events/messages/Image.cc
-    src/events/messages/Location.cc
-    src/events/messages/Notice.cc
-    src/events/messages/Text.cc
-    src/events/messages/Video.cc
-)
-
 include_directories(include)
 include_directories(include/ui)
-include_directories(include/events)
-include_directories(include/events/messages)
 
 include_directories(libs/lmdbxx)
 include_directories(${LMDB_INCLUDE_DIR})
@@ -324,35 +296,9 @@ file(APPEND ${_qrc} "</qresource> </RCC>")
 qt5_add_resources(LANG_QRC ${_qrc})
 qt5_add_resources(QRC resources/res.qrc)
 
-#
-# Matrix events library.
-#
-add_library(matrix_events ${MATRIX_EVENTS} src/Deserializable.cc)
-target_link_libraries(matrix_events Qt5::Core)
-
 add_subdirectory(libs/matrix-structs)
 
-if (BUILD_TESTS)
-    enable_testing()
-
-    find_package(GTest REQUIRED)
-    include_directories(${GTEST_INCLUDE_DIRS})
-
-    add_executable(events_test tests/events.cc)
-    target_link_libraries(events_test matrix_events ${GTEST_BOTH_LIBRARIES})
-
-    add_executable(event_collection_test tests/event_collection.cc)
-    target_link_libraries(event_collection_test matrix_events ${GTEST_BOTH_LIBRARIES})
-
-    add_executable(message_events tests/message_events.cc)
-    target_link_libraries(message_events matrix_events ${GTEST_BOTH_LIBRARIES})
-
-    add_test(MatrixEvents events_test)
-    add_test(MatrixEventCollection event_collection_test)
-    add_test(MatrixMessageEvents message_events)
-endif()
-
-set(COMMON_LIBS matrix_events matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
+set(COMMON_LIBS matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)

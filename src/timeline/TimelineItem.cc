@@ -21,7 +21,6 @@
 
 #include "Avatar.h"
 #include "Config.h"
-#include "Sync.h"
 
 #include "timeline/TimelineItem.h"
 #include "timeline/widgets/AudioItem.h"
@@ -31,9 +30,6 @@
 
 static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
 static const QString URL_HTML = "<a href=\"\\1\">\\1</a>";
-
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
 
 void
 TimelineItem::init()
@@ -71,7 +67,7 @@ TimelineItem::init()
 /*
  * For messages created locally.
  */
-TimelineItem::TimelineItem(events::MessageEventType ty,
+TimelineItem::TimelineItem(mtx::events::MessageType ty,
                            const QString &userid,
                            QString body,
                            bool withSender,
@@ -83,7 +79,7 @@ TimelineItem::TimelineItem(events::MessageEventType ty,
         auto displayName = TimelineViewManager::displayName(userid);
         auto timestamp   = QDateTime::currentDateTime();
 
-        if (ty == events::MessageEventType::Emote) {
+        if (ty == mtx::events::MessageType::Emote) {
                 body            = QString("* %1 %2").arg(displayName).arg(body);
                 descriptionMsg_ = {"", userid, body, descriptiveTime(timestamp)};
         } else {
@@ -152,64 +148,65 @@ TimelineItem::TimelineItem(VideoItem *video,
 }
 
 TimelineItem::TimelineItem(ImageItem *image,
-                           const events::MessageEvent<msgs::Image> &event,
+                           const mtx::events::RoomEvent<mtx::events::msg::Image> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
-        setupWidgetLayout<events::MessageEvent<msgs::Image>, ImageItem>(
+        setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Image>, ImageItem>(
           image, event, " sent an image", with_sender);
 }
 
 TimelineItem::TimelineItem(FileItem *file,
-                           const events::MessageEvent<msgs::File> &event,
+                           const mtx::events::RoomEvent<mtx::events::msg::File> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
-        setupWidgetLayout<events::MessageEvent<msgs::File>, FileItem>(
+        setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::File>, FileItem>(
           file, event, " sent a file", with_sender);
 }
 
 TimelineItem::TimelineItem(AudioItem *audio,
-                           const events::MessageEvent<msgs::Audio> &event,
+                           const mtx::events::RoomEvent<mtx::events::msg::Audio> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
-        setupWidgetLayout<events::MessageEvent<msgs::Audio>, AudioItem>(
+        setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Audio>, AudioItem>(
           audio, event, " sent an audio clip", with_sender);
 }
 
 TimelineItem::TimelineItem(VideoItem *video,
-                           const events::MessageEvent<msgs::Video> &event,
+                           const mtx::events::RoomEvent<mtx::events::msg::Video> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
-        setupWidgetLayout<events::MessageEvent<msgs::Video>, VideoItem>(
+        setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Video>, VideoItem>(
           video, event, " sent a video clip", with_sender);
 }
 
 /*
  * Used to display remote notice messages.
  */
-TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
+TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
         init();
 
-        event_id_ = event.eventId();
+        event_id_         = QString::fromStdString(event.event_id);
+        const auto sender = QString::fromStdString(event.sender);
 
-        descriptionMsg_ = {TimelineViewManager::displayName(event.sender()),
-                           event.sender(),
+        descriptionMsg_ = {TimelineViewManager::displayName(sender),
+                           sender,
                            " sent a notification",
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
 
-        auto body      = event.content().body().trimmed().toHtmlEscaped();
-        auto timestamp = QDateTime::fromMSecsSinceEpoch(event.timestamp());
+        auto body      = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
+        auto timestamp = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
 
         generateTimestamp(timestamp);
 
@@ -218,14 +215,14 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
         body = "<i>" + body + "</i>";
 
         if (with_sender) {
-                auto displayName = TimelineViewManager::displayName(event.sender());
+                auto displayName = TimelineViewManager::displayName(sender);
 
                 generateBody(displayName, body);
                 setupAvatarLayout(displayName);
 
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(event.sender(), this);
+                AvatarProvider::resolve(sender, this);
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -237,24 +234,25 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Notice> &event,
 /*
  * Used to display remote emote messages.
  */
-TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
+TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
         init();
 
-        event_id_ = event.eventId();
+        event_id_         = QString::fromStdString(event.event_id);
+        const auto sender = QString::fromStdString(event.sender);
 
-        auto body        = event.content().body().trimmed();
-        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-        auto displayName = TimelineViewManager::displayName(event.sender());
+        auto body        = QString::fromStdString(event.content.body).trimmed();
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
+        auto displayName = TimelineViewManager::displayName(sender);
         auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(body);
 
         descriptionMsg_ = {"",
-                           event.sender(),
+                           sender,
                            emoteMsg,
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
 
         generateTimestamp(timestamp);
         emoteMsg = emoteMsg.toHtmlEscaped();
@@ -266,7 +264,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
                 setupAvatarLayout(displayName);
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(event.sender(), this);
+                AvatarProvider::resolve(sender, this);
         } else {
                 generateBody(emoteMsg);
                 setupSimpleLayout();
@@ -278,24 +276,25 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Emote> &event,
 /*
  * Used to display remote text messages.
  */
-TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
+TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> &event,
                            bool with_sender,
                            QWidget *parent)
   : QWidget(parent)
 {
         init();
 
-        event_id_ = event.eventId();
+        event_id_         = QString::fromStdString(event.event_id);
+        const auto sender = QString::fromStdString(event.sender);
 
-        auto body        = event.content().body().trimmed();
-        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-        auto displayName = TimelineViewManager::displayName(event.sender());
+        auto body        = QString::fromStdString(event.content.body).trimmed();
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
+        auto displayName = TimelineViewManager::displayName(sender);
 
         QSettings settings;
-        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-                           event.sender(),
+        descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
+                           sender,
                            QString(": %1").arg(body),
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
 
         generateTimestamp(timestamp);
 
@@ -309,7 +308,7 @@ TimelineItem::TimelineItem(const events::MessageEvent<msgs::Text> &event,
 
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(event.sender(), this);
+                AvatarProvider::resolve(sender, this);
         } else {
                 generateBody(body);
                 setupSimpleLayout();

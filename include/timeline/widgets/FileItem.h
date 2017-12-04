@@ -23,12 +23,9 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "File.h"
-#include "MatrixClient.h"
-#include "MessageEvent.h"
+#include <mtx.hpp>
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
+#include "MatrixClient.h"
 
 class FileItem : public QWidget
 {
@@ -40,7 +37,7 @@ class FileItem : public QWidget
 
 public:
         FileItem(QSharedPointer<MatrixClient> client,
-                 const events::MessageEvent<msgs::File> &event,
+                 const mtx::events::RoomEvent<mtx::events::msg::File> &event,
                  QWidget *parent = nullptr);
 
         FileItem(QSharedPointer<MatrixClient> client,
@@ -75,7 +72,7 @@ private:
         QString readableFileSize_;
         QString filenameToSave_;
 
-        events::MessageEvent<msgs::File> event_;
+        mtx::events::RoomEvent<mtx::events::msg::File> event_;
         QSharedPointer<MatrixClient> client_;
 
         QIcon icon_;

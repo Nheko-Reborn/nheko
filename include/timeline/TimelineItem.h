@@ -25,16 +25,7 @@
 #include <QStyle>
 #include <QStyleOption>
 
-#include "Audio.h"
-#include "Emote.h"
-#include "File.h"
-#include "Image.h"
-#include "Notice.h"
-#include "Text.h"
-#include "Video.h"
-
 #include "AvatarProvider.h"
-#include "MessageEvent.h"
 #include "RoomInfoListItem.h"
 #include "TimelineViewManager.h"
 
@@ -44,26 +35,23 @@ class VideoItem;
 class FileItem;
 class Avatar;
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
-
 class TimelineItem : public QWidget
 {
         Q_OBJECT
 public:
-        TimelineItem(const events::MessageEvent<msgs::Notice> &e,
+        TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice> &e,
                      bool with_sender,
                      QWidget *parent = 0);
-        TimelineItem(const events::MessageEvent<msgs::Text> &e,
+        TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> &e,
                      bool with_sender,
                      QWidget *parent = 0);
-        TimelineItem(const events::MessageEvent<msgs::Emote> &e,
+        TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote> &e,
                      bool with_sender,
                      QWidget *parent = 0);
 
         // For local messages.
         // m.text & m.emote
-        TimelineItem(events::MessageEventType ty,
+        TimelineItem(mtx::events::MessageType ty,
                      const QString &userid,
                      QString body,
                      bool withSender,
@@ -75,19 +63,19 @@ public:
         TimelineItem(VideoItem *item, const QString &userid, bool withSender, QWidget *parent = 0);
 
         TimelineItem(ImageItem *img,
-                     const events::MessageEvent<msgs::Image> &e,
+                     const mtx::events::RoomEvent<mtx::events::msg::Image> &e,
                      bool with_sender,
                      QWidget *parent);
         TimelineItem(FileItem *file,
-                     const events::MessageEvent<msgs::File> &e,
+                     const mtx::events::RoomEvent<mtx::events::msg::File> &e,
                      bool with_sender,
                      QWidget *parent);
         TimelineItem(AudioItem *audio,
-                     const events::MessageEvent<msgs::Audio> &e,
+                     const mtx::events::RoomEvent<mtx::events::msg::Audio> &e,
                      bool with_sender,
                      QWidget *parent);
         TimelineItem(VideoItem *video,
-                     const events::MessageEvent<msgs::Video> &e,
+                     const mtx::events::RoomEvent<mtx::events::msg::Video> &e,
                      bool with_sender,
                      QWidget *parent);
 
@@ -185,16 +173,17 @@ TimelineItem::setupWidgetLayout(Widget *widget,
 {
         init();
 
-        event_id_ = event.eventId();
+        event_id_         = QString::fromStdString(event.event_id);
+        const auto sender = QString::fromStdString(event.sender);
 
-        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.timestamp());
-        auto displayName = TimelineViewManager::displayName(event.sender());
+        auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
+        auto displayName = TimelineViewManager::displayName(sender);
 
         QSettings settings;
-        descriptionMsg_ = {event.sender() == settings.value("auth/user_id") ? "You" : displayName,
-                           event.sender(),
+        descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
+                           sender,
                            msgDescription,
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.timestamp()))};
+                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
 
         generateTimestamp(timestamp);
 
@@ -209,7 +198,7 @@ TimelineItem::setupWidgetLayout(Widget *widget,
 
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(event.sender(), this);
+                AvatarProvider::resolve(sender, this);
         } else {
                 setupSimpleLayout();
         }

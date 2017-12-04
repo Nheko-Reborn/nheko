@@ -25,11 +25,8 @@
 #include "dialogs/ImageOverlay.h"
 #include "timeline/widgets/ImageItem.h"
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
-
 ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
-                     const events::MessageEvent<msgs::Image> &event,
+                     const mtx::events::RoomEvent<mtx::events::msg::Image> &event,
                      QWidget *parent)
   : QWidget(parent)
   , event_{event}
@@ -39,8 +36,8 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
         setCursor(Qt::PointingHandCursor);
         setAttribute(Qt::WA_Hover, true);
 
-        url_  = event.msgContent().url();
-        text_ = event.content().body();
+        url_  = QString::fromStdString(event.content.url);
+        text_ = QString::fromStdString(event.content.body);
 
         QList<QString> url_parts = url_.toString().split("mxc://");
 
@@ -53,7 +50,7 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(client_.data()->getHomeServer().toString(), media_params);
 
-        client_.data()->downloadImage(event.eventId(), url_);
+        client_.data()->downloadImage(QString::fromStdString(event.event_id), url_);
 
         connect(client_.data(),
                 SIGNAL(imageDownloaded(const QString &, const QPixmap &)),
@@ -91,7 +88,7 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
 void
 ImageItem::imageDownloaded(const QString &event_id, const QPixmap &img)
 {
-        if (event_id != event_.eventId())
+        if (event_id != QString::fromStdString(event_.event_id))
                 return;
 
         setImage(img);

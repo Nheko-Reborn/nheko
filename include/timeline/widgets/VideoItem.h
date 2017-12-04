@@ -23,11 +23,8 @@
 #include <QWidget>
 
 #include "MatrixClient.h"
-#include "MessageEvent.h"
-#include "Video.h"
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
+#include <mtx.hpp>
 
 class VideoItem : public QWidget
 {
@@ -35,7 +32,7 @@ class VideoItem : public QWidget
 
 public:
         VideoItem(QSharedPointer<MatrixClient> client,
-                  const events::MessageEvent<msgs::Video> &event,
+                  const mtx::events::RoomEvent<mtx::events::msg::Video> &event,
                   QWidget *parent = nullptr);
 
         VideoItem(QSharedPointer<MatrixClient> client,
@@ -53,6 +50,6 @@ private:
 
         QLabel *label_;
 
-        events::MessageEvent<msgs::Video> event_;
+        mtx::events::RoomEvent<mtx::events::msg::Video> event_;
         QSharedPointer<MatrixClient> client_;
 };

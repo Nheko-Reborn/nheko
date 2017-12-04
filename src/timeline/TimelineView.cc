@@ -22,7 +22,6 @@
 #include "FloatingButton.h"
 #include "RoomMessages.h"
 #include "ScrollBar.h"
-#include "Sync.h"
 
 #include "timeline/TimelineView.h"
 #include "timeline/widgets/AudioItem.h"
@@ -30,23 +29,7 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
-
-static bool
-isRedactedEvent(const QJsonObject &event)
-{
-        if (event.contains("redacted_because"))
-                return true;
-
-        if (event.contains("unsigned") &&
-            event.value("unsigned").toObject().contains("redacted_because"))
-                return true;
-
-        return false;
-}
-
-TimelineView::TimelineView(const Timeline &timeline,
+TimelineView::TimelineView(const mtx::responses::Timeline &timeline,
                            QSharedPointer<MatrixClient> client,
                            const QString &room_id,
                            QWidget *parent)
@@ -167,12 +150,12 @@ TimelineView::sliderMoved(int position)
 }
 
 void
-TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msgs)
+TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::Messages &msgs)
 {
         if (room_id_ != room_id)
                 return;
 
-        if (msgs.chunk().count() == 0) {
+        if (msgs.chunk.size() == 0) {
                 isTimelineFinished = true;
                 return;
         }
@@ -186,12 +169,11 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
 
         // Parse in reverse order to determine where we should not show sender's
         // name.
-        auto ii = msgs.chunk().size();
+        auto ii = msgs.chunk.size();
         while (ii != 0) {
                 --ii;
 
-                TimelineItem *item =
-                  parseMessageEvent(msgs.chunk().at(ii).toObject(), TimelineDirection::Top);
+                TimelineItem *item = parseMessageEvent(msgs.chunk[ii], TimelineDirection::Top);
 
                 if (item != nullptr)
                         items.push_back(item);
@@ -210,11 +192,11 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
 
         QApplication::processEvents();
 
-        prev_batch_token_       = msgs.end();
+        prev_batch_token_       = QString::fromStdString(msgs.end);
         isPaginationInProgress_ = false;
 
         // Exclude the top stretch.
-        if (!msgs.chunk().isEmpty() && scroll_layout_->count() > 1)
+        if (msgs.chunk.size() != 0 && scroll_layout_->count() > 1)
                 notifyForLastEvent();
 
         // If this batch is the first being rendered (i.e the first and the last
@@ -224,63 +206,59 @@ TimelineView::addBackwardsEvents(const QString &room_id, const RoomMessages &msg
 }
 
 TimelineItem *
-TimelineView::parseMessageEvent(const QJsonObject &event, TimelineDirection direction)
+TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
+                                TimelineDirection direction)
 {
-        events::EventType ty = events::extractEventType(event);
+        namespace msg     = mtx::events::msg;
+        using AudioEvent  = mtx::events::RoomEvent<msg::Audio>;
+        using EmoteEvent  = mtx::events::RoomEvent<msg::Emote>;
+        using FileEvent   = mtx::events::RoomEvent<msg::File>;
+        using ImageEvent  = mtx::events::RoomEvent<msg::Image>;
+        using NoticeEvent = mtx::events::RoomEvent<msg::Notice>;
+        using TextEvent   = mtx::events::RoomEvent<msg::Text>;
+        using VideoEvent  = mtx::events::RoomEvent<msg::Video>;
 
-        if (ty == events::EventType::RoomMessage) {
-                events::MessageEventType msg_type = events::extractMessageEventType(event);
-
-                using Audio  = events::MessageEvent<msgs::Audio>;
-                using Emote  = events::MessageEvent<msgs::Emote>;
-                using File   = events::MessageEvent<msgs::File>;
-                using Image  = events::MessageEvent<msgs::Image>;
-                using Notice = events::MessageEvent<msgs::Notice>;
-                using Text   = events::MessageEvent<msgs::Text>;
-                using Video  = events::MessageEvent<msgs::Video>;
-
-                if (msg_type == events::MessageEventType::Audio) {
-                        return processMessageEvent<Audio, AudioItem>(event, direction);
-                } else if (msg_type == events::MessageEventType::Emote) {
-                        return processMessageEvent<Emote>(event, direction);
-                } else if (msg_type == events::MessageEventType::File) {
-                        return processMessageEvent<File, FileItem>(event, direction);
-                } else if (msg_type == events::MessageEventType::Image) {
-                        return processMessageEvent<Image, ImageItem>(event, direction);
-                } else if (msg_type == events::MessageEventType::Notice) {
-                        return processMessageEvent<Notice>(event, direction);
-                } else if (msg_type == events::MessageEventType::Text) {
-                        return processMessageEvent<Text>(event, direction);
-                } else if (msg_type == events::MessageEventType::Video) {
-                        return processMessageEvent<Video, VideoItem>(event, direction);
-                } else if (msg_type == events::MessageEventType::Unknown) {
-                        // TODO Handle redacted messages.
-                        // Silenced for now.
-                        if (!isRedactedEvent(event))
-                                qWarning() << "Unknown message type" << event;
-
-                        return nullptr;
-                }
+        if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event)) {
+                auto audio = mpark::get<mtx::events::RoomEvent<msg::Audio>>(event);
+                return processMessageEvent<AudioEvent, AudioItem>(audio, direction);
+        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event)) {
+                auto emote = mpark::get<mtx::events::RoomEvent<msg::Emote>>(event);
+                return processMessageEvent<EmoteEvent>(emote, direction);
+        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::File>>(event)) {
+                auto file = mpark::get<mtx::events::RoomEvent<msg::File>>(event);
+                return processMessageEvent<FileEvent, FileItem>(file, direction);
+        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Image>>(event)) {
+                auto image = mpark::get<mtx::events::RoomEvent<msg::Image>>(event);
+                return processMessageEvent<ImageEvent, ImageItem>(image, direction);
+        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Notice>>(event)) {
+                auto notice = mpark::get<mtx::events::RoomEvent<msg::Notice>>(event);
+                return processMessageEvent<NoticeEvent>(notice, direction);
+        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Text>>(event)) {
+                auto text = mpark::get<mtx::events::RoomEvent<msg::Text>>(event);
+                return processMessageEvent<TextEvent>(text, direction);
+        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event)) {
+                auto video = mpark::get<mtx::events::RoomEvent<msg::Video>>(event);
+                return processMessageEvent<VideoEvent, VideoItem>(video, direction);
         }
 
         return nullptr;
 }
 
 int
-TimelineView::addEvents(const Timeline &timeline)
+TimelineView::addEvents(const mtx::responses::Timeline &timeline)
 {
         int message_count = 0;
 
         QSettings settings;
         QString localUser = settings.value("auth/user_id").toString();
 
-        for (const auto &event : timeline.events()) {
-                TimelineItem *item = parseMessageEvent(event.toObject(), TimelineDirection::Bottom);
+        for (const auto &event : timeline.events) {
+                TimelineItem *item = parseMessageEvent(event, TimelineDirection::Bottom);
 
                 if (item != nullptr) {
                         addTimelineItem(item, TimelineDirection::Bottom);
 
-                        if (localUser != event.toObject().value("sender").toString())
+                        if (localUser != getEventSender(event))
                                 message_count += 1;
                 }
         }
@@ -290,15 +268,15 @@ TimelineView::addEvents(const Timeline &timeline)
         QApplication::processEvents();
 
         if (isInitialSync) {
-                prev_batch_token_ = timeline.previousBatch();
+                prev_batch_token_ = QString::fromStdString(timeline.prev_batch);
                 isInitialSync     = false;
         }
 
         // Exclude the top stretch.
-        if (!timeline.events().isEmpty() && scroll_layout_->count() > 1)
+        if (timeline.events.size() != 0 && scroll_layout_->count() > 1)
                 notifyForLastEvent();
 
-        if (isActiveWindow() && isVisible() && timeline.events().size() > 0)
+        if (isActiveWindow() && isVisible() && timeline.events.size() > 0)
                 readLastEvent();
 
         return message_count;
@@ -403,7 +381,7 @@ TimelineView::updatePendingMessage(int txn_id, QString event_id)
 }
 
 void
-TimelineView::addUserMessage(matrix::events::MessageEventType ty, const QString &body)
+TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 {
         QSettings settings;
         auto user_id     = settings.value("auth/user_id").toString();
@@ -439,9 +417,9 @@ TimelineView::sendNextPendingMessage()
 
         PendingMessage &m = pending_msgs_.head();
         switch (m.ty) {
-        case matrix::events::MessageEventType::Audio:
-        case matrix::events::MessageEventType::Image:
-        case matrix::events::MessageEventType::File:
+        case mtx::events::MessageType::Audio:
+        case mtx::events::MessageType::Image:
+        case mtx::events::MessageType::File:
                 // FIXME: Improve the API
                 client_->sendRoomMessage(m.ty,
                                          m.txn_id,
@@ -572,4 +550,82 @@ TimelineView::event(QEvent *event)
         }
 
         return QWidget::event(event);
+}
+
+QString
+TimelineView::getEventSender(const mtx::events::collections::TimelineEvents &event) const
+{
+        using Aliases           = mtx::events::StateEvent<mtx::events::state::Aliases>;
+        using Avatar            = mtx::events::StateEvent<mtx::events::state::Avatar>;
+        using CanonicalAlias    = mtx::events::StateEvent<mtx::events::state::CanonicalAlias>;
+        using Create            = mtx::events::StateEvent<mtx::events::state::Create>;
+        using HistoryVisibility = mtx::events::StateEvent<mtx::events::state::HistoryVisibility>;
+        using JoinRules         = mtx::events::StateEvent<mtx::events::state::JoinRules>;
+        using Member            = mtx::events::StateEvent<mtx::events::state::Member>;
+        using Name              = mtx::events::StateEvent<mtx::events::state::Name>;
+        using PowerLevels       = mtx::events::StateEvent<mtx::events::state::PowerLevels>;
+        using Topic             = mtx::events::StateEvent<mtx::events::state::Topic>;
+
+        using Audio  = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+        using Emote  = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+        using File   = mtx::events::RoomEvent<mtx::events::msg::File>;
+        using Image  = mtx::events::RoomEvent<mtx::events::msg::Image>;
+        using Notice = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+        using Text   = mtx::events::RoomEvent<mtx::events::msg::Text>;
+        using Video  = mtx::events::RoomEvent<mtx::events::msg::Video>;
+
+        if (mpark::holds_alternative<Aliases>(event)) {
+                auto msg = mpark::get<Aliases>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Avatar>(event)) {
+                auto msg = mpark::get<Avatar>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<CanonicalAlias>(event)) {
+                auto msg = mpark::get<CanonicalAlias>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Create>(event)) {
+                auto msg = mpark::get<Create>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<HistoryVisibility>(event)) {
+                auto msg = mpark::get<HistoryVisibility>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<JoinRules>(event)) {
+                auto msg = mpark::get<JoinRules>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Name>(event)) {
+                auto msg = mpark::get<Name>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Member>(event)) {
+                auto msg = mpark::get<Member>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<PowerLevels>(event)) {
+                auto msg = mpark::get<PowerLevels>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Topic>(event)) {
+                auto msg = mpark::get<Topic>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Audio>(event)) {
+                auto msg = mpark::get<Audio>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Emote>(event)) {
+                auto msg = mpark::get<Emote>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<File>(event)) {
+                auto msg = mpark::get<File>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Image>(event)) {
+                auto msg = mpark::get<Image>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Notice>(event)) {
+                auto msg = mpark::get<Notice>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Text>(event)) {
+                auto msg = mpark::get<Text>(event);
+                return QString::fromStdString(msg.sender);
+        } else if (mpark::holds_alternative<Video>(event)) {
+                auto msg = mpark::get<Video>(event);
+                return QString::fromStdString(msg.sender);
+        }
+
+        return QString("");
 }

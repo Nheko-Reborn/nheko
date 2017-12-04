@@ -22,10 +22,7 @@
 #include <QStandardPaths>
 
 #include "Cache.h"
-#include "MemberEventContent.h"
 #include "RoomState.h"
-
-namespace events = matrix::events;
 
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val transactionID("transaction_id");
@@ -122,13 +119,10 @@ Cache::setState(const QString &nextBatchToken, const QMap<QString, RoomState> &s
 void
 Cache::insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state)
 {
-        auto stateEvents = QJsonDocument(state.serialize()).toBinaryData();
+        auto stateEvents = state.serialize();
         auto id          = roomid.toUtf8();
 
-        lmdb::dbi_put(txn,
-                      roomDb_,
-                      lmdb::val(id.data(), id.size()),
-                      lmdb::val(stateEvents.data(), stateEvents.size()));
+        lmdb::dbi_put(txn, roomDb_, lmdb::val(id.data(), id.size()), lmdb::val(stateEvents));
 
         for (const auto &membership : state.memberships) {
                 lmdb::dbi membersDb =
@@ -136,31 +130,29 @@ Cache::insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &s
 
                 // The user_id this membership event relates to, is used
                 // as the index on the membership database.
-                auto key         = membership.stateKey().toUtf8();
-                auto memberEvent = QJsonDocument(membership.serialize()).toBinaryData();
+                auto key = membership.second.state_key;
 
-                switch (membership.content().membershipState()) {
+                // Serialize membership event.
+                nlohmann::json data     = membership.second;
+                std::string memberEvent = data.dump();
+
+                switch (membership.second.content.membership) {
                 // We add or update (e.g invite -> join) a new user to the membership
                 // list.
-                case events::Membership::Invite:
-                case events::Membership::Join: {
-                        lmdb::dbi_put(txn,
-                                      membersDb,
-                                      lmdb::val(key.data(), key.size()),
-                                      lmdb::val(memberEvent.data(), memberEvent.size()));
+                case mtx::events::state::Membership::Invite:
+                case mtx::events::state::Membership::Join: {
+                        lmdb::dbi_put(txn, membersDb, lmdb::val(key), lmdb::val(memberEvent));
                         break;
                 }
                 // We remove the user from the membership list.
-                case events::Membership::Leave:
-                case events::Membership::Ban: {
-                        lmdb::dbi_del(txn,
-                                      membersDb,
-                                      lmdb::val(key.data(), key.size()),
-                                      lmdb::val(memberEvent.data(), memberEvent.size()));
+                case mtx::events::state::Membership::Leave:
+                case mtx::events::state::Membership::Ban: {
+                        lmdb::dbi_del(txn, membersDb, lmdb::val(key), lmdb::val(memberEvent));
                         break;
                 }
-                case events::Membership::Knock: {
-                        qWarning() << "Skipping knock membership" << roomid << key;
+                case mtx::events::state::Membership::Knock: {
+                        qWarning()
+                          << "Skipping knock membership" << roomid << QString::fromStdString(key);
                         break;
                 }
                 }
@@ -194,14 +186,13 @@ Cache::states()
         // Retrieve all the room names.
         while (cursor.get(room, stateData, MDB_NEXT)) {
                 auto roomid = QString::fromUtf8(room.data(), room.size());
-                auto json =
-                  QJsonDocument::fromBinaryData(QByteArray(stateData.data(), stateData.size()));
+                auto json   = nlohmann::json::parse(stateData);
 
                 RoomState state;
-                state.parse(json.object());
+                state.parse(json);
 
                 auto memberDb = lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
-                QMap<QString, events::StateEvent<events::MemberEventContent>> members;
+                std::map<std::string, mtx::events::StateEvent<mtx::events::state::Member>> members;
 
                 auto memberCursor = lmdb::cursor::open(txn, memberDb);
 
@@ -209,17 +200,15 @@ Cache::states()
                 std::string memberContent;
 
                 while (memberCursor.get(memberId, memberContent, MDB_NEXT)) {
-                        auto userid = QString::fromUtf8(memberId.data(), memberId.size());
-                        auto data   = QJsonDocument::fromBinaryData(
-                          QByteArray(memberContent.data(), memberContent.size()));
+                        auto userid = QString::fromStdString(memberId);
 
                         try {
-                                events::StateEvent<events::MemberEventContent> member;
-                                member.deserialize(data.object());
-                                members.insert(userid, member);
-                        } catch (const DeserializationException &e) {
-                                qWarning() << e.what();
-                                qWarning() << "Fault while parsing member event" << data.object();
+                                auto data = nlohmann::json::parse(memberContent);
+                                mtx::events::StateEvent<mtx::events::state::Member> member = data;
+                                members.emplace(memberId, member);
+                        } catch (std::exception &e) {
+                                qWarning() << "Fault while parsing member event" << e.what()
+                                           << QString::fromStdString(memberContent);
                                 continue;
                         }
                 }

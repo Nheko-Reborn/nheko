@@ -27,39 +27,27 @@
 #include <QStyle>
 #include <QStyleOption>
 
-#include "Audio.h"
-#include "Emote.h"
-#include "File.h"
-#include "Image.h"
-#include "Notice.h"
-#include "Text.h"
-#include "Video.h"
+#include <mtx.hpp>
 
 #include "MatrixClient.h"
-#include "MessageEvent.h"
 #include "TimelineItem.h"
 
 class FloatingButton;
-class RoomMessages;
 class ScrollBar;
-class Timeline;
 struct DescInfo;
-
-namespace msgs   = matrix::events::messages;
-namespace events = matrix::events;
 
 // Contains info about a message shown in the history view
 // but not yet confirmed by the homeserver through sync.
 struct PendingMessage
 {
-        matrix::events::MessageEventType ty;
+        mtx::events::MessageType ty;
         int txn_id;
         QString body;
         QString filename;
         QString event_id;
         TimelineItem *widget;
 
-        PendingMessage(matrix::events::MessageEventType ty,
+        PendingMessage(mtx::events::MessageType ty,
                        int txn_id,
                        QString body,
                        QString filename,
@@ -86,7 +74,7 @@ class TimelineView : public QWidget
         Q_OBJECT
 
 public:
-        TimelineView(const Timeline &timeline,
+        TimelineView(const mtx::responses::Timeline &timeline,
                      QSharedPointer<MatrixClient> client,
                      const QString &room_id,
                      QWidget *parent = 0);
@@ -95,10 +83,10 @@ public:
                      QWidget *parent = 0);
 
         // Add new events at the end of the timeline.
-        int addEvents(const Timeline &timeline);
-        void addUserMessage(matrix::events::MessageEventType ty, const QString &msg);
+        int addEvents(const mtx::responses::Timeline &timeline);
+        void addUserMessage(mtx::events::MessageType ty, const QString &msg);
 
-        template<class Widget, events::MessageEventType MsgType>
+        template<class Widget, mtx::events::MessageType MsgType>
         void addUserMessage(const QString &url, const QString &filename);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
@@ -109,7 +97,7 @@ public slots:
         void fetchHistory();
 
         // Add old events at the top of the timeline.
-        void addBackwardsEvents(const QString &room_id, const RoomMessages &msgs);
+        void addBackwardsEvents(const QString &room_id, const mtx::responses::Messages &msgs);
 
         // Whether or not the initial batch has been loaded.
         bool hasLoaded() { return scroll_layout_->count() > 1 || isTimelineFinished; }
@@ -135,13 +123,14 @@ private:
         void notifyForLastEvent();
         void readLastEvent() const;
         QString getLastEventId() const;
+        QString getEventSender(const mtx::events::collections::TimelineEvents &event) const;
 
         template<class Event, class Widget>
-        TimelineItem *processMessageEvent(const QJsonObject &event, TimelineDirection direction);
+        TimelineItem *processMessageEvent(const Event &event, TimelineDirection direction);
 
         // TODO: Remove this eventually.
         template<class Event>
-        TimelineItem *processMessageEvent(const QJsonObject &event, TimelineDirection direction);
+        TimelineItem *processMessageEvent(const Event &event, TimelineDirection direction);
 
         // For events with custom display widgets.
         template<class Event, class Widget>
@@ -164,7 +153,8 @@ private:
         void handleNewUserMessage(PendingMessage msg);
 
         // Return nullptr if the event couldn't be parsed.
-        TimelineItem *parseMessageEvent(const QJsonObject &event, TimelineDirection direction);
+        TimelineItem *parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
+                                        TimelineDirection direction);
 
         QVBoxLayout *top_layout_;
         QVBoxLayout *scroll_layout_;
@@ -207,7 +197,7 @@ private:
         QSharedPointer<MatrixClient> client_;
 };
 
-template<class Widget, events::MessageEventType MsgType>
+template<class Widget, mtx::events::MessageType MsgType>
 void
 TimelineView::addUserMessage(const QString &url, const QString &filename)
 {
@@ -252,62 +242,50 @@ TimelineView::createTimelineItem(const Event &event, bool withSender)
 
 template<class Event>
 TimelineItem *
-TimelineView::processMessageEvent(const QJsonObject &data, TimelineDirection direction)
+TimelineView::processMessageEvent(const Event &event, TimelineDirection direction)
 {
-        Event event;
+        const auto event_id = QString::fromStdString(event.event_id);
+        const auto sender   = QString::fromStdString(event.sender);
 
-        try {
-                event.deserialize(data);
-        } catch (const DeserializationException &e) {
-                qWarning() << e.what() << data;
-                return nullptr;
-        }
-
-        if (isDuplicate(event.eventId()))
+        if (isDuplicate(event_id))
                 return nullptr;
 
-        eventIds_[event.eventId()] = true;
+        eventIds_[event_id] = true;
 
-        QString txnid = event.unsignedData().transactionId();
-        if (!txnid.isEmpty() && isPendingMessage(txnid, event.sender(), local_user_)) {
+        const QString txnid = QString::fromStdString(event.unsigned_data.transaction_id);
+        if (!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) {
                 removePendingMessage(txnid);
                 return nullptr;
         }
 
-        auto with_sender = isSenderRendered(event.sender(), direction);
+        auto with_sender = isSenderRendered(sender, direction);
 
-        updateLastSender(event.sender(), direction);
+        updateLastSender(sender, direction);
 
         return createTimelineItem<Event>(event, with_sender);
 }
 
 template<class Event, class Widget>
 TimelineItem *
-TimelineView::processMessageEvent(const QJsonObject &data, TimelineDirection direction)
+TimelineView::processMessageEvent(const Event &event, TimelineDirection direction)
 {
-        Event event;
+        const auto event_id = QString::fromStdString(event.event_id);
+        const auto sender   = QString::fromStdString(event.sender);
 
-        try {
-                event.deserialize(data);
-        } catch (const DeserializationException &e) {
-                qWarning() << e.what() << data;
-                return nullptr;
-        }
-
-        if (isDuplicate(event.eventId()))
+        if (isDuplicate(event_id))
                 return nullptr;
 
-        eventIds_[event.eventId()] = true;
+        eventIds_[event_id] = true;
 
-        QString txnid = event.unsignedData().transactionId();
-        if (!txnid.isEmpty() && isPendingMessage(txnid, event.sender(), local_user_)) {
+        const QString txnid = QString::fromStdString(event.unsigned_data.transaction_id);
+        if (!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) {
                 removePendingMessage(txnid);
                 return nullptr;
         }
 
-        auto with_sender = isSenderRendered(event.sender(), direction);
+        auto with_sender = isSenderRendered(sender, direction);
 
-        updateLastSender(event.sender(), direction);
+        updateLastSender(sender, direction);
 
         return createTimelineItem<Event, Widget>(event, with_sender);
 }

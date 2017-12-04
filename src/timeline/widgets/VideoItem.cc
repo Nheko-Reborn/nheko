@@ -21,9 +21,6 @@
 
 #include "timeline/widgets/VideoItem.h"
 
-namespace events = matrix::events;
-namespace msgs   = matrix::events::messages;
-
 void
 VideoItem::init()
 {
@@ -39,15 +36,15 @@ VideoItem::init()
 }
 
 VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
-                     const events::MessageEvent<msgs::Video> &event,
+                     const mtx::events::RoomEvent<mtx::events::msg::Video> &event,
                      QWidget *parent)
   : QWidget(parent)
-  , url_{event.msgContent().url()}
-  , text_{event.content().body()}
+  , url_{QString::fromStdString(event.content.url)}
+  , text_{QString::fromStdString(event.content.body)}
   , event_{event}
   , client_{client}
 {
-        readableFileSize_ = calculateFileSize(event.msgContent().info().size);
+        readableFileSize_ = calculateFileSize(event.content.info.size);
 
         init();
 

@@ -25,12 +25,9 @@
 #include <QWidget>
 
 #include "FlatButton.h"
-#include "Image.h"
 #include "LoadingIndicator.h"
 
 #include "emoji/PickButton.h"
-
-namespace msgs = matrix::events::messages;
 
 class FilteredTextEdit : public QTextEdit
 {

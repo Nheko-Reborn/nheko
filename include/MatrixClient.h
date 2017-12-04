@@ -20,12 +20,7 @@
 #include <QFileInfo>
 #include <QNetworkAccessManager>
 #include <QUrl>
-
-#include "MessageEvent.h"
-
-class SyncResponse;
-class Profile;
-class RoomMessages;
+#include <mtx.hpp>
 
 /*
  * MatrixClient provides the high level API to communicate with
@@ -40,7 +35,7 @@ public:
         // Client API.
         void initialSync() noexcept;
         void sync() noexcept;
-        void sendRoomMessage(matrix::events::MessageEventType ty,
+        void sendRoomMessage(mtx::events::MessageType ty,
                              int txnId,
                              const QString &roomid,
                              const QString &msg,
@@ -107,15 +102,15 @@ signals:
 
         // Returned profile data for the user's account.
         void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
-        void initialSyncCompleted(const SyncResponse &response);
+        void initialSyncCompleted(const mtx::responses::Sync &response);
         void initialSyncFailed(const QString &msg);
-        void syncCompleted(const SyncResponse &response);
+        void syncCompleted(const mtx::responses::Sync &response);
         void syncFailed(const QString &msg);
         void joinFailed(const QString &msg);
         void messageSent(const QString &event_id, const QString &roomid, const int txn_id);
         void messageSendFailed(const QString &roomid, const int txn_id);
         void emoteSent(const QString &event_id, const QString &roomid, const int txn_id);
-        void messagesRetrieved(const QString &room_id, const RoomMessages &msgs);
+        void messagesRetrieved(const QString &room_id, const mtx::responses::Messages &msgs);
         void joinedRoom(const QString &room_id);
         void leftRoom(const QString &room_id);
 

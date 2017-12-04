@@ -23,7 +23,6 @@
 #include <QSettings>
 
 #include "MatrixClient.h"
-#include "Sync.h"
 
 #include "timeline/TimelineView.h"
 #include "timeline/TimelineViewManager.h"
@@ -72,7 +71,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
         auto room_id = active_room_;
         auto view    = views_[room_id];
 
-        view->addUserMessage(matrix::events::MessageEventType::Text, msg);
+        view->addUserMessage(mtx::events::MessageType::Text, msg);
 }
 
 void
@@ -81,7 +80,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
         auto room_id = active_room_;
         auto view    = views_[room_id];
 
-        view->addUserMessage(matrix::events::MessageEventType::Emote, msg);
+        view->addUserMessage(mtx::events::MessageType::Emote, msg);
 }
 
 void
@@ -96,7 +95,7 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<ImageItem, matrix::events::MessageEventType::Image>(url, filename);
+        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(url, filename);
 }
 
 void
@@ -111,7 +110,7 @@ TimelineViewManager::queueFileMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<FileItem, matrix::events::MessageEventType::File>(url, filename);
+        view->addUserMessage<FileItem, mtx::events::MessageType::File>(url, filename);
 }
 
 void
@@ -126,7 +125,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<AudioItem, matrix::events::MessageEventType::Audio>(url, filename);
+        view->addUserMessage<AudioItem, mtx::events::MessageType::Audio>(url, filename);
 }
 
 void
@@ -139,10 +138,10 @@ TimelineViewManager::clearAll()
 }
 
 void
-TimelineViewManager::initialize(const Rooms &rooms)
+TimelineViewManager::initialize(const mtx::responses::Rooms &rooms)
 {
-        for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); ++it) {
-                addRoom(it.value(), it.key());
+        for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
+                addRoom(it->second, QString::fromStdString(it->first));
         }
 }
 
@@ -155,10 +154,10 @@ TimelineViewManager::initialize(const QList<QString> &rooms)
 }
 
 void
-TimelineViewManager::addRoom(const JoinedRoom &room, const QString &room_id)
+TimelineViewManager::addRoom(const mtx::responses::JoinedRoom &room, const QString &room_id)
 {
         // Create a history view with the room events.
-        TimelineView *view = new TimelineView(room.timeline(), client_, room_id);
+        TimelineView *view = new TimelineView(room.timeline, client_, room_id);
         views_.insert(room_id, QSharedPointer<TimelineView>(view));
 
         connect(view,
@@ -195,10 +194,10 @@ TimelineViewManager::addRoom(const QString &room_id)
 }
 
 void
-TimelineViewManager::sync(const Rooms &rooms)
+TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 {
-        for (auto it = rooms.join().constBegin(); it != rooms.join().constEnd(); ++it) {
-                auto roomid = it.key();
+        for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
+                auto roomid = QString::fromStdString(it->first);
 
                 if (!views_.contains(roomid)) {
                         qDebug() << "Ignoring event from unknown room" << roomid;
@@ -207,7 +206,7 @@ TimelineViewManager::sync(const Rooms &rooms)
 
                 auto view = views_.value(roomid);
 
-                int msgs_added = view->addEvents(it.value().timeline());
+                int msgs_added = view->addEvents(it->second.timeline);
 
                 if (msgs_added > 0) {
                         // TODO: When the app window gets active the current
