@@ -26,11 +26,20 @@
 class ScrollBar : public QScrollBar
 {
         Q_OBJECT
+        Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
+        Q_PROPERTY(QColor handleColor READ handleColor WRITE setHandleColor)
+
 public:
         ScrollBar(QScrollArea *area, QWidget *parent = nullptr);
 
         void fadeIn();
         void fadeOut();
+
+        QColor backgroundColor() const { return bgColor_; }
+        void setBackgroundColor(QColor &color) { bgColor_ = color; }
+
+        QColor handleColor() const { return handleColor_; }
+        void setHandleColor(QColor &color) { handleColor_ = color; }
 
 protected:
         void paintEvent(QPaintEvent *e) override;
@@ -50,4 +59,7 @@ private:
 
         QScrollArea *area_;
         QRect handle_;
+
+        QColor bgColor_     = QColor(33, 33, 33, 30);
+        QColor handleColor_ = QColor(0, 0, 0, 80);
 };

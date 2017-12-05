@@ -85,10 +85,7 @@ ScrollBar::paintEvent(QPaintEvent *)
 
         p.setPen(Qt::NoPen);
 
-        QColor bg(33, 33, 33, 30);
-        QColor handle(0, 0, 0, 80);
-
-        p.setBrush(bg);
+        p.setBrush(backgroundColor());
         QRect backgroundArea(Padding, 0, handleWidth_, height());
         p.drawRoundedRect(backgroundArea, roundRadius_, roundRadius_);
 
@@ -104,7 +101,7 @@ ScrollBar::paintEvent(QPaintEvent *)
 
         int handle_y = (value() * (areaHeight - handleHeight - roundRadius_ / 2)) / maximum();
 
-        p.setBrush(handle);
+        p.setBrush(handleColor());
         QRect handleArea(Padding, handle_y, handleWidth_, handleHeight);
         p.drawRoundedRect(handleArea, roundRadius_, roundRadius_);
 }

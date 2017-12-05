@@ -84,3 +84,8 @@ QTextEdit,
 QLineEdit {
     background-color: palette(window);
 }
+
+ScrollBar {
+    qproperty-handleColor: palette(text);
+    qproperty-backgroundColor: palette(window);
+}

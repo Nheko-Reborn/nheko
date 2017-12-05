@@ -117,3 +117,8 @@ QTextEdit {
     background-color: #383c4a;
     color: #caccd1;
 }
+
+ScrollBar {
+    qproperty-handleColor: #caccd1;
+    qproperty-backgroundColor: #383c4e;
+}

@@ -108,3 +108,8 @@ FloatingButton {
     qproperty-backgroundColor: #efefef;
     qproperty-foregroundColor: black;
 }
+
+ScrollBar {
+    qproperty-handleColor: #ccc;
+    qproperty-backgroundColor: #efefef;
+}
