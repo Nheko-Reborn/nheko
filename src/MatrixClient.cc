@@ -359,7 +359,7 @@ MatrixClient::initialSync() noexcept
                 try {
                         mtx::responses::Sync response = nlohmann::json::parse(reply->readAll());
                         emit initialSyncCompleted(response);
-                } catch (DeserializationException &e) {
+                } catch (std::exception &e) {
                         qWarning() << "Sync malformed response" << e.what();
                         return;
                 }
