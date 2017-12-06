@@ -52,7 +52,7 @@ sudo emerge -a nheko
 ##### Arch Linux
 
 ```bash
-sudo pacman -S qt5-base qt5-tools cmake gcc fontconfig lmdb
+sudo pacman -S qt5-base qt5-tools qt5-multimedia cmake gcc fontconfig lmdb
 ```
 
 ##### Gentoo Linux
@@ -64,10 +64,10 @@ sudo emerge -a ">=dev-qt/qtgui-5.7.1" media-libs/fontconfig
 ##### Ubuntu (e.g 14.04)
 
 ```bash
-sudo add-apt-repository ppa:beineri/opt-qt58-trusty
+sudo add-apt-repository ppa:beineri/opt-qt592-trusty
 sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo apt-get update
-sudo apt-get install qt58base qt58tools cmake liblmdb-dev
+sudo apt-get install -y qt59base qt59tools qt59multimedia cmake liblmdb-dev
 ```
 
 ##### OSX (Xcode 8 or later)
@@ -91,7 +91,7 @@ or
 ```bash
 git clone https://github.com/mujx/nheko
 cd nheko
-git submodule update --init
+git submodule update --init --recursive
 ```
 
 and then use the following
