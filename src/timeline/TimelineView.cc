@@ -372,11 +372,13 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 void
 TimelineView::updatePendingMessage(int txn_id, QString event_id)
 {
-        if (pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
+        if (!pending_msgs_.isEmpty() &&
+            pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
                 auto msg     = pending_msgs_.dequeue();
                 msg.event_id = event_id;
                 pending_sent_msgs_.append(msg);
         }
+
         sendNextPendingMessage();
 }
 
@@ -405,7 +407,7 @@ void
 TimelineView::handleNewUserMessage(PendingMessage msg)
 {
         pending_msgs_.enqueue(msg);
-        if (pending_msgs_.size() == 1 && pending_sent_msgs_.size() == 0)
+        if (pending_msgs_.size() == 1 && pending_sent_msgs_.isEmpty())
                 sendNextPendingMessage();
 }
 
@@ -474,6 +476,10 @@ TimelineView::removePendingMessage(const QString &txnid)
                 if (QString::number(it->txn_id) == txnid) {
                         int index = std::distance(pending_sent_msgs_.begin(), it);
                         pending_sent_msgs_.removeAt(index);
+
+                        if (pending_sent_msgs_.isEmpty())
+                                sendNextPendingMessage();
+
                         return;
                 }
         }
@@ -491,7 +497,7 @@ TimelineView::handleFailedMessage(int txnid)
 {
         Q_UNUSED(txnid);
         // Note: We do this even if the message has already been echoed.
-        QTimer::singleShot(500, this, SLOT(sendNextPendingMessage()));
+        QTimer::singleShot(2000, this, SLOT(sendNextPendingMessage()));
 }
 
 void

@@ -300,7 +300,6 @@ MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
                 if (status == 0 || status >= 400) {
-                        qWarning() << reply->errorString();
                         emit messageSendFailed(roomid, txnId);
                         return;
                 }
