@@ -7,6 +7,10 @@ release-debug:
 	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	@cmake --build build
 
+release:
+	@cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	@cmake --build build
+
 linux-appimage:
 	@./.ci/linux/deploy.sh
 
