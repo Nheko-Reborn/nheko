@@ -89,3 +89,8 @@ ScrollBar {
     qproperty-handleColor: palette(text);
     qproperty-backgroundColor: palette(window);
 }
+
+QListWidget {
+    background-color: palette(window);
+    color: palette(text);
+}

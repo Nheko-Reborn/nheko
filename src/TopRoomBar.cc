@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
 #include <QStyleOption>
 
 #include "Avatar.h"
@@ -88,6 +89,33 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                 roomSettings_->toggleNotifications();
         });
 
+        inviteUsers_ = new QAction(tr("Invite users"), this);
+        connect(inviteUsers_, &QAction::triggered, this, [=]() {
+                if (inviteUsersDialog_.isNull()) {
+                        inviteUsersDialog_ =
+                          QSharedPointer<dialogs::InviteUsers>(new dialogs::InviteUsers(this));
+
+                        connect(inviteUsersDialog_.data(),
+                                &dialogs::InviteUsers::closing,
+                                this,
+                                [=](bool isSending, QStringList invitees) {
+                                        inviteUsersModal_->fadeOut();
+
+                                        if (isSending && !invitees.isEmpty())
+                                                emit inviteUsers(invitees);
+                                });
+                }
+
+                if (inviteUsersModal_.isNull()) {
+                        inviteUsersModal_ = QSharedPointer<OverlayModal>(
+                          new OverlayModal(MainWindow::instance(), inviteUsersDialog_.data()));
+                        inviteUsersModal_->setDuration(0);
+                        inviteUsersModal_->setColor(QColor(30, 30, 30, 170));
+                }
+
+                inviteUsersModal_->fadeIn();
+        });
+
         leaveRoom_ = new QAction(tr("Leave room"), this);
         connect(leaveRoom_, &QAction::triggered, this, [=]() {
                 if (leaveRoomDialog_.isNull()) {
@@ -111,6 +139,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         });
 
         menu_->addAction(toggleNotifications_);
+        menu_->addAction(inviteUsers_);
         menu_->addAction(leaveRoom_);
 
         connect(settingsBtn_, &QPushButton::clicked, this, [=]() {
@@ -171,9 +200,9 @@ TopRoomBar::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 
-        // Number of pixels that we can move sidebar splitter per frame. If label contains text
-        // which fills entire it's width then label starts blocking it's layout from shrinking.
-        // Making label little bit shorter leaves some space for it to shrink.
+        // Number of pixels that we can move sidebar splitter per frame. If label contains
+        // text which fills entire it's width then label starts blocking it's layout from
+        // shrinking. Making label little bit shorter leaves some space for it to shrink.
         const auto perFrameResize = 20;
 
         QString elidedText =

@@ -861,6 +861,36 @@ MatrixClient::leaveRoom(const QString &roomId)
 }
 
 void
+MatrixClient::inviteUser(const QString &roomId, const QString &user)
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/invite").arg(roomId));
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(endpoint);
+        request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+
+        QJsonObject body{{"user_id", user}};
+        auto reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomId, user]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        // TODO: Handle failure.
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                emit invitedUser(roomId, user);
+        });
+}
+void
 MatrixClient::sendTypingNotification(const QString &roomid, int timeoutInMillis)
 {
         QSettings settings;

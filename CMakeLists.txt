@@ -142,6 +142,7 @@ endif()
 set(SRC_FILES
     # Dialogs
     src/dialogs/ImageOverlay.cc
+    src/dialogs/InviteUsers.cc
     src/dialogs/JoinRoom.cc
     src/dialogs/LeaveRoom.cc
     src/dialogs/Logout.cc
@@ -185,6 +186,7 @@ set(SRC_FILES
     src/Cache.cc
     src/ChatPage.cc
     src/Deserializable.cc
+    src/InviteeItem.cc
     src/InputValidator.cc
     src/Login.cc
     src/LoginPage.cc
@@ -218,6 +220,7 @@ include_directories(${LMDB_INCLUDE_DIR})
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
     include/dialogs/ImageOverlay.h
+    include/dialogs/InviteUsers.h
     include/dialogs/JoinRoom.h
     include/dialogs/LeaveRoom.h
     include/dialogs/Logout.h
@@ -259,6 +262,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ChatPage.h
     include/LoginPage.h
     include/MainWindow.h
+    include/InviteeItem.h
     include/MatrixClient.h
     include/QuickSwitcher.h
     include/RegisterPage.h

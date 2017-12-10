@@ -18,7 +18,9 @@ SnackBar::SnackBar(QWidget *parent)
         offset_     = STARTING_OFFSET;
         position_   = SnackBarPosition::Top;
 
-        QFont font("Open Sans", 14, QFont::Medium);
+        QFont font("Open Sans");
+        font.setPixelSize(14);
+        font.setWeight(50);
         setFont(font);
 
         showTimer_ = new QTimer();

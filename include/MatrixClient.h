@@ -60,6 +60,7 @@ public:
         void sendTypingNotification(const QString &roomid, int timeoutInMillis = 20000);
         void removeTypingNotification(const QString &roomid);
         void readEvent(const QString &room_id, const QString &event_id);
+        void inviteUser(const QString &room_id, const QString &user);
 
         QUrl getHomeServer() { return server_; };
         int transactionId() { return txn_id_; };
@@ -84,6 +85,7 @@ signals:
         void versionError(const QString &error);
 
         void loggedOut();
+        void invitedUser(const QString &room_id, const QString &user);
 
         void loginSuccess(const QString &userid, const QString &homeserver, const QString &token);
         void registerSuccess(const QString &userid,

@@ -26,6 +26,7 @@
 #include <QSharedPointer>
 #include <QVBoxLayout>
 
+#include "dialogs/InviteUsers.h"
 #include "dialogs/LeaveRoom.h"
 
 class Avatar;
@@ -56,6 +57,7 @@ public:
 
 signals:
         void leaveRoom();
+        void inviteUsers(QStringList users);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -76,11 +78,15 @@ private:
         QMenu *menu_;
         QAction *toggleNotifications_;
         QAction *leaveRoom_;
+        QAction *inviteUsers_;
 
         FlatButton *settingsBtn_;
 
         QSharedPointer<OverlayModal> leaveRoomModal_;
         QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
+
+        QSharedPointer<OverlayModal> inviteUsersModal_;
+        QSharedPointer<dialogs::InviteUsers> inviteUsersDialog_;
 
         Avatar *avatar_;
 

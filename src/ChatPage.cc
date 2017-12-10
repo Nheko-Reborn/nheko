@@ -109,6 +109,13 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 
         connect(
           top_bar_, &TopRoomBar::leaveRoom, this, [=]() { client_->leaveRoom(current_room_); });
+        connect(top_bar_, &TopRoomBar::inviteUsers, this, [=](QStringList users) {
+                for (int ii = 0; ii < users.size(); ++ii) {
+                        QTimer::singleShot(ii * 1000, this, [=]() {
+                                client_->inviteUser(current_room_, users.at(ii));
+                        });
+                }
+        });
 
         connect(room_list_, &RoomList::roomChanged, this, [=](const QString &roomid) {
                 QStringList users;
@@ -257,6 +264,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         connect(client_.data(), &MatrixClient::ownAvatarRetrieved, this, &ChatPage::setOwnAvatar);
         connect(client_.data(), &MatrixClient::joinedRoom, this, [=]() {
                 emit showNotification("You joined the room.");
+        });
+        connect(client_.data(), &MatrixClient::invitedUser, this, [=](QString, QString user) {
+                emit showNotification(QString("Invited user %1").arg(user));
         });
         connect(client_.data(), &MatrixClient::leftRoom, this, &ChatPage::removeRoom);
 

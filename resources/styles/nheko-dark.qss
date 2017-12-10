@@ -79,7 +79,13 @@ Avatar {
 
 dialogs--Logout,
 dialogs--LeaveRoom,
+dialogs--InviteUsers,
 dialogs--JoinRoom {
+    background-color: #383c4a;
+    color: #caccd1;
+}
+
+QListWidget {
     background-color: #383c4a;
     color: #caccd1;
 }
