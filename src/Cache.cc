@@ -24,8 +24,10 @@
 #include "Cache.h"
 #include "RoomState.h"
 
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2017.12.10");
+
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
-static const lmdb::val transactionID("transaction_id");
+static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 
 Cache::Cache(const QString &userId)
   : env_{nullptr}
@@ -269,4 +271,42 @@ Cache::deleteData()
 
         if (!cacheDirectory_.isEmpty())
                 QDir(cacheDirectory_).removeRecursively();
+}
+
+bool
+Cache::isFormatValid()
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::val current_version;
+        bool res = lmdb::dbi_get(txn, stateDb_, CACHE_FORMAT_VERSION_KEY, current_version);
+
+        txn.commit();
+
+        if (!res)
+                return false;
+
+        std::string stored_version(current_version.data(), current_version.size());
+
+        if (stored_version != CURRENT_CACHE_FORMAT_VERSION) {
+                qWarning() << "Stored format version" << QString::fromStdString(stored_version);
+                qWarning() << "There are breaking changes in the cache format.";
+                return false;
+        }
+
+        return true;
+}
+
+void
+Cache::setCurrentFormat()
+{
+        auto txn = lmdb::txn::begin(env_);
+
+        lmdb::dbi_put(
+          txn,
+          stateDb_,
+          CACHE_FORMAT_VERSION_KEY,
+          lmdb::val(CURRENT_CACHE_FORMAT_VERSION.data(), CURRENT_CACHE_FORMAT_VERSION.size()));
+
+        txn.commit();
 }

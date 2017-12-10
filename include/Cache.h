@@ -39,6 +39,9 @@ public:
         void removeRoom(const QString &roomid);
         void setup();
 
+        bool isFormatValid();
+        void setCurrentFormat();
+
 private:
         void setNextBatchToken(lmdb::txn &txn, const QString &token);
         void insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state);

@@ -334,6 +334,12 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         try {
                 cache_->setup();
 
+                if (!cache_->isFormatValid()) {
+                        cache_->deleteData();
+                        cache_->setup();
+                        cache_->setCurrentFormat();
+                }
+
                 if (cache_->isInitialized()) {
                         loadStateFromCache();
                         return;
