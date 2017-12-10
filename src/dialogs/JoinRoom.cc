@@ -1,8 +1,10 @@
 #include <QLabel>
+#include <QStyleOption>
 #include <QVBoxLayout>
 
 #include "Config.h"
 #include "FlatButton.h"
+#include "TextField.h"
 #include "Theme.h"
 
 #include "dialogs/JoinRoom.h"
@@ -35,17 +37,25 @@ JoinRoom::JoinRoom(QWidget *parent)
         QFont font;
         font.setPixelSize(conf::headerFontSize);
 
-        auto label = new QLabel(tr("Room alias to join:"), this);
-        label->setFont(font);
+        roomInput_ = new TextField(this);
+        roomInput_->setLabel(tr("Room ID or alias"));
 
-        roomAliasEdit_ = new QLineEdit(this);
-
-        layout->addWidget(label);
-        layout->addWidget(roomAliasEdit_);
+        layout->addWidget(roomInput_);
         layout->addLayout(buttonLayout);
 
+        // TODO: input validation with error messages.
         connect(confirmBtn_, &QPushButton::clicked, [=]() {
-                emit closing(true, roomAliasEdit_->text());
+                emit closing(true, roomInput_->text());
+                roomInput_->clear();
         });
-        connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false, nullptr); });
+        connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false, ""); });
+}
+
+void
+JoinRoom::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

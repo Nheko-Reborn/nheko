@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QFrame>
-#include <QLineEdit>
 
 class FlatButton;
+class TextField;
 
 namespace dialogs {
 
@@ -14,13 +14,16 @@ public:
         JoinRoom(QWidget *parent = nullptr);
 
 signals:
-        void closing(bool isJoining, QString roomAlias);
+        void closing(bool isJoining, const QString &room);
+
+protected:
+        void paintEvent(QPaintEvent *event) override;
 
 private:
         FlatButton *confirmBtn_;
         FlatButton *cancelBtn_;
 
-        QLineEdit *roomAliasEdit_;
+        TextField *roomInput_;
 };
 
 } // dialogs

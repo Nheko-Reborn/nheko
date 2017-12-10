@@ -80,7 +80,8 @@ Avatar {
 }
 
 dialogs--Logout,
-dialogs--LeaveRoom {
+dialogs--LeaveRoom,
+dialogs--JoinRoom {
     background-color: white;
     color: #333;
 }
@@ -107,6 +108,12 @@ emoji--Category > * {
 FloatingButton {
     qproperty-backgroundColor: #efefef;
     qproperty-foregroundColor: black;
+}
+
+TextField {
+    qproperty-backgroundColor: white;
+    qproperty-inkColor: #333;
+    qproperty-labelColor: #333;
 }
 
 ScrollBar {

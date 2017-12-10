@@ -68,6 +68,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         sidebarActions_ = new SideBarActions(this);
         connect(
           sidebarActions_, &SideBarActions::showSettings, this, &ChatPage::showUserSettingsPage);
+        connect(
+          sidebarActions_, &SideBarActions::joinRoom, client_.data(), &MatrixClient::joinRoom);
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
         room_list_        = new RoomList(client, sideBar_);

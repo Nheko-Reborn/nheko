@@ -78,7 +78,8 @@ Avatar {
 }
 
 dialogs--Logout,
-dialogs--LeaveRoom {
+dialogs--LeaveRoom,
+dialogs--JoinRoom {
     background-color: #383c4a;
     color: #caccd1;
 }
@@ -110,6 +111,7 @@ FloatingButton {
 TextField {
     qproperty-backgroundColor: #383c4e;
     qproperty-inkColor: #caccd1;
+    qproperty-labelColor: #caccd1;
 }
 
 QLineEdit,
