@@ -41,10 +41,9 @@ install:
 
 before_script:
     - if [ $TRAVIS_OS_NAME == linux ]; then source /opt/qt59/bin/qt59-env.sh; fi
-    - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
 
 script:
-    - make -C build -j2
+    - make release
     - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
     - if [ $TRAVIS_OS_NAME == osx ]; then ./.ci/macos/deploy.sh; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/deploy.sh; fi
