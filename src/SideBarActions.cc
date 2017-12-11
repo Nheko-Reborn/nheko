@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QIcon>
 
 #include "Config.h"
@@ -57,6 +58,32 @@ SideBarActions::SideBarActions(QWidget *parent)
                 }
 
                 joinRoomModal_->fadeIn();
+        });
+
+        connect(createRoomAction_, &QAction::triggered, this, [=]() {
+                if (createRoomDialog_.isNull()) {
+                        createRoomDialog_ =
+                          QSharedPointer<dialogs::CreateRoom>(new dialogs::CreateRoom(this));
+
+                        connect(createRoomDialog_.data(),
+                                &dialogs::CreateRoom::closing,
+                                this,
+                                [=](bool isCreating, const mtx::requests::CreateRoom &request) {
+                                        createRoomModal_->fadeOut();
+
+                                        if (isCreating)
+                                                emit createRoom(request);
+                                });
+                }
+
+                if (createRoomModal_.isNull()) {
+                        createRoomModal_ = QSharedPointer<OverlayModal>(
+                          new OverlayModal(MainWindow::instance(), createRoomDialog_.data()));
+                        createRoomModal_->setDuration(0);
+                        createRoomModal_->setColor(QColor(30, 30, 30, 170));
+                }
+
+                createRoomModal_->fadeIn();
         });
 
         addMenu_->addAction(createRoomAction_);

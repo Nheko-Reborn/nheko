@@ -890,6 +890,49 @@ MatrixClient::inviteUser(const QString &roomId, const QString &user)
                 emit invitedUser(roomId, user);
         });
 }
+
+void
+MatrixClient::createRoom(const mtx::requests::CreateRoom &create_room_request)
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + QString("/createRoom"));
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(endpoint);
+        request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+
+        nlohmann::json body = create_room_request;
+        auto reply          = post(request, QString::fromStdString(body.dump()).toUtf8());
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        auto data     = reply->readAll();
+                        auto response = QJsonDocument::fromJson(data);
+                        auto json     = response.object();
+
+                        if (json.contains("error"))
+                                emit roomCreationFailed(json["error"].toString());
+                        else
+                                qDebug() << reply->errorString();
+
+                        return;
+                }
+
+                auto data     = reply->readAll();
+                auto response = QJsonDocument::fromJson(data);
+                auto room_id  = response.object()["room_id"].toString();
+
+                emit roomCreated(room_id);
+        });
+}
+
 void
 MatrixClient::sendTypingNotification(const QString &roomid, int timeoutInMillis)
 {

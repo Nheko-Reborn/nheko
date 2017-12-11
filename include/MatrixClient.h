@@ -61,6 +61,7 @@ public:
         void removeTypingNotification(const QString &roomid);
         void readEvent(const QString &room_id, const QString &event_id);
         void inviteUser(const QString &room_id, const QString &user);
+        void createRoom(const mtx::requests::CreateRoom &request);
 
         QUrl getHomeServer() { return server_; };
         int transactionId() { return txn_id_; };
@@ -86,6 +87,7 @@ signals:
 
         void loggedOut();
         void invitedUser(const QString &room_id, const QString &user);
+        void roomCreated(const QString &room_id);
 
         void loginSuccess(const QString &userid, const QString &homeserver, const QString &token);
         void registerSuccess(const QString &userid,
@@ -115,6 +117,7 @@ signals:
         void messagesRetrieved(const QString &room_id, const mtx::responses::Messages &msgs);
         void joinedRoom(const QString &room_id);
         void leftRoom(const QString &room_id);
+        void roomCreationFailed(const QString &msg);
 
 private:
         QNetworkReply *makeUploadRequest(const QString &filename);

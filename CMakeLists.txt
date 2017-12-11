@@ -141,6 +141,7 @@ endif()
 #
 set(SRC_FILES
     # Dialogs
+    src/dialogs/CreateRoom.cc
     src/dialogs/ImageOverlay.cc
     src/dialogs/InviteUsers.cc
     src/dialogs/JoinRoom.cc
@@ -219,6 +220,7 @@ include_directories(${LMDB_INCLUDE_DIR})
 
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
+    include/dialogs/CreateRoom.h
     include/dialogs/ImageOverlay.h
     include/dialogs/InviteUsers.h
     include/dialogs/JoinRoom.h

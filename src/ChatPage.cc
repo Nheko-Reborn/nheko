@@ -70,6 +70,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
           sidebarActions_, &SideBarActions::showSettings, this, &ChatPage::showUserSettingsPage);
         connect(
           sidebarActions_, &SideBarActions::joinRoom, client_.data(), &MatrixClient::joinRoom);
+        connect(
+          sidebarActions_, &SideBarActions::createRoom, client_.data(), &MatrixClient::createRoom);
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
         room_list_        = new RoomList(client, sideBar_);
@@ -202,6 +204,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 client_->uploadAudio(current_room_, filename);
         });
 
+        connect(
+          client_.data(), &MatrixClient::roomCreationFailed, this, &ChatPage::showNotification);
         connect(client_.data(), &MatrixClient::joinFailed, this, &ChatPage::showNotification);
         connect(client_.data(),
                 &MatrixClient::imageUploaded,
@@ -267,6 +271,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         });
         connect(client_.data(), &MatrixClient::invitedUser, this, [=](QString, QString user) {
                 emit showNotification(QString("Invited user %1").arg(user));
+        });
+        connect(client_.data(), &MatrixClient::roomCreated, this, [=](QString room_id) {
+                emit showNotification(QString("Room %1 created").arg(room_id));
         });
         connect(client_.data(), &MatrixClient::leftRoom, this, &ChatPage::removeRoom);
 

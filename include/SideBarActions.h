@@ -8,6 +8,7 @@
 #include "FlatButton.h"
 #include "Menu.h"
 
+#include "dialogs/CreateRoom.h"
 #include "dialogs/JoinRoom.h"
 
 class OverlayModal;
@@ -23,6 +24,7 @@ public:
 signals:
         void showSettings();
         void joinRoom(const QString &room);
+        void createRoom(const mtx::requests::CreateRoom &request);
 
 protected:
         void resizeEvent(QResizeEvent *event) override;
@@ -36,6 +38,9 @@ private:
 
         QSharedPointer<OverlayModal> joinRoomModal_;
         QSharedPointer<dialogs::JoinRoom> joinRoomDialog_;
+
+        QSharedPointer<OverlayModal> createRoomModal_;
+        QSharedPointer<dialogs::CreateRoom> createRoomDialog_;
 
         FlatButton *settingsBtn_;
         FlatButton *createRoomBtn_;
