@@ -43,10 +43,9 @@ TimelineItem::init()
 
         QFontMetrics fm(font_);
 
-        topLayout_    = new QHBoxLayout(this);
-        sideLayout_   = new QVBoxLayout();
-        mainLayout_   = new QVBoxLayout();
-        headerLayout_ = new QHBoxLayout();
+        topLayout_  = new QHBoxLayout(this);
+        sideLayout_ = new QVBoxLayout;
+        mainLayout_ = new QVBoxLayout;
 
         topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
         topLayout_->setSpacing(0);
@@ -59,9 +58,6 @@ TimelineItem::init()
 
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
-
-        headerLayout_->setMargin(0);
-        headerLayout_->setSpacing(conf::timeline::headerSpacing);
 }
 
 /*
@@ -417,6 +413,10 @@ TimelineItem::setupAvatarLayout(const QString &userName)
 
         sideLayout_->addWidget(userAvatar_);
         sideLayout_->addStretch(1);
+
+        headerLayout_ = new QHBoxLayout;
+        headerLayout_->setMargin(0);
+        headerLayout_->setSpacing(conf::timeline::headerSpacing);
 
         headerLayout_->addWidget(userName_);
         headerLayout_->addWidget(timestamp_, 1);

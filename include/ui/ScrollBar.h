@@ -49,7 +49,7 @@ private:
         int roundRadius_     = 4;
         int handleWidth_     = 7;
         int minHandleHeight_ = 20;
-        bool isActive;
+        bool isActive        = false;
 
         const int AnimationDuration = 300;
         const int Padding           = 4;
