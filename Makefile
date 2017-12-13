@@ -29,6 +29,18 @@ run:
 lint:
 	@./.ci/format.sh
 
+image:
+	docker build -t nheko-app-image .
+
+docker-app-image: image
+	docker run \
+		-e CXX=g++-7 \
+		-e CC=gcc-7 \
+		-v `pwd`:/build nheko-app-image make release
+	docker run \
+		--privileged \
+		-v `pwd`:/build nheko-app-image make linux-appimage
+
 clean:
 	rm -rf build
 
