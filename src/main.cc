@@ -19,12 +19,31 @@
 #include <QDesktopWidget>
 #include <QFile>
 #include <QFontDatabase>
+#include <QLabel>
+#include <QLayout>
 #include <QLibraryInfo>
 #include <QNetworkProxy>
+#include <QPalette>
+#include <QPoint>
+#include <QPushButton>
 #include <QSettings>
 #include <QTranslator>
 
+#include "Config.h"
 #include "MainWindow.h"
+#include "RaisedButton.h"
+#include "RunGuard.h"
+
+QPoint
+screenCenter(int width, int height)
+{
+        QRect screenGeometry = QApplication::desktop()->screenGeometry();
+
+        int x = (screenGeometry.width() - width) / 2;
+        int y = (screenGeometry.height() - height) / 2;
+
+        return QPoint(x, y);
+}
 
 void
 setupProxy()
@@ -55,6 +74,50 @@ setupProxy()
 int
 main(int argc, char *argv[])
 {
+        RunGuard guard("run_guard");
+
+        if (!guard.tryToRun()) {
+                QApplication a(argc, argv);
+
+                QFont font;
+                font.setPointSize(15);
+                font.setWeight(60);
+
+                QWidget widget;
+                QVBoxLayout layout(&widget);
+                layout.setContentsMargins(20, 10, 20, 20);
+                layout.setSpacing(0);
+
+                QHBoxLayout btnLayout;
+
+                QLabel msg("Another instance of nheko is currently running.");
+                msg.setWordWrap(true);
+                msg.setFont(font);
+
+                QPalette pal;
+
+                RaisedButton submitBtn("OK");
+                submitBtn.setBackgroundColor(pal.color(QPalette::Button));
+                submitBtn.setForegroundColor(pal.color(QPalette::ButtonText));
+                submitBtn.setMinimumSize(120, 35);
+                submitBtn.setFontSize(conf::btn::fontSize);
+                submitBtn.setCornerRadius(conf::btn::cornerRadius);
+
+                btnLayout.addStretch(1);
+                btnLayout.addWidget(&submitBtn);
+
+                layout.addWidget(&msg);
+                layout.addLayout(&btnLayout);
+
+                widget.setFixedSize(480, 180);
+                widget.move(screenCenter(widget.width(), widget.height()));
+                widget.show();
+
+                QObject::connect(&submitBtn, &QPushButton::clicked, &widget, &QWidget::close);
+
+                return a.exec();
+        }
+
         QCoreApplication::setApplicationName("nheko");
         QCoreApplication::setApplicationVersion("0.1.0");
         QCoreApplication::setOrganizationName("nheko");
@@ -95,11 +158,7 @@ main(int argc, char *argv[])
         MainWindow w;
 
         // Move the MainWindow to the center
-        QRect screenGeometry = QApplication::desktop()->screenGeometry();
-        int x                = (screenGeometry.width() - w.width()) / 2;
-        int y                = (screenGeometry.height() - w.height()) / 2;
-
-        w.move(x, y);
+        w.move(screenCenter(w.width(), w.height()));
         w.show();
 
         QObject::connect(&app, &QApplication::aboutToQuit, &w, &MainWindow::saveCurrentWindowSize);

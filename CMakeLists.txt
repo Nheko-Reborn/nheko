@@ -199,6 +199,7 @@ set(SRC_FILES
     src/RoomList.cc
     src/RoomMessages.cc
     src/RoomState.cc
+    src/RunGuard.cc
     src/SideBarActions.cc
     src/Splitter.cc
     src/TextInputWidget.cc
