@@ -238,7 +238,7 @@ MatrixClient::sync() noexcept
                         mtx::responses::Sync response = nlohmann::json::parse(reply->readAll());
                         emit syncCompleted(response);
                 } catch (std::exception &e) {
-                        qWarning() << "Sync malformed response" << e.what();
+                        qWarning() << "Sync malformed response: " << e.what();
                 }
         });
 }
