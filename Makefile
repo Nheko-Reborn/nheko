@@ -42,6 +42,7 @@ docker-app-image: image
 		-v `pwd`:/build nheko-app-image make linux-appimage
 
 clean:
-	rm -rf build
+	git clean -xdf
+	git submodule foreach git clean -xdf
 
 .PHONY: build app dmg

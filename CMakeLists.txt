@@ -302,6 +302,8 @@ qt5_add_resources(LANG_QRC ${_qrc})
 qt5_add_resources(QRC resources/res.qrc)
 
 add_subdirectory(libs/matrix-structs)
+include_directories(${matrix_structs_SOURCE_DIR}/include)
+include_directories(${matrix_structs_SOURCE_DIR}/deps)
 
 set(COMMON_LIBS matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
 
