@@ -134,6 +134,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         connect(
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
+        connect(room_list_, &RoomList::acceptInvite, client_.data(), &MatrixClient::joinRoom);
+        connect(room_list_, &RoomList::declineInvite, client_.data(), &MatrixClient::leaveRoom);
+
         connect(view_manager_,
                 &TimelineViewManager::clearRoomMessageCount,
                 room_list_,
@@ -266,8 +269,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 this,
                 &ChatPage::updateOwnProfileInfo);
         connect(client_.data(), &MatrixClient::ownAvatarRetrieved, this, &ChatPage::setOwnAvatar);
-        connect(client_.data(), &MatrixClient::joinedRoom, this, [=]() {
+        connect(client_.data(), &MatrixClient::joinedRoom, this, [=](const QString &room_id) {
                 emit showNotification("You joined the room.");
+                removeInvite(room_id);
         });
         connect(client_.data(), &MatrixClient::invitedUser, this, [=](QString, QString user) {
                 emit showNotification(QString("Invited user %1").arg(user));
@@ -400,8 +404,11 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 
         auto stateDiff = generateMembershipDifference(response.rooms.join, state_manager_);
         QtConcurrent::run(cache_.data(), &Cache::setState, nextBatchToken, stateDiff);
+        QtConcurrent::run(cache_.data(), &Cache::setInvites, response.rooms.invite);
 
         room_list_->sync(state_manager_, settingsManager_);
+        room_list_->syncInvites(response.rooms.invite);
+
         view_manager_->sync(response.rooms);
 
         client_->setNextBatchToken(nextBatchToken);
@@ -445,12 +452,14 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
                           &Cache::setState,
                           QString::fromStdString(response.next_batch),
                           state_manager_);
+        QtConcurrent::run(cache_.data(), &Cache::setInvites, response.rooms.invite);
 
         // Populate timelines with messages.
         view_manager_->initialize(response.rooms);
 
         // Initialize room list.
         room_list_->setInitialRooms(settingsManager_, state_manager_);
+        room_list_->syncInvites(response.rooms.invite);
 
         client_->setNextBatchToken(QString::fromStdString(response.next_batch));
         client_->sync();
@@ -552,6 +561,7 @@ ChatPage::loadStateFromCache()
 
         // Initialize room list from the restored state and settings.
         room_list_->setInitialRooms(settingsManager_, state_manager_);
+        room_list_->syncInvites(cache_->invites());
 
         // Check periodically if the timelines have been loaded.
         consensusTimer_->start(CONSENSUS_TIMEOUT);
@@ -629,12 +639,28 @@ ChatPage::removeRoom(const QString &room_id)
         settingsManager_.remove(room_id);
         try {
                 cache_->removeRoom(room_id);
+                cache_->removeInvite(room_id);
         } catch (const lmdb::error &e) {
                 qCritical() << "The cache couldn't be updated: " << e.what();
                 // TODO: Notify the user.
                 cache_->unmount();
                 cache_->deleteData();
         }
+        room_list_->removeRoom(room_id, room_id == current_room_);
+}
+
+void
+ChatPage::removeInvite(const QString &room_id)
+{
+        try {
+                cache_->removeInvite(room_id);
+        } catch (const lmdb::error &e) {
+                qCritical() << "The cache couldn't be updated: " << e.what();
+                // TODO: Notify the user.
+                cache_->unmount();
+                cache_->deleteData();
+        }
+
         room_list_->removeRoom(room_id, room_id == current_room_);
 }
 

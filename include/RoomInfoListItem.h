@@ -21,6 +21,8 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+#include <mtx/responses.hpp>
+
 #include "RoomState.h"
 
 class Menu;
@@ -52,11 +54,16 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor highlightedSubtitleColor READ highlightedSubtitleColor WRITE
                      setHighlightedSubtitleColor)
 
+        Q_PROPERTY(QColor btnColor READ btnColor WRITE setBtnColor)
+        Q_PROPERTY(QColor btnTextColor READ btnTextColor WRITE setBtnTextColor)
+
 public:
         RoomInfoListItem(QSharedPointer<RoomSettings> settings,
                          RoomState state,
                          QString room_id,
                          QWidget *parent = 0);
+
+        RoomInfoListItem(QString room_id, mtx::responses::InvitedRoom room, QWidget *parent = 0);
 
         ~RoomInfoListItem();
 
@@ -71,35 +78,36 @@ public:
         void setAvatar(const QImage &avatar_image);
         void setDescriptionMessage(const DescInfo &info);
 
-        inline QColor highlightedBackgroundColor() const { return highlightedBackgroundColor_; }
-        inline QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
-        inline QColor backgroundColor() const { return backgroundColor_; }
+        QColor highlightedBackgroundColor() const { return highlightedBackgroundColor_; }
+        QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
+        QColor backgroundColor() const { return backgroundColor_; }
 
-        inline QColor highlightedTitleColor() const { return highlightedTitleColor_; }
-        inline QColor highlightedSubtitleColor() const { return highlightedSubtitleColor_; }
+        QColor highlightedTitleColor() const { return highlightedTitleColor_; }
+        QColor highlightedSubtitleColor() const { return highlightedSubtitleColor_; }
 
-        inline QColor titleColor() const { return titleColor_; }
-        inline QColor subtitleColor() const { return subtitleColor_; }
+        QColor titleColor() const { return titleColor_; }
+        QColor subtitleColor() const { return subtitleColor_; }
+        QColor btnColor() const { return btnColor_; }
+        QColor btnTextColor() const { return btnTextColor_; }
 
-        inline void setHighlightedBackgroundColor(QColor &color)
-        {
-                highlightedBackgroundColor_ = color;
-        }
-        inline void setHoverBackgroundColor(QColor &color) { hoverBackgroundColor_ = color; }
-        inline void setBackgroundColor(QColor &color) { backgroundColor_ = color; }
+        void setHighlightedBackgroundColor(QColor &color) { highlightedBackgroundColor_ = color; }
+        void setHoverBackgroundColor(QColor &color) { hoverBackgroundColor_ = color; }
+        void setBackgroundColor(QColor &color) { backgroundColor_ = color; }
 
-        inline void setHighlightedTitleColor(QColor &color) { highlightedTitleColor_ = color; }
-        inline void setHighlightedSubtitleColor(QColor &color)
-        {
-                highlightedSubtitleColor_ = color;
-        }
+        void setHighlightedTitleColor(QColor &color) { highlightedTitleColor_ = color; }
+        void setHighlightedSubtitleColor(QColor &color) { highlightedSubtitleColor_ = color; }
 
-        inline void setTitleColor(QColor &color) { titleColor_ = color; }
-        inline void setSubtitleColor(QColor &color) { subtitleColor_ = color; }
+        void setTitleColor(QColor &color) { titleColor_ = color; }
+        void setSubtitleColor(QColor &color) { subtitleColor_ = color; }
+
+        void setBtnColor(QColor &color) { btnColor_ = color; }
+        void setBtnTextColor(QColor &color) { btnTextColor_ = color; }
 
 signals:
         void clicked(const QString &room_id);
         void leaveRoom(const QString &room_id);
+        void acceptInvite(const QString &room_id);
+        void declineInvite(const QString &room_id);
 
 public slots:
         void setPressedState(bool state);
@@ -111,14 +119,32 @@ protected:
         void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
-        QString notificationText();
+        void init(QWidget *parent);
+        QString roomName()
+        {
+                if (roomType_ == RoomType::Joined)
+                        return state_.getName();
 
-        const int Padding  = 7;
-        const int IconSize = 48;
+                return roomName_;
+        }
+
+        QString notificationText();
 
         RippleOverlay *ripple_overlay_;
 
+        enum class RoomType
+        {
+                Joined,
+                Invited,
+        };
+
+        RoomType roomType_ = RoomType::Joined;
+
+        // State information for the joined rooms.
         RoomState state_;
+
+        // State information for the invited rooms.
+        mtx::responses::InvitedRoom invitedRoom_;
 
         QString roomId_;
         QString roomName_;
@@ -135,7 +161,6 @@ private:
 
         bool isPressed_ = false;
 
-        int maxHeight_;
         int unreadMsgCount_ = 0;
 
         QColor highlightedBackgroundColor_;
@@ -147,4 +172,10 @@ private:
 
         QColor titleColor_;
         QColor subtitleColor_;
+
+        QColor btnColor_;
+        QColor btnTextColor_;
+
+        QRectF acceptBtnRegion_;
+        QRectF declineBtnRegion_;
 };

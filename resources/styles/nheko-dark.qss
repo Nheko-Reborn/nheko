@@ -49,6 +49,9 @@ RoomInfoListItem {
 
     qproperty-highlightedTitleColor: #e4e5e8;
     qproperty-highlightedSubtitleColor: #e4e5e8;
+
+    qproperty-btnColor: #414A59;
+    qproperty-btnTextColor: white;
 }
 
 LoadingIndicator {

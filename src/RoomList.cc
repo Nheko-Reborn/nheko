@@ -287,3 +287,32 @@ RoomList::paintEvent(QPaintEvent *)
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+void
+RoomList::syncInvites(const std::map<std::string, mtx::responses::InvitedRoom> &rooms)
+{
+        for (auto it = rooms.cbegin(); it != rooms.cend(); ++it) {
+                const auto room_id = QString::fromStdString(it->first);
+
+                if (!rooms_.contains(room_id))
+                        addInvitedRoom(room_id, it->second);
+        }
+}
+
+void
+RoomList::addInvitedRoom(const QString &room_id, const mtx::responses::InvitedRoom &room)
+{
+        auto room_item = new RoomInfoListItem(room_id, room, scrollArea_);
+        connect(room_item, &RoomInfoListItem::acceptInvite, this, &RoomList::acceptInvite);
+        connect(room_item, &RoomInfoListItem::declineInvite, this, &RoomList::declineInvite);
+
+        rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
+
+        auto avatarUrl = QString::fromStdString(room.avatar());
+
+        if (!avatarUrl.isEmpty())
+                client_->fetchRoomAvatar(room_id, avatarUrl);
+
+        int pos = contentsLayout_->count() - 1;
+        contentsLayout_->insertWidget(pos, room_item);
+}

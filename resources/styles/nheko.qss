@@ -47,6 +47,9 @@ RoomInfoListItem {
 
     qproperty-highlightedTitleColor: white;
     qproperty-highlightedSubtitleColor: white;
+
+    qproperty-btnColor: #ccc;
+    qproperty-btnTextColor: #333;
 }
 
 #ChatPageLoadSpinner {

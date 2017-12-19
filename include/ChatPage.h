@@ -78,6 +78,7 @@ private slots:
         void logout();
         void addRoom(const QString &room_id);
         void removeRoom(const QString &room_id);
+        void removeInvite(const QString &room_id);
 
 private:
         using UserID      = QString;

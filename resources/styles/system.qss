@@ -55,6 +55,9 @@ RoomInfoListItem {
 
     qproperty-highlightedTitleColor: palette(light);
     qproperty-highlightedSubtitleColor: palette(light);
+
+    qproperty-btnColor: palette(light);
+    qproperty-btnTextColor: palette(text);
 }
 
 LoadingIndicator {

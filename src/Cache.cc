@@ -33,6 +33,7 @@ Cache::Cache(const QString &userId)
   : env_{nullptr}
   , stateDb_{0}
   , roomDb_{0}
+  , invitesDb_{0}
   , isMounted_{false}
   , userId_{userId}
 {}
@@ -86,9 +87,10 @@ Cache::setup()
                 env_.open(statePath.toStdString().c_str());
         }
 
-        auto txn = lmdb::txn::begin(env_);
-        stateDb_ = lmdb::dbi::open(txn, "state", MDB_CREATE);
-        roomDb_  = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
+        auto txn   = lmdb::txn::begin(env_);
+        stateDb_   = lmdb::dbi::open(txn, "state", MDB_CREATE);
+        roomDb_    = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
+        invitesDb_ = lmdb::dbi::open(txn, "invites", MDB_CREATE);
 
         txn.commit();
 
@@ -170,6 +172,20 @@ Cache::removeRoom(const QString &roomid)
         auto txn = lmdb::txn::begin(env_, nullptr, 0);
 
         lmdb::dbi_del(txn, roomDb_, lmdb::val(roomid.toUtf8(), roomid.toUtf8().size()), nullptr);
+
+        txn.commit();
+}
+
+void
+Cache::removeInvite(const QString &room_id)
+{
+        if (!isMounted_)
+                return;
+
+        auto txn = lmdb::txn::begin(env_, nullptr, 0);
+
+        lmdb::dbi_del(
+          txn, invitesDb_, lmdb::val(room_id.toUtf8(), room_id.toUtf8().size()), nullptr);
 
         txn.commit();
 }
@@ -309,4 +325,77 @@ Cache::setCurrentFormat()
           lmdb::val(CURRENT_CACHE_FORMAT_VERSION.data(), CURRENT_CACHE_FORMAT_VERSION.size()));
 
         txn.commit();
+}
+
+std::map<std::string, mtx::responses::InvitedRoom>
+Cache::invites()
+{
+        std::map<std::string, mtx::responses::InvitedRoom> invites;
+
+        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto cursor = lmdb::cursor::open(txn, invitesDb_);
+
+        std::string room_id;
+        std::string payload;
+
+        mtx::responses::InvitedRoom state;
+
+        while (cursor.get(room_id, payload, MDB_NEXT)) {
+                state = nlohmann::json::parse(payload);
+                invites.emplace(room_id, state);
+        }
+
+        if (invites.size() > 0)
+                qDebug() << "Retrieved" << invites.size() << "invites";
+
+        cursor.close();
+
+        txn.commit();
+
+        return invites;
+}
+
+void
+Cache::setInvites(const std::map<std::string, mtx::responses::InvitedRoom> &invites)
+{
+        if (!isMounted_)
+                return;
+
+        using Aliases = mtx::events::StrippedEvent<mtx::events::state::Aliases>;
+        using Avatar  = mtx::events::StrippedEvent<mtx::events::state::Avatar>;
+        using Member  = mtx::events::StrippedEvent<mtx::events::state::Member>;
+        using Name    = mtx::events::StrippedEvent<mtx::events::state::Name>;
+        using Topic   = mtx::events::StrippedEvent<mtx::events::state::Topic>;
+
+        try {
+                auto txn = lmdb::txn::begin(env_);
+
+                for (auto it = invites.cbegin(); it != invites.cend(); ++it) {
+                        nlohmann::json j;
+
+                        for (const auto &e : it->second.invite_state) {
+                                if (mpark::holds_alternative<Name>(e)) {
+                                        j["invite_state"]["events"].push_back(mpark::get<Name>(e));
+                                } else if (mpark::holds_alternative<Topic>(e)) {
+                                        j["invite_state"]["events"].push_back(mpark::get<Topic>(e));
+                                } else if (mpark::holds_alternative<Avatar>(e)) {
+                                        j["invite_state"]["events"].push_back(
+                                          mpark::get<Avatar>(e));
+                                } else if (mpark::holds_alternative<Aliases>(e)) {
+                                        j["invite_state"]["events"].push_back(
+                                          mpark::get<Aliases>(e));
+                                } else if (mpark::holds_alternative<Member>(e)) {
+                                        j["invite_state"]["events"].push_back(
+                                          mpark::get<Member>(e));
+                                }
+                        }
+
+                        lmdb::dbi_put(txn, invitesDb_, lmdb::val(it->first), lmdb::val(j.dump()));
+                }
+
+                txn.commit();
+        } catch (const lmdb::error &e) {
+                qCritical() << "setInvitedRooms: " << e.what();
+                unmount();
+        }
 }

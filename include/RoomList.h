@@ -24,6 +24,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <mtx.hpp>
+
 #include "dialogs/LeaveRoom.h"
 
 class LeaveRoomDialog;
@@ -47,17 +49,21 @@ public:
                              const QMap<QString, RoomState> &states);
         void sync(const QMap<QString, RoomState> &states,
                   QMap<QString, QSharedPointer<RoomSettings>> &settings);
+        void syncInvites(const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 
         void clear();
 
         void addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
                      const RoomState &state,
                      const QString &room_id);
+        void addInvitedRoom(const QString &room_id, const mtx::responses::InvitedRoom &room);
         void removeRoom(const QString &room_id, bool reset);
 
 signals:
         void roomChanged(const QString &room_id);
         void totalUnreadMessageCountUpdated(int count);
+        void acceptInvite(const QString &room_id);
+        void declineInvite(const QString &room_id);
 
 public slots:
         void updateRoomAvatar(const QString &roomid, const QPixmap &img);
