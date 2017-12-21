@@ -37,7 +37,6 @@ signals:
 
 protected:
         void enterEvent(QEvent *e) override;
-        void leaveEvent(QEvent *e) override;
 
 private:
         // Vertical distance from panel's bottom.

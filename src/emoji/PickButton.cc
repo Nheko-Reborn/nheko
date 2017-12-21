@@ -46,21 +46,3 @@ PickButton::enterEvent(QEvent *e)
         panel_->move(x, y);
         panel_->show();
 }
-
-void
-PickButton::leaveEvent(QEvent *e)
-{
-        Q_UNUSED(e);
-
-        if (panel_->underMouse())
-                return;
-
-        auto pos            = QCursor::pos();
-        auto panel_geometry = panel_->geometry();
-        panel_geometry.adjust(0, 0, 0, vertical_distance_);
-
-        if (panel_geometry.contains(pos))
-                return;
-
-        panel_->hide();
-}
