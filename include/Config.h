@@ -6,7 +6,7 @@
 
 namespace conf {
 // Global settings.
-static constexpr int fontSize                   = 12;
+static constexpr int fontSize                   = 14;
 static constexpr int textInputFontSize          = 14;
 static constexpr int emojiSize                  = 14;
 static constexpr int headerFontSize             = 21;
@@ -39,7 +39,7 @@ static constexpr int cornerRadius = 3;
 // RoomList specific.
 namespace roomlist {
 namespace fonts {
-static constexpr int heading = 13;
+static constexpr int heading = 15;
 static constexpr int badge   = 10;
 static constexpr int bubble  = 20;
 } // namespace fonts
@@ -55,18 +55,18 @@ static constexpr int userid      = 14;
 namespace topRoomBar {
 namespace fonts {
 static constexpr int roomName        = 15;
-static constexpr int roomDescription = 13;
+static constexpr int roomDescription = 14;
 } // namespace fonts
 } // namespace topRoomBar
 
 namespace timeline {
-static constexpr int msgMargin        = 11;
+static constexpr int msgMargin        = 14;
 static constexpr int avatarSize       = 36;
-static constexpr int headerSpacing    = 5;
+static constexpr int headerSpacing    = 7;
 static constexpr int headerLeftMargin = 15;
 
 namespace fonts {
-static constexpr int timestamp = 9;
+static constexpr int timestamp = 10;
 } // namespace fonts
 } // namespace timeline
 
