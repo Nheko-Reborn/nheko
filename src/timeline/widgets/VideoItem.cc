@@ -19,6 +19,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+#include "Config.h"
 #include "timeline/widgets/VideoItem.h"
 
 void
@@ -52,12 +53,13 @@ VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
         layout->setMargin(0);
         layout->setSpacing(0);
 
-        QString link = QString("Video - <a href=%1>%2</a>").arg(url_.toString()).arg(text_);
+        QString link = QString("<a href=%1>%2</a>").arg(url_.toString()).arg(text_);
 
         label_ = new QLabel(link, this);
         label_->setMargin(0);
         label_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
         label_->setOpenExternalLinks(true);
+        label_->setStyleSheet(QString("font-size: %1px;").arg(conf::fontSize));
 
         layout->addWidget(label_);
 }
