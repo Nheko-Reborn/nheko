@@ -44,10 +44,10 @@ RoomInfoListItem {
     qproperty-hoverBackgroundColor: #39679e;
     qproperty-backgroundColor: #383c4a;
 
-    qproperty-titleColor: #caccd1;
+    qproperty-titleColor: #e4e5e8;
     qproperty-subtitleColor: #caccd1;
 
-    qproperty-highlightedTitleColor: #e4e5e8;
+    qproperty-highlightedTitleColor: #f4f4f5;
     qproperty-highlightedSubtitleColor: #e4e5e8;
 
     qproperty-btnColor: #414A59;

@@ -46,7 +46,7 @@ RoomInfoListItem {
     qproperty-subtitleColor: #5d6565;
 
     qproperty-highlightedTitleColor: white;
-    qproperty-highlightedSubtitleColor: white;
+    qproperty-highlightedSubtitleColor: #f4f4f5;
 
     qproperty-btnColor: #ccc;
     qproperty-btnTextColor: #333;

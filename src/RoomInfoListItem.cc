@@ -148,6 +148,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
         if (width() > ui::sidebar::SmallSize) {
                 font.setPixelSize(conf::roomlist::fonts::heading);
+                font.setWeight(68);
                 p.setFont(font);
                 p.setPen(titlePen);
 
@@ -173,7 +174,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         auto userName =
                           metrics.elidedText(lastMsgInfo_.username, Qt::ElideRight, usernameLimit);
 
-                        font.setBold(true);
+                        font.setWeight(60);
                         p.setFont(font);
                         p.drawText(QPoint(2 * Padding + IconSize, bottom_y), userName);
 
