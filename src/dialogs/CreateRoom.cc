@@ -54,16 +54,18 @@ CreateRoom::CreateRoom(QWidget *parent)
         auto presetLayout = new QHBoxLayout;
         presetLayout->setContentsMargins(0, 10, 0, 10);
 
-        auto visibilityLabel = new QLabel(tr("Room visibility"), this);
-        visibilityCombo_     = new QComboBox(this);
+        auto visibilityLabel = new QLabel(tr("Room Visibility"), this);
+        visibilityLabel->setStyleSheet(QString("font-size: %1px;").arg(conf::dialogs::labelSize));
+        visibilityCombo_ = new QComboBox(this);
         visibilityCombo_->addItem("Private");
         visibilityCombo_->addItem("Public");
 
         visibilityLayout->addWidget(visibilityLabel);
         visibilityLayout->addWidget(visibilityCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
-        auto presetLabel = new QLabel(tr("Room preset"), this);
-        presetCombo_     = new QComboBox(this);
+        auto presetLabel = new QLabel(tr("Room Preset"), this);
+        presetLabel->setStyleSheet(QString("font-size: %1px;").arg(conf::dialogs::labelSize));
+        presetCombo_ = new QComboBox(this);
         presetCombo_->addItem("Private Chat");
         presetCombo_->addItem("Public Chat");
         presetCombo_->addItem("Trusted Private Chat");
@@ -72,11 +74,11 @@ CreateRoom::CreateRoom(QWidget *parent)
         presetLayout->addWidget(presetCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto directLabel_ = new QLabel(tr("Direct Chat"), this);
-        directToggle_     = new Toggle(this);
+        directLabel_->setStyleSheet(QString("font-size: %1px;").arg(conf::dialogs::labelSize));
+        directToggle_ = new Toggle(this);
         directToggle_->setActiveColor(QColor("#38A3D8"));
         directToggle_->setInactiveColor(QColor("gray"));
         directToggle_->setState(true);
-        directLabel_->setStyleSheet("font-size: 15px;");
 
         auto directLayout = new QHBoxLayout;
         directLayout->setContentsMargins(0, 10, 0, 10);

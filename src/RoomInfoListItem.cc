@@ -148,7 +148,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
         if (width() > ui::sidebar::SmallSize) {
                 font.setPixelSize(conf::roomlist::fonts::heading);
-                font.setWeight(68);
+                font.setWeight(60);
                 p.setFont(font);
                 p.setPen(titlePen);
 

@@ -12,6 +12,10 @@ static constexpr int emojiSize                  = 14;
 static constexpr int headerFontSize             = 21;
 static constexpr int typingNotificationFontSize = 11;
 
+namespace dialogs {
+static constexpr int labelSize = 15;
+}
+
 // Window geometry.
 namespace window {
 static constexpr int height = 600;
@@ -39,7 +43,7 @@ static constexpr int cornerRadius = 3;
 // RoomList specific.
 namespace roomlist {
 namespace fonts {
-static constexpr int heading = 15;
+static constexpr int heading = 14;
 static constexpr int badge   = 10;
 static constexpr int bubble  = 20;
 } // namespace fonts
