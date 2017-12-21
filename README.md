@@ -14,13 +14,15 @@ feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IR
 Most of the features you would expect from a chat application are missing right now
 but we are getting close to a more feature complete client.
 Specifically there is support for:
-- Joining & leaving rooms
-- Sending & receiving images and emoji.
+- Creating, joining & leaving rooms.
+- Sending & receiving invites.
+- Sending & receiving files and emoji (inline widgets for images, audio and file messages).
 - Typing notifications.
+- Light, Dark & System themes.
 
 ### Installation
 
-There are pre-built nigtly releases [here](https://github.com/mujx/nheko/releases/tag/nightly) for Linux ([AppImage](https://appimage.org/)), Mac and Windows.
+There are continuous nightly releases [here](https://github.com/mujx/nheko/releases/tag/nightly) for Linux ([AppImage](https://appimage.org/)), Mac and Windows.
 
 #### Arch Linux
 ```bash
@@ -48,6 +50,14 @@ sudo emerge -a nheko
 - A compiler that supports C++11.
     - Clang 3.6 (or greater).
     - GCC 4.9.4 (or greater).
+
+#### Linux 
+
+If you don't want to install any external dependencies, you can generate an AppImage locally using docker.
+
+```bash
+make docker-app-image
+```
 
 ##### Arch Linux
 
@@ -103,11 +113,10 @@ cd nheko
 git submodule update --init --recursive
 ```
 
-and then use the following
+and then run
 
 ```bash
-cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release # Default is Debug.
-make -C build
+make release
 ```
 
 The `nheko` binary will be located in the `build` directory.
@@ -133,7 +142,7 @@ encouraged to open feature request issues.
 
 Here is a screen shot to get a feel for the UI, but things will probably change.
 
-![nheko](https://dl.dropboxusercontent.com/s/5iydk5r3b9zyycd/nheko-ui.png)
+![nheko](https://dl.dropboxusercontent.com/s/umojysx3gv80qs9/nheko-default-theme.png)
 
 ### Third party
 
