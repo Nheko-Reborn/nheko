@@ -69,6 +69,9 @@ private:
 
         int bottom_height_ = 30;
 
+        QRectF textRegion_;
+        QRectF imageRegion_;
+
         mtx::events::RoomEvent<mtx::events::msg::Image> event_;
 
         QSharedPointer<MatrixClient> client_;

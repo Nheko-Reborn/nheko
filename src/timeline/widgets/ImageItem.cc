@@ -22,6 +22,7 @@
 #include <QPainter>
 #include <QPixmap>
 
+#include "Config.h"
 #include "dialogs/ImageOverlay.h"
 #include "timeline/widgets/ImageItem.h"
 
@@ -156,10 +157,7 @@ ImageItem::mousePressEvent(QMouseEvent *event)
                 return;
         }
 
-        auto point = event->pos();
-
-        // Click on the text box.
-        if (QRect(0, height_ - bottom_height_, width_, bottom_height_).contains(point)) {
+        if (textRegion_.contains(event->pos())) {
                 openUrl();
         } else {
                 auto image_dialog = new dialogs::ImageOverlay(image_, this);
@@ -184,37 +182,50 @@ ImageItem::paintEvent(QPaintEvent *event)
         painter.setRenderHint(QPainter::Antialiasing);
 
         QFont font("Open Sans");
-        font.setPixelSize(12);
+        font.setPixelSize(conf::fontSize);
 
         QFontMetrics metrics(font);
-        int fontHeight = metrics.height();
+        const int fontHeight = metrics.ascent();
 
         if (image_.isNull()) {
-                int height = fontHeight + 10;
-
                 QString elidedText = metrics.elidedText(text_, Qt::ElideRight, max_width_ - 10);
 
-                setFixedSize(metrics.width(elidedText), fontHeight + 10);
+                setFixedSize(metrics.width(elidedText), fontHeight);
 
                 painter.setFont(font);
                 painter.setPen(QPen(QColor(66, 133, 244)));
-                painter.drawText(QPoint(0, height / 2 + 2), elidedText);
+                painter.drawText(QPoint(0, fontHeight), elidedText);
 
                 return;
         }
 
-        painter.fillRect(QRect(0, 0, width_, height_), scaled_image_);
+        imageRegion_ = QRectF(0, 0, width_, height_);
 
+        QPainterPath path;
+        path.addRoundedRect(imageRegion_, 5, 5);
+
+        painter.setPen(Qt::NoPen);
+        painter.fillPath(path, scaled_image_);
+        painter.drawPath(path);
+
+        // Bottom text section
         if (underMouse()) {
-                // Bottom text section
-                painter.fillRect(QRect(0, height_ - bottom_height_, width_, bottom_height_),
-                                 QBrush(QColor(33, 33, 33, 128)));
+                const int textBoxHeight = 2 * fontHeight;
+
+                textRegion_ = QRectF(0, height_ - textBoxHeight, width_, textBoxHeight);
+
+                QPainterPath textPath;
+                textPath.addRoundedRect(textRegion_, 0, 0);
+
+                painter.fillPath(textPath, QColor(40, 40, 40, 140));
 
                 QString elidedText = metrics.elidedText(text_, Qt::ElideRight, width_ - 10);
 
                 font.setWeight(80);
                 painter.setFont(font);
                 painter.setPen(QPen(QColor("white")));
-                painter.drawText(QPoint(5, height_ - fontHeight / 2), elidedText);
+
+                textRegion_.adjust(5, 0, 5, 0);
+                painter.drawText(textRegion_, Qt::AlignVCenter, elidedText);
         }
 }
