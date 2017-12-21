@@ -232,8 +232,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                         view_manager_->queueAudioMessage(roomid, filename, url);
                 });
 
-        connect(
-          client_.data(), &MatrixClient::roomAvatarRetrieved, this, &ChatPage::updateTopBarAvatar);
+        connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
 
         connect(client_.data(),
                 &MatrixClient::initialSyncCompleted,
@@ -353,6 +352,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         client_->getOwnProfile();
 
         cache_ = QSharedPointer<Cache>(new Cache(userid));
+        room_list_->setCache(cache_);
 
         try {
                 cache_->setup();

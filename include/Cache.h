@@ -48,6 +48,9 @@ public:
         bool isFormatValid();
         void setCurrentFormat();
 
+        QByteArray image(const QString &url) const;
+        void saveImage(const QString &url, const QByteArray &data);
+
 private:
         void setNextBatchToken(lmdb::txn &txn, const QString &token);
         void insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state);
@@ -56,6 +59,7 @@ private:
         lmdb::dbi stateDb_;
         lmdb::dbi roomDb_;
         lmdb::dbi invitesDb_;
+        lmdb::dbi imagesDb_;
 
         bool isMounted_;
 

@@ -98,7 +98,10 @@ signals:
         void fileUploaded(const QString &roomid, const QString &filename, const QString &url);
         void audioUploaded(const QString &roomid, const QString &filename, const QString &url);
 
-        void roomAvatarRetrieved(const QString &roomid, const QPixmap &img);
+        void roomAvatarRetrieved(const QString &roomid,
+                                 const QPixmap &img,
+                                 const QString &url,
+                                 const QByteArray &data);
         void userAvatarRetrieved(const QString &userId, const QImage &img);
         void ownAvatarRetrieved(const QPixmap &img);
         void imageDownloaded(const QString &event_id, const QPixmap &img);

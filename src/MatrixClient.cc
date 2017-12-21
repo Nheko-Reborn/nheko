@@ -468,7 +468,7 @@ MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
         QNetworkRequest avatar_request(endpoint);
 
         QNetworkReply *reply = get(avatar_request);
-        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid]() {
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, avatar_url]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -486,7 +486,7 @@ MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
                 QPixmap pixmap;
                 pixmap.loadFromData(img);
 
-                emit roomAvatarRetrieved(roomid, pixmap);
+                emit roomAvatarRetrieved(roomid, pixmap, avatar_url.toString(), img);
         });
 }
 

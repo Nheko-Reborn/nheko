@@ -15,9 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QBuffer>
 #include <QDebug>
 #include <QObject>
 
+#include "Cache.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
@@ -53,9 +55,17 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
         topLayout_->addWidget(scrollArea_);
 
         connect(client_.data(),
-                SIGNAL(roomAvatarRetrieved(const QString &, const QPixmap &)),
+                &MatrixClient::roomAvatarRetrieved,
                 this,
-                SLOT(updateRoomAvatar(const QString &, const QPixmap &)));
+                [=](const QString &room_id,
+                    const QPixmap &img,
+                    const QString &url,
+                    const QByteArray &data) {
+                        if (!cache_.isNull())
+                                cache_->saveImage(url, data);
+
+                        updateRoomAvatar(room_id, img);
+                });
 }
 
 RoomList::~RoomList() {}
@@ -79,10 +89,31 @@ RoomList::addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
         rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
         if (!state.getAvatar().toString().isEmpty())
-                client_->fetchRoomAvatar(room_id, state.getAvatar());
+                updateAvatar(room_id, state.getAvatar().toString());
 
         int pos = contentsLayout_->count() - 1;
         contentsLayout_->insertWidget(pos, room_item);
+}
+
+void
+RoomList::updateAvatar(const QString &room_id, const QString &url)
+{
+        if (url.isEmpty())
+                return;
+
+        QByteArray savedImgData;
+
+        if (!cache_.isNull())
+                savedImgData = cache_->image(url);
+
+        if (savedImgData.isEmpty()) {
+                client_->fetchRoomAvatar(room_id, url);
+        } else {
+                QPixmap img;
+                img.loadFromData(savedImgData);
+
+                updateRoomAvatar(room_id, img);
+        }
 }
 
 void
@@ -194,7 +225,7 @@ RoomList::sync(const QMap<QString, RoomState> &states,
                 auto new_avatar     = state.getAvatar();
 
                 if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
-                        client_->fetchRoomAvatar(room_id, new_avatar);
+                        updateAvatar(room_id, new_avatar.toString());
 
                 room->setState(state);
         }
@@ -246,6 +277,9 @@ RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
         }
 
         rooms_.value(roomid)->setAvatar(img.toImage());
+
+        // Used to inform other widgets for the new image data.
+        emit roomAvatarChanged(roomid, img);
 }
 
 void
@@ -308,10 +342,7 @@ RoomList::addInvitedRoom(const QString &room_id, const mtx::responses::InvitedRo
 
         rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
-        auto avatarUrl = QString::fromStdString(room.avatar());
-
-        if (!avatarUrl.isEmpty())
-                client_->fetchRoomAvatar(room_id, avatarUrl);
+        updateAvatar(room_id, QString::fromStdString(room.avatar()));
 
         int pos = contentsLayout_->count() - 1;
         contentsLayout_->insertWidget(pos, room_item);

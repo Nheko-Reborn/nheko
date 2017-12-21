@@ -30,6 +30,7 @@
 
 class LeaveRoomDialog;
 class MatrixClient;
+class Cache;
 class OverlayModal;
 class RoomInfoListItem;
 class RoomSettings;
@@ -45,6 +46,7 @@ public:
         RoomList(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
         ~RoomList();
 
+        void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
         void setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
                              const QMap<QString, RoomState> &states);
         void sync(const QMap<QString, RoomState> &states,
@@ -52,6 +54,7 @@ public:
         void syncInvites(const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 
         void clear();
+        void updateAvatar(const QString &room_id, const QString &url);
 
         void addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
                      const RoomState &state,
@@ -64,6 +67,7 @@ signals:
         void totalUnreadMessageCountUpdated(int count);
         void acceptInvite(const QString &room_id);
         void declineInvite(const QString &room_id);
+        void roomAvatarChanged(const QString &room_id, const QPixmap &img);
 
 public slots:
         void updateRoomAvatar(const QString &roomid, const QPixmap &img);
@@ -96,4 +100,5 @@ private:
         QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
 
         QSharedPointer<MatrixClient> client_;
+        QSharedPointer<Cache> cache_;
 };

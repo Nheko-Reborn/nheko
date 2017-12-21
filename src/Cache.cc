@@ -17,6 +17,7 @@
 
 #include <stdexcept>
 
+#include <QByteArray>
 #include <QDebug>
 #include <QFile>
 #include <QStandardPaths>
@@ -34,6 +35,7 @@ Cache::Cache(const QString &userId)
   , stateDb_{0}
   , roomDb_{0}
   , invitesDb_{0}
+  , imagesDb_{0}
   , isMounted_{false}
   , userId_{userId}
 {}
@@ -54,7 +56,7 @@ Cache::setup()
         bool isInitial = !QFile::exists(statePath);
 
         env_ = lmdb::env::create();
-        env_.set_mapsize(128UL * 1024UL * 1024UL); /* 128 MB */
+        env_.set_mapsize(256UL * 1024UL * 1024UL); /* 256 MB */
         env_.set_max_dbs(1024UL);
 
         if (isInitial) {
@@ -91,10 +93,58 @@ Cache::setup()
         stateDb_   = lmdb::dbi::open(txn, "state", MDB_CREATE);
         roomDb_    = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
         invitesDb_ = lmdb::dbi::open(txn, "invites", MDB_CREATE);
+        imagesDb_  = lmdb::dbi::open(txn, "images", MDB_CREATE);
 
         txn.commit();
 
         isMounted_ = true;
+}
+
+void
+Cache::saveImage(const QString &url, const QByteArray &image)
+{
+        if (!isMounted_)
+                return;
+
+        auto key = url.toUtf8();
+
+        try {
+                auto txn = lmdb::txn::begin(env_);
+
+                lmdb::dbi_put(txn,
+                              imagesDb_,
+                              lmdb::val(key.data(), key.size()),
+                              lmdb::val(image.data(), image.size()));
+
+                txn.commit();
+        } catch (const lmdb::error &e) {
+                qCritical() << "saveImage:" << e.what();
+        }
+}
+
+QByteArray
+Cache::image(const QString &url) const
+{
+        auto key = url.toUtf8();
+
+        try {
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+                lmdb::val image;
+
+                bool res = lmdb::dbi_get(txn, imagesDb_, lmdb::val(key.data(), key.size()), image);
+
+                txn.commit();
+
+                if (!res)
+                        return QByteArray();
+
+                return QByteArray(image.data(), image.size());
+        } catch (const lmdb::error &e) {
+                qCritical() << "image:" << e.what();
+        }
+
+        return QByteArray();
 }
 
 void
