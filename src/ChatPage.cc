@@ -693,7 +693,7 @@ ChatPage::updateTypingUsers(const QString &roomid, const std::vector<std::string
 void
 ChatPage::updateUserAvatarUrl(const mtx::events::StateEvent<mtx::events::state::Member> &membership)
 {
-        auto uid = QString::fromStdString(membership.sender);
+        auto uid = QString::fromStdString(membership.state_key);
         auto url = QString::fromStdString(membership.content.avatar_url);
 
         if (!url.isEmpty())
