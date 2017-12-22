@@ -3,7 +3,7 @@ debug:
 	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug
 	@cmake --build build
 
-release-debug:
+ci:
 	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	@cmake --build build
 
@@ -17,7 +17,7 @@ linux-appimage:
 linux-install:
 	cp -f nheko*.AppImage ~/.local/bin
 
-macos-app: release-debug
+macos-app: release
 	@./.ci/macos/deploy.sh
 
 macos-app-install:
@@ -43,5 +43,3 @@ docker-app-image: image
 
 clean:
 	rm -rf build
-
-.PHONY: build app dmg

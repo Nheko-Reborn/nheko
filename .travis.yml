@@ -10,6 +10,11 @@ matrix:
         - os: osx
           osx_image: xcode8
           compiler: clang
+        - os: osx
+          osx_image: xcode9
+          compiler: clang
+          env:
+            - DEPLOYMENT=1
         - os: linux
           compiler: gcc
           env:
@@ -18,8 +23,8 @@ matrix:
             - DEPLOYMENT=1
           addons:
             apt:
-              sources: ['ubuntu-toolchain-r-test']
-              packages: ['g++-6']
+              sources: ["ubuntu-toolchain-r-test"]
+              packages: ["g++-6", "ninja-build"]
         - os: linux
           compiler: clang
           env:
@@ -27,15 +32,15 @@ matrix:
             - C_COMPILER=clang-5.0
           addons:
             apt:
-              sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
-              packages: ['clang-5.0']
+              sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
+              packages: ["clang-5.0", "ninja-build"]
 
 before_install:
     - export CXX=${CXX_COMPILER}
     - export CC=${C_COMPILER}
 
 install:
-    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install qt5 lmdb clang-format; fi
+    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install qt5 lmdb clang-format ninja; fi
     - if [ $TRAVIS_OS_NAME == osx ]; then export CMAKE_PREFIX_PATH=/usr/local/opt/qt5; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/install-deps.sh; fi
 
@@ -43,7 +48,7 @@ before_script:
     - if [ $TRAVIS_OS_NAME == linux ]; then source /opt/qt59/bin/qt59-env.sh; fi
 
 script:
-    - make release
+    - make ci
     - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
     - if [ $TRAVIS_OS_NAME == osx ]; then ./.ci/macos/deploy.sh; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/deploy.sh; fi
@@ -66,6 +71,6 @@ deploy:
           secure: oprXzESukFiXBeF2BXkXUlegsAQc95Ub4kc/OkoNFaYBvqpA+IGpWHmHCx5JPny/OT3Kc2Urpe2JUeGSWDHZ7UCKDjH+NzGP3uN82fHh/HiszG/Srw7+hWEHm1ve+gMK9GS8pr+yUsUrPP0UfVXlPoI4pBWa4zGi2Ndb/SqvjCgIHFLtGyoBo6CydKQ/AyWiXSMKDfJL+Dx4JLIPP4RTCBJy8ZrZ8m/a5Tgy4Ij6+djjrgYCZCEhGxSYw7xDIT/9SV8g9NkrbisqBDrILzAH8Yhe4XMRMXo88OAxV5+Vb9Rw1hrqczez6lpFDbJetv8MjofND+pSoAFwtjaL1wTFK9Ud6w4O9AuHlEQH9cGVdvsxFcosRwJVh58x51JM9ptoktqhx/HHJBTuCHCYYlHwtRwbwqnMYdLzKZG5FnujT8DG+9mcva1fL6tzW/XD505VPMWwXFC/2/pvolgAkTFFXYSALAwZlK3IgoXU8Gok/3B4iHofzQsFf6Yq3BI/88x7tVASUqiYhoKrO50+gb6pNIRCyWgGUiBEVXBp6Ziq3ORQPyQJg7i9HHUGTUu74yvGLHWLwjNQzZP/hxJZK3VlJxzyXntdOxiJc8iOzNrU+rPKBAlAaE6bQDOoniIysEgdD5BXHTLFzPvts4P1n2Ckor5/rNJ+qXR8GU+/y7e1GKU=
       file: nheko.dmg
       on:
-          condition: $TRAVIS_OS_NAME == osx
+          condition: $TRAVIS_OS_NAME == osx && $DEPLOYMENT == 1
           repo: mujx/nheko
           tags: true
