@@ -50,8 +50,8 @@ before_script:
 script:
     - make ci
     - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
-    - if [ $TRAVIS_OS_NAME == osx && $DEPLOYMENT == 1 ]; then ./.ci/macos/deploy.sh; fi
-    - if [ $TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1 ]; then ./.ci/linux/deploy.sh; fi
+    - if [ $TRAVIS_OS_NAME == osx ] && [ $DEPLOYMENT == 1 ]; then ./.ci/macos/deploy.sh; fi
+    - if [ $TRAVIS_OS_NAME == linux ] && [ $DEPLOYMENT == 1 ]; then ./.ci/linux/deploy.sh; fi
 
 deploy:
     - skip_cleanup: true
