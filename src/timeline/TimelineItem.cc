@@ -344,9 +344,11 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
         QFont usernameFont = font_;
         usernameFont.setBold(true);
 
+        QFontMetrics fm(usernameFont);
+
         userName_ = new QLabel(this);
         userName_->setFont(usernameFont);
-        userName_->setText(sender);
+        userName_->setText(fm.elidedText(sender, Qt::ElideRight, 500));
 
         if (body.isEmpty())
                 return;
