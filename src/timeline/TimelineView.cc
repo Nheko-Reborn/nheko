@@ -21,7 +21,6 @@
 
 #include "FloatingButton.h"
 #include "RoomMessages.h"
-#include "ScrollBar.h"
 
 #include "timeline/TimelineView.h"
 #include "timeline/widgets/AudioItem.h"
@@ -83,12 +82,18 @@ TimelineView::sliderRangeChanged(int min, int max)
 void
 TimelineView::fetchHistory()
 {
-        bool hasEnoughMessages = scroll_area_->verticalScrollBar()->isVisible();
+        if (!isScrollbarActivated() && !isTimelineFinished) {
+                if (!isVisible()) {
+                        // Check again later if the timeline became visible.
+                        // TODO: Use a backoff strategy.
+                        paginationTimer_->start(3000);
+                        return;
+                }
 
-        if (!hasEnoughMessages && !isTimelineFinished) {
                 isPaginationInProgress_ = true;
                 client_->messages(room_id_, prev_batch_token_);
-                paginationTimer_->start(500);
+                paginationTimer_->start(1500);
+
                 return;
         }
 

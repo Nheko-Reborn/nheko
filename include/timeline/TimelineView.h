@@ -27,13 +27,14 @@
 #include <QStyle>
 #include <QStyleOption>
 
-#include <mtx.hpp>
+#include <mtx/events.hpp>
+#include <mtx/responses/messages.hpp>
 
 #include "MatrixClient.h"
+#include "ScrollBar.h"
 #include "TimelineItem.h"
 
 class FloatingButton;
-class ScrollBar;
 struct DescInfo;
 
 // Contains info about a message shown in the history view
@@ -122,6 +123,7 @@ private:
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
         void readLastEvent() const;
+        bool isScrollbarActivated() { return scroll_area_->verticalScrollBar()->value() != 0; }
         QString getLastEventId() const;
         QString getEventSender(const mtx::events::collections::TimelineEvents &event) const;
 
