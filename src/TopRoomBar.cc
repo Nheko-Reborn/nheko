@@ -216,7 +216,7 @@ TopRoomBar::paintEvent(QPaintEvent *event)
                 elidedText =
                   QFontMetrics(topicLabel_->font())
                     .elidedText(roomTopic_, Qt::ElideRight, topicLabel_->width() - perFrameResize);
-        elidedText.replace(URL_REGEX, URL_HTML);
+        elidedText.replace(conf::strings::url_regex, conf::strings::url_html);
         topicLabel_->setText(elidedText);
 }
 

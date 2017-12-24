@@ -16,7 +16,6 @@
  */
 
 #include <QFontDatabase>
-#include <QRegExp>
 #include <QTextEdit>
 
 #include "Avatar.h"
@@ -27,9 +26,6 @@
 #include "timeline/widgets/FileItem.h"
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
-
-static const QRegExp URL_REGEX("((?:https?|ftp)://\\S+)");
-static const QString URL_HTML = "<a href=\"\\1\">\\1</a>";
 
 void
 TimelineItem::init()
@@ -84,7 +80,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         }
 
         body = body.toHtmlEscaped();
-        body.replace(URL_REGEX, URL_HTML);
+        body.replace(conf::strings::url_regex, conf::strings::url_html);
         body.replace("\n", "<br/>");
         generateTimestamp(timestamp);
 
@@ -206,7 +202,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 
         generateTimestamp(timestamp);
 
-        body.replace(URL_REGEX, URL_HTML);
+        body.replace(conf::strings::url_regex, conf::strings::url_html);
         body.replace("\n", "<br/>");
         body = "<i>" + body + "</i>";
 
@@ -252,7 +248,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
 
         generateTimestamp(timestamp);
         emoteMsg = emoteMsg.toHtmlEscaped();
-        emoteMsg.replace(URL_REGEX, URL_HTML);
+        emoteMsg.replace(conf::strings::url_regex, conf::strings::url_html);
         emoteMsg.replace("\n", "<br/>");
 
         if (with_sender) {
@@ -295,7 +291,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         generateTimestamp(timestamp);
 
         body = body.toHtmlEscaped();
-        body.replace(URL_REGEX, URL_HTML);
+        body.replace(conf::strings::url_regex, conf::strings::url_html);
         body.replace("\n", "<br/>");
 
         if (with_sender) {

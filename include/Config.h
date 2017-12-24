@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QRegExp>
+#include <QString>
+
 // Non-theme app configuration. Layouts, fonts spacing etc.
 //
 // Font sizes are in pixels.
@@ -14,6 +17,12 @@ static constexpr int typingNotificationFontSize = 11;
 
 namespace dialogs {
 static constexpr int labelSize = 15;
+}
+
+namespace strings {
+static const QString url_html = "<a href=\"\\1\">\\1</a>";
+static const QRegExp url_regex(
+  "((www\\.(?!\\.)|[a-z][a-z0-9+.-]*://)[^\\s<>'\"]+[^!,\\.\\s<>'\"\\]\\)\\:])");
 }
 
 // Window geometry.
