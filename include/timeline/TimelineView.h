@@ -91,6 +91,7 @@ public:
         void addUserMessage(const QString &url, const QString &filename);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
+        void addDateSeparator(QDateTime datetime, int position);
 
 public slots:
         void sliderRangeChanged(int min, int max);

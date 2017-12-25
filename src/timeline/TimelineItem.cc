@@ -73,10 +73,9 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
 
         if (ty == mtx::events::MessageType::Emote) {
                 body            = QString("* %1 %2").arg(displayName).arg(body);
-                descriptionMsg_ = {"", userid, body, descriptiveTime(timestamp)};
+                descriptionMsg_ = {"", userid, body, descriptiveTime(timestamp), timestamp};
         } else {
-                descriptionMsg_ = {
-                  "You: ", userid, body, descriptiveTime(QDateTime::currentDateTime())};
+                descriptionMsg_ = {"You: ", userid, body, descriptiveTime(timestamp), timestamp};
         }
 
         body = body.toHtmlEscaped();
@@ -189,16 +188,16 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 {
         init();
 
-        event_id_         = QString::fromStdString(event.event_id);
-        const auto sender = QString::fromStdString(event.sender);
+        event_id_            = QString::fromStdString(event.event_id);
+        const auto sender    = QString::fromStdString(event.sender);
+        const auto timestamp = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
+        auto body            = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
 
         descriptionMsg_ = {TimelineViewManager::displayName(sender),
                            sender,
                            " sent a notification",
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
-
-        auto body      = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
-        auto timestamp = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
+                           descriptiveTime(timestamp),
+                           timestamp};
 
         generateTimestamp(timestamp);
 
@@ -241,10 +240,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         auto displayName = TimelineViewManager::displayName(sender);
         auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(body);
 
-        descriptionMsg_ = {"",
-                           sender,
-                           emoteMsg,
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
+        descriptionMsg_ = {"", sender, emoteMsg, descriptiveTime(timestamp), timestamp};
 
         generateTimestamp(timestamp);
         emoteMsg = emoteMsg.toHtmlEscaped();
@@ -286,7 +282,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
                            sender,
                            QString(": %1").arg(body),
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
+                           descriptiveTime(timestamp),
+                           timestamp};
 
         generateTimestamp(timestamp);
 

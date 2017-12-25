@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QAction>
+#include <QDateTime>
 #include <QSharedPointer>
 #include <QWidget>
 
@@ -35,6 +36,7 @@ struct DescInfo
         QString userid;
         QString body;
         QString timestamp;
+        QDateTime datetime;
 };
 
 class RoomInfoListItem : public QWidget

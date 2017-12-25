@@ -142,7 +142,7 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
         auto timestamp   = QDateTime::currentDateTime();
 
         descriptionMsg_ = {
-          "You", userid, QString(" %1").arg(msgDescription), descriptiveTime(timestamp)};
+          "You", userid, QString(" %1").arg(msgDescription), descriptiveTime(timestamp), timestamp};
 
         generateTimestamp(timestamp);
 
@@ -183,7 +183,8 @@ TimelineItem::setupWidgetLayout(Widget *widget,
         descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
                            sender,
                            msgDescription,
-                           descriptiveTime(QDateTime::fromMSecsSinceEpoch(event.origin_server_ts))};
+                           descriptiveTime(timestamp),
+                           timestamp};
 
         generateTimestamp(timestamp);
 

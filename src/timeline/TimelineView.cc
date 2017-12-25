@@ -19,6 +19,7 @@
 #include <QFileInfo>
 #include <QTimer>
 
+#include "Config.h"
 #include "FloatingButton.h"
 #include "RoomMessages.h"
 
@@ -368,10 +369,38 @@ TimelineView::isSenderRendered(const QString &user_id, TimelineDirection directi
 void
 TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 {
-        if (direction == TimelineDirection::Bottom)
+        const auto newDate = item->descriptionMessage().datetime;
+
+        if (direction == TimelineDirection::Bottom) {
+                const auto lastItemPosition = scroll_layout_->count() - 1;
+                auto lastItem =
+                  static_cast<TimelineItem *>(scroll_layout_->itemAt(lastItemPosition)->widget());
+
+                if (lastItem) {
+                        auto oldDate = lastItem->descriptionMessage().datetime;
+
+                        if (oldDate.daysTo(newDate) != 0)
+                                addDateSeparator(newDate, lastItemPosition);
+                }
+
                 scroll_layout_->addWidget(item);
-        else
+        } else {
+                // The first item (position 0) is a stretch widget that pushes
+                // the widgets to the bottom of the page.
+                if (scroll_layout_->count() > 1) {
+                        auto firstItem =
+                          static_cast<TimelineItem *>(scroll_layout_->itemAt(1)->widget());
+
+                        if (firstItem) {
+                                auto oldDate = firstItem->descriptionMessage().datetime;
+
+                                if (newDate.daysTo(oldDate) != 0)
+                                        addDateSeparator(oldDate, 1);
+                        }
+                }
+
                 scroll_layout_->insertWidget(1, item);
+        }
 }
 
 void
@@ -561,6 +590,36 @@ TimelineView::event(QEvent *event)
         }
 
         return QWidget::event(event);
+}
+
+void
+TimelineView::addDateSeparator(QDateTime datetime, int position)
+{
+        auto now  = QDateTime::currentDateTime();
+        auto days = now.daysTo(datetime);
+
+        QString fmt;
+        QLabel *separator;
+
+        if (now.date().year() != datetime.date().year())
+                fmt = QString("ddd d MMMM yy");
+        else
+                fmt = QString("ddd d MMMM");
+
+        if (days == 0)
+                separator = new QLabel(tr("Today"));
+        else if (std::abs(days) == 1)
+                separator = new QLabel(tr("Yesterday"));
+        else
+                separator = new QLabel(datetime.toString(fmt));
+
+        if (separator) {
+                separator->setStyleSheet(
+                  QString("font-size: %1px").arg(conf::timeline::fonts::dateSeparator));
+                separator->setAlignment(Qt::AlignCenter);
+                separator->setContentsMargins(0, 15, 0, 15);
+                scroll_layout_->insertWidget(position, separator);
+        }
 }
 
 QString
