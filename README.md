@@ -48,7 +48,7 @@ sudo emerge -a nheko
 - CMake 3.1 or greater.
 - [LMDB](https://symas.com/lightning-memory-mapped-database/).
 - A compiler that supports C++11.
-    - Clang 3.6 (or greater).
+    - Clang 3.8 (or greater).
     - GCC 4.9.4 (or greater).
 
 #### Linux 
