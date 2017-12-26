@@ -22,7 +22,8 @@ Specifically there is support for:
 
 ### Installation
 
-There are continuous nightly releases [here](https://github.com/mujx/nheko/releases/tag/nightly) for Linux ([AppImage](https://appimage.org/)), Mac and Windows.
+There are continuous nightly releases [here](https://github.com/mujx/nheko/releases/tag/nightly)
+for Linux ([AppImage](https://appimage.org/), rpm, deb), Mac and Windows.
 
 #### Arch Linux
 ```bash
