@@ -31,6 +31,9 @@ RUN update-alternatives --install \
         clang-format \
         /usr/bin/clang-format-5.0 100
 
+RUN apt-get -y install ruby ruby-dev rubygems rpm && \
+    gem install --no-ri --no-rdoc fpm
+
 ENV PATH=/opt/qt59/bin:$PATH
 
 RUN mkdir /build

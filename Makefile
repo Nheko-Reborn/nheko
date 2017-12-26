@@ -41,5 +41,14 @@ docker-app-image: image
 		--privileged \
 		-v `pwd`:/build nheko-app-image make linux-appimage
 
+docker-packages: image
+	docker run \
+		-e CXX=g++-7 \
+		-e CC=gcc-7 \
+		-v `pwd`:/build nheko-app-image make release
+	docker run \
+		--privileged \
+		-v `pwd`:/build nheko-app-image ./.ci/linux/create-packages.sh
+
 clean:
 	rm -rf build
