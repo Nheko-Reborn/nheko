@@ -2,8 +2,8 @@ nheko
 ----
 [![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko)
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master)
+[![Latest Release](https://img.shields.io/github/release/mujx/nheko.svg)](https://github.com/mujx/nheko/releases)
 [![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
-[![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-red.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![AUR: nheko-git](https://img.shields.io/badge/AUR-nheko--git-blue.svg)](https://aur.archlinux.org/packages/nheko-git)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
