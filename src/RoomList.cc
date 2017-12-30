@@ -328,7 +328,7 @@ RoomList::sortRoomsByLastMessage()
                 if (room->lastMessageInfo().userid.isEmpty())
                         times.emplace(0, room);
                 else
-                        times.emplace(room->lastMessageInfo().datetime.toSecsSinceEpoch(), room);
+                        times.emplace(room->lastMessageInfo().datetime.toMSecsSinceEpoch(), room);
         }
 
         for (auto it = times.cbegin(); it != times.cend(); ++it) {
