@@ -79,6 +79,7 @@ public:
 
         void setAvatar(const QImage &avatar_image);
         void setDescriptionMessage(const DescInfo &info);
+        DescInfo lastMessageInfo() const { return lastMsgInfo_; }
 
         QColor highlightedBackgroundColor() const { return highlightedBackgroundColor_; }
         QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }

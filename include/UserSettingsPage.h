@@ -38,14 +38,26 @@ public:
         void load();
         void applyTheme();
         void setTheme(QString theme);
-        void setTray(bool state);
+        void setTray(bool state)
+        {
+                isTrayEnabled_ = state;
+                save();
+        };
+
+        void setRoomOrdering(bool state)
+        {
+                isOrderingEnabled_ = state;
+                save();
+        };
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
+        bool isOrderingEnabled() const { return isOrderingEnabled_; }
 
 private:
         QString theme_;
         bool isTrayEnabled_;
+        bool isOrderingEnabled_;
 };
 
 class HorizontalLine : public QFrame
@@ -84,6 +96,8 @@ private:
         QSharedPointer<UserSettings> settings_;
 
         Toggle *trayToggle_;
+        Toggle *roomOrderToggle_;
+
         QComboBox *themeCombo_;
 
         int sideMargin_ = 0;

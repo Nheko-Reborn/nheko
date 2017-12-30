@@ -37,15 +37,19 @@
 #include "TopRoomBar.h"
 #include "TypingDisplay.h"
 #include "UserInfoWidget.h"
+#include "UserSettingsPage.h"
 
 #include "timeline/TimelineViewManager.h"
 
 constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
 constexpr int SYNC_RETRY_TIMEOUT        = 10000;
 
-ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
+ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
+                   QSharedPointer<UserSettings> userSettings,
+                   QWidget *parent)
   : QWidget(parent)
   , client_(client)
+  , userSettings_{userSettings}
 {
         setObjectName("chatPage");
 
@@ -74,7 +78,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent)
           sidebarActions_, &SideBarActions::createRoom, client_.data(), &MatrixClient::createRoom);
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
-        room_list_        = new RoomList(client, sideBar_);
+        room_list_        = new RoomList(client, userSettings_, sideBar_);
 
         sideBarLayout_->addWidget(user_info_widget_);
         sideBarLayout_->addWidget(room_list_);

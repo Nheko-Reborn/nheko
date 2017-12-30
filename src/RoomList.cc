@@ -18,6 +18,7 @@
 #include <QBuffer>
 #include <QDebug>
 #include <QObject>
+#include <QTimer>
 
 #include "Cache.h"
 #include "MainWindow.h"
@@ -27,10 +28,14 @@
 #include "RoomList.h"
 #include "RoomSettings.h"
 #include "RoomState.h"
+#include "UserSettingsPage.h"
 
-RoomList::RoomList(QSharedPointer<MatrixClient> client, QWidget *parent)
+RoomList::RoomList(QSharedPointer<MatrixClient> client,
+                   QSharedPointer<UserSettings> userSettings,
+                   QWidget *parent)
   : QWidget(parent)
   , client_(client)
+  , userSettings_{userSettings}
 {
         setStyleSheet("border: none;");
         topLayout_ = new QVBoxLayout(this);
@@ -291,6 +296,61 @@ RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
         }
 
         rooms_.value(roomid)->setDescriptionMessage(info);
+
+        if (underMouse()) {
+                // When the user hover out of the roomlist a sort will be triggered.
+                isSortPending_ = true;
+                return;
+        }
+
+        isSortPending_ = false;
+
+        emit sortRoomsByLastMessage();
+}
+
+void
+RoomList::sortRoomsByLastMessage()
+{
+        if (!userSettings_->isOrderingEnabled())
+                return;
+
+        isSortPending_ = false;
+
+        std::multimap<uint64_t, RoomInfoListItem *, std::greater<uint64_t>> times;
+
+        for (int ii = 0; ii < contentsLayout_->count(); ++ii) {
+                auto room = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(ii)->widget());
+
+                if (!room)
+                        continue;
+
+                // Not a room message.
+                if (room->lastMessageInfo().userid.isEmpty())
+                        times.emplace(0, room);
+                else
+                        times.emplace(room->lastMessageInfo().datetime.toSecsSinceEpoch(), room);
+        }
+
+        for (auto it = times.cbegin(); it != times.cend(); ++it) {
+                const auto roomWidget   = it->second;
+                const auto currentIndex = contentsLayout_->indexOf(roomWidget);
+                const auto newIndex     = std::distance(times.cbegin(), it);
+
+                if (currentIndex == newIndex)
+                        continue;
+
+                contentsLayout_->removeWidget(roomWidget);
+                contentsLayout_->insertWidget(newIndex, roomWidget);
+        }
+}
+
+void
+RoomList::leaveEvent(QEvent *event)
+{
+        if (isSortPending_)
+                QTimer::singleShot(700, this, &RoomList::sortRoomsByLastMessage);
+
+        QWidget::leaveEvent(event);
 }
 
 void

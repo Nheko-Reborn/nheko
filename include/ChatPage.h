@@ -40,6 +40,7 @@ class TimelineViewManager;
 class TopRoomBar;
 class TypingDisplay;
 class UserInfoWidget;
+class UserSettings;
 
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
@@ -50,7 +51,9 @@ class ChatPage : public QWidget
         Q_OBJECT
 
 public:
-        ChatPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        ChatPage(QSharedPointer<MatrixClient> client,
+                 QSharedPointer<UserSettings> userSettings,
+                 QWidget *parent = 0);
         ~ChatPage();
 
         // Initialize all the components of the UI.
@@ -149,6 +152,9 @@ private:
 
         // Matrix Client API provider.
         QSharedPointer<MatrixClient> client_;
+
+        // Global user settings.
+        QSharedPointer<UserSettings> userSettings_;
 
         // LMDB wrapper.
         QSharedPointer<Cache> cache_;

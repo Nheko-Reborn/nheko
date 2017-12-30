@@ -36,6 +36,7 @@ class RoomInfoListItem;
 class RoomSettings;
 class RoomState;
 class Sync;
+class UserSettings;
 struct DescInfo;
 
 class RoomList : public QWidget
@@ -43,7 +44,9 @@ class RoomList : public QWidget
         Q_OBJECT
 
 public:
-        RoomList(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        RoomList(QSharedPointer<MatrixClient> client,
+                 QSharedPointer<UserSettings> userSettings,
+                 QWidget *parent = 0);
         ~RoomList();
 
         void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
@@ -81,6 +84,10 @@ public slots:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void leaveEvent(QEvent *event) override;
+
+private slots:
+        void sortRoomsByLastMessage();
 
 private:
         void calculateUnreadMessageCount();
@@ -101,4 +108,7 @@ private:
 
         QSharedPointer<MatrixClient> client_;
         QSharedPointer<Cache> cache_;
+        QSharedPointer<UserSettings> userSettings_;
+
+        bool isSortPending_ = false;
 };

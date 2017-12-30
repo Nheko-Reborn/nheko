@@ -58,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
         welcome_page_     = new WelcomePage(this);
         login_page_       = new LoginPage(client_, this);
         register_page_    = new RegisterPage(client_, this);
-        chat_page_        = new ChatPage(client_, this);
+        chat_page_        = new ChatPage(client_, userSettings_, this);
         userSettingsPage_ = new UserSettingsPage(userSettings_, this);
 
         // Initialize sliding widget manager.
