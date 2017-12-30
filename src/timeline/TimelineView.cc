@@ -374,7 +374,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
         if (direction == TimelineDirection::Bottom) {
                 const auto lastItemPosition = scroll_layout_->count() - 1;
                 auto lastItem =
-                  static_cast<TimelineItem *>(scroll_layout_->itemAt(lastItemPosition)->widget());
+                  qobject_cast<TimelineItem *>(scroll_layout_->itemAt(lastItemPosition)->widget());
 
                 if (lastItem) {
                         auto oldDate = lastItem->descriptionMessage().datetime;
@@ -389,7 +389,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                 // the widgets to the bottom of the page.
                 if (scroll_layout_->count() > 1) {
                         auto firstItem =
-                          static_cast<TimelineItem *>(scroll_layout_->itemAt(1)->widget());
+                          qobject_cast<TimelineItem *>(scroll_layout_->itemAt(1)->widget());
 
                         if (firstItem) {
                                 auto oldDate = firstItem->descriptionMessage().datetime;
