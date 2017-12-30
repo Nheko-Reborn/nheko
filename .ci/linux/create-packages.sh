@@ -5,7 +5,11 @@
 #
 
 DIR=package.dir
-VERSION=`git tag -l --points-at HEAD`
+TAG=`git tag -l --points-at HEAD`
+
+if [ -z "$TAG" ]; then
+    exit 0
+fi
 
 # Installing dependencies on travis.
 if [ ! -z "$TRAVIS_OS_NAME" ]; then
@@ -38,7 +42,7 @@ fpm --force \
     --name nheko \
     --description "Desktop client for the Matrix protocol" \
     --url "https://github.com/mujx/nheko" \
-    --version ${VERSION} \
+    --version ${TAG} \
     --architecture x86_64 \
     --maintainer "mujx (https://github.com/mujx)" \
     --license "GPLv3" \
@@ -46,4 +50,4 @@ fpm --force \
     --deb-no-default-config-files \
     --chdir ${DIR} usr
 
-fpm -s deb -t rpm nheko_${VERSION}_amd64.deb
+fpm -s deb -t rpm nheko_${TAG}_amd64.deb

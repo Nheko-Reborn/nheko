@@ -4,6 +4,11 @@ set -e
 
 APP=nheko
 DIR=${APP}.AppDir
+TAG=`git tag -l --points-at HEAD`
+
+if [ -z "$TAG" ]; then
+    exit 0
+fi
 
 # Set up AppImage structure.
 mkdir -p ${DIR}/usr/{bin,share/pixmaps,share/applications}
