@@ -49,6 +49,7 @@ TimelineView::TimelineView(QSharedPointer<MatrixClient> client,
   , client_{client}
 {
         init();
+        client_->messages(room_id_, "");
 }
 
 void
