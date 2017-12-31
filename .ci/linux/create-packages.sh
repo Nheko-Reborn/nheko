@@ -7,10 +7,6 @@
 DIR=package.dir
 TAG=`git tag -l --points-at HEAD`
 
-if [ -z "$TAG" ]; then
-    exit 0
-fi
-
 # Installing dependencies on travis.
 if [ ! -z "$TRAVIS_OS_NAME" ]; then
     sudo apt-add-repository -y ppa:brightbox/ruby-ng
