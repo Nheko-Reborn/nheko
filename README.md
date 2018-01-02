@@ -42,6 +42,14 @@ sudo layman -a matrix
 sudo emerge -a nheko
 ```
 
+#### Alpine Linux (and postmarketOS)
+
+Make sure you have the testing repositories from `edge` enabled. Note that this is not needed on postmarketOS.
+
+```sh
+sudo apk add nheko
+```
+
 ### Build Requirements
 
 - Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
