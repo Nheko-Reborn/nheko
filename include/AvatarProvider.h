@@ -20,6 +20,7 @@
 #include <QImage>
 #include <QSharedPointer>
 #include <QUrl>
+#include <functional>
 
 class MatrixClient;
 class TimelineItem;
