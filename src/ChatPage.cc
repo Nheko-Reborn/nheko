@@ -39,10 +39,13 @@
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 
+#include "dialogs/ReadReceipts.h"
 #include "timeline/TimelineViewManager.h"
 
 constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
 constexpr int SYNC_RETRY_TIMEOUT        = 10000;
+
+ChatPage *ChatPage::instance_ = nullptr;
 
 ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                    QSharedPointer<UserSettings> userSettings,
@@ -302,6 +305,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         });
 
         AvatarProvider::init(client);
+
+        instance_ = this;
 }
 
 void
@@ -734,6 +739,12 @@ ChatPage::updateJoinedRooms(const std::map<std::string, mtx::responses::JoinedRo
 
                 updateTypingUsers(roomid, it->second.ephemeral.typing);
 
+                if (it->second.ephemeral.receipts.size() > 0)
+                        QtConcurrent::run(cache_.data(),
+                                          &Cache::updateReadReceipt,
+                                          it->first,
+                                          it->second.ephemeral.receipts);
+
                 const auto newStateEvents    = it->second.state;
                 const auto newTimelineEvents = it->second.timeline;
 
@@ -807,6 +818,27 @@ ChatPage::generateMembershipDifference(
         }
 
         return stateDiff;
+}
+
+void
+ChatPage::showReadReceipts(const QString &event_id)
+{
+        if (receiptsDialog_.isNull()) {
+                receiptsDialog_ = QSharedPointer<dialogs::ReadReceipts>(
+                  new dialogs::ReadReceipts(this),
+                  [=](dialogs::ReadReceipts *dialog) { dialog->deleteLater(); });
+        }
+
+        if (receiptsModal_.isNull()) {
+                receiptsModal_ = QSharedPointer<OverlayModal>(
+                  new OverlayModal(MainWindow::instance(), receiptsDialog_.data()),
+                  [=](OverlayModal *modal) { modal->deleteLater(); });
+                receiptsModal_->setDuration(0);
+                receiptsModal_->setColor(QColor(30, 30, 30, 170));
+        }
+
+        receiptsDialog_->addUsers(cache_->readReceipts(event_id, current_room_));
+        receiptsModal_->fadeIn();
 }
 
 ChatPage::~ChatPage() {}

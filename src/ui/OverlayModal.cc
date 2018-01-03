@@ -47,6 +47,8 @@ OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
                 if (animation_->direction() == QAbstractAnimation::Forward)
                         this->close();
         });
+
+        content->setFocus();
 }
 
 void
@@ -71,4 +73,13 @@ OverlayModal::fadeOut()
 {
         animation_->setDirection(QAbstractAnimation::Forward);
         animation_->start();
+}
+
+void
+OverlayModal::keyPressEvent(QKeyEvent *event)
+{
+        if (event->key() == Qt::Key_Escape) {
+                event->accept();
+                fadeOut();
+        }
 }

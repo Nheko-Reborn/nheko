@@ -87,6 +87,7 @@ public:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
         void init();
@@ -115,6 +116,9 @@ private:
         QString event_id_;
 
         DescInfo descriptionMsg_;
+
+        QMenu *receiptsMenu_;
+        QAction *showReadReceipts_;
 
         QHBoxLayout *topLayout_;
         QVBoxLayout *sideLayout_; // Avatar or Timestamp
@@ -156,7 +160,7 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
                 setupAvatarLayout(displayName);
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(userid, this);
+                AvatarProvider::resolve(userid, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
         }
@@ -199,7 +203,7 @@ TimelineItem::setupWidgetLayout(Widget *widget,
 
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(sender, this);
+                AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
         }

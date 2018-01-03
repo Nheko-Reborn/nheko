@@ -36,7 +36,7 @@ class AvatarProvider : public QObject
 
 public:
         static void init(QSharedPointer<MatrixClient> client);
-        static void resolve(const QString &userId, TimelineItem *item);
+        static void resolve(const QString &userId, std::function<void(QImage)> callback);
         static void setAvatarUrl(const QString &userId, const QUrl &url);
 
         static void clear();
@@ -48,5 +48,5 @@ private:
 
         using UserID = QString;
         static QMap<UserID, AvatarData> avatars_;
-        static QMap<UserID, QList<TimelineItem *>> toBeResolved_;
+        static QMap<UserID, QList<std::function<void(QImage)>>> toBeResolved_;
 };

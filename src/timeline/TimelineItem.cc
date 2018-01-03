@@ -15,10 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QContextMenuEvent>
 #include <QFontDatabase>
+#include <QMenu>
 #include <QTextEdit>
 
 #include "Avatar.h"
+#include "ChatPage.h"
 #include "Config.h"
 
 #include "timeline/TimelineItem.h"
@@ -38,6 +41,14 @@ TimelineItem::init()
         font_.setPixelSize(conf::fontSize);
 
         QFontMetrics fm(font_);
+
+        receiptsMenu_     = new QMenu(this);
+        showReadReceipts_ = new QAction("Read receipts", this);
+        receiptsMenu_->addAction(showReadReceipts_);
+        connect(showReadReceipts_, &QAction::triggered, this, [=]() {
+                if (!event_id_.isEmpty())
+                        ChatPage::instance()->showReadReceipts(event_id_);
+        });
 
         topLayout_  = new QHBoxLayout(this);
         sideLayout_ = new QVBoxLayout;
@@ -88,7 +99,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                 setupAvatarLayout(displayName);
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(userid, this);
+                AvatarProvider::resolve(userid, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -213,7 +224,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(sender, this);
+                AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -252,7 +263,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
                 setupAvatarLayout(displayName);
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(sender, this);
+                AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(emoteMsg);
                 setupSimpleLayout();
@@ -297,7 +308,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 
                 mainLayout_->addLayout(headerLayout_);
 
-                AvatarProvider::resolve(sender, this);
+                AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -470,6 +481,13 @@ TimelineItem::descriptiveTime(const QDateTime &then)
 }
 
 TimelineItem::~TimelineItem() {}
+
+void
+TimelineItem::contextMenuEvent(QContextMenuEvent *event)
+{
+        if (receiptsMenu_)
+                receiptsMenu_->exec(event->globalPos());
+}
 
 void
 TimelineItem::paintEvent(QPaintEvent *)

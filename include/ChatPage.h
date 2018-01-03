@@ -42,6 +42,10 @@ class TypingDisplay;
 class UserInfoWidget;
 class UserSettings;
 
+namespace dialogs {
+class ReadReceipts;
+}
+
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
 constexpr int TYPING_REFRESH_TIMEOUT = 10000;
@@ -59,6 +63,9 @@ public:
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
         void showQuickSwitcher();
+        void showReadReceipts(const QString &event_id);
+
+        static ChatPage *instance() { return instance_; }
 
 signals:
         void contentLoaded();
@@ -84,6 +91,8 @@ private slots:
         void removeInvite(const QString &room_id);
 
 private:
+        static ChatPage *instance_;
+
         using UserID      = QString;
         using RoomStates  = QMap<UserID, RoomState>;
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
@@ -149,6 +158,9 @@ private:
 
         QSharedPointer<QuickSwitcher> quickSwitcher_;
         QSharedPointer<OverlayModal> quickSwitcherModal_;
+
+        QSharedPointer<dialogs::ReadReceipts> receiptsDialog_;
+        QSharedPointer<OverlayModal> receiptsModal_;
 
         // Matrix Client API provider.
         QSharedPointer<MatrixClient> client_;

@@ -36,6 +36,7 @@ Cache::Cache(const QString &userId)
   , roomDb_{0}
   , invitesDb_{0}
   , imagesDb_{0}
+  , readReceiptsDb_{0}
   , isMounted_{false}
   , userId_{userId}
 {}
@@ -89,11 +90,12 @@ Cache::setup()
                 env_.open(statePath.toStdString().c_str());
         }
 
-        auto txn   = lmdb::txn::begin(env_);
-        stateDb_   = lmdb::dbi::open(txn, "state", MDB_CREATE);
-        roomDb_    = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
-        invitesDb_ = lmdb::dbi::open(txn, "invites", MDB_CREATE);
-        imagesDb_  = lmdb::dbi::open(txn, "images", MDB_CREATE);
+        auto txn        = lmdb::txn::begin(env_);
+        stateDb_        = lmdb::dbi::open(txn, "state", MDB_CREATE);
+        roomDb_         = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
+        invitesDb_      = lmdb::dbi::open(txn, "invites", MDB_CREATE);
+        imagesDb_       = lmdb::dbi::open(txn, "images", MDB_CREATE);
+        readReceiptsDb_ = lmdb::dbi::open(txn, "read_receipts", MDB_CREATE);
 
         txn.commit();
 
@@ -447,5 +449,96 @@ Cache::setInvites(const std::map<std::string, mtx::responses::InvitedRoom> &invi
         } catch (const lmdb::error &e) {
                 qCritical() << "setInvitedRooms: " << e.what();
                 unmount();
+        }
+}
+
+std::multimap<uint64_t, std::string>
+Cache::readReceipts(const QString &event_id, const QString &room_id)
+{
+        std::multimap<uint64_t, std::string> receipts;
+
+        ReadReceiptKey receipt_key{event_id.toStdString(), room_id.toStdString()};
+        nlohmann::json json_key = receipt_key;
+
+        try {
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                auto key = json_key.dump();
+
+                lmdb::val value;
+
+                bool res =
+                  lmdb::dbi_get(txn, readReceiptsDb_, lmdb::val(key.data(), key.size()), value);
+
+                txn.commit();
+
+                if (res) {
+                        auto json_response = json::parse(std::string(value.data(), value.size()));
+                        auto values        = json_response.get<std::vector<ReadReceiptValue>>();
+
+                        for (auto v : values)
+                                receipts.emplace(v.ts, v.user_id);
+                }
+
+        } catch (const lmdb::error &e) {
+                qCritical() << "readReceipts:" << e.what();
+        }
+
+        return receipts;
+}
+
+using Receipts = std::map<std::string, std::map<std::string, uint64_t>>;
+void
+Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
+{
+        for (auto receipt : receipts) {
+                const auto event_id = receipt.first;
+                auto event_receipts = receipt.second;
+
+                ReadReceiptKey receipt_key{event_id, room_id};
+                nlohmann::json json_key = receipt_key;
+
+                try {
+                        auto read_txn  = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                        const auto key = json_key.dump();
+
+                        lmdb::val prev_value;
+
+                        bool exists = lmdb::dbi_get(
+                          read_txn, readReceiptsDb_, lmdb::val(key.data(), key.size()), prev_value);
+
+                        read_txn.commit();
+
+                        std::vector<ReadReceiptValue> saved_receipts;
+
+                        // If an entry for the event id already exists, we would
+                        // merge the existing receipts with the new ones.
+                        if (exists) {
+                                auto json_value =
+                                  json::parse(std::string(prev_value.data(), prev_value.size()));
+
+                                // Retrieve the saved receipts.
+                                saved_receipts = json_value.get<std::vector<ReadReceiptValue>>();
+                        }
+
+                        // Append the new ones.
+                        for (auto event_receipt : event_receipts)
+                                saved_receipts.push_back(
+                                  ReadReceiptValue{event_receipt.first, event_receipt.second});
+
+                        // Save back the merged (or only the new) receipts.
+                        nlohmann::json json_updated_value = saved_receipts;
+                        std::string merged_receipts       = json_updated_value.dump();
+
+                        auto txn = lmdb::txn::begin(env_);
+
+                        lmdb::dbi_put(txn,
+                                      readReceiptsDb_,
+                                      lmdb::val(key.data(), key.size()),
+                                      lmdb::val(merged_receipts.data(), merged_receipts.size()));
+
+                        txn.commit();
+                } catch (const lmdb::error &e) {
+                        qCritical() << "updateReadReceipts:" << e.what();
+                }
         }
 }

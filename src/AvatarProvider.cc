@@ -18,12 +18,10 @@
 #include "AvatarProvider.h"
 #include "MatrixClient.h"
 
-#include "timeline/TimelineItem.h"
-
 QSharedPointer<MatrixClient> AvatarProvider::client_;
 
 QMap<QString, AvatarData> AvatarProvider::avatars_;
-QMap<QString, QList<TimelineItem *>> AvatarProvider::toBeResolved_;
+QMap<QString, QList<std::function<void(QImage)>>> AvatarProvider::toBeResolved_;
 
 void
 AvatarProvider::init(QSharedPointer<MatrixClient> client)
@@ -37,11 +35,11 @@ void
 AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
 {
         if (toBeResolved_.contains(uid)) {
-                auto items = toBeResolved_[uid];
+                auto callbacks = toBeResolved_[uid];
 
                 // Update all the timeline items with the resolved avatar.
-                for (const auto item : items)
-                        item->setUserAvatar(img);
+                for (const auto callback : callbacks)
+                        callback(img);
 
                 toBeResolved_.remove(uid);
         }
@@ -53,7 +51,7 @@ AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
 }
 
 void
-AvatarProvider::resolve(const QString &userId, TimelineItem *item)
+AvatarProvider::resolve(const QString &userId, std::function<void(QImage)> callback)
 {
         if (!avatars_.contains(userId))
                 return;
@@ -61,7 +59,7 @@ AvatarProvider::resolve(const QString &userId, TimelineItem *item)
         auto img = avatars_[userId].img;
 
         if (!img.isNull()) {
-                item->setUserAvatar(img);
+                callback(img);
                 return;
         }
 
@@ -69,12 +67,12 @@ AvatarProvider::resolve(const QString &userId, TimelineItem *item)
         if (!toBeResolved_.contains(userId)) {
                 client_->fetchUserAvatar(userId, avatars_[userId].url);
 
-                QList<TimelineItem *> timelineItems;
-                timelineItems.push_back(item);
+                QList<std::function<void(QImage)>> items;
+                items.push_back(callback);
 
-                toBeResolved_.insert(userId, timelineItems);
+                toBeResolved_.insert(userId, items);
         } else {
-                toBeResolved_[userId].push_back(item);
+                toBeResolved_[userId].push_back(callback);
         }
 }
 

@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QGraphicsOpacityEffect>
+#include <QKeyEvent>
 #include <QPaintEvent>
 #include <QPropertyAnimation>
 
@@ -37,6 +38,7 @@ public:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void keyPressEvent(QKeyEvent *event) override;
 
 private:
         int duration_;

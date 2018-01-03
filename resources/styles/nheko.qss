@@ -86,6 +86,7 @@ dialogs--Logout,
 dialogs--LeaveRoom,
 dialogs--CreateRoom,
 dialogs--InviteUsers,
+dialogs--ReadReceipts,
 dialogs--JoinRoom {
     background-color: white;
     color: #333;

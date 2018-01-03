@@ -18,10 +18,51 @@
 #pragma once
 
 #include <QDir>
+#include <json.hpp>
 #include <lmdb++.h>
 #include <mtx/responses.hpp>
 
 class RoomState;
+
+//! Used to uniquely identify a list of read receipts.
+struct ReadReceiptKey
+{
+        std::string event_id;
+        std::string room_id;
+};
+
+inline void
+to_json(json &j, const ReadReceiptKey &key)
+{
+        j = json{{"event_id", key.event_id}, {"room_id", key.room_id}};
+}
+
+inline void
+from_json(const json &j, ReadReceiptKey &key)
+{
+        key.event_id = j.at("event_id").get<std::string>();
+        key.room_id  = j.at("room_id").get<std::string>();
+}
+
+//! Decribes a read receipt stored in cache.
+struct ReadReceiptValue
+{
+        std::string user_id;
+        uint64_t ts;
+};
+
+inline void
+to_json(json &j, const ReadReceiptValue &value)
+{
+        j = json{{"user_id", value.user_id}, {"ts", value.ts}};
+}
+
+inline void
+from_json(const json &j, ReadReceiptValue &value)
+{
+        value.user_id = j.at("user_id").get<std::string>();
+        value.ts      = j.at("ts").get<uint64_t>();
+}
 
 class Cache
 {
@@ -48,6 +89,19 @@ public:
         bool isFormatValid();
         void setCurrentFormat();
 
+        //! Adds a user to the read list for the given event.
+        //!
+        //! There should be only one user id present in a receipt list per room.
+        //! The user id should be removed from any other lists.
+        using Receipts = std::map<std::string, std::map<std::string, uint64_t>>;
+        void updateReadReceipt(const std::string &room_id, const Receipts &receipts);
+
+        //! Retrieve all the read receipts for the given event id and room.
+        //!
+        //! Returns a map of user ids and the time of the read receipt in milliseconds.
+        using UserReceipts = std::multimap<uint64_t, std::string>;
+        UserReceipts readReceipts(const QString &event_id, const QString &room_id);
+
         QByteArray image(const QString &url) const;
         void saveImage(const QString &url, const QByteArray &data);
 
@@ -60,6 +114,7 @@ private:
         lmdb::dbi roomDb_;
         lmdb::dbi invitesDb_;
         lmdb::dbi imagesDb_;
+        lmdb::dbi readReceiptsDb_;
 
         bool isMounted_;
 
