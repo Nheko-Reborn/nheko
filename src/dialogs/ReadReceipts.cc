@@ -62,7 +62,7 @@ ReceiptItem::dateFormat(const QDateTime &then) const
         if (days == 0)
                 return QString("Today %1").arg(then.toString("HH:mm"));
         else if (days < 2)
-                return QString("Yesterday %1").arg(then.toString("HH::mm"));
+                return QString("Yesterday %1").arg(then.toString("HH:mm"));
         else if (days < 365)
                 return then.toString("dd/MM HH:mm");
 
