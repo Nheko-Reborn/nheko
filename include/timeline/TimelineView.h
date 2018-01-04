@@ -23,7 +23,6 @@
 #include <QList>
 #include <QQueue>
 #include <QScrollArea>
-#include <QSettings>
 #include <QStyle>
 #include <QStyleOption>
 
@@ -119,10 +118,13 @@ protected:
         bool event(QEvent *event) override;
 
 private:
+        using TimelineEvent = mtx::events::collections::TimelineEvents;
+
         void init();
         void addTimelineItem(TimelineItem *item, TimelineDirection direction);
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
+        void notifyForLastEvent(const TimelineEvent &event);
         void readLastEvent() const;
         bool isScrollbarActivated() { return scroll_area_->verticalScrollBar()->value() != 0; }
         QString getLastEventId() const;
@@ -193,6 +195,18 @@ private:
 
         TimelineDirection lastMessageDirection_;
 
+        //! Messages received by sync not added to the timeline.
+        std::vector<TimelineEvent> bottomMessages_;
+
+        //! Render the given timeline events to the bottom of the timeline.
+        void renderBottomEvents(const std::vector<TimelineEvent> &events);
+
+        //! Decide if the given timeline event can be rendered.
+        inline bool isViewable(const TimelineEvent &event) const;
+
+        //! Decide if the given event should trigger a notification.
+        inline bool isNotifiable(const TimelineEvent &event) const;
+
         // The events currently rendered. Used for duplicate detection.
         QMap<QString, bool> eventIds_;
         QQueue<PendingMessage> pending_msgs_;
@@ -204,20 +218,19 @@ template<class Widget, mtx::events::MessageType MsgType>
 void
 TimelineView::addUserMessage(const QString &url, const QString &filename)
 {
-        QSettings settings;
-        auto user_id     = settings.value("auth/user_id").toString();
-        auto with_sender = lastSender_ != user_id;
+        auto with_sender = lastSender_ != local_user_;
 
         auto widget = new Widget(client_, url, filename, this);
 
-        TimelineItem *view_item = new TimelineItem(widget, user_id, with_sender, scroll_widget_);
+        TimelineItem *view_item =
+          new TimelineItem(widget, local_user_, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
         QApplication::processEvents();
 
-        lastSender_ = user_id;
+        lastSender_ = local_user_;
 
         int txn_id = client_->incrementTransactionId();
 

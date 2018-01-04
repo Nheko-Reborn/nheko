@@ -207,6 +207,7 @@ set(SRC_FILES
     src/TopRoomBar.cc
     src/TrayIcon.cc
     src/TypingDisplay.cc
+    src/Utils.cc
     src/UserInfoWidget.cc
     src/UserSettingsPage.cc
     src/WelcomePage.cc

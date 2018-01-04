@@ -22,12 +22,15 @@
 #include "Config.h"
 #include "FloatingButton.h"
 #include "RoomMessages.h"
+#include "Utils.h"
 
 #include "timeline/TimelineView.h"
 #include "timeline/widgets/AudioItem.h"
 #include "timeline/widgets/FileItem.h"
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
+
+using TimelineEvent = mtx::events::collections::TimelineEvents;
 
 TimelineView::TimelineView(const mtx::responses::Timeline &timeline,
                            QSharedPointer<MatrixClient> client,
@@ -251,42 +254,88 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
         return nullptr;
 }
 
-int
-TimelineView::addEvents(const mtx::responses::Timeline &timeline)
+void
+TimelineView::renderBottomEvents(const std::vector<TimelineEvent> &events)
 {
-        int message_count = 0;
-
-        QSettings settings;
-        QString localUser = settings.value("auth/user_id").toString();
-
-        for (const auto &event : timeline.events) {
+        for (const auto &event : events) {
                 TimelineItem *item = parseMessageEvent(event, TimelineDirection::Bottom);
 
-                if (item != nullptr) {
+                if (item != nullptr)
                         addTimelineItem(item, TimelineDirection::Bottom);
-
-                        if (localUser != getEventSender(event))
-                                message_count += 1;
-                }
         }
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
         QApplication::processEvents();
+}
+
+int
+TimelineView::addEvents(const mtx::responses::Timeline &timeline)
+{
+        int message_count = 0;
 
         if (isInitialSync) {
                 prev_batch_token_ = QString::fromStdString(timeline.prev_batch);
                 isInitialSync     = false;
         }
 
-        // Exclude the top stretch.
-        if (timeline.events.size() != 0 && scroll_layout_->count() > 1)
-                notifyForLastEvent();
+        for (const auto &e : timeline.events) {
+                // Save the message if it can be rendered.
+                if (isViewable(e))
+                        bottomMessages_.push_back(e);
 
-        if (isActiveWindow() && isVisible() && timeline.events.size() > 0)
-                readLastEvent();
+                // Calculate notifications.
+                if (isNotifiable(e))
+                        message_count += 1;
+        }
+
+        if (!bottomMessages_.empty())
+                notifyForLastEvent(bottomMessages_[bottomMessages_.size() - 1]);
+
+        // If the current timeline is open and there are messages to be rendered.
+        if (isVisible() && !bottomMessages_.empty()) {
+                renderBottomEvents(bottomMessages_);
+
+                // Free up space for new messages.
+                bottomMessages_.clear();
+
+                // Send a read receipt for the last event.
+                if (isActiveWindow())
+                        readLastEvent();
+        }
 
         return message_count;
+}
+
+inline bool
+TimelineView::isViewable(const TimelineEvent &event) const
+{
+        namespace msg = mtx::events::msg;
+
+        return mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::File>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Image>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Notice>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Text>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event);
+}
+
+inline bool
+TimelineView::isNotifiable(const TimelineEvent &event) const
+{
+        namespace msg = mtx::events::msg;
+
+        if (local_user_ == getEventSender(event))
+                return false;
+
+        return mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::File>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Image>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Notice>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Text>>(event) ||
+               mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event);
 }
 
 void
@@ -420,18 +469,17 @@ TimelineView::updatePendingMessage(int txn_id, QString event_id)
 void
 TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 {
-        QSettings settings;
-        auto user_id     = settings.value("auth/user_id").toString();
-        auto with_sender = lastSender_ != user_id;
+        auto with_sender = lastSender_ != local_user_;
 
-        TimelineItem *view_item = new TimelineItem(ty, user_id, body, with_sender, scroll_widget_);
+        TimelineItem *view_item =
+          new TimelineItem(ty, local_user_, body, with_sender, scroll_widget_);
         scroll_layout_->addWidget(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
         QApplication::processEvents();
 
-        lastSender_ = user_id;
+        lastSender_ = local_user_;
 
         int txn_id = client_->incrementTransactionId();
         PendingMessage message(ty, txn_id, body, "", "", view_item);
@@ -481,6 +529,15 @@ TimelineView::notifyForLastEvent()
                 emit updateLastTimelineMessage(room_id_, lastTimelineItem->descriptionMessage());
         else
                 qWarning() << "Cast to TimelineView failed" << room_id_;
+}
+
+void
+TimelineView::notifyForLastEvent(const TimelineEvent &event)
+{
+        auto descInfo = utils::getMessageDescription(event, local_user_);
+
+        if (!descInfo.timestamp.isEmpty())
+                emit updateLastTimelineMessage(room_id_, descInfo);
 }
 
 bool
@@ -575,6 +632,12 @@ TimelineView::getLastEventId() const
 void
 TimelineView::showEvent(QShowEvent *event)
 {
+        if (!bottomMessages_.empty()) {
+                renderBottomEvents(bottomMessages_);
+                bottomMessages_.clear();
+                scrollDown();
+        }
+
         readLastEvent();
 
         QWidget::showEvent(event);
