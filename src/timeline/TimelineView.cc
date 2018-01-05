@@ -460,6 +460,10 @@ TimelineView::updatePendingMessage(int txn_id, QString event_id)
             pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
                 auto msg     = pending_msgs_.dequeue();
                 msg.event_id = event_id;
+
+                if (msg.widget)
+                        msg.widget->setEventId(event_id);
+
                 pending_sent_msgs_.append(msg);
         }
 
