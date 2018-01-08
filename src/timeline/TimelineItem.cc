@@ -347,7 +347,7 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
         }
 
         QFont usernameFont = font_;
-        usernameFont.setBold(true);
+        usernameFont.setWeight(60);
 
         QFontMetrics fm(usernameFont);
 
