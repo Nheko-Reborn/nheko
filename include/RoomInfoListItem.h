@@ -73,9 +73,10 @@ public:
         void clearUnreadMessageCount();
         void setState(const RoomState &state);
 
-        bool isPressed() const { return isPressed_; }
-        RoomState state() const { return state_; }
-        int unreadMessageCount() const { return unreadMsgCount_; }
+        QString roomId();
+        bool isPressed() const { return isPressed_; };
+        RoomState state() const { return state_; };
+        int unreadMessageCount() const { return unreadMsgCount_; };
 
         void setAvatar(const QImage &avatar_image);
         void setDescriptionMessage(const DescInfo &info);
@@ -182,3 +183,9 @@ private:
         QRectF acceptBtnRegion_;
         QRectF declineBtnRegion_;
 };
+
+inline QString
+RoomInfoListItem::roomId()
+{
+        return roomId_;
+}

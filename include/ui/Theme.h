@@ -13,8 +13,9 @@ enum class AvatarType
 };
 
 namespace sidebar {
-static const int SmallSize  = 60;
-static const int NormalSize = 300;
+static const int SmallSize              = 60;
+static const int NormalSize             = 300;
+static const int CommunitiesSidebarSize = 64;
 }
 // Default font size.
 const int FontSize = 16;

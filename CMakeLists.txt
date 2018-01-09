@@ -186,6 +186,9 @@ set(SRC_FILES
     src/AvatarProvider.cc
     src/Cache.cc
     src/ChatPage.cc
+    src/CommunitiesListItem.cc
+    src/CommunitiesList.cc
+    src/Community.cc
     src/Deserializable.cc
     src/InviteeItem.cc
     src/InputValidator.cc
@@ -265,6 +268,9 @@ qt5_wrap_cpp(MOC_HEADERS
 
     include/AvatarProvider.h
     include/ChatPage.h
+    include/CommunitiesListItem.h
+    include/CommunitiesList.h
+    include/Community.h
     include/LoginPage.h
     include/MainWindow.h
     include/InviteeItem.h

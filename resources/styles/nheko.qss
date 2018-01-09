@@ -17,6 +17,11 @@ RoomList > * {
     background-color: white;
 }
 
+CommunitiesList,
+CommunitiesList > * {
+    background-color: white;
+}
+
 FlatButton {
     qproperty-foregroundColor: #333;
 }
@@ -50,6 +55,12 @@ RoomInfoListItem {
 
     qproperty-btnColor: #ccc;
     qproperty-btnTextColor: #333;
+}
+
+CommunitiesListItem {
+    qproperty-highlightedBackgroundColor: #38A3D8;
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 128);
+    qproperty-backgroundColor: white;
 }
 
 #ChatPageLoadSpinner {

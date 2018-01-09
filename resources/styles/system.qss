@@ -60,6 +60,12 @@ RoomInfoListItem {
     qproperty-btnTextColor: palette(text);
 }
 
+CommunitiesListItem {
+    qproperty-highlightedBackgroundColor: palette(highlight);
+    qproperty-hoverBackgroundColor: palette(mid);
+    qproperty-backgroundColor: palette(window);
+}
+
 LoadingIndicator {
     qproperty-color: palette(highlight);
 }

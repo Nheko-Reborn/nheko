@@ -315,10 +315,7 @@ RoomInfoListItem::clearUnreadMessageCount()
 void
 RoomInfoListItem::setPressedState(bool state)
 {
-        if (!isPressed_ && state) {
-                isPressed_ = state;
-                update();
-        } else if (isPressed_ && !state) {
+        if (isPressed_ != state) {
                 isPressed_ = state;
                 update();
         }

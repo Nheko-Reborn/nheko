@@ -35,6 +35,9 @@ ui_*.h
 
 *.autosave
 
+# VSCode
+.vscode/*
+
 #QtCtreator Qml
 *.qmlproject.user
 *.qmlproject.user.*

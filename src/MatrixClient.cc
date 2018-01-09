@@ -112,7 +112,6 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
                 }
         });
 }
-
 void
 MatrixClient::logout() noexcept
 {
@@ -445,6 +444,46 @@ MatrixClient::getOwnProfile() noexcept
 }
 
 void
+MatrixClient::getOwnCommunities() noexcept
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + "/joined_groups");
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+
+        QNetworkReply *reply = get(request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data = reply->readAll();
+                auto json = QJsonDocument::fromJson(data).object();
+
+                try {
+                        QList<QString> response;
+                        for (auto it = json["groups"].toArray().constBegin();
+                             it != json["groups"].toArray().constEnd();
+                             it++) {
+                                response.append(it->toString());
+                        }
+                        emit getOwnCommunitiesResponse(response);
+                } catch (DeserializationException &e) {
+                        qWarning() << "Own communities:" << e.what();
+                }
+        });
+}
+
+void
 MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
 {
         QList<QString> url_parts = avatar_url.toString().split("mxc://");
@@ -487,6 +526,113 @@ MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
                 pixmap.loadFromData(img);
 
                 emit roomAvatarRetrieved(roomid, pixmap, avatar_url.toString(), img);
+        });
+}
+
+void
+MatrixClient::fetchCommunityAvatar(const QString &communityId, const QUrl &avatar_url)
+{
+        QList<QString> url_parts = avatar_url.toString().split("mxc://");
+
+        if (url_parts.size() != 2) {
+                qDebug() << "Invalid format for community avatar " << avatar_url.toString();
+                return;
+        }
+
+        QUrlQuery query;
+        query.addQueryItem("width", "512");
+        query.addQueryItem("height", "512");
+        query.addQueryItem("method", "crop");
+
+        QString media_url =
+          QString("%1/_matrix/media/r0/thumbnail/%2").arg(getHomeServer().toString(), url_parts[1]);
+
+        QUrl endpoint(media_url);
+        endpoint.setQuery(query);
+
+        QNetworkRequest avatar_request(endpoint);
+
+        QNetworkReply *reply = get(avatar_request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply, communityId]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto img = reply->readAll();
+
+                if (img.size() == 0)
+                        return;
+
+                QPixmap pixmap;
+                pixmap.loadFromData(img);
+
+                emit communityAvatarRetrieved(communityId, pixmap);
+        });
+}
+
+void
+MatrixClient::fetchCommunityProfile(const QString &communityId)
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + "/groups/" + communityId + "/profile");
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+
+        QNetworkReply *reply = get(request);
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply, communityId]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data       = reply->readAll();
+                const auto json = QJsonDocument::fromJson(data).object();
+
+                emit communityProfileRetrieved(communityId, json);
+        });
+}
+
+void
+MatrixClient::fetchCommunityRooms(const QString &communityId)
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + "/groups/" + communityId + "/rooms");
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+
+        QNetworkReply *reply = get(request);
+        connect(reply, &QNetworkReply::finished, this, [this, reply, communityId]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status >= 400) {
+                        qWarning() << reply->errorString();
+                        return;
+                }
+
+                auto data       = reply->readAll();
+                const auto json = QJsonDocument::fromJson(data).object();
+
+                emit communityRoomsRetrieved(communityId, json);
         });
 }
 

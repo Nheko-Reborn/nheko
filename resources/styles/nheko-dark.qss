@@ -17,6 +17,10 @@ RoomList > * {
     background-color: #383c4a;
 }
 
+CommunitiesList,
+CommunitiesList > * {
+    background-color: #383c4a;
+}
 FlatButton {
     qproperty-foregroundColor: #caccd1;
     qproperty-backgroundColor: #333;
@@ -52,6 +56,12 @@ RoomInfoListItem {
 
     qproperty-btnColor: #414A59;
     qproperty-btnTextColor: white;
+}
+
+CommunitiesListItem {
+    qproperty-highlightedBackgroundColor: #5294e2;
+    qproperty-hoverBackgroundColor: #39679e;
+    qproperty-backgroundColor: #383c4a;
 }
 
 LoadingIndicator {
