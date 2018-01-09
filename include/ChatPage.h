@@ -119,6 +119,8 @@ private:
         void loadStateFromCache();
         void deleteConfigs();
         void resetUI();
+        //! Decides whether or not to hide the group's sidebar.
+        void setGroupViewState(bool isEnabled);
 
         template<class Collection>
         Memberships getMemberships(const std::vector<Collection> &events) const;

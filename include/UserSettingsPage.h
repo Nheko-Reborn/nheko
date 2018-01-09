@@ -29,8 +29,10 @@ constexpr int OptionMargin       = 6;
 constexpr int LayoutTopMargin    = 50;
 constexpr int LayoutBottomMargin = LayoutTopMargin;
 
-class UserSettings
+class UserSettings : public QObject
 {
+        Q_OBJECT
+
 public:
         UserSettings();
 
@@ -50,14 +52,28 @@ public:
                 save();
         };
 
+        void setGroupView(bool state)
+        {
+                if (isGroupViewEnabled_ != state)
+                        emit groupViewStateChanged(state);
+
+                isGroupViewEnabled_ = state;
+                save();
+        };
+
         QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isOrderingEnabled() const { return isOrderingEnabled_; }
+        bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
+
+signals:
+        void groupViewStateChanged(bool state);
 
 private:
         QString theme_;
         bool isTrayEnabled_;
         bool isOrderingEnabled_;
+        bool isGroupViewEnabled_;
 };
 
 class HorizontalLine : public QFrame
@@ -97,6 +113,7 @@ private:
 
         Toggle *trayToggle_;
         Toggle *roomOrderToggle_;
+        Toggle *groupViewToggle_;
 
         QComboBox *themeCombo_;
 

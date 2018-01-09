@@ -369,6 +369,13 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                         }
                 });
 
+        setGroupViewState(userSettings_->isGroupViewEnabled());
+
+        connect(userSettings_.data(),
+                &UserSettings::groupViewStateChanged,
+                this,
+                &ChatPage::setGroupViewState);
+
         AvatarProvider::init(client);
 
         instance_ = this;
@@ -917,6 +924,19 @@ ChatPage::showReadReceipts(const QString &event_id)
 
         receiptsDialog_->addUsers(cache_->readReceipts(event_id, current_room_));
         receiptsModal_->fadeIn();
+}
+
+void
+ChatPage::setGroupViewState(bool isEnabled)
+{
+        if (!isEnabled) {
+                communitiesList_->communityChanged("world");
+                communitiesSideBar_->hide();
+
+                return;
+        }
+
+        communitiesSideBar_->show();
 }
 
 ChatPage::~ChatPage() {}

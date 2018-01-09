@@ -33,9 +33,10 @@ void
 UserSettings::load()
 {
         QSettings settings;
-        isTrayEnabled_     = settings.value("user/window/tray", true).toBool();
-        isOrderingEnabled_ = settings.value("user/room_ordering", true).toBool();
-        theme_             = settings.value("user/theme", "light").toString();
+        isTrayEnabled_      = settings.value("user/window/tray", true).toBool();
+        isOrderingEnabled_  = settings.value("user/room_ordering", true).toBool();
+        isGroupViewEnabled_ = settings.value("user/group_view", true).toBool();
+        theme_              = settings.value("user/theme", "light").toString();
 
         applyTheme();
 }
@@ -82,6 +83,7 @@ UserSettings::save()
         settings.endGroup();
 
         settings.setValue("room_ordering", isOrderingEnabled_);
+        settings.setValue("group_view", isGroupViewEnabled_);
         settings.setValue("theme", theme());
         settings.endGroup();
 }
@@ -139,6 +141,17 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         orderRoomLayout->addWidget(orderLabel);
         orderRoomLayout->addWidget(roomOrderToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto groupViewLayout = new QHBoxLayout;
+        groupViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto groupViewLabel = new QLabel(tr("Group's sidebar"), this);
+        groupViewToggle_    = new Toggle(this);
+        groupViewToggle_->setActiveColor(QColor("#38A3D8"));
+        groupViewToggle_->setInactiveColor(QColor("gray"));
+        groupViewLabel->setStyleSheet("font-size: 15px;");
+
+        groupViewLayout->addWidget(groupViewLabel);
+        groupViewLayout->addWidget(groupViewToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto themeLabel_ = new QLabel(tr("App theme"), this);
@@ -164,6 +177,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(orderRoomLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
+        mainLayout_->addLayout(groupViewLayout);
+        mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
 
@@ -184,6 +199,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setRoomOrdering(!isDisabled);
         });
 
+        connect(groupViewToggle_, &Toggle::toggled, this, [=](bool isDisabled) {
+                settings_->setGroupView(!isDisabled);
+        });
+
         connect(backBtn_, &QPushButton::clicked, this, [=]() {
                 settings_->save();
                 emit moveBack();
@@ -194,8 +213,11 @@ void
 UserSettingsPage::showEvent(QShowEvent *)
 {
         restoreThemeCombo();
-        trayToggle_->setState(!settings_->isTrayEnabled());          // Treats true as "off"
-        roomOrderToggle_->setState(!settings_->isOrderingEnabled()); // Treats true as "off"
+
+        // FIXME: Toggle treats true as "off"
+        trayToggle_->setState(!settings_->isTrayEnabled());
+        roomOrderToggle_->setState(!settings_->isOrderingEnabled());
+        groupViewToggle_->setState(!settings_->isGroupViewEnabled());
 }
 
 void
