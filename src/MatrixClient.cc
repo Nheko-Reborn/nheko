@@ -220,7 +220,6 @@ MatrixClient::sync() noexcept
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
-        request.setRawHeader("Connection", "keep-alive");
 
         auto reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -342,7 +341,6 @@ MatrixClient::initialSync() noexcept
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
-        request.setRawHeader("Connection", "keep-alive");
 
         auto reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
