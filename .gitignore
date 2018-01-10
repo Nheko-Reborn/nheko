@@ -85,3 +85,8 @@ dist/MacOS/nheko.app/Contents/MacOS/nheko
 # AppImage
 *.AppImage
 *.AppDir
+
+# Artifacts
+*.rpm
+*.deb
+package.dir

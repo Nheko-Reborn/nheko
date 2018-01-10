@@ -7,6 +7,17 @@
 DIR=package.dir
 TAG=`git tag -l --points-at HEAD`
 
+# Strip `v` from the version tag.
+if [[ $TAG == v* ]]; then
+    TAG=${TAG#?};
+fi
+
+# Prepend nightly with the latest version.
+if [[ $TAG == "nightly" ]]; then
+    LATEST_VERSION=`git tag -l | grep "^v" | sort | head -n 1`
+    TAG=${LATEST_VERSION#?}.nightly
+fi
+
 # Installing dependencies on travis.
 if [ ! -z "$TRAVIS_OS_NAME" ]; then
     sudo apt-add-repository -y ppa:brightbox/ruby-ng
