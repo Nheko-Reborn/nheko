@@ -23,6 +23,8 @@
 
 #include <mtx.hpp>
 
+class QFile;
+
 class MatrixClient;
 class RoomInfoListItem;
 class TimelineView;
@@ -64,7 +66,10 @@ public slots:
         void setHistoryView(const QString &room_id);
         void queueTextMessage(const QString &msg);
         void queueEmoteMessage(const QString &msg);
-        void queueImageMessage(const QString &roomid, const QString &filename, const QString &url);
+        void queueImageMessage(const QString &roomid,
+                               const QSharedPointer<QIODevice> data,
+                               const QString &filename,
+                               const QString &url);
         void queueFileMessage(const QString &roomid, const QString &filename, const QString &url);
         void queueAudioMessage(const QString &roomid, const QString &filename, const QString &url);
 

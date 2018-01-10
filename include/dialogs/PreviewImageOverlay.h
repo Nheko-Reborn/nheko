@@ -17,40 +17,41 @@
 
 #pragma once
 
-#include <QEvent>
 #include <QLabel>
-#include <QSharedPointer>
+#include <QLineEdit>
+#include <QPixmap>
 #include <QWidget>
 
-#include "MatrixClient.h"
+#include "FlatButton.h"
 
-#include <mtx.hpp>
+class QMimeData;
 
-class VideoItem : public QWidget
+namespace dialogs {
+
+class PreviewImageOverlay : public QWidget
 {
         Q_OBJECT
-
 public:
-        VideoItem(QSharedPointer<MatrixClient> client,
-                  const mtx::events::RoomEvent<mtx::events::msg::Video> &event,
-                  QWidget *parent = nullptr);
+        PreviewImageOverlay(QWidget *parent = nullptr);
 
-        VideoItem(QSharedPointer<MatrixClient> client,
-                  const QString &url,
-                  const QSharedPointer<QIODevice> data,
-                  const QString &filename,
-                  QWidget *parent = nullptr);
+        void setImageAndCreate(const QByteArray data, const QString &type);
+        void setImageAndCreate(const QString &path);
+
+signals:
+        void confirmImageUpload(const QByteArray data, const QString &img_name);
 
 private:
         void init();
-        QString calculateFileSize(int nbytes) const;
 
-        QUrl url_;
-        QString text_;
-        QString readableFileSize_;
+        QPixmap image_;
+        QByteArray imageData_;
+        QString imagePath_;
 
-        QLabel *label_;
+        QLabel titleLabel_;
+        QLabel imageLabel_;
+        QLineEdit imageName_;
 
-        mtx::events::RoomEvent<mtx::events::msg::Video> event_;
-        QSharedPointer<MatrixClient> client_;
+        FlatButton upload_;
+        FlatButton cancel_;
 };
+} // dialogs

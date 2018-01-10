@@ -76,14 +76,16 @@ FileItem::FileItem(QSharedPointer<MatrixClient> client,
 
 FileItem::FileItem(QSharedPointer<MatrixClient> client,
                    const QString &url,
+                   const QSharedPointer<QIODevice> data,
                    const QString &filename,
                    QWidget *parent)
   : QWidget(parent)
   , url_{url}
-  , text_{QFileInfo(filename).fileName()}
+  , text_{QFileInfo{filename}.fileName()}
   , client_{client}
 {
-        readableFileSize_ = calculateFileSize(QFileInfo(filename).size());
+        Q_UNUSED(data);
+        readableFileSize_ = calculateFileSize(QFileInfo{filename}.size());
 
         init();
 }

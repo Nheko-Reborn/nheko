@@ -510,12 +510,8 @@ TimelineView::sendNextPendingMessage()
         case mtx::events::MessageType::Image:
         case mtx::events::MessageType::File:
                 // FIXME: Improve the API
-                client_->sendRoomMessage(m.ty,
-                                         m.txn_id,
-                                         room_id_,
-                                         QFileInfo(m.filename).fileName(),
-                                         QFileInfo(m.filename),
-                                         m.body);
+                client_->sendRoomMessage(
+                  m.ty, m.txn_id, room_id_, m.filename, QFileInfo(m.filename), m.body);
                 break;
         default:
                 client_->sendRoomMessage(m.ty, m.txn_id, room_id_, m.body, QFileInfo());

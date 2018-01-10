@@ -85,6 +85,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 
 void
 TimelineViewManager::queueImageMessage(const QString &roomid,
+                                       const QSharedPointer<QIODevice> data,
                                        const QString &filename,
                                        const QString &url)
 {
@@ -95,7 +96,7 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(url, filename);
+        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(url, data, filename);
 }
 
 void
@@ -110,7 +111,7 @@ TimelineViewManager::queueFileMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<FileItem, mtx::events::MessageType::File>(url, filename);
+        view->addUserMessage<FileItem, mtx::events::MessageType::File>(url, nullptr, filename);
 }
 
 void
@@ -125,7 +126,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<AudioItem, mtx::events::MessageType::Audio>(url, filename);
+        view->addUserMessage<AudioItem, mtx::events::MessageType::Audio>(url, nullptr, filename);
 }
 
 void

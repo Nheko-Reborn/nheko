@@ -821,14 +821,16 @@ MatrixClient::messages(const QString &roomid, const QString &from_token, int lim
 }
 
 void
-MatrixClient::uploadImage(const QString &roomid, const QString &filename)
+MatrixClient::uploadImage(const QString &roomid,
+                          const QSharedPointer<QIODevice> data,
+                          const QString &filename)
 {
-        auto reply = makeUploadRequest(filename);
+        auto reply = makeUploadRequest(data);
 
         if (reply == nullptr)
                 return;
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename]() {
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, data, filename]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -838,12 +840,12 @@ MatrixClient::uploadImage(const QString &roomid, const QString &filename)
                         return;
                 }
 
-                auto data = reply->readAll();
+                auto res_data = reply->readAll();
 
-                if (data.isEmpty())
+                if (res_data.isEmpty())
                         return;
 
-                auto json = QJsonDocument::fromJson(data);
+                auto json = QJsonDocument::fromJson(res_data);
 
                 if (!json.isObject()) {
                         qDebug() << "Media upload: Response is not a json object.";
@@ -857,16 +859,18 @@ MatrixClient::uploadImage(const QString &roomid, const QString &filename)
                         return;
                 }
 
-                emit imageUploaded(roomid, filename, object.value("content_uri").toString());
+                emit imageUploaded(roomid, data, filename, object.value("content_uri").toString());
         });
 }
 
 void
-MatrixClient::uploadFile(const QString &roomid, const QString &filename)
+MatrixClient::uploadFile(const QString &roomid,
+                         const QSharedPointer<QIODevice> data,
+                         const QString &filename)
 {
-        auto reply = makeUploadRequest(filename);
+        auto reply = makeUploadRequest(data);
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename]() {
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, data, filename]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -900,11 +904,13 @@ MatrixClient::uploadFile(const QString &roomid, const QString &filename)
 }
 
 void
-MatrixClient::uploadAudio(const QString &roomid, const QString &filename)
+MatrixClient::uploadAudio(const QString &roomid,
+                          const QSharedPointer<QIODevice> data,
+                          const QString &filename)
 {
-        auto reply = makeUploadRequest(filename);
+        auto reply = makeUploadRequest(data);
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename]() {
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, data, filename]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -1158,7 +1164,7 @@ MatrixClient::readEvent(const QString &room_id, const QString &event_id)
 }
 
 QNetworkReply *
-MatrixClient::makeUploadRequest(const QString &filename)
+MatrixClient::makeUploadRequest(QSharedPointer<QIODevice> iodev)
 {
         QUrlQuery query;
         query.addQueryItem("access_token", token_);
@@ -1167,20 +1173,18 @@ MatrixClient::makeUploadRequest(const QString &filename)
         endpoint.setPath(mediaApiUrl_ + "/upload");
         endpoint.setQuery(query);
 
-        QFile file(filename);
-        if (!file.open(QIODevice::ReadWrite)) {
-                qDebug() << "Error while reading" << filename;
+        if (!iodev->open(QIODevice::ReadOnly)) {
+                qWarning() << "Error while reading device:" << iodev->errorString();
                 return nullptr;
         }
 
         QMimeDatabase db;
-        QMimeType mime = db.mimeTypeForFile(filename, QMimeDatabase::MatchContent);
+        QMimeType mime = db.mimeTypeForData(iodev.data());
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
-        request.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
         request.setHeader(QNetworkRequest::ContentTypeHeader, mime.name());
 
-        auto reply = post(request, file.readAll());
+        auto reply = post(request, iodev.data());
 
         return reply;
 }

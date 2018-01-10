@@ -66,6 +66,7 @@ VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
 
 VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
                      const QString &url,
+                     const QSharedPointer<QIODevice> data,
                      const QString &filename,
                      QWidget *parent)
   : QWidget(parent)
@@ -73,6 +74,7 @@ VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
   , text_{QFileInfo(filename).fileName()}
   , client_{client}
 {
+        Q_UNUSED(data);
         readableFileSize_ = calculateFileSize(QFileInfo(filename).size());
 
         init();

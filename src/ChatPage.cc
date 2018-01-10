@@ -228,17 +228,26 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 client_.data(),
                 &MatrixClient::joinRoom);
 
-        connect(text_input_, &TextInputWidget::uploadImage, this, [=](QString filename) {
-                client_->uploadImage(current_room_, filename);
-        });
+        connect(text_input_,
+                &TextInputWidget::uploadImage,
+                this,
+                [=](QSharedPointer<QIODevice> data, const QString &fn) {
+                        client_->uploadImage(current_room_, data, fn);
+                });
 
-        connect(text_input_, &TextInputWidget::uploadFile, this, [=](QString filename) {
-                client_->uploadFile(current_room_, filename);
-        });
+        connect(text_input_,
+                &TextInputWidget::uploadFile,
+                this,
+                [=](QSharedPointer<QIODevice> data, const QString &fn) {
+                        client_->uploadFile(current_room_, data, fn);
+                });
 
-        connect(text_input_, &TextInputWidget::uploadAudio, this, [=](QString filename) {
-                client_->uploadAudio(current_room_, filename);
-        });
+        connect(text_input_,
+                &TextInputWidget::uploadAudio,
+                this,
+                [=](QSharedPointer<QIODevice> data, const QString &fn) {
+                        client_->uploadAudio(current_room_, data, fn);
+                });
 
         connect(
           client_.data(), &MatrixClient::roomCreationFailed, this, &ChatPage::showNotification);
@@ -246,9 +255,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(client_.data(),
                 &MatrixClient::imageUploaded,
                 this,
-                [=](QString roomid, QString filename, QString url) {
+                [=](QString roomid, QSharedPointer<QIODevice> data, QString filename, QString url) {
                         text_input_->hideUploadSpinner();
-                        view_manager_->queueImageMessage(roomid, filename, url);
+                        view_manager_->queueImageMessage(roomid, data, filename, url);
                 });
         connect(client_.data(),
                 &MatrixClient::fileUploaded,

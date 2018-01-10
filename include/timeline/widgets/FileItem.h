@@ -42,6 +42,7 @@ public:
 
         FileItem(QSharedPointer<MatrixClient> client,
                  const QString &url,
+                 const QSharedPointer<QIODevice> data,
                  const QString &filename,
                  QWidget *parent = nullptr);
 

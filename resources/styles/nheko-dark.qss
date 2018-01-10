@@ -95,16 +95,13 @@ dialogs--LeaveRoom,
 dialogs--CreateRoom,
 dialogs--InviteUsers,
 dialogs--ReadReceipts,
-dialogs--JoinRoom {
+dialogs--JoinRoom,
+dialogs--PreviewImageOverlay {
     background-color: #383c4a;
     color: #caccd1;
 }
 
-QListWidget {
-    background-color: #383c4a;
-    color: #caccd1;
-}
-
+QListWidget,
 WelcomePage,
 LoginPage,
 RegisterPage {

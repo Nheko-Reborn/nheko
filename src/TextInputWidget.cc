@@ -16,10 +16,13 @@
  */
 
 #include <QAbstractTextDocumentLayout>
+#include <QApplication>
+#include <QBuffer>
+#include <QClipboard>
 #include <QDebug>
-#include <QFile>
 #include <QFileDialog>
 #include <QImageReader>
+#include <QMimeData>
 #include <QMimeDatabase>
 #include <QMimeType>
 #include <QPainter>
@@ -33,6 +36,7 @@ static constexpr size_t INPUT_HISTORY_SIZE = 127;
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
   , history_index_{0}
+  , previewDialog_{parent}
 {
         connect(document()->documentLayout(),
                 &QAbstractTextDocumentLayout::documentSizeChanged,
@@ -50,6 +54,12 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
         typingTimer_->setSingleShot(true);
 
         connect(typingTimer_, &QTimer::timeout, this, &FilteredTextEdit::stopTyping);
+        connect(&previewDialog_,
+                &dialogs::PreviewImageOverlay::confirmImageUpload,
+                this,
+                &FilteredTextEdit::receiveImage);
+
+        previewDialog_.hide();
 }
 
 void
@@ -101,6 +111,42 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         }
 }
 
+bool
+FilteredTextEdit::canInsertFromMimeData(const QMimeData *source) const
+{
+        return (source->hasImage() || QTextEdit::canInsertFromMimeData(source));
+}
+
+void
+FilteredTextEdit::insertFromMimeData(const QMimeData *source)
+{
+        if (source->hasImage()) {
+                const auto formats = source->formats();
+                const auto idx     = formats.indexOf(
+                  QRegularExpression{"image/.+", QRegularExpression::CaseInsensitiveOption});
+
+                // Note: in the future we may want to look into what the best choice is from the
+                // formats list. For now we will default to PNG format.
+                QString type = "png";
+                if (idx != -1) {
+                        type = formats.at(idx).split('/')[1];
+                }
+
+                // Encode raw pixel data of image.
+                QByteArray data = source->data("image/" + type);
+                previewDialog_.setImageAndCreate(data, type);
+                previewDialog_.show();
+        } else if (source->hasFormat("x-special/gnome-copied-files") &&
+                   QImageReader{source->text()}.canRead()) {
+                // Special case for X11 users. See "Notes for X11 Users" in source.
+                // Source: http://doc.qt.io/qt-5/qclipboard.html
+                previewDialog_.setImageAndCreate(source->text());
+                previewDialog_.show();
+        } else {
+                QTextEdit::insertFromMimeData(source);
+        }
+}
+
 void
 FilteredTextEdit::stopTyping()
 {
@@ -146,6 +192,7 @@ FilteredTextEdit::submit()
         history_index_ = 0;
 
         QString text = toPlainText();
+
         if (text.startsWith('/')) {
                 int command_end = text.indexOf(' ');
                 if (command_end == -1)
@@ -168,6 +215,14 @@ void
 FilteredTextEdit::textChanged()
 {
         working_history_[history_index_] = toPlainText();
+}
+
+void
+FilteredTextEdit::receiveImage(const QByteArray img, const QString &img_name)
+{
+        QSharedPointer<QBuffer> buffer{new QBuffer{this}};
+        buffer->setData(img);
+        emit image(buffer, img_name);
 }
 
 TextInputWidget::TextInputWidget(QWidget *parent)
@@ -231,6 +286,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
         connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
         connect(input_, &FilteredTextEdit::command, this, &TextInputWidget::command);
+        connect(input_, &FilteredTextEdit::image, this, &TextInputWidget::uploadImage);
         connect(emojiBtn_,
                 SIGNAL(emojiSelected(const QString &)),
                 this,
@@ -289,12 +345,13 @@ TextInputWidget::openFileSelection()
 
         const auto format = mime.name().split("/")[0];
 
+        QSharedPointer<QFile> file{new QFile{fileName, this}};
         if (format == "image")
-                emit uploadImage(fileName);
+                emit uploadImage(file, fileName);
         else if (format == "audio")
-                emit uploadAudio(fileName);
+                emit uploadAudio(file, fileName);
         else
-                emit uploadFile(fileName);
+                emit uploadFile(file, fileName);
 
         showUploadSpinner();
 }

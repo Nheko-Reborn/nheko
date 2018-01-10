@@ -27,7 +27,13 @@
 #include "FlatButton.h"
 #include "LoadingIndicator.h"
 
+#include "dialogs/PreviewImageOverlay.h"
+
 #include "emoji/PickButton.h"
+
+namespace dialogs {
+class PreviewImageOverlay;
+}
 
 class FilteredTextEdit : public QTextEdit
 {
@@ -48,16 +54,22 @@ signals:
         void stoppedTyping();
         void message(QString);
         void command(QString name, QString args);
+        void image(const QSharedPointer<QIODevice> iodev, const QString &img_name);
 
 protected:
         void keyPressEvent(QKeyEvent *event) override;
+        bool canInsertFromMimeData(const QMimeData *source) const override;
+        void insertFromMimeData(const QMimeData *source) override;
 
 private:
         std::deque<QString> true_history_, working_history_;
         size_t history_index_;
         QTimer *typingTimer_;
 
+        dialogs::PreviewImageOverlay previewDialog_;
+
         void textChanged();
+        void receiveImage(const QByteArray img, const QString &img_name);
         void afterCompletion(int);
 };
 
@@ -83,9 +95,9 @@ signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
 
-        void uploadImage(QString filename);
-        void uploadFile(QString filename);
-        void uploadAudio(QString filename);
+        void uploadImage(QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadFile(QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadAudio(QSharedPointer<QIODevice> data, const QString &filename);
 
         void sendJoinRoomRequest(const QString &room);
 
