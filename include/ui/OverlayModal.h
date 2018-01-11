@@ -19,6 +19,7 @@
 
 #include <QGraphicsOpacityEffect>
 #include <QKeyEvent>
+#include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPropertyAnimation>
 
@@ -39,8 +40,11 @@ public:
 protected:
         void paintEvent(QPaintEvent *event) override;
         void keyPressEvent(QKeyEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
 
 private:
+        QWidget *content_;
+
         int duration_;
         QColor color_;
 

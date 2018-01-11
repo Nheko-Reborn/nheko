@@ -22,6 +22,7 @@
 
 OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
   : OverlayWidget(parent)
+  , content_{content}
   , duration_{500}
   , color_{QColor(55, 55, 55)}
 {
@@ -58,6 +59,13 @@ OverlayModal::paintEvent(QPaintEvent *event)
 
         QPainter painter(this);
         painter.fillRect(rect(), color_);
+}
+
+void
+OverlayModal::mousePressEvent(QMouseEvent *e)
+{
+        if (content_ && !content_->geometry().contains(e->pos()))
+                fadeOut();
 }
 
 void
