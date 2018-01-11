@@ -41,6 +41,32 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
         QSettings settings;
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
 
+        QJsonObject default_filter{
+          {"room",
+           QJsonObject{
+             {"include_leave", true},
+             {"account_data",
+               QJsonObject{
+                 {"not_types", QJsonArray{"*"}},
+               },
+             },
+           },
+          },{"account_data",
+            QJsonObject{
+              {"not_types", QJsonArray{"*"}},
+            },
+          },{"presence",
+            QJsonObject{
+              {"not_types", QJsonArray{"*"}},
+            },
+          },
+        };
+
+	filter_ = settings.value(
+            "client/sync_filter",
+            QJsonDocument(default_filter).toJson(QJsonDocument::Compact)
+        ).toString();
+
         connect(this,
                 &QNetworkAccessManager::networkAccessibleChanged,
                 this,
@@ -194,17 +220,10 @@ MatrixClient::registerUser(const QString &user, const QString &pass, const QStri
 void
 MatrixClient::sync() noexcept
 {
-        QJsonObject filter{
-          {"room",
-           QJsonObject{
-             {"include_leave", true},
-           }},
-        };
-
         QUrlQuery query;
         query.addQueryItem("set_presence", "online");
-        query.addQueryItem("filter", QJsonDocument(filter).toJson(QJsonDocument::Compact));
-        query.addQueryItem("timeout", "15000");
+        query.addQueryItem("filter", filter_);
+        query.addQueryItem("timeout", "30000");
         query.addQueryItem("access_token", token_);
 
         if (next_batch_.isEmpty()) {
@@ -334,6 +353,7 @@ MatrixClient::initialSync() noexcept
 {
         QUrlQuery query;
         query.addQueryItem("timeout", "0");
+        query.addQueryItem("filter", filter_);
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);

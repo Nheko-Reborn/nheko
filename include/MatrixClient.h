@@ -159,4 +159,7 @@ private:
 
         // Token to be used for the next sync.
         QString next_batch_;
+
+	// filter to be send as filter-param for (initial) /sync requests
+	QString filter_;
 };
