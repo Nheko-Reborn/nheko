@@ -42,30 +42,36 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
 
         QJsonObject default_filter{
-          {"room",
-           QJsonObject{
-             {"include_leave", true},
-             {"account_data",
-               QJsonObject{
-                 {"not_types", QJsonArray{"*"}},
-               },
-             },
-           },
-          },{"account_data",
+          {
+            "room",
+            QJsonObject{
+              {"include_leave", true},
+              {
+                "account_data",
+                QJsonObject{
+                  {"not_types", QJsonArray{"*"}},
+                },
+              },
+            },
+          },
+          {
+            "account_data",
             QJsonObject{
               {"not_types", QJsonArray{"*"}},
             },
-          },{"presence",
+          },
+          {
+            "presence",
             QJsonObject{
               {"not_types", QJsonArray{"*"}},
             },
           },
         };
 
-	filter_ = settings.value(
-            "client/sync_filter",
-            QJsonDocument(default_filter).toJson(QJsonDocument::Compact)
-        ).toString();
+        filter_ = settings
+                    .value("client/sync_filter",
+                           QJsonDocument(default_filter).toJson(QJsonDocument::Compact))
+                    .toString();
 
         connect(this,
                 &QNetworkAccessManager::networkAccessibleChanged,
