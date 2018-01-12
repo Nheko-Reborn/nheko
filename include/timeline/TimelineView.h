@@ -88,8 +88,8 @@ public:
 
         template<class Widget, mtx::events::MessageType MsgType>
         void addUserMessage(const QString &url,
-                            const QSharedPointer<QIODevice> data,
-                            const QString &filename);
+                            const QString &filename,
+                            const QSharedPointer<QIODevice> data = Q_NULLPTR);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
         void addDateSeparator(QDateTime datetime, int position);
@@ -219,8 +219,8 @@ private:
 template<class Widget, mtx::events::MessageType MsgType>
 void
 TimelineView::addUserMessage(const QString &url,
-                             const QSharedPointer<QIODevice> data,
-                             const QString &filename)
+                             const QString &filename,
+                             const QSharedPointer<QIODevice> data)
 {
         auto with_sender = lastSender_ != local_user_;
 

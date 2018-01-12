@@ -96,7 +96,7 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(url, data, filename);
+        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(url, filename, data);
 }
 
 void
@@ -111,7 +111,7 @@ TimelineViewManager::queueFileMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<FileItem, mtx::events::MessageType::File>(url, nullptr, filename);
+        view->addUserMessage<FileItem, mtx::events::MessageType::File>(url, filename);
 }
 
 void
@@ -126,7 +126,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<AudioItem, mtx::events::MessageType::Audio>(url, nullptr, filename);
+        view->addUserMessage<AudioItem, mtx::events::MessageType::Audio>(url, filename);
 }
 
 void
