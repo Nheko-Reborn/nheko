@@ -87,9 +87,10 @@ public:
         void addUserMessage(mtx::events::MessageType ty, const QString &msg);
 
         template<class Widget, mtx::events::MessageType MsgType>
-        void addUserMessage(const QString &url,
-                            const QString &filename,
-                            const QSharedPointer<QIODevice> data = Q_NULLPTR);
+        void addUserMessage(
+          const QString &url,
+          const QString &filename,
+          const QSharedPointer<QIODevice> data = QSharedPointer<QIODevice>(nullptr));
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
         void addDateSeparator(QDateTime datetime, int position);
