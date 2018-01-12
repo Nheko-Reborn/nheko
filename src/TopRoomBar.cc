@@ -27,6 +27,7 @@
 #include "OverlayModal.h"
 #include "RoomSettings.h"
 #include "TopRoomBar.h"
+#include "Utils.h"
 
 TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
@@ -40,7 +41,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         topLayout_->setMargin(10);
 
         avatar_ = new Avatar(this);
-        avatar_->setLetter(QChar('?'));
+        avatar_->setLetter("");
         avatar_->setSize(35);
 
         textLayout_ = new QVBoxLayout();
@@ -169,12 +170,7 @@ TopRoomBar::closeLeaveRoomDialog(bool leaving)
 void
 TopRoomBar::updateRoomAvatarFromName(const QString &name)
 {
-        QChar letter = '?';
-
-        if (name.size() > 0)
-                letter = name[0];
-
-        avatar_->setLetter(letter);
+        avatar_->setLetter(utils::firstChar(name));
         update();
 }
 
@@ -183,7 +179,7 @@ TopRoomBar::reset()
 {
         nameLabel_->setText("");
         topicLabel_->setText("");
-        avatar_->setLetter(QChar('?'));
+        avatar_->setLetter("");
 
         roomName_.clear();
         roomTopic_.clear();

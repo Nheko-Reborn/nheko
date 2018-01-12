@@ -17,4 +17,9 @@ descriptiveTime(const QDateTime &then);
 //! in the RoomList.
 DescInfo
 getMessageDescription(const TimelineEvent &event, const QString &localUser);
+
+//! Get the first character of a string, taking into account that
+//! surrogate pairs might be in use.
+QString
+firstChar(const QString &input);
 }

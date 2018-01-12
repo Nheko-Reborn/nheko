@@ -21,7 +21,7 @@ public:
         void setBackgroundColor(const QColor &color);
         void setIcon(const QIcon &icon);
         void setImage(const QImage &image);
-        void setLetter(const QChar &letter);
+        void setLetter(const QString &letter);
         void setSize(int size);
         void setTextColor(const QColor &color);
 
@@ -38,7 +38,7 @@ private:
         void init();
 
         ui::AvatarType type_;
-        QChar letter_;
+        QString letter_;
         QColor background_color_;
         QColor text_color_;
         QIcon icon_;

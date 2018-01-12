@@ -28,6 +28,7 @@
 #include "RoomInfoListItem.h"
 #include "RoomSettings.h"
 #include "Theme.h"
+#include "Utils.h"
 
 constexpr int Padding   = 7;
 constexpr int IconSize  = 48;
@@ -244,7 +245,8 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setFont(font);
                 p.setPen(QColor("#333"));
                 p.setBrush(Qt::NoBrush);
-                p.drawText(avatarRegion.translated(0, -1), Qt::AlignCenter, QChar(roomName()[0]));
+                p.drawText(
+                  avatarRegion.translated(0, -1), Qt::AlignCenter, utils::firstChar(roomName()));
         } else {
                 p.save();
 

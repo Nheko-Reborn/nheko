@@ -7,7 +7,7 @@ Avatar::Avatar(QWidget *parent)
 {
         size_   = ui::AvatarSize;
         type_   = ui::AvatarType::Letter;
-        letter_ = QChar('A');
+        letter_ = "A";
 
         QFont _font(font());
         _font.setPointSizeF(ui::FontSize);
@@ -79,7 +79,7 @@ Avatar::setSize(int size)
 }
 
 void
-Avatar::setLetter(const QChar &letter)
+Avatar::setLetter(const QString &letter)
 {
         letter_ = letter;
         type_   = ui::AvatarType::Letter;

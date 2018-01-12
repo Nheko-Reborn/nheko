@@ -119,3 +119,12 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
 
         return DescInfo{};
 }
+
+QString
+utils::firstChar(const QString &input)
+{
+        if (!input.isEmpty())
+                return QString::fromUcs4(&input.toUcs4().at(0), 1);
+
+        return input;
+}
