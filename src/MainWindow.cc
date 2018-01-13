@@ -224,30 +224,6 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 }
 
 void
-MainWindow::showWelcomePage()
-{
-        pageStack_->setCurrentWidget(welcome_page_);
-}
-
-void
-MainWindow::showLoginPage()
-{
-        pageStack_->setCurrentWidget(login_page_);
-}
-
-void
-MainWindow::showRegisterPage()
-{
-        pageStack_->setCurrentWidget(register_page_);
-}
-
-void
-MainWindow::showUserSettingsPage()
-{
-        pageStack_->setCurrentWidget(userSettingsPage_);
-}
-
-void
 MainWindow::closeEvent(QCloseEvent *event)
 {
         if (isVisible() && userSettings_->isTrayEnabled()) {

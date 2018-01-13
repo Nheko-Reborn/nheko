@@ -22,17 +22,18 @@
 #include <QStackedWidget>
 #include <QSystemTrayIcon>
 
+#include "LoginPage.h"
+#include "RegisterPage.h"
+#include "UserSettingsPage.h"
+#include "WelcomePage.h"
+
 class ChatPage;
 class LoadingIndicator;
-class LoginPage;
 class MatrixClient;
 class OverlayModal;
-class RegisterPage;
 class SnackBar;
 class TrayIcon;
-class UserSettingsPage;
 class UserSettings;
-class WelcomePage;
 
 class MainWindow : public QMainWindow
 {
@@ -49,20 +50,22 @@ protected:
         void closeEvent(QCloseEvent *event);
 
 private slots:
-        // Handle interaction with the tray icon.
+        //! Handle interaction with the tray icon.
         void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
-        // Show the welcome page in the main window.
-        void showWelcomePage();
+        //! Show the welcome page in the main window.
+        void showWelcomePage() { pageStack_->setCurrentWidget(welcome_page_); }
 
-        // Show the login page in the main window.
-        void showLoginPage();
+        //! Show the login page in the main window.
+        void showLoginPage() { pageStack_->setCurrentWidget(login_page_); }
 
-        // Show the register page in the main window.
-        void showRegisterPage();
-        void showUserSettingsPage();
+        //! Show the register page in the main window.
+        void showRegisterPage() { pageStack_->setCurrentWidget(register_page_); }
 
-        // Show the chat page and start communicating with the given access token.
+        //! Show user settings page.
+        void showUserSettingsPage() { pageStack_->setCurrentWidget(userSettingsPage_); }
+
+        //! Show the chat page and start communicating with the given access token.
         void showChatPage(QString user_id, QString home_server, QString token);
 
         void removeOverlayProgressBar();
@@ -73,33 +76,33 @@ private:
 
         static MainWindow *instance_;
 
-        // The initial welcome screen.
+        //! The initial welcome screen.
         WelcomePage *welcome_page_;
 
-        // The login screen.
+        //! The login screen.
         LoginPage *login_page_;
 
-        // The register page.
+        //! The register page.
         RegisterPage *register_page_;
 
-        // A stacked widget that handles the transitions between widgets.
+        //! A stacked widget that handles the transitions between widgets.
         QStackedWidget *pageStack_;
 
-        // The main chat area.
+        //! The main chat area.
         ChatPage *chat_page_;
         UserSettingsPage *userSettingsPage_;
         QSharedPointer<UserSettings> userSettings_;
 
-        // Used to hide undefined states between page transitions.
+        //! Used to hide undefined states between page transitions.
         QSharedPointer<OverlayModal> progressModal_;
         QSharedPointer<LoadingIndicator> spinner_;
 
-        // Matrix Client API provider.
+        //! Matrix Client API provider.
         QSharedPointer<MatrixClient> client_;
 
-        // Tray icon that shows the unread message count.
+        //! Tray icon that shows the unread message count.
         TrayIcon *trayIcon_;
 
-        // Notifications display.
+        //! Notifications display.
         QSharedPointer<SnackBar> snackBar_;
 };
