@@ -86,7 +86,6 @@ private slots:
         void setOwnAvatar(const QPixmap &img);
         void initialSyncCompleted(const mtx::responses::Sync &response);
         void syncCompleted(const mtx::responses::Sync &response);
-        void syncFailed(const QString &msg);
         void changeTopRoomInfo(const QString &room_id);
         void logout();
         void addRoom(const QString &room_id);
@@ -157,6 +156,7 @@ private:
         // Safety net if consensus is not possible or too slow.
         QTimer *showContentTimer_;
         QTimer *consensusTimer_;
+        QTimer *syncTimeoutTimer_;
 
         QString current_room_;
         QString current_community_;

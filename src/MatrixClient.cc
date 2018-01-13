@@ -260,7 +260,7 @@ MatrixClient::sync() noexcept
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
                 if (status == 0 || status >= 400) {
-                        emit syncFailed(reply->errorString());
+                        qDebug() << reply->errorString();
                         return;
                 }
 

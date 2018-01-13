@@ -43,7 +43,7 @@
 #include "timeline/TimelineViewManager.h"
 
 constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
-constexpr int SYNC_RETRY_TIMEOUT        = 10000;
+constexpr int SYNC_RETRY_TIMEOUT        = 40000;
 
 ChatPage *ChatPage::instance_ = nullptr;
 
@@ -304,7 +304,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 client_->initialSync();
         });
         connect(client_.data(), &MatrixClient::syncCompleted, this, &ChatPage::syncCompleted);
-        connect(client_.data(), &MatrixClient::syncFailed, this, &ChatPage::syncFailed);
         connect(client_.data(),
                 &MatrixClient::getOwnProfileResponse,
                 this,
@@ -363,6 +362,17 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                         showContentTimer_->stop();
                         consensusTimer_->stop();
                 }
+        });
+
+        syncTimeoutTimer_ = new QTimer(this);
+        connect(syncTimeoutTimer_, &QTimer::timeout, this, [=]() {
+                if (client_->getHomeServer().isEmpty()) {
+                        syncTimeoutTimer_->stop();
+                        return;
+                }
+
+                qDebug() << "Sync took too long. Retrying...";
+                client_->sync();
         });
 
         connect(communitiesList_,
@@ -475,19 +485,10 @@ ChatPage::setOwnAvatar(const QPixmap &img)
 }
 
 void
-ChatPage::syncFailed(const QString &msg)
-{
-        // Stop if sync is not active. e.g user is logged out.
-        if (client_->getHomeServer().isEmpty())
-                return;
-
-        qWarning() << "Sync error:" << msg;
-        QTimer::singleShot(SYNC_RETRY_TIMEOUT, this, [=]() { client_->sync(); });
-}
-
-void
 ChatPage::syncCompleted(const mtx::responses::Sync &response)
 {
+        syncTimeoutTimer_->stop();
+
         updateJoinedRooms(response.rooms.join);
         removeLeftRooms(response.rooms.leave);
 
@@ -504,6 +505,8 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 
         client_->setNextBatchToken(nextBatchToken);
         client_->sync();
+
+        syncTimeoutTimer_->start(SYNC_RETRY_TIMEOUT);
 }
 
 void
