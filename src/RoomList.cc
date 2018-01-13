@@ -83,7 +83,7 @@ RoomList::clear()
 
 void
 RoomList::addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-                  const RoomState &state,
+                  const QSharedPointer<RoomState> &state,
                   const QString &room_id)
 {
         RoomInfoListItem *room_item =
@@ -93,8 +93,8 @@ RoomList::addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
 
         rooms_.insert(room_id, QSharedPointer<RoomInfoListItem>(room_item));
 
-        if (!state.getAvatar().toString().isEmpty())
-                updateAvatar(room_id, state.getAvatar().toString());
+        if (!state->getAvatar().toString().isEmpty())
+                updateAvatar(room_id, state->getAvatar().toString());
 
         int pos = contentsLayout_->count() - 1;
         contentsLayout_->insertWidget(pos, room_item);
@@ -161,7 +161,7 @@ RoomList::calculateUnreadMessageCount()
 
 void
 RoomList::setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-                          const QMap<QString, RoomState> &states)
+                          const QMap<QString, QSharedPointer<RoomState>> &states)
 {
         rooms_.clear();
 
@@ -212,24 +212,21 @@ RoomList::openLeaveRoomDialog(const QString &room_id)
 }
 
 void
-RoomList::sync(const QMap<QString, RoomState> &states,
-               QMap<QString, QSharedPointer<RoomSettings>> &settings)
+RoomList::sync(const QMap<QString, QSharedPointer<RoomState>> &states,
+               const QMap<QString, QSharedPointer<RoomSettings>> &settings)
 
 {
         for (auto it = states.constBegin(); it != states.constEnd(); ++it) {
                 auto room_id = it.key();
                 auto state   = it.value();
 
-                if (!rooms_.contains(room_id)) {
-                        settings.insert(room_id,
-                                        QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
+                if (!rooms_.contains(room_id))
                         addRoom(settings, state, room_id);
-                }
 
                 auto room = rooms_[room_id];
 
-                auto current_avatar = room->state().getAvatar();
-                auto new_avatar     = state.getAvatar();
+                auto current_avatar = room->state()->getAvatar();
+                auto new_avatar     = state->getAvatar();
 
                 if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
                         updateAvatar(room_id, new_avatar.toString());

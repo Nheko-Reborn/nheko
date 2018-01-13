@@ -61,7 +61,7 @@ class RoomInfoListItem : public QWidget
 
 public:
         RoomInfoListItem(QSharedPointer<RoomSettings> settings,
-                         RoomState state,
+                         QSharedPointer<RoomState> state,
                          QString room_id,
                          QWidget *parent = 0);
 
@@ -71,11 +71,15 @@ public:
 
         void updateUnreadMessageCount(int count);
         void clearUnreadMessageCount();
-        void setState(const RoomState &state);
+        void setState(QSharedPointer<RoomState> state)
+        {
+                state_ = state;
+                update();
+        }
 
         QString roomId();
         bool isPressed() const { return isPressed_; };
-        RoomState state() const { return state_; };
+        QSharedPointer<RoomState> state() const { return state_; }
         int unreadMessageCount() const { return unreadMsgCount_; };
 
         void setAvatar(const QImage &avatar_image);
@@ -127,7 +131,7 @@ private:
         QString roomName()
         {
                 if (roomType_ == RoomType::Joined)
-                        return state_.getName();
+                        return state_->getName();
 
                 return roomName_;
         }
@@ -145,7 +149,7 @@ private:
         RoomType roomType_ = RoomType::Joined;
 
         // State information for the joined rooms.
-        RoomState state_;
+        QSharedPointer<RoomState> state_;
 
         // State information for the invited rooms.
         mtx::responses::InvitedRoom invitedRoom_;

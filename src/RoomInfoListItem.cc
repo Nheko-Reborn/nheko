@@ -69,7 +69,7 @@ RoomInfoListItem::RoomInfoListItem(QString room_id,
 }
 
 RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
-                                   RoomState state,
+                                   QSharedPointer<RoomState> state,
                                    QString room_id,
                                    QWidget *parent)
   : QWidget(parent)
@@ -321,13 +321,6 @@ RoomInfoListItem::setPressedState(bool state)
                 isPressed_ = state;
                 update();
         }
-}
-
-void
-RoomInfoListItem::setState(const RoomState &new_state)
-{
-        state_ = new_state;
-        update();
 }
 
 void

@@ -97,7 +97,7 @@ private:
         static ChatPage *instance_;
 
         using UserID      = QString;
-        using RoomStates  = QMap<UserID, RoomState>;
+        using RoomStates  = QMap<UserID, QSharedPointer<RoomState>>;
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
         using Memberships = std::map<std::string, Membership>;
 
@@ -107,8 +107,9 @@ private:
         void removeLeftRooms(const LeftRooms &rooms);
         void updateJoinedRooms(const JoinedRooms &rooms);
 
-        RoomStates generateMembershipDifference(const JoinedRooms &rooms,
-                                                const RoomStates &states) const;
+        QMap<QString, QSharedPointer<RoomState>> generateMembershipDifference(
+          const JoinedRooms &rooms,
+          const RoomStates &states) const;
 
         void updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids);
 
@@ -165,8 +166,8 @@ private:
 
         UserInfoWidget *user_info_widget_;
 
-        QMap<QString, RoomState> state_manager_;
-        QMap<QString, QSharedPointer<RoomSettings>> settingsManager_;
+        RoomStates roomStates_;
+        QMap<QString, QSharedPointer<RoomSettings>> roomSettings_;
 
         QMap<QString, QSharedPointer<Community>> communityManager_;
 

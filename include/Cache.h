@@ -69,7 +69,8 @@ class Cache
 public:
         Cache(const QString &userId);
 
-        void setState(const QString &nextBatchToken, const QMap<QString, RoomState> &states);
+        void setState(const QString &nextBatchToken,
+                      const QMap<QString, QSharedPointer<RoomState>> &states);
         bool isInitialized() const;
 
         QString nextBatchToken() const;
@@ -107,7 +108,9 @@ public:
 
 private:
         void setNextBatchToken(lmdb::txn &txn, const QString &token);
-        void insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state);
+        void insertRoomState(lmdb::txn &txn,
+                             const QString &roomid,
+                             const QSharedPointer<RoomState> &state);
 
         lmdb::env env_;
         lmdb::dbi stateDb_;

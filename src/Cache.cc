@@ -150,7 +150,8 @@ Cache::image(const QString &url) const
 }
 
 void
-Cache::setState(const QString &nextBatchToken, const QMap<QString, RoomState> &states)
+Cache::setState(const QString &nextBatchToken,
+                const QMap<QString, QSharedPointer<RoomState>> &states)
 {
         if (!isMounted_)
                 return;
@@ -173,14 +174,16 @@ Cache::setState(const QString &nextBatchToken, const QMap<QString, RoomState> &s
 }
 
 void
-Cache::insertRoomState(lmdb::txn &txn, const QString &roomid, const RoomState &state)
+Cache::insertRoomState(lmdb::txn &txn,
+                       const QString &roomid,
+                       const QSharedPointer<RoomState> &state)
 {
-        auto stateEvents = state.serialize();
+        auto stateEvents = state->serialize();
         auto id          = roomid.toUtf8();
 
         lmdb::dbi_put(txn, roomDb_, lmdb::val(id.data(), id.size()), lmdb::val(stateEvents));
 
-        for (const auto &membership : state.memberships) {
+        for (const auto &membership : state->memberships) {
                 lmdb::dbi membersDb =
                   lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
 

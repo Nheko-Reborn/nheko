@@ -179,13 +179,13 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 &TimelineViewManager::unreadMessages,
                 this,
                 [=](const QString &roomid, int count) {
-                        if (!settingsManager_.contains(roomid)) {
+                        if (!roomSettings_.contains(roomid)) {
                                 qWarning() << "RoomId does not have settings" << roomid;
                                 room_list_->updateUnreadMessageCount(roomid, count);
                                 return;
                         }
 
-                        if (settingsManager_[roomid]->isNotificationsEnabled())
+                        if (roomSettings_[roomid]->isNotificationsEnabled())
                                 room_list_->updateUnreadMessageCount(roomid, count);
                 });
 
@@ -405,8 +405,8 @@ ChatPage::resetUI()
 {
         room_avatars_.clear();
         room_list_->clear();
-        settingsManager_.clear();
-        state_manager_.clear();
+        roomSettings_.clear();
+        roomStates_.clear();
         top_bar_->reset();
         user_info_widget_->reset();
         view_manager_->clearAll();
@@ -493,11 +493,11 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 
         const auto nextBatchToken = QString::fromStdString(response.next_batch);
 
-        auto stateDiff = generateMembershipDifference(response.rooms.join, state_manager_);
+        auto stateDiff = generateMembershipDifference(response.rooms.join, roomStates_);
         QtConcurrent::run(cache_.data(), &Cache::setState, nextBatchToken, stateDiff);
         QtConcurrent::run(cache_.data(), &Cache::setInvites, response.rooms.invite);
 
-        room_list_->sync(state_manager_, settingsManager_);
+        room_list_->sync(roomStates_, roomSettings_);
         room_list_->syncInvites(response.rooms.invite);
 
         view_manager_->sync(response.rooms);
@@ -512,26 +512,26 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
         auto joined = response.rooms.join;
 
         for (auto it = joined.cbegin(); it != joined.cend(); ++it) {
-                RoomState room_state;
+                auto roomState = QSharedPointer<RoomState>(new RoomState);
 
                 // Build the current state from the timeline and state events.
-                room_state.updateFromEvents(it->second.state.events);
-                room_state.updateFromEvents(it->second.timeline.events);
+                roomState->updateFromEvents(it->second.state.events);
+                roomState->updateFromEvents(it->second.timeline.events);
 
                 // Remove redundant memberships.
-                room_state.removeLeaveMemberships();
+                roomState->removeLeaveMemberships();
 
                 // Resolve room name and avatar. e.g in case of one-to-one chats.
-                room_state.resolveName();
-                room_state.resolveAvatar();
+                roomState->resolveName();
+                roomState->resolveAvatar();
 
                 const auto room_id = QString::fromStdString(it->first);
 
-                state_manager_.insert(room_id, room_state);
-                settingsManager_.insert(room_id,
-                                        QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
+                roomStates_.insert(room_id, roomState);
+                roomSettings_.insert(room_id,
+                                     QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
 
-                for (const auto membership : room_state.memberships) {
+                for (const auto membership : roomState->memberships) {
                         updateUserDisplayName(membership.second);
                         updateUserAvatarUrl(membership.second);
                 }
@@ -542,14 +542,14 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
         QtConcurrent::run(cache_.data(),
                           &Cache::setState,
                           QString::fromStdString(response.next_batch),
-                          state_manager_);
+                          roomStates_);
         QtConcurrent::run(cache_.data(), &Cache::setInvites, response.rooms.invite);
 
         // Populate timelines with messages.
         view_manager_->initialize(response.rooms);
 
         // Initialize room list.
-        room_list_->setInitialRooms(settingsManager_, state_manager_);
+        room_list_->setInitialRooms(roomSettings_, roomStates_);
         room_list_->syncInvites(response.rooms.invite);
 
         client_->setNextBatchToken(QString::fromStdString(response.next_batch));
@@ -597,19 +597,19 @@ ChatPage::updateOwnCommunitiesInfo(const QList<QString> &own_communities)
 void
 ChatPage::changeTopRoomInfo(const QString &room_id)
 {
-        if (!state_manager_.contains(room_id))
+        if (!roomStates_.contains(room_id))
                 return;
 
-        auto state = state_manager_[room_id];
+        auto state = roomStates_[room_id];
 
-        top_bar_->updateRoomName(state.getName());
-        top_bar_->updateRoomTopic(state.getTopic());
-        top_bar_->setRoomSettings(settingsManager_[room_id]);
+        top_bar_->updateRoomName(state->getName());
+        top_bar_->updateRoomTopic(state->getTopic());
+        top_bar_->setRoomSettings(roomSettings_[room_id]);
 
         if (room_avatars_.contains(room_id))
                 top_bar_->updateRoomAvatar(room_avatars_.value(room_id).toImage());
         else
-                top_bar_->updateRoomAvatarFromName(state.getName());
+                top_bar_->updateRoomAvatarFromName(state->getName());
 
         current_room_ = room_id;
 }
@@ -638,22 +638,22 @@ ChatPage::loadStateFromCache()
         auto rooms = cache_->states();
 
         for (auto it = rooms.constBegin(); it != rooms.constEnd(); ++it) {
-                RoomState room_state = it.value();
+                auto roomState = QSharedPointer<RoomState>(new RoomState(it.value()));
 
                 // Clean up and prepare state for use.
-                room_state.removeLeaveMemberships();
-                room_state.resolveName();
-                room_state.resolveAvatar();
+                roomState->removeLeaveMemberships();
+                roomState->resolveName();
+                roomState->resolveAvatar();
 
                 // Save the current room state.
-                state_manager_.insert(it.key(), room_state);
+                roomStates_.insert(it.key(), roomState);
 
                 // Create or restore the settings for this room.
-                settingsManager_.insert(it.key(),
-                                        QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
+                roomSettings_.insert(it.key(),
+                                     QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
 
                 // Resolve user avatars.
-                for (const auto membership : room_state.memberships) {
+                for (const auto membership : roomState->memberships) {
                         updateUserDisplayName(membership.second);
                         updateUserAvatarUrl(membership.second);
                 }
@@ -663,7 +663,7 @@ ChatPage::loadStateFromCache()
         view_manager_->initialize(rooms.keys());
 
         // Initialize room list from the restored state and settings.
-        room_list_->setInitialRooms(settingsManager_, state_manager_);
+        room_list_->setInitialRooms(roomSettings_, roomStates_);
         room_list_->syncInvites(cache_->invites());
 
         // Check periodically if the timelines have been loaded.
@@ -706,12 +706,12 @@ ChatPage::showQuickSwitcher()
 
         QMap<QString, QString> rooms;
 
-        for (auto it = state_manager_.constBegin(); it != state_manager_.constEnd(); ++it) {
+        for (auto it = roomStates_.constBegin(); it != roomStates_.constEnd(); ++it) {
                 QString deambiguator =
-                  QString::fromStdString(it.value().canonical_alias.content.alias);
+                  QString::fromStdString(it.value()->canonical_alias.content.alias);
                 if (deambiguator == "")
                         deambiguator = it.key();
-                rooms.insert(it.value().getName() + " (" + deambiguator + ")", it.key());
+                rooms.insert(it.value()->getName() + " (" + deambiguator + ")", it.key());
         }
 
         quickSwitcher_->setRoomList(rooms);
@@ -721,14 +721,14 @@ ChatPage::showQuickSwitcher()
 void
 ChatPage::addRoom(const QString &room_id)
 {
-        if (!state_manager_.contains(room_id)) {
-                RoomState room_state;
+        if (!roomStates_.contains(room_id)) {
+                auto room_state = QSharedPointer<RoomState>(new RoomState);
 
-                state_manager_.insert(room_id, room_state);
-                settingsManager_.insert(room_id,
-                                        QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
+                roomStates_.insert(room_id, room_state);
+                roomSettings_.insert(room_id,
+                                     QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
 
-                room_list_->addRoom(settingsManager_, state_manager_[room_id], room_id);
+                room_list_->addRoom(roomSettings_, roomStates_[room_id], room_id);
                 room_list_->highlightSelectedRoom(room_id);
 
                 changeTopRoomInfo(room_id);
@@ -738,8 +738,8 @@ ChatPage::addRoom(const QString &room_id)
 void
 ChatPage::removeRoom(const QString &room_id)
 {
-        state_manager_.remove(room_id);
-        settingsManager_.remove(room_id);
+        roomStates_.remove(room_id);
+        roomSettings_.remove(room_id);
         try {
                 cache_->removeRoom(room_id);
                 cache_->removeInvite(room_id);
@@ -820,7 +820,7 @@ ChatPage::removeLeftRooms(const std::map<std::string, mtx::responses::LeftRoom> 
         for (auto it = rooms.cbegin(); it != rooms.cend(); ++it) {
                 const auto room_id = QString::fromStdString(it->first);
 
-                if (state_manager_.contains(room_id))
+                if (roomStates_.contains(room_id))
                         removeRoom(room_id);
         }
 }
@@ -843,25 +843,25 @@ ChatPage::updateJoinedRooms(const std::map<std::string, mtx::responses::JoinedRo
                 const auto newTimelineEvents = it->second.timeline;
 
                 // Merge the new updates for rooms that we are tracking.
-                if (state_manager_.contains(roomid)) {
-                        auto oldState = &state_manager_[roomid];
+                if (roomStates_.contains(roomid)) {
+                        auto oldState = roomStates_[roomid];
                         oldState->updateFromEvents(newStateEvents.events);
                         oldState->updateFromEvents(newTimelineEvents.events);
                         oldState->resolveName();
                         oldState->resolveAvatar();
                 } else {
                         // Build the current state from the timeline and state events.
-                        RoomState room_state;
-                        room_state.updateFromEvents(newStateEvents.events);
-                        room_state.updateFromEvents(newTimelineEvents.events);
+                        auto roomState = QSharedPointer<RoomState>(new RoomState);
+                        roomState->updateFromEvents(newStateEvents.events);
+                        roomState->updateFromEvents(newTimelineEvents.events);
 
                         // Resolve room name and avatar. e.g in case of one-to-one chats.
-                        room_state.resolveName();
-                        room_state.resolveAvatar();
+                        roomState->resolveName();
+                        roomState->resolveAvatar();
 
-                        state_manager_.insert(roomid, room_state);
+                        roomStates_.insert(roomid, roomState);
 
-                        settingsManager_.insert(
+                        roomSettings_.insert(
                           roomid, QSharedPointer<RoomSettings>(new RoomSettings(roomid)));
 
                         view_manager_->addRoom(it->second, roomid);
@@ -877,12 +877,12 @@ ChatPage::updateJoinedRooms(const std::map<std::string, mtx::responses::JoinedRo
         }
 }
 
-QMap<QString, RoomState>
+QMap<QString, QSharedPointer<RoomState>>
 ChatPage::generateMembershipDifference(
   const std::map<std::string, mtx::responses::JoinedRoom> &rooms,
-  const QMap<QString, RoomState> &states) const
+  const QMap<QString, QSharedPointer<RoomState>> &states) const
 {
-        QMap<QString, RoomState> stateDiff;
+        QMap<QString, QSharedPointer<RoomState>> stateDiff;
 
         for (auto it = rooms.cbegin(); it != rooms.cend(); ++it) {
                 const auto room_id = QString::fromStdString(it->first);
@@ -897,16 +897,16 @@ ChatPage::generateMembershipDifference(
                 for (auto mm = timelineMemberships.cbegin(); mm != timelineMemberships.cend(); ++mm)
                         all_memberships.emplace(mm->first, mm->second);
 
-                RoomState local;
-                local.aliases            = states[room_id].aliases;
-                local.avatar             = states[room_id].avatar;
-                local.canonical_alias    = states[room_id].canonical_alias;
-                local.history_visibility = states[room_id].history_visibility;
-                local.join_rules         = states[room_id].join_rules;
-                local.name               = states[room_id].name;
-                local.power_levels       = states[room_id].power_levels;
-                local.topic              = states[room_id].topic;
-                local.memberships        = all_memberships;
+                auto local                = QSharedPointer<RoomState>(new RoomState);
+                local->aliases            = states[room_id]->aliases;
+                local->avatar             = states[room_id]->avatar;
+                local->canonical_alias    = states[room_id]->canonical_alias;
+                local->history_visibility = states[room_id]->history_visibility;
+                local->join_rules         = states[room_id]->join_rules;
+                local->name               = states[room_id]->name;
+                local->power_levels       = states[room_id]->power_levels;
+                local->topic              = states[room_id]->topic;
+                local->memberships        = all_memberships;
 
                 stateDiff.insert(room_id, local);
         }

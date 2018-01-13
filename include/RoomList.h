@@ -51,16 +51,16 @@ public:
 
         void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
         void setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-                             const QMap<QString, RoomState> &states);
-        void sync(const QMap<QString, RoomState> &states,
-                  QMap<QString, QSharedPointer<RoomSettings>> &settings);
+                             const QMap<QString, QSharedPointer<RoomState>> &states);
+        void sync(const QMap<QString, QSharedPointer<RoomState>> &states,
+                  const QMap<QString, QSharedPointer<RoomSettings>> &settings);
         void syncInvites(const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 
         void clear();
         void updateAvatar(const QString &room_id, const QString &url);
 
         void addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-                     const RoomState &state,
+                     const QSharedPointer<RoomState> &state,
                      const QString &room_id);
         void addInvitedRoom(const QString &room_id, const mtx::responses::InvitedRoom &room);
         void removeRoom(const QString &room_id, bool reset);
