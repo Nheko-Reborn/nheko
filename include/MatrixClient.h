@@ -64,6 +64,7 @@ public:
         void uploadAudio(const QString &roomid,
                          const QSharedPointer<QIODevice> data,
                          const QString &filename);
+        void uploadFilter(const QString &filter) noexcept;
         void joinRoom(const QString &roomIdOrAlias);
         void leaveRoom(const QString &roomId);
         void sendTypingNotification(const QString &roomid, int timeoutInMillis = 20000);

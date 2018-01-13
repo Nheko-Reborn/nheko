@@ -226,6 +226,13 @@ MatrixClient::registerUser(const QString &user, const QString &pass, const QStri
 void
 MatrixClient::sync() noexcept
 {
+        // the filter is not uploaded yet (so it is a json with { at the beginning)
+        // ignore for now that the filter might be uploaded multiple times as we expect
+        // servers to do deduplication
+        if (filter_.startsWith("{")) {
+                uploadFilter(filter_);
+        }
+
         QUrlQuery query;
         query.addQueryItem("set_presence", "online");
         query.addQueryItem("filter", filter_);
@@ -964,6 +971,55 @@ MatrixClient::uploadAudio(const QString &roomid,
                 }
 
                 emit audioUploaded(roomid, filename, object.value("content_uri").toString());
+        });
+}
+
+void
+MatrixClient::uploadFilter(const QString &filter) noexcept
+{
+        // validate that filter is a Json-String
+        QJsonDocument doc = QJsonDocument::fromJson(filter.toUtf8());
+        if (doc.isNull() || !doc.isObject()) {
+                qWarning() << "Input which should be uploaded as filter is no JsonObject";
+                return;
+        }
+
+        QSettings settings;
+        auto userid = settings.value("auth/user_id", "").toString();
+
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + QString("/user/%1/filter").arg(userid));
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(endpoint);
+        request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+
+        auto reply = post(request, doc.toJson(QJsonDocument::Compact));
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString() << "42";
+                        return;
+                }
+
+                auto data      = reply->readAll();
+                auto response  = QJsonDocument::fromJson(data);
+                auto filter_id = response.object()["filter_id"].toString();
+
+                qDebug() << "Filter with ID" << filter_id << "created.";
+                QSettings settings;
+                settings.setValue("client/sync_filter", filter_id);
+                settings.sync();
+
+                // set the filter_ var so following syncs will use it
+                filter_ = filter_id;
         });
 }
 
