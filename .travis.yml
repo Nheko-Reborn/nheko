@@ -1,3 +1,5 @@
+---
+
 language: cpp
 sudo: required
 dist: trusty
@@ -14,48 +16,52 @@ matrix:
           osx_image: xcode9
           compiler: clang
           env:
-            - DEPLOYMENT=1
+              - DEPLOYMENT=1
         - os: linux
           compiler: gcc
           env:
-            - CXX_COMPILER=g++-6
-            - C_COMPILER=gcc-6
-            - DEPLOYMENT=1
+              - CXX_COMPILER=g++-6
+              - C_COMPILER=gcc-6
+              - QT_VERSION=592
+              - DEPLOYMENT=1
           addons:
-            apt:
-              sources: ["ubuntu-toolchain-r-test"]
-              packages: ["g++-6", "ninja-build"]
+              apt:
+                  sources: ["ubuntu-toolchain-r-test"]
+                  packages: ["g++-6", "ninja-build"]
+        - os: linux
+          compiler: gcc
+          env:
+              - CXX_COMPILER=g++-6
+              - C_COMPILER=gcc-6
+              - QT_VERSION=571
+          addons:
+              apt:
+                  sources: ["ubuntu-toolchain-r-test"]
+                  packages: ["g++-6", "ninja-build"]
         - os: linux
           compiler: clang
           env:
-            - CXX_COMPILER=clang++-5.0
-            - C_COMPILER=clang-5.0
+              - CXX_COMPILER=clang++-5.0
+              - C_COMPILER=clang-5.0
+              - QT_VERSION=592
           addons:
-            apt:
-              sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
-              packages: ["clang-5.0", "ninja-build"]
+              apt:
+                  sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
+                  packages: ["clang-5.0", "ninja-build"]
 
 before_install:
     - export CXX=${CXX_COMPILER}
     - export CC=${C_COMPILER}
 
 install:
-    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install qt5 lmdb clang-format ninja; fi
-    - if [ $TRAVIS_OS_NAME == osx ]; then export CMAKE_PREFIX_PATH=/usr/local/opt/qt5; fi
-    - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/linux/install-deps.sh; fi
-
-before_script:
-    - if [ $TRAVIS_OS_NAME == linux ]; then source /opt/qt59/bin/qt59-env.sh; fi
+    - ./.ci/install.sh
 
 script:
-    - make ci
-    - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
-    - if [ $TRAVIS_OS_NAME == osx ] && [ $DEPLOYMENT == 1 ] && [ ! -z $TRAVIS_TAG ]; then make macos-deploy; fi
-    - if [ $TRAVIS_OS_NAME == linux ] && [ $DEPLOYMENT == 1 ] && [ ! -z $TRAVIS_TAG ]; then make linux-deploy; fi
+    - ./.ci/script.sh
 
 before_deploy:
-  - export RELEASE_DEB_FILE=$(ls *.deb)
-  - export RELEASE_RPM_FILE=$(ls *.rpm)
+    - export RELEASE_DEB_FILE=$(ls *.deb)
+    - export RELEASE_RPM_FILE=$(ls *.rpm)
 
 deploy:
     - skip_cleanup: true
@@ -65,9 +71,9 @@ deploy:
           secure: oprXzESukFiXBeF2BXkXUlegsAQc95Ub4kc/OkoNFaYBvqpA+IGpWHmHCx5JPny/OT3Kc2Urpe2JUeGSWDHZ7UCKDjH+NzGP3uN82fHh/HiszG/Srw7+hWEHm1ve+gMK9GS8pr+yUsUrPP0UfVXlPoI4pBWa4zGi2Ndb/SqvjCgIHFLtGyoBo6CydKQ/AyWiXSMKDfJL+Dx4JLIPP4RTCBJy8ZrZ8m/a5Tgy4Ij6+djjrgYCZCEhGxSYw7xDIT/9SV8g9NkrbisqBDrILzAH8Yhe4XMRMXo88OAxV5+Vb9Rw1hrqczez6lpFDbJetv8MjofND+pSoAFwtjaL1wTFK9Ud6w4O9AuHlEQH9cGVdvsxFcosRwJVh58x51JM9ptoktqhx/HHJBTuCHCYYlHwtRwbwqnMYdLzKZG5FnujT8DG+9mcva1fL6tzW/XD505VPMWwXFC/2/pvolgAkTFFXYSALAwZlK3IgoXU8Gok/3B4iHofzQsFf6Yq3BI/88x7tVASUqiYhoKrO50+gb6pNIRCyWgGUiBEVXBp6Ziq3ORQPyQJg7i9HHUGTUu74yvGLHWLwjNQzZP/hxJZK3VlJxzyXntdOxiJc8iOzNrU+rPKBAlAaE6bQDOoniIysEgdD5BXHTLFzPvts4P1n2Ckor5/rNJ+qXR8GU+/y7e1GKU=
       file_glob: true
       file:
-        - nheko-x86_64.AppImage
-        - $RELEASE_DEB_FILE
-        - $RELEASE_RPM_FILE
+          - nheko-x86_64.AppImage
+          - $RELEASE_DEB_FILE
+          - $RELEASE_RPM_FILE
       on:
           condition: $TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1
           repo: mujx/nheko

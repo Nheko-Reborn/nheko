@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 #
 # Create deb & rpm packages from the AppImage.
 #

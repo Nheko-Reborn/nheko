@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 TAG=`git tag -l --points-at HEAD`
 
