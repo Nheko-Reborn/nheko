@@ -20,7 +20,10 @@ for iconSize in 16 32 48 64 128 256 512; do
     cp resources/nheko-${iconSize}.png ${IconDir}/nheko.png
 done
 
-wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+# Only download the file when not already present
+if ! [ -f linuxdeployqt-continuous-x86_64.AppImage ] ; then
+	wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+fi
 chmod a+x linuxdeployqt*.AppImage
 
 unset QTDIR
