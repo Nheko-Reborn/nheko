@@ -122,10 +122,14 @@ private:
         QAction *showReadReceipts_;
 
         QHBoxLayout *topLayout_;
-        QVBoxLayout *sideLayout_; // Avatar or Timestamp
-        QVBoxLayout *mainLayout_; // Header & Message body
+        //! The message and the timestamp/checkmark.
+        QHBoxLayout *messageLayout_;
+        //! Avatar or Timestamp
+        QVBoxLayout *sideLayout_;
+        //! Header & Message body
+        QVBoxLayout *mainLayout_;
 
-        QHBoxLayout *headerLayout_; // Username (&) Timestamp
+        QVBoxLayout *headerLayout_; // Username (&) Timestamp
 
         Avatar *userAvatar_;
 
@@ -159,17 +163,25 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
         widgetLayout->addWidget(widget);
         widgetLayout->addStretch(1);
 
+        messageLayout_->setContentsMargins(0, 0, 20, 4);
+        messageLayout_->setSpacing(20);
+
         if (withSender) {
                 generateBody(displayName, "");
                 setupAvatarLayout(displayName);
-                mainLayout_->addLayout(headerLayout_);
+
+                headerLayout_->addLayout(widgetLayout);
+                messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(userid, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
+
+                messageLayout_->addLayout(widgetLayout, 1);
         }
 
-        mainLayout_->addLayout(widgetLayout);
+        messageLayout_->addWidget(timestamp_);
+        mainLayout_->addLayout(messageLayout_);
 }
 
 template<class Event, class Widget>
@@ -201,16 +213,23 @@ TimelineItem::setupWidgetLayout(Widget *widget,
         widgetLayout->addWidget(widget);
         widgetLayout->addStretch(1);
 
+        messageLayout_->setContentsMargins(0, 0, 20, 4);
+        messageLayout_->setSpacing(20);
+
         if (withSender) {
                 generateBody(displayName, "");
                 setupAvatarLayout(displayName);
 
-                mainLayout_->addLayout(headerLayout_);
+                headerLayout_->addLayout(widgetLayout);
+                messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
+
+                messageLayout_->addLayout(widgetLayout, 1);
         }
 
-        mainLayout_->addLayout(widgetLayout);
+        messageLayout_->addWidget(timestamp_);
+        mainLayout_->addLayout(messageLayout_);
 }

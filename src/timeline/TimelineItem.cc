@@ -50,18 +50,14 @@ TimelineItem::init()
                         ChatPage::instance()->showReadReceipts(event_id_);
         });
 
-        topLayout_  = new QHBoxLayout(this);
-        sideLayout_ = new QVBoxLayout;
-        mainLayout_ = new QVBoxLayout;
+        topLayout_     = new QHBoxLayout(this);
+        mainLayout_    = new QVBoxLayout;
+        messageLayout_ = new QHBoxLayout;
 
         topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
         topLayout_->setSpacing(0);
 
-        topLayout_->addLayout(sideLayout_);
         topLayout_->addLayout(mainLayout_, 1);
-
-        sideLayout_->setMargin(0);
-        sideLayout_->setSpacing(0);
 
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
@@ -95,18 +91,25 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         body.replace("\n", "<br/>");
         generateTimestamp(timestamp);
 
+        messageLayout_->setContentsMargins(0, 0, 20, 4);
+        messageLayout_->setSpacing(20);
+
         if (withSender) {
                 generateBody(displayName, body);
                 setupAvatarLayout(displayName);
-                mainLayout_->addLayout(headerLayout_);
+
+                messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(userid, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
+
+                messageLayout_->addWidget(body_, 1);
         }
 
-        mainLayout_->addWidget(body_);
+        messageLayout_->addWidget(timestamp_);
+        mainLayout_->addLayout(messageLayout_);
 }
 
 TimelineItem::TimelineItem(ImageItem *image,
@@ -217,21 +220,27 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         body.replace("\n", "<br/>");
         body = "<i>" + body + "</i>";
 
+        messageLayout_->setContentsMargins(0, 0, 20, 4);
+        messageLayout_->setSpacing(20);
+
         if (with_sender) {
                 auto displayName = TimelineViewManager::displayName(sender);
 
                 generateBody(displayName, body);
                 setupAvatarLayout(displayName);
 
-                mainLayout_->addLayout(headerLayout_);
+                messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
+
+                messageLayout_->addWidget(body_, 1);
         }
 
-        mainLayout_->addWidget(body_);
+        messageLayout_->addWidget(timestamp_);
+        mainLayout_->addLayout(messageLayout_);
 }
 
 /*
@@ -259,18 +268,25 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         emoteMsg.replace(conf::strings::url_regex, conf::strings::url_html);
         emoteMsg.replace("\n", "<br/>");
 
+        messageLayout_->setContentsMargins(0, 0, 20, 4);
+        messageLayout_->setSpacing(20);
+
         if (with_sender) {
                 generateBody(displayName, emoteMsg);
                 setupAvatarLayout(displayName);
-                mainLayout_->addLayout(headerLayout_);
+
+                messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(emoteMsg);
                 setupSimpleLayout();
+
+                messageLayout_->addWidget(body_, 1);
         }
 
-        mainLayout_->addWidget(body_);
+        messageLayout_->addWidget(timestamp_);
+        mainLayout_->addLayout(messageLayout_);
 }
 
 /*
@@ -303,19 +319,25 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         body.replace(conf::strings::url_regex, conf::strings::url_html);
         body.replace("\n", "<br/>");
 
+        messageLayout_->setContentsMargins(0, 0, 20, 4);
+        messageLayout_->setSpacing(20);
+
         if (with_sender) {
                 generateBody(displayName, body);
                 setupAvatarLayout(displayName);
 
-                mainLayout_->addLayout(headerLayout_);
+                messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
+
+                messageLayout_->addWidget(body_, 1);
         }
 
-        mainLayout_->addWidget(body_);
+        messageLayout_->addWidget(timestamp_);
+        mainLayout_->addLayout(messageLayout_);
 }
 
 // Only the body is displayed.
@@ -377,8 +399,10 @@ TimelineItem::generateTimestamp(const QDateTime &time)
         int topMargin = QFontMetrics(font_).ascent() - fm.ascent();
 
         timestamp_ = new QLabel(this);
+        timestamp_->setAlignment(Qt::AlignTop);
         timestamp_->setFont(timestampFont);
-        timestamp_->setText(time.toString("HH:mm"));
+        timestamp_->setText(
+          QString("<span style=\"color: #999\"> %1 </span>").arg(time.toString("HH:mm")));
         timestamp_->setContentsMargins(0, topMargin, 0, 0);
         timestamp_->setStyleSheet(
           QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
@@ -418,41 +442,28 @@ TimelineItem::setupAvatarLayout(const QString &userName)
         if (userName[0] == '@' && userName.size() > 1)
                 userAvatar_->setLetter(QChar(userName[1]).toUpper());
 
+        sideLayout_ = new QVBoxLayout;
+        sideLayout_->setMargin(0);
+        sideLayout_->setSpacing(0);
         sideLayout_->addWidget(userAvatar_);
         sideLayout_->addStretch(1);
+        topLayout_->insertLayout(0, sideLayout_);
 
-        headerLayout_ = new QHBoxLayout;
+        headerLayout_ = new QVBoxLayout;
         headerLayout_->setMargin(0);
-        headerLayout_->setSpacing(conf::timeline::headerSpacing);
+        headerLayout_->setSpacing(0);
 
         headerLayout_->addWidget(userName_);
-        headerLayout_->addWidget(timestamp_, 1);
+        headerLayout_->addWidget(body_);
 }
 
 void
 TimelineItem::setupSimpleLayout()
 {
-        sideLayout_->addWidget(timestamp_);
-
-        // Keep only the time in plain text.
-        QTextEdit htmlText(timestamp_->text());
-        QString plainText = htmlText.toPlainText();
-
-        timestamp_->adjustSize();
-
-        // Align the end of the avatar bubble with the end of the timestamp for
-        // messages with and without avatar. Otherwise their bodies would not be
-        // aligned.
-        int tsWidth = timestamp_->fontMetrics().width(plainText);
-        int offset  = std::max(0, conf::timeline::avatarSize - tsWidth);
-
-        int defaultFontHeight = QFontMetrics(font_).ascent();
-
-        timestamp_->setAlignment(Qt::AlignTop);
-        timestamp_->setContentsMargins(
-          offset + 1, defaultFontHeight - timestamp_->fontMetrics().ascent(), 0, 0);
-        topLayout_->setContentsMargins(
-          conf::timeline::msgMargin, conf::timeline::msgMargin / 3, 0, 0);
+        topLayout_->setContentsMargins(conf::timeline::avatarSize + conf::timeline::msgMargin + 1,
+                                       conf::timeline::msgMargin / 3,
+                                       0,
+                                       0);
 }
 
 void

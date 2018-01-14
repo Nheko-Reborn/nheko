@@ -83,7 +83,7 @@ static constexpr int headerSpacing    = 7;
 static constexpr int headerLeftMargin = 15;
 
 namespace fonts {
-static constexpr int timestamp     = 10;
+static constexpr int timestamp     = 13;
 static constexpr int dateSeparator = conf::fontSize - 2;
 } // namespace fonts
 } // namespace timeline
