@@ -340,6 +340,16 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         mainLayout_->addLayout(messageLayout_);
 }
 
+void
+TimelineItem::markReceived()
+{
+        auto checkmark = new QLabel("✓", this);
+        checkmark->setStyleSheet(QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
+        checkmark->setAlignment(Qt::AlignTop);
+
+        messageLayout_->insertWidget(1, checkmark);
+}
+
 // Only the body is displayed.
 void
 TimelineItem::generateBody(const QString &body)

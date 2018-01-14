@@ -84,6 +84,7 @@ public:
         DescInfo descriptionMessage() const { return descriptionMsg_; }
         QString eventId() const { return event_id_; }
         void setEventId(const QString &event_id) { event_id_ = event_id; }
+        void markReceived();
 
         ~TimelineItem();
 
