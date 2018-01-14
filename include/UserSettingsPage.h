@@ -61,10 +61,17 @@ public:
                 save();
         };
 
+        void setTypingNotifications(bool state)
+        {
+                isTypingNotificationsEnabled_ = state;
+                save();
+        };
+
         QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isOrderingEnabled() const { return isOrderingEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
+        bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -74,6 +81,7 @@ private:
         bool isTrayEnabled_;
         bool isOrderingEnabled_;
         bool isGroupViewEnabled_;
+        bool isTypingNotificationsEnabled_;
 };
 
 class HorizontalLine : public QFrame
@@ -114,6 +122,7 @@ private:
         Toggle *trayToggle_;
         Toggle *roomOrderToggle_;
         Toggle *groupViewToggle_;
+        Toggle *typingNotifications_;
 
         QComboBox *themeCombo_;
 

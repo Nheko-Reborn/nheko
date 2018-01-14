@@ -155,6 +155,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(room_list_, &RoomList::roomChanged, this, [=](const QString &roomid) {
                 QStringList users;
 
+                if (!userSettings_->isTypingNotificationsEnabled()) {
+                        typingDisplay_->setUsers(users);
+                        return;
+                }
+
                 if (typingUsers_.contains(roomid))
                         users = typingUsers_[roomid];
 
@@ -190,16 +195,25 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 });
 
         connect(text_input_, &TextInputWidget::startedTyping, this, [=]() {
+                if (!userSettings_->isTypingNotificationsEnabled())
+                        return;
+
                 typingRefresher_->start();
                 client_->sendTypingNotification(current_room_);
         });
 
         connect(text_input_, &TextInputWidget::stoppedTyping, this, [=]() {
+                if (!userSettings_->isTypingNotificationsEnabled())
+                        return;
+
                 typingRefresher_->stop();
                 client_->removeTypingNotification(current_room_);
         });
 
         connect(typingRefresher_, &QTimer::timeout, this, [=]() {
+                if (!userSettings_->isTypingNotificationsEnabled())
+                        return;
+
                 client_->sendTypingNotification(current_room_);
         });
 
@@ -773,6 +787,9 @@ ChatPage::removeInvite(const QString &room_id)
 void
 ChatPage::updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids)
 {
+        if (!userSettings_->isTypingNotificationsEnabled())
+                return;
+
         QStringList users;
 
         QSettings settings;

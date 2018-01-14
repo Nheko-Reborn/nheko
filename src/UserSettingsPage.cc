@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QScrollArea>
 #include <QSettings>
 
 #include "Config.h"
@@ -33,10 +34,11 @@ void
 UserSettings::load()
 {
         QSettings settings;
-        isTrayEnabled_      = settings.value("user/window/tray", true).toBool();
-        isOrderingEnabled_  = settings.value("user/room_ordering", true).toBool();
-        isGroupViewEnabled_ = settings.value("user/group_view", true).toBool();
-        theme_              = settings.value("user/theme", "light").toString();
+        isTrayEnabled_                = settings.value("user/window/tray", true).toBool();
+        isOrderingEnabled_            = settings.value("user/room_ordering", true).toBool();
+        isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
+        isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
+        theme_                        = settings.value("user/theme", "light").toString();
 
         applyTheme();
 }
@@ -83,6 +85,7 @@ UserSettings::save()
         settings.endGroup();
 
         settings.setValue("room_ordering", isOrderingEnabled_);
+        settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
         settings.setValue("group_view", isGroupViewEnabled_);
         settings.setValue("theme", theme());
         settings.endGroup();
@@ -152,9 +155,20 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         groupViewLayout->addWidget(groupViewLabel);
         groupViewLayout->addWidget(groupViewToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto typingLayout = new QHBoxLayout;
+        typingLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto typingLabel     = new QLabel(tr("Typing notifications"), this);
+        typingNotifications_ = new Toggle(this);
+        typingNotifications_->setActiveColor(QColor("#38A3D8"));
+        typingNotifications_->setInactiveColor(QColor("gray"));
+        typingLabel->setStyleSheet("font-size: 15px;");
+
+        typingLayout->addWidget(typingLabel);
+        typingLayout->addWidget(typingNotifications_, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto themeLabel_ = new QLabel(tr("App theme"), this);
+        auto themeLabel_ = new QLabel(tr("Theme"), this);
         themeCombo_      = new QComboBox(this);
         themeCombo_->addItem("Light");
         themeCombo_->addItem("Dark");
@@ -178,6 +192,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addLayout(orderRoomLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(groupViewLayout);
+        mainLayout_->addWidget(new HorizontalLine(this));
+        mainLayout_->addLayout(typingLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
@@ -203,6 +219,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setGroupView(!isDisabled);
         });
 
+        connect(typingNotifications_, &Toggle::toggled, this, [=](bool isDisabled) {
+                settings_->setTypingNotifications(!isDisabled);
+        });
+
         connect(backBtn_, &QPushButton::clicked, this, [=]() {
                 settings_->save();
                 emit moveBack();
@@ -218,6 +238,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         trayToggle_->setState(!settings_->isTrayEnabled());
         roomOrderToggle_->setState(!settings_->isOrderingEnabled());
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
+        typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
 }
 
 void
