@@ -44,26 +44,6 @@ from_json(const json &j, ReadReceiptKey &key)
         key.room_id  = j.at("room_id").get<std::string>();
 }
 
-//! Decribes a read receipt stored in cache.
-struct ReadReceiptValue
-{
-        std::string user_id;
-        uint64_t ts;
-};
-
-inline void
-to_json(json &j, const ReadReceiptValue &value)
-{
-        j = json{{"user_id", value.user_id}, {"ts", value.ts}};
-}
-
-inline void
-from_json(const json &j, ReadReceiptValue &value)
-{
-        value.user_id = j.at("user_id").get<std::string>();
-        value.ts      = j.at("ts").get<uint64_t>();
-}
-
 class Cache
 {
 public:
@@ -100,7 +80,7 @@ public:
         //! Retrieve all the read receipts for the given event id and room.
         //!
         //! Returns a map of user ids and the time of the read receipt in milliseconds.
-        using UserReceipts = std::multimap<uint64_t, std::string>;
+        using UserReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
         UserReceipts readReceipts(const QString &event_id, const QString &room_id);
 
         QByteArray image(const QString &url) const;

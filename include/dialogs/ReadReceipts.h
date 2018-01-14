@@ -37,7 +37,7 @@ public:
         explicit ReadReceipts(QWidget *parent = nullptr);
 
 public slots:
-        void addUsers(const std::multimap<uint64_t, std::string> &users);
+        void addUsers(const std::multimap<uint64_t, std::string, std::greater<uint64_t>> &users);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

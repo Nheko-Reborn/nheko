@@ -25,10 +25,13 @@
 #include "Cache.h"
 #include "RoomState.h"
 
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2017.12.10");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.01.14");
 
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
+
+using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
+using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
 Cache::Cache(const QString &userId)
   : env_{nullptr}
@@ -455,10 +458,10 @@ Cache::setInvites(const std::map<std::string, mtx::responses::InvitedRoom> &invi
         }
 }
 
-std::multimap<uint64_t, std::string>
+CachedReceipts
 Cache::readReceipts(const QString &event_id, const QString &room_id)
 {
-        std::multimap<uint64_t, std::string> receipts;
+        CachedReceipts receipts;
 
         ReadReceiptKey receipt_key{event_id.toStdString(), room_id.toStdString()};
         nlohmann::json json_key = receipt_key;
@@ -476,10 +479,11 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
 
                 if (res) {
                         auto json_response = json::parse(std::string(value.data(), value.size()));
-                        auto values        = json_response.get<std::vector<ReadReceiptValue>>();
+                        auto values        = json_response.get<std::map<std::string, uint64_t>>();
 
                         for (auto v : values)
-                                receipts.emplace(v.ts, v.user_id);
+                                // timestamp, user_id
+                                receipts.emplace(v.second, v.first);
                 }
 
         } catch (const lmdb::error &e) {
@@ -489,7 +493,6 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
         return receipts;
 }
 
-using Receipts = std::map<std::string, std::map<std::string, uint64_t>>;
 void
 Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
 {
@@ -511,7 +514,7 @@ Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
 
                         read_txn.commit();
 
-                        std::vector<ReadReceiptValue> saved_receipts;
+                        std::map<std::string, uint64_t> saved_receipts;
 
                         // If an entry for the event id already exists, we would
                         // merge the existing receipts with the new ones.
@@ -520,13 +523,12 @@ Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
                                   json::parse(std::string(prev_value.data(), prev_value.size()));
 
                                 // Retrieve the saved receipts.
-                                saved_receipts = json_value.get<std::vector<ReadReceiptValue>>();
+                                saved_receipts = json_value.get<std::map<std::string, uint64_t>>();
                         }
 
                         // Append the new ones.
                         for (auto event_receipt : event_receipts)
-                                saved_receipts.push_back(
-                                  ReadReceiptValue{event_receipt.first, event_receipt.second});
+                                saved_receipts.emplace(event_receipt.first, event_receipt.second);
 
                         // Save back the merged (or only the new) receipts.
                         nlohmann::json json_updated_value = saved_receipts;

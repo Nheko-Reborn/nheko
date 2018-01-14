@@ -96,7 +96,7 @@ ReadReceipts::ReadReceipts(QWidget *parent)
 }
 
 void
-ReadReceipts::addUsers(const std::multimap<uint64_t, std::string> &receipts)
+ReadReceipts::addUsers(const std::multimap<uint64_t, std::string, std::greater<uint64_t>> &receipts)
 {
         // We want to remove any previous items that have been set.
         userList_->clear();
