@@ -7,6 +7,11 @@ QLabel {
     background-color: white;
 }
 
+#sideBar {
+    border: none;
+    border-right: 1px solid #dcdcdc;
+}
+
 TimelineView,
 TimelineView > * {
     background-color: white;
@@ -76,6 +81,11 @@ UserInfoWidget, UserInfoWidget > * {
     color: #ebebeb;
 }
 
+UserInfoWidget {
+    border: none;
+    border-bottom: 1px solid #dcdcdc;
+}
+
 UserSettingsPage {
     background-color: white;
 }
@@ -138,4 +148,14 @@ TextField {
 ScrollBar {
     qproperty-handleColor: #ccc;
     qproperty-backgroundColor: #efefef;
+}
+
+SideBarActions {
+    border: none;
+    border-top: 1px solid #dcdcdc;
+}
+
+TopRoomBar {
+    border: none;
+    border-bottom: 1px solid #dcdcdc;
 }

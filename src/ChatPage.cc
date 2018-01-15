@@ -78,6 +78,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
 
         // SideBar
         sideBar_ = new QFrame(this);
+        sideBar_->setObjectName("sideBar");
         sideBar_->setMinimumWidth(ui::sidebar::NormalSize);
         sideBarLayout_ = new QVBoxLayout(sideBar_);
         sideBarLayout_->setSpacing(0);

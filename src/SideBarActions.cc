@@ -131,3 +131,12 @@ SideBarActions::resizeEvent(QResizeEvent *event)
                 createRoomBtn_->show();
         }
 }
+
+void
+SideBarActions::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

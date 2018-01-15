@@ -7,6 +7,11 @@ QLabel {
     background-color: #383c4a;
 }
 
+#sideBar {
+    border: none;
+    border-right: 1px solid #414A59;
+}
+
 TimelineView,
 TimelineView > * {
     background-color: #383c4a;
@@ -71,6 +76,11 @@ LoadingIndicator {
 UserInfoWidget, UserInfoWidget > * {
     background-color: #383c4a;
     color: #b0b3ba;
+}
+
+UserInfoWidget {
+    border: none;
+    border-bottom: 1px solid #414A59;
 }
 
 UserSettingsPage {
@@ -141,4 +151,14 @@ QTextEdit {
 ScrollBar {
     qproperty-handleColor: #caccd1;
     qproperty-backgroundColor: #383c4e;
+}
+
+SideBarActions {
+    border: none;
+    border-top: 1px solid #414A59;
+}
+
+TopRoomBar {
+    border: none;
+    border-bottom: 1px solid #414A59;
 }
