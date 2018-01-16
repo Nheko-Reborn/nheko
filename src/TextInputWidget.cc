@@ -344,6 +344,10 @@ TextInputWidget::command(QString command, QString args)
                 sendEmoteMessage(args);
         } else if (command == "join") {
                 sendJoinRoomRequest(args);
+        } else if (command == "shrug") {
+                sendTextMessage("¯\\_(ツ)_/¯");
+        } else if (command == "fliptable") {
+                sendTextMessage("(╯°□°)╯︵ ┻━┻");
         }
 }
 
