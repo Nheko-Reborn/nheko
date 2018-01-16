@@ -123,6 +123,17 @@ protected:
 private:
         using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+        //! HACK: Fixing layout flickering when adding to the bottom
+        //! of the timeline.
+        void pushTimelineItem(TimelineItem *item)
+        {
+                item->hide();
+                QTimer::singleShot(0, this, [=]() {
+                        scroll_layout_->addWidget(item);
+                        item->show();
+                });
+        };
+
         void init();
         void addTimelineItem(TimelineItem *item, TimelineDirection direction);
         void updateLastSender(const QString &user_id, TimelineDirection direction);
@@ -229,7 +240,8 @@ TimelineView::addUserMessage(const QString &url,
 
         TimelineItem *view_item =
           new TimelineItem(widget, local_user_, with_sender, scroll_widget_);
-        scroll_layout_->addWidget(view_item);
+
+        pushTimelineItem(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 

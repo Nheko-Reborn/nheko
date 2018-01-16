@@ -433,7 +433,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                                 addDateSeparator(newDate, lastItemPosition);
                 }
 
-                scroll_layout_->addWidget(item);
+                pushTimelineItem(item);
         } else {
                 // The first item (position 0) is a stretch widget that pushes
                 // the widgets to the bottom of the page.
@@ -479,7 +479,8 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 
         TimelineItem *view_item =
           new TimelineItem(ty, local_user_, body, with_sender, scroll_widget_);
-        scroll_layout_->addWidget(view_item);
+
+        pushTimelineItem(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
