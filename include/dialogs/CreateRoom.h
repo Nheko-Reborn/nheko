@@ -22,6 +22,7 @@ signals:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void showEvent(QShowEvent *event) override;
 
 private:
         void clearFields();

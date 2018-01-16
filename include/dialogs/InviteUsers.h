@@ -19,6 +19,7 @@ public:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void showEvent(QShowEvent *event) override;
 
 signals:
         void closing(bool isLeaving, QStringList invitees);

@@ -152,3 +152,11 @@ CreateRoom::paintEvent(QPaintEvent *)
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+void
+CreateRoom::showEvent(QShowEvent *event)
+{
+        nameInput_->setFocus();
+
+        QFrame::showEvent(event);
+}

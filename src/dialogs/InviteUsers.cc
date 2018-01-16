@@ -147,3 +147,11 @@ InviteUsers::invitedUsers() const
 
         return users;
 }
+
+void
+InviteUsers::showEvent(QShowEvent *event)
+{
+        inviteeInput_->setFocus();
+
+        QFrame::showEvent(event);
+}

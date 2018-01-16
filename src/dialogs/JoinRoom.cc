@@ -59,3 +59,11 @@ JoinRoom::paintEvent(QPaintEvent *)
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+void
+JoinRoom::showEvent(QShowEvent *event)
+{
+        roomInput_->setFocus();
+
+        QFrame::showEvent(event);
+}
