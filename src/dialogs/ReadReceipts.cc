@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 
 #include "Config.h"
+#include "Utils.h"
 
 #include "Avatar.h"
 #include "AvatarProvider.h"
@@ -32,7 +33,7 @@ ReceiptItem::ReceiptItem(QWidget *parent, const QString &user_id, uint64_t times
 
         avatar_ = new Avatar(this);
         avatar_->setSize(40);
-        avatar_->setLetter(QChar(displayName[0]));
+        avatar_->setLetter(utils::firstChar(displayName));
 
         // If it's a matrix id we use the second letter.
         if (displayName.size() > 1 && displayName.at(0) == '@')
