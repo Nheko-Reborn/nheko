@@ -87,22 +87,38 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Up: {
                 auto initial_cursor = textCursor();
                 QTextEdit::keyPressEvent(event);
-                if (textCursor() == initial_cursor &&
+
+                if (textCursor() == initial_cursor && textCursor().atStart() &&
                     history_index_ + 1 < working_history_.size()) {
                         ++history_index_;
                         setPlainText(working_history_[history_index_]);
                         moveCursor(QTextCursor::End);
                 }
+
+                // Move to the start of the text if there aren't any lines to move up to.
+                if (textCursor() == initial_cursor) {
+                        initial_cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor, 1);
+                        setTextCursor(initial_cursor);
+                }
+
                 break;
         }
         case Qt::Key_Down: {
                 auto initial_cursor = textCursor();
                 QTextEdit::keyPressEvent(event);
-                if (textCursor() == initial_cursor && history_index_ > 0) {
+
+                if (textCursor() == initial_cursor && textCursor().atEnd() && history_index_ > 0) {
                         --history_index_;
                         setPlainText(working_history_[history_index_]);
                         moveCursor(QTextCursor::End);
                 }
+
+                // Move to the end of the text if there aren't any lines to move down to.
+                if (textCursor() == initial_cursor) {
+                        initial_cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor, 1);
+                        setTextCursor(initial_cursor);
+                }
+
                 break;
         }
         default:
