@@ -93,10 +93,8 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                         ++history_index_;
                         setPlainText(working_history_[history_index_]);
                         moveCursor(QTextCursor::End);
-                }
-
-                // Move to the start of the text if there aren't any lines to move up to.
-                if (textCursor() == initial_cursor) {
+                } else if (textCursor() == initial_cursor) {
+                        // Move to the start of the text if there aren't any lines to move up to.
                         initial_cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor, 1);
                         setTextCursor(initial_cursor);
                 }
@@ -111,10 +109,8 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                         --history_index_;
                         setPlainText(working_history_[history_index_]);
                         moveCursor(QTextCursor::End);
-                }
-
-                // Move to the end of the text if there aren't any lines to move down to.
-                if (textCursor() == initial_cursor) {
+                } else if (textCursor() == initial_cursor) {
+                        // Move to the end of the text if there aren't any lines to move down to.
                         initial_cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor, 1);
                         setTextCursor(initial_cursor);
                 }
