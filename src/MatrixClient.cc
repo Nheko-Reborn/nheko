@@ -516,11 +516,10 @@ MatrixClient::getOwnCommunities() noexcept
 
                 try {
                         QList<QString> response;
-                        for (auto it = json["groups"].toArray().constBegin();
-                             it != json["groups"].toArray().constEnd();
-                             it++) {
-                                response.append(it->toString());
-                        }
+
+                        for (auto group : json["groups"].toArray())
+                                response.append(group.toString());
+
                         emit getOwnCommunitiesResponse(response);
                 } catch (DeserializationException &e) {
                         qWarning() << "Own communities:" << e.what();
