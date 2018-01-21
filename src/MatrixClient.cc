@@ -28,6 +28,8 @@
 #include <QSettings>
 #include <QUrlQuery>
 
+#include <zlib.h>
+
 #include "Login.h"
 #include "MatrixClient.h"
 #include "Register.h"
@@ -252,6 +254,7 @@ MatrixClient::sync() noexcept
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setRawHeader(QByteArray("Accept-Encoding"), QByteArray("gzip, deflate"));
 
         auto reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -264,8 +267,13 @@ MatrixClient::sync() noexcept
                         return;
                 }
 
+                auto data = reply->readAll();
+
+                if (reply->hasRawHeader(QByteArray("Content-Encoding")))
+                        data = uncompress(data);
+
                 try {
-                        mtx::responses::Sync response = nlohmann::json::parse(reply->readAll());
+                        mtx::responses::Sync response = nlohmann::json::parse(data);
                         emit syncCompleted(response);
                 } catch (std::exception &e) {
                         qWarning() << "Sync malformed response: " << e.what();
@@ -374,6 +382,7 @@ MatrixClient::initialSync() noexcept
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setRawHeader(QByteArray("Accept-Encoding"), QByteArray("gzip, deflate"));
 
         auto reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -386,8 +395,13 @@ MatrixClient::initialSync() noexcept
                         return;
                 }
 
+                auto data = reply->readAll();
+
+                if (reply->hasRawHeader(QByteArray("Content-Encoding")))
+                        data = uncompress(data);
+
                 try {
-                        mtx::responses::Sync response = nlohmann::json::parse(reply->readAll());
+                        mtx::responses::Sync response = nlohmann::json::parse(data);
                         emit initialSyncCompleted(response);
                 } catch (std::exception &e) {
                         qWarning() << "Sync malformed response" << e.what();
@@ -1267,4 +1281,60 @@ MatrixClient::makeUploadRequest(QSharedPointer<QIODevice> iodev)
         auto reply = post(request, iodev.data());
 
         return reply;
+}
+
+QByteArray
+MatrixClient::uncompress(const QByteArray &data)
+{
+        /*
+         * https://stackoverflow.com/questions/2690328/qt-quncompress-gzip-data/7351507#7351507
+         */
+
+        if (data.size() <= 4) {
+                qWarning("uncompress: Input data is truncated");
+                return QByteArray();
+        }
+
+        QByteArray result;
+
+        int ret;
+        z_stream strm;
+        static const int CHUNK_SIZE = 1024;
+        char out[CHUNK_SIZE];
+
+        /* allocate inflate state */
+        strm.zalloc   = Z_NULL;
+        strm.zfree    = Z_NULL;
+        strm.opaque   = Z_NULL;
+        strm.avail_in = data.size();
+        strm.next_in  = (Bytef *)(data.data());
+
+        ret = inflateInit2(&strm, 15 + 32); // gzip decoding
+        if (ret != Z_OK)
+                return QByteArray();
+
+        // run inflate()
+        do {
+                strm.avail_out = CHUNK_SIZE;
+                strm.next_out  = (Bytef *)(out);
+
+                ret = inflate(&strm, Z_NO_FLUSH);
+                Q_ASSERT(ret != Z_STREAM_ERROR); // state not clobbered
+
+                switch (ret) {
+                case Z_NEED_DICT:
+                        ret = Z_DATA_ERROR;
+                        // fall through
+                case Z_DATA_ERROR:
+                case Z_MEM_ERROR:
+                        (void)inflateEnd(&strm);
+                        return QByteArray();
+                }
+
+                result.append(out, CHUNK_SIZE - strm.avail_out);
+        } while (strm.avail_out == 0);
+
+        // clean up and return
+        inflateEnd(&strm);
+        return result;
 }
