@@ -39,6 +39,4 @@ Community::parseRooms(const QJsonObject &rooms)
         for (auto i = 0; i < rooms["chunk"].toArray().size(); i++) {
                 rooms_.append(rooms["chunk"].toArray()[i].toObject()["room_id"].toString());
         }
-
-        emit roomsChanged(rooms_);
 }

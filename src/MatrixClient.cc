@@ -681,7 +681,9 @@ MatrixClient::fetchCommunityRooms(const QString &communityId)
 }
 
 void
-MatrixClient::fetchUserAvatar(const QString &userId, const QUrl &avatarUrl)
+MatrixClient::fetchUserAvatar(const QUrl &avatarUrl,
+                              std::function<void(QImage)> onSuccess,
+                              std::function<void(QString)> onError)
 {
         QList<QString> url_parts = avatarUrl.toString().split("mxc://");
 
@@ -704,25 +706,23 @@ MatrixClient::fetchUserAvatar(const QString &userId, const QUrl &avatarUrl)
         QNetworkRequest avatar_request(endpoint);
 
         auto reply = get(avatar_request);
-        connect(reply, &QNetworkReply::finished, this, [this, reply, userId]() {
+        connect(reply, &QNetworkReply::finished, this, [this, reply, onSuccess, onError]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-                if (status == 0 || status >= 400) {
-                        qWarning() << reply->errorString();
-                        return;
-                }
+                if (status == 0 || status >= 400)
+                        return onError(reply->errorString());
 
                 auto data = reply->readAll();
 
                 if (data.size() == 0)
-                        return;
+                        return onError("received avatar with no data");
 
                 QImage img;
                 img.loadFromData(data);
 
-                emit userAvatarRetrieved(userId, img);
+                onSuccess(std::move(img));
         });
 }
 
@@ -777,52 +777,6 @@ MatrixClient::downloadFile(const QString &event_id, const QUrl &url)
                         return;
 
                 emit fileDownloaded(event_id, data);
-        });
-}
-
-void
-MatrixClient::fetchOwnAvatar(const QUrl &avatar_url)
-{
-        QList<QString> url_parts = avatar_url.toString().split("mxc://");
-
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for media " << avatar_url.toString();
-                return;
-        }
-
-        QUrlQuery query;
-        query.addQueryItem("width", "512");
-        query.addQueryItem("height", "512");
-        query.addQueryItem("method", "crop");
-
-        QString media_url =
-          QString("%1/_matrix/media/r0/thumbnail/%2").arg(getHomeServer().toString(), url_parts[1]);
-
-        QUrl endpoint(media_url);
-        endpoint.setQuery(query);
-
-        QNetworkRequest avatar_request(endpoint);
-
-        auto reply = get(avatar_request);
-        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-                reply->deleteLater();
-
-                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-                if (status == 0 || status >= 400) {
-                        qWarning() << reply->errorString();
-                        return;
-                }
-
-                auto img = reply->readAll();
-
-                if (img.size() == 0)
-                        return;
-
-                QPixmap pixmap;
-                pixmap.loadFromData(img);
-
-                emit ownAvatarRetrieved(pixmap);
         });
 }
 

@@ -27,8 +27,6 @@ void
 AvatarProvider::init(QSharedPointer<MatrixClient> client)
 {
         client_ = client;
-
-        connect(client_.data(), &MatrixClient::userAvatarRetrieved, &AvatarProvider::updateAvatar);
 }
 
 void
@@ -65,7 +63,13 @@ AvatarProvider::resolve(const QString &userId, std::function<void(QImage)> callb
 
         // Add the current timeline item to the waiting list for this avatar.
         if (!toBeResolved_.contains(userId)) {
-                client_->fetchUserAvatar(userId, avatars_[userId].url);
+                client_->fetchUserAvatar(avatars_[userId].url,
+                                         [userId](QImage image) { updateAvatar(userId, image); },
+                                         [userId](QString error) {
+                                                 qWarning()
+                                                   << error << ": failed to retrieve user avatar"
+                                                   << userId;
+                                         });
 
                 QList<std::function<void(QImage)>> items;
                 items.push_back(callback);

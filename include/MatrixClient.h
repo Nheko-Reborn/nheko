@@ -47,11 +47,13 @@ public:
                           const QString &server) noexcept;
         void versions() noexcept;
         void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
-        void fetchUserAvatar(const QString &userId, const QUrl &avatarUrl);
+        //! Download user's avatar.
+        void fetchUserAvatar(const QUrl &avatarUrl,
+                             std::function<void(QImage)> onSuccess,
+                             std::function<void(QString)> onError);
         void fetchCommunityAvatar(const QString &communityId, const QUrl &avatarUrl);
         void fetchCommunityProfile(const QString &communityId);
         void fetchCommunityRooms(const QString &communityId);
-        void fetchOwnAvatar(const QUrl &avatar_url);
         void downloadImage(const QString &event_id, const QUrl &url);
         void downloadFile(const QString &event_id, const QUrl &url);
         void messages(const QString &room_id, const QString &from_token, int limit = 30) noexcept;
@@ -120,7 +122,6 @@ signals:
         void communityAvatarRetrieved(const QString &communityId, const QPixmap &img);
         void communityProfileRetrieved(const QString &communityId, const QJsonObject &profile);
         void communityRoomsRetrieved(const QString &communityId, const QJsonObject &rooms);
-        void ownAvatarRetrieved(const QPixmap &img);
         void imageDownloaded(const QString &event_id, const QPixmap &img);
         void fileDownloaded(const QString &event_id, const QByteArray &data);
 

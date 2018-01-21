@@ -19,9 +19,6 @@ public:
         inline QString getLongDescription() const;
         inline const QList<QString> getRoomList() const;
 
-signals:
-        void roomsChanged(QList<QString> &rooms);
-
 private:
         QUrl avatar_;
         QString name_;

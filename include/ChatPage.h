@@ -83,7 +83,6 @@ private slots:
         void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
         void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
         void updateOwnCommunitiesInfo(const QList<QString> &own_communities);
-        void setOwnAvatar(const QPixmap &img);
         void initialSyncCompleted(const mtx::responses::Sync &response);
         void syncCompleted(const mtx::responses::Sync &response);
         void changeTopRoomInfo(const QString &room_id);

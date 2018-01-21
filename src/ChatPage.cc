@@ -349,7 +349,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                         }
                 });
 
-        connect(client_.data(), &MatrixClient::ownAvatarRetrieved, this, &ChatPage::setOwnAvatar);
         connect(client_.data(), &MatrixClient::joinedRoom, this, [=](const QString &room_id) {
                 emit showNotification("You joined the room.");
                 removeInvite(room_id);
@@ -494,12 +493,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 }
 
 void
-ChatPage::setOwnAvatar(const QPixmap &img)
-{
-        user_info_widget_->setAvatar(img.toImage());
-}
-
-void
 ChatPage::syncCompleted(const mtx::responses::Sync &response)
 {
         syncTimeoutTimer_->stop();
@@ -597,7 +590,10 @@ ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_na
         user_info_widget_->setDisplayName(display_name);
 
         if (avatar_url.isValid())
-                client_->fetchOwnAvatar(avatar_url);
+                client_->fetchUserAvatar(
+                  avatar_url,
+                  [=](QImage img) { user_info_widget_->setAvatar(img); },
+                  [=](QString error) { qWarning() << error << ": failed to fetch own avatar"; });
 }
 
 void
