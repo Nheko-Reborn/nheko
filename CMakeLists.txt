@@ -277,6 +277,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/ThemeManager.h
 
     include/AvatarProvider.h
+    include/Cache.h
     include/ChatPage.h
     include/CommunitiesListItem.h
     include/CommunitiesList.h

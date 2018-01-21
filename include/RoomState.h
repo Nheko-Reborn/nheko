@@ -77,6 +77,8 @@ private:
         QString userAvatar_;
 };
 
+Q_DECLARE_METATYPE(RoomState)
+
 template<class Collection>
 void
 RoomState::updateFromEvents(const std::vector<Collection> &collection)

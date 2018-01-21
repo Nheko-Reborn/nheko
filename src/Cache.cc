@@ -33,8 +33,9 @@ static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
-Cache::Cache(const QString &userId)
-  : env_{nullptr}
+Cache::Cache(const QString &userId, QObject *parent)
+  : QObject{parent}
+  , env_{nullptr}
   , stateDb_{0}
   , roomDb_{0}
   , invitesDb_{0}
@@ -248,7 +249,7 @@ Cache::removeInvite(const QString &room_id)
         txn.commit();
 }
 
-QMap<QString, RoomState>
+void
 Cache::states()
 {
         QMap<QString, RoomState> states;
@@ -301,7 +302,7 @@ Cache::states()
 
         txn.commit();
 
-        return states;
+        emit statesLoaded(states);
 }
 
 void

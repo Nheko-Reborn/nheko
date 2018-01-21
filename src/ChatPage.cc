@@ -648,46 +648,51 @@ ChatPage::loadStateFromCache()
         qDebug() << "Restored nextBatchToken" << cache_->nextBatchToken();
         client_->setNextBatchToken(cache_->nextBatchToken());
 
-        // Fetch all the joined room's state.
-        auto rooms = cache_->states();
+        qRegisterMetaType<QMap<QString, RoomState>>();
 
-        for (auto it = rooms.constBegin(); it != rooms.constEnd(); ++it) {
-                auto roomState = QSharedPointer<RoomState>(new RoomState(it.value()));
+        QtConcurrent::run(cache_.data(), &Cache::states);
 
-                // Clean up and prepare state for use.
-                roomState->removeLeaveMemberships();
-                roomState->resolveName();
-                roomState->resolveAvatar();
+        connect(cache_.data(), &Cache::statesLoaded, this, [this](QMap<QString, RoomState> rooms) {
+                qDebug() << "Cache data loaded";
 
-                // Save the current room state.
-                roomStates_.insert(it.key(), roomState);
+                for (auto it = rooms.constBegin(); it != rooms.constEnd(); ++it) {
+                        auto roomState = QSharedPointer<RoomState>(new RoomState(it.value()));
 
-                // Create or restore the settings for this room.
-                roomSettings_.insert(it.key(),
-                                     QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
+                        // Clean up and prepare state for use.
+                        roomState->removeLeaveMemberships();
+                        roomState->resolveName();
+                        roomState->resolveAvatar();
 
-                // Resolve user avatars.
-                for (const auto membership : roomState->memberships) {
-                        updateUserDisplayName(membership.second);
-                        updateUserAvatarUrl(membership.second);
+                        // Save the current room state.
+                        roomStates_.insert(it.key(), roomState);
+
+                        // Create or restore the settings for this room.
+                        roomSettings_.insert(
+                          it.key(), QSharedPointer<RoomSettings>(new RoomSettings(it.key())));
+
+                        // Resolve user avatars.
+                        for (const auto membership : roomState->memberships) {
+                                updateUserDisplayName(membership.second);
+                                updateUserAvatarUrl(membership.second);
+                        }
                 }
-        }
 
-        // Initializing empty timelines.
-        view_manager_->initialize(rooms.keys());
+                // Initializing empty timelines.
+                view_manager_->initialize(rooms.keys());
 
-        // Initialize room list from the restored state and settings.
-        room_list_->setInitialRooms(roomSettings_, roomStates_);
-        room_list_->syncInvites(cache_->invites());
+                // Initialize room list from the restored state and settings.
+                room_list_->setInitialRooms(roomSettings_, roomStates_);
+                room_list_->syncInvites(cache_->invites());
 
-        // Check periodically if the timelines have been loaded.
-        consensusTimer_->start(CONSENSUS_TIMEOUT);
+                // Check periodically if the timelines have been loaded.
+                consensusTimer_->start(CONSENSUS_TIMEOUT);
 
-        // Show the content if consensus can't be achieved.
-        showContentTimer_->start(SHOW_CONTENT_TIMEOUT);
+                // Show the content if consensus can't be achieved.
+                showContentTimer_->start(SHOW_CONTENT_TIMEOUT);
 
-        // Start receiving events.
-        client_->sync();
+                // Start receiving events.
+                client_->sync();
+        });
 }
 
 void
