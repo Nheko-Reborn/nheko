@@ -64,7 +64,7 @@ OverlayModal::paintEvent(QPaintEvent *event)
 void
 OverlayModal::mousePressEvent(QMouseEvent *e)
 {
-        if (content_ && !content_->geometry().contains(e->pos()))
+        if (isDismissible_ && content_ && !content_->geometry().contains(e->pos()))
                 fadeOut();
 }
 

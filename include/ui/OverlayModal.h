@@ -28,14 +28,18 @@
 class OverlayModal : public OverlayWidget
 {
 public:
-        explicit OverlayModal(QWidget *parent, QWidget *content);
+        OverlayModal(QWidget *parent, QWidget *content);
 
         void fadeIn();
         void fadeOut();
 
-public:
-        inline void setDuration(int duration);
-        inline void setColor(QColor color);
+        void setDuration(int duration)
+        {
+                duration_ = duration;
+                animation_->setDuration(duration_);
+        };
+        void setColor(QColor color) { color_ = color; }
+        void setDismissible(bool state) { isDismissible_ = state; }
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -48,19 +52,9 @@ private:
         int duration_;
         QColor color_;
 
+        //! Decides whether or not the modal can be removed by clicking into it.
+        bool isDismissible_ = true;
+
         QGraphicsOpacityEffect *opacity_;
         QPropertyAnimation *animation_;
 };
-
-inline void
-OverlayModal::setDuration(int duration)
-{
-        duration_ = duration;
-        animation_->setDuration(duration_);
-}
-
-inline void
-OverlayModal::setColor(QColor color)
-{
-        color_ = color;
-}

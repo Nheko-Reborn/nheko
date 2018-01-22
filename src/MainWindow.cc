@@ -213,6 +213,7 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
                 progressModal_ =
                   QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
                                                [=](OverlayModal *modal) { modal->deleteLater(); });
+                progressModal_->setDismissible(false);
                 progressModal_->fadeIn();
                 progressModal_->setDuration(modalOpacityDuration);
         }
