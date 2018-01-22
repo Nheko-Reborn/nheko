@@ -226,7 +226,11 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
-        if (isVisible() && userSettings_->isTrayEnabled()) {
+        // Decide whether or not we should enable tray for the current page.
+        bool pageSupportsTray =
+          !welcome_page_->isVisible() && !login_page_->isVisible() && !register_page_->isVisible();
+
+        if (isVisible() && pageSupportsTray && userSettings_->isTrayEnabled()) {
                 event->ignore();
                 hide();
         }
