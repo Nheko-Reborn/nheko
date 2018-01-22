@@ -143,7 +143,6 @@ signals:
 
 private:
         QNetworkReply *makeUploadRequest(QSharedPointer<QIODevice> iodev);
-        QByteArray uncompress(const QByteArray &data);
 
         // Client API prefix.
         QString clientApiUrl_;

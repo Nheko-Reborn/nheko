@@ -60,12 +60,6 @@ find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 
-find_package(ZLIB)
-
-if (ZLIB_FOUND)
-    include_directories(${ZLIB_INCLUDE_DIRS})
-endif()
-
 if (APPLE)
     find_package(Qt5MacExtras REQUIRED)
 endif(APPLE)
@@ -328,7 +322,7 @@ add_subdirectory(libs/matrix-structs)
 include_directories(${matrix_structs_SOURCE_DIR}/include)
 include_directories(${matrix_structs_SOURCE_DIR}/deps)
 
-set(COMMON_LIBS matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent ${ZLIB_LIBRARIES})
+set(COMMON_LIBS matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
