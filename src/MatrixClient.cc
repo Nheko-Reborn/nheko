@@ -28,8 +28,6 @@
 #include <QSettings>
 #include <QUrlQuery>
 
-#include <zlib.h>
-
 #include "Login.h"
 #include "MatrixClient.h"
 #include "Register.h"
@@ -698,7 +696,7 @@ MatrixClient::fetchUserAvatar(const QUrl &avatarUrl,
         QNetworkRequest avatar_request(endpoint);
 
         auto reply = get(avatar_request);
-        connect(reply, &QNetworkReply::finished, this, [this, reply, onSuccess, onError]() {
+        connect(reply, &QNetworkReply::finished, this, [reply, onSuccess, onError]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
