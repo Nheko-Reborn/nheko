@@ -130,15 +130,7 @@ TimelineView::sliderMoved(int position)
         if (!scroll_area_->verticalScrollBar()->isVisible())
                 return;
 
-        const int maxScroll     = scroll_area_->verticalScrollBar()->maximum();
-        const int currentScroll = scroll_area_->verticalScrollBar()->value();
-
-        if (maxScroll - currentScroll > SCROLL_BAR_GAP) {
-                scrollDownBtn_->show();
-                scrollDownBtn_->raise();
-        } else {
-                scrollDownBtn_->hide();
-        }
+        toggleScrollDownButton();
 
         // The scrollbar is high enough so we can start retrieving old events.
         if (position < SCROLL_BAR_GAP) {
@@ -641,6 +633,8 @@ TimelineView::showEvent(QShowEvent *event)
                 scrollDown();
         }
 
+        toggleScrollDownButton();
+
         readLastEvent();
 
         QWidget::showEvent(event);
@@ -765,4 +759,18 @@ TimelineView::getEventSender(const mtx::events::collections::TimelineEvents &eve
         }
 
         return QString("");
+}
+
+void
+TimelineView::toggleScrollDownButton()
+{
+        const int maxScroll     = scroll_area_->verticalScrollBar()->maximum();
+        const int currentScroll = scroll_area_->verticalScrollBar()->value();
+
+        if (maxScroll - currentScroll > SCROLL_BAR_GAP) {
+                scrollDownBtn_->show();
+                scrollDownBtn_->raise();
+        } else {
+                scrollDownBtn_->hide();
+        }
 }

@@ -134,6 +134,8 @@ private:
                 });
         };
 
+        //! Decides whether or not to show or hide the scroll down button.
+        void toggleScrollDownButton();
         void init();
         void addTimelineItem(TimelineItem *item, TimelineDirection direction);
         void updateLastSender(const QString &user_id, TimelineDirection direction);
