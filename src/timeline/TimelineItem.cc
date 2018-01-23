@@ -354,7 +354,7 @@ TimelineItem::markReceived()
 void
 TimelineItem::generateBody(const QString &body)
 {
-        QString content("<span> %1 </span>");
+        QString content("<span>%1</span>");
 
         body_ = new QLabel(this);
         body_->setFont(font_);
@@ -393,7 +393,7 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
         body_ = new QLabel(this);
         body_->setFont(font_);
         body_->setWordWrap(true);
-        body_->setText(QString("<span> %1 </span>").arg(replaceEmoji(body)));
+        body_->setText(QString("<span>%1</span>").arg(replaceEmoji(body)));
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
         body_->setOpenExternalLinks(true);
         body_->setMargin(0);
