@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include <QMap>
 #include <QSharedPointer>
 #include <QStackedWidget>
 
@@ -41,13 +40,13 @@ public:
         // Initialize with timeline events.
         void initialize(const mtx::responses::Rooms &rooms);
         // Empty initialization.
-        void initialize(const QList<QString> &rooms);
+        void initialize(const std::vector<QString> &rooms);
 
         void addRoom(const mtx::responses::JoinedRoom &room, const QString &room_id);
         void addRoom(const QString &room_id);
 
         void sync(const mtx::responses::Rooms &rooms);
-        void clearAll();
+        void clearAll() { views_.clear(); }
 
         // Check if all the timelines have been loaded.
         bool hasLoaded() const;
@@ -55,7 +54,7 @@ public:
         static QString chooseRandomColor();
         static QString displayName(const QString &userid);
 
-        static QMap<QString, QString> DISPLAY_NAMES;
+        static std::map<QString, QString> DISPLAY_NAMES;
 
 signals:
         void clearRoomMessageCount(QString roomid);
@@ -78,7 +77,10 @@ private slots:
         void messageSendFailed(const QString &roomid, int txnid);
 
 private:
+        //! Check if the given room id is managed by a TimelineView.
+        bool timelineViewExists(const QString &id) { return views_.find(id) != views_.end(); }
+
         QString active_room_;
-        QMap<QString, QSharedPointer<TimelineView>> views_;
+        std::map<QString, QSharedPointer<TimelineView>> views_;
         QSharedPointer<MatrixClient> client_;
 };

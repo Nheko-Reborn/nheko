@@ -89,7 +89,7 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
                                        const QString &url)
 {
-        if (!views_.contains(roomid)) {
+        if (!timelineViewExists(roomid)) {
                 qDebug() << "Cannot send m.image message to a non-managed view";
                 return;
         }
@@ -104,7 +104,7 @@ TimelineViewManager::queueFileMessage(const QString &roomid,
                                       const QString &filename,
                                       const QString &url)
 {
-        if (!views_.contains(roomid)) {
+        if (!timelineViewExists(roomid)) {
                 qDebug() << "Cannot send m.file message to a non-managed view";
                 return;
         }
@@ -119,7 +119,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
                                        const QString &filename,
                                        const QString &url)
 {
-        if (!views_.contains(roomid)) {
+        if (!timelineViewExists(roomid)) {
                 qDebug() << "Cannot send m.audio message to a non-managed view";
                 return;
         }
@@ -127,15 +127,6 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
         auto view = views_[roomid];
 
         view->addUserMessage<AudioItem, mtx::events::MessageType::Audio>(url, filename);
-}
-
-void
-TimelineViewManager::clearAll()
-{
-        for (auto view : views_)
-                removeWidget(view.data());
-
-        views_.clear();
 }
 
 void
@@ -147,11 +138,10 @@ TimelineViewManager::initialize(const mtx::responses::Rooms &rooms)
 }
 
 void
-TimelineViewManager::initialize(const QList<QString> &rooms)
+TimelineViewManager::initialize(const std::vector<QString> &rooms)
 {
-        for (const auto &roomid : rooms) {
+        for (const auto &roomid : rooms)
                 addRoom(roomid);
-        }
 }
 
 void
@@ -159,7 +149,7 @@ TimelineViewManager::addRoom(const mtx::responses::JoinedRoom &room, const QStri
 {
         // Create a history view with the room events.
         TimelineView *view = new TimelineView(room.timeline, client_, room_id);
-        views_.insert(room_id, QSharedPointer<TimelineView>(view));
+        views_.emplace(room_id, QSharedPointer<TimelineView>(view));
 
         connect(view,
                 &TimelineView::updateLastTimelineMessage,
@@ -179,7 +169,7 @@ TimelineViewManager::addRoom(const QString &room_id)
 {
         // Create a history view without any events.
         TimelineView *view = new TimelineView(client_, room_id);
-        views_.insert(room_id, QSharedPointer<TimelineView>(view));
+        views_.emplace(room_id, QSharedPointer<TimelineView>(view));
 
         connect(view,
                 &TimelineView::updateLastTimelineMessage,
@@ -200,12 +190,12 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
         for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
                 auto roomid = QString::fromStdString(it->first);
 
-                if (!views_.contains(roomid)) {
+                if (!timelineViewExists(roomid)) {
                         qDebug() << "Ignoring event from unknown room" << roomid;
                         continue;
                 }
 
-                auto view = views_.value(roomid);
+                auto view = views_.at(roomid);
 
                 int msgs_added = view->addEvents(it->second.timeline);
 
@@ -223,13 +213,13 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 void
 TimelineViewManager::setHistoryView(const QString &room_id)
 {
-        if (!views_.contains(room_id)) {
+        if (!timelineViewExists(room_id)) {
                 qDebug() << "Room ID from RoomList is not present in ViewManager" << room_id;
                 return;
         }
 
         active_room_ = room_id;
-        auto view    = views_.value(room_id);
+        auto view    = views_.at(room_id);
 
         setCurrentWidget(view.data());
 
@@ -237,7 +227,7 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         view->scrollDown();
 }
 
-QMap<QString, QString> TimelineViewManager::DISPLAY_NAMES;
+std::map<QString, QString> TimelineViewManager::DISPLAY_NAMES;
 
 QString
 TimelineViewManager::chooseRandomColor()
@@ -300,8 +290,8 @@ TimelineViewManager::chooseRandomColor()
 QString
 TimelineViewManager::displayName(const QString &userid)
 {
-        if (DISPLAY_NAMES.contains(userid))
-                return DISPLAY_NAMES.value(userid);
+        if (DISPLAY_NAMES.find(userid) != DISPLAY_NAMES.end())
+                return DISPLAY_NAMES.at(userid);
 
         return userid;
 }
@@ -310,7 +300,7 @@ bool
 TimelineViewManager::hasLoaded() const
 {
         for (const auto &view : views_)
-                if (!view->hasLoaded())
+                if (!view.second->hasLoaded())
                         return false;
 
         return true;

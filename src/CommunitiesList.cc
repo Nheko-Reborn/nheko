@@ -34,7 +34,7 @@ CommunitiesList::CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *p
 
         WorldCommunityListItem *world_list_item = new WorldCommunityListItem();
         contentsLayout_->addWidget(world_list_item);
-        communities_.insert("world", QSharedPointer<CommunitiesListItem>(world_list_item));
+        communities_.emplace("world", QSharedPointer<CommunitiesListItem>(world_list_item));
         connect(world_list_item,
                 &WorldCommunityListItem::clicked,
                 this,
@@ -57,40 +57,29 @@ CommunitiesList::CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *p
                 SLOT(updateCommunityAvatar(const QString &, const QPixmap &)));
 }
 
-CommunitiesList::~CommunitiesList() {}
-
 void
-CommunitiesList::setCommunities(const QMap<QString, QSharedPointer<Community>> &communities)
+CommunitiesList::setCommunities(const std::map<QString, QSharedPointer<Community>> &communities)
 {
         communities_.clear();
 
         // TODO: still not sure how to handle the "world" special-case
         WorldCommunityListItem *world_list_item = new WorldCommunityListItem();
-        communities_.insert("world", QSharedPointer<CommunitiesListItem>(world_list_item));
+        communities_.emplace("world", QSharedPointer<CommunitiesListItem>(world_list_item));
         connect(world_list_item,
                 &WorldCommunityListItem::clicked,
                 this,
                 &CommunitiesList::highlightSelectedCommunity);
         contentsLayout_->insertWidget(0, world_list_item);
 
-        for (auto it = communities.constBegin(); it != communities.constEnd(); it++) {
-                const auto community_id = it.key();
-                const auto community    = it.value();
+        for (const auto &community : communities) {
+                addCommunity(community.second, community.first);
 
-                addCommunity(community, community_id);
-
-                client_->fetchCommunityProfile(community_id);
-                client_->fetchCommunityRooms(community_id);
+                client_->fetchCommunityProfile(community.first);
+                client_->fetchCommunityRooms(community.first);
         }
 
         world_list_item->setPressedState(true);
         emit communityChanged("world");
-}
-
-void
-CommunitiesList::clear()
-{
-        communities_.clear();
 }
 
 void
@@ -99,7 +88,7 @@ CommunitiesList::addCommunity(QSharedPointer<Community> community, const QString
         CommunitiesListItem *list_item =
           new CommunitiesListItem(community, community_id, scrollArea_);
 
-        communities_.insert(community_id, QSharedPointer<CommunitiesListItem>(list_item));
+        communities_.emplace(community_id, QSharedPointer<CommunitiesListItem>(list_item));
 
         client_->fetchCommunityAvatar(community_id, community->getAvatar());
 
@@ -114,37 +103,36 @@ CommunitiesList::addCommunity(QSharedPointer<Community> community, const QString
 void
 CommunitiesList::removeCommunity(const QString &community_id)
 {
-        communities_.remove(community_id);
+        communities_.erase(communities_.find(community_id));
 }
 
 void
 CommunitiesList::updateCommunityAvatar(const QString &community_id, const QPixmap &img)
 {
-        if (!communities_.contains(community_id)) {
+        if (!communityExists(community_id)) {
                 qWarning() << "Avatar update on nonexistent community" << community_id;
                 return;
         }
 
-        communities_.value(community_id)->setAvatar(img.toImage());
+        communities_.find(community_id)->second->setAvatar(img.toImage());
 }
 
 void
 CommunitiesList::highlightSelectedCommunity(const QString &community_id)
 {
-        emit communityChanged(community_id);
-
-        if (!communities_.contains(community_id)) {
+        if (!communityExists(community_id)) {
                 qDebug() << "CommunitiesList: clicked unknown community";
                 return;
         }
 
-        for (auto it = communities_.constBegin(); it != communities_.constEnd(); it++) {
-                if (it.key() != community_id) {
-                        it.value()->setPressedState(false);
+        emit communityChanged(community_id);
+
+        for (const auto &community : communities_) {
+                if (community.first != community_id) {
+                        community.second->setPressedState(false);
                 } else {
-                        it.value()->setPressedState(true);
-                        scrollArea_->ensureWidgetVisible(
-                          qobject_cast<QWidget *>(it.value().data()));
+                        community.second->setPressedState(true);
+                        scrollArea_->ensureWidgetVisible(community.second.data());
                 }
         }
 }

@@ -3,7 +3,6 @@
 #include <QScrollArea>
 #include <QSharedPointer>
 #include <QVBoxLayout>
-#include <QWidget>
 
 #include "CommunitiesListItem.h"
 #include "Community.h"
@@ -16,27 +15,33 @@ class CommunitiesList : public QWidget
 
 public:
         CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *parent = nullptr);
-        ~CommunitiesList();
 
-        void setCommunities(const QMap<QString, QSharedPointer<Community>> &communities);
-        void clear();
+        void setCommunities(const std::map<QString, QSharedPointer<Community>> &communities);
+        void clear() { communities_.clear(); }
 
-        void addCommunity(QSharedPointer<Community> community, const QString &community_id);
-        void removeCommunity(const QString &community_id);
+        void addCommunity(QSharedPointer<Community> community, const QString &id);
+        void removeCommunity(const QString &id);
+
 signals:
-        void communityChanged(const QString &community_id);
+        void communityChanged(const QString &id);
 
 public slots:
-        void updateCommunityAvatar(const QString &community_id, const QPixmap &img);
-        void highlightSelectedCommunity(const QString &community_id);
+        void updateCommunityAvatar(const QString &id, const QPixmap &img);
+        void highlightSelectedCommunity(const QString &id);
 
 private:
+        //! Check whether or not a community id is currently managed.
+        bool communityExists(const QString &id)
+        {
+                return communities_.find(id) != communities_.end();
+        }
+
         QVBoxLayout *topLayout_;
         QVBoxLayout *contentsLayout_;
         QWidget *scrollAreaContents_;
         QScrollArea *scrollArea_;
 
-        QMap<QString, QSharedPointer<CommunitiesListItem>> communities_;
+        std::map<QString, QSharedPointer<CommunitiesListItem>> communities_;
 
         QSharedPointer<MatrixClient> client_;
 };

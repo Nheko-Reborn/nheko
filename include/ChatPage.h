@@ -95,7 +95,7 @@ private:
         static ChatPage *instance_;
 
         using UserID      = QString;
-        using RoomStates  = QMap<UserID, QSharedPointer<RoomState>>;
+        using RoomStates  = std::map<UserID, QSharedPointer<RoomState>>;
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
         using Memberships = std::map<std::string, Membership>;
 
@@ -105,7 +105,7 @@ private:
         void removeLeftRooms(const LeftRooms &rooms);
         void updateJoinedRooms(const JoinedRooms &rooms);
 
-        QMap<QString, QSharedPointer<RoomState>> generateMembershipDifference(
+        std::map<QString, QSharedPointer<RoomState>> generateMembershipDifference(
           const JoinedRooms &rooms,
           const RoomStates &states) const;
 
@@ -160,18 +160,18 @@ private:
         QString current_room_;
         QString current_community_;
 
-        QMap<QString, QPixmap> room_avatars_;
-        QMap<QString, QPixmap> community_avatars_;
+        std::map<QString, QPixmap> roomAvatars_;
+        std::map<QString, QPixmap> community_avatars_;
 
         UserInfoWidget *user_info_widget_;
 
         RoomStates roomStates_;
-        QMap<QString, QSharedPointer<RoomSettings>> roomSettings_;
+        std::map<QString, QSharedPointer<RoomSettings>> roomSettings_;
 
-        QMap<QString, QSharedPointer<Community>> communityManager_;
+        std::map<QString, QSharedPointer<Community>> communities_;
 
         // Keeps track of the users currently typing on each room.
-        QMap<QString, QList<QString>> typingUsers_;
+        std::map<QString, QList<QString>> typingUsers_;
         QTimer *typingRefresher_;
 
         QSharedPointer<QuickSwitcher> quickSwitcher_;

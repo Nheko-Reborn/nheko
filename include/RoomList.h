@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include <QMap>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSharedPointer>
@@ -50,22 +49,22 @@ public:
         ~RoomList();
 
         void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
-        void setInitialRooms(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
-                             const QMap<QString, QSharedPointer<RoomState>> &states);
-        void sync(const QMap<QString, QSharedPointer<RoomState>> &states,
-                  const QMap<QString, QSharedPointer<RoomSettings>> &settings);
+        void setInitialRooms(const std::map<QString, QSharedPointer<RoomSettings>> &settings,
+                             const std::map<QString, QSharedPointer<RoomState>> &states);
+        void sync(const std::map<QString, QSharedPointer<RoomState>> &states,
+                  const std::map<QString, QSharedPointer<RoomSettings>> &settings);
         void syncInvites(const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 
         void clear();
         void updateAvatar(const QString &room_id, const QString &url);
 
-        void addRoom(const QMap<QString, QSharedPointer<RoomSettings>> &settings,
+        void addRoom(const QSharedPointer<RoomSettings> &settings,
                      const QSharedPointer<RoomState> &state,
                      const QString &room_id);
         void addInvitedRoom(const QString &room_id, const mtx::responses::InvitedRoom &room);
         void removeRoom(const QString &room_id, bool reset);
         void setFilterRooms(bool filterRooms);
-        void setRoomFilter(QList<QString> room_ids);
+        void setRoomFilter(std::vector<QString> room_ids);
 
 signals:
         void roomChanged(const QString &room_id);
@@ -92,7 +91,14 @@ private slots:
         void sortRoomsByLastMessage();
 
 private:
+        //! Return the first non-null room.
+        std::pair<QString, QSharedPointer<RoomInfoListItem>> firstRoom() const;
         void calculateUnreadMessageCount();
+        bool roomExists(const QString &room_id) { return rooms_.find(room_id) != rooms_.end(); }
+        bool filterItemExists(const QString &id)
+        {
+                return std::find(roomFilter_.begin(), roomFilter_.end(), id) != roomFilter_.end();
+        }
 
         QVBoxLayout *topLayout_;
         QVBoxLayout *contentsLayout_;
@@ -106,11 +112,11 @@ private:
         QSharedPointer<OverlayModal> leaveRoomModal_;
         QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
 
-        QMap<QString, QSharedPointer<RoomInfoListItem>> rooms_;
+        std::map<QString, QSharedPointer<RoomInfoListItem>> rooms_;
         QString selectedRoom_;
 
-        bool filterRooms_          = false;
-        QList<QString> roomFilter_ = QList<QString>(); // which rooms to include in the room list
+        //! Which rooms to include in the room list.
+        std::vector<QString> roomFilter_;
 
         QSharedPointer<MatrixClient> client_;
         QSharedPointer<Cache> cache_;

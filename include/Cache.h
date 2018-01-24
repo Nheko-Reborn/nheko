@@ -18,7 +18,6 @@
 #pragma once
 
 #include <QDir>
-#include <QMap>
 #include <json.hpp>
 #include <lmdb++.h>
 #include <mtx/responses.hpp>
@@ -53,7 +52,7 @@ public:
         Cache(const QString &userId, QObject *parent = nullptr);
 
         void setState(const QString &nextBatchToken,
-                      const QMap<QString, QSharedPointer<RoomState>> &states);
+                      const std::map<QString, QSharedPointer<RoomState>> &states);
         bool isInitialized() const;
 
         QString nextBatchToken() const;
@@ -90,7 +89,7 @@ public:
         void saveImage(const QString &url, const QByteArray &data);
 
 signals:
-        void statesLoaded(QMap<QString, RoomState> states);
+        void statesLoaded(std::map<QString, RoomState> states);
 
 private:
         void setNextBatchToken(lmdb::txn &txn, const QString &token);

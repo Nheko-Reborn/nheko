@@ -155,7 +155,7 @@ Cache::image(const QString &url) const
 
 void
 Cache::setState(const QString &nextBatchToken,
-                const QMap<QString, QSharedPointer<RoomState>> &states)
+                const std::map<QString, QSharedPointer<RoomState>> &states)
 {
         if (!isMounted_)
                 return;
@@ -165,8 +165,8 @@ Cache::setState(const QString &nextBatchToken,
 
                 setNextBatchToken(txn, nextBatchToken);
 
-                for (auto it = states.constBegin(); it != states.constEnd(); ++it)
-                        insertRoomState(txn, it.key(), it.value());
+                for (auto const &state : states)
+                        insertRoomState(txn, state.first, state.second);
 
                 txn.commit();
         } catch (const lmdb::error &e) {
@@ -252,7 +252,7 @@ Cache::removeInvite(const QString &room_id)
 void
 Cache::states()
 {
-        QMap<QString, RoomState> states;
+        std::map<QString, RoomState> states;
 
         auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto cursor = lmdb::cursor::open(txn, roomDb_);
@@ -293,7 +293,7 @@ Cache::states()
                 qDebug() << members.size() << "members for" << roomid;
 
                 state.memberships = members;
-                states.insert(roomid, state);
+                states.emplace(roomid, std::move(state));
         }
 
         qDebug() << "Retrieved" << states.size() << "rooms";

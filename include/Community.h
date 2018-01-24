@@ -13,11 +13,11 @@ public:
         void parseProfile(const QJsonObject &profile);
         void parseRooms(const QJsonObject &rooms);
 
-        inline QUrl getAvatar() const;
-        inline QString getName() const;
-        inline QString getShortDescription() const;
-        inline QString getLongDescription() const;
-        inline const QList<QString> getRoomList() const;
+        QUrl getAvatar() const { return avatar_; }
+        QString getName() const { return name_; }
+        QString getShortDescription() const { return short_description_; }
+        QString getLongDescription() const { return long_description_; }
+        std::vector<QString> getRoomList() const { return rooms_; }
 
 private:
         QUrl avatar_;
@@ -25,35 +25,5 @@ private:
         QString short_description_;
         QString long_description_;
 
-        QList<QString> rooms_;
+        std::vector<QString> rooms_;
 };
-
-inline QUrl
-Community::getAvatar() const
-{
-        return avatar_;
-}
-
-inline QString
-Community::getName() const
-{
-        return name_;
-}
-
-inline QString
-Community::getShortDescription() const
-{
-        return short_description_;
-}
-
-inline QString
-Community::getLongDescription() const
-{
-        return long_description_;
-}
-
-inline const QList<QString>
-Community::getRoomList() const
-{
-        return rooms_;
-}

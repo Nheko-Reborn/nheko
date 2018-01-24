@@ -20,8 +20,8 @@
 
 QSharedPointer<MatrixClient> AvatarProvider::client_;
 
-QMap<QString, AvatarData> AvatarProvider::avatars_;
-QMap<QString, QList<std::function<void(QImage)>>> AvatarProvider::toBeResolved_;
+std::map<QString, AvatarData> AvatarProvider::avatars_;
+std::map<QString, std::vector<std::function<void(QImage)>>> AvatarProvider::toBeResolved_;
 
 void
 AvatarProvider::init(QSharedPointer<MatrixClient> client)
@@ -32,26 +32,26 @@ AvatarProvider::init(QSharedPointer<MatrixClient> client)
 void
 AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
 {
-        if (toBeResolved_.contains(uid)) {
+        if (toBeResolved_.find(uid) != toBeResolved_.end()) {
                 auto callbacks = toBeResolved_[uid];
 
                 // Update all the timeline items with the resolved avatar.
                 for (const auto callback : callbacks)
                         callback(img);
 
-                toBeResolved_.remove(uid);
+                toBeResolved_.erase(toBeResolved_.find(uid));
         }
 
         auto avatarData = avatars_[uid];
         avatarData.img  = img;
 
-        avatars_.insert(uid, avatarData);
+        avatars_.emplace(uid, avatarData);
 }
 
 void
 AvatarProvider::resolve(const QString &userId, std::function<void(QImage)> callback)
 {
-        if (!avatars_.contains(userId))
+        if (avatars_.find(userId) == avatars_.end())
                 return;
 
         auto img = avatars_[userId].img;
@@ -62,7 +62,7 @@ AvatarProvider::resolve(const QString &userId, std::function<void(QImage)> callb
         }
 
         // Add the current timeline item to the waiting list for this avatar.
-        if (!toBeResolved_.contains(userId)) {
+        if (toBeResolved_.find(userId) == toBeResolved_.end()) {
                 client_->fetchUserAvatar(avatars_[userId].url,
                                          [userId](QImage image) { updateAvatar(userId, image); },
                                          [userId](QString error) {
@@ -71,12 +71,12 @@ AvatarProvider::resolve(const QString &userId, std::function<void(QImage)> callb
                                                    << userId;
                                          });
 
-                QList<std::function<void(QImage)>> items;
-                items.push_back(callback);
+                std::vector<std::function<void(QImage)>> items;
+                items.emplace_back(callback);
 
-                toBeResolved_.insert(userId, items);
+                toBeResolved_.emplace(userId, items);
         } else {
-                toBeResolved_[userId].push_back(callback);
+                toBeResolved_[userId].emplace_back(callback);
         }
 }
 
@@ -86,7 +86,7 @@ AvatarProvider::setAvatarUrl(const QString &userId, const QUrl &url)
         AvatarData data;
         data.url = url;
 
-        avatars_.insert(userId, data);
+        avatars_.emplace(userId, data);
 }
 
 void

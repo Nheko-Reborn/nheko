@@ -48,6 +48,6 @@ private:
         static QSharedPointer<MatrixClient> client_;
 
         using UserID = QString;
-        static QMap<UserID, AvatarData> avatars_;
-        static QMap<UserID, QList<std::function<void(QImage)>>> toBeResolved_;
+        static std::map<UserID, AvatarData> avatars_;
+        static std::map<UserID, std::vector<std::function<void(QImage)>>> toBeResolved_;
 };

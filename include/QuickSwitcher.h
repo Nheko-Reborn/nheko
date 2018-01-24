@@ -47,7 +47,7 @@ class QuickSwitcher : public QFrame
 public:
         explicit QuickSwitcher(QWidget *parent = nullptr);
 
-        void setRoomList(const QMap<QString, QString> &rooms);
+        void setRoomList(const std::map<QString, QString> &rooms);
 
 signals:
         void closing();
@@ -65,5 +65,5 @@ private:
         RoomSearchInput *roomSearch_;
         QCompleter *completer_;
 
-        QMap<QString, QString> rooms_;
+        std::map<QString, QString> rooms_;
 };

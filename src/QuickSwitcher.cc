@@ -138,10 +138,13 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
 }
 
 void
-QuickSwitcher::setRoomList(const QMap<QString, QString> &rooms)
+QuickSwitcher::setRoomList(const std::map<QString, QString> &rooms)
 {
-        rooms_            = rooms;
-        QStringList items = rooms.keys();
+        rooms_ = rooms;
+
+        QStringList items;
+        for (const auto &room : rooms)
+                items << room.first;
 
         completer_->setModel(new QStringListModel(items));
 }
