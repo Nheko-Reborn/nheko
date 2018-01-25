@@ -249,16 +249,23 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
 void
 TimelineView::renderBottomEvents(const std::vector<TimelineEvent> &events)
 {
+        int counter = 0;
+
         for (const auto &event : events) {
                 TimelineItem *item = parseMessageEvent(event, TimelineDirection::Bottom);
 
-                if (item != nullptr)
+                if (item != nullptr) {
                         addTimelineItem(item, TimelineDirection::Bottom);
+                        counter++;
+
+                        // Prevent blocking of the event-loop
+                        // by calling processEvents every 10 items we render.
+                        if (counter % 10 == 0)
+                                QApplication::processEvents();
+                }
         }
 
         lastMessageDirection_ = TimelineDirection::Bottom;
-
-        QApplication::processEvents();
 }
 
 int
