@@ -32,19 +32,22 @@
 #include "TextInputWidget.h"
 
 static constexpr size_t INPUT_HISTORY_SIZE = 127;
+static constexpr int MAX_TEXTINPUT_HEIGHT  = 120;
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
   , history_index_{0}
   , previewDialog_{parent}
 {
+        setFrameStyle(QFrame::NoFrame);
         connect(document()->documentLayout(),
                 &QAbstractTextDocumentLayout::documentSizeChanged,
                 this,
                 &FilteredTextEdit::updateGeometry);
-        QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        policy.setHeightForWidth(true);
-        setSizePolicy(policy);
+        connect(document()->documentLayout(),
+                &QAbstractTextDocumentLayout::documentSizeChanged,
+                this,
+                [=]() { emit heightChanged(document()->size().toSize().height()); });
         working_history_.push_back("");
         connect(this, &QTextEdit::textChanged, this, &FilteredTextEdit::textChanged);
         setAcceptRichText(false);
@@ -238,17 +241,16 @@ FilteredTextEdit::receiveImage(const QByteArray img, const QString &img_name)
 }
 
 TextInputWidget::TextInputWidget(QWidget *parent)
-  : QFrame(parent)
+  : QWidget(parent)
 {
         setFont(QFont("Emoji One"));
 
         setFixedHeight(conf::textInput::height);
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         setCursor(Qt::ArrowCursor);
 
         topLayout_ = new QHBoxLayout();
         topLayout_->setSpacing(0);
-        topLayout_->setContentsMargins(15, 0, 15, 5);
+        topLayout_->setContentsMargins(15, 0, 15, 0);
 
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");
@@ -269,9 +271,17 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         input_ = new FilteredTextEdit(this);
         input_->setFixedHeight(32);
         input_->setFont(font);
-        input_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        input_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         input_->setPlaceholderText(tr("Write a message..."));
-        input_->setStyleSheet("border: none; padding-top: 5px;");
+
+        connect(input_, &FilteredTextEdit::heightChanged, this, [=](int height) {
+                int textInputHeight = std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, 32));
+                int widgetHeight =
+                  std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, conf::textInput::height));
+
+                setFixedHeight(widgetHeight);
+                input_->setFixedHeight(textInputHeight);
+        });
 
         sendMessageBtn_ = new FlatButton(this);
 

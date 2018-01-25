@@ -50,6 +50,7 @@ public:
         void submit();
 
 signals:
+        void heightChanged(int height);
         void startedTyping();
         void stoppedTyping();
         void message(QString);
@@ -73,7 +74,7 @@ private:
         void afterCompletion(int);
 };
 
-class TextInputWidget : public QFrame
+class TextInputWidget : public QWidget
 {
         Q_OBJECT
 
