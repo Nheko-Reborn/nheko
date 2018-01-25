@@ -266,6 +266,8 @@ TimelineView::renderBottomEvents(const std::vector<TimelineEvent> &events)
         }
 
         lastMessageDirection_ = TimelineDirection::Bottom;
+
+        QApplication::processEvents();
 }
 
 int
