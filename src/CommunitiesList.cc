@@ -101,12 +101,6 @@ CommunitiesList::addCommunity(QSharedPointer<Community> community, const QString
 }
 
 void
-CommunitiesList::removeCommunity(const QString &community_id)
-{
-        communities_.erase(communities_.find(community_id));
-}
-
-void
 CommunitiesList::updateCommunityAvatar(const QString &community_id, const QPixmap &img)
 {
         if (!communityExists(community_id)) {

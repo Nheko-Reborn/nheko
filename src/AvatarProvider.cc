@@ -39,7 +39,7 @@ AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
                 for (const auto callback : callbacks)
                         callback(img);
 
-                toBeResolved_.erase(toBeResolved_.find(uid));
+                toBeResolved_.erase(uid);
         }
 
         auto avatarData = avatars_[uid];

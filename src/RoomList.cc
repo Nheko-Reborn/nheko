@@ -123,7 +123,7 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
 void
 RoomList::removeRoom(const QString &room_id, bool reset)
 {
-        rooms_.erase(rooms_.find(room_id));
+        rooms_.erase(room_id);
 
         if (rooms_.empty() || !reset)
                 return;

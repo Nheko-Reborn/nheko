@@ -20,7 +20,7 @@ public:
         void clear() { communities_.clear(); }
 
         void addCommunity(QSharedPointer<Community> community, const QString &id);
-        void removeCommunity(const QString &id);
+        void removeCommunity(const QString &id) { communities_.erase(id); };
 
 signals:
         void communityChanged(const QString &id);

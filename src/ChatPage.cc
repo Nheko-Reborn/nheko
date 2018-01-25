@@ -761,8 +761,9 @@ ChatPage::addRoom(const QString &room_id)
 void
 ChatPage::removeRoom(const QString &room_id)
 {
-        roomStates_.erase(roomStates_.find(room_id));
-        roomSettings_.erase(roomSettings_.find(room_id));
+        roomStates_.erase(room_id);
+        roomSettings_.erase(room_id);
+
         try {
                 cache_->removeRoom(room_id);
                 cache_->removeInvite(room_id);

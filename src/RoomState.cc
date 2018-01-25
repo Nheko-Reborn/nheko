@@ -157,7 +157,7 @@ RoomState::update(const RoomState &state)
                 }
 
                 if (membershipState == mtx::events::state::Membership::Leave)
-                        this->memberships.erase(this->memberships.find(it->first));
+                        this->memberships.erase(it->first);
                 else
                         this->memberships.emplace(it->first, it->second);
         }
