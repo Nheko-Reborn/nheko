@@ -1,7 +1,8 @@
 
 debug:
-	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug
+	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 	@cmake --build build
+	@cp build/compile_commands.json .
 
 ci:
 	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
