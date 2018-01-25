@@ -123,8 +123,13 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
 QString
 utils::firstChar(const QString &input)
 {
-        if (!input.isEmpty())
-                return QString::fromUcs4(&input.toUcs4().at(0), 1);
+        if (input.isEmpty())
+                return input;
 
-        return input;
+        for (auto const &c : input.toUcs4()) {
+                if (QString::fromUcs4(&c, 1) != QString("#"))
+                        return QString::fromUcs4(&c, 1).toUpper();
+        }
+
+        return QString::fromUcs4(&input.toUcs4().at(0), 1).toUpper();
 }
