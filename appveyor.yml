@@ -1,3 +1,5 @@
+---
+
 version: 0.1.0-{build}
 
 environment:
@@ -10,10 +12,10 @@ configuration:
     - Release
 
 build:
-  verbosity: minimal
+    verbosity: minimal
 
 install:
-    - set QT_DIR=C:\Qt\5.9.2\msvc2015_64
+    - set QT_DIR=C:\Qt\5.10.0\msvc2015_64
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
 
 build_script:
@@ -43,7 +45,7 @@ after_build:
     - echo %BUILD%
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
-    - windeployqt --qmldir C:\Qt\5.9.2\msvc2015_64\qml\ --release NhekoRelease\nheko.exe
+    - windeployqt --qmldir C:\Qt\5.10.0\msvc2015_64\qml\ --release NhekoRelease\nheko.exe
     - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
     - copy C:\OpenSSL-Win64\bin\libeay32.dll .\NhekoRelease\libeay32.dll
     - copy C:\OpenSSL-Win64\lib\libeay32.lib .\NhekoRelease\libeay32.lib
@@ -94,12 +96,12 @@ deploy:
     description: "Development builds"
     provider: GitHub
     auth_token:
-      secure: YqB7hcM+4482eSHhtVR7ZA7N7lE78y8BC897/7UDTBQd+NWdWFW/6S+oKDie9TT7
+        secure: YqB7hcM+4482eSHhtVR7ZA7N7lE78y8BC897/7UDTBQd+NWdWFW/6S+oKDie9TT7
     artifact: nheko-installer.exe
     force_update: true
     prerelease: true
     on:
-      appveyor_repo_tag: true
+        appveyor_repo_tag: true
 
 artifacts:
     - path: nheko_win_64.zip

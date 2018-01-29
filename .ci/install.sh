@@ -13,7 +13,7 @@ fi
 if [ $TRAVIS_OS_NAME == linux ]; then
 
     if [ -z "$QT_VERSION" ]; then
-        QT_VERSION="592"
+        QT_VERSION="594"
     fi
 
     export QT_PKG=${QT_VERSION:0:2}
