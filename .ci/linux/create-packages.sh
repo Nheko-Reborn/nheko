@@ -15,9 +15,8 @@ if [[ $TAG == v* ]]; then
 fi
 
 # Prepend nightly with the latest version.
-if [[ $TAG == "nightly" ]]; then
-    LATEST_VERSION=`git tag -l | grep "^v" | sort | head -n 1`
-    TAG=${LATEST_VERSION#?}.nightly
+if [[ $TAG == nightly ]]; then
+    TAG=${TRAVIS_BUILD_NUMBER}.nightly
 fi
 
 # Installing dependencies on travis.
