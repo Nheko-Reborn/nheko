@@ -42,10 +42,8 @@ AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
                 toBeResolved_.erase(uid);
         }
 
-        auto avatarData = avatars_[uid];
-        avatarData.img  = img;
-
-        avatars_.emplace(uid, avatarData);
+        auto avatarData = &avatars_[uid];
+        avatarData->img = img;
 }
 
 void
