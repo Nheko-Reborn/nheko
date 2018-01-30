@@ -211,9 +211,13 @@ private:
 
         //! Messages received by sync not added to the timeline.
         std::vector<TimelineEvent> bottomMessages_;
+        //! Messages received by /messages not added to the timeline.
+        std::vector<TimelineEvent> topMessages_;
 
         //! Render the given timeline events to the bottom of the timeline.
         void renderBottomEvents(const std::vector<TimelineEvent> &events);
+        //! Render the given timeline events to the top of the timeline.
+        void renderTopEvents(const std::vector<TimelineEvent> &events);
 
         //! Decide if the given timeline event can be rendered.
         inline bool isViewable(const TimelineEvent &event) const;

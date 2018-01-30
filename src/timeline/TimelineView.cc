@@ -163,48 +163,32 @@ TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::M
         }
 
         isTimelineFinished = false;
-        QList<TimelineItem *> items;
 
-        // Reset the sender of the first message in the timeline
-        // cause we're about to insert a new one.
-        firstSender_.clear();
-
-        // Parse in reverse order to determine where we should not show sender's
-        // name.
-        auto ii = msgs.chunk.size();
-        while (ii != 0) {
-                --ii;
-
-                TimelineItem *item = parseMessageEvent(msgs.chunk[ii], TimelineDirection::Top);
-
-                if (item != nullptr)
-                        items.push_back(item);
+        // Queue incoming messages to be rendered later.
+        for (auto const &e : msgs.chunk) {
+                if (isViewable(e))
+                        topMessages_.emplace_back(e);
         }
 
-        // Reverse again to render them.
-        std::reverse(items.begin(), items.end());
+        // The RoomList message preview will be updated only if this
+        // is the first batch of messages received through /messages
+        // i.e there are no other messages currently present.
+        if (!topMessages_.empty() && scroll_layout_->count() == 1)
+                notifyForLastEvent(topMessages_.at(0));
 
-        oldPosition_ = scroll_area_->verticalScrollBar()->value();
-        oldHeight_   = scroll_widget_->size().height();
+        if (isVisible()) {
+                renderTopEvents(topMessages_);
 
-        for (const auto &item : items)
-                addTimelineItem(item, TimelineDirection::Top);
+                // Free up space for new messages.
+                topMessages_.clear();
 
-        lastMessageDirection_ = TimelineDirection::Top;
-
-        QApplication::processEvents();
+                // Send a read receipt for the last event.
+                if (isActiveWindow())
+                        readLastEvent();
+        }
 
         prev_batch_token_       = QString::fromStdString(msgs.end);
         isPaginationInProgress_ = false;
-
-        // Exclude the top stretch.
-        if (msgs.chunk.size() != 0 && scroll_layout_->count() > 1)
-                notifyForLastEvent();
-
-        // If this batch is the first being rendered (i.e the first and the last
-        // events originate from this batch), set the last sender.
-        if (lastSender_.isEmpty() && !items.isEmpty())
-                lastSender_ = items.constFirst()->descriptionMessage().userid;
 }
 
 TimelineItem *
@@ -268,6 +252,46 @@ TimelineView::renderBottomEvents(const std::vector<TimelineEvent> &events)
         lastMessageDirection_ = TimelineDirection::Bottom;
 
         QApplication::processEvents();
+}
+
+void
+TimelineView::renderTopEvents(const std::vector<TimelineEvent> &events)
+{
+        std::vector<TimelineItem *> items;
+
+        // Reset the sender of the first message in the timeline
+        // cause we're about to insert a new one.
+        firstSender_.clear();
+
+        // Parse in reverse order to determine where we should not show sender's
+        // name.
+        auto ii = events.size();
+        while (ii != 0) {
+                --ii;
+
+                TimelineItem *item = parseMessageEvent(events[ii], TimelineDirection::Top);
+
+                if (item != nullptr)
+                        items.push_back(item);
+        }
+
+        // Reverse again to render them.
+        std::reverse(items.begin(), items.end());
+
+        oldPosition_ = scroll_area_->verticalScrollBar()->value();
+        oldHeight_   = scroll_widget_->size().height();
+
+        for (const auto &item : items)
+                addTimelineItem(item, TimelineDirection::Top);
+
+        lastMessageDirection_ = TimelineDirection::Top;
+
+        QApplication::processEvents();
+
+        // If this batch is the first being rendered (i.e the first and the last
+        // events originate from this batch), set the last sender.
+        if (lastSender_.isEmpty() && !items.empty())
+                lastSender_ = items.at(0)->descriptionMessage().userid;
 }
 
 int
@@ -636,6 +660,11 @@ TimelineView::getLastEventId() const
 void
 TimelineView::showEvent(QShowEvent *event)
 {
+        if (!topMessages_.empty()) {
+                renderTopEvents(topMessages_);
+                topMessages_.clear();
+        }
+
         if (!bottomMessages_.empty()) {
                 renderBottomEvents(bottomMessages_);
                 bottomMessages_.clear();
