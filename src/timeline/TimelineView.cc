@@ -88,16 +88,12 @@ void
 TimelineView::fetchHistory()
 {
         if (!isScrollbarActivated() && !isTimelineFinished) {
-                if (!isVisible()) {
-                        // Check again later if the timeline became visible.
-                        // TODO: Use a backoff strategy.
-                        paginationTimer_->start(3000);
+                if (!isVisible())
                         return;
-                }
 
                 isPaginationInProgress_ = true;
                 client_->messages(room_id_, prev_batch_token_);
-                paginationTimer_->start(1500);
+                paginationTimer_->start(5000);
 
                 return;
         }
