@@ -198,7 +198,7 @@ ImageItem::paintEvent(QPaintEvent *event)
         font.setPixelSize(conf::fontSize);
 
         QFontMetrics metrics(font);
-        const int fontHeight = metrics.height() + metrics.lineSpacing();
+        const int fontHeight = metrics.height() + metrics.ascent();
 
         if (image_.isNull()) {
                 QString elidedText = metrics.elidedText(text_, Qt::ElideRight, max_width_ - 10);
@@ -223,7 +223,7 @@ ImageItem::paintEvent(QPaintEvent *event)
 
         // Bottom text section
         if (underMouse()) {
-                const int textBoxHeight = 2 * fontHeight;
+                const int textBoxHeight = fontHeight / 2 + 6;
 
                 textRegion_ = QRectF(0, height_ - textBoxHeight, width_, textBoxHeight);
 
