@@ -24,6 +24,9 @@ lint:
 image:
 	docker build -t nheko-app-image .
 
+debian-image:
+	docker build -f Dockerfile.debian -t nheko-debian-appimage .
+
 linux-deploy:
 	./.ci/linux/deploy.sh
 	./.ci/linux/create-packages.sh
@@ -39,6 +42,10 @@ docker-app-image: image
 	docker run \
 		--privileged \
 		-v `pwd`:/build nheko-app-image make linux-deploy
+
+docker-debian-appimage: debian-image
+	docker run -v `pwd`:/build nheko-debian-appimage make release
+	docker run --privileged -v `pwd`:/build nheko-debian-appimage make linux-deploy
 
 clean:
 	rm -rf build

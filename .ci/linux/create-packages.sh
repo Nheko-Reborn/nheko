@@ -19,6 +19,10 @@ if [[ $TAG == nightly ]]; then
     TAG=${TRAVIS_BUILD_NUMBER}.nightly
 fi
 
+if [ -z "$TAG" ]; then
+    TAG=`git rev-parse --abbrev-ref HEAD`
+fi
+
 # Installing dependencies on travis.
 if [ ! -z "$TRAVIS_OS_NAME" ]; then
     sudo apt-add-repository -y ppa:brightbox/ruby-ng

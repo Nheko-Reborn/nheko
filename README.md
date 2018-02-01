@@ -68,6 +68,9 @@ If you don't want to install any external dependencies, you can generate an AppI
 make docker-app-image
 ```
 
+If you're on Debian you should use `make docker-debian-appimage` instead, which uses
+Debian as the build host in an attempt to work around this [issue](https://github.com/AppImage/AppImageKit/wiki/Desktop-Linux-Platform-Issues#openssl).
+
 ##### Arch Linux
 
 ```bash
