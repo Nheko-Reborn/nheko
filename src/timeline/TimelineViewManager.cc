@@ -68,6 +68,9 @@ TimelineViewManager::messageSendFailed(const QString &roomid, int txn_id)
 void
 TimelineViewManager::queueTextMessage(const QString &msg)
 {
+        if (active_room_.isEmpty())
+                return;
+
         auto room_id = active_room_;
         auto view    = views_[room_id];
 
@@ -77,6 +80,9 @@ TimelineViewManager::queueTextMessage(const QString &msg)
 void
 TimelineViewManager::queueEmoteMessage(const QString &msg)
 {
+        if (active_room_.isEmpty())
+                return;
+
         auto room_id = active_room_;
         auto view    = views_[room_id];
 

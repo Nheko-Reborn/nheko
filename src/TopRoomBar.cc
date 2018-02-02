@@ -144,6 +144,9 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         menu_->addAction(leaveRoom_);
 
         connect(settingsBtn_, &QPushButton::clicked, this, [=]() {
+                if (roomSettings_.isNull())
+                        return;
+
                 if (roomSettings_->isNotificationsEnabled())
                         toggleNotifications_->setText(tr("Disable notifications"));
                 else
