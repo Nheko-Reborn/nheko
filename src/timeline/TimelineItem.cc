@@ -61,6 +61,10 @@ TimelineItem::init()
 
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
+
+        checkmark_ = new QLabel(" ", this);
+        checkmark_->setStyleSheet(
+          QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
 }
 
 /*
@@ -108,6 +112,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                 messageLayout_->addWidget(body_, 1);
         }
 
+        messageLayout_->addWidget(checkmark_);
         messageLayout_->addWidget(timestamp_);
         mainLayout_->addLayout(messageLayout_);
 }
@@ -239,6 +244,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
                 messageLayout_->addWidget(body_, 1);
         }
 
+        messageLayout_->addWidget(checkmark_);
         messageLayout_->addWidget(timestamp_);
         mainLayout_->addLayout(messageLayout_);
 }
@@ -285,6 +291,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
                 messageLayout_->addWidget(body_, 1);
         }
 
+        messageLayout_->addWidget(checkmark_);
         messageLayout_->addWidget(timestamp_);
         mainLayout_->addLayout(messageLayout_);
 }
@@ -336,6 +343,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
                 messageLayout_->addWidget(body_, 1);
         }
 
+        messageLayout_->addWidget(checkmark_);
         messageLayout_->addWidget(timestamp_);
         mainLayout_->addLayout(messageLayout_);
 }
@@ -343,11 +351,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 void
 TimelineItem::markReceived()
 {
-        auto checkmark = new QLabel("✓", this);
-        checkmark->setStyleSheet(QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
-        checkmark->setAlignment(Qt::AlignTop);
-
-        messageLayout_->insertWidget(1, checkmark);
+        checkmark_->setText("✓");
+        checkmark_->setAlignment(Qt::AlignTop);
 }
 
 // Only the body is displayed.

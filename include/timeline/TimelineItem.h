@@ -137,6 +137,7 @@ private:
         QFont font_;
 
         QLabel *timestamp_;
+        QLabel *checkmark_;
         QLabel *userName_;
         QLabel *body_;
 };
