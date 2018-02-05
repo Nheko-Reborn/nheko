@@ -101,15 +101,12 @@ export CC=clang-3.6 CXX=clang++-3.6
 
 On Ubuntu 14.04 Trusty, it's possible to use GCC 4.9.4+, but it is not recommended, because it requires installing GCC packages from third-party PPAs.  Later versions of Ubuntu that come with GCC 4.9.4+ should work with GCC out-of-the-box.
 
-##### OSX (Xcode 8 or later)
+##### macOS (Xcode 8 or later)
 
 ```bash
 brew update
-brew install qt5 lmdb
+brew install qt5 lmdb cmake llvm
 ```
-
-N.B. you will need to pass `-DCMAKE_PREFIX_PATH=/usr/local/opt/qt5`
-to cmake to point it at your qt5 install (tweaking the path as needed)
 
 ### Building
 
@@ -130,6 +127,15 @@ and then run
 ```bash
 make release
 ```
+
+which invokes cmake and translates to
+
+```bash
+cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build build
+```
+
+You might need to pass `-DCMAKE_PREFIX_PATH=<< Qt install location >>` to cmake to point it at your qt5 install.
 
 The `nheko` binary will be located in the `build` directory.
 
