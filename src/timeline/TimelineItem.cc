@@ -30,6 +30,8 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
+constexpr const static char *CHECKMARK = "✓";
+
 void
 TimelineItem::init()
 {
@@ -62,7 +64,11 @@ TimelineItem::init()
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
 
+        // Setting fixed width for checkmark because systems may have a differing width for a
+        // space and the Unicode checkmark.
         checkmark_ = new QLabel(" ", this);
+        checkmark_->setFixedWidth(fm.width(CHECKMARK));
+        checkmark_->setFont(font_);
         checkmark_->setStyleSheet(
           QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
 }
@@ -351,7 +357,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 void
 TimelineItem::markReceived()
 {
-        checkmark_->setText("✓");
+        checkmark_->setText(CHECKMARK);
         checkmark_->setAlignment(Qt::AlignTop);
 }
 
