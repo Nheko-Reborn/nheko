@@ -32,7 +32,6 @@ pacaur -S nheko-git
 
 #### Fedora
 ```bash
-sudo dnf copr enable xvitaly/matrix
 sudo dnf install nheko
 ```
 
