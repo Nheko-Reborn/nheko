@@ -137,6 +137,7 @@ private:
         QFont font_;
 
         QLabel *timestamp_;
+        QLabel *checkmark_;
         QLabel *userName_;
         QLabel *body_;
 };
@@ -181,6 +182,7 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
                 messageLayout_->addLayout(widgetLayout, 1);
         }
 
+        messageLayout_->addWidget(checkmark_);
         messageLayout_->addWidget(timestamp_);
         mainLayout_->addLayout(messageLayout_);
 }
@@ -231,6 +233,7 @@ TimelineItem::setupWidgetLayout(Widget *widget,
                 messageLayout_->addLayout(widgetLayout, 1);
         }
 
+        messageLayout_->addWidget(checkmark_);
         messageLayout_->addWidget(timestamp_);
         mainLayout_->addLayout(messageLayout_);
 }
