@@ -129,7 +129,7 @@ signals:
         void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);
         void getOwnCommunitiesResponse(const QList<QString> &own_communities);
         void initialSyncCompleted(const mtx::responses::Sync &response);
-        void initialSyncFailed(const QString &msg);
+        void initialSyncFailed();
         void syncCompleted(const mtx::responses::Sync &response);
         void syncFailed(const QString &msg);
         void joinFailed(const QString &msg);

@@ -42,8 +42,9 @@
 #include "dialogs/ReadReceipts.h"
 #include "timeline/TimelineViewManager.h"
 
-constexpr int MAX_INITIAL_SYNC_FAILURES = 5;
-constexpr int SYNC_RETRY_TIMEOUT        = 40000;
+constexpr int MAX_INITIAL_SYNC_FAILURES  = 7;
+constexpr int SYNC_RETRY_TIMEOUT         = 40 * 1000;
+constexpr int INITIAL_SYNC_RETRY_TIMEOUT = 240 * 1000;
 
 ChatPage *ChatPage::instance_ = nullptr;
 
@@ -295,29 +296,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 &MatrixClient::initialSyncCompleted,
                 this,
                 &ChatPage::initialSyncCompleted);
-        connect(client_.data(), &MatrixClient::initialSyncFailed, this, [=](const QString &msg) {
-                if (client_->getHomeServer().isEmpty()) {
-                        deleteConfigs();
-                        return;
-                }
-
-                initialSyncFailures += 1;
-
-                if (initialSyncFailures >= MAX_INITIAL_SYNC_FAILURES) {
-                        initialSyncFailures = 0;
-
-                        deleteConfigs();
-
-                        emit showLoginPage(msg);
-                        emit contentLoaded();
-                        return;
-                }
-
-                qWarning() << msg;
-                qWarning() << "Retrying initial sync";
-
-                client_->initialSync();
-        });
+        connect(
+          client_.data(), &MatrixClient::initialSyncFailed, this, &ChatPage::retryInitialSync);
         connect(client_.data(), &MatrixClient::syncCompleted, this, &ChatPage::syncCompleted);
         connect(client_.data(),
                 &MatrixClient::getOwnProfileResponse,
@@ -377,6 +357,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                         consensusTimer_->stop();
                 }
         });
+
+        initialSyncTimer_ = new QTimer(this);
+        connect(initialSyncTimer_, &QTimer::timeout, this, &ChatPage::retryInitialSync);
 
         syncTimeoutTimer_ = new QTimer(this);
         connect(syncTimeoutTimer_, &QTimer::timeout, this, [=]() {
@@ -489,6 +472,8 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         }
 
         client_->initialSync();
+
+        initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
 }
 
 void
@@ -519,6 +504,8 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 void
 ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
 {
+        initialSyncTimer_->stop();
+
         auto joined = response.rooms.join;
 
         for (auto it = joined.cbegin(); it != joined.cend(); ++it) {
@@ -973,6 +960,35 @@ ChatPage::setGroupViewState(bool isEnabled)
         }
 
         communitiesSideBar_->show();
+}
+
+void
+ChatPage::retryInitialSync()
+{
+        initialSyncTimer_->stop();
+
+        if (client_->getHomeServer().isEmpty()) {
+                deleteConfigs();
+                return;
+        }
+
+        initialSyncFailures_ += 1;
+
+        if (initialSyncFailures_ >= MAX_INITIAL_SYNC_FAILURES) {
+                initialSyncFailures_ = 0;
+
+                deleteConfigs();
+
+                emit showLoginPage(
+                  tr("The client couldn't sync with the server. Please try again."));
+                emit contentLoaded();
+                return;
+        }
+
+        qWarning() << "Retrying initial sync";
+
+        client_->initialSync();
+        initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
 }
 
 ChatPage::~ChatPage() {}

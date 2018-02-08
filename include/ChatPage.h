@@ -127,6 +127,8 @@ private:
         template<class Collection>
         void updateUserMetadata(const std::vector<Collection> &collection);
 
+        void retryInitialSync();
+
         QHBoxLayout *topLayout_;
         Splitter *splitter;
 
@@ -156,6 +158,7 @@ private:
         QTimer *showContentTimer_;
         QTimer *consensusTimer_;
         QTimer *syncTimeoutTimer_;
+        QTimer *initialSyncTimer_;
 
         QString current_room_;
         QString current_community_;
@@ -191,7 +194,7 @@ private:
 
         // If the number of failures exceeds a certain threshold we
         // return to the login page.
-        int initialSyncFailures = 0;
+        int initialSyncFailures_ = 0;
 };
 
 template<class Collection>

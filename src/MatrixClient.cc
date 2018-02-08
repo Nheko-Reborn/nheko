@@ -270,7 +270,7 @@ MatrixClient::sync() noexcept
                         mtx::responses::Sync response = nlohmann::json::parse(data);
                         emit syncCompleted(response);
                 } catch (std::exception &e) {
-                        qWarning() << "Sync malformed response: " << e.what();
+                        qWarning() << "Sync error: " << e.what();
                 }
         });
 }
@@ -384,7 +384,8 @@ MatrixClient::initialSync() noexcept
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
                 if (status == 0 || status >= 400) {
-                        emit initialSyncFailed(reply->errorString());
+                        qDebug() << "Error code received" << status;
+                        emit initialSyncFailed();
                         return;
                 }
 
@@ -394,7 +395,8 @@ MatrixClient::initialSync() noexcept
                         mtx::responses::Sync response = nlohmann::json::parse(data);
                         emit initialSyncCompleted(response);
                 } catch (std::exception &e) {
-                        qWarning() << "Sync malformed response" << e.what();
+                        qWarning() << "Initial sync error:" << e.what();
+                        emit initialSyncFailed();
                         return;
                 }
 
