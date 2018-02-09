@@ -93,7 +93,7 @@ public:
           const QSharedPointer<QIODevice> data = QSharedPointer<QIODevice>(nullptr));
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
-        void addDateSeparator(QDateTime datetime, int position);
+        QLabel *createDateSeparator(QDateTime datetime);
 
 public slots:
         void sliderRangeChanged(int min, int max);
@@ -135,7 +135,8 @@ private:
         //! Decides whether or not to show or hide the scroll down button.
         void toggleScrollDownButton();
         void init();
-        void addTimelineItem(TimelineItem *item, TimelineDirection direction);
+        void addTimelineItem(TimelineItem *item,
+                             TimelineDirection direction = TimelineDirection::Bottom);
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
         void notifyForLastEvent(const TimelineEvent &event);
@@ -245,7 +246,7 @@ TimelineView::addUserMessage(const QString &url,
         TimelineItem *view_item =
           new TimelineItem(widget, local_user_, with_sender, scroll_widget_);
 
-        pushTimelineItem(view_item);
+        addTimelineItem(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 

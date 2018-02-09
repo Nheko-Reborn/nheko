@@ -450,8 +450,12 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                 if (lastItem) {
                         auto oldDate = lastItem->descriptionMessage().datetime;
 
-                        if (oldDate.daysTo(newDate) != 0)
-                                addDateSeparator(newDate, lastItemPosition);
+                        if (oldDate.daysTo(newDate) != 0) {
+                                auto separator = createDateSeparator(newDate);
+
+                                if (separator)
+                                        scroll_layout_->addWidget(separator);
+                        }
                 }
 
                 pushTimelineItem(item);
@@ -465,8 +469,12 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                         if (firstItem) {
                                 auto oldDate = firstItem->descriptionMessage().datetime;
 
-                                if (newDate.daysTo(oldDate) != 0)
-                                        addDateSeparator(oldDate, 1);
+                                if (newDate.daysTo(oldDate) != 0) {
+                                        auto separator = createDateSeparator(oldDate);
+
+                                        if (separator)
+                                                scroll_layout_->insertWidget(1, separator);
+                                }
                         }
                 }
 
@@ -501,7 +509,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
         TimelineItem *view_item =
           new TimelineItem(ty, local_user_, body, with_sender, scroll_widget_);
 
-        pushTimelineItem(view_item);
+        addTimelineItem(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
@@ -687,8 +695,8 @@ TimelineView::event(QEvent *event)
         return QWidget::event(event);
 }
 
-void
-TimelineView::addDateSeparator(QDateTime datetime, int position)
+QLabel *
+TimelineView::createDateSeparator(QDateTime datetime)
 {
         auto now  = QDateTime::currentDateTime();
         auto days = now.daysTo(datetime);
@@ -713,8 +721,9 @@ TimelineView::addDateSeparator(QDateTime datetime, int position)
                   QString("font-size: %1px").arg(conf::timeline::fonts::dateSeparator));
                 separator->setAlignment(Qt::AlignCenter);
                 separator->setContentsMargins(0, 15, 0, 15);
-                scroll_layout_->insertWidget(position, separator);
         }
+
+        return separator;
 }
 
 QString
