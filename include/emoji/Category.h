@@ -31,7 +31,7 @@ class Category : public QWidget
         Q_OBJECT
 
 public:
-        Category(QString category, QList<Emoji> emoji, QWidget *parent = nullptr);
+        Category(QString category, std::vector<Emoji> emoji, QWidget *parent = nullptr);
         ~Category();
 
 signals:

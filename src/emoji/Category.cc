@@ -25,7 +25,7 @@
 
 using namespace emoji;
 
-Category::Category(QString category, QList<Emoji> emoji, QWidget *parent)
+Category::Category(QString category, std::vector<Emoji> emoji, QWidget *parent)
   : QWidget(parent)
 {
         mainLayout_ = new QVBoxLayout(this);

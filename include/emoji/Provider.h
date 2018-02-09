@@ -17,7 +17,8 @@
 
 #pragma once
 
-#include <QList>
+#include <QString>
+#include <vector>
 
 namespace emoji {
 
@@ -32,13 +33,13 @@ struct Emoji
 class Provider
 {
 public:
-        static const QList<Emoji> people;
-        static const QList<Emoji> nature;
-        static const QList<Emoji> food;
-        static const QList<Emoji> activity;
-        static const QList<Emoji> travel;
-        static const QList<Emoji> objects;
-        static const QList<Emoji> symbols;
-        static const QList<Emoji> flags;
+        static const std::vector<Emoji> people;
+        static const std::vector<Emoji> nature;
+        static const std::vector<Emoji> food;
+        static const std::vector<Emoji> activity;
+        static const std::vector<Emoji> travel;
+        static const std::vector<Emoji> objects;
+        static const std::vector<Emoji> symbols;
+        static const std::vector<Emoji> flags;
 };
 } // namespace emoji

@@ -21,7 +21,7 @@
 
 using namespace emoji;
 
-const QList<Emoji> Provider::people = {
+const std::vector<Emoji> Provider::people = {
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x80"), ":grinning:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x81"), ":grin:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x82"), ":joy:"},
@@ -231,7 +231,7 @@ const QList<Emoji> Provider::people = {
   Emoji{QString::fromUtf8("\xf0\x9f\x92\xbc"), ":briefcase:"},
 };
 
-const QList<Emoji> Provider::nature = {
+const std::vector<Emoji> Provider::nature = {
   Emoji{QString::fromUtf8("\xf0\x9f\x99\x88"), ":see_no_evil:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x99\x89"), ":hear_no_evil:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x99\x8a"), ":speak_no_evil:"},
@@ -394,7 +394,7 @@ const QList<Emoji> Provider::nature = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\x8d"), ":bamboo:"},
 };
 
-const QList<Emoji> Provider::food = {
+const std::vector<Emoji> Provider::food = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x87"), ":grapes:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x88"), ":melon:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x89"), ":watermelon:"},
@@ -482,101 +482,31 @@ const QList<Emoji> Provider::food = {
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\x84"), ":spoon:"},
 };
 
-const QList<Emoji> Provider::activity = {
+const std::vector<Emoji> Provider::activity = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xbe"), ":space_invader:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4"), ":levitate:"},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xba"), ":fencer:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87"), ":horse_racing:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87\xf0\x9f\x8f\xbb"), ":horse_racing_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87\xf0\x9f\x8f\xbc"), ":horse_racing_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87\xf0\x9f\x8f\xbd"), ":horse_racing_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87\xf0\x9f\x8f\xbe"), ":horse_racing_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87\xf0\x9f\x8f\xbf"), ":horse_racing_tone5:"},
   Emoji{QString::fromUtf8("\xe2\x9b\xb7"), ":skier:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x82"), ":snowboarder:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8c"), ":golfer:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x84"), ":surfer:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x84\xf0\x9f\x8f\xbb"), ":surfer_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x84\xf0\x9f\x8f\xbc"), ":surfer_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x84\xf0\x9f\x8f\xbd"), ":surfer_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x84\xf0\x9f\x8f\xbe"), ":surfer_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x84\xf0\x9f\x8f\xbf"), ":surfer_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x9a\xa3"), ":rowboat:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xa3\xf0\x9f\x8f\xbb"), ":rowboat_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xa3\xf0\x9f\x8f\xbc"), ":rowboat_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xa3\xf0\x9f\x8f\xbd"), ":rowboat_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xa3\xf0\x9f\x8f\xbe"), ":rowboat_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xa3\xf0\x9f\x8f\xbf"), ":rowboat_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8a"), ":swimmer:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8a\xf0\x9f\x8f\xbb"), ":swimmer_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8a\xf0\x9f\x8f\xbc"), ":swimmer_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8a\xf0\x9f\x8f\xbd"), ":swimmer_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8a\xf0\x9f\x8f\xbe"), ":swimmer_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8a\xf0\x9f\x8f\xbf"), ":swimmer_tone5:"},
   Emoji{QString::fromUtf8("\xe2\x9b\xb9"), ":basketball_player:"},
-  Emoji{QString::fromUtf8("\xe2\x9b\xb9\xf0\x9f\x8f\xbb"), ":basketball_player_tone1:"},
-  Emoji{QString::fromUtf8("\xe2\x9b\xb9\xf0\x9f\x8f\xbc"), ":basketball_player_tone2:"},
-  Emoji{QString::fromUtf8("\xe2\x9b\xb9\xf0\x9f\x8f\xbd"), ":basketball_player_tone3:"},
-  Emoji{QString::fromUtf8("\xe2\x9b\xb9\xf0\x9f\x8f\xbe"), ":basketball_player_tone4:"},
-  Emoji{QString::fromUtf8("\xe2\x9b\xb9\xf0\x9f\x8f\xbf"), ":basketball_player_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8b"), ":lifter:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8b\xf0\x9f\x8f\xbb"), ":lifter_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8b\xf0\x9f\x8f\xbc"), ":lifter_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8b\xf0\x9f\x8f\xbd"), ":lifter_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8b\xf0\x9f\x8f\xbe"), ":lifter_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8b\xf0\x9f\x8f\xbf"), ":lifter_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb4"), ":bicyclist:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb4\xf0\x9f\x8f\xbb"), ":bicyclist_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb4\xf0\x9f\x8f\xbc"), ":bicyclist_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb4\xf0\x9f\x8f\xbd"), ":bicyclist_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb4\xf0\x9f\x8f\xbe"), ":bicyclist_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb4\xf0\x9f\x8f\xbf"), ":bicyclist_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb5"), ":mountain_bicyclist:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb5\xf0\x9f\x8f\xbb"), ":mountain_bicyclist_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb5\xf0\x9f\x8f\xbc"), ":mountain_bicyclist_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb5\xf0\x9f\x8f\xbd"), ":mountain_bicyclist_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb5\xf0\x9f\x8f\xbe"), ":mountain_bicyclist_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9a\xb5\xf0\x9f\x8f\xbf"), ":mountain_bicyclist_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb8"), ":cartwheel:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb8\xf0\x9f\x8f\xbb"), ":cartwheel_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb8\xf0\x9f\x8f\xbc"), ":cartwheel_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb8\xf0\x9f\x8f\xbd"), ":cartwheel_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb8\xf0\x9f\x8f\xbe"), ":cartwheel_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb8\xf0\x9f\x8f\xbf"), ":cartwheel_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbc"), ":wrestlers:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbc\xf0\x9f\x8f\xbb"), ":wrestlers_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbc\xf0\x9f\x8f\xbc"), ":wrestlers_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbc\xf0\x9f\x8f\xbd"), ":wrestlers_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbc\xf0\x9f\x8f\xbe"), ":wrestlers_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbc\xf0\x9f\x8f\xbf"), ":wrestlers_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbd"), ":water_polo:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbd\xf0\x9f\x8f\xbb"), ":water_polo_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbd\xf0\x9f\x8f\xbc"), ":water_polo_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbd\xf0\x9f\x8f\xbd"), ":water_polo_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbd\xf0\x9f\x8f\xbe"), ":water_polo_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbd\xf0\x9f\x8f\xbf"), ":water_polo_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbe"), ":handball:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbe\xf0\x9f\x8f\xbb"), ":handball_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbe\xf0\x9f\x8f\xbc"), ":handball_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbe\xf0\x9f\x8f\xbd"), ":handball_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbe\xf0\x9f\x8f\xbe"), ":handball_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xbe\xf0\x9f\x8f\xbf"), ":handball_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb9"), ":juggling:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb9\xf0\x9f\x8f\xbb"), ":juggling_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb9\xf0\x9f\x8f\xbc"), ":juggling_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb9\xf0\x9f\x8f\xbd"), ":juggling_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb9\xf0\x9f\x8f\xbe"), ":juggling_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb9\xf0\x9f\x8f\xbf"), ":juggling_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\xaa"), ":circus_tent:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\xad"), ":performing_arts:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\xa8"), ":art:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\xb0"), ":slot_machine:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x9b\x80"), ":bath:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9b\x80\xf0\x9f\x8f\xbb"), ":bath_tone1:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9b\x80\xf0\x9f\x8f\xbc"), ":bath_tone2:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9b\x80\xf0\x9f\x8f\xbd"), ":bath_tone3:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9b\x80\xf0\x9f\x8f\xbe"), ":bath_tone4:"},
-  Emoji{QString::fromUtf8("\xf0\x9f\x9b\x80\xf0\x9f\x8f\xbf"), ":bath_tone5:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\x97"), ":reminder_ribbon:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\x9f"), ":tickets:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\xab"), ":ticket:"},
@@ -624,7 +554,7 @@ const QList<Emoji> Provider::activity = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\xb9"), ":bow_and_arrow:"},
 };
 
-const QList<Emoji> Provider::travel = {
+const std::vector<Emoji> Provider::travel = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8e"), ":race_car:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x8d"), ":motorcycle:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x97\xbe"), ":japan:"},
@@ -745,7 +675,7 @@ const QList<Emoji> Provider::travel = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x81"), ":checkered_flag:"},
 };
 
-const QList<Emoji> Provider::objects = {
+const std::vector<Emoji> Provider::objects = {
   Emoji{QString::fromUtf8("\xe2\x98\xa0"), ":skull_crossbones:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x8c"), ":love_letter:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\xa3"), ":bomb:"},
@@ -928,7 +858,7 @@ const QList<Emoji> Provider::objects = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\xb3\xf0\x9f\x8c\x88"), ":rainbow_flag:"},
 };
 
-const QList<Emoji> Provider::symbols = {
+const std::vector<Emoji> Provider::symbols = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\x81\xf0\x9f\x97\xa8"), ":eye_in_speech_bubble:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x98"), ":cupid:"},
   Emoji{QString::fromUtf8("\xe2\x9d\xa4"), ":heart:"},
@@ -1206,7 +1136,7 @@ const QList<Emoji> Provider::symbols = {
   Emoji{QString::fromUtf8("\xf0\x9f\x94\xb5"), ":blue_circle:"},
 };
 
-const QList<Emoji> Provider::flags = {
+const std::vector<Emoji> Provider::flags = {
   Emoji{QString::fromUtf8("\xf0\x9f\x87\xa6\xf0\x9f\x87\xa8"), ":flag_ac:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x87\xa6\xf0\x9f\x87\xa9"), ":flag_ad:"},
   Emoji{QString::fromUtf8("\xf0\x9f\x87\xa6\xf0\x9f\x87\xaa"), ":flag_ae:"},
