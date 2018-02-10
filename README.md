@@ -109,19 +109,7 @@ brew install qt5 lmdb cmake llvm
 
 ### Building
 
-Clone the repo with its submodules
-
-```bash
-git clone --recursive https://github.com/mujx/nheko
-```
-or 
-```bash
-git clone https://github.com/mujx/nheko
-cd nheko
-git submodule update --init --recursive
-```
-
-and then run
+Clone the repo and run
 
 ```bash
 make release
@@ -134,7 +122,22 @@ cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 cmake --build build
 ```
 
-You might need to pass `-DCMAKE_PREFIX_PATH=<< Qt install location >>` to cmake to point it at your qt5 install.
+If the build fails with the following error
+```
+Could not find a package configuration file provided by "Qt5Widgets" with
+any of the following names:
+
+Qt5WidgetsConfig.cmake
+qt5widgets-config.cmake
+```
+You might need to pass `-DCMAKE_PREFIX_PATH` to cmake to point it at your qt5 install.
+
+e.g on macOS
+
+```
+cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
+cmake --build build
+```
 
 The `nheko` binary will be located in the `build` directory.
 

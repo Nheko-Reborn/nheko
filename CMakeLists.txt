@@ -45,7 +45,8 @@ else()
     find_package_handle_standard_args(LMDB DEFAULT_MSG LMDB_INCLUDE_DIR LMDB_LIBRARY)
 endif()
 
-if (NOT EXISTS "${CMAKE_SOURCE_DIR}/libs/lmdbxx/.git" )
+if (NOT EXISTS "${CMAKE_SOURCE_DIR}/libs/lmdbxx/.git" OR
+    NOT EXISTS "${CMAKE_SOURCE_DIR}/libs/matrix-structs/.git")
     message(WARNING "The git submodules are not available.")
     message(STATUS "Running git submodule update --init --recursive ...")
     execute_process(COMMAND git submodule update --init --recursive)
