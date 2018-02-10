@@ -401,8 +401,6 @@ TextInputWidget::hideUploadSpinner()
         spinner_->stop();
 }
 
-TextInputWidget::~TextInputWidget() {}
-
 void
 TextInputWidget::stopTyping()
 {

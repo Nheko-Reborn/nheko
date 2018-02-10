@@ -32,7 +32,6 @@ class Category : public QWidget
 
 public:
         Category(QString category, std::vector<Emoji> emoji, QWidget *parent = nullptr);
-        ~Category();
 
 signals:
         void emojiSelected(const QString &emoji);

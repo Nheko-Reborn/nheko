@@ -119,8 +119,6 @@ UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
                 emit logout();
 }
 
-UserInfoWidget::~UserInfoWidget() {}
-
 void
 UserInfoWidget::resizeEvent(QResizeEvent *event)
 {

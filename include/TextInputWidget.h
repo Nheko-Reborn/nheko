@@ -80,7 +80,6 @@ class TextInputWidget : public QWidget
 
 public:
         TextInputWidget(QWidget *parent = 0);
-        ~TextInputWidget();
 
         void stopTyping();
 

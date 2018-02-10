@@ -497,8 +497,6 @@ TimelineItem::setUserAvatar(const QImage &avatar)
         userAvatar_->setImage(avatar);
 }
 
-TimelineItem::~TimelineItem() {}
-
 void
 TimelineItem::contextMenuEvent(QContextMenuEvent *event)
 {

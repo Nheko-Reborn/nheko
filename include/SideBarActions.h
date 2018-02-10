@@ -19,7 +19,6 @@ class SideBarActions : public QWidget
 
 public:
         SideBarActions(QWidget *parent = nullptr);
-        ~SideBarActions();
 
 signals:
         void showSettings();

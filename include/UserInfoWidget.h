@@ -32,7 +32,6 @@ class UserInfoWidget : public QWidget
 
 public:
         UserInfoWidget(QWidget *parent = 0);
-        ~UserInfoWidget();
 
         void setAvatar(const QImage &img);
         void setDisplayName(const QString &name);

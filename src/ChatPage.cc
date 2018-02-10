@@ -988,5 +988,3 @@ ChatPage::retryInitialSync()
         client_->initialSync();
         initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
 }
-
-ChatPage::~ChatPage() {}

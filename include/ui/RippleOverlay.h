@@ -12,7 +12,6 @@ class RippleOverlay : public OverlayWidget
 
 public:
         explicit RippleOverlay(QWidget *parent = 0);
-        ~RippleOverlay();
 
         void addRipple(Ripple *ripple);
         void addRipple(const QPoint &position, qreal radius = 300);

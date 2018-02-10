@@ -35,7 +35,6 @@ class LoginPage : public QWidget
 
 public:
         LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-        ~LoginPage();
 
         void reset();
 

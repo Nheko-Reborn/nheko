@@ -86,8 +86,6 @@ public:
         void setEventId(const QString &event_id) { event_id_ = event_id; }
         void markReceived();
 
-        ~TimelineItem();
-
 protected:
         void paintEvent(QPaintEvent *event) override;
         void contextMenuEvent(QContextMenuEvent *event) override;

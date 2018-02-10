@@ -22,8 +22,6 @@ Badge::Badge(const QString &text, QWidget *parent)
         setText(text);
 }
 
-Badge::~Badge() {}
-
 void
 Badge::init()
 {

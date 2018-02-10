@@ -32,7 +32,6 @@ class RegisterPage : public QWidget
 
 public:
         RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
-        ~RegisterPage();
 
 protected:
         void paintEvent(QPaintEvent *event) override;

@@ -73,8 +73,6 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client,
                 });
 }
 
-RoomList::~RoomList() {}
-
 void
 RoomList::clear()
 {

@@ -22,8 +22,6 @@ Theme::Theme(QObject *parent)
         setColor("Transparent", ui::Color::Transparent);
 }
 
-Theme::~Theme() {}
-
 QColor
 Theme::rgba(int r, int g, int b, qreal a) const
 {

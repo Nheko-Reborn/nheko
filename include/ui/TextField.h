@@ -23,7 +23,6 @@ class TextField : public QLineEdit
 
 public:
         explicit TextField(QWidget *parent = 0);
-        ~TextField();
 
         void setInkColor(const QColor &color);
         void setBackgroundColor(const QColor &color);
@@ -72,7 +71,6 @@ class TextFieldLabel : public QWidget
 
 public:
         TextFieldLabel(TextField *parent);
-        ~TextFieldLabel();
 
         inline void setColor(const QColor &color);
         inline void setOffset(const QPointF &pos);
@@ -140,7 +138,6 @@ class TextFieldStateMachine : public QStateMachine
 
 public:
         TextFieldStateMachine(TextField *parent);
-        ~TextFieldStateMachine();
 
         inline void setProgress(qreal progress);
         void setLabel(TextFieldLabel *label);

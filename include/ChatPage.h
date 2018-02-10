@@ -60,7 +60,6 @@ public:
         ChatPage(QSharedPointer<MatrixClient> client,
                  QSharedPointer<UserSettings> userSettings,
                  QWidget *parent = 0);
-        ~ChatPage();
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);

@@ -2,7 +2,7 @@
 
 #include <QCoreApplication>
 #include <QPaintEvent>
-#include <QStateMachine>
+#include <QSharedPointer>
 #include <QTimer>
 
 #include "OverlayWidget.h"
@@ -19,7 +19,6 @@ class SnackBar : public OverlayWidget
 
 public:
         explicit SnackBar(QWidget *parent);
-        ~SnackBar();
 
         inline void setBackgroundColor(const QColor &color);
         inline void setTextColor(const QColor &color);
@@ -48,8 +47,8 @@ private:
 
         QList<QString> messages_;
 
-        QTimer *showTimer_;
-        QTimer *hideTimer_;
+        QSharedPointer<QTimer> showTimer_;
+        QSharedPointer<QTimer> hideTimer_;
 
         int duration_;
         int boxWidth_;

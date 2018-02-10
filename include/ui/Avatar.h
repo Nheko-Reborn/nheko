@@ -16,7 +16,6 @@ class Avatar : public QWidget
 
 public:
         explicit Avatar(QWidget *parent = 0);
-        ~Avatar();
 
         void setBackgroundColor(const QColor &color);
         void setIcon(const QIcon &icon);

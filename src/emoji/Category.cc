@@ -88,5 +88,3 @@ Category::paintEvent(QPaintEvent *)
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
-
-Category::~Category() {}

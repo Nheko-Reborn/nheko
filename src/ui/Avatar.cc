@@ -17,8 +17,6 @@ Avatar::Avatar(QWidget *parent)
         setSizePolicy(policy);
 }
 
-Avatar::~Avatar() {}
-
 QColor
 Avatar::textColor() const
 {

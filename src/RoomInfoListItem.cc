@@ -388,5 +388,3 @@ RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
         lastMsgInfo_ = info;
         update();
 }
-
-RoomInfoListItem::~RoomInfoListItem() {}

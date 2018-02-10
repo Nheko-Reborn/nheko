@@ -24,8 +24,6 @@ public:
                             QString community_id,
                             QWidget *parent = nullptr);
 
-        ~CommunitiesListItem();
-
         void setCommunity(QSharedPointer<Community> community);
 
         inline bool isPressed() const;
@@ -87,7 +85,6 @@ class WorldCommunityListItem : public CommunitiesListItem
         Q_OBJECT
 public:
         WorldCommunityListItem(QWidget *parent = nullptr);
-        ~WorldCommunityListItem();
 
 protected:
         void mousePressEvent(QMouseEvent *event) override;

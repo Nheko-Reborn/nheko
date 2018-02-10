@@ -116,8 +116,6 @@ SideBarActions::SideBarActions(QWidget *parent)
         connect(settingsBtn_, &QPushButton::clicked, this, &SideBarActions::showSettings);
 }
 
-SideBarActions::~SideBarActions() {}
-
 void
 SideBarActions::resizeEvent(QResizeEvent *event)
 {

@@ -11,8 +11,6 @@ RippleOverlay::RippleOverlay(QWidget *parent)
         setAttribute(Qt::WA_NoSystemBackground);
 }
 
-RippleOverlay::~RippleOverlay() {}
-
 void
 RippleOverlay::addRipple(Ripple *ripple)
 {

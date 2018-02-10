@@ -233,5 +233,3 @@ TopRoomBar::updateRoomTopic(QString topic)
         roomTopic_ = topic;
         update();
 }
-
-TopRoomBar::~TopRoomBar() {}

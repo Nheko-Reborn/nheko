@@ -18,7 +18,6 @@ class Ripple : public QParallelAnimationGroup
 public:
         explicit Ripple(const QPoint &center, QObject *parent = 0);
         Ripple(const QPoint &center, RippleOverlay *overlay, QObject *parent = 0);
-        ~Ripple();
 
         inline void setOverlay(RippleOverlay *overlay);
 

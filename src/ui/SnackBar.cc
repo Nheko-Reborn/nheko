@@ -23,20 +23,12 @@ SnackBar::SnackBar(QWidget *parent)
         font.setWeight(50);
         setFont(font);
 
-        showTimer_ = new QTimer();
-        hideTimer_ = new QTimer();
+        showTimer_ = QSharedPointer<QTimer>(new QTimer);
+        hideTimer_ = QSharedPointer<QTimer>(new QTimer);
         hideTimer_->setSingleShot(true);
 
-        connect(showTimer_, SIGNAL(timeout()), this, SLOT(onTimeout()));
-        connect(hideTimer_, SIGNAL(timeout()), this, SLOT(hideMessage()));
-}
-
-SnackBar::~SnackBar()
-{
-        stopTimers();
-
-        delete showTimer_;
-        delete hideTimer_;
+        connect(showTimer_.data(), SIGNAL(timeout()), this, SLOT(onTimeout()));
+        connect(hideTimer_.data(), SIGNAL(timeout()), this, SLOT(hideMessage()));
 }
 
 void

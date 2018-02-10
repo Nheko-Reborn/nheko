@@ -19,7 +19,6 @@ public:
         explicit Badge(QWidget *parent = 0);
         explicit Badge(const QIcon &icon, QWidget *parent = 0);
         explicit Badge(const QString &text, QWidget *parent = 0);
-        ~Badge();
 
         void setBackgroundColor(const QColor &color);
         void setTextColor(const QColor &color);

@@ -44,7 +44,6 @@ public:
         RoomList(QSharedPointer<MatrixClient> client,
                  QSharedPointer<UserSettings> userSettings,
                  QWidget *parent = 0);
-        ~RoomList();
 
         void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
         void setInitialRooms(const std::map<QString, QSharedPointer<RoomSettings>> &settings,

@@ -11,7 +11,6 @@ public:
         explicit Label(const QString &text,
                        QWidget *parent   = Q_NULLPTR,
                        Qt::WindowFlags f = Qt::WindowFlags());
-        ~Label() override {}
 
 signals:
         void clicked(QMouseEvent *e);

@@ -32,8 +32,6 @@ TextField::TextField(QWidget *parent)
         QCoreApplication::processEvents();
 }
 
-TextField::~TextField() {}
-
 void
 TextField::setBackgroundColor(const QColor &color)
 {
@@ -273,8 +271,6 @@ TextFieldStateMachine::TextFieldStateMachine(TextField *parent)
         connect(text_field_, SIGNAL(textChanged(QString)), this, SLOT(setupProperties()));
 }
 
-TextFieldStateMachine::~TextFieldStateMachine() {}
-
 void
 TextFieldStateMachine::setLabel(TextFieldLabel *label)
 {
@@ -349,8 +345,6 @@ TextFieldLabel::TextFieldLabel(TextField *parent)
         font.setLetterSpacing(QFont::PercentageSpacing, 102);
         setFont(font);
 }
-
-TextFieldLabel::~TextFieldLabel() {}
 
 void
 TextFieldLabel::paintEvent(QPaintEvent *)

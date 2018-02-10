@@ -35,7 +35,6 @@ class TimelineViewManager : public QStackedWidget
 
 public:
         TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
-        ~TimelineViewManager();
 
         // Initialize with timeline events.
         void initialize(const mtx::responses::Rooms &rooms);
