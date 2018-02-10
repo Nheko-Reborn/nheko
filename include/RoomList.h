@@ -25,8 +25,6 @@
 
 #include <mtx.hpp>
 
-#include "dialogs/LeaveRoom.h"
-
 class LeaveRoomDialog;
 class MatrixClient;
 class Cache;
@@ -79,8 +77,6 @@ public slots:
         void updateUnreadMessageCount(const QString &roomid, int count);
         void updateRoomDescription(const QString &roomid, const DescInfo &info);
         void closeJoinRoomDialog(bool isJoining, QString roomAlias);
-        void openLeaveRoomDialog(const QString &room_id);
-        void closeLeaveRoomDialog(bool leaving, const QString &room_id);
         void clearRoomMessageCount(const QString &room_id);
 
 protected:
@@ -108,9 +104,6 @@ private:
         QPushButton *joinRoomButton_;
 
         OverlayModal *joinRoomModal_;
-
-        QSharedPointer<OverlayModal> leaveRoomModal_;
-        QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
 
         std::map<QString, QSharedPointer<RoomInfoListItem>> rooms_;
         QString selectedRoom_;

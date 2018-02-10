@@ -144,8 +144,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
         connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
 
-        connect(
-          top_bar_, &TopRoomBar::leaveRoom, this, [=]() { client_->leaveRoom(current_room_); });
         connect(top_bar_, &TopRoomBar::inviteUsers, this, [=](QStringList users) {
                 for (int ii = 0; ii < users.size(); ++ii) {
                         QTimer::singleShot(ii * 1000, this, [=]() {

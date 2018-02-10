@@ -66,6 +66,7 @@ public:
         void bootstrap(QString userid, QString homeserver, QString token);
         void showQuickSwitcher();
         void showReadReceipts(const QString &event_id);
+        QString currentRoom() const { return current_room_; }
 
         static ChatPage *instance() { return instance_; }
 

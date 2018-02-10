@@ -35,16 +35,21 @@ class SnackBar;
 class TrayIcon;
 class UserSettings;
 
+namespace dialogs {
+class LeaveRoom;
+}
+
 class MainWindow : public QMainWindow
 {
         Q_OBJECT
 
 public:
         explicit MainWindow(QWidget *parent = 0);
-        ~MainWindow();
 
         static MainWindow *instance() { return instance_; };
         void saveCurrentWindowSize();
+
+        void openLeaveRoomDialog(const QString &room_id = "");
 
 protected:
         void closeEvent(QCloseEvent *event);
@@ -78,31 +83,27 @@ private:
 
         //! The initial welcome screen.
         WelcomePage *welcome_page_;
-
         //! The login screen.
         LoginPage *login_page_;
-
         //! The register page.
         RegisterPage *register_page_;
-
         //! A stacked widget that handles the transitions between widgets.
         QStackedWidget *pageStack_;
-
         //! The main chat area.
         ChatPage *chat_page_;
         UserSettingsPage *userSettingsPage_;
         QSharedPointer<UserSettings> userSettings_;
-
         //! Used to hide undefined states between page transitions.
         QSharedPointer<OverlayModal> progressModal_;
         QSharedPointer<LoadingIndicator> spinner_;
-
         //! Matrix Client API provider.
         QSharedPointer<MatrixClient> client_;
-
         //! Tray icon that shows the unread message count.
         TrayIcon *trayIcon_;
-
         //! Notifications display.
         QSharedPointer<SnackBar> snackBar_;
+        //! Leave room modal.
+        QSharedPointer<OverlayModal> leaveRoomModal_;
+        //! Leave room dialog.
+        QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
 };

@@ -53,15 +53,11 @@ public:
         void reset();
 
 signals:
-        void leaveRoom();
         void inviteUsers(QStringList users);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
-
-private slots:
-        void closeLeaveRoomDialog(bool leaving);
 
 private:
         QHBoxLayout *topLayout_;
@@ -78,9 +74,6 @@ private:
         QAction *inviteUsers_;
 
         FlatButton *settingsBtn_;
-
-        QSharedPointer<OverlayModal> leaveRoomModal_;
-        QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
 
         QSharedPointer<OverlayModal> inviteUsersModal_;
         QSharedPointer<dialogs::InviteUsers> inviteUsersDialog_;

@@ -33,6 +33,7 @@
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "WelcomePage.h"
+#include "dialogs/LeaveRoom.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -262,4 +263,24 @@ MainWindow::hasActiveUser()
                settings.contains("auth/user_id");
 }
 
-MainWindow::~MainWindow() {}
+void
+MainWindow::openLeaveRoomDialog(const QString &room_id)
+{
+        auto roomToLeave = room_id.isEmpty() ? chat_page_->currentRoom() : room_id;
+
+        leaveRoomDialog_ = QSharedPointer<dialogs::LeaveRoom>(new dialogs::LeaveRoom(this));
+
+        connect(leaveRoomDialog_.data(), &dialogs::LeaveRoom::closing, this, [=](bool leaving) {
+                leaveRoomModal_->fadeOut();
+
+                if (leaving)
+                        client_->leaveRoom(roomToLeave);
+        });
+
+        leaveRoomModal_ =
+          QSharedPointer<OverlayModal>(new OverlayModal(this, leaveRoomDialog_.data()));
+        leaveRoomModal_->setDuration(0);
+        leaveRoomModal_->setColor(QColor(30, 30, 30, 170));
+
+        leaveRoomModal_->fadeIn();
+}
