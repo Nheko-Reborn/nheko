@@ -198,13 +198,16 @@ RoomList::sync(const std::map<QString, QSharedPointer<RoomState>> &states,
                 if (!roomExists(state.first))
                         addRoom(settings.at(state.first), state.second, state.first);
 
-                auto room = rooms_[state.first];
+                auto room       = rooms_[state.first];
+                auto room_state = room->state();
 
-                auto current_avatar = room->state()->getAvatar();
-                auto new_avatar     = state.second->getAvatar();
+                if (room_state) {
+                        auto current_avatar = room_state->getAvatar();
+                        auto new_avatar     = state.second->getAvatar();
 
-                if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
-                        updateAvatar(state.first, new_avatar.toString());
+                        if (current_avatar != new_avatar && !new_avatar.toString().isEmpty())
+                                updateAvatar(state.first, new_avatar.toString());
+                }
 
                 room->setState(state.second);
         }
