@@ -214,18 +214,6 @@ RoomList::sync(const std::map<QString, QSharedPointer<RoomState>> &states,
 }
 
 void
-RoomList::clearRoomMessageCount(const QString &room_id)
-{
-        if (!roomExists(room_id))
-                return;
-
-        auto room = rooms_[room_id];
-        room->clearUnreadMessageCount();
-
-        calculateUnreadMessageCount();
-}
-
-void
 RoomList::highlightSelectedRoom(const QString &room_id)
 {
         emit roomChanged(room_id);
@@ -234,10 +222,6 @@ RoomList::highlightSelectedRoom(const QString &room_id)
                 qDebug() << "RoomList: clicked unknown roomid";
                 return;
         }
-
-        clearRoomMessageCount(room_id);
-
-        calculateUnreadMessageCount();
 
         for (auto const &room : rooms_) {
                 if (room.second.isNull())

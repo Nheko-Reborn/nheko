@@ -57,7 +57,6 @@ public:
 
 signals:
         void clearRoomMessageCount(QString roomid);
-        void unreadMessages(QString roomid, int count);
         void updateRoomsLastMessage(const QString &user, const DescInfo &info);
 
 public slots:

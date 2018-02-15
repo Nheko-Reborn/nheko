@@ -76,7 +76,6 @@ public slots:
         void updateUnreadMessageCount(const QString &roomid, int count);
         void updateRoomDescription(const QString &roomid, const DescInfo &info);
         void closeJoinRoomDialog(bool isJoining, QString roomAlias);
-        void clearRoomMessageCount(const QString &room_id);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

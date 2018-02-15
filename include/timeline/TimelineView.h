@@ -83,7 +83,7 @@ public:
                      QWidget *parent = 0);
 
         // Add new events at the end of the timeline.
-        int addEvents(const mtx::responses::Timeline &timeline);
+        void addEvents(const mtx::responses::Timeline &timeline);
         void addUserMessage(mtx::events::MessageType ty, const QString &msg);
 
         template<class Widget, mtx::events::MessageType MsgType>
@@ -113,7 +113,6 @@ private slots:
 
 signals:
         void updateLastTimelineMessage(const QString &user, const DescInfo &info);
-        void clearUnreadMessageCount(const QString &room_id);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

@@ -1181,14 +1181,14 @@ MatrixClient::readEvent(const QString &room_id, const QString &event_id)
         query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
-        endpoint.setPath(clientApiUrl_ +
-                         QString("/rooms/%1/receipt/m.read/%2").arg(room_id).arg(event_id));
+        endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/read_markers").arg(room_id));
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
 
-        auto reply = post(request, "{}");
+        QJsonObject body({{"m.fully_read", event_id}, {"m.read", event_id}});
+        auto reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
 
         connect(reply, &QNetworkReply::finished, this, [reply]() {
                 reply->deleteLater();

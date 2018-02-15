@@ -68,7 +68,7 @@ public:
         RoomInfoListItem(QString room_id, mtx::responses::InvitedRoom room, QWidget *parent = 0);
 
         void updateUnreadMessageCount(int count);
-        void clearUnreadMessageCount();
+        void clearUnreadMessageCount() { updateUnreadMessageCount(0); };
         void setState(QSharedPointer<RoomState> state)
         {
                 state_ = state;

@@ -128,6 +128,8 @@ private:
         void updateUserMetadata(const std::vector<Collection> &collection);
 
         void retryInitialSync();
+        //! Update the room with the new notification count.
+        void updateRoomNotificationCount(const QString &room_id, uint16_t notification_count);
 
         QHBoxLayout *topLayout_;
         Splitter *splitter;

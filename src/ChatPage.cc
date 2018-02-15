@@ -175,25 +175,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(room_list_, &RoomList::acceptInvite, client_.data(), &MatrixClient::joinRoom);
         connect(room_list_, &RoomList::declineInvite, client_.data(), &MatrixClient::leaveRoom);
 
-        connect(view_manager_,
-                &TimelineViewManager::clearRoomMessageCount,
-                room_list_,
-                &RoomList::clearRoomMessageCount);
-
-        connect(view_manager_,
-                &TimelineViewManager::unreadMessages,
-                this,
-                [=](const QString &roomid, int count) {
-                        if (roomSettings_.find(roomid) == roomSettings_.end()) {
-                                qWarning() << "RoomId does not have settings" << roomid;
-                                room_list_->updateUnreadMessageCount(roomid, count);
-                                return;
-                        }
-
-                        if (roomSettings_[roomid]->isNotificationsEnabled())
-                                room_list_->updateUnreadMessageCount(roomid, count);
-                });
-
         connect(text_input_, &TextInputWidget::startedTyping, this, [=]() {
                 if (!userSettings_->isTypingNotificationsEnabled())
                         return;
@@ -844,6 +825,8 @@ ChatPage::updateJoinedRooms(const std::map<std::string, mtx::responses::JoinedRo
                 const auto roomid = QString::fromStdString(it->first);
 
                 updateTypingUsers(roomid, it->second.ephemeral.typing);
+                updateRoomNotificationCount(roomid,
+                                            it->second.unread_notifications.notification_count);
 
                 if (it->second.ephemeral.receipts.size() > 0)
                         QtConcurrent::run(cache_.data(),
@@ -987,4 +970,10 @@ ChatPage::retryInitialSync()
 
         client_->initialSync();
         initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
+}
+
+void
+ChatPage::updateRoomNotificationCount(const QString &room_id, uint16_t notification_count)
+{
+        room_list_->updateUnreadMessageCount(room_id, notification_count);
 }

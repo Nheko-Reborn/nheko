@@ -159,10 +159,6 @@ TimelineViewManager::addRoom(const mtx::responses::JoinedRoom &room, const QStri
                 &TimelineView::updateLastTimelineMessage,
                 this,
                 &TimelineViewManager::updateRoomsLastMessage);
-        connect(view,
-                &TimelineView::clearUnreadMessageCount,
-                this,
-                &TimelineViewManager::clearRoomMessageCount);
 
         // Add the view in the widget stack.
         addWidget(view);
@@ -179,10 +175,6 @@ TimelineViewManager::addRoom(const QString &room_id)
                 &TimelineView::updateLastTimelineMessage,
                 this,
                 &TimelineViewManager::updateRoomsLastMessage);
-        connect(view,
-                &TimelineView::clearUnreadMessageCount,
-                this,
-                &TimelineViewManager::clearRoomMessageCount);
 
         // Add the view in the widget stack.
         addWidget(view);
@@ -201,16 +193,7 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 
                 auto view = views_.at(roomid);
 
-                int msgs_added = view->addEvents(it->second.timeline);
-
-                if (msgs_added > 0) {
-                        // TODO: When the app window gets active the current
-                        // unread count (if any) should be cleared.
-                        auto isAppActive = QApplication::activeWindow() != nullptr;
-
-                        if (roomid != active_room_ || !isAppActive)
-                                emit unreadMessages(roomid, msgs_added);
-                }
+                view->addEvents(it->second.timeline);
         }
 }
 

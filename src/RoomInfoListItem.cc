@@ -303,14 +303,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 void
 RoomInfoListItem::updateUnreadMessageCount(int count)
 {
-        unreadMsgCount_ += count;
-        update();
-}
-
-void
-RoomInfoListItem::clearUnreadMessageCount()
-{
-        unreadMsgCount_ = 0;
+        unreadMsgCount_ = count;
         update();
 }
 

@@ -290,11 +290,9 @@ TimelineView::renderTopEvents(const std::vector<TimelineEvent> &events)
                 lastSender_ = items.at(0)->descriptionMessage().userid;
 }
 
-int
+void
 TimelineView::addEvents(const mtx::responses::Timeline &timeline)
 {
-        int message_count = 0;
-
         if (isInitialSync) {
                 prev_batch_token_ = QString::fromStdString(timeline.prev_batch);
                 isInitialSync     = false;
@@ -306,8 +304,8 @@ TimelineView::addEvents(const mtx::responses::Timeline &timeline)
                         bottomMessages_.push_back(e);
 
                 // Calculate notifications.
-                if (isNotifiable(e))
-                        message_count += 1;
+                /* if (isNotifiable(e)) */
+                /* sendNotification() */
         }
 
         if (!bottomMessages_.empty())
@@ -324,8 +322,6 @@ TimelineView::addEvents(const mtx::responses::Timeline &timeline)
                 if (isActiveWindow())
                         readLastEvent();
         }
-
-        return message_count;
 }
 
 inline bool
@@ -685,12 +681,8 @@ TimelineView::showEvent(QShowEvent *event)
 bool
 TimelineView::event(QEvent *event)
 {
-        if (event->type() == QEvent::WindowActivate) {
-                QTimer::singleShot(1000, this, [=]() {
-                        emit clearUnreadMessageCount(room_id_);
-                        readLastEvent();
-                });
-        }
+        if (event->type() == QEvent::WindowActivate)
+                readLastEvent();
 
         return QWidget::event(event);
 }
