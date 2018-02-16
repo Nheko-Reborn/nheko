@@ -47,7 +47,7 @@ matrix:
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
-                  packages: ["clang-5.0", "ninja-build"]
+                  packages: ["clang-5.0", "g++-7", "ninja-build"]
 
 before_install:
     - export CXX=${CXX_COMPILER}
