@@ -38,9 +38,8 @@ Panel::Panel(QWidget *parent)
                       "QScrollBar:vertical { width: 0px; margin: 0px; }"
                       "QScrollBar::handle:vertical { min-height: 30px; }");
 
-        setAttribute(Qt::WA_TranslucentBackground, true);
         setAttribute(Qt::WA_ShowWithoutActivating, true);
-        setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
+        setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
 
         auto mainWidget = new QWidget(this);
         mainWidget->setMaximumSize(width_, height_);
