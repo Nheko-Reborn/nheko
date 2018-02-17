@@ -153,7 +153,8 @@ TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::M
         if (room_id_ != room_id)
                 return;
 
-        if (msgs.chunk.size() == 0) {
+        // We've reached the start of the timline and there're no more messages.
+        if ((msgs.end == msgs.start) && msgs.chunk.size() == 0) {
                 isTimelineFinished = true;
                 return;
         }
