@@ -26,8 +26,6 @@ OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
   , duration_{500}
   , color_{QColor(55, 55, 55)}
 {
-        setAttribute(Qt::WA_TranslucentBackground);
-
         auto layout = new QVBoxLayout();
         layout->addWidget(content);
         layout->setAlignment(Qt::AlignCenter);
