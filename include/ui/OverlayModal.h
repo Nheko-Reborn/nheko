@@ -17,11 +17,9 @@
 
 #pragma once
 
-#include <QGraphicsOpacityEffect>
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPaintEvent>
-#include <QPropertyAnimation>
 
 #include "OverlayWidget.h"
 
@@ -30,14 +28,6 @@ class OverlayModal : public OverlayWidget
 public:
         OverlayModal(QWidget *parent, QWidget *content);
 
-        void fadeIn();
-        void fadeOut();
-
-        void setDuration(int duration)
-        {
-                duration_ = duration;
-                animation_->setDuration(duration_);
-        };
         void setColor(QColor color) { color_ = color; }
         void setDismissible(bool state) { isDismissible_ = state; }
 
@@ -48,13 +38,8 @@ protected:
 
 private:
         QWidget *content_;
-
-        int duration_;
         QColor color_;
 
         //! Decides whether or not the modal can be removed by clicking into it.
         bool isDismissible_ = true;
-
-        QGraphicsOpacityEffect *opacity_;
-        QPropertyAnimation *animation_;
 };

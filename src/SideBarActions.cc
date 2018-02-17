@@ -43,7 +43,7 @@ SideBarActions::SideBarActions(QWidget *parent)
                                 &dialogs::JoinRoom::closing,
                                 this,
                                 [=](bool isJoining, const QString &room) {
-                                        joinRoomModal_->fadeOut();
+                                        joinRoomModal_->hide();
 
                                         if (isJoining && !room.isEmpty())
                                                 emit joinRoom(room);
@@ -53,11 +53,10 @@ SideBarActions::SideBarActions(QWidget *parent)
                 if (joinRoomModal_.isNull()) {
                         joinRoomModal_ = QSharedPointer<OverlayModal>(
                           new OverlayModal(MainWindow::instance(), joinRoomDialog_.data()));
-                        joinRoomModal_->setDuration(0);
                         joinRoomModal_->setColor(QColor(30, 30, 30, 170));
                 }
 
-                joinRoomModal_->fadeIn();
+                joinRoomModal_->show();
         });
 
         connect(createRoomAction_, &QAction::triggered, this, [=]() {
@@ -69,7 +68,7 @@ SideBarActions::SideBarActions(QWidget *parent)
                                 &dialogs::CreateRoom::closing,
                                 this,
                                 [=](bool isCreating, const mtx::requests::CreateRoom &request) {
-                                        createRoomModal_->fadeOut();
+                                        createRoomModal_->hide();
 
                                         if (isCreating)
                                                 emit createRoom(request);
@@ -79,11 +78,10 @@ SideBarActions::SideBarActions(QWidget *parent)
                 if (createRoomModal_.isNull()) {
                         createRoomModal_ = QSharedPointer<OverlayModal>(
                           new OverlayModal(MainWindow::instance(), createRoomDialog_.data()));
-                        createRoomModal_->setDuration(0);
                         createRoomModal_->setColor(QColor(30, 30, 30, 170));
                 }
 
-                createRoomModal_->fadeIn();
+                createRoomModal_->show();
         });
 
         addMenu_->addAction(createRoomAction_);

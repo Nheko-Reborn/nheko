@@ -100,7 +100,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                                 &dialogs::InviteUsers::closing,
                                 this,
                                 [=](bool isSending, QStringList invitees) {
-                                        inviteUsersModal_->fadeOut();
+                                        inviteUsersModal_->hide();
 
                                         if (isSending && !invitees.isEmpty())
                                                 emit inviteUsers(invitees);
@@ -110,11 +110,10 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                 if (inviteUsersModal_.isNull()) {
                         inviteUsersModal_ = QSharedPointer<OverlayModal>(
                           new OverlayModal(MainWindow::instance(), inviteUsersDialog_.data()));
-                        inviteUsersModal_->setDuration(0);
                         inviteUsersModal_->setColor(QColor(30, 30, 30, 170));
                 }
 
-                inviteUsersModal_->fadeIn();
+                inviteUsersModal_->show();
         });
 
         leaveRoom_ = new QAction(tr("Leave room"), this);

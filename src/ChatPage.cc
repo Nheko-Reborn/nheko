@@ -680,7 +680,7 @@ ChatPage::showQuickSwitcher()
 
                 connect(quickSwitcher_.data(), &QuickSwitcher::closing, this, [=]() {
                         if (!this->quickSwitcherModal_.isNull())
-                                this->quickSwitcherModal_->fadeOut();
+                                this->quickSwitcherModal_->hide();
                         this->text_input_->setFocus(Qt::FocusReason::PopupFocusReason);
                 });
         }
@@ -689,7 +689,6 @@ ChatPage::showQuickSwitcher()
                 quickSwitcherModal_ = QSharedPointer<OverlayModal>(
                   new OverlayModal(MainWindow::instance(), quickSwitcher_.data()),
                   [=](OverlayModal *modal) { modal->deleteLater(); });
-                quickSwitcherModal_->setDuration(0);
                 quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
         }
 
@@ -704,7 +703,7 @@ ChatPage::showQuickSwitcher()
         }
 
         quickSwitcher_->setRoomList(rooms);
-        quickSwitcherModal_->fadeIn();
+        quickSwitcherModal_->show();
 }
 
 void
@@ -922,12 +921,11 @@ ChatPage::showReadReceipts(const QString &event_id)
                 receiptsModal_ = QSharedPointer<OverlayModal>(
                   new OverlayModal(MainWindow::instance(), receiptsDialog_.data()),
                   [=](OverlayModal *modal) { modal->deleteLater(); });
-                receiptsModal_->setDuration(0);
                 receiptsModal_->setColor(QColor(30, 30, 30, 170));
         }
 
         receiptsDialog_->addUsers(cache_->readReceipts(event_id, current_room_));
-        receiptsModal_->fadeIn();
+        receiptsModal_->show();
 }
 
 void

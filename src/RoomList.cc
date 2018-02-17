@@ -321,7 +321,7 @@ RoomList::leaveEvent(QEvent *event)
 void
 RoomList::closeJoinRoomDialog(bool isJoining, QString roomAlias)
 {
-        joinRoomModal_->fadeOut();
+        joinRoomModal_->hide();
 
         if (isJoining)
                 client_->joinRoom(roomAlias);

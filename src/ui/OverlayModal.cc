@@ -23,7 +23,6 @@
 OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
   : OverlayWidget(parent)
   , content_{content}
-  , duration_{500}
   , color_{QColor(55, 55, 55)}
 {
         auto layout = new QVBoxLayout();
@@ -31,21 +30,6 @@ OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
         layout->setAlignment(Qt::AlignCenter);
 
         setLayout(layout);
-
-        opacity_ = new QGraphicsOpacityEffect(this);
-        setGraphicsEffect(opacity_);
-
-        opacity_->setOpacity(1);
-        animation_ = new QPropertyAnimation(opacity_, "opacity", this);
-        animation_->setStartValue(1);
-        animation_->setEndValue(0);
-        animation_->setDuration(duration_);
-        animation_->setEasingCurve(QEasingCurve::Linear);
-
-        connect(animation_, &QPropertyAnimation::finished, [this]() {
-                if (animation_->direction() == QAbstractAnimation::Forward)
-                        this->close();
-        });
 
         content->setFocus();
 }
@@ -63,22 +47,7 @@ void
 OverlayModal::mousePressEvent(QMouseEvent *e)
 {
         if (isDismissible_ && content_ && !content_->geometry().contains(e->pos()))
-                fadeOut();
-}
-
-void
-OverlayModal::fadeIn()
-{
-        animation_->setDirection(QAbstractAnimation::Backward);
-        animation_->start();
-        show();
-}
-
-void
-OverlayModal::fadeOut()
-{
-        animation_->setDirection(QAbstractAnimation::Forward);
-        animation_->start();
+                hide();
 }
 
 void
@@ -86,6 +55,6 @@ OverlayModal::keyPressEvent(QKeyEvent *event)
 {
         if (event->key() == Qt::Key_Escape) {
                 event->accept();
-                fadeOut();
+                hide();
         }
 }

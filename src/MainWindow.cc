@@ -162,7 +162,7 @@ MainWindow::removeOverlayProgressBar()
                 timer->deleteLater();
 
                 if (!progressModal_.isNull())
-                        progressModal_->fadeOut();
+                        progressModal_->hide();
 
                 if (!spinner_.isNull())
                         spinner_->stop();
@@ -215,8 +215,7 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
                   QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
                                                [=](OverlayModal *modal) { modal->deleteLater(); });
                 progressModal_->setDismissible(false);
-                progressModal_->fadeIn();
-                progressModal_->setDuration(modalOpacityDuration);
+                progressModal_->show();
         }
 
         login_page_->reset();
@@ -271,7 +270,7 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
         leaveRoomDialog_ = QSharedPointer<dialogs::LeaveRoom>(new dialogs::LeaveRoom(this));
 
         connect(leaveRoomDialog_.data(), &dialogs::LeaveRoom::closing, this, [=](bool leaving) {
-                leaveRoomModal_->fadeOut();
+                leaveRoomModal_->hide();
 
                 if (leaving)
                         client_->leaveRoom(roomToLeave);
@@ -279,8 +278,7 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
 
         leaveRoomModal_ =
           QSharedPointer<OverlayModal>(new OverlayModal(this, leaveRoomDialog_.data()));
-        leaveRoomModal_->setDuration(0);
         leaveRoomModal_->setColor(QColor(30, 30, 30, 170));
 
-        leaveRoomModal_->fadeIn();
+        leaveRoomModal_->show();
 }

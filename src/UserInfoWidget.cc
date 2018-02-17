@@ -102,18 +102,17 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
                 if (logoutModal_.isNull()) {
                         logoutModal_ = QSharedPointer<OverlayModal>(
                           new OverlayModal(MainWindow::instance(), logoutDialog_.data()));
-                        logoutModal_->setDuration(0);
                         logoutModal_->setColor(QColor(30, 30, 30, 170));
                 }
 
-                logoutModal_->fadeIn();
+                logoutModal_->show();
         });
 }
 
 void
 UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
 {
-        logoutModal_->fadeOut();
+        logoutModal_->hide();
 
         if (isLoggingOut)
                 emit logout();
