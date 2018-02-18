@@ -28,28 +28,32 @@ class QMimeData;
 
 namespace dialogs {
 
-class PreviewImageOverlay : public QWidget
+class PreviewUploadOverlay : public QWidget
 {
         Q_OBJECT
 public:
-        PreviewImageOverlay(QWidget *parent = nullptr);
+        PreviewUploadOverlay(QWidget *parent = nullptr);
 
-        void setImageAndCreate(const QByteArray data, const QString &type);
-        void setImageAndCreate(const QString &path);
+        void setPreview(const QByteArray data, const QString &mime);
+        void setPreview(const QString &path);
 
 signals:
-        void confirmImageUpload(const QByteArray data, const QString &img_name);
+        void confirmUpload(const QByteArray data, const QString &media, const QString &filename);
 
 private:
         void init();
+        void setLabels(const QString &type, const QString &mime, const int upload_size);
 
+        bool isImage_;
         QPixmap image_;
-        QByteArray imageData_;
-        QString imagePath_;
+
+        QByteArray data_;
+        QString filePath_;
+        QString mediaType_;
 
         QLabel titleLabel_;
-        QLabel imageLabel_;
-        QLineEdit imageName_;
+        QLabel infoLabel_;
+        QLineEdit fileName_;
 
         FlatButton upload_;
         FlatButton cancel_;

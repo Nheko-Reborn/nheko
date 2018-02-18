@@ -109,7 +109,7 @@ dialogs--CreateRoom,
 dialogs--InviteUsers,
 dialogs--ReadReceipts,
 dialogs--JoinRoom,
-dialogs--PreviewImageOverlay,
+dialogs--PreviewUploadOverlay,
 QListWidget {
     background-color: white;
     color: #333;

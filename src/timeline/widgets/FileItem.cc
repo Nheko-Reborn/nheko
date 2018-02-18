@@ -20,9 +20,10 @@
 #include <QDesktopServices>
 #include <QFile>
 #include <QFileDialog>
-#include <QFileInfo>
 #include <QPainter>
 #include <QPixmap>
+
+#include "Utils.h"
 
 #include "timeline/widgets/FileItem.h"
 
@@ -69,40 +70,24 @@ FileItem::FileItem(QSharedPointer<MatrixClient> client,
   , event_{event}
   , client_{client}
 {
-        readableFileSize_ = calculateFileSize(event.content.info.size);
+        readableFileSize_ = utils::humanReadableFileSize(event.content.info.size);
 
         init();
 }
 
 FileItem::FileItem(QSharedPointer<MatrixClient> client,
                    const QString &url,
-                   const QSharedPointer<QIODevice> data,
                    const QString &filename,
+                   const int64_t size,
                    QWidget *parent)
   : QWidget(parent)
   , url_{url}
-  , text_{QFileInfo{filename}.fileName()}
+  , text_{filename}
   , client_{client}
 {
-        Q_UNUSED(data);
-        readableFileSize_ = calculateFileSize(QFileInfo{filename}.size());
+        readableFileSize_ = utils::humanReadableFileSize(size);
 
         init();
-}
-
-QString
-FileItem::calculateFileSize(int nbytes) const
-{
-        if (nbytes == 0)
-                return QString("");
-
-        if (nbytes < 1024)
-                return QString("%1 B").arg(nbytes);
-
-        if (nbytes < 1024 * 1024)
-                return QString("%1 KB").arg(nbytes / 1024);
-
-        return QString("%1 MB").arg(nbytes / 1024 / 1024);
 }
 
 void

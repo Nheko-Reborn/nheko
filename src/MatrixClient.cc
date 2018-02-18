@@ -280,7 +280,8 @@ MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
                               int txnId,
                               const QString &roomid,
                               const QString &msg,
-                              const QFileInfo &fileinfo,
+                              const QString &mime,
+                              const int64_t media_size,
                               const QString &url) noexcept
 {
         QUrlQuery query;
@@ -291,14 +292,8 @@ MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
                          QString("/rooms/%1/send/m.room.message/%2").arg(roomid).arg(txnId));
         endpoint.setQuery(query);
 
-        QString msgType("");
-
-        QMimeDatabase db;
-        QMimeType mime =
-          db.mimeTypeForFile(fileinfo.absoluteFilePath(), QMimeDatabase::MatchContent);
-
         QJsonObject body;
-        QJsonObject info = {{"size", fileinfo.size()}, {"mimetype", mime.name()}};
+        QJsonObject info = {{"size", static_cast<qint64>(media_size)}, {"mimetype", mime}};
 
         switch (ty) {
         case mtx::events::MessageType::Text:
@@ -315,6 +310,9 @@ MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
                 break;
         case mtx::events::MessageType::Audio:
                 body = {{"msgtype", "m.audio"}, {"body", msg}, {"url", url}, {"info", info}};
+                break;
+        case mtx::events::MessageType::Video:
+                body = {{"msgtype", "m.video"}, {"body", msg}, {"url", url}, {"info", info}};
                 break;
         default:
                 qDebug() << "SendRoomMessage: Unknown message type for" << msg;
@@ -812,124 +810,97 @@ MatrixClient::messages(const QString &roomid, const QString &from_token, int lim
 
 void
 MatrixClient::uploadImage(const QString &roomid,
-                          const QSharedPointer<QIODevice> data,
-                          const QString &filename)
+                          const QString &filename,
+                          const QSharedPointer<QIODevice> data)
 {
         auto reply = makeUploadRequest(data);
 
         if (reply == nullptr)
                 return;
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, data, filename]() {
-                reply->deleteLater();
-
-                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-                if (status == 0 || status >= 400) {
-                        emit syncFailed(reply->errorString());
-                        return;
-                }
-
-                auto res_data = reply->readAll();
-
-                if (res_data.isEmpty())
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename, data]() {
+                auto json = getUploadReply(reply);
+                if (json.isEmpty())
                         return;
 
-                auto json = QJsonDocument::fromJson(res_data);
+                auto mime = reply->request().header(QNetworkRequest::ContentTypeHeader).toString();
+                auto size =
+                  reply->request().header(QNetworkRequest::ContentLengthHeader).toLongLong();
 
-                if (!json.isObject()) {
-                        qDebug() << "Media upload: Response is not a json object.";
-                        return;
-                }
-
-                QJsonObject object = json.object();
-                if (!object.contains("content_uri")) {
-                        qDebug() << "Media upload: Missing content_uri key";
-                        qDebug() << object;
-                        return;
-                }
-
-                emit imageUploaded(roomid, data, filename, object.value("content_uri").toString());
+                emit imageUploaded(
+                  roomid, filename, json.value("content_uri").toString(), mime, size);
         });
 }
 
 void
 MatrixClient::uploadFile(const QString &roomid,
-                         const QSharedPointer<QIODevice> data,
-                         const QString &filename)
+                         const QString &filename,
+                         const QSharedPointer<QIODevice> data)
 {
         auto reply = makeUploadRequest(data);
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, data, filename]() {
-                reply->deleteLater();
+        if (reply == nullptr)
+                return;
 
-                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-                if (status == 0 || status >= 400) {
-                        emit syncFailed(reply->errorString());
-                        return;
-                }
-
-                auto data = reply->readAll();
-
-                if (data.isEmpty())
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename, data]() {
+                auto json = getUploadReply(reply);
+                if (json.isEmpty())
                         return;
 
-                auto json = QJsonDocument::fromJson(data);
+                auto mime = reply->request().header(QNetworkRequest::ContentTypeHeader).toString();
+                auto size =
+                  reply->request().header(QNetworkRequest::ContentLengthHeader).toLongLong();
 
-                if (!json.isObject()) {
-                        qDebug() << "Media upload: Response is not a json object.";
-                        return;
-                }
-
-                QJsonObject object = json.object();
-                if (!object.contains("content_uri")) {
-                        qDebug() << "Media upload: Missing content_uri key";
-                        qDebug() << object;
-                        return;
-                }
-
-                emit fileUploaded(roomid, filename, object.value("content_uri").toString());
+                emit fileUploaded(
+                  roomid, filename, json.value("content_uri").toString(), mime, size);
         });
 }
 
 void
 MatrixClient::uploadAudio(const QString &roomid,
-                          const QSharedPointer<QIODevice> data,
-                          const QString &filename)
+                          const QString &filename,
+                          const QSharedPointer<QIODevice> data)
 {
         auto reply = makeUploadRequest(data);
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, data, filename]() {
-                reply->deleteLater();
+        if (reply == nullptr)
+                return;
 
-                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-                if (status == 0 || status >= 400) {
-                        emit syncFailed(reply->errorString());
-                        return;
-                }
-
-                auto data = reply->readAll();
-
-                if (data.isEmpty())
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename, data]() {
+                auto json = getUploadReply(reply);
+                if (json.isEmpty())
                         return;
 
-                auto json = QJsonDocument::fromJson(data);
+                auto mime = reply->request().header(QNetworkRequest::ContentTypeHeader).toString();
+                auto size =
+                  reply->request().header(QNetworkRequest::ContentLengthHeader).toLongLong();
 
-                if (!json.isObject()) {
-                        qDebug() << "Media upload: Response is not a json object.";
+                emit audioUploaded(
+                  roomid, filename, json.value("content_uri").toString(), mime, size);
+        });
+}
+
+void
+MatrixClient::uploadVideo(const QString &roomid,
+                          const QString &filename,
+                          const QSharedPointer<QIODevice> data)
+{
+        auto reply = makeUploadRequest(data);
+
+        if (reply == nullptr)
+                return;
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply, roomid, filename, data]() {
+                auto json = getUploadReply(reply);
+                if (json.isEmpty())
                         return;
-                }
 
-                QJsonObject object = json.object();
-                if (!object.contains("content_uri")) {
-                        qDebug() << "Media upload: Missing content_uri key";
-                        qDebug() << object;
-                        return;
-                }
+                auto mime = reply->request().header(QNetworkRequest::ContentTypeHeader).toString();
+                auto size =
+                  reply->request().header(QNetworkRequest::ContentLengthHeader).toLongLong();
 
-                emit audioUploaded(roomid, filename, object.value("content_uri").toString());
+                emit videoUploaded(
+                  roomid, filename, json.value("content_uri").toString(), mime, size);
         });
 }
 
@@ -1226,4 +1197,40 @@ MatrixClient::makeUploadRequest(QSharedPointer<QIODevice> iodev)
         auto reply = post(request, iodev.data());
 
         return reply;
+}
+
+QJsonObject
+MatrixClient::getUploadReply(QNetworkReply *reply)
+{
+        QJsonObject object;
+
+        reply->deleteLater();
+
+        int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+        if (status == 0 || status >= 400) {
+                emit syncFailed(reply->errorString());
+                return object;
+        }
+
+        auto res_data = reply->readAll();
+
+        if (res_data.isEmpty())
+                return object;
+
+        auto json = QJsonDocument::fromJson(res_data);
+
+        if (!json.isObject()) {
+                qDebug() << "Media upload: Response is not a json object.";
+                return object;
+        }
+
+        object = json.object();
+        if (!object.contains("content_uri")) {
+                qDebug() << "Media upload: Missing content_uri key";
+                qDebug() << object;
+                return QJsonObject{};
+        }
+
+        return object;
 }

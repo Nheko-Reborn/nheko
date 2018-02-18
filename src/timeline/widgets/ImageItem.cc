@@ -61,14 +61,16 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
 
 ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
                      const QString &url,
-                     const QSharedPointer<QIODevice> data,
                      const QString &filename,
+                     const int64_t size,
                      QWidget *parent)
   : QWidget(parent)
   , url_{url}
   , text_{filename}
   , client_{client}
 {
+        Q_UNUSED(size);
+
         setMouseTracking(true);
         setCursor(Qt::PointingHandCursor);
         setAttribute(Qt::WA_Hover, true);
@@ -84,19 +86,12 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(client_.data()->getHomeServer().toString(), media_params);
 
-        if (data.isNull()) {
-                qWarning() << "No image data to display";
-                return;
-        }
+        client_.data()->downloadImage(QString::fromStdString(event_.event_id), url_);
 
-        if (data->reset()) {
-                QPixmap p;
-                p.loadFromData(data->readAll());
-                setImage(p);
-        } else {
-                qWarning() << "Failed to seek to beginning of device:" << data->errorString();
-                return;
-        }
+        connect(client_.data(),
+                SIGNAL(imageDownloaded(const QString &, const QPixmap &)),
+                this,
+                SLOT(imageDownloaded(const QString &, const QPixmap &)));
 }
 
 void

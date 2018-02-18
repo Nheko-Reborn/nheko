@@ -36,8 +36,8 @@ public:
 
         ImageItem(QSharedPointer<MatrixClient> client,
                   const QString &url,
-                  const QSharedPointer<QIODevice> data,
                   const QString &filename,
+                  const int64_t size,
                   QWidget *parent = nullptr);
 
         void setImage(const QPixmap &image);

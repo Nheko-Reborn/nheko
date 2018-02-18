@@ -106,7 +106,7 @@ dialogs--CreateRoom,
 dialogs--InviteUsers,
 dialogs--ReadReceipts,
 dialogs--JoinRoom,
-dialogs--PreviewImageOverlay {
+dialogs--PreviewUploadOverlay {
     background-color: #383c4a;
     color: #caccd1;
 }

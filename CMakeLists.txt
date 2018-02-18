@@ -145,7 +145,7 @@ set(SRC_FILES
     # Dialogs
     src/dialogs/CreateRoom.cc
     src/dialogs/ImageOverlay.cc
-    src/dialogs/PreviewImageOverlay.cc
+    src/dialogs/PreviewUploadOverlay.cc
     src/dialogs/InviteUsers.cc
     src/dialogs/JoinRoom.cc
     src/dialogs/LeaveRoom.cc
@@ -231,7 +231,7 @@ qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
     include/dialogs/CreateRoom.h
     include/dialogs/ImageOverlay.h
-    include/dialogs/PreviewImageOverlay.h
+    include/dialogs/PreviewUploadOverlay.h
     include/dialogs/InviteUsers.h
     include/dialogs/JoinRoom.h
     include/dialogs/LeaveRoom.h

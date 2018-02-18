@@ -37,13 +37,12 @@ public:
 
         VideoItem(QSharedPointer<MatrixClient> client,
                   const QString &url,
-                  const QSharedPointer<QIODevice> data,
                   const QString &filename,
+                  const int64_t size,
                   QWidget *parent = nullptr);
 
 private:
         void init();
-        QString calculateFileSize(int nbytes) const;
 
         QUrl url_;
         QString text_;

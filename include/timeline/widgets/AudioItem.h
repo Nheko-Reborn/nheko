@@ -48,8 +48,8 @@ public:
 
         AudioItem(QSharedPointer<MatrixClient> client,
                   const QString &url,
-                  const QSharedPointer<QIODevice> data,
                   const QString &filename,
+                  const int64_t size,
                   QWidget *parent = nullptr);
 
         QSize sizeHint() const override;
@@ -76,7 +76,6 @@ private slots:
         void fileDownloaded(const QString &event_id, const QByteArray &data);
 
 private:
-        QString calculateFileSize(int nbytes) const;
         void init();
 
         enum class AudioState

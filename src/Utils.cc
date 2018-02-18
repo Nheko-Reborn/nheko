@@ -133,3 +133,19 @@ utils::firstChar(const QString &input)
 
         return QString::fromUcs4(&input.toUcs4().at(0), 1).toUpper();
 }
+
+QString
+utils::humanReadableFileSize(const uint64_t bytes)
+{
+        constexpr static const char *units[] = {"B", "KiB", "MiB", "GiB", "TiB"};
+        constexpr static const int length    = sizeof(units) / sizeof(units[0]);
+
+        int u       = 0;
+        double size = static_cast<double>(bytes);
+        while (size >= 1024.0 && u < length) {
+                ++u;
+                size /= 1024.0;
+        }
+
+        return QString::number(size, 'g', 4) + ' ' + units[u];
+}

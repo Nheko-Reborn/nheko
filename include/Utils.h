@@ -22,4 +22,8 @@ getMessageDescription(const TimelineEvent &event, const QString &localUser);
 //! surrogate pairs might be in use.
 QString
 firstChar(const QString &input);
+
+//! Get a human readable file size with the appropriate units attached.
+QString
+humanReadableFileSize(const uint64_t bytes);
 }

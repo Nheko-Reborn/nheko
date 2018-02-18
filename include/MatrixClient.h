@@ -39,7 +39,8 @@ public:
                              int txnId,
                              const QString &roomid,
                              const QString &msg,
-                             const QFileInfo &info,
+                             const QString &mime,
+                             const int64_t media_size,
                              const QString &url = "") noexcept;
         void login(const QString &username, const QString &password) noexcept;
         void registerUser(const QString &username,
@@ -58,14 +59,17 @@ public:
         void downloadFile(const QString &event_id, const QUrl &url);
         void messages(const QString &room_id, const QString &from_token, int limit = 30) noexcept;
         void uploadImage(const QString &roomid,
-                         const QSharedPointer<QIODevice> data,
-                         const QString &filename);
+                         const QString &filename,
+                         const QSharedPointer<QIODevice> data);
         void uploadFile(const QString &roomid,
-                        const QSharedPointer<QIODevice> data,
-                        const QString &filename);
+                        const QString &filename,
+                        const QSharedPointer<QIODevice> data);
         void uploadAudio(const QString &roomid,
-                         const QSharedPointer<QIODevice> data,
-                         const QString &filename);
+                         const QString &filename,
+                         const QSharedPointer<QIODevice> data);
+        void uploadVideo(const QString &roomid,
+                         const QString &filename,
+                         const QSharedPointer<QIODevice> data);
         void uploadFilter(const QString &filter) noexcept;
         void joinRoom(const QString &roomIdOrAlias);
         void leaveRoom(const QString &roomId);
@@ -108,12 +112,25 @@ signals:
                              const QString &token);
         void versionSuccess();
         void imageUploaded(const QString &roomid,
-                           const QSharedPointer<QIODevice> data,
                            const QString &filename,
-                           const QString &url);
-        void fileUploaded(const QString &roomid, const QString &filename, const QString &url);
-        void audioUploaded(const QString &roomid, const QString &filename, const QString &url);
-
+                           const QString &url,
+                           const QString &mime,
+                           const int64_t size);
+        void fileUploaded(const QString &roomid,
+                          const QString &filename,
+                          const QString &url,
+                          const QString &mime,
+                          const int64_t size);
+        void audioUploaded(const QString &roomid,
+                           const QString &filename,
+                           const QString &url,
+                           const QString &mime,
+                           const int64_t size);
+        void videoUploaded(const QString &roomid,
+                           const QString &filename,
+                           const QString &url,
+                           const QString &mime,
+                           const int64_t size);
         void roomAvatarRetrieved(const QString &roomid,
                                  const QPixmap &img,
                                  const QString &url,
@@ -143,6 +160,7 @@ signals:
 
 private:
         QNetworkReply *makeUploadRequest(QSharedPointer<QIODevice> iodev);
+        QJsonObject getUploadReply(QNetworkReply *reply);
 
         // Client API prefix.
         QString clientApiUrl_;

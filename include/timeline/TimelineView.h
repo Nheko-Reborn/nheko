@@ -44,6 +44,8 @@ struct PendingMessage
         int txn_id;
         QString body;
         QString filename;
+        QString mime;
+        int64_t media_size;
         QString event_id;
         TimelineItem *widget;
 
@@ -51,12 +53,16 @@ struct PendingMessage
                        int txn_id,
                        QString body,
                        QString filename,
+                       QString mime,
+                       int64_t media_size,
                        QString event_id,
                        TimelineItem *widget)
           : ty(ty)
           , txn_id(txn_id)
           , body(body)
           , filename(filename)
+          , mime(mime)
+          , media_size(media_size)
           , event_id(event_id)
           , widget(widget)
         {}
@@ -87,10 +93,10 @@ public:
         void addUserMessage(mtx::events::MessageType ty, const QString &msg);
 
         template<class Widget, mtx::events::MessageType MsgType>
-        void addUserMessage(
-          const QString &url,
-          const QString &filename,
-          const QSharedPointer<QIODevice> data = QSharedPointer<QIODevice>(nullptr));
+        void addUserMessage(const QString &url,
+                            const QString &filename,
+                            const QString &mime,
+                            const int64_t size);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
         QLabel *createDateSeparator(QDateTime datetime);
@@ -236,11 +242,13 @@ template<class Widget, mtx::events::MessageType MsgType>
 void
 TimelineView::addUserMessage(const QString &url,
                              const QString &filename,
-                             const QSharedPointer<QIODevice> data)
+                             const QString &mime,
+                             const int64_t size)
 {
         auto with_sender = lastSender_ != local_user_;
+        auto trimmed     = QFileInfo{filename}.fileName(); // Trim file path.
 
-        auto widget = new Widget(client_, url, data, filename, this);
+        auto widget = new Widget(client_, url, trimmed, size, this);
 
         TimelineItem *view_item =
           new TimelineItem(widget, local_user_, with_sender, scroll_widget_);
@@ -255,7 +263,7 @@ TimelineView::addUserMessage(const QString &url,
 
         int txn_id = client_->incrementTransactionId();
 
-        PendingMessage message(MsgType, txn_id, url, filename, "", view_item);
+        PendingMessage message(MsgType, txn_id, url, trimmed, mime, size, "", view_item);
         handleNewUserMessage(message);
 }
 

@@ -27,12 +27,12 @@
 #include "FlatButton.h"
 #include "LoadingIndicator.h"
 
-#include "dialogs/PreviewImageOverlay.h"
+#include "dialogs/PreviewUploadOverlay.h"
 
 #include "emoji/PickButton.h"
 
 namespace dialogs {
-class PreviewImageOverlay;
+class PreviewUploadOverlay;
 }
 
 class FilteredTextEdit : public QTextEdit
@@ -53,9 +53,13 @@ signals:
         void heightChanged(int height);
         void startedTyping();
         void stoppedTyping();
+        void startedUpload();
         void message(QString);
         void command(QString name, QString args);
-        void image(const QSharedPointer<QIODevice> iodev, const QString &img_name);
+        void image(QSharedPointer<QIODevice> data, const QString &filename);
+        void audio(QSharedPointer<QIODevice> data, const QString &filename);
+        void video(QSharedPointer<QIODevice> data, const QString &filename);
+        void file(QSharedPointer<QIODevice> data, const QString &filename);
 
 protected:
         void keyPressEvent(QKeyEvent *event) override;
@@ -67,11 +71,12 @@ private:
         size_t history_index_;
         QTimer *typingTimer_;
 
-        dialogs::PreviewImageOverlay previewDialog_;
+        dialogs::PreviewUploadOverlay previewDialog_;
 
         void textChanged();
-        void receiveImage(const QByteArray img, const QString &img_name);
+        void uploadData(const QByteArray data, const QString &media, const QString &filename);
         void afterCompletion(int);
+        void showPreview(const QMimeData *source, const QStringList &formats);
 };
 
 class TextInputWidget : public QWidget
@@ -95,9 +100,10 @@ signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
 
-        void uploadImage(QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadFile(QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadAudio(QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadImage(const QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadFile(const QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadAudio(const QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadVideo(const QSharedPointer<QIODevice> data, const QString &filename);
 
         void sendJoinRoomRequest(const QString &room);
 
