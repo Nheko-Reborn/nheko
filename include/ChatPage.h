@@ -77,6 +77,7 @@ signals:
         void showNotification(const QString &msg);
         void showLoginPage(const QString &msg);
         void showUserSettingsPage();
+        void showOverlayProgressBar();
 
 private slots:
         void showUnreadMessageNotification(int count);

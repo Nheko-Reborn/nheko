@@ -40,6 +40,8 @@ public:
 
 signals:
         void backButtonClicked();
+        void loggingIn();
+        void errorOccured();
 
 protected:
         void paintEvent(QPaintEvent *event) override;

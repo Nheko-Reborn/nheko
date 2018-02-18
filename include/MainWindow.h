@@ -59,7 +59,11 @@ private slots:
         void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
         //! Show the welcome page in the main window.
-        void showWelcomePage() { pageStack_->setCurrentWidget(welcome_page_); }
+        void showWelcomePage()
+        {
+                removeOverlayProgressBar();
+                pageStack_->setCurrentWidget(welcome_page_);
+        }
 
         //! Show the login page in the main window.
         void showLoginPage() { pageStack_->setCurrentWidget(login_page_); }
@@ -73,6 +77,7 @@ private slots:
         //! Show the chat page and start communicating with the given access token.
         void showChatPage(QString user_id, QString home_server, QString token);
 
+        void showOverlayProgressBar();
         void removeOverlayProgressBar();
 
 private:

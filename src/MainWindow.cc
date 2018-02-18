@@ -76,9 +76,13 @@ MainWindow::MainWindow(QWidget *parent)
         connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
 
         connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
+        connect(login_page_, &LoginPage::loggingIn, this, &MainWindow::showOverlayProgressBar);
+        connect(login_page_, &LoginPage::errorOccured, this, [=]() { removeOverlayProgressBar(); });
         connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
 
         connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
+        connect(
+          chat_page_, &ChatPage::showOverlayProgressBar, this, &MainWindow::showOverlayProgressBar);
         connect(
           chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
         connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
@@ -191,32 +195,9 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
         settings.setValue("auth/home_server", homeserver);
         settings.setValue("auth/user_id", userid);
 
-        int modalOpacityDuration = 300;
+        showOverlayProgressBar();
 
-        // If we go directly from the welcome page don't show an animation.
-        if (pageStack_->currentIndex() == 0)
-                modalOpacityDuration = 0;
-
-        QTimer::singleShot(
-          modalOpacityDuration + 100, this, [=]() { pageStack_->setCurrentWidget(chat_page_); });
-
-        if (spinner_.isNull()) {
-                spinner_ = QSharedPointer<LoadingIndicator>(
-                  new LoadingIndicator(this),
-                  [=](LoadingIndicator *indicator) { indicator->deleteLater(); });
-                spinner_->setFixedHeight(100);
-                spinner_->setFixedWidth(100);
-                spinner_->setObjectName("ChatPageLoadSpinner");
-                spinner_->start();
-        }
-
-        if (progressModal_.isNull()) {
-                progressModal_ =
-                  QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
-                                               [=](OverlayModal *modal) { modal->deleteLater(); });
-                progressModal_->setDismissible(false);
-                progressModal_->show();
-        }
+        QTimer::singleShot(100, this, [=]() { pageStack_->setCurrentWidget(chat_page_); });
 
         login_page_->reset();
         chat_page_->bootstrap(userid, homeserver, token);
@@ -281,4 +262,26 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
         leaveRoomModal_->setColor(QColor(30, 30, 30, 170));
 
         leaveRoomModal_->show();
+}
+
+void
+MainWindow::showOverlayProgressBar()
+{
+        if (spinner_.isNull()) {
+                spinner_ = QSharedPointer<LoadingIndicator>(
+                  new LoadingIndicator(this),
+                  [=](LoadingIndicator *indicator) { indicator->deleteLater(); });
+                spinner_->setFixedHeight(100);
+                spinner_->setFixedWidth(100);
+                spinner_->setObjectName("ChatPageLoadSpinner");
+                spinner_->start();
+        }
+
+        if (progressModal_.isNull()) {
+                progressModal_ =
+                  QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
+                                               [=](OverlayModal *modal) { modal->deleteLater(); });
+                progressModal_->setDismissible(false);
+                progressModal_->show();
+        }
 }

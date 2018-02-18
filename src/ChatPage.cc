@@ -141,8 +141,11 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         typingRefresher_ = new QTimer(this);
         typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
 
-        connect(user_info_widget_, SIGNAL(logout()), client_.data(), SLOT(logout()));
-        connect(client_.data(), SIGNAL(loggedOut()), this, SLOT(logout()));
+        connect(user_info_widget_, &UserInfoWidget::logout, this, [=]() {
+                client_->logout();
+                emit showOverlayProgressBar();
+        });
+        connect(client_.data(), &MatrixClient::loggedOut, this, &ChatPage::logout);
 
         connect(top_bar_, &TopRoomBar::inviteUsers, this, [=](QStringList users) {
                 for (int ii = 0; ii < users.size(); ++ii) {
