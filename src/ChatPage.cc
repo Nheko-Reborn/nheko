@@ -256,6 +256,10 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(
           client_.data(), &MatrixClient::roomCreationFailed, this, &ChatPage::showNotification);
         connect(client_.data(), &MatrixClient::joinFailed, this, &ChatPage::showNotification);
+        connect(client_.data(), &MatrixClient::uploadFailed, this, [=](int, const QString &msg) {
+                text_input_->hideUploadSpinner();
+                emit showNotification(msg);
+        });
         connect(client_.data(),
                 &MatrixClient::imageUploaded,
                 this,

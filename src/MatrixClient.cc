@@ -1209,26 +1209,28 @@ MatrixClient::getUploadReply(QNetworkReply *reply)
         int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         if (status == 0 || status >= 400) {
-                emit syncFailed(reply->errorString());
+                emit uploadFailed(status,
+                                  QString("Media upload failed - %1").arg(reply->errorString()));
                 return object;
         }
 
         auto res_data = reply->readAll();
 
-        if (res_data.isEmpty())
+        if (res_data.isEmpty()) {
+                emit uploadFailed(status, "Media upload failed - Empty response");
                 return object;
+        }
 
         auto json = QJsonDocument::fromJson(res_data);
 
         if (!json.isObject()) {
-                qDebug() << "Media upload: Response is not a json object.";
+                emit uploadFailed(status, "Media upload failed - Invalid response");
                 return object;
         }
 
         object = json.object();
         if (!object.contains("content_uri")) {
-                qDebug() << "Media upload: Missing content_uri key";
-                qDebug() << object;
+                emit uploadFailed(status, "Media upload failed - Missing 'content_uri'");
                 return QJsonObject{};
         }
 

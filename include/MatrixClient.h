@@ -111,6 +111,7 @@ signals:
                              const QString &homeserver,
                              const QString &token);
         void versionSuccess();
+        void uploadFailed(int statusCode, const QString &msg);
         void imageUploaded(const QString &roomid,
                            const QString &filename,
                            const QString &url,
