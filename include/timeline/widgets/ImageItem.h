@@ -53,7 +53,6 @@ private slots:
         void imageDownloaded(const QString &event_id, const QPixmap &img);
 
 private:
-        void scaleImage();
         void openUrl();
 
         int max_width_  = 500;

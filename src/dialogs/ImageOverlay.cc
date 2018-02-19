@@ -19,6 +19,7 @@
 #include <QDesktopWidget>
 #include <QPainter>
 
+#include "Utils.h"
 #include "dialogs/ImageOverlay.h"
 
 using namespace dialogs;
@@ -47,33 +48,6 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
         raise();
 }
 
-// TODO: Move this into Utils
-void
-ImageOverlay::scaleImage(int max_width, int max_height)
-{
-        if (originalImage_.isNull())
-                return;
-
-        auto width_ratio  = (double)max_width / (double)originalImage_.width();
-        auto height_ratio = (double)max_height / (double)originalImage_.height();
-
-        auto min_aspect_ratio = std::min(width_ratio, height_ratio);
-
-        int final_width  = 0;
-        int final_height = 0;
-
-        if (min_aspect_ratio > 1) {
-                final_width  = originalImage_.width();
-                final_height = originalImage_.height();
-        } else {
-                final_width  = originalImage_.width() * min_aspect_ratio;
-                final_height = originalImage_.height() * min_aspect_ratio;
-        }
-
-        image_ = originalImage_.scaled(
-          final_width, final_height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-}
-
 void
 ImageOverlay::paintEvent(QPaintEvent *event)
 {
@@ -93,7 +67,7 @@ ImageOverlay::paintEvent(QPaintEvent *event)
         int max_width  = screen_.width() - 2 * outer_margin;
         int max_height = screen_.height();
 
-        scaleImage(max_width, max_height);
+        image_ = utils::scaleDown<QPixmap>(max_width, max_height, originalImage_);
 
         int diff_x = max_width - image_.width();
         int diff_y = max_height - image_.height();

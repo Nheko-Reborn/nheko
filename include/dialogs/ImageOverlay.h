@@ -37,8 +37,6 @@ signals:
         void closing();
 
 private:
-        void scaleImage(int width, int height);
-
         QPixmap originalImage_;
         QPixmap image_;
 

@@ -23,6 +23,7 @@
 #include <QPixmap>
 
 #include "Config.h"
+#include "Utils.h"
 #include "dialogs/ImageOverlay.h"
 #include "timeline/widgets/ImageItem.h"
 
@@ -113,30 +114,6 @@ ImageItem::openUrl()
                 qWarning() << "Could not open url" << url_.toString();
 }
 
-void
-ImageItem::scaleImage()
-{
-        if (image_.isNull())
-                return;
-
-        auto width_ratio  = (double)max_width_ / (double)image_.width();
-        auto height_ratio = (double)max_height_ / (double)image_.height();
-
-        auto min_aspect_ratio = std::min(width_ratio, height_ratio);
-
-        if (min_aspect_ratio > 1) {
-                width_  = image_.width();
-                height_ = image_.height();
-        } else {
-                width_  = image_.width() * min_aspect_ratio;
-                height_ = image_.height() * min_aspect_ratio;
-        }
-
-        setFixedSize(width_, height_);
-        scaled_image_ =
-          image_.scaled(width_, height_, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-}
-
 QSize
 ImageItem::sizeHint() const
 {
@@ -149,8 +126,13 @@ ImageItem::sizeHint() const
 void
 ImageItem::setImage(const QPixmap &image)
 {
-        image_ = image;
-        scaleImage();
+        image_        = image;
+        scaled_image_ = utils::scaleDown<QPixmap>(max_width_, max_height_, image_);
+
+        width_  = scaled_image_.width();
+        height_ = scaled_image_.height();
+
+        setFixedSize(width_, height_);
         update();
 }
 
@@ -176,9 +158,15 @@ ImageItem::mousePressEvent(QMouseEvent *event)
 void
 ImageItem::resizeEvent(QResizeEvent *event)
 {
-        Q_UNUSED(event);
+        if (!image_)
+                return QWidget::resizeEvent(event);
 
-        scaleImage();
+        scaled_image_ = utils::scaleDown<QPixmap>(max_width_, max_height_, image_);
+
+        width_  = scaled_image_.width();
+        height_ = scaled_image_.height();
+
+        setFixedSize(width_, height_);
 }
 
 void
