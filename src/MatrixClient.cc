@@ -281,7 +281,7 @@ MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
                               const QString &roomid,
                               const QString &msg,
                               const QString &mime,
-                              const int64_t media_size,
+                              uint64_t media_size,
                               const QString &url) noexcept
 {
         QUrlQuery query;

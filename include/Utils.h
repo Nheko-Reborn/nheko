@@ -25,5 +25,5 @@ firstChar(const QString &input);
 
 //! Get a human readable file size with the appropriate units attached.
 QString
-humanReadableFileSize(const uint64_t bytes);
+humanReadableFileSize(uint64_t bytes);
 }

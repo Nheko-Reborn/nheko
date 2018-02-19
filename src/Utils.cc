@@ -135,7 +135,7 @@ utils::firstChar(const QString &input)
 }
 
 QString
-utils::humanReadableFileSize(const uint64_t bytes)
+utils::humanReadableFileSize(uint64_t bytes)
 {
         constexpr static const char *units[] = {"B", "KiB", "MiB", "GiB", "TiB"};
         constexpr static const int length    = sizeof(units) / sizeof(units[0]);

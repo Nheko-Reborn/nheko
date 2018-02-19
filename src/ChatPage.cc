@@ -263,28 +263,28 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(client_.data(),
                 &MatrixClient::imageUploaded,
                 this,
-                [=](QString roomid, QString filename, QString url, QString mime, int64_t dsize) {
+                [=](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
                         text_input_->hideUploadSpinner();
                         view_manager_->queueImageMessage(roomid, filename, url, mime, dsize);
                 });
         connect(client_.data(),
                 &MatrixClient::fileUploaded,
                 this,
-                [=](QString roomid, QString filename, QString url, QString mime, int64_t dsize) {
+                [=](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
                         text_input_->hideUploadSpinner();
                         view_manager_->queueFileMessage(roomid, filename, url, mime, dsize);
                 });
         connect(client_.data(),
                 &MatrixClient::audioUploaded,
                 this,
-                [=](QString roomid, QString filename, QString url, QString mime, int64_t dsize) {
+                [=](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
                         text_input_->hideUploadSpinner();
                         view_manager_->queueAudioMessage(roomid, filename, url, mime, dsize);
                 });
         connect(client_.data(),
                 &MatrixClient::videoUploaded,
                 this,
-                [=](QString roomid, QString filename, QString url, QString mime, int64_t dsize) {
+                [=](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
                         text_input_->hideUploadSpinner();
                         view_manager_->queueVideoMessage(roomid, filename, url, mime, dsize);
                 });

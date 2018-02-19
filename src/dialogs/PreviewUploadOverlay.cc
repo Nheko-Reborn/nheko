@@ -103,7 +103,7 @@ PreviewUploadOverlay::init()
 }
 
 void
-PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, const int upload_size)
+PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64_t upload_size)
 {
         if (mediaType_ == "image") {
                 if (!image_.loadFromData(data_)) {

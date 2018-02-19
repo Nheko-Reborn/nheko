@@ -62,7 +62,7 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
 ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
                      const QString &url,
                      const QString &filename,
-                     const int64_t size,
+                     uint64_t size,
                      QWidget *parent)
   : QWidget(parent)
   , url_{url}

@@ -40,7 +40,7 @@ public:
                              const QString &roomid,
                              const QString &msg,
                              const QString &mime,
-                             const int64_t media_size,
+                             uint64_t media_size,
                              const QString &url = "") noexcept;
         void login(const QString &username, const QString &password) noexcept;
         void registerUser(const QString &username,
@@ -116,22 +116,22 @@ signals:
                            const QString &filename,
                            const QString &url,
                            const QString &mime,
-                           const int64_t size);
+                           uint64_t size);
         void fileUploaded(const QString &roomid,
                           const QString &filename,
                           const QString &url,
                           const QString &mime,
-                          const int64_t size);
+                          uint64_t size);
         void audioUploaded(const QString &roomid,
                            const QString &filename,
                            const QString &url,
                            const QString &mime,
-                           const int64_t size);
+                           uint64_t size);
         void videoUploaded(const QString &roomid,
                            const QString &filename,
                            const QString &url,
                            const QString &mime,
-                           const int64_t size);
+                           uint64_t size);
         void roomAvatarRetrieved(const QString &roomid,
                                  const QPixmap &img,
                                  const QString &url,
@@ -151,9 +151,9 @@ signals:
         void syncCompleted(const mtx::responses::Sync &response);
         void syncFailed(const QString &msg);
         void joinFailed(const QString &msg);
-        void messageSent(const QString &event_id, const QString &roomid, const int txn_id);
-        void messageSendFailed(const QString &roomid, const int txn_id);
-        void emoteSent(const QString &event_id, const QString &roomid, const int txn_id);
+        void messageSent(const QString &event_id, const QString &roomid, int txn_id);
+        void messageSendFailed(const QString &roomid, int txn_id);
+        void emoteSent(const QString &event_id, const QString &roomid, int txn_id);
         void messagesRetrieved(const QString &room_id, const mtx::responses::Messages &msgs);
         void joinedRoom(const QString &room_id);
         void leftRoom(const QString &room_id);

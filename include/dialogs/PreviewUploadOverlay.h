@@ -42,7 +42,7 @@ signals:
 
 private:
         void init();
-        void setLabels(const QString &type, const QString &mime, const int upload_size);
+        void setLabels(const QString &type, const QString &mime, uint64_t upload_size);
 
         bool isImage_;
         QPixmap image_;

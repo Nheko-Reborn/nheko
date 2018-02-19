@@ -45,7 +45,7 @@ struct PendingMessage
         QString body;
         QString filename;
         QString mime;
-        int64_t media_size;
+        uint64_t media_size;
         QString event_id;
         TimelineItem *widget;
 
@@ -54,7 +54,7 @@ struct PendingMessage
                        QString body,
                        QString filename,
                        QString mime,
-                       int64_t media_size,
+                       uint64_t media_size,
                        QString event_id,
                        TimelineItem *widget)
           : ty(ty)
@@ -96,7 +96,7 @@ public:
         void addUserMessage(const QString &url,
                             const QString &filename,
                             const QString &mime,
-                            const int64_t size);
+                            uint64_t size);
         void updatePendingMessage(int txn_id, QString event_id);
         void scrollDown();
         QLabel *createDateSeparator(QDateTime datetime);
@@ -243,7 +243,7 @@ void
 TimelineView::addUserMessage(const QString &url,
                              const QString &filename,
                              const QString &mime,
-                             const int64_t size)
+                             uint64_t size)
 {
         auto with_sender = lastSender_ != local_user_;
         auto trimmed     = QFileInfo{filename}.fileName(); // Trim file path.

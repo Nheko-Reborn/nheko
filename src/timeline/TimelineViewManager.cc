@@ -93,7 +93,7 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
                                        const QString &url,
                                        const QString &mime,
-                                       const int64_t size)
+                                       uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
                 qDebug() << "Cannot send m.image message to a non-managed view";
@@ -110,7 +110,7 @@ TimelineViewManager::queueFileMessage(const QString &roomid,
                                       const QString &filename,
                                       const QString &url,
                                       const QString &mime,
-                                      const int64_t size)
+                                      uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
                 qDebug() << "Cannot send m.file message to a non-managed view";
@@ -127,7 +127,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
                                        const QString &filename,
                                        const QString &url,
                                        const QString &mime,
-                                       const int64_t size)
+                                       uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
                 qDebug() << "Cannot send m.audio message to a non-managed view";
@@ -144,7 +144,7 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
                                        const QString &filename,
                                        const QString &url,
                                        const QString &mime,
-                                       const int64_t size)
+                                       uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
                 qDebug() << "Cannot send m.video message to a non-managed view";

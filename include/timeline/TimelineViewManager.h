@@ -67,22 +67,22 @@ public slots:
                                const QString &filename,
                                const QString &url,
                                const QString &mime,
-                               const int64_t dsize);
+                               uint64_t dsize);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
                               const QString &url,
                               const QString &mime,
-                              const int64_t dsize);
+                              uint64_t dsize);
         void queueAudioMessage(const QString &roomid,
                                const QString &filename,
                                const QString &url,
                                const QString &mime,
-                               const int64_t dsize);
+                               uint64_t dsize);
         void queueVideoMessage(const QString &roomid,
                                const QString &filename,
                                const QString &url,
                                const QString &mime,
-                               const int64_t dsize);
+                               uint64_t dsize);
 
 private slots:
         void messageSent(const QString &eventid, const QString &roomid, int txnid);
