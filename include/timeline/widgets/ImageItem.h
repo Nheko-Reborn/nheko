@@ -26,6 +26,10 @@
 
 #include "MatrixClient.h"
 
+namespace dialogs {
+class ImageOverlay;
+}
+
 class ImageItem : public QWidget
 {
         Q_OBJECT
@@ -75,4 +79,5 @@ private:
         mtx::events::RoomEvent<mtx::events::msg::Image> event_;
 
         QSharedPointer<MatrixClient> client_;
+        QSharedPointer<dialogs::ImageOverlay> image_dialog_;
 };

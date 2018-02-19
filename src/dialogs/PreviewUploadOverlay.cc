@@ -61,10 +61,9 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
 void
 PreviewUploadOverlay::init()
 {
-        auto window   = QApplication::activeWindow();
-        auto winsize  = window->frameGeometry().size();
-        auto center   = window->frameGeometry().center();
-        auto img_size = image_.size();
+        auto window  = QApplication::activeWindow();
+        auto winsize = window->frameGeometry().size();
+        auto center  = window->frameGeometry().center();
 
         fileName_.setText(QFileInfo{filePath_}.fileName());
 
@@ -87,13 +86,12 @@ PreviewUploadOverlay::init()
         if (isImage_) {
                 infoLabel_.setAlignment(Qt::AlignCenter);
 
-                // Scale image preview to the size of the current window if it is larger.
-                if ((img_size.height() * img_size.width()) > (winsize.height() * winsize.width())) {
-                        infoLabel_.setPixmap(image_.scaled(winsize, Qt::KeepAspectRatio));
-                } else {
-                        infoLabel_.setPixmap(image_);
-                        move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
-                }
+                const auto maxWidth  = winsize.width() * 0.8;
+                const auto maxHeight = winsize.height() * 0.8;
+
+                // Scale image preview to fit into the application window.
+                infoLabel_.setPixmap(utils::scaleDown<QPixmap>(maxWidth, maxHeight, image_));
+                move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
         } else {
                 infoLabel_.setAlignment(Qt::AlignLeft);
         }

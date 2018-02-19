@@ -33,7 +33,7 @@ ImageType
 scaleDown(uint64_t max_width, uint64_t max_height, const ImageType &source)
 {
         if (source.isNull())
-                return source;
+                return QPixmap();
 
         auto width_ratio  = (double)max_width / (double)source.width();
         auto height_ratio = (double)max_height / (double)source.height();
