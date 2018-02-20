@@ -150,9 +150,8 @@ ImageItem::mousePressEvent(QMouseEvent *event)
         if (textRegion_.contains(event->pos())) {
                 openUrl();
         } else {
-                image_dialog_ =
-                  QSharedPointer<dialogs::ImageOverlay>(new dialogs::ImageOverlay(image_, this));
-                image_dialog_->show();
+                auto imgDialog = new dialogs::ImageOverlay(image_);
+                imgDialog->show();
         }
 }
 

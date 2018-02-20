@@ -79,5 +79,4 @@ private:
         mtx::events::RoomEvent<mtx::events::msg::Image> event_;
 
         QSharedPointer<MatrixClient> client_;
-        QSharedPointer<dialogs::ImageOverlay> image_dialog_;
 };
