@@ -62,10 +62,10 @@ RoomList::RoomList(QSharedPointer<MatrixClient> client,
         connect(client_.data(),
                 &MatrixClient::roomAvatarRetrieved,
                 this,
-                [=](const QString &room_id,
-                    const QPixmap &img,
-                    const QString &url,
-                    const QByteArray &data) {
+                [this](const QString &room_id,
+                       const QPixmap &img,
+                       const QString &url,
+                       const QByteArray &data) {
                         if (!cache_.isNull())
                                 cache_->saveImage(url, data);
 
@@ -86,7 +86,7 @@ RoomList::addRoom(const QSharedPointer<RoomSettings> &settings,
 {
         auto room_item = new RoomInfoListItem(settings, state, room_id, scrollArea_);
         connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
-        connect(room_item, &RoomInfoListItem::leaveRoom, this, [=](const QString &room_id) {
+        connect(room_item, &RoomInfoListItem::leaveRoom, this, [](const QString &room_id) {
                 MainWindow::instance()->openLeaveRoomDialog(room_id);
         });
 

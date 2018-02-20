@@ -47,7 +47,7 @@ TimelineItem::init()
         receiptsMenu_     = new QMenu(this);
         showReadReceipts_ = new QAction("Read receipts", this);
         receiptsMenu_->addAction(showReadReceipts_);
-        connect(showReadReceipts_, &QAction::triggered, this, [=]() {
+        connect(showReadReceipts_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
                         ChatPage::instance()->showReadReceipts(event_id_);
         });
@@ -111,7 +111,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
 
                 messageLayout_->addLayout(headerLayout_, 1);
 
-                AvatarProvider::resolve(userid, [=](const QImage &img) { setUserAvatar(img); });
+                AvatarProvider::resolve(userid, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -243,7 +243,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 
                 messageLayout_->addLayout(headerLayout_, 1);
 
-                AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
+                AvatarProvider::resolve(sender, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -290,7 +290,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
 
                 messageLayout_->addLayout(headerLayout_, 1);
 
-                AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
+                AvatarProvider::resolve(sender, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(emoteMsg);
                 setupSimpleLayout();
@@ -342,7 +342,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 
                 messageLayout_->addLayout(headerLayout_, 1);
 
-                AvatarProvider::resolve(sender, [=](const QImage &img) { setUserAvatar(img); });
+                AvatarProvider::resolve(sender, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();

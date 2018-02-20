@@ -63,7 +63,7 @@ InviteUsers::InviteUsers(QWidget *parent)
         layout->addLayout(buttonLayout);
 
         connect(inviteeInput_, &TextField::returnPressed, this, &InviteUsers::addUser);
-        connect(confirmBtn_, &QPushButton::clicked, [=]() {
+        connect(confirmBtn_, &QPushButton::clicked, [this]() {
                 emit closing(true, invitedUsers());
 
                 inviteeInput_->clear();
@@ -71,7 +71,7 @@ InviteUsers::InviteUsers(QWidget *parent)
                 errorLabel_->hide();
         });
 
-        connect(cancelBtn_, &QPushButton::clicked, [=]() {
+        connect(cancelBtn_, &QPushButton::clicked, [this]() {
                 QStringList emptyList;
                 emit closing(false, emptyList);
 

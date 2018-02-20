@@ -60,8 +60,8 @@ Logout::Logout(QWidget *parent)
         layout->addWidget(label);
         layout->addLayout(buttonLayout);
 
-        connect(confirmBtn_, &QPushButton::clicked, [=]() { emit closing(true); });
-        connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false); });
+        connect(confirmBtn_, &QPushButton::clicked, [this]() { emit closing(true); });
+        connect(cancelBtn_, &QPushButton::clicked, [this]() { emit closing(false); });
 }
 
 void

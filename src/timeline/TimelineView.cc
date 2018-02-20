@@ -369,7 +369,7 @@ TimelineView::init()
         scrollDownBtn_->setForegroundColor(QColor("black"));
         scrollDownBtn_->hide();
 
-        connect(scrollDownBtn_, &QPushButton::clicked, this, [=]() {
+        connect(scrollDownBtn_, &QPushButton::clicked, this, [this]() {
                 const int max = scroll_area_->verticalScrollBar()->maximum();
                 scroll_area_->verticalScrollBar()->setValue(max);
         });

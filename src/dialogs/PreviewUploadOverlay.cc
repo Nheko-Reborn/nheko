@@ -51,7 +51,7 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
         vlayout->addWidget(&fileName_);
         vlayout->addLayout(hlayout);
 
-        connect(&upload_, &QPushButton::clicked, [&]() {
+        connect(&upload_, &QPushButton::clicked, [this]() {
                 emit confirmUpload(data_, mediaType_, fileName_.text());
                 close();
         });

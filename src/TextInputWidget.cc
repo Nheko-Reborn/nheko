@@ -47,7 +47,7 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
         connect(document()->documentLayout(),
                 &QAbstractTextDocumentLayout::documentSizeChanged,
                 this,
-                [=]() { emit heightChanged(document()->size().toSize().height()); });
+                [this]() { emit heightChanged(document()->size().toSize().height()); });
         working_history_.push_back("");
         connect(this, &QTextEdit::textChanged, this, &FilteredTextEdit::textChanged);
         setAcceptRichText(false);
@@ -330,7 +330,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         input_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         input_->setPlaceholderText(tr("Write a message..."));
 
-        connect(input_, &FilteredTextEdit::heightChanged, this, [=](int height) {
+        connect(input_, &FilteredTextEdit::heightChanged, this, [this](int height) {
                 int textInputHeight = std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, 32));
                 int widgetHeight =
                   std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, conf::textInput::height));

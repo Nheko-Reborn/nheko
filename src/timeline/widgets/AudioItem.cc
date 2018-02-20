@@ -65,7 +65,7 @@ AudioItem::init()
         player_->setNotifyInterval(1000);
 
         connect(client_.data(), &MatrixClient::fileDownloaded, this, &AudioItem::fileDownloaded);
-        connect(player_, &QMediaPlayer::stateChanged, this, [=](QMediaPlayer::State state) {
+        connect(player_, &QMediaPlayer::stateChanged, this, [this](QMediaPlayer::State state) {
                 if (state == QMediaPlayer::StoppedState) {
                         state_ = AudioState::Play;
                         player_->setMedia(QUrl(url_));

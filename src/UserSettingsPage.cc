@@ -204,26 +204,26 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(themeCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
-                [=](const QString &text) { settings_->setTheme(text.toLower()); });
+                [this](const QString &text) { settings_->setTheme(text.toLower()); });
 
-        connect(trayToggle_, &Toggle::toggled, this, [=](bool isDisabled) {
+        connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTray(!isDisabled);
                 emit trayOptionChanged(!isDisabled);
         });
 
-        connect(roomOrderToggle_, &Toggle::toggled, this, [=](bool isDisabled) {
+        connect(roomOrderToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setRoomOrdering(!isDisabled);
         });
 
-        connect(groupViewToggle_, &Toggle::toggled, this, [=](bool isDisabled) {
+        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setGroupView(!isDisabled);
         });
 
-        connect(typingNotifications_, &Toggle::toggled, this, [=](bool isDisabled) {
+        connect(typingNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTypingNotifications(!isDisabled);
         });
 
-        connect(backBtn_, &QPushButton::clicked, this, [=]() {
+        connect(backBtn_, &QPushButton::clicked, this, [this]() {
                 settings_->save();
                 emit moveBack();
         });

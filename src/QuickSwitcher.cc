@@ -23,7 +23,8 @@
 
 RoomSearchInput::RoomSearchInput(QWidget *parent)
   : TextField(parent)
-{}
+{
+}
 
 bool
 RoomSearchInput::focusNextPrevChild(bool next)
@@ -78,7 +79,7 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
         topLayout_->addWidget(roomSearch_);
 
         connect(completer_, SIGNAL(highlighted(QString)), roomSearch_, SLOT(setText(QString)));
-        connect(roomSearch_, &QLineEdit::textEdited, this, [=](const QString &prefix) {
+        connect(roomSearch_, &QLineEdit::textEdited, this, [this](const QString &prefix) {
                 if (prefix.isEmpty()) {
                         completer_->popup()->hide();
                         selection_ = -1;
@@ -96,7 +97,7 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
                 completer_->complete();
         });
 
-        connect(roomSearch_, &RoomSearchInput::selectNextCompletion, this, [=]() {
+        connect(roomSearch_, &RoomSearchInput::selectNextCompletion, this, [this]() {
                 selection_ += 1;
 
                 if (!completer_->setCurrentRow(selection_)) {
@@ -107,7 +108,7 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
                 completer_->popup()->setCurrentIndex(completer_->currentIndex());
         });
 
-        connect(roomSearch_, &RoomSearchInput::selectPreviousCompletion, this, [=]() {
+        connect(roomSearch_, &RoomSearchInput::selectPreviousCompletion, this, [this]() {
                 selection_ -= 1;
 
                 if (!completer_->setCurrentRow(selection_)) {
@@ -119,8 +120,8 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
         });
 
         connect(
-          roomSearch_, &RoomSearchInput::hiding, this, [=]() { completer_->popup()->hide(); });
-        connect(roomSearch_, &QLineEdit::returnPressed, this, [=]() {
+          roomSearch_, &RoomSearchInput::hiding, this, [this]() { completer_->popup()->hide(); });
+        connect(roomSearch_, &QLineEdit::returnPressed, this, [this]() {
                 emit closing();
 
                 QString text("");

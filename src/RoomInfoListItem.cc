@@ -84,12 +84,12 @@ RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
         menu_ = new Menu(this);
 
         toggleNotifications_ = new QAction(notificationText(), this);
-        connect(toggleNotifications_, &QAction::triggered, this, [=]() {
+        connect(toggleNotifications_, &QAction::triggered, this, [this]() {
                 roomSettings_->toggleNotifications();
         });
 
         leaveRoom_ = new QAction(tr("Leave room"), this);
-        connect(leaveRoom_, &QAction::triggered, this, [=]() { emit leaveRoom(room_id); });
+        connect(leaveRoom_, &QAction::triggered, this, [this]() { emit leaveRoom(roomId_); });
 
         menu_->addAction(toggleNotifications_);
         menu_->addAction(leaveRoom_);

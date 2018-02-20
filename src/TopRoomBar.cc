@@ -62,7 +62,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         topicLabel_->setTextFormat(Qt::RichText);
         topicLabel_->setTextInteractionFlags(Qt::TextBrowserInteraction);
         topicLabel_->setOpenExternalLinks(true);
-        connect(topicLabel_, &Label::clicked, [=](QMouseEvent *e) {
+        connect(topicLabel_, &Label::clicked, [this](QMouseEvent *e) {
                 if (e->button() == Qt::LeftButton && !topicLabel_->hasSelectedText())
                         topicLabel_->setWordWrap(!topicLabel_->wordWrap());
         });
@@ -86,12 +86,12 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         menu_ = new Menu(this);
 
         toggleNotifications_ = new QAction(tr("Disable notifications"), this);
-        connect(toggleNotifications_, &QAction::triggered, this, [=]() {
+        connect(toggleNotifications_, &QAction::triggered, this, [this]() {
                 roomSettings_->toggleNotifications();
         });
 
         inviteUsers_ = new QAction(tr("Invite users"), this);
-        connect(inviteUsers_, &QAction::triggered, this, [=]() {
+        connect(inviteUsers_, &QAction::triggered, this, [this]() {
                 if (inviteUsersDialog_.isNull()) {
                         inviteUsersDialog_ =
                           QSharedPointer<dialogs::InviteUsers>(new dialogs::InviteUsers(this));
@@ -99,7 +99,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                         connect(inviteUsersDialog_.data(),
                                 &dialogs::InviteUsers::closing,
                                 this,
-                                [=](bool isSending, QStringList invitees) {
+                                [this](bool isSending, QStringList invitees) {
                                         inviteUsersModal_->hide();
 
                                         if (isSending && !invitees.isEmpty())
@@ -117,7 +117,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         });
 
         leaveRoom_ = new QAction(tr("Leave room"), this);
-        connect(leaveRoom_, &QAction::triggered, this, [=]() {
+        connect(leaveRoom_, &QAction::triggered, this, []() {
                 MainWindow::instance()->openLeaveRoomDialog();
         });
 
@@ -125,7 +125,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         menu_->addAction(inviteUsers_);
         menu_->addAction(leaveRoom_);
 
-        connect(settingsBtn_, &QPushButton::clicked, this, [=]() {
+        connect(settingsBtn_, &QPushButton::clicked, this, [this]() {
                 if (roomSettings_.isNull())
                         return;
 

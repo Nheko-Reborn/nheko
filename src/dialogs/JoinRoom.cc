@@ -44,11 +44,11 @@ JoinRoom::JoinRoom(QWidget *parent)
         layout->addLayout(buttonLayout);
 
         // TODO: input validation with error messages.
-        connect(confirmBtn_, &QPushButton::clicked, [=]() {
+        connect(confirmBtn_, &QPushButton::clicked, [this]() {
                 emit closing(true, roomInput_->text());
                 roomInput_->clear();
         });
-        connect(cancelBtn_, &QPushButton::clicked, [=]() { emit closing(false, ""); });
+        connect(cancelBtn_, &QPushButton::clicked, [this]() { emit closing(false, ""); });
 }
 
 void

@@ -47,7 +47,7 @@ CommunitiesList::CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *p
         connect(client_.data(),
                 &MatrixClient::communityProfileRetrieved,
                 this,
-                [=](QString communityId, QJsonObject profile) {
+                [this](QString communityId, QJsonObject profile) {
                         client_->fetchCommunityAvatar(communityId,
                                                       QUrl(profile["avatar_url"].toString()));
                 });

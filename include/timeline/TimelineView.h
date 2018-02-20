@@ -134,7 +134,7 @@ private:
         {
                 item->hide();
                 scroll_layout_->addWidget(item);
-                QTimer::singleShot(0, this, [=]() { item->show(); });
+                QTimer::singleShot(0, this, [item]() { item->show(); });
         };
 
         //! Decides whether or not to show or hide the scroll down button.

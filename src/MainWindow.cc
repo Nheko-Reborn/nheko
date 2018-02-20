@@ -77,7 +77,8 @@ MainWindow::MainWindow(QWidget *parent)
 
         connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
         connect(login_page_, &LoginPage::loggingIn, this, &MainWindow::showOverlayProgressBar);
-        connect(login_page_, &LoginPage::errorOccured, this, [=]() { removeOverlayProgressBar(); });
+        connect(
+          login_page_, &LoginPage::errorOccured, this, [this]() { removeOverlayProgressBar(); });
         connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
 
         connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
@@ -86,12 +87,12 @@ MainWindow::MainWindow(QWidget *parent)
         connect(
           chat_page_, SIGNAL(changeWindowTitle(QString)), this, SLOT(setWindowTitle(QString)));
         connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
-        connect(chat_page_, &ChatPage::showLoginPage, this, [=](const QString &msg) {
+        connect(chat_page_, &ChatPage::showLoginPage, this, [this](const QString &msg) {
                 login_page_->loginError(msg);
                 showLoginPage();
         });
 
-        connect(userSettingsPage_, &UserSettingsPage::moveBack, this, [=]() {
+        connect(userSettingsPage_, &UserSettingsPage::moveBack, this, [this]() {
                 pageStack_->setCurrentWidget(chat_page_);
         });
 
@@ -116,7 +117,7 @@ MainWindow::MainWindow(QWidget *parent)
         connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
 
         QShortcut *quickSwitchShortcut = new QShortcut(QKeySequence("Ctrl+K"), this);
-        connect(quickSwitchShortcut, &QShortcut::activated, this, [=]() {
+        connect(quickSwitchShortcut, &QShortcut::activated, this, [this]() {
                 chat_page_->showQuickSwitcher();
         });
 
@@ -162,7 +163,7 @@ MainWindow::removeOverlayProgressBar()
         QTimer *timer = new QTimer(this);
         timer->setSingleShot(true);
 
-        connect(timer, &QTimer::timeout, [=]() {
+        connect(timer, &QTimer::timeout, [this, timer]() {
                 timer->deleteLater();
 
                 if (!progressModal_.isNull())
@@ -176,7 +177,7 @@ MainWindow::removeOverlayProgressBar()
         });
 
         // FIXME:  Snackbar doesn't work if it's initialized in the constructor.
-        QTimer::singleShot(100, this, [=]() {
+        QTimer::singleShot(100, this, [this]() {
                 snackBar_ = QSharedPointer<SnackBar>(new SnackBar(this));
                 connect(chat_page_,
                         &ChatPage::showNotification,
@@ -197,7 +198,7 @@ MainWindow::showChatPage(QString userid, QString homeserver, QString token)
 
         showOverlayProgressBar();
 
-        QTimer::singleShot(100, this, [=]() { pageStack_->setCurrentWidget(chat_page_); });
+        QTimer::singleShot(100, this, [this]() { pageStack_->setCurrentWidget(chat_page_); });
 
         login_page_->reset();
         chat_page_->bootstrap(userid, homeserver, token);
@@ -250,12 +251,15 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
 
         leaveRoomDialog_ = QSharedPointer<dialogs::LeaveRoom>(new dialogs::LeaveRoom(this));
 
-        connect(leaveRoomDialog_.data(), &dialogs::LeaveRoom::closing, this, [=](bool leaving) {
-                leaveRoomModal_->hide();
+        connect(leaveRoomDialog_.data(),
+                &dialogs::LeaveRoom::closing,
+                this,
+                [this, &roomToLeave](bool leaving) {
+                        leaveRoomModal_->hide();
 
-                if (leaving)
-                        client_->leaveRoom(roomToLeave);
-        });
+                        if (leaving)
+                                client_->leaveRoom(roomToLeave);
+                });
 
         leaveRoomModal_ =
           QSharedPointer<OverlayModal>(new OverlayModal(this, leaveRoomDialog_.data()));
@@ -270,7 +274,7 @@ MainWindow::showOverlayProgressBar()
         if (spinner_.isNull()) {
                 spinner_ = QSharedPointer<LoadingIndicator>(
                   new LoadingIndicator(this),
-                  [=](LoadingIndicator *indicator) { indicator->deleteLater(); });
+                  [](LoadingIndicator *indicator) { indicator->deleteLater(); });
                 spinner_->setFixedHeight(100);
                 spinner_->setFixedWidth(100);
                 spinner_->setObjectName("ChatPageLoadSpinner");
@@ -280,7 +284,7 @@ MainWindow::showOverlayProgressBar()
         if (progressModal_.isNull()) {
                 progressModal_ =
                   QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
-                                               [=](OverlayModal *modal) { modal->deleteLater(); });
+                                               [](OverlayModal *modal) { modal->deleteLater(); });
                 progressModal_->setDismissible(false);
                 progressModal_->show();
         }

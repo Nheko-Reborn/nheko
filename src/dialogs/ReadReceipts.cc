@@ -51,7 +51,7 @@ ReceiptItem::ReceiptItem(QWidget *parent, const QString &user_id, uint64_t times
         topLayout_->addWidget(avatar_);
         topLayout_->addLayout(textLayout_, 1);
 
-        AvatarProvider::resolve(user_id, [=](const QImage &img) { avatar_->setImage(img); });
+        AvatarProvider::resolve(user_id, [this](const QImage &img) { avatar_->setImage(img); });
 }
 
 QString

@@ -34,7 +34,7 @@ SideBarActions::SideBarActions(QWidget *parent)
         createRoomAction_ = new QAction(tr("Create new room"), this);
         joinRoomAction_   = new QAction(tr("Join a room"), this);
 
-        connect(joinRoomAction_, &QAction::triggered, this, [=]() {
+        connect(joinRoomAction_, &QAction::triggered, this, [this]() {
                 if (joinRoomDialog_.isNull()) {
                         joinRoomDialog_ =
                           QSharedPointer<dialogs::JoinRoom>(new dialogs::JoinRoom(this));
@@ -42,7 +42,7 @@ SideBarActions::SideBarActions(QWidget *parent)
                         connect(joinRoomDialog_.data(),
                                 &dialogs::JoinRoom::closing,
                                 this,
-                                [=](bool isJoining, const QString &room) {
+                                [this](bool isJoining, const QString &room) {
                                         joinRoomModal_->hide();
 
                                         if (isJoining && !room.isEmpty())
@@ -59,7 +59,7 @@ SideBarActions::SideBarActions(QWidget *parent)
                 joinRoomModal_->show();
         });
 
-        connect(createRoomAction_, &QAction::triggered, this, [=]() {
+        connect(createRoomAction_, &QAction::triggered, this, [this]() {
                 if (createRoomDialog_.isNull()) {
                         createRoomDialog_ =
                           QSharedPointer<dialogs::CreateRoom>(new dialogs::CreateRoom(this));
@@ -67,7 +67,7 @@ SideBarActions::SideBarActions(QWidget *parent)
                         connect(createRoomDialog_.data(),
                                 &dialogs::CreateRoom::closing,
                                 this,
-                                [=](bool isCreating, const mtx::requests::CreateRoom &request) {
+                                [this](bool isCreating, const mtx::requests::CreateRoom &request) {
                                         createRoomModal_->hide();
 
                                         if (isCreating)
@@ -93,7 +93,7 @@ SideBarActions::SideBarActions(QWidget *parent)
         createRoomBtn_->setIconSize(
           QSize(conf::sidebarActions::iconSize, conf::sidebarActions::iconSize));
 
-        connect(createRoomBtn_, &QPushButton::clicked, this, [=]() {
+        connect(createRoomBtn_, &QPushButton::clicked, this, [this]() {
                 auto pos     = mapToGlobal(createRoomBtn_->pos());
                 auto padding = conf::sidebarActions::iconSize / 2;
 

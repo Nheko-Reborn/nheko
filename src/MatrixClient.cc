@@ -76,7 +76,7 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
         connect(this,
                 &QNetworkAccessManager::networkAccessibleChanged,
                 this,
-                [=](NetworkAccessibility status) {
+                [this](NetworkAccessibility status) {
                         if (status != NetworkAccessibility::Accessible)
                                 setNetworkAccessible(NetworkAccessibility::Accessible);
                 });

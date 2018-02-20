@@ -93,7 +93,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         layout->addLayout(directLayout);
         layout->addLayout(buttonLayout);
 
-        connect(confirmBtn_, &QPushButton::clicked, this, [=]() {
+        connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
                 request_.name            = nameInput_->text().toStdString();
                 request_.topic           = topicInput_->text().toStdString();
                 request_.room_alias_name = aliasInput_->text().toStdString();
@@ -103,7 +103,7 @@ CreateRoom::CreateRoom(QWidget *parent)
                 clearFields();
         });
 
-        connect(cancelBtn_, &QPushButton::clicked, this, [=]() {
+        connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
                 emit closing(false, request_);
 
                 clearFields();
@@ -111,7 +111,7 @@ CreateRoom::CreateRoom(QWidget *parent)
 
         connect(visibilityCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
-                [=](const QString &text) {
+                [this](const QString &text) {
                         if (text == "Private") {
                                 request_.visibility = mtx::requests::Visibility::Private;
                         } else {
@@ -121,7 +121,7 @@ CreateRoom::CreateRoom(QWidget *parent)
 
         connect(presetCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
-                [=](const QString &text) {
+                [this](const QString &text) {
                         if (text == "Private Chat") {
                                 request_.preset = mtx::requests::Preset::PrivateChat;
                         } else if (text == "Public Chat") {
@@ -131,7 +131,7 @@ CreateRoom::CreateRoom(QWidget *parent)
                         }
                 });
 
-        connect(directToggle_, &Toggle::toggled, this, [=](bool isDisabled) {
+        connect(directToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 request_.is_direct = !isDisabled;
         });
 }
