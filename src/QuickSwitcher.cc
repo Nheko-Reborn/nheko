@@ -23,8 +23,7 @@
 
 RoomSearchInput::RoomSearchInput(QWidget *parent)
   : TextField(parent)
-{
-}
+{}
 
 bool
 RoomSearchInput::focusNextPrevChild(bool next)
