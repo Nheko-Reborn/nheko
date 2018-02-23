@@ -17,9 +17,8 @@
 
 #pragma once
 
+#include "Deserializable.h"
 #include <QJsonDocument>
-
-class Deserializable;
 
 class RegisterRequest
 {

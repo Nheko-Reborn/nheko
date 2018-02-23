@@ -28,7 +28,6 @@
 #include <QSettings>
 #include <QUrlQuery>
 
-#include "Login.h"
 #include "MatrixClient.h"
 #include "Register.h"
 
@@ -101,9 +100,23 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-        LoginRequest body(username, password);
+        mtx::requests::Login login;
+        login.user                        = username.toStdString();
+        login.password                    = password.toStdString();
+        login.initial_device_display_name = "nheko";
 
-        auto reply = post(request, body.serialize());
+#if defined(Q_OS_MAC)
+        login.initial_device_display_name = "nheko on Mac OS";
+#elif defined(Q_OS_LINUX)
+        login.initial_device_display_name = "nheko on Linux";
+#elif defined(Q_OS_WIN)
+        login.initial_device_display_name = "nheko on Windows";
+#endif
+
+        json j = login;
+
+        auto data  = QByteArray::fromStdString(j.dump());
+        auto reply = post(request, data);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
                 reply->deleteLater();
 

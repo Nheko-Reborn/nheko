@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Deserializable.h"
-
 #include "Register.h"
 
 RegisterRequest::RegisterRequest(const QString &username, const QString &password)

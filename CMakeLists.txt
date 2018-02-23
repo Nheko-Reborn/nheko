@@ -196,7 +196,6 @@ set(SRC_FILES
     src/Deserializable.cc
     src/InviteeItem.cc
     src/InputValidator.cc
-    src/Login.cc
     src/LoginPage.cc
     src/MainWindow.cc
     src/MatrixClient.cc
