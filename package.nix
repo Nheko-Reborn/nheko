@@ -1,4 +1,4 @@
-{ pkgs, stdenv, qtbase, qttranslations, qtmultimedia, lmdb, mkDerivation, cmake }:
+{ stdenv, qtbase, qttranslations, qtmultimedia, lmdb, cmake }:
 stdenv.mkDerivation rec {
   version = "0.1.0";
   name = "nheko-${version}";
@@ -10,9 +10,6 @@ stdenv.mkDerivation rec {
     ./.;
   nativeBuildInputs = [ cmake ];
   buildInputs = [ qtbase qttranslations qtmultimedia lmdb ];
-  installPhase = ''
-    mkdir -p $out/bin
-    cp nheko $out/bin/nheko
-  '';
+  installPhase = "install -Dm755 nheko $out/bin/nheko";
 }
 

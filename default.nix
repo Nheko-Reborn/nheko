@@ -1,3 +1,3 @@
 with import <nixpkgs> {};
-qt59.callPackage ./package.nix {}
+libsForQt5.callPackage ./package.nix {}
 
