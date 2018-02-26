@@ -83,6 +83,8 @@ private slots:
 private:
         bool hasActiveUser();
         void restoreWindowSize();
+        //! Check if there is an open dialog.
+        bool hasActiveDialogs() const;
 
         static MainWindow *instance_;
 

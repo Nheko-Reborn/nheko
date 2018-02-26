@@ -118,7 +118,8 @@ MainWindow::MainWindow(QWidget *parent)
 
         QShortcut *quickSwitchShortcut = new QShortcut(QKeySequence("Ctrl+K"), this);
         connect(quickSwitchShortcut, &QShortcut::activated, this, [this]() {
-                chat_page_->showQuickSwitcher();
+                if (chat_page_->isVisible() && !hasActiveDialogs())
+                        chat_page_->showQuickSwitcher();
         });
 
         QSettings settings;
@@ -288,4 +289,11 @@ MainWindow::showOverlayProgressBar()
                 progressModal_->setDismissible(false);
                 progressModal_->show();
         }
+}
+
+bool
+MainWindow::hasActiveDialogs() const
+{
+        return (!leaveRoomModal_.isNull() && leaveRoomModal_->isVisible()) ||
+               (!progressModal_.isNull() && progressModal_->isVisible());
 }
