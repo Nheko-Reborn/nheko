@@ -149,7 +149,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
 
         connect(top_bar_, &TopRoomBar::inviteUsers, this, [this](QStringList users) {
                 for (int ii = 0; ii < users.size(); ++ii) {
-                        QTimer::singleShot(ii * 1000, this, [this, &ii, &users]() {
+                        QTimer::singleShot(ii * 1000, this, [this, ii, users]() {
                                 client_->inviteUser(current_room_, users.at(ii));
                         });
                 }

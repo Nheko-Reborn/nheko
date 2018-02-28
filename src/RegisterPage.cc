@@ -19,7 +19,6 @@
 
 #include "Config.h"
 #include "FlatButton.h"
-#include "InputValidator.h"
 #include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "RegisterPage.h"
@@ -127,10 +126,6 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 SIGNAL(registerError(const QString &)),
                 this,
                 SLOT(registerError(const QString &)));
-
-        username_input_->setValidator(&InputValidator::Localpart);
-        password_input_->setValidator(&InputValidator::Password);
-        server_input_->setValidator(&InputValidator::Domain);
 
         setLayout(top_layout_);
 }

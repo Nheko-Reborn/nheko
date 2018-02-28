@@ -17,15 +17,18 @@
 
 #include <QStyleOption>
 
+#include <mtx/identifiers.hpp>
+
 #include "Config.h"
 #include "FlatButton.h"
-#include "InputValidator.h"
 #include "LoadingIndicator.h"
 #include "LoginPage.h"
 #include "MatrixClient.h"
 #include "OverlayModal.h"
 #include "RaisedButton.h"
 #include "TextField.h"
+
+using namespace mtx::identifiers;
 
 LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)
@@ -157,10 +160,16 @@ LoginPage::loginError(QString error)
 bool
 LoginPage::isMatrixIdValid()
 {
-        int pos        = 0;
         auto matrix_id = matrixid_input_->text();
 
-        return InputValidator::Id.validate(matrix_id, pos) == QValidator::Acceptable;
+        try {
+                parse<User>(matrix_id.toStdString());
+                return true;
+        } catch (const std::exception &e) {
+                return false;
+        }
+
+        return false;
 }
 
 void
