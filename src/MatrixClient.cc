@@ -410,7 +410,6 @@ MatrixClient::initialSync() noexcept
                         emit initialSyncFailed();
                         return;
                 }
-
         });
 }
 

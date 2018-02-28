@@ -531,7 +531,7 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
                 roomSettings_.emplace(room_id,
                                       QSharedPointer<RoomSettings>(new RoomSettings(room_id)));
 
-                for (const auto membership : roomState->memberships) {
+                for (const auto &membership : roomState->memberships) {
                         updateUserDisplayName(membership.second);
                         updateUserAvatarUrl(membership.second);
                 }
@@ -791,7 +791,7 @@ ChatPage::updateTypingUsers(const QString &roomid, const std::vector<std::string
         QSettings settings;
         QString user_id = settings.value("auth/user_id").toString();
 
-        for (const auto uid : user_ids) {
+        for (const auto &uid : user_ids) {
                 auto user = QString::fromStdString(uid);
 
                 if (user == user_id)

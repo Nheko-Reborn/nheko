@@ -102,7 +102,7 @@ ReadReceipts::addUsers(const std::multimap<uint64_t, std::string, std::greater<u
         // We want to remove any previous items that have been set.
         userList_->clear();
 
-        for (auto receipt : receipts) {
+        for (const auto &receipt : receipts) {
                 auto user =
                   new ReceiptItem(this, QString::fromStdString(receipt.second), receipt.first);
                 auto item = new QListWidgetItem(userList_);

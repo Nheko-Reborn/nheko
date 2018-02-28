@@ -482,7 +482,7 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
                         auto json_response = json::parse(std::string(value.data(), value.size()));
                         auto values        = json_response.get<std::map<std::string, uint64_t>>();
 
-                        for (auto v : values)
+                        for (const auto &v : values)
                                 // timestamp, user_id
                                 receipts.emplace(v.second, v.first);
                 }
@@ -497,7 +497,7 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
 void
 Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
 {
-        for (auto receipt : receipts) {
+        for (const auto &receipt : receipts) {
                 const auto event_id = receipt.first;
                 auto event_receipts = receipt.second;
 
@@ -528,7 +528,7 @@ Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
                         }
 
                         // Append the new ones.
-                        for (auto event_receipt : event_receipts)
+                        for (const auto &event_receipt : event_receipts)
                                 saved_receipts.emplace(event_receipt.first, event_receipt.second);
 
                         // Save back the merged (or only the new) receipts.

@@ -206,7 +206,7 @@ ChatPage::updateUserMetadata(const std::vector<Collection> &collection)
 {
         using Member = mtx::events::StateEvent<mtx::events::state::Member>;
 
-        for (auto &event : collection) {
+        for (const auto &event : collection) {
                 if (mpark::holds_alternative<Member>(event)) {
                         auto member = mpark::get<Member>(event);
 
@@ -224,7 +224,7 @@ ChatPage::getMemberships(const std::vector<Collection> &collection) const
 
         using Member = mtx::events::StateEvent<mtx::events::state::Member>;
 
-        for (auto &event : collection) {
+        for (const auto &event : collection) {
                 if (mpark::holds_alternative<Member>(event)) {
                         auto member = mpark::get<Member>(event);
                         memberships.emplace(member.state_key, member);

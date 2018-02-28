@@ -36,7 +36,7 @@ AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
                 auto callbacks = toBeResolved_[uid];
 
                 // Update all the timeline items with the resolved avatar.
-                for (const auto callback : callbacks)
+                for (const auto &callback : callbacks)
                         callback(img);
 
                 toBeResolved_.erase(uid);
