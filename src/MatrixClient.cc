@@ -123,6 +123,11 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
                 int status_code =
                   reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
+                if (reply->error()) {
+                        emit loginError(reply->errorString());
+                        return;
+                }
+
                 if (status_code == 403) {
                         emit loginError(tr("Wrong username or password"));
                         return;
@@ -427,6 +432,11 @@ MatrixClient::versions() noexcept
 
                 int status_code =
                   reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                if (reply->error()) {
+                        emit versionError(reply->errorString());
+                        return;
+                }
 
                 if (status_code == 404) {
                         emit versionError("Versions endpoint was not found on the server. Possibly "

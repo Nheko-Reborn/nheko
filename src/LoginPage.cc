@@ -222,20 +222,8 @@ LoginPage::onServerAddressEntered()
 void
 LoginPage::versionError(QString error)
 {
-        // Matrix homeservers are often kept on a subdomain called 'matrix'
-        // so let's try that next, unless the address was set explicitly or the domain
-        // part of the username already points to this subdomain
         QUrl currentServer  = client_->getHomeServer();
         QString mxidAddress = matrixid_input_->text().split(":").at(1);
-        if (currentServer.host() == inferredServerAddress_ &&
-            !currentServer.host().startsWith("matrix")) {
-                error_label_->setText("");
-                currentServer.setHost(QString("matrix.") + currentServer.host());
-                serverInput_->setText(currentServer.host());
-                client_->setServer(currentServer.host());
-                client_->versions();
-                return;
-        }
 
         error_label_->setText(error);
         serverInput_->show();
