@@ -123,11 +123,6 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
                 int status_code =
                   reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-                if (reply->error()) {
-                        emit loginError(reply->errorString());
-                        return;
-                }
-
                 if (status_code == 403) {
                         emit loginError(tr("Wrong username or password"));
                         return;
@@ -141,6 +136,11 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
                 if (status_code >= 400) {
                         qWarning() << "Login error: " << reply->errorString();
                         emit loginError(tr("An unknown error occured. Please try again."));
+                        return;
+                }
+
+                if (reply->error()) {
+                        emit loginError(reply->errorString());
                         return;
                 }
 

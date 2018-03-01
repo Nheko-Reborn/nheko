@@ -152,39 +152,22 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
 }
 
 void
-LoginPage::loginError(QString error)
-{
-        error_label_->setText(error);
-}
-
-bool
-LoginPage::isMatrixIdValid()
-{
-        auto matrix_id = matrixid_input_->text();
-
-        try {
-                parse<User>(matrix_id.toStdString());
-                return true;
-        } catch (const std::exception &e) {
-                return false;
-        }
-
-        return false;
-}
-
-void
 LoginPage::onMatrixIdEntered()
 {
         error_label_->setText("");
 
-        if (!isMatrixIdValid()) {
-                loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
-                return;
-        } else if (password_input_->text().isEmpty()) {
-                loginError(tr("Empty password"));
+        User user;
+
+        try {
+                user = parse<User>(matrixid_input_->text().toStdString());
+        } catch (const std::exception &e) {
+                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
         }
 
-        QString homeServer = matrixid_input_->text().split(":").at(1);
+        if (password_input_->text().isEmpty())
+                return loginError(tr("Empty password"));
+
+        QString homeServer = QString::fromStdString(user.hostname());
         if (homeServer != inferredServerAddress_) {
                 serverInput_->hide();
                 serverLayout_->removeWidget(errorIcon_);
@@ -251,17 +234,21 @@ LoginPage::onLoginButtonClicked()
 {
         error_label_->setText("");
 
-        if (!isMatrixIdValid()) {
-                loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
-        } else if (password_input_->text().isEmpty()) {
-                loginError("Empty password");
-        } else {
-                QString user     = matrixid_input_->text().split(":").at(0).split("@").at(1);
-                QString password = password_input_->text();
-                client_->setServer(serverInput_->text());
-                client_->login(user, password);
-                emit loggingIn();
+        User user;
+
+        try {
+                user = parse<User>(matrixid_input_->text().toStdString());
+        } catch (const std::exception &e) {
+                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
         }
+
+        if (password_input_->text().isEmpty())
+                return loginError(tr("Empty password"));
+
+        client_->setServer(serverInput_->text());
+        client_->login(QString::fromStdString(user.localpart()), password_input_->text());
+
+        emit loggingIn();
 }
 
 void

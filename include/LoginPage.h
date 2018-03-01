@@ -48,7 +48,7 @@ protected:
 
 public slots:
         // Displays errors produced during the login.
-        void loginError(QString error_message);
+        void loginError(QString msg) { error_label_->setText(msg); }
 
 private slots:
         // Callback for the back button.
