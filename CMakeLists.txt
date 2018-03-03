@@ -45,13 +45,6 @@ else()
     find_package_handle_standard_args(LMDB DEFAULT_MSG LMDB_INCLUDE_DIR LMDB_LIBRARY)
 endif()
 
-if (NOT EXISTS "${CMAKE_SOURCE_DIR}/libs/lmdbxx/.git" OR
-    NOT EXISTS "${CMAKE_SOURCE_DIR}/libs/matrix-structs/.git")
-    message(WARNING "The git submodules are not available.")
-    message(STATUS "Running git submodule update --init --recursive ...")
-    execute_process(COMMAND git submodule update --init --recursive)
-endif()
-
 #
 # Discover Qt dependencies.
 #
@@ -219,10 +212,21 @@ set(SRC_FILES
     src/main.cc
 )
 
+#
+# matrix-structs
+#
+include(${CMAKE_SOURCE_DIR}/cmake/MatrixStructs.cmake)
+include_directories(${MATRIX_STRUCTS_INCLUDE_DIRS})
+
+#
+# lmdbxx
+#
+include(${CMAKE_SOURCE_DIR}/cmake/LMDBXX.cmake)
+include_directories(${LMDBXX_INCLUDE_DIRS})
+
 include_directories(include)
 include_directories(include/ui)
 
-include_directories(libs/lmdbxx)
 include_directories(${LMDB_INCLUDE_DIR})
 
 qt5_wrap_cpp(MOC_HEADERS
@@ -317,10 +321,6 @@ endif()
 qt5_add_resources(LANG_QRC ${_qrc})
 qt5_add_resources(QRC resources/res.qrc)
 
-add_subdirectory(libs/matrix-structs)
-include_directories(${matrix_structs_SOURCE_DIR}/include)
-include_directories(${matrix_structs_SOURCE_DIR}/deps)
-
 set(COMMON_LIBS matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
 
 if(APPVEYOR_BUILD)
@@ -341,6 +341,8 @@ else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
     target_link_libraries (nheko ${NHEKO_LIBS} Qt5::Multimedia)
 endif()
+
+add_dependencies(nheko MatrixStructs lmdbxx)
 
 if(UNIX AND NOT APPLE)
     install (TARGETS nheko RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

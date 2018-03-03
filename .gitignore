@@ -91,3 +91,6 @@ compile_commands.json
 *.rpm
 *.deb
 package.dir
+
+# Dependencies
+.third-party
