@@ -21,7 +21,6 @@
 
 #include "Config.h"
 #include "FloatingButton.h"
-#include "RoomMessages.h"
 #include "Utils.h"
 
 #include "timeline/TimelineView.h"
@@ -578,17 +577,12 @@ TimelineView::isPendingMessage(const QString &txnid,
         if (sender != local_userid)
                 return false;
 
-        for (const auto &msg : pending_msgs_) {
-                if (QString::number(msg.txn_id) == txnid)
-                        return true;
-        }
+        auto match_txnid = [txnid](const auto &msg) -> bool {
+                return QString::number(msg.txn_id) == txnid;
+        };
 
-        for (const auto &msg : pending_sent_msgs_) {
-                if (QString::number(msg.txn_id) == txnid)
-                        return true;
-        }
-
-        return false;
+        return std::any_of(pending_msgs_.cbegin(), pending_msgs_.cend(), match_txnid) ||
+               std::any_of(pending_sent_msgs_.cbegin(), pending_sent_msgs_.cend(), match_txnid);
 }
 
 void

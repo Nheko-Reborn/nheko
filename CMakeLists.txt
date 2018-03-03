@@ -196,7 +196,6 @@ set(SRC_FILES
     src/RegisterPage.cc
     src/RoomInfoListItem.cc
     src/RoomList.cc
-    src/RoomMessages.cc
     src/RoomState.cc
     src/RunGuard.cc
     src/SideBarActions.cc

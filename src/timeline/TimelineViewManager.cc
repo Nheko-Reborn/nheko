@@ -206,8 +206,8 @@ TimelineViewManager::addRoom(const QString &room_id)
 void
 TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 {
-        for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
-                auto roomid = QString::fromStdString(it->first);
+        for (const auto &room : rooms.join) {
+                auto roomid = QString::fromStdString(room.first);
 
                 if (!timelineViewExists(roomid)) {
                         qDebug() << "Ignoring event from unknown room" << roomid;
@@ -216,7 +216,7 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 
                 auto view = views_.at(roomid);
 
-                view->addEvents(it->second.timeline);
+                view->addEvents(room.second.timeline);
         }
 }
 
@@ -309,9 +309,7 @@ TimelineViewManager::displayName(const QString &userid)
 bool
 TimelineViewManager::hasLoaded() const
 {
-        for (const auto &view : views_)
-                if (!view.second->hasLoaded())
-                        return false;
-
-        return true;
+        return std::all_of(views_.cbegin(), views_.cend(), [](const auto &view) {
+                return view.second->hasLoaded();
+        });
 }

@@ -22,7 +22,6 @@
 
 #include "RoomState.h"
 
-RoomState::RoomState() {}
 RoomState::RoomState(const mtx::responses::Timeline &timeline)
 {
         updateFromEvents(timeline.events);

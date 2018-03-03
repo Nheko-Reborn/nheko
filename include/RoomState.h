@@ -26,7 +26,7 @@
 class RoomState
 {
 public:
-        RoomState();
+        RoomState() = default;
         RoomState(const mtx::responses::Timeline &timeline);
         RoomState(const mtx::responses::State &state);
 
