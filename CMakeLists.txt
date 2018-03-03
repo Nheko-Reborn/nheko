@@ -215,13 +215,13 @@ set(SRC_FILES
 #
 # matrix-structs
 #
-include(${CMAKE_SOURCE_DIR}/cmake/MatrixStructs.cmake)
+include(MatrixStructs)
 include_directories(${MATRIX_STRUCTS_INCLUDE_DIRS})
 
 #
 # lmdbxx
 #
-include(${CMAKE_SOURCE_DIR}/cmake/LMDBXX.cmake)
+include(LMDBXX)
 include_directories(${LMDBXX_INCLUDE_DIRS})
 
 include_directories(include)
@@ -321,7 +321,7 @@ endif()
 qt5_add_resources(LANG_QRC ${_qrc})
 qt5_add_resources(QRC resources/res.qrc)
 
-set(COMMON_LIBS ${MATRIX_STRUCTS_LIBRARY} Qt5::Widgets Qt5::Network Qt5::Concurrent)
+set(COMMON_LIBS matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
