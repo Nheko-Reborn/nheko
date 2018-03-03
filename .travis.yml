@@ -10,9 +10,6 @@ notifications:
 matrix:
     include:
         - os: osx
-          osx_image: xcode8
-          compiler: clang
-        - os: osx
           osx_image: xcode9
           compiler: clang
           env:
