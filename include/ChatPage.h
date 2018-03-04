@@ -128,7 +128,7 @@ private:
         template<class Collection>
         void updateUserMetadata(const std::vector<Collection> &collection);
 
-        void retryInitialSync();
+        void retryInitialSync(int status_code = -1);
         //! Update the room with the new notification count.
         void updateRoomNotificationCount(const QString &room_id, uint16_t notification_count);
 

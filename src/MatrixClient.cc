@@ -401,7 +401,7 @@ MatrixClient::initialSync() noexcept
 
                 if (status == 0 || status >= 400) {
                         qDebug() << "Error code received" << status;
-                        emit initialSyncFailed();
+                        emit initialSyncFailed(status);
                         return;
                 }
 

@@ -361,7 +361,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         });
 
         initialSyncTimer_ = new QTimer(this);
-        connect(initialSyncTimer_, &QTimer::timeout, this, &ChatPage::retryInitialSync);
+        connect(initialSyncTimer_, &QTimer::timeout, this, [this]() { retryInitialSync(); });
 
         syncTimeoutTimer_ = new QTimer(this);
         connect(syncTimeoutTimer_, &QTimer::timeout, this, [this]() {
@@ -965,19 +965,30 @@ ChatPage::setGroupViewState(bool isEnabled)
 }
 
 void
-ChatPage::retryInitialSync()
+ChatPage::retryInitialSync(int status_code)
 {
         initialSyncTimer_->stop();
 
         if (client_->getHomeServer().isEmpty()) {
                 deleteConfigs();
+                resetUI();
+                emit showLoginPage("Sync error. Please try again.");
                 return;
         }
 
-        qWarning() << "Retrying initial sync";
+        // Retry on Bad-Gateway & Gateway-Timeout errors
+        if (status_code == -1 || status_code == 504 || status_code == 502 || status_code == 524) {
+                qWarning() << "retrying initial sync";
 
-        client_->initialSync();
-        initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
+                client_->initialSync();
+                initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
+        } else {
+                // Drop into the login screen.
+                deleteConfigs();
+                resetUI();
+
+                emit showLoginPage(QString("Sync error %1. Please try again.").arg(status_code));
+        }
 }
 
 void
