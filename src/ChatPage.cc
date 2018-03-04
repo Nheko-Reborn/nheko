@@ -544,7 +544,7 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
                           roomStates_);
         QtConcurrent::run(cache_.data(), &Cache::setInvites, response.rooms.invite);
 
-        // Populate timelines with messages.
+        // Create timelines
         view_manager_->initialize(response.rooms);
 
         // Initialize room list.
@@ -553,6 +553,9 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
 
         client_->setNextBatchToken(QString::fromStdString(response.next_batch));
         client_->sync();
+
+        // Add messages
+        view_manager_->sync(response.rooms);
 
         emit contentLoaded();
 }
