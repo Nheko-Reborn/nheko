@@ -164,9 +164,6 @@ LoginPage::onMatrixIdEntered()
                 return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
         }
 
-        if (password_input_->text().isEmpty())
-                return loginError(tr("Empty password"));
-
         QString homeServer = QString::fromStdString(user.hostname());
         if (homeServer != inferredServerAddress_) {
                 serverInput_->hide();
