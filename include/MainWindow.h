@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include <QMainWindow>
 #include <QSharedPointer>
 #include <QStackedWidget>
