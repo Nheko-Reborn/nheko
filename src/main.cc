@@ -119,7 +119,7 @@ main(int argc, char *argv[])
         }
 
         QCoreApplication::setApplicationName("nheko");
-        QCoreApplication::setApplicationVersion("0.1.0");
+        QCoreApplication::setApplicationVersion("0.2.0");
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 

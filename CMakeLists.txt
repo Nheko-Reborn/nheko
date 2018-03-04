@@ -9,7 +9,7 @@ include(GNUInstallDirs)
 # Include Qt basic functions
 include(QtCommon)
 
-project(nheko LANGUAGES C CXX VERSION 0.1.0)
+project(nheko LANGUAGES C CXX VERSION 0.2.0)
 
 # Set PROJECT_VERSION_PATCH and PROJECT_VERSION_TWEAK to 0 if not present, needed by add_project_meta
 fix_project_version()

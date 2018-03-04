@@ -1,6 +1,6 @@
 { stdenv, qtbase, qttranslations, qtmultimedia, lmdb, cmake }:
 stdenv.mkDerivation rec {
-  version = "0.1.0";
+  version = "0.2.0";
   name = "nheko-${version}";
   src = builtins.filterSource
     (path: type:
