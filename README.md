@@ -18,6 +18,10 @@ Specifically there is support for:
 - Sending & receiving invites.
 - Sending & receiving files and emoji (inline widgets for images, audio and file messages).
 - Typing notifications.
+- Message & mention notifications.
+- Read receipts.
+- Basic communities support.
+- Room switcher (ctrl-K).
 - Light, Dark & System themes.
 
 ### Installation
@@ -162,7 +166,7 @@ encouraged to open feature request issues.
 
 Here is a screen shot to get a feel for the UI, but things will probably change.
 
-![nheko](https://dl.dropboxusercontent.com/s/umojysx3gv80qs9/nheko-default-theme.png)
+![nheko](https://dl.dropboxusercontent.com/s/a493o47obvez6v1/nheko.png)
 
 ### Third party
 
