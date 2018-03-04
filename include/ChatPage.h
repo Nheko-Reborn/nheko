@@ -194,10 +194,6 @@ private:
 
         // LMDB wrapper.
         QSharedPointer<Cache> cache_;
-
-        // If the number of failures exceeds a certain threshold we
-        // return to the login page.
-        int initialSyncFailures_ = 0;
 };
 
 template<class Collection>

@@ -42,7 +42,6 @@
 #include "dialogs/ReadReceipts.h"
 #include "timeline/TimelineViewManager.h"
 
-constexpr int MAX_INITIAL_SYNC_FAILURES  = 7;
 constexpr int SYNC_RETRY_TIMEOUT         = 40 * 1000;
 constexpr int INITIAL_SYNC_RETRY_TIMEOUT = 240 * 1000;
 
@@ -972,19 +971,6 @@ ChatPage::retryInitialSync()
 
         if (client_->getHomeServer().isEmpty()) {
                 deleteConfigs();
-                return;
-        }
-
-        initialSyncFailures_ += 1;
-
-        if (initialSyncFailures_ >= MAX_INITIAL_SYNC_FAILURES) {
-                initialSyncFailures_ = 0;
-
-                deleteConfigs();
-
-                emit showLoginPage(
-                  tr("The client couldn't sync with the server. Please try again."));
-                emit contentLoaded();
                 return;
         }
 
