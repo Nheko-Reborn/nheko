@@ -21,6 +21,8 @@
 #include <QSettings>
 #include <QShortcut>
 
+#include <mtx/requests.hpp>
+
 #include "ChatPage.h"
 #include "Config.h"
 #include "LoadingIndicator.h"
@@ -33,7 +35,12 @@
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "WelcomePage.h"
+
+#include "dialogs/CreateRoom.h"
+#include "dialogs/InviteUsers.h"
+#include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
+#include "dialogs/Logout.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -255,7 +262,7 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
         connect(leaveRoomDialog_.data(),
                 &dialogs::LeaveRoom::closing,
                 this,
-                [this, &roomToLeave](bool leaving) {
+                [this, roomToLeave](bool leaving) {
                         leaveRoomModal_->hide();
 
                         if (leaving)
@@ -291,9 +298,120 @@ MainWindow::showOverlayProgressBar()
         }
 }
 
+void
+MainWindow::openInviteUsersDialog(std::function<void(const QStringList &invitees)> callback)
+{
+        if (inviteUsersDialog_.isNull()) {
+                inviteUsersDialog_ =
+                  QSharedPointer<dialogs::InviteUsers>(new dialogs::InviteUsers(this));
+
+                connect(inviteUsersDialog_.data(),
+                        &dialogs::InviteUsers::closing,
+                        this,
+                        [this, callback](bool isSending, QStringList invitees) {
+                                inviteUsersModal_->hide();
+
+                                if (isSending && !invitees.isEmpty())
+                                        callback(invitees);
+                        });
+        }
+
+        if (inviteUsersModal_.isNull()) {
+                inviteUsersModal_ = QSharedPointer<OverlayModal>(
+                  new OverlayModal(MainWindow::instance(), inviteUsersDialog_.data()));
+                inviteUsersModal_->setColor(QColor(30, 30, 30, 170));
+        }
+
+        inviteUsersModal_->show();
+}
+
+void
+MainWindow::openJoinRoomDialog(std::function<void(const QString &room_id)> callback)
+{
+        if (joinRoomDialog_.isNull()) {
+                joinRoomDialog_ = QSharedPointer<dialogs::JoinRoom>(new dialogs::JoinRoom(this));
+
+                connect(joinRoomDialog_.data(),
+                        &dialogs::JoinRoom::closing,
+                        this,
+                        [this, callback](bool isJoining, const QString &room) {
+                                joinRoomModal_->hide();
+
+                                if (isJoining && !room.isEmpty())
+                                        callback(room);
+                        });
+        }
+
+        if (joinRoomModal_.isNull()) {
+                joinRoomModal_ = QSharedPointer<OverlayModal>(
+                  new OverlayModal(MainWindow::instance(), joinRoomDialog_.data()));
+                joinRoomModal_->setColor(QColor(30, 30, 30, 170));
+        }
+
+        joinRoomModal_->show();
+}
+
+void
+MainWindow::openCreateRoomDialog(
+  std::function<void(const mtx::requests::CreateRoom &request)> callback)
+{
+        if (createRoomDialog_.isNull()) {
+                createRoomDialog_ =
+                  QSharedPointer<dialogs::CreateRoom>(new dialogs::CreateRoom(this));
+
+                connect(
+                  createRoomDialog_.data(),
+                  &dialogs::CreateRoom::closing,
+                  this,
+                  [this, callback](bool isCreating, const mtx::requests::CreateRoom &request) {
+                          createRoomModal_->hide();
+
+                          if (isCreating)
+                                  callback(request);
+                  });
+        }
+
+        if (createRoomModal_.isNull()) {
+                createRoomModal_ = QSharedPointer<OverlayModal>(
+                  new OverlayModal(MainWindow::instance(), createRoomDialog_.data()));
+                createRoomModal_->setColor(QColor(30, 30, 30, 170));
+        }
+
+        createRoomModal_->show();
+}
+
+void
+MainWindow::openLogoutDialog(std::function<void()> callback)
+{
+        if (logoutDialog_.isNull()) {
+                logoutDialog_ = QSharedPointer<dialogs::Logout>(new dialogs::Logout(this));
+                connect(logoutDialog_.data(),
+                        &dialogs::Logout::closing,
+                        this,
+                        [this, callback](bool logging_out) {
+                                logoutModal_->hide();
+
+                                if (logging_out)
+                                        callback();
+                        });
+        }
+
+        if (logoutModal_.isNull()) {
+                logoutModal_ = QSharedPointer<OverlayModal>(
+                  new OverlayModal(MainWindow::instance(), logoutDialog_.data()));
+                logoutModal_->setColor(QColor(30, 30, 30, 170));
+        }
+
+        logoutModal_->show();
+}
+
 bool
 MainWindow::hasActiveDialogs() const
 {
         return (!leaveRoomModal_.isNull() && leaveRoomModal_->isVisible()) ||
-               (!progressModal_.isNull() && progressModal_->isVisible());
+               (!progressModal_.isNull() && progressModal_->isVisible()) ||
+               (!inviteUsersModal_.isNull() && inviteUsersModal_->isVisible()) ||
+               (!joinRoomModal_.isNull() && joinRoomModal_->isVisible()) ||
+               (!createRoomModal_.isNull() && createRoomModal_->isVisible()) ||
+               (!logoutModal_.isNull() && logoutModal_->isVisible());
 }

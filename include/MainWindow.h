@@ -35,8 +35,18 @@ class SnackBar;
 class TrayIcon;
 class UserSettings;
 
+namespace mtx {
+namespace requests {
+struct CreateRoom;
+}
+}
+
 namespace dialogs {
+class CreateRoom;
+class InviteUsers;
+class JoinRoom;
 class LeaveRoom;
+class Logout;
 }
 
 class MainWindow : public QMainWindow
@@ -50,6 +60,11 @@ public:
         void saveCurrentWindowSize();
 
         void openLeaveRoomDialog(const QString &room_id = "");
+        void openInviteUsersDialog(std::function<void(const QStringList &invitees)> callback);
+        void openCreateRoomDialog(
+          std::function<void(const mtx::requests::CreateRoom &request)> callback);
+        void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
+        void openLogoutDialog(std::function<void()> callback);
 
 protected:
         void closeEvent(QCloseEvent *event);
@@ -113,4 +128,20 @@ private:
         QSharedPointer<OverlayModal> leaveRoomModal_;
         //! Leave room dialog.
         QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
+        //! Invite users modal.
+        QSharedPointer<OverlayModal> inviteUsersModal_;
+        //! Invite users dialog.
+        QSharedPointer<dialogs::InviteUsers> inviteUsersDialog_;
+        //! Join room modal.
+        QSharedPointer<OverlayModal> joinRoomModal_;
+        //! Join room dialog.
+        QSharedPointer<dialogs::JoinRoom> joinRoomDialog_;
+        //! Create room modal.
+        QSharedPointer<OverlayModal> createRoomModal_;
+        //! Create room dialog.
+        QSharedPointer<dialogs::CreateRoom> createRoomDialog_;
+        //! Logout modal.
+        QSharedPointer<OverlayModal> logoutModal_;
+        //! Logout dialog.
+        QSharedPointer<dialogs::Logout> logoutDialog_;
 };

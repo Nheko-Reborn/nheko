@@ -28,8 +28,6 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   : QWidget(parent)
   , display_name_("User")
   , user_id_("@user:homeserver.org")
-  , logoutModal_{nullptr}
-  , logoutDialog_{nullptr}
   , logoutButtonSize_{20}
 {
         setFixedHeight(65);
@@ -91,31 +89,8 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
         // Show the confirmation dialog.
         connect(logoutButton_, &QPushButton::clicked, this, [this]() {
-                if (logoutDialog_.isNull()) {
-                        logoutDialog_ = QSharedPointer<dialogs::Logout>(new dialogs::Logout(this));
-                        connect(logoutDialog_.data(),
-                                SIGNAL(closing(bool)),
-                                this,
-                                SLOT(closeLogoutDialog(bool)));
-                }
-
-                if (logoutModal_.isNull()) {
-                        logoutModal_ = QSharedPointer<OverlayModal>(
-                          new OverlayModal(MainWindow::instance(), logoutDialog_.data()));
-                        logoutModal_->setColor(QColor(30, 30, 30, 170));
-                }
-
-                logoutModal_->show();
+                MainWindow::instance()->openLogoutDialog([this]() { emit logout(); });
         });
-}
-
-void
-UserInfoWidget::closeLogoutDialog(bool isLoggingOut)
-{
-        logoutModal_->hide();
-
-        if (isLoggingOut)
-                emit logout();
 }
 
 void

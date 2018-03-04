@@ -8,10 +8,11 @@
 #include "FlatButton.h"
 #include "Menu.h"
 
-#include "dialogs/CreateRoom.h"
-#include "dialogs/JoinRoom.h"
-
-class OverlayModal;
+namespace mtx {
+namespace requests {
+struct CreateRoom;
+}
+}
 
 class SideBarActions : public QWidget
 {
@@ -35,12 +36,6 @@ private:
         Menu *addMenu_;
         QAction *createRoomAction_;
         QAction *joinRoomAction_;
-
-        QSharedPointer<OverlayModal> joinRoomModal_;
-        QSharedPointer<dialogs::JoinRoom> joinRoomDialog_;
-
-        QSharedPointer<OverlayModal> createRoomModal_;
-        QSharedPointer<dialogs::CreateRoom> createRoomDialog_;
 
         FlatButton *settingsBtn_;
         FlatButton *createRoomBtn_;

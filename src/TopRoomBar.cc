@@ -92,28 +92,8 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
         inviteUsers_ = new QAction(tr("Invite users"), this);
         connect(inviteUsers_, &QAction::triggered, this, [this]() {
-                if (inviteUsersDialog_.isNull()) {
-                        inviteUsersDialog_ =
-                          QSharedPointer<dialogs::InviteUsers>(new dialogs::InviteUsers(this));
-
-                        connect(inviteUsersDialog_.data(),
-                                &dialogs::InviteUsers::closing,
-                                this,
-                                [this](bool isSending, QStringList invitees) {
-                                        inviteUsersModal_->hide();
-
-                                        if (isSending && !invitees.isEmpty())
-                                                emit inviteUsers(invitees);
-                                });
-                }
-
-                if (inviteUsersModal_.isNull()) {
-                        inviteUsersModal_ = QSharedPointer<OverlayModal>(
-                          new OverlayModal(MainWindow::instance(), inviteUsersDialog_.data()));
-                        inviteUsersModal_->setColor(QColor(30, 30, 30, 170));
-                }
-
-                inviteUsersModal_->show();
+                MainWindow::instance()->openInviteUsersDialog(
+                  [this](const QStringList &invitees) { emit inviteUsers(invitees); });
         });
 
         leaveRoom_ = new QAction(tr("Leave room"), this);

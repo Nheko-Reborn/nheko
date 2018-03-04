@@ -26,9 +26,6 @@
 #include <QSharedPointer>
 #include <QVBoxLayout>
 
-#include "dialogs/InviteUsers.h"
-#include "dialogs/LeaveRoom.h"
-
 class Avatar;
 class FlatButton;
 class Label;
@@ -73,9 +70,6 @@ private:
         QAction *inviteUsers_;
 
         FlatButton *settingsBtn_;
-
-        QSharedPointer<OverlayModal> inviteUsersModal_;
-        QSharedPointer<dialogs::InviteUsers> inviteUsersDialog_;
 
         Avatar *avatar_;
 

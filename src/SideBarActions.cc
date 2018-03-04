@@ -1,6 +1,8 @@
 #include <QDebug>
 #include <QIcon>
 
+#include <mtx/requests.hpp>
+
 #include "Config.h"
 #include "MainWindow.h"
 #include "OverlayModal.h"
@@ -35,53 +37,13 @@ SideBarActions::SideBarActions(QWidget *parent)
         joinRoomAction_   = new QAction(tr("Join a room"), this);
 
         connect(joinRoomAction_, &QAction::triggered, this, [this]() {
-                if (joinRoomDialog_.isNull()) {
-                        joinRoomDialog_ =
-                          QSharedPointer<dialogs::JoinRoom>(new dialogs::JoinRoom(this));
-
-                        connect(joinRoomDialog_.data(),
-                                &dialogs::JoinRoom::closing,
-                                this,
-                                [this](bool isJoining, const QString &room) {
-                                        joinRoomModal_->hide();
-
-                                        if (isJoining && !room.isEmpty())
-                                                emit joinRoom(room);
-                                });
-                }
-
-                if (joinRoomModal_.isNull()) {
-                        joinRoomModal_ = QSharedPointer<OverlayModal>(
-                          new OverlayModal(MainWindow::instance(), joinRoomDialog_.data()));
-                        joinRoomModal_->setColor(QColor(30, 30, 30, 170));
-                }
-
-                joinRoomModal_->show();
+                MainWindow::instance()->openJoinRoomDialog(
+                  [this](const QString &room_id) { emit joinRoom(room_id); });
         });
 
         connect(createRoomAction_, &QAction::triggered, this, [this]() {
-                if (createRoomDialog_.isNull()) {
-                        createRoomDialog_ =
-                          QSharedPointer<dialogs::CreateRoom>(new dialogs::CreateRoom(this));
-
-                        connect(createRoomDialog_.data(),
-                                &dialogs::CreateRoom::closing,
-                                this,
-                                [this](bool isCreating, const mtx::requests::CreateRoom &request) {
-                                        createRoomModal_->hide();
-
-                                        if (isCreating)
-                                                emit createRoom(request);
-                                });
-                }
-
-                if (createRoomModal_.isNull()) {
-                        createRoomModal_ = QSharedPointer<OverlayModal>(
-                          new OverlayModal(MainWindow::instance(), createRoomDialog_.data()));
-                        createRoomModal_->setColor(QColor(30, 30, 30, 170));
-                }
-
-                createRoomModal_->show();
+                MainWindow::instance()->openCreateRoomDialog(
+                  [this](const mtx::requests::CreateRoom &req) { emit createRoom(req); });
         });
 
         addMenu_->addAction(createRoomAction_);
