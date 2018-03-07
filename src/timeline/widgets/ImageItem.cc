@@ -53,15 +53,13 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(client_.data()->getHomeServer().toString(), media_params);
 
-        client_.data()->downloadImage(QString::fromStdString(event.event_id), url_);
+        auto proxy = client_.data()->downloadImage(url_);
 
-        connect(client_.data(),
-                &MatrixClient::imageDownloaded,
-                this,
-                [this](const QString &id, const QPixmap &img) {
-                        if (id == QString::fromStdString(event_.event_id))
-                                setImage(img);
-                });
+        connect(
+          proxy, &DownloadMediaProxy::imageDownloaded, this, [this, proxy](const QPixmap &img) {
+                  proxy->deleteLater();
+                  setImage(img);
+          });
 }
 
 ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
@@ -91,16 +89,13 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(client_.data()->getHomeServer().toString(), media_params);
 
-        const auto request_id = QUuid::createUuid().toString();
-        client_.data()->downloadImage(request_id, url_);
+        auto proxy = client_.data()->downloadImage(url_);
 
-        connect(client_.data(),
-                &MatrixClient::imageDownloaded,
-                this,
-                [request_id, this](const QString &id, const QPixmap &img) {
-                        if (id == request_id)
-                                setImage(img);
-                });
+        connect(
+          proxy, &DownloadMediaProxy::imageDownloaded, this, [proxy, this](const QPixmap &img) {
+                  proxy->deleteLater();
+                  setImage(img);
+          });
 }
 
 void

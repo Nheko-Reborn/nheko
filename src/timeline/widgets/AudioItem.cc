@@ -64,7 +64,6 @@ AudioItem::init()
         player_->setVolume(100);
         player_->setNotifyInterval(1000);
 
-        connect(client_.data(), &MatrixClient::fileDownloaded, this, &AudioItem::fileDownloaded);
         connect(player_, &QMediaPlayer::stateChanged, this, [this](QMediaPlayer::State state) {
                 if (state == QMediaPlayer::StoppedState) {
                         state_ = AudioState::Play;
@@ -135,16 +134,20 @@ AudioItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                client_->downloadFile(QString::fromStdString(event_.event_id), url_);
+                auto proxy = client_->downloadFile(url_);
+                connect(proxy,
+                        &DownloadMediaProxy::fileDownloaded,
+                        this,
+                        [proxy, this](const QByteArray &data) {
+                                proxy->deleteLater();
+                                fileDownloaded(data);
+                        });
         }
 }
 
 void
-AudioItem::fileDownloaded(const QString &event_id, const QByteArray &data)
+AudioItem::fileDownloaded(const QByteArray &data)
 {
-        if (event_id != QString::fromStdString(event_.event_id))
-                return;
-
         try {
                 QFile file(filenameToSave_);
 

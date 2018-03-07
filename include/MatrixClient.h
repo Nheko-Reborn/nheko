@@ -22,6 +22,15 @@
 #include <QUrl>
 #include <mtx.hpp>
 
+class DownloadMediaProxy : public QObject
+{
+        Q_OBJECT
+
+signals:
+        void imageDownloaded(const QPixmap &data);
+        void fileDownloaded(const QByteArray &data);
+};
+
 /*
  * MatrixClient provides the high level API to communicate with
  * a Matrix homeserver. All the responses are returned through signals.
@@ -55,8 +64,8 @@ public:
         void fetchCommunityAvatar(const QString &communityId, const QUrl &avatarUrl);
         void fetchCommunityProfile(const QString &communityId);
         void fetchCommunityRooms(const QString &communityId);
-        void downloadImage(const QString &event_id, const QUrl &url);
-        void downloadFile(const QString &event_id, const QUrl &url);
+        DownloadMediaProxy *downloadImage(const QUrl &url);
+        DownloadMediaProxy *downloadFile(const QUrl &url);
         void messages(const QString &room_id, const QString &from_token, int limit = 30) noexcept;
         void uploadImage(const QString &roomid,
                          const QString &filename,
@@ -140,8 +149,6 @@ signals:
         void communityAvatarRetrieved(const QString &communityId, const QPixmap &img);
         void communityProfileRetrieved(const QString &communityId, const QJsonObject &profile);
         void communityRoomsRetrieved(const QString &communityId, const QJsonObject &rooms);
-        void imageDownloaded(const QString &event_id, const QPixmap &img);
-        void fileDownloaded(const QString &event_id, const QByteArray &data);
 
         // Returned profile data for the user's account.
         void getOwnProfileResponse(const QUrl &avatar_url, const QString &display_name);

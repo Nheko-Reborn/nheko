@@ -57,8 +57,6 @@ FileItem::init()
         QString media_params = url_parts[1];
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(client_.data()->getHomeServer().toString(), media_params);
-
-        connect(client_.data(), &MatrixClient::fileDownloaded, this, &FileItem::fileDownloaded);
 }
 
 FileItem::FileItem(QSharedPointer<MatrixClient> client,
@@ -122,18 +120,22 @@ FileItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                client_->downloadFile(QString::fromStdString(event_.event_id), url_);
+                auto proxy = client_->downloadFile(url_);
+                connect(proxy,
+                        &DownloadMediaProxy::fileDownloaded,
+                        this,
+                        [proxy, this](const QByteArray &data) {
+                                proxy->deleteLater();
+                                fileDownloaded(data);
+                        });
         } else {
                 openUrl();
         }
 }
 
 void
-FileItem::fileDownloaded(const QString &event_id, const QByteArray &data)
+FileItem::fileDownloaded(const QByteArray &data)
 {
-        if (event_id != QString::fromStdString(event_.event_id))
-                return;
-
         try {
                 QFile file(filenameToSave_);
 

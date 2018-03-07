@@ -60,12 +60,10 @@ protected:
         void paintEvent(QPaintEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
 
-private slots:
-        void fileDownloaded(const QString &event_id, const QByteArray &data);
-
 private:
         void openUrl();
         void init();
+        void fileDownloaded(const QByteArray &data);
 
         QUrl url_;
         QString text_;

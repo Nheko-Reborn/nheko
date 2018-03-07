@@ -738,13 +738,14 @@ MatrixClient::fetchUserAvatar(const QUrl &avatarUrl,
         });
 }
 
-void
-MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
+DownloadMediaProxy *
+MatrixClient::downloadImage(const QUrl &url)
 {
         QNetworkRequest image_request(url);
 
         auto reply = get(image_request);
-        connect(reply, &QNetworkReply::finished, this, [this, reply, event_id]() {
+        auto proxy = new DownloadMediaProxy;
+        connect(reply, &QNetworkReply::finished, this, [this, reply, proxy]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -762,17 +763,20 @@ MatrixClient::downloadImage(const QString &event_id, const QUrl &url)
                 QPixmap pixmap;
                 pixmap.loadFromData(img);
 
-                emit imageDownloaded(event_id, pixmap);
+                emit proxy->imageDownloaded(pixmap);
         });
+
+        return proxy;
 }
 
-void
-MatrixClient::downloadFile(const QString &event_id, const QUrl &url)
+DownloadMediaProxy *
+MatrixClient::downloadFile(const QUrl &url)
 {
         QNetworkRequest fileRequest(url);
 
         auto reply = get(fileRequest);
-        connect(reply, &QNetworkReply::finished, this, [this, reply, event_id]() {
+        auto proxy = new DownloadMediaProxy;
+        connect(reply, &QNetworkReply::finished, this, [this, reply, proxy]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -788,8 +792,10 @@ MatrixClient::downloadFile(const QString &event_id, const QUrl &url)
                 if (data.size() == 0)
                         return;
 
-                emit fileDownloaded(event_id, data);
+                emit proxy->fileDownloaded(data);
         });
+
+        return proxy;
 }
 
 void
