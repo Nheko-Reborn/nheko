@@ -53,9 +53,6 @@ protected:
         void mousePressEvent(QMouseEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
 
-private slots:
-        void imageDownloaded(const QString &event_id, const QPixmap &img);
-
 private:
         void openUrl();
 

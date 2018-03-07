@@ -21,6 +21,7 @@
 #include <QFileInfo>
 #include <QPainter>
 #include <QPixmap>
+#include <QUuid>
 
 #include "Config.h"
 #include "Utils.h"
@@ -55,9 +56,12 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
         client_.data()->downloadImage(QString::fromStdString(event.event_id), url_);
 
         connect(client_.data(),
-                SIGNAL(imageDownloaded(const QString &, const QPixmap &)),
+                &MatrixClient::imageDownloaded,
                 this,
-                SLOT(imageDownloaded(const QString &, const QPixmap &)));
+                [this](const QString &id, const QPixmap &img) {
+                        if (id == QString::fromStdString(event_.event_id))
+                                setImage(img);
+                });
 }
 
 ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
@@ -87,21 +91,16 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(client_.data()->getHomeServer().toString(), media_params);
 
-        client_.data()->downloadImage(QString::fromStdString(event_.event_id), url_);
+        const auto request_id = QUuid::createUuid().toString();
+        client_.data()->downloadImage(request_id, url_);
 
         connect(client_.data(),
-                SIGNAL(imageDownloaded(const QString &, const QPixmap &)),
+                &MatrixClient::imageDownloaded,
                 this,
-                SLOT(imageDownloaded(const QString &, const QPixmap &)));
-}
-
-void
-ImageItem::imageDownloaded(const QString &event_id, const QPixmap &img)
-{
-        if (event_id != QString::fromStdString(event_.event_id))
-                return;
-
-        setImage(img);
+                [request_id, this](const QString &id, const QPixmap &img) {
+                        if (id == request_id)
+                                setImage(img);
+                });
 }
 
 void
