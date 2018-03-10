@@ -745,7 +745,7 @@ MatrixClient::downloadImage(const QUrl &url)
 
         auto reply = get(image_request);
         auto proxy = new DownloadMediaProxy;
-        connect(reply, &QNetworkReply::finished, this, [this, reply, proxy]() {
+        connect(reply, &QNetworkReply::finished, this, [reply, proxy]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -776,7 +776,7 @@ MatrixClient::downloadFile(const QUrl &url)
 
         auto reply = get(fileRequest);
         auto proxy = new DownloadMediaProxy;
-        connect(reply, &QNetworkReply::finished, this, [this, reply, proxy]() {
+        connect(reply, &QNetworkReply::finished, this, [reply, proxy]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
