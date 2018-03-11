@@ -110,8 +110,8 @@ RoomState::updateFromEvents(const std::vector<Collection> &collection)
                 } else if (mpark::holds_alternative<Name>(event)) {
                         this->name = mpark::get<Name>(event);
                 } else if (mpark::holds_alternative<Member>(event)) {
-                        auto membership = mpark::get<Member>(event);
-                        this->memberships.emplace(membership.state_key, membership);
+                        auto membership                   = mpark::get<Member>(event);
+                        memberships[membership.state_key] = membership;
                 } else if (mpark::holds_alternative<PowerLevels>(event)) {
                         this->power_levels = mpark::get<PowerLevels>(event);
                 } else if (mpark::holds_alternative<Topic>(event)) {

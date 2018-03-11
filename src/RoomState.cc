@@ -51,32 +51,41 @@ RoomState::resolveName()
         }
 
         QSettings settings;
-        auto user_id = settings.value("auth/user_id");
+        auto user_id = settings.value("auth/user_id").toString();
 
         // TODO: Display names should be sorted alphabetically.
         for (const auto membership : memberships) {
                 const auto stateKey = QString::fromStdString(membership.second.state_key);
 
-                if (stateKey == user_id)
-                        continue;
+                if (stateKey == user_id) {
+                        name_ = QString::fromStdString(membership.second.content.display_name);
 
-                if (membership.second.content.membership == mtx::events::state::Membership::Join) {
-                        userAvatar_ = stateKey;
-                        auto displayName =
-                          QString::fromStdString(membership.second.content.display_name);
-
-                        if (displayName.isEmpty())
+                        if (name_.isEmpty())
                                 name_ = stateKey;
-                        else
-                                name_ = displayName;
 
+                        userAvatar_ = stateKey;
+
+                        continue;
+                }
+
+                if (membership.second.content.membership == mtx::events::state::Membership::Join ||
+                    membership.second.content.membership ==
+                      mtx::events::state::Membership::Invite) {
+                        userAvatar_ = stateKey;
+
+                        name_ = QString::fromStdString(membership.second.content.display_name);
+
+                        if (name_.isEmpty())
+                                name_ = stateKey;
+
+                        // TODO: pluralization
+                        if (memberships.size() > 2)
+                                name_ = QString("%1 and %2 others")
+                                          .arg(name_)
+                                          .arg(memberships.size() - 2);
                         break;
                 }
         }
-
-        // TODO: pluralization
-        if (memberships.size() > 2)
-                name_ = QString("%1 and %2 others").arg(name_).arg(memberships.size());
 }
 
 void
