@@ -19,8 +19,10 @@
 #include <QFileInfo>
 #include <QTimer>
 
+#include "ChatPage.h"
 #include "Config.h"
 #include "FloatingButton.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 
 #include "timeline/TimelineView.h"
@@ -504,6 +506,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 
         TimelineItem *view_item =
           new TimelineItem(ty, local_user_, body, with_sender, scroll_widget_);
+        view_item->setRoomId(room_id_);
 
         addTimelineItem(view_item);
 
@@ -628,6 +631,9 @@ TimelineView::paintEvent(QPaintEvent *)
 void
 TimelineView::readLastEvent() const
 {
+        if (!ChatPage::instance()->userSettings()->isReadReceiptsEnabled())
+                return;
+
         const auto eventId = getLastEventId();
 
         if (!eventId.isEmpty())

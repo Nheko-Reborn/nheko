@@ -38,6 +38,7 @@ UserSettings::load()
         isOrderingEnabled_            = settings.value("user/room_ordering", true).toBool();
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
+        isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", "light").toString();
 
         applyTheme();
@@ -86,6 +87,7 @@ UserSettings::save()
 
         settings.setValue("room_ordering", isOrderingEnabled_);
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
+        settings.setValue("read_receipts", isReadReceiptsEnabled_);
         settings.setValue("group_view", isGroupViewEnabled_);
         settings.setValue("theme", theme());
         settings.endGroup();
@@ -166,6 +168,17 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         typingLayout->addWidget(typingLabel);
         typingLayout->addWidget(typingNotifications_, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto receiptsLayout = new QHBoxLayout;
+        receiptsLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto receiptsLabel = new QLabel(tr("Read receipts"), this);
+        readReceipts_      = new Toggle(this);
+        readReceipts_->setActiveColor(QColor("#38A3D8"));
+        readReceipts_->setInactiveColor(QColor("gray"));
+        receiptsLabel->setStyleSheet("font-size: 15px;");
+
+        receiptsLayout->addWidget(receiptsLabel);
+        receiptsLayout->addWidget(readReceipts_, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto themeLabel_ = new QLabel(tr("Theme"), this);
@@ -194,6 +207,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addLayout(groupViewLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(typingLayout);
+        mainLayout_->addLayout(receiptsLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
@@ -223,6 +237,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setTypingNotifications(!isDisabled);
         });
 
+        connect(readReceipts_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setReadReceipts(!isDisabled);
+        });
+
         connect(backBtn_, &QPushButton::clicked, this, [this]() {
                 settings_->save();
                 emit moveBack();
@@ -239,6 +257,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         roomOrderToggle_->setState(!settings_->isOrderingEnabled());
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
+        readReceipts_->setState(!settings_->isReadReceiptsEnabled());
 }
 
 void

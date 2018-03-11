@@ -21,7 +21,6 @@
 #include <QTextEdit>
 
 #include "Avatar.h"
-#include "ChatPage.h"
 #include "Config.h"
 
 #include "timeline/TimelineItem.h"
@@ -44,13 +43,18 @@ TimelineItem::init()
 
         QFontMetrics fm(font_);
 
-        receiptsMenu_     = new QMenu(this);
+        contextMenu_      = new QMenu(this);
         showReadReceipts_ = new QAction("Read receipts", this);
-        receiptsMenu_->addAction(showReadReceipts_);
+        markAsRead_       = new QAction("Mark as read", this);
+        contextMenu_->addAction(showReadReceipts_);
+        contextMenu_->addAction(markAsRead_);
+
         connect(showReadReceipts_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
                         ChatPage::instance()->showReadReceipts(event_id_);
         });
+
+        connect(markAsRead_, &QAction::triggered, this, [this]() { sendReadReceipt(); });
 
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
@@ -360,6 +364,8 @@ TimelineItem::markReceived()
 {
         checkmark_->setText(CHECKMARK);
         checkmark_->setAlignment(Qt::AlignTop);
+
+        sendReadReceipt();
 }
 
 // Only the body is displayed.
@@ -500,8 +506,8 @@ TimelineItem::setUserAvatar(const QImage &avatar)
 void
 TimelineItem::contextMenuEvent(QContextMenuEvent *event)
 {
-        if (receiptsMenu_)
-                receiptsMenu_->exec(event->globalPos());
+        if (contextMenu_)
+                contextMenu_->exec(event->globalPos());
 }
 
 void

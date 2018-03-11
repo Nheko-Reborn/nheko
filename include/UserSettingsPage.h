@@ -61,6 +61,12 @@ public:
                 save();
         };
 
+        void setReadReceipts(bool state)
+        {
+                isReadReceiptsEnabled_ = state;
+                save();
+        }
+
         void setTypingNotifications(bool state)
         {
                 isTypingNotificationsEnabled_ = state;
@@ -72,6 +78,7 @@ public:
         bool isOrderingEnabled() const { return isOrderingEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
+        bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -82,6 +89,7 @@ private:
         bool isOrderingEnabled_;
         bool isGroupViewEnabled_;
         bool isTypingNotificationsEnabled_;
+        bool isReadReceiptsEnabled_;
 };
 
 class HorizontalLine : public QFrame
@@ -123,6 +131,7 @@ private:
         Toggle *roomOrderToggle_;
         Toggle *groupViewToggle_;
         Toggle *typingNotifications_;
+        Toggle *readReceipts_;
 
         QComboBox *themeCombo_;
 

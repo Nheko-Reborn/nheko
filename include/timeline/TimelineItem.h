@@ -26,6 +26,7 @@
 #include <QStyleOption>
 
 #include "AvatarProvider.h"
+#include "ChatPage.h"
 #include "RoomInfoListItem.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
@@ -85,6 +86,12 @@ public:
         QString eventId() const { return event_id_; }
         void setEventId(const QString &event_id) { event_id_ = event_id; }
         void markReceived();
+        void setRoomId(const QString &room_id) { room_id_ = room_id; }
+        void sendReadReceipt() const
+        {
+                if (!event_id_.isEmpty())
+                        ChatPage::instance()->readEvent(room_id_, event_id_);
+        }
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -114,11 +121,13 @@ private:
 
         QString replaceEmoji(const QString &body);
         QString event_id_;
+        QString room_id_;
 
         DescInfo descriptionMsg_;
 
-        QMenu *receiptsMenu_;
+        QMenu *contextMenu_;
         QAction *showReadReceipts_;
+        QAction *markAsRead_;
 
         QHBoxLayout *topLayout_;
         //! The message and the timestamp/checkmark.

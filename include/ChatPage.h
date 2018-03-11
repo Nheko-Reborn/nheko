@@ -68,6 +68,12 @@ public:
         QString currentRoom() const { return current_room_; }
 
         static ChatPage *instance() { return instance_; }
+        void readEvent(const QString &room_id, const QString &event_id)
+        {
+                client_->readEvent(room_id, event_id);
+        }
+
+        QSharedPointer<UserSettings> userSettings() { return userSettings_; }
 
 signals:
         void contentLoaded();
