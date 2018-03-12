@@ -144,7 +144,7 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(serverInput_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(client_.data(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
-        connect(client_.data(), SIGNAL(loginError(QString)), this, SIGNAL(errorOccured()));
+        connect(client_.data(), SIGNAL(loginError(QString)), this, SIGNAL(errorOccurred()));
         connect(matrixid_input_, SIGNAL(editingFinished()), this, SLOT(onMatrixIdEntered()));
         connect(client_.data(), SIGNAL(versionError(QString)), this, SLOT(versionError(QString)));
         connect(client_.data(), SIGNAL(versionSuccess()), this, SLOT(versionSuccess()));

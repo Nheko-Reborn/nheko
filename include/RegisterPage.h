@@ -20,11 +20,16 @@
 #include <QLabel>
 #include <QLayout>
 #include <QSharedPointer>
+#include <memory>
 
 class FlatButton;
 class MatrixClient;
 class RaisedButton;
 class TextField;
+
+namespace dialogs {
+class ReCaptcha;
+}
 
 class RegisterPage : public QWidget
 {
@@ -38,6 +43,8 @@ protected:
 
 signals:
         void backButtonClicked();
+        void errorOccurred();
+        void registering();
 
 private slots:
         void onBackButtonClicked();
@@ -70,4 +77,6 @@ private:
 
         // Matrix client API provider.
         QSharedPointer<MatrixClient> client_;
+        //! ReCaptcha dialog.
+        std::shared_ptr<dialogs::ReCaptcha> captchaDialog_;
 };

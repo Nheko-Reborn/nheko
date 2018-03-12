@@ -144,6 +144,7 @@ set(SRC_FILES
     src/dialogs/LeaveRoom.cc
     src/dialogs/Logout.cc
     src/dialogs/ReadReceipts.cc
+    src/dialogs/ReCaptcha.cpp
 
     # Emoji
     src/emoji/Category.cc
@@ -192,7 +193,6 @@ set(SRC_FILES
     src/MainWindow.cc
     src/MatrixClient.cc
     src/QuickSwitcher.cc
-    src/Register.cc
     src/RegisterPage.cc
     src/RoomInfoListItem.cc
     src/RoomList.cc
@@ -238,6 +238,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/dialogs/LeaveRoom.h
     include/dialogs/Logout.h
     include/dialogs/ReadReceipts.h
+    include/dialogs/ReCaptcha.hpp
 
     # Emoji
     include/emoji/Category.h

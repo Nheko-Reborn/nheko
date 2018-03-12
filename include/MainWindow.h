@@ -49,6 +49,7 @@ class InviteUsers;
 class JoinRoom;
 class LeaveRoom;
 class Logout;
+class ReCaptcha;
 }
 
 class MainWindow : public QMainWindow

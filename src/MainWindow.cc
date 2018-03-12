@@ -85,7 +85,12 @@ MainWindow::MainWindow(QWidget *parent)
         connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
         connect(login_page_, &LoginPage::loggingIn, this, &MainWindow::showOverlayProgressBar);
         connect(
-          login_page_, &LoginPage::errorOccured, this, [this]() { removeOverlayProgressBar(); });
+          register_page_, &RegisterPage::registering, this, &MainWindow::showOverlayProgressBar);
+        connect(
+          login_page_, &LoginPage::errorOccurred, this, [this]() { removeOverlayProgressBar(); });
+        connect(register_page_, &RegisterPage::errorOccurred, this, [this]() {
+                removeOverlayProgressBar();
+        });
         connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
 
         connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
@@ -117,6 +122,11 @@ MainWindow::MainWindow(QWidget *parent)
 
         connect(client_.data(),
                 SIGNAL(loginSuccess(QString, QString, QString)),
+                this,
+                SLOT(showChatPage(QString, QString, QString)));
+
+        connect(client_.data(),
+                SIGNAL(registerSuccess(QString, QString, QString)),
                 this,
                 SLOT(showChatPage(QString, QString, QString)));
 

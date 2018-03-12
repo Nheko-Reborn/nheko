@@ -54,7 +54,8 @@ public:
         void login(const QString &username, const QString &password) noexcept;
         void registerUser(const QString &username,
                           const QString &password,
-                          const QString &server) noexcept;
+                          const QString &server,
+                          const QString &session = "") noexcept;
         void versions() noexcept;
         void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
         //! Download user's avatar.
@@ -109,6 +110,10 @@ public slots:
 signals:
         void loginError(const QString &error);
         void registerError(const QString &error);
+        void registrationFlow(const QString &user,
+                              const QString &pass,
+                              const QString &server,
+                              const QString &session);
         void versionError(const QString &error);
 
         void loggedOut();

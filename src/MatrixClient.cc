@@ -27,9 +27,10 @@
 #include <QPixmap>
 #include <QSettings>
 #include <QUrlQuery>
+#include <mtx/errors.hpp>
 
+#include "Deserializable.h"
 #include "MatrixClient.h"
-#include "Register.h"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
   : QNetworkAccessManager(parent)
@@ -193,50 +194,66 @@ MatrixClient::logout() noexcept
 }
 
 void
-MatrixClient::registerUser(const QString &user, const QString &pass, const QString &server) noexcept
+MatrixClient::registerUser(const QString &user,
+                           const QString &pass,
+                           const QString &server,
+                           const QString &session) noexcept
 {
         setServer(server);
 
-        QUrlQuery query;
-        query.addQueryItem("kind", "user");
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + "/register");
-        endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-        RegisterRequest body(user, pass);
-        auto reply = post(request, body.serialize());
+        QJsonObject body{{"username", user}, {"password", pass}};
 
-        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        // We trying to register using the response from the recaptcha.
+        if (!session.isEmpty())
+                body = QJsonObject{
+                  {"username", user},
+                  {"password", pass},
+                  {"auth", QJsonObject{{"type", "m.login.recaptcha"}, {"session", session}}}};
+
+        auto reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
+
+        connect(reply, &QNetworkReply::finished, this, [this, reply, user, pass, server]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
                 auto data = reply->readAll();
-                auto json = QJsonDocument::fromJson(data);
 
-                if (status == 0 || status >= 400) {
-                        if (json.isObject() && json.object().contains("error"))
-                                emit registerError(json.object().value("error").toString());
-                        else
-                                emit registerError(reply->errorString());
-
-                        return;
+                // Try to parse a regular register response.
+                try {
+                        mtx::responses::Register res = nlohmann::json::parse(data);
+                        emit registerSuccess(QString::fromStdString(res.user_id.toString()),
+                                             QString::fromStdString(res.user_id.hostname()),
+                                             QString::fromStdString(res.access_token));
+                } catch (const std::exception &e) {
+                        qWarning() << "Register" << e.what();
                 }
 
-                RegisterResponse response;
-
+                // Check if the server requires a registration flow.
                 try {
-                        response.deserialize(json);
-                        emit registerSuccess(response.getUserId(),
-                                             response.getHomeServer(),
-                                             response.getAccessToken());
-                } catch (DeserializationException &e) {
-                        qWarning() << "Register" << e.what();
-                        emit registerError("Received malformed response.");
+                        mtx::responses::RegistrationFlows res = nlohmann::json::parse(data);
+                        emit registrationFlow(
+                          user, pass, server, QString::fromStdString(res.session));
+                        return;
+                } catch (const std::exception &) {
+                }
+
+                // We encountered an unknown error.
+                if (status == 0 || status >= 400) {
+                        try {
+                                mtx::errors::Error res = nlohmann::json::parse(data);
+                                emit registerError(QString::fromStdString(res.error));
+                                return;
+                        } catch (const std::exception &) {
+                        }
+
+                        emit registerError(reply->errorString());
                 }
         });
 }

@@ -5,6 +5,7 @@ nheko
 [![Latest Release](https://img.shields.io/github/release/mujx/nheko.svg)](https://github.com/mujx/nheko/releases)
 [![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
 [![AUR: nheko-git](https://img.shields.io/badge/AUR-nheko--git-blue.svg)](https://aur.archlinux.org/packages/nheko-git)
+[![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
@@ -14,6 +15,7 @@ feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IR
 Most of the features you would expect from a chat application are missing right now
 but we are getting close to a more feature complete client.
 Specifically there is support for:
+- User registration.
 - Creating, joining & leaving rooms.
 - Sending & receiving invites.
 - Sending & receiving files and emoji (inline widgets for images, audio and file messages).

@@ -101,6 +101,7 @@ Avatar {
 }
 
 dialogs--Logout,
+dialogs--ReCaptcha,
 dialogs--LeaveRoom,
 dialogs--CreateRoom,
 dialogs--InviteUsers,

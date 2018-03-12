@@ -16,13 +16,17 @@
  */
 
 #include <QStyleOption>
+#include <QTimer>
 
 #include "Config.h"
 #include "FlatButton.h"
+#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "RegisterPage.h"
 #include "TextField.h"
+
+#include "dialogs/ReCaptcha.hpp"
 
 RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
   : QWidget(parent)
@@ -126,6 +130,30 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                 SIGNAL(registerError(const QString &)),
                 this,
                 SLOT(registerError(const QString &)));
+        connect(client_.data(),
+                &MatrixClient::registrationFlow,
+                this,
+                [this](const QString &user,
+                       const QString &pass,
+                       const QString &server,
+                       const QString &session) {
+                        emit errorOccurred();
+
+                        if (!captchaDialog_) {
+                                captchaDialog_ =
+                                  std::make_shared<dialogs::ReCaptcha>(server, session, this);
+                                connect(captchaDialog_.get(),
+                                        &dialogs::ReCaptcha::closing,
+                                        this,
+                                        [this, user, pass, server, session]() {
+                                                captchaDialog_->close();
+                                                emit registering();
+                                                client_->registerUser(user, pass, server, session);
+                                        });
+                        }
+
+                        QTimer::singleShot(1000, this, [this]() { captchaDialog_->show(); });
+                });
 
         setLayout(top_layout_);
 }
@@ -139,6 +167,7 @@ RegisterPage::onBackButtonClicked()
 void
 RegisterPage::registerError(const QString &msg)
 {
+        emit errorOccurred();
         error_label_->setText(msg);
 }
 
@@ -161,6 +190,7 @@ RegisterPage::onRegisterButtonClicked()
                 QString server   = server_input_->text();
 
                 client_->registerUser(username, password, server);
+                emit registering();
         }
 }
 
