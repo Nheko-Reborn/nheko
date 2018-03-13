@@ -51,7 +51,7 @@ ReCaptcha::ReCaptcha(const QString &server, const QString &session, QWidget *par
         layout->addWidget(label);
         layout->addLayout(buttonLayout);
 
-        connect(openCaptchaBtn_, &QPushButton::clicked, [server, session, this]() {
+        connect(openCaptchaBtn_, &QPushButton::clicked, [server, session]() {
                 const auto url =
                   QString(
                     "https://%1/_matrix/client/r0/auth/m.login.recaptcha/fallback/web?session=%2")

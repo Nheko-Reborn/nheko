@@ -15,7 +15,7 @@ build:
     verbosity: minimal
 
 install:
-    - set QT_DIR=C:\Qt\5.10.0\msvc2015_64
+    - set QT_DIR=C:\Qt\5.10.1\msvc2015_64
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
 
 build_script:
@@ -45,7 +45,7 @@ after_build:
     - echo %BUILD%
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
-    - windeployqt --qmldir C:\Qt\5.10.0\msvc2015_64\qml\ --release NhekoRelease\nheko.exe
+    - windeployqt --qmldir C:\Qt\5.10.1\msvc2015_64\qml\ --release NhekoRelease\nheko.exe
     - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
     - copy C:\OpenSSL-Win64\bin\libeay32.dll .\NhekoRelease\libeay32.dll
     - copy C:\OpenSSL-Win64\lib\libeay32.lib .\NhekoRelease\libeay32.lib
