@@ -137,6 +137,8 @@ TimelineItem::TimelineItem(ImageItem *image,
         init();
 
         setupLocalWidgetLayout<ImageItem>(image, userid, "sent an image", withSender);
+
+        addSaveImageAction(image);
 }
 
 TimelineItem::TimelineItem(FileItem *file, const QString &userid, bool withSender, QWidget *parent)
@@ -177,6 +179,8 @@ TimelineItem::TimelineItem(ImageItem *image,
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Image>, ImageItem>(
           image, event, " sent an image", with_sender);
+
+        addSaveImageAction(image);
 }
 
 TimelineItem::TimelineItem(FileItem *file,
@@ -517,4 +521,15 @@ TimelineItem::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+TimelineItem::addSaveImageAction(ImageItem *image)
+{
+        if (contextMenu_) {
+                auto saveImage = new QAction("Save image", this);
+                contextMenu_->addAction(saveImage);
+
+                connect(saveImage, &QAction::triggered, image, &ImageItem::saveAs);
+        }
 }

@@ -18,6 +18,7 @@
 #include <QBrush>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QFileDialog>
 #include <QFileInfo>
 #include <QPainter>
 #include <QPixmap>
@@ -218,4 +219,33 @@ ImageItem::paintEvent(QPaintEvent *event)
                 textRegion_.adjust(5, 0, 5, 0);
                 painter.drawText(textRegion_, Qt::AlignVCenter, elidedText);
         }
+}
+
+void
+ImageItem::saveAs()
+{
+        auto filename = QFileDialog::getSaveFileName(this, tr("Save image"), text_);
+
+        if (filename.isEmpty())
+                return;
+
+        auto proxy = client_->downloadFile(url_);
+        connect(proxy,
+                &DownloadMediaProxy::fileDownloaded,
+                this,
+                [proxy, this, filename](const QByteArray &data) {
+                        proxy->deleteLater();
+
+                        try {
+                                QFile file(filename);
+
+                                if (!file.open(QIODevice::WriteOnly))
+                                        return;
+
+                                file.write(data);
+                                file.close();
+                        } catch (const std::exception &ex) {
+                                qDebug() << "Error while saving file to:" << ex.what();
+                        }
+                });
 }

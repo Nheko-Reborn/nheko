@@ -48,6 +48,10 @@ public:
 
         QSize sizeHint() const override;
 
+public slots:
+        //! Show a save as dialog for the image.
+        void saveAs();
+
 protected:
         void paintEvent(QPaintEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
