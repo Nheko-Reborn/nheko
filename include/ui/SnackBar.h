@@ -32,7 +32,6 @@ protected:
         void mousePressEvent(QMouseEvent *event) override;
 
 private slots:
-        void onTimeout();
         void hideMessage();
 
 private:

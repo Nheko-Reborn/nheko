@@ -218,6 +218,12 @@ include(MatrixStructs)
 include_directories(${MATRIX_STRUCTS_INCLUDE_DIRS})
 
 #
+# libtweeny
+#
+include(Tweeny)
+include_directories(${TWEENY_INCLUDE_DIRS})
+
+#
 # lmdbxx
 #
 include(LMDBXX)
@@ -342,7 +348,7 @@ else()
     target_link_libraries (nheko ${NHEKO_LIBS} Qt5::Multimedia)
 endif()
 
-add_dependencies(nheko MatrixStructs lmdbxx)
+add_dependencies(nheko MatrixStructs Tweeny lmdbxx)
 
 if(UNIX AND NOT APPLE)
     install (TARGETS nheko RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

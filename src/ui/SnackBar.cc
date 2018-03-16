@@ -1,6 +1,8 @@
 #include <QDebug>
 #include <QPainter>
 
+#include <tweeny.h>
+
 #include "SnackBar.h"
 
 constexpr int STARTING_OFFSET = 1;
@@ -27,7 +29,18 @@ SnackBar::SnackBar(QWidget *parent)
         hideTimer_ = QSharedPointer<QTimer>(new QTimer);
         hideTimer_->setSingleShot(true);
 
-        connect(showTimer_.data(), SIGNAL(timeout()), this, SLOT(onTimeout()));
+        auto offset_anim = tweeny::from(1.0f).to(0.0f).during(4000).via(tweeny::easing::elasticOut);
+        connect(showTimer_.data(), &QTimer::timeout, this, [this, offset_anim]() mutable {
+                if (offset_anim.progress() < 1.0f) {
+                        offset_ = offset_anim.step(0.02f);
+                        update();
+                } else {
+                        showTimer_->stop();
+                        hideTimer_->start(duration_);
+                        offset_anim.seek(0.0f);
+                }
+        });
+
         connect(hideTimer_.data(), SIGNAL(timeout()), this, SLOT(hideMessage()));
 }
 
@@ -73,19 +86,6 @@ SnackBar::showMessage(const QString &msg)
                 return;
 
         start();
-}
-
-void
-SnackBar::onTimeout()
-{
-        offset_ -= 1.1;
-
-        if (offset_ <= 0.0) {
-                showTimer_->stop();
-                hideTimer_->start(duration_);
-        }
-
-        update();
 }
 
 void
