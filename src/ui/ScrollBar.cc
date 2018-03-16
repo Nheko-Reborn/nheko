@@ -15,60 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-#include <QGraphicsOpacityEffect>
-#include <QPropertyAnimation>
-
 #include "ScrollBar.h"
 
 ScrollBar::ScrollBar(QScrollArea *area, QWidget *parent)
   : QScrollBar(parent)
   , area_{area}
-{
-        hideTimer_.setSingleShot(true);
-
-        connect(&hideTimer_, &QTimer::timeout, this, &ScrollBar::fadeOut);
-
-        eff = new QGraphicsOpacityEffect(this);
-        setGraphicsEffect(eff);
-}
-
-void
-ScrollBar::fadeOut()
-{
-        isActive = false;
-
-        QPropertyAnimation *anim = new QPropertyAnimation(eff, "opacity");
-        anim->setDuration(AnimationDuration);
-        anim->setStartValue(1);
-        anim->setEndValue(0);
-        anim->setEasingCurve(QEasingCurve::Linear);
-        anim->start(QPropertyAnimation::DeleteWhenStopped);
-}
-
-void
-ScrollBar::fadeIn()
-{
-        QPropertyAnimation *anim = new QPropertyAnimation(eff, "opacity");
-        anim->setDuration(AnimationDuration);
-        anim->setStartValue(0);
-        anim->setEndValue(1);
-        anim->setEasingCurve(QEasingCurve::Linear);
-        anim->start(QPropertyAnimation::DeleteWhenStopped);
-}
-
-void
-ScrollBar::sliderChange(SliderChange change)
-{
-        if (!isActive)
-                fadeIn();
-
-        hideTimer_.stop();
-        hideTimer_.start(1500);
-        isActive = true;
-
-        QScrollBar::sliderChange(change);
-}
+{}
 
 void
 ScrollBar::paintEvent(QPaintEvent *)

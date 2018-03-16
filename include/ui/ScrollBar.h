@@ -17,11 +17,9 @@
 
 #pragma once
 
-#include <QGraphicsOpacityEffect>
 #include <QPainter>
 #include <QScrollArea>
 #include <QScrollBar>
-#include <QTimer>
 
 class ScrollBar : public QScrollBar
 {
@@ -32,9 +30,6 @@ class ScrollBar : public QScrollBar
 public:
         ScrollBar(QScrollArea *area, QWidget *parent = nullptr);
 
-        void fadeIn();
-        void fadeOut();
-
         QColor backgroundColor() const { return bgColor_; }
         void setBackgroundColor(QColor &color) { bgColor_ = color; }
 
@@ -43,19 +38,13 @@ public:
 
 protected:
         void paintEvent(QPaintEvent *e) override;
-        void sliderChange(SliderChange change) override;
 
 private:
         int roundRadius_     = 4;
         int handleWidth_     = 7;
         int minHandleHeight_ = 20;
-        bool isActive        = false;
 
-        const int AnimationDuration = 300;
-        const int Padding           = 4;
-
-        QGraphicsOpacityEffect *eff;
-        QTimer hideTimer_;
+        const int Padding = 4;
 
         QScrollArea *area_;
         QRect handle_;
