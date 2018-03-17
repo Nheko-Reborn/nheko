@@ -491,6 +491,7 @@ TimelineView::updatePendingMessage(int txn_id, QString event_id)
                 if (msg.widget) {
                         msg.widget->setEventId(event_id);
                         msg.widget->markReceived();
+                        eventIds_[event_id] = msg.widget;
                 }
 
                 pending_sent_msgs_.append(msg);
@@ -591,6 +592,9 @@ TimelineView::isPendingMessage(const QString &txnid,
 void
 TimelineView::removePendingMessage(const QString &txnid)
 {
+        if (txnid.isEmpty())
+                return;
+
         for (auto it = pending_sent_msgs_.begin(); it != pending_sent_msgs_.end(); ++it) {
                 if (QString::number(it->txn_id) == txnid) {
                         int index = std::distance(pending_sent_msgs_.begin(), it);
@@ -738,4 +742,45 @@ TimelineView::toggleScrollDownButton()
         } else {
                 scrollDownBtn_->hide();
         }
+}
+
+void
+TimelineView::removeEvent(const QString &event_id)
+{
+        if (!eventIds_.contains(event_id)) {
+                qWarning() << "unknown event_id couldn't be removed:" << event_id;
+                return;
+        }
+
+        auto removedItem = eventIds_[event_id];
+
+        // Find the next and the previous widgets in the timeline
+        auto prevItem = qobject_cast<TimelineItem *>(relativeWidget(removedItem, -1));
+        auto nextItem = qobject_cast<TimelineItem *>(relativeWidget(removedItem, 1));
+
+        // If it's a TimelineItem add an avatar.
+        if (prevItem)
+                prevItem->addAvatar();
+
+        if (nextItem)
+                nextItem->addAvatar();
+
+        // Finally remove the event.
+        removedItem->deleteLater();
+        eventIds_.remove(event_id);
+}
+
+QWidget *
+TimelineView::relativeWidget(TimelineItem *item, int dt) const
+{
+        int pos = scroll_layout_->indexOf(item);
+
+        if (pos == -1)
+                return nullptr;
+
+        pos = pos + dt;
+
+        bool isOutOfBounds = (pos <= 0 || pos > scroll_layout_->count() - 1);
+
+        return isOutOfBounds ? nullptr : scroll_layout_->itemAt(pos)->widget();
 }

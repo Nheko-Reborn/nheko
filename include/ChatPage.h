@@ -72,6 +72,10 @@ public:
         {
                 client_->readEvent(room_id, event_id);
         }
+        void redactEvent(const QString &room_id, const QString &event_id)
+        {
+                client_->redactEvent(room_id, event_id);
+        }
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
 

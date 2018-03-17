@@ -86,6 +86,7 @@ public:
         void sendTypingNotification(const QString &roomid, int timeoutInMillis = 20000);
         void removeTypingNotification(const QString &roomid);
         void readEvent(const QString &room_id, const QString &event_id);
+        void redactEvent(const QString &room_id, const QString &event_id);
         void inviteUser(const QString &room_id, const QString &user);
         void createRoom(const mtx::requests::CreateRoom &request);
 
@@ -170,6 +171,9 @@ signals:
         void joinedRoom(const QString &room_id);
         void leftRoom(const QString &room_id);
         void roomCreationFailed(const QString &msg);
+
+        void redactionFailed(const QString &error);
+        void redactionCompleted(const QString &room_id, const QString &event_id);
 
 private:
         QNetworkReply *makeUploadRequest(QSharedPointer<QIODevice> iodev);

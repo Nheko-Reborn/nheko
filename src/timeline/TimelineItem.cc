@@ -40,18 +40,27 @@ TimelineItem::init()
         body_       = nullptr;
 
         font_.setPixelSize(conf::fontSize);
+        usernameFont_ = font_;
+        usernameFont_.setWeight(60);
 
         QFontMetrics fm(font_);
 
         contextMenu_      = new QMenu(this);
         showReadReceipts_ = new QAction("Read receipts", this);
         markAsRead_       = new QAction("Mark as read", this);
+        redactMsg_        = new QAction("Redact message", this);
         contextMenu_->addAction(showReadReceipts_);
         contextMenu_->addAction(markAsRead_);
+        contextMenu_->addAction(redactMsg_);
 
         connect(showReadReceipts_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
                         ChatPage::instance()->showReadReceipts(event_id_);
+        });
+
+        connect(redactMsg_, &QAction::triggered, this, [this]() {
+                if (!event_id_.isEmpty())
+                        ChatPage::instance()->redactEvent(room_id_, event_id_);
         });
 
         connect(markAsRead_, &QAction::triggered, this, [this]() { sendReadReceipt(); });
@@ -59,10 +68,11 @@ TimelineItem::init()
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
         messageLayout_ = new QHBoxLayout;
+        messageLayout_->setContentsMargins(0, 0, 20, 4);
+        messageLayout_->setSpacing(20);
 
         topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
         topLayout_->setSpacing(0);
-
         topLayout_->addLayout(mainLayout_, 1);
 
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
@@ -73,7 +83,7 @@ TimelineItem::init()
 
         // Setting fixed width for checkmark because systems may have a differing width for a
         // space and the Unicode checkmark.
-        checkmark_ = new QLabel(" ", this);
+        checkmark_ = new QLabel(this);
         checkmark_->setFont(checkmarkFont);
         checkmark_->setFixedWidth(QFontMetrics{checkmarkFont}.width(CHECKMARK));
 }
@@ -105,9 +115,6 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         body.replace(conf::strings::url_regex, conf::strings::url_html);
         body.replace("\n", "<br/>");
         generateTimestamp(timestamp);
-
-        messageLayout_->setContentsMargins(0, 0, 20, 4);
-        messageLayout_->setSpacing(20);
 
         if (withSender) {
                 generateBody(displayName, body);
@@ -240,9 +247,6 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         body.replace("\n", "<br/>");
         body = "<i>" + body + "</i>";
 
-        messageLayout_->setContentsMargins(0, 0, 20, 4);
-        messageLayout_->setSpacing(20);
-
         if (with_sender) {
                 auto displayName = TimelineViewManager::displayName(sender);
 
@@ -288,9 +292,6 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         emoteMsg = emoteMsg.toHtmlEscaped();
         emoteMsg.replace(conf::strings::url_regex, conf::strings::url_html);
         emoteMsg.replace("\n", "<br/>");
-
-        messageLayout_->setContentsMargins(0, 0, 20, 4);
-        messageLayout_->setSpacing(20);
 
         if (with_sender) {
                 generateBody(displayName, emoteMsg);
@@ -340,9 +341,6 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         body = body.toHtmlEscaped();
         body.replace(conf::strings::url_regex, conf::strings::url_html);
         body.replace("\n", "<br/>");
-
-        messageLayout_->setContentsMargins(0, 0, 20, 4);
-        messageLayout_->setSpacing(20);
 
         if (with_sender) {
                 generateBody(displayName, body);
@@ -400,25 +398,13 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
                         sender = userid.split(":")[0].split("@")[1];
         }
 
-        QFont usernameFont = font_;
-        usernameFont.setWeight(60);
-
-        QFontMetrics fm(usernameFont);
+        QFontMetrics fm(usernameFont_);
 
         userName_ = new QLabel(this);
-        userName_->setFont(usernameFont);
+        userName_->setFont(usernameFont_);
         userName_->setText(fm.elidedText(sender, Qt::ElideRight, 500));
 
-        if (body.isEmpty())
-                return;
-
-        body_ = new QLabel(this);
-        body_->setFont(font_);
-        body_->setWordWrap(true);
-        body_->setText(QString("<span>%1</span>").arg(replaceEmoji(body)));
-        body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-        body_->setOpenExternalLinks(true);
-        body_->setMargin(0);
+        generateBody(body);
 }
 
 void
@@ -474,12 +460,8 @@ TimelineItem::setupAvatarLayout(const QString &userName)
         if (userName[0] == '@' && userName.size() > 1)
                 userAvatar_->setLetter(QChar(userName[1]).toUpper());
 
-        sideLayout_ = new QVBoxLayout;
-        sideLayout_->setMargin(0);
-        sideLayout_->setSpacing(0);
-        sideLayout_->addWidget(userAvatar_);
-        sideLayout_->addStretch(1);
-        topLayout_->insertLayout(0, sideLayout_);
+        topLayout_->insertWidget(0, userAvatar_);
+        topLayout_->setAlignment(userAvatar_, Qt::AlignTop);
 
         headerLayout_ = new QVBoxLayout;
         headerLayout_->setMargin(0);
@@ -492,8 +474,8 @@ TimelineItem::setupAvatarLayout(const QString &userName)
 void
 TimelineItem::setupSimpleLayout()
 {
-        topLayout_->setContentsMargins(conf::timeline::avatarSize + conf::timeline::msgMargin + 1,
-                                       conf::timeline::msgMargin / 3,
+        topLayout_->setContentsMargins(conf::timeline::msgMargin + conf::timeline::avatarSize + 2,
+                                       conf::timeline::msgMargin,
                                        0,
                                        0);
 }
@@ -532,4 +514,49 @@ TimelineItem::addSaveImageAction(ImageItem *image)
 
                 connect(saveImage, &QAction::triggered, image, &ImageItem::saveAs);
         }
+}
+
+void
+TimelineItem::addAvatar()
+{
+        if (userAvatar_)
+                return;
+
+        // TODO: should be replaced with the proper event struct.
+        auto userid      = descriptionMsg_.userid;
+        auto displayName = TimelineViewManager::displayName(userid);
+
+        QFontMetrics fm(usernameFont_);
+        userName_ = new QLabel(this);
+        userName_->setFont(usernameFont_);
+        userName_->setText(fm.elidedText(displayName, Qt::ElideRight, 500));
+
+        QWidget *widget = nullptr;
+
+        // Extract the widget before we delete its layout.
+        if (widgetLayout_)
+                widget = widgetLayout_->itemAt(0)->widget();
+
+        // Remove all items from the layout.
+        QLayoutItem *item;
+        while ((item = messageLayout_->takeAt(0)) != 0)
+                delete item;
+
+        setupAvatarLayout(displayName);
+
+        // Restore widget's layout.
+        if (widget) {
+                widgetLayout_ = new QHBoxLayout();
+                widgetLayout_->setContentsMargins(0, 5, 0, 0);
+                widgetLayout_->addWidget(widget);
+                widgetLayout_->addStretch(1);
+
+                headerLayout_->addLayout(widgetLayout_);
+        }
+
+        messageLayout_->addLayout(headerLayout_, 1);
+        messageLayout_->addWidget(checkmark_);
+        messageLayout_->addWidget(timestamp_);
+
+        AvatarProvider::resolve(userid, [this](const QImage &img) { setUserAvatar(img); });
 }

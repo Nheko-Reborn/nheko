@@ -44,6 +44,16 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QW
                 &MatrixClient::messageSendFailed,
                 this,
                 &TimelineViewManager::messageSendFailed);
+
+        connect(client_.data(),
+                &MatrixClient::redactionCompleted,
+                this,
+                [this](const QString &room_id, const QString &event_id) {
+                        auto view = views_[room_id];
+
+                        if (view)
+                                view->removeEvent(event_id);
+                });
 }
 
 void

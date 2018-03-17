@@ -1281,3 +1281,47 @@ MatrixClient::getUploadReply(QNetworkReply *reply)
 
         return object;
 }
+
+void
+MatrixClient::redactEvent(const QString &room_id, const QString &event_id)
+{
+        QUrlQuery query;
+        query.addQueryItem("access_token", token_);
+
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/redact/%2/%3")
+                                           .arg(room_id)
+                                           .arg(event_id)
+                                           .arg(incrementTransactionId()));
+        endpoint.setQuery(query);
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+
+        // TODO: no reason specified
+        QJsonObject body{};
+        auto reply = put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
+
+        connect(reply, &QNetworkReply::finished, this, [reply, this, room_id, event_id]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                auto data  = reply->readAll();
+
+                if (status == 0 || status >= 400) {
+                        try {
+                                mtx::errors::Error res = nlohmann::json::parse(data);
+                                emit redactionFailed(QString::fromStdString(res.error));
+                                return;
+                        } catch (const std::exception &) {
+                        }
+                }
+
+                try {
+                        mtx::responses::EventId res = nlohmann::json::parse(data);
+                        emit redactionCompleted(room_id, event_id);
+                } catch (const std::exception &e) {
+                        emit redactionFailed(QString::fromStdString(e.what()));
+                }
+        });
+}

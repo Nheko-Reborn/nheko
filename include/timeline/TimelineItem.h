@@ -93,6 +93,9 @@ public:
                         ChatPage::instance()->readEvent(room_id_, event_id_);
         }
 
+        //! Add a user avatar for this event.
+        void addAvatar();
+
 protected:
         void paintEvent(QPaintEvent *event) override;
         void contextMenuEvent(QContextMenuEvent *event) override;
@@ -130,20 +133,18 @@ private:
         QMenu *contextMenu_;
         QAction *showReadReceipts_;
         QAction *markAsRead_;
+        QAction *redactMsg_;
 
-        QHBoxLayout *topLayout_;
-        //! The message and the timestamp/checkmark.
-        QHBoxLayout *messageLayout_;
-        //! Avatar or Timestamp
-        QVBoxLayout *sideLayout_;
-        //! Header & Message body
-        QVBoxLayout *mainLayout_;
-
-        QVBoxLayout *headerLayout_; // Username (&) Timestamp
+        QHBoxLayout *topLayout_     = nullptr;
+        QHBoxLayout *messageLayout_ = nullptr;
+        QVBoxLayout *mainLayout_    = nullptr;
+        QVBoxLayout *headerLayout_  = nullptr;
+        QHBoxLayout *widgetLayout_  = nullptr;
 
         Avatar *userAvatar_;
 
         QFont font_;
+        QFont usernameFont_;
 
         QLabel *timestamp_;
         QLabel *checkmark_;
@@ -169,26 +170,23 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
 
         generateTimestamp(timestamp);
 
-        auto widgetLayout = new QHBoxLayout();
-        widgetLayout->setContentsMargins(0, 5, 0, 0);
-        widgetLayout->addWidget(widget);
-        widgetLayout->addStretch(1);
-
-        messageLayout_->setContentsMargins(0, 0, 20, 4);
-        messageLayout_->setSpacing(20);
+        widgetLayout_ = new QHBoxLayout;
+        widgetLayout_->setContentsMargins(0, 5, 0, 0);
+        widgetLayout_->addWidget(widget);
+        widgetLayout_->addStretch(1);
 
         if (withSender) {
                 generateBody(displayName, "");
                 setupAvatarLayout(displayName);
 
-                headerLayout_->addLayout(widgetLayout);
+                headerLayout_->addLayout(widgetLayout_);
                 messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(userid, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
 
-                messageLayout_->addLayout(widgetLayout, 1);
+                messageLayout_->addLayout(widgetLayout_, 1);
         }
 
         messageLayout_->addWidget(checkmark_);
@@ -220,26 +218,23 @@ TimelineItem::setupWidgetLayout(Widget *widget,
 
         generateTimestamp(timestamp);
 
-        auto widgetLayout = new QHBoxLayout();
-        widgetLayout->setContentsMargins(0, 5, 0, 0);
-        widgetLayout->addWidget(widget);
-        widgetLayout->addStretch(1);
-
-        messageLayout_->setContentsMargins(0, 0, 20, 4);
-        messageLayout_->setSpacing(20);
+        widgetLayout_ = new QHBoxLayout();
+        widgetLayout_->setContentsMargins(0, 5, 0, 0);
+        widgetLayout_->addWidget(widget);
+        widgetLayout_->addStretch(1);
 
         if (withSender) {
                 generateBody(displayName, "");
                 setupAvatarLayout(displayName);
 
-                headerLayout_->addLayout(widgetLayout);
+                headerLayout_->addLayout(widgetLayout_);
                 messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(sender, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
 
-                messageLayout_->addLayout(widgetLayout, 1);
+                messageLayout_->addLayout(widgetLayout_, 1);
         }
 
         messageLayout_->addWidget(checkmark_);

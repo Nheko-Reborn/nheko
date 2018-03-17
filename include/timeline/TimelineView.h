@@ -101,6 +101,9 @@ public:
         void scrollDown();
         QLabel *createDateSeparator(QDateTime datetime);
 
+        //! Remove an item from the timeline with the given Event ID.
+        void removeEvent(const QString &event_id);
+
 public slots:
         void sliderRangeChanged(int min, int max);
         void sliderMoved(int position);
@@ -127,6 +130,8 @@ protected:
 
 private:
         using TimelineEvent = mtx::events::collections::TimelineEvents;
+
+        QWidget *relativeWidget(TimelineItem *item, int dt) const;
 
         //! HACK: Fixing layout flickering when adding to the bottom
         //! of the timeline.
@@ -232,7 +237,7 @@ private:
         inline bool isNotifiable(const TimelineEvent &event) const;
 
         // The events currently rendered. Used for duplicate detection.
-        QMap<QString, bool> eventIds_;
+        QMap<QString, TimelineItem *> eventIds_;
         QQueue<PendingMessage> pending_msgs_;
         QList<PendingMessage> pending_sent_msgs_;
         QSharedPointer<MatrixClient> client_;
@@ -295,13 +300,9 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
         const auto event_id = QString::fromStdString(event.event_id);
         const auto sender   = QString::fromStdString(event.sender);
 
-        if (isDuplicate(event_id))
-                return nullptr;
-
-        eventIds_[event_id] = true;
-
         const QString txnid = QString::fromStdString(event.unsigned_data.transaction_id);
-        if (!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) {
+        if ((!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) ||
+            isDuplicate(event_id)) {
                 removePendingMessage(txnid);
                 return nullptr;
         }
@@ -310,7 +311,11 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
 
         updateLastSender(sender, direction);
 
-        return createTimelineItem<Event>(event, with_sender);
+        auto item = createTimelineItem<Event>(event, with_sender);
+
+        eventIds_[event_id] = item;
+
+        return item;
 }
 
 template<class Event, class Widget>
@@ -320,13 +325,9 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
         const auto event_id = QString::fromStdString(event.event_id);
         const auto sender   = QString::fromStdString(event.sender);
 
-        if (isDuplicate(event_id))
-                return nullptr;
-
-        eventIds_[event_id] = true;
-
         const QString txnid = QString::fromStdString(event.unsigned_data.transaction_id);
-        if (!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) {
+        if ((!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) ||
+            isDuplicate(event_id)) {
                 removePendingMessage(txnid);
                 return nullptr;
         }
@@ -335,5 +336,9 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
 
         updateLastSender(sender, direction);
 
-        return createTimelineItem<Event, Widget>(event, with_sender);
+        auto item = createTimelineItem<Event, Widget>(event, with_sender);
+
+        eventIds_[event_id] = item;
+
+        return item;
 }

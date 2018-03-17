@@ -342,6 +342,9 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 emit showNotification(QString("Room %1 created").arg(room_id));
         });
         connect(client_.data(), &MatrixClient::leftRoom, this, &ChatPage::removeRoom);
+        connect(client_.data(), &MatrixClient::redactionFailed, this, [this](const QString &error) {
+                emit showNotification(QString("Message redaction failed: %1").arg(error));
+        });
 
         showContentTimer_ = new QTimer(this);
         showContentTimer_->setSingleShot(true);
