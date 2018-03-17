@@ -21,6 +21,7 @@ Specifically there is support for:
 - Sending & receiving files and emoji (inline widgets for images, audio and file messages).
 - Typing notifications.
 - Message & mention notifications.
+- Redacting messages.
 - Read receipts.
 - Basic communities support.
 - Room switcher (ctrl-K).
