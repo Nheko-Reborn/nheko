@@ -29,10 +29,10 @@ SnackBar::SnackBar(QWidget *parent)
         hideTimer_ = QSharedPointer<QTimer>(new QTimer);
         hideTimer_->setSingleShot(true);
 
-        auto offset_anim = tweeny::from(1.0f).to(0.0f).during(4000).via(tweeny::easing::elasticOut);
+        auto offset_anim = tweeny::from(1.0f).to(0.0f).during(100).via(tweeny::easing::cubicOut);
         connect(showTimer_.data(), &QTimer::timeout, this, [this, offset_anim]() mutable {
                 if (offset_anim.progress() < 1.0f) {
-                        offset_ = offset_anim.step(0.02f);
+                        offset_ = offset_anim.step(0.07f);
                         update();
                 } else {
                         showTimer_->stop();

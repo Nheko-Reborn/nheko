@@ -233,7 +233,7 @@ ImageItem::saveAs()
         connect(proxy,
                 &DownloadMediaProxy::fileDownloaded,
                 this,
-                [proxy, this, filename](const QByteArray &data) {
+                [proxy, filename](const QByteArray &data) {
                         proxy->deleteLater();
 
                         try {
