@@ -151,6 +151,9 @@ TopRoomBar::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 
+        painter.setPen(QPen(borderColor()));
+        painter.drawLine(QPointF(0, height()), QPointF(width(), height()));
+
         // Number of pixels that we can move sidebar splitter per frame. If label contains
         // text which fills entire it's width then label starts blocking it's layout from
         // shrinking. Making label little bit shorter leaves some space for it to shrink.

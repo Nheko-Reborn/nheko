@@ -10,6 +10,7 @@ QLabel {
 #sideBar {
     border: none;
     border-right: 1px solid #dcdcdc;
+    border-left: 1px solid #dcdcdc;
 }
 
 TimelineView,
@@ -83,7 +84,7 @@ UserInfoWidget, UserInfoWidget > * {
 
 UserInfoWidget {
     border: none;
-    border-bottom: 1px solid #dcdcdc;
+    qproperty-borderColor: #dcdcdc;
 }
 
 UserSettingsPage {
@@ -157,10 +158,10 @@ ScrollBar {
 
 SideBarActions {
     border: none;
-    border-top: 1px solid #dcdcdc;
+    qproperty-borderColor: #dcdcdc;
 }
 
 TopRoomBar {
     border: none;
-    border-bottom: 1px solid #dcdcdc;
+    qproperty-borderColor: #dcdcdc;
 }

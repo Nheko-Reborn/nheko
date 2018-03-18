@@ -97,4 +97,7 @@ SideBarActions::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+        p.setPen(QPen(borderColor()));
+        p.drawLine(QPointF(0, 0), QPointF(width(), 0));
 }

@@ -159,4 +159,7 @@ UserInfoWidget::paintEvent(QPaintEvent *event)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+        p.setPen(QPen(borderColor()));
+        p.drawLine(QPointF(0, height()), QPointF(width(), height()));
 }

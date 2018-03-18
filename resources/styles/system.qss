@@ -11,6 +11,7 @@ OverlayWidget > * {
 #sideBar {
     border: none;
     border-right: 1px solid palette(text);
+    border-left: 1px solid palette(text);
 }
 
 TimelineView,
@@ -84,11 +85,6 @@ UserInfoWidget > * {
     background-color: palette(window);
 }
 
-UserInfoWidget {
-    border: none;
-    border-bottom: 1px solid palette(text);
-}
-
 emoji--Category,
 emoji--Category > * {
     background-color: palette(window);
@@ -117,18 +113,4 @@ FloatingButton {
 QListWidget {
     background-color: palette(window);
     color: palette(text);
-}
-
-SideBarActions {
-    border: none;
-    border-top: 1px solid palette(text);
-}
-
-TopRoomBar {
-    border: none;
-    border-bottom: 1px solid palette(text);
-}
-
-TextInputWidget {
-    qproperty-borderColor: palette(text);
 }

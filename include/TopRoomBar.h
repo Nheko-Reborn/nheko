@@ -36,6 +36,9 @@ class RoomSettings;
 class TopRoomBar : public QWidget
 {
         Q_OBJECT
+
+        Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
+
 public:
         TopRoomBar(QWidget *parent = 0);
 
@@ -47,6 +50,9 @@ public:
         void setRoomSettings(QSharedPointer<RoomSettings> settings);
 
         void reset();
+
+        QColor borderColor() const { return borderColor_; }
+        void setBorderColor(QColor &color) { borderColor_ = color; }
 
 signals:
         void inviteUsers(QStringList users);
@@ -77,4 +83,6 @@ private:
 
         QString roomName_;
         QString roomTopic_;
+
+        QColor borderColor_;
 };

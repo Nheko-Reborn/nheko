@@ -28,6 +28,8 @@ class UserInfoWidget : public QWidget
 {
         Q_OBJECT
 
+        Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
+
 public:
         UserInfoWidget(QWidget *parent = 0);
 
@@ -36,6 +38,9 @@ public:
         void setUserId(const QString &userid);
 
         void reset();
+
+        QColor borderColor() const { return borderColor_; }
+        void setBorderColor(QColor &color) { borderColor_ = color; }
 
 signals:
         void logout();
@@ -63,4 +68,6 @@ private:
         QImage avatar_image_;
 
         int logoutButtonSize_;
+
+        QColor borderColor_;
 };

@@ -18,8 +18,13 @@ class SideBarActions : public QWidget
 {
         Q_OBJECT
 
+        Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
+
 public:
         SideBarActions(QWidget *parent = nullptr);
+
+        QColor borderColor() const { return borderColor_; }
+        void setBorderColor(QColor &color) { borderColor_ = color; }
 
 signals:
         void showSettings();
@@ -40,4 +45,6 @@ private:
         FlatButton *settingsBtn_;
         FlatButton *createRoomBtn_;
         FlatButton *joinRoomBtn_;
+
+        QColor borderColor_;
 };
