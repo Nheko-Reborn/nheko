@@ -150,10 +150,16 @@ private:
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
         void notifyForLastEvent(const TimelineEvent &event);
+
+        TimelineEvent findFirstViewableEvent(const std::vector<TimelineEvent> &events);
+        TimelineEvent findLastViewableEvent(const std::vector<TimelineEvent> &events);
+
         void readLastEvent() const;
         bool isScrollbarActivated() { return scroll_area_->verticalScrollBar()->value() != 0; }
         QString getLastEventId() const;
         QString getEventSender(const mtx::events::collections::TimelineEvents &event) const;
+        mtx::events::EventType getEventType(
+          const mtx::events::collections::TimelineEvents &event) const;
 
         template<class Event, class Widget>
         TimelineItem *processMessageEvent(const Event &event, TimelineDirection direction);

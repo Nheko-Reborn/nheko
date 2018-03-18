@@ -170,7 +170,7 @@ TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::M
         // is the first batch of messages received through /messages
         // i.e there are no other messages currently present.
         if (!topMessages_.empty() && scroll_layout_->count() == 1)
-                notifyForLastEvent(topMessages_.at(0));
+                notifyForLastEvent(findFirstViewableEvent(topMessages_));
 
         if (isVisible()) {
                 renderTopEvents(topMessages_);
@@ -313,7 +313,7 @@ TimelineView::addEvents(const mtx::responses::Timeline &timeline)
                 bottomMessages_.push_back(e);
 
         if (!bottomMessages_.empty())
-                notifyForLastEvent(bottomMessages_[bottomMessages_.size() - 1]);
+                notifyForLastEvent(findLastViewableEvent(bottomMessages_));
 
         // If the current timeline is open and there are messages to be rendered.
         if (isVisible() && !bottomMessages_.empty()) {
@@ -754,4 +754,30 @@ TimelineView::relativeWidget(TimelineItem *item, int dt) const
         bool isOutOfBounds = (pos <= 0 || pos > scroll_layout_->count() - 1);
 
         return isOutOfBounds ? nullptr : scroll_layout_->itemAt(pos)->widget();
+}
+
+TimelineEvent
+TimelineView::findFirstViewableEvent(const std::vector<TimelineEvent> &events)
+{
+        auto it = std::find_if(events.begin(), events.end(), [this](const auto &event) {
+                return mtx::events::EventType::RoomMessage == getEventType(event);
+        });
+
+        return (it == std::end(events)) ? events.front() : *it;
+}
+
+TimelineEvent
+TimelineView::findLastViewableEvent(const std::vector<TimelineEvent> &events)
+{
+        auto it = std::find_if(events.rbegin(), events.rend(), [this](const auto &event) {
+                return mtx::events::EventType::RoomMessage == getEventType(event);
+        });
+
+        return (it == std::rend(events)) ? events.back() : *it;
+}
+
+inline mtx::events::EventType
+TimelineView::getEventType(const mtx::events::collections::TimelineEvents &event) const
+{
+        return mpark::visit([](auto msg) { return msg.type; }, event);
 }
