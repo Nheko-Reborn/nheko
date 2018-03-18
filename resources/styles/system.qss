@@ -128,3 +128,7 @@ TopRoomBar {
     border: none;
     border-bottom: 1px solid palette(text);
 }
+
+TextInputWidget {
+    qproperty-borderColor: palette(text);
+}

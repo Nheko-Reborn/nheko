@@ -84,16 +84,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         sideBarLayout_->setSpacing(0);
         sideBarLayout_->setMargin(0);
 
-        sideBarTopLayout_ = new QVBoxLayout();
-        sideBarTopLayout_->setSpacing(0);
-        sideBarTopLayout_->setMargin(0);
-        sideBarMainLayout_ = new QVBoxLayout();
-        sideBarMainLayout_->setSpacing(0);
-        sideBarMainLayout_->setMargin(0);
-
-        sideBarLayout_->addLayout(sideBarTopLayout_);
-        sideBarLayout_->addLayout(sideBarMainLayout_);
-
         sideBarTopWidget_ = new QWidget(sideBar_);
         sidebarActions_   = new SideBarActions(this);
         connect(

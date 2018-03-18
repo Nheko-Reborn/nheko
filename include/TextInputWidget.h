@@ -83,10 +83,15 @@ class TextInputWidget : public QWidget
 {
         Q_OBJECT
 
+        Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
+
 public:
         TextInputWidget(QWidget *parent = 0);
 
         void stopTyping();
+
+        QColor borderColor() const { return borderColor_; }
+        void setBorderColor(QColor &color) { borderColor_ = color; }
 
 public slots:
         void openFileSelection();
@@ -126,4 +131,6 @@ private:
         FlatButton *sendFileBtn_;
         FlatButton *sendMessageBtn_;
         emoji::PickButton *emojiBtn_;
+
+        QColor borderColor_;
 };

@@ -33,6 +33,8 @@
 
 static constexpr size_t INPUT_HISTORY_SIZE = 127;
 static constexpr int MAX_TEXTINPUT_HEIGHT  = 120;
+static constexpr int InputHeight           = 26;
+static constexpr int ButtonHeight          = 24;
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
@@ -313,11 +315,11 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         sendFileBtn_ = new FlatButton(this);
         sendFileBtn_->setIcon(send_file_icon);
-        sendFileBtn_->setIconSize(QSize(24, 24));
+        sendFileBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
         spinner_ = new LoadingIndicator(this);
-        spinner_->setFixedHeight(32);
-        spinner_->setFixedWidth(32);
+        spinner_->setFixedHeight(InputHeight);
+        spinner_->setFixedWidth(InputHeight);
         spinner_->setObjectName("FileUploadSpinner");
         spinner_->hide();
 
@@ -325,13 +327,13 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         font.setPixelSize(conf::textInputFontSize);
 
         input_ = new FilteredTextEdit(this);
-        input_->setFixedHeight(32);
+        input_->setFixedHeight(InputHeight);
         input_->setFont(font);
         input_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         input_->setPlaceholderText(tr("Write a message..."));
 
         connect(input_, &FilteredTextEdit::heightChanged, this, [this](int height) {
-                int textInputHeight = std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, 32));
+                int textInputHeight = std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, InputHeight));
                 int widgetHeight =
                   std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, conf::textInput::height));
 
@@ -344,14 +346,14 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         QIcon send_message_icon;
         send_message_icon.addFile(":/icons/icons/ui/cursor.png");
         sendMessageBtn_->setIcon(send_message_icon);
-        sendMessageBtn_->setIconSize(QSize(24, 24));
+        sendMessageBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
         emojiBtn_ = new emoji::PickButton(this);
 
         QIcon emoji_icon;
         emoji_icon.addFile(":/icons/icons/ui/smile.png");
         emojiBtn_->setIcon(emoji_icon);
-        emojiBtn_->setIconSize(QSize(24, 24));
+        emojiBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
         topLayout_->addWidget(sendFileBtn_);
         topLayout_->addWidget(input_);
@@ -483,5 +485,9 @@ TextInputWidget::paintEvent(QPaintEvent *)
         QStyleOption opt;
         opt.init(this);
         QPainter p(this);
+
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+        p.setPen(QPen(borderColor()));
+        p.drawLine(QPointF(0, 0), QPointF(width(), 0));
 }

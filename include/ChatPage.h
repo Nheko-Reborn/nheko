@@ -149,8 +149,6 @@ private:
         QWidget *communitiesSideBar_;
         QVBoxLayout *communitiesSideBarLayout_;
         QVBoxLayout *sideBarLayout_;
-        QVBoxLayout *sideBarTopLayout_;
-        QVBoxLayout *sideBarMainLayout_;
         QWidget *sideBarTopWidget_;
         QVBoxLayout *sideBarTopWidgetLayout_;
 

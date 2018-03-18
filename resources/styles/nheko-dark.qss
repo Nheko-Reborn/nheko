@@ -163,3 +163,7 @@ TopRoomBar {
     border: none;
     border-bottom: 1px solid #414A59;
 }
+
+TextInputWidget {
+    qproperty-borderColor: #414A59;
+}

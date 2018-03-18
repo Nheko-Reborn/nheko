@@ -146,6 +146,10 @@ TextField {
     qproperty-labelColor: #333;
 }
 
+TextInputWidget {
+    qproperty-borderColor: #dcdcdc;
+}
+
 ScrollBar {
     qproperty-handleColor: #ccc;
     qproperty-backgroundColor: #efefef;
