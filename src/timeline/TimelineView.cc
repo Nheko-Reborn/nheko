@@ -163,10 +163,8 @@ TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::M
         isTimelineFinished = false;
 
         // Queue incoming messages to be rendered later.
-        for (auto const &e : msgs.chunk) {
-                if (isViewable(e))
-                        topMessages_.emplace_back(e);
-        }
+        for (auto const &e : msgs.chunk)
+                topMessages_.emplace_back(e);
 
         // The RoomList message preview will be updated only if this
         // is the first batch of messages received through /messages
@@ -202,7 +200,18 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
         using TextEvent   = mtx::events::RoomEvent<msg::Text>;
         using VideoEvent  = mtx::events::RoomEvent<msg::Video>;
 
-        if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event)) {
+        if (mpark::holds_alternative<mtx::events::RedactionEvent<msg::Redaction>>(event)) {
+                auto redaction_event =
+                  mpark::get<mtx::events::RedactionEvent<msg::Redaction>>(event);
+                const auto event_id = QString::fromStdString(redaction_event.redacts);
+
+                QTimer::singleShot(0, this, [event_id, this]() {
+                        if (eventIds_.contains(event_id))
+                                removeEvent(event_id);
+                });
+
+                return nullptr;
+        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event)) {
                 auto audio = mpark::get<mtx::events::RoomEvent<msg::Audio>>(event);
                 return processMessageEvent<AudioEvent, AudioItem>(audio, direction);
         } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event)) {
@@ -300,15 +309,8 @@ TimelineView::addEvents(const mtx::responses::Timeline &timeline)
                 isInitialSync     = false;
         }
 
-        for (const auto &e : timeline.events) {
-                // Save the message if it can be rendered.
-                if (isViewable(e))
-                        bottomMessages_.push_back(e);
-
-                // Calculate notifications.
-                /* if (isNotifiable(e)) */
-                /* sendNotification() */
-        }
+        for (const auto &e : timeline.events)
+                bottomMessages_.push_back(e);
 
         if (!bottomMessages_.empty())
                 notifyForLastEvent(bottomMessages_[bottomMessages_.size() - 1]);
@@ -324,37 +326,6 @@ TimelineView::addEvents(const mtx::responses::Timeline &timeline)
                 if (isActiveWindow())
                         readLastEvent();
         }
-}
-
-inline bool
-TimelineView::isViewable(const TimelineEvent &event) const
-{
-        namespace msg = mtx::events::msg;
-
-        return mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::File>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Image>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Notice>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Text>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event);
-}
-
-inline bool
-TimelineView::isNotifiable(const TimelineEvent &event) const
-{
-        namespace msg = mtx::events::msg;
-
-        if (local_user_ == getEventSender(event))
-                return false;
-
-        return mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::File>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Image>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Notice>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Text>>(event) ||
-               mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event);
 }
 
 void

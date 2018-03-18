@@ -230,12 +230,6 @@ private:
         //! Render the given timeline events to the top of the timeline.
         void renderTopEvents(const std::vector<TimelineEvent> &events);
 
-        //! Decide if the given timeline event can be rendered.
-        inline bool isViewable(const TimelineEvent &event) const;
-
-        //! Decide if the given event should trigger a notification.
-        inline bool isNotifiable(const TimelineEvent &event) const;
-
         // The events currently rendered. Used for duplicate detection.
         QMap<QString, TimelineItem *> eventIds_;
         QQueue<PendingMessage> pending_msgs_;
