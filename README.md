@@ -64,7 +64,7 @@ sudo apk add nheko
 - [LMDB](https://symas.com/lightning-memory-mapped-database/).
 - A compiler that supports C++11.
     - Clang 3.8 (or greater).
-    - GCC 4.9.4 (or greater).
+    - GCC 7 (or greater).
 
 #### Linux 
 

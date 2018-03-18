@@ -17,24 +17,24 @@ matrix:
         - os: linux
           compiler: gcc
           env:
-              - CXX_COMPILER=g++-6
-              - C_COMPILER=gcc-6
+              - CXX_COMPILER=g++-7
+              - C_COMPILER=gcc-7
               - QT_VERSION=592
               - DEPLOYMENT=1
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-6", "ninja-build"]
+                  packages: ["g++-7", "ninja-build"]
         - os: linux
           compiler: gcc
           env:
-              - CXX_COMPILER=g++-6
-              - C_COMPILER=gcc-6
+              - CXX_COMPILER=g++-7
+              - C_COMPILER=gcc-7
               - QT_VERSION=571
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-6", "ninja-build"]
+                  packages: ["g++-7", "ninja-build"]
         - os: linux
           compiler: clang
           env:
