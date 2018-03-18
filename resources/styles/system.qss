@@ -64,6 +64,9 @@ RoomInfoListItem {
 
     qproperty-btnColor: palette(light);
     qproperty-btnTextColor: palette(text);
+
+    qproperty-timestampColor: palette(text);
+    qproperty-highlightedTimestampColor: palette(light);
 }
 
 CommunitiesListItem {

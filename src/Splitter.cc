@@ -25,6 +25,7 @@ Splitter::Splitter(QWidget *parent)
 {
         connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
         setChildrenCollapsible(false);
+        setStyleSheet("QSplitter::handle { image: none; }");
 }
 
 void

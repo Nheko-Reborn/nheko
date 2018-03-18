@@ -30,8 +30,8 @@
 #include "Theme.h"
 #include "Utils.h"
 
-constexpr int Padding   = 7;
-constexpr int IconSize  = 48;
+constexpr int Padding   = 9;
+constexpr int IconSize  = 44;
 constexpr int MaxHeight = IconSize + 2 * Padding;
 
 constexpr int InviteBtnX = IconSize + 2 * Padding;
@@ -53,10 +53,9 @@ RoomInfoListItem::init(QWidget *parent)
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
 
-        font_.setPixelSize(conf::fontSize);
+        font_.setPixelSize(conf::fontSize - 1);
 
         usernameFont_ = font_;
-        usernameFont_.setWeight(60);
 
         bubbleFont_ = font_;
         bubbleFont_.setPixelSize(conf::roomlist::fonts::bubble);
@@ -69,7 +68,7 @@ RoomInfoListItem::init(QWidget *parent)
         timestampFont_.setBold(false);
 
         headingFont_ = font_;
-        headingFont_.setPixelSize(conf::roomlist::fonts::heading);
+        headingFont_.setPixelSize(conf::roomlist::fonts::heading - 1);
         headingFont_.setWeight(60);
 }
 
@@ -162,7 +161,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         QRect avatarRegion(Padding, Padding, IconSize, IconSize);
 
         // Description line with the default font.
-        int bottom_y = MaxHeight - Padding - Padding / 3 - metrics.ascent() / 2;
+        int bottom_y = MaxHeight - Padding - metrics.ascent() / 2;
 
         if (width() > ui::sidebar::SmallSize) {
                 p.setFont(headingFont_);
@@ -209,9 +208,16 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                                    description);
 
                         // We show the last message timestamp.
+                        p.save();
+                        if (isPressed_)
+                                p.setPen(QPen(highlightedTimestampColor_));
+                        else
+                                p.setPen(QPen(timestampColor_));
+
                         p.setFont(timestampFont_);
                         p.drawText(QPoint(width() - Padding - msgStampWidth, top_y),
                                    lastMsgInfo_.timestamp);
+                        p.restore();
                 } else {
                         int btnWidth = (width() - IconSize - 6 * Padding) / 2;
 
@@ -246,7 +252,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         if (roomAvatar_.isNull()) {
                 QBrush brush;
                 brush.setStyle(Qt::SolidPattern);
-                brush.setColor("#eee");
+                brush.setColor(avatarBgColor());
 
                 p.setPen(Qt::NoPen);
                 p.setBrush(brush);
@@ -254,7 +260,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
 
                 p.setFont(bubbleFont_);
-                p.setPen(QColor("#333"));
+                p.setPen(avatarFgColor());
                 p.setBrush(Qt::NoBrush);
                 p.drawText(
                   avatarRegion.translated(0, -1), Qt::AlignCenter, utils::firstChar(roomName()));
