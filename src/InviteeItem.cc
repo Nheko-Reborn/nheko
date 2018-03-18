@@ -9,7 +9,7 @@ constexpr int IconSize    = 13;
 
 InviteeItem::InviteeItem(mtx::identifiers::User user, QWidget *parent)
   : QWidget{parent}
-  , user_{QString::fromStdString(user.toString())}
+  , user_{QString::fromStdString(user.to_string())}
 {
         auto topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);

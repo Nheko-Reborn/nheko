@@ -154,7 +154,7 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
                         if (server_.port() > 0)
                                 hostname = QString("%1:%2").arg(server_.host()).arg(server_.port());
 
-                        emit loginSuccess(QString::fromStdString(login.user_id.toString()),
+                        emit loginSuccess(QString::fromStdString(login.user_id.to_string()),
                                           hostname,
                                           QString::fromStdString(login.access_token));
                 } catch (std::exception &e) {
@@ -228,7 +228,7 @@ MatrixClient::registerUser(const QString &user,
                 // Try to parse a regular register response.
                 try {
                         mtx::responses::Register res = nlohmann::json::parse(data);
-                        emit registerSuccess(QString::fromStdString(res.user_id.toString()),
+                        emit registerSuccess(QString::fromStdString(res.user_id.to_string()),
                                              QString::fromStdString(res.user_id.hostname()),
                                              QString::fromStdString(res.access_token));
                 } catch (const std::exception &e) {
