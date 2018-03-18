@@ -56,9 +56,10 @@ static constexpr int cornerRadius = 3;
 // RoomList specific.
 namespace roomlist {
 namespace fonts {
-static constexpr int heading = 14;
-static constexpr int badge   = 10;
-static constexpr int bubble  = 20;
+static constexpr int heading   = 14;
+static constexpr int timestamp = heading - 1;
+static constexpr int badge     = 10;
+static constexpr int bubble    = 20;
 } // namespace fonts
 } // namespace roomlist
 
@@ -84,7 +85,7 @@ static constexpr int headerLeftMargin = 15;
 
 namespace fonts {
 static constexpr int timestamp     = 13;
-static constexpr int dateSeparator = conf::fontSize - 2;
+static constexpr int dateSeparator = conf::fontSize;
 } // namespace fonts
 } // namespace timeline
 

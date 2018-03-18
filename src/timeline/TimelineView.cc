@@ -679,13 +679,17 @@ TimelineView::createDateSeparator(QDateTime datetime)
                 fmt = QString("ddd d MMMM");
 
         if (days == 0)
-                separator = new QLabel(tr("Today"));
+                separator = new QLabel(tr("Today"), this);
         else if (std::abs(days) == 1)
-                separator = new QLabel(tr("Yesterday"));
+                separator = new QLabel(tr("Yesterday"), this);
         else
-                separator = new QLabel(datetime.toString(fmt));
+                separator = new QLabel(datetime.toString(fmt), this);
 
         if (separator) {
+                QFont font;
+                font.setWeight(60);
+
+                separator->setFont(font);
                 separator->setStyleSheet(
                   QString("font-size: %1px").arg(conf::timeline::fonts::dateSeparator));
                 separator->setAlignment(Qt::AlignCenter);

@@ -75,10 +75,10 @@ public:
                 update();
         }
 
-        QString roomId();
-        bool isPressed() const { return isPressed_; };
+        QString roomId() { return roomId_; }
+        bool isPressed() const { return isPressed_; }
         QSharedPointer<RoomState> state() const { return state_; }
-        int unreadMessageCount() const { return unreadMsgCount_; };
+        int unreadMessageCount() const { return unreadMsgCount_; }
 
         void setAvatar(const QImage &avatar_image);
         void setDescriptionMessage(const DescInfo &info);
@@ -184,10 +184,12 @@ private:
 
         QRectF acceptBtnRegion_;
         QRectF declineBtnRegion_;
-};
 
-inline QString
-RoomInfoListItem::roomId()
-{
-        return roomId_;
-}
+        // Fonts
+        QFont bubbleFont_;
+        QFont font_;
+        QFont headingFont_;
+        QFont timestampFont_;
+        QFont usernameFont_;
+        QFont unreadCountFont_;
+};

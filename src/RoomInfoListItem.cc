@@ -52,6 +52,25 @@ RoomInfoListItem::init(QWidget *parent)
         ripple_overlay_ = new RippleOverlay(this);
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
+
+        font_.setPixelSize(conf::fontSize);
+
+        usernameFont_ = font_;
+        usernameFont_.setWeight(60);
+
+        bubbleFont_ = font_;
+        bubbleFont_.setPixelSize(conf::roomlist::fonts::bubble);
+
+        unreadCountFont_.setPixelSize(conf::roomlist::fonts::badge);
+        unreadCountFont_.setBold(true);
+
+        timestampFont_ = font_;
+        timestampFont_.setPixelSize(conf::roomlist::fonts::timestamp);
+        timestampFont_.setBold(false);
+
+        headingFont_ = font_;
+        headingFont_.setPixelSize(conf::roomlist::fonts::heading);
+        headingFont_.setWeight(60);
 }
 
 RoomInfoListItem::RoomInfoListItem(QString room_id,
@@ -125,9 +144,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         p.setRenderHint(QPainter::SmoothPixmapTransform);
         p.setRenderHint(QPainter::Antialiasing);
 
-        QFont font;
-        font.setPixelSize(conf::fontSize);
-        QFontMetrics metrics(font);
+        QFontMetrics metrics(font_);
 
         QPen titlePen(titleColor_);
         QPen subtitlePen(subtitleColor_);
@@ -148,25 +165,25 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         int bottom_y = MaxHeight - Padding - Padding / 3 - metrics.ascent() / 2;
 
         if (width() > ui::sidebar::SmallSize) {
-                font.setPixelSize(conf::roomlist::fonts::heading);
-                font.setWeight(60);
-                p.setFont(font);
+                p.setFont(headingFont_);
                 p.setPen(titlePen);
 
+                const auto msgStampWidth =
+                  QFontMetrics(timestampFont_).width(lastMsgInfo_.timestamp) + 4;
+
                 // Name line.
-                QFontMetrics fontNameMetrics(font);
+                QFontMetrics fontNameMetrics(headingFont_);
                 int top_y = 2 * Padding + fontNameMetrics.ascent() / 2;
 
-                auto name = metrics.elidedText(
-                  roomName(), Qt::ElideRight, (width() - IconSize - 2 * Padding) * 0.8);
+                const auto name =
+                  metrics.elidedText(roomName(),
+                                     Qt::ElideRight,
+                                     (width() - IconSize - 2 * Padding - msgStampWidth) * 0.8);
                 p.drawText(QPoint(2 * Padding + IconSize, top_y), name);
 
                 if (roomType_ == RoomType::Joined) {
-                        font.setPixelSize(conf::fontSize);
-                        p.setFont(font);
+                        p.setFont(font_);
                         p.setPen(subtitlePen);
-
-                        auto msgStampWidth = QFontMetrics(font).width(lastMsgInfo_.timestamp) + 5;
 
                         // The limit is the space between the end of the avatar and the start of the
                         // timestamp.
@@ -175,14 +192,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         auto userName =
                           metrics.elidedText(lastMsgInfo_.username, Qt::ElideRight, usernameLimit);
 
-                        font.setWeight(60);
-                        p.setFont(font);
+                        p.setFont(usernameFont_);
                         p.drawText(QPoint(2 * Padding + IconSize, bottom_y), userName);
 
-                        int nameWidth = QFontMetrics(font).width(userName);
+                        int nameWidth = QFontMetrics(usernameFont_).width(userName);
 
-                        font.setBold(false);
-                        p.setFont(font);
+                        p.setFont(font_);
 
                         // The limit is the space between the end of the username and the start of
                         // the timestamp.
@@ -193,12 +208,10 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         p.drawText(QPoint(2 * Padding + IconSize + nameWidth, bottom_y),
                                    description);
 
-                        // We either show the bubble or the last message timestamp.
-                        if (unreadMsgCount_ == 0) {
-                                font.setBold(true);
-                                p.drawText(QPoint(width() - Padding - msgStampWidth, bottom_y),
-                                           lastMsgInfo_.timestamp);
-                        }
+                        // We show the last message timestamp.
+                        p.setFont(timestampFont_);
+                        p.drawText(QPoint(width() - Padding - msgStampWidth, top_y),
+                                   lastMsgInfo_.timestamp);
                 } else {
                         int btnWidth = (width() - IconSize - 6 * Padding) / 2;
 
@@ -221,13 +234,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         p.drawPath(declinePath);
 
                         p.setPen(QPen(btnTextColor_));
-                        p.setFont(font);
+                        p.setFont(font_);
                         p.drawText(acceptBtnRegion_, Qt::AlignCenter, tr("Accept"));
                         p.drawText(declineBtnRegion_, Qt::AlignCenter, tr("Decline"));
                 }
         }
 
-        font.setBold(false);
         p.setPen(Qt::NoPen);
 
         // We using the first letter of room's name.
@@ -241,8 +253,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                 p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
 
-                font.setPixelSize(conf::roomlist::fonts::bubble);
-                p.setFont(font);
+                p.setFont(bubbleFont_);
                 p.setPen(QColor("#333"));
                 p.setBrush(Qt::NoBrush);
                 p.drawText(
@@ -269,13 +280,9 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 if (isPressed_)
                         brush.setColor(textColor);
 
-                QFont unreadCountFont;
-                unreadCountFont.setPixelSize(conf::roomlist::fonts::badge);
-                unreadCountFont.setBold(true);
-
                 p.setBrush(brush);
                 p.setPen(Qt::NoPen);
-                p.setFont(unreadCountFont);
+                p.setFont(unreadCountFont_);
 
                 int diameter = 20;
 
