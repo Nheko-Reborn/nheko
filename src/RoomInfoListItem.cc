@@ -280,15 +280,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         }
 
         if (unreadMsgCount_ > 0) {
-                QColor textColor("white");
-                QColor backgroundColor("#38A3D8");
-
                 QBrush brush;
                 brush.setStyle(Qt::SolidPattern);
-                brush.setColor(backgroundColor);
+                brush.setColor(bubbleBgColor());
 
                 if (isPressed_)
-                        brush.setColor(textColor);
+                        brush.setColor(bubbleFgColor());
 
                 p.setBrush(brush);
                 p.setPen(Qt::NoPen);
@@ -306,10 +303,10 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setPen(Qt::NoPen);
                 p.drawEllipse(r);
 
-                p.setPen(QPen(textColor));
+                p.setPen(QPen(bubbleFgColor()));
 
                 if (isPressed_)
-                        p.setPen(QPen(backgroundColor));
+                        p.setPen(QPen(bubbleBgColor()));
 
                 p.setBrush(Qt::NoBrush);
                 p.drawText(

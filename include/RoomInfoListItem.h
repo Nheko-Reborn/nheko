@@ -51,6 +51,9 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor avatarBgColor READ avatarBgColor WRITE setAvatarBgColor)
         Q_PROPERTY(QColor avatarFgColor READ avatarFgColor WRITE setAvatarFgColor)
 
+        Q_PROPERTY(QColor bubbleBgColor READ bubbleBgColor WRITE setBubbleBgColor)
+        Q_PROPERTY(QColor bubbleFgColor READ bubbleFgColor WRITE setBubbleFgColor)
+
         Q_PROPERTY(QColor titleColor READ titleColor WRITE setTitleColor)
         Q_PROPERTY(QColor subtitleColor READ subtitleColor WRITE setSubtitleColor)
 
@@ -107,6 +110,9 @@ public:
         QColor btnColor() const { return btnColor_; }
         QColor btnTextColor() const { return btnTextColor_; }
 
+        QColor bubbleFgColor() const { return bubbleFgColor_; }
+        QColor bubbleBgColor() const { return bubbleBgColor_; }
+
         void setHighlightedBackgroundColor(QColor &color) { highlightedBackgroundColor_ = color; }
         void setHoverBackgroundColor(QColor &color) { hoverBackgroundColor_ = color; }
         void setBackgroundColor(QColor &color) { backgroundColor_ = color; }
@@ -123,6 +129,9 @@ public:
 
         void setBtnColor(QColor &color) { btnColor_ = color; }
         void setBtnTextColor(QColor &color) { btnTextColor_ = color; }
+
+        void setBubbleFgColor(QColor &color) { bubbleFgColor_ = color; }
+        void setBubbleBgColor(QColor &color) { bubbleBgColor_ = color; }
 
 signals:
         void clicked(const QString &room_id);
@@ -213,4 +222,7 @@ private:
 
         QColor avatarBgColor_;
         QColor avatarFgColor_;
+
+        QColor bubbleBgColor_;
+        QColor bubbleFgColor_;
 };

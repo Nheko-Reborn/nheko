@@ -31,6 +31,10 @@
 
 constexpr const static char *CHECKMARK = "✓";
 
+constexpr int MSG_RIGHT_MARGIN  = 7;
+constexpr int MSG_BOTTOM_MARGIN = 4;
+constexpr int MSG_PADDING       = 20;
+
 void
 TimelineItem::init()
 {
@@ -68,8 +72,8 @@ TimelineItem::init()
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
         messageLayout_ = new QHBoxLayout;
-        messageLayout_->setContentsMargins(0, 0, 20, 4);
-        messageLayout_->setSpacing(20);
+        messageLayout_->setContentsMargins(0, 0, MSG_RIGHT_MARGIN, MSG_BOTTOM_MARGIN);
+        messageLayout_->setSpacing(MSG_PADDING);
 
         topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
         topLayout_->setSpacing(0);

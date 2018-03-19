@@ -29,7 +29,7 @@ CommunitiesList > * {
 }
 
 FlatButton {
-    qproperty-foregroundColor: #333;
+    qproperty-foregroundColor: #8c8c8c;
 }
 
 FileItem {

@@ -29,19 +29,19 @@ CommunitiesList > * {
 }
 
 FlatButton {
-    qproperty-foregroundColor: #caccd1;
+    qproperty-foregroundColor: #727274;
     qproperty-backgroundColor: #333;
 }
 
 FileItem {
     qproperty-textColor: #caccd1;
-    qproperty-backgroundColor: #414A59;
+    qproperty-backgroundColor: #2d3139;
     qproperty-iconColor: #caccd1;
 }
 
 AudioItem {
     qproperty-textColor: #caccd1;
-    qproperty-backgroundColor: #414A59;
+    qproperty-backgroundColor: #2d3139;
     qproperty-iconColor: #caccd1;
 }
 
@@ -69,6 +69,9 @@ RoomInfoListItem {
 
     qproperty-avatarBgColor: #202228;
     qproperty-avatarFgColor: white;
+
+    qproperty-bubbleFgColor: white;
+    qproperty-bubbleBgColor: #4d84c7;
 }
 
 CommunitiesListItem {
@@ -144,8 +147,8 @@ emoji--Category > * {
 }
 
 FloatingButton {
-    qproperty-backgroundColor: #efefef;
-    qproperty-foregroundColor: black;
+    qproperty-backgroundColor: #2d3139;
+    qproperty-foregroundColor: white;
 }
 
 TextField {
@@ -155,7 +158,7 @@ TextField {
 }
 
 ScrollBar {
-    qproperty-handleColor: #caccd1;
+    qproperty-handleColor: #2d3139;
     qproperty-backgroundColor: #202228;
 }
 
