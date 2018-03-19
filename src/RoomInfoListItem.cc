@@ -167,8 +167,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setFont(headingFont_);
                 p.setPen(titlePen);
 
-                const auto msgStampWidth =
+                const int msgStampWidth =
                   QFontMetrics(timestampFont_).width(lastMsgInfo_.timestamp) + 4;
+
+                // We use the full width of the widget if there is no unread msg bubble.
+                const int bottomLineWidthLimit = (unreadMsgCount_ > 0) ? msgStampWidth : 0;
 
                 // Name line.
                 QFontMetrics fontNameMetrics(headingFont_);
@@ -201,7 +204,8 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         // The limit is the space between the end of the username and the start of
                         // the timestamp.
                         int descriptionLimit = std::max(
-                          0, width() - 3 * Padding - msgStampWidth - IconSize - nameWidth - 5);
+                          0,
+                          width() - 3 * Padding - bottomLineWidthLimit - IconSize - nameWidth - 5);
                         auto description =
                           metrics.elidedText(lastMsgInfo_.body, Qt::ElideRight, descriptionLimit);
                         p.drawText(QPoint(2 * Padding + IconSize + nameWidth, bottom_y),
