@@ -30,6 +30,8 @@
 #include "Theme.h"
 #include "Utils.h"
 
+constexpr int BubbleDiameter = 18;
+
 constexpr int Padding   = 9;
 constexpr int IconSize  = 44;
 constexpr int MaxHeight = IconSize + 2 * Padding;
@@ -68,7 +70,7 @@ RoomInfoListItem::init(QWidget *parent)
         timestampFont_.setBold(false);
 
         headingFont_ = font_;
-        headingFont_.setPixelSize(conf::roomlist::fonts::heading - 1);
+        headingFont_.setPixelSize(conf::roomlist::fonts::heading);
         headingFont_.setWeight(60);
 }
 
@@ -291,14 +293,16 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setPen(Qt::NoPen);
                 p.setFont(unreadCountFont_);
 
-                int diameter = 20;
-
-                QRectF r(
-                  width() - diameter - Padding, bottom_y - diameter / 2 - 5, diameter, diameter);
+                QRectF r(width() - BubbleDiameter - Padding,
+                         bottom_y - BubbleDiameter / 2 - 5,
+                         BubbleDiameter,
+                         BubbleDiameter);
 
                 if (width() == ui::sidebar::SmallSize)
-                        r = QRectF(
-                          width() - diameter - 5, height() - diameter - 5, diameter, diameter);
+                        r = QRectF(width() - BubbleDiameter - 5,
+                                   height() - BubbleDiameter - 5,
+                                   BubbleDiameter,
+                                   BubbleDiameter);
 
                 p.setPen(Qt::NoPen);
                 p.drawEllipse(r);
