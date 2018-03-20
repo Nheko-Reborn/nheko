@@ -730,15 +730,28 @@ TimelineView::removeEvent(const QString &event_id)
         auto removedItem = eventIds_[event_id];
 
         // Find the next and the previous widgets in the timeline
-        auto prevItem = qobject_cast<TimelineItem *>(relativeWidget(removedItem, -1));
-        auto nextItem = qobject_cast<TimelineItem *>(relativeWidget(removedItem, 1));
+        auto prevWidget = relativeWidget(removedItem, -1);
+        auto nextWidget = relativeWidget(removedItem, 1);
+
+        // See if they are timeline items
+        auto prevItem = qobject_cast<TimelineItem *>(prevWidget);
+        auto nextItem = qobject_cast<TimelineItem *>(nextWidget);
+
+        // ... or a date separator
+        auto prevLabel = qobject_cast<QLabel *>(prevWidget);
 
         // If it's a TimelineItem add an avatar.
-        if (prevItem)
+        if (prevItem) {
                 prevItem->addAvatar();
+        }
 
-        if (nextItem)
+        if (nextItem) {
                 nextItem->addAvatar();
+        } else if (prevLabel) {
+                // If there's no chat message after this, and we have a label before us, delete the
+                // label.
+                prevLabel->deleteLater();
+        }
 
         // Finally remove the event.
         removedItem->deleteLater();
