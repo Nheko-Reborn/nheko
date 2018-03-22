@@ -9,7 +9,10 @@ include(GNUInstallDirs)
 # Include Qt basic functions
 include(QtCommon)
 
-project(nheko LANGUAGES C CXX VERSION 0.2.0)
+project(nheko LANGUAGES C CXX)
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "2")
+set(CPACK_PACKAGE_VERSION_PATCH "1")
 
 # Set PROJECT_VERSION_PATCH and PROJECT_VERSION_TWEAK to 0 if not present, needed by add_project_meta
 fix_project_version()
@@ -83,31 +86,26 @@ else(NOT CMAKE_BUILD_TYPE)
     message("Build type set to '${CMAKE_BUILD_TYPE}'")
 endif(NOT CMAKE_BUILD_TYPE)
 
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    set(PATCH_OUT "0")
-else("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    find_program(GIT git)
-    if(GIT)
-        execute_process(
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            COMMAND ${GIT} rev-parse --short HEAD
-            OUTPUT_VARIABLE GIT_OUT OUTPUT_STRIP_TRAILING_WHITESPACE
+find_program(GIT git)
+if(GIT)
+    execute_process(
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMAND ${GIT} rev-parse --short HEAD
+        OUTPUT_VARIABLE GIT_OUT OUTPUT_STRIP_TRAILING_WHITESPACE
         )
-        set(PATCH_OUT "0-${GIT_OUT}")
-    else(GIT)
-        set(PATCH_OUT "0")
-    endif(GIT)
-endif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+    set(CPACK_PACKAGE_VERSION_PATCH "${CPACK_PACKAGE_VERSION_PATCH}-${GIT_OUT}")
+endif(GIT)
 
-set(PROJECT_VERSION_PATCH ${PATCH_OUT})
-set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "1")
-set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 set(CPACK_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH})
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION ${CPACK_PACKAGE_VERSION})
 
 message(STATUS "Version: ${PROJECT_VERSION}")
+
+cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
+cmake_host_system_information(RESULT BUILD_OS QUERY OS_NAME)
+set(BUILD_USER $ENV{USER})
+configure_file(cmake/version.hpp config/version.hpp)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
@@ -231,6 +229,7 @@ include_directories(${LMDBXX_INCLUDE_DIRS})
 
 include_directories(include)
 include_directories(include/ui)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
 
 include_directories(${LMDB_INCLUDE_DIR})
 

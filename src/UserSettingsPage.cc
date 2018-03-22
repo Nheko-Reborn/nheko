@@ -28,6 +28,8 @@
 #include "UserSettingsPage.h"
 #include <ToggleButton.h>
 
+#include "version.hpp"
+
 UserSettings::UserSettings() { load(); }
 
 void
@@ -116,6 +118,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         auto heading_ = new QLabel(tr("User Settings"));
         heading_->setStyleSheet("font-weight: bold; font-size: 22px;");
+
+        auto versionInfo = new QLabel(
+          QString("%1 | %2 | %3").arg(nheko::version).arg(nheko::build_user).arg(nheko::build_os));
 
         topBarLayout_ = new QHBoxLayout;
         topBarLayout_->setSpacing(0);
@@ -215,6 +220,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         topLayout_->addLayout(topBarLayout_);
         topLayout_->addLayout(mainLayout_);
         topLayout_->addStretch(1);
+        topLayout_->addWidget(versionInfo);
 
         connect(themeCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
