@@ -103,7 +103,6 @@ set(PROJECT_VERSION ${CPACK_PACKAGE_VERSION})
 message(STATUS "Version: ${PROJECT_VERSION}")
 
 cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
-cmake_host_system_information(RESULT BUILD_OS QUERY OS_NAME)
 set(BUILD_USER $ENV{USER})
 configure_file(cmake/version.hpp config/version.hpp)
 

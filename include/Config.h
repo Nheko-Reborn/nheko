@@ -58,7 +58,7 @@ namespace roomlist {
 namespace fonts {
 static constexpr int heading   = 13;
 static constexpr int timestamp = heading;
-static constexpr int badge     = 9;
+static constexpr int badge     = 10;
 static constexpr int bubble    = 20;
 } // namespace fonts
 } // namespace roomlist
