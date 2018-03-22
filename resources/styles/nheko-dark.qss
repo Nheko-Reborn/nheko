@@ -18,6 +18,10 @@ TimelineView > * {
     background-color: #202228;
 }
 
+QuickSwitcher {
+    background-color: #202228;
+}
+
 RoomList,
 RoomList > * {
     background-color: #2d3139;

@@ -21,6 +21,10 @@ TimelineItem > * {
     background-color: palette(window);
 }
 
+QuickSwitcher {
+    background-color: palette(window);
+}
+
 FlatButton {
     qproperty-foregroundColor: palette(text);
 }
@@ -67,6 +71,12 @@ RoomInfoListItem {
 
     qproperty-timestampColor: palette(text);
     qproperty-highlightedTimestampColor: palette(light);
+
+    qproperty-avatarBgColor: palette(mid);
+    qproperty-avatarFgColor: palette(text);
+
+    qproperty-bubbleFgColor: palette(text);
+    qproperty-bubbleBgColor: palette(mid);
 }
 
 CommunitiesListItem {

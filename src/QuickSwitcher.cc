@@ -16,7 +16,9 @@
  */
 
 #include <QCompleter>
+#include <QPainter>
 #include <QStringListModel>
+#include <QStyleOption>
 #include <QTimer>
 
 #include "QuickSwitcher.h"
@@ -57,10 +59,9 @@ RoomSearchInput::hideEvent(QHideEvent *event)
 }
 
 QuickSwitcher::QuickSwitcher(QWidget *parent)
-  : QFrame(parent)
+  : QWidget(parent)
 {
         setMaximumWidth(450);
-        setStyleSheet("background-color: white");
 
         QFont font;
         font.setPixelSize(20);
@@ -150,9 +151,12 @@ QuickSwitcher::setRoomList(const std::map<QString, QString> &rooms)
 }
 
 void
-QuickSwitcher::showEvent(QShowEvent *)
+QuickSwitcher::paintEvent(QPaintEvent *)
 {
-        roomSearch_->setFocus();
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 void

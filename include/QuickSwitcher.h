@@ -18,9 +18,9 @@
 #pragma once
 
 #include <QAbstractItemView>
-#include <QFrame>
 #include <QKeyEvent>
 #include <QVBoxLayout>
+#include <QWidget>
 
 #include "TextField.h"
 
@@ -41,7 +41,7 @@ protected:
         bool focusNextPrevChild(bool next) override;
 };
 
-class QuickSwitcher : public QFrame
+class QuickSwitcher : public QWidget
 {
         Q_OBJECT
 public:
@@ -55,7 +55,8 @@ signals:
 
 protected:
         void keyPressEvent(QKeyEvent *event) override;
-        void showEvent(QShowEvent *event) override;
+        void showEvent(QShowEvent *) override { roomSearch_->setFocus(); }
+        void paintEvent(QPaintEvent *event) override;
 
 private:
         // Current highlighted selection from the completer.
