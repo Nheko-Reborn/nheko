@@ -200,6 +200,7 @@ set(SRC_FILES
     src/RunGuard.cc
     src/SideBarActions.cc
     src/Splitter.cc
+    src/SuggestionsPopup.cpp
     src/TextInputWidget.cc
     src/TopRoomBar.cc
     src/TrayIcon.cc
@@ -296,6 +297,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/RoomList.h
     include/SideBarActions.h
     include/Splitter.h
+    include/SuggestionsPopup.hpp
     include/TextInputWidget.h
     include/TopRoomBar.h
     include/TrayIcon.h

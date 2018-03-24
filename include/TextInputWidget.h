@@ -18,7 +18,11 @@
 #pragma once
 
 #include <deque>
+#include <iterator>
+#include <map>
 
+#include <QApplication>
+#include <QDebug>
 #include <QHBoxLayout>
 #include <QPaintEvent>
 #include <QTextEdit>
@@ -26,14 +30,19 @@
 
 #include "FlatButton.h"
 #include "LoadingIndicator.h"
+#include "SuggestionsPopup.hpp"
 
 #include "dialogs/PreviewUploadOverlay.h"
 
 #include "emoji/PickButton.h"
 
+class RoomState;
+
 namespace dialogs {
 class PreviewUploadOverlay;
 }
+
+struct SearchResult;
 
 class FilteredTextEdit : public QTextEdit
 {
@@ -61,17 +70,44 @@ signals:
         void video(QSharedPointer<QIODevice> data, const QString &filename);
         void file(QSharedPointer<QIODevice> data, const QString &filename);
 
+        //! Trigger the suggestion popup.
+        void showSuggestions(const QString &query);
+        void resultsRetrieved(const QVector<SearchResult> &results);
+
+public slots:
+        void showResults(const QVector<SearchResult> &results);
+
 protected:
         void keyPressEvent(QKeyEvent *event) override;
         bool canInsertFromMimeData(const QMimeData *source) const override;
         void insertFromMimeData(const QMimeData *source) override;
+        void focusOutEvent(QFocusEvent *event) override
+        {
+                popup_.hide();
+                QWidget::focusOutEvent(event);
+        }
 
 private:
         std::deque<QString> true_history_, working_history_;
         size_t history_index_;
         QTimer *typingTimer_;
 
+        SuggestionsPopup popup_;
+
+        void closeSuggestions() { popup_.hide(); }
+        void resetAnchor() { atTriggerPosition_ = -1; }
+
+        QString query()
+        {
+                auto cursor = textCursor();
+                cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
+                return cursor.selectedText();
+        }
+
         dialogs::PreviewUploadOverlay previewDialog_;
+
+        //! Latest position of the '@' character that triggers the username completer.
+        int atTriggerPosition_ = -1;
 
         void textChanged();
         void uploadData(const QByteArray data, const QString &media, const QString &filename);
@@ -97,6 +133,7 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
+        void setRoomState(QSharedPointer<RoomState> state) { currState_ = state; }
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
@@ -131,6 +168,9 @@ private:
         FlatButton *sendFileBtn_;
         FlatButton *sendMessageBtn_;
         emoji::PickButton *emojiBtn_;
+
+        //! State of the current room.
+        QSharedPointer<RoomState> currState_;
 
         QColor borderColor_;
 };

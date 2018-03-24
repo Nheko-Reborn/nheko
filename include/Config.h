@@ -15,6 +15,11 @@ static constexpr int emojiSize                  = 14;
 static constexpr int headerFontSize             = 21;
 static constexpr int typingNotificationFontSize = 11;
 
+namespace popup {
+static constexpr int font   = fontSize;
+static constexpr int avatar = 28;
+}
+
 namespace receipts {
 static constexpr int font = 12;
 }

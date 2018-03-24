@@ -25,6 +25,11 @@ QuickSwitcher {
     background-color: palette(window);
 }
 
+PopupItem {
+    background-color: palette(window);
+    qproperty-hoverColor: rgba(192, 193, 195, 120);
+}
+
 FlatButton {
     qproperty-foregroundColor: palette(text);
 }

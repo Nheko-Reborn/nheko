@@ -22,6 +22,11 @@ QuickSwitcher {
     background-color: #202228;
 }
 
+PopupItem {
+    background-color: #202228;
+    qproperty-hoverColor: rgba(45, 49, 57, 120);
+}
+
 RoomList,
 RoomList > * {
     background-color: #2d3139;

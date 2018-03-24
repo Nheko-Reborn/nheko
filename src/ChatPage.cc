@@ -158,6 +158,12 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 typingDisplay_->setUsers(users);
         });
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
+        connect(room_list_, &RoomList::roomChanged, text_input_, [this](const QString &room_id) {
+                if (roomStates_.find(room_id) != roomStates_.end())
+                        text_input_->setRoomState(roomStates_[room_id]);
+                else
+                        qWarning() << "no state found for room_id" << room_id;
+        });
 
         connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
@@ -780,6 +786,11 @@ ChatPage::updateTypingUsers(const QString &roomid, const std::vector<std::string
 {
         if (!userSettings_->isTypingNotificationsEnabled())
                 return;
+
+        if (user_ids.empty()) {
+                typingUsers_[roomid] = {};
+                return;
+        }
 
         QStringList users;
 

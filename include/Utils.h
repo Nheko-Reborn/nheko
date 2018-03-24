@@ -54,4 +54,8 @@ scaleDown(uint64_t max_width, uint64_t max_height, const ImageType &source)
         return source.scaled(
           final_width, final_height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
+
+//! Calculate the Levenshtein distance between two strings with character skipping.
+int
+levenshtein_distance(const std::string &s1, const std::string &s2);
 }

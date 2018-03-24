@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <thread>
+
 #include <QAbstractTextDocumentLayout>
 #include <QApplication>
 #include <QBuffer>
@@ -28,17 +30,23 @@
 #include <QPainter>
 #include <QStyleOption>
 
+#include <variant.hpp>
+
 #include "Config.h"
+#include "RoomState.h"
 #include "TextInputWidget.h"
+#include "Utils.h"
 
 static constexpr size_t INPUT_HISTORY_SIZE = 127;
 static constexpr int MAX_TEXTINPUT_HEIGHT  = 120;
 static constexpr int InputHeight           = 26;
 static constexpr int ButtonHeight          = 24;
+static constexpr int MaxPopupItems         = 5;
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
   , history_index_{0}
+  , popup_{parent}
   , previewDialog_{parent}
 {
         setFrameStyle(QFrame::NoFrame);
@@ -64,7 +72,41 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                 this,
                 &FilteredTextEdit::uploadData);
 
+        qRegisterMetaType<SearchResult>();
+        qRegisterMetaType<QVector<SearchResult>>();
+        connect(this, &FilteredTextEdit::resultsRetrieved, this, &FilteredTextEdit::showResults);
+        connect(&popup_, &SuggestionsPopup::itemSelected, this, [this](const QString &text) {
+                popup_.hide();
+
+                auto cursor   = textCursor();
+                const int end = cursor.position();
+
+                cursor.setPosition(atTriggerPosition_, QTextCursor::MoveAnchor);
+                cursor.setPosition(end, QTextCursor::KeepAnchor);
+                cursor.removeSelectedText();
+                cursor.insertText(text);
+        });
+
         previewDialog_.hide();
+}
+
+void
+FilteredTextEdit::showResults(const QVector<SearchResult> &results)
+{
+        QPoint pos;
+
+        if (atTriggerPosition_ != -1) {
+                auto cursor = textCursor();
+                cursor.setPosition(atTriggerPosition_);
+                pos = viewport()->mapToGlobal(cursorRect(cursor).topLeft());
+        } else {
+                auto rect = cursorRect();
+                pos       = viewport()->mapToGlobal(rect.topLeft());
+        }
+
+        popup_.addUsers(results);
+        popup_.move(pos.x(), pos.y() - popup_.height() - 10);
+        popup_.show();
 }
 
 void
@@ -79,7 +121,34 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 typingTimer_->start();
         }
 
+        // calculate the new query
+        if (textCursor().position() < atTriggerPosition_ || atTriggerPosition_ == -1) {
+                resetAnchor();
+                closeSuggestions();
+        }
+
+        if (popup_.isVisible()) {
+                switch (event->key()) {
+                case Qt::Key_Enter:
+                case Qt::Key_Return:
+                case Qt::Key_Escape:
+                case Qt::Key_Tab:
+                case Qt::Key_Space:
+                case Qt::Key_Backtab: {
+                        closeSuggestions();
+                        break;
+                }
+                default:
+                        break;
+                }
+        }
+
         switch (event->key()) {
+        case Qt::Key_At:
+                atTriggerPosition_ = textCursor().position();
+
+                QTextEdit::keyPressEvent(event);
+                break;
         case Qt::Key_Return:
         case Qt::Key_Enter:
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
@@ -124,6 +193,30 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         }
         default:
                 QTextEdit::keyPressEvent(event);
+
+                // Check if the current word should be autocompleted.
+                auto cursor = textCursor();
+                cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
+                auto word = cursor.selectedText();
+
+                if (cursor.position() == 0) {
+                        closeSuggestions();
+                        return;
+                }
+
+                if (cursor.position() == atTriggerPosition_ + 1) {
+                        const auto q = query();
+
+                        if (q.isEmpty()) {
+                                closeSuggestions();
+                                return;
+                        }
+
+                        emit showSuggestions(query());
+                } else {
+                        closeSuggestions();
+                }
+
                 break;
         }
 }
@@ -339,6 +432,52 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
                 setFixedHeight(widgetHeight);
                 input_->setFixedHeight(textInputHeight);
+        });
+        connect(input_, &FilteredTextEdit::showSuggestions, this, [this](const QString &q) {
+                if (q.isEmpty() || currState_.isNull())
+                        return;
+
+                std::thread worker([this, q = q.toLower().toStdString()]() {
+                        std::multimap<int, std::pair<std::string, std::string>> items;
+
+                        auto get_name = [](auto membership) {
+                                auto name = membership.second.content.display_name;
+                                auto key  = membership.first;
+
+                                // Remove the leading '@' character.
+                                if (name.empty()) {
+                                        key.erase(0, 1);
+                                        name = key;
+                                }
+
+                                return std::make_pair(key, name);
+                        };
+
+                        for (const auto &m : currState_->memberships) {
+                                const auto user = get_name(m);
+                                const int score = utils::levenshtein_distance(q, user.second);
+
+                                items.emplace(score, user);
+                        }
+
+                        QVector<SearchResult> results;
+                        auto end = items.begin();
+
+                        if (items.size() >= MaxPopupItems)
+                                std::advance(end, MaxPopupItems);
+
+                        for (auto it = items.begin(); it != end; it++) {
+                                const auto user = it->second;
+
+                                results.push_back(
+                                  SearchResult{QString::fromStdString(user.first),
+                                               QString::fromStdString(user.second)});
+                        }
+
+                        emit input_->resultsRetrieved(results);
+                });
+
+                worker.detach();
         });
 
         sendMessageBtn_ = new FlatButton(this);
