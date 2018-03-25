@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <thread>
-
 #include <QAbstractTextDocumentLayout>
 #include <QApplication>
 #include <QBuffer>
@@ -29,6 +27,7 @@
 #include <QMimeType>
 #include <QPainter>
 #include <QStyleOption>
+#include <QtConcurrent>
 
 #include <variant.hpp>
 
@@ -437,7 +436,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
                 if (q.isEmpty() || currState_.isNull())
                         return;
 
-                std::thread worker([this, q = q.toLower().toStdString()]() {
+                QtConcurrent::run([this, q = q.toLower().toStdString()]() {
                         std::multimap<int, std::pair<std::string, std::string>> items;
 
                         auto get_name = [](auto membership) {
@@ -476,8 +475,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
                         emit input_->resultsRetrieved(results);
                 });
-
-                worker.detach();
         });
 
         sendMessageBtn_ = new FlatButton(this);

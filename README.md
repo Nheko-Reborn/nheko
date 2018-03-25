@@ -20,6 +20,7 @@ Specifically there is support for:
 - Sending & receiving invites.
 - Sending & receiving files and emoji (inline widgets for images, audio and file messages).
 - Typing notifications.
+- Username auto-completion.
 - Message & mention notifications.
 - Redacting messages.
 - Read receipts.
