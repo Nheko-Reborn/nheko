@@ -52,7 +52,7 @@ AvatarProvider::resolve(const QString &userId,
 
         auto proxy = client_->fetchUserAvatar(avatars_[userId].url);
 
-        if (proxy == nullptr)
+        if (proxy.isNull())
                 return;
 
         connect(proxy.data(),

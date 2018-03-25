@@ -716,7 +716,7 @@ MatrixClient::fetchUserAvatar(const QUrl &avatarUrl)
 
         if (url_parts.size() != 2) {
                 qDebug() << "Invalid format for user avatar:" << avatarUrl.toString();
-                return nullptr;
+                return QSharedPointer<DownloadMediaProxy>();
         }
 
         QUrlQuery query;
@@ -733,8 +733,8 @@ MatrixClient::fetchUserAvatar(const QUrl &avatarUrl)
         QNetworkRequest avatar_request(endpoint);
 
         auto reply = get(avatar_request);
-        auto proxy = QSharedPointer<DownloadMediaProxy>(
-          new DownloadMediaProxy, [this](auto proxy) { proxy->deleteLater(); });
+        auto proxy = QSharedPointer<DownloadMediaProxy>(new DownloadMediaProxy,
+                                                        [](auto proxy) { proxy->deleteLater(); });
         connect(reply, &QNetworkReply::finished, this, [reply, proxy, avatarUrl]() {
                 reply->deleteLater();
 
@@ -767,8 +767,8 @@ MatrixClient::downloadImage(const QUrl &url)
         QNetworkRequest image_request(url);
 
         auto reply = get(image_request);
-        auto proxy = QSharedPointer<DownloadMediaProxy>(
-          new DownloadMediaProxy, [this](auto proxy) { proxy->deleteLater(); });
+        auto proxy = QSharedPointer<DownloadMediaProxy>(new DownloadMediaProxy,
+                                                        [](auto proxy) { proxy->deleteLater(); });
         connect(reply, &QNetworkReply::finished, this, [reply, proxy]() {
                 reply->deleteLater();
 
@@ -799,8 +799,8 @@ MatrixClient::downloadFile(const QUrl &url)
         QNetworkRequest fileRequest(url);
 
         auto reply = get(fileRequest);
-        auto proxy = QSharedPointer<DownloadMediaProxy>(
-          new DownloadMediaProxy, [this](auto proxy) { proxy->deleteLater(); });
+        auto proxy = QSharedPointer<DownloadMediaProxy>(new DownloadMediaProxy,
+                                                        [](auto proxy) { proxy->deleteLater(); });
         connect(reply, &QNetworkReply::finished, this, [reply, proxy]() {
                 reply->deleteLater();
 

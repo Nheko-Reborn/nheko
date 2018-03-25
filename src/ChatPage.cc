@@ -581,7 +581,8 @@ ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_na
 
         if (avatar_url.isValid()) {
                 auto proxy = client_->fetchUserAvatar(avatar_url);
-                if (proxy == nullptr)
+
+                if (proxy.isNull())
                         return;
 
                 proxy->setParent(this);
