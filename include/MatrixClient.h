@@ -29,6 +29,7 @@ class DownloadMediaProxy : public QObject
 signals:
         void imageDownloaded(const QPixmap &data);
         void fileDownloaded(const QByteArray &data);
+        void avatarDownloaded(const QImage &img);
 };
 
 /*
@@ -59,14 +60,12 @@ public:
         void versions() noexcept;
         void fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url);
         //! Download user's avatar.
-        void fetchUserAvatar(const QUrl &avatarUrl,
-                             std::function<void(QImage)> onSuccess,
-                             std::function<void(QString)> onError);
+        QSharedPointer<DownloadMediaProxy> fetchUserAvatar(const QUrl &avatarUrl);
         void fetchCommunityAvatar(const QString &communityId, const QUrl &avatarUrl);
         void fetchCommunityProfile(const QString &communityId);
         void fetchCommunityRooms(const QString &communityId);
-        DownloadMediaProxy *downloadImage(const QUrl &url);
-        DownloadMediaProxy *downloadFile(const QUrl &url);
+        QSharedPointer<DownloadMediaProxy> downloadImage(const QUrl &url);
+        QSharedPointer<DownloadMediaProxy> downloadFile(const QUrl &url);
         void messages(const QString &room_id, const QString &from_token, int limit = 30) noexcept;
         void uploadImage(const QString &roomid,
                          const QString &filename,

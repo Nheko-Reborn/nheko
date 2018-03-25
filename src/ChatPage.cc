@@ -579,11 +579,20 @@ ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_na
         user_info_widget_->setUserId(userid);
         user_info_widget_->setDisplayName(display_name);
 
-        if (avatar_url.isValid())
-                client_->fetchUserAvatar(
-                  avatar_url,
-                  [this](QImage img) { user_info_widget_->setAvatar(img); },
-                  [](QString error) { qWarning() << error << ": failed to fetch own avatar"; });
+        if (avatar_url.isValid()) {
+                auto proxy = client_->fetchUserAvatar(avatar_url);
+                if (proxy == nullptr)
+                        return;
+
+                proxy->setParent(this);
+                connect(proxy.data(),
+                        &DownloadMediaProxy::avatarDownloaded,
+                        this,
+                        [this, proxy](const QImage &img) {
+                                proxy->deleteLater();
+                                user_info_widget_->setAvatar(img);
+                        });
+        }
 }
 
 void

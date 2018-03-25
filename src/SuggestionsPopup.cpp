@@ -44,8 +44,8 @@ PopupItem::PopupItem(QWidget *parent, const QString &user_id)
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(userName_, 1);
 
-        /* AvatarProvider::resolve(user_id, [this](const QImage &img) { avatar_->setImage(img); });
-         */
+        AvatarProvider::resolve(
+          user_id, this, [this](const QImage &img) { avatar_->setImage(img); });
 }
 
 void

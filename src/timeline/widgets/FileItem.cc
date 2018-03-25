@@ -121,7 +121,7 @@ FileItem::mousePressEvent(QMouseEvent *event)
                         return;
 
                 auto proxy = client_->downloadFile(url_);
-                connect(proxy,
+                connect(proxy.data(),
                         &DownloadMediaProxy::fileDownloaded,
                         this,
                         [proxy, this](const QByteArray &data) {

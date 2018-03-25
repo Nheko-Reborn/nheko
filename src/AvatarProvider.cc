@@ -21,7 +21,6 @@
 QSharedPointer<MatrixClient> AvatarProvider::client_;
 
 std::map<QString, AvatarData> AvatarProvider::avatars_;
-std::map<QString, std::vector<std::function<void(QImage)>>> AvatarProvider::toBeResolved_;
 
 void
 AvatarProvider::init(QSharedPointer<MatrixClient> client)
@@ -32,22 +31,14 @@ AvatarProvider::init(QSharedPointer<MatrixClient> client)
 void
 AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
 {
-        if (toBeResolved_.find(uid) != toBeResolved_.end()) {
-                auto callbacks = toBeResolved_[uid];
-
-                // Update all the timeline items with the resolved avatar.
-                for (const auto &callback : callbacks)
-                        callback(img);
-
-                toBeResolved_.erase(uid);
-        }
-
         auto avatarData = &avatars_[uid];
         avatarData->img = img;
 }
 
 void
-AvatarProvider::resolve(const QString &userId, std::function<void(QImage)> callback)
+AvatarProvider::resolve(const QString &userId,
+                        QObject *receiver,
+                        std::function<void(QImage)> callback)
 {
         if (avatars_.find(userId) == avatars_.end())
                 return;
@@ -59,23 +50,19 @@ AvatarProvider::resolve(const QString &userId, std::function<void(QImage)> callb
                 return;
         }
 
-        // Add the current timeline item to the waiting list for this avatar.
-        if (toBeResolved_.find(userId) == toBeResolved_.end()) {
-                client_->fetchUserAvatar(avatars_[userId].url,
-                                         [userId](QImage image) { updateAvatar(userId, image); },
-                                         [userId](QString error) {
-                                                 qWarning()
-                                                   << error << ": failed to retrieve user avatar"
-                                                   << userId;
-                                         });
+        auto proxy = client_->fetchUserAvatar(avatars_[userId].url);
 
-                std::vector<std::function<void(QImage)>> items;
-                items.emplace_back(callback);
+        if (proxy == nullptr)
+                return;
 
-                toBeResolved_.emplace(userId, items);
-        } else {
-                toBeResolved_[userId].emplace_back(callback);
-        }
+        connect(proxy.data(),
+                &DownloadMediaProxy::avatarDownloaded,
+                receiver,
+                [userId, proxy, callback](const QImage &img) {
+                        proxy->deleteLater();
+                        updateAvatar(userId, img);
+                        callback(img);
+                });
 }
 
 void
@@ -85,11 +72,4 @@ AvatarProvider::setAvatarUrl(const QString &userId, const QUrl &url)
         data.url = url;
 
         avatars_.emplace(userId, data);
-}
-
-void
-AvatarProvider::clear()
-{
-        avatars_.clear();
-        toBeResolved_.clear();
 }

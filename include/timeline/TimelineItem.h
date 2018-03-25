@@ -182,7 +182,8 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
                 headerLayout_->addLayout(widgetLayout_);
                 messageLayout_->addLayout(headerLayout_, 1);
 
-                AvatarProvider::resolve(userid, [this](const QImage &img) { setUserAvatar(img); });
+                AvatarProvider::resolve(
+                  userid, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
 
@@ -230,7 +231,8 @@ TimelineItem::setupWidgetLayout(Widget *widget,
                 headerLayout_->addLayout(widgetLayout_);
                 messageLayout_->addLayout(headerLayout_, 1);
 
-                AvatarProvider::resolve(sender, [this](const QImage &img) { setUserAvatar(img); });
+                AvatarProvider::resolve(
+                  sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
 

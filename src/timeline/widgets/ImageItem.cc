@@ -56,11 +56,13 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
 
         auto proxy = client_.data()->downloadImage(url_);
 
-        connect(
-          proxy, &DownloadMediaProxy::imageDownloaded, this, [this, proxy](const QPixmap &img) {
-                  proxy->deleteLater();
-                  setImage(img);
-          });
+        connect(proxy.data(),
+                &DownloadMediaProxy::imageDownloaded,
+                this,
+                [this, proxy](const QPixmap &img) {
+                        proxy->deleteLater();
+                        setImage(img);
+                });
 }
 
 ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
@@ -92,11 +94,13 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
 
         auto proxy = client_.data()->downloadImage(url_);
 
-        connect(
-          proxy, &DownloadMediaProxy::imageDownloaded, this, [proxy, this](const QPixmap &img) {
-                  proxy->deleteLater();
-                  setImage(img);
-          });
+        connect(proxy.data(),
+                &DownloadMediaProxy::imageDownloaded,
+                this,
+                [proxy, this](const QPixmap &img) {
+                        proxy->deleteLater();
+                        setImage(img);
+                });
 }
 
 void
@@ -230,7 +234,7 @@ ImageItem::saveAs()
                 return;
 
         auto proxy = client_->downloadFile(url_);
-        connect(proxy,
+        connect(proxy.data(),
                 &DownloadMediaProxy::fileDownloaded,
                 this,
                 [proxy, filename](const QByteArray &data) {

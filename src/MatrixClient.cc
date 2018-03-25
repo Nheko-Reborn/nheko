@@ -709,16 +709,14 @@ MatrixClient::fetchCommunityRooms(const QString &communityId)
         });
 }
 
-void
-MatrixClient::fetchUserAvatar(const QUrl &avatarUrl,
-                              std::function<void(QImage)> onSuccess,
-                              std::function<void(QString)> onError)
+QSharedPointer<DownloadMediaProxy>
+MatrixClient::fetchUserAvatar(const QUrl &avatarUrl)
 {
         QList<QString> url_parts = avatarUrl.toString().split("mxc://");
 
         if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for user avatar " << avatarUrl.toString();
-                return;
+                qDebug() << "Invalid format for user avatar:" << avatarUrl.toString();
+                return nullptr;
         }
 
         QUrlQuery query;
@@ -735,33 +733,42 @@ MatrixClient::fetchUserAvatar(const QUrl &avatarUrl,
         QNetworkRequest avatar_request(endpoint);
 
         auto reply = get(avatar_request);
-        connect(reply, &QNetworkReply::finished, this, [reply, onSuccess, onError]() {
+        auto proxy = QSharedPointer<DownloadMediaProxy>(
+          new DownloadMediaProxy, [this](auto proxy) { proxy->deleteLater(); });
+        connect(reply, &QNetworkReply::finished, this, [reply, proxy, avatarUrl]() {
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-                if (status == 0 || status >= 400)
-                        return onError(reply->errorString());
+                if (status == 0 || status >= 400) {
+                        qWarning() << reply->errorString() << avatarUrl;
+                        return;
+                }
 
                 auto data = reply->readAll();
 
-                if (data.size() == 0)
-                        return onError("received avatar with no data");
+                if (data.size() == 0) {
+                        qWarning() << "received avatar with no data:" << avatarUrl;
+                        return;
+                }
 
                 QImage img;
                 img.loadFromData(data);
 
-                onSuccess(std::move(img));
+                emit proxy->avatarDownloaded(img);
         });
+
+        return proxy;
 }
 
-DownloadMediaProxy *
+QSharedPointer<DownloadMediaProxy>
 MatrixClient::downloadImage(const QUrl &url)
 {
         QNetworkRequest image_request(url);
 
         auto reply = get(image_request);
-        auto proxy = new DownloadMediaProxy;
+        auto proxy = QSharedPointer<DownloadMediaProxy>(
+          new DownloadMediaProxy, [this](auto proxy) { proxy->deleteLater(); });
         connect(reply, &QNetworkReply::finished, this, [reply, proxy]() {
                 reply->deleteLater();
 
@@ -786,13 +793,14 @@ MatrixClient::downloadImage(const QUrl &url)
         return proxy;
 }
 
-DownloadMediaProxy *
+QSharedPointer<DownloadMediaProxy>
 MatrixClient::downloadFile(const QUrl &url)
 {
         QNetworkRequest fileRequest(url);
 
         auto reply = get(fileRequest);
-        auto proxy = new DownloadMediaProxy;
+        auto proxy = QSharedPointer<DownloadMediaProxy>(
+          new DownloadMediaProxy, [this](auto proxy) { proxy->deleteLater(); });
         connect(reply, &QNetworkReply::finished, this, [reply, proxy]() {
                 reply->deleteLater();
 
