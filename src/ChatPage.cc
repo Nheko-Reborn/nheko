@@ -493,6 +493,7 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 
         room_list_->sync(roomStates_, roomSettings_);
         room_list_->syncInvites(response.rooms.invite);
+        trackInvites(response.rooms.invite);
 
         view_manager_->sync(response.rooms);
 
@@ -549,6 +550,7 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
         // Initialize room list.
         room_list_->setInitialRooms(roomSettings_, roomStates_);
         room_list_->syncInvites(response.rooms.invite);
+        trackInvites(response.rooms.invite);
 
         client_->setNextBatchToken(QString::fromStdString(response.next_batch));
         client_->sync();
@@ -687,7 +689,10 @@ ChatPage::loadStateFromCache()
 
                   // Initialize room list from the restored state and settings.
                   room_list_->setInitialRooms(roomSettings_, roomStates_);
-                  room_list_->syncInvites(cache_->invites());
+
+                  const auto invites = cache_->invites();
+                  room_list_->syncInvites(invites);
+                  trackInvites(invites);
 
                   // Check periodically if the timelines have been loaded.
                   consensusTimer_->start(CONSENSUS_TIMEOUT);
@@ -773,7 +778,9 @@ ChatPage::removeRoom(const QString &room_id)
                 cache_->unmount();
                 cache_->deleteData();
         }
+
         room_list_->removeRoom(room_id, room_id == current_room_);
+        roomInvites_.erase(room_id);
 }
 
 void
@@ -789,6 +796,7 @@ ChatPage::removeInvite(const QString &room_id)
         }
 
         room_list_->removeRoom(room_id, room_id == current_room_);
+        roomInvites_.erase(room_id);
 }
 
 void
@@ -854,6 +862,9 @@ ChatPage::removeLeftRooms(const std::map<std::string, mtx::responses::LeftRoom> 
 
                 if (roomStates_.find(room_id) != roomStates_.end())
                         removeRoom(room_id);
+
+                if (roomInvites_.find(room_id) != roomInvites_.end())
+                        removeInvite(room_id);
         }
 }
 
@@ -862,6 +873,9 @@ ChatPage::updateJoinedRooms(const std::map<std::string, mtx::responses::JoinedRo
 {
         for (auto it = rooms.cbegin(); it != rooms.cend(); ++it) {
                 const auto roomid = QString::fromStdString(it->first);
+
+                if (roomInvites_.find(roomid) != roomInvites_.end())
+                        removeInvite(roomid);
 
                 updateTypingUsers(roomid, it->second.ephemeral.typing);
                 updateRoomNotificationCount(roomid,

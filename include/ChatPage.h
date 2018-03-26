@@ -110,11 +110,17 @@ private:
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
         using Memberships = std::map<std::string, Membership>;
 
-        using JoinedRooms = std::map<std::string, mtx::responses::JoinedRoom>;
-        using LeftRooms   = std::map<std::string, mtx::responses::LeftRoom>;
+        using JoinedRooms  = std::map<std::string, mtx::responses::JoinedRoom>;
+        using LeftRooms    = std::map<std::string, mtx::responses::LeftRoom>;
+        using InvitedRooms = std::map<std::string, mtx::responses::InvitedRoom>;
 
         void removeLeftRooms(const LeftRooms &rooms);
         void updateJoinedRooms(const JoinedRooms &rooms);
+        void trackInvites(const InvitedRooms &rooms)
+        {
+                for (const auto &invite : rooms)
+                        roomInvites_[QString::fromStdString(invite.first)] = true;
+        }
 
         std::map<QString, QSharedPointer<RoomState>> generateMembershipDifference(
           const JoinedRooms &rooms,
@@ -181,6 +187,7 @@ private:
 
         RoomStates roomStates_;
         std::map<QString, QSharedPointer<RoomSettings>> roomSettings_;
+        std::map<QString, bool> roomInvites_;
 
         std::map<QString, QSharedPointer<Community>> communities_;
 
