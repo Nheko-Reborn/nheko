@@ -22,6 +22,8 @@
 #include <QFile>
 #include <QStandardPaths>
 
+#include <variant.hpp>
+
 #include "Cache.h"
 #include "RoomState.h"
 
@@ -420,12 +422,6 @@ Cache::setInvites(const std::map<std::string, mtx::responses::InvitedRoom> &invi
         if (!isMounted_)
                 return;
 
-        using Aliases = mtx::events::StrippedEvent<mtx::events::state::Aliases>;
-        using Avatar  = mtx::events::StrippedEvent<mtx::events::state::Avatar>;
-        using Member  = mtx::events::StrippedEvent<mtx::events::state::Member>;
-        using Name    = mtx::events::StrippedEvent<mtx::events::state::Name>;
-        using Topic   = mtx::events::StrippedEvent<mtx::events::state::Topic>;
-
         try {
                 auto txn = lmdb::txn::begin(env_);
 
@@ -433,20 +429,9 @@ Cache::setInvites(const std::map<std::string, mtx::responses::InvitedRoom> &invi
                         nlohmann::json j;
 
                         for (const auto &e : it->second.invite_state) {
-                                if (mpark::holds_alternative<Name>(e)) {
-                                        j["invite_state"]["events"].push_back(mpark::get<Name>(e));
-                                } else if (mpark::holds_alternative<Topic>(e)) {
-                                        j["invite_state"]["events"].push_back(mpark::get<Topic>(e));
-                                } else if (mpark::holds_alternative<Avatar>(e)) {
-                                        j["invite_state"]["events"].push_back(
-                                          mpark::get<Avatar>(e));
-                                } else if (mpark::holds_alternative<Aliases>(e)) {
-                                        j["invite_state"]["events"].push_back(
-                                          mpark::get<Aliases>(e));
-                                } else if (mpark::holds_alternative<Member>(e)) {
-                                        j["invite_state"]["events"].push_back(
-                                          mpark::get<Member>(e));
-                                }
+                                mpark::visit(
+                                  [&j](auto msg) { j["invite_state"]["events"].push_back(msg); },
+                                  e);
                         }
 
                         lmdb::dbi_put(txn, invitesDb_, lmdb::val(it->first), lmdb::val(j.dump()));
