@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDateTime>
 #include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
@@ -83,6 +84,15 @@ RoomInfoListItem::RoomInfoListItem(QString room_id,
   , roomId_{std::move(room_id)}
 {
         init(parent);
+
+        // HACK
+        // We use fake message info with an old date to pin
+        // the invite events to the top.
+        //
+        // State events in invited rooms don't contain timestamp info,
+        // so we can't use them for sorting.
+        auto now     = QDateTime::currentDateTime();
+        lastMsgInfo_ = {"-", "-", "-", "-", now.addYears(10)};
 
         roomAvatar_ = QString::fromStdString(invitedRoom_.avatar());
         roomName_   = QString::fromStdString(invitedRoom_.name());
