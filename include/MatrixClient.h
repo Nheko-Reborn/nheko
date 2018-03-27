@@ -102,7 +102,7 @@ public slots:
 
         void setServer(const QString &server)
         {
-                server_ = QUrl(QString("https://%1").arg(server));
+                server_ = QUrl(QString("%1://%2").arg(serverProtocol_).arg(server));
         };
         void setAccessToken(const QString &token) { token_ = token; };
         void setNextBatchToken(const QString &next_batch) { next_batch_ = next_batch; };
@@ -193,9 +193,10 @@ private:
         // Increasing transaction ID.
         int txn_id_;
 
-        // Token to be used for the next sync.
+        //! Token to be used for the next sync.
         QString next_batch_;
-
-        // filter to be send as filter-param for (initial) /sync requests
+        //! http or https (default).
+        QString serverProtocol_;
+        //! Filter to be send as filter-param for (initial) /sync requests.
         QString filter_;
 };

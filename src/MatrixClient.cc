@@ -25,6 +25,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QPixmap>
+#include <QProcessEnvironment>
 #include <QSettings>
 #include <QUrlQuery>
 #include <mtx/errors.hpp>
@@ -36,10 +37,25 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
   : QNetworkAccessManager(parent)
   , clientApiUrl_{"/_matrix/client/r0"}
   , mediaApiUrl_{"/_matrix/media/r0"}
-  , server_{"https://" + server}
+  , serverProtocol_{"https"}
 {
         QSettings settings;
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
+
+        auto env = QProcessEnvironment::systemEnvironment();
+
+        auto allowInsecureConnections = env.value("NHEKO_ALLOW_INSECURE_CONNECTIONS", "0");
+
+        if (allowInsecureConnections == "1") {
+                qWarning() << "Insecure connections are allowed: SSL errors will be ignored";
+                connect(
+                  this,
+                  &QNetworkAccessManager::sslErrors,
+                  this,
+                  [](QNetworkReply *reply, const QList<QSslError> &) { reply->ignoreSslErrors(); });
+        }
+
+        setServer(server);
 
         QJsonObject default_filter{
           {
