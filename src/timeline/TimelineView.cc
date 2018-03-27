@@ -753,6 +753,20 @@ TimelineView::removeEvent(const QString &event_id)
                 prevLabel->deleteLater();
         }
 
+        // If we deleted the last item in the timeline...
+        if (!nextItem && prevItem)
+                lastSender_ = prevItem->descriptionMessage().userid;
+
+        // If we deleted the first item in the timeline...
+        if (!prevItem && nextItem)
+                firstSender_ = nextItem->descriptionMessage().userid;
+
+        // If we deleted the only item in the timeline...
+        if (!prevItem && !nextItem) {
+                firstSender_.clear();
+                lastSender_.clear();
+        }
+
         // Finally remove the event.
         removedItem->deleteLater();
         eventIds_.remove(event_id);

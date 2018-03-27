@@ -154,8 +154,11 @@ private:
         TimelineEvent findFirstViewableEvent(const std::vector<TimelineEvent> &events);
         TimelineEvent findLastViewableEvent(const std::vector<TimelineEvent> &events);
 
+        //! Mark the last event as read.
         void readLastEvent() const;
+        //! Whether or not the scrollbar is visible (non-zero height).
         bool isScrollbarActivated() { return scroll_area_->verticalScrollBar()->value() != 0; }
+        //! Retrieve the event id of the last item.
         QString getLastEventId() const;
         QString getEventSender(const mtx::events::collections::TimelineEvents &event) const;
         mtx::events::EventType getEventType(
