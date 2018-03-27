@@ -38,7 +38,7 @@ constexpr int IconSize  = 44;
 constexpr int MaxHeight = IconSize + 2 * Padding;
 
 constexpr int InviteBtnX = IconSize + 2 * Padding;
-constexpr int InviteBtnY = IconSize / 2 + Padding;
+constexpr int InviteBtnY = IconSize / 2 + Padding + Padding / 3;
 
 void
 RoomInfoListItem::init(QWidget *parent)

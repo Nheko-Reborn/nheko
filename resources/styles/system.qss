@@ -62,7 +62,7 @@ RegisterPage {
 
 RoomInfoListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(mid);
+    qproperty-hoverBackgroundColor: palette(light);
     qproperty-backgroundColor: palette(window);
 
     qproperty-titleColor: palette(text);
@@ -71,7 +71,7 @@ RoomInfoListItem {
     qproperty-highlightedTitleColor: palette(light);
     qproperty-highlightedSubtitleColor: palette(light);
 
-    qproperty-btnColor: palette(light);
+    qproperty-btnColor: palette(mid);
     qproperty-btnTextColor: palette(text);
 
     qproperty-timestampColor: palette(text);
