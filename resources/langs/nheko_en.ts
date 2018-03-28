@@ -2,194 +2,195 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
-    <name>EmojiPanel</name>
+    <name>CreateRoom</name>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="120"/>
+        <location filename="../../src/dialogs/CreateRoom.cc" line="32"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/CreateRoom.cc" line="43"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/CreateRoom.cc" line="46"/>
+        <source>Topic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/CreateRoom.cc" line="49"/>
+        <source>Alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/CreateRoom.cc" line="57"/>
+        <source>Room Visibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/CreateRoom.cc" line="66"/>
+        <source>Room Preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/CreateRoom.cc" line="76"/>
+        <source>Direct Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>InviteUsers</name>
+    <message>
+        <location filename="../../src/dialogs/InviteUsers.cc" line="36"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/InviteUsers.cc" line="47"/>
+        <source>User ID to invite</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>JoinRoom</name>
+    <message>
+        <location filename="../../src/dialogs/JoinRoom.cc" line="30"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/JoinRoom.cc" line="41"/>
+        <source>Room ID or alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LeaveRoom</name>
+    <message>
+        <location filename="../../src/dialogs/LeaveRoom.cc" line="29"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/LeaveRoom.cc" line="39"/>
+        <source>Are you sure you want to leave?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Logout</name>
+    <message>
+        <location filename="../../src/dialogs/Logout.cc" line="47"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dialogs/Logout.cc" line="57"/>
+        <source>Logout. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Panel</name>
+    <message>
+        <location filename="../../src/emoji/Panel.cc" line="125"/>
         <source>Smileys &amp; People</source>
-        <translation>Smileys &amp; People</translation>
+        <translation type="unfinished">Smileys &amp; People</translation>
     </message>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="123"/>
+        <location filename="../../src/emoji/Panel.cc" line="129"/>
         <source>Animals &amp; Nature</source>
-        <translation>Animals &amp; Nature</translation>
+        <translation type="unfinished">Animals &amp; Nature</translation>
     </message>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="126"/>
+        <location filename="../../src/emoji/Panel.cc" line="132"/>
         <source>Food &amp; Drink</source>
-        <translation>Food &amp; Drink</translation>
+        <translation type="unfinished">Food &amp; Drink</translation>
     </message>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="129"/>
+        <location filename="../../src/emoji/Panel.cc" line="135"/>
         <source>Activity</source>
-        <translation>Activity</translation>
+        <translation type="unfinished">Activity</translation>
     </message>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="132"/>
+        <location filename="../../src/emoji/Panel.cc" line="139"/>
         <source>Travel &amp; Places</source>
-        <translation>Travel &amp; Places</translation>
+        <translation type="unfinished">Travel &amp; Places</translation>
     </message>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="135"/>
+        <location filename="../../src/emoji/Panel.cc" line="142"/>
         <source>Objects</source>
-        <translation>Objects</translation>
+        <translation type="unfinished">Objects</translation>
     </message>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="138"/>
+        <location filename="../../src/emoji/Panel.cc" line="145"/>
         <source>Symbols</source>
-        <translation>Symbols</translation>
+        <translation type="unfinished">Symbols</translation>
     </message>
     <message>
-        <location filename="../../src/EmojiPanel.cc" line="141"/>
+        <location filename="../../src/emoji/Panel.cc" line="148"/>
         <source>Flags</source>
-        <translation>Flags</translation>
+        <translation type="unfinished">Flags</translation>
     </message>
 </context>
 <context>
-    <name>LoginPage</name>
+    <name>PreviewUploadOverlay</name>
     <message>
-        <location filename="../../src/LoginPage.cc" line="85"/>
-        <source>Matrix ID</source>
-        <translation>Matrix ID</translation>
+        <location filename="../../src/dialogs/PreviewUploadOverlay.cc" line="41"/>
+        <source>Upload</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/LoginPage.cc" line="88"/>
-        <source>e.g @joe:matrix.org</source>
-        <translation>e.g @joe:matrix.org</translation>
+        <location filename="../../src/dialogs/PreviewUploadOverlay.cc" line="42"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/LoginPage.cc" line="92"/>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <location filename="../../src/LoginPage.cc" line="104"/>
-        <source>LOGIN</source>
-        <translation>LOGIN</translation>
-    </message>
-    <message>
-        <location filename="../../src/LoginPage.cc" line="150"/>
-        <source>Invalid Matrix ID</source>
-        <translation>Invalid Matrix ID</translation>
-    </message>
-    <message>
-        <location filename="../../src/LoginPage.cc" line="152"/>
-        <source>Empty password</source>
-        <translation>Empty password</translation>
+        <location filename="../../src/dialogs/PreviewUploadOverlay.cc" line="114"/>
+        <source>Media type: %1
+Media size: %2
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>MatrixClient</name>
+    <name>ReCaptcha</name>
     <message>
-        <location filename="../../src/MatrixClient.cc" line="75"/>
-        <source>Wrong username or password</source>
-        <translation>Wrong username or password</translation>
+        <location filename="../../src/dialogs/ReCaptcha.cpp" line="34"/>
+        <source>CONFIRM</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/MatrixClient.cc" line="80"/>
-        <source>Login endpoint was not found on the server</source>
-        <translation>Login endpoint was not found on the server</translation>
+        <location filename="../../src/dialogs/ReCaptcha.cpp" line="37"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/MatrixClient.cc" line="86"/>
-        <source>An unknown error occured. Please try again.</source>
-        <translation>An unknown error occured. Please try again.</translation>
-    </message>
-    <message>
-        <location filename="../../src/MatrixClient.cc" line="100"/>
-        <source>Malformed response. Possibly not a Matrix server</source>
-        <translation>Malformed response. Possibly not a Matrix server</translation>
+        <location filename="../../src/dialogs/ReCaptcha.cpp" line="48"/>
+        <source>Solve the reCAPTCHA and press the confirm button</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>RegisterPage</name>
+    <name>ReadReceipts</name>
     <message>
-        <location filename="../../src/RegisterPage.cc" line="72"/>
-        <source>Username</source>
-        <translation>Username</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="78"/>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="85"/>
-        <source>Password confirmation</source>
-        <translation>Password confirmation</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="92"/>
-        <source>Home Server</source>
-        <translation>Home Server</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="108"/>
-        <source>REGISTER</source>
-        <translation>REGISTER</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="159"/>
-        <source>Invalid username</source>
-        <translation>Invalid username</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="161"/>
-        <source>Password is not long enough (min 8 chars)</source>
-        <translation>Password is not long enough (min 8 chars)</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="163"/>
-        <source>Passwords don&apos;t match</source>
-        <translation>Passwords don&apos;t match</translation>
-    </message>
-    <message>
-        <location filename="../../src/RegisterPage.cc" line="165"/>
-        <source>Invalid server name</source>
-        <translation>Invalid server name</translation>
+        <location filename="../../src/dialogs/ReadReceipts.cc" line="92"/>
+        <source>Read receipts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>TextInputWidget</name>
+    <name>TimelineView</name>
     <message>
-        <location filename="../../src/TextInputWidget.cc" line="62"/>
-        <source>Write a message...</source>
-        <translation>Write a message...</translation>
-    </message>
-</context>
-<context>
-    <name>TrayIcon</name>
-    <message>
-        <location filename="../../src/TrayIcon.cc" line="73"/>
-        <source>Show</source>
-        <translation>Show</translation>
+        <location filename="../../src/timeline/TimelineView.cc" line="682"/>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/TrayIcon.cc" line="74"/>
-        <source>Quit</source>
-        <translation>Quit</translation>
-    </message>
-</context>
-<context>
-    <name>WelcomePage</name>
-    <message>
-        <location filename="../../src/WelcomePage.cc" line="38"/>
-        <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Welcome to nheko! The desktop client for the Matrix protocol.</translation>
-    </message>
-    <message>
-        <location filename="../../src/WelcomePage.cc" line="39"/>
-        <source>Enjoy your stay!</source>
-        <translation>Enjoy your stay!</translation>
-    </message>
-    <message>
-        <location filename="../../src/WelcomePage.cc" line="60"/>
-        <source>REGISTER</source>
-        <translation>REGISTER</translation>
-    </message>
-    <message>
-        <location filename="../../src/WelcomePage.cc" line="68"/>
-        <source>LOGIN</source>
-        <translation>LOGIN</translation>
+        <location filename="../../src/timeline/TimelineView.cc" line="684"/>
+        <source>Yesterday</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
