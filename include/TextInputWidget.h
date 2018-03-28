@@ -84,7 +84,7 @@ protected:
         void focusOutEvent(QFocusEvent *event) override
         {
                 popup_.hide();
-                QWidget::focusOutEvent(event);
+                QTextEdit::focusOutEvent(event);
         }
 
 private:
