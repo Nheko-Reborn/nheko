@@ -7,7 +7,7 @@ include(ExternalProject)
 set(THIRD_PARTY_ROOT ${CMAKE_SOURCE_DIR}/.third-party)
 set(LMDBXX_ROOT ${THIRD_PARTY_ROOT}/lmdbxx)
 
-set(LMDBXX_INCLUDE_DIRS ${LMDBXX_ROOT})
+set(LMDBXX_INCLUDE_DIR ${LMDBXX_ROOT})
 
 ExternalProject_Add(
   lmdbxx
@@ -21,5 +21,3 @@ ExternalProject_Add(
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
-
-include_directories(SYSTEM ${LMDBXX_ROOT})

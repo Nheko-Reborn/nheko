@@ -7,7 +7,7 @@ include(ExternalProject)
 set(THIRD_PARTY_ROOT ${CMAKE_SOURCE_DIR}/.third-party)
 set(TWEENY_ROOT ${THIRD_PARTY_ROOT}/tweeny)
 
-set(TWEENY_INCLUDE_DIRS ${TWEENY_ROOT}/include)
+set(TWEENY_INCLUDE_DIR ${TWEENY_ROOT}/include)
 
 ExternalProject_Add(
   Tweeny
@@ -21,5 +21,3 @@ ExternalProject_Add(
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
-
-include_directories(SYSTEM ${TWEENY_ROOT}/include)

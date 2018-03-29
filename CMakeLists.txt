@@ -31,26 +31,7 @@ add_project_meta(META_FILES_TO_INCLUDE)
 #
 # LMDB
 #
-if(APPVEYOR_BUILD)
-    set(LMDB_VERSION "LMDB_0.9.21")
-    set(NTDLIB "C:/WINDDK/7600.16385.1/lib/win7/amd64/ntdll.lib")
-
-    execute_process(
-        COMMAND git clone --depth=1 --branch ${LMDB_VERSION} https://github.com/LMDB/lmdb)
-
-    set(LMDB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lmdb/libraries/liblmdb)
-
-    add_library(lmdb
-        ${CMAKE_SOURCE_DIR}/lmdb/libraries/liblmdb/lmdb.h
-        ${CMAKE_SOURCE_DIR}/lmdb/libraries/liblmdb/mdb.c
-        ${CMAKE_SOURCE_DIR}/lmdb/libraries/liblmdb/midl.h
-        ${CMAKE_SOURCE_DIR}/lmdb/libraries/liblmdb/midl.c)
-else()
-    find_path (LMDB_INCLUDE_DIR NAMES lmdb.h PATHS "$ENV{LMDB_DIR}/include")
-    find_library (LMDB_LIBRARY NAMES lmdb PATHS "$ENV{LMDB_DIR}/lib" )
-    include(FindPackageHandleStandardArgs)
-    find_package_handle_standard_args(LMDB DEFAULT_MSG LMDB_INCLUDE_DIR LMDB_LIBRARY)
-endif()
+include(LMDB)
 
 #
 # Discover Qt dependencies.
@@ -76,10 +57,10 @@ endif(Qt5Widgets_FOUND)
 # Set up compiler flags.
 #
 set(CMAKE_C_COMPILER gcc)
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+include(CompilerFlags)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
@@ -109,31 +90,6 @@ cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
 set(BUILD_USER $ENV{USER})
 configure_file(cmake/version.hpp config/version.hpp)
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-        -Wall \
-        -Wextra \
-        -Werror \
-        -pipe \
-        -pedantic \
-        -Wunreachable-code")
-
-    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-
-        if (GCC_VERSION VERSION_GREATER 4.9)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always" )
-        endif()
-    endif()
-
-    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always" )
-    endif()
-endif()
-
-if(NOT APPLE AND NOT MSVC)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-endif()
 
 #
 # Declare source and header files.
@@ -216,29 +172,45 @@ set(SRC_FILES
     src/main.cc
 )
 
+# ExternalProject dependencies
+set(EXTERNAL_PROJECT_DEPS "")
+
 #
 # matrix-structs
 #
-include(MatrixStructs)
-include_directories(${MATRIX_STRUCTS_INCLUDE_DIRS})
+find_library(MATRIX_STRUCTS_LIBRARY 
+    NAMES matrix_structs 
+    PATHS ${MATRIX_STRUCTS_ROOT}
+          ${MATRIX_STRUCTS_ROOT}/lib
+          ${MATRIX_STRUCTS_ROOT}/lib/static)
+
+if(NOT MATRIX_STRUCTS_LIBRARY)
+    include(MatrixStructs)
+    set(EXTERNAL_PROJECT_DEPS ${EXTERNAL_PROJECT_DEPS} MatrixStructs)
+endif()
+include_directories(SYSTEM ${MATRIX_STRUCTS_INCLUDE_DIR})
 
 #
-# libtweeny
+# tweeny
 #
-include(Tweeny)
-include_directories(${TWEENY_INCLUDE_DIRS})
+if(NOT TWEENY_INCLUDE_DIR)
+    include(Tweeny)
+    set(EXTERNAL_PROJECT_DEPS ${EXTERNAL_PROJECT_DEPS} Tweeny)
+endif()
+include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
 
 #
 # lmdbxx
 #
-include(LMDBXX)
-include_directories(${LMDBXX_INCLUDE_DIRS})
+if(NOT LMDBXX_INCLUDE_DIR)
+    include(LMDBXX)
+    set(EXTERNAL_PROJECT_DEPS ${EXTERNAL_PROJECT_DEPS} lmdbxx)
+endif()
+include_directories(SYSTEM ${LMDBXX_INCLUDE_DIR})
 
 include_directories(include)
 include_directories(include/ui)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
-
-include_directories(${LMDB_INCLUDE_DIR})
 
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
@@ -314,27 +286,14 @@ qt5_wrap_cpp(MOC_HEADERS
 #
 # Bundle translations.
 #
-FILE(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
+include(Translations)
+set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
-qt5_add_translation(QM_SRC ${LANG_TS_SRC})
-add_custom_target(LANG_QRC ALL DEPENDS ${QM_SRC})
-
-# Generate a qrc file for the translations
-set(_qrc ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc)
-
-if(NOT EXISTS ${_qrc})
-    file(WRITE ${_qrc} "<RCC> <qresource prefix=\"/translations\">")
-    foreach(_lang ${QM_SRC})
-        get_filename_component(_filename ${_lang} NAME)
-        file(APPEND ${_qrc} "<file>${_filename}</file>")
-    endforeach(_lang)
-    file(APPEND ${_qrc} "</qresource> </RCC>")
-endif()
-
-qt5_add_resources(LANG_QRC ${_qrc})
-qt5_add_resources(QRC resources/res.qrc)
-
-set(COMMON_LIBS matrix_structs Qt5::Widgets Qt5::Network Qt5::Concurrent)
+set(COMMON_LIBS
+    ${MATRIX_STRUCTS_LIBRARY} 
+    Qt5::Widgets
+    Qt5::Network
+    Qt5::Concurrent)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
@@ -342,7 +301,12 @@ else()
     set(NHEKO_LIBS ${COMMON_LIBS} ${LMDB_LIBRARY})
 endif()
 
-set (NHEKO_DEPS ${SRC_FILES} ${UI_HEADERS} ${MOC_HEADERS} ${QRC} ${LANG_QRC} ${QM_SRC} ${META_FILES_TO_INCLUDE})
+set(NHEKO_DEPS
+    ${SRC_FILES}
+    ${UI_HEADERS}
+    ${MOC_HEADERS}
+    ${TRANSLATION_DEPS}
+    ${META_FILES_TO_INCLUDE})
 
 if(APPLE)
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
@@ -355,7 +319,9 @@ else()
     target_link_libraries (nheko ${NHEKO_LIBS} Qt5::Multimedia)
 endif()
 
-add_dependencies(nheko MatrixStructs Tweeny lmdbxx)
+if(EXTERNAL_PROJECT_DEPS)
+    add_dependencies(nheko ${EXTERNAL_PROJECT_DEPS})
+endif()
 
 if(UNIX AND NOT APPLE)
     install (TARGETS nheko RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
