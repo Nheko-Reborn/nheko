@@ -770,6 +770,10 @@ TimelineView::removeEvent(const QString &event_id)
         // Finally remove the event.
         removedItem->deleteLater();
         eventIds_.remove(event_id);
+
+        // Update the room list with a view of the last message after
+        // all events have been processed.
+        QTimer::singleShot(0, this, [this]() { notifyForLastEvent(); });
 }
 
 QWidget *
