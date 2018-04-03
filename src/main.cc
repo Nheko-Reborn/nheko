@@ -33,6 +33,7 @@
 #include "MainWindow.h"
 #include "RaisedButton.h"
 #include "RunGuard.h"
+#include "version.hpp"
 
 QPoint
 screenCenter(int width, int height)
@@ -119,7 +120,7 @@ main(int argc, char *argv[])
         }
 
         QCoreApplication::setApplicationName("nheko");
-        QCoreApplication::setApplicationVersion("0.2.0");
+        QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
