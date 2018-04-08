@@ -37,8 +37,16 @@ signals:
         void emojiSelected(const QString &emoji);
 
 protected:
-        void leaveEvent(QEvent *event);
-        void paintEvent(QPaintEvent *event);
+        void leaveEvent(QEvent *event) override
+        {
+                emit leaving();
+                QWidget::leaveEvent(event);
+        }
+
+        void paintEvent(QPaintEvent *event) override;
+
+signals:
+        void leaving();
 
 private:
         void showCategory(const Category *category);

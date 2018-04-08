@@ -39,7 +39,7 @@ Panel::Panel(QWidget *parent)
                       "QScrollBar::handle:vertical { min-height: 30px; }");
 
         setAttribute(Qt::WA_ShowWithoutActivating, true);
-        setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+        setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
 
         auto mainWidget = new QWidget(this);
         mainWidget->setMaximumSize(width_, height_);
@@ -211,12 +211,6 @@ Panel::showCategory(const Category *category)
 
         posToGo += 6 * 50;
         this->scrollArea_->ensureVisible(0, posToGo, 0, 0);
-}
-
-void
-Panel::leaveEvent(QEvent *)
-{
-        hide();
 }
 
 void

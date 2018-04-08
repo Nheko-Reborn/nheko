@@ -15,15 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "emoji/PickButton.h"
+#include <QDebug>
+
 #include "emoji/Panel.h"
+#include "emoji/PickButton.h"
 
 using namespace emoji;
+
+// Number of milliseconds after which the panel will be hidden
+// if the mouse cursor is not on top of the widget.
+constexpr int TimeoutDuration = 300;
 
 PickButton::PickButton(QWidget *parent)
   : FlatButton(parent)
   , panel_{nullptr}
-{}
+{
+        connect(&hideTimer_, &QTimer::timeout, this, [this]() {
+                if (panel_ && !panel_->underMouse()) {
+                        hideTimer_.stop();
+                        panel_->hide();
+                }
+        });
+}
 
 void
 PickButton::enterEvent(QEvent *e)
@@ -33,7 +46,11 @@ PickButton::enterEvent(QEvent *e)
         if (panel_.isNull()) {
                 panel_ = QSharedPointer<Panel>(new Panel(this));
                 connect(panel_.data(), &Panel::emojiSelected, this, &PickButton::emojiSelected);
+                connect(panel_.data(), &Panel::leaving, this, [this]() { panel_->hide(); });
         }
+
+        if (panel_->isVisible())
+                return;
 
         QPoint pos(rect().x(), rect().y());
         pos = this->mapToGlobal(pos);
@@ -45,4 +62,11 @@ PickButton::enterEvent(QEvent *e)
 
         panel_->move(x, y);
         panel_->show();
+}
+
+void
+PickButton::leaveEvent(QEvent *e)
+{
+        hideTimer_.start(TimeoutDuration);
+        FlatButton::leaveEvent(e);
 }

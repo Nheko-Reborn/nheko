@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QEvent>
+#include <QTimer>
 #include <QWidget>
 
 #include "FlatButton.h"
@@ -37,6 +38,7 @@ signals:
 
 protected:
         void enterEvent(QEvent *e) override;
+        void leaveEvent(QEvent *e) override;
 
 private:
         // Vertical distance from panel's bottom.
@@ -46,5 +48,6 @@ private:
         int horizontal_distance_ = 70;
 
         QSharedPointer<Panel> panel_;
+        QTimer hideTimer_;
 };
 } // namespace emoji
