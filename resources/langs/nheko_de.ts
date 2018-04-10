@@ -6,37 +6,37 @@
     <message>
         <location filename="../../src/dialogs/CreateRoom.cc" line="32"/>
         <source>CANCEL</source>
-        <translation type="unfinished"></translation>
+        <translation>ABBRECHEN</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/CreateRoom.cc" line="43"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/CreateRoom.cc" line="46"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/CreateRoom.cc" line="49"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/CreateRoom.cc" line="57"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumsichtbarkeit</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/CreateRoom.cc" line="66"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumvorlage</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/CreateRoom.cc" line="76"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Direkter Chat</translation>
     </message>
 </context>
 <context>
@@ -44,12 +44,12 @@
     <message>
         <location filename="../../src/dialogs/InviteUsers.cc" line="36"/>
         <source>CANCEL</source>
-        <translation type="unfinished"></translation>
+        <translation>ABBRECHEN</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/InviteUsers.cc" line="47"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutzer ID, die eingeladen werden soll</translation>
     </message>
 </context>
 <context>
@@ -57,12 +57,12 @@
     <message>
         <location filename="../../src/dialogs/JoinRoom.cc" line="30"/>
         <source>CANCEL</source>
-        <translation type="unfinished"></translation>
+        <translation>ABBRECHEN</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/JoinRoom.cc" line="41"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Raum-ID oder -Alias</translation>
     </message>
 </context>
 <context>
@@ -70,12 +70,12 @@
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cc" line="29"/>
         <source>CANCEL</source>
-        <translation type="unfinished"></translation>
+        <translation>ABBRECHEN</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cc" line="39"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Bist du sicher, dass du den Raum verlassen willst?</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
     <message>
         <location filename="../../src/dialogs/Logout.cc" line="47"/>
         <source>CANCEL</source>
-        <translation type="unfinished"></translation>
+        <translation>ABBRECHEN</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/Logout.cc" line="57"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Bist du dir sicher, dass du dich abmelden willst?</translation>
     </message>
 </context>
 <context>
@@ -139,19 +139,21 @@
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cc" line="41"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Hochladen</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cc" line="42"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cc" line="114"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Medien-Typ: %1
+Medien-Größe: %2
+</translation>
     </message>
 </context>
 <context>
@@ -159,17 +161,17 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="34"/>
         <source>CONFIRM</source>
-        <translation type="unfinished"></translation>
+        <translation>BESTÄTIGEN</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="37"/>
         <source>CANCEL</source>
-        <translation type="unfinished"></translation>
+        <translation>ABBRECHEN</translation>
     </message>
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="48"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Löse das reCAPTCHA und drücke den &quot;Bestätigen&quot;-Knopf</translation>
     </message>
 </context>
 <context>
@@ -177,7 +179,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cc" line="92"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lesebestätigungen</translation>
     </message>
 </context>
 <context>
@@ -185,12 +187,12 @@ Media size: %2
     <message>
         <location filename="../../src/timeline/TimelineView.cc" line="682"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Heute</translation>
     </message>
     <message>
         <location filename="../../src/timeline/TimelineView.cc" line="684"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestern</translation>
     </message>
 </context>
 </TS>
