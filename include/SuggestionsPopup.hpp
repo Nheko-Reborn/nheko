@@ -21,12 +21,17 @@ class PopupItem : public QWidget
         Q_OBJECT
 
         Q_PROPERTY(QColor hoverColor READ hoverColor WRITE setHoverColor)
+        Q_PROPERTY(bool hovering READ hovering WRITE setHovering)
 
 public:
         PopupItem(QWidget *parent, const QString &user_id);
 
+        QString user() const { return user_id_; }
         QColor hoverColor() const { return hoverColor_; }
         void setHoverColor(QColor &color) { hoverColor_ = color; }
+
+        bool hovering() const { return hovering_; }
+        void setHovering(const bool hover) { hovering_ = hover; };
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -43,6 +48,9 @@ private:
         QString user_id_;
 
         QColor hoverColor_;
+
+        //! Set if the item is currently being hovered during tab completion (cycling).
+        bool hovering_;
 };
 
 class SuggestionsPopup : public QWidget
@@ -54,10 +62,15 @@ public:
 
 public slots:
         void addUsers(const QVector<SearchResult> &users);
+        void cycleThroughSuggestions();
+        void selectHoveredSuggestion();
 
 signals:
         void itemSelected(const QString &user);
 
 private:
         QVBoxLayout *layout_;
+
+        //! Counter for tab completion (cycling).
+        int tab_clicks_;
 };

@@ -73,6 +73,8 @@ signals:
         //! Trigger the suggestion popup.
         void showSuggestions(const QString &query);
         void resultsRetrieved(const QVector<SearchResult> &results);
+        void cycleSuggestions();
+        void selectHoveredSuggestion();
 
 public slots:
         void showResults(const QVector<SearchResult> &results);
