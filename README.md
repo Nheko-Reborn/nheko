@@ -4,7 +4,6 @@ nheko
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master)
 [![Latest Release](https://img.shields.io/github/release/mujx/nheko.svg)](https://github.com/mujx/nheko/releases)
 [![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
-[![AUR: nheko-git](https://img.shields.io/badge/AUR-nheko--git-blue.svg)](https://aur.archlinux.org/packages/nheko-git)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
@@ -36,6 +35,10 @@ for Linux ([AppImage](https://appimage.org/), rpm, deb), Mac and Windows.
 #### Arch Linux
 ```bash
 pacaur -S nheko-git
+
+# or
+
+pacaur -S nheko
 ```
 
 #### Fedora
@@ -170,7 +173,7 @@ encouraged to open feature request issues.
 
 Here is a screen shot to get a feel for the UI, but things will probably change.
 
-![nheko](https://dl.dropboxusercontent.com/s/a493o47obvez6v1/nheko.png)
+![nheko](https://dl.dropboxusercontent.com/s/zrl26u3pmqloyjz/nheko-v0.3.1.png)
 
 ### Third party
 
