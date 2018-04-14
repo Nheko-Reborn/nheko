@@ -62,15 +62,27 @@ public:
 
 public slots:
         void addUsers(const QVector<SearchResult> &users);
-        void cycleThroughSuggestions();
         void selectHoveredSuggestion();
+        //! Move to the next available suggestion item.
+        void selectNextSuggestion();
+        //! Move to the previous available suggestion item.
+        void selectPreviousSuggestion();
+        //! Remove hovering from all items.
+        void resetHovering();
+        //! Set hovering to the item in the given layout position.
+        void setHovering(int pos);
 
 signals:
         void itemSelected(const QString &user);
 
 private:
+        void hoverSelection();
+        void resetSelection() { selectedItem_ = -1; }
+        void selectFirstItem() { selectedItem_ = 0; }
+        void selectLastItem() { selectedItem_ = layout_->count() - 1; }
+
         QVBoxLayout *layout_;
 
         //! Counter for tab completion (cycling).
-        int tab_clicks_;
+        int selectedItem_ = -1;
 };

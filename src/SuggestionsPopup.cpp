@@ -1,8 +1,8 @@
-#include "SuggestionsPopup.hpp"
 #include "Avatar.h"
 #include "AvatarProvider.h"
 #include "Config.h"
 #include "DropShadow.h"
+#include "SuggestionsPopup.hpp"
 #include "Utils.h"
 #include "timeline/TimelineViewManager.h"
 
@@ -72,7 +72,6 @@ PopupItem::mousePressEvent(QMouseEvent *event)
 
 SuggestionsPopup::SuggestionsPopup(QWidget *parent)
   : QWidget(parent)
-  , tab_clicks_(0)
 {
         setAttribute(Qt::WA_ShowWithoutActivating, true);
         setWindowFlags(Qt::ToolTip | Qt::NoDropShadowWindowHint);
@@ -103,41 +102,69 @@ SuggestionsPopup::addUsers(const QVector<SearchResult> &users)
                 connect(user, &PopupItem::clicked, this, &SuggestionsPopup::itemSelected);
         }
 
-        tab_clicks_ = 0; // Reset to start from the beginning of pop-up window on next invocation.
+        resetSelection();
 
         resize(geometry().width(), 40 * users.size());
 }
 
 void
-SuggestionsPopup::cycleThroughSuggestions()
+SuggestionsPopup::hoverSelection()
 {
-        tab_clicks_ %= layout_->count(); // Stay within the number of items in layout.
+        resetHovering();
+        setHovering(selectedItem_);
+        update();
+}
 
-        // Reset flag for hovering effect first.
+void
+SuggestionsPopup::selectNextSuggestion()
+{
+        selectedItem_++;
+        if (selectedItem_ >= layout_->count())
+                selectFirstItem();
+
+        hoverSelection();
+}
+
+void
+SuggestionsPopup::selectPreviousSuggestion()
+{
+        selectedItem_--;
+        if (selectedItem_ < 0)
+                selectLastItem();
+
+        hoverSelection();
+}
+
+void
+SuggestionsPopup::resetHovering()
+{
         for (int i = 0; i < layout_->count(); ++i) {
-                const auto &p = qobject_cast<PopupItem *>(layout_->itemAt(i)->widget());
-                p->setHovering(false);
+                const auto item = qobject_cast<PopupItem *>(layout_->itemAt(i)->widget());
+
+                if (item)
+                        item->setHovering(false);
         }
+}
 
-        const auto &item   = layout_->itemAt(tab_clicks_);
+void
+SuggestionsPopup::setHovering(int pos)
+{
+        const auto &item   = layout_->itemAt(pos);
         const auto &widget = qobject_cast<PopupItem *>(item->widget());
-        widget->setHovering(true);
 
-        ++tab_clicks_;
-
-        update(); // Request to update the paint event.
+        if (widget)
+                widget->setHovering(true);
 }
 
 void
 SuggestionsPopup::selectHoveredSuggestion()
 {
-        // Each tab press increments the counter by one, so the element desired is one off.
-        const auto item = layout_->itemAt(tab_clicks_ - 1);
+        const auto item = layout_->itemAt(selectedItem_);
         if (!item)
                 return;
 
         const auto &widget = qobject_cast<PopupItem *>(item->widget());
         emit itemSelected(TimelineViewManager::displayName(widget->user()));
 
-        tab_clicks_ = 0; // Reset to start from the beginning of pop-up window on next invocation.
+        resetSelection();
 }

@@ -88,9 +88,13 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
 
         // For cycling through the suggestions by hitting tab.
         connect(this,
-                &FilteredTextEdit::cycleSuggestions,
+                &FilteredTextEdit::selectNextSuggestion,
                 &popup_,
-                &SuggestionsPopup::cycleThroughSuggestions);
+                &SuggestionsPopup::selectNextSuggestion);
+        connect(this,
+                &FilteredTextEdit::selectPreviousSuggestion,
+                &popup_,
+                &SuggestionsPopup::selectPreviousSuggestion);
         connect(this,
                 &FilteredTextEdit::selectHoveredSuggestion,
                 &popup_,
@@ -138,19 +142,21 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
         if (popup_.isVisible()) {
                 switch (event->key()) {
+                case Qt::Key_Down:
                 case Qt::Key_Tab:
-                        emit cycleSuggestions();
+                        emit selectNextSuggestion();
                         return;
                 case Qt::Key_Enter:
                 case Qt::Key_Return:
                         emit selectHoveredSuggestion();
                         return;
                 case Qt::Key_Escape:
-                        break;
-                case Qt::Key_Space:
-                case Qt::Key_Backtab: {
                         closeSuggestions();
-                        break;
+                        return;
+                case Qt::Key_Up:
+                case Qt::Key_Backtab: {
+                        emit selectPreviousSuggestion();
+                        return;
                 }
                 default:
                         break;
