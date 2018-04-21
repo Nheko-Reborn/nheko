@@ -32,6 +32,8 @@ signals:
         void avatarDownloaded(const QImage &img);
 };
 
+Q_DECLARE_METATYPE(mtx::responses::Sync)
+
 /*
  * MatrixClient provides the high level API to communicate with
  * a Matrix homeserver. All the responses are returned through signals.

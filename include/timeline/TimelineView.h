@@ -259,8 +259,7 @@ TimelineView::addUserMessage(const QString &url,
         auto widget = new Widget(client_, url, trimmed, size, this);
 
         TimelineItem *view_item =
-          new TimelineItem(widget, local_user_, with_sender, scroll_widget_);
-        view_item->setRoomId(room_id_);
+          new TimelineItem(widget, local_user_, with_sender, room_id_, scroll_widget_);
 
         addTimelineItem(view_item);
 
@@ -280,8 +279,7 @@ template<class Event>
 TimelineItem *
 TimelineView::createTimelineItem(const Event &event, bool withSender)
 {
-        TimelineItem *item = new TimelineItem(event, withSender, scroll_widget_);
-        item->setRoomId(room_id_);
+        TimelineItem *item = new TimelineItem(event, withSender, room_id_, scroll_widget_);
         return item;
 }
 
@@ -290,8 +288,7 @@ TimelineItem *
 TimelineView::createTimelineItem(const Event &event, bool withSender)
 {
         auto eventWidget = new Widget(client_, event);
-        auto item        = new TimelineItem(eventWidget, event, withSender, scroll_widget_);
-        item->setRoomId(room_id_);
+        auto item = new TimelineItem(eventWidget, event, withSender, room_id_, scroll_widget_);
 
         return item;
 }

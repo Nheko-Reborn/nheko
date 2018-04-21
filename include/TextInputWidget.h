@@ -36,7 +36,7 @@
 
 #include "emoji/PickButton.h"
 
-class RoomState;
+class Cache;
 
 namespace dialogs {
 class PreviewUploadOverlay;
@@ -131,12 +131,12 @@ public:
 
         QColor borderColor() const { return borderColor_; }
         void setBorderColor(QColor &color) { borderColor_ = color; }
+        void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
 
 public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void setRoomState(QSharedPointer<RoomState> state) { currState_ = state; }
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
@@ -172,8 +172,7 @@ private:
         FlatButton *sendMessageBtn_;
         emoji::PickButton *emojiBtn_;
 
-        //! State of the current room.
-        QSharedPointer<RoomState> currState_;
+        QSharedPointer<Cache> cache_;
 
         QColor borderColor_;
 };

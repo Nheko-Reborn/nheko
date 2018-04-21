@@ -28,6 +28,7 @@
 #include <QProcessEnvironment>
 #include <QSettings>
 #include <QUrlQuery>
+#include <QtConcurrent>
 #include <mtx/errors.hpp>
 
 #include "Deserializable.h"
@@ -438,16 +439,15 @@ MatrixClient::initialSync() noexcept
                         return;
                 }
 
-                auto data = reply->readAll();
-
-                try {
-                        mtx::responses::Sync response = nlohmann::json::parse(data);
-                        emit initialSyncCompleted(response);
-                } catch (std::exception &e) {
-                        qWarning() << "Initial sync error:" << e.what();
-                        emit initialSyncFailed();
-                        return;
-                }
+                qRegisterMetaType<mtx::responses::Sync>();
+                QtConcurrent::run([data = reply->readAll(), this]() {
+                        try {
+                                emit initialSyncCompleted(nlohmann::json::parse(std::move(data)));
+                        } catch (std::exception &e) {
+                                qWarning() << "Initial sync error:" << e.what();
+                                emit initialSyncFailed();
+                        }
+                });
         });
 }
 
@@ -730,10 +730,8 @@ MatrixClient::fetchUserAvatar(const QUrl &avatarUrl)
 {
         QList<QString> url_parts = avatarUrl.toString().split("mxc://");
 
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for user avatar:" << avatarUrl.toString();
+        if (url_parts.size() != 2)
                 return QSharedPointer<DownloadMediaProxy>();
-        }
 
         QUrlQuery query;
         query.addQueryItem("width", "128");

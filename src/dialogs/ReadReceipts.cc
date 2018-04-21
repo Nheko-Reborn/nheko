@@ -6,17 +6,21 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
+#include "ChatPage.h"
 #include "Config.h"
 #include "Utils.h"
 
 #include "Avatar.h"
 #include "AvatarProvider.h"
+#include "Cache.h"
 #include "dialogs/ReadReceipts.h"
-#include "timeline/TimelineViewManager.h"
 
 using namespace dialogs;
 
-ReceiptItem::ReceiptItem(QWidget *parent, const QString &user_id, uint64_t timestamp)
+ReceiptItem::ReceiptItem(QWidget *parent,
+                         const QString &user_id,
+                         uint64_t timestamp,
+                         const QString &room_id)
   : QWidget(parent)
 {
         topLayout_ = new QHBoxLayout(this);
@@ -29,7 +33,7 @@ ReceiptItem::ReceiptItem(QWidget *parent, const QString &user_id, uint64_t times
         QFont font;
         font.setPixelSize(conf::receipts::font);
 
-        auto displayName = TimelineViewManager::displayName(user_id);
+        auto displayName = Cache::displayName(room_id, user_id);
 
         avatar_ = new Avatar(this);
         avatar_->setSize(40);
@@ -51,8 +55,10 @@ ReceiptItem::ReceiptItem(QWidget *parent, const QString &user_id, uint64_t times
         topLayout_->addWidget(avatar_);
         topLayout_->addLayout(textLayout_, 1);
 
-        AvatarProvider::resolve(
-          user_id, this, [this](const QImage &img) { avatar_->setImage(img); });
+        AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
+                                user_id,
+                                this,
+                                [this](const QImage &img) { avatar_->setImage(img); });
 }
 
 QString
@@ -104,8 +110,10 @@ ReadReceipts::addUsers(const std::multimap<uint64_t, std::string, std::greater<u
         userList_->clear();
 
         for (const auto &receipt : receipts) {
-                auto user =
-                  new ReceiptItem(this, QString::fromStdString(receipt.second), receipt.first);
+                auto user = new ReceiptItem(this,
+                                            QString::fromStdString(receipt.second),
+                                            receipt.first,
+                                            ChatPage::instance()->currentRoom());
                 auto item = new QListWidgetItem(userList_);
 
                 item->setSizeHint(user->minimumSizeHint());

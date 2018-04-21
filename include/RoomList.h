@@ -23,14 +23,13 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "Cache.h"
 #include <mtx.hpp>
 
 class LeaveRoomDialog;
 class MatrixClient;
-class Cache;
 class OverlayModal;
 class RoomInfoListItem;
-class RoomSettings;
 class RoomState;
 class Sync;
 class UserSettings;
@@ -46,22 +45,18 @@ public:
                  QWidget *parent = 0);
 
         void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
-        void setInitialRooms(const std::map<QString, QSharedPointer<RoomSettings>> &settings,
-                             const std::map<QString, QSharedPointer<RoomState>> &states);
-        void sync(const std::map<QString, QSharedPointer<RoomState>> &states,
-                  const std::map<QString, QSharedPointer<RoomSettings>> &settings);
-        void syncInvites(const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
+        void initialize(const QMap<QString, RoomInfo> &info);
+        void sync(const std::map<QString, RoomInfo> &info);
 
-        void clear();
+        void clear() { rooms_.clear(); };
         void updateAvatar(const QString &room_id, const QString &url);
 
-        void addRoom(const QSharedPointer<RoomSettings> &settings,
-                     const QSharedPointer<RoomState> &state,
-                     const QString &room_id);
-        void addInvitedRoom(const QString &room_id, const mtx::responses::InvitedRoom &room);
+        void addRoom(const QString &room_id, const RoomInfo &info);
+        void addInvitedRoom(const QString &room_id, const RoomInfo &info);
         void removeRoom(const QString &room_id, bool reset);
         void setFilterRooms(bool filterRooms);
         void setRoomFilter(std::vector<QString> room_ids);
+        void updateRoom(const QString &room_id, const RoomInfo &info);
 
 signals:
         void roomChanged(const QString &room_id);

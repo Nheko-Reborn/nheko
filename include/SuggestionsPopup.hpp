@@ -6,15 +6,7 @@
 #include <QWidget>
 
 class Avatar;
-
-struct SearchResult
-{
-        QString user_id;
-        QString display_name;
-};
-
-Q_DECLARE_METATYPE(SearchResult)
-Q_DECLARE_METATYPE(QVector<SearchResult>)
+struct SearchResult;
 
 class PopupItem : public QWidget
 {

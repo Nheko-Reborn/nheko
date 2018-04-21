@@ -16,7 +16,10 @@ class ReceiptItem : public QWidget
         Q_OBJECT
 
 public:
-        ReceiptItem(QWidget *parent, const QString &user_id, uint64_t timestamp);
+        ReceiptItem(QWidget *parent,
+                    const QString &user_id,
+                    uint64_t timestamp,
+                    const QString &room_id);
 
 private:
         QString dateFormat(const QDateTime &then) const;

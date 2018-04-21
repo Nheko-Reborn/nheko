@@ -24,11 +24,9 @@
 
 #include <mtx/responses.hpp>
 
-#include "RoomState.h"
-
 class Menu;
 class RippleOverlay;
-class RoomSettings;
+struct RoomInfo;
 
 struct DescInfo
 {
@@ -70,24 +68,13 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor btnTextColor READ btnTextColor WRITE setBtnTextColor)
 
 public:
-        RoomInfoListItem(QSharedPointer<RoomSettings> settings,
-                         QSharedPointer<RoomState> state,
-                         QString room_id,
-                         QWidget *parent = 0);
-
-        RoomInfoListItem(QString room_id, mtx::responses::InvitedRoom room, QWidget *parent = 0);
+        RoomInfoListItem(QString room_id, RoomInfo info, QWidget *parent = 0);
 
         void updateUnreadMessageCount(int count);
         void clearUnreadMessageCount() { updateUnreadMessageCount(0); };
-        void setState(QSharedPointer<RoomState> state)
-        {
-                state_ = state;
-                update();
-        }
 
         QString roomId() { return roomId_; }
         bool isPressed() const { return isPressed_; }
-        QSharedPointer<RoomState> state() const { return state_; }
         int unreadMessageCount() const { return unreadMsgCount_; }
 
         void setAvatar(const QImage &avatar_image);
@@ -133,6 +120,15 @@ public:
         void setBubbleFgColor(QColor &color) { bubbleFgColor_ = color; }
         void setBubbleBgColor(QColor &color) { bubbleBgColor_ = color; }
 
+        void setRoomName(const QString &name) { roomName_ = name; }
+        void setRoomType(bool isInvite)
+        {
+                if (isInvite)
+                        roomType_ = RoomType::Invited;
+                else
+                        roomType_ = RoomType::Joined;
+        }
+
 signals:
         void clicked(const QString &room_id);
         void leaveRoom(const QString &room_id);
@@ -150,15 +146,7 @@ protected:
 
 private:
         void init(QWidget *parent);
-        QString roomName()
-        {
-                if (roomType_ == RoomType::Joined)
-                        return state_->getName();
-
-                return roomName_;
-        }
-
-        QString notificationText();
+        QString roomName() { return roomName_; }
 
         RippleOverlay *ripple_overlay_;
 
@@ -169,9 +157,6 @@ private:
         };
 
         RoomType roomType_ = RoomType::Joined;
-
-        // State information for the joined rooms.
-        QSharedPointer<RoomState> state_;
 
         // State information for the invited rooms.
         mtx::responses::InvitedRoom invitedRoom_;
@@ -184,10 +169,7 @@ private:
         QPixmap roomAvatar_;
 
         Menu *menu_;
-        QAction *toggleNotifications_;
         QAction *leaveRoom_;
-
-        QSharedPointer<RoomSettings> roomSettings_;
 
         bool isPressed_ = false;
 

@@ -20,6 +20,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QFile>
+#include <QHash>
 #include <QStandardPaths>
 
 #include <variant.hpp>
@@ -27,10 +28,26 @@
 #include "Cache.h"
 #include "RoomState.h"
 
+//! Should be changed when a breaking change occurs in the cache format.
+//! This will reset client's data.
 static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.01.14");
 
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
+
+//! Cache databases and their format.
+//!
+//! Contains UI information for the joined rooms. (i.e name, topic, avatar url etc).
+//! Format: room_id -> RoomInfo
+static constexpr const char *ROOMS_DB   = "rooms";
+static constexpr const char *INVITES_DB = "rooms";
+//! Keeps already downloaded media for reuse.
+//! Format: matrix_url -> binary data.
+static constexpr const char *MEDIA_DB = "media";
+//! Information that  must be kept between sync requests.
+static constexpr const char *SYNC_STATE_DB = "sync_state";
+//! Read receipts per room/event.
+static constexpr const char *READ_RECEIPTS_DB = "read_receipts";
 
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
@@ -38,13 +55,12 @@ using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 Cache::Cache(const QString &userId, QObject *parent)
   : QObject{parent}
   , env_{nullptr}
-  , stateDb_{0}
-  , roomDb_{0}
+  , syncStateDb_{0}
+  , roomsDb_{0}
   , invitesDb_{0}
-  , imagesDb_{0}
+  , mediaDb_{0}
   , readReceiptsDb_{0}
-  , isMounted_{false}
-  , userId_{userId}
+  , localUserId_{userId}
 {}
 
 void
@@ -54,11 +70,11 @@ Cache::setup()
 
         auto statePath = QString("%1/%2/state")
                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                           .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
+                           .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()));
 
         cacheDirectory_ = QString("%1/%2")
                             .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                            .arg(QString::fromUtf8(userId_.toUtf8().toHex()));
+                            .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()));
 
         bool isInitial = !QFile::exists(statePath);
 
@@ -97,30 +113,26 @@ Cache::setup()
         }
 
         auto txn        = lmdb::txn::begin(env_);
-        stateDb_        = lmdb::dbi::open(txn, "state", MDB_CREATE);
-        roomDb_         = lmdb::dbi::open(txn, "rooms", MDB_CREATE);
-        invitesDb_      = lmdb::dbi::open(txn, "invites", MDB_CREATE);
-        imagesDb_       = lmdb::dbi::open(txn, "images", MDB_CREATE);
-        readReceiptsDb_ = lmdb::dbi::open(txn, "read_receipts", MDB_CREATE);
-
+        syncStateDb_    = lmdb::dbi::open(txn, SYNC_STATE_DB, MDB_CREATE);
+        roomsDb_        = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
+        invitesDb_      = lmdb::dbi::open(txn, INVITES_DB, MDB_CREATE);
+        mediaDb_        = lmdb::dbi::open(txn, MEDIA_DB, MDB_CREATE);
+        readReceiptsDb_ = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
         txn.commit();
 
-        isMounted_ = true;
+        qRegisterMetaType<RoomInfo>();
 }
 
 void
 Cache::saveImage(const QString &url, const QByteArray &image)
 {
-        if (!isMounted_)
-                return;
-
         auto key = url.toUtf8();
 
         try {
                 auto txn = lmdb::txn::begin(env_);
 
                 lmdb::dbi_put(txn,
-                              imagesDb_,
+                              mediaDb_,
                               lmdb::val(key.data(), key.size()),
                               lmdb::val(image.data(), image.size()));
 
@@ -140,7 +152,7 @@ Cache::image(const QString &url) const
 
                 lmdb::val image;
 
-                bool res = lmdb::dbi_get(txn, imagesDb_, lmdb::val(key.data(), key.size()), image);
+                bool res = lmdb::dbi_get(txn, mediaDb_, lmdb::val(key.data(), key.size()), image);
 
                 txn.commit();
 
@@ -156,163 +168,37 @@ Cache::image(const QString &url) const
 }
 
 void
-Cache::setState(const QString &nextBatchToken,
-                const std::map<QString, QSharedPointer<RoomState>> &states)
+Cache::removeInvite(const std::string &room_id)
 {
-        if (!isMounted_)
-                return;
-
-        try {
-                auto txn = lmdb::txn::begin(env_);
-
-                setNextBatchToken(txn, nextBatchToken);
-
-                for (auto const &state : states)
-                        insertRoomState(txn, state.first, state.second);
-
-                txn.commit();
-        } catch (const lmdb::error &e) {
-                qCritical() << "The cache couldn't be updated: " << e.what();
-
-                unmount();
-                deleteData();
-        }
+        auto txn = lmdb::txn::begin(env_);
+        lmdb::dbi_del(txn, invitesDb_, lmdb::val(room_id), nullptr);
+        txn.commit();
 }
 
 void
-Cache::insertRoomState(lmdb::txn &txn,
-                       const QString &roomid,
-                       const QSharedPointer<RoomState> &state)
+Cache::removeRoom(lmdb::txn &txn, const std::string &roomid)
 {
-        auto stateEvents = state->serialize();
-        auto id          = roomid.toUtf8();
-
-        lmdb::dbi_put(txn, roomDb_, lmdb::val(id.data(), id.size()), lmdb::val(stateEvents));
-
-        for (const auto &membership : state->memberships) {
-                lmdb::dbi membersDb =
-                  lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
-
-                // The user_id this membership event relates to, is used
-                // as the index on the membership database.
-                auto key = membership.second.state_key;
-
-                // Serialize membership event.
-                nlohmann::json data     = membership.second;
-                std::string memberEvent = data.dump();
-
-                switch (membership.second.content.membership) {
-                // We add or update (e.g invite -> join) a new user to the membership
-                // list.
-                case mtx::events::state::Membership::Invite:
-                case mtx::events::state::Membership::Join: {
-                        lmdb::dbi_put(txn, membersDb, lmdb::val(key), lmdb::val(memberEvent));
-                        break;
-                }
-                // We remove the user from the membership list.
-                case mtx::events::state::Membership::Leave:
-                case mtx::events::state::Membership::Ban: {
-                        lmdb::dbi_del(txn, membersDb, lmdb::val(key), lmdb::val(memberEvent));
-                        break;
-                }
-                case mtx::events::state::Membership::Knock: {
-                        qWarning()
-                          << "Skipping knock membership" << roomid << QString::fromStdString(key);
-                        break;
-                }
-                }
-        }
+        lmdb::dbi_del(txn, roomsDb_, lmdb::val(roomid), nullptr);
 }
 
 void
-Cache::removeRoom(const QString &roomid)
+Cache::removeRoom(const std::string &roomid)
 {
-        if (!isMounted_)
-                return;
-
         auto txn = lmdb::txn::begin(env_, nullptr, 0);
-
-        lmdb::dbi_del(txn, roomDb_, lmdb::val(roomid.toUtf8(), roomid.toUtf8().size()), nullptr);
-
+        lmdb::dbi_del(txn, roomsDb_, lmdb::val(roomid), nullptr);
         txn.commit();
 }
 
 void
-Cache::removeInvite(const QString &room_id)
+Cache::setNextBatchToken(lmdb::txn &txn, const std::string &token)
 {
-        if (!isMounted_)
-                return;
-
-        auto txn = lmdb::txn::begin(env_, nullptr, 0);
-
-        lmdb::dbi_del(
-          txn, invitesDb_, lmdb::val(room_id.toUtf8(), room_id.toUtf8().size()), nullptr);
-
-        txn.commit();
-}
-
-void
-Cache::states()
-{
-        std::map<QString, RoomState> states;
-
-        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto cursor = lmdb::cursor::open(txn, roomDb_);
-
-        std::string room;
-        std::string stateData;
-
-        // Retrieve all the room names.
-        while (cursor.get(room, stateData, MDB_NEXT)) {
-                auto roomid = QString::fromUtf8(room.data(), room.size());
-                auto json   = nlohmann::json::parse(stateData);
-
-                RoomState state;
-                state.parse(json);
-
-                auto memberDb = lmdb::dbi::open(txn, roomid.toStdString().c_str(), MDB_CREATE);
-                std::map<std::string, mtx::events::StateEvent<mtx::events::state::Member>> members;
-
-                auto memberCursor = lmdb::cursor::open(txn, memberDb);
-
-                std::string memberId;
-                std::string memberContent;
-
-                while (memberCursor.get(memberId, memberContent, MDB_NEXT)) {
-                        auto userid = QString::fromStdString(memberId);
-
-                        try {
-                                auto data = nlohmann::json::parse(memberContent);
-                                mtx::events::StateEvent<mtx::events::state::Member> member = data;
-                                members.emplace(memberId, member);
-                        } catch (std::exception &e) {
-                                qWarning() << "Fault while parsing member event" << e.what()
-                                           << QString::fromStdString(memberContent);
-                                continue;
-                        }
-                }
-
-                qDebug() << members.size() << "members for" << roomid;
-
-                state.memberships = members;
-                states.emplace(roomid, std::move(state));
-        }
-
-        qDebug() << "Retrieved" << states.size() << "rooms";
-
-        cursor.close();
-
-        txn.commit();
-
-        emit statesLoaded(states);
+        lmdb::dbi_put(txn, syncStateDb_, NEXT_BATCH_KEY, lmdb::val(token.data(), token.size()));
 }
 
 void
 Cache::setNextBatchToken(lmdb::txn &txn, const QString &token)
 {
-        auto value = token.toUtf8();
-
-        lmdb::dbi_put(txn, stateDb_, NEXT_BATCH_KEY, lmdb::val(value.data(), value.size()));
+        setNextBatchToken(txn, token.toStdString());
 }
 
 bool
@@ -321,7 +207,7 @@ Cache::isInitialized() const
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         lmdb::val token;
 
-        bool res = lmdb::dbi_get(txn, stateDb_, NEXT_BATCH_KEY, token);
+        bool res = lmdb::dbi_get(txn, syncStateDb_, NEXT_BATCH_KEY, token);
 
         txn.commit();
 
@@ -334,7 +220,7 @@ Cache::nextBatchToken() const
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         lmdb::val token;
 
-        lmdb::dbi_get(txn, stateDb_, NEXT_BATCH_KEY, token);
+        lmdb::dbi_get(txn, syncStateDb_, NEXT_BATCH_KEY, token);
 
         txn.commit();
 
@@ -356,7 +242,7 @@ Cache::isFormatValid()
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
         lmdb::val current_version;
-        bool res = lmdb::dbi_get(txn, stateDb_, CACHE_FORMAT_VERSION_KEY, current_version);
+        bool res = lmdb::dbi_get(txn, syncStateDb_, CACHE_FORMAT_VERSION_KEY, current_version);
 
         txn.commit();
 
@@ -381,67 +267,11 @@ Cache::setCurrentFormat()
 
         lmdb::dbi_put(
           txn,
-          stateDb_,
+          syncStateDb_,
           CACHE_FORMAT_VERSION_KEY,
           lmdb::val(CURRENT_CACHE_FORMAT_VERSION.data(), CURRENT_CACHE_FORMAT_VERSION.size()));
 
         txn.commit();
-}
-
-std::map<std::string, mtx::responses::InvitedRoom>
-Cache::invites()
-{
-        std::map<std::string, mtx::responses::InvitedRoom> invites;
-
-        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto cursor = lmdb::cursor::open(txn, invitesDb_);
-
-        std::string room_id;
-        std::string payload;
-
-        mtx::responses::InvitedRoom state;
-
-        while (cursor.get(room_id, payload, MDB_NEXT)) {
-                state = nlohmann::json::parse(payload);
-                invites.emplace(room_id, state);
-        }
-
-        if (invites.size() > 0)
-                qDebug() << "Retrieved" << invites.size() << "invites";
-
-        cursor.close();
-
-        txn.commit();
-
-        return invites;
-}
-
-void
-Cache::setInvites(const std::map<std::string, mtx::responses::InvitedRoom> &invites)
-{
-        if (!isMounted_)
-                return;
-
-        try {
-                auto txn = lmdb::txn::begin(env_);
-
-                for (auto it = invites.cbegin(); it != invites.cend(); ++it) {
-                        nlohmann::json j;
-
-                        for (const auto &e : it->second.invite_state) {
-                                mpark::visit(
-                                  [&j](auto msg) { j["invite_state"]["events"].push_back(msg); },
-                                  e);
-                        }
-
-                        lmdb::dbi_put(txn, invitesDb_, lmdb::val(it->first), lmdb::val(j.dump()));
-                }
-
-                txn.commit();
-        } catch (const lmdb::error &e) {
-                qCritical() << "setInvitedRooms: " << e.what();
-                unmount();
-        }
 }
 
 CachedReceipts
@@ -532,4 +362,635 @@ Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
                         qCritical() << "updateReadReceipts:" << e.what();
                 }
         }
+}
+
+void
+Cache::saveState(const mtx::responses::Sync &res)
+{
+        auto txn = lmdb::txn::begin(env_);
+
+        setNextBatchToken(txn, res.next_batch);
+
+        // Save joined rooms
+        for (const auto &room : res.rooms.join) {
+                auto statesdb  = getStatesDb(txn, room.first);
+                auto membersdb = getMembersDb(txn, room.first);
+
+                saveStateEvents(txn, statesdb, membersdb, room.first, room.second.state.events);
+                saveStateEvents(txn, statesdb, membersdb, room.first, room.second.timeline.events);
+
+                RoomInfo updatedInfo;
+                updatedInfo.name  = getRoomName(txn, statesdb, membersdb).toStdString();
+                updatedInfo.topic = getRoomTopic(txn, statesdb).toStdString();
+                updatedInfo.avatar_url =
+                  getRoomAvatarUrl(txn, statesdb, membersdb, QString::fromStdString(room.first))
+                    .toStdString();
+
+                lmdb::dbi_put(
+                  txn, roomsDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
+        }
+
+        saveInvites(txn, res.rooms.invite);
+
+        std::map<std::string, bool> invites;
+        for (const auto &invite : res.rooms.invite)
+                invites.emplace(std::move(invite.first), true);
+
+        // removeStaleInvites(txn, invites);
+
+        removeLeftRooms(txn, res.rooms.leave);
+
+        txn.commit();
+}
+
+void
+Cache::removeStaleInvites(lmdb::txn &txn, const std::map<std::string, bool> &curr)
+{
+        auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
+
+        std::string room_id, room_data;
+        while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
+                if (curr.find(room_id) == curr.end())
+                        lmdb::cursor_del(invitesCursor);
+        }
+
+        invitesCursor.close();
+}
+
+void
+Cache::saveInvites(lmdb::txn &txn, const std::map<std::string, mtx::responses::InvitedRoom> &rooms)
+{
+        for (const auto &room : rooms) {
+                auto statesdb  = getInviteStatesDb(txn, room.first);
+                auto membersdb = getInviteMembersDb(txn, room.first);
+
+                saveInvite(txn, statesdb, membersdb, room.second);
+
+                RoomInfo updatedInfo;
+                updatedInfo.name  = getInviteRoomName(txn, statesdb, membersdb).toStdString();
+                updatedInfo.topic = getInviteRoomTopic(txn, statesdb).toStdString();
+                updatedInfo.avatar_url =
+                  getInviteRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
+                updatedInfo.is_invite = true;
+
+                lmdb::dbi_put(
+                  txn, invitesDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
+        }
+}
+
+void
+Cache::saveInvite(lmdb::txn &txn,
+                  lmdb::dbi &statesdb,
+                  lmdb::dbi &membersdb,
+                  const mtx::responses::InvitedRoom &room)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        for (const auto &e : room.invite_state) {
+                if (mpark::holds_alternative<StrippedEvent<Member>>(e)) {
+                        auto msg = mpark::get<StrippedEvent<Member>>(e);
+
+                        auto display_name = msg.content.display_name.empty()
+                                              ? msg.state_key
+                                              : msg.content.display_name;
+
+                        MemberInfo tmp{display_name, msg.content.avatar_url};
+
+                        lmdb::dbi_put(
+                          txn, membersdb, lmdb::val(msg.state_key), lmdb::val(json(tmp).dump()));
+                } else {
+                        mpark::visit(
+                          [&txn, &statesdb](auto msg) {
+                                  bool res = lmdb::dbi_put(txn,
+                                                           statesdb,
+                                                           lmdb::val(to_string(msg.type)),
+                                                           lmdb::val(json(msg).dump()));
+
+                                  if (!res)
+                                          std::cout << "couldn't save data" << json(msg).dump()
+                                                    << '\n';
+                          },
+                          e);
+                }
+        }
+}
+
+std::vector<std::string>
+Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
+{
+        std::vector<std::string> rooms;
+        for (const auto &room : res.rooms.join) {
+                bool hasUpdates = false;
+                for (const auto &s : room.second.state.events) {
+                        if (containsStateUpdates(s)) {
+                                hasUpdates = true;
+                                break;
+                        }
+                }
+
+                for (const auto &s : room.second.timeline.events) {
+                        if (containsStateUpdates(s)) {
+                                hasUpdates = true;
+                                break;
+                        }
+                }
+
+                if (hasUpdates)
+                        rooms.emplace_back(room.first);
+        }
+
+        for (const auto &room : res.rooms.invite) {
+                for (const auto &s : room.second.invite_state) {
+                        if (containsStateUpdates(s)) {
+                                rooms.emplace_back(room.first);
+                                break;
+                        }
+                }
+        }
+
+        return rooms;
+}
+
+std::map<QString, RoomInfo>
+Cache::getRoomInfo(const std::vector<std::string> &rooms)
+{
+        std::map<QString, RoomInfo> room_info;
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        for (const auto &room : rooms) {
+                lmdb::val data;
+
+                // Check if the room is joined.
+                if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room), data)) {
+                        try {
+                                room_info.emplace(
+                                  QString::fromStdString(room),
+                                  json::parse(std::string(data.data(), data.size())));
+                        } catch (const json::exception &e) {
+                                qWarning()
+                                  << "failed to parse room info:" << QString::fromStdString(room)
+                                  << QString::fromStdString(std::string(data.data(), data.size()));
+                        }
+                } else {
+                        // Check if the room is an invite.
+                        if (lmdb::dbi_get(txn, invitesDb_, lmdb::val(room), data)) {
+                                try {
+                                        room_info.emplace(
+                                          QString::fromStdString(room),
+                                          json::parse(std::string(data.data(), data.size())));
+                                } catch (const json::exception &e) {
+                                        qWarning() << "failed to parse room info for invite:"
+                                                   << QString::fromStdString(room)
+                                                   << QString::fromStdString(
+                                                        std::string(data.data(), data.size()));
+                                }
+                        }
+                }
+        }
+
+        txn.commit();
+
+        return room_info;
+}
+
+QMap<QString, RoomInfo>
+Cache::roomInfo()
+{
+        QMap<QString, RoomInfo> result;
+
+        auto txn           = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto roomsCursor   = lmdb::cursor::open(txn, roomsDb_);
+        auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
+
+        std::string room_id;
+        std::string room_data;
+
+        // Gather info about the joined rooms.
+        while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
+                RoomInfo tmp = json::parse(room_data);
+                result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
+        }
+
+        // Gather info about the invites.
+        while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
+                RoomInfo tmp = json::parse(room_data);
+                result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
+        }
+
+        invitesCursor.close();
+        roomsCursor.close();
+
+        txn.commit();
+
+        return result;
+}
+
+QString
+Cache::getRoomAvatarUrl(lmdb::txn &txn,
+                        lmdb::dbi &statesdb,
+                        lmdb::dbi &membersdb,
+                        const QString &room_id)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomAvatar)), event);
+
+        if (res) {
+                try {
+                        StateEvent<Avatar> msg =
+                          json::parse(std::string(event.data(), event.size()));
+
+                        return QString::fromStdString(msg.content.url);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        // We don't use an avatar for group chats.
+        if (membersdb.size(txn) > 2)
+                return QString();
+
+        auto cursor = lmdb::cursor::open(txn, membersdb);
+        std::string user_id;
+        std::string member_data;
+
+        // Resolve avatar for 1-1 chats.
+        while (cursor.get(user_id, member_data, MDB_NEXT)) {
+                if (user_id == localUserId_.toStdString())
+                        continue;
+
+                try {
+                        MemberInfo m = json::parse(member_data);
+
+                        cursor.close();
+                        return QString::fromStdString(m.avatar_url);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        cursor.close();
+
+        // Default case when there is only one member.
+        return avatarUrl(room_id, localUserId_);
+}
+
+QString
+Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomName)), event);
+
+        if (res) {
+                try {
+                        StateEvent<Name> msg = json::parse(std::string(event.data(), event.size()));
+
+                        if (!msg.content.name.empty())
+                                return QString::fromStdString(msg.content.name);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomCanonicalAlias)), event);
+
+        if (res) {
+                try {
+                        StateEvent<CanonicalAlias> msg =
+                          json::parse(std::string(event.data(), event.size()));
+
+                        if (!msg.content.alias.empty())
+                                return QString::fromStdString(msg.content.alias);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        auto cursor     = lmdb::cursor::open(txn, membersdb);
+        const int total = membersdb.size(txn);
+
+        std::size_t ii = 0;
+        std::string user_id;
+        std::string member_data;
+        std::map<std::string, MemberInfo> members;
+
+        while (cursor.get(user_id, member_data, MDB_NEXT) && ii < 3) {
+                try {
+                        members.emplace(user_id, json::parse(member_data));
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+
+                ii++;
+        }
+
+        cursor.close();
+
+        if (total == 1 && !members.empty())
+                return QString::fromStdString(members.begin()->second.name);
+
+        auto first_member = [&members, this]() {
+                for (const auto &m : members) {
+                        if (m.first != localUserId_.toStdString())
+                                return QString::fromStdString(m.second.name);
+                }
+
+                return localUserId_;
+        }();
+
+        if (total == 2)
+                return first_member;
+        else if (total > 2)
+                return QString("%1 and %2 others").arg(first_member).arg(total);
+
+        return "Empty Room";
+}
+
+QString
+Cache::getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomTopic)), event);
+
+        if (res) {
+                try {
+                        StateEvent<Topic> msg =
+                          json::parse(std::string(event.data(), event.size()));
+
+                        if (!msg.content.topic.empty())
+                                return QString::fromStdString(msg.content.topic);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        return QString();
+}
+
+QString
+Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomName)), event);
+
+        if (res) {
+                try {
+                        StrippedEvent<state::Name> msg =
+                          json::parse(std::string(event.data(), event.size()));
+                        return QString::fromStdString(msg.content.name);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        auto cursor = lmdb::cursor::open(txn, membersdb);
+        std::string user_id, member_data;
+
+        while (cursor.get(user_id, member_data, MDB_NEXT)) {
+                if (user_id == localUserId_.toStdString())
+                        continue;
+
+                try {
+                        MemberInfo tmp = json::parse(member_data);
+                        cursor.close();
+
+                        return QString::fromStdString(tmp.name);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        cursor.close();
+
+        return QString("Empty Room");
+}
+
+QString
+Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomAvatar)), event);
+
+        if (res) {
+                try {
+                        StrippedEvent<state::Avatar> msg =
+                          json::parse(std::string(event.data(), event.size()));
+                        return QString::fromStdString(msg.content.url);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        auto cursor = lmdb::cursor::open(txn, membersdb);
+        std::string user_id, member_data;
+
+        while (cursor.get(user_id, member_data, MDB_NEXT)) {
+                if (user_id == localUserId_.toStdString())
+                        continue;
+
+                try {
+                        MemberInfo tmp = json::parse(member_data);
+                        cursor.close();
+
+                        return QString::fromStdString(tmp.avatar_url);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        cursor.close();
+
+        return QString();
+}
+
+QString
+Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res =
+          lmdb::dbi_get(txn, db, lmdb::val(to_string(mtx::events::EventType::RoomTopic)), event);
+
+        if (res) {
+                try {
+                        StrippedEvent<Topic> msg =
+                          json::parse(std::string(event.data(), event.size()));
+                        return QString::fromStdString(msg.content.topic);
+                } catch (const json::exception &e) {
+                        qWarning() << QString::fromStdString(e.what());
+                }
+        }
+
+        return QString();
+}
+
+std::vector<std::string>
+Cache::joinedRooms()
+{
+        auto txn         = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
+
+        std::string id, data;
+        std::vector<std::string> room_ids;
+
+        // Gather the room ids for the joined rooms.
+        while (roomsCursor.get(id, data, MDB_NEXT))
+                room_ids.emplace_back(id);
+
+        roomsCursor.close();
+        txn.commit();
+
+        return room_ids;
+}
+
+void
+Cache::populateMembers()
+{
+        auto rooms = joinedRooms();
+        qDebug() << "loading" << rooms.size() << "rooms";
+
+        auto txn = lmdb::txn::begin(env_);
+
+        for (const auto &room : rooms) {
+                const auto roomid = QString::fromStdString(room);
+
+                auto membersdb = getMembersDb(txn, room);
+                auto cursor    = lmdb::cursor::open(txn, membersdb);
+
+                std::string user_id, info;
+                while (cursor.get(user_id, info, MDB_NEXT)) {
+                        MemberInfo m = json::parse(info);
+
+                        const auto userid = QString::fromStdString(user_id);
+
+                        insertDisplayName(roomid, userid, QString::fromStdString(m.name));
+                        insertAvatarUrl(roomid, userid, QString::fromStdString(m.avatar_url));
+                }
+
+                cursor.close();
+        }
+
+        txn.commit();
+}
+
+QVector<SearchResult>
+Cache::getAutocompleteMatches(const std::string &room_id,
+                              const std::string &query,
+                              std::uint8_t max_items)
+{
+        std::multimap<int, std::pair<std::string, std::string>> items;
+
+        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto cursor = lmdb::cursor::open(txn, getMembersDb(txn, room_id));
+
+        std::string user_id, user_data;
+        while (cursor.get(user_id, user_data, MDB_NEXT)) {
+                const auto display_name = displayName(room_id, user_id);
+                const int score         = utils::levenshtein_distance(query, display_name);
+
+                items.emplace(score, std::make_pair(user_id, display_name));
+        }
+
+        auto end = items.begin();
+
+        if (items.size() >= max_items)
+                std::advance(end, max_items);
+        else if (items.size() > 0)
+                std::advance(end, items.size());
+
+        QVector<SearchResult> results;
+        for (auto it = items.begin(); it != end; it++) {
+                const auto user = it->second;
+                results.push_back(SearchResult{QString::fromStdString(user.first),
+                                               QString::fromStdString(user.second)});
+        }
+
+        return results;
+}
+
+QHash<QString, QString> Cache::DisplayNames;
+QHash<QString, QString> Cache::AvatarUrls;
+
+QString
+Cache::displayName(const QString &room_id, const QString &user_id)
+{
+        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
+        if (DisplayNames.contains(fmt))
+                return DisplayNames[fmt];
+
+        return user_id;
+}
+
+std::string
+Cache::displayName(const std::string &room_id, const std::string &user_id)
+{
+        auto fmt = QString::fromStdString(room_id + " " + user_id);
+        if (DisplayNames.contains(fmt))
+                return DisplayNames[fmt].toStdString();
+
+        return user_id;
+}
+
+QString
+Cache::avatarUrl(const QString &room_id, const QString &user_id)
+{
+        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
+        if (AvatarUrls.contains(fmt))
+                return AvatarUrls[fmt];
+
+        return QString();
+}
+
+void
+Cache::insertDisplayName(const QString &room_id,
+                         const QString &user_id,
+                         const QString &display_name)
+{
+        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
+        DisplayNames.insert(fmt, display_name);
+}
+
+void
+Cache::removeDisplayName(const QString &room_id, const QString &user_id)
+{
+        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
+        DisplayNames.remove(fmt);
+}
+
+void
+Cache::insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
+{
+        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
+        AvatarUrls.insert(fmt, avatar_url);
+}
+
+void
+Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
+{
+        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
+        AvatarUrls.remove(fmt);
 }

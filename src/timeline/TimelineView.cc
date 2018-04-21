@@ -477,8 +477,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
         auto with_sender = lastSender_ != local_user_;
 
         TimelineItem *view_item =
-          new TimelineItem(ty, local_user_, body, with_sender, scroll_widget_);
-        view_item->setRoomId(room_id_);
+          new TimelineItem(ty, local_user_, body, with_sender, room_id_, scroll_widget_);
 
         addTimelineItem(view_item);
 
@@ -538,7 +537,7 @@ TimelineView::notifyForLastEvent()
 void
 TimelineView::notifyForLastEvent(const TimelineEvent &event)
 {
-        auto descInfo = utils::getMessageDescription(event, local_user_);
+        auto descInfo = utils::getMessageDescription(event, local_user_, room_id_);
 
         if (!descInfo.timestamp.isEmpty())
                 emit updateLastTimelineMessage(room_id_, descInfo);

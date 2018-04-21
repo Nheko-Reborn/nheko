@@ -1,5 +1,5 @@
+#include "Cache.h"
 #include "Utils.h"
-#include "timeline/TimelineViewManager.h"
 
 #include <variant.hpp>
 
@@ -22,7 +22,9 @@ utils::descriptiveTime(const QDateTime &then)
 }
 
 DescInfo
-utils::getMessageDescription(const TimelineEvent &event, const QString &localUser)
+utils::getMessageDescription(const TimelineEvent &event,
+                             const QString &localUser,
+                             const QString &room_id)
 {
         using Audio  = mtx::events::RoomEvent<mtx::events::msg::Audio>;
         using Emote  = mtx::events::RoomEvent<mtx::events::msg::Emote>;
@@ -36,7 +38,7 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
                 const auto msg = mpark::get<Audio>(event);
                 QString sender = QString::fromStdString(msg.sender);
 
-                const auto username = TimelineViewManager::displayName(sender);
+                const auto username = Cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
                 return DescInfo{sender == localUser ? "You" : username,
@@ -48,7 +50,7 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
                 auto msg       = mpark::get<Emote>(event);
                 QString sender = QString::fromStdString(msg.sender);
 
-                const auto username = TimelineViewManager::displayName(sender);
+                const auto username = Cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
                 const auto body     = QString::fromStdString(msg.content.body).trimmed();
 
@@ -61,7 +63,7 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
                 const auto msg = mpark::get<File>(event);
                 QString sender = QString::fromStdString(msg.sender);
 
-                const auto username = TimelineViewManager::displayName(sender);
+                const auto username = Cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
                 return DescInfo{sender == localUser ? "You" : username,
@@ -73,7 +75,7 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
                 const auto msg = mpark::get<Image>(event);
                 QString sender = QString::fromStdString(msg.sender);
 
-                const auto username = TimelineViewManager::displayName(sender);
+                const auto username = Cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
                 return DescInfo{sender == localUser ? "You" : username,
@@ -85,7 +87,7 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
                 const auto msg = mpark::get<Notice>(event);
                 QString sender = QString::fromStdString(msg.sender);
 
-                const auto username = TimelineViewManager::displayName(sender);
+                const auto username = Cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
                 return DescInfo{
@@ -94,7 +96,7 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
                 const auto msg = mpark::get<Text>(event);
                 QString sender = QString::fromStdString(msg.sender);
 
-                const auto username = TimelineViewManager::displayName(sender);
+                const auto username = Cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
                 const auto body     = QString::fromStdString(msg.content.body).trimmed();
 
@@ -107,7 +109,7 @@ utils::getMessageDescription(const TimelineEvent &event, const QString &localUse
                 const auto msg = mpark::get<Video>(event);
                 QString sender = QString::fromStdString(msg.sender);
 
-                const auto username = TimelineViewManager::displayName(sender);
+                const auto username = Cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
                 return DescInfo{sender == localUser ? "You" : username,

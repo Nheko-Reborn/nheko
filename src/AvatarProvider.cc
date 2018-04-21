@@ -16,41 +16,33 @@
  */
 
 #include "AvatarProvider.h"
+#include "Cache.h"
 #include "MatrixClient.h"
 
 QSharedPointer<MatrixClient> AvatarProvider::client_;
-
-std::map<QString, AvatarData> AvatarProvider::avatars_;
-
-void
-AvatarProvider::init(QSharedPointer<MatrixClient> client)
-{
-        client_ = client;
-}
+QHash<QString, QImage> AvatarProvider::avatars_;
 
 void
-AvatarProvider::updateAvatar(const QString &uid, const QImage &img)
-{
-        auto avatarData = &avatars_[uid];
-        avatarData->img = img;
-}
-
-void
-AvatarProvider::resolve(const QString &userId,
+AvatarProvider::resolve(const QString &room_id,
+                        const QString &user_id,
                         QObject *receiver,
                         std::function<void(QImage)> callback)
 {
-        if (avatars_.find(userId) == avatars_.end())
+        const auto key = QString("%1 %2").arg(room_id).arg(user_id);
+
+        if (!Cache::AvatarUrls.contains(key))
                 return;
 
-        auto img = avatars_[userId].img;
+        if (avatars_.contains(key)) {
+                auto img = avatars_[key];
 
-        if (!img.isNull()) {
-                callback(img);
-                return;
+                if (!img.isNull()) {
+                        callback(img);
+                        return;
+                }
         }
 
-        auto proxy = client_->fetchUserAvatar(avatars_[userId].url);
+        auto proxy = client_->fetchUserAvatar(Cache::avatarUrl(room_id, user_id));
 
         if (proxy.isNull())
                 return;
@@ -58,18 +50,9 @@ AvatarProvider::resolve(const QString &userId,
         connect(proxy.data(),
                 &DownloadMediaProxy::avatarDownloaded,
                 receiver,
-                [userId, proxy, callback](const QImage &img) {
+                [user_id, proxy, callback, key](const QImage &img) {
                         proxy->deleteLater();
-                        updateAvatar(userId, img);
+                        avatars_.insert(key, img);
                         callback(img);
                 });
-}
-
-void
-AvatarProvider::setAvatarUrl(const QString &userId, const QUrl &url)
-{
-        AvatarData data;
-        data.url = url;
-
-        avatars_.emplace(userId, data);
 }

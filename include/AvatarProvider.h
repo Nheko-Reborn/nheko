@@ -17,45 +17,30 @@
 
 #pragma once
 
+#include <QHash>
 #include <QImage>
 #include <QSharedPointer>
-#include <QUrl>
 #include <functional>
 
 class MatrixClient;
 class TimelineItem;
-
-//! Saved cache data per user.
-struct AvatarData
-{
-        //! The avatar image of the user.
-        QImage img;
-        //! The url that was used to download the avatar.
-        QUrl url;
-};
 
 class AvatarProvider : public QObject
 {
         Q_OBJECT
 
 public:
-        static void init(QSharedPointer<MatrixClient> client);
+        static void init(QSharedPointer<MatrixClient> client) { client_ = client; }
         //! The callback is called with the downloaded avatar for the given user
         //! or the avatar is downloaded first and then saved for re-use.
-        static void resolve(const QString &userId,
+        static void resolve(const QString &room_id,
+                            const QString &userId,
                             QObject *receiver,
                             std::function<void(QImage)> callback);
-        //! Used to initialize the mapping user -> avatar url.
-        static void setAvatarUrl(const QString &userId, const QUrl &url);
         //! Remove all saved data.
         static void clear() { avatars_.clear(); };
 
 private:
-        //! Update the cache with the downloaded avatar.
-        static void updateAvatar(const QString &uid, const QImage &img);
-
         static QSharedPointer<MatrixClient> client_;
-
-        using UserID = QString;
-        static std::map<UserID, AvatarData> avatars_;
+        static QHash<QString, QImage> avatars_;
 };

@@ -22,12 +22,12 @@
 
 #include <variant.hpp>
 
+#include "Cache.h"
 #include "Config.h"
 #include "Menu.h"
 #include "Ripple.h"
 #include "RippleOverlay.h"
 #include "RoomInfoListItem.h"
-#include "RoomSettings.h"
 #include "Theme.h"
 #include "Utils.h"
 
@@ -73,15 +73,20 @@ RoomInfoListItem::init(QWidget *parent)
         headingFont_ = font_;
         headingFont_.setPixelSize(conf::roomlist::fonts::heading);
         headingFont_.setWeight(60);
+
+        menu_      = new Menu(this);
+        leaveRoom_ = new QAction(tr("Leave room"), this);
+        connect(leaveRoom_, &QAction::triggered, this, [this]() { emit leaveRoom(roomId_); });
+        menu_->addAction(leaveRoom_);
 }
 
-RoomInfoListItem::RoomInfoListItem(QString room_id,
-                                   mtx::responses::InvitedRoom room,
-                                   QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *parent)
   : QWidget(parent)
-  , roomType_{RoomType::Invited}
-  , invitedRoom_{std::move(room)}
-  , roomId_{std::move(room_id)}
+  , roomType_{info.is_invite ? RoomType::Invited : RoomType::Joined}
+  , roomId_(std::move(room_id))
+  , roomName_{QString::fromStdString(std::move(info.name))}
+  , isPressed_(false)
+  , unreadMsgCount_(0)
 {
         init(parent);
 
@@ -91,47 +96,8 @@ RoomInfoListItem::RoomInfoListItem(QString room_id,
         //
         // State events in invited rooms don't contain timestamp info,
         // so we can't use them for sorting.
-        auto now     = QDateTime::currentDateTime();
-        lastMsgInfo_ = {"-", "-", "-", "-", now.addYears(10)};
-
-        roomAvatar_ = QString::fromStdString(invitedRoom_.avatar());
-        roomName_   = QString::fromStdString(invitedRoom_.name());
-}
-
-RoomInfoListItem::RoomInfoListItem(QSharedPointer<RoomSettings> settings,
-                                   QSharedPointer<RoomState> state,
-                                   QString room_id,
-                                   QWidget *parent)
-  : QWidget(parent)
-  , state_(state)
-  , roomId_(room_id)
-  , roomSettings_{settings}
-  , isPressed_(false)
-  , unreadMsgCount_(0)
-{
-        init(parent);
-
-        menu_ = new Menu(this);
-
-        toggleNotifications_ = new QAction(notificationText(), this);
-        connect(toggleNotifications_, &QAction::triggered, this, [this]() {
-                roomSettings_->toggleNotifications();
-        });
-
-        leaveRoom_ = new QAction(tr("Leave room"), this);
-        connect(leaveRoom_, &QAction::triggered, this, [this]() { emit leaveRoom(roomId_); });
-
-        menu_->addAction(toggleNotifications_);
-        menu_->addAction(leaveRoom_);
-}
-
-QString
-RoomInfoListItem::notificationText()
-{
-        if (roomSettings_.isNull() || roomSettings_->isNotificationsEnabled())
-                return QString(tr("Disable notifications"));
-
-        return tr("Enable notifications");
+        if (roomType_ == RoomType::Invited)
+                lastMsgInfo_ = {"-", "-", "-", "-", QDateTime::currentDateTime().addYears(10)};
 }
 
 void
@@ -352,7 +318,6 @@ RoomInfoListItem::contextMenuEvent(QContextMenuEvent *event)
         if (roomType_ == RoomType::Invited)
                 return;
 
-        toggleNotifications_->setText(notificationText());
         menu_->popup(event->globalPos());
 }
 

@@ -1,10 +1,11 @@
 #include "Avatar.h"
 #include "AvatarProvider.h"
+#include "Cache.h"
+#include "ChatPage.h"
 #include "Config.h"
 #include "DropShadow.h"
 #include "SuggestionsPopup.hpp"
 #include "Utils.h"
-#include "timeline/TimelineViewManager.h"
 
 #include <QDebug>
 #include <QPaintEvent>
@@ -30,7 +31,7 @@ PopupItem::PopupItem(QWidget *parent, const QString &user_id)
         QFont font;
         font.setPixelSize(conf::popup::font);
 
-        auto displayName = TimelineViewManager::displayName(user_id);
+        auto displayName = Cache::displayName(ChatPage::instance()->currentRoom(), user_id);
 
         avatar_->setSize(conf::popup::avatar);
         avatar_->setLetter(utils::firstChar(displayName));
@@ -45,8 +46,10 @@ PopupItem::PopupItem(QWidget *parent, const QString &user_id)
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(userName_, 1);
 
-        AvatarProvider::resolve(
-          user_id, this, [this](const QImage &img) { avatar_->setImage(img); });
+        AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
+                                user_id,
+                                this,
+                                [this](const QImage &img) { avatar_->setImage(img); });
 }
 
 void
@@ -65,7 +68,7 @@ void
 PopupItem::mousePressEvent(QMouseEvent *event)
 {
         if (event->buttons() != Qt::RightButton)
-                emit clicked(TimelineViewManager::displayName(user_id_));
+                emit clicked(Cache::displayName(ChatPage::instance()->currentRoom(), user_id_));
 
         QWidget::mousePressEvent(event);
 }
@@ -164,7 +167,7 @@ SuggestionsPopup::selectHoveredSuggestion()
                 return;
 
         const auto &widget = qobject_cast<PopupItem *>(item->widget());
-        emit itemSelected(TimelineViewManager::displayName(widget->user()));
+        emit itemSelected(Cache::displayName(ChatPage::instance()->currentRoom(), widget->user()));
 
         resetSelection();
 }

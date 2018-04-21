@@ -99,12 +99,14 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                            const QString &userid,
                            QString body,
                            bool withSender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         init();
 
-        auto displayName = TimelineViewManager::displayName(userid);
+        auto displayName = Cache::displayName(room_id_, userid);
         auto timestamp   = QDateTime::currentDateTime();
 
         if (ty == mtx::events::MessageType::Emote) {
@@ -127,7 +129,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                 messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(
-                  userid, this, [this](const QImage &img) { setUserAvatar(img); });
+                  room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -143,8 +145,10 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
 TimelineItem::TimelineItem(ImageItem *image,
                            const QString &userid,
                            bool withSender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget{parent}
+  , room_id_{room_id}
 {
         init();
 
@@ -153,8 +157,13 @@ TimelineItem::TimelineItem(ImageItem *image,
         addSaveImageAction(image);
 }
 
-TimelineItem::TimelineItem(FileItem *file, const QString &userid, bool withSender, QWidget *parent)
+TimelineItem::TimelineItem(FileItem *file,
+                           const QString &userid,
+                           bool withSender,
+                           const QString &room_id,
+                           QWidget *parent)
   : QWidget{parent}
+  , room_id_{room_id}
 {
         init();
 
@@ -164,8 +173,10 @@ TimelineItem::TimelineItem(FileItem *file, const QString &userid, bool withSende
 TimelineItem::TimelineItem(AudioItem *audio,
                            const QString &userid,
                            bool withSender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget{parent}
+  , room_id_{room_id}
 {
         init();
 
@@ -175,8 +186,10 @@ TimelineItem::TimelineItem(AudioItem *audio,
 TimelineItem::TimelineItem(VideoItem *video,
                            const QString &userid,
                            bool withSender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget{parent}
+  , room_id_{room_id}
 {
         init();
 
@@ -186,8 +199,10 @@ TimelineItem::TimelineItem(VideoItem *video,
 TimelineItem::TimelineItem(ImageItem *image,
                            const mtx::events::RoomEvent<mtx::events::msg::Image> &event,
                            bool with_sender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Image>, ImageItem>(
           image, event, " sent an image", with_sender);
@@ -198,8 +213,10 @@ TimelineItem::TimelineItem(ImageItem *image,
 TimelineItem::TimelineItem(FileItem *file,
                            const mtx::events::RoomEvent<mtx::events::msg::File> &event,
                            bool with_sender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::File>, FileItem>(
           file, event, " sent a file", with_sender);
@@ -208,8 +225,10 @@ TimelineItem::TimelineItem(FileItem *file,
 TimelineItem::TimelineItem(AudioItem *audio,
                            const mtx::events::RoomEvent<mtx::events::msg::Audio> &event,
                            bool with_sender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Audio>, AudioItem>(
           audio, event, " sent an audio clip", with_sender);
@@ -218,8 +237,10 @@ TimelineItem::TimelineItem(AudioItem *audio,
 TimelineItem::TimelineItem(VideoItem *video,
                            const mtx::events::RoomEvent<mtx::events::msg::Video> &event,
                            bool with_sender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Video>, VideoItem>(
           video, event, " sent a video clip", with_sender);
@@ -230,8 +251,10 @@ TimelineItem::TimelineItem(VideoItem *video,
  */
 TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice> &event,
                            bool with_sender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         init();
 
@@ -240,7 +263,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         const auto timestamp = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto body            = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
 
-        descriptionMsg_ = {TimelineViewManager::displayName(sender),
+        descriptionMsg_ = {Cache::displayName(room_id_, sender),
                            sender,
                            " sent a notification",
                            utils::descriptiveTime(timestamp),
@@ -253,7 +276,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         body = "<i>" + body + "</i>";
 
         if (with_sender) {
-                auto displayName = TimelineViewManager::displayName(sender);
+                auto displayName = Cache::displayName(room_id_, sender);
 
                 generateBody(displayName, body);
                 setupAvatarLayout(displayName);
@@ -261,7 +284,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
                 messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(
-                  sender, this, [this](const QImage &img) { setUserAvatar(img); });
+                  room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -279,8 +302,10 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
  */
 TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote> &event,
                            bool with_sender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         init();
 
@@ -289,7 +314,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
 
         auto body        = QString::fromStdString(event.content.body).trimmed();
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
-        auto displayName = TimelineViewManager::displayName(sender);
+        auto displayName = Cache::displayName(room_id_, sender);
         auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(body);
 
         descriptionMsg_ = {"", sender, emoteMsg, utils::descriptiveTime(timestamp), timestamp};
@@ -306,7 +331,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
                 messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(
-                  sender, this, [this](const QImage &img) { setUserAvatar(img); });
+                  room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(emoteMsg);
                 setupSimpleLayout();
@@ -324,8 +349,10 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
  */
 TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> &event,
                            bool with_sender,
+                           const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , room_id_{room_id}
 {
         init();
 
@@ -334,7 +361,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 
         auto body        = QString::fromStdString(event.content.body).trimmed();
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
-        auto displayName = TimelineViewManager::displayName(sender);
+        auto displayName = Cache::displayName(room_id_, sender);
 
         QSettings settings;
         descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
@@ -356,7 +383,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
                 messageLayout_->addLayout(headerLayout_, 1);
 
                 AvatarProvider::resolve(
-                  sender, this, [this](const QImage &img) { setUserAvatar(img); });
+                  room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
@@ -532,7 +559,7 @@ TimelineItem::addAvatar()
 
         // TODO: should be replaced with the proper event struct.
         auto userid      = descriptionMsg_.userid;
-        auto displayName = TimelineViewManager::displayName(userid);
+        auto displayName = Cache::displayName(room_id_, userid);
 
         QFontMetrics fm(usernameFont_);
         userName_ = new QLabel(this);
@@ -566,5 +593,6 @@ TimelineItem::addAvatar()
         messageLayout_->addWidget(checkmark_);
         messageLayout_->addWidget(timestamp_);
 
-        AvatarProvider::resolve(userid, this, [this](const QImage &img) { setUserAvatar(img); });
+        AvatarProvider::resolve(
+          room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
 }

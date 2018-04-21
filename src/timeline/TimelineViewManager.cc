@@ -172,18 +172,23 @@ TimelineViewManager::initialize(const mtx::responses::Rooms &rooms)
         for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
                 addRoom(it->second, QString::fromStdString(it->first));
         }
+
+        sync(rooms);
 }
 
 void
-TimelineViewManager::initialize(const std::vector<QString> &rooms)
+TimelineViewManager::initialize(const std::vector<std::string> &rooms)
 {
         for (const auto &roomid : rooms)
-                addRoom(roomid);
+                addRoom(QString::fromStdString(roomid));
 }
 
 void
 TimelineViewManager::addRoom(const mtx::responses::JoinedRoom &room, const QString &room_id)
 {
+        if (timelineViewExists(room_id))
+                return;
+
         // Create a history view with the room events.
         TimelineView *view = new TimelineView(room.timeline, client_, room_id);
         views_.emplace(room_id, QSharedPointer<TimelineView>(view));
@@ -200,6 +205,9 @@ TimelineViewManager::addRoom(const mtx::responses::JoinedRoom &room, const QStri
 void
 TimelineViewManager::addRoom(const QString &room_id)
 {
+        if (timelineViewExists(room_id))
+                return;
+
         // Create a history view without any events.
         TimelineView *view = new TimelineView(client_, room_id);
         views_.emplace(room_id, QSharedPointer<TimelineView>(view));
@@ -246,8 +254,6 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         view->fetchHistory();
         view->scrollDown();
 }
-
-std::map<QString, QString> TimelineViewManager::DISPLAY_NAMES;
 
 QString
 TimelineViewManager::chooseRandomColor()
@@ -305,15 +311,6 @@ TimelineViewManager::chooseRandomColor()
         QColor color(ri, gi, bi);
 
         return color.name();
-}
-
-QString
-TimelineViewManager::displayName(const QString &userid)
-{
-        if (DISPLAY_NAMES.find(userid) != DISPLAY_NAMES.end())
-                return DISPLAY_NAMES.at(userid);
-
-        return userid;
 }
 
 bool

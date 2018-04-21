@@ -39,7 +39,7 @@ public:
         // Initialize with timeline events.
         void initialize(const mtx::responses::Rooms &rooms);
         // Empty initialization.
-        void initialize(const std::vector<QString> &rooms);
+        void initialize(const std::vector<std::string> &rooms);
 
         void addRoom(const mtx::responses::JoinedRoom &room, const QString &room_id);
         void addRoom(const QString &room_id);
@@ -51,9 +51,6 @@ public:
         bool hasLoaded() const;
 
         static QString chooseRandomColor();
-        static QString displayName(const QString &userid);
-
-        static std::map<QString, QString> DISPLAY_NAMES;
 
 signals:
         void clearRoomMessageCount(QString roomid);

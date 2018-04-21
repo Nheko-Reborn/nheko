@@ -31,8 +31,9 @@
 
 #include <variant.hpp>
 
+#include "Cache.h"
+#include "ChatPage.h"
 #include "Config.h"
-#include "RoomState.h"
 #include "TextInputWidget.h"
 #include "Utils.h"
 
@@ -40,7 +41,6 @@ static constexpr size_t INPUT_HISTORY_SIZE = 127;
 static constexpr int MAX_TEXTINPUT_HEIGHT  = 120;
 static constexpr int InputHeight           = 26;
 static constexpr int ButtonHeight          = 24;
-static constexpr int MaxPopupItems         = 5;
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
@@ -454,49 +454,16 @@ TextInputWidget::TextInputWidget(QWidget *parent)
                 input_->setFixedHeight(textInputHeight);
         });
         connect(input_, &FilteredTextEdit::showSuggestions, this, [this](const QString &q) {
-                if (q.isEmpty() || currState_.isNull())
+                if (q.isEmpty() || cache_.isNull())
                         return;
 
                 QtConcurrent::run([this, q = q.toLower().toStdString()]() {
-                        std::multimap<int, std::pair<std::string, std::string>> items;
-
-                        auto get_name = [](auto membership) {
-                                auto name = membership.second.content.display_name;
-                                auto key  = membership.first;
-
-                                // Remove the leading '@' character.
-                                if (name.empty()) {
-                                        key.erase(0, 1);
-                                        name = key;
-                                }
-
-                                return std::make_pair(key, name);
-                        };
-
-                        for (const auto &m : currState_->memberships) {
-                                const auto user = get_name(m);
-                                const int score = utils::levenshtein_distance(q, user.second);
-
-                                items.emplace(score, user);
+                        try {
+                                emit input_->resultsRetrieved(cache_->getAutocompleteMatches(
+                                  ChatPage::instance()->currentRoom().toStdString(), q));
+                        } catch (const lmdb::error &e) {
+                                std::cout << e.what() << '\n';
                         }
-
-                        QVector<SearchResult> results;
-                        auto end = items.begin();
-
-                        if (items.size() >= MaxPopupItems)
-                                std::advance(end, MaxPopupItems);
-                        else if (items.size() > 0)
-                                std::advance(end, items.size());
-
-                        for (auto it = items.begin(); it != end; it++) {
-                                const auto user = it->second;
-
-                                results.push_back(
-                                  SearchResult{QString::fromStdString(user.first),
-                                               QString::fromStdString(user.second)});
-                        }
-
-                        emit input_->resultsRetrieved(results);
                 });
         });
 
