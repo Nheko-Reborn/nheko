@@ -29,7 +29,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.01.14");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.04.21");
 
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
