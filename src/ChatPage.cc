@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QFuture>
 #include <QSettings>
 #include <QtConcurrent>
 
@@ -424,6 +425,14 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 view_manager_->initialize(rooms);
                 removeLeftRooms(rooms.leave);
+
+                for (const auto &room : rooms.join) {
+                        auto room_id = QString::fromStdString(room.first);
+
+                        updateTypingUsers(room_id, room.second.ephemeral.typing);
+                        updateRoomNotificationCount(
+                          room_id, room.second.unread_notifications.notification_count);
+                }
         });
         connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
 
@@ -518,16 +527,7 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 {
         syncTimeoutTimer_->stop();
 
-        // Process ephemeral data per room.
-        for (const auto &room : response.rooms.join) {
-                auto room_id = QString::fromStdString(room.first);
-
-                updateTypingUsers(room_id, room.second.ephemeral.typing);
-                updateRoomNotificationCount(room_id,
-                                            room.second.unread_notifications.notification_count);
-        }
-
-        QtConcurrent::run([this, res = std::move(response)]() {
+        auto promise = QtConcurrent::run([this, res = std::move(response)]() {
                 try {
                         cache_->saveState(res);
                         emit syncRoomlist(cache_->roomUpdates(res));

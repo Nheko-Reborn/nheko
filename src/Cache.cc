@@ -310,7 +310,7 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
 }
 
 void
-Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
+Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Receipts &receipts)
 {
         for (const auto &receipt : receipts) {
                 const auto event_id = receipt.first;
@@ -320,15 +320,12 @@ Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
                 nlohmann::json json_key = receipt_key;
 
                 try {
-                        auto read_txn  = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
                         const auto key = json_key.dump();
 
                         lmdb::val prev_value;
 
                         bool exists = lmdb::dbi_get(
-                          read_txn, readReceiptsDb_, lmdb::val(key.data(), key.size()), prev_value);
-
-                        read_txn.commit();
+                          txn, readReceiptsDb_, lmdb::val(key.data(), key.size()), prev_value);
 
                         std::map<std::string, uint64_t> saved_receipts;
 
@@ -350,14 +347,11 @@ Cache::updateReadReceipt(const std::string &room_id, const Receipts &receipts)
                         nlohmann::json json_updated_value = saved_receipts;
                         std::string merged_receipts       = json_updated_value.dump();
 
-                        auto txn = lmdb::txn::begin(env_);
-
                         lmdb::dbi_put(txn,
                                       readReceiptsDb_,
                                       lmdb::val(key.data(), key.size()),
                                       lmdb::val(merged_receipts.data(), merged_receipts.size()));
 
-                        txn.commit();
                 } catch (const lmdb::error &e) {
                         qCritical() << "updateReadReceipts:" << e.what();
                 }
@@ -388,6 +382,8 @@ Cache::saveState(const mtx::responses::Sync &res)
 
                 lmdb::dbi_put(
                   txn, roomsDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
+
+                updateReadReceipt(txn, room.first, room.second.ephemeral.receipts);
         }
 
         saveInvites(txn, res.rooms.invite);

@@ -170,7 +170,9 @@ public:
         //! There should be only one user id present in a receipt list per room.
         //! The user id should be removed from any other lists.
         using Receipts = std::map<std::string, std::map<std::string, uint64_t>>;
-        void updateReadReceipt(const std::string &room_id, const Receipts &receipts);
+        void updateReadReceipt(lmdb::txn &txn,
+                               const std::string &room_id,
+                               const Receipts &receipts);
 
         //! Retrieve all the read receipts for the given event id and room.
         //!

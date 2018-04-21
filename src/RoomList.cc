@@ -352,8 +352,6 @@ RoomList::paintEvent(QPaintEvent *)
 void
 RoomList::updateRoom(const QString &room_id, const RoomInfo &info)
 {
-        qDebug() << "updateRoom" << QString::fromStdString(info.name) << room_id;
-
         if (!roomExists(room_id)) {
                 if (info.is_invite)
                         addInvitedRoom(room_id, info);
