@@ -15,12 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QBuffer>
+#include <QtConcurrent>
+
 #include "AvatarProvider.h"
 #include "Cache.h"
 #include "MatrixClient.h"
 
 QSharedPointer<MatrixClient> AvatarProvider::client_;
-QHash<QString, QImage> AvatarProvider::avatars_;
+QSharedPointer<Cache> AvatarProvider::cache_;
 
 void
 AvatarProvider::resolve(const QString &room_id,
@@ -28,21 +31,22 @@ AvatarProvider::resolve(const QString &room_id,
                         QObject *receiver,
                         std::function<void(QImage)> callback)
 {
-        const auto key = QString("%1 %2").arg(room_id).arg(user_id);
+        const auto key       = QString("%1 %2").arg(room_id).arg(user_id);
+        const auto avatarUrl = Cache::avatarUrl(room_id, user_id);
 
-        if (!Cache::AvatarUrls.contains(key))
+        if (!Cache::AvatarUrls.contains(key) || cache_.isNull())
                 return;
 
-        if (avatars_.contains(key)) {
-                auto img = avatars_[key];
+        if (avatarUrl.isEmpty())
+                return;
 
-                if (!img.isNull()) {
-                        callback(img);
-                        return;
-                }
+        auto data = cache_->image(avatarUrl);
+        if (!data.isNull()) {
+                callback(QImage::fromData(data));
+                return;
         }
 
-        auto proxy = client_->fetchUserAvatar(Cache::avatarUrl(room_id, user_id));
+        auto proxy = client_->fetchUserAvatar(avatarUrl);
 
         if (proxy.isNull())
                 return;
@@ -50,9 +54,16 @@ AvatarProvider::resolve(const QString &room_id,
         connect(proxy.data(),
                 &DownloadMediaProxy::avatarDownloaded,
                 receiver,
-                [user_id, proxy, callback, key](const QImage &img) {
+                [user_id, proxy, callback, avatarUrl](const QImage &img) {
                         proxy->deleteLater();
-                        avatars_.insert(key, img);
+                        QtConcurrent::run([img, avatarUrl]() {
+                                QByteArray data;
+                                QBuffer buffer(&data);
+                                buffer.open(QIODevice::WriteOnly);
+                                img.save(&buffer, "PNG");
+
+                                cache_->saveImage(avatarUrl, data);
+                        });
                         callback(img);
                 });
 }

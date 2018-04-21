@@ -621,6 +621,9 @@ MatrixClient::fetchRoomAvatar(const QString &roomid, const QUrl &avatar_url)
 void
 MatrixClient::fetchCommunityAvatar(const QString &communityId, const QUrl &avatar_url)
 {
+        if (avatar_url.isEmpty())
+                return;
+
         QList<QString> url_parts = avatar_url.toString().split("mxc://");
 
         if (url_parts.size() != 2) {

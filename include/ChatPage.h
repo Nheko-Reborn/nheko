@@ -51,8 +51,8 @@ constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
 constexpr int TYPING_REFRESH_TIMEOUT = 10000;
 
-Q_DECLARE_METATYPE(mtx::responses::Rooms);
-Q_DECLARE_METATYPE(std::vector<std::string>);
+Q_DECLARE_METATYPE(mtx::responses::Rooms)
+Q_DECLARE_METATYPE(std::vector<std::string>)
 
 class ChatPage : public QWidget
 {

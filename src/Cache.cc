@@ -144,6 +144,9 @@ Cache::saveImage(const QString &url, const QByteArray &image)
 QByteArray
 Cache::image(const QString &url) const
 {
+        if (url.isEmpty())
+                return QByteArray();
+
         auto key = url.toUtf8();
 
         try {
@@ -160,7 +163,7 @@ Cache::image(const QString &url) const
 
                 return QByteArray(image.data(), image.size());
         } catch (const lmdb::error &e) {
-                qCritical() << "image:" << e.what();
+                qCritical() << "image:" << e.what() << url;
         }
 
         return QByteArray();

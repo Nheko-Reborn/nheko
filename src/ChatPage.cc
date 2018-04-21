@@ -399,8 +399,6 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 this,
                 &ChatPage::setGroupViewState);
 
-        AvatarProvider::init(client);
-
         connect(this, &ChatPage::continueSync, this, [this](const QString &next_batch) {
                 syncTimeoutTimer_->start(SYNC_RETRY_TIMEOUT);
                 client_->setNextBatchToken(next_batch);
@@ -461,7 +459,6 @@ ChatPage::resetUI()
         top_bar_->reset();
         user_info_widget_->reset();
         view_manager_->clearAll();
-        AvatarProvider::clear();
 
         showUnreadMessageNotification(0);
 }
@@ -496,6 +493,8 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         cache_ = QSharedPointer<Cache>(new Cache(userid));
         room_list_->setCache(cache_);
         text_input_->setCache(cache_);
+
+        AvatarProvider::init(client_, cache_);
 
         try {
                 cache_->setup();
@@ -584,21 +583,30 @@ ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_na
         user_info_widget_->setUserId(userid);
         user_info_widget_->setDisplayName(display_name);
 
-        if (avatar_url.isValid()) {
-                auto proxy = client_->fetchUserAvatar(avatar_url);
+        if (!avatar_url.isValid())
+                return;
 
-                if (proxy.isNull())
+        if (!cache_.isNull()) {
+                auto data = cache_->image(avatar_url.toString());
+                if (!data.isNull()) {
+                        user_info_widget_->setAvatar(QImage::fromData(data));
                         return;
-
-                proxy->setParent(this);
-                connect(proxy.data(),
-                        &DownloadMediaProxy::avatarDownloaded,
-                        this,
-                        [this, proxy](const QImage &img) {
-                                proxy->deleteLater();
-                                user_info_widget_->setAvatar(img);
-                        });
+                }
         }
+
+        auto proxy = client_->fetchUserAvatar(avatar_url);
+
+        if (proxy.isNull())
+                return;
+
+        proxy->setParent(this);
+        connect(proxy.data(),
+                &DownloadMediaProxy::avatarDownloaded,
+                this,
+                [this, proxy](const QImage &img) {
+                        proxy->deleteLater();
+                        user_info_widget_->setAvatar(img);
+                });
 }
 
 void
@@ -661,8 +669,8 @@ ChatPage::loadStateFromCache()
                 try {
                         cache_->populateMembers();
 
-                        emit initializeRoomList(cache_->roomInfo());
                         emit initializeEmptyViews(cache_->joinedRooms());
+                        emit initializeRoomList(cache_->roomInfo());
                 } catch (const lmdb::error &e) {
                         std::cout << "load cache error:" << e.what() << '\n';
                         // TODO Clear cache and restart.
