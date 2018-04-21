@@ -29,7 +29,6 @@
 #include "OverlayModal.h"
 #include "QuickSwitcher.h"
 #include "RoomList.h"
-#include "RoomState.h"
 #include "SideBarActions.h"
 #include "Splitter.h"
 #include "TextInputWidget.h"

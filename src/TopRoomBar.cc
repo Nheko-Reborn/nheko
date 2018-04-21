@@ -25,7 +25,6 @@
 #include "MainWindow.h"
 #include "Menu.h"
 #include "OverlayModal.h"
-#include "RoomSettings.h"
 #include "TopRoomBar.h"
 #include "Utils.h"
 

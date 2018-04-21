@@ -23,7 +23,6 @@
 #include <lmdb++.h>
 #include <mtx/responses.hpp>
 
-#include "RoomState.h"
 #include "Utils.h"
 
 struct SearchResult

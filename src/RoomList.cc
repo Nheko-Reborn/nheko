@@ -26,7 +26,6 @@
 #include "OverlayModal.h"
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
-#include "RoomState.h"
 #include "UserSettingsPage.h"
 
 RoomList::RoomList(QSharedPointer<MatrixClient> client,

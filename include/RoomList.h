@@ -30,7 +30,6 @@ class LeaveRoomDialog;
 class MatrixClient;
 class OverlayModal;
 class RoomInfoListItem;
-class RoomState;
 class Sync;
 class UserSettings;
 struct DescInfo;

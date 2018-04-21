@@ -34,7 +34,6 @@ class MatrixClient;
 class OverlayModal;
 class QuickSwitcher;
 class RoomList;
-class RoomState;
 class SideBarActions;
 class Splitter;
 class TextInputWidget;
@@ -117,7 +116,6 @@ private:
         static ChatPage *instance_;
 
         using UserID      = QString;
-        using RoomStates  = std::map<UserID, QSharedPointer<RoomState>>;
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
         using Memberships = std::map<std::string, Membership>;
 
@@ -174,8 +172,6 @@ private:
         std::map<QString, QPixmap> community_avatars_;
 
         UserInfoWidget *user_info_widget_;
-
-        RoomStates roomStates_;
 
         std::map<QString, QSharedPointer<Community>> communities_;
 
