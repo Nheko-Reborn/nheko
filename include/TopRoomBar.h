@@ -31,7 +31,6 @@ class FlatButton;
 class Label;
 class Menu;
 class OverlayModal;
-class RoomSettings;
 
 class TopRoomBar : public QWidget
 {
@@ -47,7 +46,6 @@ public:
         void updateRoomName(const QString &name);
         void updateRoomTopic(QString topic);
         void updateRoomAvatarFromName(const QString &name);
-        void setRoomSettings(QSharedPointer<RoomSettings> settings);
 
         void reset();
 
@@ -68,10 +66,7 @@ private:
         QLabel *nameLabel_;
         Label *topicLabel_;
 
-        QSharedPointer<RoomSettings> roomSettings_;
-
         QMenu *menu_;
-        QAction *toggleNotifications_;
         QAction *leaveRoom_;
         QAction *inviteUsers_;
 

@@ -85,11 +85,6 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
         menu_ = new Menu(this);
 
-        toggleNotifications_ = new QAction(tr("Disable notifications"), this);
-        connect(toggleNotifications_, &QAction::triggered, this, [this]() {
-                roomSettings_->toggleNotifications();
-        });
-
         inviteUsers_ = new QAction(tr("Invite users"), this);
         connect(inviteUsers_, &QAction::triggered, this, [this]() {
                 MainWindow::instance()->openInviteUsersDialog(
@@ -101,19 +96,10 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                 MainWindow::instance()->openLeaveRoomDialog();
         });
 
-        menu_->addAction(toggleNotifications_);
         menu_->addAction(inviteUsers_);
         menu_->addAction(leaveRoom_);
 
         connect(settingsBtn_, &QPushButton::clicked, this, [this]() {
-                if (roomSettings_.isNull())
-                        return;
-
-                if (roomSettings_->isNotificationsEnabled())
-                        toggleNotifications_->setText(tr("Disable notifications"));
-                else
-                        toggleNotifications_->setText(tr("Enable notifications"));
-
                 auto pos = mapToGlobal(settingsBtn_->pos());
                 menu_->popup(
                   QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(), pos.y() + buttonSize_));
@@ -180,12 +166,6 @@ TopRoomBar::mousePressEvent(QMouseEvent *event)
         if (childAt(event->pos()) == topicLabel_) {
                 event->accept();
         }
-}
-
-void
-TopRoomBar::setRoomSettings(QSharedPointer<RoomSettings> settings)
-{
-        roomSettings_ = settings;
 }
 
 void
