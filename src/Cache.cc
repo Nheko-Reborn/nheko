@@ -390,29 +390,9 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         saveInvites(txn, res.rooms.invite);
 
-        std::map<std::string, bool> invites;
-        for (const auto &invite : res.rooms.invite)
-                invites.emplace(std::move(invite.first), true);
-
-        // removeStaleInvites(txn, invites);
-
         removeLeftRooms(txn, res.rooms.leave);
 
         txn.commit();
-}
-
-void
-Cache::removeStaleInvites(lmdb::txn &txn, const std::map<std::string, bool> &curr)
-{
-        auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
-
-        std::string room_id, room_data;
-        while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
-                if (curr.find(room_id) == curr.end())
-                        lmdb::cursor_del(invitesCursor);
-        }
-
-        invitesCursor.close();
 }
 
 void
@@ -554,31 +534,32 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
 }
 
 QMap<QString, RoomInfo>
-Cache::roomInfo()
+Cache::roomInfo(bool withInvites)
 {
         QMap<QString, RoomInfo> result;
 
-        auto txn           = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto roomsCursor   = lmdb::cursor::open(txn, roomsDb_);
-        auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
         std::string room_id;
         std::string room_data;
 
         // Gather info about the joined rooms.
+        auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
-                RoomInfo tmp = json::parse(room_data);
+                RoomInfo tmp = json::parse(std::move(room_data));
                 result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
         }
-
-        // Gather info about the invites.
-        while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
-                RoomInfo tmp = json::parse(room_data);
-                result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
-        }
-
-        invitesCursor.close();
         roomsCursor.close();
+
+        if (withInvites) {
+                // Gather info about the invites.
+                auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
+                while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
+                        RoomInfo tmp = json::parse(room_data);
+                        result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
+                }
+                invitesCursor.close();
+        }
 
         txn.commit();
 

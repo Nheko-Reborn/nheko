@@ -136,7 +136,7 @@ public:
         void populateMembers();
         std::vector<std::string> joinedRooms();
 
-        QMap<QString, RoomInfo> roomInfo();
+        QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
 
         //! Calculate & return the name of the room.
         QString getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
@@ -330,9 +330,6 @@ private:
 
         void saveInvites(lmdb::txn &txn,
                          const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
-
-        //! Remove any saved invites that are not found in the input.
-        void removeStaleInvites(lmdb::txn &txn, const std::map<std::string, bool> &curr);
 
         //! Sends signals for the rooms that are removed.
         void removeLeftRooms(lmdb::txn &txn,

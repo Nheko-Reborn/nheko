@@ -624,6 +624,11 @@ ChatPage::updateOwnCommunitiesInfo(const QList<QString> &own_communities)
 void
 ChatPage::changeTopRoomInfo(const QString &room_id)
 {
+        if (room_id.isEmpty()) {
+                qWarning() << "can't switch to empty room_id";
+                return;
+        }
+
         try {
                 auto room_info = cache_->getRoomInfo({room_id.toStdString()});
 
@@ -640,12 +645,11 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                         top_bar_->updateRoomAvatar(roomAvatars_[room_id].toImage());
                 else
                         top_bar_->updateRoomAvatarFromName(name);
-        } catch (const lmdb::error &e) {
-                qWarning() << "failed to change top bar room info"
-                           << QString::fromStdString(e.what());
-        }
 
-        current_room_ = room_id;
+                current_room_ = room_id;
+        } catch (const lmdb::error &e) {
+                qWarning() << "failed to change top bar room info" << e.what();
+        }
 }
 
 void
@@ -712,12 +716,11 @@ ChatPage::showQuickSwitcher()
                 quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
         }
 
-        std::map<QString, QString> rooms;
-
         try {
-                auto info = cache_->roomInfo();
+                std::map<QString, QString> rooms;
+                auto info = cache_->roomInfo(false);
                 for (auto it = info.begin(); it != info.end(); ++it)
-                        rooms.emplace(QString::fromStdString(it.value().name), it.key());
+                        rooms.emplace(QString::fromStdString(it.value().name).trimmed(), it.key());
                 quickSwitcher_->setRoomList(rooms);
                 quickSwitcherModal_->show();
         } catch (const lmdb::error &e) {
