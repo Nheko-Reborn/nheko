@@ -550,6 +550,7 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
         QtConcurrent::run([this, res = std::move(response)]() {
                 try {
                         cache_->saveState(res);
+                        emit initializeViews(std::move(res.rooms));
                         emit initializeRoomList(cache_->roomInfo());
                 } catch (const lmdb::error &e) {
                         qWarning() << "cache error:" << QString::fromStdString(e.what());
@@ -557,7 +558,6 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
                         return;
                 }
 
-                emit initializeViews(std::move(res.rooms));
                 emit continueSync(cache_->nextBatchToken());
                 emit contentLoaded();
         });
