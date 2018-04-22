@@ -39,7 +39,7 @@ static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 //! Contains UI information for the joined rooms. (i.e name, topic, avatar url etc).
 //! Format: room_id -> RoomInfo
 static constexpr const char *ROOMS_DB   = "rooms";
-static constexpr const char *INVITES_DB = "rooms";
+static constexpr const char *INVITES_DB = "invites";
 //! Keeps already downloaded media for reuse.
 //! Format: matrix_url -> binary data.
 static constexpr const char *MEDIA_DB = "media";
@@ -170,10 +170,18 @@ Cache::image(const QString &url) const
 }
 
 void
+Cache::removeInvite(lmdb::txn &txn, const std::string &room_id)
+{
+        lmdb::dbi_del(txn, invitesDb_, lmdb::val(room_id), nullptr);
+        lmdb::dbi_drop(txn, getInviteStatesDb(txn, room_id), true);
+        lmdb::dbi_drop(txn, getInviteMembersDb(txn, room_id), true);
+}
+
+void
 Cache::removeInvite(const std::string &room_id)
 {
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_del(txn, invitesDb_, lmdb::val(room_id), nullptr);
+        removeInvite(txn, room_id);
         txn.commit();
 }
 
@@ -181,6 +189,8 @@ void
 Cache::removeRoom(lmdb::txn &txn, const std::string &roomid)
 {
         lmdb::dbi_del(txn, roomsDb_, lmdb::val(roomid), nullptr);
+        lmdb::dbi_drop(txn, getStatesDb(txn, roomid), true);
+        lmdb::dbi_drop(txn, getMembersDb(txn, roomid), true);
 }
 
 void
@@ -386,6 +396,9 @@ Cache::saveState(const mtx::responses::Sync &res)
                   txn, roomsDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
 
                 updateReadReceipt(txn, room.first, room.second.ephemeral.receipts);
+
+                // Clean up non-valid invites.
+                removeInvite(txn, room.first);
         }
 
         saveInvites(txn, res.rooms.invite);

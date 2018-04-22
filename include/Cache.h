@@ -155,6 +155,7 @@ public:
 
         void deleteData();
 
+        void removeInvite(lmdb::txn &txn, const std::string &room_id);
         void removeInvite(const std::string &room_id);
         void removeRoom(lmdb::txn &txn, const std::string &roomid);
         void removeRoom(const std::string &roomid);
@@ -335,8 +336,12 @@ private:
         void removeLeftRooms(lmdb::txn &txn,
                              const std::map<std::string, mtx::responses::LeftRoom> &rooms)
         {
-                for (const auto &room : rooms)
+                for (const auto &room : rooms) {
                         removeRoom(txn, room.first);
+
+                        // Clean up leftover invites.
+                        removeInvite(txn, room.first);
+                }
         }
 
         lmdb::dbi getInviteStatesDb(lmdb::txn &txn, const std::string &room_id)
