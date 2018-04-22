@@ -129,6 +129,8 @@ public:
                         roomType_ = RoomType::Joined;
         }
 
+        bool isInvite() { return roomType_ == RoomType::Invited; }
+
 signals:
         void clicked(const QString &room_id);
         void leaveRoom(const QString &room_id);

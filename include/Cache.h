@@ -137,6 +137,7 @@ public:
         std::vector<std::string> joinedRooms();
 
         QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
+        std::map<QString, bool> invites();
 
         //! Calculate & return the name of the room.
         QString getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);

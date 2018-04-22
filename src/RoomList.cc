@@ -181,6 +181,20 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
 }
 
 void
+RoomList::cleanupInvites(const std::map<QString, bool> &invites)
+{
+        if (invites.empty())
+                return;
+
+        for (auto it = rooms_.begin(); it != rooms_.end();) {
+                if (it->second->isInvite() && (invites.find(it->first) == invites.end()))
+                        it = rooms_.erase(it);
+                else
+                        ++it;
+        }
+}
+
+void
 RoomList::sync(const std::map<QString, RoomInfo> &info)
 
 {

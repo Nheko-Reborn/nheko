@@ -56,6 +56,7 @@ public:
         void setFilterRooms(bool filterRooms);
         void setRoomFilter(std::vector<QString> room_ids);
         void updateRoom(const QString &room_id, const RoomInfo &info);
+        void cleanupInvites(const std::map<QString, bool> &invites);
 
 signals:
         void roomChanged(const QString &room_id);

@@ -579,6 +579,25 @@ Cache::roomInfo(bool withInvites)
         return result;
 }
 
+std::map<QString, bool>
+Cache::invites()
+{
+        std::map<QString, bool> result;
+
+        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto cursor = lmdb::cursor::open(txn, invitesDb_);
+
+        std::string room_id, unused;
+
+        while (cursor.get(room_id, unused, MDB_NEXT))
+                result.emplace(QString::fromStdString(std::move(room_id)), true);
+
+        cursor.close();
+        txn.commit();
+
+        return result;
+}
+
 QString
 Cache::getRoomAvatarUrl(lmdb::txn &txn,
                         lmdb::dbi &statesdb,

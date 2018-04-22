@@ -420,6 +420,12 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
           this,
           [this](const std::vector<std::string> &rooms) { view_manager_->initialize(rooms); });
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
+                try {
+                        room_list_->cleanupInvites(cache_->invites());
+                } catch (const lmdb::error &e) {
+                        qWarning() << "failed to retrieve invites" << e.what();
+                }
+
                 view_manager_->initialize(rooms);
                 removeLeftRooms(rooms.leave);
 
@@ -528,6 +534,7 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
         auto promise = QtConcurrent::run([this, res = std::move(response)]() {
                 try {
                         cache_->saveState(res);
+                        emit syncUI(res.rooms);
                         emit syncRoomlist(cache_->roomUpdates(res));
                 } catch (const lmdb::error &e) {
                         std::cout << "save cache error:" << e.what() << '\n';
@@ -535,7 +542,6 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
                         return;
                 }
 
-                emit syncUI(std::move(res.rooms));
                 emit continueSync(cache_->nextBatchToken());
         });
 }
