@@ -9,7 +9,7 @@ nheko
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
 
-### Features
+## Features
 
 Most of the features you would expect from a chat application are missing right now
 but we are getting close to a more feature complete client.
@@ -27,10 +27,14 @@ Specifically there is support for:
 - Room switcher (ctrl-K).
 - Light, Dark & System themes.
 
-### Installation
+## Installation
 
-There are continuous nightly releases [here](https://github.com/mujx/nheko/releases/tag/nightly)
-for Linux ([AppImage](https://appimage.org/), rpm, deb), Mac and Windows.
+### Nightly releases
+- Linux [AppImage](https://github.com/mujx/nheko/releases/download/nightly/nheko-x86_64.AppImage)
+- Windows [x64 installer](https://github.com/mujx/nheko/releases/download/nightly/nheko-installer.exe)
+- macOS [disk image](https://github.com/mujx/nheko/releases/download/nightly/nheko.dmg)
+
+### Repositories
 
 #### Arch Linux
 ```bash
@@ -66,9 +70,10 @@ sudo apk add nheko
   Freetype, which is essential to properly support emoji.
 - CMake 3.1 or greater.
 - [LMDB](https://symas.com/lightning-memory-mapped-database/).
-- A compiler that supports C++11.
-    - Clang 3.8 (or greater).
-    - GCC 7 (or greater).
+- A compiler that supports C++ 14:
+    - Clang 5 (tested on Travis CI)
+    - GCC 7 (tested on Travis CI)
+    - MSVC 19.13 (tested on AppVeyor)
 
 #### Linux 
 
@@ -98,18 +103,10 @@ sudo emerge -a ">=dev-qt/qtgui-5.7.1" media-libs/fontconfig
 ```bash
 sudo add-apt-repository ppa:beineri/opt-qt592-trusty
 sudo add-apt-repository ppa:george-edison55/cmake-3.x
+sudo add-apt-repository ppa:ubuntu-toolchain-r-test
 sudo apt-get update
-sudo apt-get install -y qt59base qt59tools qt59multimedia cmake liblmdb-dev
+sudo apt-get install -y g++-7 qt59base qt59tools qt59multimedia cmake liblmdb-dev
 ```
-
-To build on Ubuntu 14.04 Trusty out-of-the-box requires using Clang 3.6 instead of GCC:
-
-```bash
-sudo apt-get install clang-3.6
-export CC=clang-3.6 CXX=clang++-3.6
-```
-
-On Ubuntu 14.04 Trusty, it's possible to use GCC 4.9.4+, but it is not recommended, because it requires installing GCC packages from third-party PPAs.  Later versions of Ubuntu that come with GCC 4.9.4+ should work with GCC out-of-the-box.
 
 ##### macOS (Xcode 8 or later)
 

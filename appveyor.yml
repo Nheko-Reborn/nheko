@@ -2,21 +2,18 @@
 
 version: 0.3.1-{build}
 
-environment:
-    global:
-        MSYSTEM: "MINGW64"
-
+configuration: Release
+image: Visual Studio 2017
 platform: x64
-
-configuration:
-    - Release
 
 build:
     verbosity: minimal
 
 install:
-    - set QT_DIR=C:\Qt\5.10.1\msvc2015_64
+    - set QT_DIR=C:\Qt\5.10.1\msvc2017_64
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+    - vcpkg install lmdb:%PLATFORM%-windows
 
 build_script:
     # VERSION format:     branch-master/branch-1.2
@@ -36,7 +33,9 @@ build_script:
     - echo %VERSION%
     - echo %INSTVERSION%
     - echo %DATE%
-    - cmake -G "Visual Studio 14 2015 Win64" -H. -Bbuild -DAPPVEYOR_BUILD=ON -DCMAKE_BUILD_TYPE=Release
+    - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
+      -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
+      -DCMAKE_BUILD_TYPE=Release
     - cmake --build build --config Release
 
 after_build:
@@ -45,7 +44,7 @@ after_build:
     - echo %BUILD%
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
-    - windeployqt --qmldir C:\Qt\5.10.1\msvc2015_64\qml\ --release NhekoRelease\nheko.exe
+    - windeployqt --qmldir %QT_DIR%\qml\ --release NhekoRelease\nheko.exe
     - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
     - copy C:\OpenSSL-Win64\bin\libeay32.dll .\NhekoRelease\libeay32.dll
     - copy C:\OpenSSL-Win64\lib\libeay32.lib .\NhekoRelease\libeay32.lib

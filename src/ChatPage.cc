@@ -17,7 +17,6 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QFuture>
 #include <QSettings>
 #include <QtConcurrent>
 
@@ -531,7 +530,7 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 {
         syncTimeoutTimer_->stop();
 
-        auto promise = QtConcurrent::run([this, res = std::move(response)]() {
+        QtConcurrent::run([this, res = std::move(response)]() {
                 try {
                         cache_->saveState(res);
                         emit syncUI(res.rooms);
