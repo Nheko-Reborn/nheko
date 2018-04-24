@@ -136,6 +136,9 @@ private:
         //! Update the room with the new notification count.
         void updateRoomNotificationCount(const QString &room_id, uint16_t notification_count);
 
+        QStringList generateTypingUsers(const QString &room_id,
+                                        const std::vector<std::string> &typing_users);
+
         QHBoxLayout *topLayout_;
         Splitter *splitter;
 

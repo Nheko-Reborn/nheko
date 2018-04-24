@@ -754,32 +754,32 @@ ChatPage::updateTypingUsers(const QString &roomid, const std::vector<std::string
         if (!userSettings_->isTypingNotificationsEnabled())
                 return;
 
-        if (user_ids.empty()) {
-                typingUsers_[roomid] = {};
-                return;
-        }
+        typingUsers_[roomid] = generateTypingUsers(roomid, user_ids);
 
+        if (current_room_ == roomid)
+                typingDisplay_->setUsers(typingUsers_[roomid]);
+}
+
+QStringList
+ChatPage::generateTypingUsers(const QString &room_id, const std::vector<std::string> &typing_users)
+{
         QStringList users;
 
         QSettings settings;
-        QString user_id = settings.value("auth/user_id").toString();
+        QString local_user = settings.value("auth/user_id").toString();
 
-        for (const auto &uid : user_ids) {
-                auto user = QString::fromStdString(uid);
+        for (const auto &uid : typing_users) {
+                const auto remote_user = QString::fromStdString(uid);
 
-                if (user == user_id)
+                if (remote_user == local_user)
                         continue;
 
-                users.append(Cache::displayName(roomid, user));
+                users.append(Cache::displayName(room_id, remote_user));
         }
 
         users.sort();
 
-        if (current_room_ == roomid) {
-                typingDisplay_->setUsers(users);
-        }
-
-        typingUsers_.emplace(roomid, users);
+        return users;
 }
 
 void
