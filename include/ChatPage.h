@@ -168,9 +168,6 @@ private:
         QString current_room_;
         QString current_community_;
 
-        std::map<QString, QPixmap> roomAvatars_;
-        std::map<QString, QPixmap> community_avatars_;
-
         UserInfoWidget *user_info_widget_;
 
         std::map<QString, QSharedPointer<Community>> communities_;

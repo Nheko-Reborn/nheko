@@ -859,6 +859,43 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
         return QString();
 }
 
+QImage
+Cache::getRoomAvatar(const QString &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::val response;
+
+        if (!lmdb::dbi_get(txn, roomsDb_, lmdb::val(room_id.toStdString()), response)) {
+                txn.commit();
+                return QImage();
+        }
+
+        std::string media_url;
+
+        try {
+                RoomInfo info = json::parse(std::string(response.data(), response.size()));
+                media_url     = std::move(info.avatar_url);
+
+                if (media_url.empty()) {
+                        txn.commit();
+                        return QImage();
+                }
+        } catch (const json::exception &e) {
+                qWarning() << "failed to parse room info" << e.what()
+                           << QString::fromStdString(std::string(response.data(), response.size()));
+        }
+
+        if (!lmdb::dbi_get(txn, mediaDb_, lmdb::val(media_url), response)) {
+                txn.commit();
+                return QImage();
+        }
+
+        txn.commit();
+
+        return QImage::fromData(QByteArray(response.data(), response.size()));
+}
+
 std::vector<std::string>
 Cache::joinedRooms()
 {

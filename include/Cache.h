@@ -166,6 +166,9 @@ public:
         bool isFormatValid();
         void setCurrentFormat();
 
+        //! Retrieves the saved room avatar.
+        QImage getRoomAvatar(const QString &id);
+
         //! Adds a user to the read list for the given event.
         //!
         //! There should be only one user id present in a receipt list per room.

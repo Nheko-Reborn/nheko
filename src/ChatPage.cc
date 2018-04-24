@@ -459,7 +459,6 @@ ChatPage::logout()
 void
 ChatPage::resetUI()
 {
-        roomAvatars_.clear();
         room_list_->clear();
         top_bar_->reset();
         user_info_widget_->reset();
@@ -571,8 +570,6 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
 void
 ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
 {
-        roomAvatars_.emplace(roomid, img);
-
         if (current_room_ != roomid)
                 return;
 
@@ -646,15 +643,18 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                 top_bar_->updateRoomName(name);
                 top_bar_->updateRoomTopic(QString::fromStdString(room_info[room_id].topic));
 
-                if (roomAvatars_.find(room_id) != roomAvatars_.end())
-                        top_bar_->updateRoomAvatar(roomAvatars_[room_id].toImage());
-                else
-                        top_bar_->updateRoomAvatarFromName(name);
+                auto img = cache_->getRoomAvatar(room_id);
 
-                current_room_ = room_id;
+                if (img.isNull())
+                        top_bar_->updateRoomAvatarFromName(name);
+                else
+                        top_bar_->updateRoomAvatar(img);
+
         } catch (const lmdb::error &e) {
                 qWarning() << "failed to change top bar room info" << e.what();
         }
+
+        current_room_ = room_id;
 }
 
 void
