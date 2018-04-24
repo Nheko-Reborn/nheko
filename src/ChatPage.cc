@@ -453,7 +453,7 @@ ChatPage::logout()
 
         resetUI();
 
-        emit close();
+        emit closing();
 }
 
 void

@@ -93,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
         });
         connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
 
-        connect(chat_page_, SIGNAL(close()), this, SLOT(showWelcomePage()));
+        connect(chat_page_, &ChatPage::closing, this, &MainWindow::showWelcomePage);
         connect(
           chat_page_, &ChatPage::showOverlayProgressBar, this, &MainWindow::showOverlayProgressBar);
         connect(

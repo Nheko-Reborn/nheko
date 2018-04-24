@@ -83,7 +83,7 @@ public:
 
 signals:
         void contentLoaded();
-        void close();
+        void closing();
         void changeWindowTitle(const QString &msg);
         void unreadMessages(int count);
         void showNotification(const QString &msg);
