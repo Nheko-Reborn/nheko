@@ -64,6 +64,9 @@ public slots:
         //! Set hovering to the item in the given layout position.
         void setHovering(int pos);
 
+protected:
+        void paintEvent(QPaintEvent *event) override;
+
 signals:
         void itemSelected(const QString &user);
 

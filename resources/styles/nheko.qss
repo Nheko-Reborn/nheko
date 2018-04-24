@@ -22,6 +22,10 @@ QuickSwitcher {
     background-color: white;
 }
 
+SuggestionsPopup {
+    background-color: white;
+}
+
 PopupItem {
     background-color: white;
     qproperty-hoverColor: rgba(192, 193, 195, 120);

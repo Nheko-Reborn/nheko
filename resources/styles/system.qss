@@ -25,6 +25,10 @@ QuickSwitcher {
     background-color: palette(window);
 }
 
+SuggestionsPopup {
+    background-color: palette(window);
+}
+
 PopupItem {
     background-color: palette(window);
     qproperty-hoverColor: rgba(192, 193, 195, 120);

@@ -106,6 +106,7 @@ SuggestionsPopup::addUsers(const QVector<SearchResult> &users)
         }
 
         resetSelection();
+        adjustSize();
 
         resize(geometry().width(), 40 * users.size());
 }
@@ -170,4 +171,13 @@ SuggestionsPopup::selectHoveredSuggestion()
         emit itemSelected(Cache::displayName(ChatPage::instance()->currentRoom(), widget->user()));
 
         resetSelection();
+}
+
+void
+SuggestionsPopup::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
