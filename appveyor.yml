@@ -6,6 +6,8 @@ configuration: Release
 image: Visual Studio 2017
 platform: x64
 
+cache: c:\tools\vcpkg\installed\
+
 build:
     verbosity: minimal
 
@@ -45,10 +47,13 @@ after_build:
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
     - windeployqt --qmldir %QT_DIR%\qml\ --release NhekoRelease\nheko.exe
+
+    - copy C:\Tools\vcpkg\installed\x64-windows\lib\lmdb.lib .\NhekoRelease\lmdb.lib
+    - copy C:\Tools\vcpkg\installed\x64-windows\bin\lmdb.dll .\NhekoRelease\lmdb.dll
+
     - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
     - copy C:\OpenSSL-Win64\bin\libeay32.dll .\NhekoRelease\libeay32.dll
     - copy C:\OpenSSL-Win64\lib\libeay32.lib .\NhekoRelease\libeay32.lib
-    - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
     - 7z a nheko_win_64.zip .\NhekoRelease\*
     - ls -lh build\Release\
     - ls -lh NhekoRelease\
