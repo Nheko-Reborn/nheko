@@ -22,6 +22,11 @@ QuickSwitcher {
     background-color: white;
 }
 
+DateSeparator {
+    qproperty-textColor: #333;
+    qproperty-boxColor: rgba(220, 220, 220, 120);
+}
+
 SuggestionsPopup {
     background-color: white;
 }

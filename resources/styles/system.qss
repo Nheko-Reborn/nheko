@@ -25,6 +25,11 @@ QuickSwitcher {
     background-color: palette(window);
 }
 
+DateSeparator {
+    qproperty-textColor: palette(text);
+    qproperty-boxColor: palette(window);
+}
+
 SuggestionsPopup {
     background-color: palette(window);
 }

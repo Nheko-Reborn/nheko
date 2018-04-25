@@ -33,6 +33,55 @@
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
+  : QWidget{parent}
+{
+        auto now  = QDateTime::currentDateTime();
+        auto days = now.daysTo(datetime);
+
+        font_.setWeight(60);
+        font_.setPixelSize(conf::timeline::fonts::dateSeparator);
+
+        QString fmt;
+
+        if (now.date().year() != datetime.date().year())
+                fmt = QString("ddd d MMMM yy");
+        else
+                fmt = QString("ddd d MMMM");
+
+        if (days == 0)
+                msg_ = tr("Today");
+        else if (std::abs(days) == 1)
+                msg_ = tr("Yesterday");
+        else
+                msg_ = datetime.toString(fmt);
+
+        QFontMetrics fm{font_};
+        width_  = fm.width(msg_) + HPadding * 2;
+        height_ = fm.ascent() + 2 * VPadding;
+}
+
+void
+DateSeparator::paintEvent(QPaintEvent *)
+{
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+        p.setFont(font_);
+
+        // Center the box horizontally & vertically.
+        auto textRegion = QRectF(width() / 2 - width_ / 2, HMargin, width_, height_);
+
+        QPainterPath ppath;
+        ppath.addRoundedRect(textRegion, height_ / 2, height_ / 2);
+
+        p.setPen(Qt::NoPen);
+        p.fillPath(ppath, boxColor());
+        p.drawPath(ppath);
+
+        p.setPen(QPen(textColor()));
+        p.drawText(textRegion, Qt::AlignCenter, msg_);
+}
+
 TimelineView::TimelineView(const mtx::responses::Timeline &timeline,
                            QSharedPointer<MatrixClient> client,
                            const QString &room_id,
@@ -420,7 +469,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                         auto oldDate = lastItem->descriptionMessage().datetime;
 
                         if (oldDate.daysTo(newDate) != 0) {
-                                auto separator = createDateSeparator(newDate);
+                                auto separator = new DateSeparator(newDate, this);
 
                                 if (separator)
                                         scroll_layout_->addWidget(separator);
@@ -439,7 +488,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
                                 auto oldDate = firstItem->descriptionMessage().datetime;
 
                                 if (newDate.daysTo(oldDate) != 0) {
-                                        auto separator = createDateSeparator(oldDate);
+                                        auto separator = new DateSeparator(oldDate);
 
                                         if (separator)
                                                 scroll_layout_->insertWidget(1, separator);
@@ -663,41 +712,6 @@ TimelineView::event(QEvent *event)
         return QWidget::event(event);
 }
 
-QLabel *
-TimelineView::createDateSeparator(QDateTime datetime)
-{
-        auto now  = QDateTime::currentDateTime();
-        auto days = now.daysTo(datetime);
-
-        QString fmt;
-        QLabel *separator;
-
-        if (now.date().year() != datetime.date().year())
-                fmt = QString("ddd d MMMM yy");
-        else
-                fmt = QString("ddd d MMMM");
-
-        if (days == 0)
-                separator = new QLabel(tr("Today"), this);
-        else if (std::abs(days) == 1)
-                separator = new QLabel(tr("Yesterday"), this);
-        else
-                separator = new QLabel(datetime.toString(fmt), this);
-
-        if (separator) {
-                QFont font;
-                font.setWeight(60);
-
-                separator->setFont(font);
-                separator->setStyleSheet(
-                  QString("font-size: %1px").arg(conf::timeline::fonts::dateSeparator));
-                separator->setAlignment(Qt::AlignCenter);
-                separator->setContentsMargins(0, 15, 0, 15);
-        }
-
-        return separator;
-}
-
 QString
 TimelineView::getEventSender(const mtx::events::collections::TimelineEvents &event) const
 {
@@ -737,7 +751,7 @@ TimelineView::removeEvent(const QString &event_id)
         auto nextItem = qobject_cast<TimelineItem *>(nextWidget);
 
         // ... or a date separator
-        auto prevLabel = qobject_cast<QLabel *>(prevWidget);
+        auto prevLabel = qobject_cast<DateSeparator *>(prevWidget);
 
         // If it's a TimelineItem add an avatar.
         if (prevItem) {
