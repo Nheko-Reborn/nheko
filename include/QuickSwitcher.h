@@ -22,7 +22,11 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "Cache.h"
+#include "SuggestionsPopup.hpp"
 #include "TextField.h"
+
+Q_DECLARE_METATYPE(std::vector<RoomSearchResult>)
 
 class RoomSearchInput : public TextField
 {
@@ -38,20 +42,20 @@ signals:
 protected:
         void keyPressEvent(QKeyEvent *event) override;
         void hideEvent(QHideEvent *event) override;
-        bool focusNextPrevChild(bool next) override;
+        bool focusNextPrevChild(bool) override { return false; };
 };
 
 class QuickSwitcher : public QWidget
 {
         Q_OBJECT
-public:
-        explicit QuickSwitcher(QWidget *parent = nullptr);
 
-        void setRoomList(const std::map<QString, QString> &rooms);
+public:
+        QuickSwitcher(QSharedPointer<Cache> cache, QWidget *parent = nullptr);
 
 signals:
         void closing();
         void roomSelected(const QString &roomid);
+        void queryResults(const std::vector<RoomSearchResult> &rooms);
 
 protected:
         void keyPressEvent(QKeyEvent *event) override;
@@ -64,7 +68,9 @@ private:
 
         QVBoxLayout *topLayout_;
         RoomSearchInput *roomSearch_;
-        QCompleter *completer_;
 
-        std::map<QString, QString> rooms_;
+        //! Autocomplete popup box with the room suggestions.
+        SuggestionsPopup popup_;
+        //! Cache client for room quering.
+        QSharedPointer<Cache> cache_;
 };

@@ -106,6 +106,14 @@ from_json(const json &j, MemberInfo &info)
         info.avatar_url = j.at("avatar_url");
 }
 
+struct RoomSearchResult
+{
+        std::string room_id;
+        RoomInfo info;
+        QImage img;
+};
+
+Q_DECLARE_METATYPE(RoomSearchResult)
 Q_DECLARE_METATYPE(RoomInfo)
 
 class Cache : public QObject
@@ -185,6 +193,11 @@ public:
         UserReceipts readReceipts(const QString &event_id, const QString &room_id);
 
         QByteArray image(const QString &url) const;
+        QByteArray image(lmdb::txn &txn, const std::string &url) const;
+        QByteArray image(const std::string &url) const
+        {
+                return image(QString::fromStdString(url));
+        }
         void saveImage(const QString &url, const QByteArray &data);
 
         std::vector<std::string> roomsWithStateUpdates(const mtx::responses::Sync &res);
@@ -194,9 +207,11 @@ public:
                 return getRoomInfo(roomsWithStateUpdates(sync));
         }
 
-        QVector<SearchResult> getAutocompleteMatches(const std::string &room_id,
-                                                     const std::string &query,
-                                                     std::uint8_t max_items = 5);
+        QVector<SearchResult> searchUsers(const std::string &room_id,
+                                          const std::string &query,
+                                          std::uint8_t max_items = 5);
+        std::vector<RoomSearchResult> searchRooms(const std::string &query,
+                                                  std::uint8_t max_items = 5);
 
 private:
         //! Save an invited room.

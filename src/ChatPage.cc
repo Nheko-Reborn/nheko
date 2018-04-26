@@ -699,7 +699,7 @@ ChatPage::showQuickSwitcher()
 {
         if (quickSwitcher_.isNull()) {
                 quickSwitcher_ = QSharedPointer<QuickSwitcher>(
-                  new QuickSwitcher(this),
+                  new QuickSwitcher(cache_, this),
                   [](QuickSwitcher *switcher) { switcher->deleteLater(); });
 
                 connect(quickSwitcher_.data(),
@@ -721,17 +721,7 @@ ChatPage::showQuickSwitcher()
                 quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
         }
 
-        try {
-                std::map<QString, QString> rooms;
-                auto info = cache_->roomInfo(false);
-                for (auto it = info.begin(); it != info.end(); ++it)
-                        rooms.emplace(QString::fromStdString(it.value().name).trimmed(), it.key());
-                quickSwitcher_->setRoomList(rooms);
-                quickSwitcherModal_->show();
-        } catch (const lmdb::error &e) {
-                const auto err = QString::fromStdString(e.what());
-                emit showNotification(QString("Failed to load room list: %1").arg(err));
-        }
+        quickSwitcherModal_->show();
 }
 
 void

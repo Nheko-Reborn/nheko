@@ -142,6 +142,27 @@ Cache::saveImage(const QString &url, const QByteArray &image)
 }
 
 QByteArray
+Cache::image(lmdb::txn &txn, const std::string &url) const
+{
+        if (url.empty())
+                return QByteArray();
+
+        try {
+                lmdb::val image;
+                bool res = lmdb::dbi_get(txn, mediaDb_, lmdb::val(url), image);
+
+                if (!res)
+                        return QByteArray();
+
+                return QByteArray(image.data(), image.size());
+        } catch (const lmdb::error &e) {
+                qCritical() << "image:" << e.what() << QString::fromStdString(url);
+        }
+
+        return QByteArray();
+}
+
+QByteArray
 Cache::image(const QString &url) const
 {
         if (url.isEmpty())
@@ -945,10 +966,47 @@ Cache::populateMembers()
         txn.commit();
 }
 
+std::vector<RoomSearchResult>
+Cache::searchRooms(const std::string &query, std::uint8_t max_items)
+{
+        std::multimap<int, std::pair<std::string, RoomInfo>> items;
+
+        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto cursor = lmdb::cursor::open(txn, roomsDb_);
+
+        std::string room_id, room_data;
+        while (cursor.get(room_id, room_data, MDB_NEXT)) {
+                RoomInfo tmp = json::parse(std::move(room_data));
+
+                const int score = utils::levenshtein_distance(
+                  query, QString::fromStdString(tmp.name).toLower().toStdString());
+                items.emplace(score, std::make_pair(room_id, tmp));
+        }
+
+        cursor.close();
+
+        auto end = items.begin();
+
+        if (items.size() >= max_items)
+                std::advance(end, max_items);
+        else if (items.size() > 0)
+                std::advance(end, items.size());
+
+        std::vector<RoomSearchResult> results;
+        for (auto it = items.begin(); it != end; it++) {
+                results.push_back(
+                  RoomSearchResult{it->second.first,
+                                   it->second.second,
+                                   QImage::fromData(image(txn, it->second.second.avatar_url))});
+        }
+
+        txn.commit();
+
+        return results;
+}
+
 QVector<SearchResult>
-Cache::getAutocompleteMatches(const std::string &room_id,
-                              const std::string &query,
-                              std::uint8_t max_items)
+Cache::searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
 {
         std::multimap<int, std::pair<std::string, std::string>> items;
 

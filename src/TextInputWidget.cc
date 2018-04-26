@@ -95,10 +95,9 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                 &FilteredTextEdit::selectPreviousSuggestion,
                 &popup_,
                 &SuggestionsPopup::selectPreviousSuggestion);
-        connect(this,
-                &FilteredTextEdit::selectHoveredSuggestion,
-                &popup_,
-                &SuggestionsPopup::selectHoveredSuggestion);
+        connect(this, &FilteredTextEdit::selectHoveredSuggestion, this, [this]() {
+                popup_.selectHoveredSuggestion<UserItem>();
+        });
 
         previewDialog_.hide();
 }
@@ -459,7 +458,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
                 QtConcurrent::run([this, q = q.toLower().toStdString()]() {
                         try {
-                                emit input_->resultsRetrieved(cache_->getAutocompleteMatches(
+                                emit input_->resultsRetrieved(cache_->searchUsers(
                                   ChatPage::instance()->currentRoom().toStdString(), q));
                         } catch (const lmdb::error &e) {
                                 std::cout << e.what() << '\n';

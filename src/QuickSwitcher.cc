@@ -20,20 +20,13 @@
 #include <QStringListModel>
 #include <QStyleOption>
 #include <QTimer>
+#include <QtConcurrent>
 
 #include "QuickSwitcher.h"
 
 RoomSearchInput::RoomSearchInput(QWidget *parent)
   : TextField(parent)
 {}
-
-bool
-RoomSearchInput::focusNextPrevChild(bool next)
-{
-        Q_UNUSED(next);
-
-        return false;
-}
 
 void
 RoomSearchInput::keyPressEvent(QKeyEvent *event)
@@ -58,9 +51,11 @@ RoomSearchInput::hideEvent(QHideEvent *event)
         TextField::hideEvent(event);
 }
 
-QuickSwitcher::QuickSwitcher(QWidget *parent)
+QuickSwitcher::QuickSwitcher(QSharedPointer<Cache> cache, QWidget *parent)
   : QWidget(parent)
+  , cache_{cache}
 {
+        qRegisterMetaType<std::vector<RoomSearchResult>>();
         setMaximumWidth(450);
 
         QFont font;
@@ -68,86 +63,53 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
 
         roomSearch_ = new RoomSearchInput(this);
         roomSearch_->setFont(font);
-        roomSearch_->setPlaceholderText(tr("Find a room..."));
-
-        completer_ = new QCompleter();
-        completer_->setCaseSensitivity(Qt::CaseInsensitive);
-        completer_->setCompletionMode(QCompleter::PopupCompletion);
-        completer_->setWidget(this);
+        roomSearch_->setPlaceholderText(tr("Search for a room..."));
 
         topLayout_ = new QVBoxLayout(this);
         topLayout_->addWidget(roomSearch_);
 
-        connect(completer_, SIGNAL(highlighted(QString)), roomSearch_, SLOT(setText(QString)));
-        connect(roomSearch_, &QLineEdit::textEdited, this, [this](const QString &prefix) {
-                if (prefix.isEmpty()) {
-                        completer_->popup()->hide();
-                        selection_ = -1;
+        connect(this,
+                &QuickSwitcher::queryResults,
+                this,
+                [this](const std::vector<RoomSearchResult> &rooms) {
+                        auto pos = mapToGlobal(roomSearch_->geometry().bottomLeft());
+
+                        popup_.setFixedWidth(width());
+                        popup_.addRooms(rooms);
+                        popup_.move(pos.x() - topLayout_->margin(), pos.y() + topLayout_->margin());
+                        popup_.show();
+                });
+
+        connect(roomSearch_, &QLineEdit::textEdited, this, [this](const QString &query) {
+                if (query.isEmpty()) {
+                        popup_.hide();
                         return;
                 }
 
-                if (prefix != completer_->completionPrefix()) {
-                        completer_->setCompletionPrefix(prefix);
-                        selection_ = -1;
-                }
-
-                completer_->popup()->setWindowFlags(completer_->popup()->windowFlags() |
-                                                    Qt::ToolTip | Qt::NoDropShadowWindowHint);
-                completer_->popup()->setAttribute(Qt::WA_ShowWithoutActivating);
-                completer_->complete();
+                QtConcurrent::run([this, query = query.toLower()]() {
+                        try {
+                                emit queryResults(cache_->searchRooms(query.toStdString()));
+                        } catch (const lmdb::error &e) {
+                                qWarning() << "room search failed:" << e.what();
+                        }
+                });
         });
 
-        connect(roomSearch_, &RoomSearchInput::selectNextCompletion, this, [this]() {
-                selection_ += 1;
-
-                if (!completer_->setCurrentRow(selection_)) {
-                        selection_ = 0;
-                        completer_->setCurrentRow(selection_);
-                }
-
-                completer_->popup()->setCurrentIndex(completer_->currentIndex());
-        });
-
-        connect(roomSearch_, &RoomSearchInput::selectPreviousCompletion, this, [this]() {
-                selection_ -= 1;
-
-                if (!completer_->setCurrentRow(selection_)) {
-                        selection_ = completer_->completionCount() - 1;
-                        completer_->setCurrentRow(selection_);
-                }
-
-                completer_->popup()->setCurrentIndex(completer_->currentIndex());
-        });
-
-        connect(
-          roomSearch_, &RoomSearchInput::hiding, this, [this]() { completer_->popup()->hide(); });
+        connect(roomSearch_,
+                &RoomSearchInput::selectNextCompletion,
+                &popup_,
+                &SuggestionsPopup::selectNextSuggestion);
+        connect(roomSearch_,
+                &RoomSearchInput::selectPreviousCompletion,
+                &popup_,
+                &SuggestionsPopup::selectPreviousSuggestion);
+        connect(&popup_, &SuggestionsPopup::itemSelected, this, &QuickSwitcher::roomSelected);
+        connect(roomSearch_, &RoomSearchInput::hiding, this, [this]() { popup_.hide(); });
         connect(roomSearch_, &QLineEdit::returnPressed, this, [this]() {
                 emit closing();
-
-                QString text("");
-
-                if (selection_ == -1) {
-                        completer_->setCurrentRow(0);
-                        text = completer_->currentCompletion();
-                } else {
-                        text = this->roomSearch_->text().trimmed();
-                }
-                emit roomSelected(rooms_[text]);
-
                 roomSearch_->clear();
+                popup_.selectHoveredSuggestion<RoomItem>();
         });
-}
-
-void
-QuickSwitcher::setRoomList(const std::map<QString, QString> &rooms)
-{
-        rooms_ = rooms;
-
-        QStringList items;
-        for (const auto &room : rooms)
-                items << room.first;
-
-        completer_->setModel(new QStringListModel(items));
 }
 
 void

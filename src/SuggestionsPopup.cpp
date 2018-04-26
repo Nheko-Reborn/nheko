@@ -1,7 +1,5 @@
 #include "Avatar.h"
 #include "AvatarProvider.h"
-#include "Cache.h"
-#include "ChatPage.h"
 #include "Config.h"
 #include "DropShadow.h"
 #include "SuggestionsPopup.hpp"
@@ -15,10 +13,9 @@
 constexpr int PopupHMargin    = 5;
 constexpr int PopupItemMargin = 4;
 
-PopupItem::PopupItem(QWidget *parent, const QString &user_id)
+PopupItem::PopupItem(QWidget *parent)
   : QWidget(parent)
   , avatar_{new Avatar(this)}
-  , user_id_{user_id}
   , hovering_{false}
 {
         setMouseTracking(true);
@@ -27,29 +24,6 @@ PopupItem::PopupItem(QWidget *parent, const QString &user_id)
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setContentsMargins(
           PopupHMargin, PopupItemMargin, PopupHMargin, PopupItemMargin);
-
-        QFont font;
-        font.setPixelSize(conf::popup::font);
-
-        auto displayName = Cache::displayName(ChatPage::instance()->currentRoom(), user_id);
-
-        avatar_->setSize(conf::popup::avatar);
-        avatar_->setLetter(utils::firstChar(displayName));
-
-        // If it's a matrix id we use the second letter.
-        if (displayName.size() > 1 && displayName.at(0) == '@')
-                avatar_->setLetter(QChar(displayName.at(1)));
-
-        userName_ = new QLabel(displayName, this);
-        userName_->setFont(font);
-
-        topLayout_->addWidget(avatar_);
-        topLayout_->addWidget(userName_, 1);
-
-        AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
-                                user_id,
-                                this,
-                                [this](const QImage &img) { avatar_->setImage(img); });
 }
 
 void
@@ -68,9 +42,59 @@ void
 PopupItem::mousePressEvent(QMouseEvent *event)
 {
         if (event->buttons() != Qt::RightButton)
-                emit clicked(Cache::displayName(ChatPage::instance()->currentRoom(), user_id_));
+                // TODO: should be abstracted.
+                emit clicked(
+                  Cache::displayName(ChatPage::instance()->currentRoom(), selectedText()));
 
         QWidget::mousePressEvent(event);
+}
+
+UserItem::UserItem(QWidget *parent, const QString &user_id)
+  : PopupItem(parent)
+  , userId_{user_id}
+{
+        QFont font;
+        font.setPixelSize(conf::popup::font);
+
+        auto displayName = Cache::displayName(ChatPage::instance()->currentRoom(), userId_);
+
+        avatar_->setSize(conf::popup::avatar);
+        avatar_->setLetter(utils::firstChar(displayName));
+
+        // If it's a matrix id we use the second letter.
+        if (displayName.size() > 1 && displayName.at(0) == '@')
+                avatar_->setLetter(QChar(displayName.at(1)));
+
+        userName_ = new QLabel(displayName, this);
+        userName_->setFont(font);
+
+        topLayout_->addWidget(avatar_);
+        topLayout_->addWidget(userName_, 1);
+
+        AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
+                                userId_,
+                                this,
+                                [this](const QImage &img) { avatar_->setImage(img); });
+}
+
+RoomItem::RoomItem(QWidget *parent, const RoomSearchResult &res)
+  : PopupItem(parent)
+  , roomId_{QString::fromStdString(res.room_id)}
+{
+        auto name = QFontMetrics(QFont()).elidedText(
+          QString::fromStdString(res.info.name), Qt::ElideRight, parentWidget()->width() - 10);
+
+        avatar_->setSize(conf::popup::avatar + 6);
+        avatar_->setLetter(utils::firstChar(name));
+
+        roomName_ = new QLabel(name, this);
+        roomName_->setMargin(0);
+
+        topLayout_->addWidget(avatar_);
+        topLayout_->addWidget(roomName_, 1);
+
+        if (!res.img.isNull())
+                avatar_->setImage(res.img);
 }
 
 SuggestionsPopup::SuggestionsPopup(QWidget *parent)
@@ -85,14 +109,31 @@ SuggestionsPopup::SuggestionsPopup(QWidget *parent)
 }
 
 void
+SuggestionsPopup::addRooms(const std::vector<RoomSearchResult> &rooms)
+{
+        removeItems();
+
+        if (rooms.empty()) {
+                hide();
+                return;
+        }
+
+        for (const auto &r : rooms) {
+                auto room = new RoomItem(this, r);
+                layout_->addWidget(room);
+                connect(room, &RoomItem::clicked, this, &SuggestionsPopup::itemSelected);
+        }
+
+        resetSelection();
+        adjustSize();
+
+        resize(geometry().width(), 40 * rooms.size());
+}
+
+void
 SuggestionsPopup::addUsers(const QVector<SearchResult> &users)
 {
-        // Remove all items from the layout.
-        QLayoutItem *item;
-        while ((item = layout_->takeAt(0)) != 0) {
-                delete item->widget();
-                delete item;
-        }
+        removeItems();
 
         if (users.isEmpty()) {
                 hide();
@@ -100,9 +141,9 @@ SuggestionsPopup::addUsers(const QVector<SearchResult> &users)
         }
 
         for (const auto &u : users) {
-                auto user = new PopupItem(this, u.user_id);
+                auto user = new UserItem(this, u.user_id);
                 layout_->addWidget(user);
-                connect(user, &PopupItem::clicked, this, &SuggestionsPopup::itemSelected);
+                connect(user, &UserItem::clicked, this, &SuggestionsPopup::itemSelected);
         }
 
         resetSelection();
@@ -158,19 +199,6 @@ SuggestionsPopup::setHovering(int pos)
 
         if (widget)
                 widget->setHovering(true);
-}
-
-void
-SuggestionsPopup::selectHoveredSuggestion()
-{
-        const auto item = layout_->itemAt(selectedItem_);
-        if (!item)
-                return;
-
-        const auto &widget = qobject_cast<PopupItem *>(item->widget());
-        emit itemSelected(Cache::displayName(ChatPage::instance()->currentRoom(), widget->user()));
-
-        resetSelection();
 }
 
 void

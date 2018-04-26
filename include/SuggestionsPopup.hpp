@@ -5,6 +5,11 @@
 #include <QPoint>
 #include <QWidget>
 
+#include "Avatar.h"
+#include "AvatarProvider.h"
+#include "Cache.h"
+#include "ChatPage.h"
+
 class Avatar;
 struct SearchResult;
 
@@ -16,9 +21,9 @@ class PopupItem : public QWidget
         Q_PROPERTY(bool hovering READ hovering WRITE setHovering)
 
 public:
-        PopupItem(QWidget *parent, const QString &user_id);
+        PopupItem(QWidget *parent);
 
-        QString user() const { return user_id_; }
+        QString selectedText() const { return QString(); }
         QColor hoverColor() const { return hoverColor_; }
         void setHoverColor(QColor &color) { hoverColor_ = color; }
 
@@ -30,19 +35,44 @@ protected:
         void mousePressEvent(QMouseEvent *event) override;
 
 signals:
-        void clicked(const QString &display_name);
+        void clicked(const QString &text);
 
-private:
+protected:
         QHBoxLayout *topLayout_;
 
         Avatar *avatar_;
-        QLabel *userName_;
-        QString user_id_;
 
         QColor hoverColor_;
 
         //! Set if the item is currently being hovered during tab completion (cycling).
         bool hovering_;
+};
+
+class UserItem : public PopupItem
+{
+        Q_OBJECT
+
+public:
+        UserItem(QWidget *parent, const QString &user_id);
+        QString selectedText() const { return userId_; }
+
+private:
+        QLabel *userName_;
+        QString userId_;
+};
+
+class RoomItem : public PopupItem
+{
+        Q_OBJECT
+
+public:
+        RoomItem(QWidget *parent, const RoomSearchResult &res);
+        QString selectedText() const { return roomId_; }
+
+private:
+        QLabel *roomName_;
+        QString roomId_;
+        RoomSearchResult info_;
 };
 
 class SuggestionsPopup : public QWidget
@@ -52,9 +82,24 @@ class SuggestionsPopup : public QWidget
 public:
         explicit SuggestionsPopup(QWidget *parent = nullptr);
 
+        template<class Item>
+        void selectHoveredSuggestion()
+        {
+                const auto item = layout_->itemAt(selectedItem_);
+                if (!item)
+                        return;
+
+                const auto &widget = qobject_cast<Item *>(item->widget());
+                emit itemSelected(
+                  Cache::displayName(ChatPage::instance()->currentRoom(), widget->selectedText()));
+
+                resetSelection();
+        }
+
 public slots:
         void addUsers(const QVector<SearchResult> &users);
-        void selectHoveredSuggestion();
+        void addRooms(const std::vector<RoomSearchResult> &rooms);
+
         //! Move to the next available suggestion item.
         void selectNextSuggestion();
         //! Move to the previous available suggestion item.
@@ -75,6 +120,14 @@ private:
         void resetSelection() { selectedItem_ = -1; }
         void selectFirstItem() { selectedItem_ = 0; }
         void selectLastItem() { selectedItem_ = layout_->count() - 1; }
+        void removeItems()
+        {
+                QLayoutItem *item;
+                while ((item = layout_->takeAt(0)) != 0) {
+                        delete item->widget();
+                        delete item;
+                }
+        }
 
         QVBoxLayout *layout_;
 
