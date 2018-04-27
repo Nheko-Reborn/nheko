@@ -55,6 +55,19 @@ scaleDown(uint64_t max_width, uint64_t max_height, const ImageType &source)
           final_width, final_height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
+//! Delete items in a container based on a predicate.
+template<typename ContainerT, typename PredicateT>
+void
+erase_if(ContainerT &items, const PredicateT &predicate)
+{
+        for (auto it = items.begin(); it != items.end();) {
+                if (predicate(*it))
+                        it = items.erase(it);
+                else
+                        ++it;
+        }
+};
+
 //! Calculate the Levenshtein distance between two strings with character skipping.
 int
 levenshtein_distance(const std::string &s1, const std::string &s2);
