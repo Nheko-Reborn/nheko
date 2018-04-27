@@ -57,6 +57,9 @@ protected:
         void mousePressEvent(QMouseEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
 
+        //! Whether the user can interact with the displayed image.
+        bool isInteractive_ = true;
+
 private:
         void openUrl();
 
@@ -80,4 +83,29 @@ private:
         mtx::events::RoomEvent<mtx::events::msg::Image> event_;
 
         QSharedPointer<MatrixClient> client_;
+};
+
+class StickerItem : public ImageItem
+{
+        Q_OBJECT
+
+public:
+        StickerItem(QSharedPointer<MatrixClient> client,
+                    const mtx::events::Sticker &event,
+                    QWidget *parent = nullptr)
+          : ImageItem{client,
+                      QString::fromStdString(event.content.url),
+                      QString::fromStdString(event.content.body),
+                      event.content.info.size,
+                      parent}
+          , event_{event}
+        {
+                isInteractive_ = false;
+                setCursor(Qt::ArrowCursor);
+                setMouseTracking(false);
+                setAttribute(Qt::WA_Hover, false);
+        }
+
+private:
+        mtx::events::Sticker event_;
 };

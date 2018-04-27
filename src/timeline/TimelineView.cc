@@ -281,6 +281,9 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
         } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event)) {
                 auto video = mpark::get<mtx::events::RoomEvent<msg::Video>>(event);
                 return processMessageEvent<VideoEvent, VideoItem>(video, direction);
+        } else if (mpark::holds_alternative<mtx::events::Sticker>(event)) {
+                return processMessageEvent<mtx::events::Sticker, StickerItem>(
+                  mpark::get<mtx::events::Sticker>(event), direction);
         }
 
         return nullptr;

@@ -187,7 +187,13 @@ RoomList::cleanupInvites(const std::map<QString, bool> &invites)
                 return;
 
         utils::erase_if(rooms_, [invites](auto &room) {
-                return room.second->isInvite() && (invites.find(room.first) == invites.end());
+                auto room_id = room.first;
+                auto item    = room.second;
+
+                if (!item)
+                        return false;
+
+                return item->isInvite() && (invites.find(room_id) == invites.end());
         });
 }
 

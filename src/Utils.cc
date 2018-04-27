@@ -118,6 +118,18 @@ utils::getMessageDescription(const TimelineEvent &event,
                                 " sent a video clip",
                                 utils::descriptiveTime(ts),
                                 ts};
+        } else if (mpark::holds_alternative<mtx::events::Sticker>(event)) {
+                const auto msg = mpark::get<mtx::events::Sticker>(event);
+                QString sender = QString::fromStdString(msg.sender);
+
+                const auto username = Cache::displayName(room_id, sender);
+                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+
+                return DescInfo{sender == localUser ? "You" : username,
+                                sender,
+                                " sent a sticker",
+                                utils::descriptiveTime(ts),
+                                ts};
         }
 
         return DescInfo{};

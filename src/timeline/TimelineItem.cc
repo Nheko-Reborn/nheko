@@ -210,6 +210,20 @@ TimelineItem::TimelineItem(ImageItem *image,
         addSaveImageAction(image);
 }
 
+TimelineItem::TimelineItem(StickerItem *image,
+                           const mtx::events::Sticker &event,
+                           bool with_sender,
+                           const QString &room_id,
+                           QWidget *parent)
+  : QWidget(parent)
+  , room_id_{room_id}
+{
+        setupWidgetLayout<mtx::events::Sticker, StickerItem>(
+          image, event, " sent a sticker", with_sender);
+
+        addSaveImageAction(image);
+}
+
 TimelineItem::TimelineItem(FileItem *file,
                            const mtx::events::RoomEvent<mtx::events::msg::File> &event,
                            bool with_sender,

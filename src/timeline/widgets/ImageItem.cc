@@ -138,6 +138,11 @@ ImageItem::setImage(const QPixmap &image)
 void
 ImageItem::mousePressEvent(QMouseEvent *event)
 {
+        if (!isInteractive_) {
+                event->accept();
+                return;
+        }
+
         if (event->button() != Qt::LeftButton)
                 return;
 
@@ -204,7 +209,7 @@ ImageItem::paintEvent(QPaintEvent *event)
         painter.drawPath(path);
 
         // Bottom text section
-        if (underMouse()) {
+        if (isInteractive_ && underMouse()) {
                 const int textBoxHeight = fontHeight / 2 + 6;
 
                 textRegion_ = QRectF(0, height_ - textBoxHeight, width_, textBoxHeight);

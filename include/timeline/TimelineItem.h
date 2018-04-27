@@ -32,6 +32,7 @@
 #include "Utils.h"
 
 class ImageItem;
+class StickerItem;
 class AudioItem;
 class VideoItem;
 class FileItem;
@@ -86,6 +87,11 @@ public:
 
         TimelineItem(ImageItem *img,
                      const mtx::events::RoomEvent<mtx::events::msg::Image> &e,
+                     bool with_sender,
+                     const QString &room_id,
+                     QWidget *parent);
+        TimelineItem(StickerItem *img,
+                     const mtx::events::Sticker &e,
                      bool with_sender,
                      const QString &room_id,
                      QWidget *parent);
