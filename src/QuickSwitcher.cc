@@ -103,11 +103,13 @@ QuickSwitcher::QuickSwitcher(QSharedPointer<Cache> cache, QWidget *parent)
                 &RoomSearchInput::selectPreviousCompletion,
                 &popup_,
                 &SuggestionsPopup::selectPreviousSuggestion);
-        connect(&popup_, &SuggestionsPopup::itemSelected, this, &QuickSwitcher::roomSelected);
+        connect(&popup_, &SuggestionsPopup::itemSelected, this, [this](const QString &room_id) {
+                reset();
+                emit roomSelected(room_id);
+        });
         connect(roomSearch_, &RoomSearchInput::hiding, this, [this]() { popup_.hide(); });
         connect(roomSearch_, &QLineEdit::returnPressed, this, [this]() {
-                emit closing();
-                roomSearch_->clear();
+                reset();
                 popup_.selectHoveredSuggestion<RoomItem>();
         });
 }
@@ -125,8 +127,7 @@ void
 QuickSwitcher::keyPressEvent(QKeyEvent *event)
 {
         if (event->key() == Qt::Key_Escape) {
-                roomSearch_->clear();
                 event->accept();
-                emit closing();
+                reset();
         }
 }

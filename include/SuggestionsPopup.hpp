@@ -32,19 +32,17 @@ public:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
-        void mousePressEvent(QMouseEvent *event) override;
 
 signals:
         void clicked(const QString &text);
 
 protected:
         QHBoxLayout *topLayout_;
-
         Avatar *avatar_;
-
         QColor hoverColor_;
 
-        //! Set if the item is currently being hovered during tab completion (cycling).
+        //! Set if the item is currently being
+        //! hovered during tab completion (cycling).
         bool hovering_;
 };
 
@@ -55,6 +53,9 @@ class UserItem : public PopupItem
 public:
         UserItem(QWidget *parent, const QString &user_id);
         QString selectedText() const { return userId_; }
+
+protected:
+        void mousePressEvent(QMouseEvent *event) override;
 
 private:
         QLabel *userName_;
@@ -68,6 +69,9 @@ class RoomItem : public PopupItem
 public:
         RoomItem(QWidget *parent, const RoomSearchResult &res);
         QString selectedText() const { return roomId_; }
+
+protected:
+        void mousePressEvent(QMouseEvent *event) override;
 
 private:
         QLabel *roomName_;

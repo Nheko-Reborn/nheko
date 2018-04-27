@@ -38,17 +38,6 @@ PopupItem::paintEvent(QPaintEvent *)
                 p.fillRect(rect(), hoverColor_);
 }
 
-void
-PopupItem::mousePressEvent(QMouseEvent *event)
-{
-        if (event->buttons() != Qt::RightButton)
-                // TODO: should be abstracted.
-                emit clicked(
-                  Cache::displayName(ChatPage::instance()->currentRoom(), selectedText()));
-
-        QWidget::mousePressEvent(event);
-}
-
 UserItem::UserItem(QWidget *parent, const QString &user_id)
   : PopupItem(parent)
   , userId_{user_id}
@@ -77,6 +66,16 @@ UserItem::UserItem(QWidget *parent, const QString &user_id)
                                 [this](const QImage &img) { avatar_->setImage(img); });
 }
 
+void
+UserItem::mousePressEvent(QMouseEvent *event)
+{
+        if (event->buttons() != Qt::RightButton)
+                emit clicked(
+                  Cache::displayName(ChatPage::instance()->currentRoom(), selectedText()));
+
+        QWidget::mousePressEvent(event);
+}
+
 RoomItem::RoomItem(QWidget *parent, const RoomSearchResult &res)
   : PopupItem(parent)
   , roomId_{QString::fromStdString(res.room_id)}
@@ -95,6 +94,15 @@ RoomItem::RoomItem(QWidget *parent, const RoomSearchResult &res)
 
         if (!res.img.isNull())
                 avatar_->setImage(res.img);
+}
+
+void
+RoomItem::mousePressEvent(QMouseEvent *event)
+{
+        if (event->buttons() != Qt::RightButton)
+                emit clicked(selectedText());
+
+        QWidget::mousePressEvent(event);
 }
 
 SuggestionsPopup::SuggestionsPopup(QWidget *parent)

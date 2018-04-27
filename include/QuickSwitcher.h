@@ -63,6 +63,12 @@ protected:
         void paintEvent(QPaintEvent *event) override;
 
 private:
+        void reset()
+        {
+                emit closing();
+                roomSearch_->clear();
+        }
+
         // Current highlighted selection from the completer.
         int selection_ = -1;
 
