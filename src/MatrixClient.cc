@@ -31,7 +31,6 @@
 #include <QtConcurrent>
 #include <mtx/errors.hpp>
 
-#include "Deserializable.h"
 #include "MatrixClient.h"
 
 MatrixClient::MatrixClient(QString server, QObject *parent)
@@ -559,16 +558,16 @@ MatrixClient::getOwnCommunities() noexcept
                 auto data = reply->readAll();
                 auto json = QJsonDocument::fromJson(data).object();
 
-                try {
-                        QList<QString> response;
-
-                        for (auto group : json["groups"].toArray())
-                                response.append(group.toString());
-
-                        emit getOwnCommunitiesResponse(response);
-                } catch (DeserializationException &e) {
-                        qWarning() << "Own communities:" << e.what();
+                if (!json.contains("groups")) {
+                        qWarning() << "failed to parse own communities. 'groups' key not found";
+                        return;
                 }
+
+                QList<QString> response;
+                for (auto group : json["groups"].toArray())
+                        response.append(group.toString());
+
+                emit getOwnCommunitiesResponse(response);
         });
 }
 

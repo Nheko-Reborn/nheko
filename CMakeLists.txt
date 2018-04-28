@@ -147,7 +147,6 @@ set(SRC_FILES
     src/CommunitiesListItem.cc
     src/CommunitiesList.cc
     src/Community.cc
-    src/Deserializable.cc
     src/InviteeItem.cc
     src/LoginPage.cc
     src/MainWindow.cc
