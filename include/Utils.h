@@ -66,7 +66,7 @@ erase_if(ContainerT &items, const PredicateT &predicate)
                 else
                         ++it;
         }
-};
+}
 
 //! Calculate the Levenshtein distance between two strings with character skipping.
 int

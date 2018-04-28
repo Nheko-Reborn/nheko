@@ -4,7 +4,7 @@ If you want to request a feature or ask a question, feel free to remove all the 
 
 ### System:
 
-- Nheko commit/version:
+- Nheko version: <!-- Get the version from the settings menu (bottom left corner)  -->
 - Installation method: <!-- AppImage, some repository, local build etc -->
 - Operating System:
 - Qt version:
