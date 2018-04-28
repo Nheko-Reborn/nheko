@@ -3,7 +3,7 @@
   "compression-level": 9,
   "contents": [
     {
-      "path": "/Applications/Nheko.app",
+      "path": "./build/Nheko.app",
       "type": "file",
       "x": 140,
       "y": 120
