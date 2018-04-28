@@ -7,8 +7,10 @@
 #include <QWidget>
 
 #include "Community.h"
-#include "Menu.h"
+#include "Config.h"
 #include "ui/Theme.h"
+
+class RippleOverlay;
 
 class CommunitiesListItem : public QWidget
 {
@@ -19,27 +21,37 @@ class CommunitiesListItem : public QWidget
           QColor hoverBackgroundColor READ hoverBackgroundColor WRITE setHoverBackgroundColor)
         Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
 
+        Q_PROPERTY(QColor avatarFgColor READ avatarFgColor WRITE setAvatarFgColor)
+        Q_PROPERTY(QColor avatarBgColor READ avatarBgColor WRITE setAvatarBgColor)
+
 public:
         CommunitiesListItem(QSharedPointer<Community> community,
                             QString community_id,
                             QWidget *parent = nullptr);
 
-        void setCommunity(QSharedPointer<Community> community);
+        void setCommunity(QSharedPointer<Community> community) { community_ = community; };
 
-        inline bool isPressed() const;
-        inline void setAvatar(const QImage &avatar_image);
+        bool isPressed() const { return isPressed_; }
+        void setAvatar(const QImage &img);
 
         QColor highlightedBackgroundColor() const { return highlightedBackgroundColor_; }
         QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
         QColor backgroundColor() const { return backgroundColor_; }
 
+        QColor avatarFgColor() const { return avatarFgColor_; }
+        QColor avatarBgColor() const { return avatarBgColor_; }
+
         void setHighlightedBackgroundColor(QColor &color) { highlightedBackgroundColor_ = color; }
         void setHoverBackgroundColor(QColor &color) { hoverBackgroundColor_ = color; }
         void setBackgroundColor(QColor &color) { backgroundColor_ = color; }
 
-        QColor highlightedBackgroundColor_;
-        QColor hoverBackgroundColor_;
-        QColor backgroundColor_;
+        void setAvatarFgColor(QColor &color) { avatarFgColor_ = color; }
+        void setAvatarBgColor(QColor &color) { avatarBgColor_ = color; }
+
+        QSize sizeHint() const override
+        {
+                return QSize(IconSize + IconSize / 3, IconSize + IconSize / 3);
+        }
 
 signals:
         void clicked(const QString &community_id);
@@ -50,10 +62,9 @@ public slots:
 protected:
         void mousePressEvent(QMouseEvent *event) override;
         void paintEvent(QPaintEvent *event) override;
-        void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
-        const int IconSize = 55;
+        const int IconSize = 36;
 
         QSharedPointer<Community> community_;
         QString communityId_;
@@ -62,34 +73,22 @@ private:
 
         QPixmap communityAvatar_;
 
-        Menu *menu_;
-        bool isPressed_ = false;
-};
+        QColor highlightedBackgroundColor_;
+        QColor hoverBackgroundColor_;
+        QColor backgroundColor_;
 
-inline bool
-CommunitiesListItem::isPressed() const
-{
-        return isPressed_;
-}
+        QColor avatarFgColor_;
+        QColor avatarBgColor_;
+
+        bool isPressed_ = false;
+
+        RippleOverlay *rippleOverlay_;
+};
 
 inline void
-CommunitiesListItem::setAvatar(const QImage &avatar_image)
+CommunitiesListItem::setAvatar(const QImage &img)
 {
         communityAvatar_ = QPixmap::fromImage(
-          avatar_image.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+          img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         update();
 }
-
-class WorldCommunityListItem : public CommunitiesListItem
-{
-        Q_OBJECT
-public:
-        WorldCommunityListItem(QWidget *parent = nullptr);
-
-protected:
-        void mousePressEvent(QMouseEvent *event) override;
-        void paintEvent(QPaintEvent *event) override;
-
-private:
-        const int IconSize = 55;
-};

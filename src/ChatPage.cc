@@ -58,16 +58,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);
 
-        communitiesSideBar_ = new QWidget(this);
-        communitiesSideBar_->setFixedWidth(ui::sidebar::CommunitiesSidebarSize);
-        communitiesSideBarLayout_ = new QVBoxLayout(communitiesSideBar_);
-        communitiesSideBarLayout_->setSpacing(0);
-        communitiesSideBarLayout_->setMargin(0);
-
         communitiesList_ = new CommunitiesList(client, this);
-        communitiesSideBarLayout_->addWidget(communitiesList_);
-        // communitiesSideBarLayout_->addStretch(1);
-        topLayout_->addWidget(communitiesSideBar_);
+        topLayout_->addWidget(communitiesList_);
 
         auto splitter = new Splitter(this);
         splitter->setHandleWidth(0);
@@ -806,12 +798,12 @@ ChatPage::setGroupViewState(bool isEnabled)
 {
         if (!isEnabled) {
                 communitiesList_->communityChanged("world");
-                communitiesSideBar_->hide();
+                communitiesList_->hide();
 
                 return;
         }
 
-        communitiesSideBar_->show();
+        communitiesList_->show();
 }
 
 void

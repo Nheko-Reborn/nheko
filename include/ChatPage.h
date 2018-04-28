@@ -143,8 +143,6 @@ private:
         Splitter *splitter;
 
         QWidget *sideBar_;
-        QWidget *communitiesSideBar_;
-        QVBoxLayout *communitiesSideBarLayout_;
         QVBoxLayout *sideBarLayout_;
         QWidget *sideBarTopWidget_;
         QVBoxLayout *sideBarTopWidgetLayout_;

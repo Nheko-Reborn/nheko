@@ -32,13 +32,7 @@ CommunitiesList::CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *p
         contentsLayout_->setSpacing(0);
         contentsLayout_->setMargin(0);
 
-        WorldCommunityListItem *world_list_item = new WorldCommunityListItem();
-        contentsLayout_->addWidget(world_list_item);
-        communities_.emplace("world", QSharedPointer<CommunitiesListItem>(world_list_item));
-        connect(world_list_item,
-                &WorldCommunityListItem::clicked,
-                this,
-                &CommunitiesList::highlightSelectedCommunity);
+        addGlobalItem();
         contentsLayout_->addStretch(1);
 
         scrollArea_->setWidget(scrollAreaContents_);
@@ -62,14 +56,7 @@ CommunitiesList::setCommunities(const std::map<QString, QSharedPointer<Community
 {
         communities_.clear();
 
-        // TODO: still not sure how to handle the "world" special-case
-        WorldCommunityListItem *world_list_item = new WorldCommunityListItem();
-        communities_.emplace("world", QSharedPointer<CommunitiesListItem>(world_list_item));
-        connect(world_list_item,
-                &WorldCommunityListItem::clicked,
-                this,
-                &CommunitiesList::highlightSelectedCommunity);
-        contentsLayout_->insertWidget(0, world_list_item);
+        addGlobalItem();
 
         for (const auto &community : communities) {
                 addCommunity(community.second, community.first);
@@ -78,7 +65,7 @@ CommunitiesList::setCommunities(const std::map<QString, QSharedPointer<Community
                 client_->fetchCommunityRooms(community.first);
         }
 
-        world_list_item->setPressedState(true);
+        communities_["world"]->setPressedState(true);
         emit communityChanged("world");
 }
 

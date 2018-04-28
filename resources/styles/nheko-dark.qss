@@ -93,9 +93,12 @@ RoomInfoListItem {
 }
 
 CommunitiesListItem {
-    qproperty-highlightedBackgroundColor: #5294e2;
-    qproperty-hoverBackgroundColor: #39679e;
+    qproperty-highlightedBackgroundColor: #4d84c7;
+    qproperty-hoverBackgroundColor: rgba(57,103,158, 100);
     qproperty-backgroundColor: #2d3139;
+
+    qproperty-avatarBgColor: #202228;
+    qproperty-avatarFgColor: white;
 }
 
 LoadingIndicator {

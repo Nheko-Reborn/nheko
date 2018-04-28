@@ -95,8 +95,11 @@ RoomInfoListItem {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(mid);
+    qproperty-hoverBackgroundColor: palette(light);
     qproperty-backgroundColor: palette(window);
+
+    qproperty-avatarBgColor: palette(mid);
+    qproperty-avatarFgColor: palette(text);
 }
 
 LoadingIndicator {

@@ -92,8 +92,11 @@ RoomInfoListItem {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 128);
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 100);
     qproperty-backgroundColor: white;
+
+    qproperty-avatarBgColor: #eee;
+    qproperty-avatarFgColor: black;
 }
 
 #ChatPageLoadSpinner {

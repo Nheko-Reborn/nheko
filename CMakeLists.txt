@@ -260,7 +260,6 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ChatPage.h
     include/CommunitiesListItem.h
     include/CommunitiesList.h
-    include/Community.h
     include/LoginPage.h
     include/MainWindow.h
     include/InviteeItem.h

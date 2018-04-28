@@ -30,6 +30,8 @@ public slots:
         void highlightSelectedCommunity(const QString &id);
 
 private:
+        void addGlobalItem() { addCommunity(QSharedPointer<Community>(new Community), "world"); }
+
         //! Check whether or not a community id is currently managed.
         bool communityExists(const QString &id)
         {

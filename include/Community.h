@@ -1,15 +1,12 @@
 #pragma once
 
 #include <QJsonObject>
-#include <QObject>
 #include <QString>
 #include <QUrl>
+#include <vector>
 
-class Community : public QObject
+struct Community
 {
-        Q_OBJECT
-
-public:
         void parseProfile(const QJsonObject &profile);
         void parseRooms(const QJsonObject &rooms);
 
@@ -19,7 +16,6 @@ public:
         QString getLongDescription() const { return long_description_; }
         std::vector<QString> getRoomList() const { return rooms_; }
 
-private:
         QUrl avatar_;
         QString name_;
         QString short_description_;
