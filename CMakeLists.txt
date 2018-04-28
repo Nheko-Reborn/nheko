@@ -40,6 +40,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
+find_package(Qt5Svg REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 
 if (APPLE)
@@ -290,6 +291,7 @@ set(COMMON_LIBS
     ${MATRIX_STRUCTS_LIBRARY} 
     Qt5::Widgets
     Qt5::Network
+    Qt5::Svg
     Qt5::Concurrent)
 
 if(APPVEYOR_BUILD)
