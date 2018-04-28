@@ -20,9 +20,8 @@ if [ $TRAVIS_OS_NAME == linux ]; then
 
     if [ -z "$QT_VERSION" ]; then
         QT_VERSION="592"
+        QT_PKG="59"
     fi
-
-    export QT_PKG=${QT_VERSION:0:2}
 
     sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
     sudo add-apt-repository -y ppa:george-edison55/cmake-3.x
@@ -30,6 +29,7 @@ if [ $TRAVIS_OS_NAME == linux ]; then
     sudo apt-get install -qq -y \
         qt${QT_PKG}base \
         qt${QT_PKG}tools \
+        qt${QT_PKG}svg \
         qt${QT_PKG}multimedia \
         cmake \
         liblmdb-dev

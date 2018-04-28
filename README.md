@@ -89,7 +89,7 @@ Debian as the build host in an attempt to work around this [issue](https://githu
 ##### Arch Linux
 
 ```bash
-sudo pacman -S qt5-base qt5-tools qt5-multimedia cmake gcc fontconfig lmdb
+sudo pacman -S qt5-base qt5-tools qt5-multimedia qt5-svg cmake gcc fontconfig lmdb
 ```
 
 ##### Gentoo Linux
@@ -105,7 +105,7 @@ sudo add-apt-repository ppa:beineri/opt-qt592-trusty
 sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo add-apt-repository ppa:ubuntu-toolchain-r-test
 sudo apt-get update
-sudo apt-get install -y g++-7 qt59base qt59tools qt59multimedia cmake liblmdb-dev
+sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev
 ```
 
 ##### macOS (Xcode 8 or later)

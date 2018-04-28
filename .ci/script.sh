@@ -3,7 +3,6 @@
 set -ex
 
 if [ $TRAVIS_OS_NAME == linux ]; then
-    QT_PKG=${QT_VERSION:0:2}
     source /opt/qt${QT_PKG}/bin/qt${QT_PKG}-env.sh || true;
 fi
 

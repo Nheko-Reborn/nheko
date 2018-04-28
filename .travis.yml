@@ -19,7 +19,8 @@ matrix:
           env:
               - CXX_COMPILER=g++-7
               - C_COMPILER=gcc-7
-              - QT_VERSION=592
+              - QT_VERSION="-5.10.1"
+              - QT_PKG=510
               - DEPLOYMENT=1
           addons:
               apt:
@@ -31,6 +32,7 @@ matrix:
               - CXX_COMPILER=g++-7
               - C_COMPILER=gcc-7
               - QT_VERSION=571
+              - QT_PKG=57
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
@@ -41,6 +43,7 @@ matrix:
               - CXX_COMPILER=clang++-5.0
               - C_COMPILER=clang-5.0
               - QT_VERSION=592
+              - QT_PKG=59
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
