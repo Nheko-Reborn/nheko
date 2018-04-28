@@ -1,0 +1,30 @@
+{
+  "background": "builtin-arrow",
+  "compression-level": 9,
+  "contents": [
+    {
+      "path": "/Applications/Nheko.app",
+      "type": "file",
+      "x": 140,
+      "y": 120
+    },
+    {
+      "path": "/Applications",
+      "type": "link",
+      "x": 500,
+      "y": 120
+    }
+  ],
+  "format": "UDZO",
+  "title": "Nheko",
+  "window": {
+    "position": {
+      "x": 100,
+      "y": 100
+    },
+    "size": {
+      "height": 280,
+      "width": 640
+    }
+  }
+}

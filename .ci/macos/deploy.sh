@@ -7,7 +7,11 @@ TAG=`git tag -l --points-at HEAD`
 # Add Qt binaries to path
 PATH=/usr/local/opt/qt/bin/:${PATH}
 
-sudo macdeployqt build/nheko.app -dmg
+pushd build
+sudo macdeployqt nheko.app -dmg
 user=$(id -nu)
-sudo chown ${user} build/nheko.dmg
-mv build/nheko.dmg .
+sudo chown ${user} nheko.dmg
+mv nheko.dmg ..
+popd
+
+dmgbuild -s ./.ci/macos/settings.json "Nheko" nheko.dmg
