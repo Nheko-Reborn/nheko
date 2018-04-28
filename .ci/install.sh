@@ -6,7 +6,11 @@ if [ $TRAVIS_OS_NAME == osx ]; then
     brew update
     brew install qt5 lmdb clang-format ninja
 
-    pip install dmgbuild
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    sudo python get-pip.py
+
+    sudo pip install --upgrade pip
+    sudo pip install dmgbuild
 
     export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
 fi
