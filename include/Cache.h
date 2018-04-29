@@ -19,11 +19,10 @@
 
 #include <QDebug>
 #include <QDir>
+#include <QImage>
 #include <json.hpp>
 #include <lmdb++.h>
 #include <mtx/responses.hpp>
-
-#include "Utils.h"
 
 struct SearchResult
 {

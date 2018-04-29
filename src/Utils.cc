@@ -1,7 +1,5 @@
 #include "Utils.h"
 
-#include "Cache.h"
-
 #include <variant.hpp>
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
@@ -36,100 +34,21 @@ utils::getMessageDescription(const TimelineEvent &event,
         using Video  = mtx::events::RoomEvent<mtx::events::msg::Video>;
 
         if (mpark::holds_alternative<Audio>(event)) {
-                const auto msg = mpark::get<Audio>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-                return DescInfo{sender == localUser ? "You" : username,
-                                sender,
-                                " sent an audio clip",
-                                utils::descriptiveTime(ts),
-                                ts};
+                return createDescriptionInfo<Audio>(event, localUser, room_id);
         } else if (mpark::holds_alternative<Emote>(event)) {
-                auto msg       = mpark::get<Emote>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-                const auto body     = QString::fromStdString(msg.content.body).trimmed();
-
-                return DescInfo{"",
-                                sender,
-                                QString("* %1 %2").arg(username).arg(body),
-                                utils::descriptiveTime(ts),
-                                ts};
+                return createDescriptionInfo<Emote>(event, localUser, room_id);
         } else if (mpark::holds_alternative<File>(event)) {
-                const auto msg = mpark::get<File>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-                return DescInfo{sender == localUser ? "You" : username,
-                                sender,
-                                " sent a file",
-                                utils::descriptiveTime(ts),
-                                ts};
+                return createDescriptionInfo<File>(event, localUser, room_id);
         } else if (mpark::holds_alternative<Image>(event)) {
-                const auto msg = mpark::get<Image>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-                return DescInfo{sender == localUser ? "You" : username,
-                                sender,
-                                " sent an image",
-                                utils::descriptiveTime(ts),
-                                ts};
+                return createDescriptionInfo<Image>(event, localUser, room_id);
         } else if (mpark::holds_alternative<Notice>(event)) {
-                const auto msg = mpark::get<Notice>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-                return DescInfo{
-                  username, sender, " sent a notification", utils::descriptiveTime(ts), ts};
+                return createDescriptionInfo<Notice>(event, localUser, room_id);
         } else if (mpark::holds_alternative<Text>(event)) {
-                const auto msg = mpark::get<Text>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-                const auto body     = QString::fromStdString(msg.content.body).trimmed();
-
-                return DescInfo{sender == localUser ? "You" : username,
-                                sender,
-                                QString(": %1").arg(body),
-                                utils::descriptiveTime(ts),
-                                ts};
+                return createDescriptionInfo<Text>(event, localUser, room_id);
         } else if (mpark::holds_alternative<Video>(event)) {
-                const auto msg = mpark::get<Video>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-                return DescInfo{sender == localUser ? "You" : username,
-                                sender,
-                                " sent a video clip",
-                                utils::descriptiveTime(ts),
-                                ts};
+                return createDescriptionInfo<Video>(event, localUser, room_id);
         } else if (mpark::holds_alternative<mtx::events::Sticker>(event)) {
-                const auto msg = mpark::get<mtx::events::Sticker>(event);
-                QString sender = QString::fromStdString(msg.sender);
-
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-                return DescInfo{sender == localUser ? "You" : username,
-                                sender,
-                                " sent a sticker",
-                                utils::descriptiveTime(ts),
-                                ts};
+                return createDescriptionInfo<mtx::events::Sticker>(event, localUser, room_id);
         }
 
         return DescInfo{};

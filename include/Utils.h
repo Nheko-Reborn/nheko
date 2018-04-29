@@ -1,6 +1,11 @@
 #pragma once
 
+#include "Cache.h"
 #include "RoomInfoListItem.h"
+#include "timeline/widgets/AudioItem.h"
+#include "timeline/widgets/FileItem.h"
+#include "timeline/widgets/ImageItem.h"
+#include "timeline/widgets/VideoItem.h"
 
 #include <QDateTime>
 #include <mtx/events/collections.hpp>
@@ -26,6 +31,64 @@ firstChar(const QString &input);
 //! Get a human readable file size with the appropriate units attached.
 QString
 humanReadableFileSize(uint64_t bytes);
+
+//! Match widgets/events with a description message.
+template<class T>
+QString
+messageDescription(const QString &username = "", const QString &body = "")
+{
+        using Audio   = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+        using Emote   = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+        using File    = mtx::events::RoomEvent<mtx::events::msg::File>;
+        using Image   = mtx::events::RoomEvent<mtx::events::msg::Image>;
+        using Notice  = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+        using Sticker = mtx::events::Sticker;
+        using Text    = mtx::events::RoomEvent<mtx::events::msg::Text>;
+        using Video   = mtx::events::RoomEvent<mtx::events::msg::Video>;
+
+        if (std::is_same<T, AudioItem>::value || std::is_same<T, Audio>::value)
+                return QString("sent an audio clip");
+        else if (std::is_same<T, ImageItem>::value || std::is_same<T, Image>::value)
+                return QString("sent an image");
+        else if (std::is_same<T, FileItem>::value || std::is_same<T, File>::value)
+                return QString("sent a file");
+        else if (std::is_same<T, VideoItem>::value || std::is_same<T, Video>::value)
+                return QString("sent a video clip");
+        else if (std::is_same<T, StickerItem>::value || std::is_same<T, Sticker>::value)
+                return QString("sent a sticker");
+        else if (std::is_same<T, Notice>::value)
+                return QString("sent a notification");
+        else if (std::is_same<T, Text>::value)
+                return QString(": %1").arg(body);
+        else if (std::is_same<T, Emote>::value)
+                return QString("* %1 %2").arg(username).arg(body);
+}
+
+template<class T, class Event>
+DescInfo
+createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
+{
+        using Text  = mtx::events::RoomEvent<mtx::events::msg::Text>;
+        using Emote = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+
+        const auto msg    = mpark::get<T>(event);
+        const auto sender = QString::fromStdString(msg.sender);
+
+        const auto username = Cache::displayName(room_id, sender);
+        const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+
+        bool isText  = std::is_same<T, Text>::value;
+        bool isEmote = std::is_same<T, Emote>::value;
+
+        return DescInfo{
+          isEmote ? "" : (sender == localUser ? "You" : username),
+          sender,
+          (isText || isEmote)
+            ? messageDescription<T>(username, QString::fromStdString(msg.content.body).trimmed())
+            : QString(" %1").arg(messageDescription<T>()),
+          utils::descriptiveTime(ts),
+          ts};
+}
 
 //! Scale down an image to fit to the given width & height limitations.
 template<class ImageType>

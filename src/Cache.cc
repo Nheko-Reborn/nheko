@@ -26,6 +26,7 @@
 #include <variant.hpp>
 
 #include "Cache.h"
+#include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.

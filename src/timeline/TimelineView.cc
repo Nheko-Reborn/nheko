@@ -19,6 +19,7 @@
 #include <QFileInfo>
 #include <QTimer>
 
+#include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "FloatingButton.h"
@@ -212,8 +213,9 @@ TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::M
         isTimelineFinished = false;
 
         // Queue incoming messages to be rendered later.
-        for (auto const &e : msgs.chunk)
-                topMessages_.emplace_back(e);
+        topMessages_.insert(topMessages_.end(),
+                            std::make_move_iterator(msgs.chunk.begin()),
+                            std::make_move_iterator(msgs.chunk.end()));
 
         // The RoomList message preview will be updated only if this
         // is the first batch of messages received through /messages
@@ -361,8 +363,9 @@ TimelineView::addEvents(const mtx::responses::Timeline &timeline)
                 isInitialSync     = false;
         }
 
-        for (const auto &e : timeline.events)
-                bottomMessages_.push_back(e);
+        bottomMessages_.insert(bottomMessages_.end(),
+                               std::make_move_iterator(timeline.events.begin()),
+                               std::make_move_iterator(timeline.events.end()));
 
         if (!bottomMessages_.empty())
                 notifyForLastEvent(findLastViewableEvent(bottomMessages_));

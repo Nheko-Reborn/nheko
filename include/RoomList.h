@@ -23,7 +23,6 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "Cache.h"
 #include <mtx.hpp>
 
 class LeaveRoomDialog;
@@ -32,7 +31,9 @@ class OverlayModal;
 class RoomInfoListItem;
 class Sync;
 class UserSettings;
+class Cache;
 struct DescInfo;
+struct RoomInfo;
 
 class RoomList : public QWidget
 {

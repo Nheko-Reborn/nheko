@@ -152,7 +152,7 @@ TimelineItem::TimelineItem(ImageItem *image,
 {
         init();
 
-        setupLocalWidgetLayout<ImageItem>(image, userid, "sent an image", withSender);
+        setupLocalWidgetLayout<ImageItem>(image, userid, withSender);
 
         addSaveImageAction(image);
 }
@@ -167,7 +167,7 @@ TimelineItem::TimelineItem(FileItem *file,
 {
         init();
 
-        setupLocalWidgetLayout<FileItem>(file, userid, "sent a file", withSender);
+        setupLocalWidgetLayout<FileItem>(file, userid, withSender);
 }
 
 TimelineItem::TimelineItem(AudioItem *audio,
@@ -180,7 +180,7 @@ TimelineItem::TimelineItem(AudioItem *audio,
 {
         init();
 
-        setupLocalWidgetLayout<AudioItem>(audio, userid, "sent an audio clip", withSender);
+        setupLocalWidgetLayout<AudioItem>(audio, userid, withSender);
 }
 
 TimelineItem::TimelineItem(VideoItem *video,
@@ -193,7 +193,7 @@ TimelineItem::TimelineItem(VideoItem *video,
 {
         init();
 
-        setupLocalWidgetLayout<VideoItem>(video, userid, "sent a video clip", withSender);
+        setupLocalWidgetLayout<VideoItem>(video, userid, withSender);
 }
 
 TimelineItem::TimelineItem(ImageItem *image,
@@ -205,7 +205,7 @@ TimelineItem::TimelineItem(ImageItem *image,
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Image>, ImageItem>(
-          image, event, " sent an image", with_sender);
+          image, event, with_sender);
 
         addSaveImageAction(image);
 }
@@ -218,8 +218,7 @@ TimelineItem::TimelineItem(StickerItem *image,
   : QWidget(parent)
   , room_id_{room_id}
 {
-        setupWidgetLayout<mtx::events::Sticker, StickerItem>(
-          image, event, " sent a sticker", with_sender);
+        setupWidgetLayout<mtx::events::Sticker, StickerItem>(image, event, with_sender);
 
         addSaveImageAction(image);
 }
@@ -233,7 +232,7 @@ TimelineItem::TimelineItem(FileItem *file,
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::File>, FileItem>(
-          file, event, " sent a file", with_sender);
+          file, event, with_sender);
 }
 
 TimelineItem::TimelineItem(AudioItem *audio,
@@ -245,7 +244,7 @@ TimelineItem::TimelineItem(AudioItem *audio,
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Audio>, AudioItem>(
-          audio, event, " sent an audio clip", with_sender);
+          audio, event, with_sender);
 }
 
 TimelineItem::TimelineItem(VideoItem *video,
@@ -257,7 +256,7 @@ TimelineItem::TimelineItem(VideoItem *video,
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Video>, VideoItem>(
-          video, event, " sent a video clip", with_sender);
+          video, event, with_sender);
 }
 
 /*

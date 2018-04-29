@@ -27,6 +27,7 @@
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 
 RoomList::RoomList(QSharedPointer<MatrixClient> client,
                    QSharedPointer<UserSettings> userSettings,

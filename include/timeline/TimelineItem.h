@@ -26,10 +26,11 @@
 #include <QStyleOption>
 
 #include "AvatarProvider.h"
-#include "Cache.h"
 #include "ChatPage.h"
 #include "RoomInfoListItem.h"
 #include "Utils.h"
+
+#include "Cache.h"
 
 class ImageItem;
 class StickerItem;
@@ -136,16 +137,10 @@ private:
         void addSaveImageAction(ImageItem *image);
 
         template<class Widget>
-        void setupLocalWidgetLayout(Widget *widget,
-                                    const QString &userid,
-                                    const QString &msgDescription,
-                                    bool withSender);
+        void setupLocalWidgetLayout(Widget *widget, const QString &userid, bool withSender);
 
         template<class Event, class Widget>
-        void setupWidgetLayout(Widget *widget,
-                               const Event &event,
-                               const QString &msgDescription,
-                               bool withSender);
+        void setupWidgetLayout(Widget *widget, const Event &event, bool withSender);
 
         void generateBody(const QString &body);
         void generateBody(const QString &userid, const QString &body);
@@ -184,17 +179,14 @@ private:
 
 template<class Widget>
 void
-TimelineItem::setupLocalWidgetLayout(Widget *widget,
-                                     const QString &userid,
-                                     const QString &msgDescription,
-                                     bool withSender)
+TimelineItem::setupLocalWidgetLayout(Widget *widget, const QString &userid, bool withSender)
 {
         auto displayName = Cache::displayName(room_id_, userid);
         auto timestamp   = QDateTime::currentDateTime();
 
         descriptionMsg_ = {"You",
                            userid,
-                           QString(" %1").arg(msgDescription),
+                           QString(" %1").arg(utils::messageDescription<Widget>()),
                            utils::descriptiveTime(timestamp),
                            timestamp};
 
@@ -227,10 +219,7 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget,
 
 template<class Event, class Widget>
 void
-TimelineItem::setupWidgetLayout(Widget *widget,
-                                const Event &event,
-                                const QString &msgDescription,
-                                bool withSender)
+TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSender)
 {
         init();
 
@@ -243,7 +232,7 @@ TimelineItem::setupWidgetLayout(Widget *widget,
         QSettings settings;
         descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
                            sender,
-                           msgDescription,
+                           QString(" %1").arg(utils::messageDescription<Widget>()),
                            utils::descriptiveTime(timestamp),
                            timestamp};
 
