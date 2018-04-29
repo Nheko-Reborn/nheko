@@ -31,9 +31,8 @@
 
 constexpr const static char *CHECKMARK = "✓";
 
-constexpr int MSG_RIGHT_MARGIN  = 7;
-constexpr int MSG_BOTTOM_MARGIN = 4;
-constexpr int MSG_PADDING       = 20;
+constexpr int MSG_RIGHT_MARGIN = 7;
+constexpr int MSG_PADDING      = 20;
 
 void
 TimelineItem::init()
@@ -72,10 +71,11 @@ TimelineItem::init()
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
         messageLayout_ = new QHBoxLayout;
-        messageLayout_->setContentsMargins(0, 0, MSG_RIGHT_MARGIN, MSG_BOTTOM_MARGIN);
+        messageLayout_->setContentsMargins(0, 0, MSG_RIGHT_MARGIN, 0);
         messageLayout_->setSpacing(MSG_PADDING);
 
-        topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
+        topLayout_->setContentsMargins(
+          conf::timeline::msgLeftMargin, conf::timeline::msgTopMargin, 0, 0);
         topLayout_->setSpacing(0);
         topLayout_->addLayout(mainLayout_, 1);
 
@@ -498,7 +498,8 @@ TimelineItem::replaceEmoji(const QString &body)
 void
 TimelineItem::setupAvatarLayout(const QString &userName)
 {
-        topLayout_->setContentsMargins(conf::timeline::msgMargin, conf::timeline::msgMargin, 0, 0);
+        topLayout_->setContentsMargins(
+          conf::timeline::msgLeftMargin, conf::timeline::msgAvatarTopMargin, 0, 0);
 
         userAvatar_ = new Avatar(this);
         userAvatar_->setLetter(QChar(userName[0]).toUpper());
@@ -513,7 +514,7 @@ TimelineItem::setupAvatarLayout(const QString &userName)
 
         headerLayout_ = new QVBoxLayout;
         headerLayout_->setMargin(0);
-        headerLayout_->setSpacing(0);
+        headerLayout_->setSpacing(conf::timeline::headerSpacing);
 
         headerLayout_->addWidget(userName_);
         headerLayout_->addWidget(body_);
@@ -522,8 +523,9 @@ TimelineItem::setupAvatarLayout(const QString &userName)
 void
 TimelineItem::setupSimpleLayout()
 {
-        topLayout_->setContentsMargins(conf::timeline::msgMargin + conf::timeline::avatarSize + 2,
-                                       conf::timeline::msgMargin,
+        topLayout_->setContentsMargins(conf::timeline::msgLeftMargin + conf::timeline::avatarSize +
+                                         2,
+                                       conf::timeline::msgTopMargin,
                                        0,
                                        0);
 }

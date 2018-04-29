@@ -84,10 +84,12 @@ static constexpr int roomDescription = 14;
 } // namespace topRoomBar
 
 namespace timeline {
-static constexpr int msgMargin        = 14;
-static constexpr int avatarSize       = 36;
-static constexpr int headerSpacing    = 7;
-static constexpr int headerLeftMargin = 15;
+static constexpr int msgAvatarTopMargin = 15;
+static constexpr int msgTopMargin       = 2;
+static constexpr int msgLeftMargin      = 14;
+static constexpr int avatarSize         = 36;
+static constexpr int headerSpacing      = 3;
+static constexpr int headerLeftMargin   = 15;
 
 namespace fonts {
 static constexpr int timestamp     = 13;
