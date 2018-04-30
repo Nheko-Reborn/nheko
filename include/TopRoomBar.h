@@ -21,7 +21,6 @@
 #include <QIcon>
 #include <QImage>
 #include <QLabel>
-#include <QMenu>
 #include <QPaintEvent>
 #include <QSharedPointer>
 #include <QVBoxLayout>
@@ -66,8 +65,9 @@ private:
         QLabel *nameLabel_;
         Label *topicLabel_;
 
-        QMenu *menu_;
+        Menu *menu_;
         QAction *leaveRoom_;
+        QAction *roomSettings_;
         QAction *inviteUsers_;
 
         FlatButton *settingsBtn_;

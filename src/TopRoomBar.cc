@@ -95,8 +95,14 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                 MainWindow::instance()->openLeaveRoomDialog();
         });
 
+        roomSettings_ = new QAction(tr("Settings"), this);
+        connect(roomSettings_, &QAction::triggered, this, []() {
+                MainWindow::instance()->openRoomSettings();
+        });
+
         menu_->addAction(inviteUsers_);
         menu_->addAction(leaveRoom_);
+        menu_->addAction(roomSettings_);
 
         connect(settingsBtn_, &QPushButton::clicked, this, [this]() {
                 auto pos = mapToGlobal(settingsBtn_->pos());

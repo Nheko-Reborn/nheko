@@ -80,6 +80,7 @@ public:
         }
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
+        QSharedPointer<Cache> cache() { return cache_; }
 
 signals:
         void contentLoaded();

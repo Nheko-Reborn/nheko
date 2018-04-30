@@ -538,9 +538,10 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                 // Check if the room is joined.
                 if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room), data)) {
                         try {
-                                room_info.emplace(
-                                  QString::fromStdString(room),
-                                  json::parse(std::string(data.data(), data.size())));
+                                RoomInfo tmp = json::parse(std::string(data.data(), data.size()));
+                                tmp.member_count = getMembersDb(txn, room).size(txn);
+
+                                room_info.emplace(QString::fromStdString(room), std::move(tmp));
                         } catch (const json::exception &e) {
                                 qWarning()
                                   << "failed to parse room info:" << QString::fromStdString(room)
@@ -550,9 +551,12 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                         // Check if the room is an invite.
                         if (lmdb::dbi_get(txn, invitesDb_, lmdb::val(room), data)) {
                                 try {
-                                        room_info.emplace(
-                                          QString::fromStdString(room),
-                                          json::parse(std::string(data.data(), data.size())));
+                                        RoomInfo tmp =
+                                          json::parse(std::string(data.data(), data.size()));
+                                        tmp.member_count = getInviteMembersDb(txn, room).size(txn);
+
+                                        room_info.emplace(QString::fromStdString(room),
+                                                          std::move(tmp));
                                 } catch (const json::exception &e) {
                                         qWarning() << "failed to parse room info for invite:"
                                                    << QString::fromStdString(room)
@@ -581,7 +585,8 @@ Cache::roomInfo(bool withInvites)
         // Gather info about the joined rooms.
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
-                RoomInfo tmp = json::parse(std::move(room_data));
+                RoomInfo tmp     = json::parse(std::move(room_data));
+                tmp.member_count = getMembersDb(txn, room_id).size(txn);
                 result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
         }
         roomsCursor.close();
@@ -590,7 +595,8 @@ Cache::roomInfo(bool withInvites)
                 // Gather info about the invites.
                 auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
                 while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
-                        RoomInfo tmp = json::parse(room_data);
+                        RoomInfo tmp     = json::parse(room_data);
+                        tmp.member_count = getInviteMembersDb(txn, room_id).size(txn);
                         result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
                 }
                 invitesCursor.close();

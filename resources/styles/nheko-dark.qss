@@ -136,6 +136,7 @@ dialogs--Logout,
 dialogs--ReCaptcha,
 dialogs--LeaveRoom,
 dialogs--CreateRoom,
+dialogs--RoomSettings,
 dialogs--InviteUsers,
 dialogs--ReadReceipts,
 dialogs--JoinRoom,
@@ -145,6 +146,10 @@ dialogs--InviteUsers > QLineEdit,
 dialogs--JoinRoom > QLineEdit {
     background-color: #202228;
     color: #caccd1;
+}
+
+TopSection {
+    qproperty-textColor: #caccd1;
 }
 
 QListWidget,

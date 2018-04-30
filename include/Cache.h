@@ -64,6 +64,8 @@ struct RoomInfo
         std::string avatar_url;
         //! Whether or not the room is an invite.
         bool is_invite = false;
+        //! Total number of members in the room.
+        int16_t member_count = 0;
 };
 
 inline void
@@ -73,6 +75,9 @@ to_json(json &j, const RoomInfo &info)
         j["topic"]      = info.topic;
         j["avatar_url"] = info.avatar_url;
         j["is_invite"]  = info.is_invite;
+
+        if (info.member_count != 0)
+                j["member_count"] = info.member_count;
 }
 
 inline void
@@ -82,6 +87,9 @@ from_json(const json &j, RoomInfo &info)
         info.topic      = j.at("topic");
         info.avatar_url = j.at("avatar_url");
         info.is_invite  = j.at("is_invite");
+
+        if (j.count("member_count"))
+                info.member_count = j.at("member_count");
 }
 
 //! Basic information per member;

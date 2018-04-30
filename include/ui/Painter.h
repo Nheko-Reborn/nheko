@@ -103,7 +103,7 @@ public:
                 drawPixmap(region, pix);
         }
 
-        void drawLetterAvatar(const QChar &c,
+        void drawLetterAvatar(const QString &c,
                               const QColor &penColor,
                               const QColor &brushColor,
                               int w,

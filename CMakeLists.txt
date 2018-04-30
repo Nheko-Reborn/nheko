@@ -106,6 +106,7 @@ set(SRC_FILES
     src/dialogs/Logout.cc
     src/dialogs/ReadReceipts.cc
     src/dialogs/ReCaptcha.cpp
+    src/dialogs/RoomSettings.cpp
 
     # Emoji
     src/emoji/Category.cc
@@ -222,6 +223,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/dialogs/Logout.h
     include/dialogs/ReadReceipts.h
     include/dialogs/ReCaptcha.hpp
+    include/dialogs/RoomSettings.hpp
 
     # Emoji
     include/emoji/Category.h

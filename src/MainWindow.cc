@@ -41,6 +41,7 @@
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 #include "dialogs/Logout.h"
+#include "dialogs/RoomSettings.hpp"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -260,6 +261,27 @@ MainWindow::hasActiveUser()
 
         return settings.contains("auth/access_token") && settings.contains("auth/home_server") &&
                settings.contains("auth/user_id");
+}
+
+void
+MainWindow::openRoomSettings(const QString &room_id)
+{
+        const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
+
+        qDebug() << "room settings" << roomToSearch;
+
+        roomSettingsDialog_ = QSharedPointer<dialogs::RoomSettings>(
+          new dialogs::RoomSettings(roomToSearch, chat_page_->cache(), this));
+
+        connect(roomSettingsDialog_.data(), &dialogs::RoomSettings::closing, this, [this]() {
+                roomSettingsModal_->hide();
+        });
+
+        roomSettingsModal_ =
+          QSharedPointer<OverlayModal>(new OverlayModal(this, roomSettingsDialog_.data()));
+        roomSettingsModal_->setColor(QColor(30, 30, 30, 170));
+
+        roomSettingsModal_->show();
 }
 
 void

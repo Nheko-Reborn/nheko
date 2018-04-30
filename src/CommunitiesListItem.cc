@@ -2,6 +2,7 @@
 #include "Painter.h"
 #include "Ripple.h"
 #include "RippleOverlay.h"
+#include "Utils.h"
 
 CommunitiesListItem::CommunitiesListItem(QSharedPointer<Community> community,
                                          QString community_id,
@@ -74,7 +75,7 @@ CommunitiesListItem::paintEvent(QPaintEvent *)
                 font.setPixelSize(conf::roomlist::fonts::communityBubble);
                 p.setFont(font);
 
-                p.drawLetterAvatar(community_->getName()[0],
+                p.drawLetterAvatar(utils::firstChar(community_->getName()),
                                    avatarFgColor_,
                                    avatarBgColor_,
                                    width(),

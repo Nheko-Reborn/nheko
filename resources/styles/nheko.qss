@@ -138,6 +138,7 @@ dialogs--Logout,
 dialogs--ReCaptcha,
 dialogs--LeaveRoom,
 dialogs--CreateRoom,
+dialogs--RoomSettings,
 dialogs--InviteUsers,
 dialogs--ReadReceipts,
 dialogs--JoinRoom,
@@ -145,6 +146,10 @@ dialogs--PreviewUploadOverlay,
 QListWidget {
     background-color: white;
     color: #333;
+}
+
+TopSection {
+    qproperty-textColor: #333;
 }
 
 WelcomePage,

@@ -50,6 +50,7 @@ class JoinRoom;
 class LeaveRoom;
 class Logout;
 class ReCaptcha;
+class RoomSettings;
 }
 
 class MainWindow : public QMainWindow
@@ -68,6 +69,7 @@ public:
           std::function<void(const mtx::requests::CreateRoom &request)> callback);
         void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
         void openLogoutDialog(std::function<void()> callback);
+        void openRoomSettings(const QString &room_id = "");
 
 protected:
         void closeEvent(QCloseEvent *event);
@@ -147,4 +149,8 @@ private:
         QSharedPointer<OverlayModal> logoutModal_;
         //! Logout dialog.
         QSharedPointer<dialogs::Logout> logoutDialog_;
+        //! Room settings modal.
+        QSharedPointer<OverlayModal> roomSettingsModal_;
+        //! Room settings dialog.
+        QSharedPointer<dialogs::RoomSettings> roomSettingsDialog_;
 };
