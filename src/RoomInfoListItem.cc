@@ -107,6 +107,11 @@ RoomInfoListItem::resizeEvent(QResizeEvent *)
         QPainterPath path;
         path.addRect(0, 0, width(), height());
 
+        if (width() > ui::sidebar::SmallSize)
+                setToolTip("");
+        else
+                setToolTip(roomName_);
+
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
 }
