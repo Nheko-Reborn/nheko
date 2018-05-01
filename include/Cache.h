@@ -39,7 +39,7 @@ struct SearchResult
 
 Q_DECLARE_METATYPE(SearchResult)
 Q_DECLARE_METATYPE(QVector<SearchResult>)
-Q_DECLARE_METATYPE(RoomMember);
+Q_DECLARE_METATYPE(RoomMember)
 
 //! Used to uniquely identify a list of read receipts.
 struct ReadReceiptKey
