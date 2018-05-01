@@ -186,6 +186,21 @@ private:
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
         void notifyForLastEvent(const TimelineEvent &event);
+        //! Keep track of the sender and the timestamp of the current message.
+        void saveLastMessageInfo(const QString &sender, const QDateTime &datetime)
+        {
+                lastSender_       = sender;
+                lastMsgTimestamp_ = datetime;
+        }
+        void saveFirstMessageInfo(const QString &sender, const QDateTime &datetime)
+        {
+                firstSender_       = sender;
+                firstMsgTimestamp_ = datetime;
+        }
+        //! Keep track of the sender and the timestamp of the current message.
+        void saveMessageInfo(const QString &sender,
+                             uint64_t origin_server_ts,
+                             TimelineDirection direction);
 
         TimelineEvent findFirstViewableEvent(const std::vector<TimelineEvent> &events);
         TimelineEvent findLastViewableEvent(const std::vector<TimelineEvent> &events);
@@ -218,7 +233,9 @@ private:
 
         // Used to determine whether or not we should prefix a message with the
         // sender's name.
-        bool isSenderRendered(const QString &user_id, TimelineDirection direction);
+        bool isSenderRendered(const QString &user_id,
+                              uint64_t origin_server_ts,
+                              TimelineDirection direction);
 
         bool isPendingMessage(const QString &txnid, const QString &sender, const QString &userid);
         void removePendingMessage(const QString &txnid);
@@ -226,6 +243,8 @@ private:
         bool isDuplicate(const QString &event_id) { return eventIds_.contains(event_id); }
 
         void handleNewUserMessage(PendingMessage msg);
+        bool isDateDifference(const QDateTime &first,
+                              const QDateTime &second = QDateTime::currentDateTime()) const;
 
         // Return nullptr if the event couldn't be parsed.
         TimelineItem *parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
@@ -238,8 +257,11 @@ private:
         ScrollBar *scrollbar_;
         QWidget *scroll_widget_;
 
-        QString lastSender_;
         QString firstSender_;
+        QDateTime firstMsgTimestamp_;
+        QString lastSender_;
+        QDateTime lastMsgTimestamp_;
+
         QString room_id_;
         QString prev_batch_token_;
         QString local_user_;
@@ -289,7 +311,7 @@ TimelineView::addUserMessage(const QString &url,
                              const QString &mime,
                              uint64_t size)
 {
-        auto with_sender = lastSender_ != local_user_;
+        auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
         auto trimmed     = QFileInfo{filename}.fileName(); // Trim file path.
 
         auto widget = new Widget(client_, url, trimmed, size, this);
@@ -303,7 +325,8 @@ TimelineView::addUserMessage(const QString &url,
 
         QApplication::processEvents();
 
-        lastSender_ = local_user_;
+        // Keep track of the sender and the timestamp of the current message.
+        saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
 
         int txn_id = client_->incrementTransactionId();
 
@@ -343,9 +366,9 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
                 return nullptr;
         }
 
-        auto with_sender = isSenderRendered(sender, direction);
+        auto with_sender = isSenderRendered(sender, event.origin_server_ts, direction);
 
-        updateLastSender(sender, direction);
+        saveMessageInfo(sender, event.origin_server_ts, direction);
 
         auto item = createTimelineItem<Event>(event, with_sender);
 
@@ -368,9 +391,9 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
                 return nullptr;
         }
 
-        auto with_sender = isSenderRendered(sender, direction);
+        auto with_sender = isSenderRendered(sender, event.origin_server_ts, direction);
 
-        updateLastSender(sender, direction);
+        saveMessageInfo(sender, event.origin_server_ts, direction);
 
         auto item = createTimelineItem<Event, Widget>(event, with_sender);
 

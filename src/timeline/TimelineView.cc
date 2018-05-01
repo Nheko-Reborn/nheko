@@ -323,6 +323,7 @@ TimelineView::renderTopEvents(const std::vector<TimelineEvent> &events)
         // Reset the sender of the first message in the timeline
         // cause we're about to insert a new one.
         firstSender_.clear();
+        firstMsgTimestamp_ = QDateTime();
 
         // Parse in reverse order to determine where we should not show sender's
         // name.
@@ -352,7 +353,8 @@ TimelineView::renderTopEvents(const std::vector<TimelineEvent> &events)
         // If this batch is the first being rendered (i.e the first and the last
         // events originate from this batch), set the last sender.
         if (lastSender_.isEmpty() && !items.empty())
-                lastSender_ = items.at(0)->descriptionMessage().userid;
+                saveLastMessageInfo(items.at(0)->descriptionMessage().userid,
+                                    items.at(0)->descriptionMessage().datetime);
 }
 
 void
@@ -453,12 +455,19 @@ TimelineView::updateLastSender(const QString &user_id, TimelineDirection directi
 }
 
 bool
-TimelineView::isSenderRendered(const QString &user_id, TimelineDirection direction)
+TimelineView::isSenderRendered(const QString &user_id,
+                               uint64_t origin_server_ts,
+                               TimelineDirection direction)
 {
-        if (direction == TimelineDirection::Bottom)
-                return lastSender_ != user_id;
-        else
-                return firstSender_ != user_id;
+        if (direction == TimelineDirection::Bottom) {
+                return (lastSender_ != user_id) ||
+                       isDateDifference(lastMsgTimestamp_,
+                                        QDateTime::fromMSecsSinceEpoch(origin_server_ts));
+        } else {
+                return (firstSender_ != user_id) ||
+                       isDateDifference(firstMsgTimestamp_,
+                                        QDateTime::fromMSecsSinceEpoch(origin_server_ts));
+        }
 }
 
 void
@@ -529,7 +538,7 @@ TimelineView::updatePendingMessage(int txn_id, QString event_id)
 void
 TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 {
-        auto with_sender = lastSender_ != local_user_;
+        auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
 
         TimelineItem *view_item =
           new TimelineItem(ty, local_user_, body, with_sender, room_id_, scroll_widget_);
@@ -540,7 +549,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 
         QApplication::processEvents();
 
-        lastSender_ = local_user_;
+        saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
 
         int txn_id = client_->incrementTransactionId();
         PendingMessage message(ty, txn_id, body, "", "", -1, "", view_item);
@@ -774,16 +783,20 @@ TimelineView::removeEvent(const QString &event_id)
 
         // If we deleted the last item in the timeline...
         if (!nextItem && prevItem)
-                lastSender_ = prevItem->descriptionMessage().userid;
+                saveLastMessageInfo(prevItem->descriptionMessage().userid,
+                                    prevItem->descriptionMessage().datetime);
 
         // If we deleted the first item in the timeline...
         if (!prevItem && nextItem)
-                firstSender_ = nextItem->descriptionMessage().userid;
+                saveFirstMessageInfo(nextItem->descriptionMessage().userid,
+                                     nextItem->descriptionMessage().datetime);
 
         // If we deleted the only item in the timeline...
         if (!prevItem && !nextItem) {
                 firstSender_.clear();
+                firstMsgTimestamp_ = QDateTime();
                 lastSender_.clear();
+                lastMsgTimestamp_ = QDateTime();
         }
 
         // Finally remove the event.
@@ -834,4 +847,30 @@ inline mtx::events::EventType
 TimelineView::getEventType(const mtx::events::collections::TimelineEvents &event) const
 {
         return mpark::visit([](auto msg) { return msg.type; }, event);
+}
+
+void
+TimelineView::saveMessageInfo(const QString &sender,
+                              uint64_t origin_server_ts,
+                              TimelineDirection direction)
+{
+        updateLastSender(sender, direction);
+
+        if (direction == TimelineDirection::Bottom)
+                lastMsgTimestamp_ = QDateTime::fromMSecsSinceEpoch(origin_server_ts);
+        else
+                firstMsgTimestamp_ = QDateTime::fromMSecsSinceEpoch(origin_server_ts);
+}
+
+bool
+TimelineView::isDateDifference(const QDateTime &first, const QDateTime &second) const
+{
+        // Check if the dates are in a different day.
+        if (std::abs(first.daysTo(second)) != 0)
+                return true;
+
+        const uint64_t diffInSeconds   = std::abs(first.msecsTo(second)) / 1000;
+        constexpr uint64_t fifteenMins = 15 * 60;
+
+        return diffInSeconds > fifteenMins;
 }
