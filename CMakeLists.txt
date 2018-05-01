@@ -102,6 +102,7 @@ set(SRC_FILES
     src/dialogs/PreviewUploadOverlay.cc
     src/dialogs/InviteUsers.cc
     src/dialogs/JoinRoom.cc
+    src/dialogs/MemberList.cpp
     src/dialogs/LeaveRoom.cc
     src/dialogs/Logout.cc
     src/dialogs/ReadReceipts.cc
@@ -219,6 +220,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/dialogs/PreviewUploadOverlay.h
     include/dialogs/InviteUsers.h
     include/dialogs/JoinRoom.h
+    include/dialogs/MemberList.hpp
     include/dialogs/LeaveRoom.h
     include/dialogs/Logout.h
     include/dialogs/ReadReceipts.h

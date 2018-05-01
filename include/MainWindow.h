@@ -49,6 +49,7 @@ class InviteUsers;
 class JoinRoom;
 class LeaveRoom;
 class Logout;
+class MemberList;
 class ReCaptcha;
 class RoomSettings;
 }
@@ -70,6 +71,7 @@ public:
         void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
         void openLogoutDialog(std::function<void()> callback);
         void openRoomSettings(const QString &room_id = "");
+        void openMemberListDialog(const QString &room_id = "");
 
 protected:
         void closeEvent(QCloseEvent *event);
@@ -153,4 +155,8 @@ private:
         QSharedPointer<OverlayModal> roomSettingsModal_;
         //! Room settings dialog.
         QSharedPointer<dialogs::RoomSettings> roomSettingsDialog_;
+        //! Member list modal.
+        QSharedPointer<OverlayModal> memberListModal_;
+        //! Member list dialog.
+        QSharedPointer<dialogs::MemberList> memberListDialog_;
 };

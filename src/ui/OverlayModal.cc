@@ -23,7 +23,7 @@
 OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
   : OverlayWidget(parent)
   , content_{content}
-  , color_{QColor(55, 55, 55)}
+  , color_{QColor(30, 30, 30, 170)}
 {
         auto layout = new QVBoxLayout();
         layout->addWidget(content);

@@ -49,17 +49,19 @@ RoomSettings::RoomSettings(const QString &room_id, QSharedPointer<Cache> cache, 
 
         auto notifOptionLayout_ = new QHBoxLayout;
         notifOptionLayout_->setMargin(5);
-        auto themeLabel_ = new QLabel(tr("Notifications"), this);
-        auto notifCombo  = new QComboBox(this);
-        notifCombo->addItem("Nothing");
-        notifCombo->addItem("Mentions only");
-        notifCombo->addItem("All messages");
-        themeLabel_->setStyleSheet("font-size: 15px;");
+        auto notifLabel = new QLabel(tr("Notifications"), this);
+        auto notifCombo = new QComboBox(this);
+        notifCombo->setDisabled(true);
+        notifCombo->addItem(tr("Muted"));
+        notifCombo->addItem(tr("Mentions only"));
+        notifCombo->addItem(tr("All messages"));
+        notifLabel->setStyleSheet("font-size: 15px;");
 
-        notifOptionLayout_->addWidget(themeLabel_);
+        notifOptionLayout_->addWidget(notifLabel);
         notifOptionLayout_->addWidget(notifCombo, 0, Qt::AlignBottom | Qt::AlignRight);
 
         layout->addWidget(new TopSection(info_, avatarImg_, this));
+        layout->addLayout(notifOptionLayout_);
         layout->addLayout(notifOptionLayout_);
         layout->addLayout(btnLayout);
 

@@ -90,6 +90,11 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                   [this](const QStringList &invitees) { emit inviteUsers(invitees); });
         });
 
+        roomMembers_ = new QAction(tr("Members"), this);
+        connect(roomMembers_, &QAction::triggered, this, []() {
+                MainWindow::instance()->openMemberListDialog();
+        });
+
         leaveRoom_ = new QAction(tr("Leave room"), this);
         connect(leaveRoom_, &QAction::triggered, this, []() {
                 MainWindow::instance()->openLeaveRoomDialog();
@@ -101,6 +106,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         });
 
         menu_->addAction(inviteUsers_);
+        menu_->addAction(roomMembers_);
         menu_->addAction(leaveRoom_);
         menu_->addAction(roomSettings_);
 

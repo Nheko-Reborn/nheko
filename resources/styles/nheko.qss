@@ -141,6 +141,7 @@ dialogs--CreateRoom,
 dialogs--RoomSettings,
 dialogs--InviteUsers,
 dialogs--ReadReceipts,
+dialogs--MemberList,
 dialogs--JoinRoom,
 dialogs--PreviewUploadOverlay,
 QListWidget {

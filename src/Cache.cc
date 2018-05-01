@@ -1045,6 +1045,48 @@ Cache::searchUsers(const std::string &room_id, const std::string &query, std::ui
         return results;
 }
 
+std::vector<RoomMember>
+Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
+{
+        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto db     = getMembersDb(txn, room_id);
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        std::size_t currentIndex = 0;
+
+        const auto endIndex = std::min(startIndex + len, db.size(txn));
+
+        std::vector<RoomMember> members;
+
+        std::string user_id, user_data;
+        while (cursor.get(user_id, user_data, MDB_NEXT)) {
+                if (currentIndex < startIndex) {
+                        currentIndex += 1;
+                        continue;
+                }
+
+                if (currentIndex >= endIndex)
+                        break;
+
+                try {
+                        MemberInfo tmp = json::parse(user_data);
+                        members.emplace_back(
+                          RoomMember{QString::fromStdString(user_id),
+                                     QString::fromStdString(tmp.name),
+                                     QImage::fromData(image(txn, tmp.avatar_url))});
+                } catch (const json::exception &e) {
+                        qWarning() << e.what();
+                }
+
+                currentIndex += 1;
+        }
+
+        cursor.close();
+        txn.commit();
+
+        return members;
+}
+
 QHash<QString, QString> Cache::DisplayNames;
 QHash<QString, QString> Cache::AvatarUrls;
 

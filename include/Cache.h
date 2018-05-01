@@ -24,6 +24,13 @@
 #include <lmdb++.h>
 #include <mtx/responses.hpp>
 
+struct RoomMember
+{
+        QString user_id;
+        QString display_name;
+        QImage avatar;
+};
+
 struct SearchResult
 {
         QString user_id;
@@ -32,6 +39,7 @@ struct SearchResult
 
 Q_DECLARE_METATYPE(SearchResult)
 Q_DECLARE_METATYPE(QVector<SearchResult>)
+Q_DECLARE_METATYPE(RoomMember);
 
 //! Used to uniquely identify a list of read receipts.
 struct ReadReceiptKey
@@ -163,6 +171,11 @@ public:
                                  lmdb::dbi &statesdb,
                                  lmdb::dbi &membersdb,
                                  const QString &room_id);
+
+        //! Retrieve member info from a room.
+        std::vector<RoomMember> getMembers(const std::string &room_id,
+                                           std::size_t startIndex = 0,
+                                           std::size_t len        = 30);
 
         void saveState(const mtx::responses::Sync &res);
         bool isInitialized() const;

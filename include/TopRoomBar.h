@@ -67,6 +67,7 @@ private:
 
         Menu *menu_;
         QAction *leaveRoom_;
+        QAction *roomMembers_;
         QAction *roomSettings_;
         QAction *inviteUsers_;
 

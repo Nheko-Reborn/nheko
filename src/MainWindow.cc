@@ -41,6 +41,7 @@
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 #include "dialogs/Logout.h"
+#include "dialogs/MemberList.hpp"
 #include "dialogs/RoomSettings.hpp"
 
 MainWindow *MainWindow::instance_ = nullptr;
@@ -268,8 +269,6 @@ MainWindow::openRoomSettings(const QString &room_id)
 {
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
 
-        qDebug() << "room settings" << roomToSearch;
-
         roomSettingsDialog_ = QSharedPointer<dialogs::RoomSettings>(
           new dialogs::RoomSettings(roomToSearch, chat_page_->cache(), this));
 
@@ -279,9 +278,22 @@ MainWindow::openRoomSettings(const QString &room_id)
 
         roomSettingsModal_ =
           QSharedPointer<OverlayModal>(new OverlayModal(this, roomSettingsDialog_.data()));
-        roomSettingsModal_->setColor(QColor(30, 30, 30, 170));
 
         roomSettingsModal_->show();
+}
+
+void
+MainWindow::openMemberListDialog(const QString &room_id)
+{
+        const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
+
+        memberListDialog_ = QSharedPointer<dialogs::MemberList>(
+          new dialogs::MemberList(roomToSearch, chat_page_->cache(), this));
+
+        memberListModal_ =
+          QSharedPointer<OverlayModal>(new OverlayModal(this, memberListDialog_.data()));
+
+        memberListModal_->show();
 }
 
 void
@@ -325,6 +337,7 @@ MainWindow::showOverlayProgressBar()
                 progressModal_ =
                   QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
                                                [](OverlayModal *modal) { modal->deleteLater(); });
+                progressModal_->setColor(QColor(30, 30, 30));
                 progressModal_->setDismissible(false);
                 progressModal_->show();
         }
@@ -377,7 +390,6 @@ MainWindow::openJoinRoomDialog(std::function<void(const QString &room_id)> callb
         if (joinRoomModal_.isNull()) {
                 joinRoomModal_ = QSharedPointer<OverlayModal>(
                   new OverlayModal(MainWindow::instance(), joinRoomDialog_.data()));
-                joinRoomModal_->setColor(QColor(30, 30, 30, 170));
         }
 
         joinRoomModal_->show();
@@ -406,7 +418,6 @@ MainWindow::openCreateRoomDialog(
         if (createRoomModal_.isNull()) {
                 createRoomModal_ = QSharedPointer<OverlayModal>(
                   new OverlayModal(MainWindow::instance(), createRoomDialog_.data()));
-                createRoomModal_->setColor(QColor(30, 30, 30, 170));
         }
 
         createRoomModal_->show();
@@ -431,7 +442,6 @@ MainWindow::openLogoutDialog(std::function<void()> callback)
         if (logoutModal_.isNull()) {
                 logoutModal_ = QSharedPointer<OverlayModal>(
                   new OverlayModal(MainWindow::instance(), logoutDialog_.data()));
-                logoutModal_->setColor(QColor(30, 30, 30, 170));
         }
 
         logoutModal_->show();
