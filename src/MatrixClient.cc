@@ -309,13 +309,24 @@ MatrixClient::sync() noexcept
                 reply->deleteLater();
 
                 int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                auto data  = reply->readAll();
 
                 if (status == 0 || status >= 400) {
-                        qDebug() << reply->errorString();
-                        return;
-                }
+                        try {
+                                mtx::errors::Error res = nlohmann::json::parse(data);
 
-                auto data = reply->readAll();
+                                if (res.errcode == mtx::errors::ErrorCode::M_UNKNOWN_TOKEN) {
+                                        emit invalidToken();
+                                        return;
+                                }
+
+                                emit syncError(QString::fromStdString(res.error));
+
+                                return;
+                        } catch (const nlohmann::json::exception &e) {
+                                qWarning() << e.what();
+                        }
+                }
 
                 try {
                         mtx::responses::Sync response = nlohmann::json::parse(data);

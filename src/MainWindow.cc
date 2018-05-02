@@ -131,6 +131,11 @@ MainWindow::MainWindow(QWidget *parent)
                 SIGNAL(registerSuccess(QString, QString, QString)),
                 this,
                 SLOT(showChatPage(QString, QString, QString)));
+        connect(client_.data(), &MatrixClient::invalidToken, this, [this]() {
+                chat_page_->deleteConfigs();
+                showLoginPage();
+                login_page_->loginError("Invalid token detected. Please try to login again.");
+        });
 
         QShortcut *quitShortcut = new QShortcut(QKeySequence::Quit, this);
         connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);

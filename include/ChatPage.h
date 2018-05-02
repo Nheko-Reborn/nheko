@@ -81,6 +81,7 @@ public:
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
         QSharedPointer<Cache> cache() { return cache_; }
+        void deleteConfigs();
 
 signals:
         void contentLoaded();
@@ -126,7 +127,6 @@ private:
         void updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids);
 
         void loadStateFromCache();
-        void deleteConfigs();
         void resetUI();
         //! Decides whether or not to hide the group's sidebar.
         void setGroupViewState(bool isEnabled);

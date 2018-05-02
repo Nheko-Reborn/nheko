@@ -175,6 +175,8 @@ signals:
 
         void redactionFailed(const QString &error);
         void redactionCompleted(const QString &room_id, const QString &event_id);
+        void invalidToken();
+        void syncError(const QString &error);
 
 private:
         QNetworkReply *makeUploadRequest(QSharedPointer<QIODevice> iodev);
