@@ -181,6 +181,10 @@ signals:
 private:
         QNetworkReply *makeUploadRequest(QSharedPointer<QIODevice> iodev);
         QJsonObject getUploadReply(QNetworkReply *reply);
+        void setupAuth(QNetworkRequest &req)
+        {
+                req.setRawHeader("Authorization", QString("Bearer %1").arg(token_).toLocal8Bit());
+        }
 
         // Client API prefix.
         QString clientApiUrl_;

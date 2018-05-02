@@ -182,15 +182,12 @@ MatrixClient::login(const QString &username, const QString &password) noexcept
 void
 MatrixClient::logout() noexcept
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + "/logout");
-        endpoint.setQuery(query);
 
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         QJsonObject body{};
         auto reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
@@ -288,7 +285,6 @@ MatrixClient::sync() noexcept
         query.addQueryItem("set_presence", "online");
         query.addQueryItem("filter", filter_);
         query.addQueryItem("timeout", "30000");
-        query.addQueryItem("access_token", token_);
 
         if (next_batch_.isEmpty()) {
                 qDebug() << "Sync requires a valid next_batch token. Initial sync should "
@@ -303,6 +299,7 @@ MatrixClient::sync() noexcept
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
 
         auto reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -346,13 +343,9 @@ MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
                               uint64_t media_size,
                               const QString &url) noexcept
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ +
                          QString("/rooms/%1/send/m.room.message/%2").arg(roomid).arg(txnId));
-        endpoint.setQuery(query);
 
         QJsonObject body;
         QJsonObject info = {{"size", static_cast<qint64>(media_size)}, {"mimetype", mime}};
@@ -383,6 +376,7 @@ MatrixClient::sendRoomMessage(mtx::events::MessageType ty,
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         auto reply = put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
 
@@ -429,13 +423,13 @@ MatrixClient::initialSync() noexcept
         QUrlQuery query;
         query.addQueryItem("timeout", "0");
         query.addQueryItem("filter", filter_);
-        query.addQueryItem("access_token", token_);
 
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + "/sync");
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
 
         auto reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -511,14 +505,11 @@ MatrixClient::getOwnProfile() noexcept
         QSettings settings;
         auto userid = settings.value("auth/user_id", "").toString();
 
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + "/profile/" + userid);
-        endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
 
         QNetworkReply *reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -546,14 +537,11 @@ MatrixClient::getOwnProfile() noexcept
 void
 MatrixClient::getOwnCommunities() noexcept
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + "/joined_groups");
-        endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
 
         QNetworkReply *reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -680,14 +668,11 @@ MatrixClient::fetchCommunityAvatar(const QString &communityId, const QUrl &avata
 void
 MatrixClient::fetchCommunityProfile(const QString &communityId)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + "/groups/" + communityId + "/profile");
-        endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
 
         QNetworkReply *reply = get(request);
 
@@ -711,14 +696,11 @@ MatrixClient::fetchCommunityProfile(const QString &communityId)
 void
 MatrixClient::fetchCommunityRooms(const QString &communityId)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + "/groups/" + communityId + "/rooms");
-        endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
 
         QNetworkReply *reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply, communityId]() {
@@ -854,7 +836,6 @@ void
 MatrixClient::messages(const QString &roomid, const QString &from_token, int limit) noexcept
 {
         QUrlQuery query;
-        query.addQueryItem("access_token", token_);
         query.addQueryItem("from", from_token);
         query.addQueryItem("dir", "b");
         query.addQueryItem("limit", QString::number(limit));
@@ -864,6 +845,7 @@ MatrixClient::messages(const QString &roomid, const QString &from_token, int lim
         endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
 
         auto reply = get(request);
         connect(reply, &QNetworkReply::finished, this, [this, reply, roomid]() {
@@ -997,15 +979,12 @@ MatrixClient::uploadFilter(const QString &filter) noexcept
         QSettings settings;
         auto userid = settings.value("auth/user_id", "").toString();
 
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/user/%1/filter").arg(userid));
-        endpoint.setQuery(query);
 
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         auto reply = post(request, doc.toJson(QJsonDocument::Compact));
 
@@ -1036,15 +1015,12 @@ MatrixClient::uploadFilter(const QString &filter) noexcept
 void
 MatrixClient::joinRoom(const QString &roomIdOrAlias)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/join/%1").arg(roomIdOrAlias));
-        endpoint.setQuery(query);
 
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         auto reply = post(request, "{}");
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
@@ -1076,15 +1052,12 @@ MatrixClient::joinRoom(const QString &roomIdOrAlias)
 void
 MatrixClient::leaveRoom(const QString &roomId)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/leave").arg(roomId));
-        endpoint.setQuery(query);
 
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         auto reply = post(request, "{}");
 
@@ -1105,15 +1078,12 @@ MatrixClient::leaveRoom(const QString &roomId)
 void
 MatrixClient::inviteUser(const QString &roomId, const QString &user)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/invite").arg(roomId));
-        endpoint.setQuery(query);
 
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         QJsonObject body{{"user_id", user}};
         auto reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
@@ -1136,15 +1106,12 @@ MatrixClient::inviteUser(const QString &roomId, const QString &user)
 void
 MatrixClient::createRoom(const mtx::requests::CreateRoom &create_room_request)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/createRoom"));
-        endpoint.setQuery(query);
 
         QNetworkRequest request(endpoint);
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         nlohmann::json body = create_room_request;
         auto reply          = post(request, QString::fromStdString(body.dump()).toUtf8());
@@ -1181,13 +1148,8 @@ MatrixClient::sendTypingNotification(const QString &roomid, int timeoutInMillis)
         QSettings settings;
         QString user_id = settings.value("auth/user_id").toString();
 
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/typing/%2").arg(roomid).arg(user_id));
-
-        endpoint.setQuery(query);
 
         QString msgType("");
         QJsonObject body;
@@ -1196,6 +1158,7 @@ MatrixClient::sendTypingNotification(const QString &roomid, int timeoutInMillis)
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
 }
@@ -1206,13 +1169,8 @@ MatrixClient::removeTypingNotification(const QString &roomid)
         QSettings settings;
         QString user_id = settings.value("auth/user_id").toString();
 
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/typing/%2").arg(roomid).arg(user_id));
-
-        endpoint.setQuery(query);
 
         QString msgType("");
         QJsonObject body;
@@ -1221,6 +1179,7 @@ MatrixClient::removeTypingNotification(const QString &roomid)
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         put(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
 }
@@ -1228,15 +1187,12 @@ MatrixClient::removeTypingNotification(const QString &roomid)
 void
 MatrixClient::readEvent(const QString &room_id, const QString &event_id)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/read_markers").arg(room_id));
-        endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         QJsonObject body({{"m.fully_read", event_id}, {"m.read", event_id}});
         auto reply = post(request, QJsonDocument(body).toJson(QJsonDocument::Compact));
@@ -1256,12 +1212,8 @@ MatrixClient::readEvent(const QString &room_id, const QString &event_id)
 QNetworkReply *
 MatrixClient::makeUploadRequest(QSharedPointer<QIODevice> iodev)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(mediaApiUrl_ + "/upload");
-        endpoint.setQuery(query);
 
         if (!iodev->open(QIODevice::ReadOnly)) {
                 qWarning() << "Error while reading device:" << iodev->errorString();
@@ -1273,6 +1225,7 @@ MatrixClient::makeUploadRequest(QSharedPointer<QIODevice> iodev)
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::ContentTypeHeader, mime.name());
+        setupAuth(request);
 
         auto reply = post(request, iodev.data());
 
@@ -1320,18 +1273,15 @@ MatrixClient::getUploadReply(QNetworkReply *reply)
 void
 MatrixClient::redactEvent(const QString &room_id, const QString &event_id)
 {
-        QUrlQuery query;
-        query.addQueryItem("access_token", token_);
-
         QUrl endpoint(server_);
         endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/redact/%2/%3")
                                            .arg(room_id)
                                            .arg(event_id)
                                            .arg(incrementTransactionId()));
-        endpoint.setQuery(query);
 
         QNetworkRequest request(QString(endpoint.toEncoded()));
         request.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
+        setupAuth(request);
 
         // TODO: no reason specified
         QJsonObject body{};
