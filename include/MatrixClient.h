@@ -19,6 +19,7 @@
 
 #include <QFileInfo>
 #include <QNetworkAccessManager>
+#include <QNetworkRequest>
 #include <QUrl>
 #include <mtx.hpp>
 
