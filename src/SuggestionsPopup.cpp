@@ -136,6 +136,8 @@ SuggestionsPopup::addRooms(const std::vector<RoomSearchResult> &rooms)
         adjustSize();
 
         resize(geometry().width(), 40 * rooms.size());
+
+        selectNextSuggestion();
 }
 
 void
@@ -158,6 +160,8 @@ SuggestionsPopup::addUsers(const QVector<SearchResult> &users)
         adjustSize();
 
         resize(geometry().width(), 40 * users.size());
+
+        selectNextSuggestion();
 }
 
 void

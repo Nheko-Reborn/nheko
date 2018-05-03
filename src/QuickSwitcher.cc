@@ -31,17 +31,22 @@ RoomSearchInput::RoomSearchInput(QWidget *parent)
 void
 RoomSearchInput::keyPressEvent(QKeyEvent *event)
 {
-        if (event->key() == Qt::Key_Tab || event->key() == Qt::Key_Down) {
+        switch (event->key()) {
+        case Qt::Key_Tab:
+        case Qt::Key_Down: {
                 emit selectNextCompletion();
                 event->accept();
-                return;
-        } else if (event->key() == Qt::Key_Up) {
+                break;
+        }
+        case Qt::Key_Backtab:
+        case Qt::Key_Up: {
                 emit selectPreviousCompletion();
                 event->accept();
-                return;
+                break;
         }
-
-        TextField::keyPressEvent(event);
+        default:
+                TextField::keyPressEvent(event);
+        }
 }
 
 void
