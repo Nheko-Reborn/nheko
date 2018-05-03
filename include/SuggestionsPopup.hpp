@@ -53,11 +53,14 @@ class UserItem : public PopupItem
 public:
         UserItem(QWidget *parent, const QString &user_id);
         QString selectedText() const { return userId_; }
+        void updateItem(const QString &user_id);
 
 protected:
         void mousePressEvent(QMouseEvent *event) override;
 
 private:
+        void resolveAvatar(const QString &user_id);
+
         QLabel *userName_;
         QString userId_;
 };
@@ -69,6 +72,7 @@ class RoomItem : public PopupItem
 public:
         RoomItem(QWidget *parent, const RoomSearchResult &res);
         QString selectedText() const { return roomId_; }
+        void updateItem(const RoomSearchResult &res);
 
 protected:
         void mousePressEvent(QMouseEvent *event) override;
@@ -124,12 +128,16 @@ private:
         void resetSelection() { selectedItem_ = -1; }
         void selectFirstItem() { selectedItem_ = 0; }
         void selectLastItem() { selectedItem_ = layout_->count() - 1; }
-        void removeItems()
+        void removeLayoutItemsAfter(size_t startingPos)
         {
+                size_t posToRemove = layout_->count() - 1;
+
                 QLayoutItem *item;
-                while ((item = layout_->takeAt(0)) != 0) {
+                while (startingPos <= posToRemove && (item = layout_->takeAt(posToRemove)) != 0) {
                         delete item->widget();
                         delete item;
+
+                        posToRemove = layout_->count() - 1;
                 }
         }
 
