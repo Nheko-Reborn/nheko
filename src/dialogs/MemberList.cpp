@@ -3,6 +3,8 @@
 #include <QStyleOption>
 #include <QVBoxLayout>
 
+#include "AvatarProvider.h"
+#include "ChatPage.h"
 #include "Config.h"
 #include "FlatButton.h"
 #include "Utils.h"
@@ -29,6 +31,11 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
 
         if (!member.avatar.isNull())
                 avatar_->setImage(member.avatar);
+        else
+                AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
+                                        member.user_id,
+                                        this,
+                                        [this](const QImage &img) { avatar_->setImage(img); });
 
         QFont nameFont, idFont;
         nameFont.setWeight(65);

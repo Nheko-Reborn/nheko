@@ -44,6 +44,11 @@ public slots:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void hideEvent(QHideEvent *event) override
+        {
+                userList_->clear();
+                QFrame::hideEvent(event);
+        }
 
 private:
         QLabel *topLabel_;

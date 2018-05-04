@@ -45,9 +45,15 @@ public slots:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
-        void moveButtonToBottom();
+        void hideEvent(QHideEvent *event) override
+        {
+                list_->clear();
+                QFrame::hideEvent(event);
+        }
 
 private:
+        void moveButtonToBottom();
+
         QString room_id_;
         QLabel *topLabel_;
         QListWidget *list_;
