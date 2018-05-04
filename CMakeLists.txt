@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 option(APPVEYOR_BUILD "Build on appveyor" OFF)
+option(ASAN "Compile with address sanitizers" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -310,6 +311,10 @@ set(NHEKO_DEPS
     ${MOC_HEADERS}
     ${TRANSLATION_DEPS}
     ${META_FILES_TO_INCLUDE})
+
+if(ASAN)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined")
+endif()
 
 if(APPLE)
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
