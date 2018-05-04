@@ -597,7 +597,7 @@ TimelineItem::addAvatar()
         // Restore widget's layout.
         if (widget) {
                 widgetLayout_ = new QHBoxLayout();
-                widgetLayout_->setContentsMargins(0, 5, 0, 0);
+                widgetLayout_->setMargin(0);
                 widgetLayout_->addWidget(widget);
                 widgetLayout_->addStretch(1);
 
