@@ -196,6 +196,7 @@ public:
 
         //! Retrieves the saved room avatar.
         QImage getRoomAvatar(const QString &id);
+        QImage getRoomAvatar(const std::string &id);
 
         //! Adds a user to the read list for the given event.
         //!
@@ -220,6 +221,7 @@ public:
         }
         void saveImage(const QString &url, const QByteArray &data);
 
+        RoomInfo singleRoomInfo(const std::string &room_id);
         std::vector<std::string> roomsWithStateUpdates(const mtx::responses::Sync &res);
         std::map<QString, RoomInfo> getRoomInfo(const std::vector<std::string> &rooms);
         std::map<QString, RoomInfo> roomUpdates(const mtx::responses::Sync &sync)

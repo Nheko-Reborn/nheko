@@ -528,6 +528,34 @@ Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
         return rooms;
 }
 
+RoomInfo
+Cache::singleRoomInfo(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::val data;
+
+        // Check if the room is joined.
+        if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room_id), data)) {
+                try {
+                        RoomInfo tmp     = json::parse(std::string(data.data(), data.size()));
+                        tmp.member_count = getMembersDb(txn, room_id).size(txn);
+
+                        txn.commit();
+
+                        return tmp;
+                } catch (const json::exception &e) {
+                        qWarning()
+                          << "failed to parse room info:" << QString::fromStdString(room_id)
+                          << QString::fromStdString(std::string(data.data(), data.size()));
+                }
+        }
+
+        txn.commit();
+
+        return RoomInfo();
+}
+
 std::map<QString, RoomInfo>
 Cache::getRoomInfo(const std::vector<std::string> &rooms)
 {
@@ -893,11 +921,17 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
 QImage
 Cache::getRoomAvatar(const QString &room_id)
 {
+        return getRoomAvatar(room_id.toStdString());
+}
+
+QImage
+Cache::getRoomAvatar(const std::string &room_id)
+{
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
         lmdb::val response;
 
-        if (!lmdb::dbi_get(txn, roomsDb_, lmdb::val(room_id.toStdString()), response)) {
+        if (!lmdb::dbi_get(txn, roomsDb_, lmdb::val(room_id), response)) {
                 txn.commit();
                 return QImage();
         }

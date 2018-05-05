@@ -38,6 +38,8 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
+#include "notifications/Manager.h"
+
 #include "dialogs/ReadReceipts.h"
 #include "timeline/TimelineViewManager.h"
 
@@ -864,12 +866,17 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
                         }
 
                         if (!cache_->isNotificationSent(event_id)) {
-                                // TODO: send desktop notification
-                                // qDebug() << "sender" << utils::event_sender(item.event);
-                                // qDebug() << "body" << utils::event_body(item.event);
+                                const auto room_id = QString::fromStdString(item.room_id);
+                                const auto user_id = utils::event_sender(item.event);
+                                const auto body    = utils::event_body(item.event);
 
                                 // We should only sent one notification per event.
-                                // cache_->markSentNotification(event_id);
+                                cache_->markSentNotification(event_id);
+
+                                NotificationsManager::postNotification(
+                                  QString::fromStdString(cache_->singleRoomInfo(item.room_id).name),
+                                  Cache::displayName(room_id, user_id),
+                                  body);
                         }
                 } catch (const lmdb::error &e) {
                         qWarning() << e.what();

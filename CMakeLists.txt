@@ -24,8 +24,8 @@ fix_project_version()
 
 # Set additional project information
 set(COMPANY "Nheko")
-set(COPYRIGHT "Copyright (c) 2017 Mujx")
-set(IDENTIFIER "com.mujx.nheko")
+set(COPYRIGHT "Copyright (c) 2017 Nheko Contributors")
+set(IDENTIFIER "com.github.mujx.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
 
@@ -304,6 +304,15 @@ if(APPVEYOR_BUILD)
 else()
     set(NHEKO_LIBS ${COMMON_LIBS} ${LMDB_LIBRARY})
 endif()
+
+if (APPLE)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation")
+    set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm)
+elseif (WIN32)
+    set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp)
+else ()
+    set(SRC_FILES ${SRC_FILES} src/notifications/ManagerLinux.cpp)
+endif ()
 
 set(NHEKO_DEPS
     ${SRC_FILES}
