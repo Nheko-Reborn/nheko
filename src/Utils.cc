@@ -111,3 +111,30 @@ utils::levenshtein_distance(const std::string &s1, const std::string &s2)
 
         return *std::min_element(row1.begin(), row1.end());
 }
+
+QString
+utils::event_body(const mtx::events::collections::TimelineEvents &event)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::msg;
+
+        if (mpark::holds_alternative<RoomEvent<Audio>>(event)) {
+                return message_body<RoomEvent<Audio>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<Emote>>(event)) {
+                return message_body<RoomEvent<Emote>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<File>>(event)) {
+                return message_body<RoomEvent<File>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<Image>>(event)) {
+                return message_body<RoomEvent<Image>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<Notice>>(event)) {
+                return message_body<RoomEvent<Notice>>(event);
+        } else if (mpark::holds_alternative<Sticker>(event)) {
+                return message_body<Sticker>(event);
+        } else if (mpark::holds_alternative<RoomEvent<Text>>(event)) {
+                return message_body<RoomEvent<Text>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<Video>>(event)) {
+                return message_body<RoomEvent<Video>>(event);
+        }
+
+        return QString();
+}

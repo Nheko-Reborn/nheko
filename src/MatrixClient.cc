@@ -1310,3 +1310,41 @@ MatrixClient::redactEvent(const QString &room_id, const QString &event_id)
                 }
         });
 }
+
+void
+MatrixClient::getNotifications() noexcept
+{
+        QUrlQuery query;
+        query.addQueryItem("limit", "5");
+
+        QUrl endpoint(server_);
+        endpoint.setQuery(query);
+        endpoint.setPath(clientApiUrl_ + "/notifications");
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+        setupAuth(request);
+
+        auto reply = get(request);
+        connect(reply, &QNetworkReply::finished, this, [reply, this]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                auto data  = reply->readAll();
+
+                if (status == 0 || status >= 400) {
+                        try {
+                                mtx::errors::Error res = nlohmann::json::parse(data);
+                                std::cout << nlohmann::json::parse(data).dump(2) << '\n';
+                                // TODO: Response with an error signal
+                                return;
+                        } catch (const std::exception &) {
+                        }
+                }
+
+                try {
+                        emit notificationsRetrieved(nlohmann::json::parse(data));
+                } catch (const std::exception &e) {
+                        qWarning() << "failed to parse /notifications response" << e.what();
+                }
+        });
+}

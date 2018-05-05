@@ -136,6 +136,8 @@ private:
 
         //! Update the room with the new notification count.
         void updateRoomNotificationCount(const QString &room_id, uint16_t notification_count);
+        //! Send desktop notification for the received messages.
+        void sendDesktopNotifications(const mtx::responses::Notifications &);
 
         QStringList generateTypingUsers(const QString &room_id,
                                         const std::vector<std::string> &typing_users);

@@ -48,6 +48,7 @@ static constexpr const char *MEDIA_DB = "media";
 static constexpr const char *SYNC_STATE_DB = "sync_state";
 //! Read receipts per room/event.
 static constexpr const char *READ_RECEIPTS_DB = "read_receipts";
+static constexpr const char *NOTIFICATIONS_DB = "sent_notifications";
 
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
@@ -60,6 +61,7 @@ Cache::Cache(const QString &userId, QObject *parent)
   , invitesDb_{0}
   , mediaDb_{0}
   , readReceiptsDb_{0}
+  , notificationsDb_{0}
   , localUserId_{userId}
 {}
 
@@ -112,12 +114,13 @@ Cache::setup()
                 env_.open(statePath.toStdString().c_str());
         }
 
-        auto txn        = lmdb::txn::begin(env_);
-        syncStateDb_    = lmdb::dbi::open(txn, SYNC_STATE_DB, MDB_CREATE);
-        roomsDb_        = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
-        invitesDb_      = lmdb::dbi::open(txn, INVITES_DB, MDB_CREATE);
-        mediaDb_        = lmdb::dbi::open(txn, MEDIA_DB, MDB_CREATE);
-        readReceiptsDb_ = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
+        auto txn         = lmdb::txn::begin(env_);
+        syncStateDb_     = lmdb::dbi::open(txn, SYNC_STATE_DB, MDB_CREATE);
+        roomsDb_         = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
+        invitesDb_       = lmdb::dbi::open(txn, INVITES_DB, MDB_CREATE);
+        mediaDb_         = lmdb::dbi::open(txn, MEDIA_DB, MDB_CREATE);
+        readReceiptsDb_  = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
+        notificationsDb_ = lmdb::dbi::open(txn, NOTIFICATIONS_DB, MDB_CREATE);
         txn.commit();
 
         qRegisterMetaType<RoomInfo>();
@@ -1085,6 +1088,36 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
         txn.commit();
 
         return members;
+}
+
+void
+Cache::markSentNotification(const std::string &event_id)
+{
+        auto txn = lmdb::txn::begin(env_);
+        lmdb::dbi_put(txn, notificationsDb_, lmdb::val(event_id), lmdb::val(std::string("")));
+        txn.commit();
+}
+
+void
+Cache::removeReadNotification(const std::string &event_id)
+{
+        auto txn = lmdb::txn::begin(env_);
+
+        lmdb::dbi_del(txn, notificationsDb_, lmdb::val(event_id), nullptr);
+
+        txn.commit();
+}
+
+bool
+Cache::isNotificationSent(const std::string &event_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::val value;
+        bool res = lmdb::dbi_get(txn, notificationsDb_, lmdb::val(event_id), value);
+        txn.commit();
+
+        return res;
 }
 
 QHash<QString, QString> Cache::DisplayNames;

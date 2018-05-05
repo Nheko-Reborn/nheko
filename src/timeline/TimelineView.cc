@@ -727,12 +727,6 @@ TimelineView::event(QEvent *event)
         return QWidget::event(event);
 }
 
-QString
-TimelineView::getEventSender(const mtx::events::collections::TimelineEvents &event) const
-{
-        return mpark::visit([](auto msg) { return QString::fromStdString(msg.sender); }, event);
-}
-
 void
 TimelineView::toggleScrollDownButton()
 {
@@ -826,8 +820,8 @@ TimelineView::relativeWidget(TimelineItem *item, int dt) const
 TimelineEvent
 TimelineView::findFirstViewableEvent(const std::vector<TimelineEvent> &events)
 {
-        auto it = std::find_if(events.begin(), events.end(), [this](const auto &event) {
-                return mtx::events::EventType::RoomMessage == getEventType(event);
+        auto it = std::find_if(events.begin(), events.end(), [](const auto &event) {
+                return mtx::events::EventType::RoomMessage == utils::event_type(event);
         });
 
         return (it == std::end(events)) ? events.front() : *it;
@@ -836,17 +830,11 @@ TimelineView::findFirstViewableEvent(const std::vector<TimelineEvent> &events)
 TimelineEvent
 TimelineView::findLastViewableEvent(const std::vector<TimelineEvent> &events)
 {
-        auto it = std::find_if(events.rbegin(), events.rend(), [this](const auto &event) {
-                return mtx::events::EventType::RoomMessage == getEventType(event);
+        auto it = std::find_if(events.rbegin(), events.rend(), [](const auto &event) {
+                return mtx::events::EventType::RoomMessage == utils::event_type(event);
         });
 
         return (it == std::rend(events)) ? events.back() : *it;
-}
-
-inline mtx::events::EventType
-TimelineView::getEventType(const mtx::events::collections::TimelineEvents &event) const
-{
-        return mpark::visit([](auto msg) { return msg.type; }, event);
 }
 
 void

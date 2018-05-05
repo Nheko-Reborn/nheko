@@ -36,6 +36,7 @@
 #include "TypingDisplay.h"
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 
 #include "dialogs/ReadReceipts.h"
 #include "timeline/TimelineViewManager.h"
@@ -339,6 +340,10 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(client_.data(), &MatrixClient::redactionFailed, this, [this](const QString &error) {
                 emit showNotification(QString("Message redaction failed: %1").arg(error));
         });
+        connect(client_.data(),
+                &MatrixClient::notificationsRetrieved,
+                this,
+                &ChatPage::sendDesktopNotifications);
 
         showContentTimer_ = new QTimer(this);
         showContentTimer_->setSingleShot(true);
@@ -420,13 +425,20 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 view_manager_->initialize(rooms);
                 removeLeftRooms(rooms.leave);
 
+                bool hasNotifications = false;
                 for (const auto &room : rooms.join) {
                         auto room_id = QString::fromStdString(room.first);
 
                         updateTypingUsers(room_id, room.second.ephemeral.typing);
                         updateRoomNotificationCount(
                           room_id, room.second.unread_notifications.notification_count);
+
+                        if (room.second.unread_notifications.notification_count > 0)
+                                hasNotifications = true;
                 }
+
+                if (hasNotifications)
+                        client_->getNotifications();
         });
         connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
 
@@ -837,4 +849,30 @@ void
 ChatPage::updateRoomNotificationCount(const QString &room_id, uint16_t notification_count)
 {
         room_list_->updateUnreadMessageCount(room_id, notification_count);
+}
+
+void
+ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
+{
+        for (const auto &item : res.notifications) {
+                const auto event_id = utils::event_id(item.event);
+
+                try {
+                        if (item.read) {
+                                cache_->removeReadNotification(event_id);
+                                continue;
+                        }
+
+                        if (!cache_->isNotificationSent(event_id)) {
+                                // TODO: send desktop notification
+                                // qDebug() << "sender" << utils::event_sender(item.event);
+                                // qDebug() << "body" << utils::event_body(item.event);
+
+                                // We should only sent one notification per event.
+                                // cache_->markSentNotification(event_id);
+                        }
+                } catch (const lmdb::error &e) {
+                        qWarning() << e.what();
+                }
+        }
 }

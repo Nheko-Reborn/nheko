@@ -233,6 +233,12 @@ public:
         std::vector<RoomSearchResult> searchRooms(const std::string &query,
                                                   std::uint8_t max_items = 5);
 
+        void markSentNotification(const std::string &event_id);
+        //! Removes an event from the sent notifications.
+        void removeReadNotification(const std::string &event_id);
+        //! Check if we have sent a desktop notification for the given event id.
+        bool isNotificationSent(const std::string &event_id);
+
 private:
         //! Save an invited room.
         void saveInvite(lmdb::txn &txn,
@@ -422,6 +428,7 @@ private:
         lmdb::dbi invitesDb_;
         lmdb::dbi mediaDb_;
         lmdb::dbi readReceiptsDb_;
+        lmdb::dbi notificationsDb_;
 
         QString localUserId_;
         QString cacheDirectory_;

@@ -32,6 +32,9 @@ firstChar(const QString &input);
 QString
 humanReadableFileSize(uint64_t bytes);
 
+QString
+event_body(const mtx::events::collections::TimelineEvents &event);
+
 //! Match widgets/events with a description message.
 template<class T>
 QString
@@ -129,6 +132,37 @@ erase_if(ContainerT &items, const PredicateT &predicate)
                 else
                         ++it;
         }
+}
+
+inline mtx::events::EventType
+event_type(const mtx::events::collections::TimelineEvents &event)
+{
+        return mpark::visit([](auto msg) { return msg.type; }, event);
+}
+
+inline std::string
+event_id(const mtx::events::collections::TimelineEvents &event)
+{
+        return mpark::visit([](auto msg) { return msg.event_id; }, event);
+}
+
+inline QString
+eventId(const mtx::events::collections::TimelineEvents &event)
+{
+        return QString::fromStdString(event_id(event));
+}
+
+inline QString
+event_sender(const mtx::events::collections::TimelineEvents &event)
+{
+        return mpark::visit([](auto msg) { return QString::fromStdString(msg.sender); }, event);
+}
+
+template<class T>
+QString
+message_body(const mtx::events::collections::TimelineEvents &event)
+{
+        return QString::fromStdString(mpark::get<T>(event).content.body);
 }
 
 //! Calculate the Levenshtein distance between two strings with character skipping.

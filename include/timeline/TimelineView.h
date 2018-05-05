@@ -211,9 +211,6 @@ private:
         bool isScrollbarActivated() { return scroll_area_->verticalScrollBar()->value() != 0; }
         //! Retrieve the event id of the last item.
         QString getLastEventId() const;
-        QString getEventSender(const mtx::events::collections::TimelineEvents &event) const;
-        mtx::events::EventType getEventType(
-          const mtx::events::collections::TimelineEvents &event) const;
 
         template<class Event, class Widget>
         TimelineItem *processMessageEvent(const Event &event, TimelineDirection direction);
