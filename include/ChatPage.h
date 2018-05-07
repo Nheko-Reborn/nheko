@@ -117,6 +117,12 @@ private slots:
 private:
         static ChatPage *instance_;
 
+        //! Check if the given room is currently open.
+        bool isRoomActive(const QString &room_id)
+        {
+                return isActiveWindow() && currentRoom() == room_id;
+        }
+
         using UserID      = QString;
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
         using Memberships = std::map<std::string, Membership>;

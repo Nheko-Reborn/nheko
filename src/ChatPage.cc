@@ -868,15 +868,18 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
                         if (!cache_->isNotificationSent(event_id)) {
                                 const auto room_id = QString::fromStdString(item.room_id);
                                 const auto user_id = utils::event_sender(item.event);
-                                const auto body    = utils::event_body(item.event);
 
                                 // We should only sent one notification per event.
                                 cache_->markSentNotification(event_id);
 
+                                // Don't send a notification when the current room is opened.
+                                if (isRoomActive(room_id))
+                                        continue;
+
                                 NotificationsManager::postNotification(
                                   QString::fromStdString(cache_->singleRoomInfo(item.room_id).name),
                                   Cache::displayName(room_id, user_id),
-                                  body);
+                                  utils::event_body(item.event));
                         }
                 } catch (const lmdb::error &e) {
                         qWarning() << e.what();
