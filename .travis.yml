@@ -59,10 +59,6 @@ install:
 script:
     - ./.ci/script.sh
 
-before_deploy:
-    - export RELEASE_DEB_FILE=$(ls *.deb)
-    - export RELEASE_RPM_FILE=$(ls *.rpm)
-
 deploy:
     - skip_cleanup: true
       overwrite: true
@@ -72,8 +68,6 @@ deploy:
       file_glob: true
       file:
           - nheko-x86_64.AppImage
-          - $RELEASE_DEB_FILE
-          - $RELEASE_RPM_FILE
       on:
           condition: $TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1
           repo: mujx/nheko

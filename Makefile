@@ -28,7 +28,6 @@ debian-image:
 
 linux-deploy:
 	./.ci/linux/deploy.sh
-	./.ci/linux/create-packages.sh
 
 macos-deploy:
 	./.ci/macos/deploy.sh
