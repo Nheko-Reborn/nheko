@@ -2,8 +2,8 @@
 
 #include <QCoreApplication>
 #include <QPaintEvent>
-#include <QSharedPointer>
 #include <QTimer>
+#include <deque>
 
 #include "OverlayWidget.h"
 
@@ -44,10 +44,10 @@ private:
         qreal bgOpacity_;
         qreal offset_;
 
-        QList<QString> messages_;
+        std::deque<QString> messages_;
 
-        QSharedPointer<QTimer> showTimer_;
-        QSharedPointer<QTimer> hideTimer_;
+        QTimer showTimer_;
+        QTimer hideTimer_;
 
         int duration_;
         int boxWidth_;

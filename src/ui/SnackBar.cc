@@ -25,32 +25,35 @@ SnackBar::SnackBar(QWidget *parent)
         font.setWeight(50);
         setFont(font);
 
-        showTimer_ = QSharedPointer<QTimer>(new QTimer);
-        hideTimer_ = QSharedPointer<QTimer>(new QTimer);
-        hideTimer_->setSingleShot(true);
+        hideTimer_.setSingleShot(true);
 
         auto offset_anim = tweeny::from(1.0f).to(0.0f).during(100).via(tweeny::easing::cubicOut);
-        connect(showTimer_.data(), &QTimer::timeout, this, [this, offset_anim]() mutable {
+        connect(&showTimer_, &QTimer::timeout, this, [this, offset_anim]() mutable {
                 if (offset_anim.progress() < 1.0f) {
                         offset_ = offset_anim.step(0.07f);
                         update();
                 } else {
-                        showTimer_->stop();
-                        hideTimer_->start(duration_);
+                        showTimer_.stop();
+                        hideTimer_.start(duration_);
                         offset_anim.seek(0.0f);
                 }
         });
 
-        connect(hideTimer_.data(), SIGNAL(timeout()), this, SLOT(hideMessage()));
+        connect(&hideTimer_, SIGNAL(timeout()), this, SLOT(hideMessage()));
+
+        hide();
 }
 
 void
 SnackBar::start()
 {
+        if (messages_.empty())
+                return;
+
         show();
         raise();
 
-        showTimer_->start(10);
+        showTimer_.start(10);
 }
 
 void
@@ -59,21 +62,22 @@ SnackBar::hideMessage()
         stopTimers();
         hide();
 
-        // Moving on to the next message.
-        messages_.removeFirst();
+        if (!messages_.empty())
+                // Moving on to the next message.
+                messages_.pop_front();
 
         // Reseting the starting position of the widget.
         offset_ = STARTING_OFFSET;
 
-        if (!messages_.isEmpty())
+        if (!messages_.empty())
                 start();
 }
 
 void
 SnackBar::stopTimers()
 {
-        showTimer_->stop();
-        hideTimer_->stop();
+        showTimer_.stop();
+        hideTimer_.stop();
 }
 
 void
@@ -99,10 +103,10 @@ SnackBar::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event)
 
-        if (messages_.isEmpty())
+        if (messages_.empty())
                 return;
 
-        auto message_ = messages_.first();
+        auto message_ = messages_.front();
 
         QPainter p(this);
         p.setRenderHint(QPainter::Antialiasing);

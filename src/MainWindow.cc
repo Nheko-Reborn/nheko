@@ -204,7 +204,7 @@ MainWindow::removeOverlayProgressBar()
         });
 
         // FIXME:  Snackbar doesn't work if it's initialized in the constructor.
-        QTimer::singleShot(100, this, [this]() {
+        QTimer::singleShot(0, this, [this]() {
                 snackBar_ = QSharedPointer<SnackBar>(new SnackBar(this));
                 connect(chat_page_,
                         &ChatPage::showNotification,
