@@ -35,7 +35,6 @@ Toggle::init()
         setCursor(QCursor(Qt::PointingHandCursor));
         setCheckable(true);
         setChecked(false);
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         setState(false);
         setupProperties();

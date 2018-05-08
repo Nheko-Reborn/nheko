@@ -119,6 +119,10 @@ UserSettingsPage {
     background-color: #202228;
 }
 
+#UserSettingScrollWidget {
+    background-color: #202228;
+}
+
 Avatar {
     qproperty-textColor: white;
     qproperty-backgroundColor: #2d3139;
@@ -212,4 +216,11 @@ TextInputWidget > QLineEdit {
     qproperty-borderColor: #202228;
     background-color: #2d3139;
     color: #caccd1;
+}
+
+Toggle {
+    qproperty-activeColor: #38a3d8;
+    qproperty-disabledColor: gray;
+    qproperty-inactiveColor: gray;
+    qproperty-trackColor: rgb(240, 240, 240);
 }

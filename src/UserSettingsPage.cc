@@ -135,8 +135,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         trayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto trayLabel = new QLabel(tr("Minimize to tray"), this);
         trayToggle_    = new Toggle(this);
-        trayToggle_->setActiveColor(QColor("#38A3D8"));
-        trayToggle_->setInactiveColor(QColor("gray"));
         trayLabel->setStyleSheet("font-size: 15px;");
 
         trayOptionLayout_->addWidget(trayLabel);
@@ -146,8 +144,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         startInTrayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto startInTrayLabel = new QLabel(tr("Start in tray"), this);
         startInTrayToggle_    = new Toggle(this);
-        startInTrayToggle_->setActiveColor(QColor("#38A3D8"));
-        startInTrayToggle_->setInactiveColor(QColor("gray"));
         if (!settings_->isTrayEnabled())
                 startInTrayToggle_->setDisabled(true);
         startInTrayLabel->setStyleSheet("font-size: 15px;");
@@ -160,8 +156,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         orderRoomLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto orderLabel  = new QLabel(tr("Re-order rooms based on activity"), this);
         roomOrderToggle_ = new Toggle(this);
-        roomOrderToggle_->setActiveColor(QColor("#38A3D8"));
-        roomOrderToggle_->setInactiveColor(QColor("gray"));
         orderLabel->setStyleSheet("font-size: 15px;");
 
         orderRoomLayout->addWidget(orderLabel);
@@ -171,8 +165,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         groupViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto groupViewLabel = new QLabel(tr("Group's sidebar"), this);
         groupViewToggle_    = new Toggle(this);
-        groupViewToggle_->setActiveColor(QColor("#38A3D8"));
-        groupViewToggle_->setInactiveColor(QColor("gray"));
         groupViewLabel->setStyleSheet("font-size: 15px;");
 
         groupViewLayout->addWidget(groupViewLabel);
@@ -182,8 +174,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         typingLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto typingLabel     = new QLabel(tr("Typing notifications"), this);
         typingNotifications_ = new Toggle(this);
-        typingNotifications_->setActiveColor(QColor("#38A3D8"));
-        typingNotifications_->setInactiveColor(QColor("gray"));
         typingLabel->setStyleSheet("font-size: 15px;");
 
         typingLayout->addWidget(typingLabel);
@@ -193,8 +183,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         receiptsLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto receiptsLabel = new QLabel(tr("Read receipts"), this);
         readReceipts_      = new Toggle(this);
-        readReceipts_->setActiveColor(QColor("#38A3D8"));
-        readReceipts_->setInactiveColor(QColor("gray"));
         receiptsLabel->setStyleSheet("font-size: 15px;");
 
         receiptsLayout->addWidget(receiptsLabel);
@@ -222,7 +210,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addWidget(general_, 1, Qt::AlignLeft | Qt::AlignVCenter);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(trayOptionLayout_);
-        mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(startInTrayOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(orderRoomLayout);
@@ -235,9 +222,20 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
 
+        auto scrollArea_ = new QScrollArea(this);
+        scrollArea_->setFrameShape(QFrame::NoFrame);
+        scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        scrollArea_->setWidgetResizable(true);
+        scrollArea_->setAlignment(Qt::AlignTop | Qt::AlignVCenter);
+
+        auto scrollAreaContents_ = new QWidget(this);
+        scrollAreaContents_->setObjectName("UserSettingScrollWidget");
+        scrollAreaContents_->setLayout(mainLayout_);
+
+        scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addLayout(topBarLayout_);
-        topLayout_->addLayout(mainLayout_);
-        topLayout_->addStretch(1);
+        topLayout_->addWidget(scrollArea_);
         topLayout_->addWidget(versionInfo);
 
         connect(themeCombo_,

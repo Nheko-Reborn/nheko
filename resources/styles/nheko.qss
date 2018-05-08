@@ -121,6 +121,10 @@ UserSettingsPage {
     background-color: white;
 }
 
+#UserSettingScrollWidget {
+    background-color: white;
+}
+
 Avatar {
     qproperty-textColor: black;
     qproperty-backgroundColor: #eee;
@@ -200,4 +204,11 @@ SideBarActions {
 TopRoomBar {
     border: none;
     qproperty-borderColor: #dcdcdc;
+}
+
+Toggle {
+    qproperty-activeColor: #38a3d8;
+    qproperty-disabledColor: gray;
+    qproperty-inactiveColor: gray;
+    qproperty-trackColor: rgb(240, 240, 240);
 }
