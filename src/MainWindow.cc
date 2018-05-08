@@ -54,6 +54,9 @@ MainWindow::MainWindow(QWidget *parent)
         setWindowTitle("nheko");
         setObjectName("MainWindow");
 
+        // Initialize the http client.
+        http::init(this);
+
         restoreWindowSize();
 
         QFont font("Open Sans");
@@ -61,14 +64,13 @@ MainWindow::MainWindow(QWidget *parent)
         font.setStyleStrategy(QFont::PreferAntialias);
         setFont(font);
 
-        client_       = QSharedPointer<MatrixClient>(new MatrixClient("matrix.org"));
         userSettings_ = QSharedPointer<UserSettings>(new UserSettings);
         trayIcon_     = new TrayIcon(":/logos/nheko-32.png", this);
 
         welcome_page_     = new WelcomePage(this);
-        login_page_       = new LoginPage(client_, this);
-        register_page_    = new RegisterPage(client_, this);
-        chat_page_        = new ChatPage(client_, userSettings_, this);
+        login_page_       = new LoginPage(this);
+        register_page_    = new RegisterPage(this);
+        chat_page_        = new ChatPage(userSettings_, this);
         userSettingsPage_ = new UserSettingsPage(userSettings_, this);
 
         // Initialize sliding widget manager.
@@ -122,16 +124,16 @@ MainWindow::MainWindow(QWidget *parent)
         connect(
           chat_page_, &ChatPage::showUserSettingsPage, this, &MainWindow::showUserSettingsPage);
 
-        connect(client_.data(),
+        connect(http::client(),
                 SIGNAL(loginSuccess(QString, QString, QString)),
                 this,
                 SLOT(showChatPage(QString, QString, QString)));
 
-        connect(client_.data(),
+        connect(http::client(),
                 SIGNAL(registerSuccess(QString, QString, QString)),
                 this,
                 SLOT(showChatPage(QString, QString, QString)));
-        connect(client_.data(), &MatrixClient::invalidToken, this, [this]() {
+        connect(http::client(), &MatrixClient::invalidToken, this, [this]() {
                 chat_page_->deleteConfigs();
                 showLoginPage();
                 login_page_->loginError("Invalid token detected. Please try to login again.");
@@ -315,7 +317,7 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
                         leaveRoomModal_->hide();
 
                         if (leaving)
-                                client_->leaveRoom(roomToLeave);
+                                http::client()->leaveRoom(roomToLeave);
                 });
 
         leaveRoomModal_ =

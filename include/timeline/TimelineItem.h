@@ -26,11 +26,11 @@
 #include <QStyleOption>
 
 #include "AvatarProvider.h"
-#include "ChatPage.h"
 #include "RoomInfoListItem.h"
 #include "Utils.h"
 
 #include "Cache.h"
+#include "MatrixClient.h"
 
 class ImageItem;
 class StickerItem;
@@ -121,7 +121,7 @@ public:
         void sendReadReceipt() const
         {
                 if (!event_id_.isEmpty())
-                        ChatPage::instance()->readEvent(room_id_, event_id_);
+                        http::client()->readEvent(room_id_, event_id_);
         }
 
         //! Add a user avatar for this event.

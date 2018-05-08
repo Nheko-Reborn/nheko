@@ -24,7 +24,6 @@
 
 class QFile;
 
-class MatrixClient;
 class RoomInfoListItem;
 class TimelineView;
 struct DescInfo;
@@ -34,7 +33,7 @@ class TimelineViewManager : public QStackedWidget
         Q_OBJECT
 
 public:
-        TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent);
+        TimelineViewManager(QWidget *parent);
 
         // Initialize with timeline events.
         void initialize(const mtx::responses::Rooms &rooms);
@@ -91,5 +90,4 @@ private:
 
         QString active_room_;
         std::map<QString, QSharedPointer<TimelineView>> views_;
-        QSharedPointer<MatrixClient> client_;
 };

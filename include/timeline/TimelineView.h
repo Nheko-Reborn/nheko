@@ -25,6 +25,7 @@
 #include <QScrollArea>
 #include <QStyle>
 #include <QStyleOption>
+#include <QTimer>
 
 #include <mtx/events.hpp>
 #include <mtx/responses/messages.hpp>
@@ -117,12 +118,9 @@ class TimelineView : public QWidget
 
 public:
         TimelineView(const mtx::responses::Timeline &timeline,
-                     QSharedPointer<MatrixClient> client,
                      const QString &room_id,
                      QWidget *parent = 0);
-        TimelineView(QSharedPointer<MatrixClient> client,
-                     const QString &room_id,
-                     QWidget *parent = 0);
+        TimelineView(const QString &room_id, QWidget *parent = 0);
 
         // Add new events at the end of the timeline.
         void addEvents(const mtx::responses::Timeline &timeline);
@@ -298,7 +296,6 @@ private:
         QMap<QString, TimelineItem *> eventIds_;
         QQueue<PendingMessage> pending_msgs_;
         QList<PendingMessage> pending_sent_msgs_;
-        QSharedPointer<MatrixClient> client_;
 };
 
 template<class Widget, mtx::events::MessageType MsgType>
@@ -311,7 +308,7 @@ TimelineView::addUserMessage(const QString &url,
         auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
         auto trimmed     = QFileInfo{filename}.fileName(); // Trim file path.
 
-        auto widget = new Widget(client_, url, trimmed, size, this);
+        auto widget = new Widget(url, trimmed, size, this);
 
         TimelineItem *view_item =
           new TimelineItem(widget, local_user_, with_sender, room_id_, scroll_widget_);
@@ -325,7 +322,7 @@ TimelineView::addUserMessage(const QString &url,
         // Keep track of the sender and the timestamp of the current message.
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
 
-        int txn_id = client_->incrementTransactionId();
+        int txn_id = http::client()->incrementTransactionId();
 
         PendingMessage message(MsgType, txn_id, url, trimmed, mime, size, "", view_item);
         handleNewUserMessage(message);
@@ -343,7 +340,7 @@ template<class Event, class Widget>
 TimelineItem *
 TimelineView::createTimelineItem(const Event &event, bool withSender)
 {
-        auto eventWidget = new Widget(client_, event);
+        auto eventWidget = new Widget(event);
         auto item = new TimelineItem(eventWidget, event, withSender, room_id_, scroll_widget_);
 
         return item;

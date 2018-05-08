@@ -24,7 +24,6 @@
 
 class FlatButton;
 class LoadingIndicator;
-class MatrixClient;
 class OverlayModal;
 class RaisedButton;
 class TextField;
@@ -34,7 +33,7 @@ class LoginPage : public QWidget
         Q_OBJECT
 
 public:
-        LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        LoginPage(QWidget *parent = 0);
 
         void reset();
 
@@ -97,7 +96,4 @@ private:
         TextField *matrixid_input_;
         TextField *password_input_;
         TextField *serverInput_;
-
-        // Matrix client API provider.
-        QSharedPointer<MatrixClient> client_;
 };

@@ -30,7 +30,6 @@
 
 #include <mtx.hpp>
 
-class MatrixClient;
 class OverlayModal;
 class QuickSwitcher;
 class RoomList;
@@ -59,9 +58,7 @@ class ChatPage : public QWidget
         Q_OBJECT
 
 public:
-        ChatPage(QSharedPointer<MatrixClient> client,
-                 QSharedPointer<UserSettings> userSettings,
-                 QWidget *parent = 0);
+        ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
@@ -70,14 +67,6 @@ public:
         QString currentRoom() const { return current_room_; }
 
         static ChatPage *instance() { return instance_; }
-        void readEvent(const QString &room_id, const QString &event_id)
-        {
-                client_->readEvent(room_id, event_id);
-        }
-        void redactEvent(const QString &room_id, const QString &event_id)
-        {
-                client_->redactEvent(room_id, event_id);
-        }
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
         QSharedPointer<Cache> cache() { return cache_; }
@@ -191,9 +180,6 @@ private:
 
         QSharedPointer<dialogs::ReadReceipts> receiptsDialog_;
         QSharedPointer<OverlayModal> receiptsModal_;
-
-        // Matrix Client API provider.
-        QSharedPointer<MatrixClient> client_;
 
         // Global user settings.
         QSharedPointer<UserSettings> userSettings_;

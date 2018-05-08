@@ -25,16 +25,14 @@
 #include <QUuid>
 
 #include "Config.h"
+#include "MatrixClient.h"
 #include "Utils.h"
 #include "dialogs/ImageOverlay.h"
 #include "timeline/widgets/ImageItem.h"
 
-ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
-                     const mtx::events::RoomEvent<mtx::events::msg::Image> &event,
-                     QWidget *parent)
+ImageItem::ImageItem(const mtx::events::RoomEvent<mtx::events::msg::Image> &event, QWidget *parent)
   : QWidget(parent)
   , event_{event}
-  , client_{client}
 {
         setMouseTracking(true);
         setCursor(Qt::PointingHandCursor);
@@ -52,9 +50,9 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
 
         QString media_params = url_parts[1];
         url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(client_.data()->getHomeServer().toString(), media_params);
+                 .arg(http::client()->getHomeServer().toString(), media_params);
 
-        auto proxy = client_.data()->downloadImage(url_);
+        auto proxy = http::client()->downloadImage(url_);
 
         connect(proxy.data(),
                 &DownloadMediaProxy::imageDownloaded,
@@ -65,15 +63,10 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
                 });
 }
 
-ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
-                     const QString &url,
-                     const QString &filename,
-                     uint64_t size,
-                     QWidget *parent)
+ImageItem::ImageItem(const QString &url, const QString &filename, uint64_t size, QWidget *parent)
   : QWidget(parent)
   , url_{url}
   , text_{filename}
-  , client_{client}
 {
         Q_UNUSED(size);
 
@@ -90,9 +83,9 @@ ImageItem::ImageItem(QSharedPointer<MatrixClient> client,
 
         QString media_params = url_parts[1];
         url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(client_.data()->getHomeServer().toString(), media_params);
+                 .arg(http::client()->getHomeServer().toString(), media_params);
 
-        auto proxy = client_.data()->downloadImage(url_);
+        auto proxy = http::client()->downloadImage(url_);
 
         connect(proxy.data(),
                 &DownloadMediaProxy::imageDownloaded,
@@ -238,7 +231,7 @@ ImageItem::saveAs()
         if (filename.isEmpty())
                 return;
 
-        auto proxy = client_->downloadFile(url_);
+        auto proxy = http::client()->downloadFile(url_);
         connect(proxy.data(),
                 &DownloadMediaProxy::fileDownloaded,
                 this,

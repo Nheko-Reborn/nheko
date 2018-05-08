@@ -24,8 +24,6 @@
 
 #include <mtx.hpp>
 
-#include "MatrixClient.h"
-
 namespace dialogs {
 class ImageOverlay;
 }
@@ -34,12 +32,10 @@ class ImageItem : public QWidget
 {
         Q_OBJECT
 public:
-        ImageItem(QSharedPointer<MatrixClient> client,
-                  const mtx::events::RoomEvent<mtx::events::msg::Image> &event,
+        ImageItem(const mtx::events::RoomEvent<mtx::events::msg::Image> &event,
                   QWidget *parent = nullptr);
 
-        ImageItem(QSharedPointer<MatrixClient> client,
-                  const QString &url,
+        ImageItem(const QString &url,
                   const QString &filename,
                   uint64_t size,
                   QWidget *parent = nullptr);
@@ -81,8 +77,6 @@ private:
         QRectF imageRegion_;
 
         mtx::events::RoomEvent<mtx::events::msg::Image> event_;
-
-        QSharedPointer<MatrixClient> client_;
 };
 
 class StickerItem : public ImageItem
@@ -90,11 +84,8 @@ class StickerItem : public ImageItem
         Q_OBJECT
 
 public:
-        StickerItem(QSharedPointer<MatrixClient> client,
-                    const mtx::events::Sticker &event,
-                    QWidget *parent = nullptr)
-          : ImageItem{client,
-                      QString::fromStdString(event.content.url),
+        StickerItem(const mtx::events::Sticker &event, QWidget *parent = nullptr)
+          : ImageItem{QString::fromStdString(event.content.url),
                       QString::fromStdString(event.content.body),
                       event.content.info.size,
                       parent}

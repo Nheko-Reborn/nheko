@@ -48,11 +48,8 @@ constexpr int INITIAL_SYNC_RETRY_TIMEOUT = 240 * 1000;
 
 ChatPage *ChatPage::instance_ = nullptr;
 
-ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
-                   QSharedPointer<UserSettings> userSettings,
-                   QWidget *parent)
+ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
-  , client_(client)
   , userSettings_{userSettings}
 {
         setObjectName("chatPage");
@@ -61,7 +58,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);
 
-        communitiesList_ = new CommunitiesList(client, this);
+        communitiesList_ = new CommunitiesList(this);
         topLayout_->addWidget(communitiesList_);
 
         auto splitter = new Splitter(this);
@@ -82,12 +79,12 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         connect(
           sidebarActions_, &SideBarActions::showSettings, this, &ChatPage::showUserSettingsPage);
         connect(
-          sidebarActions_, &SideBarActions::joinRoom, client_.data(), &MatrixClient::joinRoom);
+          sidebarActions_, &SideBarActions::joinRoom, http::client(), &MatrixClient::joinRoom);
         connect(
-          sidebarActions_, &SideBarActions::createRoom, client_.data(), &MatrixClient::createRoom);
+          sidebarActions_, &SideBarActions::createRoom, http::client(), &MatrixClient::createRoom);
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
-        room_list_        = new RoomList(client, userSettings_, sideBar_);
+        room_list_        = new RoomList(userSettings_, sideBar_);
 
         sideBarLayout_->addWidget(user_info_widget_);
         sideBarLayout_->addWidget(room_list_);
@@ -105,7 +102,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         contentLayout_->setMargin(0);
 
         top_bar_      = new TopRoomBar(this);
-        view_manager_ = new TimelineViewManager(client, this);
+        view_manager_ = new TimelineViewManager(this);
 
         contentLayout_->addWidget(top_bar_);
         contentLayout_->addWidget(view_manager_);
@@ -124,15 +121,15 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
         typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
 
         connect(user_info_widget_, &UserInfoWidget::logout, this, [this]() {
-                client_->logout();
+                http::client()->logout();
                 emit showOverlayProgressBar();
         });
-        connect(client_.data(), &MatrixClient::loggedOut, this, &ChatPage::logout);
+        connect(http::client(), &MatrixClient::loggedOut, this, &ChatPage::logout);
 
         connect(top_bar_, &TopRoomBar::inviteUsers, this, [this](QStringList users) {
                 for (int ii = 0; ii < users.size(); ++ii) {
                         QTimer::singleShot(ii * 1000, this, [this, ii, users]() {
-                                client_->inviteUser(current_room_, users.at(ii));
+                                http::client()->inviteUser(current_room_, users.at(ii));
                         });
                 }
         });
@@ -158,12 +155,12 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
 
         connect(room_list_, &RoomList::acceptInvite, this, [this](const QString &room_id) {
                 view_manager_->addRoom(room_id);
-                client_->joinRoom(room_id);
+                http::client()->joinRoom(room_id);
                 room_list_->removeRoom(room_id, currentRoom() == room_id);
         });
 
         connect(room_list_, &RoomList::declineInvite, this, [this](const QString &room_id) {
-                client_->leaveRoom(room_id);
+                http::client()->leaveRoom(room_id);
                 room_list_->removeRoom(room_id, currentRoom() == room_id);
         });
 
@@ -172,7 +169,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                         return;
 
                 typingRefresher_->start();
-                client_->sendTypingNotification(current_room_);
+                http::client()->sendTypingNotification(current_room_);
         });
 
         connect(text_input_, &TextInputWidget::stoppedTyping, this, [this]() {
@@ -180,14 +177,14 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                         return;
 
                 typingRefresher_->stop();
-                client_->removeTypingNotification(current_room_);
+                http::client()->removeTypingNotification(current_room_);
         });
 
         connect(typingRefresher_, &QTimer::timeout, this, [this]() {
                 if (!userSettings_->isTypingNotificationsEnabled())
                         return;
 
-                client_->sendTypingNotification(current_room_);
+                http::client()->sendTypingNotification(current_room_);
         });
 
         connect(view_manager_,
@@ -212,45 +209,45 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
 
         connect(text_input_,
                 &TextInputWidget::sendJoinRoomRequest,
-                client_.data(),
+                http::client(),
                 &MatrixClient::joinRoom);
 
         connect(text_input_,
                 &TextInputWidget::uploadImage,
                 this,
                 [this](QSharedPointer<QIODevice> data, const QString &fn) {
-                        client_->uploadImage(current_room_, fn, data);
+                        http::client()->uploadImage(current_room_, fn, data);
                 });
 
         connect(text_input_,
                 &TextInputWidget::uploadFile,
                 this,
                 [this](QSharedPointer<QIODevice> data, const QString &fn) {
-                        client_->uploadFile(current_room_, fn, data);
+                        http::client()->uploadFile(current_room_, fn, data);
                 });
 
         connect(text_input_,
                 &TextInputWidget::uploadAudio,
                 this,
                 [this](QSharedPointer<QIODevice> data, const QString &fn) {
-                        client_->uploadAudio(current_room_, fn, data);
+                        http::client()->uploadAudio(current_room_, fn, data);
                 });
         connect(text_input_,
                 &TextInputWidget::uploadVideo,
                 this,
                 [this](QSharedPointer<QIODevice> data, const QString &fn) {
-                        client_->uploadVideo(current_room_, fn, data);
+                        http::client()->uploadVideo(current_room_, fn, data);
                 });
 
         connect(
-          client_.data(), &MatrixClient::roomCreationFailed, this, &ChatPage::showNotification);
-        connect(client_.data(), &MatrixClient::joinFailed, this, &ChatPage::showNotification);
-        connect(client_.data(), &MatrixClient::uploadFailed, this, [this](int, const QString &msg) {
+          http::client(), &MatrixClient::roomCreationFailed, this, &ChatPage::showNotification);
+        connect(http::client(), &MatrixClient::joinFailed, this, &ChatPage::showNotification);
+        connect(http::client(), &MatrixClient::uploadFailed, this, [this](int, const QString &msg) {
                 text_input_->hideUploadSpinner();
                 emit showNotification(msg);
         });
         connect(
-          client_.data(),
+          http::client(),
           &MatrixClient::imageUploaded,
           this,
           [this](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
@@ -258,7 +255,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                   view_manager_->queueImageMessage(roomid, filename, url, mime, dsize);
           });
         connect(
-          client_.data(),
+          http::client(),
           &MatrixClient::fileUploaded,
           this,
           [this](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
@@ -266,7 +263,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                   view_manager_->queueFileMessage(roomid, filename, url, mime, dsize);
           });
         connect(
-          client_.data(),
+          http::client(),
           &MatrixClient::audioUploaded,
           this,
           [this](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
@@ -274,7 +271,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                   view_manager_->queueAudioMessage(roomid, filename, url, mime, dsize);
           });
         connect(
-          client_.data(),
+          http::client(),
           &MatrixClient::videoUploaded,
           this,
           [this](QString roomid, QString filename, QString url, QString mime, uint64_t dsize) {
@@ -284,28 +281,28 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
 
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
 
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::initialSyncCompleted,
                 this,
                 &ChatPage::initialSyncCompleted);
         connect(
-          client_.data(), &MatrixClient::initialSyncFailed, this, &ChatPage::retryInitialSync);
-        connect(client_.data(), &MatrixClient::syncCompleted, this, &ChatPage::syncCompleted);
-        connect(client_.data(),
+          http::client(), &MatrixClient::initialSyncFailed, this, &ChatPage::retryInitialSync);
+        connect(http::client(), &MatrixClient::syncCompleted, this, &ChatPage::syncCompleted);
+        connect(http::client(),
                 &MatrixClient::getOwnProfileResponse,
                 this,
                 &ChatPage::updateOwnProfileInfo);
-        connect(client_.data(),
+        connect(http::client(),
                 SIGNAL(getOwnCommunitiesResponse(QList<QString>)),
                 this,
                 SLOT(updateOwnCommunitiesInfo(QList<QString>)));
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::communityProfileRetrieved,
                 this,
                 [this](QString communityId, QJsonObject profile) {
                         communities_[communityId]->parseProfile(profile);
                 });
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::communityRoomsRetrieved,
                 this,
                 [this](QString communityId, QJsonObject rooms) {
@@ -321,7 +318,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                         }
                 });
 
-        connect(client_.data(), &MatrixClient::joinedRoom, this, [this](const QString &room_id) {
+        connect(http::client(), &MatrixClient::joinedRoom, this, [this](const QString &room_id) {
                 emit showNotification("You joined the room.");
 
                 // We remove any invites with the same room_id.
@@ -332,17 +329,17 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                                                 .arg(QString::fromStdString(e.what())));
                 }
         });
-        connect(client_.data(), &MatrixClient::leftRoom, this, &ChatPage::removeRoom);
-        connect(client_.data(), &MatrixClient::invitedUser, this, [this](QString, QString user) {
+        connect(http::client(), &MatrixClient::leftRoom, this, &ChatPage::removeRoom);
+        connect(http::client(), &MatrixClient::invitedUser, this, [this](QString, QString user) {
                 emit showNotification(QString("Invited user %1").arg(user));
         });
-        connect(client_.data(), &MatrixClient::roomCreated, this, [this](QString room_id) {
+        connect(http::client(), &MatrixClient::roomCreated, this, [this](QString room_id) {
                 emit showNotification(QString("Room %1 created").arg(room_id));
         });
-        connect(client_.data(), &MatrixClient::redactionFailed, this, [this](const QString &error) {
+        connect(http::client(), &MatrixClient::redactionFailed, this, [this](const QString &error) {
                 emit showNotification(QString("Message redaction failed: %1").arg(error));
         });
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::notificationsRetrieved,
                 this,
                 &ChatPage::sendDesktopNotifications);
@@ -369,13 +366,13 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
 
         syncTimeoutTimer_ = new QTimer(this);
         connect(syncTimeoutTimer_, &QTimer::timeout, this, [this]() {
-                if (client_->getHomeServer().isEmpty()) {
+                if (http::client()->getHomeServer().isEmpty()) {
                         syncTimeoutTimer_->stop();
                         return;
                 }
 
                 qDebug() << "Sync took too long. Retrying...";
-                client_->sync();
+                http::client()->sync();
         });
 
         connect(communitiesList_,
@@ -399,8 +396,8 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
 
         connect(this, &ChatPage::continueSync, this, [this](const QString &next_batch) {
                 syncTimeoutTimer_->start(SYNC_RETRY_TIMEOUT);
-                client_->setNextBatchToken(next_batch);
-                client_->sync();
+                http::client()->setNextBatchToken(next_batch);
+                http::client()->sync();
         });
 
         connect(this, &ChatPage::startConsesusTimer, this, [this]() {
@@ -440,7 +437,7 @@ ChatPage::ChatPage(QSharedPointer<MatrixClient> client,
                 }
 
                 if (hasNotifications)
-                        client_->getNotifications();
+                        http::client()->getNotifications();
         });
         connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
 
@@ -489,22 +486,22 @@ ChatPage::deleteConfigs()
 
         cache_->deleteData();
 
-        client_->reset();
+        http::client()->reset();
 }
 
 void
 ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 {
-        client_->setServer(homeserver);
-        client_->setAccessToken(token);
-        client_->getOwnProfile();
-        client_->getOwnCommunities();
+        http::client()->setServer(homeserver);
+        http::client()->setAccessToken(token);
+        http::client()->getOwnProfile();
+        http::client()->getOwnCommunities();
 
         cache_ = QSharedPointer<Cache>(new Cache(userid));
         room_list_->setCache(cache_);
         text_input_->setCache(cache_);
 
-        AvatarProvider::init(client_, cache_);
+        AvatarProvider::init(cache_);
 
         try {
                 cache_->setup();
@@ -525,7 +522,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 qInfo() << "Falling back to initial sync ...";
         }
 
-        client_->initialSync();
+        http::client()->initialSync();
 
         initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
 }
@@ -602,7 +599,7 @@ ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_na
                 }
         }
 
-        auto proxy = client_->fetchUserAvatar(avatar_url);
+        auto proxy = http::client()->fetchUserAvatar(avatar_url);
 
         if (proxy.isNull())
                 return;
@@ -825,7 +822,7 @@ ChatPage::retryInitialSync(int status_code)
 {
         initialSyncTimer_->stop();
 
-        if (client_->getHomeServer().isEmpty()) {
+        if (http::client()->getHomeServer().isEmpty()) {
                 deleteConfigs();
                 resetUI();
                 emit showLoginPage("Sync error. Please try again.");
@@ -836,7 +833,7 @@ ChatPage::retryInitialSync(int status_code)
         if (status_code == -1 || status_code == 504 || status_code == 502 || status_code == 524) {
                 qWarning() << "retrying initial sync";
 
-                client_->initialSync();
+                http::client()->initialSync();
                 initialSyncTimer_->start(INITIAL_SYNC_RETRY_TIMEOUT);
         } else {
                 // Drop into the login screen.

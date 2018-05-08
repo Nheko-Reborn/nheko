@@ -1,10 +1,10 @@
 #include "CommunitiesList.h"
+#include "MatrixClient.h"
 
 #include <QLabel>
 
-CommunitiesList::CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *parent)
+CommunitiesList::CommunitiesList(QWidget *parent)
   : QWidget(parent)
-  , client_(client)
 {
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
@@ -38,14 +38,14 @@ CommunitiesList::CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *p
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addWidget(scrollArea_);
 
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::communityProfileRetrieved,
                 this,
-                [this](QString communityId, QJsonObject profile) {
-                        client_->fetchCommunityAvatar(communityId,
-                                                      QUrl(profile["avatar_url"].toString()));
+                [](QString communityId, QJsonObject profile) {
+                        http::client()->fetchCommunityAvatar(
+                          communityId, QUrl(profile["avatar_url"].toString()));
                 });
-        connect(client_.data(),
+        connect(http::client(),
                 SIGNAL(communityAvatarRetrieved(const QString &, const QPixmap &)),
                 this,
                 SLOT(updateCommunityAvatar(const QString &, const QPixmap &)));
@@ -61,8 +61,8 @@ CommunitiesList::setCommunities(const std::map<QString, QSharedPointer<Community
         for (const auto &community : communities) {
                 addCommunity(community.second, community.first);
 
-                client_->fetchCommunityProfile(community.first);
-                client_->fetchCommunityRooms(community.first);
+                http::client()->fetchCommunityProfile(community.first);
+                http::client()->fetchCommunityRooms(community.first);
         }
 
         communities_["world"]->setPressedState(true);
@@ -77,7 +77,7 @@ CommunitiesList::addCommunity(QSharedPointer<Community> community, const QString
 
         communities_.emplace(community_id, QSharedPointer<CommunitiesListItem>(list_item));
 
-        client_->fetchCommunityAvatar(community_id, community->getAvatar());
+        http::client()->fetchCommunityAvatar(community_id, community->getAvatar());
 
         contentsLayout_->insertWidget(contentsLayout_->count() - 1, list_item);
 

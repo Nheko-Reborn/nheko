@@ -6,7 +6,6 @@
 
 #include "CommunitiesListItem.h"
 #include "Community.h"
-#include "MatrixClient.h"
 #include "ui/Theme.h"
 
 class CommunitiesList : public QWidget
@@ -14,7 +13,7 @@ class CommunitiesList : public QWidget
         Q_OBJECT
 
 public:
-        CommunitiesList(QSharedPointer<MatrixClient> client, QWidget *parent = nullptr);
+        CommunitiesList(QWidget *parent = nullptr);
 
         void setCommunities(const std::map<QString, QSharedPointer<Community>> &communities);
         void clear() { communities_.clear(); }
@@ -44,6 +43,4 @@ private:
         QScrollArea *scrollArea_;
 
         std::map<QString, QSharedPointer<CommunitiesListItem>> communities_;
-
-        QSharedPointer<MatrixClient> client_;
 };

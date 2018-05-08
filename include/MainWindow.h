@@ -31,7 +31,6 @@
 
 class ChatPage;
 class LoadingIndicator;
-class MatrixClient;
 class OverlayModal;
 class SnackBar;
 class TrayIcon;
@@ -125,8 +124,6 @@ private:
         //! Used to hide undefined states between page transitions.
         QSharedPointer<OverlayModal> progressModal_;
         QSharedPointer<LoadingIndicator> spinner_;
-        //! Matrix Client API provider.
-        QSharedPointer<MatrixClient> client_;
         //! Tray icon that shows the unread message count.
         TrayIcon *trayIcon_;
         //! Notifications display.

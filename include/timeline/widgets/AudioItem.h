@@ -24,8 +24,6 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "MatrixClient.h"
-
 #include <mtx.hpp>
 
 class AudioItem : public QWidget
@@ -42,12 +40,10 @@ class AudioItem : public QWidget
                      durationForegroundColor)
 
 public:
-        AudioItem(QSharedPointer<MatrixClient> client,
-                  const mtx::events::RoomEvent<mtx::events::msg::Audio> &event,
+        AudioItem(const mtx::events::RoomEvent<mtx::events::msg::Audio> &event,
                   QWidget *parent = nullptr);
 
-        AudioItem(QSharedPointer<MatrixClient> client,
-                  const QString &url,
+        AudioItem(const QString &url,
                   const QString &filename,
                   uint64_t size,
                   QWidget *parent = nullptr);
@@ -90,7 +86,6 @@ private:
         QString filenameToSave_;
 
         mtx::events::RoomEvent<mtx::events::msg::Audio> event_;
-        QSharedPointer<MatrixClient> client_;
 
         QMediaPlayer *player_;
 

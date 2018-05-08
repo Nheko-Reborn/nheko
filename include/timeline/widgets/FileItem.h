@@ -25,8 +25,6 @@
 
 #include <mtx.hpp>
 
-#include "MatrixClient.h"
-
 class FileItem : public QWidget
 {
         Q_OBJECT
@@ -36,12 +34,10 @@ class FileItem : public QWidget
         Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
 
 public:
-        FileItem(QSharedPointer<MatrixClient> client,
-                 const mtx::events::RoomEvent<mtx::events::msg::File> &event,
+        FileItem(const mtx::events::RoomEvent<mtx::events::msg::File> &event,
                  QWidget *parent = nullptr);
 
-        FileItem(QSharedPointer<MatrixClient> client,
-                 const QString &url,
+        FileItem(const QString &url,
                  const QString &filename,
                  uint64_t size,
                  QWidget *parent = nullptr);
@@ -71,7 +67,6 @@ private:
         QString filenameToSave_;
 
         mtx::events::RoomEvent<mtx::events::msg::File> event_;
-        QSharedPointer<MatrixClient> client_;
 
         QIcon icon_;
 

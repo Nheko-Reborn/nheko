@@ -84,26 +84,21 @@ DateSeparator::paintEvent(QPaintEvent *)
 }
 
 TimelineView::TimelineView(const mtx::responses::Timeline &timeline,
-                           QSharedPointer<MatrixClient> client,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
   , room_id_{room_id}
-  , client_{client}
 {
         init();
         addEvents(timeline);
 }
 
-TimelineView::TimelineView(QSharedPointer<MatrixClient> client,
-                           const QString &room_id,
-                           QWidget *parent)
+TimelineView::TimelineView(const QString &room_id, QWidget *parent)
   : QWidget(parent)
   , room_id_{room_id}
-  , client_{client}
 {
         init();
-        client_->messages(room_id_, "");
+        http::client()->messages(room_id_, "");
 }
 
 void
@@ -143,7 +138,7 @@ TimelineView::fetchHistory()
                         return;
 
                 isPaginationInProgress_ = true;
-                client_->messages(room_id_, prev_batch_token_);
+                http::client()->messages(room_id_, prev_batch_token_);
                 paginationTimer_->start(5000);
 
                 return;
@@ -194,7 +189,7 @@ TimelineView::sliderMoved(int position)
 
                 // FIXME: Maybe move this to TimelineViewManager to remove the
                 // extra calls?
-                client_->messages(room_id_, prev_batch_token_);
+                http::client()->messages(room_id_, prev_batch_token_);
         }
 }
 
@@ -430,7 +425,7 @@ TimelineView::init()
         paginationTimer_ = new QTimer(this);
         connect(paginationTimer_, &QTimer::timeout, this, &TimelineView::fetchHistory);
 
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::messagesRetrieved,
                 this,
                 &TimelineView::addBackwardsEvents);
@@ -551,7 +546,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
 
-        int txn_id = client_->incrementTransactionId();
+        int txn_id = http::client()->incrementTransactionId();
         PendingMessage message(ty, txn_id, body, "", "", -1, "", view_item);
         handleNewUserMessage(message);
 }
@@ -577,11 +572,12 @@ TimelineView::sendNextPendingMessage()
         case mtx::events::MessageType::Video:
         case mtx::events::MessageType::File:
                 // FIXME: Improve the API
-                client_->sendRoomMessage(
+                http::client()->sendRoomMessage(
                   m.ty, m.txn_id, room_id_, m.filename, m.mime, m.media_size, m.body);
                 break;
         default:
-                client_->sendRoomMessage(m.ty, m.txn_id, room_id_, m.body, m.mime, m.media_size);
+                http::client()->sendRoomMessage(
+                  m.ty, m.txn_id, room_id_, m.body, m.mime, m.media_size);
                 break;
         }
 }
@@ -675,7 +671,7 @@ TimelineView::readLastEvent() const
         const auto eventId = getLastEventId();
 
         if (!eventId.isEmpty())
-                client_->readEvent(room_id_, eventId);
+                http::client()->readEvent(room_id_, eventId);
 }
 
 QString

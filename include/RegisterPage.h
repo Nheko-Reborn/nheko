@@ -23,7 +23,6 @@
 #include <memory>
 
 class FlatButton;
-class MatrixClient;
 class RaisedButton;
 class TextField;
 
@@ -36,7 +35,7 @@ class RegisterPage : public QWidget
         Q_OBJECT
 
 public:
-        RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent = 0);
+        RegisterPage(QWidget *parent = 0);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -75,8 +74,6 @@ private:
         TextField *password_confirmation_;
         TextField *server_input_;
 
-        // Matrix client API provider.
-        QSharedPointer<MatrixClient> client_;
         //! ReCaptcha dialog.
         std::shared_ptr<dialogs::ReCaptcha> captchaDialog_;
 };

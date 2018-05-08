@@ -33,7 +33,27 @@
 
 #include "MatrixClient.h"
 
-MatrixClient::MatrixClient(QString server, QObject *parent)
+namespace {
+MatrixClient *instance_ = nullptr;
+}
+
+namespace http {
+
+void
+init(QObject *parent)
+{
+        if (!instance_)
+                instance_ = new MatrixClient(parent);
+}
+
+MatrixClient *
+client()
+{
+        return instance_;
+}
+}
+
+MatrixClient::MatrixClient(QObject *parent)
   : QNetworkAccessManager(parent)
   , clientApiUrl_{"/_matrix/client/r0"}
   , mediaApiUrl_{"/_matrix/media/r0"}
@@ -54,8 +74,6 @@ MatrixClient::MatrixClient(QString server, QObject *parent)
                   this,
                   [](QNetworkReply *reply, const QList<QSslError> &) { reply->ignoreSslErrors(); });
         }
-
-        setServer(server);
 
         QJsonObject default_filter{
           {

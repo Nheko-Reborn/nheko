@@ -19,8 +19,10 @@
 #include <QFontDatabase>
 #include <QMenu>
 #include <QTextEdit>
+#include <QTimer>
 
 #include "Avatar.h"
+#include "ChatPage.h"
 #include "Config.h"
 
 #include "timeline/TimelineItem.h"
@@ -63,7 +65,7 @@ TimelineItem::init()
 
         connect(redactMsg_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
-                        ChatPage::instance()->redactEvent(room_id_, event_id_);
+                        http::client()->redactEvent(room_id_, event_id_);
         });
 
         connect(markAsRead_, &QAction::triggered, this, [this]() { sendReadReceipt(); });

@@ -22,7 +22,6 @@
 #include "Cache.h"
 #include "MatrixClient.h"
 
-QSharedPointer<MatrixClient> AvatarProvider::client_;
 QSharedPointer<Cache> AvatarProvider::cache_;
 
 void
@@ -46,7 +45,7 @@ AvatarProvider::resolve(const QString &room_id,
                 return;
         }
 
-        auto proxy = client_->fetchUserAvatar(avatarUrl);
+        auto proxy = http::client()->fetchUserAvatar(avatarUrl);
 
         if (proxy.isNull())
                 return;

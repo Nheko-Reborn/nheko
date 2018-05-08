@@ -31,21 +31,20 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
-TimelineViewManager::TimelineViewManager(QSharedPointer<MatrixClient> client, QWidget *parent)
+TimelineViewManager::TimelineViewManager(QWidget *parent)
   : QStackedWidget(parent)
-  , client_(client)
 {
         setStyleSheet("border: none;");
 
         connect(
-          client_.data(), &MatrixClient::messageSent, this, &TimelineViewManager::messageSent);
+          http::client(), &MatrixClient::messageSent, this, &TimelineViewManager::messageSent);
 
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::messageSendFailed,
                 this,
                 &TimelineViewManager::messageSendFailed);
 
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::redactionCompleted,
                 this,
                 [this](const QString &room_id, const QString &event_id) {
@@ -190,7 +189,7 @@ TimelineViewManager::addRoom(const mtx::responses::JoinedRoom &room, const QStri
                 return;
 
         // Create a history view with the room events.
-        TimelineView *view = new TimelineView(room.timeline, client_, room_id);
+        TimelineView *view = new TimelineView(room.timeline, room_id);
         views_.emplace(room_id, QSharedPointer<TimelineView>(view));
 
         connect(view,
@@ -209,7 +208,7 @@ TimelineViewManager::addRoom(const QString &room_id)
                 return;
 
         // Create a history view without any events.
-        TimelineView *view = new TimelineView(client_, room_id);
+        TimelineView *view = new TimelineView(room_id);
         views_.emplace(room_id, QSharedPointer<TimelineView>(view));
 
         connect(view,

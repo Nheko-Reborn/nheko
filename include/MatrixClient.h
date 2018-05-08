@@ -43,7 +43,7 @@ class MatrixClient : public QNetworkAccessManager
 {
         Q_OBJECT
 public:
-        MatrixClient(QString server, QObject *parent = 0);
+        MatrixClient(QObject *parent = 0);
 
         // Client API.
         void initialSync() noexcept;
@@ -211,3 +211,13 @@ private:
         //! Filter to be send as filter-param for (initial) /sync requests.
         QString filter_;
 };
+
+namespace http {
+//! Initialize the http module
+void
+init(QObject *parent);
+
+//! Retrieve the client instance.
+MatrixClient *
+client();
+}

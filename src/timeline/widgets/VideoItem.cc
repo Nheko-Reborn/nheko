@@ -20,6 +20,7 @@
 #include <QVBoxLayout>
 
 #include "Config.h"
+#include "MatrixClient.h"
 #include "Utils.h"
 #include "timeline/widgets/VideoItem.h"
 
@@ -34,17 +35,14 @@ VideoItem::init()
 
         QString media_params = url_parts[1];
         url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(client_.data()->getHomeServer().toString(), media_params);
+                 .arg(http::client()->getHomeServer().toString(), media_params);
 }
 
-VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
-                     const mtx::events::RoomEvent<mtx::events::msg::Video> &event,
-                     QWidget *parent)
+VideoItem::VideoItem(const mtx::events::RoomEvent<mtx::events::msg::Video> &event, QWidget *parent)
   : QWidget(parent)
   , url_{QString::fromStdString(event.content.url)}
   , text_{QString::fromStdString(event.content.body)}
   , event_{event}
-  , client_{client}
 {
         readableFileSize_ = utils::humanReadableFileSize(event.content.info.size);
 
@@ -65,15 +63,10 @@ VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
         layout->addWidget(label_);
 }
 
-VideoItem::VideoItem(QSharedPointer<MatrixClient> client,
-                     const QString &url,
-                     const QString &filename,
-                     uint64_t size,
-                     QWidget *parent)
+VideoItem::VideoItem(const QString &url, const QString &filename, uint64_t size, QWidget *parent)
   : QWidget(parent)
   , url_{url}
   , text_{filename}
-  , client_{client}
 {
         readableFileSize_ = utils::humanReadableFileSize(size);
 

@@ -30,10 +30,9 @@
 
 using namespace mtx::identifiers;
 
-LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
+LoginPage::LoginPage(QWidget *parent)
   : QWidget(parent)
   , inferredServerAddress_()
-  , client_{client}
 {
         top_layout_ = new QVBoxLayout();
 
@@ -143,11 +142,11 @@ LoginPage::LoginPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(serverInput_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
-        connect(client_.data(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
-        connect(client_.data(), SIGNAL(loginError(QString)), this, SIGNAL(errorOccurred()));
+        connect(http::client(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
+        connect(http::client(), SIGNAL(loginError(QString)), this, SIGNAL(errorOccurred()));
         connect(matrixid_input_, SIGNAL(editingFinished()), this, SLOT(onMatrixIdEntered()));
-        connect(client_.data(), SIGNAL(versionError(QString)), this, SLOT(versionError(QString)));
-        connect(client_.data(), SIGNAL(versionSuccess()), this, SLOT(versionSuccess()));
+        connect(http::client(), SIGNAL(versionError(QString)), this, SLOT(versionError(QString)));
+        connect(http::client(), SIGNAL(versionSuccess()), this, SLOT(versionSuccess()));
         connect(serverInput_, SIGNAL(editingFinished()), this, SLOT(onServerAddressEntered()));
 }
 
@@ -181,8 +180,8 @@ LoginPage::onMatrixIdEntered()
 
                 inferredServerAddress_ = homeServer;
                 serverInput_->setText(homeServer);
-                client_->setServer(homeServer);
-                client_->versions();
+                http::client()->setServer(homeServer);
+                http::client()->versions();
         }
 }
 
@@ -190,8 +189,8 @@ void
 LoginPage::onServerAddressEntered()
 {
         error_label_->setText("");
-        client_->setServer(serverInput_->text());
-        client_->versions();
+        http::client()->setServer(serverInput_->text());
+        http::client()->versions();
 
         serverLayout_->removeWidget(errorIcon_);
         errorIcon_->hide();
@@ -202,7 +201,7 @@ LoginPage::onServerAddressEntered()
 void
 LoginPage::versionError(QString error)
 {
-        QUrl currentServer  = client_->getHomeServer();
+        QUrl currentServer  = http::client()->getHomeServer();
         QString mxidAddress = matrixid_input_->text().split(":").at(1);
 
         error_label_->setText(error);
@@ -242,8 +241,8 @@ LoginPage::onLoginButtonClicked()
         if (password_input_->text().isEmpty())
                 return loginError(tr("Empty password"));
 
-        client_->setServer(serverInput_->text());
-        client_->login(QString::fromStdString(user.localpart()), password_input_->text());
+        http::client()->setServer(serverInput_->text());
+        http::client()->login(QString::fromStdString(user.localpart()), password_input_->text());
 
         emit loggingIn();
 }

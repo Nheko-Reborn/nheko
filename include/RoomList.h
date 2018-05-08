@@ -26,7 +26,6 @@
 #include <mtx.hpp>
 
 class LeaveRoomDialog;
-class MatrixClient;
 class OverlayModal;
 class RoomInfoListItem;
 class Sync;
@@ -40,9 +39,7 @@ class RoomList : public QWidget
         Q_OBJECT
 
 public:
-        RoomList(QSharedPointer<MatrixClient> client,
-                 QSharedPointer<UserSettings> userSettings,
-                 QWidget *parent = 0);
+        RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
 
         void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
         void initialize(const QMap<QString, RoomInfo> &info);
@@ -105,7 +102,6 @@ private:
         //! Which rooms to include in the room list.
         std::vector<QString> roomFilter_;
 
-        QSharedPointer<MatrixClient> client_;
         QSharedPointer<Cache> cache_;
         QSharedPointer<UserSettings> userSettings_;
 

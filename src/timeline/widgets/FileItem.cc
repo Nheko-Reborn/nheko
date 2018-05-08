@@ -23,6 +23,7 @@
 #include <QPainter>
 #include <QPixmap>
 
+#include "MatrixClient.h"
 #include "Utils.h"
 
 #include "timeline/widgets/FileItem.h"
@@ -56,32 +57,24 @@ FileItem::init()
 
         QString media_params = url_parts[1];
         url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(client_.data()->getHomeServer().toString(), media_params);
+                 .arg(http::client()->getHomeServer().toString(), media_params);
 }
 
-FileItem::FileItem(QSharedPointer<MatrixClient> client,
-                   const mtx::events::RoomEvent<mtx::events::msg::File> &event,
-                   QWidget *parent)
+FileItem::FileItem(const mtx::events::RoomEvent<mtx::events::msg::File> &event, QWidget *parent)
   : QWidget(parent)
   , url_{QString::fromStdString(event.content.url)}
   , text_{QString::fromStdString(event.content.body)}
   , event_{event}
-  , client_{client}
 {
         readableFileSize_ = utils::humanReadableFileSize(event.content.info.size);
 
         init();
 }
 
-FileItem::FileItem(QSharedPointer<MatrixClient> client,
-                   const QString &url,
-                   const QString &filename,
-                   uint64_t size,
-                   QWidget *parent)
+FileItem::FileItem(const QString &url, const QString &filename, uint64_t size, QWidget *parent)
   : QWidget(parent)
   , url_{url}
   , text_{filename}
-  , client_{client}
 {
         readableFileSize_ = utils::humanReadableFileSize(size);
 
@@ -120,7 +113,7 @@ FileItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                auto proxy = client_->downloadFile(url_);
+                auto proxy = http::client()->downloadFile(url_);
                 connect(proxy.data(),
                         &DownloadMediaProxy::fileDownloaded,
                         this,

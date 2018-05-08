@@ -28,9 +28,8 @@
 
 #include "dialogs/ReCaptcha.hpp"
 
-RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
+RegisterPage::RegisterPage(QWidget *parent)
   : QWidget(parent)
-  , client_(client)
 {
         top_layout_ = new QVBoxLayout();
 
@@ -126,11 +125,11 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
         connect(password_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
         connect(password_confirmation_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
         connect(server_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(client_.data(),
+        connect(http::client(),
                 SIGNAL(registerError(const QString &)),
                 this,
                 SLOT(registerError(const QString &)));
-        connect(client_.data(),
+        connect(http::client(),
                 &MatrixClient::registrationFlow,
                 this,
                 [this](const QString &user,
@@ -148,7 +147,8 @@ RegisterPage::RegisterPage(QSharedPointer<MatrixClient> client, QWidget *parent)
                                         [this, user, pass, server, session]() {
                                                 captchaDialog_->close();
                                                 emit registering();
-                                                client_->registerUser(user, pass, server, session);
+                                                http::client()->registerUser(
+                                                  user, pass, server, session);
                                         });
                         }
 
@@ -189,7 +189,7 @@ RegisterPage::onRegisterButtonClicked()
                 QString password = password_input_->text();
                 QString server   = server_input_->text();
 
-                client_->registerUser(username, password, server);
+                http::client()->registerUser(username, password, server);
                 emit registering();
         }
 }

@@ -22,7 +22,6 @@
 #include <QSharedPointer>
 #include <functional>
 
-class MatrixClient;
 class TimelineItem;
 class Cache;
 
@@ -31,11 +30,7 @@ class AvatarProvider : public QObject
         Q_OBJECT
 
 public:
-        static void init(QSharedPointer<MatrixClient> client, QSharedPointer<Cache> cache)
-        {
-                client_ = client;
-                cache_  = cache;
-        }
+        static void init(QSharedPointer<Cache> cache) { cache_ = cache; }
         //! The callback is called with the downloaded avatar for the given user
         //! or the avatar is downloaded first and then saved for re-use.
         static void resolve(const QString &room_id,
@@ -44,6 +39,5 @@ public:
                             std::function<void(QImage)> callback);
 
 private:
-        static QSharedPointer<MatrixClient> client_;
         static QSharedPointer<Cache> cache_;
 };
