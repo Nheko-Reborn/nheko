@@ -15,18 +15,17 @@
 
 using namespace dialogs;
 
-RoomSettings::RoomSettings(const QString &room_id, QSharedPointer<Cache> cache, QWidget *parent)
+RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
   : QFrame(parent)
-  , cache_{cache}
   , room_id_{std::move(room_id)}
 {
         setMaximumWidth(385);
 
         try {
-                auto res = cache_->getRoomInfo({room_id_.toStdString()});
+                auto res = cache::client()->getRoomInfo({room_id_.toStdString()});
                 info_    = res[room_id_];
 
-                setAvatar(QImage::fromData(cache_->image(info_.avatar_url)));
+                setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
         } catch (const lmdb::error &e) {
                 qWarning() << "failed to retrieve room info from cache" << room_id;
         }

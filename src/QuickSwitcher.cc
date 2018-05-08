@@ -56,9 +56,8 @@ RoomSearchInput::hideEvent(QHideEvent *event)
         TextField::hideEvent(event);
 }
 
-QuickSwitcher::QuickSwitcher(QSharedPointer<Cache> cache, QWidget *parent)
+QuickSwitcher::QuickSwitcher(QWidget *parent)
   : QWidget(parent)
-  , cache_{cache}
 {
         qRegisterMetaType<std::vector<RoomSearchResult>>();
         setMaximumWidth(450);
@@ -93,7 +92,8 @@ QuickSwitcher::QuickSwitcher(QSharedPointer<Cache> cache, QWidget *parent)
 
                 QtConcurrent::run([this, query = query.toLower()]() {
                         try {
-                                emit queryResults(cache_->searchRooms(query.toStdString()));
+                                emit queryResults(
+                                  cache::client()->searchRooms(query.toStdString()));
                         } catch (const lmdb::error &e) {
                                 qWarning() << "room search failed:" << e.what();
                         }

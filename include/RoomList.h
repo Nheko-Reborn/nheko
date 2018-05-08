@@ -30,7 +30,6 @@ class OverlayModal;
 class RoomInfoListItem;
 class Sync;
 class UserSettings;
-class Cache;
 struct DescInfo;
 struct RoomInfo;
 
@@ -41,7 +40,6 @@ class RoomList : public QWidget
 public:
         RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
 
-        void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
         void initialize(const QMap<QString, RoomInfo> &info);
         void sync(const std::map<QString, RoomInfo> &info);
 
@@ -102,7 +100,6 @@ private:
         //! Which rooms to include in the room list.
         std::vector<QString> roomFilter_;
 
-        QSharedPointer<Cache> cache_;
         QSharedPointer<UserSettings> userSettings_;
 
         bool isSortPending_ = false;

@@ -62,8 +62,8 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                        const QPixmap &img,
                        const QString &url,
                        const QByteArray &data) {
-                        if (!cache_.isNull())
-                                cache_->saveImage(url, data);
+                        if (cache::client())
+                                cache::client()->saveImage(url, data);
 
                         updateRoomAvatar(room_id, img);
                 });
@@ -97,8 +97,8 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
 
         QByteArray savedImgData;
 
-        if (!cache_.isNull())
-                savedImgData = cache_->image(url);
+        if (cache::client())
+                savedImgData = cache::client()->image(url);
 
         if (savedImgData.isEmpty()) {
                 http::client()->fetchRoomAvatar(room_id, url);

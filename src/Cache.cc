@@ -53,6 +53,25 @@ static constexpr const char *NOTIFICATIONS_DB = "sent_notifications";
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
+namespace {
+Cache *instance_ = nullptr;
+}
+
+namespace cache {
+void
+init(const QString &user_id, QObject *parent)
+{
+        if (!instance_)
+                instance_ = new Cache(user_id, parent);
+}
+
+Cache *
+client()
+{
+        return instance_;
+}
+}
+
 Cache::Cache(const QString &userId, QObject *parent)
   : QObject{parent}
   , env_{nullptr}

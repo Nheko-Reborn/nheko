@@ -22,8 +22,6 @@
 #include "Cache.h"
 #include "MatrixClient.h"
 
-QSharedPointer<Cache> AvatarProvider::cache_;
-
 void
 AvatarProvider::resolve(const QString &room_id,
                         const QString &user_id,
@@ -33,13 +31,13 @@ AvatarProvider::resolve(const QString &room_id,
         const auto key       = QString("%1 %2").arg(room_id).arg(user_id);
         const auto avatarUrl = Cache::avatarUrl(room_id, user_id);
 
-        if (!Cache::AvatarUrls.contains(key) || cache_.isNull())
+        if (!Cache::AvatarUrls.contains(key) || !cache::client())
                 return;
 
         if (avatarUrl.isEmpty())
                 return;
 
-        auto data = cache_->image(avatarUrl);
+        auto data = cache::client()->image(avatarUrl);
         if (!data.isNull()) {
                 callback(QImage::fromData(data));
                 return;
@@ -61,7 +59,7 @@ AvatarProvider::resolve(const QString &room_id,
                                 buffer.open(QIODevice::WriteOnly);
                                 img.save(&buffer, "PNG");
 
-                                cache_->saveImage(avatarUrl, data);
+                                cache::client()->saveImage(avatarUrl, data);
                         });
                         callback(img);
                 });

@@ -56,10 +56,9 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
         topLayout_->addLayout(textLayout_, 1);
 }
 
-MemberList::MemberList(const QString &room_id, QSharedPointer<Cache> cache, QWidget *parent)
+MemberList::MemberList(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{room_id}
-  , cache_{cache}
 {
         setMaximumSize(420, 380);
         setAttribute(Qt::WA_DeleteOnClose, true);
@@ -99,11 +98,11 @@ MemberList::MemberList(const QString &room_id, QSharedPointer<Cache> cache, QWid
                 const size_t numMembers = list_->count() - 1;
 
                 if (numMembers > 0)
-                        addUsers(cache_->getMembers(room_id_.toStdString(), numMembers));
+                        addUsers(cache::client()->getMembers(room_id_.toStdString(), numMembers));
         });
 
         try {
-                addUsers(cache_->getMembers(room_id_.toStdString()));
+                addUsers(cache::client()->getMembers(room_id_.toStdString()));
         } catch (const lmdb::error &e) {
                 qCritical() << e.what();
         }

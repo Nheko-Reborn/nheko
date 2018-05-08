@@ -435,3 +435,11 @@ private:
         QString localUserId_;
         QString cacheDirectory_;
 };
+
+namespace cache {
+void
+init(const QString &userId, QObject *parent);
+
+Cache *
+client();
+}

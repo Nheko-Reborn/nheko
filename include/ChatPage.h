@@ -69,7 +69,6 @@ public:
         static ChatPage *instance() { return instance_; }
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
-        QSharedPointer<Cache> cache() { return cache_; }
         void deleteConfigs();
 
 signals:
@@ -183,9 +182,6 @@ private:
 
         // Global user settings.
         QSharedPointer<UserSettings> userSettings_;
-
-        // LMDB wrapper.
-        QSharedPointer<Cache> cache_;
 };
 
 template<class Collection>

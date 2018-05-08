@@ -276,8 +276,8 @@ MainWindow::openRoomSettings(const QString &room_id)
 {
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
 
-        roomSettingsDialog_ = QSharedPointer<dialogs::RoomSettings>(
-          new dialogs::RoomSettings(roomToSearch, chat_page_->cache(), this));
+        roomSettingsDialog_ =
+          QSharedPointer<dialogs::RoomSettings>(new dialogs::RoomSettings(roomToSearch, this));
 
         connect(roomSettingsDialog_.data(), &dialogs::RoomSettings::closing, this, [this]() {
                 roomSettingsModal_->hide();
@@ -294,8 +294,8 @@ MainWindow::openMemberListDialog(const QString &room_id)
 {
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
 
-        memberListDialog_ = QSharedPointer<dialogs::MemberList>(
-          new dialogs::MemberList(roomToSearch, chat_page_->cache(), this));
+        memberListDialog_ =
+          QSharedPointer<dialogs::MemberList>(new dialogs::MemberList(roomToSearch, this));
 
         memberListModal_ =
           QSharedPointer<OverlayModal>(new OverlayModal(this, memberListDialog_.data()));

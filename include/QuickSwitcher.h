@@ -22,7 +22,6 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "Cache.h"
 #include "SuggestionsPopup.hpp"
 #include "TextField.h"
 
@@ -50,7 +49,7 @@ class QuickSwitcher : public QWidget
         Q_OBJECT
 
 public:
-        QuickSwitcher(QSharedPointer<Cache> cache, QWidget *parent = nullptr);
+        QuickSwitcher(QWidget *parent = nullptr);
 
 signals:
         void closing();
@@ -77,6 +76,4 @@ private:
 
         //! Autocomplete popup box with the room suggestions.
         SuggestionsPopup popup_;
-        //! Cache client for room quering.
-        QSharedPointer<Cache> cache_;
 };

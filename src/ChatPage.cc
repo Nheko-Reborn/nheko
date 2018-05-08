@@ -323,7 +323,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
                 // We remove any invites with the same room_id.
                 try {
-                        cache_->removeInvite(room_id.toStdString());
+                        cache::client()->removeInvite(room_id.toStdString());
                 } catch (const lmdb::error &e) {
                         emit showNotification(QString("Failed to remove invite: %1")
                                                 .arg(QString::fromStdString(e.what())));
@@ -416,7 +416,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           [this](const std::vector<std::string> &rooms) { view_manager_->initialize(rooms); });
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 try {
-                        room_list_->cleanupInvites(cache_->invites());
+                        room_list_->cleanupInvites(cache::client()->invites());
                 } catch (const lmdb::error &e) {
                         qWarning() << "failed to retrieve invites" << e.what();
                 }
@@ -484,7 +484,7 @@ ChatPage::deleteConfigs()
         settings.remove("");
         settings.endGroup();
 
-        cache_->deleteData();
+        cache::client()->deleteData();
 
         http::client()->reset();
 }
@@ -497,28 +497,24 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         http::client()->getOwnProfile();
         http::client()->getOwnCommunities();
 
-        cache_ = QSharedPointer<Cache>(new Cache(userid));
-        room_list_->setCache(cache_);
-        text_input_->setCache(cache_);
-
-        AvatarProvider::init(cache_);
+        cache::init(userid, this);
 
         try {
-                cache_->setup();
+                cache::client()->setup();
 
-                if (!cache_->isFormatValid()) {
-                        cache_->deleteData();
-                        cache_->setup();
-                        cache_->setCurrentFormat();
+                if (!cache::client()->isFormatValid()) {
+                        cache::client()->deleteData();
+                        cache::client()->setup();
+                        cache::client()->setCurrentFormat();
                 }
 
-                if (cache_->isInitialized()) {
+                if (cache::client()->isInitialized()) {
                         loadStateFromCache();
                         return;
                 }
         } catch (const lmdb::error &e) {
                 qCritical() << "Cache failure" << e.what();
-                cache_->deleteData();
+                cache::client()->deleteData();
                 qInfo() << "Falling back to initial sync ...";
         }
 
@@ -534,16 +530,16 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
 
         QtConcurrent::run([this, res = std::move(response)]() {
                 try {
-                        cache_->saveState(res);
+                        cache::client()->saveState(res);
                         emit syncUI(res.rooms);
-                        emit syncRoomlist(cache_->roomUpdates(res));
+                        emit syncRoomlist(cache::client()->roomUpdates(res));
                 } catch (const lmdb::error &e) {
                         std::cout << "save cache error:" << e.what() << '\n';
                         // TODO: retry sync.
                         return;
                 }
 
-                emit continueSync(cache_->nextBatchToken());
+                emit continueSync(cache::client()->nextBatchToken());
         });
 }
 
@@ -556,16 +552,16 @@ ChatPage::initialSyncCompleted(const mtx::responses::Sync &response)
 
         QtConcurrent::run([this, res = std::move(response)]() {
                 try {
-                        cache_->saveState(res);
+                        cache::client()->saveState(res);
                         emit initializeViews(std::move(res.rooms));
-                        emit initializeRoomList(cache_->roomInfo());
+                        emit initializeRoomList(cache::client()->roomInfo());
                 } catch (const lmdb::error &e) {
                         qWarning() << "cache error:" << QString::fromStdString(e.what());
                         emit retryInitialSync();
                         return;
                 }
 
-                emit continueSync(cache_->nextBatchToken());
+                emit continueSync(cache::client()->nextBatchToken());
                 emit contentLoaded();
         });
 }
@@ -591,8 +587,8 @@ ChatPage::updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_na
         if (!avatar_url.isValid())
                 return;
 
-        if (!cache_.isNull()) {
-                auto data = cache_->image(avatar_url.toString());
+        if (cache::client()) {
+                auto data = cache::client()->image(avatar_url.toString());
                 if (!data.isNull()) {
                         user_info_widget_->setAvatar(QImage::fromData(data));
                         return;
@@ -635,7 +631,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
         }
 
         try {
-                auto room_info = cache_->getRoomInfo({room_id.toStdString()});
+                auto room_info = cache::client()->getRoomInfo({room_id.toStdString()});
 
                 if (room_info.find(room_id) == room_info.end())
                         return;
@@ -646,7 +642,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                 top_bar_->updateRoomName(name);
                 top_bar_->updateRoomTopic(QString::fromStdString(room_info[room_id].topic));
 
-                auto img = cache_->getRoomAvatar(room_id);
+                auto img = cache::client()->getRoomAvatar(room_id);
 
                 if (img.isNull())
                         top_bar_->updateRoomAvatarFromName(name);
@@ -679,10 +675,10 @@ ChatPage::loadStateFromCache()
 
         QtConcurrent::run([this]() {
                 try {
-                        cache_->populateMembers();
+                        cache::client()->populateMembers();
 
-                        emit initializeEmptyViews(cache_->joinedRooms());
-                        emit initializeRoomList(cache_->roomInfo());
+                        emit initializeEmptyViews(cache::client()->joinedRooms());
+                        emit initializeRoomList(cache::client()->roomInfo());
                 } catch (const lmdb::error &e) {
                         std::cout << "load cache error:" << e.what() << '\n';
                         // TODO Clear cache and restart.
@@ -690,7 +686,7 @@ ChatPage::loadStateFromCache()
                 }
 
                 // Start receiving events.
-                emit continueSync(cache_->nextBatchToken());
+                emit continueSync(cache::client()->nextBatchToken());
 
                 // Check periodically if the timelines have been loaded.
                 emit startConsesusTimer();
@@ -702,7 +698,7 @@ ChatPage::showQuickSwitcher()
 {
         if (quickSwitcher_.isNull()) {
                 quickSwitcher_ = QSharedPointer<QuickSwitcher>(
-                  new QuickSwitcher(cache_, this),
+                  new QuickSwitcher(this),
                   [](QuickSwitcher *switcher) { switcher->deleteLater(); });
 
                 connect(quickSwitcher_.data(),
@@ -731,8 +727,8 @@ void
 ChatPage::removeRoom(const QString &room_id)
 {
         try {
-                cache_->removeRoom(room_id);
-                cache_->removeInvite(room_id.toStdString());
+                cache::client()->removeRoom(room_id);
+                cache::client()->removeInvite(room_id.toStdString());
         } catch (const lmdb::error &e) {
                 qCritical() << "The cache couldn't be updated: " << e.what();
                 // TODO: Notify the user.
@@ -800,7 +796,7 @@ ChatPage::showReadReceipts(const QString &event_id)
                 receiptsModal_->setColor(QColor(30, 30, 30, 170));
         }
 
-        receiptsDialog_->addUsers(cache_->readReceipts(event_id, current_room_));
+        receiptsDialog_->addUsers(cache::client()->readReceipts(event_id, current_room_));
         receiptsModal_->show();
 }
 
@@ -858,23 +854,24 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 
                 try {
                         if (item.read) {
-                                cache_->removeReadNotification(event_id);
+                                cache::client()->removeReadNotification(event_id);
                                 continue;
                         }
 
-                        if (!cache_->isNotificationSent(event_id)) {
+                        if (!cache::client()->isNotificationSent(event_id)) {
                                 const auto room_id = QString::fromStdString(item.room_id);
                                 const auto user_id = utils::event_sender(item.event);
 
                                 // We should only sent one notification per event.
-                                cache_->markSentNotification(event_id);
+                                cache::client()->markSentNotification(event_id);
 
                                 // Don't send a notification when the current room is opened.
                                 if (isRoomActive(room_id))
                                         continue;
 
                                 NotificationsManager::postNotification(
-                                  QString::fromStdString(cache_->singleRoomInfo(item.room_id).name),
+                                  QString::fromStdString(
+                                    cache::client()->singleRoomInfo(item.room_id).name),
                                   Cache::displayName(room_id, user_id),
                                   utils::event_body(item.event));
                         }

@@ -59,9 +59,7 @@ class RoomSettings : public QFrame
 {
         Q_OBJECT
 public:
-        RoomSettings(const QString &room_id,
-                     QSharedPointer<Cache> cache,
-                     QWidget *parent = nullptr);
+        RoomSettings(const QString &room_id, QWidget *parent = nullptr);
 
 signals:
         void closing();
@@ -73,8 +71,6 @@ private:
         static constexpr int AvatarSize = 64;
 
         void setAvatar(const QImage &img) { avatarImg_ = img; }
-
-        QSharedPointer<Cache> cache_;
 
         // Button section
         FlatButton *saveBtn_;

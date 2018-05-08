@@ -4,7 +4,6 @@
 #include <QListWidget>
 
 class Avatar;
-class Cache;
 class FlatButton;
 class QHBoxLayout;
 class QLabel;
@@ -38,7 +37,7 @@ class MemberList : public QFrame
 {
         Q_OBJECT
 public:
-        MemberList(const QString &room_id, QSharedPointer<Cache> cache, QWidget *parent = nullptr);
+        MemberList(const QString &room_id, QWidget *parent = nullptr);
 
 public slots:
         void addUsers(const std::vector<RoomMember> &users);
@@ -57,7 +56,6 @@ private:
         QString room_id_;
         QLabel *topLabel_;
         QListWidget *list_;
-        QSharedPointer<Cache> cache_;
         FlatButton *moreBtn_;
 };
 } // dialogs

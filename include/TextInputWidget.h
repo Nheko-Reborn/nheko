@@ -36,8 +36,6 @@
 
 #include "emoji/PickButton.h"
 
-class Cache;
-
 namespace dialogs {
 class PreviewUploadOverlay;
 }
@@ -131,7 +129,6 @@ public:
 
         QColor borderColor() const { return borderColor_; }
         void setBorderColor(QColor &color) { borderColor_ = color; }
-        void setCache(QSharedPointer<Cache> cache) { cache_ = cache; }
 
 public slots:
         void openFileSelection();
@@ -171,8 +168,6 @@ private:
         FlatButton *sendFileBtn_;
         FlatButton *sendMessageBtn_;
         emoji::PickButton *emojiBtn_;
-
-        QSharedPointer<Cache> cache_;
 
         QColor borderColor_;
 };

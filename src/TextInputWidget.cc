@@ -453,12 +453,12 @@ TextInputWidget::TextInputWidget(QWidget *parent)
                 input_->setFixedHeight(textInputHeight);
         });
         connect(input_, &FilteredTextEdit::showSuggestions, this, [this](const QString &q) {
-                if (q.isEmpty() || cache_.isNull())
+                if (q.isEmpty() || !cache::client())
                         return;
 
                 QtConcurrent::run([this, q = q.toLower().toStdString()]() {
                         try {
-                                emit input_->resultsRetrieved(cache_->searchUsers(
+                                emit input_->resultsRetrieved(cache::client()->searchUsers(
                                   ChatPage::instance()->currentRoom().toStdString(), q));
                         } catch (const lmdb::error &e) {
                                 std::cout << e.what() << '\n';

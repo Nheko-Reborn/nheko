@@ -17,27 +17,18 @@
 
 #pragma once
 
-#include <QHash>
 #include <QImage>
-#include <QSharedPointer>
 #include <functional>
-
-class TimelineItem;
-class Cache;
 
 class AvatarProvider : public QObject
 {
         Q_OBJECT
 
 public:
-        static void init(QSharedPointer<Cache> cache) { cache_ = cache; }
         //! The callback is called with the downloaded avatar for the given user
         //! or the avatar is downloaded first and then saved for re-use.
         static void resolve(const QString &room_id,
                             const QString &userId,
                             QObject *receiver,
                             std::function<void(QImage)> callback);
-
-private:
-        static QSharedPointer<Cache> cache_;
 };
