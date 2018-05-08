@@ -46,6 +46,12 @@ public:
                 save();
         };
 
+        void setStartInTray(bool state)
+        {
+                isStartInTrayEnabled_ = state;
+                save();
+        };
+
         void setRoomOrdering(bool state)
         {
                 isOrderingEnabled_ = state;
@@ -75,6 +81,7 @@ public:
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
+        bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isOrderingEnabled() const { return isOrderingEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
@@ -86,6 +93,7 @@ signals:
 private:
         QString theme_;
         bool isTrayEnabled_;
+        bool isStartInTrayEnabled_;
         bool isOrderingEnabled_;
         bool isGroupViewEnabled_;
         bool isTypingNotificationsEnabled_;
@@ -128,6 +136,7 @@ private:
         QSharedPointer<UserSettings> settings_;
 
         Toggle *trayToggle_;
+        Toggle *startInTrayToggle_;
         Toggle *roomOrderToggle_;
         Toggle *groupViewToggle_;
         Toggle *typingNotifications_;
