@@ -438,7 +438,7 @@ private:
 
 namespace cache {
 void
-init(const QString &userId, QObject *parent);
+init(const QString &user_id);
 
 Cache *
 client();

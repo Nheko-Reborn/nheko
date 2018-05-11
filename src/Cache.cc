@@ -54,21 +54,21 @@ using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
 namespace {
-Cache *instance_ = nullptr;
+std::unique_ptr<Cache> instance_ = nullptr;
 }
 
 namespace cache {
 void
-init(const QString &user_id, QObject *parent)
+init(const QString &user_id)
 {
         if (!instance_)
-                instance_ = new Cache(user_id, parent);
+                instance_ = std::make_unique<Cache>(user_id);
 }
 
 Cache *
 client()
 {
-        return instance_;
+        return instance_.get();
 }
 }
 

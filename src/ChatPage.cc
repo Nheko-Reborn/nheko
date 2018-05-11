@@ -497,7 +497,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         http::client()->getOwnProfile();
         http::client()->getOwnCommunities();
 
-        cache::init(userid, this);
+        cache::init(userid);
 
         try {
                 cache::client()->setup();

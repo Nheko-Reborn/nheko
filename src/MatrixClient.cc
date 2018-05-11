@@ -34,22 +34,22 @@
 #include "MatrixClient.h"
 
 namespace {
-MatrixClient *instance_ = nullptr;
+std::unique_ptr<MatrixClient> instance_ = nullptr;
 }
 
 namespace http {
 
 void
-init(QObject *parent)
+init()
 {
         if (!instance_)
-                instance_ = new MatrixClient(parent);
+                instance_ = std::make_unique<MatrixClient>();
 }
 
 MatrixClient *
 client()
 {
-        return instance_;
+        return instance_.get();
 }
 }
 

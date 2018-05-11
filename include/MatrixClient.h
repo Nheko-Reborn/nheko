@@ -215,7 +215,7 @@ private:
 namespace http {
 //! Initialize the http module
 void
-init(QObject *parent);
+init();
 
 //! Retrieve the client instance.
 MatrixClient *

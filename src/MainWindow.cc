@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
         setObjectName("MainWindow");
 
         // Initialize the http client.
-        http::init(this);
+        http::init();
 
         restoreWindowSize();
 
