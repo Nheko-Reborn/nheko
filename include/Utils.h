@@ -8,6 +8,7 @@
 #include "timeline/widgets/VideoItem.h"
 
 #include <QDateTime>
+#include <QPixmap>
 #include <mtx/events/collections.hpp>
 
 namespace utils {
@@ -168,4 +169,7 @@ message_body(const mtx::events::collections::TimelineEvents &event)
 //! Calculate the Levenshtein distance between two strings with character skipping.
 int
 levenshtein_distance(const std::string &s1, const std::string &s2);
+
+QPixmap
+scaleImageToPixmap(const QImage &img, int size);
 }

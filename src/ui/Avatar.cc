@@ -1,6 +1,7 @@
 #include <QPainter>
 
 #include "Avatar.h"
+#include "Utils.h"
 
 Avatar::Avatar(QWidget *parent)
   : QWidget(parent)
@@ -64,10 +65,8 @@ Avatar::setSize(int size)
 {
         size_ = size;
 
-        if (!image_.isNull()) {
-                pixmap_ = QPixmap::fromImage(
-                  image_.scaled(size_, size_, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        }
+        if (!image_.isNull())
+                pixmap_ = utils::scaleImageToPixmap(image_, size_);
 
         QFont _font(font());
         _font.setPointSizeF(size_ * (ui::FontSize) / 40);
@@ -89,8 +88,7 @@ Avatar::setImage(const QImage &image)
 {
         image_  = image;
         type_   = ui::AvatarType::Image;
-        pixmap_ = QPixmap::fromImage(
-          image_.scaled(size_, size_, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        pixmap_ = utils::scaleImageToPixmap(image_, size_);
         update();
 }
 

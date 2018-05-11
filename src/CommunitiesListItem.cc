@@ -88,3 +88,10 @@ CommunitiesListItem::paintEvent(QPaintEvent *)
                 p.restore();
         }
 }
+
+void
+CommunitiesListItem::setAvatar(const QImage &img)
+{
+        communityAvatar_ = utils::scaleImageToPixmap(img, IconSize);
+        update();
+}

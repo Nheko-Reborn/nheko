@@ -22,21 +22,8 @@ class TopSection : public QWidget
         Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
 
 public:
-        TopSection(const RoomInfo &info, const QImage &img, QWidget *parent = nullptr)
-          : QWidget{parent}
-          , info_{std::move(info)}
-        {
-                textColor_ = palette().color(QPalette::Text);
-                avatar_    = QPixmap::fromImage(img.scaled(
-                  AvatarSize, AvatarSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        }
-
-        QSize sizeHint() const override
-        {
-                QFont font;
-                font.setPixelSize(18);
-                return QSize(200, AvatarSize + QFontMetrics(font).ascent() + 6 * Padding);
-        }
+        TopSection(const RoomInfo &info, const QImage &img, QWidget *parent = nullptr);
+        QSize sizeHint() const override;
 
         QColor textColor() const { return textColor_; }
         void setTextColor(QColor &color) { textColor_ = color; }

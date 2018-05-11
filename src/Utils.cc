@@ -1,5 +1,8 @@
 #include "Utils.h"
 
+#include <QApplication>
+#include <QDesktopWidget>
+
 #include <variant.hpp>
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
@@ -137,4 +140,12 @@ utils::event_body(const mtx::events::collections::TimelineEvents &event)
         }
 
         return QString();
+}
+
+QPixmap
+utils::scaleImageToPixmap(const QImage &img, int size)
+{
+        const int sz = QApplication::desktop()->screen()->devicePixelRatio() * size;
+        return QPixmap::fromImage(
+          img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }

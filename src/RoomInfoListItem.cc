@@ -368,8 +368,7 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 void
 RoomInfoListItem::setAvatar(const QImage &img)
 {
-        roomAvatar_ = QPixmap::fromImage(
-          img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        roomAvatar_ = utils::scaleImageToPixmap(img, IconSize);
         update();
 }
 

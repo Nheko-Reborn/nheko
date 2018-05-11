@@ -84,11 +84,3 @@ private:
 
         RippleOverlay *rippleOverlay_;
 };
-
-inline void
-CommunitiesListItem::setAvatar(const QImage &img)
-{
-        communityAvatar_ = QPixmap::fromImage(
-          img.scaled(IconSize, IconSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        update();
-}

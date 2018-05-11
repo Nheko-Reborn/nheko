@@ -15,6 +15,22 @@
 
 using namespace dialogs;
 
+TopSection::TopSection(const RoomInfo &info, const QImage &img, QWidget *parent)
+  : QWidget{parent}
+  , info_{std::move(info)}
+{
+        textColor_ = palette().color(QPalette::Text);
+        avatar_    = utils::scaleImageToPixmap(img, AvatarSize);
+}
+
+QSize
+TopSection::sizeHint() const
+{
+        QFont font;
+        font.setPixelSize(18);
+        return QSize(200, AvatarSize + QFontMetrics(font).ascent() + 6 * Padding);
+}
+
 RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{std::move(room_id)}

@@ -59,6 +59,8 @@ MatrixClient::MatrixClient(QObject *parent)
   , mediaApiUrl_{"/_matrix/media/r0"}
   , serverProtocol_{"https"}
 {
+        qRegisterMetaType<mtx::responses::Sync>();
+
         QSettings settings;
         txn_id_ = settings.value("client/transaction_id", 1).toInt();
 
@@ -344,8 +346,7 @@ MatrixClient::sync() noexcept
                 }
 
                 try {
-                        mtx::responses::Sync response = nlohmann::json::parse(data);
-                        emit syncCompleted(response);
+                        emit syncCompleted(nlohmann::json::parse(std::move(data)));
                 } catch (std::exception &e) {
                         qWarning() << "Sync error: " << e.what();
                 }
@@ -461,7 +462,6 @@ MatrixClient::initialSync() noexcept
                         return;
                 }
 
-                qRegisterMetaType<mtx::responses::Sync>();
                 QtConcurrent::run([data = reply->readAll(), this]() {
                         try {
                                 emit initialSyncCompleted(nlohmann::json::parse(std::move(data)));
