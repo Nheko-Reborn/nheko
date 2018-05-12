@@ -30,7 +30,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.04.21");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.05.11");
 
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
@@ -550,7 +550,8 @@ Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
 RoomInfo
 Cache::singleRoomInfo(const std::string &room_id)
 {
-        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto txn      = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto statesdb = getStatesDb(txn, room_id);
 
         lmdb::val data;
 
@@ -559,6 +560,8 @@ Cache::singleRoomInfo(const std::string &room_id)
                 try {
                         RoomInfo tmp     = json::parse(std::string(data.data(), data.size()));
                         tmp.member_count = getMembersDb(txn, room_id).size(txn);
+                        tmp.join_rule    = getRoomJoinRule(txn, statesdb);
+                        tmp.guest_access = getRoomGuestAccess(txn, statesdb);
 
                         txn.commit();
 
@@ -584,12 +587,15 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
 
         for (const auto &room : rooms) {
                 lmdb::val data;
+                auto statesdb = getStatesDb(txn, room);
 
                 // Check if the room is joined.
                 if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room), data)) {
                         try {
                                 RoomInfo tmp = json::parse(std::string(data.data(), data.size()));
                                 tmp.member_count = getMembersDb(txn, room).size(txn);
+                                tmp.join_rule    = getRoomJoinRule(txn, statesdb);
+                                tmp.guest_access = getRoomGuestAccess(txn, statesdb);
 
                                 room_info.emplace(QString::fromStdString(room), std::move(tmp));
                         } catch (const json::exception &e) {
@@ -803,6 +809,50 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                 return QString("%1 and %2 others").arg(first_member).arg(total);
 
         return "Empty Room";
+}
+
+JoinRule
+Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomJoinRules)), event);
+
+        if (res) {
+                try {
+                        StateEvent<JoinRules> msg =
+                          json::parse(std::string(event.data(), event.size()));
+                        return msg.content.join_rule;
+                } catch (const json::exception &e) {
+                        qWarning() << e.what();
+                }
+        }
+        return JoinRule::Knock;
+}
+
+bool
+Cache::getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomGuestAccess)), event);
+
+        if (res) {
+                try {
+                        StateEvent<GuestAccess> msg =
+                          json::parse(std::string(event.data(), event.size()));
+                        return msg.content.guest_access == AccessState::CanJoin;
+                } catch (const json::exception &e) {
+                        qWarning() << e.what();
+                }
+        }
+        return false;
 }
 
 QString

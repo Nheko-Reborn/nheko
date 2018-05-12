@@ -38,8 +38,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         setMaximumWidth(385);
 
         try {
-                auto res = cache::client()->getRoomInfo({room_id_.toStdString()});
-                info_    = res[room_id_];
+                info_ = cache::client()->singleRoomInfo(room_id_.toStdString());
 
                 setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
         } catch (const lmdb::error &e) {
@@ -75,13 +74,67 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         notifOptionLayout_->addWidget(notifLabel);
         notifOptionLayout_->addWidget(notifCombo, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto accessOptionLayout = new QHBoxLayout();
+        accessOptionLayout->setMargin(5);
+        auto accessLabel = new QLabel(tr("Room access"), this);
+        accessCombo = new QComboBox(this);
+        accessCombo->addItem(tr("Anyone and guests"));
+        accessCombo->addItem(tr("Anyone"));
+        accessCombo->addItem(tr("Invited users"));
+        accessCombo->setDisabled(true);
+        accessLabel->setStyleSheet("font-size: 15px;");
+
+        if(info_.join_rule == JoinRule::Public)
+        {
+                if(info_.guest_access)
+                {
+                        accessCombo->setCurrentIndex(0);
+                }
+                else
+                {
+                        accessCombo->setCurrentIndex(1);
+                }
+        }
+        else
+        {
+                accessCombo->setCurrentIndex(2);
+        }
+
+        accessOptionLayout->addWidget(accessLabel);
+        accessOptionLayout->addWidget(accessCombo);
+
         layout->addWidget(new TopSection(info_, avatarImg_, this));
         layout->addLayout(notifOptionLayout_);
         layout->addLayout(notifOptionLayout_);
+        layout->addLayout(accessOptionLayout);
         layout->addLayout(btnLayout);
 
         connect(cancelBtn_, &FlatButton::clicked, this, &RoomSettings::closing);
-        connect(saveBtn_, &FlatButton::clicked, this, [this]() { emit closing(); });
+        connect(saveBtn_, &FlatButton::clicked, this, &RoomSettings::save_and_close);
+}
+
+void
+RoomSettings::save_and_close() {
+        // TODO: Save access changes to the room
+        if (accessCombo->currentIndex()<2) {
+                if(info_.join_rule != JoinRule::Public) {
+                        // Make join_rule Public
+                }
+                if(accessCombo->currentIndex()==0) {
+                        if(!info_.guest_access) {
+                                // Make guest_access CanJoin
+                        }
+                }
+        }
+        else {
+                if(info_.join_rule != JoinRule::Invite) {
+                        // Make join_rule invite
+                }
+                if(info_.guest_access) {
+                        // Make guest_access forbidden
+                }
+        }
+        closing();
 }
 
 void

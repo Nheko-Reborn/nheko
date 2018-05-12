@@ -11,6 +11,7 @@ class Avatar;
 class QPixmap;
 class QLayout;
 class QLabel;
+class QComboBox;
 
 template<class T>
 class QSharedPointer;
@@ -54,6 +55,9 @@ signals:
 protected:
         void paintEvent(QPaintEvent *event) override;
 
+private slots:
+        void save_and_close();
+
 private:
         static constexpr int AvatarSize = 64;
 
@@ -66,6 +70,8 @@ private:
         RoomInfo info_;
         QString room_id_;
         QImage avatarImg_;
+
+        QComboBox *accessCombo;
 };
 
 } // dialogs

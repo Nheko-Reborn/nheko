@@ -22,7 +22,9 @@
 #include <QImage>
 #include <json.hpp>
 #include <lmdb++.h>
+#include <mtx/events/join_rules.hpp>
 #include <mtx/responses.hpp>
+using mtx::events::state::JoinRule;
 
 struct RoomMember
 {
@@ -74,15 +76,20 @@ struct RoomInfo
         bool is_invite = false;
         //! Total number of members in the room.
         int16_t member_count = 0;
+        //! Who can access to the room.
+        JoinRule join_rule = JoinRule::Public;
+        bool guest_access  = false;
 };
 
 inline void
 to_json(json &j, const RoomInfo &info)
 {
-        j["name"]       = info.name;
-        j["topic"]      = info.topic;
-        j["avatar_url"] = info.avatar_url;
-        j["is_invite"]  = info.is_invite;
+        j["name"]         = info.name;
+        j["topic"]        = info.topic;
+        j["avatar_url"]   = info.avatar_url;
+        j["is_invite"]    = info.is_invite;
+        j["join_rule"]    = info.join_rule;
+        j["guest_access"] = info.guest_access;
 
         if (info.member_count != 0)
                 j["member_count"] = info.member_count;
@@ -91,10 +98,12 @@ to_json(json &j, const RoomInfo &info)
 inline void
 from_json(const json &j, RoomInfo &info)
 {
-        info.name       = j.at("name");
-        info.topic      = j.at("topic");
-        info.avatar_url = j.at("avatar_url");
-        info.is_invite  = j.at("is_invite");
+        info.name         = j.at("name");
+        info.topic        = j.at("topic");
+        info.avatar_url   = j.at("avatar_url");
+        info.is_invite    = j.at("is_invite");
+        info.join_rule    = j.at("join_rule");
+        info.guest_access = j.at("guest_access");
 
         if (j.count("member_count"))
                 info.member_count = j.at("member_count");
@@ -164,6 +173,9 @@ public:
 
         //! Calculate & return the name of the room.
         QString getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
+        //! Get room join rules
+        JoinRule getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb);
+        bool getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb);
         //! Retrieve the topic of the room if any.
         QString getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
         //! Retrieve the room avatar's url if any.
