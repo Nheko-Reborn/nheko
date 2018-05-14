@@ -163,8 +163,7 @@ You can also install nheko by running `nix-env -f . -i`
 
 ### Contributing
 
-Any kind of contribution to the project is greatly appreciated. You are also
-encouraged to open feature request issues.
+See [CONTRIBUTING](.github/CONTRIBUTING)
 
 ### Screens
 
