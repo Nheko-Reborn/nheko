@@ -12,9 +12,37 @@ class QPixmap;
 class QLayout;
 class QLabel;
 class QComboBox;
+class TextField;
+class QLabel;
 
 template<class T>
 class QSharedPointer;
+
+class EditModal : public QWidget
+{
+        Q_OBJECT
+
+public:
+        EditModal(const QString &roomId, QWidget *parent = nullptr);
+
+        void setFields(const QString &roomName, const QString &roomTopic);
+
+signals:
+        void nameChanged(const QString &roomName);
+
+private:
+        QString roomId_;
+        QString initialName_;
+        QString initialTopic_;
+
+        QLabel *errorField_;
+
+        TextField *nameInput_;
+        TextField *topicInput_;
+
+        FlatButton *applyBtn_;
+        FlatButton *cancelBtn_;
+};
 
 class TopSection : public QWidget
 {
@@ -25,6 +53,7 @@ class TopSection : public QWidget
 public:
         TopSection(const RoomInfo &info, const QImage &img, QWidget *parent = nullptr);
         QSize sizeHint() const override;
+        void setRoomName(const QString &name);
 
         QColor textColor() const { return textColor_; }
         void setTextColor(QColor &color) { textColor_ = color; }
@@ -56,7 +85,7 @@ protected:
         void paintEvent(QPaintEvent *event) override;
 
 private slots:
-        void save_and_close();
+        void saveSettings();
 
 private:
         static constexpr int AvatarSize = 64;
@@ -67,9 +96,13 @@ private:
         FlatButton *saveBtn_;
         FlatButton *cancelBtn_;
 
+        FlatButton *editFieldsBtn_;
+
         RoomInfo info_;
         QString room_id_;
         QImage avatarImg_;
+
+        TopSection *topSection_;
 
         QComboBox *accessCombo;
 };

@@ -148,6 +148,7 @@ dialogs--MemberList,
 dialogs--PreviewUploadOverlay,
 dialogs--CreateRoom > QLineEdit,
 dialogs--InviteUsers > QLineEdit,
+EditModal,
 dialogs--JoinRoom > QLineEdit {
     background-color: #202228;
     color: #caccd1;

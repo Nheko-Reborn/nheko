@@ -18,10 +18,13 @@
 #pragma once
 
 #include <QFileInfo>
+#include <QJsonDocument>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QUrl>
 #include <mtx.hpp>
+#include <mtx/errors.hpp>
 
 class DownloadMediaProxy : public QObject
 {
@@ -31,6 +34,15 @@ signals:
         void imageDownloaded(const QPixmap &data);
         void fileDownloaded(const QByteArray &data);
         void avatarDownloaded(const QImage &img);
+};
+
+class StateEventProxy : public QObject
+{
+        Q_OBJECT
+
+signals:
+        void stateEventSent();
+        void stateEventError(const QString &msg);
 };
 
 Q_DECLARE_METATYPE(mtx::responses::Sync)
@@ -48,6 +60,10 @@ public:
         // Client API.
         void initialSync() noexcept;
         void sync() noexcept;
+        template<class EventBody, mtx::events::EventType EventT>
+        std::shared_ptr<StateEventProxy> sendStateEvent(const EventBody &body,
+                                                        const QString &roomId,
+                                                        const QString &stateKey = "");
         void sendRoomMessage(mtx::events::MessageType ty,
                              int txnId,
                              const QString &roomid,
@@ -220,4 +236,51 @@ init();
 //! Retrieve the client instance.
 MatrixClient *
 client();
+}
+
+template<class EventBody, mtx::events::EventType EventT>
+std::shared_ptr<StateEventProxy>
+MatrixClient::sendStateEvent(const EventBody &body, const QString &roomId, const QString &stateKey)
+{
+        QUrl endpoint(server_);
+        endpoint.setPath(clientApiUrl_ + QString("/rooms/%1/state/%2/%3")
+                                           .arg(roomId)
+                                           .arg(QString::fromStdString(to_string(EventT)))
+                                           .arg(stateKey));
+
+        QNetworkRequest request(QString(endpoint.toEncoded()));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        setupAuth(request);
+
+        auto proxy = std::shared_ptr<StateEventProxy>(new StateEventProxy,
+                                                      [](auto proxy) { proxy->deleteLater(); });
+
+        auto serializedBody = nlohmann::json(body).dump();
+        auto reply = put(request, QByteArray(serializedBody.data(), serializedBody.size()));
+        connect(reply, &QNetworkReply::finished, this, [reply, proxy]() {
+                reply->deleteLater();
+
+                int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                auto data  = reply->readAll();
+
+                if (status == 0 || status >= 400) {
+                        try {
+                                mtx::errors::Error res = nlohmann::json::parse(data);
+                                emit proxy->stateEventError(QString::fromStdString(res.error));
+                        } catch (const std::exception &e) {
+                                emit proxy->stateEventError(QString::fromStdString(e.what()));
+                        }
+
+                        return;
+                }
+
+                try {
+                        mtx::responses::EventId res = nlohmann::json::parse(data);
+                        emit proxy->stateEventSent();
+                } catch (const std::exception &e) {
+                        emit proxy->stateEventError(QString::fromStdString(e.what()));
+                }
+        });
+
+        return proxy;
 }

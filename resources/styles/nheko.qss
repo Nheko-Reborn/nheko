@@ -148,6 +148,7 @@ dialogs--ReadReceipts,
 dialogs--MemberList,
 dialogs--JoinRoom,
 dialogs--PreviewUploadOverlay,
+EditModal,
 QListWidget {
     background-color: white;
     color: #333;
