@@ -7,6 +7,7 @@
 
 class FlatButton;
 class TextField;
+class QHBoxLayout;
 class Avatar;
 class QPixmap;
 class QLayout;
@@ -91,6 +92,11 @@ private:
         static constexpr int AvatarSize = 64;
 
         void setAvatar(const QImage &img) { avatarImg_ = img; }
+        void setupEditButton();
+
+        //! Whether the user would be able to change the name or the topic of the room.
+        bool hasEditRights_ = true;
+        QHBoxLayout *editLayout_;
 
         // Button section
         FlatButton *saveBtn_;

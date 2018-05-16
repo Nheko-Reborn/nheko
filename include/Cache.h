@@ -206,6 +206,12 @@ public:
         bool isFormatValid();
         void setCurrentFormat();
 
+        //! Check if the given user has power leve greater than than
+        //! lowest power level of the given events.
+        bool hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
+                                 const std::string &room_id,
+                                 const std::string &user_id);
+
         //! Retrieves the saved room avatar.
         QImage getRoomAvatar(const QString &id);
         QImage getRoomAvatar(const std::string &id);

@@ -11,11 +11,13 @@
 #include <QLabel>
 #include <QPainter>
 #include <QPixmap>
+#include <QSettings>
 #include <QSharedPointer>
 #include <QStyleOption>
 #include <QVBoxLayout>
 
 using namespace dialogs;
+using namespace mtx::events;
 
 EditModal::EditModal(const QString &roomId, QWidget *parent)
   : QWidget(parent)
@@ -86,7 +88,7 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                                 &StateEventProxy::stateEventSent,
                                 this,
                                 [this, proxy, newName]() {
-                                        proxy->deleteLater();
+                                        Q_UNUSED(proxy);
                                         errorField_->hide();
                                         emit nameChanged(newName);
                                         close();
@@ -96,7 +98,7 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                                 &StateEventProxy::stateEventError,
                                 this,
                                 [this, proxy, newName](const QString &msg) {
-                                        proxy->deleteLater();
+                                        Q_UNUSED(proxy);
                                         errorField_->setText(msg);
                                         errorField_->show();
                                 });
@@ -113,7 +115,7 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                                 &StateEventProxy::stateEventSent,
                                 this,
                                 [this, proxy, newTopic]() {
-                                        proxy->deleteLater();
+                                        Q_UNUSED(proxy);
                                         errorField_->hide();
                                         close();
                                 });
@@ -122,7 +124,7 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                                 &StateEventProxy::stateEventError,
                                 this,
                                 [this, proxy, newTopic](const QString &msg) {
-                                        proxy->deleteLater();
+                                        Q_UNUSED(proxy);
                                         errorField_->setText(msg);
                                         errorField_->show();
                                 });
@@ -242,8 +244,42 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         auto menuLabel = new QLabel("Room Settings", this);
         menuLabel->setFont(font);
 
+        topSection_ = new TopSection(info_, avatarImg_, this);
+
+        editLayout_ = new QHBoxLayout;
+        editLayout_->setMargin(0);
+        editLayout_->addWidget(topSection_);
+
+        setupEditButton();
+
+        layout->addWidget(menuLabel);
+        layout->addLayout(editLayout_);
+        layout->addLayout(notifOptionLayout_);
+        layout->addLayout(accessOptionLayout);
+        layout->addLayout(btnLayout);
+
+        connect(cancelBtn_, &QPushButton::clicked, this, &RoomSettings::closing);
+        connect(saveBtn_, &QPushButton::clicked, this, &RoomSettings::saveSettings);
+}
+
+void
+RoomSettings::setupEditButton()
+{
+        try {
+                QSettings settings;
+                auto userId = settings.value("auth/user_id").toString().toStdString();
+
+                hasEditRights_ = cache::client()->hasEnoughPowerLevel(
+                  {EventType::RoomName, EventType::RoomTopic}, room_id_.toStdString(), userId);
+        } catch (const lmdb::error &e) {
+                qWarning() << "lmdb error" << e.what();
+        }
+
         constexpr int buttonSize = 36;
         constexpr int iconSize   = buttonSize / 2;
+
+        if (!hasEditRights_)
+                return;
 
         QIcon editIcon;
         editIcon.addFile(":/icons/icons/ui/edit.svg");
@@ -264,21 +300,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 });
         });
 
-        topSection_ = new TopSection(info_, avatarImg_, this);
-
-        auto editLayout = new QHBoxLayout;
-        editLayout->setMargin(0);
-        editLayout->addWidget(topSection_);
-        editLayout->addWidget(editFieldsBtn_, 0, Qt::AlignRight | Qt::AlignTop);
-
-        layout->addWidget(menuLabel);
-        layout->addLayout(editLayout);
-        layout->addLayout(notifOptionLayout_);
-        layout->addLayout(accessOptionLayout);
-        layout->addLayout(btnLayout);
-
-        connect(cancelBtn_, &QPushButton::clicked, this, &RoomSettings::closing);
-        connect(saveBtn_, &QPushButton::clicked, this, &RoomSettings::saveSettings);
+        editLayout_->addWidget(editFieldsBtn_, 0, Qt::AlignRight | Qt::AlignTop);
 }
 
 void

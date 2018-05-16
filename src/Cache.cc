@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <limits>
 #include <stdexcept>
 
 #include <QByteArray>
@@ -1221,6 +1222,44 @@ Cache::isNotificationSent(const std::string &event_id)
         txn.commit();
 
         return res;
+}
+
+bool
+Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
+                           const std::string &room_id,
+                           const std::string &user_id)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getStatesDb(txn, room_id);
+
+        uint16_t min_event_level = std::numeric_limits<uint16_t>::max();
+        uint16_t user_level      = std::numeric_limits<uint16_t>::min();
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(txn, db, lmdb::val(to_string(EventType::RoomPowerLevels)), event);
+
+        if (res) {
+                try {
+                        StateEvent<PowerLevels> msg =
+                          json::parse(std::string(event.data(), event.size()));
+
+                        user_level = msg.content.user_level(user_id);
+
+                        for (const auto &ty : eventTypes)
+                                min_event_level =
+                                  std::min(min_event_level,
+                                           (uint16_t)msg.content.state_level(to_string(ty)));
+                } catch (const json::exception &e) {
+                        qWarning() << "hasEnoughPowerLevel: " << e.what();
+                }
+        }
+
+        txn.commit();
+
+        return user_level >= min_event_level;
 }
 
 QHash<QString, QString> Cache::DisplayNames;
