@@ -23,6 +23,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QUrl>
+#include <memory>
 #include <mtx.hpp>
 #include <mtx/errors.hpp>
 
@@ -253,7 +254,7 @@ MatrixClient::sendStateEvent(const EventBody &body, const QString &roomId, const
         setupAuth(request);
 
         auto proxy = std::shared_ptr<StateEventProxy>(new StateEventProxy,
-                                                      [](auto proxy) { proxy->deleteLater(); });
+                                                      [](StateEventProxy *p) { p->deleteLater(); });
 
         auto serializedBody = nlohmann::json(body).dump();
         auto reply = put(request, QByteArray(serializedBody.data(), serializedBody.size()));
