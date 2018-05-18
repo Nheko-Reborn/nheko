@@ -23,6 +23,29 @@
     </message>
 </context>
 <context>
+    <name>EditModal</name>
+    <message>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+34"/>
+        <source>APPLY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Topic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FileItem</name>
     <message>
         <location filename="../../src/timeline/widgets/FileItem.cc" line="+111"/>
@@ -466,7 +489,7 @@ Media size: %2
 <context>
     <name>dialogs::RoomSettings</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+54"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+147"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
     </message>
