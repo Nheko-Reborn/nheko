@@ -145,6 +145,9 @@ utils::event_body(const mtx::events::collections::TimelineEvents &event)
 QPixmap
 utils::scaleImageToPixmap(const QImage &img, int size)
 {
+        if (img.isNull())
+                return QPixmap();
+
         const int sz = QApplication::desktop()->screen()->devicePixelRatio() * size;
         return QPixmap::fromImage(
           img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));

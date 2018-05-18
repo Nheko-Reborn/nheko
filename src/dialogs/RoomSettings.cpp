@@ -4,9 +4,11 @@
 #include "MatrixClient.h"
 #include "Painter.h"
 #include "TextField.h"
+#include "Theme.h"
 #include "Utils.h"
 #include "dialogs/RoomSettings.hpp"
 
+#include <QApplication>
 #include <QComboBox>
 #include <QLabel>
 #include <QPainter>
@@ -33,8 +35,10 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
 
         applyBtn_ = new FlatButton(tr("APPLY"), this);
         applyBtn_->setFontSize(conf::btn::fontSize);
+        applyBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
         cancelBtn_ = new FlatButton(tr("CANCEL"), this);
         cancelBtn_->setFontSize(conf::btn::fontSize);
+        cancelBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
 
         auto btnLayout = new QHBoxLayout;
         btnLayout->setContentsMargins(5, 20, 5, 5);
@@ -131,6 +135,10 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                 }
         });
         connect(cancelBtn_, &QPushButton::clicked, this, &EditModal::close);
+
+        auto window = QApplication::activeWindow();
+        auto center = window->frameGeometry().center();
+        move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
 }
 
 void
