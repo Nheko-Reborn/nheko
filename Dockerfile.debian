@@ -6,12 +6,10 @@ RUN apt-get install -y gcc g++ cmake clang liblmdb-dev
 
 RUN apt-get install -y mesa-common-dev wget fuse git
 
-RUN apt-get -y install ruby ruby-dev rubygems rpm && \
-    gem install --no-ri --no-rdoc fpm
-
 RUN apt-get update -qq && \
     apt-get install -y \
         qt5-default \
+        libqt5svg5-dev \
         qtbase5-dev \
         qttools5-dev-tools \
         qttools5-dev \

@@ -5,12 +5,13 @@ RUN \
     apt-get install -y software-properties-common
 
 RUN \
-    add-apt-repository -y ppa:beineri/opt-qt592-xenial && \
+    add-apt-repository -y ppa:beineri/opt-qt-5.10.1-xenial && \
     apt-get update -qq && \
     apt-get install -y \
-        qt59base \
-        qt59tools \
-        qt59multimedia
+        qt510base \
+        qt510tools \
+        qt510svg \
+        qt510multimedia
 
 RUN \
     add-apt-repository ppa:ubuntu-toolchain-r/test && \
@@ -31,10 +32,7 @@ RUN update-alternatives --install \
         clang-format \
         /usr/bin/clang-format-5.0 100
 
-RUN apt-get -y install ruby ruby-dev rubygems rpm && \
-    gem install --no-ri --no-rdoc fpm
-
-ENV PATH=/opt/qt59/bin:$PATH
+ENV PATH=/opt/qt510/bin:$PATH
 
 RUN mkdir /build
 
