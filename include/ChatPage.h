@@ -88,6 +88,7 @@ signals:
         void syncUI(const mtx::responses::Rooms &rooms);
         void continueSync(const QString &next_batch);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
+        void syncTopBar(const std::map<QString, RoomInfo> &updates);
 
 private slots:
         void showUnreadMessageNotification(int count);

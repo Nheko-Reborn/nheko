@@ -440,6 +440,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         http::client()->getNotifications();
         });
         connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
+        connect(
+          this, &ChatPage::syncTopBar, this, [this](const std::map<QString, RoomInfo> &updates) {
+                  if (updates.find(currentRoom()) != updates.end())
+                          changeTopRoomInfo(currentRoom());
+          });
 
         instance_ = this;
 
@@ -532,7 +537,12 @@ ChatPage::syncCompleted(const mtx::responses::Sync &response)
                 try {
                         cache::client()->saveState(res);
                         emit syncUI(res.rooms);
-                        emit syncRoomlist(cache::client()->roomUpdates(res));
+
+                        auto updates = cache::client()->roomUpdates(res);
+
+                        emit syncTopBar(updates);
+                        emit syncRoomlist(updates);
+
                 } catch (const lmdb::error &e) {
                         std::cout << "save cache error:" << e.what() << '\n';
                         // TODO: retry sync.
