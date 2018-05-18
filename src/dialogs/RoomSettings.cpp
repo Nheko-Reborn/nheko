@@ -182,14 +182,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
   , room_id_{std::move(room_id)}
 {
         setMaximumWidth(420);
-
-        try {
-                info_ = cache::client()->singleRoomInfo(room_id_.toStdString());
-
-                setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
-        } catch (const lmdb::error &e) {
-                qWarning() << "failed to retrieve room info from cache" << room_id;
-        }
+        retrieveRoomInfo();
 
         constexpr int SettingsMargin = 2;
 
@@ -299,6 +292,8 @@ RoomSettings::setupEditButton()
         editFieldsBtn_->setIconSize(QSize(iconSize, iconSize));
 
         connect(editFieldsBtn_, &QPushButton::clicked, this, [this]() {
+                retrieveRoomInfo();
+
                 auto modal = new EditModal(room_id_, this->parentWidget());
                 modal->setFields(QString::fromStdString(info_.name),
                                  QString::fromStdString(info_.topic));
@@ -309,6 +304,17 @@ RoomSettings::setupEditButton()
         });
 
         editLayout_->addWidget(editFieldsBtn_, 0, Qt::AlignRight | Qt::AlignTop);
+}
+
+void
+RoomSettings::retrieveRoomInfo()
+{
+        try {
+                info_ = cache::client()->singleRoomInfo(room_id_.toStdString());
+                setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
+        } catch (const lmdb::error &e) {
+                qWarning() << "failed to retrieve room info from cache" << room_id_;
+        }
 }
 
 void

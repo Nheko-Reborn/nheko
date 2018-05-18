@@ -93,6 +93,8 @@ private:
 
         void setAvatar(const QImage &img) { avatarImg_ = img; }
         void setupEditButton();
+        //! Retrieve the current room information from cache.
+        void retrieveRoomInfo();
 
         //! Whether the user would be able to change the name or the topic of the room.
         bool hasEditRights_ = true;
