@@ -18,7 +18,6 @@
 #include <QContextMenuEvent>
 #include <QFontDatabase>
 #include <QMenu>
-#include <QTextEdit>
 #include <QTimer>
 
 #include "Avatar.h"
@@ -426,14 +425,9 @@ TimelineItem::generateBody(const QString &body)
 {
         QString content("<span>%1</span>");
 
-        body_ = new QLabel(this);
+        body_ = new TextLabel(content.arg(replaceEmoji(body)), this);
         body_->setFont(font_);
-        body_->setWordWrap(true);
-        body_->setText(content.arg(replaceEmoji(body)));
-        body_->setMargin(0);
-
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-        body_->setOpenExternalLinks(true);
 }
 
 // The username/timestamp is displayed along with the message body.
