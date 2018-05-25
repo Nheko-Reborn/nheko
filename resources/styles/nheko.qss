@@ -1,3 +1,4 @@
+TextLabel,
 QLabel {
     color: #333;
 }
