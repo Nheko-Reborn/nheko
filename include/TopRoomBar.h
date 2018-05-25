@@ -22,12 +22,15 @@
 #include <QImage>
 #include <QLabel>
 #include <QPaintEvent>
+#include <QPainter>
+#include <QPen>
 #include <QSharedPointer>
+#include <QStyle>
+#include <QStyleOption>
 #include <QVBoxLayout>
 
 class Avatar;
 class FlatButton;
-class Label;
 class Menu;
 class OverlayModal;
 
@@ -55,30 +58,41 @@ signals:
         void inviteUsers(QStringList users);
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
-        void mousePressEvent(QMouseEvent *event) override;
+        void mousePressEvent(QMouseEvent *) override
+        {
+                if (roomSettings_ != nullptr)
+                        roomSettings_->trigger();
+        }
+
+        void paintEvent(QPaintEvent *) override
+        {
+                QStyleOption opt;
+                opt.init(this);
+                QPainter p(this);
+                style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+                p.setPen(QPen(borderColor()));
+                p.drawLine(QPointF(0, height()), QPointF(width(), height()));
+        }
 
 private:
-        QHBoxLayout *topLayout_;
-        QVBoxLayout *textLayout_;
+        QHBoxLayout *topLayout_  = nullptr;
+        QVBoxLayout *textLayout_ = nullptr;
 
-        QLabel *nameLabel_;
-        Label *topicLabel_;
+        QLabel *nameLabel_  = nullptr;
+        QLabel *topicLabel_ = nullptr;
 
         Menu *menu_;
-        QAction *leaveRoom_;
-        QAction *roomMembers_;
-        QAction *roomSettings_;
-        QAction *inviteUsers_;
+        QAction *leaveRoom_    = nullptr;
+        QAction *roomMembers_  = nullptr;
+        QAction *roomSettings_ = nullptr;
+        QAction *inviteUsers_  = nullptr;
 
         FlatButton *settingsBtn_;
 
         Avatar *avatar_;
 
         int buttonSize_;
-
-        QString roomName_;
-        QString roomTopic_;
 
         QColor borderColor_;
 };

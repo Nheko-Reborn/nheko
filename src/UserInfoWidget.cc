@@ -30,7 +30,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   , user_id_("@user:homeserver.org")
   , logoutButtonSize_{20}
 {
-        setFixedHeight(65);
+        setFixedHeight(60);
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -42,7 +42,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         userAvatar_ = new Avatar(this);
         userAvatar_->setObjectName("userAvatar");
         userAvatar_->setLetter(QChar('?'));
-        userAvatar_->setSize(55);
+        userAvatar_->setSize(45);
 
         QFont nameFont("Open Sans SemiBold");
         nameFont.setPixelSize(conf::userInfoWidget::fonts::displayName);

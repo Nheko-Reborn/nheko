@@ -21,7 +21,6 @@
 #include "Avatar.h"
 #include "Config.h"
 #include "FlatButton.h"
-#include "Label.h"
 #include "MainWindow.h"
 #include "Menu.h"
 #include "OverlayModal.h"
@@ -32,12 +31,11 @@ TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
   , buttonSize_{32}
 {
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        setFixedHeight(65);
+        setFixedHeight(60);
 
-        topLayout_ = new QHBoxLayout();
-        topLayout_->setSpacing(10);
-        topLayout_->setMargin(10);
+        topLayout_ = new QHBoxLayout(this);
+        topLayout_->setSpacing(8);
+        topLayout_->setMargin(8);
 
         avatar_ = new Avatar(this);
         avatar_->setLetter("");
@@ -52,19 +50,16 @@ TopRoomBar::TopRoomBar(QWidget *parent)
 
         nameLabel_ = new QLabel(this);
         nameLabel_->setFont(roomFont);
+        nameLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
 
         QFont descriptionFont("Open Sans");
         descriptionFont.setPixelSize(conf::topRoomBar::fonts::roomDescription);
 
-        topicLabel_ = new Label(this);
+        topicLabel_ = new QLabel(this);
         topicLabel_->setFont(descriptionFont);
-        topicLabel_->setTextFormat(Qt::RichText);
         topicLabel_->setTextInteractionFlags(Qt::TextBrowserInteraction);
         topicLabel_->setOpenExternalLinks(true);
-        connect(topicLabel_, &Label::clicked, [this](QMouseEvent *e) {
-                if (e->button() == Qt::LeftButton && !topicLabel_->hasSelectedText())
-                        topicLabel_->setWordWrap(!topicLabel_->wordWrap());
-        });
+        topicLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
 
         textLayout_->addWidget(nameLabel_);
         textLayout_->addWidget(topicLabel_);
@@ -115,8 +110,6 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                 menu_->popup(
                   QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(), pos.y() + buttonSize_));
         });
-
-        setLayout(topLayout_);
 }
 
 void
@@ -132,51 +125,6 @@ TopRoomBar::reset()
         nameLabel_->setText("");
         topicLabel_->setText("");
         avatar_->setLetter("");
-
-        roomName_.clear();
-        roomTopic_.clear();
-}
-
-void
-TopRoomBar::paintEvent(QPaintEvent *event)
-{
-        Q_UNUSED(event);
-
-        QStyleOption option;
-        option.initFrom(this);
-
-        QPainter painter(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
-
-        painter.setPen(QPen(borderColor()));
-        painter.drawLine(QPointF(0, height()), QPointF(width(), height()));
-
-        // Number of pixels that we can move sidebar splitter per frame. If label contains
-        // text which fills entire it's width then label starts blocking it's layout from
-        // shrinking. Making label little bit shorter leaves some space for it to shrink.
-        const auto perFrameResize = 20;
-
-        QString elidedText =
-          QFontMetrics(nameLabel_->font())
-            .elidedText(roomName_, Qt::ElideRight, nameLabel_->width() - perFrameResize);
-        nameLabel_->setText(elidedText);
-
-        if (topicLabel_->wordWrap())
-                elidedText = roomTopic_;
-        else
-                elidedText =
-                  QFontMetrics(topicLabel_->font())
-                    .elidedText(roomTopic_, Qt::ElideRight, topicLabel_->width() - perFrameResize);
-        elidedText.replace(conf::strings::url_regex, conf::strings::url_html);
-        topicLabel_->setText(elidedText);
-}
-
-void
-TopRoomBar::mousePressEvent(QMouseEvent *event)
-{
-        if (childAt(event->pos()) == topicLabel_) {
-                event->accept();
-        }
 }
 
 void
@@ -196,13 +144,14 @@ TopRoomBar::updateRoomAvatar(const QIcon &icon)
 void
 TopRoomBar::updateRoomName(const QString &name)
 {
-        roomName_ = name;
+        nameLabel_->setText(name);
         update();
 }
 
 void
 TopRoomBar::updateRoomTopic(QString topic)
 {
-        roomTopic_ = topic;
+        topic.replace(conf::strings::url_regex, conf::strings::url_html);
+        topicLabel_->setText(topic);
         update();
 }

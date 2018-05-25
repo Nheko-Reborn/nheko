@@ -75,8 +75,8 @@ constexpr int communityBubble = bubble - 4;
 
 namespace userInfoWidget {
 namespace fonts {
-constexpr int displayName = 16;
-constexpr int userid      = 14;
+constexpr int displayName = 15;
+constexpr int userid      = 13;
 } // namespace fonts
 } // namespace userInfoWidget
 
