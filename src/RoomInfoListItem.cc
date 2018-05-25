@@ -31,7 +31,7 @@
 #include "Theme.h"
 #include "Utils.h"
 
-constexpr int BubbleDiameter = 18;
+constexpr int MaxUnreadCountDisplayed = 99;
 
 constexpr int Padding   = 9;
 constexpr int IconSize  = 44;
@@ -65,6 +65,7 @@ RoomInfoListItem::init(QWidget *parent)
 
         unreadCountFont_.setPixelSize(conf::roomlist::fonts::badge);
         unreadCountFont_.setBold(true);
+        bubbleDiameter_ = QFontMetrics(unreadCountFont_).averageCharWidth() * 3;
 
         timestampFont_ = font_;
         timestampFont_.setPixelSize(conf::roomlist::fonts::timestamp);
@@ -274,16 +275,22 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setPen(Qt::NoPen);
                 p.setFont(unreadCountFont_);
 
-                QRectF r(width() - BubbleDiameter - Padding,
-                         bottom_y - BubbleDiameter / 2 - 5,
-                         BubbleDiameter,
-                         BubbleDiameter);
+                // Extra space on the x-axis to accomodate the extra character space
+                // inside the bubble.
+                const int x_width = unreadMsgCount_ > MaxUnreadCountDisplayed
+                                      ? QFontMetrics(p.font()).averageCharWidth()
+                                      : 0;
+
+                QRectF r(width() - bubbleDiameter_ - Padding - x_width,
+                         bottom_y - bubbleDiameter_ / 2 - 5,
+                         bubbleDiameter_ + x_width,
+                         bubbleDiameter_);
 
                 if (width() == ui::sidebar::SmallSize)
-                        r = QRectF(width() - BubbleDiameter - 5,
-                                   height() - BubbleDiameter - 5,
-                                   BubbleDiameter,
-                                   BubbleDiameter);
+                        r = QRectF(width() - bubbleDiameter_ - 5,
+                                   height() - bubbleDiameter_ - 5,
+                                   bubbleDiameter_ + x_width,
+                                   bubbleDiameter_);
 
                 p.setPen(Qt::NoPen);
                 p.drawEllipse(r);
@@ -293,9 +300,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 if (isPressed_)
                         p.setPen(QPen(bubbleBgColor()));
 
+                auto countTxt = unreadMsgCount_ > MaxUnreadCountDisplayed
+                                  ? QString("99+")
+                                  : QString::number(unreadMsgCount_);
+
                 p.setBrush(Qt::NoBrush);
-                p.drawText(
-                  r.translated(0, -0.5), Qt::AlignCenter, QString::number(unreadMsgCount_));
+                p.drawText(r.translated(0, -0.5), Qt::AlignCenter, countTxt);
         }
 }
 

@@ -200,6 +200,7 @@ private:
         QFont timestampFont_;
         QFont usernameFont_;
         QFont unreadCountFont_;
+        int bubbleDiameter_;
 
         QColor timestampColor_;
         QColor highlightedTimestampColor_;
