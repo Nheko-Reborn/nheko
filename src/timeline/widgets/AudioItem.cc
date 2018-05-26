@@ -72,6 +72,8 @@ AudioItem::init()
                         update();
                 }
         });
+
+        setFixedHeight(Height);
 }
 
 AudioItem::AudioItem(const mtx::events::RoomEvent<mtx::events::msg::Audio> &event, QWidget *parent)
@@ -155,6 +157,22 @@ AudioItem::fileDownloaded(const QByteArray &data)
 }
 
 void
+AudioItem::resizeEvent(QResizeEvent *event)
+{
+        QFont font;
+        font.setPixelSize(12);
+        font.setWeight(80);
+
+        QFontMetrics fm(font);
+        const int computedWidth = std::min(
+          fm.width(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding, (double)MaxWidth);
+
+        resize(computedWidth, Height);
+
+        event->accept();
+}
+
+void
 AudioItem::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event);
@@ -162,17 +180,14 @@ AudioItem::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        QFont font("Open Sans");
+        QFont font;
         font.setPixelSize(12);
         font.setWeight(80);
 
         QFontMetrics fm(font);
 
-        int computedWidth = std::min(
-          fm.width(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding, (double)MaxWidth);
-
         QPainterPath path;
-        path.addRoundedRect(QRectF(0, 0, computedWidth, Height), 10, 10);
+        path.addRoundedRect(QRectF(0, 0, width(), height()), 10, 10);
 
         painter.setPen(Qt::NoPen);
         painter.fillPath(path, backgroundColor_);
@@ -203,10 +218,8 @@ AudioItem::paintEvent(QPaintEvent *event)
         const int textStartY = VerticalPadding + fm.ascent() / 2;
 
         // Draw the filename.
-        QString elidedText =
-          fm.elidedText(text_,
-                        Qt::ElideRight,
-                        computedWidth - HorizontalPadding * 2 - TextPadding - 2 * IconRadius);
+        QString elidedText = fm.elidedText(
+          text_, Qt::ElideRight, width() - HorizontalPadding * 2 - TextPadding - 2 * IconRadius);
 
         painter.setFont(font);
         painter.setPen(QPen(textColor_));

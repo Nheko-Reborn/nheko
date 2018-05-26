@@ -423,6 +423,9 @@ TimelineItem::markReceived()
 void
 TimelineItem::generateBody(const QString &body)
 {
+        if (body.isEmpty())
+                return;
+
         QString content("<span>%1</span>");
 
         body_ = new TextLabel(content.arg(replaceEmoji(body)), this);
@@ -512,8 +515,11 @@ TimelineItem::setupAvatarLayout(const QString &userName)
         headerLayout_->setMargin(0);
         headerLayout_->setSpacing(conf::timeline::headerSpacing);
 
-        headerLayout_->addWidget(userName_);
-        headerLayout_->addWidget(body_);
+        if (userName_)
+                headerLayout_->addWidget(userName_);
+
+        if (body_)
+                headerLayout_->addWidget(body_);
 }
 
 void
@@ -593,7 +599,7 @@ TimelineItem::addAvatar()
         // Restore widget's layout.
         if (widget) {
                 widgetLayout_ = new QHBoxLayout();
-                widgetLayout_->setMargin(0);
+                widgetLayout_->setContentsMargins(0, 2, 0, 2);
                 widgetLayout_->addWidget(widget);
                 widgetLayout_->addStretch(1);
 

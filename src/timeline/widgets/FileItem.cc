@@ -58,6 +58,8 @@ FileItem::init()
         QString media_params = url_parts[1];
         url_                 = QString("%1/_matrix/media/r0/download/%2")
                  .arg(http::client()->getHomeServer().toString(), media_params);
+
+        setFixedHeight(Height);
 }
 
 FileItem::FileItem(const mtx::events::RoomEvent<mtx::events::msg::File> &event, QWidget *parent)
@@ -143,6 +145,22 @@ FileItem::fileDownloaded(const QByteArray &data)
 }
 
 void
+FileItem::resizeEvent(QResizeEvent *event)
+{
+        QFont font;
+        font.setPixelSize(12);
+        font.setWeight(80);
+
+        QFontMetrics fm(font);
+        const int computedWidth = std::min(
+          fm.width(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding, (double)MaxWidth);
+
+        resize(computedWidth, Height);
+
+        event->accept();
+}
+
+void
 FileItem::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event);
@@ -150,17 +168,14 @@ FileItem::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        QFont font("Open Sans");
+        QFont font;
         font.setPixelSize(12);
         font.setWeight(80);
 
         QFontMetrics fm(font);
 
-        int computedWidth = std::min(
-          fm.width(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding, (double)MaxWidth);
-
         QPainterPath path;
-        path.addRoundedRect(QRectF(0, 0, computedWidth, Height), 10, 10);
+        path.addRoundedRect(QRectF(0, 0, width(), height()), 10, 10);
 
         painter.setPen(Qt::NoPen);
         painter.fillPath(path, backgroundColor_);
@@ -185,10 +200,8 @@ FileItem::paintEvent(QPaintEvent *event)
         const int textStartY = VerticalPadding + fm.ascent() / 2;
 
         // Draw the filename.
-        QString elidedText =
-          fm.elidedText(text_,
-                        Qt::ElideRight,
-                        computedWidth - HorizontalPadding * 2 - TextPadding - 2 * IconRadius);
+        QString elidedText = fm.elidedText(
+          text_, Qt::ElideRight, width() - HorizontalPadding * 2 - TextPadding - 2 * IconRadius);
 
         painter.setFont(font);
         painter.setPen(QPen(textColor_));

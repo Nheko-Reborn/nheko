@@ -232,7 +232,7 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget, const QString &userid, bool
         generateTimestamp(timestamp);
 
         widgetLayout_ = new QHBoxLayout;
-        widgetLayout_->setMargin(0);
+        widgetLayout_->setContentsMargins(0, 2, 0, 2);
         widgetLayout_->addWidget(widget);
         widgetLayout_->addStretch(1);
 
@@ -278,7 +278,7 @@ TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSen
         generateTimestamp(timestamp);
 
         widgetLayout_ = new QHBoxLayout();
-        widgetLayout_->setMargin(0);
+        widgetLayout_->setContentsMargins(0, 2, 0, 2);
         widgetLayout_->addWidget(widget);
         widgetLayout_->addStretch(1);
 
