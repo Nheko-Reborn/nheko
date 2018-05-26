@@ -86,8 +86,6 @@ class DateSeparator : public QWidget
 public:
         DateSeparator(QDateTime datetime, QWidget *parent = nullptr);
 
-        QSize sizeHint() const override { return QSize(width(), height_ + 2 * HMargin); }
-
         void setTextColor(QColor color) { textColor_ = color; }
         void setBoxColor(QColor color) { boxColor_ = color; }
 

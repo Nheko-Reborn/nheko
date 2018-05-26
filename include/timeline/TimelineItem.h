@@ -68,12 +68,14 @@ public:
                         this,
                         &TextLabel::adjustHeight);
                 document()->setDocumentMargin(0);
+
+                setFixedHeight(20);
         }
 
         void wheelEvent(QWheelEvent *event) override { event->ignore(); }
 
 private slots:
-        void adjustHeight(const QSizeF &size) { setMinimumHeight(size.height()); }
+        void adjustHeight(const QSizeF &size) { setFixedHeight(size.height()); }
 };
 
 class TimelineItem : public QWidget

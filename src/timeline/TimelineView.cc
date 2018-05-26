@@ -60,6 +60,8 @@ DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
         QFontMetrics fm{font_};
         width_  = fm.width(msg_) + HPadding * 2;
         height_ = fm.ascent() + 2 * VPadding;
+
+        setFixedHeight(height_ + 2 * HMargin);
 }
 
 void
