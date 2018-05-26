@@ -124,7 +124,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         generateTimestamp(timestamp);
 
         if (withSender) {
-                generateBody(displayName, body);
+                generateBody(userid, displayName, body);
                 setupAvatarLayout(displayName);
 
                 messageLayout_->addLayout(headerLayout_, 1);
@@ -292,7 +292,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         if (with_sender) {
                 auto displayName = Cache::displayName(room_id_, sender);
 
-                generateBody(displayName, body);
+                generateBody(sender, displayName, body);
                 setupAvatarLayout(displayName);
 
                 messageLayout_->addLayout(headerLayout_, 1);
@@ -339,7 +339,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         emoteMsg.replace("\n", "<br/>");
 
         if (with_sender) {
-                generateBody(displayName, emoteMsg);
+                generateBody(sender, displayName, emoteMsg);
                 setupAvatarLayout(displayName);
 
                 messageLayout_->addLayout(headerLayout_, 1);
@@ -391,7 +391,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         body.replace("\n", "<br/>");
 
         if (with_sender) {
-                generateBody(displayName, body);
+                generateBody(sender, displayName, body);
                 setupAvatarLayout(displayName);
 
                 messageLayout_->addLayout(headerLayout_, 1);
@@ -435,14 +435,14 @@ TimelineItem::generateBody(const QString &body)
 
 // The username/timestamp is displayed along with the message body.
 void
-TimelineItem::generateBody(const QString &userid, const QString &body)
+TimelineItem::generateBody(const QString &user_id, const QString &displayname, const QString &body)
 {
-        auto sender = userid;
+        auto sender = displayname;
 
-        if (userid.startsWith("@")) {
+        if (displayname.startsWith("@")) {
                 // TODO: Fix this by using a UserId type.
-                if (userid.split(":")[0].split("@").size() > 1)
-                        sender = userid.split(":")[0].split("@")[1];
+                if (displayname.split(":")[0].split("@").size() > 1)
+                        sender = displayname.split(":")[0].split("@")[1];
         }
 
         QFontMetrics fm(usernameFont_);
@@ -450,6 +450,28 @@ TimelineItem::generateBody(const QString &userid, const QString &body)
         userName_ = new QLabel(this);
         userName_->setFont(usernameFont_);
         userName_->setText(fm.elidedText(sender, Qt::ElideRight, 500));
+        userName_->setToolTip(user_id);
+        userName_->setToolTipDuration(1500);
+        userName_->setAttribute(Qt::WA_Hover);
+        userName_->setAlignment(Qt::AlignLeft);
+        userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+
+        auto filter = new UserProfileFilter(user_id, userName_);
+        userName_->installEventFilter(filter);
+
+        connect(filter, &UserProfileFilter::hoverOn, this, [this]() {
+                QFont f = userName_->font();
+                f.setUnderline(true);
+                userName_->setCursor(Qt::PointingHandCursor);
+                userName_->setFont(f);
+        });
+
+        connect(filter, &UserProfileFilter::hoverOff, this, [this]() {
+                QFont f = userName_->font();
+                f.setUnderline(false);
+                userName_->setCursor(Qt::ArrowCursor);
+                userName_->setFont(f);
+        });
 
         generateBody(body);
 }

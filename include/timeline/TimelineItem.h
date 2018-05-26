@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QAbstractTextDocumentLayout>
+#include <QApplication>
 #include <QDateTime>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -76,6 +77,42 @@ public:
 
 private slots:
         void adjustHeight(const QSizeF &size) { setFixedHeight(size.height()); }
+};
+
+class UserProfileFilter : public QObject
+{
+        Q_OBJECT
+
+public:
+        explicit UserProfileFilter(const QString &user_id, QLabel *parent)
+          : QObject(parent)
+          , user_id_{user_id}
+        {}
+
+signals:
+        void hoverOff();
+        void hoverOn();
+
+protected:
+        bool eventFilter(QObject *obj, QEvent *event)
+        {
+                if (event->type() == QEvent::MouseButtonRelease) {
+                        // QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+                        // TODO: Open user profile
+                        return true;
+                } else if (event->type() == QEvent::HoverLeave) {
+                        emit hoverOff();
+                        return true;
+                } else if (event->type() == QEvent::HoverEnter) {
+                        emit hoverOn();
+                        return true;
+                }
+
+                return QObject::eventFilter(obj, event);
+        }
+
+private:
+        QString user_id_;
 };
 
 class TimelineItem : public QWidget
@@ -182,7 +219,7 @@ private:
         void setupWidgetLayout(Widget *widget, const Event &event, bool withSender);
 
         void generateBody(const QString &body);
-        void generateBody(const QString &userid, const QString &body);
+        void generateBody(const QString &user_id, const QString &displayname, const QString &body);
         void generateTimestamp(const QDateTime &time);
 
         void setupAvatarLayout(const QString &userName);
@@ -237,7 +274,7 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget, const QString &userid, bool
         widgetLayout_->addStretch(1);
 
         if (withSender) {
-                generateBody(displayName, "");
+                generateBody(userid, displayName, "");
                 setupAvatarLayout(displayName);
 
                 headerLayout_->addLayout(widgetLayout_);
@@ -283,7 +320,7 @@ TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSen
         widgetLayout_->addStretch(1);
 
         if (withSender) {
-                generateBody(displayName, "");
+                generateBody(sender, displayName, "");
                 setupAvatarLayout(displayName);
 
                 headerLayout_->addLayout(widgetLayout_);
