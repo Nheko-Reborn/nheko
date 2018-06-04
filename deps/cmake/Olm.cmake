@@ -4,8 +4,6 @@ else()
     set(MAKE_CMD "make")
 endif()
 
-set(OLM_NAME "${CMAKE_STATIC_LIBRARY_PREFIX}olm${CMAKE_STATIC_LIBRARY_SUFFIX}")
-
 ExternalProject_Add(
   Olm
 

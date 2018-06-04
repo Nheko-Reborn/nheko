@@ -39,6 +39,11 @@ if(APPLE)
     set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
 endif()
 
+if(NOT MSVC AND NOT APPLE)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads REQUIRED)
+endif()
+
 #
 # LMDB
 #
@@ -72,7 +77,20 @@ set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include(CompilerFlags)
+if(NOT MSVC)
+  set(
+    CMAKE_CXX_FLAGS
+    "${CMAKE_CXX_FLAGS} \
+        -Wall \
+        -Wextra \
+        -Werror \
+        -pipe \
+        -pedantic \
+        -fsized-deallocation \
+        -fdiagnostics-color=always \
+        -Wunreachable-code"
+    )
+endif()
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
@@ -187,10 +205,10 @@ set(SRC_FILES
 # ExternalProject dependencies
 set(EXTERNAL_PROJECT_DEPS "")
 
+find_package(ZLIB REQUIRED)
+find_package(OpenSSL REQUIRED)
 find_package(MatrixStructs REQUIRED)
 find_package(MatrixClient REQUIRED)
-find_package(OpenSSL REQUIRED)
-find_package(ZLIB REQUIRED)
 
 #
 # tweeny

@@ -10,7 +10,16 @@ if [ $TRAVIS_OS_NAME == osx ]; then
     export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
 fi
 
-make ci
+# Build & install dependencies
+mkdir -p .deps/usr/{lib,include}/
+cmake -Hdeps -B.deps \
+    -DUSE_BUNDLED_BOOST=${USE_BUNDLED_BOOST} \
+    -DUSE_BUNDLED_SPDLOG=${USE_BUNDLED_SPDLOG}
+cmake --build .deps
+
+# Build nheko
+cmake -GNinja -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build build
 
 if [ $TRAVIS_OS_NAME == osx ]; then
     make lint;
