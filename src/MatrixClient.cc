@@ -32,12 +32,15 @@
 #include <mtx/errors.hpp>
 
 #include "MatrixClient.h"
+#include <mtxclient/http/client.hpp>
 
 namespace {
 std::unique_ptr<MatrixClient> instance_ = nullptr;
 }
 
 namespace http {
+
+std::shared_ptr<mtx::http::Client> client_ = nullptr;
 
 void
 init()

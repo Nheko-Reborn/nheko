@@ -15,7 +15,19 @@ install:
     - set QT_DIR=C:\Qt\5.10.1\msvc2017_64
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-    - vcpkg install lmdb:%PLATFORM%-windows
+    - vcpkg install
+            boost-asio:%PLATFORM%-windows
+            boost-beast:%PLATFORM%-windows
+            boost-iostreams:%PLATFORM%-windows
+            boost-random:%PLATFORM%-windows
+            boost-signals2:%PLATFORM%-windows
+            boost-system:%PLATFORM%-windows
+            boost-thread:%PLATFORM%-windows
+            libsodium:%PLATFORM%-windows
+            lmdb:%PLATFORM%-windows
+            openssl:%PLATFORM%-windows
+            spdlog:%PLATFORM%-windows
+            zlib:%PLATFORM%-windows
 
 build_script:
     # VERSION format:     branch-master/branch-1.2
@@ -35,6 +47,17 @@ build_script:
     - echo %VERSION%
     - echo %INSTVERSION%
     - echo %DATE%
+
+    # Build & install the dependencies
+    - cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
+        -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -DCMAKE_BUILD_TYPE=Release
+        -DUSE_BUNDLED_BOOST=OFF
+        -DUSE_BUNDLED_SPDLOG=OFF
+        -DUSE_BUNDLED_GTEST=OFF
+    - cmake --build .deps --config Release
+
+    # Build nheko
     - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
       -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
       -DCMAKE_BUILD_TYPE=Release

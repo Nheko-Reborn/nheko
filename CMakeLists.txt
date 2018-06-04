@@ -29,6 +29,16 @@ set(IDENTIFIER "com.github.mujx.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
 
+set(DEPS_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/.deps/usr"
+    CACHE PATH "Path prefix for finding dependencies")
+list(INSERT CMAKE_PREFIX_PATH 0 ${DEPS_PREFIX})
+
+include_directories(SYSTEM ${DEPS_PREFIX}/include)
+
+if(APPLE)
+    set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
+endif()
+
 #
 # LMDB
 #
@@ -177,20 +187,10 @@ set(SRC_FILES
 # ExternalProject dependencies
 set(EXTERNAL_PROJECT_DEPS "")
 
-#
-# matrix-structs
-#
-find_library(MATRIX_STRUCTS_LIBRARY 
-    NAMES matrix_structs 
-    PATHS ${MATRIX_STRUCTS_ROOT}
-          ${MATRIX_STRUCTS_ROOT}/lib
-          ${MATRIX_STRUCTS_ROOT}/lib/static)
-
-if(NOT MATRIX_STRUCTS_LIBRARY)
-    include(MatrixStructs)
-    set(EXTERNAL_PROJECT_DEPS ${EXTERNAL_PROJECT_DEPS} MatrixStructs)
-endif()
-include_directories(SYSTEM ${MATRIX_STRUCTS_INCLUDE_DIR})
+find_package(MatrixStructs REQUIRED)
+find_package(MatrixClient REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(ZLIB REQUIRED)
 
 #
 # tweeny
@@ -293,7 +293,8 @@ include(Translations)
 set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 set(COMMON_LIBS
-    ${MATRIX_STRUCTS_LIBRARY} 
+    MatrixStructs::MatrixStructs
+    MatrixClient::MatrixClient
     Qt5::Widgets
     Qt5::Network
     Qt5::Svg

@@ -94,3 +94,4 @@ package.dir
 
 # Dependencies
 .third-party
+.deps
