@@ -59,6 +59,7 @@ class MainWindow : public QMainWindow
 
 public:
         explicit MainWindow(QWidget *parent = 0);
+        ~MainWindow();
 
         static MainWindow *instance() { return instance_; };
         void saveCurrentWindowSize();
@@ -96,7 +97,7 @@ private slots:
         void showUserSettingsPage() { pageStack_->setCurrentWidget(userSettingsPage_); }
 
         //! Show the chat page and start communicating with the given access token.
-        void showChatPage(QString user_id, QString home_server, QString token);
+        void showChatPage();
 
         void showOverlayProgressBar();
         void removeOverlayProgressBar();

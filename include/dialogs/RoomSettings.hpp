@@ -30,6 +30,9 @@ public:
 
 signals:
         void nameChanged(const QString &roomName);
+        void nameEventSentCb(const QString &newName);
+        void topicEventSentCb();
+        void stateEventErrorCb(const QString &msg);
 
 private:
         QString roomId_;

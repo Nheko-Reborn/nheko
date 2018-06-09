@@ -137,16 +137,16 @@ LoginPage::LoginPage(QWidget *parent)
 
         setLayout(top_layout_);
 
+        connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk);
+        connect(this, &LoginPage::versionErrorCb, this, &LoginPage::versionError);
+        connect(this, &LoginPage::loginErrorCb, this, &LoginPage::loginError);
+
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
         connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(serverInput_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
-        connect(http::client(), SIGNAL(loginError(QString)), this, SLOT(loginError(QString)));
-        connect(http::client(), SIGNAL(loginError(QString)), this, SIGNAL(errorOccurred()));
         connect(matrixid_input_, SIGNAL(editingFinished()), this, SLOT(onMatrixIdEntered()));
-        connect(http::client(), SIGNAL(versionError(QString)), this, SLOT(versionError(QString)));
-        connect(http::client(), SIGNAL(versionSuccess()), this, SLOT(versionSuccess()));
         connect(serverInput_, SIGNAL(editingFinished()), this, SLOT(onServerAddressEntered()));
 }
 
@@ -180,17 +180,47 @@ LoginPage::onMatrixIdEntered()
 
                 inferredServerAddress_ = homeServer;
                 serverInput_->setText(homeServer);
-                http::client()->setServer(homeServer);
-                http::client()->versions();
+
+                http::v2::client()->set_server(user.hostname());
+                checkHomeserverVersion();
         }
+}
+
+void
+LoginPage::checkHomeserverVersion()
+{
+        http::v2::client()->versions(
+          [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
+                  if (err) {
+                          using namespace boost::beast::http;
+
+                          if (err->status_code == status::not_found) {
+                                  emit versionErrorCb(tr("The required endpoints were not found. "
+                                                         "Possibly not a Matrix server."));
+                                  return;
+                          }
+
+                          if (!err->parse_error.empty()) {
+                                  emit versionErrorCb(tr("Received malformed response. Make sure "
+                                                         "the homeserver domain is valid."));
+                                  return;
+                          }
+
+                          emit versionErrorCb(tr(
+                            "An unknown error occured. Make sure the homeserver domain is valid."));
+                          return;
+                  }
+
+                  emit versionOkCb();
+          });
 }
 
 void
 LoginPage::onServerAddressEntered()
 {
         error_label_->setText("");
-        http::client()->setServer(serverInput_->text());
-        http::client()->versions();
+        http::v2::client()->set_server(serverInput_->text().toStdString());
+        checkHomeserverVersion();
 
         serverLayout_->removeWidget(errorIcon_);
         errorIcon_->hide();
@@ -199,11 +229,8 @@ LoginPage::onServerAddressEntered()
 }
 
 void
-LoginPage::versionError(QString error)
+LoginPage::versionError(const QString &error)
 {
-        QUrl currentServer  = http::client()->getHomeServer();
-        QString mxidAddress = matrixid_input_->text().split(":").at(1);
-
         error_label_->setText(error);
         serverInput_->show();
 
@@ -215,7 +242,7 @@ LoginPage::versionError(QString error)
 }
 
 void
-LoginPage::versionSuccess()
+LoginPage::versionOk()
 {
         serverLayout_->removeWidget(spinner_);
         matrixidLayout_->removeWidget(spinner_);
@@ -241,8 +268,20 @@ LoginPage::onLoginButtonClicked()
         if (password_input_->text().isEmpty())
                 return loginError(tr("Empty password"));
 
-        http::client()->setServer(serverInput_->text());
-        http::client()->login(QString::fromStdString(user.localpart()), password_input_->text());
+        http::v2::client()->set_server(serverInput_->text().toStdString());
+        http::v2::client()->login(
+          user.localpart(),
+          password_input_->text().toStdString(),
+          initialDeviceName(),
+          [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          emit loginError(QString::fromStdString(err->matrix_error.error));
+                          emit errorOccurred();
+                          return;
+                  }
+
+                  emit loginOk(res);
+          });
 
         emit loggingIn();
 }

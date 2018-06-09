@@ -20,15 +20,17 @@
 #include <QImage>
 #include <functional>
 
-class AvatarProvider : public QObject
+class AvatarProxy : public QObject
 {
         Q_OBJECT
 
-public:
-        //! The callback is called with the downloaded avatar for the given user
-        //! or the avatar is downloaded first and then saved for re-use.
-        static void resolve(const QString &room_id,
-                            const QString &userId,
-                            QObject *receiver,
-                            std::function<void(QImage)> callback);
+signals:
+        void avatarDownloaded(const QByteArray &data);
 };
+
+using AvatarCallback = std::function<void(QImage)>;
+
+namespace AvatarProvider {
+void
+resolve(const QString &room_id, const QString &user_id, QObject *receiver, AvatarCallback cb);
+}

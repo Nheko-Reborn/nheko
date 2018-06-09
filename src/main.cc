@@ -22,15 +22,17 @@
 #include <QLabel>
 #include <QLayout>
 #include <QLibraryInfo>
-#include <QNetworkProxy>
 #include <QPalette>
 #include <QPoint>
 #include <QPushButton>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QTranslator>
 
 #include "Config.h"
+#include "Logging.hpp"
 #include "MainWindow.h"
+#include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "RunGuard.h"
 #include "version.hpp"
@@ -44,32 +46,6 @@ screenCenter(int width, int height)
         int y = (screenGeometry.height() - height) / 2;
 
         return QPoint(x, y);
-}
-
-void
-setupProxy()
-{
-        QSettings settings;
-
-        /**
-          To set up a SOCKS proxy:
-            [user]
-            proxy\socks\host=<>
-            proxy\socks\port=<>
-            proxy\socks\user=<>
-            proxy\socks\password=<>
-          **/
-        if (settings.contains("user/proxy/socks/host")) {
-                QNetworkProxy proxy;
-                proxy.setType(QNetworkProxy::Socks5Proxy);
-                proxy.setHostName(settings.value("user/proxy/socks/host").toString());
-                proxy.setPort(settings.value("user/proxy/socks/port").toInt());
-                if (settings.contains("user/proxy/socks/user"))
-                        proxy.setUser(settings.value("user/proxy/socks/user").toString());
-                if (settings.contains("user/proxy/socks/password"))
-                        proxy.setPassword(settings.value("user/proxy/socks/password").toString());
-                QNetworkProxy::setApplicationProxy(proxy);
-        }
 }
 
 int
@@ -133,7 +109,17 @@ main(int argc, char *argv[])
         QFontDatabase::addApplicationFont(":/fonts/fonts/EmojiOne/emojione-android.ttf");
 
         app.setWindowIcon(QIcon(":/logos/nheko.png"));
-        qSetMessagePattern("%{time process}: [%{type}] - %{message}");
+
+        http::init();
+
+        try {
+                log::init(QString("%1/nheko.log")
+                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                            .toStdString());
+        } catch (const spdlog::spdlog_ex &ex) {
+                std::cout << "Log initialization failed: " << ex.what() << std::endl;
+                std::exit(1);
+        }
 
         QSettings settings;
 
@@ -154,8 +140,6 @@ main(int argc, char *argv[])
         appTranslator.load("nheko_" + lang, ":/translations");
         app.installTranslator(&appTranslator);
 
-        setupProxy();
-
         MainWindow w;
 
         // Move the MainWindow to the center
@@ -166,6 +150,8 @@ main(int argc, char *argv[])
                 w.show();
 
         QObject::connect(&app, &QApplication::aboutToQuit, &w, &MainWindow::saveCurrentWindowSize);
+
+        log::main()->info("starting nheko {}", nheko::version);
 
         return app.exec();
 }

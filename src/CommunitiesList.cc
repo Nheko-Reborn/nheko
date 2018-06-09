@@ -1,4 +1,6 @@
+#include "Cache.h"
 #include "CommunitiesList.h"
+#include "Logging.hpp"
 #include "MatrixClient.h"
 
 #include <QLabel>
@@ -38,17 +40,14 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addWidget(scrollArea_);
 
-        connect(http::client(),
-                &MatrixClient::communityProfileRetrieved,
-                this,
-                [](QString communityId, QJsonObject profile) {
-                        http::client()->fetchCommunityAvatar(
-                          communityId, QUrl(profile["avatar_url"].toString()));
-                });
-        connect(http::client(),
-                SIGNAL(communityAvatarRetrieved(const QString &, const QPixmap &)),
-                this,
-                SLOT(updateCommunityAvatar(const QString &, const QPixmap &)));
+        // connect(http::client(),
+        //         &MatrixClient::communityProfileRetrieved,
+        //         this,
+        //         [this](QString communityId, QJsonObject profile) {
+        //                 fetchCommunityAvatar(communityId, profile["avatar_url"].toString());
+        //         });
+        connect(
+          this, &CommunitiesList::avatarRetrieved, this, &CommunitiesList::updateCommunityAvatar);
 }
 
 void
@@ -61,8 +60,8 @@ CommunitiesList::setCommunities(const std::map<QString, QSharedPointer<Community
         for (const auto &community : communities) {
                 addCommunity(community.second, community.first);
 
-                http::client()->fetchCommunityProfile(community.first);
-                http::client()->fetchCommunityRooms(community.first);
+                // http::client()->fetchCommunityProfile(community.first);
+                // http::client()->fetchCommunityRooms(community.first);
         }
 
         communities_["world"]->setPressedState(true);
@@ -77,7 +76,7 @@ CommunitiesList::addCommunity(QSharedPointer<Community> community, const QString
 
         communities_.emplace(community_id, QSharedPointer<CommunitiesListItem>(list_item));
 
-        http::client()->fetchCommunityAvatar(community_id, community->getAvatar());
+        fetchCommunityAvatar(community_id, community->getAvatar().toString());
 
         contentsLayout_->insertWidget(contentsLayout_->count() - 1, list_item);
 
@@ -116,4 +115,38 @@ CommunitiesList::highlightSelectedCommunity(const QString &community_id)
                         scrollArea_->ensureWidgetVisible(community.second.data());
                 }
         }
+}
+
+void
+CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUrl)
+{
+        auto savedImgData = cache::client()->image(avatarUrl);
+        if (!savedImgData.isNull()) {
+                QPixmap pix;
+                pix.loadFromData(savedImgData);
+                emit avatarRetrieved(id, pix);
+                return;
+        }
+
+        mtx::http::ThumbOpts opts;
+        opts.mxc_url = avatarUrl.toStdString();
+        http::v2::client()->get_thumbnail(
+          opts, [this, opts, id](const std::string &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          log::net()->warn("failed to download avatar: {} - ({} {})",
+                                           opts.mxc_url,
+                                           mtx::errors::to_string(err->matrix_error.errcode),
+                                           err->matrix_error.error);
+                          return;
+                  }
+
+                  cache::client()->saveImage(opts.mxc_url, res);
+
+                  auto data = QByteArray(res.data(), res.size());
+
+                  QPixmap pix;
+                  pix.loadFromData(data);
+
+                  emit avatarRetrieved(id, pix);
+          });
 }

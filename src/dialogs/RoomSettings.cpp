@@ -67,6 +67,20 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
         labelLayout->addWidget(errorField_);
         layout->addLayout(labelLayout);
 
+        connect(this, &EditModal::stateEventErrorCb, this, [this](const QString &msg) {
+                errorField_->setText(msg);
+                errorField_->show();
+        });
+        connect(this, &EditModal::nameEventSentCb, this, [this](const QString &newName) {
+                errorField_->hide();
+                emit nameChanged(newName);
+                close();
+        });
+        connect(this, &EditModal::topicEventSentCb, this, [this]() {
+                errorField_->hide();
+                close();
+        });
+
         connect(applyBtn_, &QPushButton::clicked, [this]() {
                 // Check if the values are changed from the originals.
                 auto newName  = nameInput_->text().trimmed();
@@ -85,53 +99,37 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                         state::Name body;
                         body.name = newName.toStdString();
 
-                        auto proxy =
-                          http::client()->sendStateEvent<state::Name, EventType::RoomName>(body,
-                                                                                           roomId_);
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventSent,
-                                this,
-                                [this, proxy, newName]() {
-                                        Q_UNUSED(proxy);
-                                        errorField_->hide();
-                                        emit nameChanged(newName);
-                                        close();
-                                });
+                        http::v2::client()->send_state_event<state::Name, EventType::RoomName>(
+                          roomId_.toStdString(),
+                          body,
+                          [this, newName](const mtx::responses::EventId &,
+                                          mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit stateEventErrorCb(
+                                            QString::fromStdString(err->matrix_error.error));
+                                          return;
+                                  }
 
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventError,
-                                this,
-                                [this, proxy, newName](const QString &msg) {
-                                        Q_UNUSED(proxy);
-                                        errorField_->setText(msg);
-                                        errorField_->show();
-                                });
+                                  emit nameEventSentCb(newName);
+                          });
                 }
 
                 if (newTopic != initialTopic_ && !newTopic.isEmpty()) {
                         state::Topic body;
                         body.topic = newTopic.toStdString();
 
-                        auto proxy =
-                          http::client()->sendStateEvent<state::Topic, EventType::RoomTopic>(
-                            body, roomId_);
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventSent,
-                                this,
-                                [this, proxy, newTopic]() {
-                                        Q_UNUSED(proxy);
-                                        errorField_->hide();
-                                        close();
-                                });
+                        http::v2::client()->send_state_event<state::Topic, EventType::RoomTopic>(
+                          roomId_.toStdString(),
+                          body,
+                          [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit stateEventErrorCb(
+                                            QString::fromStdString(err->matrix_error.error));
+                                          return;
+                                  }
 
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventError,
-                                this,
-                                [this, proxy, newTopic](const QString &msg) {
-                                        Q_UNUSED(proxy);
-                                        errorField_->setText(msg);
-                                        errorField_->show();
-                                });
+                                  emit topicEventSentCb();
+                          });
                 }
         });
         connect(cancelBtn_, &QPushButton::clicked, this, &EditModal::close);

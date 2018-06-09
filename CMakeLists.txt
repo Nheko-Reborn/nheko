@@ -53,7 +53,6 @@ include(LMDB)
 # Discover Qt dependencies.
 #
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Svg REQUIRED)
@@ -181,6 +180,7 @@ set(SRC_FILES
     src/Community.cc
     src/InviteeItem.cc
     src/LoginPage.cc
+    src/Logging.cpp
     src/MainWindow.cc
     src/MatrixClient.cc
     src/QuickSwitcher.cc
@@ -287,7 +287,6 @@ qt5_wrap_cpp(MOC_HEADERS
     include/LoginPage.h
     include/MainWindow.h
     include/InviteeItem.h
-    include/MatrixClient.h
     include/QuickSwitcher.h
     include/RegisterPage.h
     include/RoomInfoListItem.h
@@ -314,7 +313,6 @@ set(COMMON_LIBS
     MatrixStructs::MatrixStructs
     MatrixClient::MatrixClient
     Qt5::Widgets
-    Qt5::Network
     Qt5::Svg
     Qt5::Concurrent)
 

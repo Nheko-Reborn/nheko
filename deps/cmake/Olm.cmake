@@ -15,6 +15,7 @@ ExternalProject_Add(
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ${MAKE_CMD} static
   INSTALL_COMMAND 
+    mkdir -p ${DEPS_INSTALL_DIR}/lib &&
     cp -R ${DEPS_BUILD_DIR}/olm/include ${DEPS_INSTALL_DIR} &&
     cp ${DEPS_BUILD_DIR}/olm/build/libolm.a ${DEPS_INSTALL_DIR}/lib
 )

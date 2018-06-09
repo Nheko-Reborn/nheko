@@ -197,11 +197,23 @@ public:
         void sendReadReceipt() const
         {
                 if (!event_id_.isEmpty())
-                        http::client()->readEvent(room_id_, event_id_);
+                        http::v2::client()->read_event(
+                          room_id_.toStdString(),
+                          event_id_.toStdString(),
+                          [this](mtx::http::RequestErr err) {
+                                  if (err) {
+                                          qWarning() << QString("failed to read_event (%1, %2)")
+                                                          .arg(room_id_, event_id_);
+                                  }
+                          });
         }
 
         //! Add a user avatar for this event.
         void addAvatar();
+
+signals:
+        void eventRedacted(const QString &event_id);
+        void redactionFailed(const QString &msg);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

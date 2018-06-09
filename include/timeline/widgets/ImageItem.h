@@ -40,13 +40,17 @@ public:
                   uint64_t size,
                   QWidget *parent = nullptr);
 
-        void setImage(const QPixmap &image);
-
         QSize sizeHint() const override;
 
 public slots:
         //! Show a save as dialog for the image.
         void saveAs();
+        void setImage(const QPixmap &image);
+        void saveImage(const QString &filename, const QByteArray &data);
+
+signals:
+        void imageDownloaded(const QPixmap &img);
+        void imageSaved(const QString &filename, const QByteArray &data);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -57,7 +61,9 @@ protected:
         bool isInteractive_ = true;
 
 private:
+        void init();
         void openUrl();
+        void downloadMedia(const QUrl &url);
 
         int max_width_  = 500;
         int max_height_ = 300;

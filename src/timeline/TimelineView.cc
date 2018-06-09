@@ -23,6 +23,7 @@
 #include "ChatPage.h"
 #include "Config.h"
 #include "FloatingButton.h"
+#include "Logging.hpp"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
@@ -100,7 +101,7 @@ TimelineView::TimelineView(const QString &room_id, QWidget *parent)
   , room_id_{room_id}
 {
         init();
-        http::client()->messages(room_id_, "");
+        getMessages();
 }
 
 void
@@ -140,7 +141,7 @@ TimelineView::fetchHistory()
                         return;
 
                 isPaginationInProgress_ = true;
-                http::client()->messages(room_id_, prev_batch_token_);
+                getMessages();
                 paginationTimer_->start(5000);
 
                 return;
@@ -189,18 +190,13 @@ TimelineView::sliderMoved(int position)
 
                 isPaginationInProgress_ = true;
 
-                // FIXME: Maybe move this to TimelineViewManager to remove the
-                // extra calls?
-                http::client()->messages(room_id_, prev_batch_token_);
+                getMessages();
         }
 }
 
 void
-TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::Messages &msgs)
+TimelineView::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
-        if (room_id_ != room_id)
-                return;
-
         // We've reached the start of the timline and there're no more messages.
         if ((msgs.end == msgs.start) && msgs.chunk.size() == 0) {
                 isTimelineFinished = true;
@@ -427,10 +423,10 @@ TimelineView::init()
         paginationTimer_ = new QTimer(this);
         connect(paginationTimer_, &QTimer::timeout, this, &TimelineView::fetchHistory);
 
-        connect(http::client(),
-                &MatrixClient::messagesRetrieved,
-                this,
-                &TimelineView::addBackwardsEvents);
+        connect(this, &TimelineView::messagesRetrieved, this, &TimelineView::addBackwardsEvents);
+
+        connect(this, &TimelineView::messageFailed, this, &TimelineView::handleFailedMessage);
+        connect(this, &TimelineView::messageSent, this, &TimelineView::updatePendingMessage);
 
         connect(scroll_area_->verticalScrollBar(),
                 SIGNAL(valueChanged(int)),
@@ -440,6 +436,27 @@ TimelineView::init()
                 SIGNAL(rangeChanged(int, int)),
                 this,
                 SLOT(sliderRangeChanged(int, int)));
+}
+
+void
+TimelineView::getMessages()
+{
+        mtx::http::MessagesOpts opts;
+        opts.room_id = room_id_.toStdString();
+        opts.from    = prev_batch_token_.toStdString();
+
+        http::v2::client()->messages(
+          opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          log::net()->error("failed to call /messages ({}): {} - {}",
+                                            opts.room_id,
+                                            mtx::errors::to_string(err->matrix_error.errcode),
+                                            err->matrix_error.error);
+                          return;
+                  }
+
+                  emit messagesRetrieved(std::move(res));
+          });
 }
 
 void
@@ -513,7 +530,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 }
 
 void
-TimelineView::updatePendingMessage(int txn_id, QString event_id)
+TimelineView::updatePendingMessage(const std::string &txn_id, const QString &event_id)
 {
         if (!pending_msgs_.isEmpty() &&
             pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
@@ -548,8 +565,11 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
 
-        int txn_id = http::client()->incrementTransactionId();
-        PendingMessage message(ty, txn_id, body, "", "", -1, "", view_item);
+        PendingMessage message;
+        message.ty     = ty;
+        message.txn_id = mtx::client::utils::random_token();
+        message.body   = body;
+        message.widget = view_item;
         handleNewUserMessage(message);
 }
 
@@ -567,19 +587,119 @@ TimelineView::sendNextPendingMessage()
         if (pending_msgs_.size() == 0)
                 return;
 
+        using namespace mtx::events;
+
         PendingMessage &m = pending_msgs_.head();
         switch (m.ty) {
-        case mtx::events::MessageType::Audio:
-        case mtx::events::MessageType::Image:
-        case mtx::events::MessageType::Video:
-        case mtx::events::MessageType::File:
-                // FIXME: Improve the API
-                http::client()->sendRoomMessage(
-                  m.ty, m.txn_id, room_id_, m.filename, m.mime, m.media_size, m.body);
+        case mtx::events::MessageType::Audio: {
+                msg::Audio audio;
+                audio.info.mimetype = m.mime.toStdString();
+                audio.info.size     = m.media_size;
+                audio.body          = m.filename.toStdString();
+                audio.url           = m.body.toStdString();
+
+                http::v2::client()->send_room_message<msg::Audio, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  audio,
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
                 break;
+        }
+        case mtx::events::MessageType::Image: {
+                msg::Image image;
+                image.info.mimetype = m.mime.toStdString();
+                image.info.size     = m.media_size;
+                image.body          = m.filename.toStdString();
+                image.url           = m.body.toStdString();
+
+                http::v2::client()->send_room_message<msg::Image, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  image,
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::Video: {
+                msg::Video video;
+                video.info.mimetype = m.mime.toStdString();
+                video.info.size     = m.media_size;
+                video.body          = m.filename.toStdString();
+                video.url           = m.body.toStdString();
+
+                http::v2::client()->send_room_message<msg::Video, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  video,
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::File: {
+                msg::File file;
+                file.info.mimetype = m.mime.toStdString();
+                file.info.size     = m.media_size;
+                file.body          = m.filename.toStdString();
+                file.url           = m.body.toStdString();
+
+                http::v2::client()->send_room_message<msg::File, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  file,
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::Text: {
+                msg::Text text;
+                text.body = m.body.toStdString();
+
+                http::v2::client()->send_room_message<msg::Text, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  text,
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::Emote: {
+                msg::Emote emote;
+                emote.body = m.body.toStdString();
+
+                http::v2::client()->send_room_message<msg::Emote, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  emote,
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+                break;
+        }
         default:
-                http::client()->sendRoomMessage(
-                  m.ty, m.txn_id, room_id_, m.body, m.mime, m.media_size);
+                log::main()->warn("cannot send unknown message type: {}", m.body.toStdString());
                 break;
         }
 }
@@ -593,7 +713,7 @@ TimelineView::notifyForLastEvent()
         if (lastTimelineItem)
                 emit updateLastTimelineMessage(room_id_, lastTimelineItem->descriptionMessage());
         else
-                qWarning() << "Cast to TimelineView failed" << room_id_;
+                log::main()->warn("cast to TimelineView failed: {}", room_id_.toStdString());
 }
 
 void
@@ -606,29 +726,27 @@ TimelineView::notifyForLastEvent(const TimelineEvent &event)
 }
 
 bool
-TimelineView::isPendingMessage(const QString &txnid,
+TimelineView::isPendingMessage(const std::string &txn_id,
                                const QString &sender,
                                const QString &local_userid)
 {
         if (sender != local_userid)
                 return false;
 
-        auto match_txnid = [txnid](const auto &msg) -> bool {
-                return QString::number(msg.txn_id) == txnid;
-        };
+        auto match_txnid = [txn_id](const auto &msg) -> bool { return msg.txn_id == txn_id; };
 
         return std::any_of(pending_msgs_.cbegin(), pending_msgs_.cend(), match_txnid) ||
                std::any_of(pending_sent_msgs_.cbegin(), pending_sent_msgs_.cend(), match_txnid);
 }
 
 void
-TimelineView::removePendingMessage(const QString &txnid)
+TimelineView::removePendingMessage(const std::string &txn_id)
 {
-        if (txnid.isEmpty())
+        if (txn_id.empty())
                 return;
 
         for (auto it = pending_sent_msgs_.begin(); it != pending_sent_msgs_.end(); ++it) {
-                if (QString::number(it->txn_id) == txnid) {
+                if (it->txn_id == txn_id) {
                         int index = std::distance(pending_sent_msgs_.begin(), it);
                         pending_sent_msgs_.removeAt(index);
 
@@ -639,7 +757,7 @@ TimelineView::removePendingMessage(const QString &txnid)
                 }
         }
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
-                if (QString::number(it->txn_id) == txnid) {
+                if (it->txn_id == txn_id) {
                         int index = std::distance(pending_msgs_.begin(), it);
                         pending_msgs_.removeAt(index);
                         return;
@@ -648,9 +766,9 @@ TimelineView::removePendingMessage(const QString &txnid)
 }
 
 void
-TimelineView::handleFailedMessage(int txnid)
+TimelineView::handleFailedMessage(const std::string &txn_id)
 {
-        Q_UNUSED(txnid);
+        Q_UNUSED(txn_id);
         // Note: We do this even if the message has already been echoed.
         QTimer::singleShot(2000, this, SLOT(sendNextPendingMessage()));
 }
@@ -673,7 +791,16 @@ TimelineView::readLastEvent() const
         const auto eventId = getLastEventId();
 
         if (!eventId.isEmpty())
-                http::client()->readEvent(room_id_, eventId);
+                http::v2::client()->read_event(room_id_.toStdString(),
+                                               eventId.toStdString(),
+                                               [this, eventId](mtx::http::RequestErr err) {
+                                                       if (err) {
+                                                               log::net()->warn(
+                                                                 "failed to read event ({}, {})",
+                                                                 room_id_.toStdString(),
+                                                                 eventId.toStdString());
+                                                       }
+                                               });
 }
 
 QString
@@ -743,7 +870,8 @@ void
 TimelineView::removeEvent(const QString &event_id)
 {
         if (!eventIds_.contains(event_id)) {
-                qWarning() << "unknown event_id couldn't be removed:" << event_id;
+                log::main()->warn("cannot remove widget with unknown event_id: {}",
+                                  event_id.toStdString());
                 return;
         }
 
@@ -859,4 +987,17 @@ TimelineView::isDateDifference(const QDateTime &first, const QDateTime &second) 
         constexpr uint64_t fifteenMins = 15 * 60;
 
         return diffInSeconds > fifteenMins;
+}
+
+void
+TimelineView::sendRoomMessageHandler(const std::string &txn_id,
+                                     const mtx::responses::EventId &res,
+                                     mtx::http::RequestErr err)
+{
+        if (err) {
+                emit messageFailed(txn_id);
+                return;
+        }
+
+        emit messageSent(txn_id, QString::fromStdString(res.event_id.to_string()));
 }

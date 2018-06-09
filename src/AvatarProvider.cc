@@ -16,17 +16,17 @@
  */
 
 #include <QBuffer>
-#include <QtConcurrent>
+#include <memory>
 
 #include "AvatarProvider.h"
 #include "Cache.h"
+#include "Logging.hpp"
 #include "MatrixClient.h"
 
+namespace AvatarProvider {
+
 void
-AvatarProvider::resolve(const QString &room_id,
-                        const QString &user_id,
-                        QObject *receiver,
-                        std::function<void(QImage)> callback)
+resolve(const QString &room_id, const QString &user_id, QObject *receiver, AvatarCallback callback)
 {
         const auto key       = QString("%1 %2").arg(room_id).arg(user_id);
         const auto avatarUrl = Cache::avatarUrl(room_id, user_id);
@@ -43,24 +43,30 @@ AvatarProvider::resolve(const QString &room_id,
                 return;
         }
 
-        auto proxy = http::client()->fetchUserAvatar(avatarUrl);
+        auto proxy = std::make_shared<AvatarProxy>();
+        QObject::connect(proxy.get(),
+                         &AvatarProxy::avatarDownloaded,
+                         receiver,
+                         [callback](const QByteArray &data) { callback(QImage::fromData(data)); });
 
-        if (proxy.isNull())
-                return;
+        mtx::http::ThumbOpts opts;
+        opts.mxc_url = avatarUrl.toStdString();
 
-        connect(proxy.data(),
-                &DownloadMediaProxy::avatarDownloaded,
-                receiver,
-                [user_id, proxy, callback, avatarUrl](const QImage &img) {
-                        proxy->deleteLater();
-                        QtConcurrent::run([img, avatarUrl]() {
-                                QByteArray data;
-                                QBuffer buffer(&data);
-                                buffer.open(QIODevice::WriteOnly);
-                                img.save(&buffer, "PNG");
+        http::v2::client()->get_thumbnail(
+          opts,
+          [opts, proxy = std::move(proxy)](const std::string &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          log::net()->warn("failed to download avatar: {} - ({} {})",
+                                           opts.mxc_url,
+                                           mtx::errors::to_string(err->matrix_error.errcode),
+                                           err->matrix_error.error);
+                          return;
+                  }
 
-                                cache::client()->saveImage(avatarUrl, data);
-                        });
-                        callback(img);
-                });
+                  cache::client()->saveImage(opts.mxc_url, res);
+
+                  auto data = QByteArray(res.data(), res.size());
+                  emit proxy->avatarDownloaded(data);
+          });
+}
 }

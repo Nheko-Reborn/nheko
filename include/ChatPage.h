@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <atomic>
+
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QMap>
@@ -50,9 +52,6 @@ constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
 constexpr int TYPING_REFRESH_TIMEOUT = 10000;
 
-Q_DECLARE_METATYPE(mtx::responses::Rooms)
-Q_DECLARE_METATYPE(std::vector<std::string>)
-
 class ChatPage : public QWidget
 {
         Q_OBJECT
@@ -71,7 +70,37 @@ public:
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
         void deleteConfigs();
 
+public slots:
+        void leaveRoom(const QString &room_id);
+
 signals:
+        void connectionLost();
+        void connectionRestored();
+
+        void notificationsRetrieved(const mtx::responses::Notifications &);
+
+        void uploadFailed(const QString &msg);
+        void imageUploaded(const QString &roomid,
+                           const QString &filename,
+                           const QString &url,
+                           const QString &mime,
+                           qint64 dsize);
+        void fileUploaded(const QString &roomid,
+                          const QString &filename,
+                          const QString &url,
+                          const QString &mime,
+                          qint64 dsize);
+        void audioUploaded(const QString &roomid,
+                           const QString &filename,
+                           const QString &url,
+                           const QString &mime,
+                           qint64 dsize);
+        void videoUploaded(const QString &roomid,
+                           const QString &filename,
+                           const QString &url,
+                           const QString &mime,
+                           qint64 dsize);
+
         void contentLoaded();
         void closing();
         void changeWindowTitle(const QString &msg);
@@ -82,29 +111,43 @@ signals:
         void showOverlayProgressBar();
         void startConsesusTimer();
 
+        void removeTimelineEvent(const QString &room_id, const QString &event_id);
+
+        void ownProfileOk();
+        void setUserDisplayName(const QString &name);
+        void setUserAvatar(const QImage &avatar);
+        void loggedOut();
+
+        void trySyncCb();
+        void tryInitialSyncCb();
+        void leftRoom(const QString &room_id);
+
         void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
         void initializeEmptyViews(const std::vector<std::string> &rooms);
         void syncUI(const mtx::responses::Rooms &rooms);
-        void continueSync(const QString &next_batch);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
         void syncTopBar(const std::map<QString, RoomInfo> &updates);
+        void dropToLoginPageCb(const QString &msg);
 
 private slots:
         void showUnreadMessageNotification(int count);
         void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
-        void updateOwnProfileInfo(const QUrl &avatar_url, const QString &display_name);
         void updateOwnCommunitiesInfo(const QList<QString> &own_communities);
-        void initialSyncCompleted(const mtx::responses::Sync &response);
-        void syncCompleted(const mtx::responses::Sync &response);
         void changeTopRoomInfo(const QString &room_id);
         void logout();
         void removeRoom(const QString &room_id);
-        //! Handles initial sync failures.
-        void retryInitialSync(int status_code = -1);
+        void dropToLoginPage(const QString &msg);
+
+        void joinRoom(const QString &room);
+        void createRoom(const mtx::requests::CreateRoom &req);
+        void sendTypingNotifications();
 
 private:
         static ChatPage *instance_;
+
+        void tryInitialSync();
+        void trySync();
 
         //! Check if the given room is currently open.
         bool isRoomActive(const QString &room_id)
@@ -161,8 +204,8 @@ private:
         // Safety net if consensus is not possible or too slow.
         QTimer *showContentTimer_;
         QTimer *consensusTimer_;
-        QTimer *syncTimeoutTimer_;
-        QTimer *initialSyncTimer_;
+        QTimer connectivityTimer_;
+        std::atomic_bool isConnected_;
 
         QString current_room_;
         QString current_community_;

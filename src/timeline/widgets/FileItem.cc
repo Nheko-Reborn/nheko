@@ -49,17 +49,9 @@ FileItem::init()
 
         icon_.addFile(":/icons/icons/ui/arrow-pointing-down.png");
 
-        QList<QString> url_parts = url_.toString().split("mxc://");
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for image" << url_.toString();
-                return;
-        }
-
-        QString media_params = url_parts[1];
-        url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(http::client()->getHomeServer().toString(), media_params);
-
         setFixedHeight(Height);
+
+        connect(this, &FileItem::fileDownloadedCb, this, &FileItem::fileDownloaded);
 }
 
 FileItem::FileItem(const mtx::events::RoomEvent<mtx::events::msg::File> &event, QWidget *parent)
@@ -89,8 +81,15 @@ FileItem::openUrl()
         if (url_.toString().isEmpty())
                 return;
 
-        if (!QDesktopServices::openUrl(url_))
-                qWarning() << "Could not open url" << url_.toString();
+        auto mxc_parts = mtx::client::utils::parse_mxc_url(url_.toString().toStdString());
+        auto urlToOpen = QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
+                           .arg(QString::fromStdString(http::v2::client()->server()))
+                           .arg(http::v2::client()->port())
+                           .arg(QString::fromStdString(mxc_parts.server))
+                           .arg(QString::fromStdString(mxc_parts.media_id));
+
+        if (!QDesktopServices::openUrl(urlToOpen))
+                qWarning() << "Could not open url" << urlToOpen;
 }
 
 QSize
@@ -115,14 +114,19 @@ FileItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                auto proxy = http::client()->downloadFile(url_);
-                connect(proxy.data(),
-                        &DownloadMediaProxy::fileDownloaded,
-                        this,
-                        [proxy, this](const QByteArray &data) {
-                                proxy->deleteLater();
-                                fileDownloaded(data);
-                        });
+                http::v2::client()->download(
+                  url_.toString().toStdString(),
+                  [this](const std::string &data,
+                         const std::string &,
+                         const std::string &,
+                         mtx::http::RequestErr err) {
+                          if (err) {
+                                  qWarning() << "failed to retrieve m.file content:" << url_;
+                                  return;
+                          }
+
+                          emit fileDownloadedCb(QByteArray(data.data(), data.size()));
+                  });
         } else {
                 openUrl();
         }

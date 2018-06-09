@@ -35,42 +35,15 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
   : QStackedWidget(parent)
 {
         setStyleSheet("border: none;");
-
-        connect(
-          http::client(), &MatrixClient::messageSent, this, &TimelineViewManager::messageSent);
-
-        connect(http::client(),
-                &MatrixClient::messageSendFailed,
-                this,
-                &TimelineViewManager::messageSendFailed);
-
-        connect(http::client(),
-                &MatrixClient::redactionCompleted,
-                this,
-                [this](const QString &room_id, const QString &event_id) {
-                        auto view = views_[room_id];
-
-                        if (view)
-                                view->removeEvent(event_id);
-                });
 }
 
 void
-TimelineViewManager::messageSent(const QString &event_id, const QString &roomid, int txn_id)
+TimelineViewManager::removeTimelineEvent(const QString &room_id, const QString &event_id)
 {
-        // We save the latest valid transaction ID for later use.
-        QSettings settings;
-        settings.setValue("client/transaction_id", txn_id + 1);
+        auto view = views_[room_id];
 
-        auto view = views_[roomid];
-        view->updatePendingMessage(txn_id, event_id);
-}
-
-void
-TimelineViewManager::messageSendFailed(const QString &roomid, int txn_id)
-{
-        auto view = views_[roomid];
-        view->handleFailedMessage(txn_id);
+        if (view)
+                view->removeEvent(event_id);
 }
 
 void

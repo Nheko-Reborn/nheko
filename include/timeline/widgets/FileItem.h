@@ -52,15 +52,20 @@ public:
         QColor iconColor() const { return iconColor_; }
         QColor backgroundColor() const { return backgroundColor_; }
 
+signals:
+        void fileDownloadedCb(const QByteArray &data);
+
 protected:
         void paintEvent(QPaintEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
 
+private slots:
+        void fileDownloaded(const QByteArray &data);
+
 private:
         void openUrl();
         void init();
-        void fileDownloaded(const QByteArray &data);
 
         QUrl url_;
         QString text_;

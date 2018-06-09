@@ -30,37 +30,62 @@
 #include "dialogs/ImageOverlay.h"
 #include "timeline/widgets/ImageItem.h"
 
-ImageItem::ImageItem(const mtx::events::RoomEvent<mtx::events::msg::Image> &event, QWidget *parent)
-  : QWidget(parent)
-  , event_{event}
+void
+ImageItem::downloadMedia(const QUrl &url)
+{
+        http::v2::client()->download(url.toString().toStdString(),
+                                     [this, url](const std::string &data,
+                                                 const std::string &,
+                                                 const std::string &,
+                                                 mtx::http::RequestErr err) {
+                                             if (err) {
+                                                     qWarning()
+                                                       << "failed to retrieve image:" << url;
+                                                     return;
+                                             }
+
+                                             QPixmap img;
+                                             img.loadFromData(QByteArray(data.data(), data.size()));
+                                             emit imageDownloaded(img);
+                                     });
+}
+
+void
+ImageItem::saveImage(const QString &filename, const QByteArray &data)
+{
+        try {
+                QFile file(filename);
+
+                if (!file.open(QIODevice::WriteOnly))
+                        return;
+
+                file.write(data);
+                file.close();
+        } catch (const std::exception &ex) {
+                qDebug() << "Error while saving file to:" << ex.what();
+        }
+}
+
+void
+ImageItem::init()
 {
         setMouseTracking(true);
         setCursor(Qt::PointingHandCursor);
         setAttribute(Qt::WA_Hover, true);
 
+        connect(this, &ImageItem::imageDownloaded, this, &ImageItem::setImage);
+        connect(this, &ImageItem::imageSaved, this, &ImageItem::saveImage);
+        downloadMedia(url_);
+}
+
+ImageItem::ImageItem(const mtx::events::RoomEvent<mtx::events::msg::Image> &event, QWidget *parent)
+  : QWidget(parent)
+  , event_{event}
+{
         url_  = QString::fromStdString(event.content.url);
         text_ = QString::fromStdString(event.content.body);
 
-        QList<QString> url_parts = url_.toString().split("mxc://");
-
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for image" << url_.toString();
-                return;
-        }
-
-        QString media_params = url_parts[1];
-        url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(http::client()->getHomeServer().toString(), media_params);
-
-        auto proxy = http::client()->downloadImage(url_);
-
-        connect(proxy.data(),
-                &DownloadMediaProxy::imageDownloaded,
-                this,
-                [this, proxy](const QPixmap &img) {
-                        proxy->deleteLater();
-                        setImage(img);
-                });
+        init();
 }
 
 ImageItem::ImageItem(const QString &url, const QString &filename, uint64_t size, QWidget *parent)
@@ -69,31 +94,7 @@ ImageItem::ImageItem(const QString &url, const QString &filename, uint64_t size,
   , text_{filename}
 {
         Q_UNUSED(size);
-
-        setMouseTracking(true);
-        setCursor(Qt::PointingHandCursor);
-        setAttribute(Qt::WA_Hover, true);
-
-        QList<QString> url_parts = url_.toString().split("mxc://");
-
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for image" << url_.toString();
-                return;
-        }
-
-        QString media_params = url_parts[1];
-        url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(http::client()->getHomeServer().toString(), media_params);
-
-        auto proxy = http::client()->downloadImage(url_);
-
-        connect(proxy.data(),
-                &DownloadMediaProxy::imageDownloaded,
-                this,
-                [proxy, this](const QPixmap &img) {
-                        proxy->deleteLater();
-                        setImage(img);
-                });
+        init();
 }
 
 void
@@ -102,8 +103,15 @@ ImageItem::openUrl()
         if (url_.toString().isEmpty())
                 return;
 
-        if (!QDesktopServices::openUrl(url_))
-                qWarning() << "Could not open url" << url_.toString();
+        auto mxc_parts = mtx::client::utils::parse_mxc_url(url_.toString().toStdString());
+        auto urlToOpen = QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
+                           .arg(QString::fromStdString(http::v2::client()->server()))
+                           .arg(http::v2::client()->port())
+                           .arg(QString::fromStdString(mxc_parts.server))
+                           .arg(QString::fromStdString(mxc_parts.media_id));
+
+        if (!QDesktopServices::openUrl(urlToOpen))
+                qWarning() << "Could not open url" << urlToOpen;
 }
 
 QSize
@@ -231,23 +239,17 @@ ImageItem::saveAs()
         if (filename.isEmpty())
                 return;
 
-        auto proxy = http::client()->downloadFile(url_);
-        connect(proxy.data(),
-                &DownloadMediaProxy::fileDownloaded,
-                this,
-                [proxy, filename](const QByteArray &data) {
-                        proxy->deleteLater();
+        http::v2::client()->download(
+          url_.toString().toStdString(),
+          [this, filename](const std::string &data,
+                           const std::string &,
+                           const std::string &,
+                           mtx::http::RequestErr err) {
+                  if (err) {
+                          qWarning() << "failed to retrieve image:" << url_;
+                          return;
+                  }
 
-                        try {
-                                QFile file(filename);
-
-                                if (!file.open(QIODevice::WriteOnly))
-                                        return;
-
-                                file.write(data);
-                                file.close();
-                        } catch (const std::exception &ex) {
-                                qDebug() << "Error while saving file to:" << ex.what();
-                        }
-                });
+                  emit imageSaved(filename, QByteArray(data.data(), data.size()));
+          });
 }

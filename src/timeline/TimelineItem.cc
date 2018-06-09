@@ -62,9 +62,27 @@ TimelineItem::init()
                         ChatPage::instance()->showReadReceipts(event_id_);
         });
 
+        connect(this, &TimelineItem::eventRedacted, this, [this](const QString &event_id) {
+                emit ChatPage::instance()->removeTimelineEvent(room_id_, event_id);
+        });
+        connect(this, &TimelineItem::redactionFailed, this, [](const QString &msg) {
+                emit ChatPage::instance()->showNotification(msg);
+        });
         connect(redactMsg_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
-                        http::client()->redactEvent(room_id_, event_id_);
+                        http::v2::client()->redact_event(
+                          room_id_.toStdString(),
+                          event_id_.toStdString(),
+                          [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit redactionFailed(tr("Message redaction failed: %1")
+                                                                 .arg(QString::fromStdString(
+                                                                   err->matrix_error.error)));
+                                          return;
+                                  }
+
+                                  emit eventRedacted(event_id_);
+                          });
         });
 
         connect(markAsRead_, &QAction::triggered, this, [this]() { sendReadReceipt(); });

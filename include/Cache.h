@@ -192,7 +192,7 @@ public:
         void saveState(const mtx::responses::Sync &res);
         bool isInitialized() const;
 
-        QString nextBatchToken() const;
+        std::string nextBatchToken() const;
 
         void deleteData();
 
@@ -237,6 +237,7 @@ public:
         {
                 return image(QString::fromStdString(url));
         }
+        void saveImage(const std::string &url, const std::string &data);
         void saveImage(const QString &url, const QByteArray &data);
 
         RoomInfo singleRoomInfo(const std::string &room_id);
