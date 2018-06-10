@@ -149,7 +149,13 @@ main(int argc, char *argv[])
             !settings.value("user/window/tray", true).toBool())
                 w.show();
 
-        QObject::connect(&app, &QApplication::aboutToQuit, &w, &MainWindow::saveCurrentWindowSize);
+        QObject::connect(&app, &QApplication::aboutToQuit, &w, [&w]() {
+                w.saveCurrentWindowSize();
+                if (http::v2::client() != nullptr) {
+                        http::v2::client()->shutdown();
+                        http::v2::client()->close();
+                }
+        });
 
         log::main()->info("starting nheko {}", nheko::version);
 

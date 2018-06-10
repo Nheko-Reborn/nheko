@@ -15,4 +15,7 @@ net();
 
 std::shared_ptr<spdlog::logger>
 db();
+
+std::shared_ptr<spdlog::logger>
+crypto();
 }

@@ -25,6 +25,7 @@
 #include "Logging.hpp"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "Olm.hpp"
 #include "OverlayModal.h"
 #include "QuickSwitcher.h"
 #include "RoomList.h"
@@ -43,8 +44,12 @@
 #include "dialogs/ReadReceipts.h"
 #include "timeline/TimelineViewManager.h"
 
+// TODO: Needs to be updated with an actual secret.
+static const std::string STORAGE_SECRET_KEY("secret");
+
 ChatPage *ChatPage::instance_             = nullptr;
 constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
+constexpr size_t MAX_ONETIME_KEYS         = 50;
 
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
@@ -612,6 +617,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync);
         connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync);
+        connect(this, &ChatPage::tryDelayedSyncCb, this, [this]() {
+                QTimer::singleShot(5000, this, &ChatPage::trySync);
+        });
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
 
@@ -728,6 +736,11 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
           });
         // TODO http::client()->getOwnCommunities();
 
+        // The Olm client needs the user_id & device_id that will be included
+        // in the generated payloads & keys.
+        olm::client()->set_user_id(http::v2::client()->user_id().to_string());
+        olm::client()->set_device_id(http::v2::client()->device_id());
+
         cache::init(userid);
 
         try {
@@ -741,12 +754,29 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
                 if (cache::client()->isInitialized()) {
                         loadStateFromCache();
+                        // TODO: Bootstrap olm client with saved data.
                         return;
                 }
         } catch (const lmdb::error &e) {
                 log::db()->critical("failure during boot: {}", e.what());
                 cache::client()->deleteData();
                 log::net()->info("falling back to initial sync");
+        }
+
+        try {
+                // It's the first time syncing with this device
+                // There isn't a saved olm account to restore.
+                log::crypto()->info("creating new olm account");
+                olm::client()->create_new_account();
+                cache::client()->saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
+        } catch (const lmdb::error &e) {
+                log::crypto()->critical("failed to save olm account {}", e.what());
+                emit dropToLoginPageCb(QString::fromStdString(e.what()));
+                return;
+        } catch (const mtx::crypto::olm_exception &e) {
+                log::crypto()->critical("failed to create new olm account {}", e.what());
+                emit dropToLoginPageCb(QString::fromStdString(e.what()));
+                return;
         }
 
         tryInitialSync();
@@ -826,15 +856,28 @@ ChatPage::loadStateFromCache()
 
         QtConcurrent::run([this]() {
                 try {
+                        cache::client()->restoreSessions();
+                        olm::client()->load(cache::client()->restoreOlmAccount(),
+                                            STORAGE_SECRET_KEY);
+
                         cache::client()->populateMembers();
 
                         emit initializeEmptyViews(cache::client()->joinedRooms());
                         emit initializeRoomList(cache::client()->roomInfo());
+                } catch (const mtx::crypto::olm_exception &e) {
+                        log::crypto()->critical("failed to restore olm account: {}", e.what());
+                        emit dropToLoginPageCb(
+                          tr("Failed to restore OLM account. Please login again."));
+                        return;
                 } catch (const lmdb::error &e) {
-                        std::cout << "load cache error:" << e.what() << '\n';
-                        // TODO Clear cache and restart.
+                        log::db()->critical("failed to restore cache: {}", e.what());
+                        emit dropToLoginPageCb(
+                          tr("Failed to restore save data. Please login again."));
                         return;
                 }
+
+                log::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+                log::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
                 // Start receiving events.
                 emit trySyncCb();
@@ -1008,49 +1051,40 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 void
 ChatPage::tryInitialSync()
 {
-        mtx::http::SyncOpts opts;
-        opts.timeout = 0;
+        log::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+        log::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
-        log::net()->info("trying initial sync");
+        // Upload one time keys for the device.
+        log::crypto()->info("generating one time keys");
+        olm::client()->generate_one_time_keys(MAX_ONETIME_KEYS);
 
-        http::v2::client()->sync(
-          opts, [this](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+        http::v2::client()->upload_keys(
+          olm::client()->create_upload_keys_request(),
+          [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
                   if (err) {
-                          const auto error      = QString::fromStdString(err->matrix_error.error);
-                          const auto msg        = tr("Please try to login again: %1").arg(error);
-                          const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
-
-                          log::net()->error("sync error: {} {}", status_code, err_code);
-
-                          switch (status_code) {
-                          case 502:
-                          case 504:
-                          case 524: {
-                                  emit tryInitialSyncCb();
-                                  return;
-                          }
-                          default: {
-                                  emit dropToLoginPageCb(msg);
-                                  return;
-                          }
-                          }
-                  }
-
-                  log::net()->info("initial sync completed");
-
-                  try {
-                          cache::client()->saveState(res);
-                          emit initializeViews(std::move(res.rooms));
-                          emit initializeRoomList(cache::client()->roomInfo());
-                  } catch (const lmdb::error &e) {
-                          log::db()->error("{}", e.what());
+                          log::crypto()->critical("failed to upload one time keys: {} {}",
+                                                  err->matrix_error.error,
+                                                  status_code);
+                          // TODO We should have a timeout instead of keeping hammering the server.
                           emit tryInitialSyncCb();
                           return;
                   }
 
-                  emit trySyncCb();
-                  emit contentLoaded();
+                  olm::client()->mark_keys_as_published();
+                  for (const auto &entry : res.one_time_key_counts)
+                          log::net()->info(
+                            "uploaded {} {} one-time keys", entry.second, entry.first);
+
+                  log::net()->info("trying initial sync");
+
+                  mtx::http::SyncOpts opts;
+                  opts.timeout = 0;
+                  http::v2::client()->sync(opts,
+                                           std::bind(&ChatPage::initialSyncHandler,
+                                                     this,
+                                                     std::placeholders::_1,
+                                                     std::placeholders::_2));
           });
 }
 
@@ -1079,24 +1113,31 @@ ChatPage::trySync()
 
                           log::net()->error("sync error: {} {}", status_code, err_code);
 
+                          if (status_code <= 0 || status_code >= 600) {
+                                  if (!http::v2::is_logged_in())
+                                          return;
+
+                                  emit dropToLoginPageCb(msg);
+                                  return;
+                          }
+
                           switch (status_code) {
                           case 502:
                           case 504:
                           case 524: {
-                                  emit trySync();
+                                  emit trySyncCb();
                                   return;
                           }
                           case 401:
                           case 403: {
-                                  // We are logged out.
-                                  if (http::v2::client()->access_token().empty())
+                                  if (!http::v2::is_logged_in())
                                           return;
 
                                   emit dropToLoginPageCb(msg);
                                   return;
                           }
                           default: {
-                                  emit trySync();
+                                  emit tryDelayedSyncCb();
                                   return;
                           }
                           }
@@ -1104,9 +1145,14 @@ ChatPage::trySync()
 
                   log::net()->debug("sync completed: {}", res.next_batch);
 
+                  // Ensure that we have enough one-time keys available.
+                  ensureOneTimeKeyCount(res.device_one_time_keys_count);
+
                   // TODO: fine grained error handling
                   try {
                           cache::client()->saveState(res);
+                          olm::handle_to_device_messages(res.to_device);
+
                           emit syncUI(res.rooms);
 
                           auto updates = cache::client()->roomUpdates(res);
@@ -1193,4 +1239,75 @@ ChatPage::sendTypingNotifications()
                                            err->matrix_error.error);
                   }
           });
+}
+
+void
+ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err)
+{
+        if (err) {
+                const auto error      = QString::fromStdString(err->matrix_error.error);
+                const auto msg        = tr("Please try to login again: %1").arg(error);
+                const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
+                const int status_code = static_cast<int>(err->status_code);
+
+                log::net()->error("sync error: {} {}", status_code, err_code);
+
+                switch (status_code) {
+                case 502:
+                case 504:
+                case 524: {
+                        emit tryInitialSyncCb();
+                        return;
+                }
+                default: {
+                        emit dropToLoginPageCb(msg);
+                        return;
+                }
+                }
+        }
+
+        log::net()->info("initial sync completed");
+
+        try {
+                cache::client()->saveState(res);
+
+                olm::handle_to_device_messages(res.to_device);
+
+                emit initializeViews(std::move(res.rooms));
+                emit initializeRoomList(cache::client()->roomInfo());
+        } catch (const lmdb::error &e) {
+                log::db()->error("{}", e.what());
+                emit tryInitialSyncCb();
+                return;
+        }
+
+        emit trySyncCb();
+        emit contentLoaded();
+}
+
+void
+ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
+{
+        for (const auto &entry : counts) {
+                if (entry.second < MAX_ONETIME_KEYS) {
+                        const int nkeys = MAX_ONETIME_KEYS - entry.second;
+
+                        log::crypto()->info("uploading {} {} keys", nkeys, entry.first);
+                        olm::client()->generate_one_time_keys(nkeys);
+
+                        http::v2::client()->upload_keys(
+                          olm::client()->create_upload_keys_request(),
+                          [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
+                                  if (err) {
+                                          log::crypto()->warn(
+                                            "failed to update one-time keys: {} {}",
+                                            err->matrix_error.error,
+                                            static_cast<int>(err->status_code));
+                                          return;
+                                  }
+
+                                  olm::client()->mark_keys_as_published();
+                          });
+                }
+        }
 }

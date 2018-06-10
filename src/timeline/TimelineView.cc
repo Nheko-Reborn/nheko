@@ -24,6 +24,7 @@
 #include "Config.h"
 #include "FloatingButton.h"
 #include "Logging.hpp"
+#include "Olm.hpp"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
@@ -235,19 +236,19 @@ TimelineItem *
 TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
                                 TimelineDirection direction)
 {
-        namespace msg     = mtx::events::msg;
-        using AudioEvent  = mtx::events::RoomEvent<msg::Audio>;
-        using EmoteEvent  = mtx::events::RoomEvent<msg::Emote>;
-        using FileEvent   = mtx::events::RoomEvent<msg::File>;
-        using ImageEvent  = mtx::events::RoomEvent<msg::Image>;
-        using NoticeEvent = mtx::events::RoomEvent<msg::Notice>;
-        using TextEvent   = mtx::events::RoomEvent<msg::Text>;
-        using VideoEvent  = mtx::events::RoomEvent<msg::Video>;
+        using namespace mtx::events;
 
-        if (mpark::holds_alternative<mtx::events::RedactionEvent<msg::Redaction>>(event)) {
-                auto redaction_event =
-                  mpark::get<mtx::events::RedactionEvent<msg::Redaction>>(event);
-                const auto event_id = QString::fromStdString(redaction_event.redacts);
+        using AudioEvent  = RoomEvent<msg::Audio>;
+        using EmoteEvent  = RoomEvent<msg::Emote>;
+        using FileEvent   = RoomEvent<msg::File>;
+        using ImageEvent  = RoomEvent<msg::Image>;
+        using NoticeEvent = RoomEvent<msg::Notice>;
+        using TextEvent   = RoomEvent<msg::Text>;
+        using VideoEvent  = RoomEvent<msg::Video>;
+
+        if (mpark::holds_alternative<RedactionEvent<msg::Redaction>>(event)) {
+                auto redaction_event = mpark::get<RedactionEvent<msg::Redaction>>(event);
+                const auto event_id  = QString::fromStdString(redaction_event.redacts);
 
                 QTimer::singleShot(0, this, [event_id, this]() {
                         if (eventIds_.contains(event_id))
@@ -255,33 +256,86 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 });
 
                 return nullptr;
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event)) {
-                auto audio = mpark::get<mtx::events::RoomEvent<msg::Audio>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Audio>>(event)) {
+                auto audio = mpark::get<RoomEvent<msg::Audio>>(event);
                 return processMessageEvent<AudioEvent, AudioItem>(audio, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event)) {
-                auto emote = mpark::get<mtx::events::RoomEvent<msg::Emote>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Emote>>(event)) {
+                auto emote = mpark::get<RoomEvent<msg::Emote>>(event);
                 return processMessageEvent<EmoteEvent>(emote, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::File>>(event)) {
-                auto file = mpark::get<mtx::events::RoomEvent<msg::File>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::File>>(event)) {
+                auto file = mpark::get<RoomEvent<msg::File>>(event);
                 return processMessageEvent<FileEvent, FileItem>(file, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Image>>(event)) {
-                auto image = mpark::get<mtx::events::RoomEvent<msg::Image>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Image>>(event)) {
+                auto image = mpark::get<RoomEvent<msg::Image>>(event);
                 return processMessageEvent<ImageEvent, ImageItem>(image, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Notice>>(event)) {
-                auto notice = mpark::get<mtx::events::RoomEvent<msg::Notice>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Notice>>(event)) {
+                auto notice = mpark::get<RoomEvent<msg::Notice>>(event);
                 return processMessageEvent<NoticeEvent>(notice, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Text>>(event)) {
-                auto text = mpark::get<mtx::events::RoomEvent<msg::Text>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Text>>(event)) {
+                auto text = mpark::get<RoomEvent<msg::Text>>(event);
                 return processMessageEvent<TextEvent>(text, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event)) {
-                auto video = mpark::get<mtx::events::RoomEvent<msg::Video>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Video>>(event)) {
+                auto video = mpark::get<RoomEvent<msg::Video>>(event);
                 return processMessageEvent<VideoEvent, VideoItem>(video, direction);
-        } else if (mpark::holds_alternative<mtx::events::Sticker>(event)) {
-                return processMessageEvent<mtx::events::Sticker, StickerItem>(
-                  mpark::get<mtx::events::Sticker>(event), direction);
+        } else if (mpark::holds_alternative<Sticker>(event)) {
+                return processMessageEvent<Sticker, StickerItem>(mpark::get<Sticker>(event),
+                                                                 direction);
+        } else if (mpark::holds_alternative<EncryptedEvent<msg::Encrypted>>(event)) {
+                auto decrypted =
+                  parseEncryptedEvent(mpark::get<EncryptedEvent<msg::Encrypted>>(event));
+                return parseMessageEvent(decrypted, direction);
         }
 
         return nullptr;
+}
+
+TimelineEvent
+TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e)
+{
+        MegolmSessionIndex index;
+        index.room_id    = room_id_.toStdString();
+        index.session_id = e.content.session_id;
+        index.sender_key = e.content.sender_key;
+
+        mtx::events::RoomEvent<mtx::events::msg::Text> dummy;
+        dummy.origin_server_ts = e.origin_server_ts;
+        dummy.event_id         = e.event_id;
+        dummy.sender           = e.sender;
+        dummy.content.body     = "-- Encrypted Event (No keys found for decryption) --";
+
+        if (!cache::client()->inboundMegolmSessionExists(index)) {
+                log::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
+                                    index.room_id,
+                                    index.session_id,
+                                    e.sender);
+                // TODO: request megolm session_id & session_key from the sender.
+                return dummy;
+        }
+
+        auto session = cache::client()->getInboundMegolmSession(index);
+        auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
+
+        const auto msg_str = std::string((char *)res.data.data(), res.data.size());
+
+        // Add missing fields for the event.
+        json body                = json::parse(msg_str);
+        body["event_id"]         = e.event_id;
+        body["sender"]           = e.sender;
+        body["origin_server_ts"] = e.origin_server_ts;
+
+        log::crypto()->info("decrypted data: \n {}", body.dump(2));
+
+        json event_array = json::array();
+        event_array.push_back(body);
+
+        std::vector<TimelineEvent> events;
+        mtx::responses::utils::parse_timeline_events(event_array, events);
+
+        if (events.size() == 1)
+                return events.at(0);
+
+        dummy.content.body = "-- Encrypted Event (Unknown event type) --";
+        return dummy;
 }
 
 void

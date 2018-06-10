@@ -184,6 +184,7 @@ set(SRC_FILES
     src/MainWindow.cc
     src/MatrixClient.cc
     src/QuickSwitcher.cc
+    src/Olm.cpp
     src/RegisterPage.cc
     src/RoomInfoListItem.cc
     src/RoomList.cc

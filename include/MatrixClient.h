@@ -11,12 +11,15 @@ Q_DECLARE_METATYPE(mtx::responses::Notifications)
 Q_DECLARE_METATYPE(mtx::responses::Rooms)
 Q_DECLARE_METATYPE(mtx::responses::Sync)
 Q_DECLARE_METATYPE(std::string)
-Q_DECLARE_METATYPE(std::vector<std::string>);
+Q_DECLARE_METATYPE(std::vector<std::string>)
 
 namespace http {
 namespace v2 {
 mtx::http::Client *
 client();
+
+bool
+is_logged_in();
 }
 
 //! Initialize the http module

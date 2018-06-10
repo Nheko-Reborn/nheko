@@ -149,6 +149,9 @@ private:
 
         QWidget *relativeWidget(TimelineItem *item, int dt) const;
 
+        TimelineEvent parseEncryptedEvent(
+          const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
+
         //! Callback for all message sending.
         void sendRoomMessageHandler(const std::string &txn_id,
                                     const mtx::responses::EventId &res,

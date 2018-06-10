@@ -29,8 +29,7 @@
 #include "Cache.h"
 #include "CommunitiesList.h"
 #include "Community.h"
-
-#include <mtx.hpp>
+#include "MatrixClient.h"
 
 class OverlayModal;
 class QuickSwitcher;
@@ -119,6 +118,7 @@ signals:
         void loggedOut();
 
         void trySyncCb();
+        void tryDelayedSyncCb();
         void tryInitialSyncCb();
         void leftRoom(const QString &room_id);
 
@@ -146,8 +146,12 @@ private slots:
 private:
         static ChatPage *instance_;
 
+        //! Handler callback for initial sync. It doesn't run on the main thread so all
+        //! communication with the GUI should be done through signals.
+        void initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err);
         void tryInitialSync();
         void trySync();
+        void ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts);
 
         //! Check if the given room is currently open.
         bool isRoomActive(const QString &room_id)

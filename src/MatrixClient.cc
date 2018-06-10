@@ -3,7 +3,7 @@
 #include <memory>
 
 namespace {
-auto v2_client_ = std::make_shared<mtx::http::Client>("matrix.org");
+auto v2_client_ = std::make_shared<mtx::http::Client>();
 }
 
 namespace http {
@@ -13,6 +13,12 @@ mtx::http::Client *
 client()
 {
         return v2_client_.get();
+}
+
+bool
+is_logged_in()
+{
+        return !v2_client_->access_token().empty();
 }
 
 } // namespace v2

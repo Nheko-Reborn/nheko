@@ -96,7 +96,7 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
                   opts, [room_id, opts, this](const std::string &res, mtx::http::RequestErr err) {
                           if (err) {
                                   log::net()->warn(
-                                    "failed to download thumbnail: {}, {} - {}",
+                                    "failed to download room avatar: {} {} {}",
                                     opts.mxc_url,
                                     mtx::errors::to_string(err->matrix_error.errcode),
                                     err->matrix_error.error);

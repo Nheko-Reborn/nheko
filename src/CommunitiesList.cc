@@ -128,6 +128,9 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
                 return;
         }
 
+        if (avatarUrl.isEmpty())
+                return;
+
         mtx::http::ThumbOpts opts;
         opts.mxc_url = avatarUrl.toStdString();
         http::v2::client()->get_thumbnail(
