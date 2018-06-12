@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDir>
 #include <QFile>
 #include <QFontDatabase>
 #include <QLabel>
@@ -46,6 +47,17 @@ screenCenter(int width, int height)
         int y = (screenGeometry.height() - height) / 2;
 
         return QPoint(x, y);
+}
+
+void
+createCacheDirectory()
+{
+        auto dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+
+        if (!QDir().mkpath(dir)) {
+                throw std::runtime_error(
+                  ("Unable to create state directory:" + dir).toStdString().c_str());
+        }
 }
 
 int
@@ -111,6 +123,8 @@ main(int argc, char *argv[])
         app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
         http::init();
+
+        createCacheDirectory();
 
         try {
                 log::init(QString("%1/nheko.log")

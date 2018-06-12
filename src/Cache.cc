@@ -87,8 +87,7 @@ init(const QString &user_id)
         qRegisterMetaType<QMap<QString, RoomInfo>>();
         qRegisterMetaType<std::map<QString, RoomInfo>>();
 
-        if (!instance_)
-                instance_ = std::make_unique<Cache>(user_id);
+        instance_ = std::make_unique<Cache>(user_id);
 }
 
 Cache *
@@ -113,14 +112,16 @@ Cache::Cache(const QString &userId, QObject *parent)
   , outboundMegolmSessionDb_{0}
   , outboundOlmSessionDb_{0}
   , localUserId_{userId}
-{}
+{
+        setup();
+}
 
 void
 Cache::setup()
 {
         log::db()->debug("setting up cache");
 
-        auto statePath = QString("%1/%2/state")
+        auto statePath = QString("%1/%2")
                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
                            .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()));
 
@@ -558,10 +559,11 @@ Cache::nextBatchToken() const
 void
 Cache::deleteData()
 {
-        log::db()->info("deleting data");
-
-        if (!cacheDirectory_.isEmpty())
+        // TODO: We need to remove the env_ while not accepting new requests.
+        if (!cacheDirectory_.isEmpty()) {
                 QDir(cacheDirectory_).removeRecursively();
+                log::db()->info("deleted cache files from disk");
+        }
 }
 
 bool
@@ -575,7 +577,7 @@ Cache::isFormatValid()
         txn.commit();
 
         if (!res)
-                return false;
+                return true;
 
         std::string stored_version(current_version.data(), current_version.size());
 

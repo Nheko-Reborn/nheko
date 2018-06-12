@@ -696,69 +696,28 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         http::v2::client()->set_server(homeserver.toStdString());
         http::v2::client()->set_access_token(token.toStdString());
-        http::v2::client()->get_profile(
-          userid.toStdString(),
-          [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          log::net()->warn("failed to retrieve own profile info");
-                          return;
-                  }
-
-                  emit setUserDisplayName(QString::fromStdString(res.display_name));
-
-                  if (cache::client()) {
-                          auto data = cache::client()->image(res.avatar_url);
-                          if (!data.isNull()) {
-                                  emit setUserAvatar(QImage::fromData(data));
-                                  return;
-                          }
-                  }
-
-                  if (res.avatar_url.empty())
-                          return;
-
-                  http::v2::client()->download(
-                    res.avatar_url,
-                    [this, res](const std::string &data,
-                                const std::string &,
-                                const std::string &,
-                                mtx::http::RequestErr err) {
-                            if (err) {
-                                    log::net()->warn(
-                                      "failed to download user avatar: {} - {}",
-                                      mtx::errors::to_string(err->matrix_error.errcode),
-                                      err->matrix_error.error);
-                                    return;
-                            }
-
-                            if (cache::client())
-                                    cache::client()->saveImage(res.avatar_url, data);
-
-                            emit setUserAvatar(
-                              QImage::fromData(QByteArray(data.data(), data.size())));
-                    });
-          });
-        // TODO http::client()->getOwnCommunities();
 
         // The Olm client needs the user_id & device_id that will be included
         // in the generated payloads & keys.
         olm::client()->set_user_id(http::v2::client()->user_id().to_string());
         olm::client()->set_device_id(http::v2::client()->device_id());
 
-        cache::init(userid);
-
         try {
-                cache::client()->setup();
+                cache::init(userid);
 
-                if (!cache::client()->isFormatValid()) {
+                const bool isInitialized = cache::client()->isInitialized();
+                const bool isValid       = cache::client()->isFormatValid();
+
+                if (isInitialized && !isValid) {
+                        log::db()->warn("breaking changes in cache");
+                        // TODO: Deleting session data but keep using the
+                        //	 same device doesn't work.
                         cache::client()->deleteData();
-                        cache::client()->setup();
-                        cache::client()->setCurrentFormat();
-                }
 
-                if (cache::client()->isInitialized()) {
+                        cache::init(userid);
+                        cache::client()->setCurrentFormat();
+                } else if (isInitialized) {
                         loadStateFromCache();
-                        // TODO: Bootstrap olm client with saved data.
                         return;
                 }
         } catch (const lmdb::error &e) {
@@ -783,6 +742,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 return;
         }
 
+        getProfileInfo();
         tryInitialSync();
 }
 
@@ -857,6 +817,8 @@ void
 ChatPage::loadStateFromCache()
 {
         log::db()->info("restoring state from cache");
+
+        getProfileInfo();
 
         QtConcurrent::run([this]() {
                 try {
@@ -1314,4 +1276,54 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
                           });
                 }
         }
+}
+
+void
+ChatPage::getProfileInfo()
+{
+        QSettings settings;
+        const auto userid = settings.value("auth/user_id").toString().toStdString();
+
+        http::v2::client()->get_profile(
+          userid, [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          log::net()->warn("failed to retrieve own profile info");
+                          return;
+                  }
+
+                  emit setUserDisplayName(QString::fromStdString(res.display_name));
+
+                  if (cache::client()) {
+                          auto data = cache::client()->image(res.avatar_url);
+                          if (!data.isNull()) {
+                                  emit setUserAvatar(QImage::fromData(data));
+                                  return;
+                          }
+                  }
+
+                  if (res.avatar_url.empty())
+                          return;
+
+                  http::v2::client()->download(
+                    res.avatar_url,
+                    [this, res](const std::string &data,
+                                const std::string &,
+                                const std::string &,
+                                mtx::http::RequestErr err) {
+                            if (err) {
+                                    log::net()->warn(
+                                      "failed to download user avatar: {} - {}",
+                                      mtx::errors::to_string(err->matrix_error.errcode),
+                                      err->matrix_error.error);
+                                    return;
+                            }
+
+                            if (cache::client())
+                                    cache::client()->saveImage(res.avatar_url, data);
+
+                            emit setUserAvatar(
+                              QImage::fromData(QByteArray(data.data(), data.size())));
+                    });
+          });
+        // TODO http::client()->getOwnCommunities();
 }
