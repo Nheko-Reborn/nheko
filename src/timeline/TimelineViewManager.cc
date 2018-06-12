@@ -22,8 +22,6 @@
 #include <QFileInfo>
 #include <QSettings>
 
-#include "MatrixClient.h"
-
 #include "timeline/TimelineView.h"
 #include "timeline/TimelineViewManager.h"
 #include "timeline/widgets/AudioItem.h"

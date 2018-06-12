@@ -48,7 +48,36 @@ struct PendingMessage
         uint64_t media_size;
         QString event_id;
         TimelineItem *widget;
+        bool is_encrypted = false;
 };
+
+template<class MessageT>
+MessageT
+toRoomMessage(const PendingMessage &) = delete;
+
+template<>
+mtx::events::msg::Audio
+toRoomMessage<mtx::events::msg::Audio>(const PendingMessage &m);
+
+template<>
+mtx::events::msg::Emote
+toRoomMessage<mtx::events::msg::Emote>(const PendingMessage &m);
+
+template<>
+mtx::events::msg::File
+toRoomMessage<mtx::events::msg::File>(const PendingMessage &);
+
+template<>
+mtx::events::msg::Image
+toRoomMessage<mtx::events::msg::Image>(const PendingMessage &m);
+
+template<>
+mtx::events::msg::Text
+toRoomMessage<mtx::events::msg::Text>(const PendingMessage &);
+
+template<>
+mtx::events::msg::Video
+toRoomMessage<mtx::events::msg::Video>(const PendingMessage &m);
 
 // In which place new TimelineItems should be inserted.
 enum class TimelineDirection
@@ -318,7 +347,7 @@ TimelineView::addUserMessage(const QString &url,
 
         PendingMessage message;
         message.ty         = MsgType;
-        message.txn_id     = mtx::client::utils::random_token();
+        message.txn_id     = http::v2::client()->generate_txn_id();
         message.body       = url;
         message.filename   = trimmed;
         message.mime       = mime;

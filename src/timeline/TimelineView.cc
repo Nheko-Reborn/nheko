@@ -285,7 +285,12 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                   parseEncryptedEvent(mpark::get<EncryptedEvent<msg::Encrypted>>(event));
                 return parseMessageEvent(decrypted, direction);
         } else if (mpark::holds_alternative<StateEvent<state::Encryption>>(event)) {
-                cache::client()->setEncryptedRoom(room_id_.toStdString());
+                try {
+                        cache::client()->setEncryptedRoom(room_id_.toStdString());
+                } catch (const lmdb::error &e) {
+                        log::db()->critical("failed to save room {} as encrypted",
+                                            room_id_.toStdString());
+                }
         }
 
         return nullptr;
@@ -588,6 +593,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 void
 TimelineView::updatePendingMessage(const std::string &txn_id, const QString &event_id)
 {
+        log::main()->info("[{}] message was received by the server", txn_id);
         if (!pending_msgs_.isEmpty() &&
             pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
                 auto msg     = pending_msgs_.dequeue();
@@ -613,19 +619,28 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
         TimelineItem *view_item =
           new TimelineItem(ty, local_user_, body, with_sender, room_id_, scroll_widget_);
 
+        PendingMessage message;
+        message.ty     = ty;
+        message.txn_id = http::v2::client()->generate_txn_id();
+        message.body   = body;
+        message.widget = view_item;
+
+        try {
+                message.is_encrypted = cache::client()->isRoomEncrypted(room_id_.toStdString());
+        } catch (const lmdb::error &e) {
+                log::db()->critical("failed to check encryption status of room {}", e.what());
+                view_item->deleteLater();
+
+                // TODO: Send a notification to the user.
+
+                return;
+        }
+
         addTimelineItem(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
-        QApplication::processEvents();
-
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
-
-        PendingMessage message;
-        message.ty     = ty;
-        message.txn_id = mtx::client::utils::random_token();
-        message.body   = body;
-        message.widget = view_item;
         handleNewUserMessage(message);
 }
 
@@ -646,18 +661,21 @@ TimelineView::sendNextPendingMessage()
         using namespace mtx::events;
 
         PendingMessage &m = pending_msgs_.head();
+
+        log::main()->info("[{}] sending next queued message", m.txn_id);
+
+        if (m.is_encrypted) {
+                // sendEncryptedMessage(m);
+                log::main()->info("[{}] sending encrypted event", m.txn_id);
+                return;
+        }
+
         switch (m.ty) {
         case mtx::events::MessageType::Audio: {
-                msg::Audio audio;
-                audio.info.mimetype = m.mime.toStdString();
-                audio.info.size     = m.media_size;
-                audio.body          = m.filename.toStdString();
-                audio.url           = m.body.toStdString();
-
                 http::v2::client()->send_room_message<msg::Audio, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
-                  audio,
+                  toRoomMessage<msg::Audio>(m),
                   std::bind(&TimelineView::sendRoomMessageHandler,
                             this,
                             m.txn_id,
@@ -667,16 +685,10 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Image: {
-                msg::Image image;
-                image.info.mimetype = m.mime.toStdString();
-                image.info.size     = m.media_size;
-                image.body          = m.filename.toStdString();
-                image.url           = m.body.toStdString();
-
                 http::v2::client()->send_room_message<msg::Image, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
-                  image,
+                  toRoomMessage<msg::Image>(m),
                   std::bind(&TimelineView::sendRoomMessageHandler,
                             this,
                             m.txn_id,
@@ -686,16 +698,10 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Video: {
-                msg::Video video;
-                video.info.mimetype = m.mime.toStdString();
-                video.info.size     = m.media_size;
-                video.body          = m.filename.toStdString();
-                video.url           = m.body.toStdString();
-
                 http::v2::client()->send_room_message<msg::Video, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
-                  video,
+                  toRoomMessage<msg::Video>(m),
                   std::bind(&TimelineView::sendRoomMessageHandler,
                             this,
                             m.txn_id,
@@ -705,16 +711,10 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::File: {
-                msg::File file;
-                file.info.mimetype = m.mime.toStdString();
-                file.info.size     = m.media_size;
-                file.body          = m.filename.toStdString();
-                file.url           = m.body.toStdString();
-
                 http::v2::client()->send_room_message<msg::File, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
-                  file,
+                  toRoomMessage<msg::File>(m),
                   std::bind(&TimelineView::sendRoomMessageHandler,
                             this,
                             m.txn_id,
@@ -724,13 +724,10 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Text: {
-                msg::Text text;
-                text.body = m.body.toStdString();
-
                 http::v2::client()->send_room_message<msg::Text, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
-                  text,
+                  toRoomMessage<msg::Text>(m),
                   std::bind(&TimelineView::sendRoomMessageHandler,
                             this,
                             m.txn_id,
@@ -740,13 +737,10 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Emote: {
-                msg::Emote emote;
-                emote.body = m.body.toStdString();
-
                 http::v2::client()->send_room_message<msg::Emote, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
-                  emote,
+                  toRoomMessage<msg::Emote>(m),
                   std::bind(&TimelineView::sendRoomMessageHandler,
                             this,
                             m.txn_id,
@@ -809,13 +803,15 @@ TimelineView::removePendingMessage(const std::string &txn_id)
                         if (pending_sent_msgs_.isEmpty())
                                 sendNextPendingMessage();
 
-                        return;
+                        log::main()->info("[{}] removed message with sync", txn_id);
                 }
         }
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
                 if (it->txn_id == txn_id) {
                         int index = std::distance(pending_msgs_.begin(), it);
                         pending_msgs_.removeAt(index);
+
+                        log::main()->info("[{}] removed message before sync", txn_id);
                         return;
                 }
         }
@@ -1051,9 +1047,80 @@ TimelineView::sendRoomMessageHandler(const std::string &txn_id,
                                      mtx::http::RequestErr err)
 {
         if (err) {
+                const int status_code = static_cast<int>(err->status_code);
+                log::net()->warn("[{}] failed to send message: {} {}",
+                                 txn_id,
+                                 err->matrix_error.error,
+                                 status_code);
                 emit messageFailed(txn_id);
                 return;
         }
 
         emit messageSent(txn_id, QString::fromStdString(res.event_id.to_string()));
+}
+
+template<>
+mtx::events::msg::Audio
+toRoomMessage<mtx::events::msg::Audio>(const PendingMessage &m)
+{
+        mtx::events::msg::Audio audio;
+        audio.info.mimetype = m.mime.toStdString();
+        audio.info.size     = m.media_size;
+        audio.body          = m.filename.toStdString();
+        audio.url           = m.body.toStdString();
+        return audio;
+}
+
+template<>
+mtx::events::msg::Image
+toRoomMessage<mtx::events::msg::Image>(const PendingMessage &m)
+{
+        mtx::events::msg::Image image;
+        image.info.mimetype = m.mime.toStdString();
+        image.info.size     = m.media_size;
+        image.body          = m.filename.toStdString();
+        image.url           = m.body.toStdString();
+        return image;
+}
+
+template<>
+mtx::events::msg::Video
+toRoomMessage<mtx::events::msg::Video>(const PendingMessage &m)
+{
+        mtx::events::msg::Video video;
+        video.info.mimetype = m.mime.toStdString();
+        video.info.size     = m.media_size;
+        video.body          = m.filename.toStdString();
+        video.url           = m.body.toStdString();
+        return video;
+}
+
+template<>
+mtx::events::msg::Emote
+toRoomMessage<mtx::events::msg::Emote>(const PendingMessage &m)
+{
+        mtx::events::msg::Emote emote;
+        emote.body = m.body.toStdString();
+        return emote;
+}
+
+template<>
+mtx::events::msg::File
+toRoomMessage<mtx::events::msg::File>(const PendingMessage &m)
+{
+        mtx::events::msg::File file;
+        file.info.mimetype = m.mime.toStdString();
+        file.info.size     = m.media_size;
+        file.body          = m.filename.toStdString();
+        file.url           = m.body.toStdString();
+        return file;
+}
+
+template<>
+mtx::events::msg::Text
+toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
+{
+        mtx::events::msg::Text text;
+        text.body = m.body.toStdString();
+        return text;
 }

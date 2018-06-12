@@ -355,7 +355,7 @@ public:
         //
         // Outbound Megolm Sessions
         //
-        void saveOutboundMegolmSession(const MegolmSessionIndex &index,
+        void saveOutboundMegolmSession(const std::string &room_id,
                                        const OutboundGroupSessionData &data,
                                        mtx::crypto::OutboundGroupSessionPtr session);
         OutboundGroupSessionDataRef getOutboundMegolmSession(const MegolmSessionIndex &index);

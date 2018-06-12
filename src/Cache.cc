@@ -251,12 +251,11 @@ Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept
 }
 
 void
-Cache::saveOutboundMegolmSession(const MegolmSessionIndex &index,
+Cache::saveOutboundMegolmSession(const std::string &room_id,
                                  const OutboundGroupSessionData &data,
                                  mtx::crypto::OutboundGroupSessionPtr session)
 {
         using namespace mtx::crypto;
-        const auto key     = index.to_hash();
         const auto pickled = pickle<OutboundSessionObject>(session.get(), SECRET);
 
         json j;
@@ -264,13 +263,13 @@ Cache::saveOutboundMegolmSession(const MegolmSessionIndex &index,
         j["session"] = pickled;
 
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(key), lmdb::val(j.dump()));
+        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
         txn.commit();
 
         {
                 std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-                session_storage.group_outbound_session_data[key] = data;
-                session_storage.group_outbound_sessions[key]     = std::move(session);
+                session_storage.group_outbound_session_data[room_id] = data;
+                session_storage.group_outbound_sessions[room_id]     = std::move(session);
         }
 }
 
@@ -302,7 +301,7 @@ Cache::saveOutboundOlmSession(const std::string &curve25519, mtx::crypto::OlmSes
         const auto pickled = pickle<SessionObject>(session.get(), SECRET);
 
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(curve25519), lmdb::val(pickled));
+        lmdb::dbi_put(txn, outboundOlmSessionDb_, lmdb::val(curve25519), lmdb::val(pickled));
         txn.commit();
 
         {
@@ -372,8 +371,8 @@ Cache::restoreSessions()
                                   unpickle<OutboundSessionObject>(obj.at("session"), SECRET);
                                 session_storage.group_outbound_sessions[key] = std::move(session);
                         } catch (const nlohmann::json::exception &e) {
-                                log::db()->warn("failed to parse outbound megolm session data: {}",
-                                                e.what());
+                                log::db()->critical(
+                                  "failed to parse outbound megolm session data: {}", e.what());
                         }
                 }
                 cursor.close();
