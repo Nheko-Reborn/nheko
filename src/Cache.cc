@@ -60,7 +60,7 @@ constexpr auto DEVICES_DB("devices");
 //! device_id -> device keys
 constexpr auto DEVICE_KEYS_DB("device_keys");
 //! room_ids that have encryption enabled.
-// constexpr auto ENCRYPTED_ROOMS_DB("encrypted_rooms");
+constexpr auto ENCRYPTED_ROOMS_DB("encrypted_rooms");
 
 //! MegolmSessionIndex -> pickled OlmInboundGroupSession
 constexpr auto INBOUND_MEGOLM_SESSIONS_DB("inbound_megolm_sessions");
@@ -182,6 +182,30 @@ Cache::setup()
         outboundOlmSessionDb_    = lmdb::dbi::open(txn, OUTBOUND_OLM_SESSIONS_DB, MDB_CREATE);
 
         txn.commit();
+}
+
+void
+Cache::setEncryptedRoom(const std::string &room_id)
+{
+        log::db()->info("mark room {} as encrypted", room_id);
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+        lmdb::dbi_put(txn, db, lmdb::val(room_id), lmdb::val("0"));
+        txn.commit();
+}
+
+bool
+Cache::isRoomEncrypted(const std::string &room_id)
+{
+        lmdb::val unused;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+        auto res = lmdb::dbi_get(txn, db, lmdb::val(room_id), unused);
+        txn.commit();
+
+        return res;
 }
 
 //

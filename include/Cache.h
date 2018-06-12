@@ -342,6 +342,8 @@ public:
 
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(const std::string &room_id);
+        bool isRoomEncrypted(const std::string &room_id);
+
         //! Save the public keys for a device.
         void saveDeviceKeys(const std::string &device_id);
         void getDeviceKeys(const std::string &device_id);

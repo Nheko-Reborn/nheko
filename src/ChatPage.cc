@@ -245,6 +245,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         return;
 
                 typingRefresher_->stop();
+
+                if (current_room_.isEmpty())
+                        return;
+
                 http::v2::client()->stop_typing(
                   current_room_.toStdString(), [](mtx::http::RequestErr err) {
                           if (err) {

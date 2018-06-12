@@ -284,6 +284,8 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 auto decrypted =
                   parseEncryptedEvent(mpark::get<EncryptedEvent<msg::Encrypted>>(event));
                 return parseMessageEvent(decrypted, direction);
+        } else if (mpark::holds_alternative<StateEvent<state::Encryption>>(event)) {
+                cache::client()->setEncryptedRoom(room_id_.toStdString());
         }
 
         return nullptr;
