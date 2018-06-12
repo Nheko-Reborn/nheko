@@ -6,7 +6,7 @@
     <message>
         <location filename="../../src/timeline/widgets/AudioItem.cc" line="+125"/>
         <source>Save File</source>
-        <translation></translation>
+        <translation>Сохранить файл</translation>
     </message>
 </context>
 <context>
@@ -27,22 +27,22 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+34"/>
         <source>APPLY</source>
-        <translation type="unfinished"></translation>
+        <translation>ПРИМЕНИТЬ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>CANCEL</source>
-        <translation type="unfinished">ОТМЕНА</translation>
+        <translation>ОТМЕНА</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Name</source>
-        <translation type="unfinished">Название</translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished">Тема</translation>
+        <translation>Тема</translation>
     </message>
 </context>
 <context>
@@ -158,7 +158,7 @@
     <message>
         <location line="+17"/>
         <source>REGISTER</source>
-        <translation>ЗАРЕГЕСТРИРОВАН</translation>
+        <translation>РЕГИСТРАЦИЯ</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -271,12 +271,12 @@
     <message>
         <location filename="../../src/TypingDisplay.cc" line="+26"/>
         <source> is typing</source>
-        <translation> вводится</translation>
+        <translation> печатает</translation>
     </message>
     <message>
         <location line="+2"/>
         <source> are typing</source>
-        <translation> вводятся</translation>
+        <translation> печатают</translation>
     </message>
 </context>
 <context>
@@ -289,12 +289,12 @@
     <message>
         <location line="+15"/>
         <source>Minimize to tray</source>
-        <translation>Сворачивать в лоток</translation>
+        <translation>Сворачивать в системную панель</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start in tray</source>
-        <translation>Запускать в лотке</translation>
+        <translation>Запускать в системной панели</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -337,7 +337,7 @@
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation>Хорошо провести время!</translation>
+        <translation>Приятного времяпрепровождения!</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -437,7 +437,7 @@
     <message>
         <location line="+10"/>
         <source>Logout. Are you sure?</source>
-        <translation>Выйти из учётной записи. Вы увереныee?</translation>
+        <translation>Выйти из учётной записи. Вы уверены?</translation>
     </message>
 </context>
 <context>
@@ -503,7 +503,7 @@ Media size: %2
     <message>
         <location line="+3"/>
         <source>Muted</source>
-        <translation>Заглушено</translation>
+        <translation>Приглушено</translation>
     </message>
     <message>
         <location line="+1"/>
