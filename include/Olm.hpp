@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <mtx.hpp>
 #include <mtxclient/crypto/client.hpp>
 
 constexpr auto OLM_ALGO = "m.olm.v1.curve25519-aes-sha2";
@@ -62,4 +63,10 @@ void
 handle_pre_key_olm_message(const std::string &sender,
                            const std::string &sender_key,
                            const OlmCipherContent &content);
+
+mtx::events::msg::Encrypted
+encrypt_group_message(const std::string &room_id,
+                      const std::string &device_id,
+                      const std::string &body);
+
 } // namespace olm

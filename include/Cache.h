@@ -286,6 +286,9 @@ public:
         bool isFormatValid();
         void setCurrentFormat();
 
+        //! Retrieve all the user ids from a room.
+        std::vector<std::string> roomMembers(const std::string &room_id);
+
         //! Check if the given user has power leve greater than than
         //! lowest power level of the given events.
         bool hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
@@ -358,8 +361,9 @@ public:
         void saveOutboundMegolmSession(const std::string &room_id,
                                        const OutboundGroupSessionData &data,
                                        mtx::crypto::OutboundGroupSessionPtr session);
-        OutboundGroupSessionDataRef getOutboundMegolmSession(const MegolmSessionIndex &index);
-        bool outboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept;
+        OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
+        bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
+        void updateOutboundMegolmSession(const std::string &room_id, int message_index);
 
         //
         // Inbound Megolm Sessions

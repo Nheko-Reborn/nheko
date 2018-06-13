@@ -185,6 +185,7 @@ private:
         void sendRoomMessageHandler(const std::string &txn_id,
                                     const mtx::responses::EventId &res,
                                     mtx::http::RequestErr err);
+        void prepareEncryptedMessage(const PendingMessage &msg);
 
         //! Call the /messages endpoint to fill the timeline.
         void getMessages();

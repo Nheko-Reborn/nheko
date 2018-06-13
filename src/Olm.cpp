@@ -136,4 +136,31 @@ handle_olm_normal_message(const std::string &, const std::string &, const OlmCip
         log::crypto()->warn("olm(1) not implemeted yet");
 }
 
+mtx::events::msg::Encrypted
+encrypt_group_message(const std::string &room_id,
+                      const std::string &device_id,
+                      const std::string &body)
+{
+        using namespace mtx::events;
+
+        // Always chech before for existence.
+        auto res     = cache::client()->getOutboundMegolmSession(room_id);
+        auto payload = olm::client()->encrypt_group_message(res.session, body);
+
+        // Prepare the m.room.encrypted event.
+        msg::Encrypted data;
+        data.ciphertext = std::string((char *)payload.data(), payload.size());
+        data.sender_key = olm::client()->identity_keys().curve25519;
+        data.session_id = res.data.session_id;
+        data.device_id  = device_id;
+
+        auto message_index = olm_outbound_group_session_message_index(res.session);
+        log::crypto()->info("next message_index {}", message_index);
+
+        // We need to re-pickle the session after we send a message to save the new message_index.
+        cache::client()->updateOutboundMegolmSession(room_id, message_index);
+
+        return data;
+}
+
 } // namespace olm

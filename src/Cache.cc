@@ -251,6 +251,36 @@ Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept
 }
 
 void
+Cache::updateOutboundMegolmSession(const std::string &room_id, int message_index)
+{
+        using namespace mtx::crypto;
+
+        if (!outboundMegolmSessionExists(room_id))
+                return;
+
+        OutboundGroupSessionData data;
+        OlmOutboundGroupSession *session;
+        {
+                std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
+                data    = session_storage.group_outbound_session_data[room_id];
+                session = session_storage.group_outbound_sessions[room_id].get();
+
+                // Update with the current message.
+                data.message_index                                   = message_index;
+                session_storage.group_outbound_session_data[room_id] = data;
+        }
+
+        // Save the updated pickled data for the session.
+        json j;
+        j["data"]    = data;
+        j["session"] = pickle<OutboundSessionObject>(session, SECRET);
+
+        auto txn = lmdb::txn::begin(env_);
+        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
+        txn.commit();
+}
+
+void
 Cache::saveOutboundMegolmSession(const std::string &room_id,
                                  const OutboundGroupSessionData &data,
                                  mtx::crypto::OutboundGroupSessionPtr session)
@@ -274,24 +304,21 @@ Cache::saveOutboundMegolmSession(const std::string &room_id,
 }
 
 bool
-Cache::outboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept
+Cache::outboundMegolmSessionExists(const std::string &room_id) noexcept
 {
-        const auto key = index.to_hash();
-
         std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-        return (session_storage.group_outbound_sessions.find(key) !=
+        return (session_storage.group_outbound_sessions.find(room_id) !=
                 session_storage.group_outbound_sessions.end()) &&
-               (session_storage.group_outbound_session_data.find(key) !=
+               (session_storage.group_outbound_session_data.find(room_id) !=
                 session_storage.group_outbound_session_data.end());
 }
 
 OutboundGroupSessionDataRef
-Cache::getOutboundMegolmSession(const MegolmSessionIndex &index)
+Cache::getOutboundMegolmSession(const std::string &room_id)
 {
-        const auto key = index.to_hash();
         std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-        return OutboundGroupSessionDataRef{session_storage.group_outbound_sessions[key].get(),
-                                           session_storage.group_outbound_session_data[key]};
+        return OutboundGroupSessionDataRef{session_storage.group_outbound_sessions[room_id].get(),
+                                           session_storage.group_outbound_session_data[room_id]};
 }
 
 void
@@ -1535,6 +1562,26 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
         txn.commit();
 
         return user_level >= min_event_level;
+}
+
+std::vector<std::string>
+Cache::roomMembers(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        std::vector<std::string> members;
+        std::string user_id, unused;
+
+        auto db = getMembersDb(txn, room_id);
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(user_id, unused, MDB_NEXT))
+                members.emplace_back(std::move(user_id));
+        cursor.close();
+
+        txn.commit();
+
+        return members;
 }
 
 QHash<QString, QString> Cache::DisplayNames;

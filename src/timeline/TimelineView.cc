@@ -34,6 +34,19 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
+class StateKeeper
+{
+public:
+        StateKeeper(std::function<void()> &&fn)
+          : fn_(std::move(fn))
+        {}
+
+        ~StateKeeper() { fn_(); }
+
+private:
+        std::function<void()> fn_;
+};
+
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
 DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
@@ -329,6 +342,7 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         body["event_id"]         = e.event_id;
         body["sender"]           = e.sender;
         body["origin_server_ts"] = e.origin_server_ts;
+        body["unsigned"]         = e.unsigned_data;
 
         log::crypto()->info("decrypted data: \n {}", body.dump(2));
 
@@ -665,7 +679,7 @@ TimelineView::sendNextPendingMessage()
         log::main()->info("[{}] sending next queued message", m.txn_id);
 
         if (m.is_encrypted) {
-                // sendEncryptedMessage(m);
+                prepareEncryptedMessage(std::move(m));
                 log::main()->info("[{}] sending encrypted event", m.txn_id);
                 return;
         }
@@ -1123,4 +1137,237 @@ toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
         mtx::events::msg::Text text;
         text.body = m.body.toStdString();
         return text;
+}
+
+void
+TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
+{
+        const auto room_id = room_id_.toStdString();
+
+        using namespace mtx::events;
+        using namespace mtx::identifiers;
+
+        json content;
+
+        // Serialize the message to the plaintext that will be encrypted.
+        switch (msg.ty) {
+        case MessageType::Audio: {
+                content = json(toRoomMessage<msg::Audio>(msg));
+                break;
+        }
+        case MessageType::Emote: {
+                content = json(toRoomMessage<msg::Emote>(msg));
+                break;
+        }
+        case MessageType::File: {
+                content = json(toRoomMessage<msg::File>(msg));
+                break;
+        }
+        case MessageType::Image: {
+                content = json(toRoomMessage<msg::Image>(msg));
+                break;
+        }
+        case MessageType::Text: {
+                content = json(toRoomMessage<msg::Text>(msg));
+                break;
+        }
+        case MessageType::Video: {
+                content = json(toRoomMessage<msg::Video>(msg));
+                break;
+        }
+        default:
+                break;
+        }
+
+        json doc{{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
+
+        try {
+                // Check if we have already an outbound megolm session then we can use.
+                if (cache::client()->outboundMegolmSessionExists(room_id)) {
+                        auto data = olm::encrypt_group_message(
+                          room_id, http::v2::client()->device_id(), doc.dump());
+
+                        http::v2::client()
+                          ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
+                            room_id,
+                            msg.txn_id,
+                            data,
+                            std::bind(&TimelineView::sendRoomMessageHandler,
+                                      this,
+                                      msg.txn_id,
+                                      std::placeholders::_1,
+                                      std::placeholders::_2));
+                        return;
+                }
+
+                log::main()->info("creating new outbound megolm session");
+
+                // Create a new outbound megolm session.
+                auto outbound_session  = olm::client()->init_outbound_group_session();
+                const auto session_id  = mtx::crypto::session_id(outbound_session.get());
+                const auto session_key = mtx::crypto::session_key(outbound_session.get());
+
+                // TODO: needs to be moved in the lib.
+                auto megolm_payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
+                                           {"room_id", room_id},
+                                           {"session_id", session_id},
+                                           {"session_key", session_key}};
+
+                // Saving the new megolm session.
+                // TODO: Maybe it's too early to save.
+                OutboundGroupSessionData session_data;
+                session_data.session_id    = session_id;
+                session_data.session_key   = session_key;
+                session_data.message_index = 0; // TODO Update me
+                cache::client()->saveOutboundMegolmSession(
+                  room_id, session_data, std::move(outbound_session));
+
+                const auto members = cache::client()->roomMembers(room_id);
+                log::main()->info("retrieved {} members for {}", members.size(), room_id);
+
+                auto keeper = std::make_shared<StateKeeper>(
+                  [megolm_payload, room_id, doc, txn_id = msg.txn_id, this]() {
+                          try {
+                                  auto data = olm::encrypt_group_message(
+                                    room_id, http::v2::client()->device_id(), doc.dump());
+
+                                  http::v2::client()
+                                    ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
+                                      room_id,
+                                      txn_id,
+                                      data,
+                                      std::bind(&TimelineView::sendRoomMessageHandler,
+                                                this,
+                                                txn_id,
+                                                std::placeholders::_1,
+                                                std::placeholders::_2));
+
+                          } catch (const lmdb::error &e) {
+                                  log::db()->critical("failed to save megolm outbound session: {}",
+                                                      e.what());
+                          }
+                  });
+
+                mtx::requests::QueryKeys req;
+                for (const auto &member : members)
+                        req.device_keys[member] = {};
+
+                http::v2::client()->query_keys(
+                  req,
+                  [keeper = std::move(keeper), megolm_payload](const mtx::responses::QueryKeys &res,
+                                                               mtx::http::RequestErr err) {
+                          if (err) {
+                                  log::net()->warn("failed to query device keys: {} {}",
+                                                   err->matrix_error.error,
+                                                   static_cast<int>(err->status_code));
+                                  // TODO: Mark the event as failed. Communicate with the UI.
+                                  return;
+                          }
+
+                          for (const auto &entry : res.device_keys) {
+                                  for (const auto &dev : entry.second) {
+                                          log::net()->info("received device {}", dev.first);
+
+                                          const auto device_keys = dev.second.keys;
+                                          const auto curveKey    = "curve25519:" + dev.first;
+                                          const auto edKey       = "ed25519:" + dev.first;
+
+                                          if ((device_keys.find(curveKey) == device_keys.end()) ||
+                                              (device_keys.find(edKey) == device_keys.end())) {
+                                                  log::net()->info(
+                                                    "ignoring malformed keys for device {}",
+                                                    dev.first);
+                                                  continue;
+                                          }
+
+                                          DevicePublicKeys pks;
+                                          pks.ed25519    = device_keys.at(edKey);
+                                          pks.curve25519 = device_keys.at(curveKey);
+
+                                          // Validate signatures
+                                          for (const auto &algo : dev.second.keys) {
+                                                  log::net()->info(
+                                                    "dev keys {} {}", algo.first, algo.second);
+                                          }
+
+                                          auto room_key =
+                                            olm::client()
+                                              ->create_room_key_event(UserId(dev.second.user_id),
+                                                                      pks.ed25519,
+                                                                      megolm_payload)
+                                              .dump();
+
+                                          http::v2::client()->claim_keys(
+                                            dev.second.user_id,
+                                            {dev.second.device_id},
+                                            [keeper,
+                                             room_key,
+                                             pks,
+                                             user_id   = dev.second.user_id,
+                                             device_id = dev.second.device_id](
+                                              const mtx::responses::ClaimKeys &res,
+                                              mtx::http::RequestErr err) {
+                                                    if (err) {
+                                                            log::net()->warn(
+                                                              "claim keys error: {}",
+                                                              err->matrix_error.error);
+                                                            return;
+                                                    }
+
+                                                    log::net()->info("claimed keys for {} - {}",
+                                                                     user_id,
+                                                                     device_id);
+
+                                                    auto retrieved_devices =
+                                                      res.one_time_keys.at(user_id);
+                                                    for (const auto &rd : retrieved_devices) {
+                                                            log::net()->info("{} : \n {}",
+                                                                             rd.first,
+                                                                             rd.second.dump(2));
+
+                                                            // TODO: Verify signatures
+                                                            auto otk = rd.second.begin()->at("key");
+                                                            auto id_key = pks.curve25519;
+
+                                                            auto session =
+                                                              olm::client()
+                                                                ->create_outbound_session(id_key,
+                                                                                          otk);
+
+                                                            auto device_msg =
+                                                              olm::client()
+                                                                ->create_olm_encrypted_content(
+                                                                  session.get(),
+                                                                  room_key,
+                                                                  pks.curve25519);
+
+                                                            json body{
+                                                              {"messages",
+                                                               {{user_id,
+                                                                 {{device_id, device_msg}}}}}};
+
+                                                            http::v2::client()->send_to_device(
+                                                              "m.room.encrypted",
+                                                              body,
+                                                              [keeper](mtx::http::RequestErr err) {
+                                                                      if (err) {
+                                                                              log::net()->warn(
+                                                                                "failed to send "
+                                                                                "send_to_device "
+                                                                                "message: {}",
+                                                                                err->matrix_error
+                                                                                  .error);
+                                                                      }
+                                                              });
+                                                    }
+                                            });
+                                  }
+                          }
+                  });
+
+        } catch (const lmdb::error &e) {
+                log::db()->critical(
+                  "failed to open outbound megolm session ({}): {}", room_id, e.what());
+                return;
+        }
 }
