@@ -1,0 +1,38 @@
+{
+  "configurations": [
+    {
+      "name": "Debug",
+      "generator": "Visual Studio 15 2017 Win64",
+      "configurationType": "Debug",
+      "buildRoot": "${workspaceRoot}\\build-vc\\${name}",
+      "cmakeCommandArgs": "",
+      "variables": [
+        {
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "${workspaceRoot}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" // <-- change vcpkg location here
+        },
+        {
+          "name": "Qt5_DIR",
+          "value": "C:\\Qt\\5.10.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
+        }
+      ]
+    },
+    {
+      "name": "Release",
+      "generator": "Visual Studio 15 2017 Win64",
+      "configurationType": "Release",
+      "buildRoot": "${workspaceRoot}\\build-vc\\${name}",
+      "cmakeCommandArgs": "",
+      "variables": [
+        {
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "${workspaceRoot}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" // <-- change vcpkg location here
+        },
+        {
+          "name": "Qt5_DIR",
+          "value": "C:\\Qt\\5.10.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
+        }
+      ]
+    },
+ ]
+}

@@ -68,6 +68,11 @@ Icon
 .Trashes
 .VolumeIcon.icns
 
+# Visual Studio
+.vs
+build-vc
+vcpkg
+
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop

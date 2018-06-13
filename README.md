@@ -115,6 +115,25 @@ brew update
 brew install qt5 lmdb cmake llvm
 ```
 
+##### Windows
+
+1. Install Visual Studio 2017's "Desktop Development" and "Linux Development with C++"
+(for the CMake integration) workloads.
+
+2. Download the latest Qt for windows installer and install it somewhere.
+Make sure to install the `MSVC 2017 64-bit` toolset for at least Qt 5.9
+(lower versions does not support VS2017).
+
+3. Install lmdb and openssl with `vcpkg`. You can simply clone it into a subfolder
+of the root nheko source directory.
+
+```powershell
+git clone http:\\github.com\Microsoft\vcpkg
+cd vcpkg
+.\bootstrap-vcpkg.bat
+.\vcpkg install --triplet x64-windows lmdb openssl
+```
+
 ### Building
 
 Clone the repo and run
@@ -160,6 +179,35 @@ nix-build
 in the project folder. This will output a binary to `result/bin/nheko`.
 
 You can also install nheko by running `nix-env -f . -i`
+
+#### Windows
+
+After installing all dependencies, you need to edit the `CMakeSettings.json` to
+be able to load and compile nheko within Visual Studio.
+
+You need to fill out the paths for the `CMAKE_TOOLCHAIN_FILE` and the `Qt5_DIR`.
+The toolchain file should point to the `vcpkg.cmake` and the Qt5 dir to the `lib\cmake\Qt5` dir.
+
+Examples for the paths are:
+ - `C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake`
+ - `C:\\Qt\\5.10.1\\msvc2017_64\\lib\\cmake\\Qt5`
+
+Now right click into the root nheko source directory and choose `Open in Visual Studio`.
+You can choose the build type Release and Debug in the top toolbar. 
+After a successful CMake generation you can select the `nheko.exe` as the run target.
+Now choose `Build all` in the CMake menu or press `F7` to compile the executable.
+
+To be able to run the application the last step is to install the needed Qt dependencies next to the
+nheko binary.
+
+Start the "Qt x.xx.x 64-bit for Desktop (MSVC 2017)" command promt and run `windeployqt`.
+```cmd
+cd <path-to-nheko>\build-vc\Release\Release
+windeployqt nheko.exe
+```
+
+The final binary will be located inside `build-vc\Release\Release` for the Release build
+and `build-vc\Debug\Debug` for the Debug build.
 
 ### Contributing
 

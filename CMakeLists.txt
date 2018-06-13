@@ -37,12 +37,7 @@ include(LMDB)
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
-find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Svg REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Network LinguistTools Concurrent Svg Multimedia REQUIRED)
 
 if (APPLE)
     find_package(Qt5MacExtras REQUIRED)
@@ -58,20 +53,23 @@ endif(Qt5Widgets_FOUND)
 #
 # Set up compiler flags.
 #
-set(CMAKE_C_COMPILER gcc)
+if (NOT MSVC)
+    set(CMAKE_C_COMPILER gcc)
+endif(NOT MSVC)
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include(CompilerFlags)
 
-if(NOT CMAKE_BUILD_TYPE)
+if(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
         "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
         FORCE)
     message("Setting build type to '${CMAKE_BUILD_TYPE}'")
-else(NOT CMAKE_BUILD_TYPE)
+else(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
     message("Build type set to '${CMAKE_BUILD_TYPE}'")
-endif(NOT CMAKE_BUILD_TYPE)
+endif(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
 
 find_program(GIT git)
 if(GIT)
