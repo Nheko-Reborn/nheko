@@ -16,13 +16,13 @@
  */
 
 #include <QBrush>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QFile>
 #include <QFileDialog>
 #include <QPainter>
 #include <QPixmap>
 
+#include "Logging.hpp"
 #include "MatrixClient.h"
 #include "Utils.h"
 
@@ -127,7 +127,8 @@ AudioItem::mousePressEvent(QMouseEvent *event)
                          const std::string &,
                          mtx::http::RequestErr err) {
                           if (err) {
-                                  qWarning() << "failed to retrieve m.audio content:" << url_;
+                                  nhlog::net()->info("failed to retrieve m.audio content: {}",
+                                                     url_.toString().toStdString());
                                   return;
                           }
 
@@ -147,8 +148,8 @@ AudioItem::fileDownloaded(const QByteArray &data)
 
                 file.write(data);
                 file.close();
-        } catch (const std::exception &ex) {
-                qDebug() << "Error while saving file to:" << ex.what();
+        } catch (const std::exception &e) {
+                nhlog::ui()->warn("error while saving file: {}", e.what());
         }
 }
 

@@ -17,7 +17,6 @@
 
 #include <QApplication>
 #include <QBuffer>
-#include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 #include <QHBoxLayout>
@@ -25,6 +24,7 @@
 #include <QVBoxLayout>
 
 #include "Config.h"
+#include "Logging.hpp"
 #include "Utils.h"
 
 #include "dialogs/PreviewUploadOverlay.h"
@@ -142,8 +142,9 @@ PreviewUploadOverlay::setPreview(const QString &path)
         QFile file{path};
 
         if (!file.open(QIODevice::ReadOnly)) {
-                qWarning() << "Failed to open file from:" << path;
-                qWarning() << "Reason:" << file.errorString();
+                nhlog::ui()->warn("Failed to open file ({}): {}",
+                                  path.toStdString(),
+                                  file.errorString().toStdString());
                 close();
                 return;
         }
@@ -152,7 +153,7 @@ PreviewUploadOverlay::setPreview(const QString &path)
         auto mime = db.mimeTypeForFileNameAndData(path, &file);
 
         if ((data_ = file.readAll()).isEmpty()) {
-                qWarning() << "Failed to read media:" << file.errorString();
+                nhlog::ui()->warn("Failed to read media: {}", file.errorString().toStdString());
                 close();
                 return;
         }

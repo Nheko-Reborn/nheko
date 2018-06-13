@@ -155,7 +155,7 @@ MainWindow::MainWindow(QWidget *parent)
                         using namespace mtx::identifiers;
                         http::v2::client()->set_user(parse<User>(user_id.toStdString()));
                 } catch (const std::invalid_argument &e) {
-                        log::main()->critical("bootstrapped with invalid user_id: {}",
+                        nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
                                               user_id.toStdString());
                 }
 

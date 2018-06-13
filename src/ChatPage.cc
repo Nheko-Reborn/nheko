@@ -129,13 +129,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
 
         connect(this, &ChatPage::connectionLost, this, [this]() {
-                log::net()->info("connectivity lost");
+                nhlog::net()->info("connectivity lost");
                 isConnected_ = false;
                 http::v2::client()->shutdown();
                 text_input_->disableInput();
         });
         connect(this, &ChatPage::connectionRestored, this, [this]() {
-                log::net()->info("trying to re-connect");
+                nhlog::net()->info("trying to re-connect");
                 text_input_->enableInput();
                 isConnected_ = true;
 
@@ -165,19 +165,20 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
         connect(user_info_widget_, &UserInfoWidget::logout, this, [this]() {
-                http::v2::client()->logout([this](const mtx::responses::Logout &,
-                                                  mtx::http::RequestErr err) {
-                        if (err) {
-                                // TODO: handle special errors
-                                emit contentLoaded();
-                                log::net()->warn("failed to logout: {} - {}",
-                                                 mtx::errors::to_string(err->matrix_error.errcode),
-                                                 err->matrix_error.error);
-                                return;
-                        }
+                http::v2::client()->logout(
+                  [this](const mtx::responses::Logout &, mtx::http::RequestErr err) {
+                          if (err) {
+                                  // TODO: handle special errors
+                                  emit contentLoaded();
+                                  nhlog::net()->warn(
+                                    "failed to logout: {} - {}",
+                                    mtx::errors::to_string(err->matrix_error.errcode),
+                                    err->matrix_error.error);
+                                  return;
+                          }
 
-                        emit loggedOut();
-                });
+                          emit loggedOut();
+                  });
 
                 emit showOverlayProgressBar();
         });
@@ -252,8 +253,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 http::v2::client()->stop_typing(
                   current_room_.toStdString(), [](mtx::http::RequestErr err) {
                           if (err) {
-                                  log::net()->warn("failed to stop typing notifications: {}",
-                                                   err->matrix_error.error);
+                                  nhlog::net()->warn("failed to stop typing notifications: {}",
+                                                     err->matrix_error.error);
                           }
                   });
         });
@@ -309,9 +310,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   if (err) {
                                           emit uploadFailed(
                                             tr("Failed to upload image. Please try again."));
-                                          log::net()->warn("failed to upload image: {} ({})",
-                                                           err->matrix_error.error,
-                                                           static_cast<int>(err->status_code));
+                                          nhlog::net()->warn("failed to upload image: {} ({})",
+                                                             err->matrix_error.error,
+                                                             static_cast<int>(err->status_code));
                                           return;
                                   }
 
@@ -352,9 +353,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   if (err) {
                                           emit uploadFailed(
                                             tr("Failed to upload file. Please try again."));
-                                          log::net()->warn("failed to upload file: {} ({})",
-                                                           err->matrix_error.error,
-                                                           static_cast<int>(err->status_code));
+                                          nhlog::net()->warn("failed to upload file: {} ({})",
+                                                             err->matrix_error.error,
+                                                             static_cast<int>(err->status_code));
                                           return;
                                   }
 
@@ -395,9 +396,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   if (err) {
                                           emit uploadFailed(
                                             tr("Failed to upload audio. Please try again."));
-                                          log::net()->warn("failed to upload audio: {} ({})",
-                                                           err->matrix_error.error,
-                                                           static_cast<int>(err->status_code));
+                                          nhlog::net()->warn("failed to upload audio: {} ({})",
+                                                             err->matrix_error.error,
+                                                             static_cast<int>(err->status_code));
                                           return;
                                   }
 
@@ -437,9 +438,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   if (err) {
                                           emit uploadFailed(
                                             tr("Failed to upload video. Please try again."));
-                                          log::net()->warn("failed to upload video: {} ({})",
-                                                           err->matrix_error.error,
-                                                           static_cast<int>(err->status_code));
+                                          nhlog::net()->warn("failed to upload video: {} ({})",
+                                                             err->matrix_error.error,
+                                                             static_cast<int>(err->status_code));
                                           return;
                                   }
 
@@ -569,7 +570,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 try {
                         room_list_->cleanupInvites(cache::client()->invites());
                 } catch (const lmdb::error &e) {
-                        log::db()->error("failed to retrieve invites: {}", e.what());
+                        nhlog::db()->error("failed to retrieve invites: {}", e.what());
                 }
 
                 view_manager_->initialize(rooms);
@@ -593,7 +594,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                           [this](const mtx::responses::Notifications &res,
                                  mtx::http::RequestErr err) {
                                   if (err) {
-                                          log::net()->warn(
+                                          nhlog::net()->warn(
                                             "failed to retrieve notifications: {} ({})",
                                             err->matrix_error.error,
                                             static_cast<int>(err->status_code));
@@ -690,7 +691,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         try {
                 http::v2::client()->set_user(parse<User>(userid.toStdString()));
         } catch (const std::invalid_argument &e) {
-                log::main()->critical("bootstrapped with invalid user_id: {}",
+                nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
                                       userid.toStdString());
         }
 
@@ -709,7 +710,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 const bool isValid       = cache::client()->isFormatValid();
 
                 if (isInitialized && !isValid) {
-                        log::db()->warn("breaking changes in cache");
+                        nhlog::db()->warn("breaking changes in cache");
                         // TODO: Deleting session data but keep using the
                         //	 same device doesn't work.
                         cache::client()->deleteData();
@@ -721,23 +722,23 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                         return;
                 }
         } catch (const lmdb::error &e) {
-                log::db()->critical("failure during boot: {}", e.what());
+                nhlog::db()->critical("failure during boot: {}", e.what());
                 cache::client()->deleteData();
-                log::net()->info("falling back to initial sync");
+                nhlog::net()->info("falling back to initial sync");
         }
 
         try {
                 // It's the first time syncing with this device
                 // There isn't a saved olm account to restore.
-                log::crypto()->info("creating new olm account");
+                nhlog::crypto()->info("creating new olm account");
                 olm::client()->create_new_account();
                 cache::client()->saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
         } catch (const lmdb::error &e) {
-                log::crypto()->critical("failed to save olm account {}", e.what());
+                nhlog::crypto()->critical("failed to save olm account {}", e.what());
                 emit dropToLoginPageCb(QString::fromStdString(e.what()));
                 return;
         } catch (const mtx::crypto::olm_exception &e) {
-                log::crypto()->critical("failed to create new olm account {}", e.what());
+                nhlog::crypto()->critical("failed to create new olm account {}", e.what());
                 emit dropToLoginPageCb(QString::fromStdString(e.what()));
                 return;
         }
@@ -771,7 +772,7 @@ void
 ChatPage::changeTopRoomInfo(const QString &room_id)
 {
         if (room_id.isEmpty()) {
-                log::main()->warn("cannot switch to empty room_id");
+                nhlog::ui()->warn("cannot switch to empty room_id");
                 return;
         }
 
@@ -795,7 +796,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                         top_bar_->updateRoomAvatar(img);
 
         } catch (const lmdb::error &e) {
-                log::main()->error("failed to change top bar room info: {}", e.what());
+                nhlog::ui()->error("failed to change top bar room info: {}", e.what());
         }
 
         current_room_ = room_id;
@@ -816,7 +817,7 @@ ChatPage::showUnreadMessageNotification(int count)
 void
 ChatPage::loadStateFromCache()
 {
-        log::db()->info("restoring state from cache");
+        nhlog::db()->info("restoring state from cache");
 
         getProfileInfo();
 
@@ -831,19 +832,19 @@ ChatPage::loadStateFromCache()
                         emit initializeEmptyViews(cache::client()->joinedRooms());
                         emit initializeRoomList(cache::client()->roomInfo());
                 } catch (const mtx::crypto::olm_exception &e) {
-                        log::crypto()->critical("failed to restore olm account: {}", e.what());
+                        nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
                         emit dropToLoginPageCb(
                           tr("Failed to restore OLM account. Please login again."));
                         return;
                 } catch (const lmdb::error &e) {
-                        log::db()->critical("failed to restore cache: {}", e.what());
+                        nhlog::db()->critical("failed to restore cache: {}", e.what());
                         emit dropToLoginPageCb(
                           tr("Failed to restore save data. Please login again."));
                         return;
                 }
 
-                log::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
-                log::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
+                nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+                nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
                 // Start receiving events.
                 emit trySyncCb();
@@ -890,7 +891,7 @@ ChatPage::removeRoom(const QString &room_id)
                 cache::client()->removeRoom(room_id);
                 cache::client()->removeInvite(room_id.toStdString());
         } catch (const lmdb::error &e) {
-                log::db()->critical("failure while removing room: {}", e.what());
+                nhlog::db()->critical("failure while removing room: {}", e.what());
                 // TODO: Notify the user.
         }
 
@@ -1009,7 +1010,7 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
                                   utils::event_body(item.event));
                         }
                 } catch (const lmdb::error &e) {
-                        log::db()->warn("error while sending desktop notification: {}", e.what());
+                        nhlog::db()->warn("error while sending desktop notification: {}", e.what());
                 }
         }
 }
@@ -1017,11 +1018,11 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 void
 ChatPage::tryInitialSync()
 {
-        log::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
-        log::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
+        nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+        nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
         // Upload one time keys for the device.
-        log::crypto()->info("generating one time keys");
+        nhlog::crypto()->info("generating one time keys");
         olm::client()->generate_one_time_keys(MAX_ONETIME_KEYS);
 
         http::v2::client()->upload_keys(
@@ -1029,9 +1030,9 @@ ChatPage::tryInitialSync()
           [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
                   if (err) {
                           const int status_code = static_cast<int>(err->status_code);
-                          log::crypto()->critical("failed to upload one time keys: {} {}",
-                                                  err->matrix_error.error,
-                                                  status_code);
+                          nhlog::crypto()->critical("failed to upload one time keys: {} {}",
+                                                    err->matrix_error.error,
+                                                    status_code);
                           // TODO We should have a timeout instead of keeping hammering the server.
                           emit tryInitialSyncCb();
                           return;
@@ -1039,10 +1040,10 @@ ChatPage::tryInitialSync()
 
                   olm::client()->mark_keys_as_published();
                   for (const auto &entry : res.one_time_key_counts)
-                          log::net()->info(
+                          nhlog::net()->info(
                             "uploaded {} {} one-time keys", entry.second, entry.first);
 
-                  log::net()->info("trying initial sync");
+                  nhlog::net()->info("trying initial sync");
 
                   mtx::http::SyncOpts opts;
                   opts.timeout = 0;
@@ -1065,7 +1066,7 @@ ChatPage::trySync()
         try {
                 opts.since = cache::client()->nextBatchToken();
         } catch (const lmdb::error &e) {
-                log::db()->error("failed to retrieve next batch token: {}", e.what());
+                nhlog::db()->error("failed to retrieve next batch token: {}", e.what());
                 return;
         }
 
@@ -1077,7 +1078,7 @@ ChatPage::trySync()
                           const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
 
-                          log::net()->error("sync error: {} {}", status_code, err_code);
+                          nhlog::net()->error("sync error: {} {}", status_code, err_code);
 
                           if (status_code <= 0 || status_code >= 600) {
                                   if (!http::v2::is_logged_in())
@@ -1109,7 +1110,7 @@ ChatPage::trySync()
                           }
                   }
 
-                  log::net()->debug("sync completed: {}", res.next_batch);
+                  nhlog::net()->debug("sync completed: {}", res.next_batch);
 
                   // Ensure that we have enough one-time keys available.
                   ensureOneTimeKeyCount(res.device_one_time_keys_count);
@@ -1126,7 +1127,7 @@ ChatPage::trySync()
                           emit syncTopBar(updates);
                           emit syncRoomlist(updates);
                   } catch (const lmdb::error &e) {
-                          log::db()->error("saving sync response: {}", e.what());
+                          nhlog::db()->error("saving sync response: {}", e.what());
                   }
 
                   emit trySyncCb();
@@ -1201,8 +1202,8 @@ ChatPage::sendTypingNotifications()
         http::v2::client()->start_typing(
           current_room_.toStdString(), 10'000, [](mtx::http::RequestErr err) {
                   if (err) {
-                          log::net()->warn("failed to send typing notification: {}",
-                                           err->matrix_error.error);
+                          nhlog::net()->warn("failed to send typing notification: {}",
+                                             err->matrix_error.error);
                   }
           });
 }
@@ -1216,7 +1217,7 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
                 const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                 const int status_code = static_cast<int>(err->status_code);
 
-                log::net()->error("sync error: {} {}", status_code, err_code);
+                nhlog::net()->error("sync error: {} {}", status_code, err_code);
 
                 switch (status_code) {
                 case 502:
@@ -1232,7 +1233,7 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
                 }
         }
 
-        log::net()->info("initial sync completed");
+        nhlog::net()->info("initial sync completed");
 
         try {
                 cache::client()->saveState(res);
@@ -1242,7 +1243,7 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
                 emit initializeViews(std::move(res.rooms));
                 emit initializeRoomList(cache::client()->roomInfo());
         } catch (const lmdb::error &e) {
-                log::db()->error("{}", e.what());
+                nhlog::db()->error("{}", e.what());
                 emit tryInitialSyncCb();
                 return;
         }
@@ -1258,14 +1259,14 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
                 if (entry.second < MAX_ONETIME_KEYS) {
                         const int nkeys = MAX_ONETIME_KEYS - entry.second;
 
-                        log::crypto()->info("uploading {} {} keys", nkeys, entry.first);
+                        nhlog::crypto()->info("uploading {} {} keys", nkeys, entry.first);
                         olm::client()->generate_one_time_keys(nkeys);
 
                         http::v2::client()->upload_keys(
                           olm::client()->create_upload_keys_request(),
                           [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
                                   if (err) {
-                                          log::crypto()->warn(
+                                          nhlog::crypto()->warn(
                                             "failed to update one-time keys: {} {}",
                                             err->matrix_error.error,
                                             static_cast<int>(err->status_code));
@@ -1287,7 +1288,7 @@ ChatPage::getProfileInfo()
         http::v2::client()->get_profile(
           userid, [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
                   if (err) {
-                          log::net()->warn("failed to retrieve own profile info");
+                          nhlog::net()->warn("failed to retrieve own profile info");
                           return;
                   }
 
@@ -1311,7 +1312,7 @@ ChatPage::getProfileInfo()
                                 const std::string &,
                                 mtx::http::RequestErr err) {
                             if (err) {
-                                    log::net()->warn(
+                                    nhlog::net()->warn(
                                       "failed to download user avatar: {} - {}",
                                       mtx::errors::to_string(err->matrix_error.errcode),
                                       err->matrix_error.error);

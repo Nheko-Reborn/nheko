@@ -119,7 +119,7 @@ Cache::Cache(const QString &userId, QObject *parent)
 void
 Cache::setup()
 {
-        log::db()->debug("setting up cache");
+        nhlog::db()->debug("setting up cache");
 
         auto statePath = QString("%1/%2")
                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
@@ -136,7 +136,7 @@ Cache::setup()
         env_.set_max_dbs(1024UL);
 
         if (isInitial) {
-                log::db()->info("initializing LMDB");
+                nhlog::db()->info("initializing LMDB");
 
                 if (!QDir().mkpath(statePath)) {
                         throw std::runtime_error(
@@ -152,7 +152,7 @@ Cache::setup()
                                                  std::string(e.what()));
                 }
 
-                log::db()->warn("resetting cache due to LMDB version mismatch: {}", e.what());
+                nhlog::db()->warn("resetting cache due to LMDB version mismatch: {}", e.what());
 
                 QDir stateDir(statePath);
 
@@ -188,7 +188,7 @@ Cache::setup()
 void
 Cache::setEncryptedRoom(const std::string &room_id)
 {
-        log::db()->info("mark room {} as encrypted", room_id);
+        nhlog::db()->info("mark room {} as encrypted", room_id);
 
         auto txn = lmdb::txn::begin(env_);
         auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
@@ -398,7 +398,7 @@ Cache::restoreSessions()
                                   unpickle<OutboundSessionObject>(obj.at("session"), SECRET);
                                 session_storage.group_outbound_sessions[key] = std::move(session);
                         } catch (const nlohmann::json::exception &e) {
-                                log::db()->critical(
+                                nhlog::db()->critical(
                                   "failed to parse outbound megolm session data: {}", e.what());
                         }
                 }
@@ -419,7 +419,7 @@ Cache::restoreSessions()
 
         txn.commit();
 
-        log::db()->info("sessions restored");
+        nhlog::db()->info("sessions restored");
 }
 
 std::string
@@ -453,7 +453,7 @@ Cache::saveImage(const std::string &url, const std::string &img_data)
 
                 txn.commit();
         } catch (const lmdb::error &e) {
-                log::db()->critical("saveImage: {}", e.what());
+                nhlog::db()->critical("saveImage: {}", e.what());
         }
 }
 
@@ -478,7 +478,7 @@ Cache::image(lmdb::txn &txn, const std::string &url) const
 
                 return QByteArray(image.data(), image.size());
         } catch (const lmdb::error &e) {
-                log::db()->critical("image: {}, {}", e.what(), url);
+                nhlog::db()->critical("image: {}, {}", e.what(), url);
         }
 
         return QByteArray();
@@ -506,7 +506,7 @@ Cache::image(const QString &url) const
 
                 return QByteArray(image.data(), image.size());
         } catch (const lmdb::error &e) {
-                log::db()->critical("image: {} {}", e.what(), url.toStdString());
+                nhlog::db()->critical("image: {} {}", e.what(), url.toStdString());
         }
 
         return QByteArray();
@@ -588,7 +588,7 @@ Cache::deleteData()
         // TODO: We need to remove the env_ while not accepting new requests.
         if (!cacheDirectory_.isEmpty()) {
                 QDir(cacheDirectory_).removeRecursively();
-                log::db()->info("deleted cache files from disk");
+                nhlog::db()->info("deleted cache files from disk");
         }
 }
 
@@ -608,9 +608,9 @@ Cache::isFormatValid()
         std::string stored_version(current_version.data(), current_version.size());
 
         if (stored_version != CURRENT_CACHE_FORMAT_VERSION) {
-                log::db()->warn("breaking changes in the cache format. stored: {}, current: {}",
-                                stored_version,
-                                CURRENT_CACHE_FORMAT_VERSION);
+                nhlog::db()->warn("breaking changes in the cache format. stored: {}, current: {}",
+                                  stored_version,
+                                  CURRENT_CACHE_FORMAT_VERSION);
                 return false;
         }
 
@@ -660,7 +660,7 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
                 }
 
         } catch (const lmdb::error &e) {
-                log::db()->critical("readReceipts: {}", e.what());
+                nhlog::db()->critical("readReceipts: {}", e.what());
         }
 
         return receipts;
@@ -710,7 +710,7 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
                                       lmdb::val(merged_receipts.data(), merged_receipts.size()));
 
                 } catch (const lmdb::error &e) {
-                        log::db()->critical("updateReadReceipts: {}", e.what());
+                        nhlog::db()->critical("updateReadReceipts: {}", e.what());
                 }
         }
 }
@@ -868,9 +868,9 @@ Cache::singleRoomInfo(const std::string &room_id)
 
                         return tmp;
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse room info: room_id ({}), {}",
-                                        room_id,
-                                        std::string(data.data(), data.size()));
+                        nhlog::db()->warn("failed to parse room info: room_id ({}), {}",
+                                          room_id,
+                                          std::string(data.data(), data.size()));
                 }
         }
 
@@ -900,9 +900,9 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
 
                                 room_info.emplace(QString::fromStdString(room), std::move(tmp));
                         } catch (const json::exception &e) {
-                                log::db()->warn("failed to parse room info: room_id ({}), {}",
-                                                room,
-                                                std::string(data.data(), data.size()));
+                                nhlog::db()->warn("failed to parse room info: room_id ({}), {}",
+                                                  room,
+                                                  std::string(data.data(), data.size()));
                         }
                 } else {
                         // Check if the room is an invite.
@@ -915,7 +915,7 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                                         room_info.emplace(QString::fromStdString(room),
                                                           std::move(tmp));
                                 } catch (const json::exception &e) {
-                                        log::db()->warn(
+                                        nhlog::db()->warn(
                                           "failed to parse room info for invite: room_id ({}), {}",
                                           room,
                                           std::string(data.data(), data.size()));
@@ -1003,7 +1003,7 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn,
 
                         return QString::fromStdString(msg.content.url);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.avatar event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.avatar event: {}", e.what());
                 }
         }
 
@@ -1026,7 +1026,7 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn,
                         cursor.close();
                         return QString::fromStdString(m.avatar_url);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse member info: {}", e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
         }
 
@@ -1053,7 +1053,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                         if (!msg.content.name.empty())
                                 return QString::fromStdString(msg.content.name);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.name event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.name event: {}", e.what());
                 }
         }
 
@@ -1068,8 +1068,8 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                         if (!msg.content.alias.empty())
                                 return QString::fromStdString(msg.content.alias);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.canonical_alias event: {}",
-                                        e.what());
+                        nhlog::db()->warn("failed to parse m.room.canonical_alias event: {}",
+                                          e.what());
                 }
         }
 
@@ -1085,7 +1085,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                 try {
                         members.emplace(user_id, json::parse(member_data));
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse member info: {}", e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
 
                 ii++;
@@ -1129,7 +1129,7 @@ Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
                           json::parse(std::string(event.data(), event.size()));
                         return msg.content.join_rule;
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.join_rule event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.join_rule event: {}", e.what());
                 }
         }
         return JoinRule::Knock;
@@ -1151,7 +1151,8 @@ Cache::getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb)
                           json::parse(std::string(event.data(), event.size()));
                         return msg.content.guest_access == AccessState::CanJoin;
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.guest_access event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.guest_access event: {}",
+                                          e.what());
                 }
         }
         return false;
@@ -1175,7 +1176,7 @@ Cache::getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
                         if (!msg.content.topic.empty())
                                 return QString::fromStdString(msg.content.topic);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.topic event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
                 }
         }
 
@@ -1198,7 +1199,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
                           json::parse(std::string(event.data(), event.size()));
                         return QString::fromStdString(msg.content.name);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.name event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.name event: {}", e.what());
                 }
         }
 
@@ -1215,7 +1216,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
 
                         return QString::fromStdString(tmp.name);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse member info: {}", e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
         }
 
@@ -1240,7 +1241,7 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
                           json::parse(std::string(event.data(), event.size()));
                         return QString::fromStdString(msg.content.url);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.avatar event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.avatar event: {}", e.what());
                 }
         }
 
@@ -1257,7 +1258,7 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
 
                         return QString::fromStdString(tmp.avatar_url);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse member info: {}", e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
         }
 
@@ -1282,7 +1283,7 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
                           json::parse(std::string(event.data(), event.size()));
                         return QString::fromStdString(msg.content.topic);
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.topic event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
                 }
         }
 
@@ -1318,9 +1319,9 @@ Cache::getRoomAvatar(const std::string &room_id)
                         return QImage();
                 }
         } catch (const json::exception &e) {
-                log::db()->warn("failed to parse room info: {}, {}",
-                                e.what(),
-                                std::string(response.data(), response.size()));
+                nhlog::db()->warn("failed to parse room info: {}, {}",
+                                  e.what(),
+                                  std::string(response.data(), response.size()));
         }
 
         if (!lmdb::dbi_get(txn, mediaDb_, lmdb::val(media_url), response)) {
@@ -1356,7 +1357,7 @@ void
 Cache::populateMembers()
 {
         auto rooms = joinedRooms();
-        log::db()->info("loading {} rooms", rooms.size());
+        nhlog::db()->info("loading {} rooms", rooms.size());
 
         auto txn = lmdb::txn::begin(env_);
 
@@ -1484,7 +1485,7 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
                                      QString::fromStdString(tmp.name),
                                      QImage::fromData(image(txn, tmp.avatar_url))});
                 } catch (const json::exception &e) {
-                        log::db()->warn("{}", e.what());
+                        nhlog::db()->warn("{}", e.what());
                 }
 
                 currentIndex += 1;
@@ -1555,7 +1556,8 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
                                   std::min(min_event_level,
                                            (uint16_t)msg.content.state_level(to_string(ty)));
                 } catch (const json::exception &e) {
-                        log::db()->warn("failed to parse m.room.power_levels event: {}", e.what());
+                        nhlog::db()->warn("failed to parse m.room.power_levels event: {}",
+                                          e.what());
                 }
         }
 

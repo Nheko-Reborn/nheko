@@ -136,7 +136,7 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
         http::v2::client()->get_thumbnail(
           opts, [this, opts, id](const std::string &res, mtx::http::RequestErr err) {
                   if (err) {
-                          log::net()->warn("failed to download avatar: {} - ({} {})",
+                          nhlog::net()->warn("failed to download avatar: {} - ({} {})",
                                            opts.mxc_url,
                                            mtx::errors::to_string(err->matrix_error.errcode),
                                            err->matrix_error.error);

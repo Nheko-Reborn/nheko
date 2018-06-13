@@ -153,7 +153,7 @@ RegisterPage::RegisterPage(QWidget *parent)
                                       [this](const mtx::responses::Register &res,
                                              mtx::http::RequestErr err) {
                                               if (err) {
-                                                      log::net()->warn(
+                                                      nhlog::net()->warn(
                                                         "failed to retrieve registration flows: {}",
                                                         err->matrix_error.error);
                                                       emit errorOccurred();
@@ -231,7 +231,7 @@ RegisterPage::onRegisterButtonClicked()
                                       const mtx::responses::RegistrationFlows &res,
                                       mtx::http::RequestErr err) {
                                             if (res.session.empty() && err) {
-                                                    log::net()->warn(
+                                                    nhlog::net()->warn(
                                                       "failed to retrieve registration flows: ({}) "
                                                       "{}",
                                                       static_cast<int>(err->status_code),
@@ -247,7 +247,7 @@ RegisterPage::onRegisterButtonClicked()
                                   return;
                           }
 
-                          log::net()->warn("failed to register: status_code ({})",
+                          nhlog::net()->warn("failed to register: status_code ({})",
                                            static_cast<int>(err->status_code));
 
                           emit registerErrorCb(QString::fromStdString(err->matrix_error.error));

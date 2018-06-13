@@ -18,10 +18,10 @@
 #include <random>
 
 #include <QApplication>
-#include <QDebug>
 #include <QFileInfo>
 #include <QSettings>
 
+#include "Logging.hpp"
 #include "timeline/TimelineView.h"
 #include "timeline/TimelineViewManager.h"
 #include "timeline/widgets/AudioItem.h"
@@ -76,7 +76,7 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
                                        uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
-                qDebug() << "Cannot send m.image message to a non-managed view";
+                nhlog::ui()->warn("Cannot send m.image message to a non-managed view");
                 return;
         }
 
@@ -93,7 +93,7 @@ TimelineViewManager::queueFileMessage(const QString &roomid,
                                       uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
-                qDebug() << "Cannot send m.file message to a non-managed view";
+                nhlog::ui()->warn("cannot send m.file message to a non-managed view");
                 return;
         }
 
@@ -110,7 +110,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
                                        uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
-                qDebug() << "Cannot send m.audio message to a non-managed view";
+                nhlog::ui()->warn("cannot send m.audio message to a non-managed view");
                 return;
         }
 
@@ -127,7 +127,7 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
                                        uint64_t size)
 {
         if (!timelineViewExists(roomid)) {
-                qDebug() << "Cannot send m.video message to a non-managed view";
+                nhlog::ui()->warn("cannot send m.video message to a non-managed view");
                 return;
         }
 
@@ -198,7 +198,8 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
                 auto roomid = QString::fromStdString(room.first);
 
                 if (!timelineViewExists(roomid)) {
-                        qDebug() << "Ignoring event from unknown room" << roomid;
+                        nhlog::ui()->warn("ignoring event from unknown room: {}",
+                                          roomid.toStdString());
                         continue;
                 }
 
@@ -212,7 +213,8 @@ void
 TimelineViewManager::setHistoryView(const QString &room_id)
 {
         if (!timelineViewExists(room_id)) {
-                qDebug() << "Room ID from RoomList is not present in ViewManager" << room_id;
+                nhlog::ui()->warn("room from RoomList is not present in ViewManager: {}",
+                                  room_id.toStdString());
                 return;
         }
 

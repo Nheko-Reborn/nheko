@@ -16,13 +16,13 @@
  */
 
 #include <QBrush>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QFile>
 #include <QFileDialog>
 #include <QPainter>
 #include <QPixmap>
 
+#include "Logging.hpp"
 #include "MatrixClient.h"
 #include "Utils.h"
 
@@ -89,7 +89,7 @@ FileItem::openUrl()
                            .arg(QString::fromStdString(mxc_parts.media_id));
 
         if (!QDesktopServices::openUrl(urlToOpen))
-                qWarning() << "Could not open url" << urlToOpen;
+                nhlog::ui()->warn("Could not open url: {}", urlToOpen.toStdString());
 }
 
 QSize
@@ -121,7 +121,8 @@ FileItem::mousePressEvent(QMouseEvent *event)
                          const std::string &,
                          mtx::http::RequestErr err) {
                           if (err) {
-                                  qWarning() << "failed to retrieve m.file content:" << url_;
+                                  nhlog::ui()->warn("failed to retrieve m.file content: {}",
+                                                    url_.toString().toStdString());
                                   return;
                           }
 
@@ -143,8 +144,8 @@ FileItem::fileDownloaded(const QByteArray &data)
 
                 file.write(data);
                 file.close();
-        } catch (const std::exception &ex) {
-                qDebug() << "Error while saving file to:" << ex.what();
+        } catch (const std::exception &e) {
+                nhlog::ui()->warn("Error while saving file to: {}", e.what());
         }
 }
 

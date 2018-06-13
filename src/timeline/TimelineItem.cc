@@ -23,6 +23,7 @@
 #include "Avatar.h"
 #include "ChatPage.h"
 #include "Config.h"
+#include "Logging.hpp"
 
 #include "timeline/TimelineItem.h"
 #include "timeline/widgets/AudioItem.h"
@@ -652,4 +653,20 @@ TimelineItem::addAvatar()
 
         AvatarProvider::resolve(
           room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
+}
+
+void
+TimelineItem::sendReadReceipt() const
+{
+        if (!event_id_.isEmpty())
+                http::v2::client()->read_event(room_id_.toStdString(),
+                                               event_id_.toStdString(),
+                                               [this](mtx::http::RequestErr err) {
+                                                       if (err) {
+                                                               nhlog::net()->warn(
+                                                                 "failed to read_event ({}, {})",
+                                                                 room_id_.toStdString(),
+                                                                 event_id_.toStdString());
+                                                       }
+                                               });
 }

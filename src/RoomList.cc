@@ -95,7 +95,7 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
                 http::v2::client()->get_thumbnail(
                   opts, [room_id, opts, this](const std::string &res, mtx::http::RequestErr err) {
                           if (err) {
-                                  log::net()->warn(
+                                  nhlog::net()->warn(
                                     "failed to download room avatar: {} {} {}",
                                     opts.mxc_url,
                                     mtx::errors::to_string(err->matrix_error.errcode),
@@ -141,7 +141,7 @@ void
 RoomList::updateUnreadMessageCount(const QString &roomid, int count)
 {
         if (!roomExists(roomid)) {
-                log::main()->warn("updateUnreadMessageCount: unknown room_id {}",
+                nhlog::ui()->warn("updateUnreadMessageCount: unknown room_id {}",
                                   roomid.toStdString());
                 return;
         }
@@ -167,7 +167,7 @@ RoomList::calculateUnreadMessageCount()
 void
 RoomList::initialize(const QMap<QString, RoomInfo> &info)
 {
-        log::main()->info("initialize room list");
+        nhlog::ui()->info("initialize room list");
 
         rooms_.clear();
 
@@ -220,7 +220,7 @@ RoomList::highlightSelectedRoom(const QString &room_id)
         emit roomChanged(room_id);
 
         if (!roomExists(room_id)) {
-                log::main()->warn("roomlist: clicked unknown room_id");
+                nhlog::ui()->warn("roomlist: clicked unknown room_id");
                 return;
         }
 
@@ -243,7 +243,7 @@ void
 RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
 {
         if (!roomExists(roomid)) {
-                log::main()->warn("avatar update on non-existent room_id: {}",
+                nhlog::ui()->warn("avatar update on non-existent room_id: {}",
                                   roomid.toStdString());
                 return;
         }
@@ -258,7 +258,7 @@ void
 RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
 {
         if (!roomExists(roomid)) {
-                log::main()->warn("description update on non-existent room_id: {}, {}",
+                nhlog::ui()->warn("description update on non-existent room_id: {}, {}",
                                   roomid.toStdString(),
                                   info.body.toStdString());
                 return;

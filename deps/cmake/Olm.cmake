@@ -1,8 +1,4 @@
-if(MSVC)
-    set(MAKE_CMD "mingw32-make.exe")
-else()
-    set(MAKE_CMD "make")
-endif()
+set(OLM_PATCH ${CMAKE_CURRENT_SOURCE_DIR}/patches/olm-CMake-Support.patch)
 
 ExternalProject_Add(
   Olm
@@ -12,12 +8,18 @@ ExternalProject_Add(
 
   BUILD_IN_SOURCE 1
   SOURCE_DIR ${DEPS_BUILD_DIR}/olm
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ${MAKE_CMD} static
-  INSTALL_COMMAND 
-    mkdir -p ${DEPS_INSTALL_DIR}/lib &&
-    cp -R ${DEPS_BUILD_DIR}/olm/include ${DEPS_INSTALL_DIR} &&
-    cp ${DEPS_BUILD_DIR}/olm/build/libolm.a ${DEPS_INSTALL_DIR}/lib
-)
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy
+      ${CMAKE_CURRENT_SOURCE_DIR}/cmake/OlmCMakeLists.txt
+      ${DEPS_BUILD_DIR}/olm/CMakeLists.txt
+    COMMAND ${CMAKE_COMMAND} -E copy
+      ${CMAKE_CURRENT_SOURCE_DIR}/cmake/OlmConfig.cmake.in
+      ${DEPS_BUILD_DIR}/olm/cmake/OlmConfig.cmake.in
+    COMMAND ${CMAKE_COMMAND}
+      -DCMAKE_INSTALL_PREFIX=${DEPS_INSTALL_DIR}
+      -DCMAKE_BUILD_TYPE=Release
+      ${DEPS_BUILD_DIR}/olm
+  BUILD_COMMAND ${CMAKE_COMMAND}
+    --build ${DEPS_BUILD_DIR}/olm
+    --config Release)
 
 list(APPEND THIRD_PARTY_DEPS Olm)

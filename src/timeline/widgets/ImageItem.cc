@@ -16,7 +16,6 @@
  */
 
 #include <QBrush>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -25,6 +24,7 @@
 #include <QUuid>
 
 #include "Config.h"
+#include "Logging.hpp"
 #include "MatrixClient.h"
 #include "Utils.h"
 #include "dialogs/ImageOverlay.h"
@@ -39,8 +39,11 @@ ImageItem::downloadMedia(const QUrl &url)
                                                  const std::string &,
                                                  mtx::http::RequestErr err) {
                                              if (err) {
-                                                     qWarning()
-                                                       << "failed to retrieve image:" << url;
+                                                     nhlog::net()->warn(
+                                                       "failed to retrieve image {}: {} {}",
+                                                       url.toString().toStdString(),
+                                                       err->matrix_error.error,
+                                                       static_cast<int>(err->status_code));
                                                      return;
                                              }
 
@@ -61,8 +64,8 @@ ImageItem::saveImage(const QString &filename, const QByteArray &data)
 
                 file.write(data);
                 file.close();
-        } catch (const std::exception &ex) {
-                qDebug() << "Error while saving file to:" << ex.what();
+        } catch (const std::exception &e) {
+                nhlog::ui()->warn("Error while saving file to: {}", e.what());
         }
 }
 
@@ -111,7 +114,7 @@ ImageItem::openUrl()
                            .arg(QString::fromStdString(mxc_parts.media_id));
 
         if (!QDesktopServices::openUrl(urlToOpen))
-                qWarning() << "Could not open url" << urlToOpen;
+                nhlog::ui()->warn("could not open url: {}", urlToOpen.toStdString());
 }
 
 QSize
@@ -239,14 +242,19 @@ ImageItem::saveAs()
         if (filename.isEmpty())
                 return;
 
+        const auto url = url_.toString().toStdString();
+
         http::v2::client()->download(
-          url_.toString().toStdString(),
-          [this, filename](const std::string &data,
-                           const std::string &,
-                           const std::string &,
-                           mtx::http::RequestErr err) {
+          url,
+          [this, filename, url](const std::string &data,
+                                const std::string &,
+                                const std::string &,
+                                mtx::http::RequestErr err) {
                   if (err) {
-                          qWarning() << "failed to retrieve image:" << url_;
+                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
+                                             url,
+                                             err->matrix_error.error,
+                                             static_cast<int>(err->status_code));
                           return;
                   }
 

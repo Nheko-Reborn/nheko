@@ -7,13 +7,13 @@ namespace {
 std::shared_ptr<spdlog::logger> db_logger     = nullptr;
 std::shared_ptr<spdlog::logger> net_logger    = nullptr;
 std::shared_ptr<spdlog::logger> crypto_logger = nullptr;
-std::shared_ptr<spdlog::logger> main_logger   = nullptr;
+std::shared_ptr<spdlog::logger> ui_logger     = nullptr;
 
 constexpr auto MAX_FILE_SIZE = 1024 * 1024 * 6;
 constexpr auto MAX_LOG_FILES = 3;
 }
 
-namespace log {
+namespace nhlog {
 void
 init(const std::string &file_path)
 {
@@ -26,17 +26,17 @@ init(const std::string &file_path)
         sinks.push_back(file_sink);
         sinks.push_back(console_sink);
 
-        net_logger  = std::make_shared<spdlog::logger>("net", std::begin(sinks), std::end(sinks));
-        main_logger = std::make_shared<spdlog::logger>("main", std::begin(sinks), std::end(sinks));
-        db_logger   = std::make_shared<spdlog::logger>("db", std::begin(sinks), std::end(sinks));
+        net_logger = std::make_shared<spdlog::logger>("net", std::begin(sinks), std::end(sinks));
+        ui_logger  = std::make_shared<spdlog::logger>("ui", std::begin(sinks), std::end(sinks));
+        db_logger  = std::make_shared<spdlog::logger>("db", std::begin(sinks), std::end(sinks));
         crypto_logger =
           std::make_shared<spdlog::logger>("crypto", std::begin(sinks), std::end(sinks));
 }
 
 std::shared_ptr<spdlog::logger>
-main()
+ui()
 {
-        return main_logger;
+        return ui_logger;
 }
 
 std::shared_ptr<spdlog::logger>

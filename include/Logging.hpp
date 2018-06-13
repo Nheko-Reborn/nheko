@@ -3,12 +3,12 @@
 #include <memory>
 #include <spdlog/spdlog.h>
 
-namespace log {
+namespace nhlog {
 void
 init(const std::string &file);
 
 std::shared_ptr<spdlog::logger>
-main();
+ui();
 
 std::shared_ptr<spdlog::logger>
 net();

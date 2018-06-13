@@ -127,9 +127,9 @@ main(int argc, char *argv[])
         createCacheDirectory();
 
         try {
-                log::init(QString("%1/nheko.log")
-                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                            .toStdString());
+                nhlog::init(QString("%1/nheko.log")
+                              .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                              .toStdString());
         } catch (const spdlog::spdlog_ex &ex) {
                 std::cout << "Log initialization failed: " << ex.what() << std::endl;
                 std::exit(1);
@@ -171,7 +171,7 @@ main(int argc, char *argv[])
                 }
         });
 
-        log::main()->info("starting nheko {}", nheko::version);
+        nhlog::ui()->info("starting nheko {}", nheko::version);
 
         return app.exec();
 }

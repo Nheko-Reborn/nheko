@@ -301,8 +301,8 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 try {
                         cache::client()->setEncryptedRoom(room_id_.toStdString());
                 } catch (const lmdb::error &e) {
-                        log::db()->critical("failed to save room {} as encrypted",
-                                            room_id_.toStdString());
+                        nhlog::db()->critical("failed to save room {} as encrypted",
+                                              room_id_.toStdString());
                 }
         }
 
@@ -324,10 +324,10 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         dummy.content.body     = "-- Encrypted Event (No keys found for decryption) --";
 
         if (!cache::client()->inboundMegolmSessionExists(index)) {
-                log::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
-                                    index.room_id,
-                                    index.session_id,
-                                    e.sender);
+                nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
+                                      index.room_id,
+                                      index.session_id,
+                                      e.sender);
                 // TODO: request megolm session_id & session_key from the sender.
                 return dummy;
         }
@@ -344,7 +344,7 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         body["origin_server_ts"] = e.origin_server_ts;
         body["unsigned"]         = e.unsigned_data;
 
-        log::crypto()->info("decrypted data: \n {}", body.dump(2));
+        nhlog::crypto()->info("decrypted data: \n {}", body.dump(2));
 
         json event_array = json::array();
         event_array.push_back(body);
@@ -523,10 +523,10 @@ TimelineView::getMessages()
         http::v2::client()->messages(
           opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
                   if (err) {
-                          log::net()->error("failed to call /messages ({}): {} - {}",
-                                            opts.room_id,
-                                            mtx::errors::to_string(err->matrix_error.errcode),
-                                            err->matrix_error.error);
+                          nhlog::net()->error("failed to call /messages ({}): {} - {}",
+                                              opts.room_id,
+                                              mtx::errors::to_string(err->matrix_error.errcode),
+                                              err->matrix_error.error);
                           return;
                   }
 
@@ -607,7 +607,7 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 void
 TimelineView::updatePendingMessage(const std::string &txn_id, const QString &event_id)
 {
-        log::main()->info("[{}] message was received by the server", txn_id);
+        nhlog::ui()->info("[{}] message was received by the server", txn_id);
         if (!pending_msgs_.isEmpty() &&
             pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
                 auto msg     = pending_msgs_.dequeue();
@@ -642,7 +642,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
         try {
                 message.is_encrypted = cache::client()->isRoomEncrypted(room_id_.toStdString());
         } catch (const lmdb::error &e) {
-                log::db()->critical("failed to check encryption status of room {}", e.what());
+                nhlog::db()->critical("failed to check encryption status of room {}", e.what());
                 view_item->deleteLater();
 
                 // TODO: Send a notification to the user.
@@ -676,11 +676,11 @@ TimelineView::sendNextPendingMessage()
 
         PendingMessage &m = pending_msgs_.head();
 
-        log::main()->info("[{}] sending next queued message", m.txn_id);
+        nhlog::ui()->info("[{}] sending next queued message", m.txn_id);
 
         if (m.is_encrypted) {
                 prepareEncryptedMessage(std::move(m));
-                log::main()->info("[{}] sending encrypted event", m.txn_id);
+                nhlog::ui()->info("[{}] sending encrypted event", m.txn_id);
                 return;
         }
 
@@ -763,7 +763,7 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         default:
-                log::main()->warn("cannot send unknown message type: {}", m.body.toStdString());
+                nhlog::ui()->warn("cannot send unknown message type: {}", m.body.toStdString());
                 break;
         }
 }
@@ -777,7 +777,7 @@ TimelineView::notifyForLastEvent()
         if (lastTimelineItem)
                 emit updateLastTimelineMessage(room_id_, lastTimelineItem->descriptionMessage());
         else
-                log::main()->warn("cast to TimelineView failed: {}", room_id_.toStdString());
+                nhlog::ui()->warn("cast to TimelineView failed: {}", room_id_.toStdString());
 }
 
 void
@@ -817,7 +817,7 @@ TimelineView::removePendingMessage(const std::string &txn_id)
                         if (pending_sent_msgs_.isEmpty())
                                 sendNextPendingMessage();
 
-                        log::main()->info("[{}] removed message with sync", txn_id);
+                        nhlog::ui()->info("[{}] removed message with sync", txn_id);
                 }
         }
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
@@ -825,7 +825,7 @@ TimelineView::removePendingMessage(const std::string &txn_id)
                         int index = std::distance(pending_msgs_.begin(), it);
                         pending_msgs_.removeAt(index);
 
-                        log::main()->info("[{}] removed message before sync", txn_id);
+                        nhlog::ui()->info("[{}] removed message before sync", txn_id);
                         return;
                 }
         }
@@ -861,7 +861,7 @@ TimelineView::readLastEvent() const
                                                eventId.toStdString(),
                                                [this, eventId](mtx::http::RequestErr err) {
                                                        if (err) {
-                                                               log::net()->warn(
+                                                               nhlog::net()->warn(
                                                                  "failed to read event ({}, {})",
                                                                  room_id_.toStdString(),
                                                                  eventId.toStdString());
@@ -936,7 +936,7 @@ void
 TimelineView::removeEvent(const QString &event_id)
 {
         if (!eventIds_.contains(event_id)) {
-                log::main()->warn("cannot remove widget with unknown event_id: {}",
+                nhlog::ui()->warn("cannot remove widget with unknown event_id: {}",
                                   event_id.toStdString());
                 return;
         }
@@ -1062,10 +1062,10 @@ TimelineView::sendRoomMessageHandler(const std::string &txn_id,
 {
         if (err) {
                 const int status_code = static_cast<int>(err->status_code);
-                log::net()->warn("[{}] failed to send message: {} {}",
-                                 txn_id,
-                                 err->matrix_error.error,
-                                 status_code);
+                nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                   txn_id,
+                                   err->matrix_error.error,
+                                   status_code);
                 emit messageFailed(txn_id);
                 return;
         }
@@ -1200,7 +1200,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                         return;
                 }
 
-                log::main()->info("creating new outbound megolm session");
+                nhlog::ui()->info("creating new outbound megolm session");
 
                 // Create a new outbound megolm session.
                 auto outbound_session  = olm::client()->init_outbound_group_session();
@@ -1223,7 +1223,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                   room_id, session_data, std::move(outbound_session));
 
                 const auto members = cache::client()->roomMembers(room_id);
-                log::main()->info("retrieved {} members for {}", members.size(), room_id);
+                nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
 
                 auto keeper = std::make_shared<StateKeeper>(
                   [megolm_payload, room_id, doc, txn_id = msg.txn_id, this]() {
@@ -1243,8 +1243,8 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                                 std::placeholders::_2));
 
                           } catch (const lmdb::error &e) {
-                                  log::db()->critical("failed to save megolm outbound session: {}",
-                                                      e.what());
+                                  nhlog::db()->critical(
+                                    "failed to save megolm outbound session: {}", e.what());
                           }
                   });
 
@@ -1257,16 +1257,16 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                   [keeper = std::move(keeper), megolm_payload](const mtx::responses::QueryKeys &res,
                                                                mtx::http::RequestErr err) {
                           if (err) {
-                                  log::net()->warn("failed to query device keys: {} {}",
-                                                   err->matrix_error.error,
-                                                   static_cast<int>(err->status_code));
+                                  nhlog::net()->warn("failed to query device keys: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
                                   // TODO: Mark the event as failed. Communicate with the UI.
                                   return;
                           }
 
                           for (const auto &entry : res.device_keys) {
                                   for (const auto &dev : entry.second) {
-                                          log::net()->info("received device {}", dev.first);
+                                          nhlog::net()->info("received device {}", dev.first);
 
                                           const auto device_keys = dev.second.keys;
                                           const auto curveKey    = "curve25519:" + dev.first;
@@ -1274,7 +1274,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
 
                                           if ((device_keys.find(curveKey) == device_keys.end()) ||
                                               (device_keys.find(edKey) == device_keys.end())) {
-                                                  log::net()->info(
+                                                  nhlog::net()->info(
                                                     "ignoring malformed keys for device {}",
                                                     dev.first);
                                                   continue;
@@ -1286,7 +1286,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
 
                                           // Validate signatures
                                           for (const auto &algo : dev.second.keys) {
-                                                  log::net()->info(
+                                                  nhlog::net()->info(
                                                     "dev keys {} {}", algo.first, algo.second);
                                           }
 
@@ -1308,22 +1308,22 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                               const mtx::responses::ClaimKeys &res,
                                               mtx::http::RequestErr err) {
                                                     if (err) {
-                                                            log::net()->warn(
+                                                            nhlog::net()->warn(
                                                               "claim keys error: {}",
                                                               err->matrix_error.error);
                                                             return;
                                                     }
 
-                                                    log::net()->info("claimed keys for {} - {}",
-                                                                     user_id,
-                                                                     device_id);
+                                                    nhlog::net()->info("claimed keys for {} - {}",
+                                                                       user_id,
+                                                                       device_id);
 
                                                     auto retrieved_devices =
                                                       res.one_time_keys.at(user_id);
                                                     for (const auto &rd : retrieved_devices) {
-                                                            log::net()->info("{} : \n {}",
-                                                                             rd.first,
-                                                                             rd.second.dump(2));
+                                                            nhlog::net()->info("{} : \n {}",
+                                                                               rd.first,
+                                                                               rd.second.dump(2));
 
                                                             // TODO: Verify signatures
                                                             auto otk = rd.second.begin()->at("key");
@@ -1351,7 +1351,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                                               body,
                                                               [keeper](mtx::http::RequestErr err) {
                                                                       if (err) {
-                                                                              log::net()->warn(
+                                                                              nhlog::net()->warn(
                                                                                 "failed to send "
                                                                                 "send_to_device "
                                                                                 "message: {}",
@@ -1366,7 +1366,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                   });
 
         } catch (const lmdb::error &e) {
-                log::db()->critical(
+                nhlog::db()->critical(
                   "failed to open outbound megolm session ({}): {}", room_id, e.what());
                 return;
         }

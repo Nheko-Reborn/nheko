@@ -23,17 +23,17 @@ handle_to_device_messages(const std::vector<nlohmann::json> &msgs)
         if (msgs.empty())
                 return;
 
-        log::crypto()->info("received {} to_device messages", msgs.size());
+        nhlog::crypto()->info("received {} to_device messages", msgs.size());
 
         for (const auto &msg : msgs) {
                 try {
                         OlmMessage olm_msg = msg;
                         handle_olm_message(std::move(olm_msg));
                 } catch (const nlohmann::json::exception &e) {
-                        log::crypto()->warn(
+                        nhlog::crypto()->warn(
                           "parsing error for olm message: {} {}", e.what(), msg.dump(2));
                 } catch (const std::invalid_argument &e) {
-                        log::crypto()->warn(
+                        nhlog::crypto()->warn(
                           "validation error for olm message: {} {}", e.what(), msg.dump(2));
                 }
         }
@@ -42,8 +42,8 @@ handle_to_device_messages(const std::vector<nlohmann::json> &msgs)
 void
 handle_olm_message(const OlmMessage &msg)
 {
-        log::crypto()->info("sender    : {}", msg.sender);
-        log::crypto()->info("sender_key: {}", msg.sender_key);
+        nhlog::crypto()->info("sender    : {}", msg.sender);
+        nhlog::crypto()->info("sender_key: {}", msg.sender_key);
 
         const auto my_key = olm::client()->identity_keys().curve25519;
 
@@ -53,7 +53,7 @@ handle_olm_message(const OlmMessage &msg)
                         continue;
 
                 const auto type = cipher.second.type;
-                log::crypto()->info("type: {}", type == 0 ? "OLM_PRE_KEY" : "OLM_MESSAGE");
+                nhlog::crypto()->info("type: {}", type == 0 ? "OLM_PRE_KEY" : "OLM_MESSAGE");
 
                 if (type == OLM_MESSAGE_TYPE_PRE_KEY)
                         handle_pre_key_olm_message(msg.sender, msg.sender_key, cipher.second);
@@ -67,19 +67,20 @@ handle_pre_key_olm_message(const std::string &sender,
                            const std::string &sender_key,
                            const OlmCipherContent &content)
 {
-        log::crypto()->info("opening olm session with {}", sender);
+        nhlog::crypto()->info("opening olm session with {}", sender);
 
         OlmSessionPtr inbound_session = nullptr;
         try {
                 inbound_session = olm::client()->create_inbound_session(content.body);
         } catch (const olm_exception &e) {
-                log::crypto()->critical(
+                nhlog::crypto()->critical(
                   "failed to create inbound session with {}: {}", sender, e.what());
                 return;
         }
 
         if (!matches_inbound_session_from(inbound_session.get(), sender_key, content.body)) {
-                log::crypto()->warn("inbound olm session doesn't match sender's key ({})", sender);
+                nhlog::crypto()->warn("inbound olm session doesn't match sender's key ({})",
+                                      sender);
                 return;
         }
 
@@ -88,13 +89,13 @@ handle_pre_key_olm_message(const std::string &sender,
                 output = olm::client()->decrypt_message(
                   inbound_session.get(), OLM_MESSAGE_TYPE_PRE_KEY, content.body);
         } catch (const olm_exception &e) {
-                log::crypto()->critical(
+                nhlog::crypto()->critical(
                   "failed to decrypt olm message {}: {}", content.body, e.what());
                 return;
         }
 
         auto plaintext = json::parse(std::string((char *)output.data(), output.size()));
-        log::crypto()->info("decrypted message: \n {}", plaintext.dump(2));
+        nhlog::crypto()->info("decrypted message: \n {}", plaintext.dump(2));
 
         std::string room_id, session_id, session_key;
         try {
@@ -102,7 +103,7 @@ handle_pre_key_olm_message(const std::string &sender,
                 session_id  = plaintext.at("content").at("session_id");
                 session_key = plaintext.at("content").at("session_key");
         } catch (const nlohmann::json::exception &e) {
-                log::crypto()->critical(
+                nhlog::crypto()->critical(
                   "failed to parse plaintext olm message: {} {}", e.what(), plaintext.dump(2));
                 return;
         }
@@ -118,14 +119,15 @@ handle_pre_key_olm_message(const std::string &sender,
                 try {
                         cache::client()->saveInboundMegolmSession(index, std::move(megolm_session));
                 } catch (const lmdb::error &e) {
-                        log::crypto()->critical("failed to save inbound megolm session: {}",
-                                                e.what());
+                        nhlog::crypto()->critical("failed to save inbound megolm session: {}",
+                                                  e.what());
                         return;
                 }
 
-                log::crypto()->info("established inbound megolm session ({}, {})", room_id, sender);
+                nhlog::crypto()->info(
+                  "established inbound megolm session ({}, {})", room_id, sender);
         } else {
-                log::crypto()->warn(
+                nhlog::crypto()->warn(
                   "inbound megolm session already exists ({}, {})", room_id, sender);
         }
 }
@@ -133,7 +135,7 @@ handle_pre_key_olm_message(const std::string &sender,
 void
 handle_olm_normal_message(const std::string &, const std::string &, const OlmCipherContent &)
 {
-        log::crypto()->warn("olm(1) not implemeted yet");
+        nhlog::crypto()->warn("olm(1) not implemeted yet");
 }
 
 mtx::events::msg::Encrypted
@@ -155,7 +157,7 @@ encrypt_group_message(const std::string &room_id,
         data.device_id  = device_id;
 
         auto message_index = olm_outbound_group_session_message_index(res.session);
-        log::crypto()->info("next message_index {}", message_index);
+        nhlog::crypto()->info("next message_index {}", message_index);
 
         // We need to re-pickle the session after we send a message to save the new message_index.
         cache::client()->updateOutboundMegolmSession(room_id, message_index);

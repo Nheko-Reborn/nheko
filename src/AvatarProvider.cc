@@ -56,10 +56,10 @@ resolve(const QString &room_id, const QString &user_id, QObject *receiver, Avata
           opts,
           [opts, proxy = std::move(proxy)](const std::string &res, mtx::http::RequestErr err) {
                   if (err) {
-                          log::net()->warn("failed to download avatar: {} - ({} {})",
-                                           opts.mxc_url,
-                                           mtx::errors::to_string(err->matrix_error.errcode),
-                                           err->matrix_error.error);
+                          nhlog::net()->warn("failed to download avatar: {} - ({} {})",
+                                             opts.mxc_url,
+                                             mtx::errors::to_string(err->matrix_error.errcode),
+                                             err->matrix_error.error);
                           return;
                   }
 

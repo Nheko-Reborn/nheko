@@ -338,7 +338,7 @@ RoomSettings::setupEditButton()
                 hasEditRights_ = cache::client()->hasEnoughPowerLevel(
                   {EventType::RoomName, EventType::RoomTopic}, room_id_.toStdString(), userId);
         } catch (const lmdb::error &e) {
-                qWarning() << "lmdb error" << e.what();
+                nhlog::db()->warn("lmdb error: {}", e.what());
         }
 
         constexpr int buttonSize = 36;
@@ -379,7 +379,8 @@ RoomSettings::retrieveRoomInfo()
                 info_           = cache::client()->singleRoomInfo(room_id_.toStdString());
                 setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
         } catch (const lmdb::error &e) {
-                qWarning() << "failed to retrieve room info from cache" << room_id_;
+                nhlog::db()->warn("failed to retrieve room info from cache: {}",
+                                  room_id_.toStdString());
         }
 }
 
@@ -415,17 +416,17 @@ RoomSettings::enableEncryption()
           room_id, [room_id, this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
                   if (err) {
                           int status_code = static_cast<int>(err->status_code);
-                          log::net()->warn("failed to enable encryption in room ({}): {} {}",
-                                           room_id,
-                                           err->matrix_error.error,
-                                           status_code);
+                          nhlog::net()->warn("failed to enable encryption in room ({}): {} {}",
+                                             room_id,
+                                             err->matrix_error.error,
+                                             status_code);
                           emit enableEncryptionError(
                             tr("Failed to enable encryption: %1")
                               .arg(QString::fromStdString(err->matrix_error.error)));
                           return;
                   }
 
-                  log::net()->info("enabled encryption on room ({})", room_id);
+                  nhlog::net()->info("enabled encryption on room ({})", room_id);
           });
 }
 
