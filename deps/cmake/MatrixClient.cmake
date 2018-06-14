@@ -22,6 +22,7 @@ ExternalProject_Add(
         -DCMAKE_BUILD_TYPE=Release 
         -DBUILD_LIB_TESTS=OFF
         -DBUILD_LIB_EXAMPLES=OFF
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         ${PLATFORM_FLAGS}
         ${DEPS_BUILD_DIR}/mtxclient
   BUILD_COMMAND 
