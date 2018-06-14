@@ -248,7 +248,7 @@ RegisterPage::onRegisterButtonClicked()
                           }
 
                           nhlog::net()->warn("failed to register: status_code ({})",
-                                           static_cast<int>(err->status_code));
+                                             static_cast<int>(err->status_code));
 
                           emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
                           emit errorOccurred();

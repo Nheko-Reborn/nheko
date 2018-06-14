@@ -1,5 +1,3 @@
-set(OLM_PATCH ${CMAKE_CURRENT_SOURCE_DIR}/patches/olm-CMake-Support.patch)
-
 ExternalProject_Add(
   Olm
 
@@ -20,6 +18,9 @@ ExternalProject_Add(
       ${DEPS_BUILD_DIR}/olm
   BUILD_COMMAND ${CMAKE_COMMAND}
     --build ${DEPS_BUILD_DIR}/olm
-    --config Release)
+    --config Release
+  INSTALL_COMMAND ${CMAKE_COMMAND}
+    --build ${DEPS_BUILD_DIR}/olm
+    --target install)
 
 list(APPEND THIRD_PARTY_DEPS Olm)

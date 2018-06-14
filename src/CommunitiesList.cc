@@ -1,5 +1,5 @@
-#include "Cache.h"
 #include "CommunitiesList.h"
+#include "Cache.h"
 #include "Logging.hpp"
 #include "MatrixClient.h"
 
@@ -137,9 +137,9 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
           opts, [this, opts, id](const std::string &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to download avatar: {} - ({} {})",
-                                           opts.mxc_url,
-                                           mtx::errors::to_string(err->matrix_error.errcode),
-                                           err->matrix_error.error);
+                                             opts.mxc_url,
+                                             mtx::errors::to_string(err->matrix_error.errcode),
+                                             err->matrix_error.error);
                           return;
                   }
 
