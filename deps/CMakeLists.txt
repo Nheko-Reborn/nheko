@@ -40,7 +40,7 @@ set(MATRIX_STRUCTS_URL https://github.com/mujx/matrix-structs)
 set(MATRIX_STRUCTS_TAG eeb7373729a1618e2b3838407863342b88b8a0de)
 
 set(MTXCLIENT_URL https://github.com/mujx/mtxclient)
-set(MTXCLIENT_TAG 688d5b0fd1fd16319d7fcbdbf938109eaa850545)
+set(MTXCLIENT_TAG c566fa0a254dce3282435723eb58590880be2b53)
 
 set(OLM_URL https://git.matrix.org/git/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)

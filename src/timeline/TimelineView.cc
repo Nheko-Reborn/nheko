@@ -1329,17 +1329,20 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                                             auto otk = rd.second.begin()->at("key");
                                                             auto id_key = pks.curve25519;
 
-                                                            auto session =
-                                                              olm::client()
-                                                                ->create_outbound_session(id_key,
-                                                                                          otk);
+                                                            auto s = olm::client()
+                                                                       ->create_outbound_session(
+                                                                         id_key, otk);
 
                                                             auto device_msg =
                                                               olm::client()
                                                                 ->create_olm_encrypted_content(
-                                                                  session.get(),
+                                                                  s.get(),
                                                                   room_key,
                                                                   pks.curve25519);
+
+                                                            // TODO: Handle exception
+                                                            cache::client()->saveOlmSession(
+                                                              id_key, std::move(s));
 
                                                             json body{
                                                               {"messages",

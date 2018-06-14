@@ -1,5 +1,7 @@
 #pragma once
 
+#include <boost/optional.hpp>
+
 #include <memory>
 #include <mtx.hpp>
 #include <mtxclient/crypto/client.hpp>
@@ -51,13 +53,17 @@ client();
 void
 handle_to_device_messages(const std::vector<nlohmann::json> &msgs);
 
+boost::optional<json>
+try_olm_decryption(const std::string &sender_key, const OlmCipherContent &content);
+
 void
 handle_olm_message(const OlmMessage &msg);
 
+//! Establish a new inbound megolm session with the decrypted payload from olm.
 void
-handle_olm_normal_message(const std::string &sender,
-                          const std::string &sender_key,
-                          const OlmCipherContent &content);
+create_inbound_megolm_session(const std::string &sender,
+                              const std::string &sender_key,
+                              const nlohmann::json &payload);
 
 void
 handle_pre_key_olm_message(const std::string &sender,

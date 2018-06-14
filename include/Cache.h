@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <boost/optional.hpp>
+
 #include <QDir>
 #include <QImage>
 
@@ -209,13 +211,12 @@ struct MegolmSessionIndex
 
 struct OlmSessionStorage
 {
-        std::map<std::string, mtx::crypto::OlmSessionPtr> outbound_sessions;
+        // Megolm sessions
         std::map<std::string, mtx::crypto::InboundGroupSessionPtr> group_inbound_sessions;
         std::map<std::string, mtx::crypto::OutboundGroupSessionPtr> group_outbound_sessions;
         std::map<std::string, OutboundGroupSessionData> group_outbound_session_data;
 
-        // Guards for accessing critical data.
-        std::mutex outbound_mtx;
+        // Guards for accessing megolm sessions.
         std::mutex group_outbound_mtx;
         std::mutex group_inbound_mtx;
 };
@@ -374,12 +375,12 @@ public:
         bool inboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept;
 
         //
-        // Outbound Olm Sessions
+        // Olm Sessions
         //
-        void saveOutboundOlmSession(const std::string &curve25519,
-                                    mtx::crypto::OlmSessionPtr session);
-        OlmSession *getOutboundOlmSession(const std::string &curve25519);
-        bool outboundOlmSessionsExists(const std::string &curve25519) noexcept;
+        void saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
+        std::vector<std::string> getOlmSessions(const std::string &curve25519);
+        boost::optional<mtx::crypto::OlmSessionPtr> getOlmSession(const std::string &curve25519,
+                                                                  const std::string &session_id);
 
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
@@ -560,6 +561,16 @@ private:
                 return lmdb::dbi::open(txn, std::string(room_id + "/members").c_str(), MDB_CREATE);
         }
 
+        //! Retrieves or creates the database that stores the open OLM sessions between our device
+        //! and the given curve25519 key which represents another device.
+        //!
+        //! Each entry is a map from the session_id to the pickled representation of the session.
+        lmdb::dbi getOlmSessionsDb(lmdb::txn &txn, const std::string &curve25519_key)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string("olm_sessions/" + curve25519_key).c_str(), MDB_CREATE);
+        }
+
         QString getDisplayName(const mtx::events::StateEvent<mtx::events::state::Member> &event)
         {
                 if (!event.content.display_name.empty())
@@ -584,7 +595,6 @@ private:
 
         lmdb::dbi inboundMegolmSessionDb_;
         lmdb::dbi outboundMegolmSessionDb_;
-        lmdb::dbi outboundOlmSessionDb_;
 
         QString localUserId_;
         QString cacheDirectory_;

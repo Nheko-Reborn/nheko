@@ -62,11 +62,10 @@ constexpr auto DEVICE_KEYS_DB("device_keys");
 //! room_ids that have encryption enabled.
 constexpr auto ENCRYPTED_ROOMS_DB("encrypted_rooms");
 
-//! MegolmSessionIndex -> pickled OlmInboundGroupSession
+//! room_id -> pickled OlmInboundGroupSession
 constexpr auto INBOUND_MEGOLM_SESSIONS_DB("inbound_megolm_sessions");
 //! MegolmSessionIndex -> pickled OlmOutboundGroupSession
 constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
-constexpr auto OUTBOUND_OLM_SESSIONS_DB("outbound_olm_sessions");
 
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
@@ -110,7 +109,6 @@ Cache::Cache(const QString &userId, QObject *parent)
   , deviceKeysDb_{0}
   , inboundMegolmSessionDb_{0}
   , outboundMegolmSessionDb_{0}
-  , outboundOlmSessionDb_{0}
   , localUserId_{userId}
 {
         setup();
@@ -180,7 +178,6 @@ Cache::setup()
         // Session management
         inboundMegolmSessionDb_  = lmdb::dbi::open(txn, INBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
         outboundMegolmSessionDb_ = lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
-        outboundOlmSessionDb_    = lmdb::dbi::open(txn, OUTBOUND_OLM_SESSIONS_DB, MDB_CREATE);
 
         txn.commit();
 }
@@ -321,35 +318,66 @@ Cache::getOutboundMegolmSession(const std::string &room_id)
                                            session_storage.group_outbound_session_data[room_id]};
 }
 
+//
+// OLM sessions.
+//
+
 void
-Cache::saveOutboundOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session)
+Cache::saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session)
 {
         using namespace mtx::crypto;
-        const auto pickled = pickle<SessionObject>(session.get(), SECRET);
 
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, outboundOlmSessionDb_, lmdb::val(curve25519), lmdb::val(pickled));
+        auto db  = getOlmSessionsDb(txn, curve25519);
+
+        const auto pickled    = pickle<SessionObject>(session.get(), SECRET);
+        const auto session_id = mtx::crypto::session_id(session.get());
+
+        lmdb::dbi_put(txn, db, lmdb::val(session_id), lmdb::val(pickled));
+
+        txn.commit();
+}
+
+boost::optional<mtx::crypto::OlmSessionPtr>
+Cache::getOlmSession(const std::string &curve25519, const std::string &session_id)
+{
+        using namespace mtx::crypto;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
+
+        lmdb::val pickled;
+        bool found = lmdb::dbi_get(txn, db, lmdb::val(session_id), pickled);
+
         txn.commit();
 
-        {
-                std::unique_lock<std::mutex> lock(session_storage.outbound_mtx);
-                session_storage.outbound_sessions[curve25519] = std::move(session);
+        if (found) {
+                auto data = std::string(pickled.data(), pickled.size());
+                return unpickle<SessionObject>(data, SECRET);
         }
+
+        return boost::none;
 }
 
-bool
-Cache::outboundOlmSessionsExists(const std::string &curve25519) noexcept
+std::vector<std::string>
+Cache::getOlmSessions(const std::string &curve25519)
 {
-        std::unique_lock<std::mutex> lock(session_storage.outbound_mtx);
-        return session_storage.outbound_sessions.find(curve25519) !=
-               session_storage.outbound_sessions.end();
-}
+        using namespace mtx::crypto;
 
-OlmSession *
-Cache::getOutboundOlmSession(const std::string &curve25519)
-{
-        std::unique_lock<std::mutex> lock(session_storage.outbound_mtx);
-        return session_storage.outbound_sessions.at(curve25519).get();
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
+
+        std::string session_id, unused;
+        std::vector<std::string> res;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(session_id, unused, MDB_NEXT))
+                res.emplace_back(session_id);
+        cursor.close();
+
+        txn.commit();
+
+        return res;
 }
 
 void
@@ -401,18 +429,6 @@ Cache::restoreSessions()
                                 nhlog::db()->critical(
                                   "failed to parse outbound megolm session data: {}", e.what());
                         }
-                }
-                cursor.close();
-        }
-
-        //
-        // Outbound Olm Sessions
-        //
-        {
-                auto cursor = lmdb::cursor::open(txn, outboundOlmSessionDb_);
-                while (cursor.get(key, value, MDB_NEXT)) {
-                        auto session = unpickle<SessionObject>(value, SECRET);
-                        session_storage.outbound_sessions[key] = std::move(session);
                 }
                 cursor.close();
         }
