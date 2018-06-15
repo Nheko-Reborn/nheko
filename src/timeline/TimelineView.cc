@@ -34,19 +34,6 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
-class StateKeeper
-{
-public:
-        StateKeeper(std::function<void()> &&fn)
-          : fn_(std::move(fn))
-        {}
-
-        ~StateKeeper() { fn_(); }
-
-private:
-        std::function<void()> fn_;
-};
-
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
 DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
@@ -1254,8 +1241,8 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
 
                 http::v2::client()->query_keys(
                   req,
-                  [keeper = std::move(keeper), megolm_payload](const mtx::responses::QueryKeys &res,
-                                                               mtx::http::RequestErr err) {
+                  [keeper = std::move(keeper), megolm_payload, this](
+                    const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("failed to query device keys: {} {}",
                                                      err->matrix_error.error,
@@ -1300,70 +1287,15 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                           http::v2::client()->claim_keys(
                                             dev.second.user_id,
                                             {dev.second.device_id},
-                                            [keeper,
-                                             room_key,
-                                             pks,
-                                             user_id   = dev.second.user_id,
-                                             device_id = dev.second.device_id](
-                                              const mtx::responses::ClaimKeys &res,
-                                              mtx::http::RequestErr err) {
-                                                    if (err) {
-                                                            nhlog::net()->warn(
-                                                              "claim keys error: {}",
-                                                              err->matrix_error.error);
-                                                            return;
-                                                    }
-
-                                                    nhlog::net()->info("claimed keys for {} - {}",
-                                                                       user_id,
-                                                                       device_id);
-
-                                                    auto retrieved_devices =
-                                                      res.one_time_keys.at(user_id);
-                                                    for (const auto &rd : retrieved_devices) {
-                                                            nhlog::net()->info("{} : \n {}",
-                                                                               rd.first,
-                                                                               rd.second.dump(2));
-
-                                                            // TODO: Verify signatures
-                                                            auto otk = rd.second.begin()->at("key");
-                                                            auto id_key = pks.curve25519;
-
-                                                            auto s = olm::client()
-                                                                       ->create_outbound_session(
-                                                                         id_key, otk);
-
-                                                            auto device_msg =
-                                                              olm::client()
-                                                                ->create_olm_encrypted_content(
-                                                                  s.get(),
-                                                                  room_key,
-                                                                  pks.curve25519);
-
-                                                            // TODO: Handle exception
-                                                            cache::client()->saveOlmSession(
-                                                              id_key, std::move(s));
-
-                                                            json body{
-                                                              {"messages",
-                                                               {{user_id,
-                                                                 {{device_id, device_msg}}}}}};
-
-                                                            http::v2::client()->send_to_device(
-                                                              "m.room.encrypted",
-                                                              body,
-                                                              [keeper](mtx::http::RequestErr err) {
-                                                                      if (err) {
-                                                                              nhlog::net()->warn(
-                                                                                "failed to send "
-                                                                                "send_to_device "
-                                                                                "message: {}",
-                                                                                err->matrix_error
-                                                                                  .error);
-                                                                      }
-                                                              });
-                                                    }
-                                            });
+                                            std::bind(&TimelineView::handleClaimedKeys,
+                                                      this,
+                                                      keeper,
+                                                      room_key,
+                                                      pks,
+                                                      dev.second.user_id,
+                                                      dev.second.device_id,
+                                                      std::placeholders::_1,
+                                                      std::placeholders::_2));
                                   }
                           }
                   });
@@ -1372,5 +1304,69 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                 nhlog::db()->critical(
                   "failed to open outbound megolm session ({}): {}", room_id, e.what());
                 return;
+        }
+}
+
+void
+TimelineView::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
+                                const std::string &room_key,
+                                const DevicePublicKeys &pks,
+                                const std::string &user_id,
+                                const std::string &device_id,
+                                const mtx::responses::ClaimKeys &res,
+                                mtx::http::RequestErr err)
+{
+        if (err) {
+                nhlog::net()->warn("claim keys error: {}", err->matrix_error.error);
+                return;
+        }
+
+        nhlog::net()->info("claimed keys for {} - {}", user_id, device_id);
+
+        if (res.one_time_keys.size() == 0) {
+                nhlog::net()->info("no one-time keys found for device_id: {}", device_id);
+                return;
+        }
+
+        if (res.one_time_keys.find(user_id) == res.one_time_keys.end()) {
+                nhlog::net()->info(
+                  "no one-time keys found in device_id {} for the user {}", device_id, user_id);
+                return;
+        }
+
+        auto retrieved_devices = res.one_time_keys.at(user_id);
+
+        for (const auto &rd : retrieved_devices) {
+                nhlog::net()->info("{} : \n {}", rd.first, rd.second.dump(2));
+
+                // TODO: Verify signatures
+                auto otk    = rd.second.begin()->at("key");
+                auto id_key = pks.curve25519;
+
+                auto s = olm::client()->create_outbound_session(id_key, otk);
+
+                auto device_msg =
+                  olm::client()->create_olm_encrypted_content(s.get(), room_key, pks.curve25519);
+
+                try {
+                        cache::client()->saveOlmSession(id_key, std::move(s));
+                } catch (const lmdb::error &e) {
+                        nhlog::db()->critical("failed to save outbound olm session: {}", e.what());
+                } catch (const mtx::crypto::olm_exception &e) {
+                        nhlog::crypto()->critical("failed to pickle outbound olm session: {}",
+                                                  e.what());
+                }
+
+                json body{{"messages", {{user_id, {{device_id, device_msg}}}}}};
+
+                http::v2::client()->send_to_device(
+                  "m.room.encrypted", body, [keeper](mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->warn("failed to send "
+                                                     "send_to_device "
+                                                     "message: {}",
+                                                     err->matrix_error.error);
+                          }
+                  });
         }
 }

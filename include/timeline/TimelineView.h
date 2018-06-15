@@ -33,6 +33,19 @@
 #include "ScrollBar.h"
 #include "TimelineItem.h"
 
+class StateKeeper
+{
+public:
+        StateKeeper(std::function<void()> &&fn)
+          : fn_(std::move(fn))
+        {}
+
+        ~StateKeeper() { fn_(); }
+
+private:
+        std::function<void()> fn_;
+};
+
 class FloatingButton;
 struct DescInfo;
 
@@ -180,6 +193,14 @@ private:
 
         TimelineEvent parseEncryptedEvent(
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
+
+        void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
+                               const std::string &room_key,
+                               const DevicePublicKeys &pks,
+                               const std::string &user_id,
+                               const std::string &device_id,
+                               const mtx::responses::ClaimKeys &res,
+                               mtx::http::RequestErr err);
 
         //! Callback for all message sending.
         void sendRoomMessageHandler(const std::string &txn_id,
