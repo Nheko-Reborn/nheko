@@ -602,11 +602,18 @@ TimelineView::updatePendingMessage(const std::string &txn_id, const QString &eve
 
                 if (msg.widget) {
                         msg.widget->setEventId(event_id);
-                        msg.widget->markReceived();
                         eventIds_[event_id] = msg.widget;
-                }
 
-                pending_sent_msgs_.append(msg);
+                        // If the response comes after we have received the event from sync
+                        // we've already marked the widget as received.
+                        if (!msg.widget->isReceived()) {
+                                msg.widget->markReceived();
+                                pending_sent_msgs_.append(msg);
+                        }
+                } else {
+                        nhlog::ui()->warn("[{}] received message response for invalid widget",
+                                          txn_id);
+                }
         }
 
         sendNextPendingMessage();
@@ -809,10 +816,10 @@ TimelineView::removePendingMessage(const std::string &txn_id)
         }
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
                 if (it->txn_id == txn_id) {
-                        int index = std::distance(pending_msgs_.begin(), it);
-                        pending_msgs_.removeAt(index);
+                        if (it->widget)
+                                it->widget->markReceived();
 
-                        nhlog::ui()->info("[{}] removed message before sync", txn_id);
+                        nhlog::ui()->info("[{}] received sync before message response", txn_id);
                         return;
                 }
         }

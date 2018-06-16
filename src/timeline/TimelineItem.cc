@@ -432,6 +432,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 void
 TimelineItem::markReceived()
 {
+        isReceived_ = true;
         checkmark_->setText(CHECKMARK);
         checkmark_->setAlignment(Qt::AlignTop);
 
