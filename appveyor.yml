@@ -15,7 +15,6 @@ install:
     - set QT_DIR=C:\Qt\5.10.1\msvc2017_64
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
     - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
-    - mingw32-make.exe --version
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
     - vcpkg install
             boost-asio:%PLATFORM%-windows
@@ -28,7 +27,6 @@ install:
             libsodium:%PLATFORM%-windows
             lmdb:%PLATFORM%-windows
             openssl:%PLATFORM%-windows
-            spdlog:%PLATFORM%-windows
             zlib:%PLATFORM%-windows
 
 build_script:
@@ -53,16 +51,12 @@ build_script:
     # Build & install the dependencies
     - cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
         -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
-        -DCMAKE_BUILD_TYPE=Release
         -DUSE_BUNDLED_BOOST=OFF
-        -DUSE_BUNDLED_SPDLOG=OFF
-        -DUSE_BUNDLED_GTEST=OFF
     - cmake --build .deps --config Release
 
     # Build nheko
     - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
       -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
-      -DCMAKE_BUILD_TYPE=Release
     - cmake --build build --config Release
 
 after_build:

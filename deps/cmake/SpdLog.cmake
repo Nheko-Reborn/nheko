@@ -1,3 +1,9 @@
+set(WINDOWS_FLAGS "")
+
+if(MSVC)
+    set(WINDOWS_FLAGS "-DCMAKE_GENERATOR_PLATFORM=x64")
+endif()
+
 ExternalProject_Add(
   SpdLog
 
@@ -10,8 +16,7 @@ ExternalProject_Add(
         -DCMAKE_INSTALL_PREFIX=${DEPS_INSTALL_DIR}
         -DSPDLOG_BUILD_EXAMPLES=0
         -DSPDLOG_BUILD_TESTING=0
-        -DCMAKE_BUILD_TYPE=Release
         ${DEPS_BUILD_DIR}/spdlog
-)
+        ${WINDOWS_FLAGS})
 
 list(APPEND THIRD_PARTY_DEPS SpdLog)

@@ -11,7 +11,6 @@ if [ $TRAVIS_OS_NAME == osx ]; then
 fi
 
 # Build & install dependencies
-mkdir -p .deps/usr/{lib,include}/
 cmake -Hdeps -B.deps \
     -DUSE_BUNDLED_BOOST=${USE_BUNDLED_BOOST} \
     -DUSE_BUNDLED_SPDLOG=${USE_BUNDLED_SPDLOG}

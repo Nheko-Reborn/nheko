@@ -1,3 +1,9 @@
+set(WINDOWS_FLAGS "")
+
+if(MSVC)
+    set(WINDOWS_FLAGS "-DCMAKE_GENERATOR_PLATFORM=x64")
+endif()
+
 ExternalProject_Add(
   Olm
 
@@ -16,11 +22,13 @@ ExternalProject_Add(
       -DCMAKE_INSTALL_PREFIX=${DEPS_INSTALL_DIR}
       -DCMAKE_BUILD_TYPE=Release
       ${DEPS_BUILD_DIR}/olm
+      ${WINDOWS_FLAGS}
   BUILD_COMMAND ${CMAKE_COMMAND}
     --build ${DEPS_BUILD_DIR}/olm
     --config Release
   INSTALL_COMMAND ${CMAKE_COMMAND}
     --build ${DEPS_BUILD_DIR}/olm
+    --config Release
     --target install)
 
 list(APPEND THIRD_PARTY_DEPS Olm)

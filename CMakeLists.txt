@@ -29,12 +29,6 @@ set(IDENTIFIER "com.github.mujx.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
 
-set(DEPS_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/.deps/usr"
-    CACHE PATH "Path prefix for finding dependencies")
-list(INSERT CMAKE_PREFIX_PATH 0 ${DEPS_PREFIX})
-
-include_directories(SYSTEM ${DEPS_PREFIX}/include)
-
 if(APPLE)
     set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
 endif()
@@ -208,8 +202,10 @@ set(EXTERNAL_PROJECT_DEPS "")
 
 find_package(ZLIB REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(MatrixStructs REQUIRED)
-find_package(MatrixClient REQUIRED)
+find_package(MatrixStructs 0.1.0 REQUIRED)
+find_package(MatrixClient 0.1.0 REQUIRED)
+find_package(Olm 2 REQUIRED)
+find_package(spdlog 0.16.0 CONFIG REQUIRED)
 
 #
 # tweeny
@@ -315,7 +311,8 @@ set(COMMON_LIBS
     MatrixClient::MatrixClient
     Qt5::Widgets
     Qt5::Svg
-    Qt5::Concurrent)
+    Qt5::Concurrent
+    Qt5::Multimedia)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
@@ -345,13 +342,13 @@ endif()
 
 if(APPLE)
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras Qt5::Multimedia)
+    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras)
 elseif(WIN32)
     add_executable (nheko ${OS_BUNDLE} ${ICON_FILE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain Qt5::Multimedia)
+    target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain)
 else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::Multimedia)
+    target_link_libraries (nheko ${NHEKO_LIBS})
 endif()
 
 if(EXTERNAL_PROJECT_DEPS)

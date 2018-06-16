@@ -31,8 +31,8 @@
 
 using namespace dialogs;
 
-static constexpr const char *DEFAULT = "Upload %1?";
-static constexpr const char *ERROR   = "Failed to load image type '%1'. Continue upload?";
+constexpr const char *DEFAULT = "Upload %1?";
+constexpr const char *ERR_MSG = "Failed to load image type '%1'. Continue upload?";
 
 PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
   : QWidget{parent}
@@ -105,7 +105,7 @@ PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64
 {
         if (mediaType_ == "image") {
                 if (!image_.loadFromData(data_)) {
-                        titleLabel_.setText(QString{tr(ERROR)}.arg(type));
+                        titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
                 } else {
                         titleLabel_.setText(QString{tr(DEFAULT)}.arg(mediaType_));
                 }
