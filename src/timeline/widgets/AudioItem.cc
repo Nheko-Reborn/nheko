@@ -16,13 +16,13 @@
  */
 
 #include <QBrush>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QFile>
 #include <QFileDialog>
 #include <QPainter>
 #include <QPixmap>
 
+#include "Logging.hpp"
 #include "MatrixClient.h"
 #include "Utils.h"
 
@@ -50,21 +50,12 @@ AudioItem::init()
         playIcon_.addFile(":/icons/icons/ui/play-sign.png");
         pauseIcon_.addFile(":/icons/icons/ui/pause-symbol.png");
 
-        QList<QString> url_parts = url_.toString().split("mxc://");
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for image" << url_.toString();
-                return;
-        }
-
-        QString media_params = url_parts[1];
-        url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(http::client()->getHomeServer().toString(), media_params);
-
         player_ = new QMediaPlayer;
         player_->setMedia(QUrl(url_));
         player_->setVolume(100);
         player_->setNotifyInterval(1000);
 
+        connect(this, &AudioItem::fileDownloadedCb, this, &AudioItem::fileDownloaded);
         connect(player_, &QMediaPlayer::stateChanged, this, [this](QMediaPlayer::State state) {
                 if (state == QMediaPlayer::StoppedState) {
                         state_ = AudioState::Play;
@@ -129,14 +120,20 @@ AudioItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                auto proxy = http::client()->downloadFile(url_);
-                connect(proxy.data(),
-                        &DownloadMediaProxy::fileDownloaded,
-                        this,
-                        [proxy, this](const QByteArray &data) {
-                                proxy->deleteLater();
-                                fileDownloaded(data);
-                        });
+                http::v2::client()->download(
+                  url_.toString().toStdString(),
+                  [this](const std::string &data,
+                         const std::string &,
+                         const std::string &,
+                         mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->info("failed to retrieve m.audio content: {}",
+                                                     url_.toString().toStdString());
+                                  return;
+                          }
+
+                          emit fileDownloadedCb(QByteArray(data.data(), data.size()));
+                  });
         }
 }
 
@@ -151,8 +148,8 @@ AudioItem::fileDownloaded(const QByteArray &data)
 
                 file.write(data);
                 file.close();
-        } catch (const std::exception &ex) {
-                qDebug() << "Error while saving file to:" << ex.what();
+        } catch (const std::exception &e) {
+                nhlog::ui()->warn("error while saving file: {}", e.what());
         }
 }
 

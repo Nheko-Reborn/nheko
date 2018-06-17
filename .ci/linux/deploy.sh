@@ -7,7 +7,7 @@ DIR=${APP}.AppDir
 TAG=`git tag -l --points-at HEAD`
 
 # Set up AppImage structure.
-mkdir -p ${DIR}/usr/{bin,share/pixmaps,share/applications}
+mkdir -p ${DIR}/usr/{bin,lib,share/pixmaps,share/applications}
 
 # Copy resources.
 cp build/nheko ${DIR}/usr/bin
@@ -30,9 +30,13 @@ unset QTDIR
 unset QT_PLUGIN_PATH 
 unset LD_LIBRARY_PATH
 
-./linuxdeployqt*.AppImage \
-    ${DIR}/usr/share/applications/nheko.desktop \
-    -bundle-non-qt-libs\
-    -appimage
+export ARCH=$(uname -m)
+
+./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -bundle-non-qt-libs
+./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -appimage
 
 chmod +x nheko-x86_64.AppImage
+
+if [ ! -z $TRAVIS_TAG ]; then
+    mv nheko-x86_64.AppImage nheko-${TRAVIS_TAG}-x86_64.AppImage
+fi

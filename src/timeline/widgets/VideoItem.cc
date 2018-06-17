@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include <QLabel>
 #include <QVBoxLayout>
 
@@ -27,15 +26,15 @@
 void
 VideoItem::init()
 {
-        QList<QString> url_parts = url_.toString().split("mxc://");
-        if (url_parts.size() != 2) {
-                qDebug() << "Invalid format for image" << url_.toString();
-                return;
-        }
+        // QList<QString> url_parts = url_.toString().split("mxc://");
+        // if (url_parts.size() != 2) {
+        //         qDebug() << "Invalid format for image" << url_.toString();
+        //         return;
+        // }
 
-        QString media_params = url_parts[1];
-        url_                 = QString("%1/_matrix/media/r0/download/%2")
-                 .arg(http::client()->getHomeServer().toString(), media_params);
+        // QString media_params = url_parts[1];
+        // url_                 = QString("%1/_matrix/media/r0/download/%2")
+        //          .arg(http::client()->getHomeServer().toString(), media_params);
 }
 
 VideoItem::VideoItem(const mtx::events::RoomEvent<mtx::events::msg::Video> &event, QWidget *parent)

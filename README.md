@@ -14,6 +14,7 @@ feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IR
 Most of the features you would expect from a chat application are missing right now
 but we are getting close to a more feature complete client.
 Specifically there is support for:
+- E2EE encryption.
 - User registration.
 - Creating, joining & leaving rooms.
 - Sending & receiving invites.
@@ -29,20 +30,15 @@ Specifically there is support for:
 
 ## Installation
 
-### Nightly releases
-- Linux [AppImage](https://github.com/mujx/nheko/releases/download/nightly/nheko-x86_64.AppImage)
-- Windows [x64 installer](https://github.com/mujx/nheko/releases/download/nightly/nheko-installer.exe)
-- macOS [disk image](https://github.com/mujx/nheko/releases/download/nightly/nheko.dmg)
+### Releases
+
+You can find releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer) on the [Bintray repo](https://bintray.com/mujx/matrix/nheko).
 
 ### Repositories
 
 #### Arch Linux
 ```bash
-pacaur -S nheko-git
-
-# or
-
-pacaur -S nheko
+pacaur -S nheko # nheko-git
 ```
 
 #### Fedora
@@ -69,7 +65,13 @@ sudo apk add nheko
 - Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
   Freetype, which is essential to properly support emoji.
 - CMake 3.1 or greater.
-- [LMDB](https://symas.com/lightning-memory-mapped-database/).
+- [mtxclient](https://github.com/mujx/mtxclient)
+- [matrix-structs](https://github.com/mujx/matrix-structs)
+- [LMDB](https://symas.com/lightning-memory-mapped-database/)
+- Boost 1.66 or greater.
+- [libolm](https://git.matrix.org/git/olm)
+- [libsodium](https://github.com/jedisct1/libsodium)
+- [spdlog](https://github.com/gabime/spdlog)
 - A compiler that supports C++ 14:
     - Clang 5 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)
@@ -89,7 +91,16 @@ Debian as the build host in an attempt to work around this [issue](https://githu
 ##### Arch Linux
 
 ```bash
-sudo pacman -S qt5-base qt5-tools qt5-multimedia qt5-svg cmake gcc fontconfig lmdb
+sudo pacman -S qt5-base \
+    qt5-tools \
+    qt5-multimedia \
+    qt5-svg \
+    cmake \
+    gcc \
+    fontconfig \
+    lmdb \
+    boost \
+    libsodium
 ```
 
 ##### Gentoo Linux
@@ -105,14 +116,14 @@ sudo add-apt-repository ppa:beineri/opt-qt592-trusty
 sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo add-apt-repository ppa:ubuntu-toolchain-r-test
 sudo apt-get update
-sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev
+sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev 
 ```
 
 ##### macOS (Xcode 8 or later)
 
 ```bash
 brew update
-brew install qt5 lmdb cmake llvm
+brew install qt5 lmdb cmake llvm libsodium spdlog boost
 ```
 
 ##### Windows
@@ -136,16 +147,19 @@ cd vcpkg
 
 ### Building
 
-Clone the repo and run
+First we need to install the rest of the dependencies that are not available in our system
 
 ```bash
-make release
+cmake -Hdeps -B.deps \
+    -DUSE_BUNDLED_BOOST=OFF # if we already have boost & spdlog installed.
+    -DUSE_BUNDLED_SPDLOG=OFF
+cmake --build .deps
 ```
 
-which invokes cmake and translates to
+We can now build nheko by pointing it to the path that we installed the dependencies.
 
 ```bash
-cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.deps/usr
 cmake --build build
 ```
 
@@ -162,7 +176,7 @@ You might need to pass `-DCMAKE_PREFIX_PATH` to cmake to point it at your qt5 in
 e.g on macOS
 
 ```
-cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
+cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
 cmake --build build
 ```
 

@@ -193,15 +193,16 @@ public:
         QString eventId() const { return event_id_; }
         void setEventId(const QString &event_id) { event_id_ = event_id; }
         void markReceived();
+        bool isReceived() { return isReceived_; };
         void setRoomId(QString room_id) { room_id_ = room_id; }
-        void sendReadReceipt() const
-        {
-                if (!event_id_.isEmpty())
-                        http::client()->readEvent(room_id_, event_id_);
-        }
+        void sendReadReceipt() const;
 
         //! Add a user avatar for this event.
         void addAvatar();
+
+signals:
+        void eventRedacted(const QString &event_id);
+        void redactionFailed(const QString &msg);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -224,6 +225,10 @@ private:
 
         void setupAvatarLayout(const QString &userName);
         void setupSimpleLayout();
+
+        //! Whether or not the event associated with the widget
+        //! has been acknowledged by the server.
+        bool isReceived_ = false;
 
         QString replaceEmoji(const QString &body);
         QString event_id_;

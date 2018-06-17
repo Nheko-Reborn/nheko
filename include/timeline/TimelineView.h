@@ -18,7 +18,6 @@
 #pragma once
 
 #include <QApplication>
-#include <QDebug>
 #include <QLayout>
 #include <QList>
 #include <QQueue>
@@ -34,6 +33,19 @@
 #include "ScrollBar.h"
 #include "TimelineItem.h"
 
+class StateKeeper
+{
+public:
+        StateKeeper(std::function<void()> &&fn)
+          : fn_(std::move(fn))
+        {}
+
+        ~StateKeeper() { fn_(); }
+
+private:
+        std::function<void()> fn_;
+};
+
 class FloatingButton;
 struct DescInfo;
 
@@ -42,32 +54,43 @@ struct DescInfo;
 struct PendingMessage
 {
         mtx::events::MessageType ty;
-        int txn_id;
+        std::string txn_id;
         QString body;
         QString filename;
         QString mime;
         uint64_t media_size;
         QString event_id;
         TimelineItem *widget;
-
-        PendingMessage(mtx::events::MessageType ty,
-                       int txn_id,
-                       QString body,
-                       QString filename,
-                       QString mime,
-                       uint64_t media_size,
-                       QString event_id,
-                       TimelineItem *widget)
-          : ty(ty)
-          , txn_id(txn_id)
-          , body(body)
-          , filename(filename)
-          , mime(mime)
-          , media_size(media_size)
-          , event_id(event_id)
-          , widget(widget)
-        {}
+        bool is_encrypted = false;
 };
+
+template<class MessageT>
+MessageT
+toRoomMessage(const PendingMessage &) = delete;
+
+template<>
+mtx::events::msg::Audio
+toRoomMessage<mtx::events::msg::Audio>(const PendingMessage &m);
+
+template<>
+mtx::events::msg::Emote
+toRoomMessage<mtx::events::msg::Emote>(const PendingMessage &m);
+
+template<>
+mtx::events::msg::File
+toRoomMessage<mtx::events::msg::File>(const PendingMessage &);
+
+template<>
+mtx::events::msg::Image
+toRoomMessage<mtx::events::msg::Image>(const PendingMessage &m);
+
+template<>
+mtx::events::msg::Text
+toRoomMessage<mtx::events::msg::Text>(const PendingMessage &);
+
+template<>
+mtx::events::msg::Video
+toRoomMessage<mtx::events::msg::Video>(const PendingMessage &m);
 
 // In which place new TimelineItems should be inserted.
 enum class TimelineDirection
@@ -129,7 +152,7 @@ public:
                             const QString &filename,
                             const QString &mime,
                             uint64_t size);
-        void updatePendingMessage(int txn_id, QString event_id);
+        void updatePendingMessage(const std::string &txn_id, const QString &event_id);
         void scrollDown();
         QLabel *createDateSeparator(QDateTime datetime);
 
@@ -142,18 +165,21 @@ public slots:
         void fetchHistory();
 
         // Add old events at the top of the timeline.
-        void addBackwardsEvents(const QString &room_id, const mtx::responses::Messages &msgs);
+        void addBackwardsEvents(const mtx::responses::Messages &msgs);
 
         // Whether or not the initial batch has been loaded.
         bool hasLoaded() { return scroll_layout_->count() > 1 || isTimelineFinished; }
 
-        void handleFailedMessage(int txnid);
+        void handleFailedMessage(const std::string &txn_id);
 
 private slots:
         void sendNextPendingMessage();
 
 signals:
         void updateLastTimelineMessage(const QString &user, const DescInfo &info);
+        void messagesRetrieved(const mtx::responses::Messages &res);
+        void messageFailed(const std::string &txn_id);
+        void messageSent(const std::string &txn_id, const QString &event_id);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -165,6 +191,25 @@ private:
 
         QWidget *relativeWidget(TimelineItem *item, int dt) const;
 
+        TimelineEvent parseEncryptedEvent(
+          const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
+
+        void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
+                               const std::string &room_key,
+                               const DevicePublicKeys &pks,
+                               const std::string &user_id,
+                               const std::string &device_id,
+                               const mtx::responses::ClaimKeys &res,
+                               mtx::http::RequestErr err);
+
+        //! Callback for all message sending.
+        void sendRoomMessageHandler(const std::string &txn_id,
+                                    const mtx::responses::EventId &res,
+                                    mtx::http::RequestErr err);
+        void prepareEncryptedMessage(const PendingMessage &msg);
+
+        //! Call the /messages endpoint to fill the timeline.
+        void getMessages();
         //! HACK: Fixing layout flickering when adding to the bottom
         //! of the timeline.
         void pushTimelineItem(TimelineItem *item)
@@ -230,8 +275,10 @@ private:
                               uint64_t origin_server_ts,
                               TimelineDirection direction);
 
-        bool isPendingMessage(const QString &txnid, const QString &sender, const QString &userid);
-        void removePendingMessage(const QString &txnid);
+        bool isPendingMessage(const std::string &txn_id,
+                              const QString &sender,
+                              const QString &userid);
+        void removePendingMessage(const std::string &txn_id);
 
         bool isDuplicate(const QString &event_id) { return eventIds_.contains(event_id); }
 
@@ -315,14 +362,18 @@ TimelineView::addUserMessage(const QString &url,
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
-        QApplication::processEvents();
-
         // Keep track of the sender and the timestamp of the current message.
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
 
-        int txn_id = http::client()->incrementTransactionId();
+        PendingMessage message;
+        message.ty         = MsgType;
+        message.txn_id     = http::v2::client()->generate_txn_id();
+        message.body       = url;
+        message.filename   = trimmed;
+        message.mime       = mime;
+        message.media_size = size;
+        message.widget     = view_item;
 
-        PendingMessage message(MsgType, txn_id, url, trimmed, mime, size, "", view_item);
         handleNewUserMessage(message);
 }
 
@@ -351,10 +402,10 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
         const auto event_id = QString::fromStdString(event.event_id);
         const auto sender   = QString::fromStdString(event.sender);
 
-        const QString txnid = QString::fromStdString(event.unsigned_data.transaction_id);
-        if ((!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) ||
+        const auto txn_id = event.unsigned_data.transaction_id;
+        if ((!txn_id.empty() && isPendingMessage(txn_id, sender, local_user_)) ||
             isDuplicate(event_id)) {
-                removePendingMessage(txnid);
+                removePendingMessage(txn_id);
                 return nullptr;
         }
 
@@ -376,10 +427,10 @@ TimelineView::processMessageEvent(const Event &event, TimelineDirection directio
         const auto event_id = QString::fromStdString(event.event_id);
         const auto sender   = QString::fromStdString(event.sender);
 
-        const QString txnid = QString::fromStdString(event.unsigned_data.transaction_id);
-        if ((!txnid.isEmpty() && isPendingMessage(txnid, sender, local_user_)) ||
+        const auto txn_id = event.unsigned_data.transaction_id;
+        if ((!txn_id.empty() && isPendingMessage(txn_id, sender, local_user_)) ||
             isDuplicate(event_id)) {
-                removePendingMessage(txnid);
+                removePendingMessage(txn_id);
                 return nullptr;
         }
 

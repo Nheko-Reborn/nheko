@@ -17,7 +17,6 @@
 
 #include <QApplication>
 #include <QLayout>
-#include <QNetworkReply>
 #include <QSettings>
 #include <QShortcut>
 
@@ -26,6 +25,7 @@
 #include "ChatPage.h"
 #include "Config.h"
 #include "LoadingIndicator.h"
+#include "Logging.hpp"
 #include "LoginPage.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -53,9 +53,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
         setWindowTitle("nheko");
         setObjectName("MainWindow");
-
-        // Initialize the http client.
-        http::init();
 
         restoreWindowSize();
 
@@ -124,20 +121,12 @@ MainWindow::MainWindow(QWidget *parent)
         connect(
           chat_page_, &ChatPage::showUserSettingsPage, this, &MainWindow::showUserSettingsPage);
 
-        connect(http::client(),
-                SIGNAL(loginSuccess(QString, QString, QString)),
-                this,
-                SLOT(showChatPage(QString, QString, QString)));
-
-        connect(http::client(),
-                SIGNAL(registerSuccess(QString, QString, QString)),
-                this,
-                SLOT(showChatPage(QString, QString, QString)));
-        connect(http::client(), &MatrixClient::invalidToken, this, [this]() {
-                chat_page_->deleteConfigs();
-                showLoginPage();
-                login_page_->loginError("Invalid token detected. Please try to login again.");
+        connect(login_page_, &LoginPage::loginOk, this, [this](const mtx::responses::Login &res) {
+                http::v2::client()->set_user(res.user_id);
+                showChatPage();
         });
+
+        connect(register_page_, &RegisterPage::registerOk, this, &MainWindow::showChatPage);
 
         QShortcut *quitShortcut = new QShortcut(QKeySequence::Quit, this);
         connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
@@ -156,8 +145,21 @@ MainWindow::MainWindow(QWidget *parent)
                 QString token       = settings.value("auth/access_token").toString();
                 QString home_server = settings.value("auth/home_server").toString();
                 QString user_id     = settings.value("auth/user_id").toString();
+                QString device_id   = settings.value("auth/device_id").toString();
 
-                showChatPage(user_id, home_server, token);
+                http::v2::client()->set_access_token(token.toStdString());
+                http::v2::client()->set_server(home_server.toStdString());
+                http::v2::client()->set_device_id(device_id.toStdString());
+
+                try {
+                        using namespace mtx::identifiers;
+                        http::v2::client()->set_user(parse<User>(user_id.toStdString()));
+                } catch (const std::invalid_argument &e) {
+                        nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
+                                              user_id.toStdString());
+                }
+
+                showChatPage();
         }
 }
 
@@ -216,12 +218,19 @@ MainWindow::removeOverlayProgressBar()
 }
 
 void
-MainWindow::showChatPage(QString userid, QString homeserver, QString token)
+MainWindow::showChatPage()
 {
+        auto userid     = QString::fromStdString(http::v2::client()->user_id().to_string());
+        auto device_id  = QString::fromStdString(http::v2::client()->device_id());
+        auto homeserver = QString::fromStdString(http::v2::client()->server() + ":" +
+                                                 std::to_string(http::v2::client()->port()));
+        auto token      = QString::fromStdString(http::v2::client()->access_token());
+
         QSettings settings;
         settings.setValue("auth/access_token", token);
         settings.setValue("auth/home_server", homeserver);
         settings.setValue("auth/user_id", userid);
+        settings.setValue("auth/device_id", device_id);
 
         showOverlayProgressBar();
 
@@ -317,7 +326,7 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
                         leaveRoomModal_->hide();
 
                         if (leaving)
-                                http::client()->leaveRoom(roomToLeave);
+                                chat_page_->leaveRoom(roomToLeave);
                 });
 
         leaveRoomModal_ =

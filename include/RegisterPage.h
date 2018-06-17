@@ -44,6 +44,11 @@ signals:
         void backButtonClicked();
         void errorOccurred();
         void registering();
+        void registerOk();
+        void registerErrorCb(const QString &msg);
+        void registrationFlow(const std::string &user,
+                              const std::string &pass,
+                              const std::string &session);
 
 private slots:
         void onBackButtonClicked();

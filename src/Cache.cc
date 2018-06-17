@@ -19,7 +19,6 @@
 #include <stdexcept>
 
 #include <QByteArray>
-#include <QDebug>
 #include <QFile>
 #include <QHash>
 #include <QStandardPaths>
@@ -27,29 +26,46 @@
 #include <variant.hpp>
 
 #include "Cache.h"
+#include "Logging.hpp"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.05.11");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.06.10");
+static const std::string SECRET("secret");
 
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
+static const lmdb::val OLM_ACCOUNT_KEY("olm_account");
 static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 
 //! Cache databases and their format.
 //!
 //! Contains UI information for the joined rooms. (i.e name, topic, avatar url etc).
 //! Format: room_id -> RoomInfo
-static constexpr const char *ROOMS_DB   = "rooms";
-static constexpr const char *INVITES_DB = "invites";
+constexpr auto ROOMS_DB("rooms");
+constexpr auto INVITES_DB("invites");
 //! Keeps already downloaded media for reuse.
 //! Format: matrix_url -> binary data.
-static constexpr const char *MEDIA_DB = "media";
+constexpr auto MEDIA_DB("media");
 //! Information that  must be kept between sync requests.
-static constexpr const char *SYNC_STATE_DB = "sync_state";
+constexpr auto SYNC_STATE_DB("sync_state");
 //! Read receipts per room/event.
-static constexpr const char *READ_RECEIPTS_DB = "read_receipts";
-static constexpr const char *NOTIFICATIONS_DB = "sent_notifications";
+constexpr auto READ_RECEIPTS_DB("read_receipts");
+constexpr auto NOTIFICATIONS_DB("sent_notifications");
+
+//! Encryption related databases.
+
+//! user_id -> list of devices
+constexpr auto DEVICES_DB("devices");
+//! device_id -> device keys
+constexpr auto DEVICE_KEYS_DB("device_keys");
+//! room_ids that have encryption enabled.
+constexpr auto ENCRYPTED_ROOMS_DB("encrypted_rooms");
+
+//! room_id -> pickled OlmInboundGroupSession
+constexpr auto INBOUND_MEGOLM_SESSIONS_DB("inbound_megolm_sessions");
+//! MegolmSessionIndex -> pickled OlmOutboundGroupSession
+constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
 
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
@@ -62,8 +78,15 @@ namespace cache {
 void
 init(const QString &user_id)
 {
-        if (!instance_)
-                instance_ = std::make_unique<Cache>(user_id);
+        qRegisterMetaType<SearchResult>();
+        qRegisterMetaType<QVector<SearchResult>>();
+        qRegisterMetaType<RoomMember>();
+        qRegisterMetaType<RoomSearchResult>();
+        qRegisterMetaType<RoomInfo>();
+        qRegisterMetaType<QMap<QString, RoomInfo>>();
+        qRegisterMetaType<std::map<QString, RoomInfo>>();
+
+        instance_ = std::make_unique<Cache>(user_id);
 }
 
 Cache *
@@ -71,7 +94,7 @@ client()
 {
         return instance_.get();
 }
-}
+} // namespace cache
 
 Cache::Cache(const QString &userId, QObject *parent)
   : QObject{parent}
@@ -82,15 +105,21 @@ Cache::Cache(const QString &userId, QObject *parent)
   , mediaDb_{0}
   , readReceiptsDb_{0}
   , notificationsDb_{0}
+  , devicesDb_{0}
+  , deviceKeysDb_{0}
+  , inboundMegolmSessionDb_{0}
+  , outboundMegolmSessionDb_{0}
   , localUserId_{userId}
-{}
+{
+        setup();
+}
 
 void
 Cache::setup()
 {
-        qDebug() << "Setting up cache";
+        nhlog::db()->debug("setting up cache");
 
-        auto statePath = QString("%1/%2/state")
+        auto statePath = QString("%1/%2")
                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
                            .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()));
 
@@ -105,7 +134,7 @@ Cache::setup()
         env_.set_max_dbs(1024UL);
 
         if (isInitial) {
-                qDebug() << "First time initializing LMDB";
+                nhlog::db()->info("initializing LMDB");
 
                 if (!QDir().mkpath(statePath)) {
                         throw std::runtime_error(
@@ -121,7 +150,7 @@ Cache::setup()
                                                  std::string(e.what()));
                 }
 
-                qWarning() << "Resetting cache due to LMDB version mismatch:" << e.what();
+                nhlog::db()->warn("resetting cache due to LMDB version mismatch: {}", e.what());
 
                 QDir stateDir(statePath);
 
@@ -141,28 +170,313 @@ Cache::setup()
         mediaDb_         = lmdb::dbi::open(txn, MEDIA_DB, MDB_CREATE);
         readReceiptsDb_  = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
         notificationsDb_ = lmdb::dbi::open(txn, NOTIFICATIONS_DB, MDB_CREATE);
-        txn.commit();
 
-        qRegisterMetaType<RoomInfo>();
+        // Device management
+        devicesDb_    = lmdb::dbi::open(txn, DEVICES_DB, MDB_CREATE);
+        deviceKeysDb_ = lmdb::dbi::open(txn, DEVICE_KEYS_DB, MDB_CREATE);
+
+        // Session management
+        inboundMegolmSessionDb_  = lmdb::dbi::open(txn, INBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
+        outboundMegolmSessionDb_ = lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
+
+        txn.commit();
 }
 
 void
-Cache::saveImage(const QString &url, const QByteArray &image)
+Cache::setEncryptedRoom(const std::string &room_id)
 {
-        auto key = url.toUtf8();
+        nhlog::db()->info("mark room {} as encrypted", room_id);
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+        lmdb::dbi_put(txn, db, lmdb::val(room_id), lmdb::val("0"));
+        txn.commit();
+}
+
+bool
+Cache::isRoomEncrypted(const std::string &room_id)
+{
+        lmdb::val unused;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+        auto res = lmdb::dbi_get(txn, db, lmdb::val(room_id), unused);
+        txn.commit();
+
+        return res;
+}
+
+//
+// Device Management
+//
+
+//
+// Session Management
+//
+
+void
+Cache::saveInboundMegolmSession(const MegolmSessionIndex &index,
+                                mtx::crypto::InboundGroupSessionPtr session)
+{
+        using namespace mtx::crypto;
+        const auto key     = index.to_hash();
+        const auto pickled = pickle<InboundSessionObject>(session.get(), SECRET);
+
+        auto txn = lmdb::txn::begin(env_);
+        lmdb::dbi_put(txn, inboundMegolmSessionDb_, lmdb::val(key), lmdb::val(pickled));
+        txn.commit();
+
+        {
+                std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
+                session_storage.group_inbound_sessions[key] = std::move(session);
+        }
+}
+
+OlmInboundGroupSession *
+Cache::getInboundMegolmSession(const MegolmSessionIndex &index)
+{
+        std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
+        return session_storage.group_inbound_sessions[index.to_hash()].get();
+}
+
+bool
+Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept
+{
+        std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
+        return session_storage.group_inbound_sessions.find(index.to_hash()) !=
+               session_storage.group_inbound_sessions.end();
+}
+
+void
+Cache::updateOutboundMegolmSession(const std::string &room_id, int message_index)
+{
+        using namespace mtx::crypto;
+
+        if (!outboundMegolmSessionExists(room_id))
+                return;
+
+        OutboundGroupSessionData data;
+        OlmOutboundGroupSession *session;
+        {
+                std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
+                data    = session_storage.group_outbound_session_data[room_id];
+                session = session_storage.group_outbound_sessions[room_id].get();
+
+                // Update with the current message.
+                data.message_index                                   = message_index;
+                session_storage.group_outbound_session_data[room_id] = data;
+        }
+
+        // Save the updated pickled data for the session.
+        json j;
+        j["data"]    = data;
+        j["session"] = pickle<OutboundSessionObject>(session, SECRET);
+
+        auto txn = lmdb::txn::begin(env_);
+        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
+        txn.commit();
+}
+
+void
+Cache::saveOutboundMegolmSession(const std::string &room_id,
+                                 const OutboundGroupSessionData &data,
+                                 mtx::crypto::OutboundGroupSessionPtr session)
+{
+        using namespace mtx::crypto;
+        const auto pickled = pickle<OutboundSessionObject>(session.get(), SECRET);
+
+        json j;
+        j["data"]    = data;
+        j["session"] = pickled;
+
+        auto txn = lmdb::txn::begin(env_);
+        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
+        txn.commit();
+
+        {
+                std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
+                session_storage.group_outbound_session_data[room_id] = data;
+                session_storage.group_outbound_sessions[room_id]     = std::move(session);
+        }
+}
+
+bool
+Cache::outboundMegolmSessionExists(const std::string &room_id) noexcept
+{
+        std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
+        return (session_storage.group_outbound_sessions.find(room_id) !=
+                session_storage.group_outbound_sessions.end()) &&
+               (session_storage.group_outbound_session_data.find(room_id) !=
+                session_storage.group_outbound_session_data.end());
+}
+
+OutboundGroupSessionDataRef
+Cache::getOutboundMegolmSession(const std::string &room_id)
+{
+        std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
+        return OutboundGroupSessionDataRef{session_storage.group_outbound_sessions[room_id].get(),
+                                           session_storage.group_outbound_session_data[room_id]};
+}
+
+//
+// OLM sessions.
+//
+
+void
+Cache::saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session)
+{
+        using namespace mtx::crypto;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
+
+        const auto pickled    = pickle<SessionObject>(session.get(), SECRET);
+        const auto session_id = mtx::crypto::session_id(session.get());
+
+        lmdb::dbi_put(txn, db, lmdb::val(session_id), lmdb::val(pickled));
+
+        txn.commit();
+}
+
+boost::optional<mtx::crypto::OlmSessionPtr>
+Cache::getOlmSession(const std::string &curve25519, const std::string &session_id)
+{
+        using namespace mtx::crypto;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
+
+        lmdb::val pickled;
+        bool found = lmdb::dbi_get(txn, db, lmdb::val(session_id), pickled);
+
+        txn.commit();
+
+        if (found) {
+                auto data = std::string(pickled.data(), pickled.size());
+                return unpickle<SessionObject>(data, SECRET);
+        }
+
+        return boost::none;
+}
+
+std::vector<std::string>
+Cache::getOlmSessions(const std::string &curve25519)
+{
+        using namespace mtx::crypto;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
+
+        std::string session_id, unused;
+        std::vector<std::string> res;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(session_id, unused, MDB_NEXT))
+                res.emplace_back(session_id);
+        cursor.close();
+
+        txn.commit();
+
+        return res;
+}
+
+void
+Cache::saveOlmAccount(const std::string &data)
+{
+        auto txn = lmdb::txn::begin(env_);
+        lmdb::dbi_put(txn, syncStateDb_, OLM_ACCOUNT_KEY, lmdb::val(data));
+        txn.commit();
+}
+
+void
+Cache::restoreSessions()
+{
+        using namespace mtx::crypto;
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        std::string key, value;
+
+        //
+        // Inbound Megolm Sessions
+        //
+        {
+                auto cursor = lmdb::cursor::open(txn, inboundMegolmSessionDb_);
+                while (cursor.get(key, value, MDB_NEXT)) {
+                        auto session = unpickle<InboundSessionObject>(value, SECRET);
+                        session_storage.group_inbound_sessions[key] = std::move(session);
+                }
+                cursor.close();
+        }
+
+        //
+        // Outbound Megolm Sessions
+        //
+        {
+                auto cursor = lmdb::cursor::open(txn, outboundMegolmSessionDb_);
+                while (cursor.get(key, value, MDB_NEXT)) {
+                        json obj;
+
+                        try {
+                                obj = json::parse(value);
+
+                                session_storage.group_outbound_session_data[key] =
+                                  obj.at("data").get<OutboundGroupSessionData>();
+
+                                auto session =
+                                  unpickle<OutboundSessionObject>(obj.at("session"), SECRET);
+                                session_storage.group_outbound_sessions[key] = std::move(session);
+                        } catch (const nlohmann::json::exception &e) {
+                                nhlog::db()->critical(
+                                  "failed to parse outbound megolm session data: {}", e.what());
+                        }
+                }
+                cursor.close();
+        }
+
+        txn.commit();
+
+        nhlog::db()->info("sessions restored");
+}
+
+std::string
+Cache::restoreOlmAccount()
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        lmdb::val pickled;
+        lmdb::dbi_get(txn, syncStateDb_, OLM_ACCOUNT_KEY, pickled);
+        txn.commit();
+
+        return std::string(pickled.data(), pickled.size());
+}
+
+//
+// Media Management
+//
+
+void
+Cache::saveImage(const std::string &url, const std::string &img_data)
+{
+        if (url.empty() || img_data.empty())
+                return;
 
         try {
                 auto txn = lmdb::txn::begin(env_);
 
                 lmdb::dbi_put(txn,
                               mediaDb_,
-                              lmdb::val(key.data(), key.size()),
-                              lmdb::val(image.data(), image.size()));
+                              lmdb::val(url.data(), url.size()),
+                              lmdb::val(img_data.data(), img_data.size()));
 
                 txn.commit();
         } catch (const lmdb::error &e) {
-                qCritical() << "saveImage:" << e.what();
+                nhlog::db()->critical("saveImage: {}", e.what());
         }
+}
+
+void
+Cache::saveImage(const QString &url, const QByteArray &image)
+{
+        saveImage(url.toStdString(), std::string(image.constData(), image.length()));
 }
 
 QByteArray
@@ -180,7 +494,7 @@ Cache::image(lmdb::txn &txn, const std::string &url) const
 
                 return QByteArray(image.data(), image.size());
         } catch (const lmdb::error &e) {
-                qCritical() << "image:" << e.what() << QString::fromStdString(url);
+                nhlog::db()->critical("image: {}, {}", e.what(), url);
         }
 
         return QByteArray();
@@ -208,7 +522,7 @@ Cache::image(const QString &url) const
 
                 return QByteArray(image.data(), image.size());
         } catch (const lmdb::error &e) {
-                qCritical() << "image:" << e.what() << url;
+                nhlog::db()->critical("image: {} {}", e.what(), url.toStdString());
         }
 
         return QByteArray();
@@ -271,7 +585,7 @@ Cache::isInitialized() const
         return res;
 }
 
-QString
+std::string
 Cache::nextBatchToken() const
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
@@ -281,16 +595,17 @@ Cache::nextBatchToken() const
 
         txn.commit();
 
-        return QString::fromUtf8(token.data(), token.size());
+        return std::string(token.data(), token.size());
 }
 
 void
 Cache::deleteData()
 {
-        qInfo() << "Deleting cache data";
-
-        if (!cacheDirectory_.isEmpty())
+        // TODO: We need to remove the env_ while not accepting new requests.
+        if (!cacheDirectory_.isEmpty()) {
                 QDir(cacheDirectory_).removeRecursively();
+                nhlog::db()->info("deleted cache files from disk");
+        }
 }
 
 bool
@@ -304,13 +619,14 @@ Cache::isFormatValid()
         txn.commit();
 
         if (!res)
-                return false;
+                return true;
 
         std::string stored_version(current_version.data(), current_version.size());
 
         if (stored_version != CURRENT_CACHE_FORMAT_VERSION) {
-                qWarning() << "Stored format version" << QString::fromStdString(stored_version);
-                qWarning() << "There are breaking changes in the cache format.";
+                nhlog::db()->warn("breaking changes in the cache format. stored: {}, current: {}",
+                                  stored_version,
+                                  CURRENT_CACHE_FORMAT_VERSION);
                 return false;
         }
 
@@ -360,7 +676,7 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
                 }
 
         } catch (const lmdb::error &e) {
-                qCritical() << "readReceipts:" << e.what();
+                nhlog::db()->critical("readReceipts: {}", e.what());
         }
 
         return receipts;
@@ -410,7 +726,7 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
                                       lmdb::val(merged_receipts.data(), merged_receipts.size()));
 
                 } catch (const lmdb::error &e) {
-                        qCritical() << "updateReadReceipts:" << e.what();
+                        nhlog::db()->critical("updateReadReceipts: {}", e.what());
                 }
         }
 }
@@ -568,9 +884,9 @@ Cache::singleRoomInfo(const std::string &room_id)
 
                         return tmp;
                 } catch (const json::exception &e) {
-                        qWarning()
-                          << "failed to parse room info:" << QString::fromStdString(room_id)
-                          << QString::fromStdString(std::string(data.data(), data.size()));
+                        nhlog::db()->warn("failed to parse room info: room_id ({}), {}",
+                                          room_id,
+                                          std::string(data.data(), data.size()));
                 }
         }
 
@@ -584,7 +900,8 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
 {
         std::map<QString, RoomInfo> room_info;
 
-        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        // TODO This should be read only.
+        auto txn = lmdb::txn::begin(env_);
 
         for (const auto &room : rooms) {
                 lmdb::val data;
@@ -600,9 +917,9 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
 
                                 room_info.emplace(QString::fromStdString(room), std::move(tmp));
                         } catch (const json::exception &e) {
-                                qWarning()
-                                  << "failed to parse room info:" << QString::fromStdString(room)
-                                  << QString::fromStdString(std::string(data.data(), data.size()));
+                                nhlog::db()->warn("failed to parse room info: room_id ({}), {}",
+                                                  room,
+                                                  std::string(data.data(), data.size()));
                         }
                 } else {
                         // Check if the room is an invite.
@@ -615,10 +932,10 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                                         room_info.emplace(QString::fromStdString(room),
                                                           std::move(tmp));
                                 } catch (const json::exception &e) {
-                                        qWarning() << "failed to parse room info for invite:"
-                                                   << QString::fromStdString(room)
-                                                   << QString::fromStdString(
-                                                        std::string(data.data(), data.size()));
+                                        nhlog::db()->warn(
+                                          "failed to parse room info for invite: room_id ({}), {}",
+                                          room,
+                                          std::string(data.data(), data.size()));
                                 }
                         }
                 }
@@ -703,7 +1020,7 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn,
 
                         return QString::fromStdString(msg.content.url);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse m.room.avatar event: {}", e.what());
                 }
         }
 
@@ -726,7 +1043,7 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn,
                         cursor.close();
                         return QString::fromStdString(m.avatar_url);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
         }
 
@@ -753,7 +1070,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                         if (!msg.content.name.empty())
                                 return QString::fromStdString(msg.content.name);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse m.room.name event: {}", e.what());
                 }
         }
 
@@ -768,7 +1085,8 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                         if (!msg.content.alias.empty())
                                 return QString::fromStdString(msg.content.alias);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse m.room.canonical_alias event: {}",
+                                          e.what());
                 }
         }
 
@@ -784,7 +1102,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                 try {
                         members.emplace(user_id, json::parse(member_data));
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
 
                 ii++;
@@ -828,7 +1146,7 @@ Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
                           json::parse(std::string(event.data(), event.size()));
                         return msg.content.join_rule;
                 } catch (const json::exception &e) {
-                        qWarning() << e.what();
+                        nhlog::db()->warn("failed to parse m.room.join_rule event: {}", e.what());
                 }
         }
         return JoinRule::Knock;
@@ -850,7 +1168,8 @@ Cache::getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb)
                           json::parse(std::string(event.data(), event.size()));
                         return msg.content.guest_access == AccessState::CanJoin;
                 } catch (const json::exception &e) {
-                        qWarning() << e.what();
+                        nhlog::db()->warn("failed to parse m.room.guest_access event: {}",
+                                          e.what());
                 }
         }
         return false;
@@ -874,7 +1193,7 @@ Cache::getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
                         if (!msg.content.topic.empty())
                                 return QString::fromStdString(msg.content.topic);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
                 }
         }
 
@@ -897,7 +1216,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
                           json::parse(std::string(event.data(), event.size()));
                         return QString::fromStdString(msg.content.name);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse m.room.name event: {}", e.what());
                 }
         }
 
@@ -914,7 +1233,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
 
                         return QString::fromStdString(tmp.name);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
         }
 
@@ -939,7 +1258,7 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
                           json::parse(std::string(event.data(), event.size()));
                         return QString::fromStdString(msg.content.url);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse m.room.avatar event: {}", e.what());
                 }
         }
 
@@ -956,7 +1275,7 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
 
                         return QString::fromStdString(tmp.avatar_url);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse member info: {}", e.what());
                 }
         }
 
@@ -981,7 +1300,7 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
                           json::parse(std::string(event.data(), event.size()));
                         return QString::fromStdString(msg.content.topic);
                 } catch (const json::exception &e) {
-                        qWarning() << QString::fromStdString(e.what());
+                        nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
                 }
         }
 
@@ -1017,8 +1336,9 @@ Cache::getRoomAvatar(const std::string &room_id)
                         return QImage();
                 }
         } catch (const json::exception &e) {
-                qWarning() << "failed to parse room info" << e.what()
-                           << QString::fromStdString(std::string(response.data(), response.size()));
+                nhlog::db()->warn("failed to parse room info: {}, {}",
+                                  e.what(),
+                                  std::string(response.data(), response.size()));
         }
 
         if (!lmdb::dbi_get(txn, mediaDb_, lmdb::val(media_url), response)) {
@@ -1054,7 +1374,7 @@ void
 Cache::populateMembers()
 {
         auto rooms = joinedRooms();
-        qDebug() << "loading" << rooms.size() << "rooms";
+        nhlog::db()->info("loading {} rooms", rooms.size());
 
         auto txn = lmdb::txn::begin(env_);
 
@@ -1182,7 +1502,7 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
                                      QString::fromStdString(tmp.name),
                                      QImage::fromData(image(txn, tmp.avatar_url))});
                 } catch (const json::exception &e) {
-                        qWarning() << e.what();
+                        nhlog::db()->warn("{}", e.what());
                 }
 
                 currentIndex += 1;
@@ -1253,13 +1573,34 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
                                   std::min(min_event_level,
                                            (uint16_t)msg.content.state_level(to_string(ty)));
                 } catch (const json::exception &e) {
-                        qWarning() << "hasEnoughPowerLevel: " << e.what();
+                        nhlog::db()->warn("failed to parse m.room.power_levels event: {}",
+                                          e.what());
                 }
         }
 
         txn.commit();
 
         return user_level >= min_event_level;
+}
+
+std::vector<std::string>
+Cache::roomMembers(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        std::vector<std::string> members;
+        std::string user_id, unused;
+
+        auto db = getMembersDb(txn, room_id);
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(user_id, unused, MDB_NEXT))
+                members.emplace_back(std::move(user_id));
+        cursor.close();
+
+        txn.commit();
+
+        return members;
 }
 
 QHash<QString, QString> Cache::DisplayNames;

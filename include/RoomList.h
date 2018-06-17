@@ -60,6 +60,8 @@ signals:
         void acceptInvite(const QString &room_id);
         void declineInvite(const QString &room_id);
         void roomAvatarChanged(const QString &room_id, const QPixmap &img);
+        void joinRoom(const QString &room_id);
+        void updateRoomAvatarCb(const QString &room_id, const QPixmap &img);
 
 public slots:
         void updateRoomAvatar(const QString &roomid, const QPixmap &img);

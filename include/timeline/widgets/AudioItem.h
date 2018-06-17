@@ -69,9 +69,14 @@ protected:
         void resizeEvent(QResizeEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
 
+signals:
+        void fileDownloadedCb(const QByteArray &data);
+
+private slots:
+        void fileDownloaded(const QByteArray &data);
+
 private:
         void init();
-        void fileDownloaded(const QByteArray &data);
 
         enum class AudioState
         {

@@ -4,7 +4,8 @@ set -ex
 
 if [ $TRAVIS_OS_NAME == osx ]; then
     brew update
-    brew install qt5 lmdb clang-format ninja
+    brew install qt5 lmdb clang-format ninja libsodium spdlog
+    brew upgrade boost
 
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     sudo python get-pip.py
@@ -23,6 +24,7 @@ if [ $TRAVIS_OS_NAME == linux ]; then
         QT_PKG="59"
     fi
 
+    sudo add-apt-repository -y ppa:chris-lea/libsodium
     sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
     sudo add-apt-repository -y ppa:george-edison55/cmake-3.x
     sudo apt-get update -qq
@@ -32,5 +34,6 @@ if [ $TRAVIS_OS_NAME == linux ]; then
         qt${QT_PKG}svg \
         qt${QT_PKG}multimedia \
         cmake \
-        liblmdb-dev
+        liblmdb-dev \
+        libsodium-dev
 fi

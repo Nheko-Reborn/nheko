@@ -1,14 +1,31 @@
+DEPS_BUILD_DIR=.deps
+DEPS_SOURCE_DIR=deps
 
 debug:
-	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+	@cmake -H. -GNinja \
+		-Bbuild \
+		-DCMAKE_BUILD_TYPE=Debug \
+		-DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
+		-DCMAKE_INSTALL_PREFIX=${DEPS_BUILD_DIR}/usr
 	@cmake --build build
+
+third-party:
+	@cmake -GNinja -H${DEPS_SOURCE_DIR} -B${DEPS_BUILD_DIR} \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DUSE_BUNDLED_BOOST=OFF
+	@cmake --build ${DEPS_BUILD_DIR}
 
 ci:
-	@cmake -H. -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
-	@cmake --build build
+	cmake -H${DEPS_SOURCE_DIR} -B${DEPS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release
+	cmake --build ${DEPS_BUILD_DIR}
+	cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	cmake --build build
 
 release:
-	@cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	@cmake -H. -GNinja \
+		-Bbuild \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=${DEPS_BUILD_DIR}/usr
 	@cmake --build build
 
 linux-install:

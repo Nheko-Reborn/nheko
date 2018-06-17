@@ -1,16 +1,20 @@
 #include "Avatar.h"
+#include "ChatPage.h"
 #include "Config.h"
 #include "FlatButton.h"
+#include "Logging.hpp"
 #include "MatrixClient.h"
 #include "Painter.h"
 #include "TextField.h"
 #include "Theme.h"
 #include "Utils.h"
 #include "dialogs/RoomSettings.hpp"
+#include "ui/ToggleButton.h"
 
 #include <QApplication>
 #include <QComboBox>
 #include <QLabel>
+#include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
 #include <QSettings>
@@ -67,6 +71,20 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
         labelLayout->addWidget(errorField_);
         layout->addLayout(labelLayout);
 
+        connect(this, &EditModal::stateEventErrorCb, this, [this](const QString &msg) {
+                errorField_->setText(msg);
+                errorField_->show();
+        });
+        connect(this, &EditModal::nameEventSentCb, this, [this](const QString &newName) {
+                errorField_->hide();
+                emit nameChanged(newName);
+                close();
+        });
+        connect(this, &EditModal::topicEventSentCb, this, [this]() {
+                errorField_->hide();
+                close();
+        });
+
         connect(applyBtn_, &QPushButton::clicked, [this]() {
                 // Check if the values are changed from the originals.
                 auto newName  = nameInput_->text().trimmed();
@@ -85,53 +103,37 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                         state::Name body;
                         body.name = newName.toStdString();
 
-                        auto proxy =
-                          http::client()->sendStateEvent<state::Name, EventType::RoomName>(body,
-                                                                                           roomId_);
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventSent,
-                                this,
-                                [this, proxy, newName]() {
-                                        Q_UNUSED(proxy);
-                                        errorField_->hide();
-                                        emit nameChanged(newName);
-                                        close();
-                                });
+                        http::v2::client()->send_state_event<state::Name, EventType::RoomName>(
+                          roomId_.toStdString(),
+                          body,
+                          [this, newName](const mtx::responses::EventId &,
+                                          mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit stateEventErrorCb(
+                                            QString::fromStdString(err->matrix_error.error));
+                                          return;
+                                  }
 
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventError,
-                                this,
-                                [this, proxy, newName](const QString &msg) {
-                                        Q_UNUSED(proxy);
-                                        errorField_->setText(msg);
-                                        errorField_->show();
-                                });
+                                  emit nameEventSentCb(newName);
+                          });
                 }
 
                 if (newTopic != initialTopic_ && !newTopic.isEmpty()) {
                         state::Topic body;
                         body.topic = newTopic.toStdString();
 
-                        auto proxy =
-                          http::client()->sendStateEvent<state::Topic, EventType::RoomTopic>(
-                            body, roomId_);
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventSent,
-                                this,
-                                [this, proxy, newTopic]() {
-                                        Q_UNUSED(proxy);
-                                        errorField_->hide();
-                                        close();
-                                });
+                        http::v2::client()->send_state_event<state::Topic, EventType::RoomTopic>(
+                          roomId_.toStdString(),
+                          body,
+                          [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit stateEventErrorCb(
+                                            QString::fromStdString(err->matrix_error.error));
+                                          return;
+                                  }
 
-                        connect(proxy.get(),
-                                &StateEventProxy::stateEventError,
-                                this,
-                                [this, proxy, newTopic](const QString &msg) {
-                                        Q_UNUSED(proxy);
-                                        errorField_->setText(msg);
-                                        errorField_->show();
-                                });
+                                  emit topicEventSentCb();
+                          });
                 }
         });
         connect(cancelBtn_, &QPushButton::clicked, this, &EditModal::close);
@@ -190,8 +192,8 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->setSpacing(15);
         layout->setMargin(20);
 
-        saveBtn_ = new FlatButton("SAVE", this);
-        saveBtn_->setFontSize(conf::btn::fontSize);
+        okBtn_ = new FlatButton(tr("OK"), this);
+        okBtn_->setFontSize(conf::btn::fontSize);
         cancelBtn_ = new FlatButton(tr("CANCEL"), this);
         cancelBtn_->setFontSize(conf::btn::fontSize);
 
@@ -199,7 +201,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         btnLayout->setSpacing(0);
         btnLayout->setMargin(0);
         btnLayout->addStretch(1);
-        btnLayout->addWidget(saveBtn_);
+        btnLayout->addWidget(okBtn_);
         btnLayout->addWidget(cancelBtn_);
 
         auto notifOptionLayout_ = new QHBoxLayout;
@@ -238,6 +240,61 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         accessOptionLayout->addWidget(accessLabel);
         accessOptionLayout->addWidget(accessCombo);
 
+        auto encryptionOptionLayout = new QHBoxLayout;
+        encryptionOptionLayout->setMargin(SettingsMargin);
+        auto encryptionLabel = new QLabel(tr("Encryption"), this);
+        encryptionLabel->setStyleSheet("font-size: 15px;");
+        encryptionToggle_ = new Toggle(this);
+        connect(encryptionToggle_, &Toggle::toggled, this, [this](bool isOn) {
+                if (isOn)
+                        return;
+
+                QFont font;
+                font.setPixelSize(conf::fontSize);
+
+                QMessageBox msgBox;
+                msgBox.setIcon(QMessageBox::Question);
+                msgBox.setFont(font);
+                msgBox.setWindowTitle(tr("End-to-End Encryption"));
+                msgBox.setText(tr(
+                  "Encryption is currently experimental and things might break unexpectedly. <br>"
+                  "Please take note that it can't be disabled afterwards."));
+                msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+                msgBox.setDefaultButton(QMessageBox::Save);
+                int ret = msgBox.exec();
+
+                switch (ret) {
+                case QMessageBox::Ok: {
+                        encryptionToggle_->setState(false);
+                        encryptionToggle_->setEnabled(false);
+                        enableEncryption();
+                        break;
+                }
+                default: {
+                        encryptionToggle_->setState(true);
+                        encryptionToggle_->setEnabled(true);
+                        break;
+                }
+                }
+        });
+
+        encryptionOptionLayout->addWidget(encryptionLabel);
+        encryptionOptionLayout->addWidget(encryptionToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
+
+        // Disable encryption button.
+        if (usesEncryption_) {
+                encryptionToggle_->setState(false);
+                encryptionToggle_->setEnabled(false);
+        } else {
+                encryptionToggle_->setState(true);
+        }
+
+        // Hide encryption option for public rooms.
+        if (!usesEncryption_ && (info_.join_rule == JoinRule::Public)) {
+                encryptionToggle_->hide();
+                encryptionLabel->hide();
+        }
+
         QFont font;
         font.setPixelSize(18);
         font.setWeight(70);
@@ -257,10 +314,18 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addLayout(editLayout_);
         layout->addLayout(notifOptionLayout_);
         layout->addLayout(accessOptionLayout);
+        layout->addLayout(encryptionOptionLayout);
         layout->addLayout(btnLayout);
 
         connect(cancelBtn_, &QPushButton::clicked, this, &RoomSettings::closing);
-        connect(saveBtn_, &QPushButton::clicked, this, &RoomSettings::saveSettings);
+        connect(okBtn_, &QPushButton::clicked, this, &RoomSettings::saveSettings);
+
+        connect(this, &RoomSettings::enableEncryptionError, this, [this](const QString &msg) {
+                encryptionToggle_->setState(true);
+                encryptionToggle_->setEnabled(true);
+
+                emit ChatPage::instance()->showNotification(msg);
+        });
 }
 
 void
@@ -273,7 +338,7 @@ RoomSettings::setupEditButton()
                 hasEditRights_ = cache::client()->hasEnoughPowerLevel(
                   {EventType::RoomName, EventType::RoomTopic}, room_id_.toStdString(), userId);
         } catch (const lmdb::error &e) {
-                qWarning() << "lmdb error" << e.what();
+                nhlog::db()->warn("lmdb error: {}", e.what());
         }
 
         constexpr int buttonSize = 36;
@@ -310,10 +375,12 @@ void
 RoomSettings::retrieveRoomInfo()
 {
         try {
-                info_ = cache::client()->singleRoomInfo(room_id_.toStdString());
+                usesEncryption_ = cache::client()->isRoomEncrypted(room_id_.toStdString());
+                info_           = cache::client()->singleRoomInfo(room_id_.toStdString());
                 setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
         } catch (const lmdb::error &e) {
-                qWarning() << "failed to retrieve room info from cache" << room_id_;
+                nhlog::db()->warn("failed to retrieve room info from cache: {}",
+                                  room_id_.toStdString());
         }
 }
 
@@ -339,6 +406,28 @@ RoomSettings::saveSettings()
                 }
         }
         closing();
+}
+
+void
+RoomSettings::enableEncryption()
+{
+        const auto room_id = room_id_.toStdString();
+        http::v2::client()->enable_encryption(
+          room_id, [room_id, this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                  if (err) {
+                          int status_code = static_cast<int>(err->status_code);
+                          nhlog::net()->warn("failed to enable encryption in room ({}): {} {}",
+                                             room_id,
+                                             err->matrix_error.error,
+                                             status_code);
+                          emit enableEncryptionError(
+                            tr("Failed to enable encryption: %1")
+                              .arg(QString::fromStdString(err->matrix_error.error)));
+                          return;
+                  }
+
+                  nhlog::net()->info("enabled encryption on room ({})", room_id);
+          });
 }
 
 void

@@ -29,6 +29,15 @@ set(IDENTIFIER "com.github.mujx.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
 
+if(APPLE)
+    set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
+endif()
+
+if(NOT MSVC AND NOT APPLE)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads REQUIRED)
+endif()
+
 #
 # LMDB
 #
@@ -37,7 +46,7 @@ include(LMDB)
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 COMPONENTS Core Widgets Network LinguistTools Concurrent Svg Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia REQUIRED)
 
 if (APPLE)
     find_package(Qt5MacExtras REQUIRED)
@@ -60,7 +69,20 @@ endif(NOT MSVC)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include(CompilerFlags)
+if(NOT MSVC)
+  set(
+    CMAKE_CXX_FLAGS
+    "${CMAKE_CXX_FLAGS} \
+        -Wall \
+        -Wextra \
+        -Werror \
+        -pipe \
+        -pedantic \
+        -fsized-deallocation \
+        -fdiagnostics-color=always \
+        -Wunreachable-code"
+    )
+endif()
 
 if(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
@@ -151,9 +173,11 @@ set(SRC_FILES
     src/Community.cc
     src/InviteeItem.cc
     src/LoginPage.cc
+    src/Logging.cpp
     src/MainWindow.cc
     src/MatrixClient.cc
     src/QuickSwitcher.cc
+    src/Olm.cpp
     src/RegisterPage.cc
     src/RoomInfoListItem.cc
     src/RoomList.cc
@@ -175,20 +199,12 @@ set(SRC_FILES
 # ExternalProject dependencies
 set(EXTERNAL_PROJECT_DEPS "")
 
-#
-# matrix-structs
-#
-find_library(MATRIX_STRUCTS_LIBRARY 
-    NAMES matrix_structs 
-    PATHS ${MATRIX_STRUCTS_ROOT}
-          ${MATRIX_STRUCTS_ROOT}/lib
-          ${MATRIX_STRUCTS_ROOT}/lib/static)
-
-if(NOT MATRIX_STRUCTS_LIBRARY)
-    include(MatrixStructs)
-    set(EXTERNAL_PROJECT_DEPS ${EXTERNAL_PROJECT_DEPS} MatrixStructs)
-endif()
-include_directories(SYSTEM ${MATRIX_STRUCTS_INCLUDE_DIR})
+find_package(ZLIB REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(MatrixStructs 0.1.0 REQUIRED)
+find_package(MatrixClient 0.1.0 REQUIRED)
+find_package(Olm 2 REQUIRED)
+find_package(spdlog 0.16.0 CONFIG REQUIRED)
 
 #
 # tweeny
@@ -267,7 +283,6 @@ qt5_wrap_cpp(MOC_HEADERS
     include/LoginPage.h
     include/MainWindow.h
     include/InviteeItem.h
-    include/MatrixClient.h
     include/QuickSwitcher.h
     include/RegisterPage.h
     include/RoomInfoListItem.h
@@ -291,11 +306,12 @@ include(Translations)
 set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 set(COMMON_LIBS
-    ${MATRIX_STRUCTS_LIBRARY} 
+    MatrixStructs::MatrixStructs
+    MatrixClient::MatrixClient
     Qt5::Widgets
-    Qt5::Network
     Qt5::Svg
-    Qt5::Concurrent)
+    Qt5::Concurrent
+    Qt5::Multimedia)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
@@ -325,13 +341,13 @@ endif()
 
 if(APPLE)
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras Qt5::Multimedia)
+    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras)
 elseif(WIN32)
     add_executable (nheko ${OS_BUNDLE} ${ICON_FILE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain Qt5::Multimedia)
+    target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain)
 else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::Multimedia)
+    target_link_libraries (nheko ${NHEKO_LIBS})
 endif()
 
 if(EXTERNAL_PROJECT_DEPS)

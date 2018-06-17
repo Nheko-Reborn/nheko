@@ -23,6 +23,7 @@
 #include "Avatar.h"
 #include "ChatPage.h"
 #include "Config.h"
+#include "Logging.hpp"
 
 #include "timeline/TimelineItem.h"
 #include "timeline/widgets/AudioItem.h"
@@ -62,9 +63,27 @@ TimelineItem::init()
                         ChatPage::instance()->showReadReceipts(event_id_);
         });
 
+        connect(this, &TimelineItem::eventRedacted, this, [this](const QString &event_id) {
+                emit ChatPage::instance()->removeTimelineEvent(room_id_, event_id);
+        });
+        connect(this, &TimelineItem::redactionFailed, this, [](const QString &msg) {
+                emit ChatPage::instance()->showNotification(msg);
+        });
         connect(redactMsg_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
-                        http::client()->redactEvent(room_id_, event_id_);
+                        http::v2::client()->redact_event(
+                          room_id_.toStdString(),
+                          event_id_.toStdString(),
+                          [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit redactionFailed(tr("Message redaction failed: %1")
+                                                                 .arg(QString::fromStdString(
+                                                                   err->matrix_error.error)));
+                                          return;
+                                  }
+
+                                  emit eventRedacted(event_id_);
+                          });
         });
 
         connect(markAsRead_, &QAction::triggered, this, [this]() { sendReadReceipt(); });
@@ -413,6 +432,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 void
 TimelineItem::markReceived()
 {
+        isReceived_ = true;
         checkmark_->setText(CHECKMARK);
         checkmark_->setAlignment(Qt::AlignTop);
 
@@ -634,4 +654,20 @@ TimelineItem::addAvatar()
 
         AvatarProvider::resolve(
           room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
+}
+
+void
+TimelineItem::sendReadReceipt() const
+{
+        if (!event_id_.isEmpty())
+                http::v2::client()->read_event(room_id_.toStdString(),
+                                               event_id_.toStdString(),
+                                               [this](mtx::http::RequestErr err) {
+                                                       if (err) {
+                                                               nhlog::net()->warn(
+                                                                 "failed to read_event ({}, {})",
+                                                                 room_id_.toStdString(),
+                                                                 event_id_.toStdString());
+                                                       }
+                                               });
 }

@@ -28,6 +28,12 @@ class OverlayModal;
 class RaisedButton;
 class TextField;
 
+namespace mtx {
+namespace responses {
+struct Login;
+}
+}
+
 class LoginPage : public QWidget
 {
         Q_OBJECT
@@ -42,12 +48,19 @@ signals:
         void loggingIn();
         void errorOccurred();
 
+        //! Used to trigger the corresponding slot outside of the main thread.
+        void versionErrorCb(const QString &err);
+        void loginErrorCb(const QString &err);
+        void versionOkCb();
+
+        void loginOk(const mtx::responses::Login &res);
+
 protected:
         void paintEvent(QPaintEvent *event) override;
 
 public slots:
         // Displays errors produced during the login.
-        void loginError(QString msg) { error_label_->setText(msg); }
+        void loginError(const QString &msg) { error_label_->setText(msg); }
 
 private slots:
         // Callback for the back button.
@@ -63,13 +76,25 @@ private slots:
         void onServerAddressEntered();
 
         // Callback for errors produced during server probing
-        void versionError(QString error_message);
-
+        void versionError(const QString &error_message);
         // Callback for successful server probing
-        void versionSuccess();
+        void versionOk();
 
 private:
         bool isMatrixIdValid();
+        void checkHomeserverVersion();
+        std::string initialDeviceName()
+        {
+#if defined(Q_OS_MAC)
+                return "nheko on macOS";
+#elif defined(Q_OS_LINUX)
+                return "nheko on Linux";
+#elif defined(Q_OS_WIN)
+                return "nheko on Windows";
+#else
+                return "nheko";
+#endif
+        }
 
         QVBoxLayout *top_layout_;
 

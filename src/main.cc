@@ -17,20 +17,23 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDir>
 #include <QFile>
 #include <QFontDatabase>
 #include <QLabel>
 #include <QLayout>
 #include <QLibraryInfo>
-#include <QNetworkProxy>
 #include <QPalette>
 #include <QPoint>
 #include <QPushButton>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QTranslator>
 
 #include "Config.h"
+#include "Logging.hpp"
 #include "MainWindow.h"
+#include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "RunGuard.h"
 #include "version.hpp"
@@ -47,28 +50,13 @@ screenCenter(int width, int height)
 }
 
 void
-setupProxy()
+createCacheDirectory()
 {
-        QSettings settings;
+        auto dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
 
-        /**
-          To set up a SOCKS proxy:
-            [user]
-            proxy\socks\host=<>
-            proxy\socks\port=<>
-            proxy\socks\user=<>
-            proxy\socks\password=<>
-          **/
-        if (settings.contains("user/proxy/socks/host")) {
-                QNetworkProxy proxy;
-                proxy.setType(QNetworkProxy::Socks5Proxy);
-                proxy.setHostName(settings.value("user/proxy/socks/host").toString());
-                proxy.setPort(settings.value("user/proxy/socks/port").toInt());
-                if (settings.contains("user/proxy/socks/user"))
-                        proxy.setUser(settings.value("user/proxy/socks/user").toString());
-                if (settings.contains("user/proxy/socks/password"))
-                        proxy.setPassword(settings.value("user/proxy/socks/password").toString());
-                QNetworkProxy::setApplicationProxy(proxy);
+        if (!QDir().mkpath(dir)) {
+                throw std::runtime_error(
+                  ("Unable to create state directory:" + dir).toStdString().c_str());
         }
 }
 
@@ -133,7 +121,19 @@ main(int argc, char *argv[])
         QFontDatabase::addApplicationFont(":/fonts/fonts/EmojiOne/emojione-android.ttf");
 
         app.setWindowIcon(QIcon(":/logos/nheko.png"));
-        qSetMessagePattern("%{time process}: [%{type}] - %{message}");
+
+        http::init();
+
+        createCacheDirectory();
+
+        try {
+                nhlog::init(QString("%1/nheko.log")
+                              .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                              .toStdString());
+        } catch (const spdlog::spdlog_ex &ex) {
+                std::cout << "Log initialization failed: " << ex.what() << std::endl;
+                std::exit(1);
+        }
 
         QSettings settings;
 
@@ -154,8 +154,6 @@ main(int argc, char *argv[])
         appTranslator.load("nheko_" + lang, ":/translations");
         app.installTranslator(&appTranslator);
 
-        setupProxy();
-
         MainWindow w;
 
         // Move the MainWindow to the center
@@ -165,7 +163,16 @@ main(int argc, char *argv[])
             !settings.value("user/window/tray", true).toBool())
                 w.show();
 
-        QObject::connect(&app, &QApplication::aboutToQuit, &w, &MainWindow::saveCurrentWindowSize);
+        QObject::connect(&app, &QApplication::aboutToQuit, &w, [&w]() {
+                w.saveCurrentWindowSize();
+                if (http::v2::client() != nullptr) {
+                        nhlog::net()->info("shutting down all I/O threads & open connections");
+                        http::v2::client()->shutdown();
+                        http::v2::client()->close(true);
+                }
+        });
+
+        nhlog::ui()->info("starting nheko {}", nheko::version);
 
         return app.exec();
 }

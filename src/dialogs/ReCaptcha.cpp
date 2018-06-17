@@ -6,6 +6,7 @@
 
 #include "Config.h"
 #include "FlatButton.h"
+#include "MatrixClient.h"
 #include "RaisedButton.h"
 #include "Theme.h"
 
@@ -13,7 +14,7 @@
 
 using namespace dialogs;
 
-ReCaptcha::ReCaptcha(const QString &server, const QString &session, QWidget *parent)
+ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
   : QWidget(parent)
 {
         setAutoFillBackground(true);
@@ -51,12 +52,12 @@ ReCaptcha::ReCaptcha(const QString &server, const QString &session, QWidget *par
         layout->addWidget(label);
         layout->addLayout(buttonLayout);
 
-        connect(openCaptchaBtn_, &QPushButton::clicked, [server, session]() {
-                const auto url =
-                  QString(
-                    "https://%1/_matrix/client/r0/auth/m.login.recaptcha/fallback/web?session=%2")
-                    .arg(server)
-                    .arg(session);
+        connect(openCaptchaBtn_, &QPushButton::clicked, [session]() {
+                const auto url = QString("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
+                                         "fallback/web?session=%3")
+                                   .arg(QString::fromStdString(http::v2::client()->server()))
+                                   .arg(http::v2::client()->port())
+                                   .arg(session);
 
                 QDesktopServices::openUrl(url);
         });

@@ -71,8 +71,6 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                 this,
                 &FilteredTextEdit::uploadData);
 
-        qRegisterMetaType<SearchResult>();
-        qRegisterMetaType<QVector<SearchResult>>();
         connect(this, &FilteredTextEdit::resultsRetrieved, this, &FilteredTextEdit::showResults);
         connect(&popup_, &SuggestionsPopup::itemSelected, this, [this](const QString &text) {
                 popup_.hide();

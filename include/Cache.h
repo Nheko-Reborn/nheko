@@ -17,13 +17,18 @@
 
 #pragma once
 
-#include <QDebug>
+#include <boost/optional.hpp>
+
 #include <QDir>
 #include <QImage>
+
 #include <json.hpp>
 #include <lmdb++.h>
 #include <mtx/events/join_rules.hpp>
 #include <mtx/responses.hpp>
+#include <mtxclient/crypto/client.hpp>
+#include <mutex>
+
 using mtx::events::state::JoinRule;
 
 struct RoomMember
@@ -140,6 +145,82 @@ struct RoomSearchResult
 Q_DECLARE_METATYPE(RoomSearchResult)
 Q_DECLARE_METATYPE(RoomInfo)
 
+// Extra information associated with an outbound megolm session.
+struct OutboundGroupSessionData
+{
+        std::string session_id;
+        std::string session_key;
+        uint64_t message_index = 0;
+};
+
+inline void
+to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg)
+{
+        obj["session_id"]    = msg.session_id;
+        obj["session_key"]   = msg.session_key;
+        obj["message_index"] = msg.message_index;
+}
+
+inline void
+from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg)
+{
+        msg.session_id    = obj.at("session_id");
+        msg.session_key   = obj.at("session_key");
+        msg.message_index = obj.at("message_index");
+}
+
+struct OutboundGroupSessionDataRef
+{
+        OlmOutboundGroupSession *session;
+        OutboundGroupSessionData data;
+};
+
+struct DevicePublicKeys
+{
+        std::string ed25519;
+        std::string curve25519;
+};
+
+inline void
+to_json(nlohmann::json &obj, const DevicePublicKeys &msg)
+{
+        obj["ed25519"]    = msg.ed25519;
+        obj["curve25519"] = msg.curve25519;
+}
+
+inline void
+from_json(const nlohmann::json &obj, DevicePublicKeys &msg)
+{
+        msg.ed25519    = obj.at("ed25519");
+        msg.curve25519 = obj.at("curve25519");
+}
+
+//! Represents a unique megolm session identifier.
+struct MegolmSessionIndex
+{
+        //! The room in which this session exists.
+        std::string room_id;
+        //! The session_id of the megolm session.
+        std::string session_id;
+        //! The curve25519 public key of the sender.
+        std::string sender_key;
+
+        //! Representation to be used in a hash map.
+        std::string to_hash() const { return room_id + session_id + sender_key; }
+};
+
+struct OlmSessionStorage
+{
+        // Megolm sessions
+        std::map<std::string, mtx::crypto::InboundGroupSessionPtr> group_inbound_sessions;
+        std::map<std::string, mtx::crypto::OutboundGroupSessionPtr> group_outbound_sessions;
+        std::map<std::string, OutboundGroupSessionData> group_outbound_session_data;
+
+        // Guards for accessing megolm sessions.
+        std::mutex group_outbound_mtx;
+        std::mutex group_inbound_mtx;
+};
+
 class Cache : public QObject
 {
         Q_OBJECT
@@ -192,7 +273,7 @@ public:
         void saveState(const mtx::responses::Sync &res);
         bool isInitialized() const;
 
-        QString nextBatchToken() const;
+        std::string nextBatchToken() const;
 
         void deleteData();
 
@@ -205,6 +286,9 @@ public:
 
         bool isFormatValid();
         void setCurrentFormat();
+
+        //! Retrieve all the user ids from a room.
+        std::vector<std::string> roomMembers(const std::string &room_id);
 
         //! Check if the given user has power leve greater than than
         //! lowest power level of the given events.
@@ -237,6 +321,7 @@ public:
         {
                 return image(QString::fromStdString(url));
         }
+        void saveImage(const std::string &url, const std::string &data);
         void saveImage(const QString &url, const QByteArray &data);
 
         RoomInfo singleRoomInfo(const std::string &room_id);
@@ -258,6 +343,51 @@ public:
         void removeReadNotification(const std::string &event_id);
         //! Check if we have sent a desktop notification for the given event id.
         bool isNotificationSent(const std::string &event_id);
+
+        //! Mark a room that uses e2e encryption.
+        void setEncryptedRoom(const std::string &room_id);
+        bool isRoomEncrypted(const std::string &room_id);
+
+        //! Save the public keys for a device.
+        void saveDeviceKeys(const std::string &device_id);
+        void getDeviceKeys(const std::string &device_id);
+
+        //! Save the device list for a user.
+        void setDeviceList(const std::string &user_id, const std::vector<std::string> &devices);
+        std::vector<std::string> getDeviceList(const std::string &user_id);
+
+        //
+        // Outbound Megolm Sessions
+        //
+        void saveOutboundMegolmSession(const std::string &room_id,
+                                       const OutboundGroupSessionData &data,
+                                       mtx::crypto::OutboundGroupSessionPtr session);
+        OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
+        bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
+        void updateOutboundMegolmSession(const std::string &room_id, int message_index);
+
+        //
+        // Inbound Megolm Sessions
+        //
+        void saveInboundMegolmSession(const MegolmSessionIndex &index,
+                                      mtx::crypto::InboundGroupSessionPtr session);
+        OlmInboundGroupSession *getInboundMegolmSession(const MegolmSessionIndex &index);
+        bool inboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept;
+
+        //
+        // Olm Sessions
+        //
+        void saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
+        std::vector<std::string> getOlmSessions(const std::string &curve25519);
+        boost::optional<mtx::crypto::OlmSessionPtr> getOlmSession(const std::string &curve25519,
+                                                                  const std::string &session_id);
+
+        void saveOlmAccount(const std::string &pickled);
+        std::string restoreOlmAccount();
+
+        void restoreSessions();
+
+        OlmSessionStorage session_storage;
 
 private:
         //! Save an invited room.
@@ -431,6 +561,16 @@ private:
                 return lmdb::dbi::open(txn, std::string(room_id + "/members").c_str(), MDB_CREATE);
         }
 
+        //! Retrieves or creates the database that stores the open OLM sessions between our device
+        //! and the given curve25519 key which represents another device.
+        //!
+        //! Each entry is a map from the session_id to the pickled representation of the session.
+        lmdb::dbi getOlmSessionsDb(lmdb::txn &txn, const std::string &curve25519_key)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string("olm_sessions/" + curve25519_key).c_str(), MDB_CREATE);
+        }
+
         QString getDisplayName(const mtx::events::StateEvent<mtx::events::state::Member> &event)
         {
                 if (!event.content.display_name.empty())
@@ -449,6 +589,12 @@ private:
         lmdb::dbi mediaDb_;
         lmdb::dbi readReceiptsDb_;
         lmdb::dbi notificationsDb_;
+
+        lmdb::dbi devicesDb_;
+        lmdb::dbi deviceKeysDb_;
+
+        lmdb::dbi inboundMegolmSessionDb_;
+        lmdb::dbi outboundMegolmSessionDb_;
 
         QString localUserId_;
         QString cacheDirectory_;

@@ -12,7 +12,7 @@ class ReCaptcha : public QWidget
         Q_OBJECT
 
 public:
-        ReCaptcha(const QString &server, const QString &session, QWidget *parent = nullptr);
+        ReCaptcha(const QString &session, QWidget *parent = nullptr);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

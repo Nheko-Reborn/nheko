@@ -23,12 +23,14 @@ public:
 
 signals:
         void communityChanged(const QString &id);
+        void avatarRetrieved(const QString &id, const QPixmap &img);
 
 public slots:
         void updateCommunityAvatar(const QString &id, const QPixmap &img);
         void highlightSelectedCommunity(const QString &id);
 
 private:
+        void fetchCommunityAvatar(const QString &id, const QString &avatarUrl);
         void addGlobalItem() { addCommunity(QSharedPointer<Community>(new Community), "world"); }
 
         //! Check whether or not a community id is currently managed.

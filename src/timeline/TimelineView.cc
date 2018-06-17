@@ -23,6 +23,8 @@
 #include "ChatPage.h"
 #include "Config.h"
 #include "FloatingButton.h"
+#include "Logging.hpp"
+#include "Olm.hpp"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
@@ -100,7 +102,7 @@ TimelineView::TimelineView(const QString &room_id, QWidget *parent)
   , room_id_{room_id}
 {
         init();
-        http::client()->messages(room_id_, "");
+        getMessages();
 }
 
 void
@@ -140,7 +142,7 @@ TimelineView::fetchHistory()
                         return;
 
                 isPaginationInProgress_ = true;
-                http::client()->messages(room_id_, prev_batch_token_);
+                getMessages();
                 paginationTimer_->start(5000);
 
                 return;
@@ -189,18 +191,13 @@ TimelineView::sliderMoved(int position)
 
                 isPaginationInProgress_ = true;
 
-                // FIXME: Maybe move this to TimelineViewManager to remove the
-                // extra calls?
-                http::client()->messages(room_id_, prev_batch_token_);
+                getMessages();
         }
 }
 
 void
-TimelineView::addBackwardsEvents(const QString &room_id, const mtx::responses::Messages &msgs)
+TimelineView::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
-        if (room_id_ != room_id)
-                return;
-
         // We've reached the start of the timline and there're no more messages.
         if ((msgs.end == msgs.start) && msgs.chunk.size() == 0) {
                 isTimelineFinished = true;
@@ -239,19 +236,19 @@ TimelineItem *
 TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
                                 TimelineDirection direction)
 {
-        namespace msg     = mtx::events::msg;
-        using AudioEvent  = mtx::events::RoomEvent<msg::Audio>;
-        using EmoteEvent  = mtx::events::RoomEvent<msg::Emote>;
-        using FileEvent   = mtx::events::RoomEvent<msg::File>;
-        using ImageEvent  = mtx::events::RoomEvent<msg::Image>;
-        using NoticeEvent = mtx::events::RoomEvent<msg::Notice>;
-        using TextEvent   = mtx::events::RoomEvent<msg::Text>;
-        using VideoEvent  = mtx::events::RoomEvent<msg::Video>;
+        using namespace mtx::events;
 
-        if (mpark::holds_alternative<mtx::events::RedactionEvent<msg::Redaction>>(event)) {
-                auto redaction_event =
-                  mpark::get<mtx::events::RedactionEvent<msg::Redaction>>(event);
-                const auto event_id = QString::fromStdString(redaction_event.redacts);
+        using AudioEvent  = RoomEvent<msg::Audio>;
+        using EmoteEvent  = RoomEvent<msg::Emote>;
+        using FileEvent   = RoomEvent<msg::File>;
+        using ImageEvent  = RoomEvent<msg::Image>;
+        using NoticeEvent = RoomEvent<msg::Notice>;
+        using TextEvent   = RoomEvent<msg::Text>;
+        using VideoEvent  = RoomEvent<msg::Video>;
+
+        if (mpark::holds_alternative<RedactionEvent<msg::Redaction>>(event)) {
+                auto redaction_event = mpark::get<RedactionEvent<msg::Redaction>>(event);
+                const auto event_id  = QString::fromStdString(redaction_event.redacts);
 
                 QTimer::singleShot(0, this, [event_id, this]() {
                         if (eventIds_.contains(event_id))
@@ -259,33 +256,94 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 });
 
                 return nullptr;
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Audio>>(event)) {
-                auto audio = mpark::get<mtx::events::RoomEvent<msg::Audio>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Audio>>(event)) {
+                auto audio = mpark::get<RoomEvent<msg::Audio>>(event);
                 return processMessageEvent<AudioEvent, AudioItem>(audio, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Emote>>(event)) {
-                auto emote = mpark::get<mtx::events::RoomEvent<msg::Emote>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Emote>>(event)) {
+                auto emote = mpark::get<RoomEvent<msg::Emote>>(event);
                 return processMessageEvent<EmoteEvent>(emote, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::File>>(event)) {
-                auto file = mpark::get<mtx::events::RoomEvent<msg::File>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::File>>(event)) {
+                auto file = mpark::get<RoomEvent<msg::File>>(event);
                 return processMessageEvent<FileEvent, FileItem>(file, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Image>>(event)) {
-                auto image = mpark::get<mtx::events::RoomEvent<msg::Image>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Image>>(event)) {
+                auto image = mpark::get<RoomEvent<msg::Image>>(event);
                 return processMessageEvent<ImageEvent, ImageItem>(image, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Notice>>(event)) {
-                auto notice = mpark::get<mtx::events::RoomEvent<msg::Notice>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Notice>>(event)) {
+                auto notice = mpark::get<RoomEvent<msg::Notice>>(event);
                 return processMessageEvent<NoticeEvent>(notice, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Text>>(event)) {
-                auto text = mpark::get<mtx::events::RoomEvent<msg::Text>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Text>>(event)) {
+                auto text = mpark::get<RoomEvent<msg::Text>>(event);
                 return processMessageEvent<TextEvent>(text, direction);
-        } else if (mpark::holds_alternative<mtx::events::RoomEvent<msg::Video>>(event)) {
-                auto video = mpark::get<mtx::events::RoomEvent<msg::Video>>(event);
+        } else if (mpark::holds_alternative<RoomEvent<msg::Video>>(event)) {
+                auto video = mpark::get<RoomEvent<msg::Video>>(event);
                 return processMessageEvent<VideoEvent, VideoItem>(video, direction);
-        } else if (mpark::holds_alternative<mtx::events::Sticker>(event)) {
-                return processMessageEvent<mtx::events::Sticker, StickerItem>(
-                  mpark::get<mtx::events::Sticker>(event), direction);
+        } else if (mpark::holds_alternative<Sticker>(event)) {
+                return processMessageEvent<Sticker, StickerItem>(mpark::get<Sticker>(event),
+                                                                 direction);
+        } else if (mpark::holds_alternative<EncryptedEvent<msg::Encrypted>>(event)) {
+                auto decrypted =
+                  parseEncryptedEvent(mpark::get<EncryptedEvent<msg::Encrypted>>(event));
+                return parseMessageEvent(decrypted, direction);
+        } else if (mpark::holds_alternative<StateEvent<state::Encryption>>(event)) {
+                try {
+                        cache::client()->setEncryptedRoom(room_id_.toStdString());
+                } catch (const lmdb::error &e) {
+                        nhlog::db()->critical("failed to save room {} as encrypted",
+                                              room_id_.toStdString());
+                }
         }
 
         return nullptr;
+}
+
+TimelineEvent
+TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e)
+{
+        MegolmSessionIndex index;
+        index.room_id    = room_id_.toStdString();
+        index.session_id = e.content.session_id;
+        index.sender_key = e.content.sender_key;
+
+        mtx::events::RoomEvent<mtx::events::msg::Text> dummy;
+        dummy.origin_server_ts = e.origin_server_ts;
+        dummy.event_id         = e.event_id;
+        dummy.sender           = e.sender;
+        dummy.content.body     = "-- Encrypted Event (No keys found for decryption) --";
+
+        if (!cache::client()->inboundMegolmSessionExists(index)) {
+                nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
+                                      index.room_id,
+                                      index.session_id,
+                                      e.sender);
+                // TODO: request megolm session_id & session_key from the sender.
+                return dummy;
+        }
+
+        auto session = cache::client()->getInboundMegolmSession(index);
+        auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
+
+        const auto msg_str = std::string((char *)res.data.data(), res.data.size());
+
+        // Add missing fields for the event.
+        json body                = json::parse(msg_str);
+        body["event_id"]         = e.event_id;
+        body["sender"]           = e.sender;
+        body["origin_server_ts"] = e.origin_server_ts;
+        body["unsigned"]         = e.unsigned_data;
+
+        nhlog::crypto()->info("decrypted data: \n {}", body.dump(2));
+
+        json event_array = json::array();
+        event_array.push_back(body);
+
+        std::vector<TimelineEvent> events;
+        mtx::responses::utils::parse_timeline_events(event_array, events);
+
+        if (events.size() == 1)
+                return events.at(0);
+
+        dummy.content.body = "-- Encrypted Event (Unknown event type) --";
+        return dummy;
 }
 
 void
@@ -427,10 +485,10 @@ TimelineView::init()
         paginationTimer_ = new QTimer(this);
         connect(paginationTimer_, &QTimer::timeout, this, &TimelineView::fetchHistory);
 
-        connect(http::client(),
-                &MatrixClient::messagesRetrieved,
-                this,
-                &TimelineView::addBackwardsEvents);
+        connect(this, &TimelineView::messagesRetrieved, this, &TimelineView::addBackwardsEvents);
+
+        connect(this, &TimelineView::messageFailed, this, &TimelineView::handleFailedMessage);
+        connect(this, &TimelineView::messageSent, this, &TimelineView::updatePendingMessage);
 
         connect(scroll_area_->verticalScrollBar(),
                 SIGNAL(valueChanged(int)),
@@ -440,6 +498,27 @@ TimelineView::init()
                 SIGNAL(rangeChanged(int, int)),
                 this,
                 SLOT(sliderRangeChanged(int, int)));
+}
+
+void
+TimelineView::getMessages()
+{
+        mtx::http::MessagesOpts opts;
+        opts.room_id = room_id_.toStdString();
+        opts.from    = prev_batch_token_.toStdString();
+
+        http::v2::client()->messages(
+          opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->error("failed to call /messages ({}): {} - {}",
+                                              opts.room_id,
+                                              mtx::errors::to_string(err->matrix_error.errcode),
+                                              err->matrix_error.error);
+                          return;
+                  }
+
+                  emit messagesRetrieved(std::move(res));
+          });
 }
 
 void
@@ -513,8 +592,9 @@ TimelineView::addTimelineItem(TimelineItem *item, TimelineDirection direction)
 }
 
 void
-TimelineView::updatePendingMessage(int txn_id, QString event_id)
+TimelineView::updatePendingMessage(const std::string &txn_id, const QString &event_id)
 {
+        nhlog::ui()->info("[{}] message was received by the server", txn_id);
         if (!pending_msgs_.isEmpty() &&
             pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
                 auto msg     = pending_msgs_.dequeue();
@@ -522,11 +602,18 @@ TimelineView::updatePendingMessage(int txn_id, QString event_id)
 
                 if (msg.widget) {
                         msg.widget->setEventId(event_id);
-                        msg.widget->markReceived();
                         eventIds_[event_id] = msg.widget;
-                }
 
-                pending_sent_msgs_.append(msg);
+                        // If the response comes after we have received the event from sync
+                        // we've already marked the widget as received.
+                        if (!msg.widget->isReceived()) {
+                                msg.widget->markReceived();
+                                pending_sent_msgs_.append(msg);
+                        }
+                } else {
+                        nhlog::ui()->warn("[{}] received message response for invalid widget",
+                                          txn_id);
+                }
         }
 
         sendNextPendingMessage();
@@ -540,16 +627,28 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
         TimelineItem *view_item =
           new TimelineItem(ty, local_user_, body, with_sender, room_id_, scroll_widget_);
 
+        PendingMessage message;
+        message.ty     = ty;
+        message.txn_id = http::v2::client()->generate_txn_id();
+        message.body   = body;
+        message.widget = view_item;
+
+        try {
+                message.is_encrypted = cache::client()->isRoomEncrypted(room_id_.toStdString());
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to check encryption status of room {}", e.what());
+                view_item->deleteLater();
+
+                // TODO: Send a notification to the user.
+
+                return;
+        }
+
         addTimelineItem(view_item);
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
-        QApplication::processEvents();
-
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
-
-        int txn_id = http::client()->incrementTransactionId();
-        PendingMessage message(ty, txn_id, body, "", "", -1, "", view_item);
         handleNewUserMessage(message);
 }
 
@@ -567,19 +666,98 @@ TimelineView::sendNextPendingMessage()
         if (pending_msgs_.size() == 0)
                 return;
 
+        using namespace mtx::events;
+
         PendingMessage &m = pending_msgs_.head();
+
+        nhlog::ui()->info("[{}] sending next queued message", m.txn_id);
+
+        if (m.is_encrypted) {
+                prepareEncryptedMessage(std::move(m));
+                nhlog::ui()->info("[{}] sending encrypted event", m.txn_id);
+                return;
+        }
+
         switch (m.ty) {
-        case mtx::events::MessageType::Audio:
-        case mtx::events::MessageType::Image:
-        case mtx::events::MessageType::Video:
-        case mtx::events::MessageType::File:
-                // FIXME: Improve the API
-                http::client()->sendRoomMessage(
-                  m.ty, m.txn_id, room_id_, m.filename, m.mime, m.media_size, m.body);
+        case mtx::events::MessageType::Audio: {
+                http::v2::client()->send_room_message<msg::Audio, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  toRoomMessage<msg::Audio>(m),
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
                 break;
+        }
+        case mtx::events::MessageType::Image: {
+                http::v2::client()->send_room_message<msg::Image, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  toRoomMessage<msg::Image>(m),
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::Video: {
+                http::v2::client()->send_room_message<msg::Video, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  toRoomMessage<msg::Video>(m),
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::File: {
+                http::v2::client()->send_room_message<msg::File, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  toRoomMessage<msg::File>(m),
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::Text: {
+                http::v2::client()->send_room_message<msg::Text, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  toRoomMessage<msg::Text>(m),
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+
+                break;
+        }
+        case mtx::events::MessageType::Emote: {
+                http::v2::client()->send_room_message<msg::Emote, EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  m.txn_id,
+                  toRoomMessage<msg::Emote>(m),
+                  std::bind(&TimelineView::sendRoomMessageHandler,
+                            this,
+                            m.txn_id,
+                            std::placeholders::_1,
+                            std::placeholders::_2));
+                break;
+        }
         default:
-                http::client()->sendRoomMessage(
-                  m.ty, m.txn_id, room_id_, m.body, m.mime, m.media_size);
+                nhlog::ui()->warn("cannot send unknown message type: {}", m.body.toStdString());
                 break;
         }
 }
@@ -593,7 +771,7 @@ TimelineView::notifyForLastEvent()
         if (lastTimelineItem)
                 emit updateLastTimelineMessage(room_id_, lastTimelineItem->descriptionMessage());
         else
-                qWarning() << "Cast to TimelineView failed" << room_id_;
+                nhlog::ui()->warn("cast to TimelineView failed: {}", room_id_.toStdString());
 }
 
 void
@@ -606,51 +784,51 @@ TimelineView::notifyForLastEvent(const TimelineEvent &event)
 }
 
 bool
-TimelineView::isPendingMessage(const QString &txnid,
+TimelineView::isPendingMessage(const std::string &txn_id,
                                const QString &sender,
                                const QString &local_userid)
 {
         if (sender != local_userid)
                 return false;
 
-        auto match_txnid = [txnid](const auto &msg) -> bool {
-                return QString::number(msg.txn_id) == txnid;
-        };
+        auto match_txnid = [txn_id](const auto &msg) -> bool { return msg.txn_id == txn_id; };
 
         return std::any_of(pending_msgs_.cbegin(), pending_msgs_.cend(), match_txnid) ||
                std::any_of(pending_sent_msgs_.cbegin(), pending_sent_msgs_.cend(), match_txnid);
 }
 
 void
-TimelineView::removePendingMessage(const QString &txnid)
+TimelineView::removePendingMessage(const std::string &txn_id)
 {
-        if (txnid.isEmpty())
+        if (txn_id.empty())
                 return;
 
         for (auto it = pending_sent_msgs_.begin(); it != pending_sent_msgs_.end(); ++it) {
-                if (QString::number(it->txn_id) == txnid) {
+                if (it->txn_id == txn_id) {
                         int index = std::distance(pending_sent_msgs_.begin(), it);
                         pending_sent_msgs_.removeAt(index);
 
                         if (pending_sent_msgs_.isEmpty())
                                 sendNextPendingMessage();
 
-                        return;
+                        nhlog::ui()->info("[{}] removed message with sync", txn_id);
                 }
         }
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
-                if (QString::number(it->txn_id) == txnid) {
-                        int index = std::distance(pending_msgs_.begin(), it);
-                        pending_msgs_.removeAt(index);
+                if (it->txn_id == txn_id) {
+                        if (it->widget)
+                                it->widget->markReceived();
+
+                        nhlog::ui()->info("[{}] received sync before message response", txn_id);
                         return;
                 }
         }
 }
 
 void
-TimelineView::handleFailedMessage(int txnid)
+TimelineView::handleFailedMessage(const std::string &txn_id)
 {
-        Q_UNUSED(txnid);
+        Q_UNUSED(txn_id);
         // Note: We do this even if the message has already been echoed.
         QTimer::singleShot(2000, this, SLOT(sendNextPendingMessage()));
 }
@@ -673,7 +851,16 @@ TimelineView::readLastEvent() const
         const auto eventId = getLastEventId();
 
         if (!eventId.isEmpty())
-                http::client()->readEvent(room_id_, eventId);
+                http::v2::client()->read_event(room_id_.toStdString(),
+                                               eventId.toStdString(),
+                                               [this, eventId](mtx::http::RequestErr err) {
+                                                       if (err) {
+                                                               nhlog::net()->warn(
+                                                                 "failed to read event ({}, {})",
+                                                                 room_id_.toStdString(),
+                                                                 eventId.toStdString());
+                                                       }
+                                               });
 }
 
 QString
@@ -743,7 +930,8 @@ void
 TimelineView::removeEvent(const QString &event_id)
 {
         if (!eventIds_.contains(event_id)) {
-                qWarning() << "unknown event_id couldn't be removed:" << event_id;
+                nhlog::ui()->warn("cannot remove widget with unknown event_id: {}",
+                                  event_id.toStdString());
                 return;
         }
 
@@ -859,4 +1047,333 @@ TimelineView::isDateDifference(const QDateTime &first, const QDateTime &second) 
         constexpr uint64_t fifteenMins = 15 * 60;
 
         return diffInSeconds > fifteenMins;
+}
+
+void
+TimelineView::sendRoomMessageHandler(const std::string &txn_id,
+                                     const mtx::responses::EventId &res,
+                                     mtx::http::RequestErr err)
+{
+        if (err) {
+                const int status_code = static_cast<int>(err->status_code);
+                nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                   txn_id,
+                                   err->matrix_error.error,
+                                   status_code);
+                emit messageFailed(txn_id);
+                return;
+        }
+
+        emit messageSent(txn_id, QString::fromStdString(res.event_id.to_string()));
+}
+
+template<>
+mtx::events::msg::Audio
+toRoomMessage<mtx::events::msg::Audio>(const PendingMessage &m)
+{
+        mtx::events::msg::Audio audio;
+        audio.info.mimetype = m.mime.toStdString();
+        audio.info.size     = m.media_size;
+        audio.body          = m.filename.toStdString();
+        audio.url           = m.body.toStdString();
+        return audio;
+}
+
+template<>
+mtx::events::msg::Image
+toRoomMessage<mtx::events::msg::Image>(const PendingMessage &m)
+{
+        mtx::events::msg::Image image;
+        image.info.mimetype = m.mime.toStdString();
+        image.info.size     = m.media_size;
+        image.body          = m.filename.toStdString();
+        image.url           = m.body.toStdString();
+        return image;
+}
+
+template<>
+mtx::events::msg::Video
+toRoomMessage<mtx::events::msg::Video>(const PendingMessage &m)
+{
+        mtx::events::msg::Video video;
+        video.info.mimetype = m.mime.toStdString();
+        video.info.size     = m.media_size;
+        video.body          = m.filename.toStdString();
+        video.url           = m.body.toStdString();
+        return video;
+}
+
+template<>
+mtx::events::msg::Emote
+toRoomMessage<mtx::events::msg::Emote>(const PendingMessage &m)
+{
+        mtx::events::msg::Emote emote;
+        emote.body = m.body.toStdString();
+        return emote;
+}
+
+template<>
+mtx::events::msg::File
+toRoomMessage<mtx::events::msg::File>(const PendingMessage &m)
+{
+        mtx::events::msg::File file;
+        file.info.mimetype = m.mime.toStdString();
+        file.info.size     = m.media_size;
+        file.body          = m.filename.toStdString();
+        file.url           = m.body.toStdString();
+        return file;
+}
+
+template<>
+mtx::events::msg::Text
+toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
+{
+        mtx::events::msg::Text text;
+        text.body = m.body.toStdString();
+        return text;
+}
+
+void
+TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
+{
+        const auto room_id = room_id_.toStdString();
+
+        using namespace mtx::events;
+        using namespace mtx::identifiers;
+
+        json content;
+
+        // Serialize the message to the plaintext that will be encrypted.
+        switch (msg.ty) {
+        case MessageType::Audio: {
+                content = json(toRoomMessage<msg::Audio>(msg));
+                break;
+        }
+        case MessageType::Emote: {
+                content = json(toRoomMessage<msg::Emote>(msg));
+                break;
+        }
+        case MessageType::File: {
+                content = json(toRoomMessage<msg::File>(msg));
+                break;
+        }
+        case MessageType::Image: {
+                content = json(toRoomMessage<msg::Image>(msg));
+                break;
+        }
+        case MessageType::Text: {
+                content = json(toRoomMessage<msg::Text>(msg));
+                break;
+        }
+        case MessageType::Video: {
+                content = json(toRoomMessage<msg::Video>(msg));
+                break;
+        }
+        default:
+                break;
+        }
+
+        json doc{{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
+
+        try {
+                // Check if we have already an outbound megolm session then we can use.
+                if (cache::client()->outboundMegolmSessionExists(room_id)) {
+                        auto data = olm::encrypt_group_message(
+                          room_id, http::v2::client()->device_id(), doc.dump());
+
+                        http::v2::client()
+                          ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
+                            room_id,
+                            msg.txn_id,
+                            data,
+                            std::bind(&TimelineView::sendRoomMessageHandler,
+                                      this,
+                                      msg.txn_id,
+                                      std::placeholders::_1,
+                                      std::placeholders::_2));
+                        return;
+                }
+
+                nhlog::ui()->info("creating new outbound megolm session");
+
+                // Create a new outbound megolm session.
+                auto outbound_session  = olm::client()->init_outbound_group_session();
+                const auto session_id  = mtx::crypto::session_id(outbound_session.get());
+                const auto session_key = mtx::crypto::session_key(outbound_session.get());
+
+                // TODO: needs to be moved in the lib.
+                auto megolm_payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
+                                           {"room_id", room_id},
+                                           {"session_id", session_id},
+                                           {"session_key", session_key}};
+
+                // Saving the new megolm session.
+                // TODO: Maybe it's too early to save.
+                OutboundGroupSessionData session_data;
+                session_data.session_id    = session_id;
+                session_data.session_key   = session_key;
+                session_data.message_index = 0; // TODO Update me
+                cache::client()->saveOutboundMegolmSession(
+                  room_id, session_data, std::move(outbound_session));
+
+                const auto members = cache::client()->roomMembers(room_id);
+                nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
+
+                auto keeper = std::make_shared<StateKeeper>(
+                  [megolm_payload, room_id, doc, txn_id = msg.txn_id, this]() {
+                          try {
+                                  auto data = olm::encrypt_group_message(
+                                    room_id, http::v2::client()->device_id(), doc.dump());
+
+                                  http::v2::client()
+                                    ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
+                                      room_id,
+                                      txn_id,
+                                      data,
+                                      std::bind(&TimelineView::sendRoomMessageHandler,
+                                                this,
+                                                txn_id,
+                                                std::placeholders::_1,
+                                                std::placeholders::_2));
+
+                          } catch (const lmdb::error &e) {
+                                  nhlog::db()->critical(
+                                    "failed to save megolm outbound session: {}", e.what());
+                          }
+                  });
+
+                mtx::requests::QueryKeys req;
+                for (const auto &member : members)
+                        req.device_keys[member] = {};
+
+                http::v2::client()->query_keys(
+                  req,
+                  [keeper = std::move(keeper), megolm_payload, this](
+                    const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->warn("failed to query device keys: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                                  // TODO: Mark the event as failed. Communicate with the UI.
+                                  return;
+                          }
+
+                          for (const auto &entry : res.device_keys) {
+                                  for (const auto &dev : entry.second) {
+                                          nhlog::net()->info("received device {}", dev.first);
+
+                                          const auto device_keys = dev.second.keys;
+                                          const auto curveKey    = "curve25519:" + dev.first;
+                                          const auto edKey       = "ed25519:" + dev.first;
+
+                                          if ((device_keys.find(curveKey) == device_keys.end()) ||
+                                              (device_keys.find(edKey) == device_keys.end())) {
+                                                  nhlog::net()->info(
+                                                    "ignoring malformed keys for device {}",
+                                                    dev.first);
+                                                  continue;
+                                          }
+
+                                          DevicePublicKeys pks;
+                                          pks.ed25519    = device_keys.at(edKey);
+                                          pks.curve25519 = device_keys.at(curveKey);
+
+                                          // Validate signatures
+                                          for (const auto &algo : dev.second.keys) {
+                                                  nhlog::net()->info(
+                                                    "dev keys {} {}", algo.first, algo.second);
+                                          }
+
+                                          auto room_key =
+                                            olm::client()
+                                              ->create_room_key_event(UserId(dev.second.user_id),
+                                                                      pks.ed25519,
+                                                                      megolm_payload)
+                                              .dump();
+
+                                          http::v2::client()->claim_keys(
+                                            dev.second.user_id,
+                                            {dev.second.device_id},
+                                            std::bind(&TimelineView::handleClaimedKeys,
+                                                      this,
+                                                      keeper,
+                                                      room_key,
+                                                      pks,
+                                                      dev.second.user_id,
+                                                      dev.second.device_id,
+                                                      std::placeholders::_1,
+                                                      std::placeholders::_2));
+                                  }
+                          }
+                  });
+
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical(
+                  "failed to open outbound megolm session ({}): {}", room_id, e.what());
+                return;
+        }
+}
+
+void
+TimelineView::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
+                                const std::string &room_key,
+                                const DevicePublicKeys &pks,
+                                const std::string &user_id,
+                                const std::string &device_id,
+                                const mtx::responses::ClaimKeys &res,
+                                mtx::http::RequestErr err)
+{
+        if (err) {
+                nhlog::net()->warn("claim keys error: {}", err->matrix_error.error);
+                return;
+        }
+
+        nhlog::net()->info("claimed keys for {} - {}", user_id, device_id);
+
+        if (res.one_time_keys.size() == 0) {
+                nhlog::net()->info("no one-time keys found for device_id: {}", device_id);
+                return;
+        }
+
+        if (res.one_time_keys.find(user_id) == res.one_time_keys.end()) {
+                nhlog::net()->info(
+                  "no one-time keys found in device_id {} for the user {}", device_id, user_id);
+                return;
+        }
+
+        auto retrieved_devices = res.one_time_keys.at(user_id);
+
+        for (const auto &rd : retrieved_devices) {
+                nhlog::net()->info("{} : \n {}", rd.first, rd.second.dump(2));
+
+                // TODO: Verify signatures
+                auto otk    = rd.second.begin()->at("key");
+                auto id_key = pks.curve25519;
+
+                auto s = olm::client()->create_outbound_session(id_key, otk);
+
+                auto device_msg =
+                  olm::client()->create_olm_encrypted_content(s.get(), room_key, pks.curve25519);
+
+                try {
+                        cache::client()->saveOlmSession(id_key, std::move(s));
+                } catch (const lmdb::error &e) {
+                        nhlog::db()->critical("failed to save outbound olm session: {}", e.what());
+                } catch (const mtx::crypto::olm_exception &e) {
+                        nhlog::crypto()->critical("failed to pickle outbound olm session: {}",
+                                                  e.what());
+                }
+
+                json body{{"messages", {{user_id, {{device_id, device_msg}}}}}};
+
+                http::v2::client()->send_to_device(
+                  "m.room.encrypted", body, [keeper](mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->warn("failed to send "
+                                                     "send_to_device "
+                                                     "message: {}",
+                                                     err->matrix_error.error);
+                          }
+                  });
+        }
 }

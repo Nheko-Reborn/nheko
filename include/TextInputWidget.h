@@ -129,6 +129,16 @@ public:
 
         QColor borderColor() const { return borderColor_; }
         void setBorderColor(QColor &color) { borderColor_ = color; }
+        void disableInput()
+        {
+                input_->setEnabled(false);
+                input_->setPlaceholderText(tr("Connection lost. Nheko is trying to re-connect..."));
+        }
+        void enableInput()
+        {
+                input_->setEnabled(true);
+                input_->setPlaceholderText(tr("Write a message..."));
+        }
 
 public slots:
         void openFileSelection();

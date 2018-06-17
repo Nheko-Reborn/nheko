@@ -20,6 +20,7 @@
 
 #include "Config.h"
 #include "FlatButton.h"
+#include "Logging.hpp"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "RaisedButton.h"
@@ -125,35 +126,53 @@ RegisterPage::RegisterPage(QWidget *parent)
         connect(password_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
         connect(password_confirmation_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
         connect(server_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(http::client(),
-                SIGNAL(registerError(const QString &)),
-                this,
-                SLOT(registerError(const QString &)));
-        connect(http::client(),
-                &MatrixClient::registrationFlow,
-                this,
-                [this](const QString &user,
-                       const QString &pass,
-                       const QString &server,
-                       const QString &session) {
-                        emit errorOccurred();
+        connect(this, &RegisterPage::registerErrorCb, this, &RegisterPage::registerError);
+        connect(
+          this,
+          &RegisterPage::registrationFlow,
+          this,
+          [this](const std::string &user, const std::string &pass, const std::string &session) {
+                  emit errorOccurred();
 
-                        if (!captchaDialog_) {
-                                captchaDialog_ =
-                                  std::make_shared<dialogs::ReCaptcha>(server, session, this);
-                                connect(captchaDialog_.get(),
-                                        &dialogs::ReCaptcha::closing,
-                                        this,
-                                        [this, user, pass, server, session]() {
-                                                captchaDialog_->close();
-                                                emit registering();
-                                                http::client()->registerUser(
-                                                  user, pass, server, session);
-                                        });
-                        }
+                  if (!captchaDialog_) {
+                          captchaDialog_ = std::make_shared<dialogs::ReCaptcha>(
+                            QString::fromStdString(session), this);
+                          connect(
+                            captchaDialog_.get(),
+                            &dialogs::ReCaptcha::closing,
+                            this,
+                            [this, user, pass, session]() {
+                                    captchaDialog_->close();
+                                    emit registering();
 
-                        QTimer::singleShot(1000, this, [this]() { captchaDialog_->show(); });
-                });
+                                    http::v2::client()->flow_response(
+                                      user,
+                                      pass,
+                                      session,
+                                      "m.login.recaptcha",
+                                      [this](const mtx::responses::Register &res,
+                                             mtx::http::RequestErr err) {
+                                              if (err) {
+                                                      nhlog::net()->warn(
+                                                        "failed to retrieve registration flows: {}",
+                                                        err->matrix_error.error);
+                                                      emit errorOccurred();
+                                                      emit registerErrorCb(QString::fromStdString(
+                                                        err->matrix_error.error));
+                                                      return;
+                                              }
+
+                                              http::v2::client()->set_user(res.user_id);
+                                              http::v2::client()->set_access_token(
+                                                res.access_token);
+
+                                              emit registerOk();
+                                      });
+                            });
+                  }
+
+                  QTimer::singleShot(1000, this, [this]() { captchaDialog_->show(); });
+          });
 
         setLayout(top_layout_);
 }
@@ -185,11 +204,56 @@ RegisterPage::onRegisterButtonClicked()
         } else if (!server_input_->hasAcceptableInput()) {
                 registerError(tr("Invalid server name"));
         } else {
-                QString username = username_input_->text();
-                QString password = password_input_->text();
-                QString server   = server_input_->text();
+                auto username = username_input_->text().toStdString();
+                auto password = password_input_->text().toStdString();
+                auto server   = server_input_->text().toStdString();
 
-                http::client()->registerUser(username, password, server);
+                http::v2::client()->set_server(server);
+                http::v2::client()->registration(
+                  username,
+                  password,
+                  [this, username, password](const mtx::responses::Register &res,
+                                             mtx::http::RequestErr err) {
+                          if (!err) {
+                                  http::v2::client()->set_user(res.user_id);
+                                  http::v2::client()->set_access_token(res.access_token);
+
+                                  emit registerOk();
+                                  return;
+                          }
+
+                          // The server requires registration flows.
+                          if (err->status_code == boost::beast::http::status::unauthorized) {
+                                  http::v2::client()->flow_register(
+                                    username,
+                                    password,
+                                    [this, username, password](
+                                      const mtx::responses::RegistrationFlows &res,
+                                      mtx::http::RequestErr err) {
+                                            if (res.session.empty() && err) {
+                                                    nhlog::net()->warn(
+                                                      "failed to retrieve registration flows: ({}) "
+                                                      "{}",
+                                                      static_cast<int>(err->status_code),
+                                                      err->matrix_error.error);
+                                                    emit errorOccurred();
+                                                    emit registerErrorCb(QString::fromStdString(
+                                                      err->matrix_error.error));
+                                                    return;
+                                            }
+
+                                            emit registrationFlow(username, password, res.session);
+                                    });
+                                  return;
+                          }
+
+                          nhlog::net()->warn("failed to register: status_code ({})",
+                                             static_cast<int>(err->status_code));
+
+                          emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
+                          emit errorOccurred();
+                  });
+
                 emit registering();
         }
 }

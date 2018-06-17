@@ -5,16 +5,17 @@
 
 #include "Cache.h"
 
-class FlatButton;
-class TextField;
-class QHBoxLayout;
 class Avatar;
-class QPixmap;
-class QLayout;
-class QLabel;
+class FlatButton;
 class QComboBox;
-class TextField;
+class QHBoxLayout;
 class QLabel;
+class QLabel;
+class QLayout;
+class QPixmap;
+class TextField;
+class TextField;
+class Toggle;
 
 template<class T>
 class QSharedPointer;
@@ -30,6 +31,9 @@ public:
 
 signals:
         void nameChanged(const QString &roomName);
+        void nameEventSentCb(const QString &newName);
+        void topicEventSentCb();
+        void stateEventErrorCb(const QString &msg);
 
 private:
         QString roomId_;
@@ -81,6 +85,7 @@ public:
 
 signals:
         void closing();
+        void enableEncryptionError(const QString &msg);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -95,13 +100,15 @@ private:
         void setupEditButton();
         //! Retrieve the current room information from cache.
         void retrieveRoomInfo();
+        void enableEncryption();
 
         //! Whether the user would be able to change the name or the topic of the room.
-        bool hasEditRights_ = true;
+        bool hasEditRights_  = true;
+        bool usesEncryption_ = false;
         QHBoxLayout *editLayout_;
 
         // Button section
-        FlatButton *saveBtn_;
+        FlatButton *okBtn_;
         FlatButton *cancelBtn_;
 
         FlatButton *editFieldsBtn_;
@@ -113,6 +120,7 @@ private:
         TopSection *topSection_;
 
         QComboBox *accessCombo;
+        Toggle *encryptionToggle_;
 };
 
 } // dialogs

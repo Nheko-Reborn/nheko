@@ -56,6 +56,8 @@ signals:
         void updateRoomsLastMessage(const QString &user, const DescInfo &info);
 
 public slots:
+        void removeTimelineEvent(const QString &room_id, const QString &event_id);
+
         void setHistoryView(const QString &room_id);
         void queueTextMessage(const QString &msg);
         void queueEmoteMessage(const QString &msg);
@@ -79,10 +81,6 @@ public slots:
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize);
-
-private slots:
-        void messageSent(const QString &eventid, const QString &roomid, int txnid);
-        void messageSendFailed(const QString &roomid, int txnid);
 
 private:
         //! Check if the given room id is managed by a TimelineView.

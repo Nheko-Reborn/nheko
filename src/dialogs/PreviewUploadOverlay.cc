@@ -17,7 +17,6 @@
 
 #include <QApplication>
 #include <QBuffer>
-#include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 #include <QHBoxLayout>
@@ -25,14 +24,15 @@
 #include <QVBoxLayout>
 
 #include "Config.h"
+#include "Logging.hpp"
 #include "Utils.h"
 
 #include "dialogs/PreviewUploadOverlay.h"
 
 using namespace dialogs;
 
-static constexpr const char *DEFAULT = "Upload %1?";
-static constexpr const char *ERROR   = "Failed to load image type '%1'. Continue upload?";
+constexpr const char *DEFAULT = "Upload %1?";
+constexpr const char *ERR_MSG = "Failed to load image type '%1'. Continue upload?";
 
 PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
   : QWidget{parent}
@@ -105,7 +105,7 @@ PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64
 {
         if (mediaType_ == "image") {
                 if (!image_.loadFromData(data_)) {
-                        titleLabel_.setText(QString{tr(ERROR)}.arg(type));
+                        titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
                 } else {
                         titleLabel_.setText(QString{tr(DEFAULT)}.arg(mediaType_));
                 }
@@ -142,8 +142,9 @@ PreviewUploadOverlay::setPreview(const QString &path)
         QFile file{path};
 
         if (!file.open(QIODevice::ReadOnly)) {
-                qWarning() << "Failed to open file from:" << path;
-                qWarning() << "Reason:" << file.errorString();
+                nhlog::ui()->warn("Failed to open file ({}): {}",
+                                  path.toStdString(),
+                                  file.errorString().toStdString());
                 close();
                 return;
         }
@@ -152,7 +153,7 @@ PreviewUploadOverlay::setPreview(const QString &path)
         auto mime = db.mimeTypeForFileNameAndData(path, &file);
 
         if ((data_ = file.readAll()).isEmpty()) {
-                qWarning() << "Failed to read media:" << file.errorString();
+                nhlog::ui()->warn("Failed to read media: {}", file.errorString().toStdString());
                 close();
                 return;
         }
