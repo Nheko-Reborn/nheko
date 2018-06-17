@@ -66,28 +66,18 @@ install:
 
 script:
     - ./.ci/script.sh
+    - sed -i -e "s/VERSION_NAME_VALUE/${TRAVIS_TAG}/g" ./.ci/bintray-release.json || true
+    - cp ./.ci/bintray-release.json .
 
 deploy:
-    - skip_cleanup: true
+    - provider: bintray
+      user: "mujx"
+      key:
+          secure: "CAVzWZPxYSOTollo9bpD4tvEbfxXjqelc32aApV48GKyJrMQljQ+mvSe25BuUtnDehxnw8affgGX23AYXmvG8P7w4hM2d7//8Lgan1zCmusV8JE432jknev6X641B4cvrywqSe0Dj3l0kS9Xgirq4BGavlI0y2vUjeJfQEv0y8GYoI72LwgyH0i82v/1Qi92Fh8429IJIb0eKmC1wGWXCmo2kd8StZRL5mSlc4TmyWI0SHpA5GrLMiQwLAuD7DjDl5mpaK2yQx+H4vBcI2SUMvmlHGgVjXikJG5gURlHbnIaaBFvO67INc1/65KtMokWuMP12zxqJiaMPtsAskOpQv4FLAYDfnigH3NxufyOIGp2cxS5RhJDQhbNsxHEDnUo1kHcO23ZYNWCuC1yUdn0RXzKhWcUsz8mKF8KJs22Ty4VjfUMZ+vqK/AbHyq4rkl8DizVRZqKF1KjSWrSv/2sT4itnHk9pmcgxAYfGuALcjrJJveI4MTwDhzXB62CKnMOqLq3sAMqvE0+BdA0BykQr7qrKtptuyP2/OFx6RDbfHQl5Klkb6cSOjxm0oUzh/8iaxgsVdCrhfE67eqkhFZ+a8lJkB/rZ4zSK1Q2Cp4nLtnxenUCW+Ptk2l7zZN6kXM1/+tcgqVROChYJ6asMUpsjFOOAVQ8SZ4TcxX1rq+pxlA="
+      skip_cleanup: true
       overwrite: true
-      provider: releases
-      api_key:
-          secure: oprXzESukFiXBeF2BXkXUlegsAQc95Ub4kc/OkoNFaYBvqpA+IGpWHmHCx5JPny/OT3Kc2Urpe2JUeGSWDHZ7UCKDjH+NzGP3uN82fHh/HiszG/Srw7+hWEHm1ve+gMK9GS8pr+yUsUrPP0UfVXlPoI4pBWa4zGi2Ndb/SqvjCgIHFLtGyoBo6CydKQ/AyWiXSMKDfJL+Dx4JLIPP4RTCBJy8ZrZ8m/a5Tgy4Ij6+djjrgYCZCEhGxSYw7xDIT/9SV8g9NkrbisqBDrILzAH8Yhe4XMRMXo88OAxV5+Vb9Rw1hrqczez6lpFDbJetv8MjofND+pSoAFwtjaL1wTFK9Ud6w4O9AuHlEQH9cGVdvsxFcosRwJVh58x51JM9ptoktqhx/HHJBTuCHCYYlHwtRwbwqnMYdLzKZG5FnujT8DG+9mcva1fL6tzW/XD505VPMWwXFC/2/pvolgAkTFFXYSALAwZlK3IgoXU8Gok/3B4iHofzQsFf6Yq3BI/88x7tVASUqiYhoKrO50+gb6pNIRCyWgGUiBEVXBp6Ziq3ORQPyQJg7i9HHUGTUu74yvGLHWLwjNQzZP/hxJZK3VlJxzyXntdOxiJc8iOzNrU+rPKBAlAaE6bQDOoniIysEgdD5BXHTLFzPvts4P1n2Ckor5/rNJ+qXR8GU+/y7e1GKU=
-      file_glob: true
-      file:
-          - nheko-x86_64.AppImage
+      file: "bintray-release.json"
       on:
-          condition: $TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1
-          repo: mujx/nheko
-          tags: true
-
-    - skip_cleanup: true
-      overwrite: true
-      provider: releases
-      api_key:
-          secure: oprXzESukFiXBeF2BXkXUlegsAQc95Ub4kc/OkoNFaYBvqpA+IGpWHmHCx5JPny/OT3Kc2Urpe2JUeGSWDHZ7UCKDjH+NzGP3uN82fHh/HiszG/Srw7+hWEHm1ve+gMK9GS8pr+yUsUrPP0UfVXlPoI4pBWa4zGi2Ndb/SqvjCgIHFLtGyoBo6CydKQ/AyWiXSMKDfJL+Dx4JLIPP4RTCBJy8ZrZ8m/a5Tgy4Ij6+djjrgYCZCEhGxSYw7xDIT/9SV8g9NkrbisqBDrILzAH8Yhe4XMRMXo88OAxV5+Vb9Rw1hrqczez6lpFDbJetv8MjofND+pSoAFwtjaL1wTFK9Ud6w4O9AuHlEQH9cGVdvsxFcosRwJVh58x51JM9ptoktqhx/HHJBTuCHCYYlHwtRwbwqnMYdLzKZG5FnujT8DG+9mcva1fL6tzW/XD505VPMWwXFC/2/pvolgAkTFFXYSALAwZlK3IgoXU8Gok/3B4iHofzQsFf6Yq3BI/88x7tVASUqiYhoKrO50+gb6pNIRCyWgGUiBEVXBp6Ziq3ORQPyQJg7i9HHUGTUu74yvGLHWLwjNQzZP/hxJZK3VlJxzyXntdOxiJc8iOzNrU+rPKBAlAaE6bQDOoniIysEgdD5BXHTLFzPvts4P1n2Ckor5/rNJ+qXR8GU+/y7e1GKU=
-      file: nheko.dmg
-      on:
-          condition: $TRAVIS_OS_NAME == osx && $DEPLOYMENT == 1
+          condition: $DEPLOYMENT == 1
           repo: mujx/nheko
           tags: true

@@ -67,12 +67,9 @@ after_build:
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
     - windeployqt --qmldir %QT_DIR%\qml\ --release NhekoRelease\nheko.exe
 
-    - copy C:\Tools\vcpkg\installed\x64-windows\lib\lmdb.lib .\NhekoRelease\lmdb.lib
-    - copy C:\Tools\vcpkg\installed\x64-windows\bin\lmdb.dll .\NhekoRelease\lmdb.dll
+    - copy C:\Tools\vcpkg\installed\x64-windows\lib\*.lib .\NhekoRelease\
+    - copy C:\Tools\vcpkg\installed\x64-windows\bin\*.dll .\NhekoRelease\
 
-    - copy C:\OpenSSL-Win64\bin\ssleay32.dll .\NhekoRelease\ssleay32.dll
-    - copy C:\OpenSSL-Win64\bin\libeay32.dll .\NhekoRelease\libeay32.dll
-    - copy C:\OpenSSL-Win64\lib\libeay32.lib .\NhekoRelease\libeay32.lib
     - 7z a nheko_win_64.zip .\NhekoRelease\*
     - ls -lh build\Release\
     - ls -lh NhekoRelease\
@@ -115,17 +112,23 @@ after_build:
     - set PATH=%BUILD%\tools\bin;%PATH%
     - binarycreator.exe -f -c installer\config\config.xml -p installer\packages nheko-installer.exe
 
+    - mv nheko-installer.exe nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe
+
 deploy:
-    description: "Development builds"
-    provider: GitHub
-    auth_token:
-        secure: YqB7hcM+4482eSHhtVR7ZA7N7lE78y8BC897/7UDTBQd+NWdWFW/6S+oKDie9TT7
-    artifact: nheko-installer.exe
-    force_update: true
-    prerelease: true
+    provider: BinTray
+    username: mujx
+    api_key:
+        secure: "hhhAH6csIrPEVH92NNQkiGCkuON6l6sfhbZk+pvzDAM3vHex7YbqFKW6v5UjAS8v"
+    subject: mujx
+    repo: matrix
+    package: nheko
+    version: $(APPVEYOR_REPO_TAG_NAME)
+    publish: true
+    override: true
+    artifact: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe
     on:
         appveyor_repo_tag: true
 
 artifacts:
     - path: nheko_win_64.zip
-    - path: nheko-installer.exe
+    - path: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe

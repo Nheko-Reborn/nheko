@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "includePattern": "nheko-VERSION_NAME_VALUE.dmg",
+      "matrixParams": {
+        "override": 1
+      },
+      "uploadPattern": "VERSION_NAME_VALUE/nheko-VERSION_NAME_VALUE.dmg"
+    },
+    {
+      "includePattern": "nheko-VERSION_NAME_VALUE-x86_64.AppImage",
+      "matrixParams": {
+        "override": 1
+      },
+      "uploadPattern": "VERSION_NAME_VALUE/nheko-VERSION_NAME_VALUE-x86_64.AppImage"
+    }
+  ],
+  "package": {
+    "desc": "Desktop client for the Matrix protocol",
+    "issue_tracker_url": "https://github.com/mujx/nheko/issues",
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "name": "nheko",
+    "public_download_numbers": true,
+    "public_stats": true,
+    "repo": "matrix",
+    "subject": "mujx",
+    "vcs_url": "https://github.com/mujx/nheko",
+    "website_url": "https://github.com/mujx/nheko"
+  },
+  "publish": true,
+  "version": {
+    "name": "VERSION_NAME_VALUE",
+    "vcs_tag": "VERSION_NAME_VALUE"
+  }
+}

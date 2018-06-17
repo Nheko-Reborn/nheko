@@ -1084,7 +1084,7 @@ ChatPage::trySync()
                                   if (!http::v2::is_logged_in())
                                           return;
 
-                                  emit dropToLoginPageCb(msg);
+                                  emit tryDelayedSyncCb();
                                   return;
                           }
 
@@ -1095,16 +1095,16 @@ ChatPage::trySync()
                                   emit trySyncCb();
                                   return;
                           }
-                          case 401:
-                          case 403: {
+                          default: {
                                   if (!http::v2::is_logged_in())
                                           return;
 
-                                  emit dropToLoginPageCb(msg);
-                                  return;
-                          }
-                          default: {
-                                  emit tryDelayedSyncCb();
+                                  if (err->matrix_error.errcode ==
+                                      mtx::errors::ErrorCode::M_UNKNOWN_TOKEN)
+                                          emit dropToLoginPageCb(msg);
+                                  else
+                                          emit tryDelayedSyncCb();
+
                                   return;
                           }
                           }
