@@ -166,8 +166,9 @@ main(int argc, char *argv[])
         QObject::connect(&app, &QApplication::aboutToQuit, &w, [&w]() {
                 w.saveCurrentWindowSize();
                 if (http::v2::client() != nullptr) {
+                        nhlog::net()->info("shutting down all I/O threads & open connections");
                         http::v2::client()->shutdown();
-                        http::v2::client()->close();
+                        http::v2::client()->close(true);
                 }
         });
 

@@ -362,8 +362,6 @@ TimelineView::addUserMessage(const QString &url,
 
         lastMessageDirection_ = TimelineDirection::Bottom;
 
-        QApplication::processEvents();
-
         // Keep track of the sender and the timestamp of the current message.
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
 

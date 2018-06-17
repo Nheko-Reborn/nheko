@@ -30,13 +30,10 @@ unset QTDIR
 unset QT_PLUGIN_PATH 
 unset LD_LIBRARY_PATH
 
-cp -R .deps/usr/lib/* ${DIR}/usr/lib
+export ARCH=$(uname -m)
 
-ldd ${DIR}/usr/bin/nheko
-
-./linuxdeployqt*.AppImage \
-    ${DIR}/usr/share/applications/nheko.desktop \
-    -appimage
+./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -bundle-non-qt-libs
+./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -appimage
 
 chmod +x nheko-x86_64.AppImage
 

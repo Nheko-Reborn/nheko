@@ -900,7 +900,8 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
 {
         std::map<QString, RoomInfo> room_info;
 
-        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        // TODO This should be read only.
+        auto txn = lmdb::txn::begin(env_);
 
         for (const auto &room : rooms) {
                 lmdb::val data;
