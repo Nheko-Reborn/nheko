@@ -75,4 +75,7 @@ encrypt_group_message(const std::string &room_id,
                       const std::string &device_id,
                       const std::string &body);
 
+void
+mark_keys_as_published();
+
 } // namespace olm

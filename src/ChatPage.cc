@@ -1038,7 +1038,8 @@ ChatPage::tryInitialSync()
                           return;
                   }
 
-                  olm::client()->mark_keys_as_published();
+                  olm::mark_keys_as_published();
+
                   for (const auto &entry : res.one_time_key_counts)
                           nhlog::net()->info(
                             "uploaded {} {} one-time keys", entry.second, entry.first);
@@ -1273,7 +1274,7 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
                                           return;
                                   }
 
-                                  olm::client()->mark_keys_as_published();
+                                  olm::mark_keys_as_published();
                           });
                 }
         }

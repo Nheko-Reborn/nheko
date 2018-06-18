@@ -5,6 +5,8 @@
 
 using namespace mtx::crypto;
 
+static const std::string STORAGE_SECRET_KEY("secret");
+
 namespace {
 auto client_ = std::make_unique<mtx::crypto::OlmClient>();
 }
@@ -227,6 +229,13 @@ create_inbound_megolm_session(const std::string &sender,
         }
 
         nhlog::crypto()->info("established inbound megolm session ({}, {})", room_id, sender);
+}
+
+void
+mark_keys_as_published()
+{
+        olm::client()->mark_keys_as_published();
+        cache::client()->saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
 }
 
 } // namespace olm
