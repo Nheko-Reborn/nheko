@@ -29,6 +29,8 @@
 #include <mtxclient/crypto/client.hpp>
 #include <mutex>
 
+#include "Logging.hpp"
+
 using mtx::events::state::JoinRule;
 
 struct RoomMember
@@ -345,7 +347,7 @@ public:
         bool isNotificationSent(const std::string &event_id);
 
         //! Mark a room that uses e2e encryption.
-        void setEncryptedRoom(const std::string &room_id);
+        void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
         bool isRoomEncrypted(const std::string &room_id);
 
         //! Save the public keys for a device.
@@ -467,6 +469,9 @@ private:
                         }
                         }
 
+                        return;
+                } else if (mpark::holds_alternative<StateEvent<Encryption>>(event)) {
+                        setEncryptedRoom(txn, room_id);
                         return;
                 }
 

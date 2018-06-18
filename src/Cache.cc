@@ -183,14 +183,12 @@ Cache::setup()
 }
 
 void
-Cache::setEncryptedRoom(const std::string &room_id)
+Cache::setEncryptedRoom(lmdb::txn &txn, const std::string &room_id)
 {
         nhlog::db()->info("mark room {} as encrypted", room_id);
 
-        auto txn = lmdb::txn::begin(env_);
-        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+        auto db = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
         lmdb::dbi_put(txn, db, lmdb::val(room_id), lmdb::val("0"));
-        txn.commit();
 }
 
 bool

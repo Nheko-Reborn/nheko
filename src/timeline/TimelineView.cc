@@ -284,13 +284,6 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 auto decrypted =
                   parseEncryptedEvent(mpark::get<EncryptedEvent<msg::Encrypted>>(event));
                 return parseMessageEvent(decrypted, direction);
-        } else if (mpark::holds_alternative<StateEvent<state::Encryption>>(event)) {
-                try {
-                        cache::client()->setEncryptedRoom(room_id_.toStdString());
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->critical("failed to save room {} as encrypted",
-                                              room_id_.toStdString());
-                }
         }
 
         return nullptr;
