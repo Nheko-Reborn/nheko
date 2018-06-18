@@ -82,7 +82,8 @@ handle_pre_key_olm_message(const std::string &sender,
 
         OlmSessionPtr inbound_session = nullptr;
         try {
-                inbound_session = olm::client()->create_inbound_session(content.body);
+                inbound_session =
+                  olm::client()->create_inbound_session_from(sender_key, content.body);
 
                 // We also remove the one time key used to establish that
                 // session so we'll have to update our copy of the account object.
@@ -153,6 +154,9 @@ boost::optional<json>
 try_olm_decryption(const std::string &sender_key, const OlmCipherContent &msg)
 {
         auto session_ids = cache::client()->getOlmSessions(sender_key);
+
+        nhlog::crypto()->info("attempt to decrypt message with {} known session_ids",
+                              session_ids.size());
 
         for (const auto &id : session_ids) {
                 auto session = cache::client()->getOlmSession(sender_key, id);

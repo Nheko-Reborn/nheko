@@ -331,7 +331,8 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         body["origin_server_ts"] = e.origin_server_ts;
         body["unsigned"]         = e.unsigned_data;
 
-        nhlog::crypto()->info("decrypted data: \n {}", body.dump(2));
+        nhlog::crypto()->info("decrypted event: {}", e.event_id);
+        nhlog::crypto()->debug("decrypted data: \n {}", body.dump(2));
 
         json event_array = json::array();
         event_array.push_back(body);
@@ -673,8 +674,8 @@ TimelineView::sendNextPendingMessage()
         nhlog::ui()->info("[{}] sending next queued message", m.txn_id);
 
         if (m.is_encrypted) {
-                prepareEncryptedMessage(std::move(m));
                 nhlog::ui()->info("[{}] sending encrypted event", m.txn_id);
+                prepareEncryptedMessage(std::move(m));
                 return;
         }
 
