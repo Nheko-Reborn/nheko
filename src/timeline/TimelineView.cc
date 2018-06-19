@@ -1277,19 +1277,22 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                   return;
                           }
 
-                          for (const auto &entry : res.device_keys) {
-                                  for (const auto &dev : entry.second) {
-                                          nhlog::net()->info("received device {}", dev.first);
+                          for (const auto &user : res.device_keys) {
+                                  for (const auto &dev : user.second) {
+                                          const auto user_id   = UserId(dev.second.user_id);
+                                          const auto device_id = DeviceId(dev.second.device_id);
+
+                                          nhlog::net()->info("device_id {}", device_id.get());
 
                                           const auto device_keys = dev.second.keys;
-                                          const auto curveKey    = "curve25519:" + dev.first;
-                                          const auto edKey       = "ed25519:" + dev.first;
+                                          const auto curveKey    = "curve25519:" + device_id.get();
+                                          const auto edKey       = "ed25519:" + device_id.get();
 
                                           if ((device_keys.find(curveKey) == device_keys.end()) ||
                                               (device_keys.find(edKey) == device_keys.end())) {
                                                   nhlog::net()->info(
                                                     "ignoring malformed keys for device {}",
-                                                    dev.first);
+                                                    device_id.get());
                                                   continue;
                                           }
 
@@ -1303,23 +1306,36 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                                     "dev keys {} {}", algo.first, algo.second);
                                           }
 
-                                          auto room_key =
-                                            olm::client()
-                                              ->create_room_key_event(UserId(dev.second.user_id),
-                                                                      pks.ed25519,
-                                                                      megolm_payload)
-                                              .dump();
+                                          try {
+                                                  if (!mtx::crypto::verify_identity_signature(
+                                                        json(dev.second), device_id, user_id)) {
+                                                          nhlog::crypto()->warn(
+                                                            "failed to verify identity keys: {}",
+                                                            json(dev.second).dump(2));
+                                                          continue;
+                                                  }
+                                          } catch (const json::exception &e) {
+                                                  nhlog::crypto()->warn(
+                                                    "failed to parse device key json: {}",
+                                                    e.what());
+                                                  continue;
+                                          }
+
+                                          auto room_key = olm::client()
+                                                            ->create_room_key_event(
+                                                              user_id, pks.ed25519, megolm_payload)
+                                                            .dump();
 
                                           http::v2::client()->claim_keys(
-                                            dev.second.user_id,
-                                            {dev.second.device_id},
+                                            user_id,
+                                            {device_id},
                                             std::bind(&TimelineView::handleClaimedKeys,
                                                       this,
                                                       keeper,
                                                       room_key,
                                                       pks,
-                                                      dev.second.user_id,
-                                                      dev.second.device_id,
+                                                      user_id,
+                                                      device_id,
                                                       std::placeholders::_1,
                                                       std::placeholders::_2));
                                   }
