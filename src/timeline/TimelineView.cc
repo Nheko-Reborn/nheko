@@ -297,25 +297,50 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         index.session_id = e.content.session_id;
         index.sender_key = e.content.sender_key;
 
-        mtx::events::RoomEvent<mtx::events::msg::Text> dummy;
+        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
         dummy.origin_server_ts = e.origin_server_ts;
         dummy.event_id         = e.event_id;
         dummy.sender           = e.sender;
         dummy.content.body     = "-- Encrypted Event (No keys found for decryption) --";
 
-        if (!cache::client()->inboundMegolmSessionExists(index)) {
-                nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
-                                      index.room_id,
-                                      index.session_id,
-                                      e.sender);
-                // TODO: request megolm session_id & session_key from the sender.
+        try {
+                if (!cache::client()->inboundMegolmSessionExists(index)) {
+                        nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
+                                              index.room_id,
+                                              index.session_id,
+                                              e.sender);
+                        // TODO: request megolm session_id & session_key from the sender.
+                        return dummy;
+                }
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to check megolm session's existence: {}", e.what());
+                dummy.content.body = "-- Decryption Error (failed to communicate with DB) --";
                 return dummy;
         }
 
-        auto session = cache::client()->getInboundMegolmSession(index);
-        auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
-
-        const auto msg_str = std::string((char *)res.data.data(), res.data.size());
+        std::string msg_str;
+        try {
+                auto session = cache::client()->getInboundMegolmSession(index);
+                auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
+                msg_str      = std::string((char *)res.data.data(), res.data.size());
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
+                                      index.room_id,
+                                      index.session_id,
+                                      index.sender_key,
+                                      e.what());
+                dummy.content.body =
+                  "-- Decryption Error (failed to retrieve megolm keys from db) --";
+                return dummy;
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
+                                          index.room_id,
+                                          index.session_id,
+                                          index.sender_key,
+                                          e.what());
+                dummy.content.body = "-- Decryption Error (" + std::string(e.what()) + ") --";
+                return dummy;
+        }
 
         // Add missing fields for the event.
         json body                = json::parse(msg_str);
@@ -1301,10 +1326,13 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                           }
                   });
 
+                // TODO: Let the user know about the errors.
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical(
                   "failed to open outbound megolm session ({}): {}", room_id, e.what());
-                return;
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical(
+                  "failed to open outbound megolm session ({}): {}", room_id, e.what());
         }
 }
 
