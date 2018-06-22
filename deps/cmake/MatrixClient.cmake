@@ -8,6 +8,11 @@ if(APPLE)
     set(PLATFORM_FLAGS "-DOPENSSL_ROOT_DIR=/usr/local/opt/openssl")
 endif()
 
+# Force to build with the bundled version of Boost. This is necessary because
+# if an outdated version of Boost is installed, then CMake will grab that
+# instead of the bundled version of Boost, like we wanted.
+set(BOOST_BUNDLE_ROOT "-DBOOST_ROOT=${DEPS_BUILD_DIR}/boost")
+
 ExternalProject_Add(
   MatrixClient
 
@@ -23,6 +28,7 @@ ExternalProject_Add(
         -DBUILD_LIB_TESTS=OFF
         -DBUILD_LIB_EXAMPLES=OFF
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+        ${BOOST_BUNDLE_ROOT}
         ${PLATFORM_FLAGS}
         ${DEPS_BUILD_DIR}/mtxclient
   BUILD_COMMAND 
