@@ -6,6 +6,10 @@ configuration: Release
 image: Visual Studio 2017
 platform: x64
 
+environment:
+    BINTRAY_APIKEY:
+        secure: "hhhAH6csIrPEVH92NNQkiGCkuON6l6sfhbZk+pvzDAM3vHex7YbqFKW6v5UjAS8v"
+
 cache: c:\tools\vcpkg\installed\
 
 build:
@@ -114,20 +118,8 @@ after_build:
 
     - mv nheko-installer.exe nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe
 
-deploy:
-    provider: BinTray
-    username: mujx
-    api_key:
-        secure: "hhhAH6csIrPEVH92NNQkiGCkuON6l6sfhbZk+pvzDAM3vHex7YbqFKW6v5UjAS8v"
-    subject: mujx
-    repo: matrix
-    package: nheko
-    version: $(APPVEYOR_REPO_TAG_NAME)
-    publish: true
-    override: true
-    artifact: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe
-    on:
-        appveyor_repo_tag: true
+on_success:
+    - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -umujx:%BINTRAY_APIKEY% https://api.bintray.com/content/mujx/matrix/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
 
 artifacts:
     - path: nheko_win_64.zip

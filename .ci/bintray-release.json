@@ -5,14 +5,14 @@
       "matrixParams": {
         "override": 1
       },
-      "uploadPattern": "VERSION_NAME_VALUE/nheko-VERSION_NAME_VALUE.dmg"
+      "uploadPattern": "nheko/VERSION_NAME_VALUE/nheko-VERSION_NAME_VALUE.dmg"
     },
     {
       "includePattern": "nheko-VERSION_NAME_VALUE-x86_64.AppImage",
       "matrixParams": {
         "override": 1
       },
-      "uploadPattern": "VERSION_NAME_VALUE/nheko-VERSION_NAME_VALUE-x86_64.AppImage"
+      "uploadPattern": "nheko/VERSION_NAME_VALUE/nheko-VERSION_NAME_VALUE-x86_64.AppImage"
     }
   ],
   "package": {

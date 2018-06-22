@@ -63,6 +63,7 @@ before_install:
 
 install:
     - ./.ci/install.sh
+    - export PATH=/usr/local/bin:${PATH}
 
 script:
     - ./.ci/script.sh
