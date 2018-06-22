@@ -121,8 +121,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         auto heading_ = new QLabel(tr("User Settings"));
         heading_->setStyleSheet("font-weight: bold; font-size: 22px;");
 
-        auto versionInfo = new QLabel(
-          QString("%1 | %2 | %3").arg(nheko::version).arg(nheko::build_user).arg(nheko::build_os));
+        auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version).arg(nheko::build_os));
+        versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
         topBarLayout_ = new QHBoxLayout;
         topBarLayout_->setSpacing(0);

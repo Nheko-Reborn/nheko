@@ -2,7 +2,8 @@ nheko
 ----
 [![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko)
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master)
-[![Latest Release](https://img.shields.io/github/release/mujx/nheko.svg)](https://github.com/mujx/nheko/releases)
+[![Latest Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://bintray.com/mujx/matrix/nheko/_latestVersion)
+[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://bintray.com/mujx/matrix/nheko/nightly)
 [![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
 
@@ -32,7 +33,7 @@ Specifically there is support for:
 
 ### Releases
 
-You can find releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer) on the [Bintray repo](https://bintray.com/mujx/matrix/nheko).
+Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer) can be found on the [Bintray repo](https://bintray.com/mujx/matrix/nheko).
 
 ### Repositories
 
@@ -84,9 +85,6 @@ If you don't want to install any external dependencies, you can generate an AppI
 ```bash
 make docker-app-image
 ```
-
-If you're on Debian you should use `make docker-debian-appimage` instead, which uses
-Debian as the build host in an attempt to work around this [issue](https://github.com/AppImage/AppImageKit/wiki/Desktop-Linux-Platform-Issues#openssl).
 
 ##### Arch Linux
 
