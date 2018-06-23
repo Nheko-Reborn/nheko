@@ -2,7 +2,7 @@ nheko
 ----
 [![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko)
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master)
-[![Latest Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://bintray.com/mujx/matrix/nheko/_latestVersion)
+[![Latest Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://bintray.com/mujx/matrix/nheko/v0.4.3)
 [![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://bintray.com/mujx/matrix/nheko/nightly)
 [![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)

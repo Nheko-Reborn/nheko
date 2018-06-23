@@ -19,11 +19,24 @@ matrix:
         - os: linux
           compiler: gcc
           env:
+              - CXX_COMPILER=g++-5
+              - C_COMPILER=gcc-5
+              - QT_VERSION="-5.10.1"
+              - QT_PKG=510
+              - DEPLOYMENT=1
+              - USE_BUNDLED_BOOST=1
+              - USE_BUNDLED_SPDLOG=1
+          addons:
+              apt:
+                  sources: ["ubuntu-toolchain-r-test"]
+                  packages: ["g++-5", "ninja-build"]
+        - os: linux
+          compiler: gcc
+          env:
               - CXX_COMPILER=g++-7
               - C_COMPILER=gcc-7
               - QT_VERSION="-5.10.1"
               - QT_PKG=510
-              - DEPLOYMENT=1
               - USE_BUNDLED_BOOST=1
               - USE_BUNDLED_SPDLOG=1
           addons:
