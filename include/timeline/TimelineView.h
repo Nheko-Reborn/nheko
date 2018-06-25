@@ -195,10 +195,9 @@ private:
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
 
         void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
-                               const std::string &room_key,
-                               const DevicePublicKeys &pks,
+                               const std::map<std::string, std::string> &room_key,
+                               const std::map<std::string, DevicePublicKeys> &pks,
                                const std::string &user_id,
-                               const std::string &device_id,
                                const mtx::responses::ClaimKeys &res,
                                mtx::http::RequestErr err);
 

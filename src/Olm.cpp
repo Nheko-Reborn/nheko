@@ -6,6 +6,7 @@
 using namespace mtx::crypto;
 
 static const std::string STORAGE_SECRET_KEY("secret");
+constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
 
 namespace {
 auto client_ = std::make_unique<mtx::crypto::OlmClient>();
@@ -142,6 +143,7 @@ encrypt_group_message(const std::string &room_id,
         data.sender_key = olm::client()->identity_keys().curve25519;
         data.session_id = res.data.session_id;
         data.device_id  = device_id;
+        data.algorithm  = MEGOLM_ALGO;
 
         auto message_index = olm_outbound_group_session_message_index(res.session);
         nhlog::crypto()->info("next message_index {}", message_index);
