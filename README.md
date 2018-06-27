@@ -15,7 +15,7 @@ feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IR
 Most of the features you would expect from a chat application are missing right now
 but we are getting close to a more feature complete client.
 Specifically there is support for:
-- E2E encryption.
+- E2E encryption (text messages only: attachments are currently sent unencrypted).
 - User registration.
 - Creating, joining & leaving rooms.
 - Sending & receiving invites.
