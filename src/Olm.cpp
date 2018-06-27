@@ -29,15 +29,31 @@ handle_to_device_messages(const std::vector<nlohmann::json> &msgs)
         nhlog::crypto()->info("received {} to_device messages", msgs.size());
 
         for (const auto &msg : msgs) {
-                try {
-                        OlmMessage olm_msg = msg;
-                        handle_olm_message(std::move(olm_msg));
-                } catch (const nlohmann::json::exception &e) {
-                        nhlog::crypto()->warn(
-                          "parsing error for olm message: {} {}", e.what(), msg.dump(2));
-                } catch (const std::invalid_argument &e) {
-                        nhlog::crypto()->warn(
-                          "validation error for olm message: {} {}", e.what(), msg.dump(2));
+                if (msg.count("type") == 0) {
+                        nhlog::crypto()->warn("received message with no type field: {}",
+                                              msg.dump(2));
+                        continue;
+                }
+
+                std::string msg_type = msg.at("type");
+
+                if (msg_type == to_string(mtx::events::EventType::RoomEncrypted)) {
+                        try {
+                                OlmMessage olm_msg = msg;
+                                handle_olm_message(std::move(olm_msg));
+                        } catch (const nlohmann::json::exception &e) {
+                                nhlog::crypto()->warn(
+                                  "parsing error for olm message: {} {}", e.what(), msg.dump(2));
+                        } catch (const std::invalid_argument &e) {
+                                nhlog::crypto()->warn(
+                                  "validation error for olm message: {} {}", e.what(), msg.dump(2));
+                        }
+
+                        // TODO: Move this event type into matrix-structs
+                } else if (msg_type == "m.room_key_request") {
+                        nhlog::crypto()->warn("handling key request event: {}", msg.dump(2));
+                } else {
+                        nhlog::crypto()->warn("unhandled event: {}", msg.dump(2));
                 }
         }
 }
@@ -79,7 +95,7 @@ handle_olm_message(const OlmMessage &msg)
 void
 handle_pre_key_olm_message(const std::string &sender,
                            const std::string &sender_key,
-                           const OlmCipherContent &content)
+                           const mtx::events::msg::OlmCipherContent &content)
 {
         nhlog::crypto()->info("opening olm session with {}", sender);
 
@@ -155,7 +171,7 @@ encrypt_group_message(const std::string &room_id,
 }
 
 boost::optional<json>
-try_olm_decryption(const std::string &sender_key, const OlmCipherContent &msg)
+try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCipherContent &msg)
 {
         auto session_ids = cache::client()->getOlmSessions(sender_key);
 

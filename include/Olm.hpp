@@ -10,26 +10,13 @@ constexpr auto OLM_ALGO = "m.olm.v1.curve25519-aes-sha2";
 
 namespace olm {
 
-struct OlmCipherContent
-{
-        std::string body;
-        uint8_t type;
-};
-
-inline void
-from_json(const nlohmann::json &obj, OlmCipherContent &msg)
-{
-        msg.body = obj.at("body");
-        msg.type = obj.at("type");
-}
-
 struct OlmMessage
 {
         std::string sender_key;
         std::string sender;
 
         using RecipientKey = std::string;
-        std::map<RecipientKey, OlmCipherContent> ciphertext;
+        std::map<RecipientKey, mtx::events::msg::OlmCipherContent> ciphertext;
 };
 
 inline void
@@ -43,8 +30,9 @@ from_json(const nlohmann::json &obj, OlmMessage &msg)
 
         msg.sender     = obj.at("sender");
         msg.sender_key = obj.at("content").at("sender_key");
-        msg.ciphertext =
-          obj.at("content").at("ciphertext").get<std::map<std::string, OlmCipherContent>>();
+        msg.ciphertext = obj.at("content")
+                           .at("ciphertext")
+                           .get<std::map<std::string, mtx::events::msg::OlmCipherContent>>();
 }
 
 mtx::crypto::OlmClient *
@@ -54,7 +42,8 @@ void
 handle_to_device_messages(const std::vector<nlohmann::json> &msgs);
 
 boost::optional<json>
-try_olm_decryption(const std::string &sender_key, const OlmCipherContent &content);
+try_olm_decryption(const std::string &sender_key,
+                   const mtx::events::msg::OlmCipherContent &content);
 
 void
 handle_olm_message(const OlmMessage &msg);
@@ -68,7 +57,7 @@ create_inbound_megolm_session(const std::string &sender,
 void
 handle_pre_key_olm_message(const std::string &sender,
                            const std::string &sender_key,
-                           const OlmCipherContent &content);
+                           const mtx::events::msg::OlmCipherContent &content);
 
 mtx::events::msg::Encrypted
 encrypt_group_message(const std::string &room_id,
