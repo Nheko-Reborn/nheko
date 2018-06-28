@@ -21,6 +21,7 @@
 #include <QFileInfo>
 #include <QSettings>
 
+#include "Cache.h"
 #include "Logging.hpp"
 #include "timeline/TimelineView.h"
 #include "timeline/TimelineViewManager.h"
@@ -144,6 +145,27 @@ TimelineViewManager::initialize(const mtx::responses::Rooms &rooms)
         }
 
         sync(rooms);
+}
+
+void
+TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
+{
+        for (auto it = msgs.cbegin(); it != msgs.cend(); ++it) {
+                if (timelineViewExists(it->first))
+                        return;
+
+                // Create a history view with the room events.
+                TimelineView *view = new TimelineView(it->second, it->first);
+                views_.emplace(it->first, QSharedPointer<TimelineView>(view));
+
+                connect(view,
+                        &TimelineView::updateLastTimelineMessage,
+                        this,
+                        &TimelineViewManager::updateRoomsLastMessage);
+
+                // Add the view in the widget stack.
+                addWidget(view);
+        }
 }
 
 void

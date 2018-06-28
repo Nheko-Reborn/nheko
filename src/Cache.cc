@@ -21,8 +21,10 @@
 #include <QByteArray>
 #include <QFile>
 #include <QHash>
+#include <QSettings>
 #include <QStandardPaths>
 
+#include <mtx/responses/common.hpp>
 #include <variant.hpp>
 
 #include "Cache.h"
@@ -37,6 +39,8 @@ static const std::string SECRET("secret");
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
 static const lmdb::val OLM_ACCOUNT_KEY("olm_account");
 static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
+
+constexpr size_t MAX_RESTORED_MESSAGES = 30;
 
 //! Cache databases and their format.
 //!
@@ -85,6 +89,7 @@ init(const QString &user_id)
         qRegisterMetaType<RoomInfo>();
         qRegisterMetaType<QMap<QString, RoomInfo>>();
         qRegisterMetaType<std::map<QString, RoomInfo>>();
+        qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
 
         instance_ = std::make_unique<Cache>(user_id);
 }
@@ -744,6 +749,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                 saveStateEvents(txn, statesdb, membersdb, room.first, room.second.state.events);
                 saveStateEvents(txn, statesdb, membersdb, room.first, room.second.timeline.events);
 
+                saveTimelineMessages(txn, room.first, room.second.timeline);
+
                 RoomInfo updatedInfo;
                 updatedInfo.name  = getRoomName(txn, statesdb, membersdb).toStdString();
                 updatedInfo.topic = getRoomTopic(txn, statesdb).toStdString();
@@ -944,6 +951,57 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
         return room_info;
 }
 
+std::map<QString, mtx::responses::Timeline>
+Cache::roomMessages()
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        std::map<QString, mtx::responses::Timeline> msgs;
+        std::string room_id, unused;
+
+        auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
+        while (roomsCursor.get(room_id, unused, MDB_NEXT))
+                msgs.emplace(QString::fromStdString(room_id), getTimelineMessages(txn, room_id));
+
+        roomsCursor.close();
+        txn.commit();
+
+        return msgs;
+}
+
+mtx::responses::Timeline
+Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id)
+{
+        auto db = getMessagesDb(txn, room_id);
+
+        mtx::responses::Timeline timeline;
+        std::string timestamp, msg;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        size_t index = 0;
+
+        while (cursor.get(timestamp, msg, MDB_NEXT) && index < MAX_RESTORED_MESSAGES) {
+                auto obj = json::parse(msg);
+
+                if (obj.count("event") == 0 || obj.count("token") == 0)
+                        continue;
+
+                mtx::events::collections::TimelineEvents event;
+                mtx::events::collections::from_json(obj.at("event"), event);
+
+                index += 1;
+
+                timeline.events.push_back(event);
+                timeline.prev_batch = obj.at("token").get<std::string>();
+        }
+        cursor.close();
+
+        std::reverse(timeline.events.begin(), timeline.events.end());
+
+        return timeline;
+}
+
 QMap<QString, RoomInfo>
 Cache::roomInfo(bool withInvites)
 {
@@ -959,6 +1017,8 @@ Cache::roomInfo(bool withInvites)
         while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
                 RoomInfo tmp     = json::parse(std::move(room_data));
                 tmp.member_count = getMembersDb(txn, room_id).size(txn);
+                tmp.msgInfo      = getLastMessageInfo(txn, room_id);
+
                 result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
         }
         roomsCursor.close();
@@ -977,6 +1037,38 @@ Cache::roomInfo(bool withInvites)
         txn.commit();
 
         return result;
+}
+
+DescInfo
+Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
+{
+        auto db = getMessagesDb(txn, room_id);
+
+        if (db.size(txn) == 0)
+                return DescInfo{};
+
+        std::string timestamp, msg;
+
+        QSettings settings;
+        auto local_user = settings.value("auth/user_id").toString();
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(timestamp, msg, MDB_NEXT)) {
+                auto obj = json::parse(msg);
+
+                if (obj.count("event") == 0)
+                        continue;
+
+                mtx::events::collections::TimelineEvents event;
+                mtx::events::collections::from_json(obj.at("event"), event);
+
+                cursor.close();
+                return utils::getMessageDescription(
+                  event, local_user, QString::fromStdString(room_id));
+        }
+        cursor.close();
+
+        return DescInfo{};
 }
 
 std::map<QString, bool>
@@ -1510,6 +1602,35 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
         txn.commit();
 
         return members;
+}
+
+void
+Cache::saveTimelineMessages(lmdb::txn &txn,
+                            const std::string &room_id,
+                            const mtx::responses::Timeline &res)
+{
+        auto db = getMessagesDb(txn, room_id);
+
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        for (const auto &e : res.events) {
+                if (isStateEvent(e))
+                        continue;
+
+                if (mpark::holds_alternative<RedactionEvent<msg::Redaction>>(e))
+                        continue;
+
+                json obj = json::object();
+
+                obj["event"] = utils::serialize_event(e);
+                obj["token"] = res.prev_batch;
+
+                lmdb::dbi_put(txn,
+                              db,
+                              lmdb::val(std::to_string(utils::event_timestamp(e))),
+                              lmdb::val(obj.dump()));
+        }
 }
 
 void

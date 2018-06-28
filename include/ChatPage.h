@@ -108,7 +108,6 @@ signals:
         void showLoginPage(const QString &msg);
         void showUserSettingsPage();
         void showOverlayProgressBar();
-        void startConsesusTimer();
 
         void removeTimelineEvent(const QString &room_id, const QString &event_id);
 
@@ -124,7 +123,7 @@ signals:
 
         void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
-        void initializeEmptyViews(const std::vector<std::string> &rooms);
+        void initializeEmptyViews(const std::map<QString, mtx::responses::Timeline> &msgs);
         void syncUI(const mtx::responses::Rooms &rooms);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
         void syncTopBar(const std::map<QString, RoomInfo> &updates);
@@ -206,9 +205,6 @@ private:
         TextInputWidget *text_input_;
         TypingDisplay *typingDisplay_;
 
-        // Safety net if consensus is not possible or too slow.
-        QTimer *showContentTimer_;
-        QTimer *consensusTimer_;
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;
 

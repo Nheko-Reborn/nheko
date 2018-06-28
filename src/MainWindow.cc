@@ -234,7 +234,8 @@ MainWindow::showChatPage()
 
         showOverlayProgressBar();
 
-        QTimer::singleShot(100, this, [this]() { pageStack_->setCurrentWidget(chat_page_); });
+        welcome_page_->hide();
+        pageStack_->setCurrentWidget(chat_page_);
 
         login_page_->reset();
         chat_page_->bootstrap(userid, homeserver, token);

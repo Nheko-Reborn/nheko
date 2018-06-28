@@ -28,13 +28,14 @@ utils::getMessageDescription(const TimelineEvent &event,
                              const QString &localUser,
                              const QString &room_id)
 {
-        using Audio  = mtx::events::RoomEvent<mtx::events::msg::Audio>;
-        using Emote  = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-        using File   = mtx::events::RoomEvent<mtx::events::msg::File>;
-        using Image  = mtx::events::RoomEvent<mtx::events::msg::Image>;
-        using Notice = mtx::events::RoomEvent<mtx::events::msg::Notice>;
-        using Text   = mtx::events::RoomEvent<mtx::events::msg::Text>;
-        using Video  = mtx::events::RoomEvent<mtx::events::msg::Video>;
+        using Audio     = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+        using Emote     = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+        using File      = mtx::events::RoomEvent<mtx::events::msg::File>;
+        using Image     = mtx::events::RoomEvent<mtx::events::msg::Image>;
+        using Notice    = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+        using Text      = mtx::events::RoomEvent<mtx::events::msg::Text>;
+        using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
+        using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
         if (mpark::holds_alternative<Audio>(event)) {
                 return createDescriptionInfo<Audio>(event, localUser, room_id);
@@ -52,6 +53,27 @@ utils::getMessageDescription(const TimelineEvent &event,
                 return createDescriptionInfo<Video>(event, localUser, room_id);
         } else if (mpark::holds_alternative<mtx::events::Sticker>(event)) {
                 return createDescriptionInfo<mtx::events::Sticker>(event, localUser, room_id);
+        } else if (mpark::holds_alternative<Encrypted>(event)) {
+                const auto msg    = mpark::get<Encrypted>(event);
+                const auto sender = QString::fromStdString(msg.sender);
+
+                const auto username = Cache::displayName(room_id, sender);
+                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+
+                DescInfo info;
+                if (sender == localUser)
+                        info.username = "You";
+                else
+                        info.username = username;
+
+                info.userid    = sender;
+                info.body      = QString(" %1").arg(messageDescription<Encrypted>());
+                info.timestamp = utils::descriptiveTime(ts);
+                info.datetime  = ts;
+
+                return info;
+        } else {
+                std::cout << "type not found: " << serialize_event(event).dump(2) << '\n';
         }
 
         return DescInfo{};

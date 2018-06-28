@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QBuffer>
 #include <QObject>
 #include <QTimer>
@@ -171,12 +172,19 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
 
         rooms_.clear();
 
+        setUpdatesEnabled(false);
+
         for (auto it = info.begin(); it != info.end(); it++) {
                 if (it.value().is_invite)
                         addInvitedRoom(it.key(), it.value());
                 else
                         addRoom(it.key(), it.value());
         }
+
+        for (auto it = info.begin(); it != info.end(); it++)
+                updateRoomDescription(it.key(), it.value().msgInfo);
+
+        setUpdatesEnabled(true);
 
         if (rooms_.empty())
                 return;

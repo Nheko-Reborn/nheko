@@ -158,6 +158,7 @@ public:
 
         //! Remove an item from the timeline with the given Event ID.
         void removeEvent(const QString &event_id);
+        void setPrevBatchToken(const QString &token) { prev_batch_token_ = token; }
 
 public slots:
         void sliderRangeChanged(int min, int max);

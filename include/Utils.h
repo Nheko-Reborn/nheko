@@ -41,14 +41,15 @@ template<class T>
 QString
 messageDescription(const QString &username = "", const QString &body = "")
 {
-        using Audio   = mtx::events::RoomEvent<mtx::events::msg::Audio>;
-        using Emote   = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-        using File    = mtx::events::RoomEvent<mtx::events::msg::File>;
-        using Image   = mtx::events::RoomEvent<mtx::events::msg::Image>;
-        using Notice  = mtx::events::RoomEvent<mtx::events::msg::Notice>;
-        using Sticker = mtx::events::Sticker;
-        using Text    = mtx::events::RoomEvent<mtx::events::msg::Text>;
-        using Video   = mtx::events::RoomEvent<mtx::events::msg::Video>;
+        using Audio     = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+        using Emote     = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+        using File      = mtx::events::RoomEvent<mtx::events::msg::File>;
+        using Image     = mtx::events::RoomEvent<mtx::events::msg::Image>;
+        using Notice    = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+        using Sticker   = mtx::events::Sticker;
+        using Text      = mtx::events::RoomEvent<mtx::events::msg::Text>;
+        using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
+        using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
         if (std::is_same<T, AudioItem>::value || std::is_same<T, Audio>::value)
                 return QString("sent an audio clip");
@@ -66,6 +67,8 @@ messageDescription(const QString &username = "", const QString &body = "")
                 return QString(": %1").arg(body);
         else if (std::is_same<T, Emote>::value)
                 return QString("* %1 %2").arg(username).arg(body);
+        else if (std::is_same<T, Encrypted>::value)
+                return QString("sent an encrypted message");
 }
 
 template<class T, class Event>
@@ -133,6 +136,18 @@ erase_if(ContainerT &items, const PredicateT &predicate)
                 else
                         ++it;
         }
+}
+
+inline uint64_t
+event_timestamp(const mtx::events::collections::TimelineEvents &event)
+{
+        return mpark::visit([](auto msg) { return msg.origin_server_ts; }, event);
+}
+
+inline nlohmann::json
+serialize_event(const mtx::events::collections::TimelineEvents &event)
+{
+        return mpark::visit([](auto msg) { return json(msg); }, event);
 }
 
 inline mtx::events::EventType

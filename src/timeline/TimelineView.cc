@@ -378,7 +378,7 @@ TimelineView::renderBottomEvents(const std::vector<TimelineEvent> &events)
 
                         // Prevent blocking of the event-loop
                         // by calling processEvents every 10 items we render.
-                        if (counter % 10 == 0)
+                        if (counter % 4 == 0)
                                 QApplication::processEvents();
                 }
         }
@@ -1035,7 +1035,8 @@ TimelineEvent
 TimelineView::findLastViewableEvent(const std::vector<TimelineEvent> &events)
 {
         auto it = std::find_if(events.rbegin(), events.rend(), [](const auto &event) {
-                return mtx::events::EventType::RoomMessage == utils::event_type(event);
+                return (mtx::events::EventType::RoomMessage == utils::event_type(event)) ||
+                       (mtx::events::EventType::RoomEncrypted == utils::event_type(event));
         });
 
         return (it == std::rend(events)) ? events.back() : *it;

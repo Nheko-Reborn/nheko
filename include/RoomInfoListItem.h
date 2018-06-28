@@ -22,20 +22,11 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+#include "Cache.h"
 #include <mtx/responses.hpp>
 
 class Menu;
 class RippleOverlay;
-struct RoomInfo;
-
-struct DescInfo
-{
-        QString username;
-        QString userid;
-        QString body;
-        QString timestamp;
-        QDateTime datetime;
-};
 
 class RoomInfoListItem : public QWidget
 {

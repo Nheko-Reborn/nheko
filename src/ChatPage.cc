@@ -516,23 +516,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
 
-        showContentTimer_ = new QTimer(this);
-        showContentTimer_->setSingleShot(true);
-        connect(showContentTimer_, &QTimer::timeout, this, [this]() {
-                consensusTimer_->stop();
-                emit contentLoaded();
-        });
-
-        consensusTimer_ = new QTimer(this);
-        connect(consensusTimer_, &QTimer::timeout, this, [this]() {
-                if (view_manager_->hasLoaded()) {
-                        // Remove the spinner overlay.
-                        emit contentLoaded();
-                        showContentTimer_->stop();
-                        consensusTimer_->stop();
-                }
-        });
-
         connect(communitiesList_,
                 &CommunitiesList::communityChanged,
                 this,
@@ -552,20 +535,15 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 this,
                 &ChatPage::setGroupViewState);
 
-        connect(this, &ChatPage::startConsesusTimer, this, [this]() {
-                consensusTimer_->start(CONSENSUS_TIMEOUT);
-                showContentTimer_->start(SHOW_CONTENT_TIMEOUT);
-        });
         connect(this, &ChatPage::initializeRoomList, room_list_, &RoomList::initialize);
         connect(this,
                 &ChatPage::initializeViews,
                 view_manager_,
                 [this](const mtx::responses::Rooms &rooms) { view_manager_->initialize(rooms); });
-        connect(
-          this,
-          &ChatPage::initializeEmptyViews,
-          this,
-          [this](const std::vector<std::string> &rooms) { view_manager_->initialize(rooms); });
+        connect(this,
+                &ChatPage::initializeEmptyViews,
+                view_manager_,
+                &TimelineViewManager::initWithMessages);
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 try {
                         room_list_->cleanupInvites(cache::client()->invites());
@@ -817,6 +795,8 @@ ChatPage::showUnreadMessageNotification(int count)
 void
 ChatPage::loadStateFromCache()
 {
+        emit contentLoaded();
+
         nhlog::db()->info("restoring state from cache");
 
         getProfileInfo();
@@ -829,8 +809,9 @@ ChatPage::loadStateFromCache()
 
                         cache::client()->populateMembers();
 
-                        emit initializeEmptyViews(cache::client()->joinedRooms());
+                        emit initializeEmptyViews(cache::client()->roomMessages());
                         emit initializeRoomList(cache::client()->roomInfo());
+
                 } catch (const mtx::crypto::olm_exception &e) {
                         nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
                         emit dropToLoginPageCb(
@@ -841,6 +822,9 @@ ChatPage::loadStateFromCache()
                         emit dropToLoginPageCb(
                           tr("Failed to restore save data. Please login again."));
                         return;
+                } catch (const json::exception &e) {
+                        nhlog::db()->critical("failed to parse cache data: {}", e.what());
+                        return;
                 }
 
                 nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
@@ -848,9 +832,6 @@ ChatPage::loadStateFromCache()
 
                 // Start receiving events.
                 emit trySyncCb();
-
-                // Check periodically if the timelines have been loaded.
-                emit startConsesusTimer();
         });
 }
 

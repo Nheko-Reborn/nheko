@@ -27,6 +27,7 @@ class QFile;
 class RoomInfoListItem;
 class TimelineView;
 struct DescInfo;
+struct SavedMessages;
 
 class TimelineViewManager : public QStackedWidget
 {
@@ -57,6 +58,7 @@ signals:
 
 public slots:
         void removeTimelineEvent(const QString &room_id, const QString &event_id);
+        void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
 
         void setHistoryView(const QString &room_id);
         void queueTextMessage(const QString &msg);

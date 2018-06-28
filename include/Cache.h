@@ -19,8 +19,10 @@
 
 #include <boost/optional.hpp>
 
+#include <QDateTime>
 #include <QDir>
 #include <QImage>
+#include <QString>
 
 #include <json.hpp>
 #include <lmdb++.h>
@@ -46,9 +48,24 @@ struct SearchResult
         QString display_name;
 };
 
+inline int
+numeric_key_comparison(const MDB_val *a, const MDB_val *b)
+{
+        auto lhs = std::stoul(std::string((char *)a->mv_data, a->mv_size));
+        auto rhs = std::stoul(std::string((char *)b->mv_data, b->mv_size));
+
+        if (lhs < rhs)
+                return 1;
+        else if (lhs == rhs)
+                return 0;
+
+        return -1;
+}
+
 Q_DECLARE_METATYPE(SearchResult)
 Q_DECLARE_METATYPE(QVector<SearchResult>)
 Q_DECLARE_METATYPE(RoomMember)
+Q_DECLARE_METATYPE(mtx::responses::Timeline)
 
 //! Used to uniquely identify a list of read receipts.
 struct ReadReceiptKey
@@ -70,6 +87,15 @@ from_json(const json &j, ReadReceiptKey &key)
         key.room_id  = j.at("room_id").get<std::string>();
 }
 
+struct DescInfo
+{
+        QString username;
+        QString userid;
+        QString body;
+        QString timestamp;
+        QDateTime datetime;
+};
+
 //! UI info associated with a room.
 struct RoomInfo
 {
@@ -86,6 +112,8 @@ struct RoomInfo
         //! Who can access to the room.
         JoinRule join_rule = JoinRule::Public;
         bool guest_access  = false;
+        //! Metadata describing the last message in the timeline.
+        DescInfo msgInfo;
 };
 
 inline void
@@ -289,6 +317,8 @@ public:
         bool isFormatValid();
         void setCurrentFormat();
 
+        std::map<QString, mtx::responses::Timeline> roomMessages();
+
         //! Retrieve all the user ids from a room.
         std::vector<std::string> roomMembers(const std::string &room_id);
 
@@ -402,6 +432,13 @@ private:
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
         QString getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
 
+        DescInfo getLastMessageInfo(lmdb::txn &txn, const std::string &room_id);
+        void saveTimelineMessages(lmdb::txn &txn,
+                                  const std::string &room_id,
+                                  const mtx::responses::Timeline &res);
+
+        mtx::responses::Timeline getTimelineMessages(lmdb::txn &txn, const std::string &room_id);
+
         //! Remove a room from the cache.
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);
         template<class T>
@@ -500,6 +537,7 @@ private:
                        mpark::holds_alternative<StateEvent<HistoryVisibility>>(e) ||
                        mpark::holds_alternative<StateEvent<JoinRules>>(e) ||
                        mpark::holds_alternative<StateEvent<Name>>(e) ||
+                       mpark::holds_alternative<StateEvent<Member>>(e) ||
                        mpark::holds_alternative<StateEvent<PowerLevels>>(e) ||
                        mpark::holds_alternative<StateEvent<Topic>>(e);
         }
@@ -542,6 +580,15 @@ private:
                         // Clean up leftover invites.
                         removeInvite(txn, room.first);
                 }
+        }
+
+        lmdb::dbi getMessagesDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                auto db =
+                  lmdb::dbi::open(txn, std::string(room_id + "/messages").c_str(), MDB_CREATE);
+                lmdb::dbi_set_compare(txn, db, numeric_key_comparison);
+
+                return db;
         }
 
         lmdb::dbi getInviteStatesDb(lmdb::txn &txn, const std::string &room_id)
