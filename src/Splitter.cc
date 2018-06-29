@@ -16,6 +16,7 @@
  */
 
 #include <QDebug>
+#include <QSettings>
 
 #include "Splitter.h"
 #include "Theme.h"
@@ -26,6 +27,43 @@ Splitter::Splitter(QWidget *parent)
         connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
         setChildrenCollapsible(false);
         setStyleSheet("QSplitter::handle { image: none; }");
+}
+
+void
+Splitter::restoreSizes(int fallback)
+{
+        QSettings settings;
+        int savedWidth = settings.value("sidebar/width").toInt();
+
+        auto left = widget(0);
+        if (savedWidth == ui::sidebar::SmallSize) {
+                if (left) {
+                        left->setMinimumWidth(ui::sidebar::SmallSize);
+                        left->setMaximumWidth(ui::sidebar::SmallSize);
+                        return;
+                }
+        }
+
+        if (savedWidth >= ui::sidebar::NormalSize && savedWidth <= 2 * ui::sidebar::NormalSize) {
+                if (left) {
+                        left->setMinimumWidth(ui::sidebar::NormalSize);
+                        left->setMaximumWidth(2 * ui::sidebar::NormalSize);
+                        setSizes({savedWidth, fallback - savedWidth});
+                        return;
+                }
+        }
+
+        setSizes({ui::sidebar::NormalSize, fallback - ui::sidebar::NormalSize});
+}
+
+Splitter::~Splitter()
+{
+        auto left = widget(0);
+
+        if (left) {
+                QSettings settings;
+                settings.setValue("sidebar/width", left->width());
+        }
 }
 
 void

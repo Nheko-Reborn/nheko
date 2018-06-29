@@ -24,6 +24,9 @@ class Splitter : public QSplitter
         Q_OBJECT
 public:
         explicit Splitter(QWidget *parent = nullptr);
+        ~Splitter();
+
+        void restoreSizes(int fallback);
 
 private:
         void onSplitterMoved(int pos, int index);

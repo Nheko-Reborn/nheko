@@ -234,8 +234,11 @@ MainWindow::showChatPage()
 
         showOverlayProgressBar();
 
-        welcome_page_->hide();
         pageStack_->setCurrentWidget(chat_page_);
+
+        pageStack_->removeWidget(welcome_page_);
+        pageStack_->removeWidget(login_page_);
+        pageStack_->removeWidget(register_page_);
 
         login_page_->reset();
         chat_page_->bootstrap(userid, homeserver, token);

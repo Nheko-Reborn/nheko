@@ -83,14 +83,23 @@ private slots:
         void showWelcomePage()
         {
                 removeOverlayProgressBar();
+                pageStack_->addWidget(welcome_page_);
                 pageStack_->setCurrentWidget(welcome_page_);
         }
 
         //! Show the login page in the main window.
-        void showLoginPage() { pageStack_->setCurrentWidget(login_page_); }
+        void showLoginPage()
+        {
+                pageStack_->addWidget(login_page_);
+                pageStack_->setCurrentWidget(login_page_);
+        }
 
         //! Show the register page in the main window.
-        void showRegisterPage() { pageStack_->setCurrentWidget(register_page_); }
+        void showRegisterPage()
+        {
+                pageStack_->addWidget(register_page_);
+                pageStack_->setCurrentWidget(register_page_);
+        }
 
         //! Show user settings page.
         void showUserSettingsPage() { pageStack_->setCurrentWidget(userSettingsPage_); }

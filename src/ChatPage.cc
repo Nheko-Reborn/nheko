@@ -118,7 +118,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         // Splitter
         splitter->addWidget(sideBar_);
         splitter->addWidget(content_);
-        splitter->setSizes({ui::sidebar::NormalSize, parent->width() - ui::sidebar::NormalSize});
+        splitter->restoreSizes(parent->width());
 
         text_input_    = new TextInputWidget(this);
         typingDisplay_ = new TypingDisplay(this);
