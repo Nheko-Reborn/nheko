@@ -605,6 +605,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
+        connect(this, &ChatPage::messageReply, text_input_, &TextInputWidget::addReply);
 
         instance_ = this;
 }

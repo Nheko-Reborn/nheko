@@ -614,3 +614,14 @@ TextInputWidget::paintEvent(QPaintEvent *)
         p.setPen(QPen(borderColor()));
         p.drawLine(QPointF(0, 0), QPointF(width(), 0));
 }
+
+void
+TextInputWidget::addReply(const QString &username, const QString &msg)
+{
+        input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
+        input_->setFocus();
+
+        auto cursor = input_->textCursor();
+        cursor.movePosition(QTextCursor::End);
+        input_->setTextCursor(cursor);
+}

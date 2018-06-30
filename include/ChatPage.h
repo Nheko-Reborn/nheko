@@ -76,6 +76,8 @@ signals:
         void connectionLost();
         void connectionRestored();
 
+        void messageReply(const QString &username, const QString &msg);
+
         void notificationsRetrieved(const mtx::responses::Notifications &);
 
         void uploadFailed(const QString &msg);

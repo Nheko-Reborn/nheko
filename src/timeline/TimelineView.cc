@@ -143,7 +143,7 @@ TimelineView::fetchHistory()
 
                 isPaginationInProgress_ = true;
                 getMessages();
-                paginationTimer_->start(5000);
+                paginationTimer_->start(2000);
 
                 return;
         }

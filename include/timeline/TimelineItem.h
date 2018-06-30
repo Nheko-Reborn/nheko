@@ -212,6 +212,8 @@ private:
         void init();
         //! Add a context menu option to save the image of the timeline item.
         void addSaveImageAction(ImageItem *image);
+        //! Add the reply action in the context menu for widgets that support it.
+        void addReplyAction();
 
         template<class Widget>
         void setupLocalWidgetLayout(Widget *widget, const QString &userid, bool withSender);
@@ -240,6 +242,7 @@ private:
         QAction *showReadReceipts_;
         QAction *markAsRead_;
         QAction *redactMsg_;
+        QAction *replyMsg_;
 
         QHBoxLayout *topLayout_     = nullptr;
         QHBoxLayout *messageLayout_ = nullptr;

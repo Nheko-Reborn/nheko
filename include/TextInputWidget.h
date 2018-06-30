@@ -144,6 +144,7 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
+        void addReply(const QString &username, const QString &msg);
 
 private slots:
         void addSelectedEmoji(const QString &emoji);

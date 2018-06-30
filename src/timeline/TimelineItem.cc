@@ -125,6 +125,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
   , room_id_{room_id}
 {
         init();
+        addReplyAction();
 
         auto displayName = Cache::displayName(room_id_, userid);
         auto timestamp   = QDateTime::currentDateTime();
@@ -290,6 +291,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
   , room_id_{room_id}
 {
         init();
+        addReplyAction();
 
         event_id_            = QString::fromStdString(event.event_id);
         const auto sender    = QString::fromStdString(event.sender);
@@ -341,6 +343,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
   , room_id_{room_id}
 {
         init();
+        addReplyAction();
 
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
@@ -388,6 +391,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
   , room_id_{room_id}
 {
         init();
+        addReplyAction();
 
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
@@ -607,6 +611,24 @@ TimelineItem::addSaveImageAction(ImageItem *image)
                 contextMenu_->addAction(saveImage);
 
                 connect(saveImage, &QAction::triggered, image, &ImageItem::saveAs);
+        }
+}
+
+void
+TimelineItem::addReplyAction()
+{
+        if (contextMenu_) {
+                auto replyAction = new QAction("Reply", this);
+                contextMenu_->addAction(replyAction);
+
+                connect(replyAction, &QAction::triggered, this, [this]() {
+                        if (!body_)
+                                return;
+
+                        emit ChatPage::instance()->messageReply(
+                          Cache::displayName(room_id_, descriptionMsg_.userid),
+                          body_->toPlainText());
+                });
         }
 }
 
