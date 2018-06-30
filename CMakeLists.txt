@@ -323,7 +323,17 @@ if (APPLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation")
     set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm)
 elseif (WIN32)
-    set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp)
+    file(DOWNLOAD
+         "https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.cpp"
+         ${PROJECT_SOURCE_DIR}/src/wintoastlib.cpp
+         EXPECTED_HASH SHA256=1A1A7CE41C1052B12946798F4A6C67CE1FAD209C967F5ED4D720B173527E2073)
+
+    file(DOWNLOAD
+         "https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.h"
+         ${PROJECT_SOURCE_DIR}/include/wintoastlib.h
+         EXPECTED_HASH SHA256=b4481023c5782733795838be22bf1a75f45d87458cd4d9a5a75f664a146eea11)
+
+    set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp)
 else ()
     set(SRC_FILES ${SRC_FILES} src/notifications/ManagerLinux.cpp)
 endif ()

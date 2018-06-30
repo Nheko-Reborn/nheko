@@ -1,6 +1,7 @@
 build
 tags
 .clang_complete
+*wintoastlib*
 
 # C++ objects and libs
 
