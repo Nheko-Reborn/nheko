@@ -12,8 +12,12 @@
           "value": "${workspaceRoot}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" // <-- change vcpkg location here
         },
         {
+          "name": "CMAKE_INSTALL_PREFIX",
+          "value": "${workspaceRoot}/.deps"
+        },
+        {
           "name": "Qt5_DIR",
-          "value": "C:\\Qt\\5.10.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
+          "value": "C:\\Qt\\5.11.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
         }
       ]
     },
@@ -29,8 +33,12 @@
           "value": "${workspaceRoot}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" // <-- change vcpkg location here
         },
         {
+          "name": "CMAKE_INSTALL_PREFIX",
+          "value": "${workspaceRoot}/.deps"
+        },
+        {
           "name": "Qt5_DIR",
-          "value": "C:\\Qt\\5.10.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
+          "value": "C:\\Qt\\5.11.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
         }
       ]
     },

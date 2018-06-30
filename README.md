@@ -133,14 +133,37 @@ brew install qt5 lmdb cmake llvm libsodium spdlog boost
 Make sure to install the `MSVC 2017 64-bit` toolset for at least Qt 5.9
 (lower versions does not support VS2017).
 
-3. Install lmdb and openssl with `vcpkg`. You can simply clone it into a subfolder
+3. Install dependencies with `vcpkg`. You can simply clone it into a subfolder
 of the root nheko source directory.
 
 ```powershell
 git clone http:\\github.com\Microsoft\vcpkg
 cd vcpkg
 .\bootstrap-vcpkg.bat
-.\vcpkg install --triplet x64-windows lmdb openssl
+.\vcpkg install --triplet x64-windows \
+	boost-asio \
+	boost-beast \
+	boost-iostreams \
+	boost-random \
+	boost-signals2 \
+	boost-system \
+	boost-thread \
+	libsodium \
+	lmdb \
+	openssl \
+	zlib
+```
+
+4. Install dependencies not managed by vcpkg. (libolm, libmtxclient, libmatrix_structs)
+
+Inside the project root run the following (replacing the path to vcpkg as necessary).
+
+```bash
+cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
+        -DCMAKE_TOOLCHAIN_FILE=C:/Users/<your-path>/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -DUSE_BUNDLED_BOOST=OFF
+cmake --build .deps --config Release
+cmake --build .deps --config Debug
 ```
 
 ### Building

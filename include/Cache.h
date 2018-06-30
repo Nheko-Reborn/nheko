@@ -48,11 +48,11 @@ struct SearchResult
         QString display_name;
 };
 
-inline int
+static int
 numeric_key_comparison(const MDB_val *a, const MDB_val *b)
 {
-        auto lhs = std::stoul(std::string((char *)a->mv_data, a->mv_size));
-        auto rhs = std::stoul(std::string((char *)b->mv_data, b->mv_size));
+        auto lhs = std::stoull(std::string((char *)a->mv_data, a->mv_size));
+        auto rhs = std::stoull(std::string((char *)b->mv_data, b->mv_size));
 
         if (lhs < rhs)
                 return 1;
