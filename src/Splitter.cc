@@ -15,8 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QDebug>
+#include <QDesktopWidget>
 #include <QSettings>
+#include <QShortcut>
 
 #include "Splitter.h"
 #include "Theme.h"
@@ -27,6 +30,28 @@ Splitter::Splitter(QWidget *parent)
         connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
         setChildrenCollapsible(false);
         setStyleSheet("QSplitter::handle { image: none; }");
+
+        auto showChatShortcut = new QShortcut(QKeySequence(tr("Ctrl+O", "Show chat")), parent);
+        auto showSidebarShortcut =
+          new QShortcut(QKeySequence(tr("Ctrl+L", "Show sidebar")), parent);
+
+        connect(showChatShortcut, &QShortcut::activated, this, [this]() {
+                if (count() != 2)
+                        return;
+
+                hideSidebar();
+                widget(1)->show();
+        });
+        connect(showSidebarShortcut, &QShortcut::activated, this, [this]() {
+                if (count() != 2)
+                        return;
+
+                widget(0)->setMinimumWidth(ui::sidebar::NormalSize);
+                widget(0)->setMaximumWidth(QApplication::desktop()->screenGeometry().height());
+
+                widget(0)->show();
+                widget(1)->hide();
+        });
 }
 
 void
@@ -53,6 +78,11 @@ Splitter::restoreSizes(int fallback)
                 }
         }
 
+        if (savedWidth == 0) {
+                hideSidebar();
+                return;
+        }
+
         setSizes({ui::sidebar::NormalSize, fallback - ui::sidebar::NormalSize});
 }
 
@@ -62,7 +92,11 @@ Splitter::~Splitter()
 
         if (left) {
                 QSettings settings;
-                settings.setValue("sidebar/width", left->width());
+
+                if (!left->isVisible())
+                        settings.setValue("sidebar/width", 0);
+                else
+                        settings.setValue("sidebar/width", left->width());
         }
 }
 
@@ -114,7 +148,44 @@ Splitter::onSplitterMoved(int pos, int index)
                                 left->setMaximumWidth(2 * ui::sidebar::NormalSize);
 
                                 leftMoveCount_ = 0;
+                        } else if (left->rect().contains(left->mapFromGlobal(QCursor::pos()))) {
+                                hideSidebar();
                         }
                 }
+        }
+}
+void
+Splitter::showChatView()
+{
+        if (count() != 2)
+                return;
+
+        auto right = widget(1);
+
+        // We are in Roomlist-only view so we'll switch into Chat-only view.
+        if (!right->isVisible()) {
+                right->show();
+                hideSidebar();
+        }
+}
+
+void
+Splitter::showSidebar()
+{
+        auto left = widget(0);
+        if (left) {
+                left->setMinimumWidth(ui::sidebar::SmallSize);
+                left->setMaximumWidth(ui::sidebar::SmallSize);
+                left->show();
+        }
+}
+
+void
+Splitter::hideSidebar()
+{
+        auto left = widget(0);
+        if (left) {
+                left->hide();
+                emit hiddenSidebar();
         }
 }

@@ -54,8 +54,12 @@ public:
         QColor borderColor() const { return borderColor_; }
         void setBorderColor(QColor &color) { borderColor_ = color; }
 
+public slots:
+        void enableBackButton();
+
 signals:
         void inviteUsers(QStringList users);
+        void showSidebar();
 
 protected:
         void mousePressEvent(QMouseEvent *) override
@@ -89,6 +93,7 @@ private:
         QAction *inviteUsers_  = nullptr;
 
         FlatButton *settingsBtn_;
+        FlatButton *backBtn_;
 
         Avatar *avatar_;
 

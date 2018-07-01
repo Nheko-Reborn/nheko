@@ -183,6 +183,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 emit showOverlayProgressBar();
         });
 
+        connect(splitter, &Splitter::hiddenSidebar, top_bar_, &TopRoomBar::enableBackButton);
+        connect(top_bar_, &TopRoomBar::showSidebar, splitter, &Splitter::showSidebar);
         connect(top_bar_, &TopRoomBar::inviteUsers, this, [this](QStringList users) {
                 const auto room_id = current_room_.toStdString();
 
@@ -223,6 +225,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
         connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
+        connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
         connect(
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);

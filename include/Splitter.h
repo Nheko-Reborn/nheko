@@ -28,6 +28,14 @@ public:
 
         void restoreSizes(int fallback);
 
+public slots:
+        void showSidebar();
+        void hideSidebar();
+        void showChatView();
+
+signals:
+        void hiddenSidebar();
+
 private:
         void onSplitterMoved(int pos, int index);
 

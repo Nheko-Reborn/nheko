@@ -45,10 +45,8 @@
 void
 stacktraceHandler(int signum)
 {
-        auto dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-
         std::signal(signum, SIG_DFL);
-        boost::stacktrace::safe_dump_to(dir.toStdString() + "/backtrace.dump");
+        boost::stacktrace::safe_dump_to("./nheko-backtrace.dump");
         std::raise(SIGABRT);
 }
 
