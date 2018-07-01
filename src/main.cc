@@ -38,6 +38,36 @@
 #include "RunGuard.h"
 #include "version.hpp"
 
+#if defined(Q_OS_LINUX)
+#include <boost/stacktrace.hpp>
+#include <signal.h>
+
+void
+stacktraceHandler(int signum)
+{
+        auto dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+
+        std::signal(signum, SIG_DFL);
+        boost::stacktrace::safe_dump_to(dir.toStdString() + "/backtrace.dump");
+        std::raise(SIGABRT);
+}
+
+void
+registerSignalHandlers()
+{
+        std::signal(SIGSEGV, &stacktraceHandler);
+        std::signal(SIGABRT, &stacktraceHandler);
+}
+
+#else
+
+// No implementation for systems with no stacktrace support.
+void
+registerSignalHandlers()
+{}
+
+#endif
+
 QPoint
 screenCenter(int width, int height)
 {
@@ -125,6 +155,8 @@ main(int argc, char *argv[])
         http::init();
 
         createCacheDirectory();
+
+        registerSignalHandlers();
 
         try {
                 nhlog::init(QString("%1/nheko.log")

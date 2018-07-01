@@ -24,6 +24,7 @@
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.hpp"
+#include "Painter.h"
 
 #include "timeline/TimelineItem.h"
 #include "timeline/widgets/AudioItem.h"
@@ -31,10 +32,89 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
-constexpr const static char *CHECKMARK = "✓";
-
 constexpr int MSG_RIGHT_MARGIN = 7;
 constexpr int MSG_PADDING      = 20;
+
+StatusIndicator::StatusIndicator(QWidget *parent)
+  : QWidget(parent)
+{
+        lockIcon_.addFile(":/icons/icons/ui/lock.png");
+        clockIcon_.addFile(":/icons/icons/ui/clock.png");
+        checkmarkIcon_.addFile(":/icons/icons/ui/checkmark.png");
+}
+
+void
+StatusIndicator::paintIcon(QPainter &p, QIcon &icon)
+{
+        auto pixmap = icon.pixmap(width());
+
+        QPainter painter(&pixmap);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        painter.fillRect(pixmap.rect(), p.pen().color());
+
+        QIcon(pixmap).paint(&p, rect(), Qt::AlignCenter, QIcon::Normal);
+}
+
+void
+StatusIndicator::paintEvent(QPaintEvent *)
+{
+        if (state_ == StatusIndicatorState::Empty)
+                return;
+
+        Painter p(this);
+        PainterHighQualityEnabler hq(p);
+
+        p.setPen(iconColor_);
+
+        switch (state_) {
+        case StatusIndicatorState::Sent: {
+                paintIcon(p, clockIcon_);
+                break;
+        }
+        case StatusIndicatorState::Encrypted:
+                paintIcon(p, lockIcon_);
+                break;
+        case StatusIndicatorState::Received: {
+                paintIcon(p, checkmarkIcon_);
+                break;
+        }
+        case StatusIndicatorState::Empty:
+                break;
+        }
+}
+
+void
+StatusIndicator::setState(StatusIndicatorState state)
+{
+        state_ = state;
+        update();
+}
+
+void
+TimelineItem::adjustMessageLayoutForWidget()
+{
+        messageLayout_->addLayout(widgetLayout_, 1);
+        messageLayout_->addWidget(statusIndicator_);
+        messageLayout_->addWidget(timestamp_);
+
+        messageLayout_->setAlignment(statusIndicator_, Qt::AlignTop);
+        messageLayout_->setAlignment(timestamp_, Qt::AlignTop);
+
+        mainLayout_->addLayout(messageLayout_);
+}
+
+void
+TimelineItem::adjustMessageLayout()
+{
+        messageLayout_->addWidget(body_, 1);
+        messageLayout_->addWidget(statusIndicator_);
+        messageLayout_->addWidget(timestamp_);
+
+        messageLayout_->setAlignment(statusIndicator_, Qt::AlignTop);
+        messageLayout_->setAlignment(timestamp_, Qt::AlignTop);
+
+        mainLayout_->addLayout(messageLayout_);
+}
 
 void
 TimelineItem::init()
@@ -102,14 +182,13 @@ TimelineItem::init()
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
 
-        QFont checkmarkFont;
-        checkmarkFont.setPixelSize(conf::timeline::fonts::timestamp);
+        QFont timestampFont;
+        timestampFont.setPixelSize(conf::timeline::fonts::indicator);
+        QFontMetrics tsFm(timestampFont);
 
-        // Setting fixed width for checkmark because systems may have a differing width for a
-        // space and the Unicode checkmark.
-        checkmark_ = new QLabel(this);
-        checkmark_->setFont(checkmarkFont);
-        checkmark_->setFixedWidth(QFontMetrics{checkmarkFont}.width(CHECKMARK));
+        statusIndicator_ = new StatusIndicator(this);
+        statusIndicator_->setFixedWidth(tsFm.height() - tsFm.leading());
+        statusIndicator_->setFixedHeight(tsFm.height() - tsFm.leading());
 }
 
 /*
@@ -147,20 +226,14 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                 generateBody(userid, displayName, body);
                 setupAvatarLayout(displayName);
 
-                messageLayout_->addLayout(headerLayout_, 1);
-
                 AvatarProvider::resolve(
                   room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
-
-                messageLayout_->addWidget(body_, 1);
         }
 
-        messageLayout_->addWidget(checkmark_);
-        messageLayout_->addWidget(timestamp_);
-        mainLayout_->addLayout(messageLayout_);
+        adjustMessageLayout();
 }
 
 TimelineItem::TimelineItem(ImageItem *image,
@@ -316,20 +389,14 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
                 generateBody(sender, displayName, body);
                 setupAvatarLayout(displayName);
 
-                messageLayout_->addLayout(headerLayout_, 1);
-
                 AvatarProvider::resolve(
                   room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
-
-                messageLayout_->addWidget(body_, 1);
         }
 
-        messageLayout_->addWidget(checkmark_);
-        messageLayout_->addWidget(timestamp_);
-        mainLayout_->addLayout(messageLayout_);
+        adjustMessageLayout();
 }
 
 /*
@@ -364,20 +431,14 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
                 generateBody(sender, displayName, emoteMsg);
                 setupAvatarLayout(displayName);
 
-                messageLayout_->addLayout(headerLayout_, 1);
-
                 AvatarProvider::resolve(
                   room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(emoteMsg);
                 setupSimpleLayout();
-
-                messageLayout_->addWidget(body_, 1);
         }
 
-        messageLayout_->addWidget(checkmark_);
-        messageLayout_->addWidget(timestamp_);
-        mainLayout_->addLayout(messageLayout_);
+        adjustMessageLayout();
 }
 
 /*
@@ -417,28 +478,31 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
                 generateBody(sender, displayName, body);
                 setupAvatarLayout(displayName);
 
-                messageLayout_->addLayout(headerLayout_, 1);
-
                 AvatarProvider::resolve(
                   room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 generateBody(body);
                 setupSimpleLayout();
-
-                messageLayout_->addWidget(body_, 1);
         }
 
-        messageLayout_->addWidget(checkmark_);
-        messageLayout_->addWidget(timestamp_);
-        mainLayout_->addLayout(messageLayout_);
+        adjustMessageLayout();
 }
 
 void
-TimelineItem::markReceived()
+TimelineItem::markSent()
+{
+        statusIndicator_->setState(StatusIndicatorState::Sent);
+}
+
+void
+TimelineItem::markReceived(bool isEncrypted)
 {
         isReceived_ = true;
-        checkmark_->setText(CHECKMARK);
-        checkmark_->setAlignment(Qt::AlignTop);
+
+        if (isEncrypted)
+                statusIndicator_->setState(StatusIndicatorState::Encrypted);
+        else
+                statusIndicator_->setState(StatusIndicatorState::Received);
 
         sendReadReceipt();
 }
@@ -506,17 +570,10 @@ TimelineItem::generateTimestamp(const QDateTime &time)
         QFont timestampFont;
         timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
 
-        QFontMetrics fm(timestampFont);
-        int topMargin = QFontMetrics(font_).ascent() - fm.ascent();
-
         timestamp_ = new QLabel(this);
-        timestamp_->setAlignment(Qt::AlignTop);
         timestamp_->setFont(timestampFont);
         timestamp_->setText(
           QString("<span style=\"color: #999\"> %1 </span>").arg(time.toString("HH:mm")));
-        timestamp_->setContentsMargins(0, topMargin, 0, 0);
-        timestamp_->setStyleSheet(
-          QString("font-size: %1px;").arg(conf::timeline::fonts::timestamp));
 }
 
 QString
@@ -557,15 +614,8 @@ TimelineItem::setupAvatarLayout(const QString &userName)
         topLayout_->insertWidget(0, userAvatar_);
         topLayout_->setAlignment(userAvatar_, Qt::AlignTop);
 
-        headerLayout_ = new QVBoxLayout;
-        headerLayout_->setMargin(0);
-        headerLayout_->setSpacing(conf::timeline::headerSpacing);
-
         if (userName_)
-                headerLayout_->addWidget(userName_);
-
-        if (body_)
-                headerLayout_->addWidget(body_);
+                mainLayout_->insertWidget(0, userName_);
 }
 
 void
@@ -647,32 +697,7 @@ TimelineItem::addAvatar()
         userName_->setFont(usernameFont_);
         userName_->setText(fm.elidedText(displayName, Qt::ElideRight, 500));
 
-        QWidget *widget = nullptr;
-
-        // Extract the widget before we delete its layout.
-        if (widgetLayout_)
-                widget = widgetLayout_->itemAt(0)->widget();
-
-        // Remove all items from the layout.
-        QLayoutItem *item;
-        while ((item = messageLayout_->takeAt(0)) != 0)
-                delete item;
-
         setupAvatarLayout(displayName);
-
-        // Restore widget's layout.
-        if (widget) {
-                widgetLayout_ = new QHBoxLayout();
-                widgetLayout_->setContentsMargins(0, 2, 0, 2);
-                widgetLayout_->addWidget(widget);
-                widgetLayout_->addStretch(1);
-
-                headerLayout_->addLayout(widgetLayout_);
-        }
-
-        messageLayout_->addLayout(headerLayout_, 1);
-        messageLayout_->addWidget(checkmark_);
-        messageLayout_->addWidget(timestamp_);
 
         AvatarProvider::resolve(
           room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });

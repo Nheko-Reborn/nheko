@@ -625,7 +625,7 @@ TimelineView::updatePendingMessage(const std::string &txn_id, const QString &eve
                         // If the response comes after we have received the event from sync
                         // we've already marked the widget as received.
                         if (!msg.widget->isReceived()) {
-                                msg.widget->markReceived();
+                                msg.widget->markReceived(msg.is_encrypted);
                                 pending_sent_msgs_.append(msg);
                         }
                 } else {
@@ -689,6 +689,9 @@ TimelineView::sendNextPendingMessage()
         PendingMessage &m = pending_msgs_.head();
 
         nhlog::ui()->info("[{}] sending next queued message", m.txn_id);
+
+        if (m.widget)
+                m.widget->markSent();
 
         if (m.is_encrypted) {
                 nhlog::ui()->info("[{}] sending encrypted event", m.txn_id);
@@ -835,7 +838,7 @@ TimelineView::removePendingMessage(const std::string &txn_id)
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
                 if (it->txn_id == txn_id) {
                         if (it->widget)
-                                it->widget->markReceived();
+                                it->widget->markReceived(it->is_encrypted);
 
                         nhlog::ui()->info("[{}] received sync before message response", txn_id);
                         return;

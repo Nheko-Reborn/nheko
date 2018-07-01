@@ -48,7 +48,7 @@ CommunitiesList > * {
 }
 
 FlatButton {
-    qproperty-foregroundColor: #14272d;
+    qproperty-foregroundColor: #495057;
 }
 
 FileItem {

@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/icons">
+        <file>icons/ui/lock.png</file>
+        <file>icons/ui/lock@2x.png</file>
+        <file>icons/ui/clock.png</file>
+        <file>icons/ui/clock@2x.png</file>
+        <file>icons/ui/checkmark.png</file>
+        <file>icons/ui/checkmark@2x.png</file>
         <file>icons/ui/cursor.png</file>
         <file>icons/ui/cursor@2x.png</file>
         <file>icons/ui/settings.png</file>

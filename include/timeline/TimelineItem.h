@@ -22,6 +22,7 @@
 #include <QDateTime>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QLayout>
 #include <QPainter>
 #include <QSettings>
 #include <QStyle>
@@ -42,6 +43,46 @@ class AudioItem;
 class VideoItem;
 class FileItem;
 class Avatar;
+
+enum class StatusIndicatorState
+{
+        //! The encrypted message was received by the server.
+        Encrypted,
+        //! The plaintext message was received by the server.
+        Received,
+        //! The client sent the message. Not yet received.
+        Sent,
+        //! When the message is loaded from cache or backfill.
+        Empty,
+};
+
+//!
+//! Used to notify the user about the status of a message.
+//!
+class StatusIndicator : public QWidget
+{
+        Q_OBJECT
+
+public:
+        explicit StatusIndicator(QWidget *parent);
+        void setState(StatusIndicatorState state);
+
+protected:
+        void paintEvent(QPaintEvent *event) override;
+
+private:
+        void paintIcon(QPainter &p, QIcon &icon);
+
+        QIcon lockIcon_;
+        QIcon clockIcon_;
+        QIcon checkmarkIcon_;
+
+        QColor iconColor_ = QColor("#999");
+
+        StatusIndicatorState state_ = StatusIndicatorState::Empty;
+
+        static constexpr int MaxWidth = 24;
+};
 
 class TextLabel : public QTextBrowser
 {
@@ -192,7 +233,8 @@ public:
         DescInfo descriptionMessage() const { return descriptionMsg_; }
         QString eventId() const { return event_id_; }
         void setEventId(const QString &event_id) { event_id_ = event_id; }
-        void markReceived();
+        void markReceived(bool isEncrypted);
+        void markSent();
         bool isReceived() { return isReceived_; };
         void setRoomId(QString room_id) { room_id_ = room_id; }
         void sendReadReceipt() const;
@@ -228,6 +270,9 @@ private:
         void setupAvatarLayout(const QString &userName);
         void setupSimpleLayout();
 
+        void adjustMessageLayout();
+        void adjustMessageLayoutForWidget();
+
         //! Whether or not the event associated with the widget
         //! has been acknowledged by the server.
         bool isReceived_ = false;
@@ -247,7 +292,6 @@ private:
         QHBoxLayout *topLayout_     = nullptr;
         QHBoxLayout *messageLayout_ = nullptr;
         QVBoxLayout *mainLayout_    = nullptr;
-        QVBoxLayout *headerLayout_  = nullptr;
         QHBoxLayout *widgetLayout_  = nullptr;
 
         Avatar *userAvatar_;
@@ -255,8 +299,9 @@ private:
         QFont font_;
         QFont usernameFont_;
 
+        StatusIndicator *statusIndicator_;
+
         QLabel *timestamp_;
-        QLabel *checkmark_;
         QLabel *userName_;
         TextLabel *body_;
 };
@@ -285,20 +330,13 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget, const QString &userid, bool
                 generateBody(userid, displayName, "");
                 setupAvatarLayout(displayName);
 
-                headerLayout_->addLayout(widgetLayout_);
-                messageLayout_->addLayout(headerLayout_, 1);
-
                 AvatarProvider::resolve(
                   room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
-
-                messageLayout_->addLayout(widgetLayout_, 1);
         }
 
-        messageLayout_->addWidget(checkmark_);
-        messageLayout_->addWidget(timestamp_);
-        mainLayout_->addLayout(messageLayout_);
+        adjustMessageLayoutForWidget();
 }
 
 template<class Event, class Widget>
@@ -331,18 +369,11 @@ TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSen
                 generateBody(sender, displayName, "");
                 setupAvatarLayout(displayName);
 
-                headerLayout_->addLayout(widgetLayout_);
-                messageLayout_->addLayout(headerLayout_, 1);
-
                 AvatarProvider::resolve(
                   room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
                 setupSimpleLayout();
-
-                messageLayout_->addLayout(widgetLayout_, 1);
         }
 
-        messageLayout_->addWidget(checkmark_);
-        messageLayout_->addWidget(timestamp_);
-        mainLayout_->addLayout(messageLayout_);
+        adjustMessageLayoutForWidget();
 }
