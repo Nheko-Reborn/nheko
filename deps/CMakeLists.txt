@@ -24,6 +24,8 @@ option(USE_BUNDLED "Use bundled dependencies." ON)
 option(USE_BUNDLED_BOOST "Use the bundled version of Boost." ${USE_BUNDLED})
 option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog." ${USE_BUNDLED})
 option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${USE_BUNDLED})
+option(USE_BUNDLED_TWEENY "Use the bundled version of Tweeny." ${USE_BUNDLED})
+option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdbxx." ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_STRUCTS "Use the bundled version of matrix-structs."
        ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
@@ -41,6 +43,15 @@ set(MATRIX_STRUCTS_TAG 3a052a95c555ce3ae12b8a2e0508e8bb73266fa1)
 
 set(MTXCLIENT_URL https://github.com/mujx/mtxclient)
 set(MTXCLIENT_TAG 73491268f94ddeb606284836bb5f512d11b0e249)
+
+set(TWEENY_URL https://github.com/mobius3/tweeny)
+set(TWEENY_TAG b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf)
+
+set(
+  LMDBXX_HEADER_URL
+  https://raw.githubusercontent.com/bendiken/lmdbxx/0b43ca87d8cfabba392dfe884eb1edb83874de02/lmdb%2B%2B.h
+  )
+set(LMDBXX_SHA c57b501a4e8fa1187fa7fd348da415c7685a50a7cb25b17b3f257b9e9426f73d)
 
 set(OLM_URL https://git.matrix.org/git/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)
@@ -62,6 +73,15 @@ endif()
 
 if(USE_BUNDLED_MATRIX_STRUCTS)
   include(MatrixStructs)
+endif()
+
+if(USE_BUNDLED_TWEENY)
+  include(Tweeny)
+endif()
+
+if(USE_BUNDLED_LMDBXX)
+  file(DOWNLOAD ${LMDBXX_HEADER_URL} ${DEPS_INSTALL_DIR}/include/lmdb++.h
+       EXPECTED_HASH SHA256=${LMDBXX_SHA})
 endif()
 
 if(WIN32)

@@ -489,7 +489,7 @@ TimelineView::init()
         scroll_widget_ = new QWidget(this);
 
         scroll_layout_ = new QVBoxLayout(scroll_widget_);
-        scroll_layout_->setContentsMargins(15, 0, 15, 15);
+        scroll_layout_->setContentsMargins(4, 0, 15, 15);
         scroll_layout_->addStretch(1);
         scroll_layout_->setSpacing(0);
         scroll_layout_->setObjectName("timelinescrollarea");

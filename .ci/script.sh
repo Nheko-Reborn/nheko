@@ -11,13 +11,15 @@ if [ $TRAVIS_OS_NAME == osx ]; then
 fi
 
 # Build & install dependencies
-cmake -Hdeps -B.deps \
+cmake -GNinja -Hdeps -B.deps \
     -DUSE_BUNDLED_BOOST=${USE_BUNDLED_BOOST} \
     -DUSE_BUNDLED_SPDLOG=${USE_BUNDLED_SPDLOG}
 cmake --build .deps
 
 # Build nheko
-cmake -GNinja -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake -GNinja -H. -Bbuild \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_INSTALL_PREFIX=.deps/usr
 cmake --build build
 
 if [ $TRAVIS_OS_NAME == osx ]; then

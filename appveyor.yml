@@ -61,6 +61,8 @@ build_script:
     # Build nheko
     - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
       -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
+      -DLMDBXX_INCLUDE_DIR=.deps/usr/include
+      -DTWEENY_INCLUDE_DIR=.deps/usr/include
     - cmake --build build --config Release
 
 after_build:

@@ -1,7 +1,7 @@
 #include <QDebug>
 #include <QPainter>
 
-#include <tweeny.h>
+#include <tweeny/tweeny.h>
 
 #include "SnackBar.h"
 

@@ -226,23 +226,25 @@ find_package(MatrixClient 0.1.0 REQUIRED)
 find_package(Olm 2 REQUIRED)
 find_package(spdlog 0.16.0 CONFIG REQUIRED)
 
-#
-# tweeny
-#
-if(NOT TWEENY_INCLUDE_DIR)
-    include(Tweeny)
-    set(EXTERNAL_PROJECT_DEPS ${EXTERNAL_PROJECT_DEPS} Tweeny)
-endif()
-include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
-
-#
-# lmdbxx
-#
 if(NOT LMDBXX_INCLUDE_DIR)
-    include(LMDBXX)
-    set(EXTERNAL_PROJECT_DEPS ${EXTERNAL_PROJECT_DEPS} lmdbxx)
+    find_path(LMDBXX_INCLUDE_DIR
+            NAMES lmdb++.h
+            PATHS /usr/include
+                  /usr/local/include
+                  $ENV{LIB_DIR}/include
+                  $ENV{LIB_DIR}/include/lmdbxx)
 endif()
-include_directories(SYSTEM ${LMDBXX_INCLUDE_DIR})
+include_directories(${LMDBXX_INCLUDE_DIR})
+
+if(NOT TWEENY_INCLUDE_DIR)
+    find_path(TWEENY_INCLUDE_DIR
+            NAMES tweeny/tweeny.h
+            PATHS /usr/include/
+                  /usr/local/include/
+                  $ENV{LIB_DIR}/include/
+                  $ENV{LIB_DIR}/include/tweeny)
+endif()
+include_directories(${TWEENY_INCLUDE_DIR})
 
 include_directories(include)
 include_directories(include/ui)
