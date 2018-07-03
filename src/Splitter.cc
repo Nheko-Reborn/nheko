@@ -21,8 +21,11 @@
 #include <QSettings>
 #include <QShortcut>
 
+#include "Config.h"
 #include "Splitter.h"
 #include "Theme.h"
+
+constexpr auto MaxWidth = (1 << 24) - 1;
 
 Splitter::Splitter(QWidget *parent)
   : QSplitter(parent)
@@ -30,28 +33,6 @@ Splitter::Splitter(QWidget *parent)
         connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
         setChildrenCollapsible(false);
         setStyleSheet("QSplitter::handle { image: none; }");
-
-        auto showChatShortcut = new QShortcut(QKeySequence(tr("Ctrl+O", "Show chat")), parent);
-        auto showSidebarShortcut =
-          new QShortcut(QKeySequence(tr("Ctrl+L", "Show sidebar")), parent);
-
-        connect(showChatShortcut, &QShortcut::activated, this, [this]() {
-                if (count() != 2)
-                        return;
-
-                hideSidebar();
-                widget(1)->show();
-        });
-        connect(showSidebarShortcut, &QShortcut::activated, this, [this]() {
-                if (count() != 2)
-                        return;
-
-                widget(0)->setMinimumWidth(ui::sidebar::NormalSize);
-                widget(0)->setMaximumWidth(QApplication::desktop()->screenGeometry().height());
-
-                widget(0)->show();
-                widget(1)->hide();
-        });
 }
 
 void
@@ -61,7 +42,10 @@ Splitter::restoreSizes(int fallback)
         int savedWidth = settings.value("sidebar/width").toInt();
 
         auto left = widget(0);
-        if (savedWidth == ui::sidebar::SmallSize) {
+        if (savedWidth == 0) {
+                hideSidebar();
+                return;
+        } else if (savedWidth == ui::sidebar::SmallSize) {
                 if (left) {
                         left->setMinimumWidth(ui::sidebar::SmallSize);
                         left->setMaximumWidth(ui::sidebar::SmallSize);
@@ -69,21 +53,12 @@ Splitter::restoreSizes(int fallback)
                 }
         }
 
-        if (savedWidth >= ui::sidebar::NormalSize && savedWidth <= 2 * ui::sidebar::NormalSize) {
-                if (left) {
-                        left->setMinimumWidth(ui::sidebar::NormalSize);
-                        left->setMaximumWidth(2 * ui::sidebar::NormalSize);
-                        setSizes({savedWidth, fallback - savedWidth});
-                        return;
-                }
-        }
-
-        if (savedWidth == 0) {
-                hideSidebar();
-                return;
-        }
-
+        left->setMinimumWidth(ui::sidebar::NormalSize);
+        left->setMaximumWidth(2 * ui::sidebar::NormalSize);
         setSizes({ui::sidebar::NormalSize, fallback - ui::sidebar::NormalSize});
+
+        setStretchFactor(0, 0);
+        setStretchFactor(1, 1);
 }
 
 Splitter::~Splitter()
@@ -92,11 +67,7 @@ Splitter::~Splitter()
 
         if (left) {
                 QSettings settings;
-
-                if (!left->isVisible())
-                        settings.setValue("sidebar/width", 0);
-                else
-                        settings.setValue("sidebar/width", left->width());
+                settings.setValue("sidebar/width", left->width());
         }
 }
 
@@ -143,40 +114,15 @@ Splitter::onSplitterMoved(int pos, int index)
 
                         // if we are coming from the left, the cursor should
                         // end up on the second widget.
-                        if (extended.contains(pos)) {
+                        if (extended.contains(pos) &&
+                            right->size().width() >=
+                              conf::sideBarCollapsePoint + ui::sidebar::NormalSize) {
                                 left->setMinimumWidth(ui::sidebar::NormalSize);
                                 left->setMaximumWidth(2 * ui::sidebar::NormalSize);
 
                                 leftMoveCount_ = 0;
-                        } else if (left->rect().contains(left->mapFromGlobal(QCursor::pos()))) {
-                                hideSidebar();
                         }
                 }
-        }
-}
-void
-Splitter::showChatView()
-{
-        if (count() != 2)
-                return;
-
-        auto right = widget(1);
-
-        // We are in Roomlist-only view so we'll switch into Chat-only view.
-        if (!right->isVisible()) {
-                right->show();
-                hideSidebar();
-        }
-}
-
-void
-Splitter::showSidebar()
-{
-        auto left = widget(0);
-        if (left) {
-                left->setMinimumWidth(ui::sidebar::SmallSize);
-                left->setMaximumWidth(ui::sidebar::SmallSize);
-                left->show();
         }
 }
 
@@ -184,8 +130,39 @@ void
 Splitter::hideSidebar()
 {
         auto left = widget(0);
-        if (left) {
+        if (left)
                 left->hide();
-                emit hiddenSidebar();
+}
+
+void
+Splitter::showChatView()
+{
+        auto left  = widget(0);
+        auto right = widget(1);
+
+        if (right->isHidden()) {
+                left->hide();
+                right->show();
+
+                // Restore previous size.
+                if (left->minimumWidth() == ui::sidebar::SmallSize) {
+                        left->setMinimumWidth(ui::sidebar::SmallSize);
+                        left->setMaximumWidth(ui::sidebar::SmallSize);
+                } else {
+                        left->setMinimumWidth(ui::sidebar::NormalSize);
+                        left->setMaximumWidth(2 * ui::sidebar::NormalSize);
+                }
         }
+}
+
+void
+Splitter::showFullRoomList()
+{
+        auto left  = widget(0);
+        auto right = widget(1);
+
+        right->hide();
+
+        left->show();
+        left->setMaximumWidth(MaxWidth);
 }

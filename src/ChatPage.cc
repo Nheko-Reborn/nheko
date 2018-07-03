@@ -65,7 +65,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         communitiesList_ = new CommunitiesList(this);
         topLayout_->addWidget(communitiesList_);
 
-        auto splitter = new Splitter(this);
+        splitter = new Splitter(this);
         splitter->setHandleWidth(0);
 
         topLayout_->addWidget(splitter);
@@ -183,8 +183,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 emit showOverlayProgressBar();
         });
 
-        connect(splitter, &Splitter::hiddenSidebar, top_bar_, &TopRoomBar::enableBackButton);
-        connect(top_bar_, &TopRoomBar::showSidebar, splitter, &Splitter::showSidebar);
+        connect(top_bar_, &TopRoomBar::showRoomList, splitter, &Splitter::showFullRoomList);
         connect(top_bar_, &TopRoomBar::inviteUsers, this, [this](QStringList users) {
                 const auto room_id = current_room_.toStdString();
 
@@ -1313,4 +1312,36 @@ ChatPage::getProfileInfo()
                     });
           });
         // TODO http::client()->getOwnCommunities();
+}
+
+void
+ChatPage::hideSideBars()
+{
+        communitiesList_->hide();
+        sideBar_->hide();
+        top_bar_->enableBackButton();
+}
+
+void
+ChatPage::showSideBars()
+{
+        if (userSettings_->isGroupViewEnabled())
+                communitiesList_->show();
+
+        sideBar_->show();
+        top_bar_->disableBackButton();
+}
+
+int
+ChatPage::timelineWidth()
+{
+        int sidebarWidth = sideBar_->size().width();
+        sidebarWidth += communitiesList_->size().width();
+
+        return size().width() - sidebarWidth;
+}
+bool
+ChatPage::isSideBarExpanded()
+{
+        return sideBar_->size().width() > ui::sidebar::NormalSize;
 }

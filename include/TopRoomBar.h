@@ -55,11 +55,14 @@ public:
         void setBorderColor(QColor &color) { borderColor_ = color; }
 
 public slots:
+        //! Add a "back-arrow" button that can switch to roomlist only view.
         void enableBackButton();
+        //! Replace the "back-arrow" button with the avatar of the room.
+        void disableBackButton();
 
 signals:
         void inviteUsers(QStringList users);
-        void showSidebar();
+        void showRoomList();
 
 protected:
         void mousePressEvent(QMouseEvent *) override

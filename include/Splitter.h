@@ -29,8 +29,8 @@ public:
         void restoreSizes(int fallback);
 
 public slots:
-        void showSidebar();
         void hideSidebar();
+        void showFullRoomList();
         void showChatView();
 
 signals:

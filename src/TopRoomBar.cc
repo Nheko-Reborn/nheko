@@ -83,11 +83,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         backBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
         backBtn_->hide();
 
-        connect(backBtn_, &QPushButton::clicked, this, [this]() {
-                backBtn_->hide();
-                avatar_->show();
-                emit showSidebar();
-        });
+        connect(backBtn_, &QPushButton::clicked, this, &TopRoomBar::showRoomList);
 
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(backBtn_);
@@ -134,6 +130,13 @@ TopRoomBar::enableBackButton()
 {
         avatar_->hide();
         backBtn_->show();
+}
+
+void
+TopRoomBar::disableBackButton()
+{
+        avatar_->show();
+        backBtn_->hide();
 }
 
 void

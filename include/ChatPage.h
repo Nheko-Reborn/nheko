@@ -69,6 +69,14 @@ public:
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
         void deleteConfigs();
 
+        //! Calculate the width of the message timeline.
+        int timelineWidth();
+        bool isSideBarExpanded();
+        //! Hide the room & group list (if it was visible).
+        void hideSideBars();
+        //! Show the room/group list (if it was visible).
+        void showSideBars();
+
 public slots:
         void leaveRoom(const QString &room_id);
 
