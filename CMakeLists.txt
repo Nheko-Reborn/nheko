@@ -234,7 +234,7 @@ if(NOT LMDBXX_INCLUDE_DIR)
                   $ENV{LIB_DIR}/include
                   $ENV{LIB_DIR}/include/lmdbxx)
 endif()
-include_directories(${LMDBXX_INCLUDE_DIR})
+include_directories(SYSTEM ${LMDBXX_INCLUDE_DIR})
 
 if(NOT TWEENY_INCLUDE_DIR)
     find_path(TWEENY_INCLUDE_DIR
@@ -244,7 +244,7 @@ if(NOT TWEENY_INCLUDE_DIR)
                   $ENV{LIB_DIR}/include/
                   $ENV{LIB_DIR}/include/tweeny)
 endif()
-include_directories(${TWEENY_INCLUDE_DIR})
+include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
 
 include_directories(include)
 include_directories(include/ui)
