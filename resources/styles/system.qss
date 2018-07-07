@@ -25,7 +25,7 @@ QuickSwitcher {
     background-color: palette(window);
 }
 
-DateSeparator {
+InfoMessage {
     qproperty-textColor: palette(text);
     qproperty-boxColor: palette(window);
 }

@@ -23,7 +23,7 @@ QuickSwitcher {
     background-color: white;
 }
 
-DateSeparator {
+InfoMessage {
     qproperty-textColor: #333;
     qproperty-boxColor: rgba(220, 220, 220, 120);
 }

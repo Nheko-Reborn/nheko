@@ -170,6 +170,7 @@ set(SRC_FILES
     src/ui/Avatar.cc
     src/ui/Badge.cc
     src/ui/LoadingIndicator.cc
+    src/ui/InfoMessage.cpp
     src/ui/FlatButton.cc
     src/ui/FloatingButton.cc
     src/ui/Label.cc
@@ -283,6 +284,7 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/Avatar.h
     include/ui/Badge.h
     include/ui/LoadingIndicator.h
+    include/ui/InfoMessage.hpp
     include/ui/FlatButton.h
     include/ui/Label.h
     include/ui/FloatingButton.h

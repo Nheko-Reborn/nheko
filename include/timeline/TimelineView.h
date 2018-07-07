@@ -107,40 +107,6 @@ enum class TimelineDirection
         Bottom,
 };
 
-class DateSeparator : public QWidget
-{
-        Q_OBJECT
-
-        Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
-        Q_PROPERTY(QColor boxColor WRITE setBoxColor READ boxColor)
-
-public:
-        DateSeparator(QDateTime datetime, QWidget *parent = nullptr);
-
-        void setTextColor(QColor color) { textColor_ = color; }
-        void setBoxColor(QColor color) { boxColor_ = color; }
-
-        QColor textColor() const { return textColor_; }
-        QColor boxColor() const { return boxColor_; }
-
-protected:
-        void paintEvent(QPaintEvent *event) override;
-
-private:
-        static constexpr int VPadding = 6;
-        static constexpr int HPadding = 12;
-        static constexpr int HMargin  = 20;
-
-        int width_;
-        int height_;
-
-        QString msg_;
-        QFont font_;
-
-        QColor textColor_ = QColor("black");
-        QColor boxColor_  = QColor("white");
-};
-
 class TimelineView : public QWidget
 {
         Q_OBJECT
@@ -162,7 +128,6 @@ public:
                             uint64_t size);
         void updatePendingMessage(const std::string &txn_id, const QString &event_id);
         void scrollDown();
-        QLabel *createDateSeparator(QDateTime datetime);
 
         //! Remove an item from the timeline with the given Event ID.
         void removeEvent(const QString &event_id);
@@ -220,7 +185,7 @@ private:
         void getMessages();
         //! HACK: Fixing layout flickering when adding to the bottom
         //! of the timeline.
-        void pushTimelineItem(TimelineItem *item)
+        void pushTimelineItem(QWidget *item)
         {
                 item->hide();
                 scroll_layout_->addWidget(item);
@@ -230,7 +195,7 @@ private:
         //! Decides whether or not to show or hide the scroll down button.
         void toggleScrollDownButton();
         void init();
-        void addTimelineItem(TimelineItem *item,
+        void addTimelineItem(QWidget *item,
                              TimelineDirection direction = TimelineDirection::Bottom);
         void updateLastSender(const QString &user_id, TimelineDirection direction);
         void notifyForLastEvent();
@@ -295,8 +260,8 @@ private:
                               const QDateTime &second = QDateTime::currentDateTime()) const;
 
         // Return nullptr if the event couldn't be parsed.
-        TimelineItem *parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
-                                        TimelineDirection direction);
+        QWidget *parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
+                                   TimelineDirection direction);
 
         QVBoxLayout *top_layout_;
         QVBoxLayout *scroll_layout_;
