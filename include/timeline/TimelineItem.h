@@ -241,6 +241,7 @@ public:
 
         //! Add a user avatar for this event.
         void addAvatar();
+        void addKeyRequestAction();
 
 signals:
         void eventRedacted(const QString &event_id);

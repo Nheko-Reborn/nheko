@@ -39,10 +39,10 @@ set(BOOST_SHA256
     5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9)
 
 set(MATRIX_STRUCTS_URL https://github.com/mujx/matrix-structs)
-set(MATRIX_STRUCTS_TAG 3a052a95c555ce3ae12b8a2e0508e8bb73266fa1)
+set(MATRIX_STRUCTS_TAG 92a5e99db51301b5abf626aa872a1a87b7727634)
 
 set(MTXCLIENT_URL https://github.com/mujx/mtxclient)
-set(MTXCLIENT_TAG 73491268f94ddeb606284836bb5f512d11b0e249)
+set(MTXCLIENT_TAG 708c8c6772b9bd99d77c5be6bb3ba58643258628)
 
 set(TWEENY_URL https://github.com/mobius3/tweeny)
 set(TWEENY_TAG b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf)

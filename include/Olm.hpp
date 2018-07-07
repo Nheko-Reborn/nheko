@@ -67,4 +67,20 @@ encrypt_group_message(const std::string &room_id,
 void
 mark_keys_as_published();
 
+//! Request the encryption keys from sender's device for the given event.
+void
+request_keys(const std::string &room_id, const std::string &event_id);
+
+void
+send_key_request_for(const std::string &room_id,
+                     const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &);
+
+void
+handle_key_request_message(const mtx::events::msg::KeyRequest &);
+
+void
+send_megolm_key_to_device(const std::string &user_id,
+                          const std::string &device_id,
+                          const json &payload);
+
 } // namespace olm

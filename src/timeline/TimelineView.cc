@@ -261,6 +261,8 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
 
                 if (item && res.isDecrypted)
                         item->markReceived(true);
+                else if (item && !res.isDecrypted)
+                        item->addKeyRequestAction();
 
                 return widget;
         }

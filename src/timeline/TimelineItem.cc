@@ -24,6 +24,7 @@
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.hpp"
+#include "Olm.hpp"
 #include "Painter.h"
 
 #include "timeline/TimelineItem.h"
@@ -678,6 +679,19 @@ TimelineItem::addReplyAction()
                         emit ChatPage::instance()->messageReply(
                           Cache::displayName(room_id_, descriptionMsg_.userid),
                           body_->toPlainText());
+                });
+        }
+}
+
+void
+TimelineItem::addKeyRequestAction()
+{
+        if (contextMenu_) {
+                auto requestKeys = new QAction("Request encryption keys", this);
+                contextMenu_->addAction(requestKeys);
+
+                connect(requestKeys, &QAction::triggered, this, [this]() {
+                        olm::request_keys(room_id_.toStdString(), event_id_.toStdString());
                 });
         }
 }

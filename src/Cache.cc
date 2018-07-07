@@ -987,12 +987,11 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id)
                 if (obj.count("event") == 0 || obj.count("token") == 0)
                         continue;
 
-                mtx::events::collections::TimelineEvents event;
-                mtx::events::collections::from_json(obj.at("event"), event);
+                mtx::events::collections::TimelineEvent event = obj.at("event");
 
                 index += 1;
 
-                timeline.events.push_back(event);
+                timeline.events.push_back(event.data);
                 timeline.prev_batch = obj.at("token").get<std::string>();
         }
         cursor.close();
@@ -1059,12 +1058,11 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                 if (obj.count("event") == 0)
                         continue;
 
-                mtx::events::collections::TimelineEvents event;
-                mtx::events::collections::from_json(obj.at("event"), event);
+                mtx::events::collections::TimelineEvent event = obj.at("event");
 
                 cursor.close();
                 return utils::getMessageDescription(
-                  event, local_user, QString::fromStdString(room_id));
+                  event.data, local_user, QString::fromStdString(room_id));
         }
         cursor.close();
 
