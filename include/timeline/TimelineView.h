@@ -46,6 +46,14 @@ private:
         std::function<void()> fn_;
 };
 
+struct DecryptionResult
+{
+        //! The decrypted content as a normal plaintext event.
+        utils::TimelineEvent event;
+        //! Whether or not the decryption was successful.
+        bool isDecrypted = false;
+};
+
 class FloatingButton;
 struct DescInfo;
 
@@ -192,7 +200,7 @@ private:
 
         QWidget *relativeWidget(TimelineItem *item, int dt) const;
 
-        TimelineEvent parseEncryptedEvent(
+        DecryptionResult parseEncryptedEvent(
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
 
         void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
