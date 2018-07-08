@@ -88,12 +88,12 @@ Splitter::onSplitterMoved(int pos, int index)
                 rightMoveCount_ += 1;
 
                 if (rightMoveCount_ > moveEventLimit_) {
-                        auto left = widget(0);
-                        auto pos  = left->mapFromGlobal(QCursor::pos());
+                        auto left           = widget(0);
+                        auto cursorPosition = left->mapFromGlobal(QCursor::pos());
 
                         // if we are coming from the right, the cursor should
                         // end up on the first widget.
-                        if (left->rect().contains(pos)) {
+                        if (left->rect().contains(cursorPosition)) {
                                 left->setMinimumWidth(ui::sidebar::SmallSize);
                                 left->setMaximumWidth(ui::sidebar::SmallSize);
 
@@ -104,9 +104,9 @@ Splitter::onSplitterMoved(int pos, int index)
                 leftMoveCount_ += 1;
 
                 if (leftMoveCount_ > moveEventLimit_) {
-                        auto left  = widget(0);
-                        auto right = widget(1);
-                        auto pos   = right->mapFromGlobal(QCursor::pos());
+                        auto left           = widget(0);
+                        auto right          = widget(1);
+                        auto cursorPosition = right->mapFromGlobal(QCursor::pos());
 
                         // We move the start a little further so the transition isn't so abrupt.
                         auto extended = right->rect();
@@ -114,7 +114,7 @@ Splitter::onSplitterMoved(int pos, int index)
 
                         // if we are coming from the left, the cursor should
                         // end up on the second widget.
-                        if (extended.contains(pos) &&
+                        if (extended.contains(cursorPosition) &&
                             right->size().width() >=
                               conf::sideBarCollapsePoint + ui::sidebar::NormalSize) {
                                 left->setMinimumWidth(ui::sidebar::NormalSize);

@@ -96,6 +96,7 @@ if(NOT MSVC)
         -Wall \
         -Wextra \
         -Werror \
+        -Wshadow \
         -pipe \
         -pedantic \
         -fsized-deallocation \
