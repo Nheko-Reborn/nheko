@@ -494,7 +494,7 @@ send_megolm_key_to_device(const std::string &user_id,
                                     auto olm_session = olm::client()->create_outbound_session(
                                       pks.curve25519, device.begin()->at("key"));
 
-                                    auto device_msg = olm::client()->create_olm_encrypted_content(
+                                    device_msg = olm::client()->create_olm_encrypted_content(
                                       olm_session.get(), room_key, pks.curve25519);
 
                                     cache::client()->saveOlmSession(pks.curve25519,
@@ -511,7 +511,8 @@ send_megolm_key_to_device(const std::string &user_id,
 
                             body["messages"][user_id][device_id] = device_msg;
 
-                            nhlog::net()->info("send_to_device: {}", user_id);
+                            nhlog::net()->info(
+                              "sending m.room_key event to {}:{}", user_id, device_id);
                             http::v2::client()->send_to_device(
                               "m.room.encrypted", body, [user_id](mtx::http::RequestErr err) {
                                       if (err) {

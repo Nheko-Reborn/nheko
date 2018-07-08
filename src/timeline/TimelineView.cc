@@ -1450,5 +1450,7 @@ TimelineView::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
                                              "message: {}",
                                              err->matrix_error.error);
                   }
+
+                  (void)keeper;
           });
 }
