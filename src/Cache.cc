@@ -961,7 +961,7 @@ Cache::roomMessages()
 
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, unused, MDB_NEXT))
-                msgs.emplace(QString::fromStdString(room_id), getTimelineMessages(txn, room_id));
+                msgs.emplace(QString::fromStdString(room_id), mtx::responses::Timeline());
 
         roomsCursor.close();
         txn.commit();
