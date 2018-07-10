@@ -96,13 +96,17 @@ if(NOT MSVC)
         -Wall \
         -Wextra \
         -Werror \
-        -Wshadow \
         -pipe \
         -pedantic \
         -fsized-deallocation \
         -fdiagnostics-color=always \
         -Wunreachable-code"
     )
+    if (NOT CMAKE_COMPILER_IS_GNUCXX)
+        # -Wshadow is buggy and broken in GCC, so do not enable it.
+        # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79328
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wshadow")
+    endif()
 endif()
 
 if(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
