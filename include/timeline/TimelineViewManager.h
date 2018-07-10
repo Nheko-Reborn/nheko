@@ -67,7 +67,8 @@ public slots:
                                const QString &filename,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize);
+                               uint64_t dsize,
+                               const QSize &dimensions);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
                               const QString &url,

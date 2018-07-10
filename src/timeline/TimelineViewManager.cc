@@ -74,7 +74,8 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
                                        const QString &url,
                                        const QString &mime,
-                                       uint64_t size)
+                                       uint64_t size,
+                                       const QSize &dimensions)
 {
         if (!timelineViewExists(roomid)) {
                 nhlog::ui()->warn("Cannot send m.image message to a non-managed view");
@@ -83,7 +84,8 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
 
         auto view = views_[roomid];
 
-        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(url, filename, mime, size);
+        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(
+          url, filename, mime, size, dimensions);
 }
 
 void

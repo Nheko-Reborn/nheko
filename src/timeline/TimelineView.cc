@@ -1097,6 +1097,8 @@ toRoomMessage<mtx::events::msg::Image>(const PendingMessage &m)
         image.info.size     = m.media_size;
         image.body          = m.filename.toStdString();
         image.url           = m.body.toStdString();
+        image.info.h        = m.dimensions.height();
+        image.info.w        = m.dimensions.width();
         return image;
 }
 

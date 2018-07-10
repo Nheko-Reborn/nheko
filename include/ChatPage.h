@@ -93,7 +93,8 @@ signals:
                            const QString &filename,
                            const QString &url,
                            const QString &mime,
-                           qint64 dsize);
+                           qint64 dsize,
+                           const QSize &dimensions);
         void fileUploaded(const QString &roomid,
                           const QString &filename,
                           const QString &url,

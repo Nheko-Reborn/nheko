@@ -69,6 +69,7 @@ struct PendingMessage
         uint64_t media_size;
         QString event_id;
         TimelineItem *widget;
+        QSize dimensions;
         bool is_encrypted = false;
 };
 
@@ -125,7 +126,8 @@ public:
         void addUserMessage(const QString &url,
                             const QString &filename,
                             const QString &mime,
-                            uint64_t size);
+                            uint64_t size,
+                            const QSize &dimensions = QSize());
         void updatePendingMessage(const std::string &txn_id, const QString &event_id);
         void scrollDown();
 
@@ -321,7 +323,8 @@ void
 TimelineView::addUserMessage(const QString &url,
                              const QString &filename,
                              const QString &mime,
-                             uint64_t size)
+                             uint64_t size,
+                             const QSize &dimensions)
 {
         auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
         auto trimmed     = QFileInfo{filename}.fileName(); // Trim file path.
@@ -346,6 +349,7 @@ TimelineView::addUserMessage(const QString &url,
         message.mime       = mime;
         message.media_size = size;
         message.widget     = view_item;
+        message.dimensions = dimensions;
 
         handleNewUserMessage(message);
 }
