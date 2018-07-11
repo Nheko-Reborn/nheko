@@ -277,11 +277,8 @@ MainWindow::showChatPage()
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
-        // Decide whether or not we should enable tray for the current page.
-        bool pageSupportsTray =
-          !welcome_page_->isVisible() && !login_page_->isVisible() && !register_page_->isVisible();
-
-        if (isVisible() && pageSupportsTray && userSettings_->isTrayEnabled()) {
+        if (!qApp->isSavingSession() && isVisible() && pageSupportsTray() &&
+            userSettings_->isTrayEnabled()) {
                 event->ignore();
                 hide();
         }
@@ -504,4 +501,11 @@ MainWindow::hasActiveDialogs() const
                (!joinRoomModal_.isNull() && joinRoomModal_->isVisible()) ||
                (!createRoomModal_.isNull() && createRoomModal_->isVisible()) ||
                (!logoutModal_.isNull() && logoutModal_->isVisible());
+}
+
+bool
+MainWindow::pageSupportsTray() const
+{
+        return !welcome_page_->isVisible() && !login_page_->isVisible() &&
+               !register_page_->isVisible();
 }
