@@ -300,7 +300,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
                   auto bin        = dev->peek(dev->size());
                   auto payload    = std::string(bin.data(), bin.size());
-                  auto dimensions = QImageReader(dev.get()).size();
+                  auto dimensions = QImageReader(dev.data()).size();
 
                   http::v2::client()->upload(
                     payload,
