@@ -67,6 +67,7 @@ include(LMDB)
 # Discover Qt dependencies.
 #
 find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia REQUIRED)
+find_package(Qt5DBus)
 
 if (APPLE)
     find_package(Qt5MacExtras REQUIRED)
@@ -304,6 +305,8 @@ qt5_wrap_cpp(MOC_HEADERS
     include/ui/Theme.h
     include/ui/ThemeManager.h
 
+    include/notifications/Manager.h
+
     include/AvatarProvider.h
     include/Cache.h
     include/ChatPage.h
@@ -386,7 +389,7 @@ elseif(WIN32)
     target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain)
 else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
-    target_link_libraries (nheko ${NHEKO_LIBS})
+    target_link_libraries (nheko ${NHEKO_LIBS} Qt5::DBus)
 endif()
 
 if(EXTERNAL_PROJECT_DEPS)

@@ -27,15 +27,25 @@ init()
 }
 }
 
+NotificationsManager::NotificationsManager(QObject *parent): QObject(parent)
+{
+
+}
+
 void
-NotificationsManager::postNotification(const QString &room, const QString &user, const QString &msg)
+NotificationsManager::postNotification(const QString &, //roomid
+                                const QString &,        //eventid
+                                const QString &roomname,
+                                const QString &sender,
+                                const QString &text,
+                                const QImage &)         //icon
 {
         if (!isInitialized)
                 init();
 
         auto templ = WinToastTemplate(WinToastTemplate::ImageAndText02);
-        if (room != user)
-                templ.setTextField(QString("%1 - %2").arg(user).arg(room).toStdWString(),
+        if (roomname != sender)
+                templ.setTextField(QString("%1 - %2").arg(sender).arg(roomname).toStdWString(),
                                    WinToastTemplate::FirstLine);
         else
                 templ.setTextField(QString("%1").arg(user).toStdWString(),
@@ -45,4 +55,15 @@ NotificationsManager::postNotification(const QString &room, const QString &user,
         // templ.setImagePath(L"C:/example.png");
 
         WinToast::instance()->showToast(templ, new CustomHandler());
+}
+
+//unused
+void
+NotificationsManager::actionInvoked(uint, QString)
+{
+}
+
+void
+NotificationsManager::notificationClosed(uint, uint)
+{
 }

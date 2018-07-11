@@ -30,6 +30,7 @@
 #include "CommunitiesList.h"
 #include "Community.h"
 #include "MatrixClient.h"
+#include "notifications/Manager.h"
 
 class OverlayModal;
 class QuickSwitcher;
@@ -42,6 +43,7 @@ class TopRoomBar;
 class TypingDisplay;
 class UserInfoWidget;
 class UserSettings;
+class NotificationsManager;
 
 namespace dialogs {
 class ReadReceipts;
@@ -139,6 +141,13 @@ signals:
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
         void syncTopBar(const std::map<QString, RoomInfo> &updates);
         void dropToLoginPageCb(const QString &msg);
+
+        void notifyMessage(const QString &roomid,
+                           const QString &eventid,
+                           const QString &roomname,
+                           const QString &sender,
+                           const QString &message,
+                           const QImage &icon);
 
 private slots:
         void showUnreadMessageNotification(int count);
@@ -238,6 +247,8 @@ private:
 
         // Global user settings.
         QSharedPointer<UserSettings> userSettings_;
+
+        NotificationsManager notificationsManager;
 };
 
 template<class Collection>
