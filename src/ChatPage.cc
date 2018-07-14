@@ -501,31 +501,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
 
-        // connect(http::client(),
-        //         SIGNAL(getOwnCommunitiesResponse(QList<QString>)),
-        //         this,
-        //         SLOT(updateOwnCommunitiesInfo(QList<QString>)));
-        // connect(http::client(),
-        //         &MatrixClient::communityProfileRetrieved,
-        //         this,
-        //         [this](QString communityId, QJsonObject profile) {
-        //                 communities_[communityId]->parseProfile(profile);
-        //         });
-        // connect(http::client(),
-        //         &MatrixClient::communityRoomsRetrieved,
-        //         this,
-        //         [this](QString communityId, QJsonObject rooms) {
-        //                 communities_[communityId]->parseRooms(rooms);
-
-        //                 if (communityId == current_community_) {
-        //                         if (communityId == "world") {
-        //                                 room_list_->setFilterRooms(false);
-        //                         } else {
-        //                                 room_list_->setRoomFilter(
-        //                                   communities_[communityId]->getRoomList());
-        //                         }
-        //                 }
-        //         });
+        connect(
+          this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
@@ -533,13 +510,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(communitiesList_,
                 &CommunitiesList::communityChanged,
                 this,
-                [this](const QString &communityId) {
-                        current_community_ = communityId;
+                [this](const QString &groupId) {
+                        current_community_ = groupId;
 
-                        if (communityId == "world")
+                        if (groupId == "world")
                                 room_list_->setFilterRooms(false);
                         else
-                                room_list_->setRoomFilter(communities_[communityId]->getRoomList());
+                                room_list_->setRoomFilter(communitiesList_->roomList(groupId));
                 });
 
         connect(&notificationsManager,
@@ -756,18 +733,6 @@ ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
                 return;
 
         top_bar_->updateRoomAvatar(img.toImage());
-}
-
-void
-ChatPage::updateOwnCommunitiesInfo(const QList<QString> &own_communities)
-{
-        for (int i = 0; i < own_communities.size(); i++) {
-                QSharedPointer<Community> community = QSharedPointer<Community>(new Community());
-
-                communities_[own_communities[i]] = community;
-        }
-
-        communitiesList_->setCommunities(communities_);
 }
 
 void
@@ -1335,7 +1300,18 @@ ChatPage::getProfileInfo()
                               QImage::fromData(QByteArray(data.data(), data.size())));
                     });
           });
-        // TODO http::client()->getOwnCommunities();
+
+        http::v2::client()->joined_groups(
+          [this](const mtx::responses::JoinedGroups &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->critical("failed to retrieve joined groups: {} {}",
+                                                 static_cast<int>(err->status_code),
+                                                 err->matrix_error.error);
+                          return;
+                  }
+
+                  emit updateGroupsInfo(res);
+          });
 }
 
 void

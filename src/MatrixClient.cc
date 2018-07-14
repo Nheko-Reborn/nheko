@@ -31,8 +31,11 @@ init()
         qRegisterMetaType<mtx::responses::Notifications>();
         qRegisterMetaType<mtx::responses::Rooms>();
         qRegisterMetaType<mtx::responses::Sync>();
+        qRegisterMetaType<mtx::responses::JoinedGroups>();
+        qRegisterMetaType<mtx::responses::GroupProfile>();
         qRegisterMetaType<std::string>();
         qRegisterMetaType<std::vector<std::string>>();
+        qRegisterMetaType<std::vector<QString>>();
 }
 
 } // namespace http

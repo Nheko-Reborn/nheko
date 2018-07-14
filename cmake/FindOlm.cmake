@@ -6,6 +6,10 @@
 # OLM_LIBRARY     = full path to the library
 # OLM_INCLUDE_DIR = where to find the library headers
 #
+if(WIN32)
+    message(STATUS "FindOlm is not supported in Windows")
+    return()
+endif()
 
 find_path(OLM_INCLUDE_DIR
           NAMES olm/olm.h

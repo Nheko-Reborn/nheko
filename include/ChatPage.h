@@ -28,7 +28,6 @@
 
 #include "Cache.h"
 #include "CommunitiesList.h"
-#include "Community.h"
 #include "MatrixClient.h"
 #include "notifications/Manager.h"
 
@@ -149,10 +148,11 @@ signals:
                            const QString &message,
                            const QImage &icon);
 
+        void updateGroupsInfo(const mtx::responses::JoinedGroups &groups);
+
 private slots:
         void showUnreadMessageNotification(int count);
         void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
-        void updateOwnCommunitiesInfo(const QList<QString> &own_communities);
         void changeTopRoomInfo(const QString &room_id);
         void logout();
         void removeRoom(const QString &room_id);
@@ -232,8 +232,6 @@ private:
         QString current_community_;
 
         UserInfoWidget *user_info_widget_;
-
-        std::map<QString, QSharedPointer<Community>> communities_;
 
         // Keeps track of the users currently typing on each room.
         std::map<QString, QList<QString>> typingUsers_;

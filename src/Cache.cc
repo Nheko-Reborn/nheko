@@ -987,7 +987,8 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id)
                 if (obj.count("event") == 0 || obj.count("token") == 0)
                         continue;
 
-                mtx::events::collections::TimelineEvent event = obj.at("event");
+                mtx::events::collections::TimelineEvent event;
+                mtx::events::collections::from_json(obj.at("event"), event);
 
                 index += 1;
 
@@ -1058,7 +1059,8 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                 if (obj.count("event") == 0)
                         continue;
 
-                mtx::events::collections::TimelineEvent event = obj.at("event");
+                mtx::events::collections::TimelineEvent event;
+                mtx::events::collections::from_json(obj.at("event"), event);
 
                 cursor.close();
                 return utils::getMessageDescription(

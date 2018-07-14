@@ -40,50 +40,81 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addWidget(scrollArea_);
 
-        // connect(http::client(),
-        //         &MatrixClient::communityProfileRetrieved,
-        //         this,
-        //         [this](QString communityId, QJsonObject profile) {
-        //                 fetchCommunityAvatar(communityId, profile["avatar_url"].toString());
-        //         });
         connect(
           this, &CommunitiesList::avatarRetrieved, this, &CommunitiesList::updateCommunityAvatar);
 }
 
 void
-CommunitiesList::setCommunities(const std::map<QString, QSharedPointer<Community>> &communities)
+CommunitiesList::setCommunities(const mtx::responses::JoinedGroups &response)
 {
         communities_.clear();
 
         addGlobalItem();
 
-        for (const auto &community : communities) {
-                addCommunity(community.second, community.first);
-
-                // http::client()->fetchCommunityProfile(community.first);
-                // http::client()->fetchCommunityRooms(community.first);
-        }
+        for (const auto &group : response.groups)
+                addCommunity(group);
 
         communities_["world"]->setPressedState(true);
         emit communityChanged("world");
 }
 
 void
-CommunitiesList::addCommunity(QSharedPointer<Community> community, const QString &community_id)
+CommunitiesList::addCommunity(const std::string &group_id)
 {
-        CommunitiesListItem *list_item =
-          new CommunitiesListItem(community, community_id, scrollArea_);
+        const auto id = QString::fromStdString(group_id);
 
-        communities_.emplace(community_id, QSharedPointer<CommunitiesListItem>(list_item));
-
-        fetchCommunityAvatar(community_id, community->getAvatar().toString());
-
+        CommunitiesListItem *list_item = new CommunitiesListItem(id, scrollArea_);
+        communities_.emplace(id, QSharedPointer<CommunitiesListItem>(list_item));
         contentsLayout_->insertWidget(contentsLayout_->count() - 1, list_item);
 
+        connect(this,
+                &CommunitiesList::groupProfileRetrieved,
+                this,
+                [this](const QString &id, const mtx::responses::GroupProfile &profile) {
+                        if (communities_.find(id) == communities_.end())
+                                return;
+
+                        communities_.at(id)->setName(QString::fromStdString(profile.name));
+
+                        if (!profile.avatar_url.empty())
+                                fetchCommunityAvatar(id,
+                                                     QString::fromStdString(profile.avatar_url));
+                });
+        connect(this,
+                &CommunitiesList::groupRoomsRetrieved,
+                this,
+                [this](const QString &id, const std::vector<QString> &rooms) {
+                        if (communities_.find(id) == communities_.end())
+                                return;
+
+                        communities_.at(id)->setRooms(rooms);
+                });
         connect(list_item,
                 &CommunitiesListItem::clicked,
                 this,
                 &CommunitiesList::highlightSelectedCommunity);
+
+        http::v2::client()->group_profile(
+          group_id, [id, this](const mtx::responses::GroupProfile &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          return;
+                  }
+
+                  emit groupProfileRetrieved(id, res);
+          });
+
+        http::v2::client()->group_rooms(
+          group_id, [id, this](const nlohmann::json &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          return;
+                  }
+
+                  std::vector<QString> room_ids;
+                  for (const auto &room : res.at("chunk"))
+                          room_ids.push_back(QString::fromStdString(room.at("room_id")));
+
+                  emit groupRoomsRetrieved(id, room_ids);
+          });
 }
 
 void
@@ -94,7 +125,7 @@ CommunitiesList::updateCommunityAvatar(const QString &community_id, const QPixma
                 return;
         }
 
-        communities_.find(community_id)->second->setAvatar(img.toImage());
+        communities_.at(community_id)->setAvatar(img.toImage());
 }
 
 void
@@ -152,4 +183,13 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
 
                   emit avatarRetrieved(id, pix);
           });
+}
+
+std::vector<QString>
+CommunitiesList::roomList(const QString &id) const
+{
+        if (communityExists(id))
+                return communities_.at(id)->rooms();
+
+        return {};
 }

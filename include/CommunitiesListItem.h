@@ -6,7 +6,8 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "Community.h"
+#include <mtx/responses/groups.hpp>
+
 #include "Config.h"
 #include "ui/Theme.h"
 
@@ -25,14 +26,14 @@ class CommunitiesListItem : public QWidget
         Q_PROPERTY(QColor avatarBgColor READ avatarBgColor WRITE setAvatarBgColor)
 
 public:
-        CommunitiesListItem(QSharedPointer<Community> community,
-                            QString community_id,
-                            QWidget *parent = nullptr);
+        CommunitiesListItem(QString group_id, QWidget *parent = nullptr);
 
-        void setCommunity(QSharedPointer<Community> community) { community_ = community; };
-
+        void setName(QString name) { name_ = name; }
         bool isPressed() const { return isPressed_; }
         void setAvatar(const QImage &img);
+
+        void setRooms(std::vector<QString> room_ids) { room_ids_ = std::move(room_ids); }
+        std::vector<QString> rooms() const { return room_ids_; }
 
         QColor highlightedBackgroundColor() const { return highlightedBackgroundColor_; }
         QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
@@ -54,7 +55,7 @@ public:
         }
 
 signals:
-        void clicked(const QString &community_id);
+        void clicked(const QString &group_id);
 
 public slots:
         void setPressedState(bool state);
@@ -66,12 +67,13 @@ protected:
 private:
         const int IconSize = 36;
 
-        QSharedPointer<Community> community_;
-        QString communityId_;
-        QString communityName_;
-        QString communityShortDescription;
+        QString resolveName() const;
 
-        QPixmap communityAvatar_;
+        std::vector<QString> room_ids_;
+
+        QString name_;
+        QString groupId_;
+        QPixmap avatar_;
 
         QColor highlightedBackgroundColor_;
         QColor hoverBackgroundColor_;

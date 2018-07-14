@@ -4,12 +4,9 @@
 #include "RippleOverlay.h"
 #include "Utils.h"
 
-CommunitiesListItem::CommunitiesListItem(QSharedPointer<Community> community,
-                                         QString community_id,
-                                         QWidget *parent)
+CommunitiesListItem::CommunitiesListItem(QString group_id, QWidget *parent)
   : QWidget(parent)
-  , community_(community)
-  , communityId_(community_id)
+  , groupId_(group_id)
 {
         setMouseTracking(true);
         setAttribute(Qt::WA_Hover);
@@ -20,8 +17,8 @@ CommunitiesListItem::CommunitiesListItem(QSharedPointer<Community> community,
         rippleOverlay_->setClipPath(path);
         rippleOverlay_->setClipping(true);
 
-        if (communityId_ == "world")
-                communityAvatar_ = QPixmap(":/icons/icons/ui/world.svg");
+        if (groupId_ == "world")
+                avatar_ = QPixmap(":/icons/icons/ui/world.svg");
 }
 
 void
@@ -41,7 +38,7 @@ CommunitiesListItem::mousePressEvent(QMouseEvent *event)
                 return;
         }
 
-        emit clicked(communityId_);
+        emit clicked(groupId_);
 
         setPressedState(true);
 
@@ -70,12 +67,12 @@ CommunitiesListItem::paintEvent(QPaintEvent *)
         else
                 p.fillRect(rect(), backgroundColor_);
 
-        if (communityAvatar_.isNull()) {
+        if (avatar_.isNull()) {
                 QFont font;
                 font.setPixelSize(conf::roomlist::fonts::communityBubble);
                 p.setFont(font);
 
-                p.drawLetterAvatar(utils::firstChar(community_->getName()),
+                p.drawLetterAvatar(utils::firstChar(resolveName()),
                                    avatarFgColor_,
                                    avatarBgColor_,
                                    width(),
@@ -84,7 +81,7 @@ CommunitiesListItem::paintEvent(QPaintEvent *)
         } else {
                 p.save();
 
-                p.drawAvatar(communityAvatar_, width(), height(), IconSize);
+                p.drawAvatar(avatar_, width(), height(), IconSize);
                 p.restore();
         }
 }
@@ -92,6 +89,20 @@ CommunitiesListItem::paintEvent(QPaintEvent *)
 void
 CommunitiesListItem::setAvatar(const QImage &img)
 {
-        communityAvatar_ = utils::scaleImageToPixmap(img, IconSize);
+        avatar_ = utils::scaleImageToPixmap(img, IconSize);
         update();
+}
+
+QString
+CommunitiesListItem::resolveName() const
+{
+        if (!name_.isEmpty())
+                return name_;
+
+        if (!groupId_.startsWith("+"))
+                return QString("Group"); // Group with no name or id.
+
+        // Extract the localpart of the group.
+        auto firstPart = groupId_.split(':').at(0);
+        return firstPart.right(firstPart.size() - 1);
 }
