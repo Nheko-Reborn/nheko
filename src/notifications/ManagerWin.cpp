@@ -27,43 +27,39 @@ init()
 }
 }
 
-NotificationsManager::NotificationsManager(QObject *parent): QObject(parent)
-{
-
-}
+NotificationsManager::NotificationsManager(QObject *parent)
+  : QObject(parent)
+{}
 
 void
-NotificationsManager::postNotification(const QString &, //roomid
-                                const QString &,        //eventid
-                                const QString &roomname,
-                                const QString &sender,
-                                const QString &text,
-                                const QImage &)         //icon
+NotificationsManager::postNotification(const QString &room_id,
+                                       const QString &event_id,
+                                       const QString &room_name,
+                                       const QString &sender,
+                                       const QString &text,
+                                       const QImage &icon)
 {
+        Q_UNUSED(room_id)
+        Q_UNUSED(event_id)
+        Q_UNUSED(icon)
+
         if (!isInitialized)
                 init();
 
         auto templ = WinToastTemplate(WinToastTemplate::ImageAndText02);
-        if (roomname != sender)
-                templ.setTextField(QString("%1 - %2").arg(sender).arg(roomname).toStdWString(),
+        if (room_name != sender)
+                templ.setTextField(QString("%1 - %2").arg(sender).arg(room_name).toStdWString(),
                                    WinToastTemplate::FirstLine);
         else
-                templ.setTextField(QString("%1").arg(user).toStdWString(),
+                templ.setTextField(QString("%1").arg(sender).toStdWString(),
                                    WinToastTemplate::FirstLine);
-        templ.setTextField(QString("%1").arg(msg).toStdWString(), WinToastTemplate::SecondLine);
+        templ.setTextField(QString("%1").arg(text).toStdWString(), WinToastTemplate::SecondLine);
         // TODO: implement room or user avatar
         // templ.setImagePath(L"C:/example.png");
 
         WinToast::instance()->showToast(templ, new CustomHandler());
 }
 
-//unused
-void
-NotificationsManager::actionInvoked(uint, QString)
-{
-}
+void NotificationsManager::actionInvoked(uint, QString) {}
 
-void
-NotificationsManager::notificationClosed(uint, uint)
-{
-}
+void NotificationsManager::notificationClosed(uint, uint) {}

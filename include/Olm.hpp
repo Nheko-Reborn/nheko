@@ -41,7 +41,7 @@ client();
 void
 handle_to_device_messages(const std::vector<nlohmann::json> &msgs);
 
-boost::optional<json>
+nlohmann::json
 try_olm_decryption(const std::string &sender_key,
                    const mtx::events::msg::OlmCipherContent &content);
 

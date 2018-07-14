@@ -90,9 +90,9 @@ handle_olm_message(const OlmMessage &msg)
 
                 auto payload = try_olm_decryption(msg.sender_key, cipher.second);
 
-                if (payload) {
-                        nhlog::crypto()->info("decrypted olm payload: {}", payload.value().dump(2));
-                        create_inbound_megolm_session(msg.sender, msg.sender_key, payload.value());
+                if (!payload.is_null()) {
+                        nhlog::crypto()->info("decrypted olm payload: {}", payload.dump(2));
+                        create_inbound_megolm_session(msg.sender, msg.sender_key, payload);
                         return;
                 }
 
@@ -184,7 +184,7 @@ encrypt_group_message(const std::string &room_id,
         return data;
 }
 
-boost::optional<json>
+nlohmann::json
 try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCipherContent &msg)
 {
         auto session_ids = cache::client()->getOlmSessions(sender_key);
@@ -203,7 +203,6 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
                 try {
                         text = olm::client()->decrypt_message(session->get(), msg.type, msg.body);
                         cache::client()->saveOlmSession(id, std::move(session.value()));
-
                 } catch (const olm_exception &e) {
                         nhlog::crypto()->info("failed to decrypt olm message ({}, {}) with {}: {}",
                                               msg.type,
