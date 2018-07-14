@@ -59,6 +59,7 @@ build_script:
     - cmake --build .deps --config Release
 
     # Build nheko
+    - rm -f cmake/FindOlm.cmake
     - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
       -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
       -DLMDBXX_INCLUDE_DIR=.deps/usr/include
