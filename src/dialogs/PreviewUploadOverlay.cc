@@ -70,7 +70,7 @@ PreviewUploadOverlay::init()
                 winsize = window->frameGeometry().size();
                 center  = window->frameGeometry().center();
         } else {
-                nhlog::ui()->warn("unable to load the retrieve MainWindow's size");
+                nhlog::ui()->warn("unable to retrieve MainWindow's size");
         }
 
         fileName_.setText(QFileInfo{filePath_}.fileName());

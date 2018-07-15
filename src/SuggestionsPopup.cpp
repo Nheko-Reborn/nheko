@@ -9,8 +9,8 @@
 #include <QPainter>
 #include <QStyleOption>
 
-constexpr int PopupHMargin    = 5;
-constexpr int PopupItemMargin = 4;
+constexpr int PopupHMargin    = 4;
+constexpr int PopupItemMargin = 3;
 
 PopupItem::PopupItem(QWidget *parent)
   : QWidget(parent)
@@ -23,6 +23,8 @@ PopupItem::PopupItem(QWidget *parent)
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setContentsMargins(
           PopupHMargin, PopupItemMargin, PopupHMargin, PopupItemMargin);
+
+        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 }
 
 void

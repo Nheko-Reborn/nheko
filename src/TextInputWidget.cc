@@ -217,6 +217,7 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 auto word = cursor.selectedText();
 
                 if (cursor.position() == 0) {
+                        resetAnchor();
                         closeSuggestions();
                         return;
                 }
@@ -231,6 +232,7 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
                         emit showSuggestions(query());
                 } else {
+                        resetAnchor();
                         closeSuggestions();
                 }
 
