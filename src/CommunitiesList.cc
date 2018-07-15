@@ -1,5 +1,5 @@
-#include "CommunitiesList.h"
 #include "Cache.h"
+#include "CommunitiesList.h"
 #include "Logging.hpp"
 #include "MatrixClient.h"
 
@@ -94,7 +94,7 @@ CommunitiesList::addCommunity(const std::string &group_id)
                 this,
                 &CommunitiesList::highlightSelectedCommunity);
 
-        http::v2::client()->group_profile(
+        http::client()->group_profile(
           group_id, [id, this](const mtx::responses::GroupProfile &res, mtx::http::RequestErr err) {
                   if (err) {
                           return;
@@ -103,7 +103,7 @@ CommunitiesList::addCommunity(const std::string &group_id)
                   emit groupProfileRetrieved(id, res);
           });
 
-        http::v2::client()->group_rooms(
+        http::client()->group_rooms(
           group_id, [id, this](const nlohmann::json &res, mtx::http::RequestErr err) {
                   if (err) {
                           return;
@@ -164,7 +164,7 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
 
         mtx::http::ThumbOpts opts;
         opts.mxc_url = avatarUrl.toStdString();
-        http::v2::client()->get_thumbnail(
+        http::client()->get_thumbnail(
           opts, [this, opts, id](const std::string &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to download avatar: {} - ({} {})",

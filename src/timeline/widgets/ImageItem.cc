@@ -33,24 +33,24 @@
 void
 ImageItem::downloadMedia(const QUrl &url)
 {
-        http::v2::client()->download(url.toString().toStdString(),
-                                     [this, url](const std::string &data,
-                                                 const std::string &,
-                                                 const std::string &,
-                                                 mtx::http::RequestErr err) {
-                                             if (err) {
-                                                     nhlog::net()->warn(
-                                                       "failed to retrieve image {}: {} {}",
-                                                       url.toString().toStdString(),
-                                                       err->matrix_error.error,
-                                                       static_cast<int>(err->status_code));
-                                                     return;
-                                             }
+        http::client()->download(url.toString().toStdString(),
+                                 [this, url](const std::string &data,
+                                             const std::string &,
+                                             const std::string &,
+                                             mtx::http::RequestErr err) {
+                                         if (err) {
+                                                 nhlog::net()->warn(
+                                                   "failed to retrieve image {}: {} {}",
+                                                   url.toString().toStdString(),
+                                                   err->matrix_error.error,
+                                                   static_cast<int>(err->status_code));
+                                                 return;
+                                         }
 
-                                             QPixmap img;
-                                             img.loadFromData(QByteArray(data.data(), data.size()));
-                                             emit imageDownloaded(img);
-                                     });
+                                         QPixmap img;
+                                         img.loadFromData(QByteArray(data.data(), data.size()));
+                                         emit imageDownloaded(img);
+                                 });
 }
 
 void
@@ -108,8 +108,8 @@ ImageItem::openUrl()
 
         auto mxc_parts = mtx::client::utils::parse_mxc_url(url_.toString().toStdString());
         auto urlToOpen = QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
-                           .arg(QString::fromStdString(http::v2::client()->server()))
-                           .arg(http::v2::client()->port())
+                           .arg(QString::fromStdString(http::client()->server()))
+                           .arg(http::client()->port())
                            .arg(QString::fromStdString(mxc_parts.server))
                            .arg(QString::fromStdString(mxc_parts.media_id));
 
@@ -244,7 +244,7 @@ ImageItem::saveAs()
 
         const auto url = url_.toString().toStdString();
 
-        http::v2::client()->download(
+        http::client()->download(
           url,
           [this, filename, url](const std::string &data,
                                 const std::string &,

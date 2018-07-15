@@ -274,7 +274,7 @@ request_keys(const std::string &room_id, const std::string &event_id)
 {
         nhlog::crypto()->info("requesting keys for event {} at {}", event_id, room_id);
 
-        http::v2::client()->get_event(
+        http::client()->get_event(
           room_id,
           event_id,
           [event_id, room_id](const mtx::events::collections::TimelineEvents &res,
@@ -306,8 +306,8 @@ send_key_request_for(const std::string &room_id,
 
         nhlog::crypto()->debug("sending key request: {}", json(e).dump(2));
         auto payload = json{{"action", "request"},
-                            {"request_id", http::v2::client()->generate_txn_id()},
-                            {"requesting_device_id", http::v2::client()->device_id()},
+                            {"request_id", http::client()->generate_txn_id()},
+                            {"requesting_device_id", http::client()->device_id()},
                             {"body",
                              {{"algorithm", MEGOLM_ALGO},
                               {"room_id", room_id},
@@ -320,18 +320,17 @@ send_key_request_for(const std::string &room_id,
 
         nhlog::crypto()->debug("m.room_key_request: {}", body.dump(2));
 
-        http::v2::client()->send_to_device(
-          "m.room_key_request", body, [e](mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to send "
-                                             "send_to_device "
-                                             "message: {}",
-                                             err->matrix_error.error);
-                  }
+        http::client()->send_to_device("m.room_key_request", body, [e](mtx::http::RequestErr err) {
+                if (err) {
+                        nhlog::net()->warn("failed to send "
+                                           "send_to_device "
+                                           "message: {}",
+                                           err->matrix_error.error);
+                }
 
-                  nhlog::net()->info(
-                    "m.room_key_request sent to {}:{}", e.sender, e.content.device_id);
-          });
+                nhlog::net()->info(
+                  "m.room_key_request sent to {}:{}", e.sender, e.content.device_id);
+        });
 }
 
 void
@@ -389,7 +388,7 @@ send_megolm_key_to_device(const std::string &user_id,
         mtx::requests::QueryKeys req;
         req.device_keys[user_id] = {device_id};
 
-        http::v2::client()->query_keys(
+        http::client()->query_keys(
           req,
           [payload, user_id, device_id](const mtx::responses::QueryKeys &res,
                                         mtx::http::RequestErr err) {
@@ -447,7 +446,7 @@ send_megolm_key_to_device(const std::string &user_id,
                                     ->create_room_key_event(UserId(user_id), pks.ed25519, payload)
                                     .dump();
 
-                  http::v2::client()->claim_keys(
+                  http::client()->claim_keys(
                     user_id,
                     {device_id},
                     [room_key, user_id, device_id, pks](const mtx::responses::ClaimKeys &res,
@@ -512,7 +511,7 @@ send_megolm_key_to_device(const std::string &user_id,
 
                             nhlog::net()->info(
                               "sending m.room_key event to {}:{}", user_id, device_id);
-                            http::v2::client()->send_to_device(
+                            http::client()->send_to_device(
                               "m.room.encrypted", body, [user_id](mtx::http::RequestErr err) {
                                       if (err) {
                                               nhlog::net()->warn("failed to send "

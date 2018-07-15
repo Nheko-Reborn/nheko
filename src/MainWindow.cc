@@ -122,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent)
           chat_page_, &ChatPage::showUserSettingsPage, this, &MainWindow::showUserSettingsPage);
 
         connect(login_page_, &LoginPage::loginOk, this, [this](const mtx::responses::Login &res) {
-                http::v2::client()->set_user(res.user_id);
+                http::client()->set_user(res.user_id);
                 showChatPage();
         });
 
@@ -147,13 +147,13 @@ MainWindow::MainWindow(QWidget *parent)
                 QString user_id     = settings.value("auth/user_id").toString();
                 QString device_id   = settings.value("auth/device_id").toString();
 
-                http::v2::client()->set_access_token(token.toStdString());
-                http::v2::client()->set_server(home_server.toStdString());
-                http::v2::client()->set_device_id(device_id.toStdString());
+                http::client()->set_access_token(token.toStdString());
+                http::client()->set_server(home_server.toStdString());
+                http::client()->set_device_id(device_id.toStdString());
 
                 try {
                         using namespace mtx::identifiers;
-                        http::v2::client()->set_user(parse<User>(user_id.toStdString()));
+                        http::client()->set_user(parse<User>(user_id.toStdString()));
                 } catch (const std::invalid_argument &e) {
                         nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
                                               user_id.toStdString());
@@ -248,11 +248,11 @@ MainWindow::removeOverlayProgressBar()
 void
 MainWindow::showChatPage()
 {
-        auto userid     = QString::fromStdString(http::v2::client()->user_id().to_string());
-        auto device_id  = QString::fromStdString(http::v2::client()->device_id());
-        auto homeserver = QString::fromStdString(http::v2::client()->server() + ":" +
-                                                 std::to_string(http::v2::client()->port()));
-        auto token      = QString::fromStdString(http::v2::client()->access_token());
+        auto userid     = QString::fromStdString(http::client()->user_id().to_string());
+        auto device_id  = QString::fromStdString(http::client()->device_id());
+        auto homeserver = QString::fromStdString(http::client()->server() + ":" +
+                                                 std::to_string(http::client()->port()));
+        auto token      = QString::fromStdString(http::client()->access_token());
 
         QSettings settings;
         settings.setValue("auth/access_token", token);

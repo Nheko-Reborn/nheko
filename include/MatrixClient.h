@@ -18,13 +18,11 @@ Q_DECLARE_METATYPE(std::vector<std::string>)
 Q_DECLARE_METATYPE(std::vector<QString>)
 
 namespace http {
-namespace v2 {
 mtx::http::Client *
 client();
 
 bool
 is_logged_in();
-}
 
 //! Initialize the http module
 void

@@ -510,7 +510,7 @@ TimelineView::getMessages()
         opts.room_id = room_id_.toStdString();
         opts.from    = prev_batch_token_.toStdString();
 
-        http::v2::client()->messages(
+        http::client()->messages(
           opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->error("failed to call /messages ({}): {} - {}",
@@ -630,7 +630,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 
         PendingMessage message;
         message.ty     = ty;
-        message.txn_id = http::v2::client()->generate_txn_id();
+        message.txn_id = http::client()->generate_txn_id();
         message.body   = body;
         message.widget = view_item;
 
@@ -684,7 +684,7 @@ TimelineView::sendNextPendingMessage()
 
         switch (m.ty) {
         case mtx::events::MessageType::Audio: {
-                http::v2::client()->send_room_message<msg::Audio, EventType::RoomMessage>(
+                http::client()->send_room_message<msg::Audio, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
                   toRoomMessage<msg::Audio>(m),
@@ -697,7 +697,7 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Image: {
-                http::v2::client()->send_room_message<msg::Image, EventType::RoomMessage>(
+                http::client()->send_room_message<msg::Image, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
                   toRoomMessage<msg::Image>(m),
@@ -710,7 +710,7 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Video: {
-                http::v2::client()->send_room_message<msg::Video, EventType::RoomMessage>(
+                http::client()->send_room_message<msg::Video, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
                   toRoomMessage<msg::Video>(m),
@@ -723,7 +723,7 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::File: {
-                http::v2::client()->send_room_message<msg::File, EventType::RoomMessage>(
+                http::client()->send_room_message<msg::File, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
                   toRoomMessage<msg::File>(m),
@@ -736,7 +736,7 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Text: {
-                http::v2::client()->send_room_message<msg::Text, EventType::RoomMessage>(
+                http::client()->send_room_message<msg::Text, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
                   toRoomMessage<msg::Text>(m),
@@ -749,7 +749,7 @@ TimelineView::sendNextPendingMessage()
                 break;
         }
         case mtx::events::MessageType::Emote: {
-                http::v2::client()->send_room_message<msg::Emote, EventType::RoomMessage>(
+                http::client()->send_room_message<msg::Emote, EventType::RoomMessage>(
                   room_id_.toStdString(),
                   m.txn_id,
                   toRoomMessage<msg::Emote>(m),
@@ -855,16 +855,16 @@ TimelineView::readLastEvent() const
         const auto eventId = getLastEventId();
 
         if (!eventId.isEmpty())
-                http::v2::client()->read_event(room_id_.toStdString(),
-                                               eventId.toStdString(),
-                                               [this, eventId](mtx::http::RequestErr err) {
-                                                       if (err) {
-                                                               nhlog::net()->warn(
-                                                                 "failed to read event ({}, {})",
-                                                                 room_id_.toStdString(),
-                                                                 eventId.toStdString());
-                                                       }
-                                               });
+                http::client()->read_event(room_id_.toStdString(),
+                                           eventId.toStdString(),
+                                           [this, eventId](mtx::http::RequestErr err) {
+                                                   if (err) {
+                                                           nhlog::net()->warn(
+                                                             "failed to read event ({}, {})",
+                                                             room_id_.toStdString(),
+                                                             eventId.toStdString());
+                                                   }
+                                           });
 }
 
 QString
@@ -1186,18 +1186,17 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                 // Check if we have already an outbound megolm session then we can use.
                 if (cache::client()->outboundMegolmSessionExists(room_id)) {
                         auto data = olm::encrypt_group_message(
-                          room_id, http::v2::client()->device_id(), doc.dump());
+                          room_id, http::client()->device_id(), doc.dump());
 
-                        http::v2::client()
-                          ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
-                            room_id,
-                            msg.txn_id,
-                            data,
-                            std::bind(&TimelineView::sendRoomMessageHandler,
-                                      this,
-                                      msg.txn_id,
-                                      std::placeholders::_1,
-                                      std::placeholders::_2));
+                        http::client()->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
+                          room_id,
+                          msg.txn_id,
+                          data,
+                          std::bind(&TimelineView::sendRoomMessageHandler,
+                                    this,
+                                    msg.txn_id,
+                                    std::placeholders::_1,
+                                    std::placeholders::_2));
                         return;
                 }
 
@@ -1230,9 +1229,9 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                   [megolm_payload, room_id, doc, txn_id = msg.txn_id, this]() {
                           try {
                                   auto data = olm::encrypt_group_message(
-                                    room_id, http::v2::client()->device_id(), doc.dump());
+                                    room_id, http::client()->device_id(), doc.dump());
 
-                                  http::v2::client()
+                                  http::client()
                                     ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
                                       room_id,
                                       txn_id,
@@ -1253,7 +1252,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                 for (const auto &member : members)
                         req.device_keys[member] = {};
 
-                http::v2::client()->query_keys(
+                http::client()->query_keys(
                   req,
                   [keeper = std::move(keeper), megolm_payload, this](
                     const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
@@ -1340,7 +1339,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                                     user.first,
                                     valid_devices.size());
 
-                                  http::v2::client()->claim_keys(
+                                  http::client()->claim_keys(
                                     user.first,
                                     valid_devices,
                                     std::bind(&TimelineView::handleClaimedKeys,
@@ -1440,7 +1439,7 @@ TimelineView::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
 
         nhlog::net()->info("send_to_device: {}", user_id);
 
-        http::v2::client()->send_to_device(
+        http::client()->send_to_device(
           "m.room.encrypted", body, [keeper](mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to send "

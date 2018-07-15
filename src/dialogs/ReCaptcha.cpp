@@ -55,8 +55,8 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
         connect(openCaptchaBtn_, &QPushButton::clicked, [session]() {
                 const auto url = QString("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
                                          "fallback/web?session=%3")
-                                   .arg(QString::fromStdString(http::v2::client()->server()))
-                                   .arg(http::v2::client()->port())
+                                   .arg(QString::fromStdString(http::client()->server()))
+                                   .arg(http::client()->port())
                                    .arg(session);
 
                 QDesktopServices::openUrl(url);

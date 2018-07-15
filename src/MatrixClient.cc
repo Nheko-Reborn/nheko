@@ -3,25 +3,22 @@
 #include <memory>
 
 namespace {
-auto v2_client_ = std::make_shared<mtx::http::Client>();
+auto client_ = std::make_shared<mtx::http::Client>();
 }
 
 namespace http {
-namespace v2 {
 
 mtx::http::Client *
 client()
 {
-        return v2_client_.get();
+        return client_.get();
 }
 
 bool
 is_logged_in()
 {
-        return !v2_client_->access_token().empty();
+        return !client_->access_token().empty();
 }
-
-} // namespace v2
 
 void
 init()

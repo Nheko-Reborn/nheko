@@ -103,7 +103,7 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                         state::Name body;
                         body.name = newName.toStdString();
 
-                        http::v2::client()->send_state_event<state::Name, EventType::RoomName>(
+                        http::client()->send_state_event<state::Name, EventType::RoomName>(
                           roomId_.toStdString(),
                           body,
                           [this, newName](const mtx::responses::EventId &,
@@ -122,7 +122,7 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                         state::Topic body;
                         body.topic = newTopic.toStdString();
 
-                        http::v2::client()->send_state_event<state::Topic, EventType::RoomTopic>(
+                        http::client()->send_state_event<state::Topic, EventType::RoomTopic>(
                           roomId_.toStdString(),
                           body,
                           [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
@@ -412,7 +412,7 @@ void
 RoomSettings::enableEncryption()
 {
         const auto room_id = room_id_.toStdString();
-        http::v2::client()->enable_encryption(
+        http::client()->enable_encryption(
           room_id, [room_id, this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
                   if (err) {
                           int status_code = static_cast<int>(err->status_code);

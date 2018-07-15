@@ -152,7 +152,7 @@ TimelineItem::init()
         });
         connect(redactMsg_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
-                        http::v2::client()->redact_event(
+                        http::client()->redact_event(
                           room_id_.toStdString(),
                           event_id_.toStdString(),
                           [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
@@ -721,14 +721,14 @@ void
 TimelineItem::sendReadReceipt() const
 {
         if (!event_id_.isEmpty())
-                http::v2::client()->read_event(room_id_.toStdString(),
-                                               event_id_.toStdString(),
-                                               [this](mtx::http::RequestErr err) {
-                                                       if (err) {
-                                                               nhlog::net()->warn(
-                                                                 "failed to read_event ({}, {})",
-                                                                 room_id_.toStdString(),
-                                                                 event_id_.toStdString());
-                                                       }
-                                               });
+                http::client()->read_event(room_id_.toStdString(),
+                                           event_id_.toStdString(),
+                                           [this](mtx::http::RequestErr err) {
+                                                   if (err) {
+                                                           nhlog::net()->warn(
+                                                             "failed to read_event ({}, {})",
+                                                             room_id_.toStdString(),
+                                                             event_id_.toStdString());
+                                                   }
+                                           });
 }

@@ -181,7 +181,7 @@ LoginPage::onMatrixIdEntered()
                 inferredServerAddress_ = homeServer;
                 serverInput_->setText(homeServer);
 
-                http::v2::client()->set_server(user.hostname());
+                http::client()->set_server(user.hostname());
                 checkHomeserverVersion();
         }
 }
@@ -189,7 +189,7 @@ LoginPage::onMatrixIdEntered()
 void
 LoginPage::checkHomeserverVersion()
 {
-        http::v2::client()->versions(
+        http::client()->versions(
           [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
                   if (err) {
                           using namespace boost::beast::http;
@@ -219,7 +219,7 @@ void
 LoginPage::onServerAddressEntered()
 {
         error_label_->setText("");
-        http::v2::client()->set_server(serverInput_->text().toStdString());
+        http::client()->set_server(serverInput_->text().toStdString());
         checkHomeserverVersion();
 
         serverLayout_->removeWidget(errorIcon_);
@@ -268,20 +268,20 @@ LoginPage::onLoginButtonClicked()
         if (password_input_->text().isEmpty())
                 return loginError(tr("Empty password"));
 
-        http::v2::client()->set_server(serverInput_->text().toStdString());
-        http::v2::client()->login(
-          user.localpart(),
-          password_input_->text().toStdString(),
-          initialDeviceName(),
-          [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit loginError(QString::fromStdString(err->matrix_error.error));
-                          emit errorOccurred();
-                          return;
-                  }
+        http::client()->set_server(serverInput_->text().toStdString());
+        http::client()->login(user.localpart(),
+                              password_input_->text().toStdString(),
+                              initialDeviceName(),
+                              [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
+                                      if (err) {
+                                              emit loginError(
+                                                QString::fromStdString(err->matrix_error.error));
+                                              emit errorOccurred();
+                                              return;
+                                      }
 
-                  emit loginOk(res);
-          });
+                                      emit loginOk(res);
+                              });
 
         emit loggingIn();
 }

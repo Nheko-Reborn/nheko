@@ -133,7 +133,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this, &ChatPage::connectionLost, this, [this]() {
                 nhlog::net()->info("connectivity lost");
                 isConnected_ = false;
-                http::v2::client()->shutdown();
+                http::client()->shutdown();
                 text_input_->disableInput();
         });
         connect(this, &ChatPage::connectionRestored, this, [this]() {
@@ -142,18 +142,18 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 isConnected_ = true;
 
                 // Drop all pending connections.
-                http::v2::client()->shutdown();
+                http::client()->shutdown();
                 trySync();
         });
 
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
         connect(&connectivityTimer_, &QTimer::timeout, this, [=]() {
-                if (http::v2::client()->access_token().empty()) {
+                if (http::client()->access_token().empty()) {
                         connectivityTimer_.stop();
                         return;
                 }
 
-                http::v2::client()->versions(
+                http::client()->versions(
                   [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
                           if (err) {
                                   emit connectionLost();
@@ -167,7 +167,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
         connect(user_info_widget_, &UserInfoWidget::logout, this, [this]() {
-                http::v2::client()->logout(
+                http::client()->logout(
                   [this](const mtx::responses::Logout &, mtx::http::RequestErr err) {
                           if (err) {
                                   // TODO: handle special errors
@@ -193,7 +193,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         QTimer::singleShot(ii * 500, this, [this, room_id, ii, users]() {
                                 const auto user = users.at(ii);
 
-                                http::v2::client()->invite_user(
+                                http::client()->invite_user(
                                   room_id,
                                   user.toStdString(),
                                   [this, user](const mtx::responses::RoomInvite &,
@@ -254,7 +254,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 if (current_room_.isEmpty())
                         return;
 
-                http::v2::client()->stop_typing(
+                http::client()->stop_typing(
                   current_room_.toStdString(), [](mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("failed to stop typing notifications: {}",
@@ -303,7 +303,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                   auto payload    = std::string(bin.data(), bin.size());
                   auto dimensions = QImageReader(dev.data()).size();
 
-                  http::v2::client()->upload(
+                  http::client()->upload(
                     payload,
                     mime.name().toStdString(),
                     QFileInfo(fn).fileName().toStdString(),
@@ -348,7 +348,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         auto bin     = dev->readAll();
                         auto payload = std::string(bin.data(), bin.size());
 
-                        http::v2::client()->upload(
+                        http::client()->upload(
                           payload,
                           mime.name().toStdString(),
                           QFileInfo(fn).fileName().toStdString(),
@@ -391,7 +391,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         auto bin     = dev->readAll();
                         auto payload = std::string(bin.data(), bin.size());
 
-                        http::v2::client()->upload(
+                        http::client()->upload(
                           payload,
                           mime.name().toStdString(),
                           QFileInfo(fn).fileName().toStdString(),
@@ -433,7 +433,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         auto bin     = dev->readAll();
                         auto payload = std::string(bin.data(), bin.size());
 
-                        http::v2::client()->upload(
+                        http::client()->upload(
                           payload,
                           mime.name().toStdString(),
                           QFileInfo(fn).fileName().toStdString(),
@@ -567,7 +567,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
 
                 if (hasNotifications)
-                        http::v2::client()->notifications(
+                        http::client()->notifications(
                           5,
                           [this](const mtx::responses::Notifications &res,
                                  mtx::http::RequestErr err) {
@@ -627,7 +627,7 @@ ChatPage::dropToLoginPage(const QString &msg)
         deleteConfigs();
         resetUI();
 
-        http::v2::client()->shutdown();
+        http::client()->shutdown();
         connectivityTimer_.stop();
 
         emit showLoginPage(msg);
@@ -659,7 +659,7 @@ ChatPage::deleteConfigs()
         settings.endGroup();
 
         cache::client()->deleteData();
-        http::v2::client()->clear();
+        http::client()->clear();
 }
 
 void
@@ -668,19 +668,19 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         using namespace mtx::identifiers;
 
         try {
-                http::v2::client()->set_user(parse<User>(userid.toStdString()));
+                http::client()->set_user(parse<User>(userid.toStdString()));
         } catch (const std::invalid_argument &e) {
                 nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
                                       userid.toStdString());
         }
 
-        http::v2::client()->set_server(homeserver.toStdString());
-        http::v2::client()->set_access_token(token.toStdString());
+        http::client()->set_server(homeserver.toStdString());
+        http::client()->set_access_token(token.toStdString());
 
         // The Olm client needs the user_id & device_id that will be included
         // in the generated payloads & keys.
-        olm::client()->set_user_id(http::v2::client()->user_id().to_string());
-        olm::client()->set_device_id(http::v2::client()->device_id());
+        olm::client()->set_user_id(http::client()->user_id().to_string());
+        olm::client()->set_device_id(http::client()->device_id());
 
         try {
                 cache::init(userid);
@@ -998,7 +998,7 @@ ChatPage::tryInitialSync()
         nhlog::crypto()->info("generating one time keys");
         olm::client()->generate_one_time_keys(MAX_ONETIME_KEYS);
 
-        http::v2::client()->upload_keys(
+        http::client()->upload_keys(
           olm::client()->create_upload_keys_request(),
           [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
                   if (err) {
@@ -1021,11 +1021,11 @@ ChatPage::tryInitialSync()
 
                   mtx::http::SyncOpts opts;
                   opts.timeout = 0;
-                  http::v2::client()->sync(opts,
-                                           std::bind(&ChatPage::initialSyncHandler,
-                                                     this,
-                                                     std::placeholders::_1,
-                                                     std::placeholders::_2));
+                  http::client()->sync(opts,
+                                       std::bind(&ChatPage::initialSyncHandler,
+                                                 this,
+                                                 std::placeholders::_1,
+                                                 std::placeholders::_2));
           });
 }
 
@@ -1044,7 +1044,7 @@ ChatPage::trySync()
                 return;
         }
 
-        http::v2::client()->sync(
+        http::client()->sync(
           opts, [this](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
                   if (err) {
                           const auto error      = QString::fromStdString(err->matrix_error.error);
@@ -1055,7 +1055,7 @@ ChatPage::trySync()
                           nhlog::net()->error("sync error: {} {}", status_code, err_code);
 
                           if (status_code <= 0 || status_code >= 600) {
-                                  if (!http::v2::is_logged_in())
+                                  if (!http::is_logged_in())
                                           return;
 
                                   emit tryDelayedSyncCb();
@@ -1070,7 +1070,7 @@ ChatPage::trySync()
                                   return;
                           }
                           default: {
-                                  if (!http::v2::is_logged_in())
+                                  if (!http::is_logged_in())
                                           return;
 
                                   if (err->matrix_error.errcode ==
@@ -1113,7 +1113,7 @@ ChatPage::joinRoom(const QString &room)
 {
         const auto room_id = room.toStdString();
 
-        http::v2::client()->join_room(
+        http::client()->join_room(
           room_id, [this, room_id](const nlohmann::json &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
@@ -1137,7 +1137,7 @@ ChatPage::joinRoom(const QString &room)
 void
 ChatPage::createRoom(const mtx::requests::CreateRoom &req)
 {
-        http::v2::client()->create_room(
+        http::client()->create_room(
           req, [this](const mtx::responses::CreateRoom &res, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
@@ -1154,7 +1154,7 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
 void
 ChatPage::leaveRoom(const QString &room_id)
 {
-        http::v2::client()->leave_room(
+        http::client()->leave_room(
           room_id.toStdString(), [this, room_id](const json &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
@@ -1173,7 +1173,7 @@ ChatPage::sendTypingNotifications()
         if (!userSettings_->isTypingNotificationsEnabled())
                 return;
 
-        http::v2::client()->start_typing(
+        http::client()->start_typing(
           current_room_.toStdString(), 10'000, [](mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to send typing notification: {}",
@@ -1236,7 +1236,7 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
                         nhlog::crypto()->info("uploading {} {} keys", nkeys, entry.first);
                         olm::client()->generate_one_time_keys(nkeys);
 
-                        http::v2::client()->upload_keys(
+                        http::client()->upload_keys(
                           olm::client()->create_upload_keys_request(),
                           [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
                                   if (err) {
@@ -1259,7 +1259,7 @@ ChatPage::getProfileInfo()
         QSettings settings;
         const auto userid = settings.value("auth/user_id").toString().toStdString();
 
-        http::v2::client()->get_profile(
+        http::client()->get_profile(
           userid, [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to retrieve own profile info");
@@ -1279,7 +1279,7 @@ ChatPage::getProfileInfo()
                   if (res.avatar_url.empty())
                           return;
 
-                  http::v2::client()->download(
+                  http::client()->download(
                     res.avatar_url,
                     [this, res](const std::string &data,
                                 const std::string &,
@@ -1301,7 +1301,7 @@ ChatPage::getProfileInfo()
                     });
           });
 
-        http::v2::client()->joined_groups(
+        http::client()->joined_groups(
           [this](const mtx::responses::JoinedGroups &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->critical("failed to retrieve joined groups: {} {}",

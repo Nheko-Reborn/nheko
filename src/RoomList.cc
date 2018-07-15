@@ -93,7 +93,7 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
         if (savedImgData.isEmpty()) {
                 mtx::http::ThumbOpts opts;
                 opts.mxc_url = url.toStdString();
-                http::v2::client()->get_thumbnail(
+                http::client()->get_thumbnail(
                   opts, [room_id, opts, this](const std::string &res, mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn(

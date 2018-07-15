@@ -52,7 +52,7 @@ resolve(const QString &room_id, const QString &user_id, QObject *receiver, Avata
         mtx::http::ThumbOpts opts;
         opts.mxc_url = avatarUrl.toStdString();
 
-        http::v2::client()->get_thumbnail(
+        http::client()->get_thumbnail(
           opts,
           [opts, proxy = std::move(proxy)](const std::string &res, mtx::http::RequestErr err) {
                   if (err) {

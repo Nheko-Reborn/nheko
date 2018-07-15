@@ -120,7 +120,7 @@ AudioItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                http::v2::client()->download(
+                http::client()->download(
                   url_.toString().toStdString(),
                   [this](const std::string &data,
                          const std::string &,

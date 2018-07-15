@@ -145,7 +145,7 @@ RegisterPage::RegisterPage(QWidget *parent)
                                     captchaDialog_->close();
                                     emit registering();
 
-                                    http::v2::client()->flow_response(
+                                    http::client()->flow_response(
                                       user,
                                       pass,
                                       session,
@@ -162,9 +162,8 @@ RegisterPage::RegisterPage(QWidget *parent)
                                                       return;
                                               }
 
-                                              http::v2::client()->set_user(res.user_id);
-                                              http::v2::client()->set_access_token(
-                                                res.access_token);
+                                              http::client()->set_user(res.user_id);
+                                              http::client()->set_access_token(res.access_token);
 
                                               emit registerOk();
                                       });
@@ -208,15 +207,15 @@ RegisterPage::onRegisterButtonClicked()
                 auto password = password_input_->text().toStdString();
                 auto server   = server_input_->text().toStdString();
 
-                http::v2::client()->set_server(server);
-                http::v2::client()->registration(
+                http::client()->set_server(server);
+                http::client()->registration(
                   username,
                   password,
                   [this, username, password](const mtx::responses::Register &res,
                                              mtx::http::RequestErr err) {
                           if (!err) {
-                                  http::v2::client()->set_user(res.user_id);
-                                  http::v2::client()->set_access_token(res.access_token);
+                                  http::client()->set_user(res.user_id);
+                                  http::client()->set_access_token(res.access_token);
 
                                   emit registerOk();
                                   return;
@@ -224,7 +223,7 @@ RegisterPage::onRegisterButtonClicked()
 
                           // The server requires registration flows.
                           if (err->status_code == boost::beast::http::status::unauthorized) {
-                                  http::v2::client()->flow_register(
+                                  http::client()->flow_register(
                                     username,
                                     password,
                                     [this, username, password](

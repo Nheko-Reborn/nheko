@@ -343,7 +343,7 @@ TimelineView::addUserMessage(const QString &url,
 
         PendingMessage message;
         message.ty         = MsgType;
-        message.txn_id     = http::v2::client()->generate_txn_id();
+        message.txn_id     = http::client()->generate_txn_id();
         message.body       = url;
         message.filename   = trimmed;
         message.mime       = mime;

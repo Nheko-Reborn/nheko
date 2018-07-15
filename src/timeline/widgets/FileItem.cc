@@ -83,8 +83,8 @@ FileItem::openUrl()
 
         auto mxc_parts = mtx::client::utils::parse_mxc_url(url_.toString().toStdString());
         auto urlToOpen = QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
-                           .arg(QString::fromStdString(http::v2::client()->server()))
-                           .arg(http::v2::client()->port())
+                           .arg(QString::fromStdString(http::client()->server()))
+                           .arg(http::client()->port())
                            .arg(QString::fromStdString(mxc_parts.server))
                            .arg(QString::fromStdString(mxc_parts.media_id));
 
@@ -114,7 +114,7 @@ FileItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
-                http::v2::client()->download(
+                http::client()->download(
                   url_.toString().toStdString(),
                   [this](const std::string &data,
                          const std::string &,
