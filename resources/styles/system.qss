@@ -56,7 +56,7 @@ AudioItem {
 }
 
 RaisedButton {
-    qproperty-foregroundColor: palette(light);
+    qproperty-foregroundColor: palette(buttonText);
 }
 
 TextField {
