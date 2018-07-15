@@ -16,6 +16,7 @@
  */
 
 #include <QApplication>
+#include <QCommandLineParser>
 #include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
@@ -135,12 +136,16 @@ main(int argc, char *argv[])
                 return a.exec();
         }
 
+        QApplication app(argc, argv);
         QCoreApplication::setApplicationName("nheko");
         QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-        QApplication app(argc, argv);
+        QCommandLineParser parser;
+        parser.addHelpOption();
+        parser.addVersionOption();
+        parser.process(app);
 
         QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
         QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
