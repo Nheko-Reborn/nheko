@@ -187,4 +187,8 @@ levenshtein_distance(const std::string &s1, const std::string &s2);
 
 QPixmap
 scaleImageToPixmap(const QImage &img, int size);
+
+//! Convert a Content Matrix URI to an HTTP link.
+QString
+mxcToHttp(const QUrl &url, const QString &server, int port);
 }

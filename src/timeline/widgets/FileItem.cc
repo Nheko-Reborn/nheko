@@ -81,12 +81,8 @@ FileItem::openUrl()
         if (url_.toString().isEmpty())
                 return;
 
-        auto mxc_parts = mtx::client::utils::parse_mxc_url(url_.toString().toStdString());
-        auto urlToOpen = QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
-                           .arg(QString::fromStdString(http::client()->server()))
-                           .arg(http::client()->port())
-                           .arg(QString::fromStdString(mxc_parts.server))
-                           .arg(QString::fromStdString(mxc_parts.media_id));
+        auto urlToOpen = utils::mxcToHttp(
+          url_, QString::fromStdString(http::client()->server()), http::client()->port());
 
         if (!QDesktopServices::openUrl(urlToOpen))
                 nhlog::ui()->warn("Could not open url: {}", urlToOpen.toStdString());

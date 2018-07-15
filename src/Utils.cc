@@ -174,3 +174,15 @@ utils::scaleImageToPixmap(const QImage &img, int size)
         return QPixmap::fromImage(
           img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
+
+QString
+utils::mxcToHttp(const QUrl &url, const QString &server, int port)
+{
+        auto mxcParts = mtx::client::utils::parse_mxc_url(url.toString().toStdString());
+
+        return QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
+          .arg(server)
+          .arg(port)
+          .arg(QString::fromStdString(mxcParts.server))
+          .arg(QString::fromStdString(mxcParts.media_id));
+}
