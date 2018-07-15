@@ -380,13 +380,9 @@ TimelineView::renderTopEvents(const std::vector<TimelineEvent> &events)
         firstSender_.clear();
         firstMsgTimestamp_ = QDateTime();
 
-        // Parse in reverse order to determine where we should not show sender's
-        // name.
-        auto ii = events.size();
-        while (ii != 0) {
-                --ii;
-
-                auto item = parseMessageEvent(events[ii], TimelineDirection::Top);
+        // Parse in reverse order to determine where we should not show sender's name.
+        for (auto it = events.rbegin(); it != events.rend(); ++it) {
+                auto item = parseMessageEvent(*it, TimelineDirection::Top);
 
                 if (item != nullptr)
                         items.push_back(item);
