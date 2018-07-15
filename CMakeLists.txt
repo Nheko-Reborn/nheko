@@ -12,8 +12,8 @@ include(QtCommon)
 
 project(nheko LANGUAGES C CXX)
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "4")
-set(CPACK_PACKAGE_VERSION_PATCH "3")
+set(CPACK_PACKAGE_VERSION_MINOR "5")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR})
 set(PROJECT_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH})
@@ -24,7 +24,7 @@ fix_project_version()
 
 # Set additional project information
 set(COMPANY "Nheko")
-set(COPYRIGHT "Copyright (c) 2017 Nheko Contributors")
+set(COPYRIGHT "Copyright (c) 2018 Nheko Contributors")
 set(IDENTIFIER "com.github.mujx.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
