@@ -25,6 +25,7 @@
 
 #include "Config.h"
 #include "Logging.hpp"
+#include "MainWindow.h"
 #include "Utils.h"
 
 #include "dialogs/PreviewUploadOverlay.h"
@@ -61,9 +62,16 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
 void
 PreviewUploadOverlay::init()
 {
-        auto window  = QApplication::activeWindow();
-        auto winsize = window->frameGeometry().size();
-        auto center  = window->frameGeometry().center();
+        QSize winsize;
+        QPoint center;
+
+        auto window = MainWindow::instance();
+        if (window) {
+                winsize = window->frameGeometry().size();
+                center  = window->frameGeometry().center();
+        } else {
+                nhlog::ui()->warn("unable to load the retrieve MainWindow's size");
+        }
 
         fileName_.setText(QFileInfo{filePath_}.fileName());
 
