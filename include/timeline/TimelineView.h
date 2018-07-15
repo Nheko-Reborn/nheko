@@ -165,7 +165,7 @@ protected:
 private:
         using TimelineEvent = mtx::events::collections::TimelineEvents;
 
-        QWidget *relativeWidget(TimelineItem *item, int dt) const;
+        QWidget *relativeWidget(QWidget *item, int dt) const;
 
         DecryptionResult parseEncryptedEvent(
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
@@ -265,6 +265,9 @@ private:
         QWidget *parseMessageEvent(const mtx::events::collections::TimelineEvents &event,
                                    TimelineDirection direction);
 
+        //! Store the event id associated with the given widget.
+        void saveEventId(QWidget *widget);
+
         QVBoxLayout *top_layout_;
         QVBoxLayout *scroll_layout_;
 
@@ -313,7 +316,7 @@ private:
         void renderTopEvents(const std::vector<TimelineEvent> &events);
 
         // The events currently rendered. Used for duplicate detection.
-        QMap<QString, TimelineItem *> eventIds_;
+        QMap<QString, QWidget *> eventIds_;
         QQueue<PendingMessage> pending_msgs_;
         QList<PendingMessage> pending_sent_msgs_;
 };

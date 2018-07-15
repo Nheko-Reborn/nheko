@@ -221,9 +221,15 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
 
                 return nullptr;
         } else if (mpark::holds_alternative<StateEvent<state::Encryption>>(event)) {
-                auto msg  = mpark::get<StateEvent<state::Encryption>>(event);
+                auto msg      = mpark::get<StateEvent<state::Encryption>>(event);
+                auto event_id = QString::fromStdString(msg.event_id);
+
+                if (eventIds_.contains(event_id))
+                        return nullptr;
+
                 auto item = new InfoMessage(tr("Encryption is enabled"), this);
                 item->saveDatetime(QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts));
+                eventIds_[event_id] = item;
 
                 return item;
         } else if (mpark::holds_alternative<RoomEvent<msg::Audio>>(event)) {
@@ -993,7 +999,7 @@ TimelineView::removeEvent(const QString &event_id)
 }
 
 QWidget *
-TimelineView::relativeWidget(TimelineItem *item, int dt) const
+TimelineView::relativeWidget(QWidget *item, int dt) const
 {
         int pos = scroll_layout_->indexOf(item);
 
