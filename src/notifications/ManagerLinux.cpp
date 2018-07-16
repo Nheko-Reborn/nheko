@@ -53,7 +53,7 @@ NotificationsManager::showNotification(const QString summary,
                                        const QImage image)
 {
         QVariantMap hints;
-        hints["image_data"] = image;
+        hints["image-data"] = image;
         QList<QVariant> argumentList;
         argumentList << "nheko";                             // app_name
         argumentList << (uint)0;                             // replace_id
