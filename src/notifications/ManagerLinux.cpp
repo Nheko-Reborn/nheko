@@ -62,7 +62,7 @@ NotificationsManager::showNotification(const QString summary,
         argumentList << text;                                // body
         argumentList << (QStringList("default") << "reply"); // actions
         argumentList << hints;                               // hints
-        argumentList << (int)0;                              // timeout in ms
+        argumentList << (int)-1;                             // timeout in ms
 
         static QDBusInterface notifyApp("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
