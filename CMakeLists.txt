@@ -360,7 +360,7 @@ elseif (WIN32)
 
     file(DOWNLOAD
          "https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.h"
-         ${PROJECT_SOURCE_DIR}/include/wintoastlib.h
+         ${PROJECT_SOURCE_DIR}/src/wintoastlib.h
          EXPECTED_HASH SHA256=b4481023c5782733795838be22bf1a75f45d87458cd4d9a5a75f664a146eea11)
 
     set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp)
