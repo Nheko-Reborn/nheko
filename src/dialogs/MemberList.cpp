@@ -3,15 +3,15 @@
 #include <QStyleOption>
 #include <QVBoxLayout>
 
+#include "dialogs/MemberList.h"
+
 #include "AvatarProvider.h"
+#include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"
-#include "FlatButton.h"
 #include "Utils.h"
-
-#include "Avatar.h"
-#include "Cache.h"
-#include "dialogs/MemberList.hpp"
+#include "ui/Avatar.h"
+#include "ui/FlatButton.h"
 
 using namespace dialogs;
 

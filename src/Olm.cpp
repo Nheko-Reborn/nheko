@@ -1,7 +1,7 @@
-#include "Olm.hpp"
+#include "Olm.h"
 
 #include "Cache.h"
-#include "Logging.hpp"
+#include "Logging.h"
 #include "MatrixClient.h"
 
 using namespace mtx::crypto;

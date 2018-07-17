@@ -9,6 +9,6 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-FILES=`find include src -type f -type f \( -iname "*.cc" -o -iname "*.h" \)`
+FILES=`find src -type f -type f \( -iname "*.cpp" -o -iname "*.h" \)`
 
 clang-format -i $FILES && git diff --exit-code

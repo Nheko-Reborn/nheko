@@ -1,16 +1,3 @@
-#include "Avatar.h"
-#include "ChatPage.h"
-#include "Config.h"
-#include "FlatButton.h"
-#include "Logging.hpp"
-#include "MatrixClient.h"
-#include "Painter.h"
-#include "TextField.h"
-#include "Theme.h"
-#include "Utils.h"
-#include "dialogs/RoomSettings.hpp"
-#include "ui/ToggleButton.h"
-
 #include <QApplication>
 #include <QComboBox>
 #include <QLabel>
@@ -21,6 +8,20 @@
 #include <QSharedPointer>
 #include <QStyleOption>
 #include <QVBoxLayout>
+
+#include "dialogs/RoomSettings.h"
+
+#include "ChatPage.h"
+#include "Config.h"
+#include "Logging.h"
+#include "MatrixClient.h"
+#include "Utils.h"
+#include "ui/Avatar.h"
+#include "ui/FlatButton.h"
+#include "ui/Painter.h"
+#include "ui/TextField.h"
+#include "ui/Theme.h"
+#include "ui/ToggleButton.h"
 
 using namespace dialogs;
 using namespace mtx::events;

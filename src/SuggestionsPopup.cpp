@@ -1,13 +1,12 @@
-#include "Avatar.h"
-#include "AvatarProvider.h"
-#include "Config.h"
-#include "DropShadow.h"
-#include "SuggestionsPopup.hpp"
-#include "Utils.h"
-
 #include <QPaintEvent>
 #include <QPainter>
 #include <QStyleOption>
+
+#include "Config.h"
+#include "SuggestionsPopup.h"
+#include "Utils.h"
+#include "ui/Avatar.h"
+#include "ui/DropShadow.h"
 
 constexpr int PopupHMargin    = 4;
 constexpr int PopupItemMargin = 3;

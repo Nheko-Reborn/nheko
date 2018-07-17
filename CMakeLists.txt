@@ -136,7 +136,7 @@ message(STATUS "Version: ${PROJECT_VERSION}")
 
 cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
 set(BUILD_USER $ENV{USER})
-configure_file(cmake/version.hpp config/version.hpp)
+configure_file(cmake/version.h config/version.h)
 
 
 #
@@ -144,82 +144,82 @@ configure_file(cmake/version.hpp config/version.hpp)
 #
 set(SRC_FILES
     # Dialogs
-    src/dialogs/CreateRoom.cc
-    src/dialogs/ImageOverlay.cc
-    src/dialogs/PreviewUploadOverlay.cc
-    src/dialogs/InviteUsers.cc
-    src/dialogs/JoinRoom.cc
+    src/dialogs/CreateRoom.cpp
+    src/dialogs/ImageOverlay.cpp
+    src/dialogs/PreviewUploadOverlay.cpp
+    src/dialogs/InviteUsers.cpp
+    src/dialogs/JoinRoom.cpp
     src/dialogs/MemberList.cpp
-    src/dialogs/LeaveRoom.cc
-    src/dialogs/Logout.cc
-    src/dialogs/ReadReceipts.cc
+    src/dialogs/LeaveRoom.cpp
+    src/dialogs/Logout.cpp
+    src/dialogs/ReadReceipts.cpp
     src/dialogs/ReCaptcha.cpp
     src/dialogs/RoomSettings.cpp
 
     # Emoji
-    src/emoji/Category.cc
-    src/emoji/ItemDelegate.cc
-    src/emoji/Panel.cc
-    src/emoji/PickButton.cc
-    src/emoji/Provider.cc
+    src/emoji/Category.cpp
+    src/emoji/ItemDelegate.cpp
+    src/emoji/Panel.cpp
+    src/emoji/PickButton.cpp
+    src/emoji/Provider.cpp
 
     # Timeline
-    src/timeline/TimelineViewManager.cc
-    src/timeline/TimelineItem.cc
-    src/timeline/TimelineView.cc
-    src/timeline/widgets/AudioItem.cc
-    src/timeline/widgets/FileItem.cc
-    src/timeline/widgets/ImageItem.cc
-    src/timeline/widgets/VideoItem.cc
+    src/timeline/TimelineViewManager.cpp
+    src/timeline/TimelineItem.cpp
+    src/timeline/TimelineView.cpp
+    src/timeline/widgets/AudioItem.cpp
+    src/timeline/widgets/FileItem.cpp
+    src/timeline/widgets/ImageItem.cpp
+    src/timeline/widgets/VideoItem.cpp
 
     # UI components
-    src/ui/Avatar.cc
-    src/ui/Badge.cc
-    src/ui/LoadingIndicator.cc
+    src/ui/Avatar.cpp
+    src/ui/Badge.cpp
+    src/ui/LoadingIndicator.cpp
     src/ui/InfoMessage.cpp
-    src/ui/FlatButton.cc
-    src/ui/FloatingButton.cc
-    src/ui/Label.cc
-    src/ui/OverlayModal.cc
-    src/ui/ScrollBar.cc
-    src/ui/SnackBar.cc
-    src/ui/RaisedButton.cc
-    src/ui/Ripple.cc
-    src/ui/RippleOverlay.cc
-    src/ui/OverlayWidget.cc
-    src/ui/TextField.cc
-    src/ui/ToggleButton.cc
-    src/ui/Theme.cc
-    src/ui/ThemeManager.cc
+    src/ui/FlatButton.cpp
+    src/ui/FloatingButton.cpp
+    src/ui/Label.cpp
+    src/ui/OverlayModal.cpp
+    src/ui/ScrollBar.cpp
+    src/ui/SnackBar.cpp
+    src/ui/RaisedButton.cpp
+    src/ui/Ripple.cpp
+    src/ui/RippleOverlay.cpp
+    src/ui/OverlayWidget.cpp
+    src/ui/TextField.cpp
+    src/ui/ToggleButton.cpp
+    src/ui/Theme.cpp
+    src/ui/ThemeManager.cpp
 
-    src/AvatarProvider.cc
-    src/Cache.cc
-    src/ChatPage.cc
-    src/CommunitiesListItem.cc
-    src/CommunitiesList.cc
-    src/InviteeItem.cc
-    src/LoginPage.cc
+    src/AvatarProvider.cpp
+    src/Cache.cpp
+    src/ChatPage.cpp
+    src/CommunitiesListItem.cpp
+    src/CommunitiesList.cpp
+    src/InviteeItem.cpp
+    src/LoginPage.cpp
     src/Logging.cpp
-    src/MainWindow.cc
-    src/MatrixClient.cc
-    src/QuickSwitcher.cc
+    src/MainWindow.cpp
+    src/MatrixClient.cpp
+    src/QuickSwitcher.cpp
     src/Olm.cpp
-    src/RegisterPage.cc
-    src/RoomInfoListItem.cc
-    src/RoomList.cc
-    src/RunGuard.cc
-    src/SideBarActions.cc
-    src/Splitter.cc
+    src/RegisterPage.cpp
+    src/RoomInfoListItem.cpp
+    src/RoomList.cpp
+    src/RunGuard.cpp
+    src/SideBarActions.cpp
+    src/Splitter.cpp
     src/SuggestionsPopup.cpp
-    src/TextInputWidget.cc
-    src/TopRoomBar.cc
-    src/TrayIcon.cc
-    src/TypingDisplay.cc
-    src/Utils.cc
-    src/UserInfoWidget.cc
-    src/UserSettingsPage.cc
-    src/WelcomePage.cc
-    src/main.cc
+    src/TextInputWidget.cpp
+    src/TopRoomBar.cpp
+    src/TrayIcon.cpp
+    src/TypingDisplay.cpp
+    src/Utils.cpp
+    src/UserInfoWidget.cpp
+    src/UserSettingsPage.cpp
+    src/WelcomePage.cpp
+    src/main.cpp
 )
 
 # ExternalProject dependencies
@@ -252,82 +252,81 @@ if(NOT TWEENY_INCLUDE_DIR)
 endif()
 include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
 
-include_directories(include)
-include_directories(include/ui)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
 
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
-    include/dialogs/CreateRoom.h
-    include/dialogs/ImageOverlay.h
-    include/dialogs/PreviewUploadOverlay.h
-    include/dialogs/InviteUsers.h
-    include/dialogs/JoinRoom.h
-    include/dialogs/MemberList.hpp
-    include/dialogs/LeaveRoom.h
-    include/dialogs/Logout.h
-    include/dialogs/ReadReceipts.h
-    include/dialogs/ReCaptcha.hpp
-    include/dialogs/RoomSettings.hpp
+    src/dialogs/CreateRoom.h
+    src/dialogs/ImageOverlay.h
+    src/dialogs/PreviewUploadOverlay.h
+    src/dialogs/InviteUsers.h
+    src/dialogs/JoinRoom.h
+    src/dialogs/MemberList.h
+    src/dialogs/LeaveRoom.h
+    src/dialogs/Logout.h
+    src/dialogs/ReadReceipts.h
+    src/dialogs/ReCaptcha.h
+    src/dialogs/RoomSettings.h
 
     # Emoji
-    include/emoji/Category.h
-    include/emoji/ItemDelegate.h
-    include/emoji/Panel.h
-    include/emoji/PickButton.h
+    src/emoji/Category.h
+    src/emoji/ItemDelegate.h
+    src/emoji/Panel.h
+    src/emoji/PickButton.h
 
     # Timeline
-    include/timeline/TimelineItem.h
-    include/timeline/TimelineView.h
-    include/timeline/TimelineViewManager.h
-    include/timeline/widgets/AudioItem.h
-    include/timeline/widgets/FileItem.h
-    include/timeline/widgets/ImageItem.h
-    include/timeline/widgets/VideoItem.h
+    src/timeline/TimelineItem.h
+    src/timeline/TimelineView.h
+    src/timeline/TimelineViewManager.h
+    src/timeline/widgets/AudioItem.h
+    src/timeline/widgets/FileItem.h
+    src/timeline/widgets/ImageItem.h
+    src/timeline/widgets/VideoItem.h
 
     # UI components
-    include/ui/Avatar.h
-    include/ui/Badge.h
-    include/ui/LoadingIndicator.h
-    include/ui/InfoMessage.hpp
-    include/ui/FlatButton.h
-    include/ui/Label.h
-    include/ui/FloatingButton.h
-    include/ui/OverlayWidget.h
-    include/ui/ScrollBar.h
-    include/ui/SnackBar.h
-    include/ui/RaisedButton.h
-    include/ui/Ripple.h
-    include/ui/RippleOverlay.h
-    include/ui/TextField.h
-    include/ui/ToggleButton.h
-    include/ui/Theme.h
-    include/ui/ThemeManager.h
+    src/ui/Avatar.h
+    src/ui/Badge.h
+    src/ui/LoadingIndicator.h
+    src/ui/InfoMessage.h
+    src/ui/FlatButton.h
+    src/ui/Label.h
+    src/ui/FloatingButton.h
+    src/ui/OverlayWidget.h
+    src/ui/ScrollBar.h
+    src/ui/SnackBar.h
+    src/ui/RaisedButton.h
+    src/ui/Ripple.h
+    src/ui/RippleOverlay.h
+    src/ui/TextField.h
+    src/ui/ToggleButton.h
+    src/ui/Theme.h
+    src/ui/ThemeManager.h
 
-    include/notifications/Manager.h
+    src/notifications/Manager.h
 
-    include/AvatarProvider.h
-    include/Cache.h
-    include/ChatPage.h
-    include/CommunitiesListItem.h
-    include/CommunitiesList.h
-    include/LoginPage.h
-    include/MainWindow.h
-    include/InviteeItem.h
-    include/QuickSwitcher.h
-    include/RegisterPage.h
-    include/RoomInfoListItem.h
-    include/RoomList.h
-    include/SideBarActions.h
-    include/Splitter.h
-    include/SuggestionsPopup.hpp
-    include/TextInputWidget.h
-    include/TopRoomBar.h
-    include/TrayIcon.h
-    include/TypingDisplay.h
-    include/UserInfoWidget.h
-    include/UserSettingsPage.h
-    include/WelcomePage.h
+    src/AvatarProvider.h
+    src/Cache.h
+    src/ChatPage.h
+    src/CommunitiesListItem.h
+    src/CommunitiesList.h
+    src/LoginPage.h
+    src/MainWindow.h
+    src/InviteeItem.h
+    src/QuickSwitcher.h
+    src/RegisterPage.h
+    src/RoomInfoListItem.h
+    src/RoomList.h
+    src/SideBarActions.h
+    src/Splitter.h
+    src/SuggestionsPopup.h
+    src/TextInputWidget.h
+    src/TopRoomBar.h
+    src/TrayIcon.h
+    src/TypingDisplay.h
+    src/UserInfoWidget.h
+    src/UserSettingsPage.h
+    src/WelcomePage.h
 )
 
 #

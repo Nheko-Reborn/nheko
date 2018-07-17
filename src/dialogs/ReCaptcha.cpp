@@ -4,13 +4,13 @@
 #include <QStyleOption>
 #include <QVBoxLayout>
 
-#include "Config.h"
-#include "FlatButton.h"
-#include "MatrixClient.h"
-#include "RaisedButton.h"
-#include "Theme.h"
+#include "dialogs/ReCaptcha.h"
 
-#include "dialogs/ReCaptcha.hpp"
+#include "Config.h"
+#include "MatrixClient.h"
+#include "ui/FlatButton.h"
+#include "ui/RaisedButton.h"
+#include "ui/Theme.h"
 
 using namespace dialogs;
 
