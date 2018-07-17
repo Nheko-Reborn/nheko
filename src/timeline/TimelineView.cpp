@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QTimer>
+#include <QtConcurrent>
 
 #include "Cache.h"
 #include "ChatPage.h"
@@ -353,6 +354,27 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
 }
 
 void
+TimelineView::displayReadReceipts(std::vector<TimelineEvent> events)
+{
+        QtConcurrent::run(
+          [events = std::move(events), room_id = room_id_, local_user = local_user_, this]() {
+                  std::vector<QString> event_ids;
+
+                  for (const auto &e : events) {
+                          if (utils::event_sender(e) == local_user)
+                                  event_ids.emplace_back(
+                                    QString::fromStdString(utils::event_id(e)));
+                  }
+
+                  auto readEvents =
+                    cache::client()->filterReadEvents(room_id, event_ids, local_user.toStdString());
+
+                  if (!readEvents.empty())
+                          emit markReadEvents(readEvents);
+          });
+}
+
+void
 TimelineView::renderBottomEvents(const std::vector<TimelineEvent> &events)
 {
         int counter = 0;
@@ -372,6 +394,8 @@ TimelineView::renderBottomEvents(const std::vector<TimelineEvent> &events)
         }
 
         lastMessageDirection_ = TimelineDirection::Bottom;
+
+        displayReadReceipts(events);
 
         QApplication::processEvents();
 }
@@ -406,6 +430,8 @@ TimelineView::renderTopEvents(const std::vector<TimelineEvent> &events)
         lastMessageDirection_ = TimelineDirection::Top;
 
         QApplication::processEvents();
+
+        displayReadReceipts(events);
 
         // If this batch is the first being rendered (i.e the first and the last
         // events originate from this batch), set the last sender.
@@ -498,6 +524,23 @@ TimelineView::init()
 
         connect(this, &TimelineView::messageFailed, this, &TimelineView::handleFailedMessage);
         connect(this, &TimelineView::messageSent, this, &TimelineView::updatePendingMessage);
+
+        connect(
+          this, &TimelineView::markReadEvents, this, [this](const std::vector<QString> &event_ids) {
+                  for (const auto &event : event_ids) {
+                          if (eventIds_.contains(event)) {
+                                  auto widget = eventIds_[event];
+                                  if (!widget)
+                                          return;
+
+                                  auto item = qobject_cast<TimelineItem *>(widget);
+                                  if (!item)
+                                          return;
+
+                                  item->markRead();
+                          }
+                  }
+          });
 
         connect(scroll_area_->verticalScrollBar(),
                 SIGNAL(valueChanged(int)),
@@ -615,6 +658,7 @@ TimelineView::updatePendingMessage(const std::string &txn_id, const QString &eve
                         // we've already marked the widget as received.
                         if (!msg.widget->isReceived()) {
                                 msg.widget->markReceived(msg.is_encrypted);
+                                cache::client()->addPendingReceipt(room_id_, event_id);
                                 pending_sent_msgs_.append(msg);
                         }
                 } else {
@@ -826,8 +870,13 @@ TimelineView::removePendingMessage(const std::string &txn_id)
         }
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
                 if (it->txn_id == txn_id) {
-                        if (it->widget)
+                        if (it->widget) {
                                 it->widget->markReceived(it->is_encrypted);
+
+                                // TODO: update when a solution for encrypted messages is available.
+                                if (!it->is_encrypted)
+                                        cache::client()->addPendingReceipt(room_id_, it->event_id);
+                        }
 
                         nhlog::ui()->info("[{}] received sync before message response", txn_id);
                         return;

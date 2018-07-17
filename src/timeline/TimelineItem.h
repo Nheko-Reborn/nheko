@@ -50,6 +50,8 @@ enum class StatusIndicatorState
         Encrypted,
         //! The plaintext message was received by the server.
         Received,
+        //! At least one of the participants has read the message.
+        Read,
         //! The client sent the message. Not yet received.
         Sent,
         //! When the message is loaded from cache or backfill.
@@ -66,6 +68,7 @@ class StatusIndicator : public QWidget
 public:
         explicit StatusIndicator(QWidget *parent);
         void setState(StatusIndicatorState state);
+        StatusIndicatorState state() const { return state_; }
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -76,6 +79,7 @@ private:
         QIcon lockIcon_;
         QIcon clockIcon_;
         QIcon checkmarkIcon_;
+        QIcon doubleCheckmarkIcon_;
 
         QColor iconColor_ = QColor("#999");
 
@@ -234,6 +238,7 @@ public:
         QString eventId() const { return event_id_; }
         void setEventId(const QString &event_id) { event_id_ = event_id; }
         void markReceived(bool isEncrypted);
+        void markRead();
         void markSent();
         bool isReceived() { return isReceived_; };
         void setRoomId(QString room_id) { room_id_ = room_id; }
@@ -252,6 +257,8 @@ protected:
         void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
+        //! If we are the sender of the message the event wil be marked as received by the server.
+        void markOwnMessagesAsReceived(const std::string &sender);
         void init();
         //! Add a context menu option to save the image of the timeline item.
         void addSaveImageAction(ImageItem *image);

@@ -42,6 +42,7 @@ StatusIndicator::StatusIndicator(QWidget *parent)
         lockIcon_.addFile(":/icons/icons/ui/lock.png");
         clockIcon_.addFile(":/icons/icons/ui/clock.png");
         checkmarkIcon_.addFile(":/icons/icons/ui/checkmark.png");
+        doubleCheckmarkIcon_.addFile(":/icons/icons/ui/double-tick-indicator.png");
 }
 
 void
@@ -77,6 +78,10 @@ StatusIndicator::paintEvent(QPaintEvent *)
                 break;
         case StatusIndicatorState::Received: {
                 paintIcon(p, checkmarkIcon_);
+                break;
+        }
+        case StatusIndicatorState::Read: {
+                paintIcon(p, doubleCheckmarkIcon_);
                 break;
         }
         case StatusIndicatorState::Empty:
@@ -302,6 +307,8 @@ TimelineItem::TimelineItem(ImageItem *image,
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Image>, ImageItem>(
           image, event, with_sender);
 
+        markOwnMessagesAsReceived(event.sender);
+
         addSaveImageAction(image);
 }
 
@@ -314,6 +321,8 @@ TimelineItem::TimelineItem(StickerItem *image,
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::Sticker, StickerItem>(image, event, with_sender);
+
+        markOwnMessagesAsReceived(event.sender);
 
         addSaveImageAction(image);
 }
@@ -328,6 +337,8 @@ TimelineItem::TimelineItem(FileItem *file,
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::File>, FileItem>(
           file, event, with_sender);
+
+        markOwnMessagesAsReceived(event.sender);
 }
 
 TimelineItem::TimelineItem(AudioItem *audio,
@@ -340,6 +351,8 @@ TimelineItem::TimelineItem(AudioItem *audio,
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Audio>, AudioItem>(
           audio, event, with_sender);
+
+        markOwnMessagesAsReceived(event.sender);
 }
 
 TimelineItem::TimelineItem(VideoItem *video,
@@ -352,6 +365,8 @@ TimelineItem::TimelineItem(VideoItem *video,
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Video>, VideoItem>(
           video, event, with_sender);
+
+        markOwnMessagesAsReceived(event.sender);
 }
 
 /*
@@ -366,6 +381,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 {
         init();
         addReplyAction();
+
+        markOwnMessagesAsReceived(event.sender);
 
         event_id_            = QString::fromStdString(event.event_id);
         const auto sender    = QString::fromStdString(event.sender);
@@ -413,6 +430,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         init();
         addReplyAction();
 
+        markOwnMessagesAsReceived(event.sender);
+
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 
@@ -455,6 +474,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         init();
         addReplyAction();
 
+        markOwnMessagesAsReceived(event.sender);
+
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 
@@ -493,6 +514,21 @@ void
 TimelineItem::markSent()
 {
         statusIndicator_->setState(StatusIndicatorState::Sent);
+}
+
+void
+TimelineItem::markOwnMessagesAsReceived(const std::string &sender)
+{
+        QSettings settings;
+        if (sender == settings.value("auth/user_id").toString().toStdString())
+                statusIndicator_->setState(StatusIndicatorState::Received);
+}
+
+void
+TimelineItem::markRead()
+{
+        if (statusIndicator_->state() != StatusIndicatorState::Encrypted)
+                statusIndicator_->setState(StatusIndicatorState::Read);
 }
 
 void

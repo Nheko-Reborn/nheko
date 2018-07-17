@@ -649,6 +649,70 @@ Cache::setCurrentFormat()
         txn.commit();
 }
 
+std::vector<QString>
+Cache::pendingReceiptsEvents(lmdb::txn &txn, const std::string &room_id)
+{
+        auto db = getPendingReceiptsDb(txn);
+
+        std::string key, unused;
+        std::vector<QString> pending;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(key, unused, MDB_NEXT)) {
+                ReadReceiptKey receipt;
+                try {
+                        receipt = json::parse(key);
+                } catch (const nlohmann::json::exception &e) {
+                        nhlog::db()->warn("pendingReceiptsEvents: {}", e.what());
+                        continue;
+                }
+
+                if (receipt.room_id == room_id)
+                        pending.emplace_back(QString::fromStdString(receipt.event_id));
+        }
+
+        cursor.close();
+
+        return pending;
+}
+
+void
+Cache::removePendingReceipt(lmdb::txn &txn, const std::string &room_id, const std::string &event_id)
+{
+        auto db = getPendingReceiptsDb(txn);
+
+        ReadReceiptKey receipt_key{event_id, room_id};
+        auto key = json(receipt_key).dump();
+
+        try {
+                lmdb::dbi_del(txn, db, lmdb::val(key.data(), key.size()), nullptr);
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("removePendingReceipt: {}", e.what());
+        }
+}
+
+void
+Cache::addPendingReceipt(const QString &room_id, const QString &event_id)
+{
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getPendingReceiptsDb(txn);
+
+        ReadReceiptKey receipt_key{event_id.toStdString(), room_id.toStdString()};
+        auto key = json(receipt_key).dump();
+        std::string empty;
+
+        try {
+                lmdb::dbi_put(txn,
+                              db,
+                              lmdb::val(key.data(), key.size()),
+                              lmdb::val(empty.data(), empty.size()));
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("addPendingReceipt: {}", e.what());
+        }
+
+        txn.commit();
+}
+
 CachedReceipts
 Cache::readReceipts(const QString &event_id, const QString &room_id)
 {
@@ -682,6 +746,30 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
         }
 
         return receipts;
+}
+
+std::vector<QString>
+Cache::filterReadEvents(const QString &room_id,
+                        const std::vector<QString> &event_ids,
+                        const std::string &excluded_user)
+{
+        std::vector<QString> read_events;
+
+        for (const auto &event : event_ids) {
+                auto receipts = readReceipts(event, room_id);
+
+                if (receipts.size() == 0)
+                        continue;
+
+                if (receipts.size() == 1) {
+                        if (receipts.begin()->second == excluded_user)
+                                continue;
+                }
+
+                read_events.emplace_back(event);
+        }
+
+        return read_events;
 }
 
 void
@@ -734,6 +822,23 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
 }
 
 void
+Cache::notifyForReadReceipts(lmdb::txn &txn, const std::string &room_id)
+{
+        QSettings settings;
+        auto local_user = settings.value("auth/user_id").toString();
+
+        auto matches = filterReadEvents(QString::fromStdString(room_id),
+                                        pendingReceiptsEvents(txn, room_id),
+                                        local_user.toStdString());
+
+        for (const auto &m : matches)
+                removePendingReceipt(txn, room_id, m.toStdString());
+
+        if (!matches.empty())
+                emit newReadReceipts(QString::fromStdString(room_id), matches);
+}
+
+void
 Cache::saveState(const mtx::responses::Sync &res)
 {
         auto txn = lmdb::txn::begin(env_);
@@ -771,6 +876,12 @@ Cache::saveState(const mtx::responses::Sync &res)
         removeLeftRooms(txn, res.rooms.leave);
 
         txn.commit();
+
+        for (const auto &room : res.rooms.join) {
+                auto txn = lmdb::txn::begin(env_);
+                notifyForReadReceipts(txn, room.first);
+                txn.commit();
+        }
 }
 
 void

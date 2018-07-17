@@ -685,6 +685,11 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         try {
                 cache::init(userid);
 
+                connect(cache::client(),
+                        &Cache::newReadReceipts,
+                        view_manager_,
+                        &TimelineViewManager::updateReadReceipts);
+
                 const bool isInitialized = cache::client()->isInitialized();
                 const bool isValid       = cache::client()->isFormatValid();
 
@@ -700,6 +705,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                         loadStateFromCache();
                         return;
                 }
+
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("failure during boot: {}", e.what());
                 cache::client()->deleteData();

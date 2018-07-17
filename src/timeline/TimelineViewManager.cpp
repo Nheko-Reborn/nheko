@@ -37,6 +37,17 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
 }
 
 void
+TimelineViewManager::updateReadReceipts(const QString &room_id,
+                                        const std::vector<QString> &event_ids)
+{
+        if (timelineViewExists(room_id)) {
+                auto view = views_[room_id];
+                if (view)
+                        emit view->markReadEvents(event_ids);
+        }
+}
+
+void
 TimelineViewManager::removeTimelineEvent(const QString &room_id, const QString &event_id)
 {
         auto view = views_[room_id];

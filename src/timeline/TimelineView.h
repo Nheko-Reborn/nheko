@@ -156,6 +156,7 @@ signals:
         void messagesRetrieved(const mtx::responses::Messages &res);
         void messageFailed(const std::string &txn_id);
         void messageSent(const std::string &txn_id, const QString &event_id);
+        void markReadEvents(const std::vector<QString> &event_ids);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -164,6 +165,9 @@ protected:
 
 private:
         using TimelineEvent = mtx::events::collections::TimelineEvents;
+
+        //! Mark our own widgets as read if they have more than one receipt.
+        void displayReadReceipts(std::vector<TimelineEvent> events);
 
         QWidget *relativeWidget(QWidget *item, int dt) const;
 
