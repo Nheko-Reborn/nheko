@@ -878,9 +878,9 @@ Cache::saveState(const mtx::responses::Sync &res)
         txn.commit();
 
         for (const auto &room : res.rooms.join) {
-                auto txn = lmdb::txn::begin(env_);
-                notifyForReadReceipts(txn, room.first);
-                txn.commit();
+                auto tmpTxn = lmdb::txn::begin(env_);
+                notifyForReadReceipts(tmpTxn, room.first);
+                tmpTxn.commit();
         }
 }
 
