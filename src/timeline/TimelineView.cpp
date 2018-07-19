@@ -232,6 +232,9 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 item->saveDatetime(QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts));
                 eventIds_[event_id] = item;
 
+                // Force the next message to have avatar by not providing the current username.
+                saveMessageInfo("", msg.origin_server_ts, direction);
+
                 return item;
         } else if (mpark::holds_alternative<RoomEvent<msg::Audio>>(event)) {
                 auto audio = mpark::get<RoomEvent<msg::Audio>>(event);
