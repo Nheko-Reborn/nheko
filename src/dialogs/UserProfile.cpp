@@ -8,6 +8,8 @@
 
 #include "AvatarProvider.h"
 #include "Cache.h"
+#include "ChatPage.h"
+#include "MatrixClient.h"
 #include "Utils.h"
 #include "dialogs/UserProfile.h"
 #include "ui/Avatar.h"
@@ -17,10 +19,25 @@ using namespace dialogs;
 
 constexpr int BUTTON_SIZE = 36;
 
-DeviceItem::DeviceItem(QWidget *parent, QString deviceName)
+DeviceItem::DeviceItem(DeviceInfo device, QWidget *parent)
   : QWidget(parent)
-  , name_(deviceName)
-{}
+  , info_(std::move(device))
+{
+        QFont font;
+        font.setBold(true);
+
+        auto deviceIdLabel = new QLabel(info_.device_id, this);
+        deviceIdLabel->setFont(font);
+
+        auto layout = new QVBoxLayout{this};
+        layout->addWidget(deviceIdLabel);
+
+        if (!info_.display_name.isEmpty())
+                layout->addWidget(new QLabel(info_.display_name, this));
+
+        layout->setMargin(0);
+        layout->setSpacing(4);
+}
 
 UserProfile::UserProfile(QWidget *parent)
   : QWidget(parent)
@@ -34,6 +51,7 @@ UserProfile::UserProfile(QWidget *parent)
         banBtn_->setIcon(banIcon);
         banBtn_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
         banBtn_->setToolTip(tr("Ban the user from the room"));
+        banBtn_->setDisabled(true); // Not used yet.
 
         ignoreIcon.addFile(":/icons/icons/ui/volume-off-indicator.png");
         ignoreBtn_ = new FlatButton(this);
@@ -42,6 +60,7 @@ UserProfile::UserProfile(QWidget *parent)
         ignoreBtn_->setIcon(ignoreIcon);
         ignoreBtn_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
         ignoreBtn_->setToolTip(tr("Ignore messages from this user"));
+        ignoreBtn_->setDisabled(true); // Not used yet.
 
         kickIcon.addFile(":/icons/icons/ui/round-remove-button.png");
         kickBtn_ = new FlatButton(this);
@@ -50,6 +69,7 @@ UserProfile::UserProfile(QWidget *parent)
         kickBtn_->setIcon(kickIcon);
         kickBtn_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
         kickBtn_->setToolTip(tr("Kick the user from the room"));
+        kickBtn_->setDisabled(true); // Not used yet.
 
         startChatIcon.addFile(":/icons/icons/ui/black-bubble-speech.png");
         startChat_ = new FlatButton(this);
@@ -59,21 +79,34 @@ UserProfile::UserProfile(QWidget *parent)
         startChat_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
         startChat_->setToolTip(tr("Start a conversation"));
 
+        connect(startChat_, &QPushButton::clicked, this, [this]() {
+                auto user_id = userIdLabel_->text();
+
+                mtx::requests::CreateRoom req;
+                req.preset     = mtx::requests::Preset::PrivateChat;
+                req.visibility = mtx::requests::Visibility::Private;
+
+                if (utils::localUser() != user_id)
+                        req.invite = {user_id.toStdString()};
+
+                emit ChatPage::instance()->createRoom(req);
+        });
+
         // Button line
         auto btnLayout = new QHBoxLayout;
+        btnLayout->addStretch(1);
         btnLayout->addWidget(startChat_);
         btnLayout->addWidget(ignoreBtn_);
 
-        // TODO: check if the user has enough power level given the room_id
-        // in which the profile was opened.
         btnLayout->addWidget(kickBtn_);
         btnLayout->addWidget(banBtn_);
+        btnLayout->addStretch(1);
         btnLayout->setSpacing(8);
         btnLayout->setMargin(0);
 
         avatar_ = new Avatar(this);
         avatar_->setLetter("X");
-        avatar_->setSize(148);
+        avatar_->setSize(128);
 
         QFont font;
         font.setPointSizeF(font.pointSizeF() * 2);
@@ -90,10 +123,26 @@ UserProfile::UserProfile(QWidget *parent)
         textLayout->setSpacing(4);
         textLayout->setMargin(0);
 
+        devices_ = new QListWidget{this};
+        devices_->setFrameStyle(QFrame::NoFrame);
+        devices_->setSelectionMode(QAbstractItemView::NoSelection);
+        devices_->setAttribute(Qt::WA_MacShowFocusRect, 0);
+        devices_->setSpacing(5);
+        devices_->hide();
+
+        QFont descriptionLabelFont;
+        descriptionLabelFont.setWeight(65);
+
+        devicesLabel_ = new QLabel(tr("Devices").toUpper(), this);
+        devicesLabel_->setFont(descriptionLabelFont);
+        devicesLabel_->hide();
+
         auto vlayout = new QVBoxLayout{this};
         vlayout->addWidget(avatar_);
         vlayout->addLayout(textLayout);
         vlayout->addLayout(btnLayout);
+        vlayout->addWidget(devicesLabel_, Qt::AlignLeft);
+        vlayout->addWidget(devices_);
 
         vlayout->setAlignment(avatar_, Qt::AlignCenter | Qt::AlignTop);
         vlayout->setAlignment(userIdLabel_, Qt::AlignCenter | Qt::AlignTop);
@@ -107,6 +156,10 @@ UserProfile::UserProfile(QWidget *parent)
 
         vlayout->setSpacing(15);
         vlayout->setContentsMargins(20, 40, 20, 20);
+
+        qRegisterMetaType<std::vector<DeviceInfo>>();
+
+        connect(this, &UserProfile::devicesRetrieved, this, &UserProfile::updateDeviceList);
 }
 
 void
@@ -121,13 +174,7 @@ UserProfile::init(const QString &userId, const QString &roomId)
         AvatarProvider::resolve(
           roomId, userId, this, [this](const QImage &img) { avatar_->setImage(img); });
 
-        QSettings settings;
-        auto localUser = settings.value("auth/user_id").toString();
-
-        if (localUser == userId) {
-                qDebug() << "the local user should have edit rights on avatar & display name";
-                // TODO: click on display name & avatar to change.
-        }
+        auto localUser = utils::localUser();
 
         try {
                 bool hasMemberRights =
@@ -141,6 +188,75 @@ UserProfile::init(const QString &userId, const QString &roomId)
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
         }
+
+        if (localUser == userId) {
+                // TODO: click on display name & avatar to change.
+                kickBtn_->hide();
+                banBtn_->hide();
+                ignoreBtn_->hide();
+        }
+
+        mtx::requests::QueryKeys req;
+        req.device_keys[userId.toStdString()] = {};
+
+        http::client()->query_keys(
+          req,
+          [user_id = userId.toStdString(), this](const mtx::responses::QueryKeys &res,
+                                                 mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to query device keys: {} {}",
+                                             err->matrix_error.error,
+                                             static_cast<int>(err->status_code));
+                          // TODO: Notify the UI.
+                          return;
+                  }
+
+                  if (res.device_keys.empty() ||
+                      (res.device_keys.find(user_id) == res.device_keys.end())) {
+                          nhlog::net()->warn("no devices retrieved {}", user_id);
+                          return;
+                  }
+
+                  auto devices = res.device_keys.at(user_id);
+
+                  std::vector<DeviceInfo> deviceInfo;
+                  for (const auto &d : devices) {
+                          auto device = d.second;
+
+                          // TODO: Verify signatures and ignore those that don't pass.
+                          deviceInfo.emplace_back(DeviceInfo{
+                            QString::fromStdString(d.first),
+                            QString::fromStdString(device.unsigned_info.device_display_name)});
+                  }
+
+                  std::sort(deviceInfo.begin(),
+                            deviceInfo.end(),
+                            [](const DeviceInfo &a, const DeviceInfo &b) {
+                                    return a.device_id > b.device_id;
+                            });
+
+                  if (!deviceInfo.empty())
+                          emit devicesRetrieved(deviceInfo);
+          });
+}
+
+void
+UserProfile::updateDeviceList(const std::vector<DeviceInfo> &devices)
+{
+        for (const auto &dev : devices) {
+                auto deviceItem = new DeviceItem(dev, this);
+                auto item       = new QListWidgetItem;
+
+                item->setSizeHint(deviceItem->minimumSizeHint());
+                item->setFlags(Qt::NoItemFlags);
+                item->setTextAlignment(Qt::AlignCenter);
+
+                devices_->insertItem(devices_->count() - 1, item);
+                devices_->setItemWidget(item, deviceItem);
+        }
+
+        devicesLabel_->show();
+        devices_->show();
 }
 
 void

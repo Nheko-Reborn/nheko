@@ -15,6 +15,9 @@ namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+QString
+localUser();
+
 //! Human friendly timestamp representation.
 QString
 descriptiveTime(const QDateTime &then);

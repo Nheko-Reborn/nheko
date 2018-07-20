@@ -2,10 +2,18 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QSettings>
 
 #include <variant.hpp>
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
+
+QString
+utils::localUser()
+{
+        QSettings settings;
+        return settings.value("auth/user_id").toString();
+}
 
 QString
 utils::descriptiveTime(const QDateTime &then)

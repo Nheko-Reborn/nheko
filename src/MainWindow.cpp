@@ -317,6 +317,7 @@ MainWindow::openUserProfile(const QString &user_id, const QString &room_id)
 
         userProfileModal_ =
           QSharedPointer<OverlayModal>(new OverlayModal(this, userProfileDialog_.data()));
+        userProfileModal_->setContentAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
         userProfileModal_->show();
 }
@@ -394,7 +395,6 @@ MainWindow::showOverlayProgressBar()
                 progressModal_ =
                   QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
                                                [](OverlayModal *modal) { modal->deleteLater(); });
-                progressModal_->setContentAlignment(Qt::AlignCenter);
                 progressModal_->setColor(QColor(30, 30, 30));
                 progressModal_->setDismissible(false);
                 progressModal_->show();

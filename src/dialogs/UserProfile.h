@@ -7,6 +7,15 @@ class Avatar;
 class FlatButton;
 class QLabel;
 class QListWidget;
+class Toggle;
+
+struct DeviceInfo
+{
+        QString device_id;
+        QString display_name;
+};
+
+Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 
 namespace dialogs {
 
@@ -15,10 +24,10 @@ class DeviceItem : public QWidget
         Q_OBJECT
 
 public:
-        explicit DeviceItem(QWidget *parent, QString deviceName);
+        explicit DeviceItem(DeviceInfo device, QWidget *parent);
 
 private:
-        QString name_;
+        DeviceInfo info_;
 
         // Toggle *verifyToggle_;
 };
@@ -34,11 +43,14 @@ public:
 protected:
         void paintEvent(QPaintEvent *) override;
 
+signals:
+        void devicesRetrieved(const std::vector<DeviceInfo> &devices);
+
+private slots:
+        void updateDeviceList(const std::vector<DeviceInfo> &devices);
+
 private:
         Avatar *avatar_;
-
-        QString displayName_;
-        QString userId_;
 
         QLabel *userIdLabel_;
         QLabel *displayNameLabel_;
@@ -48,6 +60,8 @@ private:
         FlatButton *ignoreBtn_;
         FlatButton *startChat_;
 
+        QLabel *devicesLabel_;
         QListWidget *devices_;
 };
+
 } // dialogs

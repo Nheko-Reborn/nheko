@@ -29,7 +29,7 @@ OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
         layout_->addWidget(content);
         layout_->setSpacing(0);
         layout_->setContentsMargins(10, 40, 10, 20);
-        setContentAlignment(Qt::AlignTop | Qt::AlignHCenter);
+        setContentAlignment(Qt::AlignCenter);
 
         content->setFocus();
 }

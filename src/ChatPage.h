@@ -80,6 +80,7 @@ public:
 
 public slots:
         void leaveRoom(const QString &room_id);
+        void createRoom(const mtx::requests::CreateRoom &req);
 
 signals:
         void connectionLost();
@@ -159,7 +160,6 @@ private slots:
         void dropToLoginPage(const QString &msg);
 
         void joinRoom(const QString &room);
-        void createRoom(const mtx::requests::CreateRoom &req);
         void sendTypingNotifications();
 
 private:
