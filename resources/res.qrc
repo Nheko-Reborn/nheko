@@ -1,5 +1,14 @@
 <RCC>
     <qresource prefix="/icons">
+        <file>icons/ui/volume-off-indicator.png</file>
+        <file>icons/ui/volume-off-indicator@2x.png</file>
+        <file>icons/ui/black-bubble-speech.png</file>
+        <file>icons/ui/black-bubble-speech@2x.png</file>
+        <file>icons/ui/do-not-disturb-rounded-sign.png</file>
+        <file>icons/ui/do-not-disturb-rounded-sign@2x.png</file>
+        <file>icons/ui/round-remove-button.png</file>
+        <file>icons/ui/round-remove-button@2x.png</file>
+
         <file>icons/ui/double-tick-indicator.png</file>
         <file>icons/ui/double-tick-indicator@2x.png</file>
         <file>icons/ui/lock.png</file>

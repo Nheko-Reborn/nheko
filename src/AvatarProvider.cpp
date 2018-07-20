@@ -50,6 +50,8 @@ resolve(const QString &room_id, const QString &user_id, QObject *receiver, Avata
                          [callback](const QByteArray &data) { callback(QImage::fromData(data)); });
 
         mtx::http::ThumbOpts opts;
+        opts.width   = 256;
+        opts.height  = 256;
         opts.mxc_url = avatarUrl.toStdString();
 
         http::client()->get_thumbnail(

@@ -23,6 +23,7 @@
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"
+#include "MainWindow.h"
 #include "Olm.h"
 #include "ui/Avatar.h"
 #include "ui/Painter.h"
@@ -562,6 +563,13 @@ TimelineItem::generateBody(const QString &body)
 void
 TimelineItem::generateBody(const QString &user_id, const QString &displayname, const QString &body)
 {
+        generateUserName(user_id, displayname);
+        generateBody(body);
+}
+
+void
+TimelineItem::generateUserName(const QString &user_id, const QString &displayname)
+{
         auto sender = displayname;
 
         if (displayname.startsWith("@")) {
@@ -598,7 +606,9 @@ TimelineItem::generateBody(const QString &user_id, const QString &displayname, c
                 userName_->setFont(f);
         });
 
-        generateBody(body);
+        connect(filter, &UserProfileFilter::clicked, this, [this, user_id]() {
+                MainWindow::instance()->openUserProfile(user_id, room_id_);
+        });
 }
 
 void
@@ -742,10 +752,7 @@ TimelineItem::addAvatar()
         auto userid      = descriptionMsg_.userid;
         auto displayName = Cache::displayName(room_id_, userid);
 
-        QFontMetrics fm(usernameFont_);
-        userName_ = new QLabel(this);
-        userName_->setFont(usernameFont_);
-        userName_->setText(fm.elidedText(displayName, Qt::ElideRight, 500));
+        generateUserName(userid, displayName);
 
         setupAvatarLayout(displayName);
 

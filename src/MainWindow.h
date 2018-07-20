@@ -28,6 +28,7 @@
 #include "RegisterPage.h"
 #include "UserSettingsPage.h"
 #include "WelcomePage.h"
+#include "dialogs/UserProfile.h"
 
 class ChatPage;
 class LoadingIndicator;
@@ -71,6 +72,7 @@ public:
         void openLogoutDialog(std::function<void()> callback);
         void openRoomSettings(const QString &room_id = "");
         void openMemberListDialog(const QString &room_id = "");
+        void openUserProfile(const QString &user_id, const QString &room_id);
 
 protected:
         void closeEvent(QCloseEvent *event) override;
@@ -171,4 +173,7 @@ private:
         QSharedPointer<OverlayModal> memberListModal_;
         //! Member list dialog.
         QSharedPointer<dialogs::MemberList> memberListDialog_;
+
+        QSharedPointer<OverlayModal> userProfileModal_;
+        QSharedPointer<dialogs::UserProfile> userProfileDialog_;
 };

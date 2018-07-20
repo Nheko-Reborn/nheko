@@ -149,10 +149,11 @@ dialogs--ReadReceipts,
 dialogs--MemberList,
 dialogs--JoinRoom,
 dialogs--PreviewUploadOverlay,
+dialogs--UserProfile,
 EditModal,
 QListWidget {
     background-color: white;
-    color: #333;
+    color: #495057;
 }
 
 TopSection {

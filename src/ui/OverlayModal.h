@@ -20,6 +20,7 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QVBoxLayout>
 
 #include "OverlayWidget.h"
 
@@ -31,6 +32,8 @@ public:
         void setColor(QColor color) { color_ = color; }
         void setDismissible(bool state) { isDismissible_ = state; }
 
+        void setContentAlignment(QFlags<Qt::AlignmentFlag> flag) { layout_->setAlignment(flag); }
+
 protected:
         void paintEvent(QPaintEvent *event) override;
         void keyPressEvent(QKeyEvent *event) override;
@@ -38,6 +41,8 @@ protected:
 
 private:
         QWidget *content_;
+        QVBoxLayout *layout_;
+
         QColor color_;
 
         //! Decides whether or not the modal can be removed by clicking into it.

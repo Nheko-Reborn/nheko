@@ -137,13 +137,13 @@ public:
 signals:
         void hoverOff();
         void hoverOn();
+        void clicked();
 
 protected:
         bool eventFilter(QObject *obj, QEvent *event)
         {
                 if (event->type() == QEvent::MouseButtonRelease) {
-                        // QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-                        // TODO: Open user profile
+                        emit clicked();
                         return true;
                 } else if (event->type() == QEvent::HoverLeave) {
                         emit hoverOff();
@@ -274,6 +274,7 @@ private:
         void generateBody(const QString &body);
         void generateBody(const QString &user_id, const QString &displayname, const QString &body);
         void generateTimestamp(const QDateTime &time);
+        void generateUserName(const QString &userid, const QString &displayname);
 
         void setupAvatarLayout(const QString &userName);
         void setupSimpleLayout();

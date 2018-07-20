@@ -310,6 +310,18 @@ MainWindow::hasActiveUser()
 }
 
 void
+MainWindow::openUserProfile(const QString &user_id, const QString &room_id)
+{
+        userProfileDialog_ = QSharedPointer<dialogs::UserProfile>(new dialogs::UserProfile(this));
+        userProfileDialog_->init(user_id, room_id);
+
+        userProfileModal_ =
+          QSharedPointer<OverlayModal>(new OverlayModal(this, userProfileDialog_.data()));
+
+        userProfileModal_->show();
+}
+
+void
 MainWindow::openRoomSettings(const QString &room_id)
 {
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
@@ -382,6 +394,7 @@ MainWindow::showOverlayProgressBar()
                 progressModal_ =
                   QSharedPointer<OverlayModal>(new OverlayModal(this, spinner_.data()),
                                                [](OverlayModal *modal) { modal->deleteLater(); });
+                progressModal_->setContentAlignment(Qt::AlignCenter);
                 progressModal_->setColor(QColor(30, 30, 30));
                 progressModal_->setDismissible(false);
                 progressModal_->show();

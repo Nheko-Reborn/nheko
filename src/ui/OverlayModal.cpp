@@ -25,11 +25,11 @@ OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
   , content_{content}
   , color_{QColor(30, 30, 30, 170)}
 {
-        auto layout = new QVBoxLayout();
-        layout->addWidget(content);
-        layout->setAlignment(Qt::AlignCenter);
-
-        setLayout(layout);
+        layout_ = new QVBoxLayout(this);
+        layout_->addWidget(content);
+        layout_->setSpacing(0);
+        layout_->setContentsMargins(10, 40, 10, 20);
+        setContentAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
         content->setFocus();
 }

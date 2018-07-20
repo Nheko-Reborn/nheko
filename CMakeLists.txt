@@ -152,6 +152,7 @@ set(SRC_FILES
     src/dialogs/MemberList.cpp
     src/dialogs/LeaveRoom.cpp
     src/dialogs/Logout.cpp
+    src/dialogs/UserProfile.cpp
     src/dialogs/ReadReceipts.cpp
     src/dialogs/ReCaptcha.cpp
     src/dialogs/RoomSettings.cpp
@@ -265,6 +266,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/dialogs/MemberList.h
     src/dialogs/LeaveRoom.h
     src/dialogs/Logout.h
+    src/dialogs/UserProfile.h
     src/dialogs/ReadReceipts.h
     src/dialogs/ReCaptcha.h
     src/dialogs/RoomSettings.h
