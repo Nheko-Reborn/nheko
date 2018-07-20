@@ -54,7 +54,7 @@ constexpr int height = 50;
 
 namespace sidebarActions {
 constexpr int height   = textInput::height;
-constexpr int iconSize = 28;
+constexpr int iconSize = 24;
 }
 
 // Button settings.
