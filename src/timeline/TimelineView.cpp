@@ -38,6 +38,10 @@
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+//! Maximum number of widgets to keep in the timeline layout.
+constexpr int MAX_RETAINED_WIDGETS = 100;
+constexpr int MIN_SCROLLBAR_HANDLE = 60;
+
 //! Retrieve the timestamp of the event represented by the given widget.
 QDateTime
 getDate(QWidget *widget)
@@ -481,8 +485,7 @@ TimelineView::addEvents(const mtx::responses::Timeline &timeline)
 void
 TimelineView::init()
 {
-        QSettings settings;
-        local_user_ = settings.value("auth/user_id").toString();
+        local_user_ = utils::localUser();
 
         QIcon icon;
         icon.addFile(":/icons/icons/ui/angle-arrow-down.png");
@@ -965,6 +968,19 @@ TimelineView::showEvent(QShowEvent *event)
         QWidget::showEvent(event);
 }
 
+void
+TimelineView::hideEvent(QHideEvent *event)
+{
+        const auto handleHeight = scroll_area_->verticalScrollBar()->sizeHint().height();
+        const auto widgetsNum   = scroll_layout_->count();
+
+        // Remove widgets from the timeline to reduce the memory footprint.
+        if (handleHeight < MIN_SCROLLBAR_HANDLE && widgetsNum > MAX_RETAINED_WIDGETS)
+                clearTimeline();
+
+        QWidget::hideEvent(event);
+}
+
 bool
 TimelineView::event(QEvent *event)
 {
@@ -972,6 +988,30 @@ TimelineView::event(QEvent *event)
                 readLastEvent();
 
         return QWidget::event(event);
+}
+
+void
+TimelineView::clearTimeline()
+{
+        // Delete all widgets.
+        QLayoutItem *item;
+        while ((item = scroll_layout_->takeAt(0)) != nullptr) {
+                delete item->widget();
+                delete item;
+        }
+
+        // The next call to /messages will be without a prev token.
+        prev_batch_token_.clear();
+        eventIds_.clear();
+
+        // Clear queues with pending messages to be rendered.
+        bottomMessages_.clear();
+        topMessages_.clear();
+
+        firstSender_.clear();
+        lastSender_.clear();
+
+        scroll_layout_->addStretch(1);
 }
 
 void

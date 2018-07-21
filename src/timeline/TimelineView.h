@@ -161,6 +161,7 @@ signals:
 protected:
         void paintEvent(QPaintEvent *event) override;
         void showEvent(QShowEvent *event) override;
+        void hideEvent(QHideEvent *event) override;
         bool event(QEvent *event) override;
 
 private:
@@ -271,6 +272,8 @@ private:
 
         //! Store the event id associated with the given widget.
         void saveEventId(QWidget *widget);
+        //! Remove all widgets from the timeline layout.
+        void clearTimeline();
 
         QVBoxLayout *top_layout_;
         QVBoxLayout *scroll_layout_;
