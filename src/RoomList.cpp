@@ -355,6 +355,9 @@ RoomList::removeFilter()
 void
 RoomList::applyFilter(const std::map<QString, bool> &filter)
 {
+        // Disabling paint updates will resolve issues with screen flickering on big room lists.
+        setUpdatesEnabled(false);
+
         for (int i = 0; i < contentsLayout_->count(); i++) {
                 // If filter contains the room for the current RoomInfoListItem,
                 // show the list item, otherwise hide it
@@ -369,6 +372,8 @@ RoomList::applyFilter(const std::map<QString, bool> &filter)
                 else
                         listitem->hide();
         }
+
+        setUpdatesEnabled(true);
 
         // If the already selected room is part of the group, make sure it's visible.
         if (!selectedRoom_.isEmpty() && (filter.find(selectedRoom_) != filter.end()))
