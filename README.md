@@ -10,6 +10,11 @@ nheko
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
 
+### Note regarding End-to-End encryption
+
+Currently the implementation is at best a **proof of concept** and it should only be used for
+testing purposes.
+
 ## Features
 
 Most of the features you would expect from a chat application are missing right now
