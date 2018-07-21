@@ -44,12 +44,14 @@ protected:
         void paintEvent(QPaintEvent *) override;
 
 signals:
-        void devicesRetrieved(const std::vector<DeviceInfo> &devices);
+        void devicesRetrieved(const QString &user_id, const std::vector<DeviceInfo> &devices);
 
 private slots:
-        void updateDeviceList(const std::vector<DeviceInfo> &devices);
+        void updateDeviceList(const QString &user_id, const std::vector<DeviceInfo> &devices);
 
 private:
+        void resetToDefaults();
+
         Avatar *avatar_;
 
         QLabel *userIdLabel_;

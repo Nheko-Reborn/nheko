@@ -17,7 +17,13 @@
 
 using namespace dialogs;
 
-constexpr int BUTTON_SIZE = 36;
+constexpr int BUTTON_SIZE       = 36;
+constexpr int BUTTON_RADIUS     = BUTTON_SIZE / 2;
+constexpr int WIDGET_MARGIN     = 20;
+constexpr int TOP_WIDGET_MARGIN = 2 * WIDGET_MARGIN;
+constexpr int WIDGET_SPACING    = 15;
+constexpr int TEXT_SPACING      = 4;
+constexpr int DEVICE_SPACING    = 5;
 
 DeviceItem::DeviceItem(DeviceInfo device, QWidget *parent)
   : QWidget(parent)
@@ -47,36 +53,36 @@ UserProfile::UserProfile(QWidget *parent)
         banIcon.addFile(":/icons/icons/ui/do-not-disturb-rounded-sign.png");
         banBtn_ = new FlatButton(this);
         banBtn_->setFixedSize(BUTTON_SIZE, BUTTON_SIZE);
-        banBtn_->setCornerRadius(BUTTON_SIZE / 2);
+        banBtn_->setCornerRadius(BUTTON_RADIUS);
         banBtn_->setIcon(banIcon);
-        banBtn_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
+        banBtn_->setIconSize(QSize(BUTTON_RADIUS, BUTTON_RADIUS));
         banBtn_->setToolTip(tr("Ban the user from the room"));
         banBtn_->setDisabled(true); // Not used yet.
 
         ignoreIcon.addFile(":/icons/icons/ui/volume-off-indicator.png");
         ignoreBtn_ = new FlatButton(this);
         ignoreBtn_->setFixedSize(BUTTON_SIZE, BUTTON_SIZE);
-        ignoreBtn_->setCornerRadius(BUTTON_SIZE / 2);
+        ignoreBtn_->setCornerRadius(BUTTON_RADIUS);
         ignoreBtn_->setIcon(ignoreIcon);
-        ignoreBtn_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
+        ignoreBtn_->setIconSize(QSize(BUTTON_RADIUS, BUTTON_RADIUS));
         ignoreBtn_->setToolTip(tr("Ignore messages from this user"));
         ignoreBtn_->setDisabled(true); // Not used yet.
 
         kickIcon.addFile(":/icons/icons/ui/round-remove-button.png");
         kickBtn_ = new FlatButton(this);
         kickBtn_->setFixedSize(BUTTON_SIZE, BUTTON_SIZE);
-        kickBtn_->setCornerRadius(BUTTON_SIZE / 2);
+        kickBtn_->setCornerRadius(BUTTON_RADIUS);
         kickBtn_->setIcon(kickIcon);
-        kickBtn_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
+        kickBtn_->setIconSize(QSize(BUTTON_RADIUS, BUTTON_RADIUS));
         kickBtn_->setToolTip(tr("Kick the user from the room"));
         kickBtn_->setDisabled(true); // Not used yet.
 
         startChatIcon.addFile(":/icons/icons/ui/black-bubble-speech.png");
         startChat_ = new FlatButton(this);
         startChat_->setFixedSize(BUTTON_SIZE, BUTTON_SIZE);
-        startChat_->setCornerRadius(BUTTON_SIZE / 2);
+        startChat_->setCornerRadius(BUTTON_RADIUS);
         startChat_->setIcon(startChatIcon);
-        startChat_->setIconSize(QSize(BUTTON_SIZE / 2, BUTTON_SIZE / 2));
+        startChat_->setIconSize(QSize(BUTTON_RADIUS, BUTTON_RADIUS));
         startChat_->setToolTip(tr("Start a conversation"));
 
         connect(startChat_, &QPushButton::clicked, this, [this]() {
@@ -120,14 +126,14 @@ UserProfile::UserProfile(QWidget *parent)
         textLayout->addWidget(userIdLabel_);
         textLayout->setAlignment(displayNameLabel_, Qt::AlignCenter | Qt::AlignTop);
         textLayout->setAlignment(userIdLabel_, Qt::AlignCenter | Qt::AlignTop);
-        textLayout->setSpacing(4);
+        textLayout->setSpacing(TEXT_SPACING);
         textLayout->setMargin(0);
 
         devices_ = new QListWidget{this};
         devices_->setFrameStyle(QFrame::NoFrame);
         devices_->setSelectionMode(QAbstractItemView::NoSelection);
         devices_->setAttribute(Qt::WA_MacShowFocusRect, 0);
-        devices_->setSpacing(5);
+        devices_->setSpacing(DEVICE_SPACING);
         devices_->hide();
 
         QFont descriptionLabelFont;
@@ -143,6 +149,7 @@ UserProfile::UserProfile(QWidget *parent)
         vlayout->addLayout(btnLayout);
         vlayout->addWidget(devicesLabel_, Qt::AlignLeft);
         vlayout->addWidget(devices_);
+        vlayout->addStretch(1);
 
         vlayout->setAlignment(avatar_, Qt::AlignCenter | Qt::AlignTop);
         vlayout->setAlignment(userIdLabel_, Qt::AlignCenter | Qt::AlignTop);
@@ -151,11 +158,16 @@ UserProfile::UserProfile(QWidget *parent)
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
         setWindowModality(Qt::WindowModal);
 
-        setMinimumWidth(340);
+        QFont doubleFont;
+        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+
+        setMinimumWidth(
+          std::max(devices_->sizeHint().width() + 4 * WIDGET_MARGIN,
+                   QFontMetrics(doubleFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN));
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-        vlayout->setSpacing(15);
-        vlayout->setContentsMargins(20, 40, 20, 20);
+        vlayout->setSpacing(WIDGET_SPACING);
+        vlayout->setContentsMargins(WIDGET_MARGIN, TOP_WIDGET_MARGIN, WIDGET_MARGIN, WIDGET_MARGIN);
 
         qRegisterMetaType<std::vector<DeviceInfo>>();
 
@@ -163,8 +175,21 @@ UserProfile::UserProfile(QWidget *parent)
 }
 
 void
+UserProfile::resetToDefaults()
+{
+        avatar_->setLetter("X");
+        devices_->clear();
+
+        ignoreBtn_->show();
+        devices_->hide();
+        devicesLabel_->hide();
+}
+
+void
 UserProfile::init(const QString &userId, const QString &roomId)
 {
+        resetToDefaults();
+
         auto displayName = Cache::displayName(roomId, userId);
 
         userIdLabel_->setText(userId);
@@ -184,6 +209,9 @@ UserProfile::init(const QString &userId, const QString &roomId)
                 if (!hasMemberRights) {
                         kickBtn_->hide();
                         banBtn_->hide();
+                } else {
+                        kickBtn_->show();
+                        banBtn_->show();
                 }
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
@@ -236,13 +264,16 @@ UserProfile::init(const QString &userId, const QString &roomId)
                             });
 
                   if (!deviceInfo.empty())
-                          emit devicesRetrieved(deviceInfo);
+                          emit devicesRetrieved(QString::fromStdString(user_id), deviceInfo);
           });
 }
 
 void
-UserProfile::updateDeviceList(const std::vector<DeviceInfo> &devices)
+UserProfile::updateDeviceList(const QString &user_id, const std::vector<DeviceInfo> &devices)
 {
+        if (user_id != userIdLabel_->text())
+                return;
+
         for (const auto &dev : devices) {
                 auto deviceItem = new DeviceItem(dev, this);
                 auto item       = new QListWidgetItem;
