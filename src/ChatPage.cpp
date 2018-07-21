@@ -514,9 +514,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         current_community_ = groupId;
 
                         if (groupId == "world")
-                                room_list_->setFilterRooms(false);
+                                room_list_->removeFilter();
                         else
-                                room_list_->setRoomFilter(communitiesList_->roomList(groupId));
+                                room_list_->applyFilter(communitiesList_->roomList(groupId));
                 });
 
         connect(&notificationsManager,

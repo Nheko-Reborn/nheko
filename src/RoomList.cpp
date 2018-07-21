@@ -56,6 +56,8 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addWidget(scrollArea_);
 
+        qRegisterMetaType<std::map<QString, bool>>();
+
         connect(this, &RoomList::updateRoomAvatarCb, this, &RoomList::updateRoomAvatar);
 }
 
@@ -340,10 +342,21 @@ RoomList::closeJoinRoomDialog(bool isJoining, QString roomAlias)
 }
 
 void
-RoomList::setFilterRooms(bool isFilteringEnabled)
+RoomList::removeFilter()
 {
         for (int i = 0; i < contentsLayout_->count(); i++) {
-                // If roomFilter_ contains the room for the current RoomInfoListItem,
+                auto widget =
+                  qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
+                if (widget)
+                        widget->show();
+        }
+}
+
+void
+RoomList::applyFilter(const std::map<QString, bool> &filter)
+{
+        for (int i = 0; i < contentsLayout_->count(); i++) {
+                // If filter contains the room for the current RoomInfoListItem,
                 // show the list item, otherwise hide it
                 auto listitem =
                   qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
@@ -351,28 +364,29 @@ RoomList::setFilterRooms(bool isFilteringEnabled)
                 if (!listitem)
                         continue;
 
-                if (!isFilteringEnabled || filterItemExists(listitem->roomId()))
+                if (filter.find(listitem->roomId()) != filter.end())
                         listitem->show();
                 else
                         listitem->hide();
         }
 
-        if (isFilteringEnabled && !filterItemExists(selectedRoom_)) {
-                RoomInfoListItem *firstVisibleRoom = nullptr;
+        // If the already selected room is part of the group, make sure it's visible.
+        if (!selectedRoom_.isEmpty() && (filter.find(selectedRoom_) != filter.end()))
+                return;
 
-                for (int i = 0; i < contentsLayout_->count(); i++) {
-                        QWidget *item = contentsLayout_->itemAt(i)->widget();
+        selectFirstVisibleRoom();
+}
 
-                        if (item != nullptr && item->isVisible()) {
-                                firstVisibleRoom = qobject_cast<RoomInfoListItem *>(item);
-                                break;
-                        }
+void
+RoomList::selectFirstVisibleRoom()
+{
+        for (int i = 0; i < contentsLayout_->count(); i++) {
+                auto item = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
+
+                if (item && item->isVisible()) {
+                        highlightSelectedRoom(item->roomId());
+                        break;
                 }
-
-                if (firstVisibleRoom != nullptr)
-                        highlightSelectedRoom(firstVisibleRoom->roomId());
-        } else {
-                scrollArea_->ensureWidgetVisible(rooms_[selectedRoom_].data());
         }
 }
 
@@ -402,13 +416,6 @@ RoomList::updateRoom(const QString &room_id, const RoomInfo &info)
         room->setRoomName(QString::fromStdString(info.name));
         room->setRoomType(info.is_invite);
         room->update();
-}
-
-void
-RoomList::setRoomFilter(std::vector<QString> room_ids)
-{
-        roomFilter_ = room_ids;
-        setFilterRooms(true);
 }
 
 void

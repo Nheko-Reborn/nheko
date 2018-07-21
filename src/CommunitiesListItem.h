@@ -32,8 +32,8 @@ public:
         bool isPressed() const { return isPressed_; }
         void setAvatar(const QImage &img);
 
-        void setRooms(std::vector<QString> room_ids) { room_ids_ = std::move(room_ids); }
-        std::vector<QString> rooms() const { return room_ids_; }
+        void setRooms(std::map<QString, bool> room_ids) { room_ids_ = std::move(room_ids); }
+        std::map<QString, bool> rooms() const { return room_ids_; }
 
         QColor highlightedBackgroundColor() const { return highlightedBackgroundColor_; }
         QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
@@ -69,7 +69,7 @@ private:
 
         QString resolveName() const;
 
-        std::vector<QString> room_ids_;
+        std::map<QString, bool> room_ids_;
 
         QString name_;
         QString groupId_;

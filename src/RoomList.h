@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QMetaType>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSharedPointer>
@@ -32,6 +33,9 @@ class Sync;
 class UserSettings;
 struct DescInfo;
 struct RoomInfo;
+
+using RoomIds = std::map<QString, bool>;
+Q_DECLARE_METATYPE(RoomIds)
 
 class RoomList : public QWidget
 {
@@ -49,8 +53,10 @@ public:
         void addRoom(const QString &room_id, const RoomInfo &info);
         void addInvitedRoom(const QString &room_id, const RoomInfo &info);
         void removeRoom(const QString &room_id, bool reset);
-        void setFilterRooms(bool filterRooms);
-        void setRoomFilter(std::vector<QString> room_ids);
+        //! Hide rooms that are not present in the given filter.
+        void applyFilter(const std::map<QString, bool> &rooms);
+        //! Show all the available rooms.
+        void removeFilter();
         void updateRoom(const QString &room_id, const RoomInfo &info);
         void cleanupInvites(const std::map<QString, bool> &invites);
 
@@ -82,10 +88,8 @@ private:
         std::pair<QString, QSharedPointer<RoomInfoListItem>> firstRoom() const;
         void calculateUnreadMessageCount();
         bool roomExists(const QString &room_id) { return rooms_.find(room_id) != rooms_.end(); }
-        bool filterItemExists(const QString &id)
-        {
-                return std::find(roomFilter_.begin(), roomFilter_.end(), id) != roomFilter_.end();
-        }
+        //! Select the first visible room in the room list.
+        void selectFirstVisibleRoom();
 
         QVBoxLayout *topLayout_;
         QVBoxLayout *contentsLayout_;
@@ -98,9 +102,6 @@ private:
 
         std::map<QString, QSharedPointer<RoomInfoListItem>> rooms_;
         QString selectedRoom_;
-
-        //! Which rooms to include in the room list.
-        std::vector<QString> roomFilter_;
 
         QSharedPointer<UserSettings> userSettings_;
 

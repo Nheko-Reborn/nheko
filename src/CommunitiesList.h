@@ -18,13 +18,13 @@ public:
 
         void addCommunity(const std::string &id);
         void removeCommunity(const QString &id) { communities_.erase(id); };
-        std::vector<QString> roomList(const QString &id) const;
+        std::map<QString, bool> roomList(const QString &id) const;
 
 signals:
         void communityChanged(const QString &id);
         void avatarRetrieved(const QString &id, const QPixmap &img);
         void groupProfileRetrieved(const QString &group_id, const mtx::responses::GroupProfile &);
-        void groupRoomsRetrieved(const QString &group_id, const std::vector<QString> &res);
+        void groupRoomsRetrieved(const QString &group_id, const std::map<QString, bool> &res);
 
 public slots:
         void updateCommunityAvatar(const QString &id, const QPixmap &img);

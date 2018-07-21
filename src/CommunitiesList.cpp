@@ -1,5 +1,5 @@
-#include "CommunitiesList.h"
 #include "Cache.h"
+#include "CommunitiesList.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 
@@ -83,7 +83,7 @@ CommunitiesList::addCommunity(const std::string &group_id)
         connect(this,
                 &CommunitiesList::groupRoomsRetrieved,
                 this,
-                [this](const QString &id, const std::vector<QString> &rooms) {
+                [this](const QString &id, const std::map<QString, bool> &rooms) {
                         if (communities_.find(id) == communities_.end())
                                 return;
 
@@ -109,9 +109,9 @@ CommunitiesList::addCommunity(const std::string &group_id)
                           return;
                   }
 
-                  std::vector<QString> room_ids;
+                  std::map<QString, bool> room_ids;
                   for (const auto &room : res.at("chunk"))
-                          room_ids.push_back(QString::fromStdString(room.at("room_id")));
+                          room_ids.emplace(QString::fromStdString(room.at("room_id")), true);
 
                   emit groupRoomsRetrieved(id, room_ids);
           });
@@ -185,7 +185,7 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
           });
 }
 
-std::vector<QString>
+std::map<QString, bool>
 CommunitiesList::roomList(const QString &id) const
 {
         if (communityExists(id))
