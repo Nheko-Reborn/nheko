@@ -369,6 +369,14 @@ handle_key_request_message(const mtx::events::msg::KeyRequest &req)
                 return;
         }
 
+        if (!cache::client()->isRoomMember(req.sender, req.room_id)) {
+                nhlog::crypto()->warn(
+                  "user {} that requested the session key is not member of the room {}",
+                  req.sender,
+                  req.room_id);
+                return;
+        }
+
         //
         // Prepare the m.room_key event.
         //

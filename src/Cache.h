@@ -400,6 +400,9 @@ public:
         void setDeviceList(const std::string &user_id, const std::vector<std::string> &devices);
         std::vector<std::string> getDeviceList(const std::string &user_id);
 
+        //! Check if a user is a member of the room.
+        bool isRoomMember(const std::string &user_id, const std::string &room_id);
+
         //
         // Outbound Megolm Sessions
         //

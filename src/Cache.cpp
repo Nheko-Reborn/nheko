@@ -1714,6 +1714,19 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
         return members;
 }
 
+bool
+Cache::isRoomMember(const std::string &user_id, const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getMembersDb(txn, room_id);
+
+        lmdb::val value;
+        bool res = lmdb::dbi_get(txn, db, lmdb::val(user_id), value);
+        txn.commit();
+
+        return res;
+}
+
 void
 Cache::saveTimelineMessages(lmdb::txn &txn,
                             const std::string &room_id,
