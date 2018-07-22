@@ -4,7 +4,6 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
-#include <QSettings>
 #include <QSharedPointer>
 #include <QStyleOption>
 #include <QVBoxLayout>
@@ -26,40 +25,55 @@
 using namespace dialogs;
 using namespace mtx::events;
 
+constexpr int BUTTON_SIZE       = 36;
+constexpr int BUTTON_RADIUS     = BUTTON_SIZE / 2;
+constexpr int WIDGET_MARGIN     = 20;
+constexpr int TOP_WIDGET_MARGIN = 2 * WIDGET_MARGIN;
+constexpr int WIDGET_SPACING    = 15;
+constexpr int TEXT_SPACING      = 4;
+constexpr int BUTTON_SPACING    = 2 * TEXT_SPACING;
+
 EditModal::EditModal(const QString &roomId, QWidget *parent)
   : QWidget(parent)
   , roomId_{roomId}
 {
-        setMinimumWidth(360);
         setAutoFillBackground(true);
         setAttribute(Qt::WA_DeleteOnClose, true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
         setWindowModality(Qt::WindowModal);
 
+        QFont doubleFont;
+        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
         auto layout = new QVBoxLayout(this);
 
+        QFont buttonFont;
+        buttonFont.setPointSizeF(buttonFont.pointSizeF() * 1.3);
+
         applyBtn_ = new FlatButton(tr("APPLY"), this);
-        applyBtn_->setFontSize(conf::btn::fontSize);
+        applyBtn_->setFont(buttonFont);
         applyBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
+        applyBtn_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
         cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-        cancelBtn_->setFontSize(conf::btn::fontSize);
+        cancelBtn_->setFont(buttonFont);
         cancelBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
+        cancelBtn_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto btnLayout = new QHBoxLayout;
-        btnLayout->setContentsMargins(5, 20, 5, 5);
+        btnLayout->setMargin(5);
+        btnLayout->addStretch(1);
         btnLayout->addWidget(applyBtn_);
         btnLayout->addWidget(cancelBtn_);
 
         nameInput_ = new TextField(this);
-        nameInput_->setLabel(tr("Name"));
+        nameInput_->setLabel(tr("Name").toUpper());
         topicInput_ = new TextField(this);
-        topicInput_->setLabel(tr("Topic"));
-
-        QFont font;
-        font.setPixelSize(conf::modals::errorFont);
+        topicInput_->setLabel(tr("Topic").toUpper());
 
         errorField_ = new QLabel(this);
-        errorField_->setFont(font);
         errorField_->setWordWrap(true);
         errorField_->hide();
 
@@ -154,79 +168,46 @@ EditModal::setFields(const QString &roomName, const QString &roomTopic)
         topicInput_->setText(roomTopic);
 }
 
-TopSection::TopSection(const RoomInfo &info, const QImage &img, QWidget *parent)
-  : QWidget{parent}
-  , info_{std::move(info)}
-{
-        textColor_ = palette().color(QPalette::Text);
-        avatar_    = utils::scaleImageToPixmap(img, AvatarSize);
-
-        QSizePolicy policy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        setSizePolicy(policy);
-}
-
-void
-TopSection::setRoomName(const QString &name)
-{
-        info_.name = name.toStdString();
-        update();
-}
-
-QSize
-TopSection::sizeHint() const
-{
-        QFont font;
-        font.setPixelSize(18);
-        return QSize(340, AvatarSize + QFontMetrics(font).ascent());
-}
-
 RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{std::move(room_id)}
 {
-        setMaximumWidth(420);
         retrieveRoomInfo();
 
-        constexpr int SettingsMargin = 2;
+        QFont doubleFont;
+        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+
+        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
-        layout->setSpacing(15);
-        layout->setMargin(20);
+        layout->setSpacing(WIDGET_SPACING);
+        layout->setContentsMargins(WIDGET_MARGIN, TOP_WIDGET_MARGIN, WIDGET_MARGIN, WIDGET_MARGIN);
 
-        okBtn_ = new FlatButton(tr("OK"), this);
-        okBtn_->setFontSize(conf::btn::fontSize);
-        cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-        cancelBtn_->setFontSize(conf::btn::fontSize);
+        QFont font;
+        font.setWeight(65);
+        font.setPointSizeF(font.pointSizeF() * 1.2);
+        auto settingsLabel = new QLabel(tr("Settings").toUpper(), this);
+        settingsLabel->setFont(font);
 
-        auto btnLayout = new QHBoxLayout();
-        btnLayout->setSpacing(0);
-        btnLayout->setMargin(0);
-        btnLayout->addStretch(1);
-        btnLayout->addWidget(okBtn_);
-        btnLayout->addWidget(cancelBtn_);
-
-        auto notifOptionLayout_ = new QHBoxLayout;
-        notifOptionLayout_->setMargin(SettingsMargin);
         auto notifLabel = new QLabel(tr("Notifications"), this);
         auto notifCombo = new QComboBox(this);
         notifCombo->setDisabled(true);
         notifCombo->addItem(tr("Muted"));
         notifCombo->addItem(tr("Mentions only"));
         notifCombo->addItem(tr("All messages"));
-        notifLabel->setStyleSheet("font-size: 15px;");
 
-        notifOptionLayout_->addWidget(notifLabel);
+        auto notifOptionLayout_ = new QHBoxLayout;
+        notifOptionLayout_->setMargin(0);
+        notifOptionLayout_->addWidget(notifLabel, Qt::AlignBottom | Qt::AlignLeft);
         notifOptionLayout_->addWidget(notifCombo, 0, Qt::AlignBottom | Qt::AlignRight);
 
-        auto accessOptionLayout = new QHBoxLayout();
-        accessOptionLayout->setMargin(SettingsMargin);
         auto accessLabel = new QLabel(tr("Room access"), this);
         accessCombo      = new QComboBox(this);
         accessCombo->addItem(tr("Anyone and guests"));
         accessCombo->addItem(tr("Anyone"));
         accessCombo->addItem(tr("Invited users"));
         accessCombo->setDisabled(true);
-        accessLabel->setStyleSheet("font-size: 15px;");
 
         if (info_.join_rule == JoinRule::Public) {
                 if (info_.guest_access) {
@@ -238,24 +219,19 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 accessCombo->setCurrentIndex(2);
         }
 
-        accessOptionLayout->addWidget(accessLabel);
-        accessOptionLayout->addWidget(accessCombo);
+        auto accessOptionLayout = new QHBoxLayout();
+        accessOptionLayout->setMargin(0);
+        accessOptionLayout->addWidget(accessLabel, Qt::AlignBottom | Qt::AlignLeft);
+        accessOptionLayout->addWidget(accessCombo, 0, Qt::AlignBottom | Qt::AlignRight);
 
-        auto encryptionOptionLayout = new QHBoxLayout;
-        encryptionOptionLayout->setMargin(SettingsMargin);
         auto encryptionLabel = new QLabel(tr("Encryption"), this);
-        encryptionLabel->setStyleSheet("font-size: 15px;");
-        encryptionToggle_ = new Toggle(this);
+        encryptionToggle_    = new Toggle(this);
         connect(encryptionToggle_, &Toggle::toggled, this, [this](bool isOn) {
                 if (isOn)
                         return;
 
-                QFont font;
-                font.setPixelSize(conf::fontSize);
-
                 QMessageBox msgBox;
                 msgBox.setIcon(QMessageBox::Question);
-                msgBox.setFont(font);
                 msgBox.setWindowTitle(tr("End-to-End Encryption"));
                 msgBox.setText(tr(
                   "Encryption is currently experimental and things might break unexpectedly. <br>"
@@ -279,7 +255,9 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 }
         });
 
-        encryptionOptionLayout->addWidget(encryptionLabel);
+        auto encryptionOptionLayout = new QHBoxLayout;
+        encryptionOptionLayout->setMargin(0);
+        encryptionOptionLayout->addWidget(encryptionLabel, Qt::AlignBottom | Qt::AlignLeft);
         encryptionOptionLayout->addWidget(encryptionToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
 
         // Disable encryption button.
@@ -296,30 +274,37 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 encryptionLabel->hide();
         }
 
-        QFont font;
-        font.setPixelSize(18);
-        font.setWeight(70);
+        avatar_ = new Avatar(this);
+        avatar_->setSize(128);
+        if (avatarImg_.isNull())
+                avatar_->setLetter(utils::firstChar(QString::fromStdString(info_.name)));
+        else
+                avatar_->setImage(avatarImg_);
 
-        auto menuLabel = new QLabel("Room Settings", this);
-        menuLabel->setFont(font);
+        auto roomNameLabel = new QLabel(QString::fromStdString(info_.name), this);
+        roomNameLabel->setFont(doubleFont);
 
-        topSection_ = new TopSection(info_, avatarImg_, this);
+        auto membersLabel =
+          new QLabel(QString::fromStdString("%1 members").arg(info_.member_count), this);
 
-        editLayout_ = new QHBoxLayout;
-        editLayout_->setMargin(0);
-        editLayout_->addWidget(topSection_);
+        auto textLayout = new QVBoxLayout;
+        textLayout->addWidget(roomNameLabel);
+        textLayout->addWidget(membersLabel);
+        textLayout->setAlignment(roomNameLabel, Qt::AlignCenter | Qt::AlignTop);
+        textLayout->setAlignment(membersLabel, Qt::AlignCenter | Qt::AlignTop);
+        textLayout->setSpacing(TEXT_SPACING);
+        textLayout->setMargin(0);
 
         setupEditButton();
 
-        layout->addWidget(menuLabel);
-        layout->addLayout(editLayout_);
+        layout->addWidget(avatar_, Qt::AlignCenter | Qt::AlignTop);
+        layout->addLayout(textLayout);
+        layout->addLayout(btnLayout_);
+        layout->addWidget(settingsLabel, Qt::AlignLeft);
         layout->addLayout(notifOptionLayout_);
         layout->addLayout(accessOptionLayout);
         layout->addLayout(encryptionOptionLayout);
-        layout->addLayout(btnLayout);
-
-        connect(cancelBtn_, &QPushButton::clicked, this, &RoomSettings::closing);
-        connect(okBtn_, &QPushButton::clicked, this, &RoomSettings::saveSettings);
+        layout->addStretch(1);
 
         connect(this, &RoomSettings::enableEncryptionError, this, [this](const QString &msg) {
                 encryptionToggle_->setState(true);
@@ -332,9 +317,12 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
 void
 RoomSettings::setupEditButton()
 {
+        btnLayout_ = new QHBoxLayout;
+        btnLayout_->setSpacing(BUTTON_SPACING);
+        btnLayout_->setMargin(0);
+
         try {
-                QSettings settings;
-                auto userId = settings.value("auth/user_id").toString().toStdString();
+                auto userId = utils::localUser().toStdString();
 
                 hasEditRights_ = cache::client()->hasEnoughPowerLevel(
                   {EventType::RoomName, EventType::RoomTopic}, room_id_.toStdString(), userId);
@@ -342,20 +330,17 @@ RoomSettings::setupEditButton()
                 nhlog::db()->warn("lmdb error: {}", e.what());
         }
 
-        constexpr int buttonSize = 36;
-        constexpr int iconSize   = buttonSize / 2;
-
         if (!hasEditRights_)
                 return;
 
         QIcon editIcon;
-        editIcon.addFile(":/icons/icons/ui/edit.svg");
+        editIcon.addFile(":/icons/icons/ui/edit.png");
         editFieldsBtn_ = new FlatButton(this);
-        editFieldsBtn_->setFixedSize(buttonSize, buttonSize);
-        editFieldsBtn_->setCornerRadius(iconSize);
+        editFieldsBtn_->setFixedSize(BUTTON_SIZE, BUTTON_SIZE);
+        editFieldsBtn_->setCornerRadius(BUTTON_RADIUS);
         editFieldsBtn_->setIcon(editIcon);
         editFieldsBtn_->setIcon(editIcon);
-        editFieldsBtn_->setIconSize(QSize(iconSize, iconSize));
+        editFieldsBtn_->setIconSize(QSize(BUTTON_RADIUS, BUTTON_RADIUS));
 
         connect(editFieldsBtn_, &QPushButton::clicked, this, [this]() {
                 retrieveRoomInfo();
@@ -364,12 +349,14 @@ RoomSettings::setupEditButton()
                 modal->setFields(QString::fromStdString(info_.name),
                                  QString::fromStdString(info_.topic));
                 modal->show();
-                connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
-                        topSection_->setRoomName(newName);
+                connect(modal, &EditModal::nameChanged, this, [](const QString &newName) {
+                        Q_UNUSED(newName);
                 });
         });
 
-        editLayout_->addWidget(editFieldsBtn_, 0, Qt::AlignRight | Qt::AlignTop);
+        btnLayout_->addStretch(1);
+        btnLayout_->addWidget(editFieldsBtn_);
+        btnLayout_->addStretch(1);
 }
 
 void
@@ -438,65 +425,4 @@ RoomSettings::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-void
-TopSection::paintEvent(QPaintEvent *)
-{
-        Painter p(this);
-        PainterHighQualityEnabler hq(p);
-
-        constexpr int textStartX     = AvatarSize + 5 * Padding;
-        const int availableTextWidth = width() - textStartX;
-
-        constexpr int nameFont    = 15;
-        constexpr int membersFont = 14;
-
-        p.save();
-        p.setPen(textColor());
-        p.translate(textStartX, 2 * Padding);
-
-        // Draw the name.
-        QFont font;
-        font.setPixelSize(membersFont);
-        const auto members = QString("%1 members").arg(info_.member_count);
-
-        font.setPixelSize(nameFont);
-        const auto name = QFontMetrics(font).elidedText(
-          QString::fromStdString(info_.name), Qt::ElideRight, availableTextWidth - 4 * Padding);
-
-        font.setWeight(60);
-        p.setFont(font);
-        p.drawTextLeft(0, 0, name);
-
-        // Draw the number of members
-        p.translate(0, QFontMetrics(p.font()).ascent() + 2 * Padding);
-
-        font.setPixelSize(membersFont);
-        font.setWeight(50);
-        p.setFont(font);
-        p.drawTextLeft(0, 0, members);
-        p.restore();
-
-        if (avatar_.isNull()) {
-                font.setPixelSize(AvatarSize / 2);
-                font.setWeight(60);
-                p.setFont(font);
-
-                p.translate(Padding, Padding);
-                p.drawLetterAvatar(utils::firstChar(name),
-                                   QColor("white"),
-                                   QColor("black"),
-                                   AvatarSize + Padding,
-                                   AvatarSize + Padding,
-                                   AvatarSize);
-        } else {
-                QRect avatarRegion(Padding, Padding, AvatarSize, AvatarSize);
-
-                QPainterPath pp;
-                pp.addEllipse(avatarRegion.center(), AvatarSize, AvatarSize);
-
-                p.setClipPath(pp);
-                p.drawPixmap(avatarRegion, avatar_);
-        }
 }

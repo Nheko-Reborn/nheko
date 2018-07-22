@@ -49,32 +49,6 @@ private:
         FlatButton *cancelBtn_;
 };
 
-class TopSection : public QWidget
-{
-        Q_OBJECT
-
-        Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
-
-public:
-        TopSection(const RoomInfo &info, const QImage &img, QWidget *parent = nullptr);
-        QSize sizeHint() const override;
-        void setRoomName(const QString &name);
-
-        QColor textColor() const { return textColor_; }
-        void setTextColor(QColor &color) { textColor_ = color; }
-
-protected:
-        void paintEvent(QPaintEvent *event) override;
-
-private:
-        static constexpr int AvatarSize = 72;
-        static constexpr int Padding    = 5;
-
-        RoomInfo info_;
-        QPixmap avatar_;
-        QColor textColor_;
-};
-
 namespace dialogs {
 
 class RoomSettings : public QFrame
@@ -102,22 +76,18 @@ private:
         void retrieveRoomInfo();
         void enableEncryption();
 
+        Avatar *avatar_;
+
         //! Whether the user would be able to change the name or the topic of the room.
         bool hasEditRights_  = true;
         bool usesEncryption_ = false;
-        QHBoxLayout *editLayout_;
-
-        // Button section
-        FlatButton *okBtn_;
-        FlatButton *cancelBtn_;
+        QHBoxLayout *btnLayout_;
 
         FlatButton *editFieldsBtn_;
 
         RoomInfo info_;
         QString room_id_;
         QImage avatarImg_;
-
-        TopSection *topSection_;
 
         QComboBox *accessCombo;
         Toggle *encryptionToggle_;

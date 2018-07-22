@@ -18,7 +18,7 @@ CommunitiesListItem::CommunitiesListItem(QString group_id, QWidget *parent)
         rippleOverlay_->setClipping(true);
 
         if (groupId_ == "world")
-                avatar_ = QPixmap(":/icons/icons/ui/world.svg");
+                avatar_ = QPixmap(":/icons/icons/ui/world.png");
 }
 
 void
