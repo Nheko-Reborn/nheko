@@ -26,7 +26,7 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
         textLayout_->setSpacing(0);
 
         avatar_ = new Avatar(this);
-        avatar_->setSize(44);
+        avatar_->setSize(46);
         avatar_->setLetter(utils::firstChar(member.display_name));
 
         if (!member.avatar.isNull())
@@ -37,17 +37,13 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
                                         this,
                                         [this](const QImage &img) { avatar_->setImage(img); });
 
-        QFont nameFont, idFont;
+        QFont nameFont;
         nameFont.setWeight(65);
-        nameFont.setPixelSize(conf::receipts::font + 1);
-        idFont.setWeight(50);
-        idFont.setPixelSize(conf::receipts::font);
+        nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
 
+        userId_   = new QLabel(member.user_id, this);
         userName_ = new QLabel(member.display_name, this);
         userName_->setFont(nameFont);
-
-        userId_ = new QLabel(member.user_id, this);
-        userId_->setFont(idFont);
 
         textLayout_->addWidget(userName_);
         textLayout_->addWidget(userId_);
@@ -60,12 +56,17 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{room_id}
 {
-        setMaximumSize(420, 380);
+        QFont doubleFont;
+        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30);
+        setMinimumHeight(conf::modals::MIN_WIDGET_HEIGHT);
+
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         setAttribute(Qt::WA_DeleteOnClose, true);
 
         auto layout = new QVBoxLayout(this);
-        layout->setSpacing(30);
-        layout->setMargin(20);
+        layout->setSpacing(conf::modals::WIDGET_SPACING);
+        layout->setMargin(conf::modals::WIDGET_MARGIN);
 
         list_ = new QListWidget;
         list_->setFrameStyle(QFrame::NoFrame);
@@ -74,7 +75,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         list_->setSpacing(5);
 
         QFont font;
-        font.setPixelSize(conf::headerFontSize);
+        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_BIG_SIZE_RATIO);
 
         topLabel_ = new QLabel(tr("Room members"), this);
         topLabel_->setAlignment(Qt::AlignCenter);

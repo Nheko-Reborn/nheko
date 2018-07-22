@@ -33,6 +33,24 @@ namespace dialogs {
 constexpr int labelSize = 15;
 }
 
+namespace modals {
+constexpr int MIN_WIDGET_WIDTH  = 400;
+constexpr int MIN_WIDGET_HEIGHT = 400;
+
+constexpr int WIDGET_MARGIN     = 20;
+constexpr int WIDGET_SPACING    = 15;
+constexpr int WIDGET_TOP_MARGiN = 2 * WIDGET_MARGIN;
+
+constexpr int TEXT_SPACING = 4;
+
+constexpr int BUTTON_SIZE   = 36;
+constexpr int BUTTON_RADIUS = BUTTON_SIZE / 2;
+
+constexpr float BUTTON_TEXT_SIZE_RATIO  = 1.3;
+constexpr float LABEL_MEDIUM_SIZE_RATIO = 1.3;
+constexpr float LABEL_BIG_SIZE_RATIO    = 2;
+}
+
 namespace strings {
 const QString url_html = "<a href=\"\\1\">\\1</a>";
 const QRegExp url_regex(

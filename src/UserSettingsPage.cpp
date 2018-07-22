@@ -118,8 +118,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         backBtn_->setIcon(icon);
         backBtn_->setIconSize(QSize(24, 24));
 
-        auto heading_ = new QLabel(tr("User Settings"));
-        heading_->setStyleSheet("font-weight: bold; font-size: 22px;");
+        QFont font;
+        font.setPointSizeF(font.pointSizeF() * 1.1);
 
         auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version).arg(nheko::build_os));
         versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -128,14 +128,13 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         topBarLayout_->setSpacing(0);
         topBarLayout_->setMargin(0);
         topBarLayout_->addWidget(backBtn_, 1, Qt::AlignLeft | Qt::AlignVCenter);
-        topBarLayout_->addWidget(heading_, 0, Qt::AlignBottom);
         topBarLayout_->addStretch(1);
 
         auto trayOptionLayout_ = new QHBoxLayout;
         trayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto trayLabel = new QLabel(tr("Minimize to tray"), this);
-        trayToggle_    = new Toggle(this);
-        trayLabel->setStyleSheet("font-size: 15px;");
+        trayLabel->setFont(font);
+        trayToggle_ = new Toggle(this);
 
         trayOptionLayout_->addWidget(trayLabel);
         trayOptionLayout_->addWidget(trayToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
@@ -143,10 +142,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         auto startInTrayOptionLayout_ = new QHBoxLayout;
         startInTrayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto startInTrayLabel = new QLabel(tr("Start in tray"), this);
-        startInTrayToggle_    = new Toggle(this);
+        startInTrayLabel->setFont(font);
+        startInTrayToggle_ = new Toggle(this);
         if (!settings_->isTrayEnabled())
                 startInTrayToggle_->setDisabled(true);
-        startInTrayLabel->setStyleSheet("font-size: 15px;");
 
         startInTrayOptionLayout_->addWidget(startInTrayLabel);
         startInTrayOptionLayout_->addWidget(
@@ -154,9 +153,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         auto orderRoomLayout = new QHBoxLayout;
         orderRoomLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto orderLabel  = new QLabel(tr("Re-order rooms based on activity"), this);
+        auto orderLabel = new QLabel(tr("Re-order rooms based on activity"), this);
+        orderLabel->setFont(font);
         roomOrderToggle_ = new Toggle(this);
-        orderLabel->setStyleSheet("font-size: 15px;");
 
         orderRoomLayout->addWidget(orderLabel);
         orderRoomLayout->addWidget(roomOrderToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
@@ -164,17 +163,17 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         auto groupViewLayout = new QHBoxLayout;
         groupViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto groupViewLabel = new QLabel(tr("Group's sidebar"), this);
-        groupViewToggle_    = new Toggle(this);
-        groupViewLabel->setStyleSheet("font-size: 15px;");
+        groupViewLabel->setFont(font);
+        groupViewToggle_ = new Toggle(this);
 
         groupViewLayout->addWidget(groupViewLabel);
         groupViewLayout->addWidget(groupViewToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto typingLayout = new QHBoxLayout;
         typingLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto typingLabel     = new QLabel(tr("Typing notifications"), this);
+        auto typingLabel = new QLabel(tr("Typing notifications"), this);
+        typingLabel->setFont(font);
         typingNotifications_ = new Toggle(this);
-        typingLabel->setStyleSheet("font-size: 15px;");
 
         typingLayout->addWidget(typingLabel);
         typingLayout->addWidget(typingNotifications_, 0, Qt::AlignBottom | Qt::AlignRight);
@@ -182,8 +181,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         auto receiptsLayout = new QHBoxLayout;
         receiptsLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto receiptsLabel = new QLabel(tr("Read receipts"), this);
-        readReceipts_      = new Toggle(this);
-        receiptsLabel->setStyleSheet("font-size: 15px;");
+        receiptsLabel->setFont(font);
+        readReceipts_ = new Toggle(this);
 
         receiptsLayout->addWidget(receiptsLabel);
         receiptsLayout->addWidget(readReceipts_, 0, Qt::AlignBottom | Qt::AlignRight);
@@ -191,17 +190,18 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto themeLabel_ = new QLabel(tr("Theme"), this);
-        themeCombo_      = new QComboBox(this);
+        themeLabel_->setFont(font);
+        themeCombo_ = new QComboBox(this);
         themeCombo_->addItem("Light");
         themeCombo_->addItem("Dark");
         themeCombo_->addItem("System");
-        themeLabel_->setStyleSheet("font-size: 15px;");
 
         themeOptionLayout_->addWidget(themeLabel_);
         themeOptionLayout_->addWidget(themeCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        font.setWeight(65);
         auto general_ = new QLabel(tr("GENERAL"), this);
-        general_->setStyleSheet("font-size: 17px");
+        general_->setFont(font);
 
         mainLayout_ = new QVBoxLayout;
         mainLayout_->setSpacing(7);

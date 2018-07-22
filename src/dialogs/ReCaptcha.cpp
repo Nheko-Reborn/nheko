@@ -22,21 +22,24 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
         setWindowModality(Qt::WindowModal);
 
         auto layout = new QVBoxLayout(this);
-        layout->setSpacing(30);
-        layout->setMargin(20);
+        layout->setSpacing(conf::modals::WIDGET_SPACING);
+        layout->setMargin(conf::modals::WIDGET_MARGIN);
 
         auto buttonLayout = new QHBoxLayout();
         buttonLayout->setSpacing(8);
         buttonLayout->setMargin(0);
 
+        QFont buttonFont;
+        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
+
         openCaptchaBtn_ = new FlatButton("OPEN reCAPTCHA", this);
-        openCaptchaBtn_->setFontSize(conf::btn::fontSize);
+        openCaptchaBtn_->setFont(buttonFont);
 
         confirmBtn_ = new RaisedButton(tr("CONFIRM"), this);
-        confirmBtn_->setFontSize(conf::btn::fontSize);
+        confirmBtn_->setFont(buttonFont);
 
         cancelBtn_ = new RaisedButton(tr("CANCEL"), this);
-        cancelBtn_->setFontSize(conf::btn::fontSize);
+        cancelBtn_->setFont(buttonFont);
 
         buttonLayout->addStretch(1);
         buttonLayout->addWidget(openCaptchaBtn_);
@@ -44,7 +47,7 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
         buttonLayout->addWidget(cancelBtn_);
 
         QFont font;
-        font.setPixelSize(conf::headerFontSize);
+        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
 
         auto label = new QLabel(tr("Solve the reCAPTCHA and press the confirm button"), this);
         label->setFont(font);

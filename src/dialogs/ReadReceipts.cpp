@@ -28,15 +28,16 @@ ReceiptItem::ReceiptItem(QWidget *parent,
 
         textLayout_ = new QVBoxLayout;
         textLayout_->setMargin(0);
-        textLayout_->setSpacing(5);
+        textLayout_->setSpacing(conf::modals::TEXT_SPACING);
 
-        QFont font;
-        font.setPixelSize(conf::receipts::font);
+        QFont nameFont;
+        nameFont.setWeight(65);
+        nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
 
         auto displayName = Cache::displayName(room_id, user_id);
 
         avatar_ = new Avatar(this);
-        avatar_->setSize(40);
+        avatar_->setSize(44);
         avatar_->setLetter(utils::firstChar(displayName));
 
         // If it's a matrix id we use the second letter.
@@ -44,10 +45,9 @@ ReceiptItem::ReceiptItem(QWidget *parent,
                 avatar_->setLetter(QChar(displayName.at(1)));
 
         userName_ = new QLabel(displayName, this);
-        userName_->setFont(font);
+        userName_->setFont(nameFont);
 
         timestamp_ = new QLabel(dateFormat(QDateTime::fromMSecsSinceEpoch(timestamp)), this);
-        timestamp_->setFont(font);
 
         textLayout_->addWidget(userName_);
         textLayout_->addWidget(timestamp_);
@@ -80,20 +80,21 @@ ReceiptItem::dateFormat(const QDateTime &then) const
 ReadReceipts::ReadReceipts(QWidget *parent)
   : QFrame(parent)
 {
-        setMaximumSize(400, 350);
+        setMinimumSize(conf::modals::MIN_WIDGET_WIDTH, conf::modals::MIN_WIDGET_HEIGHT);
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
-        layout->setSpacing(30);
-        layout->setMargin(20);
+        layout->setSpacing(conf::modals::WIDGET_SPACING);
+        layout->setMargin(conf::modals::WIDGET_MARGIN);
 
         userList_ = new QListWidget;
         userList_->setFrameStyle(QFrame::NoFrame);
         userList_->setSelectionMode(QAbstractItemView::NoSelection);
         userList_->setAttribute(Qt::WA_MacShowFocusRect, 0);
-        userList_->setSpacing(5);
+        userList_->setSpacing(conf::modals::TEXT_SPACING);
 
         QFont font;
-        font.setPixelSize(conf::headerFontSize);
+        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
 
         topLabel_ = new QLabel(tr("Read receipts"), this);
         topLabel_->setAlignment(Qt::AlignCenter);

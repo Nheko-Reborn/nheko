@@ -16,21 +16,25 @@ using namespace dialogs;
 CreateRoom::CreateRoom(QWidget *parent)
   : QFrame(parent)
 {
-        setMaximumSize(520, 600);
+        setMinimumSize(conf::modals::MIN_WIDGET_WIDTH, conf::modals::MIN_WIDGET_HEIGHT);
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
-        layout->setSpacing(30);
-        layout->setMargin(20);
+        layout->setSpacing(conf::modals::WIDGET_SPACING);
+        layout->setMargin(conf::modals::WIDGET_MARGIN);
 
         auto buttonLayout = new QHBoxLayout();
         buttonLayout->setSpacing(0);
         buttonLayout->setMargin(0);
 
+        QFont buttonFont;
+        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
+
         confirmBtn_ = new FlatButton("CREATE", this);
-        confirmBtn_->setFontSize(conf::btn::fontSize);
+        confirmBtn_->setFont(buttonFont);
 
         cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-        cancelBtn_->setFontSize(conf::btn::fontSize);
+        cancelBtn_->setFont(buttonFont);
 
         buttonLayout->addStretch(1);
         buttonLayout->addWidget(confirmBtn_);
@@ -55,8 +59,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         presetLayout->setContentsMargins(0, 10, 0, 10);
 
         auto visibilityLabel = new QLabel(tr("Room Visibility"), this);
-        visibilityLabel->setStyleSheet(QString("font-size: %1px;").arg(conf::dialogs::labelSize));
-        visibilityCombo_ = new QComboBox(this);
+        visibilityCombo_     = new QComboBox(this);
         visibilityCombo_->addItem("Private");
         visibilityCombo_->addItem("Public");
 
@@ -64,8 +67,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         visibilityLayout->addWidget(visibilityCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto presetLabel = new QLabel(tr("Room Preset"), this);
-        presetLabel->setStyleSheet(QString("font-size: %1px;").arg(conf::dialogs::labelSize));
-        presetCombo_ = new QComboBox(this);
+        presetCombo_     = new QComboBox(this);
         presetCombo_->addItem("Private Chat");
         presetCombo_->addItem("Public Chat");
         presetCombo_->addItem("Trusted Private Chat");
@@ -74,8 +76,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         presetLayout->addWidget(presetCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto directLabel_ = new QLabel(tr("Direct Chat"), this);
-        directLabel_->setStyleSheet(QString("font-size: %1px;").arg(conf::dialogs::labelSize));
-        directToggle_ = new Toggle(this);
+        directToggle_     = new Toggle(this);
         directToggle_->setActiveColor(QColor("#38A3D8"));
         directToggle_->setInactiveColor(QColor("gray"));
         directToggle_->setState(true);

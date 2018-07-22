@@ -20,28 +20,29 @@ using namespace dialogs;
 InviteUsers::InviteUsers(QWidget *parent)
   : QFrame(parent)
 {
-        setMaximumSize(400, 350);
+        setMinimumWidth(conf::modals::MIN_WIDGET_WIDTH);
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
-        layout->setSpacing(30);
-        layout->setMargin(20);
+        layout->setSpacing(conf::modals::WIDGET_SPACING);
+        layout->setMargin(conf::modals::WIDGET_MARGIN);
 
         auto buttonLayout = new QHBoxLayout();
         buttonLayout->setSpacing(0);
         buttonLayout->setMargin(0);
 
+        QFont buttonFont;
+        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
+
         confirmBtn_ = new FlatButton("INVITE", this);
-        confirmBtn_->setFontSize(conf::btn::fontSize);
+        confirmBtn_->setFont(buttonFont);
 
         cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-        cancelBtn_->setFontSize(conf::btn::fontSize);
+        cancelBtn_->setFont(buttonFont);
 
         buttonLayout->addStretch(1);
         buttonLayout->addWidget(confirmBtn_);
         buttonLayout->addWidget(cancelBtn_);
-
-        QFont font;
-        font.setPixelSize(conf::headerFontSize);
 
         inviteeInput_ = new TextField(this);
         inviteeInput_->setLabel(tr("User ID to invite"));
@@ -54,8 +55,6 @@ InviteUsers::InviteUsers(QWidget *parent)
 
         errorLabel_ = new QLabel(this);
         errorLabel_->setAlignment(Qt::AlignCenter);
-        font.setPixelSize(12);
-        errorLabel_->setFont(font);
 
         layout->addWidget(inviteeInput_);
         layout->addWidget(errorLabel_);

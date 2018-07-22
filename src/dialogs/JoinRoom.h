@@ -20,6 +20,9 @@ protected:
         void paintEvent(QPaintEvent *event) override;
         void showEvent(QShowEvent *event) override;
 
+private slots:
+        void handleInput();
+
 private:
         FlatButton *confirmBtn_;
         FlatButton *cancelBtn_;

@@ -39,18 +39,23 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
   : QWidget{parent}
   , titleLabel_{this}
   , fileName_{this}
-  , upload_{tr("Upload"), this}
-  , cancel_{tr("Cancel"), this}
+  , upload_{tr("Upload").toUpper(), this}
+  , cancel_{tr("Cancel").toUpper(), this}
 {
         auto hlayout = new QHBoxLayout;
+        hlayout->addStretch(1);
         hlayout->addWidget(&upload_);
         hlayout->addWidget(&cancel_);
+        hlayout->setSpacing(0);
+        hlayout->setMargin(0);
 
         auto vlayout = new QVBoxLayout{this};
         vlayout->addWidget(&titleLabel_);
         vlayout->addWidget(&infoLabel_);
         vlayout->addWidget(&fileName_);
         vlayout->addLayout(hlayout);
+        vlayout->setSpacing(conf::modals::WIDGET_SPACING);
+        vlayout->setMargin(conf::modals::WIDGET_MARGIN);
 
         connect(&upload_, &QPushButton::clicked, [this]() {
                 emit confirmUpload(data_, mediaType_, fileName_.text());
@@ -79,8 +84,10 @@ PreviewUploadOverlay::init()
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
         setWindowModality(Qt::WindowModal);
 
-        titleLabel_.setStyleSheet(
-          QString{"font-weight: bold; font-size: %1px;"}.arg(conf::headerFontSize));
+        QFont font;
+        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
+
+        titleLabel_.setFont(font);
         titleLabel_.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         titleLabel_.setAlignment(Qt::AlignCenter);
         infoLabel_.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
@@ -88,8 +95,11 @@ PreviewUploadOverlay::init()
         fileName_.setAlignment(Qt::AlignCenter);
         upload_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         cancel_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        upload_.setFontSize(conf::btn::fontSize);
-        cancel_.setFontSize(conf::btn::fontSize);
+
+        QFont buttonFont;
+        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
+        upload_.setFont(buttonFont);
+        cancel_.setFont(buttonFont);
 
         if (isImage_) {
                 infoLabel_.setAlignment(Qt::AlignCenter);
