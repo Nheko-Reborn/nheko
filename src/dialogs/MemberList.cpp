@@ -26,7 +26,7 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
         textLayout_->setSpacing(0);
 
         avatar_ = new Avatar(this);
-        avatar_->setSize(46);
+        avatar_->setSize(44);
         avatar_->setLetter(utils::firstChar(member.display_name));
 
         if (!member.avatar.isNull())
@@ -38,7 +38,6 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
                                         [this](const QImage &img) { avatar_->setImage(img); });
 
         QFont nameFont;
-        nameFont.setWeight(65);
         nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
 
         userId_   = new QLabel(member.user_id, this);
@@ -56,10 +55,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{room_id}
 {
-        QFont doubleFont;
-        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
-        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30);
-        setMinimumHeight(conf::modals::MIN_WIDGET_HEIGHT);
+        setMinimumSize(conf::modals::MIN_WIDGET_WIDTH, conf::modals::MIN_WIDGET_HEIGHT);
 
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         setAttribute(Qt::WA_DeleteOnClose, true);
@@ -75,7 +71,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         list_->setSpacing(5);
 
         QFont font;
-        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_BIG_SIZE_RATIO);
+        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
 
         topLabel_ = new QLabel(tr("Room members"), this);
         topLabel_->setAlignment(Qt::AlignCenter);

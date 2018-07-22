@@ -31,7 +31,6 @@ ReceiptItem::ReceiptItem(QWidget *parent,
         textLayout_->setSpacing(conf::modals::TEXT_SPACING);
 
         QFont nameFont;
-        nameFont.setWeight(65);
         nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
 
         auto displayName = Cache::displayName(room_id, user_id);
