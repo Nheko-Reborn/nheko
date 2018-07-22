@@ -1,5 +1,5 @@
-#include "Cache.h"
 #include "CommunitiesList.h"
+#include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 

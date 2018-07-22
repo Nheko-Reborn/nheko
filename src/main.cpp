@@ -26,6 +26,7 @@
 #include <QLibraryInfo>
 #include <QPalette>
 #include <QPoint>
+#include <QProcessEnvironment>
 #include <QPushButton>
 #include <QSettings>
 #include <QStandardPaths>
@@ -36,6 +37,7 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "RunGuard.h"
+#include "Utils.h"
 #include "ui/RaisedButton.h"
 #include "version.h"
 
@@ -98,7 +100,6 @@ main(int argc, char *argv[])
                 QApplication a(argc, argv);
 
                 QFont font;
-                font.setPointSize(15);
                 font.setWeight(60);
 
                 QWidget widget;
@@ -117,7 +118,6 @@ main(int argc, char *argv[])
                 RaisedButton submitBtn("OK");
                 submitBtn.setBackgroundColor(pal.color(QPalette::Button));
                 submitBtn.setForegroundColor(pal.color(QPalette::ButtonText));
-                submitBtn.setMinimumSize(120, 35);
                 submitBtn.setFontSize(conf::btn::fontSize);
                 submitBtn.setCornerRadius(conf::btn::cornerRadius);
 
@@ -127,7 +127,7 @@ main(int argc, char *argv[])
                 layout.addWidget(&msg);
                 layout.addLayout(&btnLayout);
 
-                widget.setFixedSize(480, 180);
+                widget.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
                 widget.move(screenCenter(widget.width(), widget.height()));
                 widget.show();
 
@@ -135,6 +135,15 @@ main(int argc, char *argv[])
 
                 return a.exec();
         }
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+        if (qgetenv("QT_SCALE_FACTOR").size() == 0) {
+                float factor = utils::scaleFactor();
+
+                if (factor != -1)
+                        qputenv("QT_SCALE_FACTOR", QString::number(factor).toUtf8());
+        }
+#endif
 
         QApplication app(argc, argv);
         QCoreApplication::setApplicationName("nheko");

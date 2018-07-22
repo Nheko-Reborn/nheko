@@ -126,6 +126,7 @@ signals:
 
 private:
         void restoreThemeCombo() const;
+        void restoreScaleFactor() const;
 
         // Layouts
         QVBoxLayout *topLayout_;
@@ -143,6 +144,7 @@ private:
         Toggle *readReceipts_;
 
         QComboBox *themeCombo_;
+        QComboBox *scaleFactorCombo_;
 
         int sideMargin_ = 0;
 };

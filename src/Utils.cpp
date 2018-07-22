@@ -15,6 +15,23 @@ utils::localUser()
         return settings.value("auth/user_id").toString();
 }
 
+void
+utils::setScaleFactor(float factor)
+{
+        if (factor < 1 || factor > 3)
+                return;
+
+        QSettings settings;
+        settings.setValue("settings/scale_factor", factor);
+}
+
+float
+utils::scaleFactor()
+{
+        QSettings settings("nheko", "nheko");
+        return settings.value("settings/scale_factor", -1).toFloat();
+}
+
 bool
 utils::respondsToKeyRequests(const std::string &roomId)
 {

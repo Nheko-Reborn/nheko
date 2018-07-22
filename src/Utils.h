@@ -18,6 +18,12 @@ using TimelineEvent = mtx::events::collections::TimelineEvents;
 QString
 localUser();
 
+float
+scaleFactor();
+
+void
+setScaleFactor(float factor);
+
 //! Whether or not we should respond to key requests for the given room.
 bool
 respondsToKeyRequests(const QString &roomId);

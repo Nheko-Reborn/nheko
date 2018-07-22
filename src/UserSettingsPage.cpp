@@ -25,6 +25,7 @@
 
 #include "Config.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 #include "ui/FlatButton.h"
 #include "ui/ToggleButton.h"
 
@@ -187,6 +188,24 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         receiptsLayout->addWidget(receiptsLabel);
         receiptsLayout->addWidget(readReceipts_, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto scaleFactorOptionLayout = new QHBoxLayout;
+        scaleFactorOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto scaleFactorLabel = new QLabel(tr("Scale factor (requires restart)"), this);
+        scaleFactorLabel->setFont(font);
+        scaleFactorCombo_ = new QComboBox(this);
+        scaleFactorCombo_->addItem("1");
+        scaleFactorCombo_->addItem("1.25");
+        scaleFactorCombo_->addItem("1.5");
+        scaleFactorCombo_->addItem("1.75");
+        scaleFactorCombo_->addItem("2");
+        scaleFactorCombo_->addItem("2.25");
+        scaleFactorCombo_->addItem("2.5");
+        scaleFactorCombo_->addItem("2.75");
+        scaleFactorCombo_->addItem("3");
+
+        scaleFactorOptionLayout->addWidget(scaleFactorLabel);
+        scaleFactorOptionLayout->addWidget(scaleFactorCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto themeLabel_ = new QLabel(tr("Theme"), this);
@@ -219,6 +238,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addLayout(typingLayout);
         mainLayout_->addLayout(receiptsLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
+
+#if defined(Q_OS_MAC)
+        scaleFactorLabel->hide();
+        scaleFactorCombo_->hide();
+#else
+        mainLayout_->addLayout(scaleFactorOptionLayout);
+        mainLayout_->addWidget(new HorizontalLine(this));
+#endif
+
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
 
@@ -241,6 +269,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(themeCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [this](const QString &text) { settings_->setTheme(text.toLower()); });
+        connect(scaleFactorCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                [this](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
 
         connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTray(!isDisabled);
@@ -282,6 +313,7 @@ void
 UserSettingsPage::showEvent(QShowEvent *)
 {
         restoreThemeCombo();
+        restoreScaleFactor();
 
         // FIXME: Toggle treats true as "off"
         trayToggle_->setState(!settings_->isTrayEnabled());
@@ -309,6 +341,33 @@ UserSettingsPage::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+UserSettingsPage::restoreScaleFactor() const
+{
+        auto factor = utils::scaleFactor();
+
+        if (factor == 1)
+                scaleFactorCombo_->setCurrentIndex(0);
+        else if (factor == 1.25)
+                scaleFactorCombo_->setCurrentIndex(1);
+        else if (factor == 1.5)
+                scaleFactorCombo_->setCurrentIndex(2);
+        else if (factor == 1.75)
+                scaleFactorCombo_->setCurrentIndex(3);
+        else if (factor == 2)
+                scaleFactorCombo_->setCurrentIndex(4);
+        else if (factor == 2.25)
+                scaleFactorCombo_->setCurrentIndex(5);
+        else if (factor == 2.5)
+                scaleFactorCombo_->setCurrentIndex(6);
+        else if (factor == 2.75)
+                scaleFactorCombo_->setCurrentIndex(7);
+        else if (factor == 3)
+                scaleFactorCombo_->setCurrentIndex(7);
+        else
+                scaleFactorCombo_->setCurrentIndex(0);
 }
 
 void

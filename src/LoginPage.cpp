@@ -277,7 +277,8 @@ LoginPage::onLoginButtonClicked()
         http::client()->login(
           user.localpart(),
           password_input_->text().toStdString(),
-          deviceName_->text().isEmpty() ? initialDeviceName() : deviceName_->text().toStdString(),
+          deviceName_->text().trimmed().isEmpty() ? initialDeviceName()
+                                                  : deviceName_->text().toStdString(),
           [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                   if (err) {
                           emit loginError(QString::fromStdString(err->matrix_error.error));
