@@ -3,6 +3,7 @@
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "Utils.h"
 
 using namespace mtx::crypto;
 
@@ -374,6 +375,11 @@ handle_key_request_message(const mtx::events::msg::KeyRequest &req)
                   "user {} that requested the session key is not member of the room {}",
                   req.sender,
                   req.room_id);
+                return;
+        }
+
+        if (!utils::respondsToKeyRequests(req.room_id)) {
+                nhlog::crypto()->info("ignoring all key requests for room {}", req.room_id);
                 return;
         }
 

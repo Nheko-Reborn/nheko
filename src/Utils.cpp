@@ -15,6 +15,32 @@ utils::localUser()
         return settings.value("auth/user_id").toString();
 }
 
+bool
+utils::respondsToKeyRequests(const std::string &roomId)
+{
+        return respondsToKeyRequests(QString::fromStdString(roomId));
+}
+
+bool
+utils::respondsToKeyRequests(const QString &roomId)
+{
+        if (roomId.isEmpty())
+                return false;
+
+        QSettings settings;
+        return settings.value("rooms/respond_to_key_requests/" + roomId, false).toBool();
+}
+
+void
+utils::setKeyRequestsPreference(QString roomId, bool value)
+{
+        if (roomId.isEmpty())
+                return;
+
+        QSettings settings;
+        settings.setValue("rooms/respond_to_key_requests/" + roomId, value);
+}
+
 QString
 utils::descriptiveTime(const QDateTime &then)
 {

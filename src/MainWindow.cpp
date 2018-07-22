@@ -341,6 +341,7 @@ MainWindow::openRoomSettings(const QString &room_id)
         roomSettingsModal_ =
           QSharedPointer<OverlayModal>(new OverlayModal(this, roomSettingsDialog_.data()));
 
+        roomSettingsModal_->setContentAlignment(Qt::AlignTop | Qt::AlignHCenter);
         roomSettingsModal_->show();
 }
 

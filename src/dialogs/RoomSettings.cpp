@@ -260,18 +260,43 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         encryptionOptionLayout->addWidget(encryptionLabel, Qt::AlignBottom | Qt::AlignLeft);
         encryptionOptionLayout->addWidget(encryptionToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto keyRequestsLabel = new QLabel(tr("Respond to key requests"), this);
+        keyRequestsLabel->setToolTipDuration(6000);
+        keyRequestsLabel->setToolTip(
+          tr("Whether or not the client should respond automatically with the session keys\n"
+             " upon request. Use with caution, this is a temporary measure to test the\n"
+             " E2E implementation until device verification is completed."));
+        keyRequestsToggle_ = new Toggle(this);
+        connect(keyRequestsToggle_, &Toggle::toggled, this, [this](bool isOn) {
+                utils::setKeyRequestsPreference(room_id_, !isOn);
+        });
+
+        auto keyRequestsLayout = new QHBoxLayout;
+        keyRequestsLayout->setMargin(0);
+        keyRequestsLayout->setSpacing(0);
+        keyRequestsLayout->addWidget(keyRequestsLabel, Qt::AlignBottom | Qt::AlignLeft);
+        keyRequestsLayout->addWidget(keyRequestsToggle_, 0, Qt::AlignBottom | Qt::AlignRight);
+
         // Disable encryption button.
         if (usesEncryption_) {
                 encryptionToggle_->setState(false);
                 encryptionToggle_->setEnabled(false);
+
+                keyRequestsToggle_->setState(!utils::respondsToKeyRequests(room_id_));
         } else {
                 encryptionToggle_->setState(true);
+
+                keyRequestsLabel->hide();
+                keyRequestsToggle_->hide();
         }
 
         // Hide encryption option for public rooms.
         if (!usesEncryption_ && (info_.join_rule == JoinRule::Public)) {
                 encryptionToggle_->hide();
                 encryptionLabel->hide();
+
+                keyRequestsLabel->hide();
+                keyRequestsToggle_->hide();
         }
 
         avatar_ = new Avatar(this);
@@ -284,8 +309,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         auto roomNameLabel = new QLabel(QString::fromStdString(info_.name), this);
         roomNameLabel->setFont(doubleFont);
 
-        auto membersLabel =
-          new QLabel(QString::fromStdString("%1 members").arg(info_.member_count), this);
+        auto membersLabel = new QLabel(tr("%n member(s)", "", info_.member_count), this);
 
         auto textLayout = new QVBoxLayout;
         textLayout->addWidget(roomNameLabel);
@@ -304,6 +328,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addLayout(notifOptionLayout_);
         layout->addLayout(accessOptionLayout);
         layout->addLayout(encryptionOptionLayout);
+        layout->addLayout(keyRequestsLayout);
         layout->addStretch(1);
 
         connect(this, &RoomSettings::enableEncryptionError, this, [this](const QString &msg) {

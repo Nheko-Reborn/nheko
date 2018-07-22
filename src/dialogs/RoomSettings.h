@@ -91,6 +91,7 @@ private:
 
         QComboBox *accessCombo;
         Toggle *encryptionToggle_;
+        Toggle *keyRequestsToggle_;
 };
 
 } // dialogs
