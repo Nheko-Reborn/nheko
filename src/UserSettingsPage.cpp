@@ -271,7 +271,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 [this](const QString &text) { settings_->setTheme(text.toLower()); });
         connect(scaleFactorCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
-                [this](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
+                [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
 
         connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTray(!isDisabled);

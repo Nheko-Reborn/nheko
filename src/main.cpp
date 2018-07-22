@@ -24,10 +24,8 @@
 #include <QLabel>
 #include <QLayout>
 #include <QLibraryInfo>
-#include <QPalette>
+#include <QMessageBox>
 #include <QPoint>
-#include <QProcessEnvironment>
-#include <QPushButton>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QTranslator>
@@ -38,7 +36,6 @@
 #include "MatrixClient.h"
 #include "RunGuard.h"
 #include "Utils.h"
-#include "ui/RaisedButton.h"
 #include "version.h"
 
 #if defined(Q_OS_LINUX)
@@ -99,41 +96,11 @@ main(int argc, char *argv[])
         if (!guard.tryToRun()) {
                 QApplication a(argc, argv);
 
-                QFont font;
-                font.setWeight(60);
+                QMessageBox msgBox;
+                msgBox.setText("Another instance of Nheko is running");
+                msgBox.exec();
 
-                QWidget widget;
-                QVBoxLayout layout(&widget);
-                layout.setContentsMargins(20, 10, 20, 20);
-                layout.setSpacing(0);
-
-                QHBoxLayout btnLayout;
-
-                QLabel msg("Another instance of nheko is currently running.");
-                msg.setWordWrap(true);
-                msg.setFont(font);
-
-                QPalette pal;
-
-                RaisedButton submitBtn("OK");
-                submitBtn.setBackgroundColor(pal.color(QPalette::Button));
-                submitBtn.setForegroundColor(pal.color(QPalette::ButtonText));
-                submitBtn.setFontSize(conf::btn::fontSize);
-                submitBtn.setCornerRadius(conf::btn::cornerRadius);
-
-                btnLayout.addStretch(1);
-                btnLayout.addWidget(&submitBtn);
-
-                layout.addWidget(&msg);
-                layout.addLayout(&btnLayout);
-
-                widget.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-                widget.move(screenCenter(widget.width(), widget.height()));
-                widget.show();
-
-                QObject::connect(&submitBtn, &QPushButton::clicked, &widget, &QWidget::close);
-
-                return a.exec();
+                return 0;
         }
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
