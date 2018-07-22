@@ -95,6 +95,9 @@ LoginPage::LoginPage(QWidget *parent)
         password_input_->setLabel(tr("Password"));
         password_input_->setEchoMode(QLineEdit::Password);
 
+        deviceName_ = new TextField(this);
+        deviceName_->setLabel(tr("Device name"));
+
         serverInput_ = new TextField(this);
         serverInput_->setLabel("Homeserver address");
         serverInput_->setPlaceholderText("matrix.org");
@@ -104,7 +107,8 @@ LoginPage::LoginPage(QWidget *parent)
         serverLayout_->addWidget(serverInput_, 0, Qt::AlignVCenter);
 
         form_layout_->addLayout(matrixidLayout_);
-        form_layout_->addWidget(password_input_, Qt::AlignHCenter, 0);
+        form_layout_->addWidget(password_input_);
+        form_layout_->addWidget(deviceName_, Qt::AlignHCenter, 0);
         form_layout_->addLayout(serverLayout_);
 
         button_layout_ = new QHBoxLayout();
@@ -145,6 +149,7 @@ LoginPage::LoginPage(QWidget *parent)
         connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
         connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
+        connect(deviceName_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(serverInput_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(matrixid_input_, SIGNAL(editingFinished()), this, SLOT(onMatrixIdEntered()));
         connect(serverInput_, SIGNAL(editingFinished()), this, SLOT(onServerAddressEntered()));
@@ -269,19 +274,19 @@ LoginPage::onLoginButtonClicked()
                 return loginError(tr("Empty password"));
 
         http::client()->set_server(serverInput_->text().toStdString());
-        http::client()->login(user.localpart(),
-                              password_input_->text().toStdString(),
-                              initialDeviceName(),
-                              [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
-                                      if (err) {
-                                              emit loginError(
-                                                QString::fromStdString(err->matrix_error.error));
-                                              emit errorOccurred();
-                                              return;
-                                      }
+        http::client()->login(
+          user.localpart(),
+          password_input_->text().toStdString(),
+          deviceName_->text().isEmpty() ? initialDeviceName() : deviceName_->text().toStdString(),
+          [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          emit loginError(QString::fromStdString(err->matrix_error.error));
+                          emit errorOccurred();
+                          return;
+                  }
 
-                                      emit loginOk(res);
-                              });
+                  emit loginOk(res);
+          });
 
         emit loggingIn();
 }

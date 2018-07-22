@@ -86,13 +86,13 @@ private:
         std::string initialDeviceName()
         {
 #if defined(Q_OS_MAC)
-                return "nheko on macOS";
+                return "Nheko on macOS";
 #elif defined(Q_OS_LINUX)
-                return "nheko on Linux";
+                return "Nheko on Linux";
 #elif defined(Q_OS_WIN)
-                return "nheko on Windows";
+                return "Nheko on Windows";
 #else
-                return "nheko";
+                return "Nheko";
 #endif
         }
 
@@ -120,5 +120,6 @@ private:
 
         TextField *matrixid_input_;
         TextField *password_input_;
+        TextField *deviceName_;
         TextField *serverInput_;
 };
