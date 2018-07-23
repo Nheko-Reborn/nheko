@@ -184,7 +184,7 @@ TimelineItem::init()
         topLayout_->setContentsMargins(
           conf::timeline::msgLeftMargin, conf::timeline::msgTopMargin, 0, 0);
         topLayout_->setSpacing(0);
-        topLayout_->addLayout(mainLayout_, 1);
+        topLayout_->addLayout(mainLayout_);
 
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
@@ -196,6 +196,9 @@ TimelineItem::init()
         statusIndicator_ = new StatusIndicator(this);
         statusIndicator_->setFixedWidth(tsFm.height() - tsFm.leading());
         statusIndicator_->setFixedHeight(tsFm.height() - tsFm.leading());
+
+        parentWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 }
 
 /*
@@ -586,7 +589,7 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setToolTip(user_id);
         userName_->setToolTipDuration(1500);
         userName_->setAttribute(Qt::WA_Hover);
-        userName_->setAlignment(Qt::AlignLeft);
+        userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
 
         auto filter = new UserProfileFilter(user_id, userName_);
@@ -659,10 +662,10 @@ TimelineItem::setupAvatarLayout(const QString &userName)
                 userAvatar_->setLetter(QChar(userName[1]).toUpper());
 
         topLayout_->insertWidget(0, userAvatar_);
-        topLayout_->setAlignment(userAvatar_, Qt::AlignTop);
+        topLayout_->setAlignment(userAvatar_, Qt::AlignTop | Qt::AlignLeft);
 
         if (userName_)
-                mainLayout_->insertWidget(0, userName_);
+                mainLayout_->insertWidget(0, userName_, Qt::AlignTop | Qt::AlignLeft);
 }
 
 void

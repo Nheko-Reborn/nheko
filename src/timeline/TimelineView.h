@@ -144,7 +144,7 @@ public slots:
         void addBackwardsEvents(const mtx::responses::Messages &msgs);
 
         // Whether or not the initial batch has been loaded.
-        bool hasLoaded() { return scroll_layout_->count() > 1 || isTimelineFinished; }
+        bool hasLoaded() { return scroll_layout_->count() > 0 || isTimelineFinished; }
 
         void handleFailedMessage(const std::string &txn_id);
 

@@ -115,7 +115,8 @@ public:
                         &TextLabel::adjustHeight);
                 document()->setDocumentMargin(0);
 
-                setFixedHeight(20);
+                setFixedHeight(QFontMetrics(QFont()).lineSpacing() + 4);
+                setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         }
 
         void wheelEvent(QWheelEvent *event) override { event->ignore(); }

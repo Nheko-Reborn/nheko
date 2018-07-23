@@ -183,7 +183,7 @@ TimelineView::addBackwardsEvents(const mtx::responses::Messages &msgs)
         // The RoomList message preview will be updated only if this
         // is the first batch of messages received through /messages
         // i.e there are no other messages currently present.
-        if (!topMessages_.empty() && scroll_layout_->count() == 1)
+        if (!topMessages_.empty() && scroll_layout_->count() == 0)
                 notifyForLastEvent(findFirstViewableEvent(topMessages_));
 
         if (isVisible()) {
@@ -513,7 +513,6 @@ TimelineView::init()
 
         scroll_layout_ = new QVBoxLayout(scroll_widget_);
         scroll_layout_->setContentsMargins(4, 0, 15, 15);
-        scroll_layout_->addStretch(1);
         scroll_layout_->setSpacing(0);
         scroll_layout_->setObjectName("timelinescrollarea");
 
@@ -610,8 +609,13 @@ TimelineView::addTimelineItem(QWidget *item, TimelineDirection direction)
         const auto newDate = getDate(item);
 
         if (direction == TimelineDirection::Bottom) {
-                const auto lastItemPosition = scroll_layout_->count() - 1;
-                const auto lastItem         = scroll_layout_->itemAt(lastItemPosition)->widget();
+                QWidget *lastItem    = nullptr;
+                int lastItemPosition = 0;
+
+                if (scroll_layout_->count() > 0) {
+                        lastItemPosition = scroll_layout_->count() - 1;
+                        lastItem         = scroll_layout_->itemAt(lastItemPosition)->widget();
+                }
 
                 if (lastItem) {
                         const auto oldDate = getDate(lastItem);
@@ -626,10 +630,8 @@ TimelineView::addTimelineItem(QWidget *item, TimelineDirection direction)
 
                 pushTimelineItem(item);
         } else {
-                // The first item (position 0) is a stretch widget that pushes
-                // the widgets to the bottom of the page.
-                if (scroll_layout_->count() > 1) {
-                        const auto firstItem = scroll_layout_->itemAt(1)->widget();
+                if (scroll_layout_->count() > 0) {
+                        const auto firstItem = scroll_layout_->itemAt(0)->widget();
 
                         if (firstItem) {
                                 const auto oldDate = getDate(firstItem);
@@ -638,12 +640,12 @@ TimelineView::addTimelineItem(QWidget *item, TimelineDirection direction)
                                         auto separator = new DateSeparator(oldDate);
 
                                         if (separator)
-                                                scroll_layout_->insertWidget(1, separator);
+                                                scroll_layout_->insertWidget(0, separator);
                                 }
                         }
                 }
 
-                scroll_layout_->insertWidget(1, item);
+                scroll_layout_->insertWidget(0, item);
         }
 }
 
@@ -1010,8 +1012,6 @@ TimelineView::clearTimeline()
 
         firstSender_.clear();
         lastSender_.clear();
-
-        scroll_layout_->addStretch(1);
 }
 
 void
@@ -1100,7 +1100,7 @@ TimelineView::relativeWidget(QWidget *item, int dt) const
 
         pos = pos + dt;
 
-        bool isOutOfBounds = (pos <= 0 || pos > scroll_layout_->count() - 1);
+        bool isOutOfBounds = (pos < 0 || pos > scroll_layout_->count() - 1);
 
         return isOutOfBounds ? nullptr : scroll_layout_->itemAt(pos)->widget();
 }
