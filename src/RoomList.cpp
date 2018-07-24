@@ -344,12 +344,14 @@ RoomList::closeJoinRoomDialog(bool isJoining, QString roomAlias)
 void
 RoomList::removeFilter()
 {
+        setUpdatesEnabled(false);
         for (int i = 0; i < contentsLayout_->count(); i++) {
                 auto widget =
                   qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
                 if (widget)
                         widget->show();
         }
+        setUpdatesEnabled(true);
 }
 
 void
