@@ -1,29 +1,26 @@
-#include <QDebug>
 #include <QPainter>
 
 #include <tweeny/tweeny.h>
 
 #include "SnackBar.h"
 
-constexpr int STARTING_OFFSET = 1;
+constexpr int STARTING_OFFSET         = 1;
+constexpr int ANIMATION_DURATION      = 6'000;
+constexpr int BOX_PADDING             = 10;
+constexpr double MIN_WIDTH            = 400.0;
+constexpr double MIN_WIDTH_PERCENTAGE = 0.3;
 
 SnackBar::SnackBar(QWidget *parent)
   : OverlayWidget(parent)
 {
-        bgOpacity_  = 0.9;
-        duration_   = 6000;
-        boxWidth_   = 400;
-        boxHeight_  = 40;
-        boxPadding_ = 10;
-        textColor_  = QColor("white");
-        bgColor_    = QColor("#333");
-        offset_     = STARTING_OFFSET;
-        position_   = SnackBarPosition::Top;
-
-        QFont font("Open Sans");
-        font.setPixelSize(14);
+        QFont font;
+        font.setPointSizeF(font.pointSizeF() * 1.2);
         font.setWeight(50);
         setFont(font);
+
+        boxHeight_ = QFontMetrics(font).height() * 2;
+        offset_    = STARTING_OFFSET;
+        position_  = SnackBarPosition::Top;
 
         hideTimer_.setSingleShot(true);
 
@@ -31,10 +28,10 @@ SnackBar::SnackBar(QWidget *parent)
         connect(&showTimer_, &QTimer::timeout, this, [this, offset_anim]() mutable {
                 if (offset_anim.progress() < 1.0f) {
                         offset_ = offset_anim.step(0.07f);
-                        update();
+                        repaint();
                 } else {
                         showTimer_.stop();
-                        hideTimer_.start(duration_);
+                        hideTimer_.start(ANIMATION_DURATION);
                         offset_anim.seek(0.0f);
                 }
         });
@@ -115,27 +112,26 @@ SnackBar::paintEvent(QPaintEvent *event)
         brush.setStyle(Qt::SolidPattern);
         brush.setColor(bgColor_);
         p.setBrush(brush);
-        p.setOpacity(bgOpacity_);
 
-        QRect r(0, 0, boxWidth_, boxHeight_);
+        QRect r(0, 0, std::max(MIN_WIDTH, width() * MIN_WIDTH_PERCENTAGE), boxHeight_);
 
         p.setPen(Qt::white);
         QRect br = p.boundingRect(r, Qt::AlignHCenter | Qt::AlignTop | Qt::TextWordWrap, message_);
 
         p.setPen(Qt::NoPen);
-        r = br.united(r).adjusted(-boxPadding_, -boxPadding_, boxPadding_, boxPadding_);
+        r = br.united(r).adjusted(-BOX_PADDING, -BOX_PADDING, BOX_PADDING, BOX_PADDING);
 
         const qreal s = 1 - offset_;
 
         if (position_ == SnackBarPosition::Bottom)
-                p.translate((width() - (r.width() - 2 * boxPadding_)) / 2,
-                            height() - boxPadding_ - s * (r.height()));
+                p.translate((width() - (r.width() - 2 * BOX_PADDING)) / 2,
+                            height() - BOX_PADDING - s * (r.height()));
         else
-                p.translate((width() - (r.width() - 2 * boxPadding_)) / 2,
-                            s * (r.height()) - 2 * boxPadding_);
+                p.translate((width() - (r.width() - 2 * BOX_PADDING)) / 2,
+                            s * (r.height()) - 2 * BOX_PADDING);
 
         br.moveCenter(r.center());
-        p.drawRoundedRect(r.adjusted(0, 0, 0, 3), 3, 3);
+        p.drawRoundedRect(r.adjusted(0, 0, 0, 4), 4, 4);
         p.setPen(textColor_);
         p.drawText(br, Qt::AlignHCenter | Qt::AlignTop | Qt::TextWordWrap, message_);
 }

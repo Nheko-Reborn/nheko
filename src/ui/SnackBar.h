@@ -17,12 +17,30 @@ class SnackBar : public OverlayWidget
 {
         Q_OBJECT
 
+        Q_PROPERTY(QColor bgColor READ backgroundColor WRITE setBackgroundColor)
+        Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
+
 public:
         explicit SnackBar(QWidget *parent);
 
-        inline void setBackgroundColor(const QColor &color);
-        inline void setTextColor(const QColor &color);
-        inline void setPosition(SnackBarPosition pos);
+        QColor backgroundColor() const { return bgColor_; }
+        void setBackgroundColor(const QColor &color)
+        {
+                bgColor_ = color;
+                update();
+        }
+
+        QColor textColor() const { return textColor_; }
+        void setTextColor(const QColor &color)
+        {
+                textColor_ = color;
+                update();
+        }
+        void setPosition(SnackBarPosition pos)
+        {
+                position_ = pos;
+                update();
+        }
 
 public slots:
         void showMessage(const QString &msg);
@@ -49,31 +67,7 @@ private:
         QTimer showTimer_;
         QTimer hideTimer_;
 
-        int duration_;
-        int boxWidth_;
-        int boxHeight_;
-        int boxPadding_;
+        double boxHeight_;
 
         SnackBarPosition position_;
 };
-
-inline void
-SnackBar::setPosition(SnackBarPosition pos)
-{
-        position_ = pos;
-        update();
-}
-
-inline void
-SnackBar::setBackgroundColor(const QColor &color)
-{
-        bgColor_ = color;
-        update();
-}
-
-inline void
-SnackBar::setTextColor(const QColor &color)
-{
-        textColor_ = color;
-        update();
-}

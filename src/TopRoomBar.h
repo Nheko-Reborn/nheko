@@ -79,8 +79,7 @@ protected:
                 style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 
                 p.setPen(QPen(borderColor()));
-                p.drawLine(QPointF(0, height() - p.pen().widthF()),
-                           QPointF(width(), height() - p.pen().widthF()));
+                p.drawLine(QPointF(0, height()), QPointF(width(), height()));
         }
 
 private:

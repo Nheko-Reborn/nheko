@@ -14,6 +14,11 @@ OverlayWidget > * {
     border-left: 1px solid palette(text);
 }
 
+TopRoomBar {
+    qproperty-borderColor: palette(text);
+    border: none;
+}
+
 TimelineView,
 TimelineView > *,
 TimelineItem,
@@ -149,4 +154,9 @@ FloatingButton {
 QListWidget {
     background-color: palette(window);
     color: palette(text);
+}
+
+SnackBar {
+    qproperty-textColor: palette(text);
+    qproperty-bgColor: palette(base);
 }

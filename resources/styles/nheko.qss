@@ -221,3 +221,8 @@ Toggle {
     qproperty-inactiveColor: gray;
     qproperty-trackColor: rgb(240, 240, 240);
 }
+
+SnackBar {
+    qproperty-textColor: white;
+    qproperty-bgColor: #495057;
+}
