@@ -17,6 +17,11 @@ QLabel {
 TimelineView,
 TimelineView > * {
     background-color: #202228;
+    border: none;
+}
+
+#scroll_widget {
+    background-color: #202228;
 }
 
 QuickSwitcher {

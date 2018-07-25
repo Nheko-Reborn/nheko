@@ -32,9 +32,7 @@
 
 TimelineViewManager::TimelineViewManager(QWidget *parent)
   : QStackedWidget(parent)
-{
-        setStyleSheet("border: none;");
-}
+{}
 
 void
 TimelineViewManager::updateReadReceipts(const QString &room_id,

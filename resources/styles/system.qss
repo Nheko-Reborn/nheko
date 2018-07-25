@@ -19,6 +19,7 @@ TimelineView > *,
 TimelineItem,
 TimelineItem > * {
     background-color: palette(window);
+    border: none;
 }
 
 QuickSwitcher {
