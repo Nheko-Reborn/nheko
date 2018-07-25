@@ -34,9 +34,6 @@ class UserSettings;
 struct DescInfo;
 struct RoomInfo;
 
-using RoomIds = std::map<QString, bool>;
-Q_DECLARE_METATYPE(RoomIds)
-
 class RoomList : public QWidget
 {
         Q_OBJECT

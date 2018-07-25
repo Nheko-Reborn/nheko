@@ -33,6 +33,7 @@ init()
         qRegisterMetaType<std::string>();
         qRegisterMetaType<std::vector<std::string>>();
         qRegisterMetaType<std::vector<QString>>();
+        qRegisterMetaType<std::map<QString, bool>>("std::map<QString, bool>");
 }
 
 } // namespace http

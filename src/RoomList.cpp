@@ -56,8 +56,6 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addWidget(scrollArea_);
 
-        qRegisterMetaType<std::map<QString, bool>>();
-
         connect(this, &RoomList::updateRoomAvatarCb, this, &RoomList::updateRoomAvatar);
 }
 
