@@ -81,5 +81,5 @@ void
 LoadingIndicator::onTimeout()
 {
         angle_ = (angle_ + 45) % 360;
-        update();
+        repaint();
 }
