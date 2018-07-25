@@ -517,6 +517,7 @@ TimelineView::init()
         scroll_layout_->setObjectName("timelinescrollarea");
 
         scroll_area_->setWidget(scroll_widget_);
+        scroll_area_->setAlignment(Qt::AlignBottom);
 
         top_layout_->addWidget(scroll_area_);
 
