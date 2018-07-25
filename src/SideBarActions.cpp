@@ -29,6 +29,7 @@ SideBarActions::SideBarActions(QWidget *parent)
         joinRoomIcon.addFile(":/icons/icons/ui/speech-bubbles-comment-option.png");
 
         settingsBtn_ = new FlatButton(this);
+        settingsBtn_->setToolTip(tr("User settings"));
         settingsBtn_->setIcon(settingsIcon);
         settingsBtn_->setCornerRadius(conf::sidebarActions::iconSize / 2);
         settingsBtn_->setIconSize(
@@ -52,6 +53,7 @@ SideBarActions::SideBarActions(QWidget *parent)
         addMenu_->addAction(joinRoomAction_);
 
         createRoomBtn_ = new FlatButton(this);
+        createRoomBtn_->setToolTip(tr("Start a new chat"));
         createRoomBtn_->setIcon(createRoomIcon);
         createRoomBtn_->setCornerRadius(conf::sidebarActions::iconSize / 2);
         createRoomBtn_->setIconSize(
@@ -65,14 +67,16 @@ SideBarActions::SideBarActions(QWidget *parent)
                   QPoint(pos.x() + padding, pos.y() - padding - addMenu_->sizeHint().height()));
         });
 
-        joinRoomBtn_ = new FlatButton(this);
-        joinRoomBtn_->setIcon(joinRoomIcon);
-        joinRoomBtn_->setCornerRadius(conf::sidebarActions::iconSize / 2);
-        joinRoomBtn_->setIconSize(
+        roomDirectory_ = new FlatButton(this);
+        roomDirectory_->setToolTip(tr("Room directory"));
+        roomDirectory_->setEnabled(false);
+        roomDirectory_->setIcon(joinRoomIcon);
+        roomDirectory_->setCornerRadius(conf::sidebarActions::iconSize / 2);
+        roomDirectory_->setIconSize(
           QSize(conf::sidebarActions::iconSize, conf::sidebarActions::iconSize));
 
         layout_->addWidget(createRoomBtn_);
-        layout_->addWidget(joinRoomBtn_);
+        layout_->addWidget(roomDirectory_);
         layout_->addWidget(settingsBtn_);
 
         connect(settingsBtn_, &QPushButton::clicked, this, &SideBarActions::showSettings);
@@ -84,10 +88,10 @@ SideBarActions::resizeEvent(QResizeEvent *event)
         Q_UNUSED(event);
 
         if (width() <= ui::sidebar::SmallSize) {
-                joinRoomBtn_->hide();
+                roomDirectory_->hide();
                 createRoomBtn_->hide();
         } else {
-                joinRoomBtn_->show();
+                roomDirectory_->show();
                 createRoomBtn_->show();
         }
 }

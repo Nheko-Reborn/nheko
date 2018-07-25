@@ -428,6 +428,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");
 
         sendFileBtn_ = new FlatButton(this);
+        sendFileBtn_->setToolTip(tr("Send a file"));
         sendFileBtn_->setIcon(send_file_icon);
         sendFileBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
@@ -469,6 +470,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         });
 
         sendMessageBtn_ = new FlatButton(this);
+        sendMessageBtn_->setToolTip(tr("Send a message"));
 
         QIcon send_message_icon;
         send_message_icon.addFile(":/icons/icons/ui/cursor.png");

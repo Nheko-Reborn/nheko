@@ -75,6 +75,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         buttonLayout_->setMargin(0);
 
         logoutButton_ = new FlatButton(this);
+        logoutButton_->setToolTip(tr("Logout"));
         logoutButton_->setCornerRadius(logoutButtonSize_ / 2);
 
         QIcon icon;

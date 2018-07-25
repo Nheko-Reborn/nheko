@@ -44,7 +44,7 @@ private:
 
         FlatButton *settingsBtn_;
         FlatButton *createRoomBtn_;
-        FlatButton *joinRoomBtn_;
+        FlatButton *roomDirectory_;
 
         QColor borderColor_;
 };
