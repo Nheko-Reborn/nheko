@@ -34,17 +34,21 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
   , userSettings_{userSettings}
 {
-        setStyleSheet("border: none;");
         topLayout_ = new QVBoxLayout(this);
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);
 
         scrollArea_ = new QScrollArea(this);
         scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignTop | Qt::AlignVCenter);
+
+        // The scrollbar on macOS will hide itself when not active so it won't interfere
+        // with the content.
+#if not defined(Q_OS_MAC)
+        scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+#endif
 
         scrollAreaContents_ = new QWidget(this);
 

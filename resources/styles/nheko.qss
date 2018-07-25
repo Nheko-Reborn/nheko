@@ -45,6 +45,7 @@ PopupItem {
 RoomList,
 RoomList > * {
     background-color: white;
+    border: none;
 }
 
 CommunitiesList,

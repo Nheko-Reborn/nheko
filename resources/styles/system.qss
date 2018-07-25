@@ -70,6 +70,11 @@ RegisterPage {
     background-color: palette(window);
 }
 
+RoomList,
+RoomList > * {
+    border: none;
+}
+
 RoomInfoListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
     qproperty-hoverBackgroundColor: palette(light);
