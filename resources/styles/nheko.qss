@@ -79,7 +79,7 @@ RaisedButton {
 
 RoomInfoListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 100);
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
     qproperty-backgroundColor: white;
 
     qproperty-titleColor: #333;
@@ -103,7 +103,7 @@ RoomInfoListItem {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 100);
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
     qproperty-backgroundColor: white;
 
     qproperty-avatarBgColor: #eee;
