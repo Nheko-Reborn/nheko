@@ -42,7 +42,7 @@ set(MATRIX_STRUCTS_URL https://github.com/mujx/matrix-structs)
 set(MATRIX_STRUCTS_TAG 8de04afea34e95c14d1dde82af390592dfde90dd)
 
 set(MTXCLIENT_URL https://github.com/mujx/mtxclient)
-set(MTXCLIENT_TAG 2f519d28b4521f7f234b2ed0f32360cbb1edd2f7)
+set(MTXCLIENT_TAG ca66424489b4d3e6ea447b853157fa88f0b849b3)
 
 set(TWEENY_URL https://github.com/mobius3/tweeny)
 set(TWEENY_TAG b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf)
