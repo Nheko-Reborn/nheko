@@ -51,6 +51,7 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 #endif
 
         scrollAreaContents_ = new QWidget(this);
+        scrollAreaContents_->setObjectName("roomlist_area");
 
         contentsLayout_ = new QVBoxLayout(scrollAreaContents_);
         contentsLayout_->setSpacing(0);

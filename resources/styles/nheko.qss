@@ -48,6 +48,10 @@ RoomList > * {
     border: none;
 }
 
+#roomlist_area {
+    background-color: white;
+}
+
 CommunitiesList,
 CommunitiesList > * {
     background-color: white;
