@@ -107,7 +107,7 @@ FilteredTextEdit::showResults(const QVector<SearchResult> &results)
 {
         QPoint pos;
 
-        if (atTriggerPosition_ != -1) {
+        if (isAnchorValid()) {
                 auto cursor = textCursor();
                 cursor.setPosition(atTriggerPosition_);
                 pos = viewport()->mapToGlobal(cursorRect(cursor).topLeft());
@@ -134,7 +134,7 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         // calculate the new query
-        if (textCursor().position() < atTriggerPosition_ || atTriggerPosition_ == -1) {
+        if (textCursor().position() < atTriggerPosition_ || !isAnchorValid()) {
                 resetAnchor();
                 closeSuggestions();
         }
@@ -165,9 +165,31 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         switch (event->key()) {
         case Qt::Key_At:
                 atTriggerPosition_ = textCursor().position();
+                anchorType_        = AnchorType::Sigil;
 
                 QTextEdit::keyPressEvent(event);
                 break;
+        case Qt::Key_Tab: {
+                auto cursor          = textCursor();
+                const int initialPos = cursor.position();
+
+                cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
+                auto word = cursor.selectedText();
+
+                const int startOfWord = cursor.position();
+
+                // There is a word to complete.
+                if (initialPos != startOfWord) {
+                        atTriggerPosition_ = startOfWord;
+                        anchorType_        = AnchorType::Tab;
+
+                        emit showSuggestions(word);
+                } else {
+                        QTextEdit::keyPressEvent(event);
+                }
+
+                break;
+        }
         case Qt::Key_Return:
         case Qt::Key_Enter:
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
@@ -213,26 +235,27 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         default:
                 QTextEdit::keyPressEvent(event);
 
-                // Check if the current word should be autocompleted.
-                auto cursor = textCursor();
-                cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
-                auto word = cursor.selectedText();
+                if (isModifier)
+                        return;
 
-                if (cursor.position() == 0) {
+                if (textCursor().position() == 0) {
                         resetAnchor();
                         closeSuggestions();
                         return;
                 }
 
-                if (cursor.position() == atTriggerPosition_ + 1) {
-                        const auto q = query();
+                // Check if the current word should be autocompleted.
+                auto cursor = textCursor();
+                cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
+                auto word = cursor.selectedText();
 
-                        if (q.isEmpty()) {
+                if (hasAnchor(cursor.position(), anchorType_) && isAnchorValid()) {
+                        if (word.isEmpty()) {
                                 closeSuggestions();
                                 return;
                         }
 
-                        emit showSuggestions(query());
+                        emit showSuggestions(word);
                 } else {
                         resetAnchor();
                         closeSuggestions();

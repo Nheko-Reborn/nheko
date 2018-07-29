@@ -94,8 +94,23 @@ private:
 
         SuggestionsPopup popup_;
 
+        enum class AnchorType
+        {
+                Tab   = 0,
+                Sigil = 1,
+        };
+
+        AnchorType anchorType_ = AnchorType::Sigil;
+
+        int anchorWidth(AnchorType anchor) { return static_cast<int>(anchor); }
+
         void closeSuggestions() { popup_.hide(); }
         void resetAnchor() { atTriggerPosition_ = -1; }
+        bool isAnchorValid() { return atTriggerPosition_ != -1; }
+        bool hasAnchor(int pos, AnchorType anchor)
+        {
+                return pos == atTriggerPosition_ + anchorWidth(anchor);
+        }
 
         QString query()
         {
