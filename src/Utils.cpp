@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QSettings>
+#include <cmath>
 
 #include <variant.hpp>
 
@@ -221,7 +222,8 @@ utils::scaleImageToPixmap(const QImage &img, int size)
         if (img.isNull())
                 return QPixmap();
 
-        const int sz = QApplication::desktop()->screen()->devicePixelRatio() * size;
+        const double sz =
+          ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
         return QPixmap::fromImage(
           img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
