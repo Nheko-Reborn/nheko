@@ -66,6 +66,14 @@ Make sure you have the testing repositories from `edge` enabled. Note that this 
 sudo apk add nheko
 ```
 
+#### macOS (10.12 and above)
+
+with [macports](https://www.macports.org/) :
+
+```sh
+sudo port install nheko
+```
+
 ### Build Requirements
 
 - Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
