@@ -116,32 +116,8 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
 }
 
 //! Scale down an image to fit to the given width & height limitations.
-template<class ImageType>
-ImageType
-scaleDown(uint64_t max_width, uint64_t max_height, const ImageType &source)
-{
-        if (source.isNull())
-                return QPixmap();
-
-        auto width_ratio  = (double)max_width / (double)source.width();
-        auto height_ratio = (double)max_height / (double)source.height();
-
-        auto min_aspect_ratio = std::min(width_ratio, height_ratio);
-
-        int final_width  = 0;
-        int final_height = 0;
-
-        if (min_aspect_ratio > 1) {
-                final_width  = source.width();
-                final_height = source.height();
-        } else {
-                final_width  = source.width() * min_aspect_ratio;
-                final_height = source.height() * min_aspect_ratio;
-        }
-
-        return source.scaled(
-          final_width, final_height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-}
+QPixmap
+scaleDown(uint64_t maxWidth, uint64_t maxHeight, const QPixmap &source);
 
 //! Delete items in a container based on a predicate.
 template<typename ContainerT, typename PredicateT>

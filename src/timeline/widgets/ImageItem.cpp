@@ -126,7 +126,7 @@ void
 ImageItem::setImage(const QPixmap &image)
 {
         image_        = image;
-        scaled_image_ = utils::scaleDown<QPixmap>(max_width_, max_height_, image_);
+        scaled_image_ = utils::scaleDown(max_width_, max_height_, image_);
 
         width_  = scaled_image_.width();
         height_ = scaled_image_.height();
@@ -165,7 +165,7 @@ ImageItem::resizeEvent(QResizeEvent *event)
         if (!image_)
                 return QWidget::resizeEvent(event);
 
-        scaled_image_ = utils::scaleDown<QPixmap>(max_width_, max_height_, image_);
+        scaled_image_ = utils::scaleDown(max_width_, max_height_, image_);
 
         width_  = scaled_image_.width();
         height_ = scaled_image_.height();

@@ -223,9 +223,39 @@ utils::scaleImageToPixmap(const QImage &img, int size)
                 return QPixmap();
 
         const double sz =
-          ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
+          std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
         return QPixmap::fromImage(
           img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+}
+
+QPixmap
+utils::scaleDown(uint64_t maxWidth, uint64_t maxHeight, const QPixmap &source)
+{
+        if (source.isNull())
+                return QPixmap();
+
+        const double pixelRatio = QApplication::desktop()->screen()->devicePixelRatioF();
+
+        // Take into account the scale factor of the screen.
+        maxWidth  = std::ceil(pixelRatio * (double)maxWidth);
+        maxHeight = std::ceil(pixelRatio * (double)maxHeight);
+
+        const double widthRatio     = (double)maxWidth / (double)source.width();
+        const double heightRatio    = (double)maxHeight / (double)source.height();
+        const double minAspectRatio = std::min(widthRatio, heightRatio);
+
+        // Size of the output image.
+        int w, h = 0;
+
+        if (minAspectRatio > 1) {
+                w = source.width();
+                h = source.height();
+        } else {
+                w = source.width() * minAspectRatio;
+                h = source.height() * minAspectRatio;
+        }
+
+        return source.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
 QString

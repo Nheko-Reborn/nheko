@@ -108,7 +108,7 @@ PreviewUploadOverlay::init()
                 const auto maxHeight = winsize.height() * 0.8;
 
                 // Scale image preview to fit into the application window.
-                infoLabel_.setPixmap(utils::scaleDown<QPixmap>(maxWidth, maxHeight, image_));
+                infoLabel_.setPixmap(utils::scaleDown(maxWidth, maxHeight, image_));
                 move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
         } else {
                 infoLabel_.setAlignment(Qt::AlignLeft);

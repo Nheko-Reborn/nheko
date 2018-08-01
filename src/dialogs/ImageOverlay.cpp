@@ -68,7 +68,7 @@ ImageOverlay::paintEvent(QPaintEvent *event)
         int max_width  = screen_.width() - 2 * outer_margin;
         int max_height = screen_.height();
 
-        image_ = utils::scaleDown<QPixmap>(max_width, max_height, originalImage_);
+        image_ = utils::scaleDown(max_width, max_height, originalImage_);
 
         int diff_x = max_width - image_.width();
         int diff_y = max_height - image_.height();
