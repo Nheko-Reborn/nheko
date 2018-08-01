@@ -220,13 +220,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         font.setWeight(65);
         auto general_ = new QLabel(tr("GENERAL"), this);
+        general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
         general_->setFont(font);
 
         mainLayout_ = new QVBoxLayout;
+        mainLayout_->setAlignment(Qt::AlignTop);
         mainLayout_->setSpacing(7);
         mainLayout_->setContentsMargins(
           sideMargin_, LayoutTopMargin, sideMargin_, LayoutBottomMargin);
-        mainLayout_->addWidget(general_, 1, Qt::AlignLeft | Qt::AlignVCenter);
+        mainLayout_->addWidget(general_, 1, Qt::AlignLeft | Qt::AlignBottom);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(trayOptionLayout_);
         mainLayout_->addLayout(startInTrayOptionLayout_);
@@ -249,6 +251,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
+        mainLayout_->addStretch(1);
 
         auto scrollArea_ = new QScrollArea(this);
         scrollArea_->setFrameShape(QFrame::NoFrame);
@@ -263,7 +266,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addLayout(topBarLayout_);
-        topLayout_->addWidget(scrollArea_);
+        topLayout_->addWidget(scrollArea_, Qt::AlignTop);
+        topLayout_->addStretch(1);
         topLayout_->addWidget(versionInfo);
 
         connect(themeCombo_,
