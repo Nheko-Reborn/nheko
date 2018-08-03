@@ -66,6 +66,12 @@ Make sure you have the testing repositories from `edge` enabled. Note that this 
 sudo apk add nheko
 ```
 
+#### Flatpak
+
+```
+flatpak install flathub io.github.mujx.Nheko
+```
+
 #### macOS (10.12 and above)
 
 with [macports](https://www.macports.org/) :
