@@ -94,6 +94,25 @@ void
 StatusIndicator::setState(StatusIndicatorState state)
 {
         state_ = state;
+
+        switch (state) {
+        case StatusIndicatorState::Encrypted:
+                setToolTip(tr("Encrypted"));
+                break;
+        case StatusIndicatorState::Received:
+                setToolTip(tr("Delivered"));
+                break;
+        case StatusIndicatorState::Read:
+                setToolTip(tr("Seen"));
+                break;
+        case StatusIndicatorState::Sent:
+                setToolTip(tr("Sent"));
+                break;
+        case StatusIndicatorState::Empty:
+                setToolTip("");
+                break;
+        }
+
         update();
 }
 
