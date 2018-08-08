@@ -15,7 +15,6 @@ matrix:
           env:
               - DEPLOYMENT=1
               - USE_BUNDLED_BOOST=0
-              - USE_BUNDLED_SPDLOG=0
         - os: linux
           compiler: gcc
           env:
@@ -25,7 +24,6 @@ matrix:
               - QT_PKG=510
               - DEPLOYMENT=1
               - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_SPDLOG=1
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
@@ -38,7 +36,6 @@ matrix:
               - QT_VERSION="-5.10.1"
               - QT_PKG=510
               - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_SPDLOG=1
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
@@ -51,7 +48,6 @@ matrix:
               - QT_VERSION=571
               - QT_PKG=57
               - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_SPDLOG=1
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
@@ -64,7 +60,6 @@ matrix:
               - QT_VERSION=592
               - QT_PKG=59
               - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_SPDLOG=1
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
