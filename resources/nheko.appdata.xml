@@ -1,22 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2018 Vitaly Zaitsev <vitaly@easycoding.org> -->
+<?xml version="1.0" encoding="utf-8"?>
 <component type="desktop">
-  <id>nheko.desktop</id>
-  <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPLv3+ and Public Domain and MIT and Boost and ASL 2.0 and CC-BY</project_license>
-  <name>nheko</name>
-  <summary>Desktop client for the Matrix protocol</summary>
-  <description>
-    <p>
-      The motivation behind the project is to provide a native desktop app
-      for Matrix that feels more like a mainstream chat app.
-    </p>
-  </description>
-  <screenshots>
-    <screenshot type="default">
-      <image>https://dl.dropboxusercontent.com/s/zrl26u3pmqloyjz/nheko-v0.3.1.png</image>
-    </screenshot>
-  </screenshots>
-  <url type="homepage">https://github.com/mujx/nheko</url>
-  <update_contact>https://github.com/mujx</update_contact>
-</component> 
+    <id>nheko.desktop</id>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0-or-later and CC-BY</project_license>
+    <name>nheko</name>
+    <summary>Desktop client for the Matrix protocol</summary>
+    <description>
+        <p>The motivation behind the project is to provide a native
+        desktop app for Matrix that feels more like a mainstream
+        chat app.</p>
+    </description>
+    <screenshots>
+        <screenshot type="default">
+            <image>
+            https://dl.dropboxusercontent.com/s/fvlupc271m5y2hd/nheko-linux.png</image>
+        </screenshot>
+    </screenshots>
+    <url type="homepage">https://github.com/mujx/nheko</url>
+    <update_contact>https://github.com/mujx</update_contact>
+    <releases>
+        <release version="0.5.2" date="2018-07-28" />
+    </releases>
+</component>
