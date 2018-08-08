@@ -31,6 +31,10 @@ QuickSwitcher {
     background-color: palette(window);
 }
 
+TypingDisplay {
+    qproperty-textColor: palette(text);
+}
+
 InfoMessage {
     qproperty-textColor: palette(text);
     qproperty-boxColor: palette(window);

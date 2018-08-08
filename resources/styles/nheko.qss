@@ -33,6 +33,10 @@ InfoMessage {
     qproperty-boxColor: rgba(220, 220, 220, 120);
 }
 
+TypingDisplay {
+    qproperty-textColor: #333;
+}
+
 SuggestionsPopup {
     background-color: white;
 }

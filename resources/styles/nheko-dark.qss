@@ -48,6 +48,10 @@ RoomList > * {
     border: none;
 }
 
+TypingDisplay {
+    qproperty-textColor: #caccd1;
+}
+
 #roomlist_area {
     background-color: #2d3139;
 }
