@@ -1,7 +1,8 @@
 #include "Logging.h"
 
+#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/sinks/stdout_sinks.h"
 #include <iostream>
-#include <spdlog/sinks/file_sinks.h>
 
 namespace {
 std::shared_ptr<spdlog::logger> db_logger     = nullptr;

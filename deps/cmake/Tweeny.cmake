@@ -7,8 +7,8 @@ endif()
 ExternalProject_Add(
   Tweeny
 
-  GIT_REPOSITORY ${TWEENY_URL}
-  GIT_TAG ${TWEENY_TAG}
+  URL ${TWEENY_URL}
+  URL_HASH SHA256=${TWEENY_HASH}
 
   BUILD_IN_SOURCE 1
   SOURCE_DIR ${DEPS_BUILD_DIR}/tweeny

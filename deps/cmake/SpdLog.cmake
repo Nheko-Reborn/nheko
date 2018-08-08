@@ -7,8 +7,8 @@ endif()
 ExternalProject_Add(
   SpdLog
 
-  GIT_REPOSITORY ${SPDLOG_URL}
-  GIT_TAG ${SPDLOG_TAG}
+  URL ${SPDLOG_URL}
+  URL_HASH SHA256=${SPDLOG_HASH}
 
   BUILD_IN_SOURCE 1
   SOURCE_DIR ${DEPS_BUILD_DIR}/spdlog

@@ -38,26 +38,40 @@ set(BOOST_URL
 set(BOOST_SHA256
     5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9)
 
-set(MATRIX_STRUCTS_URL https://github.com/mujx/matrix-structs)
-set(MATRIX_STRUCTS_TAG 8de04afea34e95c14d1dde82af390592dfde90dd)
+set(
+  MATRIX_STRUCTS_URL
+  https://github.com/mujx/matrix-structs/archive/8de04afea34e95c14d1dde82af390592dfde90dd.tar.gz
+  )
+set(MATRIX_STRUCTS_HASH
+    255a82a9e463261858cd7da18f34fd60d19882ab507d214e47ea47ff78ae68b6)
 
-set(MTXCLIENT_URL https://github.com/mujx/mtxclient)
-set(MTXCLIENT_TAG ca66424489b4d3e6ea447b853157fa88f0b849b3)
+set(
+  MTXCLIENT_URL
+  https://github.com/mujx/mtxclient/archive/10894678e982bc037a0aa4cf650b89a566ccbc52.tar.gz
+  )
+set(MTXCLIENT_HASH
+    9bbb4613e6ed7c9886575221e1820c4aeda302ff29703e9040e53a2d0236c8ea)
 
-set(TWEENY_URL https://github.com/mobius3/tweeny)
-set(TWEENY_TAG b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf)
+set(
+  TWEENY_URL
+  https://github.com/mobius3/tweeny/archive/b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf.tar.gz
+  )
+set(TWEENY_HASH
+    9a632b9da84823fae002ad5d9ba02c8d77c0a3810479974c6b637c5504165475)
 
 set(
   LMDBXX_HEADER_URL
   https://raw.githubusercontent.com/bendiken/lmdbxx/0b43ca87d8cfabba392dfe884eb1edb83874de02/lmdb%2B%2B.h
   )
-set(LMDBXX_SHA c57b501a4e8fa1187fa7fd348da415c7685a50a7cb25b17b3f257b9e9426f73d)
+set(LMDBXX_HASH
+    c57b501a4e8fa1187fa7fd348da415c7685a50a7cb25b17b3f257b9e9426f73d)
 
 set(OLM_URL https://git.matrix.org/git/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)
 
-set(SPDLOG_URL https://github.com/gabime/spdlog)
-set(SPDLOG_TAG 560df2878ad308b27873b3cc5e810635d69cfad6)
+set(SPDLOG_URL https://github.com/gabime/spdlog/archive/v1.0.0.tar.gz)
+set(SPDLOG_HASH
+    90d5365121bcd2c41ce94dfe6a460e89507a2dfef6133fe5fad5bb35ac4ef0a1)
 
 if(USE_BUNDLED_BOOST)
   include(Boost)
@@ -81,7 +95,7 @@ endif()
 
 if(USE_BUNDLED_LMDBXX)
   file(DOWNLOAD ${LMDBXX_HEADER_URL} ${DEPS_INSTALL_DIR}/include/lmdb++.h
-       EXPECTED_HASH SHA256=${LMDBXX_SHA})
+       EXPECTED_HASH SHA256=${LMDBXX_HASH})
 endif()
 
 if(WIN32)
