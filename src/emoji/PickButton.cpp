@@ -24,25 +24,35 @@ using namespace emoji;
 
 // Number of milliseconds after which the panel will be hidden
 // if the mouse cursor is not on top of the widget.
-constexpr int TimeoutDuration = 300;
+constexpr int HIDE_TIMEOUT = 300;
 
 PickButton::PickButton(QWidget *parent)
   : FlatButton(parent)
   , panel_{nullptr}
 {
-        connect(&hideTimer_, &QTimer::timeout, this, [this]() {
-                if (panel_ && !panel_->underMouse()) {
-                        hideTimer_.stop();
-                        panel_->hide();
+        connect(&hideTimer_, &QTimer::timeout, this, &PickButton::hidePanel);
+        connect(this, &QPushButton::clicked, this, [this]() {
+                if (panel_ && panel_->isVisible()) {
+                        hidePanel();
+                        return;
                 }
+
+                showPanel();
         });
 }
 
 void
-PickButton::enterEvent(QEvent *e)
+PickButton::hidePanel()
 {
-        Q_UNUSED(e);
+        if (panel_ && !panel_->underMouse()) {
+                hideTimer_.stop();
+                panel_->hide();
+        }
+}
 
+void
+PickButton::showPanel()
+{
         if (panel_.isNull()) {
                 panel_ = QSharedPointer<Panel>(new Panel(this));
                 connect(panel_.data(), &Panel::emojiSelected, this, &PickButton::emojiSelected);
@@ -67,6 +77,6 @@ PickButton::enterEvent(QEvent *e)
 void
 PickButton::leaveEvent(QEvent *e)
 {
-        hideTimer_.start(TimeoutDuration);
+        hideTimer_.start(HIDE_TIMEOUT);
         FlatButton::leaveEvent(e);
 }

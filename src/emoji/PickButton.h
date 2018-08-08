@@ -37,10 +37,12 @@ signals:
         void emojiSelected(const QString &emoji);
 
 protected:
-        void enterEvent(QEvent *e) override;
         void leaveEvent(QEvent *e) override;
 
 private:
+        void showPanel();
+        void hidePanel();
+
         // Vertical distance from panel's bottom.
         int vertical_distance_ = 10;
 
