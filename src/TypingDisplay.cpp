@@ -23,6 +23,8 @@ TypingDisplay::setUsers(const QStringList &uid)
 {
         if (uid.isEmpty()) {
                 text_.clear();
+                update();
+
                 return;
         }
 
