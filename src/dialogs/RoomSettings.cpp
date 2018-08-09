@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QSharedPointer>
+#include <QShowEvent>
 #include <QStyleOption>
 #include <QVBoxLayout>
 
@@ -17,6 +18,7 @@
 #include "Utils.h"
 #include "ui/Avatar.h"
 #include "ui/FlatButton.h"
+#include "ui/LoadingIndicator.h"
 #include "ui/Painter.h"
 #include "ui/TextField.h"
 #include "ui/Theme.h"
@@ -207,7 +209,39 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         accessCombo->addItem(tr("Anyone and guests"));
         accessCombo->addItem(tr("Anyone"));
         accessCombo->addItem(tr("Invited users"));
-        accessCombo->setDisabled(true);
+        accessCombo->setDisabled(
+          !canChangeJoinRules(room_id_.toStdString(), utils::localUser().toStdString()));
+        connect(accessCombo, QOverload<int>::of(&QComboBox::activated), [this](int index) {
+                using namespace mtx::events::state;
+
+                auto guest_access = [](int index) -> state::GuestAccess {
+                        state::GuestAccess event;
+
+                        if (index == 0)
+                                event.guest_access = state::AccessState::CanJoin;
+                        else
+                                event.guest_access = state::AccessState::Forbidden;
+
+                        return event;
+                }(index);
+
+                auto join_rule = [](int index) -> state::JoinRules {
+                        state::JoinRules event;
+
+                        switch (index) {
+                        case 0:
+                        case 1:
+                                event.join_rule = JoinRule::Public;
+                                break;
+                        default:
+                                event.join_rule = JoinRule::Invite;
+                        }
+
+                        return event;
+                }(index);
+
+                updateAccessRules(room_id_.toStdString(), join_rule, guest_access);
+        });
 
         if (info_.join_rule == JoinRule::Public) {
                 if (info_.guest_access) {
@@ -321,6 +355,20 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
 
         setupEditButton();
 
+        errorLabel_ = new QLabel(this);
+        errorLabel_->setAlignment(Qt::AlignCenter);
+        errorLabel_->hide();
+
+        spinner_ = new LoadingIndicator(this);
+        spinner_->setFixedHeight(30);
+        spinner_->setFixedWidth(30);
+        spinner_->hide();
+        auto spinnerLayout = new QVBoxLayout;
+        spinnerLayout->addWidget(spinner_);
+        spinnerLayout->setAlignment(Qt::AlignCenter);
+        spinnerLayout->setMargin(0);
+        spinnerLayout->setSpacing(0);
+
         layout->addWidget(avatar_, Qt::AlignCenter | Qt::AlignTop);
         layout->addLayout(textLayout);
         layout->addLayout(btnLayout_);
@@ -329,6 +377,8 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addLayout(accessOptionLayout);
         layout->addLayout(encryptionOptionLayout);
         layout->addLayout(keyRequestsLayout);
+        layout->addWidget(errorLabel_);
+        layout->addLayout(spinnerLayout);
         layout->addStretch(1);
 
         connect(this, &RoomSettings::enableEncryptionError, this, [this](const QString &msg) {
@@ -336,6 +386,21 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 encryptionToggle_->setEnabled(true);
 
                 emit ChatPage::instance()->showNotification(msg);
+        });
+
+        connect(this, &RoomSettings::showErrorMessage, this, [this](const QString &msg) {
+                if (!errorLabel_)
+                        return;
+
+                stopLoadingSpinner();
+
+                errorLabel_->show();
+                errorLabel_->setText(msg);
+        });
+
+        connect(this, &RoomSettings::accessRulesUpdated, this, [this]() {
+                stopLoadingSpinner();
+                resetErrorLabel();
         });
 }
 
@@ -346,16 +411,7 @@ RoomSettings::setupEditButton()
         btnLayout_->setSpacing(BUTTON_SPACING);
         btnLayout_->setMargin(0);
 
-        try {
-                auto userId = utils::localUser().toStdString();
-
-                hasEditRights_ = cache::client()->hasEnoughPowerLevel(
-                  {EventType::RoomName, EventType::RoomTopic}, room_id_.toStdString(), userId);
-        } catch (const lmdb::error &e) {
-                nhlog::db()->warn("lmdb error: {}", e.what());
-        }
-
-        if (!hasEditRights_)
+        if (!canChangeNameAndTopic(room_id_.toStdString(), utils::localUser().toStdString()))
                 return;
 
         QIcon editIcon;
@@ -398,30 +454,6 @@ RoomSettings::retrieveRoomInfo()
 }
 
 void
-RoomSettings::saveSettings()
-{
-        // TODO: Save access changes to the room
-        if (accessCombo->currentIndex() < 2) {
-                if (info_.join_rule != JoinRule::Public) {
-                        // Make join_rule Public
-                }
-                if (accessCombo->currentIndex() == 0) {
-                        if (!info_.guest_access) {
-                                // Make guest_access CanJoin
-                        }
-                }
-        } else {
-                if (info_.join_rule != JoinRule::Invite) {
-                        // Make join_rule invite
-                }
-                if (info_.guest_access) {
-                        // Make guest_access forbidden
-                }
-        }
-        closing();
-}
-
-void
 RoomSettings::enableEncryption()
 {
         const auto room_id = room_id_.toStdString();
@@ -444,10 +476,113 @@ RoomSettings::enableEncryption()
 }
 
 void
+RoomSettings::showEvent(QShowEvent *event)
+{
+        resetErrorLabel();
+        stopLoadingSpinner();
+
+        QWidget::showEvent(event);
+}
+
+void
 RoomSettings::paintEvent(QPaintEvent *)
 {
         QStyleOption opt;
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+bool
+RoomSettings::canChangeJoinRules(const std::string &room_id, const std::string &user_id) const
+{
+        try {
+                return cache::client()->hasEnoughPowerLevel(
+                  {EventType::RoomJoinRules}, room_id, user_id);
+        } catch (const lmdb::error &e) {
+                nhlog::db()->warn("lmdb error: {}", e.what());
+        }
+
+        return false;
+}
+
+bool
+RoomSettings::canChangeNameAndTopic(const std::string &room_id, const std::string &user_id) const
+{
+        try {
+                return cache::client()->hasEnoughPowerLevel(
+                  {EventType::RoomName, EventType::RoomTopic}, room_id, user_id);
+        } catch (const lmdb::error &e) {
+                nhlog::db()->warn("lmdb error: {}", e.what());
+        }
+
+        return false;
+}
+
+void
+RoomSettings::updateAccessRules(const std::string &room_id,
+                                const mtx::events::state::JoinRules &join_rule,
+                                const mtx::events::state::GuestAccess &guest_access)
+{
+        startLoadingSpinner();
+        resetErrorLabel();
+
+        http::client()->send_state_event<state::JoinRules, EventType::RoomJoinRules>(
+          room_id,
+          join_rule,
+          [this, room_id, guest_access](const mtx::responses::EventId &,
+                                        mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to send m.room.join_rule: {} {}",
+                                             static_cast<int>(err->status_code),
+                                             err->matrix_error.error);
+                          emit showErrorMessage(QString::fromStdString(err->matrix_error.error));
+
+                          return;
+                  }
+
+                  http::client()->send_state_event<state::GuestAccess, EventType::RoomGuestAccess>(
+                    room_id,
+                    guest_access,
+                    [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                            if (err) {
+                                    nhlog::net()->warn("failed to send m.room.guest_access: {} {}",
+                                                       static_cast<int>(err->status_code),
+                                                       err->matrix_error.error);
+                                    emit showErrorMessage(
+                                      QString::fromStdString(err->matrix_error.error));
+
+                                    return;
+                            }
+
+                            emit accessRulesUpdated();
+                    });
+          });
+}
+
+void
+RoomSettings::stopLoadingSpinner()
+{
+        if (spinner_) {
+                spinner_->stop();
+                spinner_->hide();
+        }
+}
+
+void
+RoomSettings::startLoadingSpinner()
+{
+        if (spinner_) {
+                spinner_->start();
+                spinner_->show();
+        }
+}
+
+void
+RoomSettings::resetErrorLabel()
+{
+        if (errorLabel_) {
+                errorLabel_->hide();
+                errorLabel_->clear();
+        }
 }

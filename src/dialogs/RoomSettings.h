@@ -9,6 +9,8 @@ class Avatar;
 class FlatButton;
 class QComboBox;
 class QHBoxLayout;
+class QShowEvent;
+class LoadingIndicator;
 class QLabel;
 class QLabel;
 class QLayout;
@@ -60,15 +62,24 @@ public:
 signals:
         void closing();
         void enableEncryptionError(const QString &msg);
+        void showErrorMessage(const QString &msg);
+        void accessRulesUpdated();
 
 protected:
         void paintEvent(QPaintEvent *event) override;
-
-private slots:
-        void saveSettings();
+        void showEvent(QShowEvent *event) override;
 
 private:
-        static constexpr int AvatarSize = 64;
+        //! Whether the user has enough power level to send m.room.join_rules events.
+        bool canChangeJoinRules(const std::string &room_id, const std::string &user_id) const;
+        //! Whether the user has enough power level to send m.room.name & m.room.topic events.
+        bool canChangeNameAndTopic(const std::string &room_id, const std::string &user_id) const;
+        void updateAccessRules(const std::string &room_id,
+                               const mtx::events::state::JoinRules &,
+                               const mtx::events::state::GuestAccess &);
+        void stopLoadingSpinner();
+        void startLoadingSpinner();
+        void resetErrorLabel();
 
         void setAvatar(const QImage &img) { avatarImg_ = img; }
         void setupEditButton();
@@ -78,8 +89,6 @@ private:
 
         Avatar *avatar_;
 
-        //! Whether the user would be able to change the name or the topic of the room.
-        bool hasEditRights_  = true;
         bool usesEncryption_ = false;
         QHBoxLayout *btnLayout_;
 
@@ -88,6 +97,9 @@ private:
         RoomInfo info_;
         QString room_id_;
         QImage avatarImg_;
+
+        QLabel *errorLabel_;
+        LoadingIndicator *spinner_;
 
         QComboBox *accessCombo;
         Toggle *encryptionToggle_;
