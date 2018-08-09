@@ -741,7 +741,7 @@ Rozmiar multimediów: %2
     <message>
         <location line="+3"/>
         <source>Objects</source>
-        <translation>Objekty</translation>
+        <translation>Przedmioty</translation>
     </message>
     <message>
         <location line="+3"/>
