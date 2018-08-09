@@ -166,6 +166,7 @@ private slots:
 signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
+        void heightChanged(int height);
 
         void uploadImage(const QSharedPointer<QIODevice> data, const QString &filename);
         void uploadFile(const QSharedPointer<QIODevice> data, const QString &filename);

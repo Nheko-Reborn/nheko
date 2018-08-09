@@ -122,10 +122,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         splitter->addWidget(content_);
         splitter->restoreSizes(parent->width());
 
-        text_input_    = new TextInputWidget(this);
-        typingDisplay_ = new TypingDisplay(this);
-        contentLayout_->addWidget(typingDisplay_);
+        text_input_ = new TextInputWidget(this);
         contentLayout_->addWidget(text_input_);
+
+        typingDisplay_ = new TypingDisplay(content_);
+        typingDisplay_->hide();
+        connect(
+          text_input_, &TextInputWidget::heightChanged, typingDisplay_, &TypingDisplay::setOffset);
 
         typingRefresher_ = new QTimer(this);
         typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
@@ -592,8 +595,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         // Callbacks to update the user info (top left corner of the page).
         connect(this, &ChatPage::setUserAvatar, user_info_widget_, &UserInfoWidget::setAvatar);
         connect(this, &ChatPage::setUserDisplayName, this, [this](const QString &name) {
-                QSettings settings;
-                auto userid = settings.value("auth/user_id").toString();
+                auto userid = utils::localUser();
                 user_info_widget_->setUserId(userid);
                 user_info_widget_->setDisplayName(name);
         });
@@ -890,9 +892,7 @@ QStringList
 ChatPage::generateTypingUsers(const QString &room_id, const std::vector<std::string> &typing_users)
 {
         QStringList users;
-
-        QSettings settings;
-        QString local_user = settings.value("auth/user_id").toString();
+        auto local_user = utils::localUser();
 
         for (const auto &uid : typing_users) {
                 const auto remote_user = QString::fromStdString(uid);
@@ -1262,8 +1262,7 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
 void
 ChatPage::getProfileInfo()
 {
-        QSettings settings;
-        const auto userid = settings.value("auth/user_id").toString().toStdString();
+        const auto userid = utils::localUser().toStdString();
 
         http::client()->get_profile(
           userid, [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {

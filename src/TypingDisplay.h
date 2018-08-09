@@ -1,9 +1,10 @@
 #pragma once
 
-#include <QPaintEvent>
-#include <QWidget>
+#include "ui/OverlayWidget.h"
 
-class TypingDisplay : public QWidget
+class QPaintEvent;
+
+class TypingDisplay : public OverlayWidget
 {
         Q_OBJECT
 
@@ -17,10 +18,14 @@ public:
         void setTextColor(const QColor &color) { textColor_ = color; };
         QColor textColor() const { return textColor_; };
 
+public slots:
+        void setOffset(int margin);
+
 protected:
         void paintEvent(QPaintEvent *event) override;
 
 private:
+        int offset_;
         QColor textColor_;
         QString text_;
 };

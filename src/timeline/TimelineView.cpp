@@ -490,8 +490,6 @@ TimelineView::init()
         QIcon icon;
         icon.addFile(":/icons/icons/ui/angle-arrow-down.png");
         scrollDownBtn_ = new FloatingButton(icon, this);
-        scrollDownBtn_->setBackgroundColor(QColor("#F5F5F5"));
-        scrollDownBtn_->setForegroundColor(QColor("black"));
         scrollDownBtn_->hide();
 
         connect(scrollDownBtn_, &QPushButton::clicked, this, [this]() {
@@ -509,8 +507,13 @@ TimelineView::init()
         scroll_widget_ = new QWidget(this);
         scroll_widget_->setObjectName("scroll_widget");
 
+        // Height of the typing display.
+        QFont f;
+        f.setPixelSize(conf::typingNotificationFontSize);
+        const int bottomMargin = QFontMetrics(f).height() + 6;
+
         scroll_layout_ = new QVBoxLayout(scroll_widget_);
-        scroll_layout_->setContentsMargins(4, 0, 15, 15);
+        scroll_layout_->setContentsMargins(4, 0, 15, bottomMargin);
         scroll_layout_->setSpacing(0);
         scroll_layout_->setObjectName("timelinescrollarea");
 

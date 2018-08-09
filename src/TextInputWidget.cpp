@@ -477,6 +477,8 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
                 setFixedHeight(widgetHeight);
                 input_->setFixedHeight(textInputHeight);
+
+                emit heightChanged(widgetHeight);
         });
         connect(input_, &FilteredTextEdit::showSuggestions, this, [this](const QString &q) {
                 if (q.isEmpty() || !cache::client())
