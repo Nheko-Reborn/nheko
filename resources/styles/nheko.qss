@@ -35,6 +35,7 @@ InfoMessage {
 
 TypingDisplay {
     qproperty-textColor: #333;
+    qproperty-backgroundColor: white;
 }
 
 SuggestionsPopup {

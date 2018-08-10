@@ -33,6 +33,7 @@ QuickSwitcher {
 
 TypingDisplay {
     qproperty-textColor: palette(text);
+    qproperty-backgroundColor: palette(window);
 }
 
 InfoMessage {

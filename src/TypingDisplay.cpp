@@ -8,6 +8,7 @@
 #include "ui/Painter.h"
 
 constexpr int LEFT_PADDING = 24;
+constexpr int RECT_PADDING = 2;
 
 TypingDisplay::TypingDisplay(QWidget *parent)
   : OverlayWidget(parent)
@@ -17,7 +18,7 @@ TypingDisplay::TypingDisplay(QWidget *parent)
         f.setPixelSize(conf::typingNotificationFontSize);
         setFont(f);
 
-        setFixedHeight(QFontMetrics(font()).height() + 2);
+        setFixedHeight(QFontMetrics(font()).height() + RECT_PADDING);
         setAttribute(Qt::WA_TransparentForMouseEvents);
 }
 
@@ -66,7 +67,11 @@ TypingDisplay::paintEvent(QPaintEvent *)
         region.translate(LEFT_PADDING, 0);
 
         QFontMetrics fm(font());
-        text_ = fm.elidedText(text_, Qt::ElideRight, width() - 3 * LEFT_PADDING);
+        text_ = fm.elidedText(text_, Qt::ElideRight, (double)(width() * 0.75));
 
+        QPainterPath path;
+        path.addRoundedRect(QRectF(0, 0, fm.width(text_) + 2 * LEFT_PADDING, height()), 3, 3);
+
+        p.fillPath(path, backgroundColor());
         p.drawText(region, Qt::AlignVCenter, text_);
 }

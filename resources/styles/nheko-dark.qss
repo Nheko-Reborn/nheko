@@ -50,6 +50,7 @@ RoomList > * {
 
 TypingDisplay {
     qproperty-textColor: #caccd1;
+    qproperty-backgroundColor: #202228;
 }
 
 #roomlist_area {
