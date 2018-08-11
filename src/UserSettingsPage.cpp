@@ -38,6 +38,7 @@ UserSettings::load()
 {
         QSettings settings;
         isTrayEnabled_                = settings.value("user/window/tray", true).toBool();
+        hasDesktopNotifications_      = settings.value("user/desktop_notifications", true).toBool();
         isStartInTrayEnabled_         = settings.value("user/window/start_in_tray", false).toBool();
         isOrderingEnabled_            = settings.value("user/room_ordering", true).toBool();
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
@@ -94,6 +95,7 @@ UserSettings::save()
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
         settings.setValue("read_receipts", isReadReceiptsEnabled_);
         settings.setValue("group_view", isGroupViewEnabled_);
+        settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("theme", theme());
         settings.endGroup();
 }
@@ -188,6 +190,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         receiptsLayout->addWidget(receiptsLabel);
         receiptsLayout->addWidget(readReceipts_, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto desktopLayout = new QHBoxLayout;
+        desktopLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto desktopLabel = new QLabel(tr("Desktop notifications"), this);
+        desktopLabel->setFont(font);
+        desktopNotifications_ = new Toggle(this);
+
+        desktopLayout->addWidget(desktopLabel);
+        desktopLayout->addWidget(desktopNotifications_, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto scaleFactorOptionLayout = new QHBoxLayout;
         scaleFactorOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto scaleFactorLabel = new QLabel(tr("Scale factor (requires restart)"), this);
@@ -239,6 +250,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(typingLayout);
         mainLayout_->addLayout(receiptsLayout);
+        mainLayout_->addLayout(desktopLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
 
 #if defined(Q_OS_MAC)
@@ -307,6 +319,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setReadReceipts(!isDisabled);
         });
 
+        connect(desktopNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setDesktopNotifications(!isDisabled);
+        });
+
         connect(backBtn_, &QPushButton::clicked, this, [this]() {
                 settings_->save();
                 emit moveBack();
@@ -326,6 +342,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
         readReceipts_->setState(!settings_->isReadReceiptsEnabled());
+        desktopNotifications_->setState(!settings_->hasDesktopNotifications());
 }
 
 void

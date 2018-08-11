@@ -569,7 +569,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                 hasNotifications = true;
                 }
 
-                if (hasNotifications)
+                if (hasNotifications && userSettings_->hasDesktopNotifications())
                         http::client()->notifications(
                           5,
                           [this](const mtx::responses::Notifications &res,

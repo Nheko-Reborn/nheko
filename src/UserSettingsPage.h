@@ -44,19 +44,19 @@ public:
         {
                 isTrayEnabled_ = state;
                 save();
-        };
+        }
 
         void setStartInTray(bool state)
         {
                 isStartInTrayEnabled_ = state;
                 save();
-        };
+        }
 
         void setRoomOrdering(bool state)
         {
                 isOrderingEnabled_ = state;
                 save();
-        };
+        }
 
         void setGroupView(bool state)
         {
@@ -65,7 +65,7 @@ public:
 
                 isGroupViewEnabled_ = state;
                 save();
-        };
+        }
 
         void setReadReceipts(bool state)
         {
@@ -77,7 +77,13 @@ public:
         {
                 isTypingNotificationsEnabled_ = state;
                 save();
-        };
+        }
+
+        void setDesktopNotifications(bool state)
+        {
+                hasDesktopNotifications_ = state;
+                save();
+        }
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
@@ -86,6 +92,7 @@ public:
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
+        bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -98,6 +105,7 @@ private:
         bool isGroupViewEnabled_;
         bool isTypingNotificationsEnabled_;
         bool isReadReceiptsEnabled_;
+        bool hasDesktopNotifications_;
 };
 
 class HorizontalLine : public QFrame
@@ -142,6 +150,7 @@ private:
         Toggle *groupViewToggle_;
         Toggle *typingNotifications_;
         Toggle *readReceipts_;
+        Toggle *desktopNotifications_;
 
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;
