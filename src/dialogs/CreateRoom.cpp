@@ -16,8 +16,13 @@ using namespace dialogs;
 CreateRoom::CreateRoom(QWidget *parent)
   : QFrame(parent)
 {
-        setMinimumSize(conf::modals::MIN_WIDGET_WIDTH, conf::modals::MIN_WIDGET_HEIGHT);
+        QFont doubleFont;
+        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        setMinimumHeight(conf::modals::MIN_WIDGET_HEIGHT);
+        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30 -
+                        2 * conf::modals::WIDGET_MARGIN);
 
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(conf::modals::WIDGET_SPACING);

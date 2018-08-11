@@ -79,9 +79,6 @@ ReceiptItem::dateFormat(const QDateTime &then) const
 ReadReceipts::ReadReceipts(QWidget *parent)
   : QFrame(parent)
 {
-        setMinimumSize(conf::modals::MIN_WIDGET_WIDTH, conf::modals::MIN_WIDGET_HEIGHT);
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(conf::modals::WIDGET_SPACING);
         layout->setMargin(conf::modals::WIDGET_MARGIN);
@@ -91,6 +88,15 @@ ReadReceipts::ReadReceipts(QWidget *parent)
         userList_->setSelectionMode(QAbstractItemView::NoSelection);
         userList_->setAttribute(Qt::WA_MacShowFocusRect, 0);
         userList_->setSpacing(conf::modals::TEXT_SPACING);
+
+        QFont doubleFont;
+        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        setMinimumHeight(userList_->sizeHint().height() * 2);
+        setMinimumWidth(std::max(userList_->sizeHint().width() + 4 * conf::modals::WIDGET_MARGIN,
+                                 QFontMetrics(doubleFont).averageCharWidth() * 30 -
+                                   2 * conf::modals::WIDGET_MARGIN));
 
         QFont font;
         font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);

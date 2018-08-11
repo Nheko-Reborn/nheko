@@ -55,9 +55,6 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{room_id}
 {
-        setMinimumSize(conf::modals::MIN_WIDGET_WIDTH, conf::modals::MIN_WIDGET_HEIGHT);
-
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         setAttribute(Qt::WA_DeleteOnClose, true);
 
         auto layout = new QVBoxLayout(this);
@@ -69,6 +66,15 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         list_->setSelectionMode(QAbstractItemView::NoSelection);
         list_->setAttribute(Qt::WA_MacShowFocusRect, 0);
         list_->setSpacing(5);
+
+        QFont doubleFont;
+        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        setMinimumHeight(list_->sizeHint().height() * 2);
+        setMinimumWidth(std::max(list_->sizeHint().width() + 4 * conf::modals::WIDGET_MARGIN,
+                                 QFontMetrics(doubleFont).averageCharWidth() * 30 -
+                                   2 * conf::modals::WIDGET_MARGIN));
 
         QFont font;
         font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);

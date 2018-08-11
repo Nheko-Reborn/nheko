@@ -332,8 +332,7 @@ MainWindow::openMemberListDialog(const QString &room_id)
 {
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
 
-        modal_->setWidget(new dialogs::MemberList(roomToSearch, this));
-        modal_->show();
+        showTransparentOverlayModal(new dialogs::MemberList(roomToSearch, this));
 }
 
 void
