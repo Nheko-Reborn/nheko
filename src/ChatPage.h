@@ -44,10 +44,6 @@ class UserInfoWidget;
 class UserSettings;
 class NotificationsManager;
 
-namespace dialogs {
-class ReadReceipts;
-}
-
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
 constexpr int TYPING_REFRESH_TIMEOUT = 10000;
@@ -62,7 +58,6 @@ public:
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
         void showQuickSwitcher();
-        void showReadReceipts(const QString &event_id);
         QString currentRoom() const { return current_room_; }
 
         static ChatPage *instance() { return instance_; }
@@ -236,12 +231,6 @@ private:
         // Keeps track of the users currently typing on each room.
         std::map<QString, QList<QString>> typingUsers_;
         QTimer *typingRefresher_;
-
-        QSharedPointer<QuickSwitcher> quickSwitcher_;
-        QSharedPointer<OverlayModal> quickSwitcherModal_;
-
-        QSharedPointer<dialogs::ReadReceipts> receiptsDialog_;
-        QSharedPointer<OverlayModal> receiptsModal_;
 
         // Global user settings.
         QSharedPointer<UserSettings> userSettings_;

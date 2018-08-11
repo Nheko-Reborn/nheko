@@ -12,15 +12,8 @@ LoadingIndicator::LoadingIndicator(QWidget *parent)
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         setFocusPolicy(Qt::NoFocus);
 
-        timer_ = new QTimer();
+        timer_ = new QTimer(this);
         connect(timer_, SIGNAL(timeout()), this, SLOT(onTimeout()));
-}
-
-LoadingIndicator::~LoadingIndicator()
-{
-        stop();
-
-        delete timer_;
 }
 
 void

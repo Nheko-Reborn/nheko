@@ -29,6 +29,7 @@
 #include "UserSettingsPage.h"
 #include "WelcomePage.h"
 #include "dialogs/UserProfile.h"
+#include "ui/OverlayModal.h"
 
 class ChatPage;
 class LoadingIndicator;
@@ -73,6 +74,14 @@ public:
         void openRoomSettings(const QString &room_id = "");
         void openMemberListDialog(const QString &room_id = "");
         void openUserProfile(const QString &user_id, const QString &room_id);
+        void openReadReceiptsDialog(const QString &event_id);
+
+        void hideOverlay();
+        void showSolidOverlayModal(QWidget *content,
+                                   QFlags<Qt::AlignmentFlag> flags = Qt::AlignCenter);
+        void showTransparentOverlayModal(QWidget *content,
+                                         QFlags<Qt::AlignmentFlag> flags = Qt::AlignTop |
+                                                                           Qt::AlignHCenter);
 
 protected:
         void closeEvent(QCloseEvent *event) override;
@@ -138,42 +147,11 @@ private:
         ChatPage *chat_page_;
         UserSettingsPage *userSettingsPage_;
         QSharedPointer<UserSettings> userSettings_;
-        //! Used to hide undefined states between page transitions.
-        QSharedPointer<OverlayModal> progressModal_;
-        QSharedPointer<LoadingIndicator> spinner_;
         //! Tray icon that shows the unread message count.
         TrayIcon *trayIcon_;
         //! Notifications display.
-        QSharedPointer<SnackBar> snackBar_;
-        //! Leave room modal.
-        QSharedPointer<OverlayModal> leaveRoomModal_;
-        //! Leave room dialog.
-        QSharedPointer<dialogs::LeaveRoom> leaveRoomDialog_;
-        //! Invite users modal.
-        QSharedPointer<OverlayModal> inviteUsersModal_;
-        //! Invite users dialog.
-        QSharedPointer<dialogs::InviteUsers> inviteUsersDialog_;
-        //! Join room modal.
-        QSharedPointer<OverlayModal> joinRoomModal_;
-        //! Join room dialog.
-        QSharedPointer<dialogs::JoinRoom> joinRoomDialog_;
-        //! Create room modal.
-        QSharedPointer<OverlayModal> createRoomModal_;
-        //! Create room dialog.
-        QSharedPointer<dialogs::CreateRoom> createRoomDialog_;
-        //! Logout modal.
-        QSharedPointer<OverlayModal> logoutModal_;
-        //! Logout dialog.
-        QSharedPointer<dialogs::Logout> logoutDialog_;
-        //! Room settings modal.
-        QSharedPointer<OverlayModal> roomSettingsModal_;
-        //! Room settings dialog.
-        QSharedPointer<dialogs::RoomSettings> roomSettingsDialog_;
-        //! Member list modal.
-        QSharedPointer<OverlayModal> memberListModal_;
-        //! Member list dialog.
-        QSharedPointer<dialogs::MemberList> memberListDialog_;
-
-        QSharedPointer<OverlayModal> userProfileModal_;
-        QSharedPointer<dialogs::UserProfile> userProfileDialog_;
+        SnackBar *snackBar_ = nullptr;
+        //! Overlay modal used to project other widgets.
+        OverlayModal *modal_       = nullptr;
+        LoadingIndicator *spinner_ = nullptr;
 };

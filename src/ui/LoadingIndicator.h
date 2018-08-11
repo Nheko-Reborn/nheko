@@ -13,7 +13,6 @@ class LoadingIndicator : public QWidget
 
 public:
         LoadingIndicator(QWidget *parent = 0);
-        virtual ~LoadingIndicator();
 
         void paintEvent(QPaintEvent *e);
 

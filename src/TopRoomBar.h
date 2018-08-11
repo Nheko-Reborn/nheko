@@ -24,7 +24,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPen>
-#include <QSharedPointer>
 #include <QStyle>
 #include <QStyleOption>
 #include <QVBoxLayout>

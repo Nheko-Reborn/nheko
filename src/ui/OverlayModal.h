@@ -27,12 +27,13 @@
 class OverlayModal : public OverlayWidget
 {
 public:
-        OverlayModal(QWidget *parent, QWidget *content);
+        OverlayModal(QWidget *parent);
 
         void setColor(QColor color) { color_ = color; }
         void setDismissible(bool state) { isDismissible_ = state; }
 
         void setContentAlignment(QFlags<Qt::AlignmentFlag> flag) { layout_->setAlignment(flag); }
+        void setWidget(QWidget *widget);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

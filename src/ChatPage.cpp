@@ -835,31 +835,15 @@ ChatPage::loadStateFromCache()
 void
 ChatPage::showQuickSwitcher()
 {
-        if (quickSwitcher_.isNull()) {
-                quickSwitcher_ = QSharedPointer<QuickSwitcher>(
-                  new QuickSwitcher(this),
-                  [](QuickSwitcher *switcher) { switcher->deleteLater(); });
+        auto dialog = new QuickSwitcher(this);
 
-                connect(quickSwitcher_.data(),
-                        &QuickSwitcher::roomSelected,
-                        room_list_,
-                        &RoomList::highlightSelectedRoom);
+        connect(dialog, &QuickSwitcher::roomSelected, room_list_, &RoomList::highlightSelectedRoom);
+        connect(dialog, &QuickSwitcher::closing, this, [this]() {
+                MainWindow::instance()->hideOverlay();
+                text_input_->setFocus(Qt::FocusReason::PopupFocusReason);
+        });
 
-                connect(quickSwitcher_.data(), &QuickSwitcher::closing, this, [this]() {
-                        if (!quickSwitcherModal_.isNull())
-                                quickSwitcherModal_->hide();
-                        text_input_->setFocus(Qt::FocusReason::PopupFocusReason);
-                });
-        }
-
-        if (quickSwitcherModal_.isNull()) {
-                quickSwitcherModal_ = QSharedPointer<OverlayModal>(
-                  new OverlayModal(MainWindow::instance(), quickSwitcher_.data()),
-                  [](OverlayModal *modal) { modal->deleteLater(); });
-                quickSwitcherModal_->setColor(QColor(30, 30, 30, 170));
-        }
-
-        quickSwitcherModal_->show();
+        MainWindow::instance()->showTransparentOverlayModal(dialog);
 }
 
 void
@@ -915,26 +899,6 @@ ChatPage::removeLeftRooms(const std::map<std::string, mtx::responses::LeftRoom> 
                 const auto room_id = QString::fromStdString(it->first);
                 room_list_->removeRoom(room_id, room_id == current_room_);
         }
-}
-
-void
-ChatPage::showReadReceipts(const QString &event_id)
-{
-        if (receiptsDialog_.isNull()) {
-                receiptsDialog_ = QSharedPointer<dialogs::ReadReceipts>(
-                  new dialogs::ReadReceipts(this),
-                  [](dialogs::ReadReceipts *dialog) { dialog->deleteLater(); });
-        }
-
-        if (receiptsModal_.isNull()) {
-                receiptsModal_ = QSharedPointer<OverlayModal>(
-                  new OverlayModal(MainWindow::instance(), receiptsDialog_.data()),
-                  [](OverlayModal *modal) { modal->deleteLater(); });
-                receiptsModal_->setColor(QColor(30, 30, 30, 170));
-        }
-
-        receiptsDialog_->addUsers(cache::client()->readReceipts(event_id, current_room_));
-        receiptsModal_->show();
 }
 
 void

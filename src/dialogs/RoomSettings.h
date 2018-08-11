@@ -19,9 +19,6 @@ class TextField;
 class TextField;
 class Toggle;
 
-template<class T>
-class QSharedPointer;
-
 class EditModal : public QWidget
 {
         Q_OBJECT

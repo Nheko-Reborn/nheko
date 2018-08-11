@@ -166,7 +166,7 @@ TimelineItem::init()
 
         connect(showReadReceipts_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
-                        ChatPage::instance()->showReadReceipts(event_id_);
+                        MainWindow::instance()->openReadReceiptsDialog(event_id_);
         });
 
         connect(this, &TimelineItem::eventRedacted, this, [this](const QString &event_id) {

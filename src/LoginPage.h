@@ -19,7 +19,6 @@
 
 #include <QLabel>
 #include <QLayout>
-#include <QSharedPointer>
 #include <QWidget>
 
 class FlatButton;

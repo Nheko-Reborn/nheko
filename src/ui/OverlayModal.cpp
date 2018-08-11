@@ -20,18 +20,31 @@
 
 #include "OverlayModal.h"
 
-OverlayModal::OverlayModal(QWidget *parent, QWidget *content)
+OverlayModal::OverlayModal(QWidget *parent)
   : OverlayWidget(parent)
-  , content_{content}
   , color_{QColor(30, 30, 30, 170)}
 {
         layout_ = new QVBoxLayout(this);
-        layout_->addWidget(content);
         layout_->setSpacing(0);
         layout_->setContentsMargins(10, 40, 10, 20);
         setContentAlignment(Qt::AlignCenter);
+}
 
-        content->setFocus();
+void
+OverlayModal::setWidget(QWidget *widget)
+{
+        // Delete the previous widget
+        if (layout_->count() > 0) {
+                QLayoutItem *item;
+                while ((item = layout_->takeAt(0)) != nullptr) {
+                        delete item->widget();
+                        delete item;
+                }
+        }
+
+        layout_->addWidget(widget);
+        content_ = widget;
+        content_->setFocus();
 }
 
 void

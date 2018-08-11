@@ -170,8 +170,6 @@ UserProfile::UserProfile(QWidget *parent)
         vlayout->setContentsMargins(WIDGET_MARGIN, TOP_WIDGET_MARGIN, WIDGET_MARGIN, WIDGET_MARGIN);
 
         qRegisterMetaType<std::vector<DeviceInfo>>();
-
-        connect(this, &UserProfile::devicesRetrieved, this, &UserProfile::updateDeviceList);
 }
 
 void
@@ -227,10 +225,15 @@ UserProfile::init(const QString &userId, const QString &roomId)
         mtx::requests::QueryKeys req;
         req.device_keys[userId.toStdString()] = {};
 
+        // A proxy object is used to emit the signal instead of the original object
+        // which might be destroyed by the time the http call finishes.
+        auto proxy = std::make_shared<Proxy>();
+        QObject::connect(proxy.get(), &Proxy::done, this, &UserProfile::updateDeviceList);
+
         http::client()->query_keys(
           req,
-          [user_id = userId.toStdString(), this](const mtx::responses::QueryKeys &res,
-                                                 mtx::http::RequestErr err) {
+          [user_id = userId.toStdString(), proxy = std::move(proxy), this](
+            const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {} {}",
                                              err->matrix_error.error,
@@ -264,7 +267,7 @@ UserProfile::init(const QString &userId, const QString &roomId)
                             });
 
                   if (!deviceInfo.empty())
-                          emit devicesRetrieved(QString::fromStdString(user_id), deviceInfo);
+                          emit proxy->done(QString::fromStdString(user_id), deviceInfo);
           });
 }
 

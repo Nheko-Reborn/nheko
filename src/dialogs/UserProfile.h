@@ -17,6 +17,14 @@ struct DeviceInfo
 
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 
+class Proxy : public QObject
+{
+        Q_OBJECT
+
+signals:
+        void done(const QString &user_id, const std::vector<DeviceInfo> &devices);
+};
+
 namespace dialogs {
 
 class DeviceItem : public QWidget
@@ -42,9 +50,6 @@ public:
 
 protected:
         void paintEvent(QPaintEvent *) override;
-
-signals:
-        void devicesRetrieved(const QString &user_id, const std::vector<DeviceInfo> &devices);
 
 private slots:
         void updateDeviceList(const QString &user_id, const std::vector<DeviceInfo> &devices);

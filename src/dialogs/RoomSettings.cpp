@@ -4,7 +4,6 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
-#include <QSharedPointer>
 #include <QShowEvent>
 #include <QStyleOption>
 #include <QVBoxLayout>
