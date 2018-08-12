@@ -4,7 +4,7 @@ set -ex
 
 if [ $TRAVIS_OS_NAME == osx ]; then
     brew update
-    brew install qt5 lmdb clang-format ninja libsodium spdlog
+    brew install qt5 lmdb clang-format ninja libsodium
     brew upgrade boost cmake
 
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py

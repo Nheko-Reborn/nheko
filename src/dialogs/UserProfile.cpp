@@ -232,7 +232,7 @@ UserProfile::init(const QString &userId, const QString &roomId)
 
         http::client()->query_keys(
           req,
-          [user_id = userId.toStdString(), proxy = std::move(proxy), this](
+          [user_id = userId.toStdString(), proxy = std::move(proxy)](
             const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {} {}",
