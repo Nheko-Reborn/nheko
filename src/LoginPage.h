@@ -90,6 +90,8 @@ private:
                 return "Nheko on Linux";
 #elif defined(Q_OS_WIN)
                 return "Nheko on Windows";
+#elif defined(Q_OS_FREEBSD)
+                return "Nheko on FreeBSD";
 #else
                 return "Nheko";
 #endif
