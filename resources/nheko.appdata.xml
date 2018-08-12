@@ -13,12 +13,13 @@
     <screenshots>
         <screenshot type="default">
             <image>
-            https://dl.dropboxusercontent.com/s/fvlupc271m5y2hd/nheko-linux.png</image>
+            https://dl.dropboxusercontent.com/s/x638uft1fcnybv9/nheko-gnome.png</image>
         </screenshot>
     </screenshots>
     <url type="homepage">https://github.com/mujx/nheko</url>
     <update_contact>https://github.com/mujx</update_contact>
     <releases>
+        <release version="0.5.3" date="2018-08-12" />
         <release version="0.5.2" date="2018-07-28" />
     </releases>
 </component>
