@@ -47,9 +47,11 @@ Logout::Logout(QWidget *parent)
 
         confirmBtn_ = new FlatButton("OK", this);
         confirmBtn_->setFont(buttonFont);
+        confirmBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
 
         cancelBtn_ = new FlatButton(tr("CANCEL"), this);
         cancelBtn_->setFont(buttonFont);
+        cancelBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
 
         buttonLayout->addStretch(1);
         buttonLayout->addWidget(confirmBtn_);
