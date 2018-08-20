@@ -234,12 +234,6 @@ utils::scaleDown(uint64_t maxWidth, uint64_t maxHeight, const QPixmap &source)
         if (source.isNull())
                 return QPixmap();
 
-        const double pixelRatio = QApplication::desktop()->screen()->devicePixelRatioF();
-
-        // Take into account the scale factor of the screen.
-        maxWidth  = std::ceil(pixelRatio * (double)maxWidth);
-        maxHeight = std::ceil(pixelRatio * (double)maxHeight);
-
         const double widthRatio     = (double)maxWidth / (double)source.width();
         const double heightRatio    = (double)maxHeight / (double)source.height();
         const double minAspectRatio = std::min(widthRatio, heightRatio);
