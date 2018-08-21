@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+318"/>
+        <location filename="../../src/ChatPage.cpp" line="+321"/>
         <source>Failed to upload image. Please try again.</source>
         <translation>Nie udało się wysłać obrazu. Spróbuj ponownie.</translation>
     </message>
@@ -32,7 +32,7 @@
         <translation>Nie udało się wysłać filmu. Spróbuj ponownie.</translation>
     </message>
     <message>
-        <location line="+365"/>
+        <location line="+364"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Nie udało się przywrócić konta OLM. Spróbuj zalogować się ponownie.</translation>
     </message>
@@ -42,7 +42,7 @@
         <translation>Nie udało się przywrócić zapisanych danych. Spróbuj zalogować się ponownie.</translation>
     </message>
     <message>
-        <location line="+239"/>
+        <location line="+201"/>
         <location line="+139"/>
         <source>Please try to login again: %1</source>
         <translation>Spróbuj zalogować się ponownie: %1</translation>
@@ -74,7 +74,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+55"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+56"/>
         <source>APPLY</source>
         <translation>ZASTOSUJ</translation>
     </message>
@@ -161,7 +161,7 @@
 <context>
     <name>MemberList</name>
     <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+76"/>
+        <location filename="../../src/dialogs/MemberList.cpp" line="+82"/>
         <source>Room members</source>
         <translation>Członkowie pokoju</translation>
     </message>
@@ -274,25 +274,53 @@
     </message>
 </context>
 <context>
+    <name>StatusIndicator</name>
+    <message>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+100"/>
+        <source>Encrypted</source>
+        <translation>Szyfrowana</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Delivered</source>
+        <translation>Dostarczono</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Seen</source>
+        <translation>Wyświetlona</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Sent</source>
+        <translation>Wysłana</translation>
+    </message>
+</context>
+<context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+431"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+454"/>
         <source>Send a file</source>
         <translation>Wyślij plik</translation>
     </message>
     <message>
         <location line="+17"/>
-        <location filename="../../src/TextInputWidget.h" line="+139"/>
+        <location filename="../../src/TextInputWidget.h" line="+154"/>
         <source>Write a message...</source>
         <translation>Napisz wiadomość…</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Send a message</source>
         <translation>Wyślij wiadomość</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+8"/>
+        <source>Emoji</source>
+        <translation>Emoji</translation>
+    </message>
+    <message>
+        <location line="+77"/>
         <source>Select a file</source>
         <translation>Wybierz plik</translation>
     </message>
@@ -310,7 +338,7 @@
 <context>
     <name>TimelineItem</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+166"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+76"/>
         <source>Message redaction failed: %1</source>
         <translation>Redagowanie wiadomości nie powiodło się: %1</translation>
     </message>
@@ -367,7 +395,7 @@
 <context>
     <name>TypingDisplay</name>
     <message>
-        <location filename="../../src/TypingDisplay.cpp" line="+26"/>
+        <location filename="../../src/TypingDisplay.cpp" line="+49"/>
         <source> is typing</source>
         <translation> pisze</translation>
     </message>
@@ -388,7 +416,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+136"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+140"/>
         <source>Minimize to tray</source>
         <translation>Zminimalizuj do paska zadań</translation>
     </message>
@@ -419,8 +447,13 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Desktop notifications</source>
+        <translation>Powiadomienia na pulpicie</translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Scale factor (requires restart)</source>
-        <translation type="unfinished"></translation>
+        <translation>Czynnik skalowania (wymaga ponownego uruchomienia)</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -428,7 +461,22 @@
         <translation>Motyw</translation>
     </message>
     <message>
+        <location line="+21"/>
+        <source>Device ID</source>
+        <translation>ID urządzenia</translation>
+    </message>
+    <message>
         <location line="+11"/>
+        <source>Device Fingerprint</source>
+        <translation>Odcisk palca urządzenia</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>ENCRYPTION</source>
+        <translation>SZYFROWANIE</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>GENERAL</source>
         <translation>OGÓLNE</translation>
     </message>
@@ -459,7 +507,7 @@
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+41"/>
         <source>CANCEL</source>
         <translation>ANULUJ</translation>
     </message>
@@ -536,12 +584,12 @@
 <context>
     <name>dialogs::Logout</name>
     <message>
-        <location filename="../../src/dialogs/Logout.cpp" line="+51"/>
+        <location filename="../../src/dialogs/Logout.cpp" line="+52"/>
         <source>CANCEL</source>
         <translation>ANULUJ</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Logout. Are you sure?</source>
         <translation>Czy na pewno chcesz wylogować się?</translation>
     </message>
@@ -589,7 +637,7 @@ Rozmiar multimediów: %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+98"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+104"/>
         <source>Read receipts</source>
         <translation>Potwierdzenia przeczytania</translation>
     </message>
@@ -642,7 +690,7 @@ Rozmiar multimediów: %2
         <translation>Zaproszeni użytkownicy</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+50"/>
         <source>Encryption</source>
         <translation>Szyfrowanie</translation>
     </message>
@@ -659,14 +707,16 @@ Rozmiar multimediów: %2
     <message>
         <location line="+27"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpowiadaj na żądania o klucze</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Określa, czy klient powinien odpowiadać automatycznie z kluczami
+ sesji na żądania. Używaj ostrożnie, jest to tymczasowe rozwiązanie
+ do testowania implementacji E2E, zanim weryfikacja urządzeń będzie ukończona.</translation>
     </message>
     <message numerus="yes">
         <location line="+46"/>
@@ -678,7 +728,7 @@ Rozmiar multimediów: %2
         </translation>
     </message>
     <message>
-        <location line="+125"/>
+        <location line="+123"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Nie udało się włączyć szyfrowania: %1</translation>
     </message>
