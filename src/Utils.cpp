@@ -263,3 +263,18 @@ utils::mxcToHttp(const QUrl &url, const QString &server, int port)
           .arg(QString::fromStdString(mxcParts.server))
           .arg(QString::fromStdString(mxcParts.media_id));
 }
+
+QString
+utils::humanReadableFingerprint(const std::string &ed25519)
+{
+        return humanReadableFingerprint(QString::fromStdString(ed25519));
+}
+QString
+utils::humanReadableFingerprint(const QString &ed25519)
+{
+        QStringList fingerprintList;
+        for (int i = 0; i < ed25519.length(); i = i + 4) {
+                fingerprintList << ed25519.mid(i, 4);
+        }
+        return fingerprintList.join(" ");
+}

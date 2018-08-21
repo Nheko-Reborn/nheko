@@ -19,6 +19,7 @@
 
 #include <QComboBox>
 #include <QFrame>
+#include <QLabel>
 #include <QLayout>
 #include <QSharedPointer>
 #include <QWidget>
@@ -151,6 +152,8 @@ private:
         Toggle *typingNotifications_;
         Toggle *readReceipts_;
         Toggle *desktopNotifications_;
+        QLabel *deviceFingerprintValue_;
+        QLabel *deviceIdValue_;
 
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;

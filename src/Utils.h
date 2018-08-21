@@ -185,4 +185,11 @@ scaleImageToPixmap(const QImage &img, int size);
 //! Convert a Content Matrix URI to an HTTP link.
 QString
 mxcToHttp(const QUrl &url, const QString &server, int port);
+
+//! Convert a ed25519 fingerprint into a human readable form
+QString
+humanReadableFingerprint(const std::string &ed25519);
+
+QString
+humanReadableFingerprint(const QString &ed25519);
 }
