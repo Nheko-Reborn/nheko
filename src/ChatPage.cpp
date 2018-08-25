@@ -1070,6 +1070,11 @@ ChatPage::trySync()
 
                           emit syncTopBar(updates);
                           emit syncRoomlist(updates);
+
+                          cache::client()->deleteOldData();
+                  } catch (const lmdb::map_full_error &e) {
+                          nhlog::db()->error("lmdb is full: {}", e.what());
+                          cache::client()->deleteOldData();
                   } catch (const lmdb::error &e) {
                           nhlog::db()->error("saving sync response: {}", e.what());
                   }

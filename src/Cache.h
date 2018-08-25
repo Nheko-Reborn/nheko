@@ -388,6 +388,12 @@ public:
         //! Check if we have sent a desktop notification for the given event id.
         bool isNotificationSent(const std::string &event_id);
 
+        //! Remove old unused data.
+        void deleteOldMessages();
+        void deleteOldData() noexcept;
+        //! Retrieve all saved room ids.
+        std::vector<std::string> getRoomIds(lmdb::txn &txn);
+
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
         bool isRoomEncrypted(const std::string &room_id);

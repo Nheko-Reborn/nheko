@@ -41,6 +41,9 @@ static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 
 constexpr size_t MAX_RESTORED_MESSAGES = 30;
 
+constexpr auto DB_SIZE = 256UL * 1024UL * 1024UL; // 256 MB
+constexpr auto MAX_DBS = 1024UL;
+
 //! Cache databases and their format.
 //!
 //! Contains UI information for the joined rooms. (i.e name, topic, avatar url etc).
@@ -134,8 +137,8 @@ Cache::setup()
         bool isInitial = !QFile::exists(statePath);
 
         env_ = lmdb::env::create();
-        env_.set_mapsize(256UL * 1024UL * 1024UL); /* 256 MB */
-        env_.set_max_dbs(1024UL);
+        env_.set_mapsize(DB_SIZE);
+        env_.set_max_dbs(MAX_DBS);
 
         if (isInitial) {
                 nhlog::db()->info("initializing LMDB");
@@ -1784,6 +1787,67 @@ Cache::isNotificationSent(const std::string &event_id)
         txn.commit();
 
         return res;
+}
+
+std::vector<std::string>
+Cache::getRoomIds(lmdb::txn &txn)
+{
+        auto db     = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        std::vector<std::string> rooms;
+
+        std::string room_id, _unused;
+        while (cursor.get(room_id, _unused, MDB_NEXT))
+                rooms.emplace_back(room_id);
+
+        cursor.close();
+
+        return rooms;
+}
+
+void
+Cache::deleteOldMessages()
+{
+        auto txn      = lmdb::txn::begin(env_);
+        auto room_ids = getRoomIds(txn);
+
+        for (const auto &id : room_ids) {
+                auto msg_db = getMessagesDb(txn, id);
+
+                std::string ts, event;
+                uint64_t idx = 0;
+
+                const auto db_size = msg_db.size(txn);
+                if (db_size <= 3 * MAX_RESTORED_MESSAGES)
+                        continue;
+
+                nhlog::db()->info("[{}] message count: {}", id, db_size);
+
+                auto cursor = lmdb::cursor::open(txn, msg_db);
+                while (cursor.get(ts, event, MDB_NEXT)) {
+                        idx += 1;
+
+                        if (idx > MAX_RESTORED_MESSAGES)
+                                lmdb::cursor_del(cursor);
+                }
+
+                cursor.close();
+
+                nhlog::db()->info("[{}] updated message count: {}", id, msg_db.size(txn));
+        }
+
+        txn.commit();
+}
+
+void
+Cache::deleteOldData() noexcept
+{
+        try {
+                deleteOldMessages();
+        } catch (const lmdb::error &e) {
+                nhlog::db()->error("failed to delete old messages: {}", e.what());
+        }
 }
 
 bool
