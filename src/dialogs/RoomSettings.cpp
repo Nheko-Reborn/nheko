@@ -191,6 +191,23 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         auto settingsLabel = new QLabel(tr("Settings").toUpper(), this);
         settingsLabel->setFont(font);
 
+        auto infoLabel = new QLabel(tr("Info").toUpper(), this);
+        infoLabel->setFont(font);
+
+        QFont monospaceFont;
+        monospaceFont.setFamily("Courier New");
+        monospaceFont.setStyleHint(QFont::Courier);
+
+        auto roomIdLabel = new QLabel(room_id, this);
+        roomIdLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        roomIdLabel->setFont(monospaceFont);
+
+        auto roomIdLayout = new QHBoxLayout;
+        roomIdLayout->setMargin(0);
+        roomIdLayout->addWidget(new QLabel(tr("Internal ID"), this),
+                                Qt::AlignBottom | Qt::AlignLeft);
+        roomIdLayout->addWidget(roomIdLabel, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto notifLabel = new QLabel(tr("Notifications"), this);
         auto notifCombo = new QComboBox(this);
         notifCombo->setDisabled(true);
@@ -376,6 +393,8 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addLayout(accessOptionLayout);
         layout->addLayout(encryptionOptionLayout);
         layout->addLayout(keyRequestsLayout);
+        layout->addWidget(infoLabel, Qt::AlignLeft);
+        layout->addLayout(roomIdLayout);
         layout->addWidget(errorLabel_);
         layout->addLayout(spinnerLayout);
         layout->addStretch(1);
