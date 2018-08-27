@@ -93,30 +93,7 @@ class TextLabel : public QTextBrowser
         Q_OBJECT
 
 public:
-        TextLabel(const QString &text, QWidget *parent = 0)
-          : QTextBrowser(parent)
-        {
-                setText(text);
-                setOpenExternalLinks(true);
-
-                // Make it look and feel like an ordinary label.
-                setReadOnly(true);
-                setFrameStyle(QFrame::NoFrame);
-                QPalette pal = palette();
-                pal.setColor(QPalette::Base, Qt::transparent);
-                setPalette(pal);
-
-                // Wrap anywhere but prefer words, adjust minimum height on the fly.
-                setLineWrapMode(QTextEdit::WidgetWidth);
-                setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-                connect(document()->documentLayout(),
-                        &QAbstractTextDocumentLayout::documentSizeChanged,
-                        this,
-                        &TextLabel::adjustHeight);
-                document()->setDocumentMargin(0);
-
-                setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        }
+        TextLabel(const QString &text, QWidget *parent = nullptr);
 
         void wheelEvent(QWheelEvent *event) override { event->ignore(); }
 

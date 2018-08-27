@@ -194,9 +194,14 @@ private:
         //! of the timeline.
         void pushTimelineItem(QWidget *item)
         {
+                setUpdatesEnabled(false);
                 item->hide();
                 scroll_layout_->addWidget(item);
-                QTimer::singleShot(0, this, [item]() { item->show(); });
+                QTimer::singleShot(0, this, [item, this]() {
+                        item->show();
+                        item->adjustSize();
+                        setUpdatesEnabled(true);
+                });
         };
 
         //! Decides whether or not to show or hide the scroll down button.

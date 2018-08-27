@@ -626,7 +626,7 @@ TimelineView::addTimelineItem(QWidget *item, TimelineDirection direction)
                                 auto separator = new DateSeparator(newDate, this);
 
                                 if (separator)
-                                        scroll_layout_->addWidget(separator);
+                                        pushTimelineItem(separator);
                         }
                 }
 
