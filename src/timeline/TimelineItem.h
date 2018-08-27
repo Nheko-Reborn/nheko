@@ -115,7 +115,6 @@ public:
                         &TextLabel::adjustHeight);
                 document()->setDocumentMargin(0);
 
-                setFixedHeight(QFontMetrics(QFont()).lineSpacing() + 4);
                 setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         }
 
