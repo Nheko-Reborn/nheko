@@ -102,6 +102,10 @@ protected:
         void paintEvent(QPaintEvent *event) override;
         void showEvent(QShowEvent *event) override;
 
+private slots:
+        //! The file dialog opens so the user can select and upload a new room avatar.
+        void updateAvatar();
+
 private:
         //! Whether the user has enough power level to send m.room.join_rules events.
         bool canChangeJoinRules(const std::string &room_id, const std::string &user_id) const;
