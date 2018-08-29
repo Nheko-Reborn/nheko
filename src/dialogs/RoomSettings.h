@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QEvent>
 #include <QFrame>
 #include <QImage>
 
@@ -18,6 +19,41 @@ class QPixmap;
 class TextField;
 class TextField;
 class Toggle;
+
+class ClickableFilter : public QObject
+{
+        Q_OBJECT
+
+public:
+        explicit ClickableFilter(QWidget *parent)
+          : QObject(parent)
+        {}
+
+signals:
+        void clicked();
+
+protected:
+        bool eventFilter(QObject *obj, QEvent *event)
+        {
+                if (event->type() == QEvent::MouseButtonRelease) {
+                        emit clicked();
+                        return true;
+                }
+
+                return QObject::eventFilter(obj, event);
+        }
+};
+
+/// Convenience class which connects events emmited from threads
+/// outside of main with the UI code.
+class ThreadProxy : public QObject
+{
+        Q_OBJECT
+
+signals:
+        void error(const QString &msg);
+        void avatarChanged(const QImage &img);
+};
 
 class EditModal : public QWidget
 {
@@ -71,36 +107,39 @@ private:
         bool canChangeJoinRules(const std::string &room_id, const std::string &user_id) const;
         //! Whether the user has enough power level to send m.room.name & m.room.topic events.
         bool canChangeNameAndTopic(const std::string &room_id, const std::string &user_id) const;
+        //! Whether the user has enough power level to send m.room.avatar event.
+        bool canChangeAvatar(const std::string &room_id, const std::string &user_id) const;
         void updateAccessRules(const std::string &room_id,
                                const mtx::events::state::JoinRules &,
                                const mtx::events::state::GuestAccess &);
         void stopLoadingSpinner();
         void startLoadingSpinner();
         void resetErrorLabel();
+        void displayErrorMessage(const QString &msg);
 
-        void setAvatar(const QImage &img) { avatarImg_ = img; }
+        void setAvatar(const QImage &img);
         void setupEditButton();
         //! Retrieve the current room information from cache.
         void retrieveRoomInfo();
         void enableEncryption();
 
-        Avatar *avatar_;
+        Avatar *avatar_ = nullptr;
 
         bool usesEncryption_ = false;
         QHBoxLayout *btnLayout_;
 
-        FlatButton *editFieldsBtn_;
+        FlatButton *editFieldsBtn_ = nullptr;
 
         RoomInfo info_;
         QString room_id_;
         QImage avatarImg_;
 
-        QLabel *errorLabel_;
-        LoadingIndicator *spinner_;
+        QLabel *errorLabel_        = nullptr;
+        LoadingIndicator *spinner_ = nullptr;
 
-        QComboBox *accessCombo;
-        Toggle *encryptionToggle_;
-        Toggle *keyRequestsToggle_;
+        QComboBox *accessCombo     = nullptr;
+        Toggle *encryptionToggle_  = nullptr;
+        Toggle *keyRequestsToggle_ = nullptr;
 };
 
 } // dialogs

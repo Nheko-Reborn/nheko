@@ -639,18 +639,17 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
 
         auto filter = new UserProfileFilter(user_id, userName_);
         userName_->installEventFilter(filter);
+        userName_->setCursor(Qt::PointingHandCursor);
 
         connect(filter, &UserProfileFilter::hoverOn, this, [this]() {
                 QFont f = userName_->font();
                 f.setUnderline(true);
-                userName_->setCursor(Qt::PointingHandCursor);
                 userName_->setFont(f);
         });
 
         connect(filter, &UserProfileFilter::hoverOff, this, [this]() {
                 QFont f = userName_->font();
                 f.setUnderline(false);
-                userName_->setCursor(Qt::ArrowCursor);
                 userName_->setFont(f);
         });
 
