@@ -978,6 +978,12 @@ ChatPage::tryInitialSync()
                           nhlog::crypto()->critical("failed to upload one time keys: {} {}",
                                                     err->matrix_error.error,
                                                     status_code);
+                          if (status_code == 404) {
+                                  nhlog::net()->warn(
+                                    "skipping key uploading. server doesn't provide /keys/upload");
+                                  return startInitialSync();
+                          }
+
                           // TODO We should have a timeout instead of keeping hammering the server.
                           emit tryInitialSyncCb();
                           return;
