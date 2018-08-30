@@ -124,8 +124,6 @@ utils::getMessageDescription(const TimelineEvent &event,
                 info.datetime  = ts;
 
                 return info;
-        } else {
-                std::cout << "type not found: " << serialize_event(event).dump(2) << '\n';
         }
 
         return DescInfo{};

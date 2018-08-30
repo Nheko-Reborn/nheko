@@ -626,6 +626,8 @@ ChatPage::logout()
 void
 ChatPage::dropToLoginPage(const QString &msg)
 {
+        nhlog::ui()->info("dropping to the login page: {}", msg.toStdString());
+
         deleteConfigs();
         resetUI();
 
@@ -987,16 +989,21 @@ ChatPage::tryInitialSync()
                           nhlog::net()->info(
                             "uploaded {} {} one-time keys", entry.second, entry.first);
 
-                  nhlog::net()->info("trying initial sync");
-
-                  mtx::http::SyncOpts opts;
-                  opts.timeout = 0;
-                  http::client()->sync(opts,
-                                       std::bind(&ChatPage::initialSyncHandler,
-                                                 this,
-                                                 std::placeholders::_1,
-                                                 std::placeholders::_2));
+                  startInitialSync();
           });
+}
+
+void
+ChatPage::startInitialSync()
+{
+        nhlog::net()->info("trying initial sync");
+
+        mtx::http::SyncOpts opts;
+        opts.timeout = 0;
+        http::client()->sync(
+          opts,
+          std::bind(
+            &ChatPage::initialSyncHandler, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void
@@ -1022,8 +1029,6 @@ ChatPage::trySync()
                           const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
 
-                          nhlog::net()->error("sync error: {} {}", status_code, err_code);
-
                           if (status_code <= 0 || status_code >= 600) {
                                   if (!http::is_logged_in())
                                           return;
@@ -1031,6 +1036,8 @@ ChatPage::trySync()
                                   emit tryDelayedSyncCb();
                                   return;
                           }
+
+                          nhlog::net()->error("sync error: {} {}", status_code, err_code);
 
                           switch (status_code) {
                           case 502:
@@ -1166,13 +1173,13 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
                 const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                 const int status_code = static_cast<int>(err->status_code);
 
-                nhlog::net()->error("sync error: {} {}", status_code, err_code);
+                nhlog::net()->error("initial sync error: {} {}", status_code, err_code);
 
                 switch (status_code) {
                 case 502:
                 case 504:
                 case 524: {
-                        emit tryInitialSyncCb();
+                        startInitialSync();
                         return;
                 }
                 default: {
@@ -1192,8 +1199,8 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
                 emit initializeViews(std::move(res.rooms));
                 emit initializeRoomList(cache::client()->roomInfo());
         } catch (const lmdb::error &e) {
-                nhlog::db()->error("{}", e.what());
-                emit tryInitialSyncCb();
+                nhlog::db()->error("failed to save state after initial sync: {}", e.what());
+                startInitialSync();
                 return;
         }
 

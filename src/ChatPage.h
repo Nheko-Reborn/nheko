@@ -163,6 +163,7 @@ private:
         //! Handler callback for initial sync. It doesn't run on the main thread so all
         //! communication with the GUI should be done through signals.
         void initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err);
+        void startInitialSync();
         void tryInitialSync();
         void trySync();
         void ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts);
