@@ -169,24 +169,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
-        connect(user_info_widget_, &UserInfoWidget::logout, this, [this]() {
-                http::client()->logout(
-                  [this](const mtx::responses::Logout &, mtx::http::RequestErr err) {
-                          if (err) {
-                                  // TODO: handle special errors
-                                  emit contentLoaded();
-                                  nhlog::net()->warn(
-                                    "failed to logout: {} - {}",
-                                    mtx::errors::to_string(err->matrix_error.errcode),
-                                    err->matrix_error.error);
-                                  return;
-                          }
-
-                          emit loggedOut();
-                  });
-
-                emit showOverlayProgressBar();
-        });
 
         connect(top_bar_, &TopRoomBar::showRoomList, splitter, &Splitter::showFullRoomList);
         connect(top_bar_, &TopRoomBar::inviteUsers, this, [this](QStringList users) {
@@ -1331,4 +1313,23 @@ bool
 ChatPage::isSideBarExpanded()
 {
         return sideBar_->size().width() > ui::sidebar::NormalSize;
+}
+
+void
+ChatPage::initiateLogout()
+{
+        http::client()->logout([this](const mtx::responses::Logout &, mtx::http::RequestErr err) {
+                if (err) {
+                        // TODO: handle special errors
+                        emit contentLoaded();
+                        nhlog::net()->warn("failed to logout: {} - {}",
+                                           mtx::errors::to_string(err->matrix_error.errcode),
+                                           err->matrix_error.error);
+                        return;
+                }
+
+                emit loggedOut();
+        });
+
+        emit showOverlayProgressBar();
 }

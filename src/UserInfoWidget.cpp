@@ -89,8 +89,8 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         topLayout_->addLayout(buttonLayout_);
 
         // Show the confirmation dialog.
-        connect(logoutButton_, &QPushButton::clicked, this, [this]() {
-                MainWindow::instance()->openLogoutDialog([this]() { emit logout(); });
+        connect(logoutButton_, &QPushButton::clicked, this, []() {
+                MainWindow::instance()->openLogoutDialog();
         });
 }
 

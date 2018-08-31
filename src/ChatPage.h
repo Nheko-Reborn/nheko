@@ -72,6 +72,7 @@ public:
         void hideSideBars();
         //! Show the room/group list (if it was visible).
         void showSideBars();
+        void initiateLogout();
 
 public slots:
         void leaveRoom(const QString &room_id);

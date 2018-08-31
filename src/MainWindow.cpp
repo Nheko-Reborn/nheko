@@ -441,15 +441,22 @@ MainWindow::showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> fl
 }
 
 void
-MainWindow::openLogoutDialog(std::function<void()> callback)
+MainWindow::openLogoutDialog()
 {
         auto dialog = new dialogs::Logout(this);
-        connect(dialog, &dialogs::Logout::closing, this, [this, callback](bool logging_out) {
+        connect(dialog, &dialogs::Logout::closing, this, [this](bool logging_out) {
                 if (modal_)
                         modal_->hide();
 
-                if (logging_out)
-                        callback();
+                // By initiating the logout process a new overlay widget
+                // will replace & destroy the previous widget (logout dialog).
+                //
+                // This will force the destruction of the logout widget to
+                // happen after the click event has been fully processed.
+                QTimer::singleShot(0, this, [logging_out, this]() {
+                        if (logging_out)
+                                chat_page_->initiateLogout();
+                });
         });
 
         showTransparentOverlayModal(dialog, Qt::AlignCenter);

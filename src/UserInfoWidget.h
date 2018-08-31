@@ -42,9 +42,6 @@ public:
         QColor borderColor() const { return borderColor_; }
         void setBorderColor(QColor &color) { borderColor_ = color; }
 
-signals:
-        void logout();
-
 protected:
         void resizeEvent(QResizeEvent *event) override;
         void paintEvent(QPaintEvent *event) override;

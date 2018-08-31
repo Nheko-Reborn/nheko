@@ -70,7 +70,7 @@ public:
         void openCreateRoomDialog(
           std::function<void(const mtx::requests::CreateRoom &request)> callback);
         void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
-        void openLogoutDialog(std::function<void()> callback);
+        void openLogoutDialog();
         void openRoomSettings(const QString &room_id = "");
         void openMemberListDialog(const QString &room_id = "");
         void openUserProfile(const QString &user_id, const QString &room_id);
