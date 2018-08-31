@@ -222,18 +222,6 @@ cmake --build build
 
 The `nheko` binary will be located in the `build` directory.
 
-#### Nix
-
-Download the repo as mentioned above and run
-
-```bash
-nix-build
-```
-
-in the project folder. This will output a binary to `result/bin/nheko`.
-
-You can also install nheko by running `nix-env -f . -i`
-
 #### Windows
 
 After installing all dependencies, you need to edit the `CMakeSettings.json` to
