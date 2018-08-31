@@ -168,7 +168,7 @@ void
 TimelineView::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
         // We've reached the start of the timline and there're no more messages.
-        if ((msgs.end == msgs.start) && msgs.chunk.size() == 0) {
+        if (msgs.end.empty() || ((msgs.end == msgs.start) && msgs.chunk.size() == 0)) {
                 isTimelineFinished = true;
                 return;
         }
