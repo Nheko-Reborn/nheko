@@ -194,17 +194,22 @@ private:
         void getMessages();
         //! HACK: Fixing layout flickering when adding to the bottom
         //! of the timeline.
-        void pushTimelineItem(QWidget *item)
+        void pushTimelineItem(QWidget *item, TimelineDirection dir)
         {
                 setUpdatesEnabled(false);
                 item->hide();
-                scroll_layout_->addWidget(item);
+
+                if (dir == TimelineDirection::Top)
+                        scroll_layout_->insertWidget(0, item);
+                else
+                        scroll_layout_->addWidget(item);
+
                 QTimer::singleShot(0, this, [item, this]() {
                         item->show();
                         item->adjustSize();
                         setUpdatesEnabled(true);
                 });
-        };
+        }
 
         //! Decides whether or not to show or hide the scroll down button.
         void toggleScrollDownButton();

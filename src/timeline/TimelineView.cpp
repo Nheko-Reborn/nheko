@@ -634,11 +634,11 @@ TimelineView::addTimelineItem(QWidget *item, TimelineDirection direction)
                                 auto separator = new DateSeparator(newDate, this);
 
                                 if (separator)
-                                        pushTimelineItem(separator);
+                                        pushTimelineItem(separator, direction);
                         }
                 }
 
-                pushTimelineItem(item);
+                pushTimelineItem(item, direction);
         } else {
                 if (scroll_layout_->count() > 0) {
                         const auto firstItem = scroll_layout_->itemAt(0)->widget();
@@ -650,12 +650,12 @@ TimelineView::addTimelineItem(QWidget *item, TimelineDirection direction)
                                         auto separator = new DateSeparator(oldDate);
 
                                         if (separator)
-                                                scroll_layout_->insertWidget(0, separator);
+                                                pushTimelineItem(separator, direction);
                                 }
                         }
                 }
 
-                scroll_layout_->insertWidget(0, item);
+                pushTimelineItem(item, direction);
         }
 }
 
