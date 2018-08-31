@@ -105,6 +105,9 @@ private slots:
         //! Show the login page in the main window.
         void showLoginPage()
         {
+                if (modal_)
+                        modal_->hide();
+
                 pageStack_->addWidget(login_page_);
                 pageStack_->setCurrentWidget(login_page_);
         }

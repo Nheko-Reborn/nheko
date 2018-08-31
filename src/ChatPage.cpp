@@ -1169,6 +1169,12 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
 
                 nhlog::net()->error("initial sync error: {} {}", status_code, err_code);
 
+                // non http related errors
+                if (status_code <= 0 || status_code >= 600) {
+                        startInitialSync();
+                        return;
+                }
+
                 switch (status_code) {
                 case 502:
                 case 504:
