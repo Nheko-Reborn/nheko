@@ -570,13 +570,6 @@ TimelineView::init()
 void
 TimelineView::getMessages()
 {
-        if (prev_batch_token_.isEmpty()) {
-                nhlog::ui()->info("[{}] start of timeline reached, prev_batch token is empty",
-                                  room_id_.toStdString());
-                isTimelineFinished = true;
-                return;
-        }
-
         mtx::http::MessagesOpts opts;
         opts.room_id = room_id_.toStdString();
         opts.from    = prev_batch_token_.toStdString();
