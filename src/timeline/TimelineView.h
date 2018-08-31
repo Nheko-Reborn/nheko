@@ -169,6 +169,8 @@ private:
 
         //! Mark our own widgets as read if they have more than one receipt.
         void displayReadReceipts(std::vector<TimelineEvent> events);
+        //! Determine if the start of the timeline is reached from the response of /messages.
+        bool isStartOfTimeline(const mtx::responses::Messages &msgs);
 
         QWidget *relativeWidget(QWidget *item, int dt) const;
 

@@ -164,11 +164,19 @@ TimelineView::sliderMoved(int position)
         }
 }
 
+bool
+TimelineView::isStartOfTimeline(const mtx::responses::Messages &msgs)
+{
+        return (msgs.chunk.size() == 0 && (msgs.end.empty() || msgs.end == msgs.start));
+}
+
 void
 TimelineView::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
         // We've reached the start of the timline and there're no more messages.
-        if (msgs.end.empty() || ((msgs.end == msgs.start) && msgs.chunk.size() == 0)) {
+        if (isStartOfTimeline(msgs)) {
+                nhlog::ui()->info("[{}] start of timeline reached, no more messages to fetch",
+                                  room_id_.toStdString());
                 isTimelineFinished = true;
                 return;
         }
@@ -562,6 +570,13 @@ TimelineView::init()
 void
 TimelineView::getMessages()
 {
+        if (prev_batch_token_.isEmpty()) {
+                nhlog::ui()->info("[{}] start of timeline reached, prev_batch token is empty",
+                                  room_id_.toStdString());
+                isTimelineFinished = true;
+                return;
+        }
+
         mtx::http::MessagesOpts opts;
         opts.room_id = room_id_.toStdString();
         opts.from    = prev_batch_token_.toStdString();
@@ -829,13 +844,22 @@ TimelineView::sendNextPendingMessage()
 void
 TimelineView::notifyForLastEvent()
 {
-        auto lastItem          = scroll_layout_->itemAt(scroll_layout_->count() - 1);
+        if (scroll_layout_->count() == 0) {
+                nhlog::ui()->error("notifyForLastEvent called with empty timeline");
+                return;
+        }
+
+        auto lastItem = scroll_layout_->itemAt(scroll_layout_->count() - 1);
+
+        if (!lastItem)
+                return;
+
         auto *lastTimelineItem = qobject_cast<TimelineItem *>(lastItem->widget());
 
         if (lastTimelineItem)
                 emit updateLastTimelineMessage(room_id_, lastTimelineItem->descriptionMessage());
         else
-                nhlog::ui()->warn("cast to TimelineView failed: {}", room_id_.toStdString());
+                nhlog::ui()->warn("cast to TimelineItem failed: {}", room_id_.toStdString());
 }
 
 void

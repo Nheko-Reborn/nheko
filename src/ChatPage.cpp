@@ -1110,9 +1110,15 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
         http::client()->create_room(
           req, [this](const mtx::responses::CreateRoom &res, mtx::http::RequestErr err) {
                   if (err) {
+                          const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
+                          const auto error      = err->matrix_error.error;
+                          const int status_code = static_cast<int>(err->status_code);
+
+                          nhlog::net()->warn(
+                            "failed to create room: {} {} ({})", error, err_code, status_code);
+
                           emit showNotification(
-                            tr("Room creation failed: %1")
-                              .arg(QString::fromStdString(err->matrix_error.error)));
+                            tr("Room creation failed: %1").arg(QString::fromStdString(error)));
                           return;
                   }
 
