@@ -19,6 +19,7 @@
     <url type="homepage">https://github.com/mujx/nheko</url>
     <update_contact>https://github.com/mujx</update_contact>
     <releases>
+        <release version="0.5.5" date="2018-09-01" />
         <release version="0.5.4" date="2018-08-21" />
         <release version="0.5.3" date="2018-08-12" />
         <release version="0.5.2" date="2018-07-28" />
