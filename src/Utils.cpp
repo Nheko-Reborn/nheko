@@ -5,7 +5,7 @@
 #include <QSettings>
 #include <cmath>
 
-#include <variant.hpp>
+#include <boost/variant.hpp>
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
@@ -89,24 +89,24 @@ utils::getMessageDescription(const TimelineEvent &event,
         using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
         using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
-        if (mpark::holds_alternative<Audio>(event)) {
+        if (boost::get<Audio>(&event) != nullptr) {
                 return createDescriptionInfo<Audio>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<Emote>(event)) {
+        } else if (boost::get<Emote>(&event) != nullptr) {
                 return createDescriptionInfo<Emote>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<File>(event)) {
+        } else if (boost::get<File>(&event) != nullptr) {
                 return createDescriptionInfo<File>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<Image>(event)) {
+        } else if (boost::get<Image>(&event) != nullptr) {
                 return createDescriptionInfo<Image>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<Notice>(event)) {
+        } else if (boost::get<Notice>(&event) != nullptr) {
                 return createDescriptionInfo<Notice>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<Text>(event)) {
+        } else if (boost::get<Text>(&event) != nullptr) {
                 return createDescriptionInfo<Text>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<Video>(event)) {
+        } else if (boost::get<Video>(&event) != nullptr) {
                 return createDescriptionInfo<Video>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<mtx::events::Sticker>(event)) {
+        } else if (boost::get<mtx::events::Sticker>(&event) != nullptr) {
                 return createDescriptionInfo<mtx::events::Sticker>(event, localUser, room_id);
-        } else if (mpark::holds_alternative<Encrypted>(event)) {
-                const auto msg    = mpark::get<Encrypted>(event);
+        } else if (boost::get<Encrypted>(&event) != nullptr) {
+                const auto msg    = boost::get<Encrypted>(event);
                 const auto sender = QString::fromStdString(msg.sender);
 
                 const auto username = Cache::displayName(room_id, sender);
@@ -193,21 +193,21 @@ utils::event_body(const mtx::events::collections::TimelineEvents &event)
         using namespace mtx::events;
         using namespace mtx::events::msg;
 
-        if (mpark::holds_alternative<RoomEvent<Audio>>(event)) {
+        if (boost::get<RoomEvent<Audio>>(&event) != nullptr) {
                 return message_body<RoomEvent<Audio>>(event);
-        } else if (mpark::holds_alternative<RoomEvent<Emote>>(event)) {
+        } else if (boost::get<RoomEvent<Emote>>(&event) != nullptr) {
                 return message_body<RoomEvent<Emote>>(event);
-        } else if (mpark::holds_alternative<RoomEvent<File>>(event)) {
+        } else if (boost::get<RoomEvent<File>>(&event) != nullptr) {
                 return message_body<RoomEvent<File>>(event);
-        } else if (mpark::holds_alternative<RoomEvent<Image>>(event)) {
+        } else if (boost::get<RoomEvent<Image>>(&event) != nullptr) {
                 return message_body<RoomEvent<Image>>(event);
-        } else if (mpark::holds_alternative<RoomEvent<Notice>>(event)) {
+        } else if (boost::get<RoomEvent<Notice>>(&event) != nullptr) {
                 return message_body<RoomEvent<Notice>>(event);
-        } else if (mpark::holds_alternative<Sticker>(event)) {
+        } else if (boost::get<Sticker>(&event) != nullptr) {
                 return message_body<Sticker>(event);
-        } else if (mpark::holds_alternative<RoomEvent<Text>>(event)) {
+        } else if (boost::get<RoomEvent<Text>>(&event) != nullptr) {
                 return message_body<RoomEvent<Text>>(event);
-        } else if (mpark::holds_alternative<RoomEvent<Video>>(event)) {
+        } else if (boost::get<RoomEvent<Video>>(&event) != nullptr) {
                 return message_body<RoomEvent<Video>>(event);
         }
 

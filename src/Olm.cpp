@@ -1,3 +1,5 @@
+#include <boost/variant.hpp>
+
 #include "Olm.h"
 
 #include "Cache.h"
@@ -288,14 +290,14 @@ request_keys(const std::string &room_id, const std::string &event_id)
                           return;
                   }
 
-                  if (!mpark::holds_alternative<EncryptedEvent<msg::Encrypted>>(res)) {
+                  if (boost::get<EncryptedEvent<msg::Encrypted>>(&res) == nullptr) {
                           nhlog::net()->info(
                             "retrieved event is not encrypted: {} from {}", event_id, room_id);
                           return;
                   }
 
                   olm::send_key_request_for(room_id,
-                                            mpark::get<EncryptedEvent<msg::Encrypted>>(res));
+                                            boost::get<EncryptedEvent<msg::Encrypted>>(res));
           });
 }
 

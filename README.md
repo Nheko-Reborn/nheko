@@ -86,7 +86,6 @@ sudo port install nheko
   Freetype, which is essential to properly support emoji.
 - CMake 3.1 or greater.
 - [mtxclient](https://github.com/mujx/mtxclient)
-- [matrix-structs](https://github.com/mujx/matrix-structs)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
 - Boost 1.66 or greater.
 - [libolm](https://git.matrix.org/git/olm)

@@ -26,8 +26,6 @@ option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog." ${USE_BUNDLED})
 option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${USE_BUNDLED})
 option(USE_BUNDLED_TWEENY "Use the bundled version of Tweeny." ${USE_BUNDLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdbxx." ${USE_BUNDLED})
-option(USE_BUNDLED_MATRIX_STRUCTS "Use the bundled version of matrix-structs."
-       ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
        ${USE_BUNDLED})
 
@@ -39,18 +37,11 @@ set(BOOST_SHA256
     5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9)
 
 set(
-  MATRIX_STRUCTS_URL
-  https://github.com/mujx/matrix-structs/archive/8de04afea34e95c14d1dde82af390592dfde90dd.tar.gz
-  )
-set(MATRIX_STRUCTS_HASH
-    255a82a9e463261858cd7da18f34fd60d19882ab507d214e47ea47ff78ae68b6)
-
-set(
   MTXCLIENT_URL
-  https://github.com/mujx/mtxclient/archive/10894678e982bc037a0aa4cf650b89a566ccbc52.tar.gz
+  https://github.com/mujx/mtxclient/archive/343cf4b1589b380443dd7f34f381d655ba9cc87c.tar.gz
   )
 set(MTXCLIENT_HASH
-    9bbb4613e6ed7c9886575221e1820c4aeda302ff29703e9040e53a2d0236c8ea)
+    68d4f7be55bb62a59e8698ecb04705e7422b63d5caccede26e2e0153f17ccda9)
 
 set(
   TWEENY_URL
@@ -69,9 +60,17 @@ set(LMDBXX_HASH
 set(OLM_URL https://git.matrix.org/git/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)
 
-set(SPDLOG_URL https://github.com/gabime/spdlog/archive/v1.0.0.tar.gz)
+set(SPDLOG_URL https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz)
 set(SPDLOG_HASH
-    90d5365121bcd2c41ce94dfe6a460e89507a2dfef6133fe5fad5bb35ac4ef0a1)
+    3dbcbfd8c07e25f5e0d662b194d3a7772ef214358c49ada23c044c4747ce8b19)
+
+set(JSON_HEADER_URL
+    https://github.com/nlohmann/json/releases/download/v3.2.0/json.hpp)
+set(JSON_HEADER_HASH
+    ce6b5610a051ec6795fa11c33854abebb086f0fd67c311f5921c3c07f9531b44)
+
+file(DOWNLOAD ${JSON_HEADER_URL} ${DEPS_INSTALL_DIR}/include/json.hpp
+     EXPECTED_HASH SHA256=${JSON_HEADER_HASH})
 
 if(USE_BUNDLED_BOOST)
   include(Boost)
@@ -83,10 +82,6 @@ endif()
 
 if(USE_BUNDLED_OLM)
   include(Olm)
-endif()
-
-if(USE_BUNDLED_MATRIX_STRUCTS)
-  include(MatrixStructs)
 endif()
 
 if(USE_BUNDLED_TWEENY)

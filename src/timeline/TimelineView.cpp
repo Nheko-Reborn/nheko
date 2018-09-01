@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <boost/variant.hpp>
+
 #include <QApplication>
 #include <QFileInfo>
 #include <QTimer>
@@ -223,8 +225,8 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
         using TextEvent   = RoomEvent<msg::Text>;
         using VideoEvent  = RoomEvent<msg::Video>;
 
-        if (mpark::holds_alternative<RedactionEvent<msg::Redaction>>(event)) {
-                auto redaction_event = mpark::get<RedactionEvent<msg::Redaction>>(event);
+        if (boost::get<RedactionEvent<msg::Redaction>>(&event) != nullptr) {
+                auto redaction_event = boost::get<RedactionEvent<msg::Redaction>>(event);
                 const auto event_id  = QString::fromStdString(redaction_event.redacts);
 
                 QTimer::singleShot(0, this, [event_id, this]() {
@@ -233,8 +235,8 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 });
 
                 return nullptr;
-        } else if (mpark::holds_alternative<StateEvent<state::Encryption>>(event)) {
-                auto msg      = mpark::get<StateEvent<state::Encryption>>(event);
+        } else if (boost::get<StateEvent<state::Encryption>>(&event) != nullptr) {
+                auto msg      = boost::get<StateEvent<state::Encryption>>(event);
                 auto event_id = QString::fromStdString(msg.event_id);
 
                 if (eventIds_.contains(event_id))
@@ -248,32 +250,32 @@ TimelineView::parseMessageEvent(const mtx::events::collections::TimelineEvents &
                 saveMessageInfo("", msg.origin_server_ts, direction);
 
                 return item;
-        } else if (mpark::holds_alternative<RoomEvent<msg::Audio>>(event)) {
-                auto audio = mpark::get<RoomEvent<msg::Audio>>(event);
+        } else if (boost::get<RoomEvent<msg::Audio>>(&event) != nullptr) {
+                auto audio = boost::get<RoomEvent<msg::Audio>>(event);
                 return processMessageEvent<AudioEvent, AudioItem>(audio, direction);
-        } else if (mpark::holds_alternative<RoomEvent<msg::Emote>>(event)) {
-                auto emote = mpark::get<RoomEvent<msg::Emote>>(event);
+        } else if (boost::get<RoomEvent<msg::Emote>>(&event) != nullptr) {
+                auto emote = boost::get<RoomEvent<msg::Emote>>(event);
                 return processMessageEvent<EmoteEvent>(emote, direction);
-        } else if (mpark::holds_alternative<RoomEvent<msg::File>>(event)) {
-                auto file = mpark::get<RoomEvent<msg::File>>(event);
+        } else if (boost::get<RoomEvent<msg::File>>(&event) != nullptr) {
+                auto file = boost::get<RoomEvent<msg::File>>(event);
                 return processMessageEvent<FileEvent, FileItem>(file, direction);
-        } else if (mpark::holds_alternative<RoomEvent<msg::Image>>(event)) {
-                auto image = mpark::get<RoomEvent<msg::Image>>(event);
+        } else if (boost::get<RoomEvent<msg::Image>>(&event) != nullptr) {
+                auto image = boost::get<RoomEvent<msg::Image>>(event);
                 return processMessageEvent<ImageEvent, ImageItem>(image, direction);
-        } else if (mpark::holds_alternative<RoomEvent<msg::Notice>>(event)) {
-                auto notice = mpark::get<RoomEvent<msg::Notice>>(event);
+        } else if (boost::get<RoomEvent<msg::Notice>>(&event) != nullptr) {
+                auto notice = boost::get<RoomEvent<msg::Notice>>(event);
                 return processMessageEvent<NoticeEvent>(notice, direction);
-        } else if (mpark::holds_alternative<RoomEvent<msg::Text>>(event)) {
-                auto text = mpark::get<RoomEvent<msg::Text>>(event);
+        } else if (boost::get<RoomEvent<msg::Text>>(&event) != nullptr) {
+                auto text = boost::get<RoomEvent<msg::Text>>(event);
                 return processMessageEvent<TextEvent>(text, direction);
-        } else if (mpark::holds_alternative<RoomEvent<msg::Video>>(event)) {
-                auto video = mpark::get<RoomEvent<msg::Video>>(event);
+        } else if (boost::get<RoomEvent<msg::Video>>(&event) != nullptr) {
+                auto video = boost::get<RoomEvent<msg::Video>>(event);
                 return processMessageEvent<VideoEvent, VideoItem>(video, direction);
-        } else if (mpark::holds_alternative<Sticker>(event)) {
-                return processMessageEvent<Sticker, StickerItem>(mpark::get<Sticker>(event),
+        } else if (boost::get<Sticker>(&event) != nullptr) {
+                return processMessageEvent<Sticker, StickerItem>(boost::get<Sticker>(event),
                                                                  direction);
-        } else if (mpark::holds_alternative<EncryptedEvent<msg::Encrypted>>(event)) {
-                auto res = parseEncryptedEvent(mpark::get<EncryptedEvent<msg::Encrypted>>(event));
+        } else if (boost::get<EncryptedEvent<msg::Encrypted>>(&event) != nullptr) {
+                auto res = parseEncryptedEvent(boost::get<EncryptedEvent<msg::Encrypted>>(event));
                 auto widget = parseMessageEvent(res.event, direction);
 
                 if (widget == nullptr)

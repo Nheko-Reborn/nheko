@@ -29,8 +29,6 @@
 #include <QStyleOption>
 #include <QtConcurrent>
 
-#include <variant.hpp>
-
 #include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"

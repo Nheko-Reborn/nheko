@@ -1,5 +1,7 @@
 #pragma once
 
+#include <boost/variant.hpp>
+
 #include "Cache.h"
 #include "RoomInfoListItem.h"
 #include "timeline/widgets/AudioItem.h"
@@ -96,7 +98,7 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
         using Text  = mtx::events::RoomEvent<mtx::events::msg::Text>;
         using Emote = mtx::events::RoomEvent<mtx::events::msg::Emote>;
 
-        const auto msg    = mpark::get<T>(event);
+        const auto msg    = boost::get<T>(event);
         const auto sender = QString::fromStdString(msg.sender);
 
         const auto username = Cache::displayName(room_id, sender);
@@ -135,25 +137,25 @@ erase_if(ContainerT &items, const PredicateT &predicate)
 inline uint64_t
 event_timestamp(const mtx::events::collections::TimelineEvents &event)
 {
-        return mpark::visit([](auto msg) { return msg.origin_server_ts; }, event);
+        return boost::apply_visitor([](auto msg) { return msg.origin_server_ts; }, event);
 }
 
 inline nlohmann::json
 serialize_event(const mtx::events::collections::TimelineEvents &event)
 {
-        return mpark::visit([](auto msg) { return json(msg); }, event);
+        return boost::apply_visitor([](auto msg) { return json(msg); }, event);
 }
 
 inline mtx::events::EventType
 event_type(const mtx::events::collections::TimelineEvents &event)
 {
-        return mpark::visit([](auto msg) { return msg.type; }, event);
+        return boost::apply_visitor([](auto msg) { return msg.type; }, event);
 }
 
 inline std::string
 event_id(const mtx::events::collections::TimelineEvents &event)
 {
-        return mpark::visit([](auto msg) { return msg.event_id; }, event);
+        return boost::apply_visitor([](auto msg) { return msg.event_id; }, event);
 }
 
 inline QString
@@ -165,14 +167,15 @@ eventId(const mtx::events::collections::TimelineEvents &event)
 inline QString
 event_sender(const mtx::events::collections::TimelineEvents &event)
 {
-        return mpark::visit([](auto msg) { return QString::fromStdString(msg.sender); }, event);
+        return boost::apply_visitor([](auto msg) { return QString::fromStdString(msg.sender); },
+                                    event);
 }
 
 template<class T>
 QString
 message_body(const mtx::events::collections::TimelineEvents &event)
 {
-        return QString::fromStdString(mpark::get<T>(event).content.body);
+        return QString::fromStdString(boost::get<T>(event).content.body);
 }
 
 //! Calculate the Levenshtein distance between two strings with character skipping.

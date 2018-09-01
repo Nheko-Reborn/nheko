@@ -20,8 +20,6 @@
 #include <QMouseEvent>
 #include <QPainter>
 
-#include <variant.hpp>
-
 #include "Cache.h"
 #include "Config.h"
 #include "RoomInfoListItem.h"

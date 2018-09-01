@@ -5,6 +5,9 @@ option(ASAN "Compile with address sanitizers" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+add_definitions(-DBOOST_MPL_LIMIT_LIST_SIZE=30)
+add_definitions(-DBOOST_MPL_CFG_NO_PREPROCESSED_HEADERS)
+
 include(GNUInstallDirs)
 
 # Include Qt basic functions
@@ -230,9 +233,20 @@ set(SRC_FILES
 # ExternalProject dependencies
 set(EXTERNAL_PROJECT_DEPS "")
 
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_STATIC_RUNTIME OFF)
+set(Boost_USE_MULTITHREADED ON)
+find_package(Boost 1.66 REQUIRED
+             COMPONENTS atomic
+                        chrono
+                        date_time
+                        iostreams
+                        random
+                        regex
+                        system
+                        thread)
 find_package(ZLIB REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(MatrixStructs 0.1.0 REQUIRED)
 find_package(MatrixClient 0.1.0 REQUIRED)
 find_package(Olm 2 REQUIRED)
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
@@ -259,6 +273,7 @@ include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
+include_directories(${Boost_INCLUDE_DIRS})
 
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
@@ -342,8 +357,8 @@ include(Translations)
 set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 set(COMMON_LIBS
-    MatrixStructs::MatrixStructs
     MatrixClient::MatrixClient
+    ${Boost_LIBRARIES}
     Qt5::Widgets
     Qt5::Svg
     Qt5::Concurrent

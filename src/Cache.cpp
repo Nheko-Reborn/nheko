@@ -24,8 +24,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 
+#include <boost/variant.hpp>
 #include <mtx/responses/common.hpp>
-#include <variant.hpp>
 
 #include "Cache.h"
 #include "Utils.h"
@@ -918,8 +918,8 @@ Cache::saveInvite(lmdb::txn &txn,
         using namespace mtx::events::state;
 
         for (const auto &e : room.invite_state) {
-                if (mpark::holds_alternative<StrippedEvent<Member>>(e)) {
-                        auto msg = mpark::get<StrippedEvent<Member>>(e);
+                if (boost::get<StrippedEvent<Member>>(&e) != nullptr) {
+                        auto msg = boost::get<StrippedEvent<Member>>(e);
 
                         auto display_name = msg.content.display_name.empty()
                                               ? msg.state_key
@@ -930,7 +930,7 @@ Cache::saveInvite(lmdb::txn &txn,
                         lmdb::dbi_put(
                           txn, membersdb, lmdb::val(msg.state_key), lmdb::val(json(tmp).dump()));
                 } else {
-                        mpark::visit(
+                        boost::apply_visitor(
                           [&txn, &statesdb](auto msg) {
                                   bool res = lmdb::dbi_put(txn,
                                                            statesdb,
@@ -1744,7 +1744,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                 if (isStateEvent(e))
                         continue;
 
-                if (mpark::holds_alternative<RedactionEvent<msg::Redaction>>(e))
+                if (boost::get<RedactionEvent<msg::Redaction>>(&e) != nullptr)
                         continue;
 
                 json obj = json::object();

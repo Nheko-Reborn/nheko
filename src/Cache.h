@@ -486,8 +486,8 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                if (mpark::holds_alternative<StateEvent<Member>>(event)) {
-                        const auto e = mpark::get<StateEvent<Member>>(event);
+                if (boost::get<StateEvent<Member>>(&event) != nullptr) {
+                        const auto e = boost::get<StateEvent<Member>>(event);
 
                         switch (e.content.membership) {
                         //
@@ -531,7 +531,7 @@ private:
                         }
 
                         return;
-                } else if (mpark::holds_alternative<StateEvent<Encryption>>(event)) {
+                } else if (boost::get<StateEvent<Encryption>>(&event) != nullptr) {
                         setEncryptedRoom(txn, room_id);
                         return;
                 }
@@ -539,7 +539,7 @@ private:
                 if (!isStateEvent(event))
                         return;
 
-                mpark::visit(
+                boost::apply_visitor(
                   [&txn, &statesdb](auto e) {
                           lmdb::dbi_put(
                             txn, statesdb, lmdb::val(to_string(e.type)), lmdb::val(json(e).dump()));
@@ -553,17 +553,17 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                return mpark::holds_alternative<StateEvent<Aliases>>(e) ||
-                       mpark::holds_alternative<StateEvent<state::Avatar>>(e) ||
-                       mpark::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
-                       mpark::holds_alternative<StateEvent<Create>>(e) ||
-                       mpark::holds_alternative<StateEvent<GuestAccess>>(e) ||
-                       mpark::holds_alternative<StateEvent<HistoryVisibility>>(e) ||
-                       mpark::holds_alternative<StateEvent<JoinRules>>(e) ||
-                       mpark::holds_alternative<StateEvent<Name>>(e) ||
-                       mpark::holds_alternative<StateEvent<Member>>(e) ||
-                       mpark::holds_alternative<StateEvent<PowerLevels>>(e) ||
-                       mpark::holds_alternative<StateEvent<Topic>>(e);
+                return boost::get<StateEvent<Aliases>>(&e) != nullptr ||
+                       boost::get<StateEvent<state::Avatar>>(&e) != nullptr ||
+                       boost::get<StateEvent<CanonicalAlias>>(&e) != nullptr ||
+                       boost::get<StateEvent<Create>>(&e) != nullptr ||
+                       boost::get<StateEvent<GuestAccess>>(&e) != nullptr ||
+                       boost::get<StateEvent<HistoryVisibility>>(&e) != nullptr ||
+                       boost::get<StateEvent<JoinRules>>(&e) != nullptr ||
+                       boost::get<StateEvent<Name>>(&e) != nullptr ||
+                       boost::get<StateEvent<Member>>(&e) != nullptr ||
+                       boost::get<StateEvent<PowerLevels>>(&e) != nullptr ||
+                       boost::get<StateEvent<Topic>>(&e) != nullptr;
         }
 
         template<class T>
@@ -572,11 +572,11 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                return mpark::holds_alternative<StateEvent<state::Avatar>>(e) ||
-                       mpark::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
-                       mpark::holds_alternative<StateEvent<Name>>(e) ||
-                       mpark::holds_alternative<StateEvent<Member>>(e) ||
-                       mpark::holds_alternative<StateEvent<Topic>>(e);
+                return boost::get<StateEvent<state::Avatar>>(&e) != nullptr ||
+                       boost::get<StateEvent<CanonicalAlias>>(&e) != nullptr ||
+                       boost::get<StateEvent<Name>>(&e) != nullptr ||
+                       boost::get<StateEvent<Member>>(&e) != nullptr ||
+                       boost::get<StateEvent<Topic>>(&e) != nullptr;
         }
 
         bool containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
@@ -584,11 +584,11 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                return mpark::holds_alternative<StrippedEvent<state::Avatar>>(e) ||
-                       mpark::holds_alternative<StrippedEvent<CanonicalAlias>>(e) ||
-                       mpark::holds_alternative<StrippedEvent<Name>>(e) ||
-                       mpark::holds_alternative<StrippedEvent<Member>>(e) ||
-                       mpark::holds_alternative<StrippedEvent<Topic>>(e);
+                return boost::get<StrippedEvent<state::Avatar>>(&e) != nullptr ||
+                       boost::get<StrippedEvent<CanonicalAlias>>(&e) != nullptr ||
+                       boost::get<StrippedEvent<Name>>(&e) != nullptr ||
+                       boost::get<StrippedEvent<Member>>(&e) != nullptr ||
+                       boost::get<StrippedEvent<Topic>>(&e) != nullptr;
         }
 
         void saveInvites(lmdb::txn &txn,

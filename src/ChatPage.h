@@ -18,6 +18,7 @@
 #pragma once
 
 #include <atomic>
+#include <boost/variant.hpp>
 
 #include <QFrame>
 #include <QHBoxLayout>
@@ -249,8 +250,8 @@ ChatPage::getMemberships(const std::vector<Collection> &collection) const
         using Member = mtx::events::StateEvent<mtx::events::state::Member>;
 
         for (const auto &event : collection) {
-                if (mpark::holds_alternative<Member>(event)) {
-                        auto member = mpark::get<Member>(event);
+                if (boost::get<Member>(event) != nullptr) {
+                        auto member = boost::get<Member>(event);
                         memberships.emplace(member.state_key, member);
                 }
         }
