@@ -16,7 +16,7 @@ ExternalProject_Add(
   CONFIGURE_COMMAND ${DEPS_BUILD_DIR}/boost/bootstrap.sh
     --with-libraries=random,thread,system,iostreams,atomic,chrono,date_time,regex
     --prefix=${DEPS_INSTALL_DIR}
-  BUILD_COMMAND ${DEPS_BUILD_DIR}/boost/b2 -d0 variant=release link=static threading=multi --layout=system
+  BUILD_COMMAND ${DEPS_BUILD_DIR}/boost/b2 -d0 cxxstd=14 variant=release link=static threading=multi --layout=system
   INSTALL_COMMAND ${DEPS_BUILD_DIR}/boost/b2 -d0 install
 )
 

@@ -3,6 +3,17 @@
 set -ex
 
 if [ $TRAVIS_OS_NAME == linux ]; then
+    export CC=${C_COMPILER}
+    export CXX=${CXX_COMPILER}
+
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/${C_COMPILER} 10
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/${CXX_COMPILER} 10
+
+    sudo update-alternatives --set gcc "/usr/bin/${C_COMPILER}"
+    sudo update-alternatives --set g++ "/usr/bin/${CXX_COMPILER}"
+fi
+
+if [ $TRAVIS_OS_NAME == linux ]; then
     source /opt/qt${QT_PKG}/bin/qt${QT_PKG}-env.sh || true;
 fi
 
