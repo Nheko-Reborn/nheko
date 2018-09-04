@@ -32,9 +32,9 @@ option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
 include(ExternalProject)
 
 set(BOOST_URL
-    https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2)
+    https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2)
 set(BOOST_SHA256
-    5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9)
+    7f6130bc3cf65f56a618888ce9d5ea704fa10b462be126ad053e80e553d6d8b7)
 
 set(
   MTXCLIENT_URL

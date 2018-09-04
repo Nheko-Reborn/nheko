@@ -1,7 +1,7 @@
 #include "Logging.h"
 
 #include "spdlog/sinks/rotating_file_sink.h"
-#include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 #include <iostream>
 
 namespace {
@@ -21,7 +21,7 @@ init(const std::string &file_path)
         auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
           file_path, MAX_FILE_SIZE, MAX_LOG_FILES);
 
-        auto console_sink = std::make_shared<spdlog::sinks::stdout_sink_mt>();
+        auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 
         std::vector<spdlog::sink_ptr> sinks;
         sinks.push_back(file_sink);
