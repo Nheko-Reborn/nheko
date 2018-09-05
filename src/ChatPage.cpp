@@ -50,6 +50,7 @@ static const std::string STORAGE_SECRET_KEY("secret");
 
 ChatPage *ChatPage::instance_             = nullptr;
 constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
+constexpr int RETRY_TIMEOUT               = 5'000;
 constexpr size_t MAX_ONETIME_KEYS         = 50;
 
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
@@ -585,7 +586,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync);
         connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync);
         connect(this, &ChatPage::tryDelayedSyncCb, this, [this]() {
-                QTimer::singleShot(5000, this, &ChatPage::trySync);
+                QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync);
         });
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
@@ -957,17 +958,23 @@ ChatPage::tryInitialSync()
           [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
                   if (err) {
                           const int status_code = static_cast<int>(err->status_code);
-                          nhlog::crypto()->critical("failed to upload one time keys: {} {}",
-                                                    err->matrix_error.error,
-                                                    status_code);
+
                           if (status_code == 404) {
                                   nhlog::net()->warn(
                                     "skipping key uploading. server doesn't provide /keys/upload");
                                   return startInitialSync();
                           }
 
-                          // TODO We should have a timeout instead of keeping hammering the server.
-                          emit tryInitialSyncCb();
+                          nhlog::crypto()->critical("failed to upload one time keys: {} {}",
+                                                    err->matrix_error.error,
+                                                    status_code);
+
+                          QString errorMsg(tr("Failed to setup encryption keys. Server response: "
+                                              "%s %d. Please try again later.")
+                                             .arg(QString::fromStdString(err->matrix_error.error))
+                                             .arg(status_code));
+
+                          emit dropToLoginPageCb(errorMsg);
                           return;
                   }
 
