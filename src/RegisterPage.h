@@ -25,10 +25,6 @@ class FlatButton;
 class RaisedButton;
 class TextField;
 
-namespace dialogs {
-class ReCaptcha;
-}
-
 class RegisterPage : public QWidget
 {
         Q_OBJECT
@@ -77,7 +73,4 @@ private:
         TextField *password_input_;
         TextField *password_confirmation_;
         TextField *server_input_;
-
-        //! ReCaptcha dialog.
-        std::shared_ptr<dialogs::ReCaptcha> captchaDialog_;
 };

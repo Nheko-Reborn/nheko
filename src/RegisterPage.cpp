@@ -134,43 +134,43 @@ RegisterPage::RegisterPage(QWidget *parent)
           [this](const std::string &user, const std::string &pass, const std::string &session) {
                   emit errorOccurred();
 
-                  if (!captchaDialog_) {
-                          captchaDialog_ = std::make_shared<dialogs::ReCaptcha>(
-                            QString::fromStdString(session), this);
-                          connect(
-                            captchaDialog_.get(),
-                            &dialogs::ReCaptcha::closing,
-                            this,
-                            [this, user, pass, session]() {
-                                    captchaDialog_->close();
-                                    emit registering();
+                  auto captchaDialog =
+                    new dialogs::ReCaptcha(QString::fromStdString(session), this);
 
-                                    http::client()->flow_response(
-                                      user,
-                                      pass,
-                                      session,
-                                      "m.login.recaptcha",
-                                      [this](const mtx::responses::Register &res,
-                                             mtx::http::RequestErr err) {
-                                              if (err) {
-                                                      nhlog::net()->warn(
-                                                        "failed to retrieve registration flows: {}",
-                                                        err->matrix_error.error);
-                                                      emit errorOccurred();
-                                                      emit registerErrorCb(QString::fromStdString(
-                                                        err->matrix_error.error));
-                                                      return;
-                                              }
+                  connect(captchaDialog,
+                          &dialogs::ReCaptcha::closing,
+                          this,
+                          [this, user, pass, session, captchaDialog]() {
+                                  captchaDialog->close();
+                                  captchaDialog->deleteLater();
 
-                                              http::client()->set_user(res.user_id);
-                                              http::client()->set_access_token(res.access_token);
+                                  emit registering();
 
-                                              emit registerOk();
-                                      });
-                            });
-                  }
+                                  http::client()->flow_response(
+                                    user,
+                                    pass,
+                                    session,
+                                    "m.login.recaptcha",
+                                    [this](const mtx::responses::Register &res,
+                                           mtx::http::RequestErr err) {
+                                            if (err) {
+                                                    nhlog::net()->warn(
+                                                      "failed to retrieve registration flows: {}",
+                                                      err->matrix_error.error);
+                                                    emit errorOccurred();
+                                                    emit registerErrorCb(QString::fromStdString(
+                                                      err->matrix_error.error));
+                                                    return;
+                                            }
 
-                  QTimer::singleShot(1000, this, [this]() { captchaDialog_->show(); });
+                                            http::client()->set_user(res.user_id);
+                                            http::client()->set_access_token(res.access_token);
+
+                                            emit registerOk();
+                                    });
+                          });
+
+                  QTimer::singleShot(1000, this, [captchaDialog]() { captchaDialog->show(); });
           });
 
         setLayout(top_layout_);
