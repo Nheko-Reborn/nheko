@@ -448,6 +448,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 
         generateTimestamp(timestamp);
 
+        formatted_body.replace(conf::strings::url_regex, conf::strings::url_html);
         formatted_body = "<i>" + formatted_body + "</i>";
 
         if (with_sender) {
@@ -493,6 +494,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
 
         descriptionMsg_ = {"", sender, emoteMsg, utils::descriptiveTime(timestamp), timestamp};
 
+        formatted_body.replace(conf::strings::url_regex, conf::strings::url_html);
+
         generateTimestamp(timestamp);
 
         if (with_sender) {
@@ -532,6 +535,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);
+
+        formatted_body.replace(conf::strings::url_regex, conf::strings::url_html);
 
         QSettings settings;
         descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
