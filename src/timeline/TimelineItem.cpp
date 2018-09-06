@@ -436,7 +436,9 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         event_id_            = QString::fromStdString(event.event_id);
         const auto sender    = QString::fromStdString(event.sender);
         const auto timestamp = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
-        auto body            = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
+
+        auto formatted_body = utils::get_message_body(event).trimmed();
+        auto body           = QString::fromStdString(event.content.body).trimmed();
 
         descriptionMsg_ = {Cache::displayName(room_id_, sender),
                            sender,
@@ -446,20 +448,18 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 
         generateTimestamp(timestamp);
 
-        body.replace(conf::strings::url_regex, conf::strings::url_html);
-        body.replace("\n", "<br/>");
-        body = "<i>" + body + "</i>";
+        formatted_body = "<i>" + formatted_body + "</i>";
 
         if (with_sender) {
                 auto displayName = Cache::displayName(room_id_, sender);
 
-                generateBody(sender, displayName, body);
+                generateBody(sender, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
                 AvatarProvider::resolve(
                   room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
-                generateBody(body);
+                generateBody(formatted_body);
                 setupSimpleLayout();
         }
 
@@ -484,26 +484,25 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 
-        auto body        = QString::fromStdString(event.content.body).trimmed();
+        auto formatted_body = utils::get_message_body(event).trimmed();
+        auto body           = QString::fromStdString(event.content.body).trimmed();
+
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);
-        auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(body);
+        auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(formatted_body);
 
         descriptionMsg_ = {"", sender, emoteMsg, utils::descriptiveTime(timestamp), timestamp};
 
         generateTimestamp(timestamp);
-        emoteMsg = emoteMsg.toHtmlEscaped();
-        emoteMsg.replace(conf::strings::url_regex, conf::strings::url_html);
-        emoteMsg.replace("\n", "<br/>");
 
         if (with_sender) {
-                generateBody(sender, displayName, emoteMsg);
+                generateBody(sender, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
                 AvatarProvider::resolve(
                   room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
-                generateBody(emoteMsg);
+                generateBody(formatted_body);
                 setupSimpleLayout();
         }
 
@@ -528,7 +527,9 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 
-        auto body        = QString::fromStdString(event.content.body).trimmed();
+        auto formatted_body = utils::get_message_body(event).trimmed();
+        auto body           = QString::fromStdString(event.content.body).trimmed();
+
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);
 
@@ -541,18 +542,14 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
 
         generateTimestamp(timestamp);
 
-        body = body.toHtmlEscaped();
-        body.replace(conf::strings::url_regex, conf::strings::url_html);
-        body.replace("\n", "<br/>");
-
         if (with_sender) {
-                generateBody(sender, displayName, body);
+                generateBody(sender, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
                 AvatarProvider::resolve(
                   room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
-                generateBody(body);
+                generateBody(formatted_body);
                 setupSimpleLayout();
         }
 

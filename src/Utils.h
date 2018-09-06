@@ -12,6 +12,7 @@
 #include <QDateTime>
 #include <QPixmap>
 #include <mtx/events/collections.hpp>
+#include <mtx/events/common.hpp>
 
 namespace utils {
 
@@ -195,4 +196,19 @@ humanReadableFingerprint(const std::string &ed25519);
 
 QString
 humanReadableFingerprint(const QString &ed25519);
+
+//! Retrieve the message body taking into account the `formatted_body` field.
+//! If the `format` of the message is not supported we fallback to `body`.
+template<typename RoomMessageT>
+QString
+get_message_body(const RoomMessageT &event)
+{
+        if (event.content.format.empty())
+                return QString::fromStdString(event.content.body);
+
+        if (event.content.format != common::FORMAT_MSG_TYPE)
+                return QString::fromStdString(event.content.body);
+
+        return QString::fromStdString(event.content.formatted_body);
+}
 }
