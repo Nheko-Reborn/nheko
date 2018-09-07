@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+321"/>
+        <location filename="../../src/ChatPage.cpp" line="+303"/>
         <source>Failed to upload image. Please try again.</source>
         <translation>Nie udało się wysłać obrazu. Spróbuj ponownie.</translation>
     </message>
@@ -32,7 +32,7 @@
         <translation>Nie udało się wysłać filmu. Spróbuj ponownie.</translation>
     </message>
     <message>
-        <location line="+364"/>
+        <location line="+366"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Nie udało się przywrócić konta OLM. Spróbuj zalogować się ponownie.</translation>
     </message>
@@ -42,18 +42,18 @@
         <translation>Nie udało się przywrócić zapisanych danych. Spróbuj zalogować się ponownie.</translation>
     </message>
     <message>
-        <location line="+201"/>
-        <location line="+139"/>
+        <location line="+212"/>
+        <location line="+150"/>
         <source>Please try to login again: %1</source>
         <translation>Spróbuj zalogować się ponownie: %1</translation>
     </message>
     <message>
-        <location line="-46"/>
+        <location line="-45"/>
         <source>Room creation failed: %1</source>
         <translation>Tworzenie pokoju nie powiodło się: %1</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+16"/>
         <source>Failed to leave room: %1</source>
         <translation>Nie udało się opuścić pokoju: %1</translation>
     </message>
@@ -74,7 +74,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+56"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+59"/>
         <source>APPLY</source>
         <translation>ZASTOSUJ</translation>
     </message>
@@ -230,7 +230,7 @@
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+79"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+77"/>
         <source>Leave room</source>
         <translation>Opuść pokój</translation>
     </message>
@@ -276,7 +276,7 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+100"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+126"/>
         <source>Encrypted</source>
         <translation>Szyfrowana</translation>
     </message>
@@ -299,7 +299,7 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+454"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+452"/>
         <source>Send a file</source>
         <translation>Wyślij plik</translation>
     </message>
@@ -346,7 +346,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../../src/timeline/TimelineView.cpp" line="+235"/>
+        <location filename="../../src/timeline/TimelineView.cpp" line="+245"/>
         <source>Encryption is enabled</source>
         <translation>Szyfrowanie jest włączone</translation>
     </message>
@@ -651,6 +651,16 @@ Rozmiar multimediów: %2
     </message>
     <message>
         <location line="+3"/>
+        <source>Info</source>
+        <translation>Informacje</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Internal ID</source>
+        <translation>Wewnętrzne ID</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Notifications</source>
         <translation>Powiadomienia</translation>
     </message>
@@ -719,7 +729,7 @@ Rozmiar multimediów: %2
  do testowania implementacji E2E, zanim weryfikacja urządzeń będzie ukończona.</translation>
     </message>
     <message numerus="yes">
-        <location line="+46"/>
+        <location line="+53"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n członek</numerusform>
@@ -728,9 +738,35 @@ Rozmiar multimediów: %2
         </translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+125"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Nie udało się włączyć szyfrowania: %1</translation>
+    </message>
+    <message>
+        <location line="+158"/>
+        <source>Select an avatar</source>
+        <translation>Wybierz awatar</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All Files (*)</source>
+        <translation>Wszystkie pliki (*)</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>The selected media is not an image</source>
+        <translation>Wybrany plik multimedialny nie jest obrazem</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Error while reading media: %1</source>
+        <translation>Błąd odczytywania pliku: %1</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <location line="+20"/>
+        <source>Failed to upload image: %s</source>
+        <translation>Nie udało się wysłać obrazu: %s</translation>
     </message>
 </context>
 <context>
