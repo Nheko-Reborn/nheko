@@ -1264,9 +1264,6 @@ toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
         text.body           = utils::stripHtml(html);
         text.formatted_body = html;
 
-        std::cout << "body: " << text.body << std::endl;
-        std::cout << "formatted_body: " << text.formatted_body << std::endl;
-
         return text;
 }
 
