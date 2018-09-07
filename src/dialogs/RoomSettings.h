@@ -53,6 +53,8 @@ class ThreadProxy : public QObject
 signals:
         void error(const QString &msg);
         void avatarChanged(const QImage &img);
+        void nameEventSent(const QString &);
+        void topicEventSent();
 };
 
 class EditModal : public QWidget
@@ -66,9 +68,6 @@ public:
 
 signals:
         void nameChanged(const QString &roomName);
-        void nameEventSentCb(const QString &newName);
-        void topicEventSentCb();
-        void stateEventErrorCb(const QString &msg);
 
 private:
         QString roomId_;
@@ -138,6 +137,7 @@ private:
         QString room_id_;
         QImage avatarImg_;
 
+        QLabel *roomNameLabel_     = nullptr;
         QLabel *errorLabel_        = nullptr;
         LoadingIndicator *spinner_ = nullptr;
 

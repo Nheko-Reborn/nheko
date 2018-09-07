@@ -90,20 +90,6 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
         labelLayout->addWidget(errorField_);
         layout->addLayout(labelLayout);
 
-        connect(this, &EditModal::stateEventErrorCb, this, [this](const QString &msg) {
-                errorField_->setText(msg);
-                errorField_->show();
-        });
-        connect(this, &EditModal::nameEventSentCb, this, [this](const QString &newName) {
-                errorField_->hide();
-                emit nameChanged(newName);
-                close();
-        });
-        connect(this, &EditModal::topicEventSentCb, this, [this]() {
-                errorField_->hide();
-                close();
-        });
-
         connect(applyBtn_, &QPushButton::clicked, [this]() {
                 // Check if the values are changed from the originals.
                 auto newName  = nameInput_->text().trimmed();
@@ -117,6 +103,21 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                 }
 
                 using namespace mtx::events;
+                auto proxy = std::make_shared<ThreadProxy>();
+                connect(proxy.get(), &ThreadProxy::topicEventSent, this, [this]() {
+                        errorField_->hide();
+                        close();
+                });
+                connect(
+                  proxy.get(), &ThreadProxy::nameEventSent, this, [this](const QString &newName) {
+                          errorField_->hide();
+                          emit nameChanged(newName);
+                          close();
+                  });
+                connect(proxy.get(), &ThreadProxy::error, this, [this](const QString &msg) {
+                        errorField_->setText(msg);
+                        errorField_->show();
+                });
 
                 if (newName != initialName_ && !newName.isEmpty()) {
                         state::Name body;
@@ -125,15 +126,15 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                         http::client()->send_state_event<state::Name, EventType::RoomName>(
                           roomId_.toStdString(),
                           body,
-                          [this, newName](const mtx::responses::EventId &,
-                                          mtx::http::RequestErr err) {
+                          [proxy, newName](const mtx::responses::EventId &,
+                                           mtx::http::RequestErr err) {
                                   if (err) {
-                                          emit stateEventErrorCb(
+                                          emit proxy->error(
                                             QString::fromStdString(err->matrix_error.error));
                                           return;
                                   }
 
-                                  emit nameEventSentCb(newName);
+                                  emit proxy->nameEventSent(newName);
                           });
                 }
 
@@ -144,14 +145,14 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
                         http::client()->send_state_event<state::Topic, EventType::RoomTopic>(
                           roomId_.toStdString(),
                           body,
-                          [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                          [proxy](const mtx::responses::EventId &, mtx::http::RequestErr err) {
                                   if (err) {
-                                          emit stateEventErrorCb(
+                                          emit proxy->error(
                                             QString::fromStdString(err->matrix_error.error));
                                           return;
                                   }
 
-                                  emit topicEventSentCb();
+                                  emit proxy->topicEventSent();
                           });
                 }
         });
@@ -366,15 +367,15 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 connect(filter, &ClickableFilter::clicked, this, &RoomSettings::updateAvatar);
         }
 
-        auto roomNameLabel = new QLabel(QString::fromStdString(info_.name), this);
-        roomNameLabel->setFont(doubleFont);
+        roomNameLabel_ = new QLabel(QString::fromStdString(info_.name), this);
+        roomNameLabel_->setFont(doubleFont);
 
         auto membersLabel = new QLabel(tr("%n member(s)", "", info_.member_count), this);
 
         auto textLayout = new QVBoxLayout;
-        textLayout->addWidget(roomNameLabel);
+        textLayout->addWidget(roomNameLabel_);
         textLayout->addWidget(membersLabel);
-        textLayout->setAlignment(roomNameLabel, Qt::AlignCenter | Qt::AlignTop);
+        textLayout->setAlignment(roomNameLabel_, Qt::AlignCenter | Qt::AlignTop);
         textLayout->setAlignment(membersLabel, Qt::AlignCenter | Qt::AlignTop);
         textLayout->setSpacing(TEXT_SPACING);
         textLayout->setMargin(0);
@@ -458,8 +459,9 @@ RoomSettings::setupEditButton()
                 modal->setFields(QString::fromStdString(info_.name),
                                  QString::fromStdString(info_.topic));
                 modal->show();
-                connect(modal, &EditModal::nameChanged, this, [](const QString &newName) {
-                        Q_UNUSED(newName);
+                connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
+                        if (roomNameLabel_)
+                                roomNameLabel_->setText(newName);
                 });
         });
 

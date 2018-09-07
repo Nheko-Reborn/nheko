@@ -50,8 +50,6 @@ FileItem::init()
         icon_.addFile(":/icons/icons/ui/arrow-pointing-down.png");
 
         setFixedHeight(Height);
-
-        connect(this, &FileItem::fileDownloadedCb, this, &FileItem::fileDownloaded);
 }
 
 FileItem::FileItem(const mtx::events::RoomEvent<mtx::events::msg::File> &event, QWidget *parent)
@@ -110,19 +108,22 @@ FileItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
+                auto proxy = std::make_shared<MediaProxy>();
+                connect(proxy.get(), &MediaProxy::fileDownloaded, this, &FileItem::fileDownloaded);
+
                 http::client()->download(
                   url_.toString().toStdString(),
-                  [this](const std::string &data,
-                         const std::string &,
-                         const std::string &,
-                         mtx::http::RequestErr err) {
+                  [proxy = std::move(proxy), url = url_](const std::string &data,
+                                                         const std::string &,
+                                                         const std::string &,
+                                                         mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::ui()->warn("failed to retrieve m.file content: {}",
-                                                    url_.toString().toStdString());
+                                                    url.toString().toStdString());
                                   return;
                           }
 
-                          emit fileDownloadedCb(QByteArray(data.data(), data.size()));
+                          emit proxy->fileDownloaded(QByteArray(data.data(), data.size()));
                   });
         } else {
                 openUrl();

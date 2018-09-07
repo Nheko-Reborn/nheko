@@ -333,6 +333,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/CommunitiesList.h
     src/LoginPage.h
     src/MainWindow.h
+    src/MatrixClient.h
     src/InviteeItem.h
     src/QuickSwitcher.h
     src/RegisterPage.h

@@ -33,11 +33,14 @@
 void
 ImageItem::downloadMedia(const QUrl &url)
 {
+        auto proxy = std::make_shared<MediaProxy>();
+        connect(proxy.get(), &MediaProxy::imageDownloaded, this, &ImageItem::setImage);
+
         http::client()->download(url.toString().toStdString(),
-                                 [this, url](const std::string &data,
-                                             const std::string &,
-                                             const std::string &,
-                                             mtx::http::RequestErr err) {
+                                 [proxy = std::move(proxy), url](const std::string &data,
+                                                                 const std::string &,
+                                                                 const std::string &,
+                                                                 mtx::http::RequestErr err) {
                                          if (err) {
                                                  nhlog::net()->warn(
                                                    "failed to retrieve image {}: {} {}",
@@ -49,7 +52,8 @@ ImageItem::downloadMedia(const QUrl &url)
 
                                          QPixmap img;
                                          img.loadFromData(QByteArray(data.data(), data.size()));
-                                         emit imageDownloaded(img);
+
+                                         emit proxy->imageDownloaded(img);
                                  });
 }
 
@@ -76,8 +80,6 @@ ImageItem::init()
         setCursor(Qt::PointingHandCursor);
         setAttribute(Qt::WA_Hover, true);
 
-        connect(this, &ImageItem::imageDownloaded, this, &ImageItem::setImage);
-        connect(this, &ImageItem::imageSaved, this, &ImageItem::saveImage);
         downloadMedia(url_);
 }
 
@@ -240,12 +242,15 @@ ImageItem::saveAs()
 
         const auto url = url_.toString().toStdString();
 
+        auto proxy = std::make_shared<MediaProxy>();
+        connect(proxy.get(), &MediaProxy::imageSaved, this, &ImageItem::saveImage);
+
         http::client()->download(
           url,
-          [this, filename, url](const std::string &data,
-                                const std::string &,
-                                const std::string &,
-                                mtx::http::RequestErr err) {
+          [proxy = std::move(proxy), filename, url](const std::string &data,
+                                                    const std::string &,
+                                                    const std::string &,
+                                                    mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to retrieve image {}: {} {}",
                                              url,
@@ -254,6 +259,6 @@ ImageItem::saveAs()
                           return;
                   }
 
-                  emit imageSaved(filename, QByteArray(data.data(), data.size()));
+                  emit proxy->imageSaved(filename, QByteArray(data.data(), data.size()));
           });
 }

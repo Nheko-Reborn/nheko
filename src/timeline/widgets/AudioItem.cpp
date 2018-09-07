@@ -55,7 +55,6 @@ AudioItem::init()
         player_->setVolume(100);
         player_->setNotifyInterval(1000);
 
-        connect(this, &AudioItem::fileDownloadedCb, this, &AudioItem::fileDownloaded);
         connect(player_, &QMediaPlayer::stateChanged, this, [this](QMediaPlayer::State state) {
                 if (state == QMediaPlayer::StoppedState) {
                         state_ = AudioState::Play;
@@ -120,19 +119,22 @@ AudioItem::mousePressEvent(QMouseEvent *event)
                 if (filenameToSave_.isEmpty())
                         return;
 
+                auto proxy = std::make_shared<MediaProxy>();
+                connect(proxy.get(), &MediaProxy::fileDownloaded, this, &AudioItem::fileDownloaded);
+
                 http::client()->download(
                   url_.toString().toStdString(),
-                  [this](const std::string &data,
-                         const std::string &,
-                         const std::string &,
-                         mtx::http::RequestErr err) {
+                  [proxy = std::move(proxy), url = url_](const std::string &data,
+                                                         const std::string &,
+                                                         const std::string &,
+                                                         mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->info("failed to retrieve m.audio content: {}",
-                                                     url_.toString().toStdString());
+                                                     url.toString().toStdString());
                                   return;
                           }
 
-                          emit fileDownloadedCb(QByteArray(data.data(), data.size()));
+                          emit proxy->fileDownloaded(QByteArray(data.data(), data.size()));
                   });
         }
 }

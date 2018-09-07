@@ -52,9 +52,6 @@ public:
         QColor iconColor() const { return iconColor_; }
         QColor backgroundColor() const { return backgroundColor_; }
 
-signals:
-        void fileDownloadedCb(const QByteArray &data);
-
 protected:
         void paintEvent(QPaintEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;

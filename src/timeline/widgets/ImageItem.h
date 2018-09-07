@@ -48,10 +48,6 @@ public slots:
         void setImage(const QPixmap &image);
         void saveImage(const QString &filename, const QByteArray &data);
 
-signals:
-        void imageDownloaded(const QPixmap &img);
-        void imageSaved(const QString &filename, const QByteArray &data);
-
 protected:
         void paintEvent(QPaintEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
