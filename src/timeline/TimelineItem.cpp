@@ -437,7 +437,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         const auto sender    = QString::fromStdString(event.sender);
         const auto timestamp = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
 
-        auto formatted_body = utils::get_message_body(event).trimmed();
+        auto formatted_body = utils::linkifyMessage(utils::getMessageBody(event).trimmed());
         auto body           = QString::fromStdString(event.content.body).trimmed();
 
         descriptionMsg_ = {Cache::displayName(room_id_, sender),
@@ -448,7 +448,6 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 
         generateTimestamp(timestamp);
 
-        formatted_body.replace(conf::strings::url_regex, conf::strings::url_html);
         formatted_body = "<i>" + formatted_body + "</i>";
 
         if (with_sender) {
@@ -485,7 +484,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 
-        auto formatted_body = utils::get_message_body(event).trimmed();
+        auto formatted_body = utils::linkifyMessage(utils::getMessageBody(event).trimmed());
         auto body           = QString::fromStdString(event.content.body).trimmed();
 
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
@@ -493,8 +492,6 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(formatted_body);
 
         descriptionMsg_ = {"", sender, emoteMsg, utils::descriptiveTime(timestamp), timestamp};
-
-        formatted_body.replace(conf::strings::url_regex, conf::strings::url_html);
 
         generateTimestamp(timestamp);
 
@@ -530,13 +527,11 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 
-        auto formatted_body = utils::get_message_body(event).trimmed();
+        auto formatted_body = utils::linkifyMessage(utils::getMessageBody(event).trimmed());
         auto body           = QString::fromStdString(event.content.body).trimmed();
 
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);
-
-        formatted_body.replace(conf::strings::url_regex, conf::strings::url_html);
 
         QSettings settings;
         descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,

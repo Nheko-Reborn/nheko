@@ -201,7 +201,7 @@ humanReadableFingerprint(const QString &ed25519);
 //! If the `format` of the message is not supported we fallback to `body`.
 template<typename RoomMessageT>
 QString
-get_message_body(const RoomMessageT &event)
+getMessageBody(const RoomMessageT &event)
 {
         if (event.content.format.empty())
                 return QString::fromStdString(event.content.body);
@@ -211,4 +211,8 @@ get_message_body(const RoomMessageT &event)
 
         return QString::fromStdString(event.content.formatted_body);
 }
+
+//! Replace raw URLs in text with HTML link tags.
+QString
+linkifyMessage(const QString &body);
 }

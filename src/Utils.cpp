@@ -3,9 +3,12 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QSettings>
+#include <QXmlStreamReader>
 #include <cmath>
 
 #include <boost/variant.hpp>
+
+#include "Config.h"
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
@@ -275,4 +278,52 @@ utils::humanReadableFingerprint(const QString &ed25519)
                 fingerprintList << ed25519.mid(i, 4);
         }
         return fingerprintList.join(" ");
+}
+
+QString
+utils::linkifyMessage(const QString &body)
+{
+        QXmlStreamReader xml{"<html>" + body + "</html>"};
+
+        QString textString;
+        while (!xml.atEnd() && !xml.hasError()) {
+                auto t = xml.readNext();
+
+                switch (t) {
+                case QXmlStreamReader::Characters: {
+                        auto text = xml.text().toString();
+                        text.replace(conf::strings::url_regex, conf::strings::url_html);
+
+                        textString += text;
+                        break;
+                }
+                case QXmlStreamReader::StartDocument:
+                case QXmlStreamReader::EndDocument:
+                        break;
+                case QXmlStreamReader::StartElement: {
+                        if (xml.name() == "html")
+                                break;
+
+                        textString += "<" + xml.name() + ">";
+                        break;
+                }
+                case QXmlStreamReader::EndElement: {
+                        if (xml.name() == "html")
+                                break;
+
+                        textString += "</" + xml.name() + ">";
+                        break;
+                }
+                default: {
+                        break;
+                }
+                }
+        }
+
+        if (xml.hasError()) {
+                // qWarning() << "error while parsing xml";
+                return body;
+        }
+
+        return textString;
 }
