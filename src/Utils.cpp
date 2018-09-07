@@ -3,10 +3,12 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QSettings>
+#include <QTextDocument>
 #include <QXmlStreamReader>
 #include <cmath>
 
 #include <boost/variant.hpp>
+#include <maddy/parser.h>
 
 #include "Config.h"
 
@@ -326,4 +328,25 @@ utils::linkifyMessage(const QString &body)
         }
 
         return textString;
+}
+
+std::string
+utils::markdownToHtml(const std::string &text)
+{
+        std::stringstream markdownInput(text);
+        auto parser = std::make_shared<maddy::Parser>();
+
+        return parser->Parse(markdownInput);
+}
+
+std::string
+utils::markdownToHtml(const QString &text)
+{
+        return markdownToHtml(text.toStdString());
+}
+
+std::string
+utils::stripHtml(const std::string &text)
+{
+        return QString::fromStdString(text).remove(QRegExp("<[^>]*>")).toStdString();
 }

@@ -1233,8 +1233,12 @@ template<>
 mtx::events::msg::Emote
 toRoomMessage<mtx::events::msg::Emote>(const PendingMessage &m)
 {
+        auto html = utils::markdownToHtml(m.body);
+
         mtx::events::msg::Emote emote;
-        emote.body = m.body.toStdString();
+        emote.body           = utils::stripHtml(html);
+        emote.formatted_body = html;
+
         return emote;
 }
 
@@ -1254,8 +1258,15 @@ template<>
 mtx::events::msg::Text
 toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
 {
+        auto html = utils::markdownToHtml(m.body);
+
         mtx::events::msg::Text text;
-        text.body = m.body.toStdString();
+        text.body           = utils::stripHtml(html);
+        text.formatted_body = html;
+
+        std::cout << "body: " << text.body << std::endl;
+        std::cout << "formatted_body: " << text.formatted_body << std::endl;
+
         return text;
 }
 

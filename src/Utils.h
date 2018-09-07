@@ -215,4 +215,15 @@ getMessageBody(const RoomMessageT &event)
 //! Replace raw URLs in text with HTML link tags.
 QString
 linkifyMessage(const QString &body);
+
+//! Convert the input markdown text to html.
+std::string
+markdownToHtml(const QString &text);
+
+std::string
+markdownToHtml(const std::string &text);
+
+//! Return the plain text version of an html document.
+std::string
+stripHtml(const std::string &text);
 }

@@ -26,6 +26,7 @@ option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog." ${USE_BUNDLED})
 option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${USE_BUNDLED})
 option(USE_BUNDLED_TWEENY "Use the bundled version of Tweeny." ${USE_BUNDLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdbxx." ${USE_BUNDLED})
+option(USE_BUNDLED_MADDY "Use the bundled version of maddy." ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
        ${USE_BUNDLED})
 
@@ -64,6 +65,12 @@ set(SPDLOG_URL https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz)
 set(SPDLOG_HASH
     3dbcbfd8c07e25f5e0d662b194d3a7772ef214358c49ada23c044c4747ce8b19)
 
+set(
+  MADDY_URL
+  https://github.com/mujx/maddy/archive/d6b32013a580d40de57ac8b6650846abecbb071f.tar.gz
+  )
+set(MADDY_HASH c40df975420aa9f1549d9e528af84243f701b5264ed9c32d86b1cfc9306c15b8)
+
 set(JSON_HEADER_URL
     https://github.com/nlohmann/json/releases/download/v3.2.0/json.hpp)
 set(JSON_HEADER_HASH
@@ -78,6 +85,10 @@ endif()
 
 if(USE_BUNDLED_SPDLOG)
   include(SpdLog)
+endif()
+
+if(USE_BUNDLED_MADDY)
+  include(Maddy)
 endif()
 
 if(USE_BUNDLED_OLM)

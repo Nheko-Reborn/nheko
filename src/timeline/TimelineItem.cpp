@@ -265,16 +265,16 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         auto timestamp   = QDateTime::currentDateTime();
 
         if (ty == mtx::events::MessageType::Emote) {
-                body            = QString("* %1 %2").arg(displayName).arg(body);
+                body            = QString("%1 %2").arg(displayName).arg(body);
                 descriptionMsg_ = {"", userid, body, utils::descriptiveTime(timestamp), timestamp};
         } else {
                 descriptionMsg_ = {
                   "You: ", userid, body, utils::descriptiveTime(timestamp), timestamp};
         }
 
-        body = body.toHtmlEscaped();
-        body.replace(conf::strings::url_regex, conf::strings::url_html);
-        body.replace("\n", "<br/>");
+        body = QString::fromStdString(utils::markdownToHtml(body));
+        body = utils::linkifyMessage(body);
+
         generateTimestamp(timestamp);
 
         if (withSender) {
@@ -489,7 +489,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
 
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);
-        auto emoteMsg    = QString("* %1 %2").arg(displayName).arg(formatted_body);
+        auto emoteMsg    = QString("%1 %2").arg(displayName).arg(formatted_body);
 
         descriptionMsg_ = {"", sender, emoteMsg, utils::descriptiveTime(timestamp), timestamp};
 

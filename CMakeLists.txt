@@ -250,6 +250,7 @@ find_package(OpenSSL REQUIRED)
 find_package(MatrixClient 0.1.0 REQUIRED)
 find_package(Olm 2 REQUIRED)
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
+find_package(maddy 1.0.0 CONFIG REQUIRED)
 
 if(NOT LMDBXX_INCLUDE_DIR)
     find_path(LMDBXX_INCLUDE_DIR
