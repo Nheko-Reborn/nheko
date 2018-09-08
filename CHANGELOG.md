@@ -6,6 +6,7 @@
 
 ### Improvements
 - Update Polish translation (#430)
+- Enable Qt auto scaling. (#397)
 - Enable colors in the console logger.
 
 ### Bug fixes
@@ -14,6 +15,7 @@
 - Fixed issue with downloading media that don't have a generated thumbnail.
 - macOS: Add missing border on the top bar.
 - Fallback to the login screen when the one-time keys cannot be uploaded.
+- Show the sidebar after initial sync. (#412)
 
 ## [0.5.5] - 2018-09-01
 

@@ -109,6 +109,9 @@ main(int argc, char *argv[])
 
                 if (factor != -1)
                         qputenv("QT_SCALE_FACTOR", QString::number(factor).toUtf8());
+
+                if (factor == -1 || factor == 1)
+                        qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
         }
 #endif
 
