@@ -80,6 +80,9 @@ protected:
 #if !defined(Q_OS_MAC)
                 p.setPen(QPen(borderColor()));
                 p.drawLine(QPointF(0, height() - p.pen().width()), QPointF(width(), height()));
+#else
+                p.setPen(QPen(borderColor()));
+                p.drawLine(QPointF(0, height()), QPointF(width(), height()));
 #endif
         }
 

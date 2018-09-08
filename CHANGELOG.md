@@ -11,6 +11,8 @@
 ### Bug fixes
 - Fixed crash when switching rooms. (#433)
 - Fixed crash during low connectivity. (#406)
+- Fixed issue with downloading media that don't have a generated thumbnail.
+- macOS: Add missing border on the top bar.
 - Fallback to the login screen when the one-time keys cannot be uploaded.
 
 ## [0.5.5] - 2018-09-01
