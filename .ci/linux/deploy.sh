@@ -31,10 +31,7 @@ unset QT_PLUGIN_PATH
 unset LD_LIBRARY_PATH
 
 export ARCH=$(uname -m)
-
-if [ ! -z $TRAVIS_TAG ]; then
-    export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
-fi
+export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
 
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -bundle-non-qt-libs
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -appimage

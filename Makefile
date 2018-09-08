@@ -15,6 +15,10 @@ third-party:
 		-DUSE_BUNDLED_BOOST=OFF
 	@cmake --build ${DEPS_BUILD_DIR}
 
+docker-third-party:
+	@cmake -GNinja -H${DEPS_SOURCE_DIR} -B${DEPS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release
+	@cmake --build ${DEPS_BUILD_DIR}
+
 ci:
 	cmake -H${DEPS_SOURCE_DIR} -B${DEPS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release
 	cmake --build ${DEPS_BUILD_DIR}
@@ -48,8 +52,12 @@ macos-deploy:
 
 docker-app-image: image
 	docker run \
-		-e CXX=g++-7 \
-		-e CC=gcc-7 \
+		-e CXX=g++-5 \
+		-e CC=gcc-5 \
+		-v `pwd`:/build nheko-app-image make docker-third-party
+	docker run \
+		-e CXX=g++-5 \
+		-e CC=gcc-5 \
 		-v `pwd`:/build nheko-app-image make release
 	docker run \
 		--privileged \
