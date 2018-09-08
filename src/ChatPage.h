@@ -67,7 +67,7 @@ public:
         void deleteConfigs();
 
         //! Calculate the width of the message timeline.
-        int timelineWidth();
+        uint64_t timelineWidth();
         bool isSideBarExpanded();
         //! Hide the room & group list (if it was visible).
         void hideSideBars();

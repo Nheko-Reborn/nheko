@@ -1320,7 +1320,7 @@ ChatPage::showSideBars()
         top_bar_->disableBackButton();
 }
 
-int
+uint64_t
 ChatPage::timelineWidth()
 {
         int sidebarWidth = sideBar_->size().width();
