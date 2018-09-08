@@ -6,27 +6,16 @@
 
 class Menu : public QMenu
 {
+        Q_OBJECT
 public:
         Menu(QWidget *parent = nullptr)
-          : QMenu(parent)
-        {
-                QFont font;
-                font.setPixelSize(conf::fontSize);
-
-                setFont(font);
-                setStyleSheet(
-                  "QMenu { color: black; background-color: white; margin: 0px;}"
-                  "QMenu::item {"
-                  "color: black; padding: 7px 20px; border: 1px solid transparent;"
-                  "margin: 2px 0px; }"
-                  "QMenu::item:selected { color: black; background: rgba(180, 180, 180, 100); }");
-        };
+          : QMenu(parent){};
 
 protected:
-        void leaveEvent(QEvent *e)
+        void leaveEvent(QEvent *e) override
         {
-                Q_UNUSED(e);
-
                 hide();
+
+                QMenu::leaveEvent(e);
         }
 };

@@ -314,6 +314,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/ui/FlatButton.h
     src/ui/Label.h
     src/ui/FloatingButton.h
+    src/ui/Menu.h
     src/ui/OverlayWidget.h
     src/ui/ScrollBar.h
     src/ui/SnackBar.h
