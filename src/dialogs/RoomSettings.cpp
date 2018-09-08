@@ -90,77 +90,69 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
         labelLayout->addWidget(errorField_);
         layout->addLayout(labelLayout);
 
-        connect(applyBtn_, &QPushButton::clicked, [this]() {
-                // Check if the values are changed from the originals.
-                auto newName  = nameInput_->text().trimmed();
-                auto newTopic = topicInput_->text().trimmed();
-
-                errorField_->hide();
-
-                if (newName == initialName_ && newTopic == initialTopic_) {
-                        close();
-                        return;
-                }
-
-                using namespace mtx::events;
-                auto proxy = std::make_shared<ThreadProxy>();
-                connect(proxy.get(), &ThreadProxy::topicEventSent, this, [this]() {
-                        errorField_->hide();
-                        close();
-                });
-                connect(
-                  proxy.get(), &ThreadProxy::nameEventSent, this, [this](const QString &newName) {
-                          errorField_->hide();
-                          emit nameChanged(newName);
-                          close();
-                  });
-                connect(proxy.get(), &ThreadProxy::error, this, [this](const QString &msg) {
-                        errorField_->setText(msg);
-                        errorField_->show();
-                });
-
-                if (newName != initialName_ && !newName.isEmpty()) {
-                        state::Name body;
-                        body.name = newName.toStdString();
-
-                        http::client()->send_state_event<state::Name, EventType::RoomName>(
-                          roomId_.toStdString(),
-                          body,
-                          [proxy, newName](const mtx::responses::EventId &,
-                                           mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit proxy->error(
-                                            QString::fromStdString(err->matrix_error.error));
-                                          return;
-                                  }
-
-                                  emit proxy->nameEventSent(newName);
-                          });
-                }
-
-                if (newTopic != initialTopic_ && !newTopic.isEmpty()) {
-                        state::Topic body;
-                        body.topic = newTopic.toStdString();
-
-                        http::client()->send_state_event<state::Topic, EventType::RoomTopic>(
-                          roomId_.toStdString(),
-                          body,
-                          [proxy](const mtx::responses::EventId &, mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit proxy->error(
-                                            QString::fromStdString(err->matrix_error.error));
-                                          return;
-                                  }
-
-                                  emit proxy->topicEventSent();
-                          });
-                }
-        });
+        connect(applyBtn_, &QPushButton::clicked, this, &EditModal::applyClicked);
         connect(cancelBtn_, &QPushButton::clicked, this, &EditModal::close);
 
         auto window = QApplication::activeWindow();
         auto center = window->frameGeometry().center();
         move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
+}
+
+void
+EditModal::applyClicked()
+{
+        // Check if the values are changed from the originals.
+        auto newName  = nameInput_->text().trimmed();
+        auto newTopic = topicInput_->text().trimmed();
+
+        errorField_->hide();
+
+        if (newName == initialName_ && newTopic == initialTopic_) {
+                close();
+                return;
+        }
+
+        using namespace mtx::events;
+        auto proxy = std::make_shared<ThreadProxy>();
+        connect(proxy.get(), &ThreadProxy::topicEventSent, this, &EditModal::topicEventSent);
+        connect(proxy.get(), &ThreadProxy::nameEventSent, this, &EditModal::nameEventSent);
+        connect(proxy.get(), &ThreadProxy::error, this, &EditModal::error);
+
+        if (newName != initialName_ && !newName.isEmpty()) {
+                state::Name body;
+                body.name = newName.toStdString();
+
+                http::client()->send_state_event<state::Name, EventType::RoomName>(
+                  roomId_.toStdString(),
+                  body,
+                  [proxy, newName](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                          if (err) {
+                                  emit proxy->error(
+                                    QString::fromStdString(err->matrix_error.error));
+                                  return;
+                          }
+
+                          emit proxy->nameEventSent(newName);
+                  });
+        }
+
+        if (newTopic != initialTopic_ && !newTopic.isEmpty()) {
+                state::Topic body;
+                body.topic = newTopic.toStdString();
+
+                http::client()->send_state_event<state::Topic, EventType::RoomTopic>(
+                  roomId_.toStdString(),
+                  body,
+                  [proxy](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                          if (err) {
+                                  emit proxy->error(
+                                    QString::fromStdString(err->matrix_error.error));
+                                  return;
+                          }
+
+                          emit proxy->topicEventSent();
+                  });
+        }
 }
 
 void

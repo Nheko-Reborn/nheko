@@ -3,6 +3,7 @@
 #include <QEvent>
 #include <QFrame>
 #include <QImage>
+#include <QLabel>
 
 #include "Cache.h"
 
@@ -12,8 +13,6 @@ class QComboBox;
 class QHBoxLayout;
 class QShowEvent;
 class LoadingIndicator;
-class QLabel;
-class QLabel;
 class QLayout;
 class QPixmap;
 class TextField;
@@ -68,6 +67,28 @@ public:
 
 signals:
         void nameChanged(const QString &roomName);
+
+private slots:
+        void topicEventSent()
+        {
+                errorField_->hide();
+                close();
+        }
+
+        void nameEventSent(const QString &name)
+        {
+                errorField_->hide();
+                emit nameChanged(name);
+                close();
+        }
+
+        void error(const QString &msg)
+        {
+                errorField_->setText(msg);
+                errorField_->show();
+        }
+
+        void applyClicked();
 
 private:
         QString roomId_;
