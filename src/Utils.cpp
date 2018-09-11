@@ -8,7 +8,7 @@
 #include <cmath>
 
 #include <boost/variant.hpp>
-#include <maddy/parser.h>
+#include <cmark.h>
 
 #include "Config.h"
 
@@ -333,16 +333,21 @@ utils::linkifyMessage(const QString &body)
 std::string
 utils::markdownToHtml(const std::string &text)
 {
-        std::stringstream markdownInput(text);
-        auto parser = std::make_shared<maddy::Parser>();
+        const char *tmp_buf = cmark_markdown_to_html(text.c_str(), text.size(), CMARK_OPT_DEFAULT);
 
-        return parser->Parse(markdownInput);
+        // Copy the null terminated output buffer.
+        std::string html(tmp_buf);
+
+        // The buffer is no longer needed.
+        free((char *)tmp_buf);
+
+        return html;
 }
 
 std::string
 utils::markdownToHtml(const QString &text)
 {
-        return markdownToHtml(text.toStdString());
+        return utils::markdownToHtml(text.toStdString());
 }
 
 std::string

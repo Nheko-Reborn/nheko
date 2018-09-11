@@ -250,7 +250,7 @@ find_package(OpenSSL REQUIRED)
 find_package(MatrixClient 0.1.0 REQUIRED)
 find_package(Olm 2 REQUIRED)
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
-find_package(maddy 1.0.0 CONFIG REQUIRED)
+find_package(cmark REQUIRED)
 
 if(NOT LMDBXX_INCLUDE_DIR)
     find_path(LMDBXX_INCLUDE_DIR
@@ -362,6 +362,7 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 set(COMMON_LIBS
     MatrixClient::MatrixClient
     ${Boost_LIBRARIES}
+    cmark::cmark
     Qt5::Widgets
     Qt5::Svg
     Qt5::Concurrent
