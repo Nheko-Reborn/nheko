@@ -87,6 +87,7 @@ sudo port install nheko
 - CMake 3.1 or greater.
 - [mtxclient](https://github.com/mujx/mtxclient)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
+- [cmark](https://github.com/commonmark/cmark)
 - Boost 1.66 or greater.
 - [libolm](https://git.matrix.org/git/olm)
 - [libsodium](https://github.com/jedisct1/libsodium)
@@ -115,6 +116,7 @@ sudo pacman -S qt5-base \
     gcc \
     fontconfig \
     lmdb \
+    cmark \
     boost \
     libsodium
 ```
@@ -139,7 +141,7 @@ sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake li
 
 ```bash
 brew update
-brew install qt5 lmdb cmake llvm libsodium spdlog boost
+brew install qt5 lmdb cmake llvm libsodium spdlog boost cmark
 ```
 
 ##### Windows
@@ -166,6 +168,7 @@ cd vcpkg
 	boost-signals2 \
 	boost-system \
 	boost-thread \
+	cmark \
 	libsodium \
 	lmdb \
 	openssl \

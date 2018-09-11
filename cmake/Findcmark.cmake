@@ -2,23 +2,25 @@
 # CMake module to search for the cmark library
 #
 
-find_path(CMARK_INCLUDE_DIR
-          NAMES cmark.h
-          PATHS /usr/include
-                /usr/local/include
-                $ENV{LIB_DIR}/include
-                $ENV{LIB_DIR}/include/cmark)
+include(FindPkgConfig)
+pkg_check_modules(PC_CMARK QUIET cmark)
 
-find_library(CMARK_LIBRARY
-             NAMES cmark
-             PATHS /usr/lib /usr/local/lib $ENV{LIB_DIR}/lib)
+if(NOT CMARK_INCLUDE_DIR)
+  find_path(CMARK_INCLUDE_DIR
+            NAMES cmark.h
+            PATHS ${PC_CMARK_INCLUDEDIR}
+                  ${PC_CMARK_INCLUDE_DIRS}
+                  /usr/include
+                  /usr/local/include)
+endif()
 
-if(OLM_FOUND)
-  set(OLM_INCLUDE_DIRS ${CMARK_INCLUDE_DIR})
-
-  if(NOT OLM_LIBRARIES)
-    set(OLM_LIBRARIES ${CMARK_LIBRARY})
-  endif()
+if(NOT CMARK_LIBRARY)
+  find_library(CMARK_LIBRARY
+               NAMES cmark
+               HINTS ${PC_CMARK_LIBDIR}
+                     ${PC_CMARK_LIBRARY_DIRS}
+                     /usr/lib
+                     /usr/local/lib)
 endif()
 
 if(NOT TARGET cmark::cmark)
@@ -37,3 +39,6 @@ find_package_handle_standard_args(cmark
                                   CMARK_LIBRARY)
 
 mark_as_advanced(CMARK_LIBRARY CMARK_INCLUDE_DIR)
+
+set(CMARK_LIBRARIES ${CMARK_LIBRARY})
+set(CMARK_INCLUDE_DIRS ${CMARK_INCLUDE_DIR})

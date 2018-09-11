@@ -22,7 +22,9 @@ if [ $TRAVIS_OS_NAME == osx ]; then
 fi
 
 # Build & install dependencies
-cmake -GNinja -Hdeps -B.deps -DUSE_BUNDLED_BOOST=${USE_BUNDLED_BOOST}
+cmake -GNinja -Hdeps -B.deps \
+    -DUSE_BUNDLED_BOOST=${USE_BUNDLED_BOOST} \
+    -DUSE_BUNDLED_CMARK=${USE_BUNDLED_CMARK}
 cmake --build .deps
 
 # Build nheko

@@ -22,6 +22,7 @@ set(DEPS_DOWNLOAD_DIR "${DEPS_BUILD_DIR}/downloads"
 option(USE_BUNDLED "Use bundled dependencies." ON)
 
 option(USE_BUNDLED_BOOST "Use the bundled version of Boost." ${USE_BUNDLED})
+option(USE_BUNDLED_CMARK "Use the bundled version of cmark." ${USE_BUNDLED})
 option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog." ${USE_BUNDLED})
 option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${USE_BUNDLED})
 option(USE_BUNDLED_TWEENY "Use the bundled version of Tweeny." ${USE_BUNDLED})
@@ -38,10 +39,10 @@ set(BOOST_SHA256
 
 set(
   MTXCLIENT_URL
-  https://github.com/mujx/mtxclient/archive/659bfe7cd9b87bb009ebc703398fd93dc098b0f0.tar.gz
+  https://github.com/mujx/mtxclient/archive/1a539721ec86cb8b5f9d0b51cbe2251e46257a9b.tar.gz
   )
 set(MTXCLIENT_HASH
-    d6794940354fd6e163ca52cab7878bba3c71ebfe3ca9a51ada5485a09c0d27f8)
+    7c458f57f774c75afaf403869e57a753620b5b619b1a7cd0b63bbc4735fc8993)
 
 set(
   TWEENY_URL
@@ -59,6 +60,9 @@ set(LMDBXX_HASH
 
 set(OLM_URL https://git.matrix.org/git/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)
+
+set(CMARK_URL https://github.com/commonmark/cmark/archive/0.28.3.tar.gz)
+set(CMARK_HASH acc98685d3c1b515ff787ac7c994188dadaf28a2d700c10c1221da4199bae1fc)
 
 set(SPDLOG_URL https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz)
 set(SPDLOG_HASH
@@ -82,6 +86,10 @@ endif()
 
 if(USE_BUNDLED_OLM)
   include(Olm)
+endif()
+
+if(USE_BUNDLED_CMARK)
+  include(cmark)
 endif()
 
 if(USE_BUNDLED_TWEENY)
