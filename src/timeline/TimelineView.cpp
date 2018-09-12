@@ -1237,7 +1237,7 @@ toRoomMessage<mtx::events::msg::Emote>(const PendingMessage &m)
 
         mtx::events::msg::Emote emote;
         emote.body           = utils::stripHtml(html);
-        emote.formatted_body = html;
+        emote.formatted_body = html.toStdString();
 
         return emote;
 }
@@ -1262,7 +1262,7 @@ toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
 
         mtx::events::msg::Text text;
         text.body           = utils::stripHtml(html);
-        text.formatted_body = html;
+        text.formatted_body = html.toStdString();
 
         return text;
 }

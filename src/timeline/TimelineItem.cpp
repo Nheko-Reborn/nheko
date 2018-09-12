@@ -272,7 +272,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                   "You: ", userid, body, utils::descriptiveTime(timestamp), timestamp};
         }
 
-        body = QString::fromStdString(utils::markdownToHtml(body));
+        body = utils::markdownToHtml(body);
         body = utils::linkifyMessage(body);
 
         generateTimestamp(timestamp);

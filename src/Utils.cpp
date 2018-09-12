@@ -337,10 +337,12 @@ utils::linkifyMessage(const QString &body)
         return textString;
 }
 
-std::string
-utils::markdownToHtml(const std::string &text)
+QString
+utils::markdownToHtml(const QString &text)
 {
-        const char *tmp_buf = cmark_markdown_to_html(text.c_str(), text.size(), CMARK_OPT_DEFAULT);
+        const auto str = text.toUtf8();
+        const char *tmp_buf =
+          cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_DEFAULT);
 
         // Copy the null terminated output buffer.
         std::string html(tmp_buf);
@@ -348,17 +350,11 @@ utils::markdownToHtml(const std::string &text)
         // The buffer is no longer needed.
         free((char *)tmp_buf);
 
-        return html;
+        return QString::fromStdString(html).trimmed();
 }
 
 std::string
-utils::markdownToHtml(const QString &text)
+utils::stripHtml(const QString &text)
 {
-        return utils::markdownToHtml(text.toStdString());
-}
-
-std::string
-utils::stripHtml(const std::string &text)
-{
-        return QString::fromStdString(text).remove(QRegExp("<[^>]*>")).toStdString();
+        return text.trimmed().remove(QRegExp("<[^>]*>")).toStdString();
 }
