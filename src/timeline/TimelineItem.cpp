@@ -494,8 +494,6 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
 
         generateTimestamp(timestamp);
 
-        formatted_body = "<i>" + formatted_body + "</i>";
-
         if (with_sender) {
                 auto displayName = Cache::displayName(room_id_, sender);
 
