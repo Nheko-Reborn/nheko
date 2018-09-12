@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QFileDialog>
+#include <QFontDatabase>
 #include <QImageReader>
 #include <QLabel>
 #include <QMessageBox>
@@ -190,9 +191,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         auto infoLabel = new QLabel(tr("Info").toUpper(), this);
         infoLabel->setFont(font);
 
-        QFont monospaceFont;
-        monospaceFont.setFamily("Courier New");
-        monospaceFont.setStyleHint(QFont::Courier);
+        QFont monospaceFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 
         auto roomIdLabel = new QLabel(room_id, this);
         roomIdLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);

@@ -88,6 +88,14 @@ private:
         static constexpr int MaxWidth = 24;
 };
 
+class EventProxy : public QObject
+{
+        Q_OBJECT
+
+signals:
+        void eventRetrieved(const nlohmann::json &);
+};
+
 class TextLabel : public QTextBrowser
 {
         Q_OBJECT
@@ -220,6 +228,7 @@ public:
         bool isReceived() { return isReceived_; };
         void setRoomId(QString room_id) { room_id_ = room_id; }
         void sendReadReceipt() const;
+        void openRawMessageViewer() const;
 
         //! Add a user avatar for this event.
         void addAvatar();
@@ -273,6 +282,7 @@ private:
         QAction *showReadReceipts_;
         QAction *markAsRead_;
         QAction *redactMsg_;
+        QAction *viewRawMessage_;
         QAction *replyMsg_;
 
         QHBoxLayout *topLayout_     = nullptr;

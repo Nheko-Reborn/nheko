@@ -31,6 +31,7 @@ init()
         qRegisterMetaType<mtx::responses::JoinedGroups>();
         qRegisterMetaType<mtx::responses::GroupProfile>();
         qRegisterMetaType<std::string>();
+        qRegisterMetaType<nlohmann::json>();
         qRegisterMetaType<std::vector<std::string>>();
         qRegisterMetaType<std::vector<QString>>();
         qRegisterMetaType<std::map<QString, bool>>("std::map<QString, bool>");

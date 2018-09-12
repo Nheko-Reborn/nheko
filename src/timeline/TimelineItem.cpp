@@ -34,6 +34,8 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
+#include "dialogs/RawMessage.h"
+
 constexpr int MSG_RIGHT_MARGIN = 7;
 constexpr int MSG_PADDING      = 20;
 
@@ -185,8 +187,10 @@ TimelineItem::init()
         contextMenu_      = new QMenu(this);
         showReadReceipts_ = new QAction("Read receipts", this);
         markAsRead_       = new QAction("Mark as read", this);
+        viewRawMessage_   = new QAction("View raw message", this);
         redactMsg_        = new QAction("Redact message", this);
         contextMenu_->addAction(showReadReceipts_);
+        contextMenu_->addAction(viewRawMessage_);
         contextMenu_->addAction(markAsRead_);
         contextMenu_->addAction(redactMsg_);
 
@@ -218,7 +222,8 @@ TimelineItem::init()
                           });
         });
 
-        connect(markAsRead_, &QAction::triggered, this, [this]() { sendReadReceipt(); });
+        connect(markAsRead_, &QAction::triggered, this, &TimelineItem::sendReadReceipt);
+        connect(viewRawMessage_, &QAction::triggered, this, &TimelineItem::openRawMessageViewer);
 
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
@@ -815,4 +820,38 @@ TimelineItem::sendReadReceipt() const
                                                              event_id_.toStdString());
                                                    }
                                            });
+}
+
+void
+TimelineItem::openRawMessageViewer() const
+{
+        const auto event_id = event_id_.toStdString();
+        const auto room_id  = room_id_.toStdString();
+
+        auto proxy = std::make_shared<EventProxy>();
+        connect(proxy.get(), &EventProxy::eventRetrieved, this, [](const nlohmann::json &obj) {
+                auto dialog = new dialogs::RawMessage{QString::fromStdString(obj.dump(4))};
+                Q_UNUSED(dialog);
+        });
+
+        http::client()->get_event(
+          room_id,
+          event_id,
+          [event_id, room_id, proxy = std::move(proxy)](
+            const mtx::events::collections::TimelineEvents &res, mtx::http::RequestErr err) {
+                  using namespace mtx::events;
+
+                  if (err) {
+                          nhlog::net()->warn(
+                            "failed to retrieve event {} from {}", event_id, room_id);
+                          return;
+                  }
+
+                  try {
+                          emit proxy->eventRetrieved(utils::serialize_event(res));
+                  } catch (const nlohmann::json::exception &e) {
+                          nhlog::net()->warn(
+                            "failed to serialize event ({}, {})", room_id, event_id);
+                  }
+          });
 }

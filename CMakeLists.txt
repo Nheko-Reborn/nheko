@@ -287,6 +287,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/dialogs/LeaveRoom.h
     src/dialogs/Logout.h
     src/dialogs/UserProfile.h
+    src/dialogs/RawMessage.h
     src/dialogs/ReadReceipts.h
     src/dialogs/ReCaptcha.h
     src/dialogs/RoomSettings.h
