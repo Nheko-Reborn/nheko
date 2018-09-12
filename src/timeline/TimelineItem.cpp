@@ -16,6 +16,7 @@
  */
 
 #include <QContextMenuEvent>
+#include <QDesktopServices>
 #include <QFontDatabase>
 #include <QMenu>
 #include <QTimer>
@@ -35,6 +36,7 @@
 #include "timeline/widgets/VideoItem.h"
 
 #include "dialogs/RawMessage.h"
+#include "mtx/identifiers.hpp"
 
 constexpr int MSG_RIGHT_MARGIN = 7;
 constexpr int MSG_PADDING      = 20;
@@ -61,8 +63,47 @@ TextLabel::TextLabel(const QString &text, QWidget *parent)
                 &TextLabel::adjustHeight);
         document()->setDocumentMargin(0);
 
+        setFocusPolicy(Qt::NoFocus);
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         setFixedHeight(0);
+
+        connect(this, &TextLabel::linkActivated, this, [](const QUrl &url) {
+                auto parts          = url.toString().split('/');
+                auto defaultHandler = [](const QUrl &url) { QDesktopServices::openUrl(url); };
+
+                if (url.host() != "matrix.to" || parts.isEmpty())
+                        return defaultHandler(url);
+
+                try {
+                        using namespace mtx::identifiers;
+                        parse<User>(parts.last().toStdString());
+                } catch (const std::exception &) {
+                        return defaultHandler(url);
+                }
+
+                auto user_id = parts.last();
+                auto room_id = ChatPage::instance()->currentRoom();
+
+                MainWindow::instance()->openUserProfile(user_id, room_id);
+        });
+}
+
+void
+TextLabel::mousePressEvent(QMouseEvent *e)
+{
+        link_ = (e->button() & Qt::LeftButton) ? anchorAt(e->pos()) : QString();
+        QTextBrowser::mousePressEvent(e);
+}
+
+void
+TextLabel::mouseReleaseEvent(QMouseEvent *e)
+{
+        if (e->button() & Qt::LeftButton && !link_.isEmpty() && anchorAt(e->pos()) == link_) {
+                emit linkActivated(link_);
+                return;
+        }
+
+        QTextBrowser::mouseReleaseEvent(e);
 }
 
 StatusIndicator::StatusIndicator(QWidget *parent)

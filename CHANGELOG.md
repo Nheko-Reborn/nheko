@@ -3,6 +3,8 @@
 ## [Unreleased]
 ### Features
 - Support for sending & receiving markdown formatted messages. (#283)
+- Context menu option to show the raw text message of an event. (#437)
+- Clicking on a user pill link will open the user profile.
 
 ### Improvements
 - Update Polish translation (#430)

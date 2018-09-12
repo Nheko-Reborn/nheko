@@ -105,8 +105,18 @@ public:
 
         void wheelEvent(QWheelEvent *event) override { event->ignore(); }
 
+protected:
+        void mousePressEvent(QMouseEvent *e) override;
+        void mouseReleaseEvent(QMouseEvent *e) override;
+
 private slots:
         void adjustHeight(const QSizeF &size) { setFixedHeight(size.height()); }
+
+signals:
+        void linkActivated(const QUrl &link);
+
+private:
+        QString link_;
 };
 
 class UserProfileFilter : public QObject
