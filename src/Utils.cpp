@@ -306,7 +306,14 @@ utils::linkifyMessage(const QString &body)
                         if (xml.name() == "html")
                                 break;
 
-                        textString += "<" + xml.name() + ">";
+                        textString += "<" + xml.name();
+
+                        const auto attrs = xml.attributes();
+                        for (const auto &e : attrs)
+                                textString += QString(" %1=\"%2\"").arg(e.name()).arg(e.value());
+
+                        textString += ">";
+
                         break;
                 }
                 case QXmlStreamReader::EndElement: {
