@@ -664,7 +664,7 @@ TimelineView::addTimelineItem(QWidget *item, TimelineDirection direction)
 void
 TimelineView::updatePendingMessage(const std::string &txn_id, const QString &event_id)
 {
-        nhlog::ui()->info("[{}] message was received by the server", txn_id);
+        nhlog::ui()->debug("[{}] message was received by the server", txn_id);
         if (!pending_msgs_.isEmpty() &&
             pending_msgs_.head().txn_id == txn_id) { // We haven't received it yet
                 auto msg     = pending_msgs_.dequeue();
@@ -741,7 +741,7 @@ TimelineView::sendNextPendingMessage()
 
         PendingMessage &m = pending_msgs_.head();
 
-        nhlog::ui()->info("[{}] sending next queued message", m.txn_id);
+        nhlog::ui()->debug("[{}] sending next queued message", m.txn_id);
 
         if (m.widget)
                 m.widget->markSent();
@@ -894,7 +894,7 @@ TimelineView::removePendingMessage(const std::string &txn_id)
                         if (pending_sent_msgs_.isEmpty())
                                 sendNextPendingMessage();
 
-                        nhlog::ui()->info("[{}] removed message with sync", txn_id);
+                        nhlog::ui()->debug("[{}] removed message with sync", txn_id);
                 }
         }
         for (auto it = pending_msgs_.begin(); it != pending_msgs_.end(); ++it) {
@@ -907,7 +907,7 @@ TimelineView::removePendingMessage(const std::string &txn_id)
                                         cache::client()->addPendingReceipt(room_id_, it->event_id);
                         }
 
-                        nhlog::ui()->info("[{}] received sync before message response", txn_id);
+                        nhlog::ui()->debug("[{}] received sync before message response", txn_id);
                         return;
                 }
         }
