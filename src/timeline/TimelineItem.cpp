@@ -310,27 +310,36 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         auto displayName = Cache::displayName(room_id_, userid);
         auto timestamp   = QDateTime::currentDateTime();
 
+        // Generate the html body to rendered.
+        auto formatted_body = utils::markdownToHtml(body);
+
+        // Extract the plain text version for the sidebar.
+        body = QString::fromStdString(utils::stripHtml(formatted_body));
+
         if (ty == mtx::events::MessageType::Emote) {
-                body            = QString("%1 %2").arg(displayName).arg(body);
-                descriptionMsg_ = {"", userid, body, utils::descriptiveTime(timestamp), timestamp};
+                formatted_body  = QString("<em>%1</em>").arg(formatted_body);
+                descriptionMsg_ = {"",
+                                   userid,
+                                   QString("* %1 %2").arg(displayName).arg(body),
+                                   utils::descriptiveTime(timestamp),
+                                   timestamp};
         } else {
                 descriptionMsg_ = {
                   "You: ", userid, body, utils::descriptiveTime(timestamp), timestamp};
         }
 
-        body = utils::markdownToHtml(body);
-        body = utils::linkifyMessage(body);
+        formatted_body = utils::linkifyMessage(formatted_body);
 
         generateTimestamp(timestamp);
 
         if (withSender) {
-                generateBody(userid, displayName, body);
+                generateBody(userid, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
                 AvatarProvider::resolve(
                   room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
         } else {
-                generateBody(body);
+                generateBody(formatted_body);
                 setupSimpleLayout();
         }
 
@@ -533,9 +542,13 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
 
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);
-        auto emoteMsg    = QString("%1 %2").arg(displayName).arg(formatted_body);
+        formatted_body   = QString("<em>%1</em>").arg(formatted_body);
 
-        descriptionMsg_ = {"", sender, emoteMsg, utils::descriptiveTime(timestamp), timestamp};
+        descriptionMsg_ = {"",
+                           sender,
+                           QString("* %1 %2").arg(displayName).arg(body),
+                           utils::descriptiveTime(timestamp),
+                           timestamp};
 
         generateTimestamp(timestamp);
 
