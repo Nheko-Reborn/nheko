@@ -594,9 +594,6 @@ TimelineItem::markReceived(bool isEncrypted)
 void
 TimelineItem::generateBody(const QString &body)
 {
-        if (body.isEmpty())
-                return;
-
         QString content("<span>%1</span>");
 
         body_ = new TextLabel(content.arg(replaceEmoji(body)), this);
