@@ -65,7 +65,7 @@ build_script:
       -DLMDBXX_INCLUDE_DIR=.deps/usr/include
       -DTWEENY_INCLUDE_DIR=.deps/usr/include
       -DCMARK_INCLUDE_DIR=C:/projects/nheko/.deps/usr/include
-      -DCMARK_LIBRARY=C:/projects/nheko/.deps/usr/lib/cmark_static.lib
+      -DCMARK_LIBRARY=C:/projects/nheko/.deps/usr/lib/cmark.lib
     - cmake --build build --config Release
 
 after_build:
