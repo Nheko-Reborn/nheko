@@ -350,11 +350,11 @@ utils::markdownToHtml(const QString &text)
         // The buffer is no longer needed.
         free((char *)tmp_buf);
 
-        return QString::fromStdString(html).trimmed();
-}
+        auto result = QString::fromStdString(html).trimmed();
 
-std::string
-utils::stripHtml(const QString &text)
-{
-        return text.trimmed().remove(QRegExp("<[^>]*>")).toStdString();
+        // Strip paragraph tags.
+        result.replace("<p>", "");
+        result.replace("</p>", "");
+
+        return result;
 }

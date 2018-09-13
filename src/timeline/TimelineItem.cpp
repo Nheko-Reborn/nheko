@@ -310,11 +310,12 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         auto displayName = Cache::displayName(room_id_, userid);
         auto timestamp   = QDateTime::currentDateTime();
 
-        // Generate the html body to rendered.
+        // Generate the html body to be rendered.
         auto formatted_body = utils::markdownToHtml(body);
 
-        // Extract the plain text version for the sidebar.
-        body = QString::fromStdString(utils::stripHtml(formatted_body));
+        // Escape html if the input is not formatted.
+        if (formatted_body == body.trimmed().toHtmlEscaped())
+                formatted_body = body.toHtmlEscaped();
 
         if (ty == mtx::events::MessageType::Emote) {
                 formatted_body  = QString("<em>%1</em>").arg(formatted_body);
@@ -651,9 +652,7 @@ TimelineItem::markReceived(bool isEncrypted)
 void
 TimelineItem::generateBody(const QString &body)
 {
-        QString content("<span>%1</span>");
-
-        body_ = new TextLabel(content.arg(replaceEmoji(body)), this);
+        body_ = new TextLabel(replaceEmoji(body), this);
         body_->setFont(font_);
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 }

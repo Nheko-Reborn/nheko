@@ -1236,8 +1236,10 @@ toRoomMessage<mtx::events::msg::Emote>(const PendingMessage &m)
         auto html = utils::markdownToHtml(m.body);
 
         mtx::events::msg::Emote emote;
-        emote.body           = utils::stripHtml(html);
-        emote.formatted_body = html.toStdString();
+        emote.body = m.body.trimmed().toStdString();
+
+        if (html != m.body.trimmed().toHtmlEscaped())
+                emote.formatted_body = html.toStdString();
 
         return emote;
 }
@@ -1261,8 +1263,10 @@ toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
         auto html = utils::markdownToHtml(m.body);
 
         mtx::events::msg::Text text;
-        text.body           = utils::stripHtml(html);
-        text.formatted_body = html.toStdString();
+        text.body = m.body.trimmed().toStdString();
+
+        if (html != m.body.trimmed().toHtmlEscaped())
+                text.formatted_body = html.toStdString();
 
         return text;
 }
