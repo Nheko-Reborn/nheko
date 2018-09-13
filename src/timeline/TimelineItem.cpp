@@ -494,7 +494,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         const auto timestamp = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
 
         auto formatted_body = utils::linkifyMessage(utils::getMessageBody(event).trimmed());
-        auto body           = QString::fromStdString(event.content.body).trimmed();
+        auto body           = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
 
         descriptionMsg_ = {Cache::displayName(room_id_, sender),
                            sender,
@@ -539,7 +539,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         const auto sender = QString::fromStdString(event.sender);
 
         auto formatted_body = utils::linkifyMessage(utils::getMessageBody(event).trimmed());
-        auto body           = QString::fromStdString(event.content.body).trimmed();
+        auto body           = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
 
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);
@@ -586,7 +586,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         const auto sender = QString::fromStdString(event.sender);
 
         auto formatted_body = utils::linkifyMessage(utils::getMessageBody(event).trimmed());
-        auto body           = QString::fromStdString(event.content.body).trimmed();
+        auto body           = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
 
         auto timestamp   = QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
         auto displayName = Cache::displayName(room_id_, sender);

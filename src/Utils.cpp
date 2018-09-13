@@ -285,7 +285,14 @@ utils::humanReadableFingerprint(const QString &ed25519)
 QString
 utils::linkifyMessage(const QString &body)
 {
-        QXmlStreamReader xml{"<html>" + body + "</html>"};
+        // Convert to valid XML.
+        auto doc = QString("<html>%1</html>").arg(body);
+
+        doc.replace("<mx-reply>", "");
+        doc.replace("</mx-reply>", "");
+        doc.replace("<br>", "<br></br>");
+
+        QXmlStreamReader xml{doc};
 
         QString textString;
         while (!xml.atEnd() && !xml.hasError()) {
@@ -330,8 +337,10 @@ utils::linkifyMessage(const QString &body)
         }
 
         if (xml.hasError()) {
-                // qWarning() << "error while parsing xml";
-                return body;
+                qWarning() << "error while parsing xml" << xml.errorString() << doc;
+                doc.replace("<html>", "");
+                doc.replace("</html>", "");
+                return doc;
         }
 
         return textString;
