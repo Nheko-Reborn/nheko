@@ -319,7 +319,8 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget, const QString &userid, bool
         auto displayName = Cache::displayName(room_id_, userid);
         auto timestamp   = QDateTime::currentDateTime();
 
-        descriptionMsg_ = {"You",
+        descriptionMsg_ = {"", // No event_id up until this point.
+                           "You",
                            userid,
                            QString(" %1").arg(utils::messageDescription<Widget>()),
                            utils::descriptiveTime(timestamp),
@@ -358,7 +359,8 @@ TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSen
         auto displayName = Cache::displayName(room_id_, sender);
 
         QSettings settings;
-        descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
+        descriptionMsg_ = {event_id_,
+                           sender == settings.value("auth/user_id") ? "You" : displayName,
                            sender,
                            QString(" %1").arg(utils::messageDescription<Widget>()),
                            utils::descriptiveTime(timestamp),

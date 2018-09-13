@@ -317,16 +317,23 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         if (formatted_body == body.trimmed().toHtmlEscaped())
                 formatted_body = body.toHtmlEscaped();
 
+        QString emptyEventId;
+
         if (ty == mtx::events::MessageType::Emote) {
                 formatted_body  = QString("<em>%1</em>").arg(formatted_body);
-                descriptionMsg_ = {"",
+                descriptionMsg_ = {emptyEventId,
+                                   "",
                                    userid,
                                    QString("* %1 %2").arg(displayName).arg(body),
                                    utils::descriptiveTime(timestamp),
                                    timestamp};
         } else {
-                descriptionMsg_ = {
-                  "You: ", userid, body, utils::descriptiveTime(timestamp), timestamp};
+                descriptionMsg_ = {emptyEventId,
+                                   "You: ",
+                                   userid,
+                                   body,
+                                   utils::descriptiveTime(timestamp),
+                                   timestamp};
         }
 
         formatted_body = utils::linkifyMessage(formatted_body);
@@ -496,7 +503,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
         auto formatted_body = utils::linkifyMessage(utils::getMessageBody(event).trimmed());
         auto body           = QString::fromStdString(event.content.body).trimmed().toHtmlEscaped();
 
-        descriptionMsg_ = {Cache::displayName(room_id_, sender),
+        descriptionMsg_ = {event_id_,
+                           Cache::displayName(room_id_, sender),
                            sender,
                            " sent a notification",
                            utils::descriptiveTime(timestamp),
@@ -545,7 +553,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
         auto displayName = Cache::displayName(room_id_, sender);
         formatted_body   = QString("<em>%1</em>").arg(formatted_body);
 
-        descriptionMsg_ = {"",
+        descriptionMsg_ = {event_id_,
+                           "",
                            sender,
                            QString("* %1 %2").arg(displayName).arg(body),
                            utils::descriptiveTime(timestamp),
@@ -592,7 +601,8 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         auto displayName = Cache::displayName(room_id_, sender);
 
         QSettings settings;
-        descriptionMsg_ = {sender == settings.value("auth/user_id") ? "You" : displayName,
+        descriptionMsg_ = {event_id_,
+                           sender == settings.value("auth/user_id") ? "You" : displayName,
                            sender,
                            QString(": %1").arg(body),
                            utils::descriptiveTime(timestamp),

@@ -455,3 +455,16 @@ RoomList::firstRoom() const
         return std::pair<QString, QSharedPointer<RoomInfoListItem>>(firstRoom->first,
                                                                     firstRoom->second);
 }
+
+void
+RoomList::updateReadStatus(const std::map<QString, bool> &status)
+{
+        for (const auto &room : status) {
+                if (roomExists(room.first)) {
+                        auto item = rooms_.at(room.first);
+
+                        if (item)
+                                item->setReadState(room.second);
+                }
+        }
+}

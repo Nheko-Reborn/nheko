@@ -825,8 +825,10 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
 }
 
 void
-Cache::notifyForReadReceipts(lmdb::txn &txn, const std::string &room_id)
+Cache::notifyForReadReceipts(const std::string &room_id)
 {
+        auto txn = lmdb::txn::begin(env_);
+
         QSettings settings;
         auto local_user = settings.value("auth/user_id").toString();
 
@@ -839,6 +841,47 @@ Cache::notifyForReadReceipts(lmdb::txn &txn, const std::string &room_id)
 
         if (!matches.empty())
                 emit newReadReceipts(QString::fromStdString(room_id), matches);
+
+        txn.commit();
+}
+
+void
+Cache::calculateRoomReadStatus()
+{
+        const auto joined_rooms = joinedRooms();
+
+        std::map<QString, bool> readStatus;
+
+        for (const auto &room : joined_rooms)
+                readStatus.emplace(QString::fromStdString(room), calculateRoomReadStatus(room));
+
+        emit roomReadStatus(readStatus);
+}
+
+bool
+Cache::calculateRoomReadStatus(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_);
+
+        // Get last event id on the room.
+        const auto last_event_id = getLastMessageInfo(txn, room_id).event_id;
+        const auto localUser     = utils::localUser().toStdString();
+
+        txn.commit();
+
+        // Retrieve all read receipts for that event.
+        const auto receipts = readReceipts(last_event_id, QString::fromStdString(room_id));
+
+        if (receipts.size() == 0)
+                return true;
+
+        // Check if the local user has a read receipt for it.
+        for (auto it = receipts.cbegin(); it != receipts.cend(); it++) {
+                if (it->second == localUser)
+                        return false;
+        }
+
+        return true;
 }
 
 void
@@ -880,11 +923,15 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         txn.commit();
 
+        std::map<QString, bool> readStatus;
+
         for (const auto &room : res.rooms.join) {
-                auto tmpTxn = lmdb::txn::begin(env_);
-                notifyForReadReceipts(tmpTxn, room.first);
-                tmpTxn.commit();
+                notifyForReadReceipts(room.first);
+                readStatus.emplace(QString::fromStdString(room.first),
+                                   calculateRoomReadStatus(room.first));
         }
+
+        emit roomReadStatus(readStatus);
 }
 
 void

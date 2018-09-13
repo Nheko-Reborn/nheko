@@ -126,6 +126,7 @@ utils::getMessageDescription(const TimelineEvent &event,
                 info.userid    = sender;
                 info.body      = QString(" %1").arg(messageDescription<Encrypted>());
                 info.timestamp = utils::descriptiveTime(ts);
+                info.event_id  = QString::fromStdString(msg.event_id);
                 info.datetime  = ts;
 
                 return info;

@@ -121,6 +121,13 @@ public:
         }
 
         bool isInvite() { return roomType_ == RoomType::Invited; }
+        void setReadState(bool hasUnreadMessages)
+        {
+                if (hasUnreadMessages_ != hasUnreadMessages) {
+                        hasUnreadMessages_ = hasUnreadMessages;
+                        update();
+                }
+        }
 
 signals:
         void clicked(const QString &room_id);
@@ -164,7 +171,8 @@ private:
         Menu *menu_;
         QAction *leaveRoom_;
 
-        bool isPressed_ = false;
+        bool isPressed_         = false;
+        bool hasUnreadMessages_ = true;
 
         int unreadMsgCount_ = 0;
 

@@ -89,6 +89,7 @@ from_json(const json &j, ReadReceiptKey &key)
 
 struct DescInfo
 {
+        QString event_id;
         QString username;
         QString userid;
         QString body;
@@ -356,7 +357,7 @@ public:
         void removePendingReceipt(lmdb::txn &txn,
                                   const std::string &room_id,
                                   const std::string &event_id);
-        void notifyForReadReceipts(lmdb::txn &txn, const std::string &room_id);
+        void notifyForReadReceipts(const std::string &room_id);
         std::vector<QString> pendingReceiptsEvents(lmdb::txn &txn, const std::string &room_id);
 
         QByteArray image(const QString &url) const;
@@ -375,6 +376,11 @@ public:
         {
                 return getRoomInfo(roomsWithStateUpdates(sync));
         }
+
+        //! Calculates which the read status of a room.
+        //! Whether all the events in the timeline have been read.
+        bool calculateRoomReadStatus(const std::string &room_id);
+        void calculateRoomReadStatus();
 
         QVector<SearchResult> searchUsers(const std::string &room_id,
                                           const std::string &query,
@@ -444,6 +450,7 @@ public:
 
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
+        void roomReadStatus(const std::map<QString, bool> &status);
 
 private:
         //! Save an invited room.

@@ -677,6 +677,9 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                         view_manager_,
                         &TimelineViewManager::updateReadReceipts);
 
+                connect(
+                  cache::client(), &Cache::roomReadStatus, room_list_, &RoomList::updateReadStatus);
+
                 const bool isInitialized = cache::client()->isInitialized();
                 const bool isValid       = cache::client()->isFormatValid();
 
@@ -793,6 +796,8 @@ ChatPage::loadStateFromCache()
 
                         emit initializeEmptyViews(cache::client()->roomMessages());
                         emit initializeRoomList(cache::client()->roomInfo());
+
+                        cache::client()->calculateRoomReadStatus();
 
                 } catch (const mtx::crypto::olm_exception &e) {
                         nhlog::crypto()->critical("failed to restore olm account: {}", e.what());

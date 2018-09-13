@@ -109,6 +109,7 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
         bool isEmote = std::is_same<T, Emote>::value;
 
         return DescInfo{
+          QString::fromStdString(msg.event_id),
           isEmote ? "" : (sender == localUser ? "You" : username),
           sender,
           (isText || isEmote)

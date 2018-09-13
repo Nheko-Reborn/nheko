@@ -31,9 +31,11 @@
 
 constexpr int MaxUnreadCountDisplayed = 99;
 
-constexpr int Padding   = 9;
-constexpr int IconSize  = 44;
-constexpr int MaxHeight = IconSize + 2 * Padding;
+constexpr int Padding          = 9;
+constexpr int UnreadLineWidth  = 4;
+constexpr int UnreadLineOffset = 4;
+constexpr int IconSize         = 44;
+constexpr int MaxHeight        = IconSize + 2 * Padding;
 
 constexpr int InviteBtnX = IconSize + 2 * Padding;
 constexpr int InviteBtnY = IconSize / 2 + Padding + Padding / 3;
@@ -89,6 +91,8 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *pare
 {
         init(parent);
 
+        QString emptyEventId;
+
         // HACK
         // We use fake message info with an old date to pin
         // the invite events to the top.
@@ -96,7 +100,8 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *pare
         // State events in invited rooms don't contain timestamp info,
         // so we can't use them for sorting.
         if (roomType_ == RoomType::Invited)
-                lastMsgInfo_ = {"-", "-", "-", "-", QDateTime::currentDateTime().addYears(10)};
+                lastMsgInfo_ = {
+                  emptyEventId, "-", "-", "-", "-", QDateTime::currentDateTime().addYears(10)};
 }
 
 void
@@ -304,6 +309,15 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                 p.setBrush(Qt::NoBrush);
                 p.drawText(r.translated(0, -0.5), Qt::AlignCenter, countTxt);
+        }
+
+        if (!isPressed_ && hasUnreadMessages_) {
+                QPen pen;
+                pen.setWidth(UnreadLineWidth);
+                pen.setColor(highlightedBackgroundColor_);
+
+                p.setPen(pen);
+                p.drawLine(0, UnreadLineOffset, 0, height() - UnreadLineOffset);
         }
 }
 
