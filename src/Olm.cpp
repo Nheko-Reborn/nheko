@@ -7,8 +7,6 @@
 #include "MatrixClient.h"
 #include "Utils.h"
 
-using namespace mtx::crypto;
-
 static const std::string STORAGE_SECRET_KEY("secret");
 constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
 
@@ -116,7 +114,7 @@ handle_pre_key_olm_message(const std::string &sender,
 {
         nhlog::crypto()->info("opening olm session with {}", sender);
 
-        OlmSessionPtr inbound_session = nullptr;
+        mtx::crypto::OlmSessionPtr inbound_session = nullptr;
         try {
                 inbound_session =
                   olm::client()->create_inbound_session_from(sender_key, content.body);
@@ -124,13 +122,14 @@ handle_pre_key_olm_message(const std::string &sender,
                 // We also remove the one time key used to establish that
                 // session so we'll have to update our copy of the account object.
                 cache::client()->saveOlmAccount(olm::client()->save("secret"));
-        } catch (const olm_exception &e) {
+        } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to create inbound session with {}: {}", sender, e.what());
                 return;
         }
 
-        if (!matches_inbound_session_from(inbound_session.get(), sender_key, content.body)) {
+        if (!mtx::crypto::matches_inbound_session_from(
+              inbound_session.get(), sender_key, content.body)) {
                 nhlog::crypto()->warn("inbound olm session doesn't match sender's key ({})",
                                       sender);
                 return;
@@ -140,7 +139,7 @@ handle_pre_key_olm_message(const std::string &sender,
         try {
                 output =
                   olm::client()->decrypt_message(inbound_session.get(), content.type, content.body);
-        } catch (const olm_exception &e) {
+        } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to decrypt olm message {}: {}", content.body, e.what());
                 return;
@@ -206,7 +205,7 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
                 try {
                         text = olm::client()->decrypt_message(session->get(), msg.type, msg.body);
                         cache::client()->saveOlmSession(id, std::move(session.value()));
-                } catch (const olm_exception &e) {
+                } catch (const mtx::crypto::olm_exception &e) {
                         nhlog::crypto()->info("failed to decrypt olm message ({}, {}) with {}: {}",
                                               msg.type,
                                               sender_key,
@@ -257,7 +256,7 @@ create_inbound_megolm_session(const std::string &sender,
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
                 return;
-        } catch (const olm_exception &e) {
+        } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical("failed to create inbound megolm session: {}", e.what());
                 return;
         }

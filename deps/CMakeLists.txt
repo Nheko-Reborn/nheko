@@ -39,10 +39,10 @@ set(BOOST_SHA256
 
 set(
   MTXCLIENT_URL
-  https://github.com/mujx/mtxclient/archive/1a539721ec86cb8b5f9d0b51cbe2251e46257a9b.tar.gz
+  https://github.com/mujx/mtxclient/archive/3328fdedcb7db0a0bd2921189193504bf3b0c3aa.tar.gz
   )
 set(MTXCLIENT_HASH
-    7c458f57f774c75afaf403869e57a753620b5b619b1a7cd0b63bbc4735fc8993)
+    10a60158669001c6367a163b21a251a4e098ee9e3d12c5190104e9940639dc9f)
 
 set(
   TWEENY_URL
