@@ -211,9 +211,51 @@ Cache::isRoomEncrypted(const std::string &room_id)
         return res;
 }
 
-//
-// Device Management
-//
+mtx::crypto::ExportedSessionKeys
+Cache::exportSessionKeys()
+{
+        using namespace mtx::crypto;
+
+        ExportedSessionKeys keys;
+
+        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto cursor = lmdb::cursor::open(txn, inboundMegolmSessionDb_);
+
+        std::string key, value;
+        while (cursor.get(key, value, MDB_NEXT)) {
+                ExportedSession exported;
+
+                auto saved_session = unpickle<InboundSessionObject>(value, SECRET);
+                auto index         = nlohmann::json::parse(key).get<MegolmSessionIndex>();
+
+                exported.room_id     = index.room_id;
+                exported.sender_key  = index.sender_key;
+                exported.session_id  = index.session_id;
+                exported.session_key = export_session(saved_session.get());
+
+                keys.sessions.push_back(exported);
+        }
+
+        cursor.close();
+        txn.commit();
+
+        return keys;
+}
+
+void
+Cache::importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
+{
+        for (const auto &s : keys.sessions) {
+                MegolmSessionIndex index;
+                index.room_id    = s.room_id;
+                index.session_id = s.session_id;
+                index.sender_key = s.sender_key;
+
+                auto exported_session = mtx::crypto::import_session(s.session_key);
+
+                saveInboundMegolmSession(index, std::move(exported_session));
+        }
+}
 
 //
 // Session Management
@@ -224,7 +266,7 @@ Cache::saveInboundMegolmSession(const MegolmSessionIndex &index,
                                 mtx::crypto::InboundGroupSessionPtr session)
 {
         using namespace mtx::crypto;
-        const auto key     = index.to_hash();
+        const auto key     = json(index).dump();
         const auto pickled = pickle<InboundSessionObject>(session.get(), SECRET);
 
         auto txn = lmdb::txn::begin(env_);
@@ -241,14 +283,14 @@ OlmInboundGroupSession *
 Cache::getInboundMegolmSession(const MegolmSessionIndex &index)
 {
         std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
-        return session_storage.group_inbound_sessions[index.to_hash()].get();
+        return session_storage.group_inbound_sessions[json(index).dump()].get();
 }
 
 bool
-Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept
+Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index)
 {
         std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
-        return session_storage.group_inbound_sessions.find(index.to_hash()) !=
+        return session_storage.group_inbound_sessions.find(json(index).dump()) !=
                session_storage.group_inbound_sessions.end();
 }
 

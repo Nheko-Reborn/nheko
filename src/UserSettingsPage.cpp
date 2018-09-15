@@ -18,7 +18,11 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
+#include <QFileDialog>
+#include <QInputDialog>
 #include <QLabel>
+#include <QLineEdit>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSettings>
@@ -233,43 +237,60 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         auto encryptionLayout_ = new QVBoxLayout;
         encryptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        encryptionLayout_->setAlignment(Qt::AlignVCenter | Qt::AlignBottom);
 
         QFont monospaceFont = QFont(font);
         monospaceFont.setFamily("Courier New");
         monospaceFont.setStyleHint(QFont::Courier);
         monospaceFont.setPointSizeF(monospaceFont.pointSizeF() * 0.9);
 
-        auto deviceIdWidget = new QHBoxLayout;
-        deviceIdWidget->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto deviceIdLayout = new QHBoxLayout;
+        deviceIdLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
 
         auto deviceIdLabel = new QLabel(tr("Device ID"), this);
         deviceIdLabel->setFont(font);
-        deviceIdValue_ = new QLabel();
+        deviceIdValue_ = new QLabel{this};
         deviceIdValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
         deviceIdValue_->setFont(monospaceFont);
-        deviceIdWidget->addWidget(deviceIdLabel, 1);
-        deviceIdWidget->addWidget(deviceIdValue_);
+        deviceIdLayout->addWidget(deviceIdLabel, 1);
+        deviceIdLayout->addWidget(deviceIdValue_);
 
-        auto deviceFingerprintWidget = new QHBoxLayout;
-        deviceFingerprintWidget->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto deviceFingerprintLayout = new QHBoxLayout;
+        deviceFingerprintLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
 
         auto deviceFingerprintLabel = new QLabel(tr("Device Fingerprint"), this);
         deviceFingerprintLabel->setFont(font);
-        deviceFingerprintValue_ = new QLabel();
+        deviceFingerprintValue_ = new QLabel{this};
         deviceFingerprintValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
         deviceFingerprintValue_->setFont(monospaceFont);
-        deviceFingerprintWidget->addWidget(deviceFingerprintLabel, 1);
-        deviceFingerprintWidget->addWidget(deviceFingerprintValue_);
+        deviceFingerprintLayout->addWidget(deviceFingerprintLabel, 1);
+        deviceFingerprintLayout->addWidget(deviceFingerprintValue_);
 
-        encryptionLayout_->addLayout(deviceIdWidget);
-        encryptionLayout_->addLayout(deviceFingerprintWidget);
+        auto sessionKeysLayout = new QHBoxLayout;
+        sessionKeysLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto sessionKeysLabel = new QLabel(tr("Session Keys"), this);
+        sessionKeysLabel->setFont(font);
+        sessionKeysLayout->addWidget(sessionKeysLabel, 1);
+
+        auto sessionKeysImportBtn = new FlatButton(tr("IMPORT"), this);
+        connect(
+          sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
+        auto sessionKeysExportBtn = new FlatButton(tr("EXPORT"), this);
+        connect(
+          sessionKeysExportBtn, &QPushButton::clicked, this, &UserSettingsPage::exportSessionKeys);
+        sessionKeysLayout->addWidget(sessionKeysExportBtn);
+        sessionKeysLayout->addWidget(sessionKeysImportBtn);
+
+        encryptionLayout_->addLayout(deviceIdLayout);
+        encryptionLayout_->addLayout(deviceFingerprintLayout);
+        encryptionLayout_->addWidget(new HorizontalLine(this));
+        encryptionLayout_->addLayout(sessionKeysLayout);
 
         font.setWeight(65);
 
         auto encryptionLabel_ = new QLabel(tr("ENCRYPTION"), this);
         encryptionLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
         encryptionLabel_->setFont(font);
-        // encryptionLabel_->setContentsMargins(0, 50, 0, 0);
 
         auto general_ = new QLabel(tr("GENERAL"), this);
         general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
@@ -310,7 +331,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addWidget(encryptionLabel_, 1, Qt::AlignLeft | Qt::AlignBottom);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(encryptionLayout_);
-        mainLayout_->addStretch(1);
 
         auto scrollArea_ = new QScrollArea(this);
         scrollArea_->setFrameShape(QFrame::NoFrame);
@@ -451,4 +471,90 @@ UserSettingsPage::restoreThemeCombo() const
                 themeCombo_->setCurrentIndex(1);
         else
                 themeCombo_->setCurrentIndex(2);
+}
+
+void
+UserSettingsPage::importSessionKeys()
+{
+        auto fileName = QFileDialog::getOpenFileName(this, tr("Open Sessions File"), "", "");
+
+        QFile file(fileName);
+        if (!file.open(QIODevice::ReadOnly)) {
+                QMessageBox::warning(this, tr("Error"), file.errorString());
+                return;
+        }
+
+        auto bin     = file.peek(file.size());
+        auto payload = std::string(bin.data(), bin.size());
+
+        bool ok;
+        auto password = QInputDialog::getText(this,
+                                              tr("File Password"),
+                                              tr("Enter the passphrase to decrypt the file:"),
+                                              QLineEdit::Password,
+                                              "",
+                                              &ok);
+
+        if (!ok || password.isEmpty()) {
+                QMessageBox::warning(this, tr("Error"), tr("The password cannot be empty"));
+                return;
+        }
+
+        try {
+                auto sessions = mtx::crypto::decrypt_exported_sessions(
+                  mtx::crypto::base642bin(payload), password.toStdString());
+                cache::client()->importSessionKeys(std::move(sessions));
+        } catch (const std::exception &e) {
+                QMessageBox::warning(this, tr("Error"), e.what());
+        } catch (const lmdb::error &e) {
+                QMessageBox::warning(this, tr("Error"), e.what());
+        } catch (const nlohmann::json::exception &e) {
+                QMessageBox::warning(this, tr("Error"), e.what());
+        }
+}
+
+void
+UserSettingsPage::exportSessionKeys()
+{
+        qDebug() << "exporting session keys";
+
+        // Open password dialog.
+        bool ok;
+        auto password = QInputDialog::getText(this,
+                                              tr("File Password"),
+                                              tr("Enter passphrase to encrypt your session keys:"),
+                                              QLineEdit::Password,
+                                              "",
+                                              &ok);
+
+        if (!ok || password.isEmpty()) {
+                QMessageBox::warning(this, tr("Error"), tr("The password cannot be empty"));
+                return;
+        }
+
+        // Open file dialog to save the file.
+        auto fileName =
+          QFileDialog::getSaveFileName(this, tr("File to save the exported session keys"), "", "");
+
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly)) {
+                QMessageBox::warning(this, tr("Error"), file.errorString());
+                return;
+        }
+
+        // Export sessions & save to file.
+        try {
+                auto encrypted_blob = mtx::crypto::encrypt_exported_sessions(
+                  cache::client()->exportSessionKeys(), password.toStdString());
+
+                auto b64 = mtx::crypto::bin2base64(encrypted_blob);
+
+                file.write(b64.data(), b64.size());
+        } catch (const std::exception &e) {
+                QMessageBox::warning(this, tr("Error"), e.what());
+        } catch (const lmdb::error &e) {
+                QMessageBox::warning(this, tr("Error"), e.what());
+        } catch (const nlohmann::json::exception &e) {
+                QMessageBox::warning(this, tr("Error"), e.what());
+        }
 }

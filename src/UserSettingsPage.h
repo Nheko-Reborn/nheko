@@ -133,6 +133,10 @@ signals:
         void moveBack();
         void trayOptionChanged(bool value);
 
+private slots:
+        void importSessionKeys();
+        void exportSessionKeys();
+
 private:
         void restoreThemeCombo() const;
         void restoreScaleFactor() const;

@@ -235,10 +235,23 @@ struct MegolmSessionIndex
         std::string session_id;
         //! The curve25519 public key of the sender.
         std::string sender_key;
-
-        //! Representation to be used in a hash map.
-        std::string to_hash() const { return room_id + session_id + sender_key; }
 };
+
+inline void
+to_json(nlohmann::json &obj, const MegolmSessionIndex &msg)
+{
+        obj["room_id"]    = msg.room_id;
+        obj["session_id"] = msg.session_id;
+        obj["sender_key"] = msg.sender_key;
+}
+
+inline void
+from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
+{
+        msg.room_id    = obj.at("room_id");
+        msg.session_id = obj.at("session_id");
+        msg.sender_key = obj.at("sender_key");
+}
 
 struct OlmSessionStorage
 {
@@ -425,13 +438,16 @@ public:
         bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
         void updateOutboundMegolmSession(const std::string &room_id, int message_index);
 
+        void importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys);
+        mtx::crypto::ExportedSessionKeys exportSessionKeys();
+
         //
         // Inbound Megolm Sessions
         //
         void saveInboundMegolmSession(const MegolmSessionIndex &index,
                                       mtx::crypto::InboundGroupSessionPtr session);
         OlmInboundGroupSession *getInboundMegolmSession(const MegolmSessionIndex &index);
-        bool inboundMegolmSessionExists(const MegolmSessionIndex &index) noexcept;
+        bool inboundMegolmSessionExists(const MegolmSessionIndex &index);
 
         //
         // Olm Sessions
