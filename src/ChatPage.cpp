@@ -1210,6 +1210,8 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
 
                 emit initializeViews(std::move(res.rooms));
                 emit initializeRoomList(cache::client()->roomInfo());
+
+                cache::client()->calculateRoomReadStatus();
         } catch (const lmdb::error &e) {
                 nhlog::db()->error("failed to save state after initial sync: {}", e.what());
                 startInitialSync();

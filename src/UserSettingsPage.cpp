@@ -17,7 +17,6 @@
 
 #include <QApplication>
 #include <QComboBox>
-#include <QDebug>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QLabel>
@@ -516,8 +515,6 @@ UserSettingsPage::importSessionKeys()
 void
 UserSettingsPage::exportSessionKeys()
 {
-        qDebug() << "exporting session keys";
-
         // Open password dialog.
         bool ok;
         auto password = QInputDialog::getText(this,
