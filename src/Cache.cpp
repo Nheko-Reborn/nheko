@@ -224,9 +224,16 @@ Cache::exportSessionKeys()
         std::string key, value;
         while (cursor.get(key, value, MDB_NEXT)) {
                 ExportedSession exported;
+                MegolmSessionIndex index;
 
                 auto saved_session = unpickle<InboundSessionObject>(value, SECRET);
-                auto index         = nlohmann::json::parse(key).get<MegolmSessionIndex>();
+
+                try {
+                        index = nlohmann::json::parse(key).get<MegolmSessionIndex>();
+                } catch (const nlohmann::json::exception &e) {
+                        nhlog::db()->critical("failed to export megolm session: {}", e.what());
+                        continue;
+                }
 
                 exported.room_id     = index.room_id;
                 exported.sender_key  = index.sender_key;
