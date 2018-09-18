@@ -314,11 +314,13 @@ utils::linkifyMessage(const QString &body)
                         if (xml.name() == "html")
                                 break;
 
-                        textString += "<" + xml.name();
+                        textString += QString("<%1").arg(xml.name().toString());
 
                         const auto attrs = xml.attributes();
                         for (const auto &e : attrs)
-                                textString += QString(" %1=\"%2\"").arg(e.name()).arg(e.value());
+                                textString += QString(" %1=\"%2\"")
+                                                .arg(e.name().toString())
+                                                .arg(e.value().toString());
 
                         textString += ">";
 
@@ -328,7 +330,7 @@ utils::linkifyMessage(const QString &body)
                         if (xml.name() == "html")
                                 break;
 
-                        textString += "</" + xml.name() + ">";
+                        textString += QString("</%1>").arg(xml.name().toString());
                         break;
                 }
                 default: {

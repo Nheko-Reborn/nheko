@@ -503,7 +503,7 @@ UserSettingsPage::importSessionKeys()
                 auto sessions = mtx::crypto::decrypt_exported_sessions(
                   mtx::crypto::base642bin(payload), password.toStdString());
                 cache::client()->importSessionKeys(std::move(sessions));
-        } catch (const std::exception &e) {
+        } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         } catch (const lmdb::error &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
@@ -547,7 +547,7 @@ UserSettingsPage::exportSessionKeys()
                 auto b64 = mtx::crypto::bin2base64(encrypted_blob);
 
                 file.write(b64.data(), b64.size());
-        } catch (const std::exception &e) {
+        } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         } catch (const lmdb::error &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
