@@ -33,21 +33,8 @@ matrix:
         - os: linux
           compiler: gcc
           env:
-              - CXX_COMPILER=g++-7
-              - C_COMPILER=gcc-7
-              - QT_VERSION="-5.10.1"
-              - QT_PKG=510
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-          addons:
-              apt:
-                  sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-7", "ninja-build"]
-        - os: linux
-          compiler: gcc
-          env:
-              - CXX_COMPILER=g++-7
-              - C_COMPILER=gcc-7
+              - CXX_COMPILER=g++-8
+              - C_COMPILER=gcc-8
               - QT_VERSION=571
               - QT_PKG=57
               - USE_BUNDLED_BOOST=1
@@ -55,7 +42,7 @@ matrix:
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-7", "ninja-build"]
+                  packages: ["g++-8", "ninja-build"]
         - os: linux
           compiler: clang
           env:
