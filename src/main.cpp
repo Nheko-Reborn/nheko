@@ -38,6 +38,10 @@
 #include "Utils.h"
 #include "version.h"
 
+#if defined(Q_OS_MAC)
+#include "emoji/MacHelper.h"
+#endif
+
 #if defined(Q_OS_LINUX)
 #include <boost/stacktrace.hpp>
 #include <signal.h>
@@ -185,6 +189,12 @@ main(int argc, char *argv[])
                         nhlog::net()->debug("bye");
                 }
         });
+
+#if defined(Q_OS_MAC)
+        // Temporary solution for the emoji picker until
+        // nheko has a proper menu bar with more functionality.
+        MacHelper::initializeMenus();
+#endif
 
         nhlog::ui()->info("starting nheko {}", nheko::version);
 

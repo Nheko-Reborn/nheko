@@ -37,6 +37,10 @@
 #include "ui/FlatButton.h"
 #include "ui/LoadingIndicator.h"
 
+#if defined(Q_OS_MAC)
+#include "emoji/MacHelper.h"
+#endif
+
 static constexpr size_t INPUT_HISTORY_SIZE = 127;
 static constexpr int MAX_TEXTINPUT_HEIGHT  = 120;
 static constexpr int InputHeight           = 26;
@@ -123,6 +127,12 @@ void
 FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 {
         const bool isModifier = (event->modifiers() != Qt::NoModifier);
+
+#if defined(Q_OS_MAC)
+        if (event->modifiers() == (Qt::ControlModifier | Qt::MetaModifier) &&
+            event->key() == Qt::Key_Space)
+                MacHelper::showEmojiWindow();
+#endif
 
         if (!isModifier) {
                 if (!typingTimer_->isActive())
@@ -502,6 +512,11 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         emojiBtn_ = new emoji::PickButton(this);
         emojiBtn_->setToolTip(tr("Emoji"));
+
+#if defined(Q_OS_MAC)
+        // macOS has a native emoji picker.
+        emojiBtn_->hide();
+#endif
 
         QIcon emoji_icon;
         emoji_icon.addFile(":/icons/icons/ui/smile.png");
