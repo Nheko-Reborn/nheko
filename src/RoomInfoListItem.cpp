@@ -32,7 +32,7 @@
 constexpr int MaxUnreadCountDisplayed = 99;
 
 constexpr int Padding          = 9;
-constexpr int UnreadLineWidth  = 4;
+constexpr int UnreadLineWidth  = 6;
 constexpr int UnreadLineOffset = 4;
 constexpr int IconSize         = 44;
 constexpr int MaxHeight        = IconSize + 2 * Padding;

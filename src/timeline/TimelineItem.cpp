@@ -41,9 +41,15 @@
 constexpr int MSG_RIGHT_MARGIN = 7;
 constexpr int MSG_PADDING      = 20;
 
+TextLabel::TextLabel(QWidget *parent)
+  : TextLabel(QString(), parent)
+{}
+
 TextLabel::TextLabel(const QString &text, QWidget *parent)
   : QTextBrowser(parent)
 {
+        document()->setDefaultStyleSheet(QString("a {color: %1; }").arg(utils::linkColor()));
+
         setText(text);
         setOpenExternalLinks(true);
 
@@ -722,6 +728,8 @@ void
 TimelineItem::generateTimestamp(const QDateTime &time)
 {
         QFont timestampFont;
+        timestampFont.setFamily("Monospace");
+        timestampFont.setStyleHint(QFont::Monospace);
         timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
 
         timestamp_ = new QLabel(this);

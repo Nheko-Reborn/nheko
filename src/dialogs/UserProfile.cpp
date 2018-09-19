@@ -3,6 +3,7 @@
 #include <QListWidget>
 #include <QPaintEvent>
 #include <QSettings>
+#include <QShortcut>
 #include <QStyleOption>
 #include <QVBoxLayout>
 
@@ -48,6 +49,11 @@ DeviceItem::DeviceItem(DeviceInfo device, QWidget *parent)
 UserProfile::UserProfile(QWidget *parent)
   : QWidget(parent)
 {
+        setAutoFillBackground(true);
+        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::WindowModal);
+        setAttribute(Qt::WA_DeleteOnClose, true);
+
         QIcon banIcon, kickIcon, ignoreIcon, startChatIcon;
 
         banIcon.addFile(":/icons/icons/ui/do-not-disturb-rounded-sign.png");
@@ -134,6 +140,7 @@ UserProfile::UserProfile(QWidget *parent)
         devices_->setSelectionMode(QAbstractItemView::NoSelection);
         devices_->setAttribute(Qt::WA_MacShowFocusRect, 0);
         devices_->setSpacing(DEVICE_SPACING);
+        devices_->setMinimumHeight(devices_->sizeHint().height() * 1.2);
         devices_->hide();
 
         QFont descriptionLabelFont;
@@ -170,6 +177,9 @@ UserProfile::UserProfile(QWidget *parent)
         vlayout->setContentsMargins(WIDGET_MARGIN, TOP_WIDGET_MARGIN, WIDGET_MARGIN, WIDGET_MARGIN);
 
         qRegisterMetaType<std::vector<DeviceInfo>>();
+
+        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        connect(closeShortcut, &QShortcut::activated, this, &UserProfile::close);
 }
 
 void
@@ -291,13 +301,4 @@ UserProfile::updateDeviceList(const QString &user_id, const std::vector<DeviceIn
 
         devicesLabel_->show();
         devices_->show();
-}
-
-void
-UserProfile::paintEvent(QPaintEvent *)
-{
-        QStyleOption opt;
-        opt.init(this);
-        QPainter p(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

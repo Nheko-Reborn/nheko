@@ -31,6 +31,7 @@
 class Avatar;
 class FlatButton;
 class Menu;
+class TextLabel;
 class OverlayModal;
 
 class TopRoomBar : public QWidget
@@ -76,22 +77,14 @@ protected:
                 opt.init(this);
                 QPainter p(this);
                 style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-
-#if !defined(Q_OS_MAC)
-                p.setPen(QPen(borderColor()));
-                p.drawLine(QPointF(0, height() - p.pen().width()), QPointF(width(), height()));
-#else
-                p.setPen(QPen(borderColor()));
-                p.drawLine(QPointF(0, height()), QPointF(width(), height()));
-#endif
         }
 
 private:
         QHBoxLayout *topLayout_  = nullptr;
         QVBoxLayout *textLayout_ = nullptr;
 
-        QLabel *nameLabel_  = nullptr;
-        QLabel *topicLabel_ = nullptr;
+        QLabel *nameLabel_     = nullptr;
+        TextLabel *topicLabel_ = nullptr;
 
         Menu *menu_;
         QAction *leaveRoom_    = nullptr;

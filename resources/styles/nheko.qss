@@ -130,7 +130,7 @@ UserInfoWidget, UserInfoWidget > * {
 
 UserInfoWidget {
     border: none;
-    qproperty-borderColor: #dcdcdc;
+    border-bottom: 1px solid #dcdcdc;
 }
 
 UserSettingsPage {
@@ -206,7 +206,8 @@ TextField {
 }
 
 TextInputWidget {
-    qproperty-borderColor: #dcdcdc;
+    border: none;
+    border-top: 1px solid #dcdcdc;
 }
 
 ScrollBar {
@@ -216,12 +217,12 @@ ScrollBar {
 
 SideBarActions {
     border: none;
-    qproperty-borderColor: #dcdcdc;
+    border-top: 1px solid #dcdcdc;
 }
 
 TopRoomBar {
     border: none;
-    qproperty-borderColor: #dcdcdc;
+    border-bottom: 1px solid #dcdcdc;
 }
 
 Toggle {

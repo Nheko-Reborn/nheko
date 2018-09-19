@@ -1,53 +1,52 @@
-OverlayWidget,
-OverlayWidget > * {
-    background-color: palette(window);
-}
-
-#mainContent,
-#mainContent > * {
-    background-color: palette(window);
-}
-
-#sideBar {
-    border: none;
-    border-right: 1px solid palette(text);
-    border-left: 1px solid palette(text);
-}
-
-TopRoomBar {
-    qproperty-borderColor: palette(text);
-    border: none;
-}
-
-TimelineView,
-TimelineView > *,
-TimelineItem,
-TimelineItem > * {
-    background-color: palette(window);
-    border: none;
-}
-
-QuickSwitcher {
-    background-color: palette(window);
-}
-
 TypingDisplay {
     qproperty-textColor: palette(text);
     qproperty-backgroundColor: palette(window);
 }
 
-InfoMessage {
-    qproperty-textColor: palette(text);
-    qproperty-boxColor: palette(window);
+TimelineView,
+TimelineView > * {
+    border: none;
 }
 
-SuggestionsPopup {
+TextInputWidget {
+    border: none;
+    border-top: 1px solid palette(mid);
+}
+
+SideBarActions {
+    border: none;
+    border-top: 1px solid palette(mid);
+}
+
+TopRoomBar {
+    border: none;
+    border-bottom: 1px solid palette(mid);
+}
+
+RoomList,
+RoomList > * {
     background-color: palette(window);
+    border: none;
+}
+
+UserInfoWidget {
+    border: none;
+    border-bottom: 1px solid palette(mid);
+}
+
+#sideBar {
+    border: none;
+    border-right: 1px solid palette(mid);
+    border-left: 1px solid palette(mid);
+}
+
+InfoMessage {
+    qproperty-textColor: palette(text);
+    qproperty-boxColor: palette(base);
 }
 
 PopupItem {
-    background-color: palette(window);
-    qproperty-hoverColor: rgba(192, 193, 195, 120);
+    qproperty-hoverColor: palette(base);
 }
 
 FlatButton {
@@ -74,47 +73,44 @@ TextField {
     qproperty-backgroundColor: palette(window);
 }
 
-WelcomePage,
-LoginPage,
-RegisterPage {
+QTextEdit,
+ReceiptItem,
+MemberItem,
+QLineEdit,
+QListWidget {
     background-color: palette(window);
-}
-
-RoomList,
-RoomList > * {
-    border: none;
 }
 
 RoomInfoListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(light);
+    qproperty-hoverBackgroundColor: palette(base);
     qproperty-backgroundColor: palette(window);
 
     qproperty-titleColor: palette(text);
     qproperty-subtitleColor: palette(text);
 
-    qproperty-highlightedTitleColor: palette(light);
-    qproperty-highlightedSubtitleColor: palette(light);
+    qproperty-highlightedTitleColor: palette(highlightedtext);
+    qproperty-highlightedSubtitleColor: palette(highlightedtext);
 
-    qproperty-btnColor: palette(mid);
-    qproperty-btnTextColor: palette(text);
+    qproperty-btnColor: palette(button);
+    qproperty-btnTextColor: palette(buttonText);
 
     qproperty-timestampColor: palette(text);
-    qproperty-highlightedTimestampColor: palette(light);
+    qproperty-highlightedTimestampColor: palette(highlightedtext);
 
-    qproperty-avatarBgColor: palette(mid);
+    qproperty-avatarBgColor: palette(base);
     qproperty-avatarFgColor: palette(text);
 
+    qproperty-bubbleBgColor: palette(base);
     qproperty-bubbleFgColor: palette(text);
-    qproperty-bubbleBgColor: palette(mid);
 }
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(light);
+    qproperty-hoverBackgroundColor: palette(base);
     qproperty-backgroundColor: palette(window);
 
-    qproperty-avatarBgColor: palette(mid);
+    qproperty-avatarBgColor: palette(base);
     qproperty-avatarFgColor: palette(text);
 }
 
@@ -126,42 +122,23 @@ LoadingIndicator {
     qproperty-color: palette(light);
 }
 
-UserInfoWidget,
-UserInfoWidget > * {
-    background-color: palette(window);
-}
-
-emoji--Category,
-emoji--Category > * {
-    background-color: palette(window);
-}
-
-emoji--Panel,
-emoji--Panel > * {
-    background-color: palette(window);
-}
-
-QTextEdit,
-QLineEdit {
-    background-color: palette(window);
-}
-
-ScrollBar {
-    qproperty-handleColor: palette(text);
-    qproperty-backgroundColor: palette(window);
-}
-
 FloatingButton {
-    qproperty-backgroundColor: palette(window);
+    qproperty-backgroundColor: palette(base);
     qproperty-foregroundColor: palette(text);
-}
-
-QListWidget {
-    background-color: palette(window);
-    color: palette(text);
 }
 
 SnackBar {
     qproperty-textColor: palette(text);
     qproperty-bgColor: palette(base);
+}
+
+MemberItem {
+    background-color: palette(window);
+}
+
+Toggle {
+    qproperty-activeColor: palette(highlight);
+    qproperty-disabledColor: palette(dark);
+    qproperty-inactiveColor: palette(mid);
+    qproperty-trackColor: palette(base);
 }

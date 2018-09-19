@@ -102,8 +102,10 @@ class TextLabel : public QTextBrowser
 
 public:
         TextLabel(const QString &text, QWidget *parent = nullptr);
+        TextLabel(QWidget *parent = nullptr);
 
         void wheelEvent(QWheelEvent *event) override { event->ignore(); }
+        void clearLinks() { link_.clear(); }
 
 protected:
         void mousePressEvent(QMouseEvent *e) override;

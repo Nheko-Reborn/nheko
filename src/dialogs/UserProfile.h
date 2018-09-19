@@ -48,9 +48,6 @@ public:
 
         void init(const QString &userId, const QString &roomId);
 
-protected:
-        void paintEvent(QPaintEvent *) override;
-
 private slots:
         void updateDeviceList(const QString &user_id, const std::vector<DeviceInfo> &devices);
 

@@ -129,7 +129,7 @@ UserInfoWidget, UserInfoWidget > * {
 
 UserInfoWidget {
     border: none;
-    qproperty-borderColor: #202228;
+    border-bottom: 1px solid #202228;
 }
 
 UserSettingsPage {
@@ -214,13 +214,13 @@ ScrollBar {
 
 SideBarActions {
     border: none;
-    qproperty-borderColor: #202228;
+    border-top: 1px solid #202228;
     background-color: #2d3139;
 }
 
 TopRoomBar {
     border: none;
-    qproperty-borderColor: #202228;
+    border-bottom: 1px solid #202228;
     background-color: #2d3139;
 }
 
@@ -229,10 +229,14 @@ QLineEdit {
     color: #caccd1;
 }
 
+TextInputWidget {
+    border: none;
+    border-top: 1px solid #2d3139;
+}
+
 TextInputWidget,
 TextInputWidget > QTextEdit,
 TextInputWidget > QLineEdit {
-    qproperty-borderColor: #202228;
     background-color: #2d3139;
     color: #caccd1;
 }

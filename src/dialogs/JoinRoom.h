@@ -2,7 +2,7 @@
 
 #include <QFrame>
 
-class FlatButton;
+class QPushButton;
 class TextField;
 
 namespace dialogs {
@@ -14,18 +14,17 @@ public:
         JoinRoom(QWidget *parent = nullptr);
 
 signals:
-        void closing(bool isJoining, const QString &room);
+        void joinRoom(const QString &room);
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
         void showEvent(QShowEvent *event) override;
 
 private slots:
         void handleInput();
 
 private:
-        FlatButton *confirmBtn_;
-        FlatButton *cancelBtn_;
+        QPushButton *confirmBtn_;
+        QPushButton *cancelBtn_;
 
         TextField *roomInput_;
 };

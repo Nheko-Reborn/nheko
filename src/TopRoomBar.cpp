@@ -22,6 +22,7 @@
 #include "MainWindow.h"
 #include "TopRoomBar.h"
 #include "Utils.h"
+#include "timeline/TimelineItem.h"
 #include "ui/Avatar.h"
 #include "ui/FlatButton.h"
 #include "ui/Menu.h"
@@ -55,7 +56,9 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         QFont descriptionFont("Open Sans");
         descriptionFont.setPixelSize(conf::topRoomBar::fonts::roomDescription);
 
-        topicLabel_ = new QLabel(this);
+        topicLabel_ = new TextLabel(this);
+        topicLabel_->setLineWrapMode(QTextEdit::NoWrap);
+        topicLabel_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         topicLabel_->setFont(descriptionFont);
         topicLabel_->setTextInteractionFlags(Qt::TextBrowserInteraction);
         topicLabel_->setOpenExternalLinks(true);
@@ -180,6 +183,7 @@ void
 TopRoomBar::updateRoomTopic(QString topic)
 {
         topic.replace(conf::strings::url_regex, conf::strings::url_html);
-        topicLabel_->setText(topic);
+        topicLabel_->clearLinks();
+        topicLabel_->setHtml(topic);
         update();
 }

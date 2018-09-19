@@ -310,7 +310,8 @@ MainWindow::openUserProfile(const QString &user_id, const QString &room_id)
         auto dialog = new dialogs::UserProfile(this);
         dialog->init(user_id, room_id);
 
-        showTransparentOverlayModal(dialog);
+        dialog->raise();
+        dialog->show();
 }
 
 void
@@ -319,20 +320,19 @@ MainWindow::openRoomSettings(const QString &room_id)
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
 
         auto dialog = new dialogs::RoomSettings(roomToSearch, this);
-        connect(dialog, &dialogs::RoomSettings::closing, this, [this]() {
-                if (modal_)
-                        modal_->hide();
-        });
 
-        showTransparentOverlayModal(dialog);
+        dialog->raise();
+        dialog->show();
 }
 
 void
 MainWindow::openMemberListDialog(const QString &room_id)
 {
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
+        auto dialog             = new dialogs::MemberList(roomToSearch, this);
 
-        showTransparentOverlayModal(new dialogs::MemberList(roomToSearch, this));
+        dialog->raise();
+        dialog->show();
 }
 
 void
@@ -341,15 +341,12 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
         auto roomToLeave = room_id.isEmpty() ? chat_page_->currentRoom() : room_id;
 
         auto dialog = new dialogs::LeaveRoom(this);
-        connect(dialog, &dialogs::LeaveRoom::closing, this, [this, roomToLeave](bool leaving) {
-                if (modal_)
-                        modal_->hide();
-
-                if (leaving)
-                        chat_page_->leaveRoom(roomToLeave);
+        connect(dialog, &dialogs::LeaveRoom::leaving, this, [this, roomToLeave]() {
+                chat_page_->leaveRoom(roomToLeave);
         });
 
-        showTransparentOverlayModal(dialog, Qt::AlignCenter);
+        dialog->raise();
+        dialog->show();
 }
 
 void
@@ -368,35 +365,26 @@ void
 MainWindow::openInviteUsersDialog(std::function<void(const QStringList &invitees)> callback)
 {
         auto dialog = new dialogs::InviteUsers(this);
-        connect(dialog,
-                &dialogs::InviteUsers::closing,
-                this,
-                [this, callback](bool isSending, QStringList invitees) {
-                        if (modal_)
-                                modal_->hide();
-                        if (isSending && !invitees.isEmpty())
-                                callback(invitees);
-                });
+        connect(dialog, &dialogs::InviteUsers::sendInvites, this, [callback](QStringList invitees) {
+                if (!invitees.isEmpty())
+                        callback(invitees);
+        });
 
-        showTransparentOverlayModal(dialog);
+        dialog->raise();
+        dialog->show();
 }
 
 void
 MainWindow::openJoinRoomDialog(std::function<void(const QString &room_id)> callback)
 {
         auto dialog = new dialogs::JoinRoom(this);
-        connect(dialog,
-                &dialogs::JoinRoom::closing,
-                this,
-                [this, callback](bool isJoining, const QString &room) {
-                        if (modal_)
-                                modal_->hide();
+        connect(dialog, &dialogs::JoinRoom::joinRoom, this, [callback](const QString &room) {
+                if (!room.isEmpty())
+                        callback(room);
+        });
 
-                        if (isJoining && !room.isEmpty())
-                                callback(room);
-                });
-
-        showTransparentOverlayModal(dialog, Qt::AlignCenter);
+        dialog->raise();
+        dialog->show();
 }
 
 void
@@ -405,17 +393,12 @@ MainWindow::openCreateRoomDialog(
 {
         auto dialog = new dialogs::CreateRoom(this);
         connect(dialog,
-                &dialogs::CreateRoom::closing,
+                &dialogs::CreateRoom::createRoom,
                 this,
-                [this, callback](bool isCreating, const mtx::requests::CreateRoom &request) {
-                        if (modal_)
-                                modal_->hide();
+                [callback](const mtx::requests::CreateRoom &request) { callback(request); });
 
-                        if (isCreating)
-                                callback(request);
-                });
-
-        showTransparentOverlayModal(dialog);
+        dialog->raise();
+        dialog->show();
 }
 
 void
@@ -444,22 +427,11 @@ void
 MainWindow::openLogoutDialog()
 {
         auto dialog = new dialogs::Logout(this);
-        connect(dialog, &dialogs::Logout::closing, this, [this](bool logging_out) {
-                if (modal_)
-                        modal_->hide();
+        connect(
+          dialog, &dialogs::Logout::loggingOut, this, [this]() { chat_page_->initiateLogout(); });
 
-                // By initiating the logout process a new overlay widget
-                // will replace & destroy the previous widget (logout dialog).
-                //
-                // This will force the destruction of the logout widget to
-                // happen after the click event has been fully processed.
-                QTimer::singleShot(0, this, [logging_out, this]() {
-                        if (logging_out)
-                                chat_page_->initiateLogout();
-                });
-        });
-
-        showTransparentOverlayModal(dialog, Qt::AlignCenter);
+        dialog->raise();
+        dialog->show();
 }
 
 void
@@ -480,7 +452,8 @@ MainWindow::openReadReceiptsDialog(const QString &event_id)
                 return;
         }
 
-        showTransparentOverlayModal(dialog);
+        dialog->raise();
+        dialog->show();
 }
 
 bool

@@ -5,7 +5,7 @@
 #include <QListWidgetItem>
 #include <QStringList>
 
-class FlatButton;
+class QPushButton;
 class TextField;
 class QListWidget;
 
@@ -18,11 +18,10 @@ public:
         explicit InviteUsers(QWidget *parent = nullptr);
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
         void showEvent(QShowEvent *event) override;
 
 signals:
-        void closing(bool isLeaving, QStringList invitees);
+        void sendInvites(QStringList invitees);
 
 private slots:
         void removeInvitee(QListWidgetItem *item);
@@ -31,8 +30,8 @@ private:
         void addUser();
         QStringList invitedUsers() const;
 
-        FlatButton *confirmBtn_;
-        FlatButton *cancelBtn_;
+        QPushButton *confirmBtn_;
+        QPushButton *cancelBtn_;
 
         TextField *inviteeInput_;
         QLabel *errorLabel_;

@@ -2,7 +2,7 @@
 
 #include <QFrame>
 
-class FlatButton;
+class QPushButton;
 
 namespace dialogs {
 
@@ -12,14 +12,11 @@ class LeaveRoom : public QFrame
 public:
         explicit LeaveRoom(QWidget *parent = nullptr);
 
-protected:
-        void paintEvent(QPaintEvent *event) override;
-
 signals:
-        void closing(bool isLeaving);
+        void leaving();
 
 private:
-        FlatButton *confirmBtn_;
-        FlatButton *cancelBtn_;
+        QPushButton *confirmBtn_;
+        QPushButton *cancelBtn_;
 };
 } // dialogs

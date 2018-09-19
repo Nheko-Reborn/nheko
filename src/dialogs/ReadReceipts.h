@@ -21,6 +21,9 @@ public:
                     uint64_t timestamp,
                     const QString &room_id);
 
+protected:
+        void paintEvent(QPaintEvent *);
+
 private:
         QString dateFormat(const QDateTime &then) const;
 

@@ -370,3 +370,17 @@ utils::markdownToHtml(const QString &text)
 
         return result;
 }
+
+QString
+utils::linkColor()
+{
+        QSettings settings;
+        const auto theme = settings.value("user/theme", "light").toString();
+
+        if (theme == "light")
+                return "#0077b5";
+        else if (theme == "dark")
+                return "#38A3D8";
+
+        return QPalette().color(QPalette::Link).name();
+}

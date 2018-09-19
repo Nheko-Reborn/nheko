@@ -2,6 +2,7 @@
 #include <QIcon>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QPushButton>
 #include <QStyleOption>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -10,7 +11,6 @@
 
 #include "Config.h"
 #include "InviteeItem.h"
-#include "ui/FlatButton.h"
 #include "ui/TextField.h"
 
 #include "mtx.hpp"
@@ -20,6 +20,11 @@ using namespace dialogs;
 InviteUsers::InviteUsers(QWidget *parent)
   : QFrame(parent)
 {
+        setAutoFillBackground(true);
+        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::WindowModal);
+        setAttribute(Qt::WA_DeleteOnClose, true);
+
         setMinimumWidth(conf::modals::MIN_WIDGET_WIDTH);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
@@ -31,18 +36,14 @@ InviteUsers::InviteUsers(QWidget *parent)
         buttonLayout->setSpacing(0);
         buttonLayout->setMargin(0);
 
-        QFont buttonFont;
-        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
-
-        confirmBtn_ = new FlatButton("INVITE", this);
-        confirmBtn_->setFont(buttonFont);
-
-        cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-        cancelBtn_->setFont(buttonFont);
+        confirmBtn_ = new QPushButton("Invite", this);
+        cancelBtn_  = new QPushButton(tr("Cancel"), this);
+        cancelBtn_->setDefault(true);
 
         buttonLayout->addStretch(1);
-        buttonLayout->addWidget(confirmBtn_);
+        buttonLayout->setSpacing(15);
         buttonLayout->addWidget(cancelBtn_);
+        buttonLayout->addWidget(confirmBtn_);
 
         inviteeInput_ = new TextField(this);
         inviteeInput_->setLabel(tr("User ID to invite"));
@@ -63,7 +64,7 @@ InviteUsers::InviteUsers(QWidget *parent)
 
         connect(inviteeInput_, &TextField::returnPressed, this, &InviteUsers::addUser);
         connect(confirmBtn_, &QPushButton::clicked, [this]() {
-                emit closing(true, invitedUsers());
+                emit sendInvites(invitedUsers());
 
                 inviteeInput_->clear();
                 inviteeList_->clear();
@@ -71,12 +72,11 @@ InviteUsers::InviteUsers(QWidget *parent)
         });
 
         connect(cancelBtn_, &QPushButton::clicked, [this]() {
-                QStringList emptyList;
-                emit closing(false, emptyList);
-
                 inviteeInput_->clear();
                 inviteeList_->clear();
                 errorLabel_->hide();
+
+                emit close();
         });
 }
 
@@ -117,15 +117,6 @@ InviteUsers::removeInvitee(QListWidgetItem *item)
         auto widget = inviteeList_->takeItem(row);
 
         inviteeList_->removeItemWidget(widget);
-}
-
-void
-InviteUsers::paintEvent(QPaintEvent *)
-{
-        QStyleOption opt;
-        opt.init(this);
-        QPainter p(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 QStringList

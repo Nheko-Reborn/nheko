@@ -1,5 +1,7 @@
 #include <QListWidgetItem>
 #include <QPainter>
+#include <QPushButton>
+#include <QShortcut>
 #include <QStyleOption>
 #include <QVBoxLayout>
 
@@ -11,7 +13,6 @@
 #include "Config.h"
 #include "Utils.h"
 #include "ui/Avatar.h"
-#include "ui/FlatButton.h"
 
 using namespace dialogs;
 
@@ -51,10 +52,22 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
         topLayout_->addLayout(textLayout_, 1);
 }
 
+void
+MemberItem::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
 MemberList::MemberList(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{room_id}
 {
+        setAutoFillBackground(true);
+        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::WindowModal);
         setAttribute(Qt::WA_DeleteOnClose, true);
 
         auto layout = new QVBoxLayout(this);
@@ -64,7 +77,6 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         list_ = new QListWidget;
         list_->setFrameStyle(QFrame::NoFrame);
         list_->setSelectionMode(QAbstractItemView::NoSelection);
-        list_->setAttribute(Qt::WA_MacShowFocusRect, 0);
         list_->setSpacing(5);
 
         QFont doubleFont;
@@ -89,7 +101,8 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         list_->clear();
 
         // Add button at the bottom.
-        moreBtn_  = new FlatButton(tr("SHOW MORE"), this);
+        moreBtn_ = new QPushButton(tr("Show more"), this);
+        moreBtn_->setFlat(true);
         auto item = new QListWidgetItem;
         item->setSizeHint(moreBtn_->minimumSizeHint());
         item->setFlags(Qt::NoItemFlags);
@@ -97,7 +110,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         list_->insertItem(0, item);
         list_->setItemWidget(item, moreBtn_);
 
-        connect(moreBtn_, &FlatButton::clicked, this, [this]() {
+        connect(moreBtn_, &QPushButton::clicked, this, [this]() {
                 const size_t numMembers = list_->count() - 1;
 
                 if (numMembers > 0)
@@ -109,6 +122,9 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         } catch (const lmdb::error &e) {
                 qCritical() << e.what();
         }
+
+        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        connect(closeShortcut, &QShortcut::activated, this, &MemberList::close);
 }
 
 void
@@ -142,13 +158,4 @@ MemberList::addUsers(const std::vector<RoomMember> &members)
                 list_->insertItem(list_->count() - 1, item);
                 list_->setItemWidget(item, user);
         }
-}
-
-void
-MemberList::paintEvent(QPaintEvent *)
-{
-        QStyleOption opt;
-        opt.init(this);
-        QPainter p(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

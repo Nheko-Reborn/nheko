@@ -2,6 +2,7 @@
 #include <QIcon>
 #include <QListWidgetItem>
 #include <QPainter>
+#include <QShortcut>
 #include <QStyleOption>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -60,6 +61,15 @@ ReceiptItem::ReceiptItem(QWidget *parent,
                                 [this](const QImage &img) { avatar_->setImage(img); });
 }
 
+void
+ReceiptItem::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
 QString
 ReceiptItem::dateFormat(const QDateTime &then) const
 {
@@ -79,6 +89,11 @@ ReceiptItem::dateFormat(const QDateTime &then) const
 ReadReceipts::ReadReceipts(QWidget *parent)
   : QFrame(parent)
 {
+        setAutoFillBackground(true);
+        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::WindowModal);
+        setAttribute(Qt::WA_DeleteOnClose, true);
+
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(conf::modals::WIDGET_SPACING);
         layout->setMargin(conf::modals::WIDGET_MARGIN);
@@ -86,7 +101,6 @@ ReadReceipts::ReadReceipts(QWidget *parent)
         userList_ = new QListWidget;
         userList_->setFrameStyle(QFrame::NoFrame);
         userList_->setSelectionMode(QAbstractItemView::NoSelection);
-        userList_->setAttribute(Qt::WA_MacShowFocusRect, 0);
         userList_->setSpacing(conf::modals::TEXT_SPACING);
 
         QFont doubleFont;
@@ -107,6 +121,9 @@ ReadReceipts::ReadReceipts(QWidget *parent)
 
         layout->addWidget(topLabel_);
         layout->addWidget(userList_);
+
+        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        connect(closeShortcut, &QShortcut::activated, this, &ReadReceipts::close);
 }
 
 void

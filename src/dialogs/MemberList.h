@@ -4,7 +4,7 @@
 #include <QListWidget>
 
 class Avatar;
-class FlatButton;
+class QPushButton;
 class QHBoxLayout;
 class QLabel;
 class QVBoxLayout;
@@ -22,6 +22,9 @@ class MemberItem : public QWidget
 
 public:
         MemberItem(const RoomMember &member, QWidget *parent);
+
+protected:
+        void paintEvent(QPaintEvent *) override;
 
 private:
         QHBoxLayout *topLayout_;
@@ -43,7 +46,6 @@ public slots:
         void addUsers(const std::vector<RoomMember> &users);
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
         void hideEvent(QHideEvent *event) override
         {
                 list_->clear();
@@ -56,6 +58,6 @@ private:
         QString room_id_;
         QLabel *topLabel_;
         QListWidget *list_;
-        FlatButton *moreBtn_;
+        QPushButton *moreBtn_;
 };
 } // dialogs

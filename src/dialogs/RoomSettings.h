@@ -9,6 +9,7 @@
 
 class Avatar;
 class FlatButton;
+class QPushButton;
 class QComboBox;
 class QHBoxLayout;
 class QShowEvent;
@@ -100,8 +101,8 @@ private:
         TextField *nameInput_;
         TextField *topicInput_;
 
-        FlatButton *applyBtn_;
-        FlatButton *cancelBtn_;
+        QPushButton *applyBtn_;
+        QPushButton *cancelBtn_;
 };
 
 namespace dialogs {
@@ -113,13 +114,11 @@ public:
         RoomSettings(const QString &room_id, QWidget *parent = nullptr);
 
 signals:
-        void closing();
         void enableEncryptionError(const QString &msg);
         void showErrorMessage(const QString &msg);
         void accessRulesUpdated();
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
         void showEvent(QShowEvent *event) override;
 
 private slots:

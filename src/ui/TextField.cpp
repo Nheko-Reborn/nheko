@@ -13,20 +13,18 @@ TextField::TextField(QWidget *parent)
         // Get rid of the focus border on macOS.
         setAttribute(Qt::WA_MacShowFocusRect, 0);
 
+        QPalette pal;
+
         state_machine_    = new TextFieldStateMachine(this);
         label_            = 0;
         label_font_size_  = 15;
         show_label_       = false;
-        background_color_ = QColor("white");
+        background_color_ = pal.color(QPalette::Window);
 
         setFrame(false);
         setAttribute(Qt::WA_Hover);
         setMouseTracking(true);
         setTextMargins(0, 4, 0, 6);
-
-        QFont font("Open Sans");
-        font.setPixelSize(14);
-        setFont(font);
 
         state_machine_->start();
         QCoreApplication::processEvents();
@@ -115,7 +113,7 @@ QColor
 TextField::textColor() const
 {
         if (!text_color_.isValid()) {
-                return QColor("black");
+                return QPalette().color(QPalette::Text);
         }
 
         return text_color_;
@@ -132,7 +130,7 @@ QColor
 TextField::labelColor() const
 {
         if (!label_color_.isValid()) {
-                return QColor("#abb"); // TODO: Move this into Theme.h
+                return QPalette().color(QPalette::Text);
         }
 
         return label_color_;
@@ -149,7 +147,7 @@ QColor
 TextField::inkColor() const
 {
         if (!ink_color_.isValid()) {
-                return QColor("black");
+                return QPalette().color(QPalette::Text);
         }
 
         return ink_color_;
@@ -166,7 +164,7 @@ QColor
 TextField::underlineColor() const
 {
         if (!underline_color_.isValid()) {
-                return QColor("black");
+                return QPalette().color(QPalette::Highlight);
         }
 
         return underline_color_;
@@ -340,8 +338,8 @@ TextFieldLabel::TextFieldLabel(TextField *parent)
         scale_ = 1;
         color_ = parent->labelColor();
 
-        QFont font("Open Sans SemiBold");
-        font.setPixelSize(parent->labelFontSize());
+        QFont font;
+        font.setWeight(60);
         font.setLetterSpacing(QFont::PercentageSpacing, 102);
         setFont(font);
 }

@@ -4,7 +4,7 @@
 
 #include <mtx.hpp>
 
-class FlatButton;
+class QPushButton;
 class TextField;
 class QComboBox;
 class Toggle;
@@ -18,10 +18,9 @@ public:
         CreateRoom(QWidget *parent = nullptr);
 
 signals:
-        void closing(bool isCreating, const mtx::requests::CreateRoom &request);
+        void createRoom(const mtx::requests::CreateRoom &request);
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
         void showEvent(QShowEvent *event) override;
 
 private:
@@ -32,8 +31,8 @@ private:
 
         Toggle *directToggle_;
 
-        FlatButton *confirmBtn_;
-        FlatButton *cancelBtn_;
+        QPushButton *confirmBtn_;
+        QPushButton *cancelBtn_;
 
         TextField *nameInput_;
         TextField *topicInput_;

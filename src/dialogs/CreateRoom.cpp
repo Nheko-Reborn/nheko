@@ -1,12 +1,11 @@
 #include <QComboBox>
 #include <QLabel>
-#include <QStyleOption>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 #include "dialogs/CreateRoom.h"
 
 #include "Config.h"
-#include "ui/FlatButton.h"
 #include "ui/TextField.h"
 #include "ui/Theme.h"
 #include "ui/ToggleButton.h"
@@ -16,6 +15,11 @@ using namespace dialogs;
 CreateRoom::CreateRoom(QWidget *parent)
   : QFrame(parent)
 {
+        setAutoFillBackground(true);
+        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::WindowModal);
+        setAttribute(Qt::WA_DeleteOnClose, true);
+
         QFont doubleFont;
         doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
 
@@ -29,21 +33,15 @@ CreateRoom::CreateRoom(QWidget *parent)
         layout->setMargin(conf::modals::WIDGET_MARGIN);
 
         auto buttonLayout = new QHBoxLayout();
-        buttonLayout->setSpacing(0);
-        buttonLayout->setMargin(0);
+        buttonLayout->setSpacing(15);
 
-        QFont buttonFont;
-        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
-
-        confirmBtn_ = new FlatButton("CREATE", this);
-        confirmBtn_->setFont(buttonFont);
-
-        cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-        cancelBtn_->setFont(buttonFont);
+        confirmBtn_ = new QPushButton(tr("Create room"), this);
+        cancelBtn_  = new QPushButton(tr("Cancel"), this);
+        cancelBtn_->setDefault(true);
 
         buttonLayout->addStretch(1);
-        buttonLayout->addWidget(confirmBtn_);
         buttonLayout->addWidget(cancelBtn_);
+        buttonLayout->addWidget(confirmBtn_);
 
         QFont font;
         font.setPixelSize(conf::headerFontSize);
@@ -104,15 +102,14 @@ CreateRoom::CreateRoom(QWidget *parent)
                 request_.topic           = topicInput_->text().toStdString();
                 request_.room_alias_name = aliasInput_->text().toStdString();
 
-                emit closing(true, request_);
+                emit createRoom(request_);
 
                 clearFields();
         });
 
         connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
-                emit closing(false, request_);
-
                 clearFields();
+                emit close();
         });
 
         connect(visibilityCombo_,
@@ -148,15 +145,6 @@ CreateRoom::clearFields()
         nameInput_->clear();
         topicInput_->clear();
         aliasInput_->clear();
-}
-
-void
-CreateRoom::paintEvent(QPaintEvent *)
-{
-        QStyleOption opt;
-        opt.init(this);
-        QPainter p(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 void

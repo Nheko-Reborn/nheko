@@ -8,6 +8,8 @@
 #include <QMimeDatabase>
 #include <QPainter>
 #include <QPixmap>
+#include <QPushButton>
+#include <QShortcut>
 #include <QShowEvent>
 #include <QStyleOption>
 #include <QVBoxLayout>
@@ -54,24 +56,15 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
 
         auto layout = new QVBoxLayout(this);
 
-        QFont buttonFont;
-        buttonFont.setPointSizeF(buttonFont.pointSizeF() * 1.3);
-
-        applyBtn_ = new FlatButton(tr("APPLY"), this);
-        applyBtn_->setFont(buttonFont);
-        applyBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
-        applyBtn_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-
-        cancelBtn_ = new FlatButton(tr("CANCEL"), this);
-        cancelBtn_->setFont(buttonFont);
-        cancelBtn_->setRippleStyle(ui::RippleStyle::NoRipple);
-        cancelBtn_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        applyBtn_  = new QPushButton(tr("Apply"), this);
+        cancelBtn_ = new QPushButton(tr("Cancel"), this);
+        cancelBtn_->setDefault(true);
 
         auto btnLayout = new QHBoxLayout;
-        btnLayout->setMargin(5);
         btnLayout->addStretch(1);
-        btnLayout->addWidget(applyBtn_);
+        btnLayout->setSpacing(15);
         btnLayout->addWidget(cancelBtn_);
+        btnLayout->addWidget(applyBtn_);
 
         nameInput_ = new TextField(this);
         nameInput_->setLabel(tr("Name").toUpper());
@@ -171,6 +164,11 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
   , room_id_{std::move(room_id)}
 {
         retrieveRoomInfo();
+
+        setAutoFillBackground(true);
+        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::WindowModal);
+        setAttribute(Qt::WA_DeleteOnClose, true);
 
         QFont doubleFont;
         doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
@@ -422,6 +420,9 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 stopLoadingSpinner();
                 resetErrorLabel();
         });
+
+        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        connect(closeShortcut, &QShortcut::activated, this, &RoomSettings::close);
 }
 
 void
@@ -446,9 +447,10 @@ RoomSettings::setupEditButton()
         connect(editFieldsBtn_, &QPushButton::clicked, this, [this]() {
                 retrieveRoomInfo();
 
-                auto modal = new EditModal(room_id_, this->parentWidget());
+                auto modal = new EditModal(room_id_, this);
                 modal->setFields(QString::fromStdString(info_.name),
                                  QString::fromStdString(info_.topic));
+                modal->raise();
                 modal->show();
                 connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
                         if (roomNameLabel_)
@@ -503,15 +505,6 @@ RoomSettings::showEvent(QShowEvent *event)
         stopLoadingSpinner();
 
         QWidget::showEvent(event);
-}
-
-void
-RoomSettings::paintEvent(QPaintEvent *)
-{
-        QStyleOption opt;
-        opt.init(this);
-        QPainter p(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 bool

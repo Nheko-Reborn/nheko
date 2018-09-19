@@ -19,7 +19,7 @@
 
 #include <QFrame>
 
-class FlatButton;
+class QPushButton;
 
 namespace dialogs {
 
@@ -29,14 +29,11 @@ class Logout : public QFrame
 public:
         explicit Logout(QWidget *parent = nullptr);
 
-protected:
-        void paintEvent(QPaintEvent *event) override;
-
 signals:
-        void closing(bool isLoggingOut);
+        void loggingOut();
 
 private:
-        FlatButton *confirmBtn_;
-        FlatButton *cancelBtn_;
+        QPushButton *confirmBtn_;
+        QPushButton *cancelBtn_;
 };
 } // dialogs
