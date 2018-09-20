@@ -30,8 +30,8 @@ JoinRoom::JoinRoom(QWidget *parent)
         buttonLayout->setSpacing(15);
 
         confirmBtn_ = new QPushButton(tr("Join"), this);
-        cancelBtn_  = new QPushButton(tr("Cancel"), this);
-        cancelBtn_->setDefault(true);
+        confirmBtn_->setDefault(true);
+        cancelBtn_ = new QPushButton(tr("Cancel"), this);
 
         buttonLayout->addStretch(1);
         buttonLayout->addWidget(cancelBtn_);

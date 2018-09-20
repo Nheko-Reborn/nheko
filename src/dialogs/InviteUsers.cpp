@@ -37,8 +37,8 @@ InviteUsers::InviteUsers(QWidget *parent)
         buttonLayout->setMargin(0);
 
         confirmBtn_ = new QPushButton("Invite", this);
-        cancelBtn_  = new QPushButton(tr("Cancel"), this);
-        cancelBtn_->setDefault(true);
+        confirmBtn_->setDefault(true);
+        cancelBtn_ = new QPushButton(tr("Cancel"), this);
 
         buttonLayout->addStretch(1);
         buttonLayout->setSpacing(15);
