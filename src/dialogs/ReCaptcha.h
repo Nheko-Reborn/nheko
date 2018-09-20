@@ -2,8 +2,7 @@
 
 #include <QWidget>
 
-class FlatButton;
-class RaisedButton;
+class QPushButton;
 
 namespace dialogs {
 
@@ -14,15 +13,12 @@ class ReCaptcha : public QWidget
 public:
         ReCaptcha(const QString &session, QWidget *parent = nullptr);
 
-protected:
-        void paintEvent(QPaintEvent *event) override;
-
 signals:
-        void closing();
+        void confirmation();
 
 private:
-        FlatButton *openCaptchaBtn_;
-        RaisedButton *confirmBtn_;
-        RaisedButton *cancelBtn_;
+        QPushButton *openCaptchaBtn_;
+        QPushButton *confirmBtn_;
+        QPushButton *cancelBtn_;
 };
 } // dialogs

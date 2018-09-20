@@ -43,6 +43,9 @@ LeaveRoom::LeaveRoom(QWidget *parent)
         layout->addWidget(label);
         layout->addLayout(buttonLayout);
 
-        connect(confirmBtn_, &QPushButton::clicked, this, &LeaveRoom::leaving);
+        connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
+                emit leaving();
+                emit close();
+        });
         connect(cancelBtn_, &QPushButton::clicked, this, &LeaveRoom::close);
 }

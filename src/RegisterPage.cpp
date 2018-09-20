@@ -138,7 +138,7 @@ RegisterPage::RegisterPage(QWidget *parent)
                     new dialogs::ReCaptcha(QString::fromStdString(session), this);
 
                   connect(captchaDialog,
-                          &dialogs::ReCaptcha::closing,
+                          &dialogs::ReCaptcha::confirmation,
                           this,
                           [this, user, pass, session, captchaDialog]() {
                                   captchaDialog->close();

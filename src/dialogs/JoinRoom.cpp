@@ -58,6 +58,8 @@ JoinRoom::handleInput()
         // TODO: input validation with error messages.
         emit joinRoom(roomInput_->text());
         roomInput_->clear();
+
+        emit close();
 }
 
 void

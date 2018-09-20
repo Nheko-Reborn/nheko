@@ -63,6 +63,9 @@ Logout::Logout(QWidget *parent)
         layout->addLayout(buttonLayout);
         layout->addStretch(1);
 
-        connect(confirmBtn_, &QPushButton::clicked, this, &Logout::loggingOut);
+        connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
+                emit loggingOut();
+                emit close();
+        });
         connect(cancelBtn_, &QPushButton::clicked, this, &Logout::close);
 }

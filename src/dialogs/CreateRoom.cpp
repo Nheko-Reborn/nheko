@@ -105,6 +105,7 @@ CreateRoom::CreateRoom(QWidget *parent)
                 emit createRoom(request_);
 
                 clearFields();
+                emit close();
         });
 
         connect(cancelBtn_, &QPushButton::clicked, this, [this]() {

@@ -1,15 +1,13 @@
 #include <QDesktopServices>
 #include <QLabel>
-#include <QPaintEvent>
-#include <QStyleOption>
+#include <QPushButton>
+#include <QUrl>
 #include <QVBoxLayout>
 
 #include "dialogs/ReCaptcha.h"
 
 #include "Config.h"
 #include "MatrixClient.h"
-#include "ui/FlatButton.h"
-#include "ui/RaisedButton.h"
 #include "ui/Theme.h"
 
 using namespace dialogs;
@@ -20,6 +18,7 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
         setWindowModality(Qt::WindowModal);
+        setAttribute(Qt::WA_DeleteOnClose, true);
 
         auto layout = new QVBoxLayout(this);
         layout->setSpacing(conf::modals::WIDGET_SPACING);
@@ -29,22 +28,15 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
         buttonLayout->setSpacing(8);
         buttonLayout->setMargin(0);
 
-        QFont buttonFont;
-        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
-
-        openCaptchaBtn_ = new FlatButton("OPEN reCAPTCHA", this);
-        openCaptchaBtn_->setFont(buttonFont);
-
-        confirmBtn_ = new RaisedButton(tr("CONFIRM"), this);
-        confirmBtn_->setFont(buttonFont);
-
-        cancelBtn_ = new RaisedButton(tr("CANCEL"), this);
-        cancelBtn_->setFont(buttonFont);
+        openCaptchaBtn_ = new QPushButton("Open reCAPTCHA", this);
+        cancelBtn_      = new QPushButton(tr("Cancel"), this);
+        confirmBtn_     = new QPushButton(tr("Confirm"), this);
+        confirmBtn_->setDefault(true);
 
         buttonLayout->addStretch(1);
         buttonLayout->addWidget(openCaptchaBtn_);
-        buttonLayout->addWidget(confirmBtn_);
         buttonLayout->addWidget(cancelBtn_);
+        buttonLayout->addWidget(confirmBtn_);
 
         QFont font;
         font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
@@ -65,15 +57,9 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
                 QDesktopServices::openUrl(url);
         });
 
-        connect(confirmBtn_, &QPushButton::clicked, this, &dialogs::ReCaptcha::closing);
+        connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
+                emit confirmation();
+                emit close();
+        });
         connect(cancelBtn_, &QPushButton::clicked, this, &dialogs::ReCaptcha::close);
-}
-
-void
-ReCaptcha::paintEvent(QPaintEvent *)
-{
-        QStyleOption opt;
-        opt.init(this);
-        QPainter p(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

@@ -69,6 +69,8 @@ InviteUsers::InviteUsers(QWidget *parent)
                 inviteeInput_->clear();
                 inviteeList_->clear();
                 errorLabel_->hide();
+
+                emit close();
         });
 
         connect(cancelBtn_, &QPushButton::clicked, [this]() {
