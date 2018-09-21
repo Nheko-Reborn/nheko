@@ -388,14 +388,15 @@ utils::linkColor()
 void
 utils::centerWidget(QWidget *widget, QWidget *parent)
 {
+        auto findCenter = [childRect = widget->rect()](QRect hostRect) -> QPoint {
+                return QPoint(hostRect.center().x() - (childRect.width() * 0.5),
+                              hostRect.center().y() - (childRect.height() * 0.5));
+        };
+
         if (parent) {
-                widget->move(parent->geometry().center() - widget->rect().center());
+                widget->move(findCenter(parent->geometry()));
                 return;
         }
 
-        const QRect screenGeometry = QApplication::desktop()->screenGeometry();
-        const int x                = (screenGeometry.width() - widget->width()) / 2;
-        const int y                = (screenGeometry.height() - widget->height()) / 2;
-
-        widget->move(x, y);
+        widget->move(findCenter(QApplication::desktop()->screenGeometry()));
 }

@@ -1,9 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.6.0] - 2018-09-21
+
 ### Features
 - Support for sending & receiving markdown formatted messages. (#283)
 - Import/Export of megolm session keys. (Incompatible with Riot) (#358)
+- macOS: The native emoji picker can be used.
 - Context menu option to show the raw text message of an event. (#437)
 - Rooms with unread messages are marked in the room list. (#313)
 - Clicking on a user pill link will open the user profile.
@@ -12,6 +16,7 @@
 - Update Polish translation (#430)
 - Enable Qt auto scaling. (#397)
 - Enable colors in the console logger.
+- Refactor styling to better work with the system theme.
 
 ### Bug fixes
 - Fixed crash when switching rooms. (#433)
@@ -20,6 +25,7 @@
 - macOS: Add missing border on the top bar.
 - Fallback to the login screen when the one-time keys cannot be uploaded.
 - Show the sidebar after initial sync. (#412)
+- Fix regression, where cache format changes didn't trigger a logout.
 
 ## [0.5.5] - 2018-09-01
 

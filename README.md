@@ -2,8 +2,8 @@ nheko
 ----
 [![Build Status](https://travis-ci.org/mujx/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko)
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/mujx/nheko/branch/master)
-[![Latest Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://bintray.com/mujx/matrix/nheko/v0.5.5)
-[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://bintray.com/mujx/matrix/nheko/nightly)
+[![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/mujx/nheko/releases/v0.6.0)
+[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://github.com/mujx/nheko/releases/nightly)
 [![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
 
@@ -38,7 +38,9 @@ Specifically there is support for:
 
 ### Releases
 
-Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer) can be found on the [Bintray repo](https://bintray.com/mujx/matrix/nheko).
+Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer) 
+can be found on the [Bintray repo](https://bintray.com/mujx/matrix/nheko) and
+in the [Github releases](https://github.com/mujx/nheko/releases).
 
 ### Repositories
 
