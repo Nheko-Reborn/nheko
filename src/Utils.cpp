@@ -384,3 +384,18 @@ utils::linkColor()
 
         return QPalette().color(QPalette::Link).name();
 }
+
+void
+utils::centerWidget(QWidget *widget, QWidget *parent)
+{
+        if (parent) {
+                widget->move(parent->geometry().center() - widget->rect().center());
+                return;
+        }
+
+        const QRect screenGeometry = QApplication::desktop()->screenGeometry();
+        const int x                = (screenGeometry.width() - widget->width()) / 2;
+        const int y                = (screenGeometry.height() - widget->height()) / 2;
+
+        widget->move(x, y);
+}

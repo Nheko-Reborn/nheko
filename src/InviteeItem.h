@@ -5,7 +5,7 @@
 
 #include "mtx.hpp"
 
-class FlatButton;
+class QPushButton;
 
 class InviteeItem : public QWidget
 {
@@ -23,5 +23,5 @@ private:
         QString user_;
 
         QLabel *name_;
-        FlatButton *removeUserBtn_;
+        QPushButton *removeUserBtn_;
 };

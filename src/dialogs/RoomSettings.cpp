@@ -26,7 +26,6 @@
 #include "ui/LoadingIndicator.h"
 #include "ui/Painter.h"
 #include "ui/TextField.h"
-#include "ui/Theme.h"
 #include "ui/ToggleButton.h"
 
 using namespace dialogs;

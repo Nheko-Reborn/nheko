@@ -221,6 +221,11 @@ linkifyMessage(const QString &body);
 QString
 markdownToHtml(const QString &text);
 
+//! Retrieve the color of the links based on the current theme.
 QString
 linkColor();
+
+//! Center a widget in relation to another widget.
+void
+centerWidget(QWidget *widget, QWidget *parent);
 }

@@ -16,16 +16,11 @@
  */
 
 #include <QLabel>
-#include <QPaintEvent>
-#include <QPainter>
 #include <QPushButton>
-#include <QStyleOption>
 #include <QVBoxLayout>
 
-#include "dialogs/Logout.h"
-
 #include "Config.h"
-#include "ui/Theme.h"
+#include "dialogs/Logout.h"
 
 using namespace dialogs;
 

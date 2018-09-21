@@ -1,12 +1,10 @@
 #include <QLabel>
 #include <QPushButton>
-#include <QStyleOption>
 #include <QVBoxLayout>
 
 #include "dialogs/LeaveRoom.h"
 
 #include "Config.h"
-#include "ui/Theme.h"
 
 using namespace dialogs;
 

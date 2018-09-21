@@ -8,7 +8,6 @@
 
 #include "Config.h"
 #include "MatrixClient.h"
-#include "ui/Theme.h"
 
 using namespace dialogs;
 

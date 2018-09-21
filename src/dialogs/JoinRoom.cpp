@@ -1,13 +1,11 @@
 #include <QLabel>
 #include <QPushButton>
-#include <QStyleOption>
 #include <QVBoxLayout>
 
 #include "dialogs/JoinRoom.h"
 
 #include "Config.h"
 #include "ui/TextField.h"
-#include "ui/Theme.h"
 
 using namespace dialogs;
 

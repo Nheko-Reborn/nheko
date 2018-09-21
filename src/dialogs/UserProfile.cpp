@@ -1,10 +1,8 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
-#include <QPaintEvent>
 #include <QSettings>
 #include <QShortcut>
-#include <QStyleOption>
 #include <QVBoxLayout>
 
 #include "AvatarProvider.h"
