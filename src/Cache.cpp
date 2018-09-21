@@ -32,7 +32,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.09.16");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.09.21");
 static const std::string SECRET("secret");
 
 static const lmdb::val NEXT_BATCH_KEY("next_batch");
@@ -673,7 +673,7 @@ Cache::isFormatValid()
         txn.commit();
 
         if (!res)
-                return true;
+                return false;
 
         std::string stored_version(current_version.data(), current_version.size());
 

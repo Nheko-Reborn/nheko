@@ -683,8 +683,9 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 const bool isInitialized = cache::client()->isInitialized();
                 const bool isValid       = cache::client()->isFormatValid();
 
-                if (isInitialized && !isValid) {
-                        nhlog::db()->warn("breaking changes in cache");
+                if (!isInitialized) {
+                        cache::client()->setCurrentFormat();
+                } else if (isInitialized && !isValid) {
                         // TODO: Deleting session data but keep using the
                         //	 same device doesn't work.
                         cache::client()->deleteData();
@@ -975,7 +976,7 @@ ChatPage::tryInitialSync()
                                                     status_code);
 
                           QString errorMsg(tr("Failed to setup encryption keys. Server response: "
-                                              "%s %d. Please try again later.")
+                                              "%1 %2. Please try again later.")
                                              .arg(QString::fromStdString(err->matrix_error.error))
                                              .arg(status_code));
 
