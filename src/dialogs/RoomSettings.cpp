@@ -384,6 +384,13 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         spinnerLayout->setMargin(0);
         spinnerLayout->setSpacing(0);
 
+        auto okBtn = new QPushButton("OK", this);
+
+        auto buttonLayout = new QHBoxLayout();
+        buttonLayout->setSpacing(15);
+        buttonLayout->addStretch(1);
+        buttonLayout->addWidget(okBtn);
+
         layout->addWidget(avatar_, Qt::AlignCenter | Qt::AlignTop);
         layout->addLayout(textLayout);
         layout->addLayout(btnLayout_);
@@ -395,6 +402,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addWidget(infoLabel, Qt::AlignLeft);
         layout->addLayout(roomIdLayout);
         layout->addWidget(errorLabel_);
+        layout->addLayout(buttonLayout);
         layout->addLayout(spinnerLayout);
         layout->addStretch(1);
 
@@ -422,6 +430,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
 
         auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
         connect(closeShortcut, &QShortcut::activated, this, &RoomSettings::close);
+        connect(okBtn, &QPushButton::clicked, this, &RoomSettings::close);
 }
 
 void

@@ -148,12 +148,20 @@ UserProfile::UserProfile(QWidget *parent)
         devicesLabel_->setFont(descriptionLabelFont);
         devicesLabel_->hide();
 
+        auto okBtn = new QPushButton("OK", this);
+
+        auto closeLayout = new QHBoxLayout();
+        closeLayout->setSpacing(15);
+        closeLayout->addStretch(1);
+        closeLayout->addWidget(okBtn);
+
         auto vlayout = new QVBoxLayout{this};
         vlayout->addWidget(avatar_);
         vlayout->addLayout(textLayout);
         vlayout->addLayout(btnLayout);
         vlayout->addWidget(devicesLabel_, Qt::AlignLeft);
         vlayout->addWidget(devices_);
+        vlayout->addLayout(closeLayout);
         vlayout->addStretch(1);
 
         vlayout->setAlignment(avatar_, Qt::AlignCenter | Qt::AlignTop);
@@ -178,6 +186,7 @@ UserProfile::UserProfile(QWidget *parent)
 
         auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
         connect(closeShortcut, &QShortcut::activated, this, &UserProfile::close);
+        connect(okBtn, &QPushButton::clicked, this, &UserProfile::close);
 }
 
 void

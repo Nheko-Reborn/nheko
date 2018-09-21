@@ -2,6 +2,7 @@
 #include <QIcon>
 #include <QListWidgetItem>
 #include <QPainter>
+#include <QPushButton>
 #include <QShortcut>
 #include <QStyleOption>
 #include <QTimer>
@@ -119,11 +120,20 @@ ReadReceipts::ReadReceipts(QWidget *parent)
         topLabel_->setAlignment(Qt::AlignCenter);
         topLabel_->setFont(font);
 
+        auto okBtn = new QPushButton(tr("Close"), this);
+
+        auto buttonLayout = new QHBoxLayout();
+        buttonLayout->setSpacing(15);
+        buttonLayout->addStretch(1);
+        buttonLayout->addWidget(okBtn);
+
         layout->addWidget(topLabel_);
         layout->addWidget(userList_);
+        layout->addLayout(buttonLayout);
 
         auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
         connect(closeShortcut, &QShortcut::activated, this, &ReadReceipts::close);
+        connect(okBtn, &QPushButton::clicked, this, &ReadReceipts::close);
 }
 
 void
