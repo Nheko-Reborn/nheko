@@ -31,6 +31,7 @@
 #include "RegisterPage.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 #include "WelcomePage.h"
 #include "ui/LoadingIndicator.h"
 #include "ui/OverlayModal.h"
@@ -310,8 +311,7 @@ MainWindow::openUserProfile(const QString &user_id, const QString &room_id)
         auto dialog = new dialogs::UserProfile(this);
         dialog->init(user_id, room_id);
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -321,8 +321,7 @@ MainWindow::openRoomSettings(const QString &room_id)
 
         auto dialog = new dialogs::RoomSettings(roomToSearch, this);
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -331,8 +330,7 @@ MainWindow::openMemberListDialog(const QString &room_id)
         const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
         auto dialog             = new dialogs::MemberList(roomToSearch, this);
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -345,8 +343,7 @@ MainWindow::openLeaveRoomDialog(const QString &room_id)
                 chat_page_->leaveRoom(roomToLeave);
         });
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -370,8 +367,7 @@ MainWindow::openInviteUsersDialog(std::function<void(const QStringList &invitees
                         callback(invitees);
         });
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -383,8 +379,7 @@ MainWindow::openJoinRoomDialog(std::function<void(const QString &room_id)> callb
                         callback(room);
         });
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -397,8 +392,7 @@ MainWindow::openCreateRoomDialog(
                 this,
                 [callback](const mtx::requests::CreateRoom &request) { callback(request); });
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -430,8 +424,7 @@ MainWindow::openLogoutDialog()
         connect(
           dialog, &dialogs::Logout::loggingOut, this, [this]() { chat_page_->initiateLogout(); });
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 void
@@ -452,8 +445,7 @@ MainWindow::openReadReceiptsDialog(const QString &event_id)
                 return;
         }
 
-        dialog->raise();
-        dialog->show();
+        showDialog(dialog);
 }
 
 bool
@@ -474,4 +466,12 @@ MainWindow::hideOverlay()
 {
         if (modal_)
                 modal_->hide();
+}
+
+inline void
+MainWindow::showDialog(QWidget *dialog)
+{
+        utils::centerWidget(dialog, this);
+        dialog->raise();
+        dialog->show();
 }

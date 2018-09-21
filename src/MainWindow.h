@@ -129,6 +129,7 @@ private slots:
         void removeOverlayProgressBar();
 
 private:
+        void showDialog(QWidget *dialog);
         bool hasActiveUser();
         void restoreWindowSize();
         //! Check if there is an open dialog.
