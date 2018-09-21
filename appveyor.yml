@@ -126,6 +126,17 @@ after_build:
 on_success:
     - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -umujx:%BINTRAY_APIKEY% https://api.bintray.com/content/mujx/matrix/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
 
+deploy:
+    description: "Development builds"
+    provider: GitHub
+    auth_token:
+        secure: "YqB7hcM+4482eSHhtVR7ZA7N7lE78y8BC897/7UDTBQd+NWdWFW/6S+oKDie9TT7"
+    artifact: nheko-${APPVEYOR_REPO_TAG_NAME}-installer.exe
+    force_update: true
+    prerelease: true
+    on:
+        appveyor_repo_tag: true
+
 artifacts:
     - path: nheko_win_64.zip
     - path: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe
