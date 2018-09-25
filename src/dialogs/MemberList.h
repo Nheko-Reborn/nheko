@@ -45,13 +45,6 @@ public:
 public slots:
         void addUsers(const std::vector<RoomMember> &users);
 
-protected:
-        void hideEvent(QHideEvent *event) override
-        {
-                list_->clear();
-                QFrame::hideEvent(event);
-        }
-
 private:
         void moveButtonToBottom();
 
