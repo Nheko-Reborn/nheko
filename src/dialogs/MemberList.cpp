@@ -1,6 +1,8 @@
+#include <QAbstractSlider>
 #include <QListWidgetItem>
 #include <QPainter>
 #include <QPushButton>
+#include <QScrollBar>
 #include <QShortcut>
 #include <QStyleOption>
 #include <QVBoxLayout>
@@ -108,17 +110,10 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
 
         list_->clear();
 
-        // Add button at the bottom.
-        moreBtn_ = new QPushButton(tr("Show more"), this);
-        moreBtn_->setFlat(true);
-        auto item = new QListWidgetItem;
-        item->setSizeHint(moreBtn_->minimumSizeHint());
-        item->setFlags(Qt::NoItemFlags);
-        item->setTextAlignment(Qt::AlignCenter);
-        list_->insertItem(0, item);
-        list_->setItemWidget(item, moreBtn_);
+        connect(list_->verticalScrollBar(), &QAbstractSlider::valueChanged, this, [this](int pos) {
+                if (pos != list_->verticalScrollBar()->maximum())
+                        return;
 
-        connect(moreBtn_, &QPushButton::clicked, this, [this]() {
                 const size_t numMembers = list_->count() - 1;
 
                 if (numMembers > 0)
@@ -137,25 +132,8 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
 }
 
 void
-MemberList::moveButtonToBottom()
-{
-        auto item = new QListWidgetItem(list_);
-        item->setSizeHint(moreBtn_->minimumSizeHint());
-        item->setFlags(Qt::NoItemFlags);
-        item->setTextAlignment(Qt::AlignCenter);
-        list_->setItemWidget(item, moreBtn_);
-        list_->addItem(item);
-}
-
-void
 MemberList::addUsers(const std::vector<RoomMember> &members)
 {
-        if (members.size() == 0) {
-                moreBtn_->hide();
-        } else {
-                moreBtn_->show();
-        }
-
         for (const auto &member : members) {
                 auto user = new MemberItem(member, this);
                 auto item = new QListWidgetItem;

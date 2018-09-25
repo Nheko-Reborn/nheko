@@ -46,11 +46,8 @@ public slots:
         void addUsers(const std::vector<RoomMember> &users);
 
 private:
-        void moveButtonToBottom();
-
         QString room_id_;
         QLabel *topLabel_;
         QListWidget *list_;
-        QPushButton *moreBtn_;
 };
 } // dialogs
