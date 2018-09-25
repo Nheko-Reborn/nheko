@@ -69,7 +69,6 @@ TextLabel::TextLabel(const QString &text, QWidget *parent)
                 &TextLabel::adjustHeight);
         document()->setDocumentMargin(0);
 
-        setFocusPolicy(Qt::NoFocus);
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         setFixedHeight(0);
 
@@ -92,6 +91,16 @@ TextLabel::TextLabel(const QString &text, QWidget *parent)
 
                 MainWindow::instance()->openUserProfile(user_id, room_id);
         });
+}
+
+void
+TextLabel::focusOutEvent(QFocusEvent *e)
+{
+        QTextBrowser::focusOutEvent(e);
+
+        QTextCursor cursor = textCursor();
+        cursor.clearSelection();
+        setTextCursor(cursor);
 }
 
 void
