@@ -119,7 +119,7 @@ after_build:
     - xcopy NhekoData\*.* installer\packages\com.mujx.nheko\data\*.* /s /e /c /y
     - move NhekoRelease\nheko.exe installer\packages\com.mujx.nheko\data
     - mkdir tools
-    - curl -L -O https://download.qt.io/official_releases/qt-installer-framework/3.0.1/QtInstallerFramework-win-x86.exe
+    - curl -L -O https://download.qt.io/official_releases/qt-installer-framework/3.0.4/QtInstallerFramework-win-x86.exe
     - 7z x QtInstallerFramework-win-x86.exe -otools -aoa
     - set PATH=%BUILD%\tools\bin;%PATH%
     - binarycreator.exe -f -c installer\config\config.xml -p installer\packages nheko-installer.exe
