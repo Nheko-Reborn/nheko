@@ -39,8 +39,7 @@ Specifically there is support for:
 ### Releases
 
 Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer) 
-can be found on the [Bintray repo](https://bintray.com/mujx/matrix/nheko) and
-in the [Github releases](https://github.com/mujx/nheko/releases).
+can be found in the [Github releases](https://github.com/mujx/nheko/releases).
 
 ### Repositories
 
