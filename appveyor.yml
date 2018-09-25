@@ -79,6 +79,9 @@ after_build:
     - copy C:\Tools\vcpkg\installed\x64-windows\lib\*.lib .\NhekoRelease\
     - copy C:\Tools\vcpkg\installed\x64-windows\bin\*.dll .\NhekoRelease\
 
+    - copy C:\projects\nheko\.deps\usr\lib\cmark.lib .\NhekoRelease\
+    - copy C:\projects\nheko\.deps\usr\bin\cmark.dll .\NhekoRelease\
+
     - 7z a nheko_win_64.zip .\NhekoRelease\*
     - ls -lh build\Release\
     - ls -lh NhekoRelease\
