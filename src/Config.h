@@ -46,9 +46,8 @@ constexpr int TEXT_SPACING = 4;
 constexpr int BUTTON_SIZE   = 36;
 constexpr int BUTTON_RADIUS = BUTTON_SIZE / 2;
 
-constexpr float BUTTON_TEXT_SIZE_RATIO  = 1.3;
-constexpr float LABEL_MEDIUM_SIZE_RATIO = 1.3;
-constexpr float LABEL_BIG_SIZE_RATIO    = 2;
+constexpr auto LABEL_MEDIUM_SIZE_RATIO = 1.3;
+constexpr auto LABEL_BIG_SIZE_RATIO    = 2;
 }
 
 namespace strings {

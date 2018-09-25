@@ -39,14 +39,13 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
   : QWidget{parent}
   , titleLabel_{this}
   , fileName_{this}
-  , upload_{tr("Upload").toUpper(), this}
-  , cancel_{tr("Cancel").toUpper(), this}
+  , upload_{tr("Upload"), this}
+  , cancel_{tr("Cancel"), this}
 {
         auto hlayout = new QHBoxLayout;
         hlayout->addStretch(1);
-        hlayout->addWidget(&upload_);
         hlayout->addWidget(&cancel_);
-        hlayout->setSpacing(0);
+        hlayout->addWidget(&upload_);
         hlayout->setMargin(0);
 
         auto vlayout = new QVBoxLayout{this};
@@ -57,6 +56,7 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
         vlayout->setSpacing(conf::modals::WIDGET_SPACING);
         vlayout->setMargin(conf::modals::WIDGET_MARGIN);
 
+        upload_.setDefault(true);
         connect(&upload_, &QPushButton::clicked, [this]() {
                 emit confirmUpload(data_, mediaType_, fileName_.text());
                 close();
@@ -95,11 +95,6 @@ PreviewUploadOverlay::init()
         fileName_.setAlignment(Qt::AlignCenter);
         upload_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         cancel_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-        QFont buttonFont;
-        buttonFont.setPointSizeF(buttonFont.pointSizeF() * conf::modals::BUTTON_TEXT_SIZE_RATIO);
-        upload_.setFont(buttonFont);
-        cancel_.setFont(buttonFont);
 
         if (isImage_) {
                 infoLabel_.setAlignment(Qt::AlignCenter);

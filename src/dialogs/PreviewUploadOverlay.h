@@ -20,9 +20,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPixmap>
+#include <QPushButton>
 #include <QWidget>
-
-#include "ui/FlatButton.h"
 
 class QMimeData;
 
@@ -55,7 +54,7 @@ private:
         QLabel infoLabel_;
         QLineEdit fileName_;
 
-        FlatButton upload_;
-        FlatButton cancel_;
+        QPushButton upload_;
+        QPushButton cancel_;
 };
 } // dialogs
