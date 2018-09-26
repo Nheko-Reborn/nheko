@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.6.1] - 2018-09-26
+
+### Improvements
+- Add infinite scroll in member list. (#446)
+- Use QPushButton on the preview modal.
+
+### Bug fixes
+- Clear text selection when focus is lost. (#409)
+- Don't clear the member list when the modal is hidden. (#447)
+
 ## [0.6.0] - 2018-09-21
 
 ### Features
