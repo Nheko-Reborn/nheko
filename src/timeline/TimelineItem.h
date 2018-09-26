@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include <QAbstractTextDocumentLayout>
 #include <QApplication>
 #include <QDateTime>
 #include <QHBoxLayout>
@@ -25,9 +24,6 @@
 #include <QLayout>
 #include <QPainter>
 #include <QSettings>
-#include <QStyle>
-#include <QStyleOption>
-#include <QTextBrowser>
 #include <QTimer>
 
 #include "AvatarProvider.h"
@@ -43,6 +39,7 @@ class AudioItem;
 class VideoItem;
 class FileItem;
 class Avatar;
+class TextLabel;
 
 enum class StatusIndicatorState
 {
@@ -94,32 +91,6 @@ class EventProxy : public QObject
 
 signals:
         void eventRetrieved(const nlohmann::json &);
-};
-
-class TextLabel : public QTextBrowser
-{
-        Q_OBJECT
-
-public:
-        TextLabel(const QString &text, QWidget *parent = nullptr);
-        TextLabel(QWidget *parent = nullptr);
-
-        void wheelEvent(QWheelEvent *event) override { event->ignore(); }
-        void clearLinks() { link_.clear(); }
-
-protected:
-        void mousePressEvent(QMouseEvent *e) override;
-        void mouseReleaseEvent(QMouseEvent *e) override;
-        void focusOutEvent(QFocusEvent *e) override;
-
-private slots:
-        void adjustHeight(const QSizeF &size) { setFixedHeight(size.height()); }
-
-signals:
-        void linkActivated(const QUrl &link);
-
-private:
-        QString link_;
 };
 
 class UserProfileFilter : public QObject

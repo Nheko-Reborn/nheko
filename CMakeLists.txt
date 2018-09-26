@@ -196,6 +196,7 @@ set(SRC_FILES
     src/ui/RippleOverlay.cpp
     src/ui/OverlayWidget.cpp
     src/ui/TextField.cpp
+    src/ui/TextLabel.cpp
     src/ui/ToggleButton.cpp
     src/ui/Theme.cpp
     src/ui/ThemeManager.cpp
@@ -323,6 +324,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/ui/Ripple.h
     src/ui/RippleOverlay.h
     src/ui/TextField.h
+    src/ui/TextLabel.h
     src/ui/ToggleButton.h
     src/ui/Theme.h
     src/ui/ThemeManager.h

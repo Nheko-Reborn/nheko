@@ -28,6 +28,7 @@
 #include "Olm.h"
 #include "ui/Avatar.h"
 #include "ui/Painter.h"
+#include "ui/TextLabel.h"
 
 #include "timeline/TimelineItem.h"
 #include "timeline/widgets/AudioItem.h"
@@ -40,86 +41,6 @@
 
 constexpr int MSG_RIGHT_MARGIN = 7;
 constexpr int MSG_PADDING      = 20;
-
-TextLabel::TextLabel(QWidget *parent)
-  : TextLabel(QString(), parent)
-{}
-
-TextLabel::TextLabel(const QString &text, QWidget *parent)
-  : QTextBrowser(parent)
-{
-        document()->setDefaultStyleSheet(QString("a {color: %1; }").arg(utils::linkColor()));
-
-        setText(text);
-        setOpenExternalLinks(true);
-
-        // Make it look and feel like an ordinary label.
-        setReadOnly(true);
-        setFrameStyle(QFrame::NoFrame);
-        QPalette pal = palette();
-        pal.setColor(QPalette::Base, Qt::transparent);
-        setPalette(pal);
-
-        // Wrap anywhere but prefer words, adjust minimum height on the fly.
-        setLineWrapMode(QTextEdit::WidgetWidth);
-        setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        connect(document()->documentLayout(),
-                &QAbstractTextDocumentLayout::documentSizeChanged,
-                this,
-                &TextLabel::adjustHeight);
-        document()->setDocumentMargin(0);
-
-        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        setFixedHeight(0);
-
-        connect(this, &TextLabel::linkActivated, this, [](const QUrl &url) {
-                auto parts          = url.toString().split('/');
-                auto defaultHandler = [](const QUrl &url) { QDesktopServices::openUrl(url); };
-
-                if (url.host() != "matrix.to" || parts.isEmpty())
-                        return defaultHandler(url);
-
-                try {
-                        using namespace mtx::identifiers;
-                        parse<User>(parts.last().toStdString());
-                } catch (const std::exception &) {
-                        return defaultHandler(url);
-                }
-
-                auto user_id = parts.last();
-                auto room_id = ChatPage::instance()->currentRoom();
-
-                MainWindow::instance()->openUserProfile(user_id, room_id);
-        });
-}
-
-void
-TextLabel::focusOutEvent(QFocusEvent *e)
-{
-        QTextBrowser::focusOutEvent(e);
-
-        QTextCursor cursor = textCursor();
-        cursor.clearSelection();
-        setTextCursor(cursor);
-}
-
-void
-TextLabel::mousePressEvent(QMouseEvent *e)
-{
-        link_ = (e->button() & Qt::LeftButton) ? anchorAt(e->pos()) : QString();
-        QTextBrowser::mousePressEvent(e);
-}
-
-void
-TextLabel::mouseReleaseEvent(QMouseEvent *e)
-{
-        if (e->button() & Qt::LeftButton && !link_.isEmpty() && anchorAt(e->pos()) == link_) {
-                emit linkActivated(link_);
-                return;
-        }
-
-        QTextBrowser::mouseReleaseEvent(e);
-}
 
 StatusIndicator::StatusIndicator(QWidget *parent)
   : QWidget(parent)
@@ -680,6 +601,11 @@ TimelineItem::generateBody(const QString &body)
         body_ = new TextLabel(replaceEmoji(body), this);
         body_->setFont(font_);
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+
+        connect(body_, &TextLabel::userProfileTriggered, this, [](const QString &user_id) {
+                MainWindow::instance()->openUserProfile(user_id,
+                                                        ChatPage::instance()->currentRoom());
+        });
 }
 
 // The username/timestamp is displayed along with the message body.

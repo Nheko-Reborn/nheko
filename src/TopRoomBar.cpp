@@ -22,11 +22,11 @@
 #include "MainWindow.h"
 #include "TopRoomBar.h"
 #include "Utils.h"
-#include "timeline/TimelineItem.h"
 #include "ui/Avatar.h"
 #include "ui/FlatButton.h"
 #include "ui/Menu.h"
 #include "ui/OverlayModal.h"
+#include "ui/TextLabel.h"
 
 TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
