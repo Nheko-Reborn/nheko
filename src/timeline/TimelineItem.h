@@ -110,7 +110,7 @@ public:
 protected:
         void mousePressEvent(QMouseEvent *e) override;
         void mouseReleaseEvent(QMouseEvent *e) override;
-	void focusOutEvent(QFocusEvent* e) override;
+        void focusOutEvent(QFocusEvent *e) override;
 
 private slots:
         void adjustHeight(const QSizeF &size) { setFixedHeight(size.height()); }
