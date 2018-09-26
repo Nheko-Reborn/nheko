@@ -7,6 +7,17 @@
 
 #include "Utils.h"
 
+bool
+ContextMenuFilter::eventFilter(QObject *obj, QEvent *event)
+{
+        if (event->type() == QEvent::MouseButtonPress) {
+                emit contextMenuIsOpening();
+                return true;
+        }
+
+        return QObject::eventFilter(obj, event);
+}
+
 TextLabel::TextLabel(QWidget *parent)
   : TextLabel(QString(), parent)
 {}
@@ -39,12 +50,24 @@ TextLabel::TextLabel(const QString &text, QWidget *parent)
         setFixedHeight(0);
 
         connect(this, &TextLabel::linkActivated, this, &TextLabel::handleLinkActivation);
+
+        auto filter = new ContextMenuFilter(this);
+        installEventFilter(filter);
+        connect(filter, &ContextMenuFilter::contextMenuIsOpening, this, [this]() {
+                contextMenuRequested_ = true;
+        });
 }
 
 void
 TextLabel::focusOutEvent(QFocusEvent *e)
 {
         QTextBrowser::focusOutEvent(e);
+
+        // We keep the selection available for the context menu.
+        if (contextMenuRequested_) {
+                contextMenuRequested_ = false;
+                return;
+        }
 
         QTextCursor cursor = textCursor();
         cursor.clearSelection();

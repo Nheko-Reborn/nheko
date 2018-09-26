@@ -9,6 +9,22 @@ class QMouseEvent;
 class QFocusEvent;
 class QWheelEvent;
 
+class ContextMenuFilter : public QObject
+{
+        Q_OBJECT
+
+public:
+        explicit ContextMenuFilter(QWidget *parent)
+          : QObject(parent)
+        {}
+
+signals:
+        void contextMenuIsOpening();
+
+protected:
+        bool eventFilter(QObject *obj, QEvent *event);
+};
+
 class TextLabel : public QTextBrowser
 {
         Q_OBJECT
@@ -35,4 +51,5 @@ signals:
 
 private:
         QString link_;
+        bool contextMenuRequested_ = false;
 };
