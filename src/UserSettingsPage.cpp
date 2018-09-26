@@ -42,7 +42,7 @@ void
 UserSettings::load()
 {
         QSettings settings;
-        isTrayEnabled_                = settings.value("user/window/tray", true).toBool();
+        isTrayEnabled_                = settings.value("user/window/tray", false).toBool();
         hasDesktopNotifications_      = settings.value("user/desktop_notifications", true).toBool();
         isStartInTrayEnabled_         = settings.value("user/window/start_in_tray", false).toBool();
         isOrderingEnabled_            = settings.value("user/room_ordering", true).toBool();
