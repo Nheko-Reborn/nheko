@@ -136,6 +136,7 @@ signals:
         void initializeEmptyViews(const std::map<QString, mtx::responses::Timeline> &msgs);
         void syncUI(const mtx::responses::Rooms &rooms);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
+        void syncTags(const std::map<QString, RoomInfo> &updates);
         void syncTopBar(const std::map<QString, RoomInfo> &updates);
         void dropToLoginPageCb(const QString &msg);
 

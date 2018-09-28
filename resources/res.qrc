@@ -53,6 +53,13 @@
         <file>icons/ui/world.png</file>
         <file>icons/ui/world@2x.png</file>
 
+        <file>icons/ui/tag.png</file>
+        <file>icons/ui/tag@2x.png</file>
+        <file>icons/ui/star.png</file>
+        <file>icons/ui/star@2x.png</file>
+        <file>icons/ui/lowprio.png</file>
+        <file>icons/ui/lowprio@2x.png</file>
+
         <file>icons/ui/edit.png</file>
         <file>icons/ui/edit@2x.png</file>
 

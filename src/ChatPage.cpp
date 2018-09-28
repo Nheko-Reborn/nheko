@@ -569,6 +569,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                           });
         });
         connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
+        connect(this, &ChatPage::syncTags, communitiesList_, &CommunitiesList::syncTags);
         connect(
           this, &ChatPage::syncTopBar, this, [this](const std::map<QString, RoomInfo> &updates) {
                   if (updates.find(currentRoom()) != updates.end())
@@ -797,6 +798,7 @@ ChatPage::loadStateFromCache()
 
                         emit initializeEmptyViews(cache::client()->roomMessages());
                         emit initializeRoomList(cache::client()->roomInfo());
+                        emit syncTags(cache::client()->roomInfo().toStdMap());
 
                         cache::client()->calculateRoomReadStatus();
 
@@ -1079,6 +1081,8 @@ ChatPage::trySync()
                           emit syncTopBar(updates);
                           emit syncRoomlist(updates);
 
+                          emit syncTags(cache::client()->roomTagUpdates(res));
+
                           cache::client()->deleteOldData();
                   } catch (const lmdb::map_full_error &e) {
                           nhlog::db()->error("lmdb is full: {}", e.what());
@@ -1213,6 +1217,7 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
                 emit initializeRoomList(cache::client()->roomInfo());
 
                 cache::client()->calculateRoomReadStatus();
+                emit syncTags(cache::client()->roomInfo().toStdMap());
         } catch (const lmdb::error &e) {
                 nhlog::db()->error("failed to save state after initial sync: {}", e.what());
                 startInitialSync();

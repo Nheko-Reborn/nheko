@@ -47,7 +47,15 @@ CommunitiesList::CommunitiesList(QWidget *parent)
 void
 CommunitiesList::setCommunities(const mtx::responses::JoinedGroups &response)
 {
-        communities_.clear();
+        // remove all non-tag communities
+        auto it = communities_.begin();
+        while (it != communities_.end()) {
+                if (it->second->is_tag()) {
+                        ++it;
+                } else {
+                        it = communities_.erase(it);
+                }
+        }
 
         addGlobalItem();
 
@@ -56,6 +64,60 @@ CommunitiesList::setCommunities(const mtx::responses::JoinedGroups &response)
 
         communities_["world"]->setPressedState(true);
         emit communityChanged("world");
+        sortEntries();
+}
+
+void
+CommunitiesList::syncTags(const std::map<QString, RoomInfo> &info)
+{
+        for (const auto &room : info)
+                setTagsForRoom(room.first, room.second.tags);
+        sortEntries();
+}
+
+void
+CommunitiesList::setTagsForRoom(const QString &room_id, const std::vector<std::string> &tags)
+{
+        // create missing tag if any
+        for (const auto &tag : tags) {
+                // filter out tags we should ignore according to the spec
+                // https://matrix.org/docs/spec/client_server/r0.4.0.html#id154
+                // nheko currently does not make use of internal tags
+                // so we ignore any tag containig a `.` (which would indicate a tag
+                // in the form `tld.domain.*`) except for `m.*` and `u.*`.
+                if (tag.find(".") != ::std::string::npos && tag.compare(0, 2, "m.") &&
+                    tag.compare(0, 2, "u."))
+                        continue;
+                QString name = QString("tag:") + QString::fromStdString(tag);
+                if (!communityExists(name)) {
+                        addCommunity(std::string("tag:") + tag);
+                }
+        }
+        // update membership of the room for all tags
+        auto it = communities_.begin();
+        while (it != communities_.end()) {
+                // Skip if the community is not a tag
+                if (!it->second->is_tag()) {
+                        ++it;
+                        continue;
+                }
+                // insert or remove the room from the tag as appropriate
+                std::string current_tag =
+                  it->first.right(it->first.size() - strlen("tag:")).toStdString();
+                if (std::find(tags.begin(), tags.end(), current_tag) != tags.end()) {
+                        // the room has this tag
+                        it->second->addRoom(room_id);
+                } else {
+                        // the room does not have this tag
+                        it->second->delRoom(room_id);
+                }
+                // Check if the tag is now empty, if yes delete it
+                if (it->second->rooms().empty()) {
+                        it = communities_.erase(it);
+                } else {
+                        ++it;
+                }
+        }
 }
 
 void
@@ -192,4 +254,48 @@ CommunitiesList::roomList(const QString &id) const
                 return communities_.at(id)->rooms();
 
         return {};
+}
+
+void
+CommunitiesList::sortEntries()
+{
+        std::vector<CommunitiesListItem *> header;
+        std::vector<CommunitiesListItem *> communities;
+        std::vector<CommunitiesListItem *> tags;
+        std::vector<CommunitiesListItem *> footer;
+        // remove all the contents and sort them in the 4 vectors
+        for (auto &entry : communities_) {
+                CommunitiesListItem *item = entry.second.data();
+                contentsLayout_->removeWidget(item);
+                // world is handled separately
+                if (entry.first == "world")
+                        continue;
+                // sort the rest
+                if (item->is_tag())
+                        if (entry.first == "tag:m.favourite")
+                                header.push_back(item);
+                        else if (entry.first == "tag:m.lowpriority")
+                                footer.push_back(item);
+                        else
+                                tags.push_back(item);
+                else
+                        communities.push_back(item);
+        }
+
+        // now there remains only the stretch in the layout, remove it
+        QLayoutItem *stretch = contentsLayout_->itemAt(0);
+        contentsLayout_->removeItem(stretch);
+
+        contentsLayout_->addWidget(communities_["world"].data());
+
+        auto insert_widgets = [this](auto &vec) {
+                for (auto item : vec)
+                        contentsLayout_->addWidget(item);
+        };
+        insert_widgets(header);
+        insert_widgets(communities);
+        insert_widgets(tags);
+        insert_widgets(footer);
+
+        contentsLayout_->addItem(stretch);
 }

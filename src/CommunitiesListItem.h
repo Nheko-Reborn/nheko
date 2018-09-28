@@ -28,12 +28,16 @@ class CommunitiesListItem : public QWidget
 public:
         CommunitiesListItem(QString group_id, QWidget *parent = nullptr);
 
-        void setName(QString name) { name_ = name; }
+        void setName(QString name);
         bool isPressed() const { return isPressed_; }
         void setAvatar(const QImage &img);
 
         void setRooms(std::map<QString, bool> room_ids) { room_ids_ = std::move(room_ids); }
+        void addRoom(const QString &id) { room_ids_[id] = true; }
+        void delRoom(const QString &id) { room_ids_.erase(id); }
         std::map<QString, bool> rooms() const { return room_ids_; }
+
+        bool is_tag() const { return groupId_.startsWith("tag:"); }
 
         QColor highlightedBackgroundColor() const { return highlightedBackgroundColor_; }
         QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
@@ -68,6 +72,7 @@ private:
         const int IconSize = 36;
 
         QString resolveName() const;
+        void updateTooltip();
 
         std::map<QString, bool> room_ids_;
 

@@ -936,6 +936,8 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
 void
 Cache::saveState(const mtx::responses::Sync &res)
 {
+        using namespace mtx::events;
+
         auto txn = lmdb::txn::begin(env_);
 
         setNextBatchToken(txn, res.next_batch);
@@ -956,6 +958,35 @@ Cache::saveState(const mtx::responses::Sync &res)
                 updatedInfo.avatar_url =
                   getRoomAvatarUrl(txn, statesdb, membersdb, QString::fromStdString(room.first))
                     .toStdString();
+
+                // Process the account_data associated with this room
+                bool has_new_tags = false;
+                for (const auto &evt : room.second.account_data.events) {
+                        // for now only fetch tag events
+                        if (evt.type() == typeid(Event<account_data::Tag>)) {
+                                auto tags_evt = boost::get<Event<account_data::Tag>>(evt);
+                                has_new_tags  = true;
+                                for (const auto &tag : tags_evt.content.tags) {
+                                        updatedInfo.tags.push_back(tag.first);
+                                }
+                        }
+                }
+                if (!has_new_tags) {
+                        // retrieve the old tags, they haven't changed
+                        lmdb::val data;
+                        if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
+                                try {
+                                        RoomInfo tmp =
+                                          json::parse(std::string(data.data(), data.size()));
+                                        updatedInfo.tags = tmp.tags;
+                                } catch (const json::exception &e) {
+                                        nhlog::db()->warn(
+                                          "failed to parse room info: room_id ({}), {}",
+                                          room.first,
+                                          std::string(data.data(), data.size()));
+                                }
+                        }
+                }
 
                 lmdb::dbi_put(
                   txn, roomsDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
@@ -1073,6 +1104,27 @@ Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
                                 break;
                         }
                 }
+        }
+
+        return rooms;
+}
+
+std::vector<std::string>
+Cache::roomsWithTagUpdates(const mtx::responses::Sync &res)
+{
+        using namespace mtx::events;
+
+        std::vector<std::string> rooms;
+        for (const auto &room : res.rooms.join) {
+                bool hasUpdates = false;
+                for (const auto &evt : room.second.account_data.events) {
+                        if (evt.type() == typeid(Event<account_data::Tag>)) {
+                                hasUpdates = true;
+                        }
+                }
+
+                if (hasUpdates)
+                        rooms.emplace_back(room.first);
         }
 
         return rooms;

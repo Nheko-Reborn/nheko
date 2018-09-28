@@ -4,6 +4,7 @@
 #include <QSharedPointer>
 #include <QVBoxLayout>
 
+#include "Cache.h"
 #include "CommunitiesListItem.h"
 #include "ui/Theme.h"
 
@@ -20,6 +21,9 @@ public:
         void removeCommunity(const QString &id) { communities_.erase(id); };
         std::map<QString, bool> roomList(const QString &id) const;
 
+        void syncTags(const std::map<QString, RoomInfo> &info);
+        void setTagsForRoom(const QString &id, const std::vector<std::string> &tags);
+
 signals:
         void communityChanged(const QString &id);
         void avatarRetrieved(const QString &id, const QPixmap &img);
@@ -34,6 +38,7 @@ public slots:
 private:
         void fetchCommunityAvatar(const QString &id, const QString &avatarUrl);
         void addGlobalItem() { addCommunity("world"); }
+        void sortEntries();
 
         //! Check whether or not a community id is currently managed.
         bool communityExists(const QString &id) const
