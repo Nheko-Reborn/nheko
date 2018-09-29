@@ -446,8 +446,6 @@ FilteredTextEdit::showPreview(const QMimeData *source, const QStringList &format
 TextInputWidget::TextInputWidget(QWidget *parent)
   : QWidget(parent)
 {
-        setFont(QFont("Emoji One"));
-
         setFixedHeight(conf::textInput::height);
         setCursor(Qt::ArrowCursor);
 
@@ -469,12 +467,8 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         spinner_->setObjectName("FileUploadSpinner");
         spinner_->hide();
 
-        QFont font;
-        font.setPixelSize(conf::textInputFontSize);
-
         input_ = new FilteredTextEdit(this);
         input_->setFixedHeight(InputHeight);
-        input_->setFont(font);
         input_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         input_->setPlaceholderText(tr("Write a message..."));
 
@@ -556,20 +550,12 @@ TextInputWidget::addSelectedEmoji(const QString &emoji)
 {
         QTextCursor cursor = input_->textCursor();
 
-        QFont emoji_font("Emoji One");
-        emoji_font.setPixelSize(conf::emojiSize);
-
-        QFont text_font("Open Sans");
-        text_font.setPixelSize(conf::fontSize);
-
         QTextCharFormat charfmt;
-        charfmt.setFont(emoji_font);
         input_->setCurrentCharFormat(charfmt);
 
         input_->insertPlainText(emoji);
         cursor.movePosition(QTextCursor::End);
 
-        charfmt.setFont(text_font);
         input_->setCurrentCharFormat(charfmt);
 
         input_->show();
