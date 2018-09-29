@@ -22,7 +22,6 @@
 #include <QFile>
 #include <QFontDatabase>
 #include <QLabel>
-#include <QLayout>
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QPoint>
@@ -113,9 +112,6 @@ main(int argc, char *argv[])
 
                 if (factor != -1)
                         qputenv("QT_SCALE_FACTOR", QString::number(factor).toUtf8());
-
-                if (factor == -1 || factor == 1)
-                        qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
         }
 #endif
 
@@ -124,6 +120,7 @@ main(int argc, char *argv[])
         QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
         QCommandLineParser parser;
         parser.addHelpOption();
@@ -153,14 +150,7 @@ main(int argc, char *argv[])
                 std::exit(1);
         }
 
-        QSettings settings;
-
-        // Set the default if a value has not been set.
-        if (settings.value("font/size").toInt() == 0)
-                settings.setValue("font/size", 12);
-
-        QFont font("Open Sans", settings.value("font/size").toInt());
-        app.setFont(font);
+        app.setFont(QFont("Open Sans"));
 
         QString lang = QLocale::system().name();
 
@@ -176,6 +166,8 @@ main(int argc, char *argv[])
 
         // Move the MainWindow to the center
         w.move(screenCenter(w.width(), w.height()));
+
+        QSettings settings;
 
         if (!settings.value("user/window/start_in_tray", false).toBool() ||
             !settings.value("user/window/tray", true).toBool())
