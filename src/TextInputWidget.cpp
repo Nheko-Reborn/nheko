@@ -43,8 +43,8 @@
 
 static constexpr size_t INPUT_HISTORY_SIZE = 127;
 static constexpr int MAX_TEXTINPUT_HEIGHT  = 120;
-static constexpr int InputHeight           = 26;
-static constexpr int ButtonHeight          = 24;
+static constexpr int InputHeight           = 24;
+static constexpr int ButtonHeight          = 22;
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
@@ -453,7 +453,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         topLayout_ = new QHBoxLayout();
         topLayout_->setSpacing(0);
-        topLayout_->setContentsMargins(15, 0, 15, 0);
+        topLayout_->setContentsMargins(13, 0, 13, 0);
 
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");

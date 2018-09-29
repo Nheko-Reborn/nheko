@@ -66,7 +66,7 @@ constexpr int minWidth  = 950;
 } // namespace window
 
 namespace textInput {
-constexpr int height = 50;
+constexpr int height = 44;
 }
 
 namespace sidebarActions {
