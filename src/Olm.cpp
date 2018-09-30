@@ -92,7 +92,7 @@ handle_olm_message(const OlmMessage &msg)
                 auto payload = try_olm_decryption(msg.sender_key, cipher.second);
 
                 if (!payload.is_null()) {
-                        nhlog::crypto()->info("decrypted olm payload: {}", payload.dump(2));
+                        nhlog::crypto()->debug("decrypted olm payload: {}", payload.dump(2));
                         create_inbound_megolm_session(msg.sender, msg.sender_key, payload);
                         return;
                 }
@@ -146,7 +146,7 @@ handle_pre_key_olm_message(const std::string &sender,
         }
 
         auto plaintext = json::parse(std::string((char *)output.data(), output.size()));
-        nhlog::crypto()->info("decrypted message: \n {}", plaintext.dump(2));
+        nhlog::crypto()->debug("decrypted message: \n {}", plaintext.dump(2));
 
         try {
                 cache::client()->saveOlmSession(sender_key, std::move(inbound_session));
@@ -206,11 +206,11 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
                         text = olm::client()->decrypt_message(session->get(), msg.type, msg.body);
                         cache::client()->saveOlmSession(id, std::move(session.value()));
                 } catch (const mtx::crypto::olm_exception &e) {
-                        nhlog::crypto()->info("failed to decrypt olm message ({}, {}) with {}: {}",
-                                              msg.type,
-                                              sender_key,
-                                              id,
-                                              e.what());
+                        nhlog::crypto()->debug("failed to decrypt olm message ({}, {}) with {}: {}",
+                                               msg.type,
+                                               sender_key,
+                                               id,
+                                               e.what());
                         continue;
                 } catch (const lmdb::error &e) {
                         nhlog::crypto()->critical("failed to save session: {}", e.what());
@@ -339,19 +339,19 @@ void
 handle_key_request_message(const mtx::events::msg::KeyRequest &req)
 {
         if (req.algorithm != MEGOLM_ALGO) {
-                nhlog::crypto()->info("ignoring key request {} with invalid algorithm: {}",
-                                      req.request_id,
-                                      req.algorithm);
+                nhlog::crypto()->debug("ignoring key request {} with invalid algorithm: {}",
+                                       req.request_id,
+                                       req.algorithm);
                 return;
         }
 
         // Check if we were the sender of the session being requested.
         if (req.sender_key != olm::client()->identity_keys().curve25519) {
-                nhlog::crypto()->info("ignoring key request {} because we were not the sender: "
-                                      "\nrequested({}) ours({})",
-                                      req.request_id,
-                                      req.sender_key,
-                                      olm::client()->identity_keys().curve25519);
+                nhlog::crypto()->debug("ignoring key request {} because we were not the sender: "
+                                       "\nrequested({}) ours({})",
+                                       req.request_id,
+                                       req.sender_key,
+                                       olm::client()->identity_keys().curve25519);
                 return;
         }
 
@@ -380,7 +380,7 @@ handle_key_request_message(const mtx::events::msg::KeyRequest &req)
         }
 
         if (!utils::respondsToKeyRequests(req.room_id)) {
-                nhlog::crypto()->info("ignoring all key requests for room {}", req.room_id);
+                nhlog::crypto()->debug("ignoring all key requests for room {}", req.room_id);
                 return;
         }
 
@@ -433,7 +433,7 @@ send_megolm_key_to_device(const std::string &user_id,
 
                   if ((device_keys.find(curveKey) == device_keys.end()) ||
                       (device_keys.find(edKey) == device_keys.end())) {
-                          nhlog::net()->info("ignoring malformed keys for device {}", device_id);
+                          nhlog::net()->debug("ignoring malformed keys for device {}", device_id);
                           return;
                   }
 
@@ -499,7 +499,7 @@ send_megolm_key_to_device(const std::string &user_id,
                             body["messages"][user_id] = json::object();
 
                             auto device = retrieved_devices.begin()->second;
-                            nhlog::net()->info("{} : \n {}", device_id, device.dump(2));
+                            nhlog::net()->debug("{} : \n {}", device_id, device.dump(2));
 
                             json device_msg;
 

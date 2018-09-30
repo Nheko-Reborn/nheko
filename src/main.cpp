@@ -35,7 +35,7 @@
 #include "MatrixClient.h"
 #include "RunGuard.h"
 #include "Utils.h"
-#include "version.h"
+#include "config/nheko.h"
 
 #if defined(Q_OS_MAC)
 #include "emoji/MacHelper.h"

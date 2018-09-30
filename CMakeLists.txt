@@ -122,6 +122,12 @@ else(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
     message("Build type set to '${CMAKE_BUILD_TYPE}'")
 endif(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
 
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    set(SPDLOG_DEBUG_ON true)
+else()
+    set(SPDLOG_DEBUG_ON false)
+endif()
+
 find_program(GIT git)
 if(GIT)
     execute_process(
@@ -143,7 +149,7 @@ message(STATUS "Version: ${PROJECT_VERSION}")
 
 cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
 set(BUILD_USER $ENV{USER})
-configure_file(cmake/version.h config/version.h)
+configure_file(cmake/nheko.h config/nheko.h)
 
 
 #
@@ -274,7 +280,6 @@ endif()
 include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
 include_directories(${Boost_INCLUDE_DIRS})
 
 qt5_wrap_cpp(MOC_HEADERS

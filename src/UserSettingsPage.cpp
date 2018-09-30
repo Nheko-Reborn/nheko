@@ -34,7 +34,7 @@
 #include "ui/FlatButton.h"
 #include "ui/ToggleButton.h"
 
-#include "version.h"
+#include "config/nheko.h"
 
 UserSettings::UserSettings() { load(); }
 

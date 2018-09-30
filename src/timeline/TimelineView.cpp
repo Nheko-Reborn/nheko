@@ -354,8 +354,7 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         body["origin_server_ts"] = e.origin_server_ts;
         body["unsigned"]         = e.unsigned_data;
 
-        nhlog::crypto()->info("decrypted event: {}", e.event_id);
-        nhlog::crypto()->debug("decrypted data: \n {}", body.dump(2));
+        nhlog::crypto()->debug("decrypted event: {}", e.event_id);
 
         json event_array = json::array();
         event_array.push_back(body);
@@ -746,7 +745,7 @@ TimelineView::sendNextPendingMessage()
                 m.widget->markSent();
 
         if (m.is_encrypted) {
-                nhlog::ui()->info("[{}] sending encrypted event", m.txn_id);
+                nhlog::ui()->debug("[{}] sending encrypted event", m.txn_id);
                 prepareEncryptedMessage(std::move(m));
                 return;
         }
@@ -1330,7 +1329,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
                         return;
                 }
 
-                nhlog::ui()->info("creating new outbound megolm session");
+                nhlog::ui()->debug("creating new outbound megolm session");
 
                 // Create a new outbound megolm session.
                 auto outbound_session  = olm::client()->init_outbound_group_session();
@@ -1413,7 +1412,7 @@ TimelineView::prepareEncryptedMessage(const PendingMessage &msg)
 
                                           if ((device_keys.find(curveKey) == device_keys.end()) ||
                                               (device_keys.find(edKey) == device_keys.end())) {
-                                                  nhlog::net()->info(
+                                                  nhlog::net()->debug(
                                                     "ignoring malformed keys for device {}",
                                                     device_id.get());
                                                   continue;
@@ -1512,15 +1511,15 @@ TimelineView::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
                 return;
         }
 
-        nhlog::net()->info("claimed keys for {}", user_id);
+        nhlog::net()->debug("claimed keys for {}", user_id);
 
         if (res.one_time_keys.size() == 0) {
-                nhlog::net()->info("no one-time keys found for user_id: {}", user_id);
+                nhlog::net()->debug("no one-time keys found for user_id: {}", user_id);
                 return;
         }
 
         if (res.one_time_keys.find(user_id) == res.one_time_keys.end()) {
-                nhlog::net()->info("no one-time keys found for user_id: {}", user_id);
+                nhlog::net()->debug("no one-time keys found for user_id: {}", user_id);
                 return;
         }
 
@@ -1532,7 +1531,7 @@ TimelineView::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
 
         for (const auto &rd : retrieved_devices) {
                 const auto device_id = rd.first;
-                nhlog::net()->info("{} : \n {}", device_id, rd.second.dump(2));
+                nhlog::net()->debug("{} : \n {}", device_id, rd.second.dump(2));
 
                 // TODO: Verify signatures
                 auto otk = rd.second.begin()->at("key");

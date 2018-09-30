@@ -1,5 +1,5 @@
-#include "Config.h"
 #include "InfoMessage.h"
+#include "Config.h"
 
 #include <QDateTime>
 #include <QPainter>

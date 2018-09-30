@@ -1,4 +1,5 @@
 #include "Logging.h"
+#include "config/nheko.h"
 
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -32,6 +33,12 @@ init(const std::string &file_path)
         db_logger  = std::make_shared<spdlog::logger>("db", std::begin(sinks), std::end(sinks));
         crypto_logger =
           std::make_shared<spdlog::logger>("crypto", std::begin(sinks), std::end(sinks));
+
+        if (nheko::enable_debug_log) {
+                db_logger->set_level(spdlog::level::trace);
+                ui_logger->set_level(spdlog::level::trace);
+                crypto_logger->set_level(spdlog::level::trace);
+        }
 }
 
 std::shared_ptr<spdlog::logger>
