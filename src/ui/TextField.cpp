@@ -76,7 +76,7 @@ TextField::setLabelFontSize(qreal size)
 
         if (label_) {
                 QFont font(label_->font());
-                font.setPixelSize(size);
+                font.setPointSizeF(size);
                 label_->setFont(font);
                 label_->update();
         }

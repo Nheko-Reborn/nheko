@@ -30,7 +30,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   , user_id_("@user:homeserver.org")
   , logoutButtonSize_{20}
 {
-        setFixedHeight(60);
+        setFixedHeight(56);
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -38,28 +38,25 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
         avatarLayout_ = new QHBoxLayout();
         textLayout_   = new QVBoxLayout();
+        textLayout_->setSpacing(2);
+        textLayout_->setContentsMargins(10, 5, 10, 5);
 
         userAvatar_ = new Avatar(this);
         userAvatar_->setObjectName("userAvatar");
         userAvatar_->setLetter(QChar('?'));
         userAvatar_->setSize(45);
 
-        QFont nameFont("Open Sans SemiBold");
-        nameFont.setPixelSize(conf::userInfoWidget::fonts::displayName);
+        QFont nameFont;
+        nameFont.setPointSizeF(nameFont.pointSizeF() * 1.2);
+        nameFont.setWeight(QFont::Medium);
 
         displayNameLabel_ = new QLabel(this);
         displayNameLabel_->setFont(nameFont);
         displayNameLabel_->setObjectName("displayNameLabel");
-        displayNameLabel_->setStyleSheet("padding: 0 9px; margin-bottom: -10px;");
         displayNameLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 
-        QFont useridFont("Open Sans");
-        useridFont.setPixelSize(conf::userInfoWidget::fonts::userid);
-
         userIdLabel_ = new QLabel(this);
-        userIdLabel_->setFont(useridFont);
         userIdLabel_->setObjectName("userIdLabel");
-        userIdLabel_->setStyleSheet("padding: 0 8px 8px 8px;");
         userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
         avatarLayout_->addWidget(userAvatar_);

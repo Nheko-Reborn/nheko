@@ -125,7 +125,6 @@ LoginPage::LoginPage(QWidget *parent)
         button_layout_->addStretch(1);
 
         QFont font;
-        font.setPixelSize(conf::fontSize);
 
         error_label_ = new QLabel(this);
         error_label_->setFont(font);

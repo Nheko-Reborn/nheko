@@ -84,7 +84,7 @@ CommunitiesListItem::paintEvent(QPaintEvent *)
 
         if (avatar_.isNull()) {
                 QFont font;
-                font.setPixelSize(conf::roomlist::fonts::communityBubble);
+                font.setPointSizeF(font.pointSizeF() * 1.3);
                 p.setFont(font);
 
                 p.drawLetterAvatar(utils::firstChar(resolveName()),

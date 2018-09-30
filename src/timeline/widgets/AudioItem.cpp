@@ -159,8 +159,7 @@ void
 AudioItem::resizeEvent(QResizeEvent *event)
 {
         QFont font;
-        font.setPixelSize(12);
-        font.setWeight(80);
+        font.setWeight(QFont::Medium);
 
         QFontMetrics fm(font);
         const int computedWidth = std::min(
@@ -180,8 +179,7 @@ AudioItem::paintEvent(QPaintEvent *event)
         painter.setRenderHint(QPainter::Antialiasing);
 
         QFont font;
-        font.setPixelSize(12);
-        font.setWeight(80);
+        font.setWeight(QFont::Medium);
 
         QFontMetrics fm(font);
 
@@ -225,7 +223,7 @@ AudioItem::paintEvent(QPaintEvent *event)
         painter.drawText(QPoint(textStartX, textStartY), elidedText);
 
         // Draw the filesize.
-        font.setWeight(50);
+        font.setWeight(QFont::Normal);
         painter.setFont(font);
         painter.setPen(QPen(textColor_));
         painter.drawText(QPoint(textStartX, textStartY + 1.5 * fm.ascent()), readableFileSize_);

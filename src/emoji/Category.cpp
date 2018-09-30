@@ -67,8 +67,8 @@ Category::Category(QString category, std::vector<Emoji> emoji, QWidget *parent)
                 itemModel_->appendRow(item);
         }
 
-        QFont font("Open Sans SemiBold");
-        font.setPixelSize(conf::fontSize);
+        QFont font;
+        font.setWeight(QFont::Medium);
 
         category_ = new QLabel(category, this);
         category_->setFont(font);

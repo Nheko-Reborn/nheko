@@ -42,7 +42,6 @@ ItemDelegate::paint(QPainter *painter,
         auto emoji = index.data(Qt::UserRole).toString();
 
         QFont font("Emoji One");
-        font.setPixelSize(19);
 
         painter->setFont(font);
         painter->drawText(viewOption.rect, Qt::AlignCenter, emoji);

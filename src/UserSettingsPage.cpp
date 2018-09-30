@@ -282,7 +282,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         encryptionLayout_->addWidget(new HorizontalLine{this});
         encryptionLayout_->addLayout(sessionKeysLayout);
 
-        font.setWeight(65);
+        font.setWeight(QFont::Medium);
 
         auto encryptionLabel_ = new QLabel(tr("ENCRYPTION"), this);
         encryptionLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);

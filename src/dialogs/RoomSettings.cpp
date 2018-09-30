@@ -48,9 +48,9 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
         setWindowModality(Qt::WindowModal);
 
-        QFont doubleFont;
-        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
-        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
+        QFont largeFont;
+        largeFont.setPointSizeF(largeFont.pointSizeF() * 1.4);
+        setMinimumWidth(QFontMetrics(largeFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
@@ -169,10 +169,10 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         setWindowModality(Qt::WindowModal);
         setAttribute(Qt::WA_DeleteOnClose, true);
 
-        QFont doubleFont;
-        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+        QFont largeFont;
+        largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
-        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
+        setMinimumWidth(QFontMetrics(largeFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
@@ -180,7 +180,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->setContentsMargins(WIDGET_MARGIN, TOP_WIDGET_MARGIN, WIDGET_MARGIN, WIDGET_MARGIN);
 
         QFont font;
-        font.setWeight(65);
+        font.setWeight(QFont::Medium);
         font.setPointSizeF(font.pointSizeF() * 1.2);
         auto settingsLabel = new QLabel(tr("Settings").toUpper(), this);
         settingsLabel->setFont(font);
@@ -356,7 +356,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         }
 
         roomNameLabel_ = new QLabel(QString::fromStdString(info_.name), this);
-        roomNameLabel_->setFont(doubleFont);
+        roomNameLabel_->setFont(largeFont);
 
         auto membersLabel = new QLabel(tr("%n member(s)", "", info_.member_count), this);
 

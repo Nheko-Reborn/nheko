@@ -19,12 +19,12 @@ CreateRoom::CreateRoom(QWidget *parent)
         setWindowModality(Qt::WindowModal);
         setAttribute(Qt::WA_DeleteOnClose, true);
 
-        QFont doubleFont;
-        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+        QFont largeFont;
+        largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         setMinimumHeight(conf::modals::MIN_WIDGET_HEIGHT);
-        setMinimumWidth(QFontMetrics(doubleFont).averageCharWidth() * 30 -
+        setMinimumWidth(QFontMetrics(largeFont).averageCharWidth() * 30 -
                         2 * conf::modals::WIDGET_MARGIN);
 
         auto layout = new QVBoxLayout(this);
@@ -43,7 +43,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         buttonLayout->addWidget(confirmBtn_);
 
         QFont font;
-        font.setPixelSize(conf::headerFontSize);
+        font.setPointSizeF(font.pointSizeF() * 1.3);
 
         nameInput_ = new TextField(this);
         nameInput_->setLabel(tr("Name"));

@@ -104,13 +104,13 @@ ReadReceipts::ReadReceipts(QWidget *parent)
         userList_->setSelectionMode(QAbstractItemView::NoSelection);
         userList_->setSpacing(conf::modals::TEXT_SPACING);
 
-        QFont doubleFont;
-        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+        QFont largeFont;
+        largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         setMinimumHeight(userList_->sizeHint().height() * 2);
         setMinimumWidth(std::max(userList_->sizeHint().width() + 4 * conf::modals::WIDGET_MARGIN,
-                                 QFontMetrics(doubleFont).averageCharWidth() * 30 -
+                                 QFontMetrics(largeFont).averageCharWidth() * 30 -
                                    2 * conf::modals::WIDGET_MARGIN));
 
         QFont font;

@@ -183,8 +183,7 @@ ImageItem::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        QFont font("Open Sans");
-        font.setPixelSize(conf::fontSize);
+        QFont font;
 
         QFontMetrics metrics(font);
         const int fontHeight = metrics.height() + metrics.ascent();
@@ -223,9 +222,9 @@ ImageItem::paintEvent(QPaintEvent *event)
 
                 QString elidedText = metrics.elidedText(text_, Qt::ElideRight, width_ - 10);
 
-                font.setWeight(80);
+                font.setWeight(QFont::Medium);
                 painter.setFont(font);
-                painter.setPen(QPen(QColor("white")));
+                painter.setPen(QPen(QColor(Qt::white)));
 
                 textRegion_.adjust(5, 0, 5, 0);
                 painter.drawText(textRegion_, Qt::AlignVCenter, elidedText);

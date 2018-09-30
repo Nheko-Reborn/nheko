@@ -58,8 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         restoreWindowSize();
 
-        QFont font("Open Sans");
-        font.setPixelSize(conf::fontSize);
+        QFont font;
         font.setStyleStrategy(QFont::PreferAntialias);
         setFont(font);
 

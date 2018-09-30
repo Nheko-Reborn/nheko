@@ -1,5 +1,5 @@
-#include "InfoMessage.h"
 #include "Config.h"
+#include "InfoMessage.h"
 
 #include <QDateTime>
 #include <QPainter>
@@ -12,18 +12,16 @@ constexpr int HMargin  = 20;
 InfoMessage::InfoMessage(QWidget *parent)
   : QWidget{parent}
 {
-        font_.setWeight(60);
-        font_.setPixelSize(conf::timeline::fonts::dateSeparator);
+        initFont();
 }
 
 InfoMessage::InfoMessage(QString msg, QWidget *parent)
   : QWidget{parent}
   , msg_{msg}
 {
-        font_.setWeight(60);
-        font_.setPixelSize(conf::timeline::fonts::dateSeparator);
+        initFont();
 
-        QFontMetrics fm{font_};
+        QFontMetrics fm{font()};
         width_  = fm.width(msg_) + HPadding * 2;
         height_ = fm.ascent() + 2 * VPadding;
 
@@ -35,7 +33,7 @@ InfoMessage::paintEvent(QPaintEvent *)
 {
         QPainter p(this);
         p.setRenderHint(QPainter::Antialiasing);
-        p.setFont(font_);
+        p.setFont(font());
 
         // Center the box horizontally & vertically.
         auto textRegion = QRectF(width() / 2 - width_ / 2, HMargin, width_, height_);
@@ -54,8 +52,7 @@ InfoMessage::paintEvent(QPaintEvent *)
 DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
   : InfoMessage{parent}
 {
-        auto now  = QDateTime::currentDateTime();
-        auto days = now.daysTo(datetime);
+        auto now = QDateTime::currentDateTime();
 
         QString fmt;
 
@@ -64,14 +61,9 @@ DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
         else
                 fmt = QString("ddd d MMMM");
 
-        if (days == 0)
-                msg_ = tr("Today");
-        else if (std::abs(days) == 1)
-                msg_ = tr("Yesterday");
-        else
-                msg_ = datetime.toString(fmt);
+        msg_ = datetime.toString(fmt);
 
-        QFontMetrics fm{font_};
+        QFontMetrics fm{font()};
         width_  = fm.width(msg_) + HPadding * 2;
         height_ = fm.ascent() + 2 * VPadding;
 

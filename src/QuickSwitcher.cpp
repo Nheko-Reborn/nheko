@@ -64,7 +64,7 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
         setMaximumWidth(450);
 
         QFont font;
-        font.setPixelSize(20);
+        font.setPointSizeF(font.pointSizeF() * 1.5);
 
         roomSearch_ = new RoomSearchInput(this);
         roomSearch_->setFont(font);

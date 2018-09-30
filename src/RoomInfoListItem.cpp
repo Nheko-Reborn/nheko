@@ -56,23 +56,19 @@ RoomInfoListItem::init(QWidget *parent)
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
 
-        font_.setPixelSize(conf::fontSize - 1);
-
         usernameFont_ = font_;
+        bubbleFont_   = font_;
+        bubbleFont_.setPointSizeF(font_.pointSizeF() * 1.3);
 
-        bubbleFont_ = font_;
-        bubbleFont_.setPixelSize(conf::roomlist::fonts::bubble);
-
-        unreadCountFont_.setPixelSize(conf::roomlist::fonts::badge);
+        unreadCountFont_.setPointSizeF(font_.pointSizeF() * 0.8);
         unreadCountFont_.setBold(true);
+
         bubbleDiameter_ = QFontMetrics(unreadCountFont_).averageCharWidth() * 3;
 
         timestampFont_ = font_;
-        timestampFont_.setPixelSize(conf::roomlist::fonts::timestamp);
         timestampFont_.setBold(false);
 
         headingFont_ = font_;
-        headingFont_.setPixelSize(conf::roomlist::fonts::heading);
         headingFont_.setWeight(60);
 
         menu_      = new Menu(this);

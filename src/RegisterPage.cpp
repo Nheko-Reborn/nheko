@@ -97,7 +97,6 @@ RegisterPage::RegisterPage(QWidget *parent)
         button_layout_->setMargin(0);
 
         QFont font;
-        font.setPixelSize(conf::fontSize);
 
         error_label_ = new QLabel(this);
         error_label_->setFont(font);

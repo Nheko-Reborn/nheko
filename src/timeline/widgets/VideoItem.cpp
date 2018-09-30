@@ -50,7 +50,6 @@ VideoItem::VideoItem(const mtx::events::RoomEvent<mtx::events::msg::Video> &even
         label_->setMargin(0);
         label_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
         label_->setOpenExternalLinks(true);
-        label_->setStyleSheet(QString("font-size: %1px;").arg(conf::fontSize));
 
         layout->addWidget(label_);
 }

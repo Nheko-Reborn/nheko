@@ -519,7 +519,6 @@ TimelineView::init()
 
         // Height of the typing display.
         QFont f;
-        f.setPixelSize(conf::typingNotificationFontSize);
         const int bottomMargin = QFontMetrics(f).height() + 6;
 
         scroll_layout_ = new QVBoxLayout(scroll_widget_);

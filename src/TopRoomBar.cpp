@@ -32,7 +32,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
   , buttonSize_{32}
 {
-        setFixedHeight(60);
+        setFixedHeight(56);
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(8);
@@ -46,15 +46,15 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         textLayout_->setSpacing(0);
         textLayout_->setContentsMargins(0, 0, 0, 0);
 
-        QFont roomFont("Open Sans SemiBold");
-        roomFont.setPixelSize(conf::topRoomBar::fonts::roomName);
+        QFont roomFont;
+        roomFont.setPointSizeF(roomFont.pointSizeF() * 1.2);
+        roomFont.setWeight(QFont::Medium);
 
         nameLabel_ = new QLabel(this);
         nameLabel_->setFont(roomFont);
         nameLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
 
-        QFont descriptionFont("Open Sans");
-        descriptionFont.setPixelSize(conf::topRoomBar::fonts::roomDescription);
+        QFont descriptionFont;
 
         topicLabel_ = new TextLabel(this);
         topicLabel_->setLineWrapMode(QTextEdit::NoWrap);

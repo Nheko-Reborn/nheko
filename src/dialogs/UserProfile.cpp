@@ -171,12 +171,12 @@ UserProfile::UserProfile(QWidget *parent)
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
         setWindowModality(Qt::WindowModal);
 
-        QFont doubleFont;
-        doubleFont.setPointSizeF(doubleFont.pointSizeF() * 2);
+        QFont largeFont;
+        largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
         setMinimumWidth(
           std::max(devices_->sizeHint().width() + 4 * WIDGET_MARGIN,
-                   QFontMetrics(doubleFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN));
+                   QFontMetrics(largeFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN));
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         vlayout->setSpacing(WIDGET_SPACING);

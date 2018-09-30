@@ -42,9 +42,6 @@ UserItem::UserItem(QWidget *parent, const QString &user_id)
   : PopupItem(parent)
   , userId_{user_id}
 {
-        QFont font;
-        font.setPixelSize(conf::popup::font);
-
         auto displayName = Cache::displayName(ChatPage::instance()->currentRoom(), userId_);
 
         avatar_->setSize(conf::popup::avatar);
@@ -55,7 +52,6 @@ UserItem::UserItem(QWidget *parent, const QString &user_id)
                 avatar_->setLetter(QChar(displayName.at(1)));
 
         userName_ = new QLabel(displayName, this);
-        userName_->setFont(font);
 
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(userName_, 1);

@@ -15,7 +15,6 @@ TypingDisplay::TypingDisplay(QWidget *parent)
   , offset_{conf::textInput::height}
 {
         QFont f;
-        f.setPixelSize(conf::typingNotificationFontSize);
         setFont(f);
 
         setFixedHeight(QFontMetrics(font()).height() + RECT_PADDING);

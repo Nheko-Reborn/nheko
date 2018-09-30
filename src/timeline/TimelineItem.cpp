@@ -155,9 +155,8 @@ TimelineItem::init()
         userName_   = nullptr;
         body_       = nullptr;
 
-        font_.setPixelSize(conf::fontSize);
         usernameFont_ = font_;
-        usernameFont_.setWeight(60);
+        usernameFont_.setWeight(QFont::Medium);
 
         QFontMetrics fm(font_);
 
@@ -216,9 +215,11 @@ TimelineItem::init()
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
 
-        QFont timestampFont;
-        timestampFont.setPixelSize(conf::timeline::fonts::indicator);
-        QFontMetrics tsFm(timestampFont);
+        timestampFont_.setPointSizeF(timestampFont_.pointSizeF() * 0.9);
+        timestampFont_.setFamily("Monospace");
+        timestampFont_.setStyleHint(QFont::Monospace);
+
+        QFontMetrics tsFm(timestampFont_);
 
         statusIndicator_ = new StatusIndicator(this);
         statusIndicator_->setFixedWidth(tsFm.height() - tsFm.leading());
@@ -662,13 +663,8 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
 void
 TimelineItem::generateTimestamp(const QDateTime &time)
 {
-        QFont timestampFont;
-        timestampFont.setFamily("Monospace");
-        timestampFont.setStyleHint(QFont::Monospace);
-        timestampFont.setPixelSize(conf::timeline::fonts::timestamp);
-
         timestamp_ = new QLabel(this);
-        timestamp_->setFont(timestampFont);
+        timestamp_->setFont(timestampFont_);
         timestamp_->setText(
           QString("<span style=\"color: #999\"> %1 </span>").arg(time.toString("HH:mm")));
 }
@@ -683,9 +679,7 @@ TimelineItem::replaceEmoji(const QString &body)
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
                 if (code > 9000)
-                        fmtBody += QString("<span style=\"font-family: Emoji "
-                                           "One; font-size: %1px\">")
-                                     .arg(conf::emojiSize) +
+                        fmtBody += QString("<span style=\"font-family: Emoji One;\">") +
                                    QString::fromUcs4(&code, 1) + "</span>";
                 else
                         fmtBody += QString::fromUcs4(&code, 1);

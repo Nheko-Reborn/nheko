@@ -25,12 +25,17 @@ public:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void initFont()
+        {
+                QFont f;
+                f.setWeight(QFont::Medium);
+                setFont(f);
+        }
 
         int width_;
         int height_;
 
         QString msg_;
-        QFont font_;
 
         QDateTime datetime_;
 
