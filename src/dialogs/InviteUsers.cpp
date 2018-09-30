@@ -25,7 +25,7 @@ InviteUsers::InviteUsers(QWidget *parent)
         setWindowModality(Qt::WindowModal);
         setAttribute(Qt::WA_DeleteOnClose, true);
 
-        setMinimumWidth(conf::modals::MIN_WIDGET_WIDTH);
+        setMinimumWidth(conf::window::minModalWidth);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);

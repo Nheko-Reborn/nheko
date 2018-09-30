@@ -58,8 +58,9 @@ const QRegExp url_regex(
 
 // Window geometry.
 namespace window {
-constexpr int height = 600;
-constexpr int width  = 1066;
+constexpr int height        = 600;
+constexpr int width         = 1066;
+constexpr int minModalWidth = 340;
 
 constexpr int minHeight = height;
 constexpr int minWidth  = 950;

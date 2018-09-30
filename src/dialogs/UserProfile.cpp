@@ -175,8 +175,7 @@ UserProfile::UserProfile(QWidget *parent)
         largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
         setMinimumWidth(
-          std::max(devices_->sizeHint().width() + 4 * WIDGET_MARGIN,
-                   QFontMetrics(largeFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN));
+          std::max(devices_->sizeHint().width() + 4 * WIDGET_MARGIN, conf::window::minModalWidth));
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         vlayout->setSpacing(WIDGET_SPACING);

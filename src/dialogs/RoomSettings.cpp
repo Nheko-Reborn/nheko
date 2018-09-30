@@ -50,7 +50,7 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
 
         QFont largeFont;
         largeFont.setPointSizeF(largeFont.pointSizeF() * 1.4);
-        setMinimumWidth(QFontMetrics(largeFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
+        setMinimumWidth(conf::window::minModalWidth);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
@@ -172,7 +172,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         QFont largeFont;
         largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
-        setMinimumWidth(QFontMetrics(largeFont).averageCharWidth() * 30 - 2 * WIDGET_MARGIN);
+        setMinimumWidth(conf::window::minModalWidth);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
         auto layout = new QVBoxLayout(this);
@@ -181,7 +181,6 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
 
         QFont font;
         font.setWeight(QFont::Medium);
-        font.setPointSizeF(font.pointSizeF() * 1.2);
         auto settingsLabel = new QLabel(tr("Settings").toUpper(), this);
         settingsLabel->setFont(font);
 
