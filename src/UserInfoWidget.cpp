@@ -17,6 +17,8 @@
 
 #include <QTimer>
 
+#include <iostream>
+
 #include "Config.h"
 #include "MainWindow.h"
 #include "UserInfoWidget.h"
@@ -28,26 +30,31 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   : QWidget(parent)
   , display_name_("User")
   , user_id_("@user:homeserver.org")
-  , logoutButtonSize_{20}
 {
-        setFixedHeight(56);
+        const int fontHeight    = QFontMetrics(font()).height();
+        const int widgetMargin  = fontHeight / 3;
+        const int contentHeight = fontHeight * 3;
+
+        logoutButtonSize_ = fontHeight + (fontHeight / 4);
+
+        setFixedHeight(contentHeight + widgetMargin * 2);
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
-        topLayout_->setMargin(5);
+        topLayout_->setMargin(widgetMargin);
 
         avatarLayout_ = new QHBoxLayout();
         textLayout_   = new QVBoxLayout();
-        textLayout_->setSpacing(2);
-        textLayout_->setContentsMargins(10, 5, 10, 5);
+        textLayout_->setSpacing(0);
+        textLayout_->setContentsMargins(
+          widgetMargin * 2, widgetMargin, widgetMargin * 2, widgetMargin);
 
         userAvatar_ = new Avatar(this);
         userAvatar_->setObjectName("userAvatar");
         userAvatar_->setLetter(QChar('?'));
-        userAvatar_->setSize(45);
+        userAvatar_->setSize(fontHeight * 2.5);
 
         QFont nameFont;
-        nameFont.setPointSizeF(nameFont.pointSizeF() * 1.2);
         nameFont.setWeight(QFont::Medium);
 
         displayNameLabel_ = new QLabel(this);

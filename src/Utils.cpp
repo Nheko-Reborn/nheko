@@ -1,6 +1,7 @@
 #include "Utils.h"
 
 #include <QApplication>
+#include <QComboBox>
 #include <QDesktopWidget>
 #include <QSettings>
 #include <QTextDocument>
@@ -399,4 +400,15 @@ utils::centerWidget(QWidget *widget, QWidget *parent)
         }
 
         widget->move(findCenter(QApplication::desktop()->screenGeometry()));
+}
+
+void
+utils::restoreCombobox(QComboBox *combo, const QString &value)
+{
+        for (auto i = 0; i < combo->count(); ++i) {
+                if (value == combo->itemText(i)) {
+                        combo->setCurrentIndex(i);
+                        break;
+                }
+        }
 }

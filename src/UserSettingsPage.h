@@ -53,6 +53,12 @@ public:
                 save();
         }
 
+        void setFontSize(double size)
+        {
+                baseFontSize_ = size;
+                save();
+        }
+
         void setRoomOrdering(bool state)
         {
                 isOrderingEnabled_ = state;
@@ -94,6 +100,7 @@ public:
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
+        double fontSize() const { return baseFontSize_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -107,6 +114,7 @@ private:
         bool isTypingNotificationsEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
+        double baseFontSize_;
 };
 
 class HorizontalLine : public QFrame
@@ -138,9 +146,6 @@ private slots:
         void exportSessionKeys();
 
 private:
-        void restoreThemeCombo() const;
-        void restoreScaleFactor() const;
-
         // Layouts
         QVBoxLayout *topLayout_;
         QVBoxLayout *mainLayout_;
@@ -161,6 +166,7 @@ private:
 
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;
+        QComboBox *fontSizeCombo_;
 
         int sideMargin_ = 0;
 };

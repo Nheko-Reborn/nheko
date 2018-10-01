@@ -51,6 +51,8 @@ UserSettings::load()
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", "light").toString();
 
+        baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+
         applyTheme();
 }
 
@@ -92,6 +94,7 @@ UserSettings::save()
         settings.setValue("start_in_tray", isStartInTrayEnabled_);
         settings.endGroup();
 
+        settings.setValue("font_size", baseFontSize_);
         settings.setValue("room_ordering", isOrderingEnabled_);
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
         settings.setValue("read_receipts", isReadReceiptsEnabled_);
@@ -214,8 +217,16 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         scaleFactorCombo_->addItem("2.75");
         scaleFactorCombo_->addItem("3");
 
-        scaleFactorOptionLayout->addWidget(scaleFactorLabel);
-        scaleFactorOptionLayout->addWidget(scaleFactorCombo_, 0, Qt::AlignRight);
+        auto fontSizeOptionLayout = new QHBoxLayout;
+        fontSizeOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto fontSizeLabel = new QLabel(tr("Font size"), this);
+        fontSizeLabel->setFont(font);
+        fontSizeCombo_ = new QComboBox(this);
+        for (double option = 10; option < 17; option += 0.5)
+                fontSizeCombo_->addItem(QString("%1 ").arg(QString::number(option)));
+
+        fontSizeOptionLayout->addWidget(fontSizeLabel);
+        fontSizeOptionLayout->addWidget(fontSizeCombo_, 0, Qt::AlignRight);
 
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -316,9 +327,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         scaleFactorCombo_->hide();
 #else
         mainLayout_->addLayout(scaleFactorOptionLayout);
-        mainLayout_->addWidget(new HorizontalLine(this));
 #endif
 
+        mainLayout_->addLayout(fontSizeOptionLayout);
+        mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
 
@@ -351,6 +363,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(scaleFactorCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
+        connect(fontSizeCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                [this](const QString &size) { settings_->setFontSize(size.trimmed().toDouble()); });
 
         connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTray(!isDisabled);
@@ -395,8 +410,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 void
 UserSettingsPage::showEvent(QShowEvent *)
 {
-        restoreThemeCombo();
-        restoreScaleFactor();
+        // FIXME macOS doesn't show the full option unless a space is added.
+        utils::restoreCombobox(fontSizeCombo_, QString::number(settings_->fontSize()) + " ");
+        utils::restoreCombobox(scaleFactorCombo_, QString::number(utils::scaleFactor()));
+        utils::restoreCombobox(themeCombo_, settings_->theme());
 
         // FIXME: Toggle treats true as "off"
         trayToggle_->setState(!settings_->isTrayEnabled());
@@ -429,44 +446,6 @@ UserSettingsPage::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-void
-UserSettingsPage::restoreScaleFactor() const
-{
-        auto factor = utils::scaleFactor();
-
-        if (factor == 1)
-                scaleFactorCombo_->setCurrentIndex(0);
-        else if (factor == 1.25)
-                scaleFactorCombo_->setCurrentIndex(1);
-        else if (factor == 1.5)
-                scaleFactorCombo_->setCurrentIndex(2);
-        else if (factor == 1.75)
-                scaleFactorCombo_->setCurrentIndex(3);
-        else if (factor == 2)
-                scaleFactorCombo_->setCurrentIndex(4);
-        else if (factor == 2.25)
-                scaleFactorCombo_->setCurrentIndex(5);
-        else if (factor == 2.5)
-                scaleFactorCombo_->setCurrentIndex(6);
-        else if (factor == 2.75)
-                scaleFactorCombo_->setCurrentIndex(7);
-        else if (factor == 3)
-                scaleFactorCombo_->setCurrentIndex(7);
-        else
-                scaleFactorCombo_->setCurrentIndex(0);
-}
-
-void
-UserSettingsPage::restoreThemeCombo() const
-{
-        if (settings_->theme() == "light")
-                themeCombo_->setCurrentIndex(0);
-        else if (settings_->theme() == "dark")
-                themeCombo_->setCurrentIndex(1);
-        else
-                themeCombo_->setCurrentIndex(2);
 }
 
 void

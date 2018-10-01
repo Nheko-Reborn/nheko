@@ -150,7 +150,12 @@ main(int argc, char *argv[])
                 std::exit(1);
         }
 
-        app.setFont(QFont("Open Sans"));
+        QSettings settings;
+
+        QFont font("Open Sans");
+        font.setPointSizeF(settings.value("user/font_size", font.pointSizeF()).toDouble());
+
+        app.setFont(font);
 
         QString lang = QLocale::system().name();
 
@@ -166,8 +171,6 @@ main(int argc, char *argv[])
 
         // Move the MainWindow to the center
         w.move(screenCenter(w.width(), w.height()));
-
-        QSettings settings;
 
         if (!settings.value("user/window/start_in_tray", false).toBool() ||
             !settings.value("user/window/tray", true).toBool())

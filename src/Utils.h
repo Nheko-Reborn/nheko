@@ -14,6 +14,8 @@
 #include <mtx/events/collections.hpp>
 #include <mtx/events/common.hpp>
 
+class QComboBox;
+
 namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
@@ -228,4 +230,7 @@ linkColor();
 //! Center a widget in relation to another widget.
 void
 centerWidget(QWidget *widget, QWidget *parent);
+
+void
+restoreCombobox(QComboBox *combo, const QString &value);
 }
