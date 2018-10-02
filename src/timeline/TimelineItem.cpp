@@ -600,7 +600,6 @@ void
 TimelineItem::generateBody(const QString &body)
 {
         body_ = new TextLabel(replaceEmoji(body), this);
-        body_->setFont(font_);
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 
         connect(body_, &TextLabel::userProfileTriggered, this, [](const QString &user_id) {

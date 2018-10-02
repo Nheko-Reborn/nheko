@@ -14,9 +14,6 @@ TypingDisplay::TypingDisplay(QWidget *parent)
   : OverlayWidget(parent)
   , offset_{conf::textInput::height}
 {
-        QFont f;
-        setFont(f);
-
         setFixedHeight(QFontMetrics(font()).height() + RECT_PADDING);
         setAttribute(Qt::WA_TransparentForMouseEvents);
 }
