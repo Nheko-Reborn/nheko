@@ -276,8 +276,6 @@ private:
 
         Avatar *userAvatar_;
 
-        QFont font_;
-        QFont usernameFont_;
         QFont timestampFont_;
 
         StatusIndicator *statusIndicator_;

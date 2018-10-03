@@ -31,13 +31,16 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
   , display_name_("User")
   , user_id_("@user:homeserver.org")
 {
-        const int fontHeight    = QFontMetrics(font()).height();
+        QFont f;
+        f.setPointSizeF(f.pointSizeF());
+
+        const int fontHeight    = QFontMetrics(f).height();
         const int widgetMargin  = fontHeight / 3;
         const int contentHeight = fontHeight * 3;
 
-        logoutButtonSize_ = fontHeight + (fontHeight / 4);
+        logoutButtonSize_ = std::min(fontHeight, 20);
 
-        setFixedHeight(contentHeight + widgetMargin * 2);
+        setFixedHeight(contentHeight + widgetMargin);
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -45,9 +48,9 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
         avatarLayout_ = new QHBoxLayout();
         textLayout_   = new QVBoxLayout();
-        textLayout_->setSpacing(0);
+        textLayout_->setSpacing(widgetMargin);
         textLayout_->setContentsMargins(
-          widgetMargin * 2, widgetMargin, widgetMargin * 2, widgetMargin);
+          widgetMargin * 1.5, widgetMargin, widgetMargin, widgetMargin);
 
         userAvatar_ = new Avatar(this);
         userAvatar_->setObjectName("userAvatar");
@@ -55,6 +58,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         userAvatar_->setSize(fontHeight * 2.5);
 
         QFont nameFont;
+        nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
         nameFont.setWeight(QFont::Medium);
 
         displayNameLabel_ = new QLabel(this);
@@ -63,12 +67,13 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         displayNameLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 
         userIdLabel_ = new QLabel(this);
+        userIdLabel_->setFont(f);
         userIdLabel_->setObjectName("userIdLabel");
         userIdLabel_->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
         avatarLayout_->addWidget(userAvatar_);
-        textLayout_->addWidget(displayNameLabel_);
-        textLayout_->addWidget(userIdLabel_);
+        textLayout_->addWidget(displayNameLabel_, 0, Qt::AlignBottom);
+        textLayout_->addWidget(userIdLabel_, 0, Qt::AlignTop);
 
         topLayout_->addLayout(avatarLayout_);
         topLayout_->addLayout(textLayout_);

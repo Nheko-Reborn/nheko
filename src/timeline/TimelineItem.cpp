@@ -155,11 +155,6 @@ TimelineItem::init()
         userName_   = nullptr;
         body_       = nullptr;
 
-        usernameFont_ = font_;
-        usernameFont_.setWeight(QFont::Medium);
-
-        QFontMetrics fm(font_);
-
         contextMenu_      = new QMenu(this);
         showReadReceipts_ = new QAction("Read receipts", this);
         markAsRead_       = new QAction("Mark as read", this);
@@ -627,10 +622,14 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
                         sender = displayname.split(":")[0].split("@")[1];
         }
 
-        QFontMetrics fm(usernameFont_);
+        QFont usernameFont;
+        usernameFont.setPointSizeF(usernameFont.pointSizeF());
+        usernameFont.setWeight(QFont::Medium);
+
+        QFontMetrics fm(usernameFont);
 
         userName_ = new QLabel(this);
-        userName_->setFont(usernameFont_);
+        userName_->setFont(usernameFont);
         userName_->setText(fm.elidedText(sender, Qt::ElideRight, 500));
         userName_->setToolTip(user_id);
         userName_->setToolTipDuration(1500);
@@ -693,9 +692,12 @@ TimelineItem::setupAvatarLayout(const QString &userName)
         topLayout_->setContentsMargins(
           conf::timeline::msgLeftMargin, conf::timeline::msgAvatarTopMargin, 0, 0);
 
+        QFont f;
+        f.setPointSizeF(f.pointSizeF());
+
         userAvatar_ = new Avatar(this);
         userAvatar_->setLetter(QChar(userName[0]).toUpper());
-        userAvatar_->setSize(conf::timeline::avatarSize);
+        userAvatar_->setSize(QFontMetrics(f).height() * 2);
 
         // TODO: The provided user name should be a UserId class
         if (userName[0] == '@' && userName.size() > 1)
@@ -711,8 +713,11 @@ TimelineItem::setupAvatarLayout(const QString &userName)
 void
 TimelineItem::setupSimpleLayout()
 {
-        topLayout_->setContentsMargins(conf::timeline::msgLeftMargin + conf::timeline::avatarSize +
-                                         2,
+        QFont f;
+        f.setPointSizeF(f.pointSizeF());
+
+        topLayout_->setContentsMargins(conf::timeline::msgLeftMargin +
+                                         QFontMetrics(f).height() * 2 + 2,
                                        conf::timeline::msgTopMargin,
                                        0,
                                        0);

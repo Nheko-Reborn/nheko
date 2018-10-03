@@ -32,22 +32,30 @@ TopRoomBar::TopRoomBar(QWidget *parent)
   : QWidget(parent)
   , buttonSize_{32}
 {
-        setFixedHeight(56);
+        QFont f;
+        f.setPointSizeF(f.pointSizeF());
+
+        const int fontHeight    = QFontMetrics(f).height();
+        const int widgetMargin  = fontHeight / 3;
+        const int contentHeight = fontHeight * 3;
+
+        setFixedHeight(contentHeight + widgetMargin);
 
         topLayout_ = new QHBoxLayout(this);
-        topLayout_->setSpacing(8);
-        topLayout_->setMargin(8);
+        topLayout_->setSpacing(widgetMargin);
+        topLayout_->setContentsMargins(
+          2 * widgetMargin, widgetMargin, 2 * widgetMargin, widgetMargin);
 
         avatar_ = new Avatar(this);
         avatar_->setLetter("");
-        avatar_->setSize(35);
+        avatar_->setSize(fontHeight * 2);
 
         textLayout_ = new QVBoxLayout();
         textLayout_->setSpacing(0);
-        textLayout_->setContentsMargins(0, 0, 0, 0);
+        textLayout_->setMargin(0);
 
         QFont roomFont;
-        roomFont.setPointSizeF(roomFont.pointSizeF() * 1.2);
+        roomFont.setPointSizeF(roomFont.pointSizeF() * 1.1);
         roomFont.setWeight(QFont::Medium);
 
         nameLabel_ = new QLabel(this);
