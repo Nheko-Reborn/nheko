@@ -30,7 +30,6 @@ class LeaveRoomDialog;
 class OverlayModal;
 class RoomInfoListItem;
 class Sync;
-class UserSettings;
 struct DescInfo;
 struct RoomInfo;
 
@@ -39,7 +38,7 @@ class RoomList : public QWidget
         Q_OBJECT
 
 public:
-        RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
+        explicit RoomList(QWidget *parent = 0);
 
         void initialize(const QMap<QString, RoomInfo> &info);
         void sync(const std::map<QString, RoomInfo> &info);
@@ -100,8 +99,6 @@ private:
 
         std::map<QString, QSharedPointer<RoomInfoListItem>> rooms_;
         QString selectedRoom_;
-
-        QSharedPointer<UserSettings> userSettings_;
 
         bool isSortPending_ = false;
 };

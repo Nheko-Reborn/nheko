@@ -30,9 +30,8 @@
 #include "Utils.h"
 #include "ui/OverlayModal.h"
 
-RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
+RoomList::RoomList(QWidget *parent)
   : QWidget(parent)
-  , userSettings_{userSettings}
 {
         topLayout_ = new QVBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -293,9 +292,6 @@ RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
 void
 RoomList::sortRoomsByLastMessage()
 {
-        if (!userSettings_->isOrderingEnabled())
-                return;
-
         isSortPending_ = false;
 
         std::multimap<uint64_t, RoomInfoListItem *, std::greater<uint64_t>> times;

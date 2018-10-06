@@ -45,7 +45,6 @@ UserSettings::load()
         isTrayEnabled_                = settings.value("user/window/tray", false).toBool();
         hasDesktopNotifications_      = settings.value("user/desktop_notifications", true).toBool();
         isStartInTrayEnabled_         = settings.value("user/window/start_in_tray", false).toBool();
-        isOrderingEnabled_            = settings.value("user/room_ordering", true).toBool();
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
@@ -102,7 +101,6 @@ UserSettings::save()
         settings.endGroup();
 
         settings.setValue("font_size", baseFontSize_);
-        settings.setValue("room_ordering", isOrderingEnabled_);
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
         settings.setValue("read_receipts", isReadReceiptsEnabled_);
         settings.setValue("group_view", isGroupViewEnabled_);
@@ -163,15 +161,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         startInTrayOptionLayout_->addWidget(startInTrayLabel);
         startInTrayOptionLayout_->addWidget(startInTrayToggle_, 0, Qt::AlignRight);
-
-        auto orderRoomLayout = new QHBoxLayout;
-        orderRoomLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto orderLabel = new QLabel(tr("Re-order rooms based on activity"), this);
-        orderLabel->setFont(font);
-        roomOrderToggle_ = new Toggle(this);
-
-        orderRoomLayout->addWidget(orderLabel);
-        orderRoomLayout->addWidget(roomOrderToggle_, 0, Qt::AlignRight);
 
         auto groupViewLayout = new QHBoxLayout;
         groupViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -320,8 +309,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addLayout(trayOptionLayout_);
         mainLayout_->addLayout(startInTrayOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
-        mainLayout_->addLayout(orderRoomLayout);
-        mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(groupViewLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(typingLayout);
@@ -388,10 +375,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setStartInTray(!isDisabled);
         });
 
-        connect(roomOrderToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setRoomOrdering(!isDisabled);
-        });
-
         connect(groupViewToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setGroupView(!isDisabled);
         });
@@ -425,7 +408,6 @@ UserSettingsPage::showEvent(QShowEvent *)
         // FIXME: Toggle treats true as "off"
         trayToggle_->setState(!settings_->isTrayEnabled());
         startInTrayToggle_->setState(!settings_->isStartInTrayEnabled());
-        roomOrderToggle_->setState(!settings_->isOrderingEnabled());
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
         readReceipts_->setState(!settings_->isReadReceiptsEnabled());
