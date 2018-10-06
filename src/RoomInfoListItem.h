@@ -193,11 +193,6 @@ private:
         QRectF declineBtnRegion_;
 
         // Fonts
-        QFont bubbleFont_;
-        QFont font_;
-        QFont headingFont_;
-        QFont timestampFont_;
-        QFont usernameFont_;
         QFont unreadCountFont_;
         int bubbleDiameter_;
 

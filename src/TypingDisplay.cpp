@@ -56,13 +56,16 @@ TypingDisplay::paintEvent(QPaintEvent *)
         Painter p(this);
         PainterHighQualityEnabler hq(p);
 
-        p.setFont(font());
+        QFont f;
+        f.setPointSizeF(f.pointSizeF() * 0.9);
+
+        p.setFont(f);
         p.setPen(QPen(textColor()));
 
         QRect region = rect();
         region.translate(LEFT_PADDING, 0);
 
-        QFontMetrics fm(font());
+        QFontMetrics fm(f);
         text_ = fm.elidedText(text_, Qt::ElideRight, (double)(width() * 0.75));
 
         QPainterPath path;

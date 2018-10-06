@@ -57,6 +57,13 @@ UserSettings::load()
 }
 
 void
+UserSettings::setFontSize(double size)
+{
+        baseFontSize_ = size;
+        save();
+}
+
+void
 UserSettings::setTheme(QString theme)
 {
         theme_ = theme;

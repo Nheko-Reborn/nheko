@@ -31,14 +31,47 @@
 
 constexpr int MaxUnreadCountDisplayed = 99;
 
-constexpr int Padding          = 9;
-constexpr int UnreadLineWidth  = 6;
-constexpr int UnreadLineOffset = 4;
-constexpr int IconSize         = 44;
-constexpr int MaxHeight        = IconSize + 2 * Padding;
+constexpr int IconSize = 44;
+// constexpr int MaxHeight        = IconSize + 2 * Padding;
 
-constexpr int InviteBtnX = IconSize + 2 * Padding;
-constexpr int InviteBtnY = IconSize / 2 + Padding + Padding / 3;
+struct WidgetMetrics
+{
+        int maxHeight;
+        int iconSize;
+        int padding;
+        int unit;
+
+        int unreadLineWidth;
+        int unreadLineOffset;
+
+        int inviteBtnX;
+        int inviteBtnY;
+};
+
+WidgetMetrics
+getMetrics(const QFont &font)
+{
+        WidgetMetrics m;
+
+        const int height = QFontMetrics(font).lineSpacing();
+
+        m.unit             = height;
+        m.maxHeight        = std::ceil((double)height * 3.5);
+        m.iconSize         = std::ceil((double)height * 2.5);
+        m.padding          = std::ceil((double)height / 2.0);
+        m.unreadLineWidth  = m.padding - m.padding / 3;
+        m.unreadLineOffset = m.padding - m.padding / 4;
+
+        m.inviteBtnX = m.iconSize + 2 * m.padding;
+        m.inviteBtnX = m.iconSize / 2.0 + m.padding + m.padding / 3.0;
+
+        // std::cout << "unit " << m.unit << '\n';
+        // std::cout << "maxHeight " << m.maxHeight << '\n';
+        // std::cout << "iconSize " << m.iconSize << '\n';
+        // std::cout << "padding " << m.padding << '\n';
+
+        return m;
+}
 
 void
 RoomInfoListItem::init(QWidget *parent)
@@ -47,7 +80,7 @@ RoomInfoListItem::init(QWidget *parent)
         setMouseTracking(true);
         setAttribute(Qt::WA_Hover);
 
-        setFixedHeight(MaxHeight);
+        setFixedHeight(getMetrics(QFont{}).maxHeight);
 
         QPainterPath path;
         path.addRect(0, 0, parent->width(), height());
@@ -56,20 +89,10 @@ RoomInfoListItem::init(QWidget *parent)
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
 
-        usernameFont_ = font_;
-        bubbleFont_   = font_;
-        bubbleFont_.setPointSizeF(font_.pointSizeF() * 1.3);
-
-        unreadCountFont_.setPointSizeF(font_.pointSizeF() * 0.8);
+        unreadCountFont_.setPointSizeF(unreadCountFont_.pointSizeF() * 0.8);
         unreadCountFont_.setBold(true);
 
         bubbleDiameter_ = QFontMetrics(unreadCountFont_).averageCharWidth() * 3;
-
-        timestampFont_ = font_;
-        timestampFont_.setBold(false);
-
-        headingFont_ = font_;
-        headingFont_.setWeight(60);
 
         menu_      = new Menu(this);
         leaveRoom_ = new QAction(tr("Leave room"), this);
@@ -126,10 +149,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         p.setRenderHint(QPainter::SmoothPixmapTransform);
         p.setRenderHint(QPainter::Antialiasing);
 
-        QFontMetrics metrics(font_);
+        QFontMetrics metrics(QFont{});
 
         QPen titlePen(titleColor_);
         QPen subtitlePen(subtitleColor_);
+
+        auto wm = getMetrics(QFont{});
 
         if (isPressed_) {
                 p.fillRect(rect(), highlightedBackgroundColor_);
@@ -141,57 +166,59 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.fillRect(rect(), backgroundColor_);
         }
 
-        QRect avatarRegion(Padding, Padding, IconSize, IconSize);
+        QRect avatarRegion(wm.padding, wm.padding, wm.iconSize, wm.iconSize);
 
         // Description line with the default font.
-        int bottom_y = MaxHeight - Padding - metrics.ascent() / 2;
+        int bottom_y = wm.maxHeight - wm.padding - metrics.ascent() / 2;
 
         if (width() > ui::sidebar::SmallSize) {
-                p.setFont(headingFont_);
+                QFont headingFont;
+                headingFont.setWeight(QFont::Medium);
+                p.setFont(headingFont);
                 p.setPen(titlePen);
 
-                const int msgStampWidth =
-                  QFontMetrics(timestampFont_).width(lastMsgInfo_.timestamp) + 4;
+                const int msgStampWidth = QFontMetrics(QFont{}).width(lastMsgInfo_.timestamp) + 4;
 
                 // We use the full width of the widget if there is no unread msg bubble.
                 const int bottomLineWidthLimit = (unreadMsgCount_ > 0) ? msgStampWidth : 0;
 
                 // Name line.
-                QFontMetrics fontNameMetrics(headingFont_);
-                int top_y = 2 * Padding + fontNameMetrics.ascent() / 2;
+                QFontMetrics fontNameMetrics(headingFont);
+                int top_y = 2 * wm.padding + fontNameMetrics.ascent() / 2;
 
-                const auto name =
-                  metrics.elidedText(roomName(),
-                                     Qt::ElideRight,
-                                     (width() - IconSize - 2 * Padding - msgStampWidth) * 0.8);
-                p.drawText(QPoint(2 * Padding + IconSize, top_y), name);
+                const auto name = metrics.elidedText(
+                  roomName(),
+                  Qt::ElideRight,
+                  (width() - wm.iconSize - 2 * wm.padding - msgStampWidth) * 0.8);
+                p.drawText(QPoint(2 * wm.padding + wm.iconSize, top_y), name);
 
                 if (roomType_ == RoomType::Joined) {
-                        p.setFont(font_);
+                        p.setFont(QFont{});
                         p.setPen(subtitlePen);
 
                         // The limit is the space between the end of the avatar and the start of the
                         // timestamp.
                         int usernameLimit =
-                          std::max(0, width() - 3 * Padding - msgStampWidth - IconSize - 20);
+                          std::max(0, width() - 3 * wm.padding - msgStampWidth - wm.iconSize - 20);
                         auto userName =
                           metrics.elidedText(lastMsgInfo_.username, Qt::ElideRight, usernameLimit);
 
-                        p.setFont(usernameFont_);
-                        p.drawText(QPoint(2 * Padding + IconSize, bottom_y), userName);
+                        p.setFont(QFont{});
+                        p.drawText(QPoint(2 * wm.padding + wm.iconSize, bottom_y), userName);
 
-                        int nameWidth = QFontMetrics(usernameFont_).width(userName);
+                        int nameWidth = QFontMetrics(QFont{}).width(userName);
 
-                        p.setFont(font_);
+                        p.setFont(QFont{});
 
                         // The limit is the space between the end of the username and the start of
                         // the timestamp.
-                        int descriptionLimit = std::max(
-                          0,
-                          width() - 3 * Padding - bottomLineWidthLimit - IconSize - nameWidth - 5);
+                        int descriptionLimit =
+                          std::max(0,
+                                   width() - 3 * wm.padding - bottomLineWidthLimit - wm.iconSize -
+                                     nameWidth - 5);
                         auto description =
                           metrics.elidedText(lastMsgInfo_.body, Qt::ElideRight, descriptionLimit);
-                        p.drawText(QPoint(2 * Padding + IconSize + nameWidth, bottom_y),
+                        p.drawText(QPoint(2 * wm.padding + wm.iconSize + nameWidth, bottom_y),
                                    description);
 
                         // We show the last message timestamp.
@@ -201,16 +228,16 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         else
                                 p.setPen(QPen(timestampColor_));
 
-                        p.setFont(timestampFont_);
-                        p.drawText(QPoint(width() - Padding - msgStampWidth, top_y),
+                        p.setFont(QFont{});
+                        p.drawText(QPoint(width() - wm.padding - msgStampWidth, top_y),
                                    lastMsgInfo_.timestamp);
                         p.restore();
                 } else {
-                        int btnWidth = (width() - IconSize - 6 * Padding) / 2;
+                        int btnWidth = (width() - wm.iconSize - 6 * wm.padding) / 2;
 
-                        acceptBtnRegion_ = QRectF(InviteBtnX, InviteBtnY, btnWidth, 20);
-                        declineBtnRegion_ =
-                          QRectF(InviteBtnX + btnWidth + 2 * Padding, InviteBtnY, btnWidth, 20);
+                        acceptBtnRegion_  = QRectF(wm.inviteBtnX, wm.inviteBtnY, btnWidth, 20);
+                        declineBtnRegion_ = QRectF(
+                          wm.inviteBtnX + btnWidth + 2 * wm.padding, wm.inviteBtnY, btnWidth, 20);
 
                         QPainterPath acceptPath;
                         acceptPath.addRoundedRect(acceptBtnRegion_, 10, 10);
@@ -227,7 +254,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         p.drawPath(declinePath);
 
                         p.setPen(QPen(btnTextColor_));
-                        p.setFont(font_);
+                        p.setFont(QFont{});
                         p.drawText(acceptBtnRegion_, Qt::AlignCenter, tr("Accept"));
                         p.drawText(declineBtnRegion_, Qt::AlignCenter, tr("Decline"));
                 }
@@ -244,9 +271,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setPen(Qt::NoPen);
                 p.setBrush(brush);
 
-                p.drawEllipse(avatarRegion.center(), IconSize / 2, IconSize / 2);
+                p.drawEllipse(avatarRegion.center(), wm.iconSize / 2, wm.iconSize / 2);
 
-                p.setFont(bubbleFont_);
+                QFont bubbleFont;
+                bubbleFont.setPointSizeF(bubbleFont.pointSizeF() * 1.4);
+                p.setFont(bubbleFont);
                 p.setPen(avatarFgColor());
                 p.setBrush(Qt::NoBrush);
                 p.drawText(
@@ -255,7 +284,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.save();
 
                 QPainterPath path;
-                path.addEllipse(Padding, Padding, IconSize, IconSize);
+                path.addEllipse(wm.padding, wm.padding, wm.iconSize, wm.iconSize);
                 p.setClipPath(path);
 
                 p.drawPixmap(avatarRegion, roomAvatar_);
@@ -280,7 +309,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                                       ? QFontMetrics(p.font()).averageCharWidth()
                                       : 0;
 
-                QRectF r(width() - bubbleDiameter_ - Padding - x_width,
+                QRectF r(width() - bubbleDiameter_ - wm.padding - x_width,
                          bottom_y - bubbleDiameter_ / 2 - 5,
                          bubbleDiameter_ + x_width,
                          bubbleDiameter_);
@@ -309,11 +338,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
         if (!isPressed_ && hasUnreadMessages_) {
                 QPen pen;
-                pen.setWidth(UnreadLineWidth);
+                pen.setWidth(wm.unreadLineWidth);
                 pen.setColor(highlightedBackgroundColor_);
 
                 p.setPen(pen);
-                p.drawLine(0, UnreadLineOffset, 0, height() - UnreadLineOffset);
+                p.drawLine(0, wm.unreadLineOffset, 0, height() - wm.unreadLineOffset);
         }
 }
 

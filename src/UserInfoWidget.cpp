@@ -48,9 +48,8 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 
         avatarLayout_ = new QHBoxLayout();
         textLayout_   = new QVBoxLayout();
-        textLayout_->setSpacing(widgetMargin);
-        textLayout_->setContentsMargins(
-          widgetMargin * 1.5, widgetMargin, widgetMargin, widgetMargin);
+        textLayout_->setSpacing(widgetMargin / 2);
+        textLayout_->setContentsMargins(widgetMargin * 2, widgetMargin, widgetMargin, widgetMargin);
 
         userAvatar_ = new Avatar(this);
         userAvatar_->setObjectName("userAvatar");

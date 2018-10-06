@@ -53,11 +53,7 @@ public:
                 save();
         }
 
-        void setFontSize(double size)
-        {
-                baseFontSize_ = size;
-                save();
-        }
+        void setFontSize(double size);
 
         void setRoomOrdering(bool state)
         {
