@@ -14,7 +14,13 @@
 SideBarActions::SideBarActions(QWidget *parent)
   : QWidget{parent}
 {
-        setFixedHeight(conf::sidebarActions::height);
+        QFont f;
+        f.setPointSizeF(f.pointSizeF());
+
+        const int fontHeight    = QFontMetrics(f).height();
+        const int contentHeight = fontHeight * 2.5;
+
+        setFixedHeight(contentHeight);
 
         layout_ = new QHBoxLayout(this);
         layout_->setMargin(0);

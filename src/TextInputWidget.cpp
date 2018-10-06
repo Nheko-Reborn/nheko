@@ -43,7 +43,6 @@
 
 static constexpr size_t INPUT_HISTORY_SIZE = 127;
 static constexpr int MAX_TEXTINPUT_HEIGHT  = 120;
-static constexpr int InputHeight           = 24;
 static constexpr int ButtonHeight          = 22;
 
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
@@ -446,7 +445,13 @@ FilteredTextEdit::showPreview(const QMimeData *source, const QStringList &format
 TextInputWidget::TextInputWidget(QWidget *parent)
   : QWidget(parent)
 {
-        setFixedHeight(conf::textInput::height);
+        QFont f;
+        f.setPointSizeF(f.pointSizeF());
+        const int fontHeight    = QFontMetrics(f).height();
+        const int contentHeight = fontHeight * 2.5;
+        const int InputHeight   = fontHeight * 1.5;
+
+        setFixedHeight(contentHeight);
         setCursor(Qt::ArrowCursor);
 
         topLayout_ = new QHBoxLayout();
@@ -472,16 +477,20 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         input_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         input_->setPlaceholderText(tr("Write a message..."));
 
-        connect(input_, &FilteredTextEdit::heightChanged, this, [this](int height) {
-                int textInputHeight = std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, InputHeight));
-                int widgetHeight =
-                  std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, conf::textInput::height));
+        connect(input_,
+                &FilteredTextEdit::heightChanged,
+                this,
+                [this, InputHeight, contentHeight](int height) {
+                        int textInputHeight =
+                          std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, InputHeight));
+                        int widgetHeight =
+                          std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, contentHeight));
 
-                setFixedHeight(widgetHeight);
-                input_->setFixedHeight(textInputHeight);
+                        setFixedHeight(widgetHeight);
+                        input_->setFixedHeight(textInputHeight);
 
-                emit heightChanged(widgetHeight);
-        });
+                        emit heightChanged(widgetHeight);
+                });
         connect(input_, &FilteredTextEdit::showSuggestions, this, [this](const QString &q) {
                 if (q.isEmpty() || !cache::client())
                         return;
