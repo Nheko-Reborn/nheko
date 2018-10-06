@@ -200,7 +200,6 @@ set(SRC_FILES
     src/ui/FloatingButton.cpp
     src/ui/Label.cpp
     src/ui/OverlayModal.cpp
-    src/ui/ScrollBar.cpp
     src/ui/SnackBar.cpp
     src/ui/RaisedButton.cpp
     src/ui/Ripple.cpp
@@ -328,7 +327,6 @@ qt5_wrap_cpp(MOC_HEADERS
     src/ui/FloatingButton.h
     src/ui/Menu.h
     src/ui/OverlayWidget.h
-    src/ui/ScrollBar.h
     src/ui/SnackBar.h
     src/ui/RaisedButton.h
     src/ui/Ripple.h

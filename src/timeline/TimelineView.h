@@ -22,6 +22,7 @@
 #include <QList>
 #include <QQueue>
 #include <QScrollArea>
+#include <QScrollBar>
 #include <QStyle>
 #include <QStyleOption>
 #include <QTimer>
@@ -31,7 +32,6 @@
 
 #include "MatrixClient.h"
 #include "timeline/TimelineItem.h"
-#include "ui/ScrollBar.h"
 
 class StateKeeper
 {
@@ -291,7 +291,6 @@ private:
         QVBoxLayout *scroll_layout_;
 
         QScrollArea *scroll_area_;
-        ScrollBar *scrollbar_;
         QWidget *scroll_widget_;
 
         QString firstSender_;
