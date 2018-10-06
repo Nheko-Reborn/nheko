@@ -122,10 +122,15 @@ else(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
     message("Build type set to '${CMAKE_BUILD_TYPE}'")
 endif(NOT (CMAKE_BUILD_TYPE OR CMAKE_CONFIGURATION_TYPES))
 
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    set(SPDLOG_DEBUG_ON true)
-else()
-    set(SPDLOG_DEBUG_ON false)
+set(SPDLOG_DEBUG_ON false)
+
+# Windows doesn't handle CMAKE_BUILD_TYPE.
+if(NOT WIN32)
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+        set(SPDLOG_DEBUG_ON true)
+    else()
+        set(SPDLOG_DEBUG_ON false)
+    endif()
 endif()
 
 find_program(GIT git)
