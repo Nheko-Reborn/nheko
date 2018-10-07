@@ -200,18 +200,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         auto scaleFactorOptionLayout = new QHBoxLayout;
         scaleFactorOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto scaleFactorLabel = new QLabel(tr("Scale factor (requires restart)"), this);
+        auto scaleFactorLabel = new QLabel(tr("Scale factor"), this);
         scaleFactorLabel->setFont(font);
         scaleFactorCombo_ = new QComboBox(this);
-        scaleFactorCombo_->addItem("1");
-        scaleFactorCombo_->addItem("1.25");
-        scaleFactorCombo_->addItem("1.5");
-        scaleFactorCombo_->addItem("1.75");
-        scaleFactorCombo_->addItem("2");
-        scaleFactorCombo_->addItem("2.25");
-        scaleFactorCombo_->addItem("2.5");
-        scaleFactorCombo_->addItem("2.75");
-        scaleFactorCombo_->addItem("3");
+        for (double option = 1; option <= 3; option += 0.25)
+                scaleFactorCombo_->addItem(QString::number(option));
+
+        scaleFactorOptionLayout->addWidget(scaleFactorLabel);
+        scaleFactorOptionLayout->addWidget(scaleFactorCombo_, 0, Qt::AlignRight);
 
         auto fontSizeOptionLayout = new QHBoxLayout;
         fontSizeOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -319,10 +315,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 #if defined(Q_OS_MAC)
         scaleFactorLabel->hide();
         scaleFactorCombo_->hide();
-#else
-        mainLayout_->addLayout(scaleFactorOptionLayout);
 #endif
 
+        mainLayout_->addLayout(scaleFactorOptionLayout);
         mainLayout_->addLayout(fontSizeOptionLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(themeOptionLayout_);

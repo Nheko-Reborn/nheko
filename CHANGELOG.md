@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [0.6.2] - 2018-10-06
+
+### Features
+- Display tags as sorting items in the community panel (#401 @vberger)
+- Add ability to configure the font size.
+
+### Improvements
+- Don't enable tray by default.
+- Remove room re-ordering option.
+- Hard-coded pixel values were removed. The sizes are derived from the font.
+
 ## [0.6.1] - 2018-09-26
 
 ### Improvements
