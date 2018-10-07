@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [0.6.2] - 2018-10-06
+## [0.6.2] - 2018-10-07
 
 ### Features
 - Display tags as sorting items in the community panel (#401 @vberger)
