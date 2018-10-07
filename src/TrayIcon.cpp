@@ -54,9 +54,13 @@ MsgCountComposedIcon::paint(QPainter *painter,
         brush.setStyle(Qt::SolidPattern);
         brush.setColor(backgroundColor);
 
+        QFont f;
+        f.setPointSizeF(8);
+        f.setWeight(QFont::Thin);
+
         painter->setBrush(brush);
         painter->setPen(Qt::NoPen);
-        painter->setFont(QFont("Open Sans", 8, QFont::Black));
+        painter->setFont(f);
 
         QRectF bubble(rect.width() - BubbleDiameter,
                       rect.height() - BubbleDiameter,

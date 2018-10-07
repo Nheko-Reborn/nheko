@@ -83,12 +83,6 @@
         <file>nheko-32.png</file>
         <file>nheko-16.png</file>
     </qresource>
-    <qresource prefix="/fonts">
-        <file>fonts/OpenSans/OpenSans-Regular.ttf</file>
-        <file>fonts/OpenSans/OpenSans-Italic.ttf</file>
-        <file>fonts/OpenSans/OpenSans-Bold.ttf</file>
-        <file>fonts/OpenSans/OpenSans-Semibold.ttf</file>
-    </qresource>
     <qresource prefix="/styles">
         <file>styles/system.qss</file>
         <file>styles/nheko.qss</file>

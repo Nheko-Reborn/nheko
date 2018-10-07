@@ -127,11 +127,6 @@ main(int argc, char *argv[])
         parser.addVersionOption();
         parser.process(app);
 
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Bold.ttf");
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Semibold.ttf");
-
         app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
         http::init();
@@ -151,7 +146,7 @@ main(int argc, char *argv[])
 
         QSettings settings;
 
-        QFont font("Open Sans");
+        QFont font;
         font.setPointSizeF(settings.value("user/font_size", font.pointSizeF()).toDouble());
 
         app.setFont(font);
