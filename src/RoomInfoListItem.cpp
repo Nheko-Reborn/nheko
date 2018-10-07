@@ -27,7 +27,6 @@
 #include "ui/Menu.h"
 #include "ui/Ripple.h"
 #include "ui/RippleOverlay.h"
-#include "ui/Theme.h"
 
 constexpr int MaxUnreadCountDisplayed = 99;
 
@@ -64,11 +63,6 @@ getMetrics(const QFont &font)
 
         m.inviteBtnX = m.iconSize + 2 * m.padding;
         m.inviteBtnX = m.iconSize / 2.0 + m.padding + m.padding / 3.0;
-
-        // std::cout << "unit " << m.unit << '\n';
-        // std::cout << "maxHeight " << m.maxHeight << '\n';
-        // std::cout << "iconSize " << m.iconSize << '\n';
-        // std::cout << "padding " << m.padding << '\n';
 
         return m;
 }
@@ -130,7 +124,9 @@ RoomInfoListItem::resizeEvent(QResizeEvent *)
         QPainterPath path;
         path.addRect(0, 0, width(), height());
 
-        if (width() > ui::sidebar::SmallSize)
+        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+
+        if (width() > sidebarSizes.small)
                 setToolTip("");
         else
                 setToolTip(roomName_);
@@ -171,7 +167,9 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         // Description line with the default font.
         int bottom_y = wm.maxHeight - wm.padding - metrics.ascent() / 2;
 
-        if (width() > ui::sidebar::SmallSize) {
+        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+
+        if (width() > sidebarSizes.small) {
                 QFont headingFont;
                 headingFont.setWeight(QFont::Medium);
                 p.setFont(headingFont);
@@ -314,7 +312,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                          bubbleDiameter_ + x_width,
                          bubbleDiameter_);
 
-                if (width() == ui::sidebar::SmallSize)
+                if (width() == sidebarSizes.small)
                         r = QRectF(width() - bubbleDiameter_ - 5,
                                    height() - bubbleDiameter_ - 5,
                                    bubbleDiameter_ + x_width,

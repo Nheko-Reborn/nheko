@@ -8,7 +8,6 @@
 // Font sizes are in pixels.
 
 namespace conf {
-constexpr int sideBarCollapsePoint = 450;
 // Global settings.
 constexpr int fontSize                   = 14;
 constexpr int textInputFontSize          = 14;

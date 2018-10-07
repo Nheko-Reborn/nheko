@@ -6,10 +6,10 @@
 #include "Config.h"
 #include "MainWindow.h"
 #include "SideBarActions.h"
+#include "Utils.h"
 #include "ui/FlatButton.h"
 #include "ui/Menu.h"
 #include "ui/OverlayModal.h"
-#include "ui/Theme.h"
 
 SideBarActions::SideBarActions(QWidget *parent)
   : QWidget{parent}
@@ -93,7 +93,9 @@ SideBarActions::resizeEvent(QResizeEvent *event)
 {
         Q_UNUSED(event);
 
-        if (width() <= ui::sidebar::SmallSize) {
+        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+
+        if (width() <= sidebarSizes.small) {
                 roomDirectory_->hide();
                 createRoomBtn_->hide();
         } else {

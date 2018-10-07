@@ -1,7 +1,8 @@
-#include "CommunitiesList.h"
 #include "Cache.h"
+#include "CommunitiesList.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "Utils.h"
 
 #include <QLabel>
 
@@ -19,7 +20,8 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);
 
-        setFixedWidth(ui::sidebar::CommunitiesSidebarSize);
+        const auto sideBarSizes = utils::calculateSidebarSizes(QFont{});
+        setFixedWidth(sideBarSizes.groups);
 
         scrollArea_ = new QScrollArea(this);
         scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

@@ -233,4 +233,15 @@ centerWidget(QWidget *widget, QWidget *parent);
 
 void
 restoreCombobox(QComboBox *combo, const QString &value);
+
+struct SideBarSizes
+{
+        int small;
+        int normal;
+        int groups;
+	int collapsePoint;
+};
+
+SideBarSizes
+calculateSidebarSizes(const QFont &f);
 }

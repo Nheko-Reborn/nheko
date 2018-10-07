@@ -181,9 +181,10 @@ MainWindow::resizeEvent(QResizeEvent *event)
 void
 MainWindow::adjustSideBars()
 {
-        const uint64_t timelineWidth = chat_page_->timelineWidth();
-        const uint64_t minAvailableWidth =
-          conf::sideBarCollapsePoint + ui::sidebar::CommunitiesSidebarSize;
+        const auto sz = utils::calculateSidebarSizes(QFont{});
+
+        const uint64_t timelineWidth     = chat_page_->timelineWidth();
+        const uint64_t minAvailableWidth = sz.collapsePoint + sz.groups;
 
         if (timelineWidth < minAvailableWidth && !chat_page_->isSideBarExpanded()) {
                 chat_page_->hideSideBars();

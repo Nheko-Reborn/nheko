@@ -22,6 +22,7 @@
 #include "Config.h"
 #include "MainWindow.h"
 #include "UserInfoWidget.h"
+#include "Utils.h"
 #include "ui/Avatar.h"
 #include "ui/FlatButton.h"
 #include "ui/OverlayModal.h"
@@ -107,8 +108,10 @@ UserInfoWidget::resizeEvent(QResizeEvent *event)
 {
         Q_UNUSED(event);
 
-        if (width() <= ui::sidebar::SmallSize) {
-                topLayout_->setContentsMargins(0, 0, logoutButtonSize_ / 2 - 5 / 2, 0);
+        const auto sz = utils::calculateSidebarSizes(QFont{});
+
+        if (width() <= sz.small) {
+                topLayout_->setContentsMargins(0, 0, logoutButtonSize_, 0);
 
                 userAvatar_->hide();
                 displayNameLabel_->hide();

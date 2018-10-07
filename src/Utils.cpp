@@ -412,3 +412,17 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
                 }
         }
 }
+
+utils::SideBarSizes
+utils::calculateSidebarSizes(const QFont &f)
+{
+        const auto height = static_cast<double>(QFontMetrics{f}.lineSpacing());
+
+        SideBarSizes sz;
+        sz.small         = std::ceil(3.5 * height + height / 4.0);
+        sz.normal        = std::ceil(16 * height);
+        sz.groups        = std::ceil(3 * height);
+        sz.collapsePoint = 2 * sz.normal;
+
+        return sz;
+}

@@ -23,12 +23,12 @@
 
 #include "Config.h"
 #include "Splitter.h"
-#include "ui/Theme.h"
 
 constexpr auto MaxWidth = (1 << 24) - 1;
 
 Splitter::Splitter(QWidget *parent)
   : QSplitter(parent)
+  , sz_{utils::calculateSidebarSizes(QFont{})}
 {
         connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
         setChildrenCollapsible(false);
@@ -45,17 +45,17 @@ Splitter::restoreSizes(int fallback)
         if (savedWidth == 0) {
                 hideSidebar();
                 return;
-        } else if (savedWidth == ui::sidebar::SmallSize) {
+        } else if (savedWidth == sz_.small) {
                 if (left) {
-                        left->setMinimumWidth(ui::sidebar::SmallSize);
-                        left->setMaximumWidth(ui::sidebar::SmallSize);
+                        left->setMinimumWidth(sz_.small);
+                        left->setMaximumWidth(sz_.small);
                         return;
                 }
         }
 
-        left->setMinimumWidth(ui::sidebar::NormalSize);
-        left->setMaximumWidth(2 * ui::sidebar::NormalSize);
-        setSizes({ui::sidebar::NormalSize, fallback - ui::sidebar::NormalSize});
+        left->setMinimumWidth(sz_.normal);
+        left->setMaximumWidth(2 * sz_.normal);
+        setSizes({sz_.normal, fallback - sz_.normal});
 
         setStretchFactor(0, 0);
         setStretchFactor(1, 1);
@@ -84,7 +84,7 @@ Splitter::onSplitterMoved(int pos, int index)
                 return;
         }
 
-        if (s[0] == ui::sidebar::NormalSize) {
+        if (s[0] == sz_.normal) {
                 rightMoveCount_ += 1;
 
                 if (rightMoveCount_ > moveEventLimit_) {
@@ -94,13 +94,13 @@ Splitter::onSplitterMoved(int pos, int index)
                         // if we are coming from the right, the cursor should
                         // end up on the first widget.
                         if (left->rect().contains(cursorPosition)) {
-                                left->setMinimumWidth(ui::sidebar::SmallSize);
-                                left->setMaximumWidth(ui::sidebar::SmallSize);
+                                left->setMinimumWidth(sz_.small);
+                                left->setMaximumWidth(sz_.small);
 
                                 rightMoveCount_ = 0;
                         }
                 }
-        } else if (s[0] == ui::sidebar::SmallSize) {
+        } else if (s[0] == sz_.small) {
                 leftMoveCount_ += 1;
 
                 if (leftMoveCount_ > moveEventLimit_) {
@@ -115,10 +115,9 @@ Splitter::onSplitterMoved(int pos, int index)
                         // if we are coming from the left, the cursor should
                         // end up on the second widget.
                         if (extended.contains(cursorPosition) &&
-                            right->size().width() >=
-                              conf::sideBarCollapsePoint + ui::sidebar::NormalSize) {
-                                left->setMinimumWidth(ui::sidebar::NormalSize);
-                                left->setMaximumWidth(2 * ui::sidebar::NormalSize);
+                            right->size().width() >= sz_.collapsePoint + sz_.normal) {
+                                left->setMinimumWidth(sz_.normal);
+                                left->setMaximumWidth(2 * sz_.normal);
 
                                 leftMoveCount_ = 0;
                         }
@@ -145,12 +144,12 @@ Splitter::showChatView()
                 right->show();
 
                 // Restore previous size.
-                if (left->minimumWidth() == ui::sidebar::SmallSize) {
-                        left->setMinimumWidth(ui::sidebar::SmallSize);
-                        left->setMaximumWidth(ui::sidebar::SmallSize);
+                if (left->minimumWidth() == sz_.small) {
+                        left->setMinimumWidth(sz_.small);
+                        left->setMaximumWidth(sz_.small);
                 } else {
-                        left->setMinimumWidth(ui::sidebar::NormalSize);
-                        left->setMaximumWidth(2 * ui::sidebar::NormalSize);
+                        left->setMinimumWidth(sz_.normal);
+                        left->setMaximumWidth(2 * sz_.normal);
                 }
         }
 }

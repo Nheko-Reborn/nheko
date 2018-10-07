@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "Utils.h"
 #include <QSplitter>
 
 class Splitter : public QSplitter
@@ -43,4 +44,6 @@ private:
 
         int leftMoveCount_  = 0;
         int rightMoveCount_ = 0;
+
+        utils::SideBarSizes sz_;
 };

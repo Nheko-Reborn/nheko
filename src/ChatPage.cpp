@@ -76,7 +76,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         // SideBar
         sideBar_ = new QFrame(this);
         sideBar_->setObjectName("sideBar");
-        sideBar_->setMinimumWidth(ui::sidebar::NormalSize);
+        sideBar_->setMinimumWidth(utils::calculateSidebarSizes(QFont{}).normal);
         sideBarLayout_ = new QVBoxLayout(sideBar_);
         sideBarLayout_->setSpacing(0);
         sideBarLayout_->setMargin(0);
@@ -1344,7 +1344,8 @@ ChatPage::timelineWidth()
 bool
 ChatPage::isSideBarExpanded()
 {
-        return sideBar_->size().width() > ui::sidebar::NormalSize;
+        const auto sz = utils::calculateSidebarSizes(QFont{});
+        return sideBar_->size().width() > sz.normal;
 }
 
 void
