@@ -53,9 +53,9 @@ RoomList::RoomList(QWidget *parent)
         scrollAreaContents_->setObjectName("roomlist_area");
 
         contentsLayout_ = new QVBoxLayout(scrollAreaContents_);
+        contentsLayout_->setAlignment(Qt::AlignTop);
         contentsLayout_->setSpacing(0);
         contentsLayout_->setMargin(0);
-        contentsLayout_->addStretch(1);
 
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addWidget(scrollArea_);

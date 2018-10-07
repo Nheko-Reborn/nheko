@@ -12,9 +12,10 @@
 - Don't enable tray by default.
 - Hard-coded pixel values were removed. The sizes are derived from the font.
 
-### Removed
-- Remove room re-ordering option.
-- Built-in emoji picker & emoji font.
+### Other changes
+- Removed room re-ordering option.
+- Removed built-in emoji picker.
+- Removed bundled fonts.
 
 ## [0.6.1] - 2018-09-26
 

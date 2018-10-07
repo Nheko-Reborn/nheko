@@ -239,7 +239,7 @@ struct SideBarSizes
         int small;
         int normal;
         int groups;
-	int collapsePoint;
+        int collapsePoint;
 };
 
 SideBarSizes
