@@ -63,22 +63,6 @@
         <file>icons/ui/edit.png</file>
         <file>icons/ui/edit@2x.png</file>
 
-        <file>icons/emoji-categories/people.png</file>
-        <file>icons/emoji-categories/people@2x.png</file>
-        <file>icons/emoji-categories/nature.png</file>
-        <file>icons/emoji-categories/nature@2x.png</file>
-        <file>icons/emoji-categories/foods.png</file>
-        <file>icons/emoji-categories/foods@2x.png</file>
-        <file>icons/emoji-categories/activity.png</file>
-        <file>icons/emoji-categories/activity@2x.png</file>
-        <file>icons/emoji-categories/travel.png</file>
-        <file>icons/emoji-categories/travel@2x.png</file>
-        <file>icons/emoji-categories/objects.png</file>
-        <file>icons/emoji-categories/objects@2x.png</file>
-        <file>icons/emoji-categories/symbols.png</file>
-        <file>icons/emoji-categories/symbols@2x.png</file>
-        <file>icons/emoji-categories/flags.png</file>
-        <file>icons/emoji-categories/flags@2x.png</file>
     </qresource>
     <qresource prefix="/logos">
         <file>nheko.png</file>
@@ -104,7 +88,6 @@
         <file>fonts/OpenSans/OpenSans-Italic.ttf</file>
         <file>fonts/OpenSans/OpenSans-Bold.ttf</file>
         <file>fonts/OpenSans/OpenSans-Semibold.ttf</file>
-        <file>fonts/EmojiOne/emojione-android.ttf</file>
     </qresource>
     <qresource prefix="/styles">
         <file>styles/system.qss</file>

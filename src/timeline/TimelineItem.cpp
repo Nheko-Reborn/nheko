@@ -594,7 +594,7 @@ TimelineItem::markReceived(bool isEncrypted)
 void
 TimelineItem::generateBody(const QString &body)
 {
-        body_ = new TextLabel(replaceEmoji(body), this);
+        body_ = new TextLabel(body, this);
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 
         connect(body_, &TextLabel::userProfileTriggered, this, [](const QString &user_id) {
@@ -665,25 +665,6 @@ TimelineItem::generateTimestamp(const QDateTime &time)
         timestamp_->setFont(timestampFont_);
         timestamp_->setText(
           QString("<span style=\"color: #999\"> %1 </span>").arg(time.toString("HH:mm")));
-}
-
-QString
-TimelineItem::replaceEmoji(const QString &body)
-{
-        QString fmtBody = "";
-
-        QVector<uint> utf32_string = body.toUcs4();
-
-        for (auto &code : utf32_string) {
-                // TODO: Be more precise here.
-                if (code > 9000)
-                        fmtBody += QString("<span style=\"font-family: Emoji One;\">") +
-                                   QString::fromUcs4(&code, 1) + "</span>";
-                else
-                        fmtBody += QString::fromUcs4(&code, 1);
-        }
-
-        return fmtBody;
 }
 
 void

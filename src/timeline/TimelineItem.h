@@ -256,7 +256,6 @@ private:
         //! has been acknowledged by the server.
         bool isReceived_ = false;
 
-        QString replaceEmoji(const QString &body);
         QString event_id_;
         QString room_id_;
 

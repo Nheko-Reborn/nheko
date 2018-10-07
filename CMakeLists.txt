@@ -176,10 +176,6 @@ set(SRC_FILES
     src/dialogs/RoomSettings.cpp
 
     # Emoji
-    src/emoji/Category.cpp
-    src/emoji/ItemDelegate.cpp
-    src/emoji/Panel.cpp
-    src/emoji/PickButton.cpp
     src/emoji/Provider.cpp
 
     # Timeline
@@ -301,12 +297,6 @@ qt5_wrap_cpp(MOC_HEADERS
     src/dialogs/ReadReceipts.h
     src/dialogs/ReCaptcha.h
     src/dialogs/RoomSettings.h
-
-    # Emoji
-    src/emoji/Category.h
-    src/emoji/ItemDelegate.h
-    src/emoji/Panel.h
-    src/emoji/PickButton.h
 
     # Timeline
     src/timeline/TimelineItem.h
