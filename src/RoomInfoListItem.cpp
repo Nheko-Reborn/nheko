@@ -55,8 +55,8 @@ getMetrics(const QFont &font)
         const int height = QFontMetrics(font).lineSpacing();
 
         m.unit             = height;
-        m.maxHeight        = std::ceil((double)height * 3.5);
-        m.iconSize         = std::ceil((double)height * 2.5);
+        m.maxHeight        = std::ceil((double)height * 3.8);
+        m.iconSize         = std::ceil((double)height * 2.8);
         m.padding          = std::ceil((double)height / 2.0);
         m.unreadLineWidth  = m.padding - m.padding / 3;
         m.unreadLineOffset = m.padding - m.padding / 4;
