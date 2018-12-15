@@ -1098,7 +1098,8 @@ ChatPage::trySync()
 void
 ChatPage::joinRoom(const QString &room)
 {
-        const auto room_id = room.toStdString();
+        // Percent escape the room ID
+        const auto room_id = QUrl::toPercentEncoding(room).toStdString();
 
         http::client()->join_room(
           room_id, [this, room_id](const nlohmann::json &, mtx::http::RequestErr err) {
