@@ -10,8 +10,8 @@ QLabel {
 
 #sideBar {
     border: none;
-    border-right: 1px solid #dcdcdc;
-    border-left: 1px solid #dcdcdc;
+    border-right: 1px solid #dee1f3;
+    border-left: 1px solid #dee1f3;
 }
 
 TimelineView,
@@ -49,17 +49,17 @@ PopupItem {
 
 RoomList,
 RoomList > * {
-    background-color: white;
+    background-color: #2e3649;
     border: none;
 }
 
 #roomlist_area {
-    background-color: white;
+    background-color: #2e3649;
 }
 
 CommunitiesList,
 CommunitiesList > * {
-    background-color: white;
+    background-color: #2e3649;
 }
 
 FlatButton {
@@ -85,7 +85,9 @@ RaisedButton {
 RoomInfoListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
     qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
-    qproperty-backgroundColor: white;
+    qproperty-hoverTitleColor: #f2f5f8;
+    qproperty-hoverSubtitleColor: white;
+    qproperty-backgroundColor: #f2f5f8;
 
     qproperty-titleColor: #333;
     qproperty-subtitleColor: #5d6565;
@@ -109,7 +111,7 @@ RoomInfoListItem {
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
     qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
-    qproperty-backgroundColor: white;
+    qproperty-backgroundColor: #f2f5f8;
 
     qproperty-avatarBgColor: #eee;
     qproperty-avatarFgColor: black;
@@ -130,7 +132,7 @@ UserInfoWidget, UserInfoWidget > * {
 
 UserInfoWidget {
     border: none;
-    border-bottom: 1px solid #dcdcdc;
+    border-bottom: 2px solid #ccc;
 }
 
 UserSettingsPage {

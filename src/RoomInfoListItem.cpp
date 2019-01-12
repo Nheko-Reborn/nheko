@@ -158,8 +158,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 subtitlePen.setColor(highlightedSubtitleColor_);
         } else if (underMouse()) {
                 p.fillRect(rect(), hoverBackgroundColor_);
+                titlePen.setColor(hoverTitleColor_);
+                subtitlePen.setColor(hoverSubtitleColor_);
         } else {
                 p.fillRect(rect(), backgroundColor_);
+                titlePen.setColor(titleColor_);
+                subtitlePen.setColor(subtitleColor_);
         }
 
         QRect avatarRegion(wm.padding, wm.padding, wm.iconSize, wm.iconSize);
