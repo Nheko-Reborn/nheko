@@ -93,6 +93,9 @@ RoomInfoListItem {
     qproperty-titleColor: #e4e5e8;
     qproperty-subtitleColor: #caccd1;
 
+    qproperty-hoverTitleColor: #f4f5f8;
+    qproperty-hoverSubtitleColor: white;
+
     qproperty-highlightedTitleColor: #f4f4f5;
     qproperty-highlightedSubtitleColor: #e4e5e8;
 
@@ -101,6 +104,7 @@ RoomInfoListItem {
 
     qproperty-timestampColor: #727274;
     qproperty-highlightedTimestampColor: #e7e7e9;
+    qproperty-hoverTimestampColor: #f4f5f8;
 
     qproperty-avatarBgColor: #202228;
     qproperty-avatarFgColor: white;

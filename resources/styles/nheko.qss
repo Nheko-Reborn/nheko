@@ -100,6 +100,7 @@ RoomInfoListItem {
 
     qproperty-timestampColor: #707070;
     qproperty-highlightedTimestampColor: #f4f4f5;
+    qproperty-hoverTimestampColor: white;
 
     qproperty-avatarBgColor: #eee;
     qproperty-avatarFgColor: black;

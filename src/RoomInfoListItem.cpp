@@ -227,10 +227,13 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                         // We show the last message timestamp.
                         p.save();
-                        if (isPressed_)
+                        if (isPressed_) {
                                 p.setPen(QPen(highlightedTimestampColor_));
-                        else
+                        } else if (underMouse()) {
+                                p.setPen(QPen(hoverTimestampColor_));
+                        } else {
                                 p.setPen(QPen(timestampColor_));
+                        }
 
                         p.setFont(tsFont);
                         p.drawText(QPoint(width() - wm.padding - msgStampWidth, top_y),

@@ -92,11 +92,15 @@ RoomInfoListItem {
     qproperty-highlightedTitleColor: palette(highlightedtext);
     qproperty-highlightedSubtitleColor: palette(highlightedtext);
 
+    qproperty-hoverTitleColor: palette(highlightedtext);
+    qproperty-hoverSubtitleColor: palette(highlightedtext);
+
     qproperty-btnColor: palette(button);
     qproperty-btnTextColor: palette(buttonText);
 
     qproperty-timestampColor: palette(text);
     qproperty-highlightedTimestampColor: palette(highlightedtext);
+    qproperty-hoverTimestampColor: palette(highlightedtext);
 
     qproperty-avatarBgColor: palette(base);
     qproperty-avatarFgColor: palette(text);

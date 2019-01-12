@@ -49,6 +49,8 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor timestampColor READ timestampColor WRITE setTimestampColor)
         Q_PROPERTY(QColor highlightedTimestampColor READ highlightedTimestampColor WRITE
                      setHighlightedTimestampColor)
+        Q_PROPERTY(QColor hoverTimestampColor READ hoverTimestampColor WRITE
+                     setHoverTimestampColor)
 
         Q_PROPERTY(
           QColor highlightedTitleColor READ highlightedTitleColor WRITE setHighlightedTitleColor)
@@ -81,6 +83,7 @@ public:
         QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
         QColor hoverTitleColor() const { return hoverTitleColor_; }
         QColor hoverSubtitleColor() const { return hoverSubtitleColor_; }
+        QColor hoverTimestampColor() const { return hoverTimestampColor_; }
         QColor backgroundColor() const { return backgroundColor_; }
         QColor avatarBgColor() const { return avatarBgColor_; }
         QColor avatarFgColor() const { return avatarFgColor_; }
@@ -102,6 +105,7 @@ public:
         void setHoverBackgroundColor(QColor &color) { hoverBackgroundColor_ = color; }
         void setHoverSubtitleColor(QColor &color) { hoverSubtitleColor_ = color; }
         void setHoverTitleColor(QColor &color) { hoverTitleColor_ = color; }
+        void setHoverTimestampColor(QColor &color) { hoverTimestampColor_ = color; }
         void setBackgroundColor(QColor &color) { backgroundColor_ = color; }
         void setTimestampColor(QColor &color) { timestampColor_ = color; }
         void setAvatarFgColor(QColor &color) { avatarFgColor_ = color; }
@@ -210,6 +214,7 @@ private:
 
         QColor timestampColor_;
         QColor highlightedTimestampColor_;
+        QColor hoverTimestampColor_;
 
         QColor avatarBgColor_;
         QColor avatarFgColor_;
