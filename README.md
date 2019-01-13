@@ -4,7 +4,7 @@ nheko
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/redsky17/nheko/branch/master)
 [![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/redsky17/nheko/releases/v0.6.2)
 [![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://github.com/redsky17/nheko/releases/nightly)
-[![Chat on Matrix](https://img.shields.io/badge/chat-on%20matrix-blue.svg)](https://matrix.to/#/#nheko:matrix.org)
+[![#nheko-reborn:matrix.org](https://img.shields.io/matrix/nheko-reborn:matrix.org.svg?label=%23nheko-reborn:matrix.org)](https://matrix.to/#/#nheko-reborn:matrix.org)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
@@ -38,7 +38,7 @@ Specifically there is support for:
 
 ### Releases
 
-Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer) 
+Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer)
 can be found in the [Github releases](https://github.com/mujx/nheko/releases).
 
 ### Repositories
@@ -98,7 +98,7 @@ sudo port install nheko
     - GCC 7 (tested on Travis CI)
     - MSVC 19.13 (tested on AppVeyor)
 
-#### Linux 
+#### Linux
 
 If you don't want to install any external dependencies, you can generate an AppImage locally using docker.
 
@@ -135,7 +135,7 @@ sudo add-apt-repository ppa:beineri/opt-qt592-trusty
 sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo add-apt-repository ppa:ubuntu-toolchain-r-test
 sudo apt-get update
-sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev 
+sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev
 ```
 
 ##### macOS (Xcode 8 or later)
