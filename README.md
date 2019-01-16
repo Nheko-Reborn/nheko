@@ -1,9 +1,9 @@
 nheko
 ----
-[![Build Status](https://travis-ci.org/redsky17/nheko.svg?branch=master)](https://travis-ci.org/mujx/nheko)
+[![Build Status](https://travis-ci.org/Nheko-Reborn/nheko.svg?branch=master)](https://travis-ci.org/Nheko-Reborn/nheko)
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/redsky17/nheko/branch/master)
-[![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/redsky17/nheko/releases/v0.6.2)
-[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://github.com/redsky17/nheko/releases/nightly)
+[![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/v0.6.2)
+[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/nightly)
 [![#nheko-reborn:matrix.org](https://img.shields.io/matrix/nheko-reborn:matrix.org.svg?label=%23nheko-reborn:matrix.org)](https://matrix.to/#/#nheko-reborn:matrix.org)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
 
@@ -39,7 +39,7 @@ Specifically there is support for:
 ### Releases
 
 Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer)
-can be found in the [Github releases](https://github.com/mujx/nheko/releases).
+can be found in the [Github releases](https://github.com/Nheko-Reborn/nheko/releases).
 
 ### Repositories
 
@@ -86,7 +86,7 @@ sudo port install nheko
 - Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
   Freetype, which is essential to properly support emoji.
 - CMake 3.1 or greater.
-- [mtxclient](https://github.com/mujx/mtxclient)
+- [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
 - [cmark](https://github.com/commonmark/cmark)
 - Boost 1.66 or greater.

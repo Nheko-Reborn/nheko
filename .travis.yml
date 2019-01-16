@@ -80,7 +80,7 @@ deploy:
       file: "bintray-release.json"
       on:
           condition: $DEPLOYMENT == 1
-          repo: redsky17/nheko
+          repo: nheko-reborn/nheko
           tags: true
           deploy:
     - skip_cleanup: true

@@ -17,7 +17,7 @@
   ],
   "package": {
     "desc": "Desktop client for the Matrix protocol",
-    "issue_tracker_url": "https://github.com/mujx/nheko/issues",
+    "issue_tracker_url": "https://github.com/nheko-reborn/nheko/issues",
     "licenses": [
       "GPL-3.0"
     ],
@@ -26,8 +26,8 @@
     "public_stats": true,
     "repo": "matrix",
     "subject": "mujx",
-    "vcs_url": "https://github.com/mujx/nheko",
-    "website_url": "https://github.com/mujx/nheko"
+    "vcs_url": "https://github.com/nheko-reborn/nheko",
+    "website_url": "https://github.com/nheko-reborn/nheko"
   },
   "publish": true,
   "version": {

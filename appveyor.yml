@@ -8,7 +8,7 @@ platform: x64
 
 environment:
     BINTRAY_APIKEY:
-        secure: "hhhAH6csIrPEVH92NNQkiGCkuON6l6sfhbZk+pvzDAM3vHex7YbqFKW6v5UjAS8v"
+        secure: "iGl5mzE9/ta9kFELUxDw9XtlYMSCMai9xowXIkYzU8WKHz7NfW0mLwMJZvblZFXJ"
 
 cache: c:\tools\vcpkg\installed\
 
@@ -127,13 +127,13 @@ after_build:
     - mv nheko-installer.exe nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe
 
 on_success:
-    - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -umujx:%BINTRAY_APIKEY% https://api.bintray.com/content/mujx/matrix/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
+    - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -uredsky17:%BINTRAY_APIKEY% https://api.bintray.com/content/nheko-reborn/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
 
 deploy:
     description: "Development builds"
     provider: GitHub
     auth_token:
-        secure: "YqB7hcM+4482eSHhtVR7ZA7N7lE78y8BC897/7UDTBQd+NWdWFW/6S+oKDie9TT7"
+        secure: "ShStWeqp+TkYqJPQr7uFZb+B8ZTgC7Iwth+IkhjfRDCTLhy8gtWvlPzlQilder3E"
     artifact: nheko-${APPVEYOR_REPO_TAG_NAME}-installer.exe
     force_update: true
     prerelease: true
