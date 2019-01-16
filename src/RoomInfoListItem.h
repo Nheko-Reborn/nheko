@@ -47,7 +47,8 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor subtitleColor READ subtitleColor WRITE setSubtitleColor)
 
         Q_PROPERTY(QColor timestampColor READ timestampColor WRITE setTimestampColor)
-        Q_PROPERTY(QColor highlightedTimestampColor READ highlightedTimestampColor WRITE setHighlightedTimestampColor)
+        Q_PROPERTY(QColor highlightedTimestampColor READ highlightedTimestampColor WRITE
+                     setHighlightedTimestampColor)
         Q_PROPERTY(QColor hoverTimestampColor READ hoverTimestampColor WRITE setHoverTimestampColor)
 
         Q_PROPERTY(
@@ -55,10 +56,8 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor highlightedSubtitleColor READ highlightedSubtitleColor WRITE
                      setHighlightedSubtitleColor)
 
-        Q_PROPERTY(
-          QColor hoverTitleColor READ hoverTitleColor WRITE setHoverTitleColor)
-        Q_PROPERTY(QColor hoverSubtitleColor READ hoverSubtitleColor WRITE
-                     setHoverSubtitleColor)
+        Q_PROPERTY(QColor hoverTitleColor READ hoverTitleColor WRITE setHoverTitleColor)
+        Q_PROPERTY(QColor hoverSubtitleColor READ hoverSubtitleColor WRITE setHoverSubtitleColor)
 
         Q_PROPERTY(QColor btnColor READ btnColor WRITE setBtnColor)
         Q_PROPERTY(QColor btnTextColor READ btnTextColor WRITE setBtnTextColor)
