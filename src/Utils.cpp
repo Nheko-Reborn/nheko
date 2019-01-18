@@ -382,6 +382,23 @@ utils::linkColor()
         return QPalette().color(QPalette::Link).name();
 }
 
+QString
+utils::generateHexColor(const QString &input)
+{
+        auto hash = 0;
+
+        for (int i = 0; i < input.length(); i++) {
+                hash = input.at(i).digitValue() + ((hash << 5) - hash);
+        }
+        hash *= 13;
+        QString colour("#");
+        for (int i = 0; i < 3; i++) {
+                int value = (hash >> (i * 8)) & 0xFF;
+                colour.append(("00" + QString::number(value, 16)).right(2));
+        }
+        return colour;
+}
+
 void
 utils::centerWidget(QWidget *widget, QWidget *parent)
 {

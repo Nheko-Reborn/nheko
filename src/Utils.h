@@ -227,6 +227,10 @@ markdownToHtml(const QString &text);
 QString
 linkColor();
 
+//! Given an input string, create a color string
+QString
+generateHexColor(const QString &string);
+
 //! Center a widget in relation to another widget.
 void
 centerWidget(QWidget *widget, QWidget *parent);

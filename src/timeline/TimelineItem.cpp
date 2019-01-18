@@ -622,8 +622,10 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
                         sender = displayname.split(":")[0].split("@")[1];
         }
 
+        auto userColor = utils::generateHexColor(user_id);
+
         QFont usernameFont;
-        usernameFont.setPointSizeF(usernameFont.pointSizeF());
+        usernameFont.setPointSizeF(usernameFont.pointSizeF() * 1.1);
         usernameFont.setWeight(QFont::Medium);
 
         QFontMetrics fm(usernameFont);
@@ -636,6 +638,8 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setAttribute(Qt::WA_Hover);
         userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+
+        userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
 
         auto filter = new UserProfileFilter(user_id, userName_);
         userName_->installEventFilter(filter);
