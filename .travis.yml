@@ -80,7 +80,6 @@ script:
 - sed -i -e "s/VERSION_NAME_VALUE/${TRAVIS_TAG}/g" ./.ci/bintray-release.json || true
 - cp ./.ci/bintray-release.json .
 deploy:
-  matrix:
   - provider: bintray
     user: redsky17
     key:
