@@ -622,8 +622,6 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
                         sender = displayname.split(":")[0].split("@")[1];
         }
 
-        auto userColor = utils::generateHexColor(user_id);
-
         QFont usernameFont;
         usernameFont.setPointSizeF(usernameFont.pointSizeF() * 1.1);
         usernameFont.setWeight(QFont::Medium);
@@ -639,6 +637,12 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
 
+        // TimelineItem isn't displayed.  This forces the QSS to get
+        // loaded.
+        qApp->style()->polish(this);
+        // generate user's unique color.
+        auto backCol   = backgroundColor().name();
+        auto userColor = utils::generateContrastingHexColor(user_id, backCol);
         userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
 
         auto filter = new UserProfileFilter(user_id, userName_);

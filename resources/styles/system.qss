@@ -3,6 +3,10 @@ TypingDisplay {
     qproperty-backgroundColor: palette(window);
 }
 
+TimelineItem {
+    qproperty-backgroundColor: palette(window);
+}
+
 TimelineView,
 TimelineView > * {
     border: none;

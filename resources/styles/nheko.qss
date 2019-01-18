@@ -3,6 +3,10 @@ QLabel {
     color: #333;
 }
 
+TimelineItem {
+    qproperty-backgroundColor: white;
+}
+
 #chatPage,
 #chatPage > * {
     background-color: white;

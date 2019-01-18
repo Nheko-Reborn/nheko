@@ -132,6 +132,8 @@ private:
 class TimelineItem : public QWidget
 {
         Q_OBJECT
+        Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
+
 public:
         TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice> &e,
                      bool with_sender,
@@ -201,6 +203,9 @@ public:
                      bool with_sender,
                      const QString &room_id,
                      QWidget *parent);
+
+        void setBackgroundColor(const QColor &color) { backgroundColor_ = color; }
+        QColor backgroundColor() const { return backgroundColor_; }
 
         void setUserAvatar(const QImage &pixmap);
         DescInfo descriptionMessage() const { return descriptionMsg_; }
@@ -282,6 +287,8 @@ private:
         QLabel *timestamp_;
         QLabel *userName_;
         TextLabel *body_;
+
+        QColor backgroundColor_;
 };
 
 template<class Widget>

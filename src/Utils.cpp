@@ -383,20 +383,120 @@ utils::linkColor()
 }
 
 QString
-utils::generateHexColor(const QString &input)
+utils::generateHexColor(const int hash)
+{
+        QString colour("#");
+        for (int i = 0; i < 3; i++) {
+                int value = (hash >> (i * 8)) & 0xFF;
+                colour.append(("00" + QString::number(value, 16)).right(2));
+        }
+        // nhlog::ui()->debug("Hex Generated {} -> {}", QString::number(hash).toStdString(),
+        // colour.toStdString());
+        return colour.toUpper();
+}
+
+int
+utils::hashQString(const QString &input)
 {
         auto hash = 0;
 
         for (int i = 0; i < input.length(); i++) {
                 hash = input.at(i).digitValue() + ((hash << 5) - hash);
         }
+
         hash *= 13;
-        QString colour("#");
-        for (int i = 0; i < 3; i++) {
-                int value = (hash >> (i * 8)) & 0xFF;
-                colour.append(("00" + QString::number(value, 16)).right(2));
+
+        return hash;
+}
+
+QString
+utils::generateContrastingHexColor(const QString &input, const QString &background)
+{
+        nhlog::ui()->debug("Background hex {}", background.toStdString());
+        const QColor backgroundCol(background);
+        const qreal backgroundLum = luminance(background);
+
+        // Create a color for the input
+        auto hash     = hashQString(input);
+        auto colorHex = generateHexColor(hash);
+
+        // converting to a QColor makes the luminance calc easier.
+        QColor inputColor = QColor(colorHex);
+
+        // attempt to score both the luminance and the contrast.
+        // contrast should have a higher precedence, but luminance
+        // helps dictate how exciting the colors are.
+        auto colorLum = luminance(inputColor);
+        auto contrast = computeContrast(colorLum, backgroundLum);
+
+        // If the contrast or luminance don't meet our criteria,
+        // try again and again until they do.  After 10 tries,
+        // the best-scoring color will be chosen.
+        int att = 0;
+        while ((contrast < 5 || (colorLum < 0.05 || colorLum > 0.95)) && ++att < 10) {
+                hash        = hashQString(input) + ((hash << 2) * 13);
+                auto newHex = generateHexColor(hash);
+                inputColor.setNamedColor(newHex);
+                auto tmpLum      = luminance(inputColor);
+                auto tmpContrast = computeContrast(tmpLum, backgroundLum);
+
+                // Prioritize contrast over luminance
+                // If both values are better, it's a no brainer.
+                if (tmpContrast > contrast && (tmpLum > 0.05 && tmpLum < 0.95)) {
+                        contrast = tmpContrast;
+                        colorHex = newHex;
+                        colorLum = tmpLum;
+                }
+                // Otherwise, if we still can get a more
+                // vibrant color and have met our contrast
+                // threshold, pick the more vibrant color,
+                // even if contrast will drop somewhat.
+                // choosing 50% luminance as ideal.
+                else if ((qAbs(tmpLum - 0.50) < qAbs(colorLum - 0.50)) && tmpContrast >= 5) {
+                        contrast = tmpContrast;
+                        colorHex = newHex;
+                        colorLum = tmpLum;
+                }
+                // Otherwise, just take the better contrast.
+                else if (tmpContrast > contrast) {
+                        contrast = tmpContrast;
+                        colorHex = newHex;
+                        colorLum = tmpLum;
+                }
         }
-        return colour;
+
+        nhlog::ui()->debug("Hex Generated for {}: [hex: {}, contrast: {}, luminance: {}]",
+                           input.toStdString(),
+                           colorHex.toStdString(),
+                           QString::number(contrast).toStdString(),
+                           QString::number(colorLum).toStdString());
+        return colorHex;
+}
+
+qreal
+utils::computeContrast(const qreal &one, const qreal &two)
+{
+        auto ratio = (one + 0.05) / (two + 0.05);
+
+        if (two > one) {
+                ratio = 1 / ratio;
+        }
+
+        return ratio;
+}
+
+qreal
+utils::luminance(const QColor &col)
+{
+        int colRgb[3] = {col.red(), col.green(), col.blue()};
+        qreal lumRgb[3];
+
+        for (int i = 0; i < 3; i++) {
+                qreal v                  = colRgb[i] / 255.0;
+                v <= 0.03928 ? lumRgb[i] = v / 12.92 : lumRgb[i] = qPow((v + 0.055) / 1.055, 2.4);
+        }
+
+        return lumRgb[0] * 0.2126 + lumRgb[1] * 0.7152 + lumRgb[2] * 0.0722;
 }
 
 void
