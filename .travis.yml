@@ -1,114 +1,119 @@
----
-
 language: cpp
 sudo: required
 dist: trusty
-
 notifications:
-    email: false
-    webhooks:
-        urls:
-            - "https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MHJlZF9za3klM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbS8lMjFldkFxa1BIWnVQSElHZWVuaGklM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbQ"
-        on_success: always  # always|never|change
-        on_failure: always
-        on_start: never
-
-
+  email: false
+  webhooks:
+    urls:
+    - https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MHJlZF9za3klM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbS8lMjFldkFxa1BIWnVQSElHZWVuaGklM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbQ
+    on_success: always
+    on_failure: always
+    on_start: never
 matrix:
-    include:
-        - os: osx
-          osx_image: xcode9
-          compiler: clang
-          env:
-              - DEPLOYMENT=1
-              - USE_BUNDLED_BOOST=0
-              - USE_BUNDLED_CMARK=0
-        - os: linux
-          compiler: gcc
-          env:
-              - CXX_COMPILER=g++-5
-              - C_COMPILER=gcc-5
-              - QT_VERSION="-5.10.1"
-              - QT_PKG=510
-              - DEPLOYMENT=1
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-          addons:
-              apt:
-                  sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-5", "ninja-build"]
-        - os: linux
-          compiler: gcc
-          env:
-              - CXX_COMPILER=g++-8
-              - C_COMPILER=gcc-8
-              - QT_VERSION=571
-              - QT_PKG=57
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-          addons:
-              apt:
-                  sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-8", "ninja-build"]
-        - os: linux
-          compiler: clang
-          env:
-              - CXX_COMPILER=clang++-5.0
-              - C_COMPILER=clang-5.0
-              - QT_VERSION=592
-              - QT_PKG=59
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-          addons:
-              apt:
-                  sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
-                  packages: ["clang-5.0", "g++-7", "ninja-build"]
-
+  include:
+  - os: osx
+    osx_image: xcode9
+    compiler: clang
+    env:
+    - DEPLOYMENT=1
+    - USE_BUNDLED_BOOST=0
+    - USE_BUNDLED_CMARK=0
+  - os: linux
+    compiler: gcc
+    env:
+    - CXX_COMPILER=g++-5
+    - C_COMPILER=gcc-5
+    - QT_VERSION="-5.10.1"
+    - QT_PKG=510
+    - DEPLOYMENT=1
+    - USE_BUNDLED_BOOST=1
+    - USE_BUNDLED_CMARK=1
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-5
+        - ninja-build
+  - os: linux
+    compiler: gcc
+    env:
+    - CXX_COMPILER=g++-8
+    - C_COMPILER=gcc-8
+    - QT_VERSION=571
+    - QT_PKG=57
+    - USE_BUNDLED_BOOST=1
+    - USE_BUNDLED_CMARK=1
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-8
+        - ninja-build
+  - os: linux
+    compiler: clang
+    env:
+    - CXX_COMPILER=clang++-5.0
+    - C_COMPILER=clang-5.0
+    - QT_VERSION=592
+    - QT_PKG=59
+    - USE_BUNDLED_BOOST=1
+    - USE_BUNDLED_CMARK=1
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        - llvm-toolchain-trusty-5.0
+        packages:
+        - clang-5.0
+        - g++-7
+        - ninja-build
 before_install:
-    - export CXX=${CXX_COMPILER}
-    - export CC=${C_COMPILER}
-
+- export CXX=${CXX_COMPILER}
+- export CC=${C_COMPILER}
 install:
-    - ./.ci/install.sh
-    - export PATH=/usr/local/bin:${PATH}
-
+- "./.ci/install.sh"
+- export PATH=/usr/local/bin:${PATH}
 script:
-    - ./.ci/script.sh
-    - sed -i -e "s/VERSION_NAME_VALUE/${TRAVIS_TAG}/g" ./.ci/bintray-release.json || true
-    - cp ./.ci/bintray-release.json .
-
+- "./.ci/script.sh"
+- sed -i -e "s/VERSION_NAME_VALUE/${TRAVIS_TAG}/g" ./.ci/bintray-release.json || true
+- cp ./.ci/bintray-release.json .
 deploy:
-    - provider: bintray
-      user: "redsky17"
-      key:
-          secure: "CAVzWZPxYSOTollo9bpD4tvEbfxXjqelc32aApV48GKyJrMQljQ+mvSe25BuUtnDehxnw8affgGX23AYXmvG8P7w4hM2d7//8Lgan1zCmusV8JE432jknev6X641B4cvrywqSe0Dj3l0kS9Xgirq4BGavlI0y2vUjeJfQEv0y8GYoI72LwgyH0i82v/1Qi92Fh8429IJIb0eKmC1wGWXCmo2kd8StZRL5mSlc4TmyWI0SHpA5GrLMiQwLAuD7DjDl5mpaK2yQx+H4vBcI2SUMvmlHGgVjXikJG5gURlHbnIaaBFvO67INc1/65KtMokWuMP12zxqJiaMPtsAskOpQv4FLAYDfnigH3NxufyOIGp2cxS5RhJDQhbNsxHEDnUo1kHcO23ZYNWCuC1yUdn0RXzKhWcUsz8mKF8KJs22Ty4VjfUMZ+vqK/AbHyq4rkl8DizVRZqKF1KjSWrSv/2sT4itnHk9pmcgxAYfGuALcjrJJveI4MTwDhzXB62CKnMOqLq3sAMqvE0+BdA0BykQr7qrKtptuyP2/OFx6RDbfHQl5Klkb6cSOjxm0oUzh/8iaxgsVdCrhfE67eqkhFZ+a8lJkB/rZ4zSK1Q2Cp4nLtnxenUCW+Ptk2l7zZN6kXM1/+tcgqVROChYJ6asMUpsjFOOAVQ8SZ4TcxX1rq+pxlA="
-      skip_cleanup: true
-      overwrite: true
-      file: "bintray-release.json"
-      on:
-          condition: $DEPLOYMENT == 1
-          repo: nheko-reborn/nheko
-          tags: true
-          deploy:
-    - skip_cleanup: true
-      overwrite: true
-      provider: releases
-      api_key:
-          secure: "JROFCxI1Dj0j8GKftCk1M16PovGmbCQb/i6JKm+YKWIhoYoMJBFl3TzhN0D0KlT8VeClZ0WV4MOom6elAkxlYTGR1kcoJ5ESt/AS0B1ULxq2exbmqzqJgJJBb65JVo4nglLHZPnUHOY5s/QGtg05nPeexcK8b3lFvhMRI+Y5jqX9i4FGsEBk6tG2OLfXB0odU8f6rhEeIGWgJw1LVyiTk3VoQcJtBi7Vsg3p4othMaLDlkVHsepNY+xSO14NbNpUjXSzYWZJEM9HqCOaOlAjZR5Q0Ad365TqN9zj6NOVwxEdN4Zl3/Ux838Or6TobhdhGjqqO2JmWt6C+xV4XJ9wX+8LPb+hYYVBrItp32g3grtW/e4nNsp4j3nm1P87kzKPxC4oAaskyn0dlwC4Vo3LH67beQiceAIuM9ywej4Zwr94+MeKjIVtqI6Qz7Tjlt1pFGI1lmfkKQOXiFlkwPbyCPV3smpJ1WSOC4Npkht6tFPBlLV2DFySYUMRAdH2RwBxWhjzwsSJlx/dEKUUL5yffKtg2tANM6aCCyXMEqEXXVkFe9e9ymPbGmmQuf56xo3rYQj5BcQWA9JHAancqLkxoR0rbRBBmai5qDQP7rBss/HR7Uec5xSnYkS6YYI9zpZ+FTfPa7lnVI3c8hj+ukua1EnsYytB8F8l95jrO8fnTxU="
-      file_glob: true
-      file:
-          - nheko-${TRAVIS_TAG}-x86_64.AppImage
-      on:
-          condition: $TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1
-          repo: redsky17/nheko
-          tags: true
-    - skip_cleanup: true
-      overwrite: true
-      provider: releases
-      api_key:
-          secure: "JROFCxI1Dj0j8GKftCk1M16PovGmbCQb/i6JKm+YKWIhoYoMJBFl3TzhN0D0KlT8VeClZ0WV4MOom6elAkxlYTGR1kcoJ5ESt/AS0B1ULxq2exbmqzqJgJJBb65JVo4nglLHZPnUHOY5s/QGtg05nPeexcK8b3lFvhMRI+Y5jqX9i4FGsEBk6tG2OLfXB0odU8f6rhEeIGWgJw1LVyiTk3VoQcJtBi7Vsg3p4othMaLDlkVHsepNY+xSO14NbNpUjXSzYWZJEM9HqCOaOlAjZR5Q0Ad365TqN9zj6NOVwxEdN4Zl3/Ux838Or6TobhdhGjqqO2JmWt6C+xV4XJ9wX+8LPb+hYYVBrItp32g3grtW/e4nNsp4j3nm1P87kzKPxC4oAaskyn0dlwC4Vo3LH67beQiceAIuM9ywej4Zwr94+MeKjIVtqI6Qz7Tjlt1pFGI1lmfkKQOXiFlkwPbyCPV3smpJ1WSOC4Npkht6tFPBlLV2DFySYUMRAdH2RwBxWhjzwsSJlx/dEKUUL5yffKtg2tANM6aCCyXMEqEXXVkFe9e9ymPbGmmQuf56xo3rYQj5BcQWA9JHAancqLkxoR0rbRBBmai5qDQP7rBss/HR7Uec5xSnYkS6YYI9zpZ+FTfPa7lnVI3c8hj+ukua1EnsYytB8F8l95jrO8fnTxU="
-      file: nheko-${TRAVIS_TAG}.dmg
-      on:
-          condition: $TRAVIS_OS_NAME == osx && $DEPLOYMENT == 1
-          repo: redsky17/nheko
-          tags: true
+  matrix:
+  - provider: bintray
+    user: redsky17
+    key:
+      secure: CAVzWZPxYSOTollo9bpD4tvEbfxXjqelc32aApV48GKyJrMQljQ+mvSe25BuUtnDehxnw8affgGX23AYXmvG8P7w4hM2d7//8Lgan1zCmusV8JE432jknev6X641B4cvrywqSe0Dj3l0kS9Xgirq4BGavlI0y2vUjeJfQEv0y8GYoI72LwgyH0i82v/1Qi92Fh8429IJIb0eKmC1wGWXCmo2kd8StZRL5mSlc4TmyWI0SHpA5GrLMiQwLAuD7DjDl5mpaK2yQx+H4vBcI2SUMvmlHGgVjXikJG5gURlHbnIaaBFvO67INc1/65KtMokWuMP12zxqJiaMPtsAskOpQv4FLAYDfnigH3NxufyOIGp2cxS5RhJDQhbNsxHEDnUo1kHcO23ZYNWCuC1yUdn0RXzKhWcUsz8mKF8KJs22Ty4VjfUMZ+vqK/AbHyq4rkl8DizVRZqKF1KjSWrSv/2sT4itnHk9pmcgxAYfGuALcjrJJveI4MTwDhzXB62CKnMOqLq3sAMqvE0+BdA0BykQr7qrKtptuyP2/OFx6RDbfHQl5Klkb6cSOjxm0oUzh/8iaxgsVdCrhfE67eqkhFZ+a8lJkB/rZ4zSK1Q2Cp4nLtnxenUCW+Ptk2l7zZN6kXM1/+tcgqVROChYJ6asMUpsjFOOAVQ8SZ4TcxX1rq+pxlA=
+    skip_cleanup: true
+    overwrite: true
+    file: bintray-release.json
+    on:
+      condition: "$DEPLOYMENT == 1"
+      repo: Nheko-Reborn/nheko
+      tags: true
+      deploy: 
+  - skip_cleanup: true
+    overwrite: true
+    provider: releases
+    api_key:
+      secure: JROFCxI1Dj0j8GKftCk1M16PovGmbCQb/i6JKm+YKWIhoYoMJBFl3TzhN0D0KlT8VeClZ0WV4MOom6elAkxlYTGR1kcoJ5ESt/AS0B1ULxq2exbmqzqJgJJBb65JVo4nglLHZPnUHOY5s/QGtg05nPeexcK8b3lFvhMRI+Y5jqX9i4FGsEBk6tG2OLfXB0odU8f6rhEeIGWgJw1LVyiTk3VoQcJtBi7Vsg3p4othMaLDlkVHsepNY+xSO14NbNpUjXSzYWZJEM9HqCOaOlAjZR5Q0Ad365TqN9zj6NOVwxEdN4Zl3/Ux838Or6TobhdhGjqqO2JmWt6C+xV4XJ9wX+8LPb+hYYVBrItp32g3grtW/e4nNsp4j3nm1P87kzKPxC4oAaskyn0dlwC4Vo3LH67beQiceAIuM9ywej4Zwr94+MeKjIVtqI6Qz7Tjlt1pFGI1lmfkKQOXiFlkwPbyCPV3smpJ1WSOC4Npkht6tFPBlLV2DFySYUMRAdH2RwBxWhjzwsSJlx/dEKUUL5yffKtg2tANM6aCCyXMEqEXXVkFe9e9ymPbGmmQuf56xo3rYQj5BcQWA9JHAancqLkxoR0rbRBBmai5qDQP7rBss/HR7Uec5xSnYkS6YYI9zpZ+FTfPa7lnVI3c8hj+ukua1EnsYytB8F8l95jrO8fnTxU=
+    file_glob: true
+    file:
+    - nheko-${TRAVIS_TAG}-x86_64.AppImage
+    on:
+      condition: "$TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1"
+      repo: Nheko-Reborn/nheko
+      tags: true
+  - skip_cleanup: true
+    overwrite: true
+    provider: releases
+    api_key:
+      secure: JROFCxI1Dj0j8GKftCk1M16PovGmbCQb/i6JKm+YKWIhoYoMJBFl3TzhN0D0KlT8VeClZ0WV4MOom6elAkxlYTGR1kcoJ5ESt/AS0B1ULxq2exbmqzqJgJJBb65JVo4nglLHZPnUHOY5s/QGtg05nPeexcK8b3lFvhMRI+Y5jqX9i4FGsEBk6tG2OLfXB0odU8f6rhEeIGWgJw1LVyiTk3VoQcJtBi7Vsg3p4othMaLDlkVHsepNY+xSO14NbNpUjXSzYWZJEM9HqCOaOlAjZR5Q0Ad365TqN9zj6NOVwxEdN4Zl3/Ux838Or6TobhdhGjqqO2JmWt6C+xV4XJ9wX+8LPb+hYYVBrItp32g3grtW/e4nNsp4j3nm1P87kzKPxC4oAaskyn0dlwC4Vo3LH67beQiceAIuM9ywej4Zwr94+MeKjIVtqI6Qz7Tjlt1pFGI1lmfkKQOXiFlkwPbyCPV3smpJ1WSOC4Npkht6tFPBlLV2DFySYUMRAdH2RwBxWhjzwsSJlx/dEKUUL5yffKtg2tANM6aCCyXMEqEXXVkFe9e9ymPbGmmQuf56xo3rYQj5BcQWA9JHAancqLkxoR0rbRBBmai5qDQP7rBss/HR7Uec5xSnYkS6YYI9zpZ+FTfPa7lnVI3c8hj+ukua1EnsYytB8F8l95jrO8fnTxU=
+    file: nheko-${TRAVIS_TAG}.dmg
+    on:
+      condition: "$TRAVIS_OS_NAME == osx && $DEPLOYMENT == 1"
+      repo: Nheko-Reborn/nheko
+      tags: true
+  key:
+    secure: q4V4k6mAEDBgA/13NiCw+5/Jh7/xmtRBybFSr/0I6JTatkaLs2pj4zIRyHIrBVZtOd1oFVmq6aDHXXR+fbSo1Euj3s5Eo+7TTAqKAlyRMcme/+0S0bfZfisA+6LskZcmacq1FzEkAXd5OjMXB6rIakDC1sgkgo5bpM9w5r/9ZFXXgCfDzW07LJOypDyph0Gg4rlU22o5fAcKmuglTgbJWceznv46HcHvW1s2JzkJQugpAh8LkpiEkuNnH1wZ0WDI1wQQFI+ti5GSBkHicS2kgkOL3IlCvfzS0ym85XF1FTncqDEClxudwWOhVm3qpSOm28I+lB4i0ha1LNzsl4S8ClVTxJRJMJBHmLmkh3lOasAn6v8Vc2WASygfnTC2VGMaRWYMfphLm7e1CcT8OPfoNcEJLvR6YTxgm7AadomOV4f8q9FUwvrkyJkbR+sV+DkJ5yQ/uF1pDOMnUUzjDYpCfYXEECqh8gH8iUXhWabrJyaFlzZaOsai/ujyepLOkUtJaGcOrnCHlOQlfXgBhmOCUFau8ByJhSrHGGlBPb9JhC/jzWq++dmN/5zn1coc4kNqKB55h1AFVtTTW7t14RzNKER2/opl7LFoywvyMyERusmxHfGzNihFHO4GoBY+WtEpphCAdqCjLaJM95w9spQ0sgR0/qy4883MhTWBctT9K6s=
