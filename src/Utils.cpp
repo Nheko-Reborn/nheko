@@ -365,10 +365,6 @@ utils::markdownToHtml(const QString &text)
 
         auto result = QString::fromStdString(html).trimmed();
 
-        // Strip paragraph tags.
-        result.replace("<p>", "");
-        result.replace("</p>", "");
-
         return result;
 }
 
