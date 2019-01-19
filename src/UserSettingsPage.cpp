@@ -239,6 +239,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 fontSelectionCombo_->addItem(family);
         }
 
+        int fontIndex = fontSelectionCombo_->findText(settings_->font());
+        fontSelectionCombo_->setCurrentIndex(fontIndex);
+
         fontFamilyOptionLayout->addWidget(fontFamilyLabel);
         fontFamilyOptionLayout->addWidget(fontSelectionCombo_, 0, Qt::AlignRight);
 
@@ -250,6 +253,11 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         themeCombo_->addItem("Light");
         themeCombo_->addItem("Dark");
         themeCombo_->addItem("System");
+
+        QString themeStr = settings_->theme();
+        themeStr.replace(0, 1, themeStr[0].toUpper());
+        int themeIndex = themeCombo_->findText(themeStr);
+        themeCombo_->setCurrentIndex(themeIndex);
 
         themeOptionLayout_->addWidget(themeLabel_);
         themeOptionLayout_->addWidget(themeCombo_, 0, Qt::AlignRight);

@@ -92,6 +92,7 @@ public:
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         double fontSize() const { return baseFontSize_; }
+        QString font() const { return font_; }
 
 signals:
         void groupViewStateChanged(bool state);
