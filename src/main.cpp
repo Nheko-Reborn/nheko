@@ -147,6 +147,10 @@ main(int argc, char *argv[])
         QSettings settings;
 
         QFont font;
+        QString userFontFamily = settings.value("user/font_family", "").toString();
+        if (!userFontFamily.isEmpty()) {
+                font.setFamily(userFontFamily);
+        }
         font.setPointSizeF(settings.value("user/font_size", font.pointSizeF()).toDouble());
 
         app.setFont(font);
