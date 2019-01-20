@@ -382,19 +382,6 @@ utils::linkColor()
         return QPalette().color(QPalette::Link).name();
 }
 
-QString
-utils::generateHexColor(const int hash)
-{
-        QString colour("#");
-        for (int i = 0; i < 3; i++) {
-                int value = (hash >> (i * 8)) & 0xFF;
-                colour.append(("00" + QString::number(value, 16)).right(2));
-        }
-        // nhlog::ui()->debug("Hex Generated {} -> {}", QString::number(hash).toStdString(),
-        // colour.toStdString());
-        return colour.toUpper();
-}
-
 int
 utils::hashQString(const QString &input)
 {
@@ -403,8 +390,6 @@ utils::hashQString(const QString &input)
         for (int i = 0; i < input.length(); i++) {
                 hash = input.at(i).digitValue() + ((hash << 5) - hash);
         }
-
-        hash *= 13;
 
         return hash;
 }
@@ -417,59 +402,84 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
         const qreal backgroundLum = luminance(background);
 
         // Create a color for the input
-        auto hash     = hashQString(input);
-        auto colorHex = generateHexColor(hash);
+        auto hash = hashQString(input);
+        // create a hue value based on the hash of the input.
+        auto userHue = qAbs(hash % 360);
+        nhlog::ui()->debug(
+          "User Hue {} : {}", input.toStdString(), QString::number(userHue).toStdString());
+        // start with moderate saturation and lightness values.
+        auto sat       = 220;
+        auto lightness = 125;
 
         // converting to a QColor makes the luminance calc easier.
-        QColor inputColor = QColor(colorHex);
+        QColor inputColor = QColor::fromHsl(userHue, sat, lightness);
 
-        // attempt to score both the luminance and the contrast.
-        // contrast should have a higher precedence, but luminance
-        // helps dictate how exciting the colors are.
-        auto colorLum = luminance(inputColor);
-        auto contrast = computeContrast(colorLum, backgroundLum);
+        // calculate the initial luminance and contrast of the
+        // generated color.  It's possible that no additional
+        // work will be necessary.
+        auto lum      = luminance(inputColor);
+        auto contrast = computeContrast(lum, backgroundLum);
 
-        // If the contrast or luminance don't meet our criteria,
-        // try again and again until they do.  After 10 tries,
-        // the best-scoring color will be chosen.
-        int att = 0;
-        while ((contrast < 5 || (colorLum < 0.05 || colorLum > 0.95)) && ++att < 10) {
-                hash        = hashQString(input) + ((hash << 2) * 13);
-                auto newHex = generateHexColor(hash);
-                inputColor.setNamedColor(newHex);
-                auto tmpLum      = luminance(inputColor);
-                auto tmpContrast = computeContrast(tmpLum, backgroundLum);
+        // If the contrast doesn't meet our criteria,
+        // try again and again until they do by modifying first
+        // the lightness and then the saturation of the color.
+        while (contrast < 5) {
+                // if our lightness is at it's bounds, try changing
+                // saturation instead.
+                if (lightness == 242 || lightness == 13) {
+                        qreal newSat = qBound(26.0, sat * 1.25, 242.0);
+                        nhlog::ui()->info("newSat {}", QString::number(newSat).toStdString());
 
-                // Prioritize contrast over luminance
-                // If both values are better, it's a no brainer.
-                if (tmpContrast > contrast && (tmpLum > 0.05 && tmpLum < 0.95)) {
-                        contrast = tmpContrast;
-                        colorHex = newHex;
-                        colorLum = tmpLum;
-                }
-                // Otherwise, if we still can get a more
-                // vibrant color and have met our contrast
-                // threshold, pick the more vibrant color,
-                // even if contrast will drop somewhat.
-                // choosing 50% luminance as ideal.
-                else if ((qAbs(tmpLum - 0.50) < qAbs(colorLum - 0.50)) && tmpContrast >= 5) {
-                        contrast = tmpContrast;
-                        colorHex = newHex;
-                        colorLum = tmpLum;
-                }
-                // Otherwise, just take the better contrast.
-                else if (tmpContrast > contrast) {
-                        contrast = tmpContrast;
-                        colorHex = newHex;
-                        colorLum = tmpLum;
+                        inputColor.setHsl(userHue, qFloor(newSat), lightness);
+                        auto tmpLum         = luminance(inputColor);
+                        auto higherContrast = computeContrast(tmpLum, backgroundLum);
+                        if (higherContrast > contrast) {
+                                contrast = higherContrast;
+                                sat      = newSat;
+                        } else {
+                                newSat = qBound(26.0, sat / 1.25, 242.0);
+                                inputColor.setHsl(userHue, qFloor(newSat), lightness);
+                                tmpLum             = luminance(inputColor);
+                                auto lowerContrast = computeContrast(tmpLum, backgroundLum);
+                                if (lowerContrast > contrast) {
+                                        contrast = lowerContrast;
+                                        sat      = newSat;
+                                }
+                        }
+                } else {
+                        qreal newLightness = qBound(13.0, lightness * 1.25, 242.0);
+
+                        inputColor.setHsl(userHue, sat, qFloor(newLightness));
+
+                        auto tmpLum         = luminance(inputColor);
+                        auto higherContrast = computeContrast(tmpLum, backgroundLum);
+
+                        // Check to make sure we have actually improved contrast
+                        if (higherContrast > contrast) {
+                                contrast  = higherContrast;
+                                lightness = newLightness;
+                                // otherwise, try going the other way instead.
+                        } else {
+                                newLightness = qBound(13.0, lightness / 1.25, 242.0);
+                                inputColor.setHsl(userHue, sat, qFloor(newLightness));
+                                tmpLum             = luminance(inputColor);
+                                auto lowerContrast = computeContrast(tmpLum, backgroundLum);
+                                if (lowerContrast > contrast) {
+                                        contrast  = lowerContrast;
+                                        lightness = newLightness;
+                                }
+                        }
                 }
         }
+
+        // get the hex value of the generated color.
+        auto colorHex = inputColor.name();
 
         nhlog::ui()->debug("Hex Generated for {}: [hex: {}, contrast: {}, luminance: {}]",
                            input.toStdString(),
                            colorHex.toStdString(),
                            QString::number(contrast).toStdString(),
-                           QString::number(colorLum).toStdString());
+                           QString::number(lum).toStdString());
         return colorHex;
 }
 
@@ -496,7 +506,9 @@ utils::luminance(const QColor &col)
                 v <= 0.03928 ? lumRgb[i] = v / 12.92 : lumRgb[i] = qPow((v + 0.055) / 1.055, 2.4);
         }
 
-        return lumRgb[0] * 0.2126 + lumRgb[1] * 0.7152 + lumRgb[2] * 0.0722;
+        auto lum = lumRgb[0] * 0.2126 + lumRgb[1] * 0.7152 + lumRgb[2] * 0.0722;
+
+        return lum;
 }
 
 void

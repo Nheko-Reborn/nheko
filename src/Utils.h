@@ -229,10 +229,6 @@ markdownToHtml(const QString &text);
 QString
 linkColor();
 
-//! Given an input integer, create a color string in #RRGGBB format
-QString
-generateHexColor(const int hash);
-
 //! Returns the hash code of the input QString
 int
 hashQString(const QString &input);
