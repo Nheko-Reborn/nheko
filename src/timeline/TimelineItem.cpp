@@ -192,7 +192,8 @@ TimelineItem::init()
                                   emit eventRedacted(event_id_);
                           });
         });
-
+        connect(
+          ChatPage::instance(), &ChatPage::themeChanged, this, &TimelineItem::refreshAuthorColor);
         connect(markAsRead_, &QAction::triggered, this, &TimelineItem::sendReadReceipt);
         connect(viewRawMessage_, &QAction::triggered, this, &TimelineItem::openRawMessageViewer);
 
@@ -603,6 +604,21 @@ TimelineItem::generateBody(const QString &body)
         });
 }
 
+void
+TimelineItem::refreshAuthorColor()
+{
+        if (userName_) {
+                QString userColor = utils::getAuthorColor(userName_->text());
+                if (userColor.isEmpty()) {
+                        qApp->style()->polish(this);
+                        // generate user's unique color.
+                        auto backCol = backgroundColor().name();
+                        userColor = utils::generateContrastingHexColor(userName_->text(), backCol);
+                        utils::addAuthorColor(userName_->text(), userColor);
+                }
+                userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+        }
+}
 // The username/timestamp is displayed along with the message body.
 void
 TimelineItem::generateBody(const QString &user_id, const QString &displayname, const QString &body)
@@ -639,10 +655,14 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
 
         // TimelineItem isn't displayed.  This forces the QSS to get
         // loaded.
-        qApp->style()->polish(this);
-        // generate user's unique color.
-        auto backCol   = backgroundColor().name();
-        auto userColor = utils::generateContrastingHexColor(user_id, backCol);
+        QString userColor = utils::getAuthorColor(user_id);
+        if (userColor.isEmpty()) {
+                qApp->style()->polish(this);
+                // generate user's unique color.
+                auto backCol = backgroundColor().name();
+                userColor    = utils::generateContrastingHexColor(user_id, backCol);
+                utils::addAuthorColor(user_id, userColor);
+        }
         userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
 
         auto filter = new UserProfileFilter(user_id, userName_);

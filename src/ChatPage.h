@@ -148,6 +148,7 @@ signals:
                            const QImage &icon);
 
         void updateGroupsInfo(const mtx::responses::JoinedGroups &groups);
+        void themeChanged();
 
 private slots:
         void showUnreadMessageNotification(int count);

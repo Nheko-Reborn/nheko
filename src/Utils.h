@@ -246,6 +246,18 @@ computeContrast(const qreal &one, const qreal &two);
 qreal
 luminance(const QColor &col);
 
+//! Clear the author color hashmap
+void
+clearAuthorColors();
+
+//! Get the given QString from the authorColors hash
+QString
+getAuthorColor(const QString &author);
+
+//! Put the given QString into the authorColor hash
+void
+addAuthorColor(const QString &author, const QString &color);
+
 //! Center a widget in relation to another widget.
 void
 centerWidget(QWidget *widget, QWidget *parent);

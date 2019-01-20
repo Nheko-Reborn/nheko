@@ -227,6 +227,9 @@ signals:
         void eventRedacted(const QString &event_id);
         void redactionFailed(const QString &msg);
 
+public slots:
+        void refreshAuthorColor();
+
 protected:
         void paintEvent(QPaintEvent *event) override;
         void contextMenuEvent(QContextMenuEvent *event) override;

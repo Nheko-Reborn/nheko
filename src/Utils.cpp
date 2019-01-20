@@ -15,6 +15,8 @@
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+QHash<QString, QString> authorColors_;
+
 QString
 utils::localUser()
 {
@@ -509,6 +511,28 @@ utils::luminance(const QColor &col)
         auto lum = lumRgb[0] * 0.2126 + lumRgb[1] * 0.7152 + lumRgb[2] * 0.0722;
 
         return lum;
+}
+
+void
+utils::clearAuthorColors()
+{
+        authorColors_.clear();
+}
+
+QString
+utils::getAuthorColor(const QString &author)
+{
+        if (authorColors_.contains(author)) {
+                return authorColors_[author];
+        } else {
+                return "";
+        }
+}
+
+void
+utils::addAuthorColor(const QString &author, const QString &color)
+{
+        authorColors_[author] = color;
 }
 
 void

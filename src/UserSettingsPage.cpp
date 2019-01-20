@@ -379,7 +379,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(themeCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
-                [this](const QString &text) { settings_->setTheme(text.toLower()); });
+                [this](const QString &text) {
+                        settings_->setTheme(text.toLower());
+                        emit themeChanged();
+                });
         connect(scaleFactorCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });

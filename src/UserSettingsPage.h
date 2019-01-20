@@ -132,6 +132,7 @@ protected:
 signals:
         void moveBack();
         void trayOptionChanged(bool value);
+        void themeChanged();
 
 private slots:
         void importSessionKeys();
