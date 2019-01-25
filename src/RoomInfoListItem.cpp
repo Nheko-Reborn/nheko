@@ -101,6 +101,7 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *pare
   , roomName_{QString::fromStdString(std::move(info.name))}
   , isPressed_(false)
   , unreadMsgCount_(0)
+  , unreadHighlightedMsgCount_(0)
 {
         init(parent);
 
@@ -301,7 +302,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         if (unreadMsgCount_ > 0) {
                 QBrush brush;
                 brush.setStyle(Qt::SolidPattern);
-                brush.setColor(bubbleBgColor());
+                if (unreadHighlightedMsgCount_ > 0) {
+                        brush.setColor(mentionedColor());
+                } else {
+                        brush.setColor(bubbleBgColor());
+                }
 
                 if (isPressed_)
                         brush.setColor(bubbleFgColor());
@@ -354,9 +359,10 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 }
 
 void
-RoomInfoListItem::updateUnreadMessageCount(int count)
+RoomInfoListItem::updateUnreadMessageCount(int count, int highlightedCount)
 {
-        unreadMsgCount_ = count;
+        unreadMsgCount_            = count;
+        unreadHighlightedMsgCount_ = highlightedCount;
         update();
 }
 

@@ -86,6 +86,7 @@ QListWidget {
 }
 
 RoomInfoListItem {
+    qproperty-mentionedColor: palette(alternate-base);
     qproperty-highlightedBackgroundColor: palette(highlight);
     qproperty-hoverBackgroundColor: palette(base);
     qproperty-backgroundColor: palette(window);

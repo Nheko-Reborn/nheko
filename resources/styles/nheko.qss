@@ -87,6 +87,7 @@ RaisedButton {
 }
 
 RoomInfoListItem {
+    qproperty-mentionedColor: #a82353;
     qproperty-highlightedBackgroundColor: #38A3D8;
     qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
     qproperty-hoverTitleColor: #f2f5f8;

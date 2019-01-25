@@ -197,7 +197,9 @@ private:
         Memberships getMemberships(const std::vector<Collection> &events) const;
 
         //! Update the room with the new notification count.
-        void updateRoomNotificationCount(const QString &room_id, uint16_t notification_count);
+        void updateRoomNotificationCount(const QString &room_id,
+                                         uint16_t notification_count,
+                                         uint16_t highlight_count);
         //! Send desktop notification for the received messages.
         void sendDesktopNotifications(const mtx::responses::Notifications &);
 

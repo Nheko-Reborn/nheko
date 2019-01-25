@@ -546,7 +546,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
                         updateTypingUsers(room_id, room.second.ephemeral.typing);
                         updateRoomNotificationCount(
-                          room_id, room.second.unread_notifications.notification_count);
+                          room_id,
+                          room.second.unread_notifications.notification_count,
+                          room.second.unread_notifications.highlight_count);
 
                         if (room.second.unread_notifications.notification_count > 0)
                                 hasNotifications = true;
@@ -908,9 +910,11 @@ ChatPage::setGroupViewState(bool isEnabled)
 }
 
 void
-ChatPage::updateRoomNotificationCount(const QString &room_id, uint16_t notification_count)
+ChatPage::updateRoomNotificationCount(const QString &room_id,
+                                      uint16_t notification_count,
+                                      uint16_t highlight_count)
 {
-        room_list_->updateUnreadMessageCount(room_id, notification_count);
+        room_list_->updateUnreadMessageCount(room_id, notification_count, highlight_count);
 }
 
 void

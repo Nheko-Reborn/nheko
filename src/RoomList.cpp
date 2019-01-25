@@ -143,7 +143,7 @@ RoomList::removeRoom(const QString &room_id, bool reset)
 }
 
 void
-RoomList::updateUnreadMessageCount(const QString &roomid, int count)
+RoomList::updateUnreadMessageCount(const QString &roomid, int count, int highlightedCount)
 {
         if (!roomExists(roomid)) {
                 nhlog::ui()->warn("updateUnreadMessageCount: unknown room_id {}",
@@ -151,7 +151,7 @@ RoomList::updateUnreadMessageCount(const QString &roomid, int count)
                 return;
         }
 
-        rooms_[roomid]->updateUnreadMessageCount(count);
+        rooms_[roomid]->updateUnreadMessageCount(count, highlightedCount);
 
         calculateUnreadMessageCount();
 }
