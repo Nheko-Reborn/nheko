@@ -608,17 +608,18 @@ void
 TimelineItem::refreshAuthorColor()
 {
         if (userName_) {
-                QString userColor = Cache::userColor(userName_->text());
+                QString userColor = Cache::userColor(userName_->toolTip());
                 if (userColor.isEmpty()) {
                         // This attempts to refresh this item since it's not drawn
                         // which allows us to get the background color accurately.
                         qApp->style()->polish(this);
                         // generate user's unique color.
                         auto backCol = backgroundColor().name();
-                        userColor = utils::generateContrastingHexColor(userName_->text(), backCol);
-                        Cache::insertUserColor(userName_->text(), userColor);
-                        userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+                        userColor = utils::generateContrastingHexColor(userName_->toolTip(), backCol);
+                        Cache::insertUserColor(userName_->toolTip(), userColor);
                 }
+                userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+
         }
 }
 // The username/timestamp is displayed along with the message body.
