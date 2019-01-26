@@ -282,6 +282,9 @@ include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${Boost_INCLUDE_DIRS})
 
+# local inclue directory
+include_directories(includes)
+
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
     src/dialogs/CreateRoom.h
