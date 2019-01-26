@@ -708,7 +708,7 @@ TimelineItem::replaceEmoji(const QString &body)
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
                 if (code > 9000)
-                        fmtBody += QString("<span style=\"font-family: Emoji One;\">") +
+                        fmtBody += QString("<span style=\"font-family:  emoji;\">") +
                                    QString::fromUcs4(&code, 1) + "</span>";
                 else
                         fmtBody += QString::fromUcs4(&code, 1);
