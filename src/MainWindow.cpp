@@ -17,9 +17,9 @@
 
 #include <QApplication>
 #include <QLayout>
+#include <QPluginLoader>
 #include <QSettings>
 #include <QShortcut>
-#include <QPluginLoader>
 
 #include <mtx/requests.hpp>
 
@@ -488,23 +488,23 @@ MainWindow::showDialog(QWidget *dialog)
 bool
 MainWindow::loadJdenticonPlugin()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
+        QDir pluginsDir(qApp->applicationDirPath());
 
-    bool plugins = pluginsDir.cd("plugins");
-    if (plugins) {
-        foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-                QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
-                QObject *plugin = pluginLoader.instance();
-                if (plugin) {
-                        jdenticonInteface_ = qobject_cast<JdenticonInterface *>(plugin);
-                        if (jdenticonInteface_) {
-                                nhlog::ui()->info("Found jdenticon plugin.");
-                                return true;
+        bool plugins = pluginsDir.cd("plugins");
+        if (plugins) {
+                foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+                        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+                        QObject *plugin = pluginLoader.instance();
+                        if (plugin) {
+                                jdenticonInteface_ = qobject_cast<JdenticonInterface *>(plugin);
+                                if (jdenticonInteface_) {
+                                        nhlog::ui()->info("Found jdenticon plugin.");
+                                        return true;
+                                }
                         }
                 }
         }
-    }
 
-    nhlog::ui()->info("jdenticon plugin not found.");
-    return false;
+        nhlog::ui()->info("jdenticon plugin not found.");
+        return false;
 }
