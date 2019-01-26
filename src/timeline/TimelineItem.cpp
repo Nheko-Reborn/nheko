@@ -615,11 +615,11 @@ TimelineItem::refreshAuthorColor()
                         qApp->style()->polish(this);
                         // generate user's unique color.
                         auto backCol = backgroundColor().name();
-                        userColor = utils::generateContrastingHexColor(userName_->toolTip(), backCol);
+                        userColor =
+                          utils::generateContrastingHexColor(userName_->toolTip(), backCol);
                         Cache::insertUserColor(userName_->toolTip(), userColor);
                 }
                 userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
-
         }
 }
 // The username/timestamp is displayed along with the message body.
