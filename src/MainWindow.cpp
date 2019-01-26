@@ -113,7 +113,7 @@ MainWindow::MainWindow(QWidget *parent)
         connect(
           userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
         connect(userSettingsPage_, &UserSettingsPage::themeChanged, this, []() {
-                utils::clearAuthorColors();
+                Cache::clearUserColors();
         });
         connect(
           userSettingsPage_, &UserSettingsPage::themeChanged, chat_page_, &ChatPage::themeChanged);

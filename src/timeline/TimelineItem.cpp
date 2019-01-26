@@ -608,15 +608,17 @@ void
 TimelineItem::refreshAuthorColor()
 {
         if (userName_) {
-                QString userColor = utils::getAuthorColor(userName_->text());
+                QString userColor = Cache::userColor(userName_->text());
                 if (userColor.isEmpty()) {
+                        // This attempts to refresh this item since it's not drawn
+                        // which allows us to get the background color accurately.
                         qApp->style()->polish(this);
                         // generate user's unique color.
                         auto backCol = backgroundColor().name();
                         userColor = utils::generateContrastingHexColor(userName_->text(), backCol);
-                        utils::addAuthorColor(userName_->text(), userColor);
+                        Cache::insertUserColor(userName_->text(), userColor);
+                        userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
                 }
-                userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
         }
 }
 // The username/timestamp is displayed along with the message body.
@@ -655,13 +657,13 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
 
         // TimelineItem isn't displayed.  This forces the QSS to get
         // loaded.
-        QString userColor = utils::getAuthorColor(user_id);
+        QString userColor = Cache::userColor(user_id);
         if (userColor.isEmpty()) {
                 qApp->style()->polish(this);
                 // generate user's unique color.
                 auto backCol = backgroundColor().name();
                 userColor    = utils::generateContrastingHexColor(user_id, backCol);
-                utils::addAuthorColor(user_id, userColor);
+                Cache::insertUserColor(user_id, userColor);
         }
         userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
 

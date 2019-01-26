@@ -2059,6 +2059,7 @@ Cache::roomMembers(const std::string &room_id)
 
 QHash<QString, QString> Cache::DisplayNames;
 QHash<QString, QString> Cache::AvatarUrls;
+QHash<QString, QString> Cache::UserColors;
 
 QString
 Cache::displayName(const QString &room_id, const QString &user_id)
@@ -2086,6 +2087,16 @@ Cache::avatarUrl(const QString &room_id, const QString &user_id)
         auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
         if (AvatarUrls.contains(fmt))
                 return AvatarUrls[fmt];
+
+        return QString();
+}
+
+QString
+Cache::userColor(const QString &user_id)
+{
+        if (UserColors.contains(user_id)) {
+                return UserColors[user_id];
+        }
 
         return QString();
 }
@@ -2118,4 +2129,22 @@ Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
 {
         auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
         AvatarUrls.remove(fmt);
+}
+
+void
+Cache::insertUserColor(const QString &user_id, const QString &color_name)
+{
+        UserColors.insert(user_id, color_name);
+}
+
+void
+Cache::removeUserColor(const QString &user_id)
+{
+        UserColors.remove(user_id);
+}
+
+void
+Cache::clearUserColors()
+{
+        UserColors.clear();
 }

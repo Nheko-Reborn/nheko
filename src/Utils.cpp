@@ -514,28 +514,6 @@ utils::luminance(const QColor &col)
 }
 
 void
-utils::clearAuthorColors()
-{
-        authorColors_.clear();
-}
-
-QString
-utils::getAuthorColor(const QString &author)
-{
-        if (authorColors_.contains(author)) {
-                return authorColors_[author];
-        } else {
-                return "";
-        }
-}
-
-void
-utils::addAuthorColor(const QString &author, const QString &color)
-{
-        authorColors_[author] = color;
-}
-
-void
 utils::centerWidget(QWidget *widget, QWidget *parent)
 {
         auto findCenter = [childRect = widget->rect()](QRect hostRect) -> QPoint {
