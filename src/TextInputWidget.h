@@ -30,6 +30,7 @@
 
 #include "SuggestionsPopup.h"
 #include "dialogs/PreviewUploadOverlay.h"
+#include "emoji/PickButton.h"
 
 namespace dialogs {
 class PreviewUploadOverlay;
@@ -159,6 +160,9 @@ public slots:
         void focusLineEdit() { input_->setFocus(); }
         void addReply(const QString &username, const QString &msg);
 
+private slots:
+        void addSelectedEmoji(const QString &emoji);
+
 signals:
         void sendTextMessage(QString msg);
         void sendEmoteMessage(QString msg);
@@ -189,6 +193,7 @@ private:
 
         FlatButton *sendFileBtn_;
         FlatButton *sendMessageBtn_;
+        emoji::PickButton *emojiBtn_;
 
         QColor borderColor_;
 };

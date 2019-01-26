@@ -14,8 +14,6 @@
 
 ### Other changes
 - Removed room re-ordering option.
-- Removed built-in emoji picker.
-- Removed bundled fonts.
 
 ## [0.6.1] - 2018-09-26
 

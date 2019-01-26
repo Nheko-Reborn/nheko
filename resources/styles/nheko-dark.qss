@@ -193,6 +193,18 @@ RegisterPage {
     color: #caccd1;
 }
 
+emoji--Panel,
+emoji--Panel > * {
+    background-color: #202228;
+    color: #caccd1;
+}
+
+emoji--Category,
+emoji--Category > * {
+    background-color: #2d3139;
+    color: #caccd1;
+}
+
 FloatingButton {
     qproperty-backgroundColor: #2d3139;
     qproperty-foregroundColor: white;
