@@ -76,6 +76,8 @@ ImageOverlay::paintEvent(QPaintEvent *event)
         content_ = QRect(outer_margin + diff_x / 2, diff_y / 2, image_.width(), image_.height());
         close_button_ =
           QRect(screen_.width() - margin - buttonSize, margin, buttonSize, buttonSize);
+        save_button_ =
+          QRect(screen_.width() - (2 * margin) - (2 * buttonSize), margin, buttonSize, buttonSize);
 
         // Draw main content_.
         painter.drawPixmap(content_, image_);
@@ -91,6 +93,12 @@ ImageOverlay::paintEvent(QPaintEvent *event)
         painter.setPen(pen);
         painter.drawLine(center - QPointF(15, 15), center + QPointF(15, 15));
         painter.drawLine(center + QPointF(15, -15), center - QPointF(15, -15));
+
+        // Draw download button
+        center = save_button_.center();
+        painter.drawLine(center - QPointF(0, 15), center + QPointF(0, 15));
+        painter.drawLine(center - QPointF(15, 0), center + QPointF(0, 15));
+        painter.drawLine(center + QPointF(0, 15), center + QPointF(15, 0));
 }
 
 void
@@ -101,6 +109,8 @@ ImageOverlay::mousePressEvent(QMouseEvent *event)
 
         if (close_button_.contains(event->pos()))
                 emit closing();
+        else if (save_button_.contains(event->pos()))
+                emit saving();
         else if (!content_.contains(event->pos()))
                 emit closing();
 }
