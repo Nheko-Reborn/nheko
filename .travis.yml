@@ -88,7 +88,7 @@ deploy:
       on:
           condition: $DEPLOYMENT == 1
           repo: nheko-reborn/nheko
-          tags: true
+          tags: false
           deploy:
     - skip_cleanup: true
       overwrite: true
