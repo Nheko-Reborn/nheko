@@ -71,7 +71,7 @@ install:
 
 script:
     - ./.ci/script.sh
-    - sed -i -e "s/VERSION_NAME_VALUE/${TRAVIS_TAG}/g" ./.ci/bintray-release.json || true
+    - sed -i -e "s/VERSION_NAME_VALUE/${TRAVIS_COMMIT}/g" ./.ci/bintray-release.json || true
     - cp ./.ci/bintray-release.json .
 deploy:
 - provider: bintray
