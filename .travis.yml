@@ -64,15 +64,15 @@ matrix:
 before_install:
     - export CXX=${CXX_COMPILER}
     - export CC=${C_COMPILER}
-
+    # Use TRAVIS_TAG if defined, or the short commit SHA otherwise
+    - export VERSION=${TRAVIS_TAG:-$(git rev-parse --short HEAD)}
 install:
     - ./.ci/install.sh
     - export PATH=/usr/local/bin:${PATH}
 
 script:
     - ./.ci/script.sh
-    # todo, use TRAVIS_TAG and fall back to TRAVIS_COMMIT if tag not definedS
-    - sed -i -e "s/VERSION_NAME_VALUE/${TRAVIS_COMMIT}/g" ./.ci/bintray-release.json || true
+    - sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     - cp ./.ci/bintray-release.json .
 deploy:
 - provider: bintray
@@ -95,7 +95,7 @@ deploy:
     secure: "JROFCxI1Dj0j8GKftCk1M16PovGmbCQb/i6JKm+YKWIhoYoMJBFl3TzhN0D0KlT8VeClZ0WV4MOom6elAkxlYTGR1kcoJ5ESt/AS0B1ULxq2exbmqzqJgJJBb65JVo4nglLHZPnUHOY5s/QGtg05nPeexcK8b3lFvhMRI+Y5jqX9i4FGsEBk6tG2OLfXB0odU8f6rhEeIGWgJw1LVyiTk3VoQcJtBi7Vsg3p4othMaLDlkVHsepNY+xSO14NbNpUjXSzYWZJEM9HqCOaOlAjZR5Q0Ad365TqN9zj6NOVwxEdN4Zl3/Ux838Or6TobhdhGjqqO2JmWt6C+xV4XJ9wX+8LPb+hYYVBrItp32g3grtW/e4nNsp4j3nm1P87kzKPxC4oAaskyn0dlwC4Vo3LH67beQiceAIuM9ywej4Zwr94+MeKjIVtqI6Qz7Tjlt1pFGI1lmfkKQOXiFlkwPbyCPV3smpJ1WSOC4Npkht6tFPBlLV2DFySYUMRAdH2RwBxWhjzwsSJlx/dEKUUL5yffKtg2tANM6aCCyXMEqEXXVkFe9e9ymPbGmmQuf56xo3rYQj5BcQWA9JHAancqLkxoR0rbRBBmai5qDQP7rBss/HR7Uec5xSnYkS6YYI9zpZ+FTfPa7lnVI3c8hj+ukua1EnsYytB8F8l95jrO8fnTxU="
   file_glob: true
   file:
-  - nheko-${TRAVIS_TAG}-x86_64.AppImage
+  - nheko-${VERSION}-x86_64.AppImage
   on:
     condition: "$TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1"
     repo: Nheko-Reborn/nheko
@@ -105,7 +105,7 @@ deploy:
   provider: releases
   api_key:
     secure: "JROFCxI1Dj0j8GKftCk1M16PovGmbCQb/i6JKm+YKWIhoYoMJBFl3TzhN0D0KlT8VeClZ0WV4MOom6elAkxlYTGR1kcoJ5ESt/AS0B1ULxq2exbmqzqJgJJBb65JVo4nglLHZPnUHOY5s/QGtg05nPeexcK8b3lFvhMRI+Y5jqX9i4FGsEBk6tG2OLfXB0odU8f6rhEeIGWgJw1LVyiTk3VoQcJtBi7Vsg3p4othMaLDlkVHsepNY+xSO14NbNpUjXSzYWZJEM9HqCOaOlAjZR5Q0Ad365TqN9zj6NOVwxEdN4Zl3/Ux838Or6TobhdhGjqqO2JmWt6C+xV4XJ9wX+8LPb+hYYVBrItp32g3grtW/e4nNsp4j3nm1P87kzKPxC4oAaskyn0dlwC4Vo3LH67beQiceAIuM9ywej4Zwr94+MeKjIVtqI6Qz7Tjlt1pFGI1lmfkKQOXiFlkwPbyCPV3smpJ1WSOC4Npkht6tFPBlLV2DFySYUMRAdH2RwBxWhjzwsSJlx/dEKUUL5yffKtg2tANM6aCCyXMEqEXXVkFe9e9ymPbGmmQuf56xo3rYQj5BcQWA9JHAancqLkxoR0rbRBBmai5qDQP7rBss/HR7Uec5xSnYkS6YYI9zpZ+FTfPa7lnVI3c8hj+ukua1EnsYytB8F8l95jrO8fnTxU="
-  file: nheko-${TRAVIS_TAG}.dmg
+  file: nheko-${VERSION}.dmg
   on:
     condition: "$TRAVIS_OS_NAME == osx && $DEPLOYMENT == 1"
     repo: Nheko-Reborn/nheko

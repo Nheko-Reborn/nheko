@@ -38,8 +38,6 @@ export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
 
 chmod +x nheko-x86_64.AppImage
 
-if [ ! -z $TRAVIS_TAG ]; then
-    mv nheko-x86_64.AppImage nheko-${TRAVIS_TAG}-x86_64.AppImage
-elif [ ! -z $TRAVIS_COMMIT ]; then
-    mv nheko-x86_64.AppImage nheko-${TRAVIS_COMMIT}-x86_64.AppImage
+if [ ! -z $VERSION ]; then
+    mv nheko-x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
 fi
