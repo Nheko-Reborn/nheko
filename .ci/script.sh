@@ -41,6 +41,6 @@ if [ $TRAVIS_OS_NAME == osx ]; then
     fi
 fi
 
-if [ $TRAVIS_OS_NAME == linux ]  && [ $DEPLOYMENT == 1 && [ ! -z $VERSION ] ; then
+if [ $TRAVIS_OS_NAME == linux ]  && [ $DEPLOYMENT == 1 ] && [ ! -z $VERSION ] ; then
     make linux-deploy;
 fi
