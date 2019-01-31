@@ -84,7 +84,7 @@ deploy:
   on:
     condition: "$DEPLOYMENT == 1"
     repo: Nheko-Reborn/nheko
-    tags: true
+    tags: false
     all_branches: true
     deploy: 
 - skip_cleanup: true
