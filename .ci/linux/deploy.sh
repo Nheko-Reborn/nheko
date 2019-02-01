@@ -39,5 +39,6 @@ export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
 chmod +x nheko-*x86_64.AppImage
 
 if [ ! -z $VERSION ]; then
-    mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
+    # commented out for now, as AppImage file appears to already contain the version.
+    #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
 fi
