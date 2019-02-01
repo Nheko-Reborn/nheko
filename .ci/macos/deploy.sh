@@ -16,6 +16,6 @@ popd
 
 dmgbuild -s ./.ci/macos/settings.json "Nheko" nheko.dmg
 
-if [ ! -z $TRAVIS_TAG ]; then
-    mv nheko.dmg nheko-${TRAVIS_TAG}.dmg
+if [ ! -z $VERSION ]; then
+    mv nheko.dmg nheko-${VERSION}.dmg
 fi

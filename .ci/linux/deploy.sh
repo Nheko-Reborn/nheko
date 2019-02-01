@@ -36,8 +36,8 @@ export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -bundle-non-qt-libs
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -appimage
 
-chmod +x nheko-x86_64.AppImage
+chmod +x nheko-*x86_64.AppImage
 
 if [ ! -z $VERSION ]; then
-    mv nheko-x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
+    mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
 fi
