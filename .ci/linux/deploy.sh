@@ -41,4 +41,5 @@ chmod +x nheko-*x86_64.AppImage
 if [ ! -z $VERSION ]; then
     # commented out for now, as AppImage file appears to already contain the version.
     #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
+    echo "nheko-${VERSION}-x86_64.AppImage"
 fi
