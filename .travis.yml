@@ -14,12 +14,15 @@ notifications:
 matrix:
     include:
         - os: osx
-          osx_image: xcode9
           compiler: clang
           env:
               - DEPLOYMENT=1
               - USE_BUNDLED_BOOST=0
               - USE_BUNDLED_CMARK=0
+          addons:
+            homebrew:
+              packages:
+              - qt5
         - os: linux
           compiler: gcc
           env:
