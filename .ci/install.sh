@@ -4,10 +4,13 @@ set -ex
 
 if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew update
-    brew install icu4c qt5 lmdb clang-format ninja libsodium cmark
-    brew upgrade boost cmake || true
-    # Attempt to fix icu4c issues.
-    brew unlink icu4c && brew link icu4c --force
+    brew install qt5 lmdb clang-format ninja libsodium cmark
+    brew upgrade boost cmake icu4c || true
+    # make sure that ICU executables are added to the PATH
+    # and that the shared objects files can be found by the linker
+    export PATH="$(brew --prefix icu4c)/bin:$PATH"
+    export DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix icu4c)/lib:$DYLD_FALLBACK_LIBRARY_PATH"
+    export PKG_CONFIG_PATH="$(brew --prefix icu4c)/lib/pkgconfig:$PKG_CONFIG_PATH"
 
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     sudo python get-pip.py
