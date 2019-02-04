@@ -4,8 +4,10 @@ set -ex
 
 if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew update
-    brew install qt5 lmdb clang-format ninja libsodium cmark
+    brew install icu4c qt5 lmdb clang-format ninja libsodium cmark
     brew upgrade boost cmake || true
+    # Attempt to fix icu4c issues.
+    brew unlink icu4c && brew link icu4c --force
 
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     sudo python get-pip.py
