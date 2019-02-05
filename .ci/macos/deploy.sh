@@ -9,6 +9,12 @@ PATH=/usr/local/opt/qt/bin/:${PATH}
 
 pushd build
 sudo macdeployqt nheko.app -dmg
+
+# macdeployqt does not copy symlinks over.
+# this specifically addresses icu4c issues but nothing else.
+export ICU_LIB="$(brew --prefix icu4c)/lib"
+find ${ICU_LIB} -type l -name "*.dylib" -exec cp {} nheko.app/Contents/Frameworks/ \; || true
+
 user=$(id -nu)
 sudo chown ${user} nheko.dmg
 mv nheko.dmg ..

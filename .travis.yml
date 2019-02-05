@@ -18,7 +18,7 @@ matrix:
           osx_image: xcode9
           env:
               - DEPLOYMENT=1
-              - USE_BUNDLED_BOOST=1
+              - USE_BUNDLED_BOOST=0
               - USE_BUNDLED_CMARK=0
         - os: linux
           compiler: gcc
