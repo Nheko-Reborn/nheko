@@ -176,6 +176,10 @@ set(SRC_FILES
     src/dialogs/RoomSettings.cpp
 
     # Emoji
+    src/emoji/Category.cpp
+    src/emoji/ItemDelegate.cpp
+    src/emoji/Panel.cpp
+    src/emoji/PickButton.cpp
     src/emoji/Provider.cpp
 
     # Timeline
@@ -282,6 +286,9 @@ include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${Boost_INCLUDE_DIRS})
 
+# local inclue directory
+include_directories(includes)
+
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
     src/dialogs/CreateRoom.h
@@ -297,6 +304,12 @@ qt5_wrap_cpp(MOC_HEADERS
     src/dialogs/ReadReceipts.h
     src/dialogs/ReCaptcha.h
     src/dialogs/RoomSettings.h
+
+    # Emoji
+    src/emoji/Category.h
+    src/emoji/ItemDelegate.h
+    src/emoji/Panel.h
+    src/emoji/PickButton.h
 
     # Timeline
     src/timeline/TimelineItem.h

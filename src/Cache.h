@@ -282,13 +282,16 @@ public:
 
         static QHash<QString, QString> DisplayNames;
         static QHash<QString, QString> AvatarUrls;
+        static QHash<QString, QString> UserColors;
 
         static std::string displayName(const std::string &room_id, const std::string &user_id);
         static QString displayName(const QString &room_id, const QString &user_id);
         static QString avatarUrl(const QString &room_id, const QString &user_id);
+        static QString userColor(const QString &user_id);
 
         static void removeDisplayName(const QString &room_id, const QString &user_id);
         static void removeAvatarUrl(const QString &room_id, const QString &user_id);
+        static void removeUserColor(const QString &user_id);
 
         static void insertDisplayName(const QString &room_id,
                                       const QString &user_id,
@@ -296,6 +299,9 @@ public:
         static void insertAvatarUrl(const QString &room_id,
                                     const QString &user_id,
                                     const QString &avatar_url);
+        static void insertUserColor(const QString &user_id, const QString &color_name);
+
+        static void clearUserColors();
 
         //! Load saved data for the display names & avatars.
         void populateMembers();

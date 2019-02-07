@@ -59,14 +59,15 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor hoverTitleColor READ hoverTitleColor WRITE setHoverTitleColor)
         Q_PROPERTY(QColor hoverSubtitleColor READ hoverSubtitleColor WRITE setHoverSubtitleColor)
 
+        Q_PROPERTY(QColor mentionedColor READ mentionedColor WRITE setMentionedColor)
         Q_PROPERTY(QColor btnColor READ btnColor WRITE setBtnColor)
         Q_PROPERTY(QColor btnTextColor READ btnTextColor WRITE setBtnTextColor)
 
 public:
         RoomInfoListItem(QString room_id, RoomInfo info, QWidget *parent = 0);
 
-        void updateUnreadMessageCount(int count);
-        void clearUnreadMessageCount() { updateUnreadMessageCount(0); };
+        void updateUnreadMessageCount(int count, int highlightedCount);
+        void clearUnreadMessageCount() { updateUnreadMessageCount(0, 0); };
 
         QString roomId() { return roomId_; }
         bool isPressed() const { return isPressed_; }
@@ -97,6 +98,7 @@ public:
 
         QColor bubbleFgColor() const { return bubbleFgColor_; }
         QColor bubbleBgColor() const { return bubbleBgColor_; }
+        QColor mentionedColor() const { return mentionedFontColor_; }
 
         void setHighlightedBackgroundColor(QColor &color) { highlightedBackgroundColor_ = color; }
         void setHoverBackgroundColor(QColor &color) { hoverBackgroundColor_ = color; }
@@ -120,6 +122,7 @@ public:
 
         void setBubbleFgColor(QColor &color) { bubbleFgColor_ = color; }
         void setBubbleBgColor(QColor &color) { bubbleBgColor_ = color; }
+        void setMentionedColor(QColor &color) { mentionedFontColor_ = color; }
 
         void setRoomName(const QString &name) { roomName_ = name; }
         void setRoomType(bool isInvite)
@@ -184,7 +187,8 @@ private:
         bool isPressed_         = false;
         bool hasUnreadMessages_ = true;
 
-        int unreadMsgCount_ = 0;
+        int unreadMsgCount_            = 0;
+        int unreadHighlightedMsgCount_ = 0;
 
         QColor highlightedBackgroundColor_;
         QColor hoverBackgroundColor_;
@@ -206,6 +210,7 @@ private:
         QRectF declineBtnRegion_;
 
         // Fonts
+        QColor mentionedFontColor_;
         QFont unreadCountFont_;
         int bubbleDiameter_;
 

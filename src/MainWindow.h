@@ -31,6 +31,8 @@
 #include "dialogs/UserProfile.h"
 #include "ui/OverlayModal.h"
 
+#include "jdenticoninterface.h"
+
 class ChatPage;
 class LoadingIndicator;
 class OverlayModal;
@@ -129,6 +131,8 @@ private slots:
         void removeOverlayProgressBar();
 
 private:
+        bool loadJdenticonPlugin();
+
         void showDialog(QWidget *dialog);
         bool hasActiveUser();
         void restoreWindowSize();
@@ -158,4 +162,6 @@ private:
         //! Overlay modal used to project other widgets.
         OverlayModal *modal_       = nullptr;
         LoadingIndicator *spinner_ = nullptr;
+
+        JdenticonInterface *jdenticonInteface_ = nullptr;
 };

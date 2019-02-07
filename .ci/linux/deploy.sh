@@ -36,8 +36,10 @@ export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -bundle-non-qt-libs
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -appimage
 
-chmod +x nheko-x86_64.AppImage
+chmod +x nheko-*x86_64.AppImage
 
-if [ ! -z $TRAVIS_TAG ]; then
-    mv nheko-x86_64.AppImage nheko-${TRAVIS_TAG}-x86_64.AppImage
+if [ ! -z $VERSION ]; then
+    # commented out for now, as AppImage file appears to already contain the version.
+    #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
+    echo "nheko-${VERSION}-x86_64.AppImage"
 fi

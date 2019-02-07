@@ -68,7 +68,7 @@ signals:
 public slots:
         void updateRoomAvatar(const QString &roomid, const QPixmap &img);
         void highlightSelectedRoom(const QString &room_id);
-        void updateUnreadMessageCount(const QString &roomid, int count);
+        void updateUnreadMessageCount(const QString &roomid, int count, int highlightedCount);
         void updateRoomDescription(const QString &roomid, const DescInfo &info);
         void closeJoinRoomDialog(bool isJoining, QString roomAlias);
         void updateReadStatus(const std::map<QString, bool> &status);

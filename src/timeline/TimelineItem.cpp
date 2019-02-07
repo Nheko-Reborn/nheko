@@ -192,7 +192,8 @@ TimelineItem::init()
                                   emit eventRedacted(event_id_);
                           });
         });
-
+        connect(
+          ChatPage::instance(), &ChatPage::themeChanged, this, &TimelineItem::refreshAuthorColor);
         connect(markAsRead_, &QAction::triggered, this, &TimelineItem::sendReadReceipt);
         connect(viewRawMessage_, &QAction::triggered, this, &TimelineItem::openRawMessageViewer);
 
@@ -594,7 +595,7 @@ TimelineItem::markReceived(bool isEncrypted)
 void
 TimelineItem::generateBody(const QString &body)
 {
-        body_ = new TextLabel(body, this);
+        body_ = new TextLabel(replaceEmoji(body), this);
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 
         connect(body_, &TextLabel::userProfileTriggered, this, [](const QString &user_id) {
@@ -603,6 +604,24 @@ TimelineItem::generateBody(const QString &body)
         });
 }
 
+void
+TimelineItem::refreshAuthorColor()
+{
+        if (userName_) {
+                QString userColor = Cache::userColor(userName_->toolTip());
+                if (userColor.isEmpty()) {
+                        // This attempts to refresh this item since it's not drawn
+                        // which allows us to get the background color accurately.
+                        qApp->style()->polish(this);
+                        // generate user's unique color.
+                        auto backCol = backgroundColor().name();
+                        userColor =
+                          utils::generateContrastingHexColor(userName_->toolTip(), backCol);
+                        Cache::insertUserColor(userName_->toolTip(), userColor);
+                }
+                userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+        }
+}
 // The username/timestamp is displayed along with the message body.
 void
 TimelineItem::generateBody(const QString &user_id, const QString &displayname, const QString &body)
@@ -623,7 +642,7 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         }
 
         QFont usernameFont;
-        usernameFont.setPointSizeF(usernameFont.pointSizeF());
+        usernameFont.setPointSizeF(usernameFont.pointSizeF() * 1.1);
         usernameFont.setWeight(QFont::Medium);
 
         QFontMetrics fm(usernameFont);
@@ -636,6 +655,18 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setAttribute(Qt::WA_Hover);
         userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+
+        // TimelineItem isn't displayed.  This forces the QSS to get
+        // loaded.
+        QString userColor = Cache::userColor(user_id);
+        if (userColor.isEmpty()) {
+                qApp->style()->polish(this);
+                // generate user's unique color.
+                auto backCol = backgroundColor().name();
+                userColor    = utils::generateContrastingHexColor(user_id, backCol);
+                Cache::insertUserColor(user_id, userColor);
+        }
+        userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
 
         auto filter = new UserProfileFilter(user_id, userName_);
         userName_->installEventFilter(filter);
@@ -665,6 +696,25 @@ TimelineItem::generateTimestamp(const QDateTime &time)
         timestamp_->setFont(timestampFont_);
         timestamp_->setText(
           QString("<span style=\"color: #999\"> %1 </span>").arg(time.toString("HH:mm")));
+}
+
+QString
+TimelineItem::replaceEmoji(const QString &body)
+{
+        QString fmtBody = "";
+
+        QVector<uint> utf32_string = body.toUcs4();
+
+        for (auto &code : utf32_string) {
+                // TODO: Be more precise here.
+                if (code > 9000)
+                        fmtBody += QString("<span style=\"font-family:  emoji;\">") +
+                                   QString::fromUcs4(&code, 1) + "</span>";
+                else
+                        fmtBody += QString::fromUcs4(&code, 1);
+        }
+
+        return fmtBody;
 }
 
 void

@@ -49,7 +49,7 @@ UserSettings::load()
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", "light").toString();
-
+        font_                         = settings.value("user/font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
         applyTheme();
@@ -59,6 +59,13 @@ void
 UserSettings::setFontSize(double size)
 {
         baseFontSize_ = size;
+        save();
+}
+
+void
+UserSettings::setFontFamily(QString family)
+{
+        font_ = family;
         save();
 }
 
@@ -106,6 +113,7 @@ UserSettings::save()
         settings.setValue("group_view", isGroupViewEnabled_);
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("theme", theme());
+        settings.setValue("font_family", font_);
         settings.endGroup();
 }
 
@@ -220,6 +228,23 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         fontSizeOptionLayout->addWidget(fontSizeLabel);
         fontSizeOptionLayout->addWidget(fontSizeCombo_, 0, Qt::AlignRight);
 
+        auto fontFamilyOptionLayout = new QHBoxLayout;
+        fontFamilyOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto fontFamilyLabel = new QLabel(tr("Font Family"), this);
+        fontFamilyLabel->setFont(font);
+        fontSelectionCombo_ = new QComboBox(this);
+        QFontDatabase fontDb;
+        auto fontFamilies = fontDb.families();
+        for (const auto &family : fontFamilies) {
+                fontSelectionCombo_->addItem(family);
+        }
+
+        int fontIndex = fontSelectionCombo_->findText(settings_->font());
+        fontSelectionCombo_->setCurrentIndex(fontIndex);
+
+        fontFamilyOptionLayout->addWidget(fontFamilyLabel);
+        fontFamilyOptionLayout->addWidget(fontSelectionCombo_, 0, Qt::AlignRight);
+
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         auto themeLabel_ = new QLabel(tr("Theme"), this);
@@ -228,6 +253,11 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         themeCombo_->addItem("Light");
         themeCombo_->addItem("Dark");
         themeCombo_->addItem("System");
+
+        QString themeStr = settings_->theme();
+        themeStr.replace(0, 1, themeStr[0].toUpper());
+        int themeIndex = themeCombo_->findText(themeStr);
+        themeCombo_->setCurrentIndex(themeIndex);
 
         themeOptionLayout_->addWidget(themeLabel_);
         themeOptionLayout_->addWidget(themeCombo_, 0, Qt::AlignRight);
@@ -319,6 +349,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         mainLayout_->addLayout(scaleFactorOptionLayout);
         mainLayout_->addLayout(fontSizeOptionLayout);
+        mainLayout_->addLayout(fontFamilyOptionLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
@@ -348,14 +379,19 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(themeCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
-                [this](const QString &text) { settings_->setTheme(text.toLower()); });
+                [this](const QString &text) {
+                        settings_->setTheme(text.toLower());
+                        emit themeChanged();
+                });
         connect(scaleFactorCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
         connect(fontSizeCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [this](const QString &size) { settings_->setFontSize(size.trimmed().toDouble()); });
-
+        connect(fontSelectionCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                [this](const QString &family) { settings_->setFontFamily(family.trimmed()); });
         connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTray(!isDisabled);
                 if (isDisabled) {
