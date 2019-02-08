@@ -31,8 +31,8 @@ option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
        ${USE_BUNDLED})
 
 if(USE_BUNDLED_BOOST)
-  # bundled boost is 1.68, which requires CMake 3.13 or greater.
-  cmake_minimum_required(VERSION 3.13)
+  # bundled boost is 1.68, which requires CMake 3.12 or greater.
+  cmake_minimum_required(VERSION 3.12)
 endif()
 
 include(ExternalProject)
