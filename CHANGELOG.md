@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [0.6.3] - 2019-02-08
+
+### Features
+- Room notifications now distinguish between general and user mentions by using different colors
+- User names are now colored based on both the theme and a hash from their user id.
+- Add font selection preference
+
+
+### Improvements
+- Fix room joining issue by escaping (thanks rnhmjoj)
+- Mild tweaks to the dark and light themes
+- Add paragraph tags back to markdown, fixing #2 / mujx#438
+- Tweak author text to help differentiate it from the message text
+- Some Russian translations have been added/fixed (thanks tim77)
+- Partially address some build issues (related to #10)
+
 ## [0.6.2] - 2018-10-07
 
 ### Features

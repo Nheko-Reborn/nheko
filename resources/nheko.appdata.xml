@@ -16,9 +16,10 @@
             https://dl.dropboxusercontent.com/s/x638uft1fcnybv9/nheko-gnome.png</image>
         </screenshot>
     </screenshots>
-    <url type="homepage">https://github.com/mujx/nheko</url>
-    <update_contact>https://github.com/mujx</update_contact>
+    <url type="homepage">https://github.com/Nheko-Reborn/nheko</url>
+    <update_contact>https://github.com/Nheko-Reborn</update_contact>
     <releases>
+        <release version="0.6.3" date="2019-02-08" />
         <release version="0.6.2" date="2018-10-07" />
         <release version="0.6.1" date="2018-09-26" />
         <release version="0.6.0" date="2018-09-21" />
