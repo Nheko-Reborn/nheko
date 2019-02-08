@@ -26,6 +26,8 @@
 #include <QSettings>
 #include <QTimer>
 
+#include <QtConcurrent>
+
 #include "AvatarProvider.h"
 #include "RoomInfoListItem.h"
 #include "Utils.h"
@@ -204,6 +206,8 @@ public:
                      const QString &room_id,
                      QWidget *parent);
 
+        ~TimelineItem();
+
         void setBackgroundColor(const QColor &color) { backgroundColor_ = color; }
         QColor backgroundColor() const { return backgroundColor_; }
 
@@ -229,6 +233,7 @@ signals:
 
 public slots:
         void refreshAuthorColor();
+        void finishedGeneratingColor();
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -263,6 +268,8 @@ private:
         //! Whether or not the event associated with the widget
         //! has been acknowledged by the server.
         bool isReceived_ = false;
+
+        QFutureWatcher<QString> *colorGenerating_;
 
         QString replaceEmoji(const QString &body);
         QString event_id_;

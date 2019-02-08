@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <functional>
 
 #include <QContextMenuEvent>
 #include <QDesktopServices>
@@ -196,6 +197,12 @@ TimelineItem::init()
           ChatPage::instance(), &ChatPage::themeChanged, this, &TimelineItem::refreshAuthorColor);
         connect(markAsRead_, &QAction::triggered, this, &TimelineItem::sendReadReceipt);
         connect(viewRawMessage_, &QAction::triggered, this, &TimelineItem::openRawMessageViewer);
+
+        colorGenerating_ = new QFutureWatcher<QString>(this);
+        connect(colorGenerating_,
+                &QFutureWatcher<QString>::finished,
+                this,
+                &TimelineItem::finishedGeneratingColor);
 
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
@@ -557,6 +564,12 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         adjustMessageLayout();
 }
 
+TimelineItem::~TimelineItem()
+{
+        colorGenerating_->cancel();
+        colorGenerating_->waitForFinished();
+}
+
 void
 TimelineItem::markSent()
 {
@@ -607,16 +620,39 @@ TimelineItem::generateBody(const QString &body)
 void
 TimelineItem::refreshAuthorColor()
 {
+        // Cancel and wait if we are already generating the color.
+        if (colorGenerating_->isRunning()) {
+                colorGenerating_->cancel();
+                colorGenerating_->waitForFinished();
+        }
         if (userName_) {
+                // generate user's unique color.
+                std::function<QString()> generate = [this]() {
+                        QString userColor = utils::generateContrastingHexColor(
+                          userName_->toolTip(), backgroundColor().name());
+                        return userColor;
+                };
+
                 QString userColor = Cache::userColor(userName_->toolTip());
+
+                // If the color is empty, then generate it asynchronously
                 if (userColor.isEmpty()) {
-                        // This attempts to refresh this item since it's not drawn
-                        // which allows us to get the background color accurately.
-                        qApp->style()->polish(this);
-                        // generate user's unique color.
-                        auto backCol = backgroundColor().name();
-                        userColor =
-                          utils::generateContrastingHexColor(userName_->toolTip(), backCol);
+                        colorGenerating_->setFuture(QtConcurrent::run(generate));
+                } else {
+                        userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+                }
+        }
+}
+
+void
+TimelineItem::finishedGeneratingColor()
+{
+        nhlog::ui()->debug("finishedGeneratingColor for: {}", userName_->toolTip().toStdString());
+        QString userColor = colorGenerating_->result();
+
+        if (!userColor.isEmpty()) {
+                // another TimelineItem might have inserted in the meantime.
+                if (Cache::userColor(userName_->toolTip()).isEmpty()) {
                         Cache::insertUserColor(userName_->toolTip(), userColor);
                 }
                 userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
@@ -656,17 +692,9 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
 
-        // TimelineItem isn't displayed.  This forces the QSS to get
-        // loaded.
-        QString userColor = Cache::userColor(user_id);
-        if (userColor.isEmpty()) {
-                qApp->style()->polish(this);
-                // generate user's unique color.
-                auto backCol = backgroundColor().name();
-                userColor    = utils::generateContrastingHexColor(user_id, backCol);
-                Cache::insertUserColor(user_id, userColor);
-        }
-        userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+        // Set the user color asynchronously if it hasn't been generated yet,
+        // otherwise this will just set it.
+        refreshAuthorColor();
 
         auto filter = new UserProfileFilter(user_id, userName_);
         userName_->installEventFilter(filter);

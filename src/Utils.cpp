@@ -399,7 +399,6 @@ utils::hashQString(const QString &input)
 QString
 utils::generateContrastingHexColor(const QString &input, const QString &background)
 {
-        nhlog::ui()->debug("Background hex {}", background.toStdString());
         const QColor backgroundCol(background);
         const qreal backgroundLum = luminance(background);
 
@@ -407,8 +406,6 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
         auto hash = hashQString(input);
         // create a hue value based on the hash of the input.
         auto userHue = qAbs(hash % 360);
-        nhlog::ui()->debug(
-          "User Hue {} : {}", input.toStdString(), QString::number(userHue).toStdString());
         // start with moderate saturation and lightness values.
         auto sat       = 220;
         auto lightness = 125;
@@ -430,7 +427,6 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
                 // saturation instead.
                 if (lightness == 242 || lightness == 13) {
                         qreal newSat = qBound(26.0, sat * 1.25, 242.0);
-                        nhlog::ui()->info("newSat {}", QString::number(newSat).toStdString());
 
                         inputColor.setHsl(userHue, qFloor(newSat), lightness);
                         auto tmpLum         = luminance(inputColor);
@@ -477,11 +473,6 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
         // get the hex value of the generated color.
         auto colorHex = inputColor.name();
 
-        nhlog::ui()->debug("Hex Generated for {}: [hex: {}, contrast: {}, luminance: {}]",
-                           input.toStdString(),
-                           colorHex.toStdString(),
-                           QString::number(contrast).toStdString(),
-                           QString::number(lum).toStdString());
         return colorHex;
 }
 
