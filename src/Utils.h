@@ -14,6 +14,8 @@
 #include <mtx/events/collections.hpp>
 #include <mtx/events/common.hpp>
 
+#include <qmath.h>
+
 class QComboBox;
 
 namespace utils {
@@ -226,6 +228,23 @@ markdownToHtml(const QString &text);
 //! Retrieve the color of the links based on the current theme.
 QString
 linkColor();
+
+//! Returns the hash code of the input QString
+int
+hashQString(const QString &input);
+
+//! Generate a color (matching #RRGGBB) that has an acceptable contrast to background that is based
+//! on the input string.
+QString
+generateContrastingHexColor(const QString &input, const QString &background);
+
+//! Given two luminance values, compute the contrast ratio between them.
+qreal
+computeContrast(const qreal &one, const qreal &two);
+
+//! Compute the luminance of a single color.  Based on https://stackoverflow.com/a/9733420
+qreal
+luminance(const QColor &col);
 
 //! Center a widget in relation to another widget.
 void

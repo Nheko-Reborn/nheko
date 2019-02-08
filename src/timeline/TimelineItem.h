@@ -26,6 +26,8 @@
 #include <QSettings>
 #include <QTimer>
 
+#include <QtConcurrent>
+
 #include "AvatarProvider.h"
 #include "RoomInfoListItem.h"
 #include "Utils.h"
@@ -132,6 +134,8 @@ private:
 class TimelineItem : public QWidget
 {
         Q_OBJECT
+        Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
+
 public:
         TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice> &e,
                      bool with_sender,
@@ -202,6 +206,11 @@ public:
                      const QString &room_id,
                      QWidget *parent);
 
+        ~TimelineItem();
+
+        void setBackgroundColor(const QColor &color) { backgroundColor_ = color; }
+        QColor backgroundColor() const { return backgroundColor_; }
+
         void setUserAvatar(const QImage &pixmap);
         DescInfo descriptionMessage() const { return descriptionMsg_; }
         QString eventId() const { return event_id_; }
@@ -221,6 +230,10 @@ public:
 signals:
         void eventRedacted(const QString &event_id);
         void redactionFailed(const QString &msg);
+
+public slots:
+        void refreshAuthorColor();
+        void finishedGeneratingColor();
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -256,6 +269,9 @@ private:
         //! has been acknowledged by the server.
         bool isReceived_ = false;
 
+        QFutureWatcher<QString> *colorGenerating_;
+
+        QString replaceEmoji(const QString &body);
         QString event_id_;
         QString room_id_;
 
@@ -282,6 +298,8 @@ private:
         QLabel *timestamp_;
         QLabel *userName_;
         TextLabel *body_;
+
+        QColor backgroundColor_;
 };
 
 template<class Widget>

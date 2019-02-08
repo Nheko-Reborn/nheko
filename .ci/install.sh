@@ -2,10 +2,10 @@
 
 set -ex
 
-if [ $TRAVIS_OS_NAME == osx ]; then
+if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew update
     brew install qt5 lmdb clang-format ninja libsodium cmark
-    brew upgrade boost cmake || true
+    brew upgrade boost cmake icu4c || true
 
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     sudo python get-pip.py
@@ -17,7 +17,7 @@ if [ $TRAVIS_OS_NAME == osx ]; then
 fi
 
 
-if [ $TRAVIS_OS_NAME == linux ]; then
+if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
     if [ -z "$QT_VERSION" ]; then
         QT_VERSION="592"

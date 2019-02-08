@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QComboBox>
+#include <QFontDatabase>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
@@ -54,6 +55,7 @@ public:
         }
 
         void setFontSize(double size);
+        void setFontFamily(QString family);
 
         void setGroupView(bool state)
         {
@@ -90,6 +92,7 @@ public:
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         double fontSize() const { return baseFontSize_; }
+        QString font() const { return font_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -103,6 +106,7 @@ private:
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
         double baseFontSize_;
+        QString font_;
 };
 
 class HorizontalLine : public QFrame
@@ -128,6 +132,7 @@ protected:
 signals:
         void moveBack();
         void trayOptionChanged(bool value);
+        void themeChanged();
 
 private slots:
         void importSessionKeys();
@@ -154,6 +159,7 @@ private:
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;
         QComboBox *fontSizeCombo_;
+        QComboBox *fontSelectionCombo_;
 
         int sideMargin_ = 0;
 };

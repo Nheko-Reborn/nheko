@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.11)
 project(NHEKO_DEPS)
 
 # Point CMake at any custom modules we may ship
@@ -29,6 +29,11 @@ option(USE_BUNDLED_TWEENY "Use the bundled version of Tweeny." ${USE_BUNDLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdbxx." ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
        ${USE_BUNDLED})
+
+if(USE_BUNDLED_BOOST)
+  # bundled boost is 1.68, which requires CMake 3.12 or greater.
+  cmake_minimum_required(VERSION 3.12)
+endif()
 
 include(ExternalProject)
 

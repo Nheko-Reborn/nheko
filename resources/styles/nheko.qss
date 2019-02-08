@@ -3,6 +3,10 @@ QLabel {
     color: #333;
 }
 
+TimelineItem {
+    qproperty-backgroundColor: white;
+}
+
 #chatPage,
 #chatPage > * {
     background-color: white;
@@ -83,6 +87,7 @@ RaisedButton {
 }
 
 RoomInfoListItem {
+    qproperty-mentionedColor: #a82353;
     qproperty-highlightedBackgroundColor: #38A3D8;
     qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
     qproperty-hoverTitleColor: #f2f5f8;
@@ -183,6 +188,18 @@ LoginPage,
 RegisterPage {
     background-color: white;
     color: #333;
+}
+
+emoji--Panel,
+emoji--Panel > * {
+    background-color: #eee;
+    color: #333;
+}
+
+emoji--Category,
+emoji--Category > * {
+    background-color: white;
+    color: #ccc;
 }
 
 FloatingButton {

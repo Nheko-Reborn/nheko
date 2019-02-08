@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <functional>
 
 #include <QContextMenuEvent>
 #include <QDesktopServices>
@@ -192,9 +193,16 @@ TimelineItem::init()
                                   emit eventRedacted(event_id_);
                           });
         });
-
+        connect(
+          ChatPage::instance(), &ChatPage::themeChanged, this, &TimelineItem::refreshAuthorColor);
         connect(markAsRead_, &QAction::triggered, this, &TimelineItem::sendReadReceipt);
         connect(viewRawMessage_, &QAction::triggered, this, &TimelineItem::openRawMessageViewer);
+
+        colorGenerating_ = new QFutureWatcher<QString>(this);
+        connect(colorGenerating_,
+                &QFutureWatcher<QString>::finished,
+                this,
+                &TimelineItem::finishedGeneratingColor);
 
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
@@ -556,6 +564,12 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
         adjustMessageLayout();
 }
 
+TimelineItem::~TimelineItem()
+{
+        colorGenerating_->cancel();
+        colorGenerating_->waitForFinished();
+}
+
 void
 TimelineItem::markSent()
 {
@@ -594,7 +608,7 @@ TimelineItem::markReceived(bool isEncrypted)
 void
 TimelineItem::generateBody(const QString &body)
 {
-        body_ = new TextLabel(body, this);
+        body_ = new TextLabel(replaceEmoji(body), this);
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 
         connect(body_, &TextLabel::userProfileTriggered, this, [](const QString &user_id) {
@@ -603,6 +617,47 @@ TimelineItem::generateBody(const QString &body)
         });
 }
 
+void
+TimelineItem::refreshAuthorColor()
+{
+        // Cancel and wait if we are already generating the color.
+        if (colorGenerating_->isRunning()) {
+                colorGenerating_->cancel();
+                colorGenerating_->waitForFinished();
+        }
+        if (userName_) {
+                // generate user's unique color.
+                std::function<QString()> generate = [this]() {
+                        QString userColor = utils::generateContrastingHexColor(
+                          userName_->toolTip(), backgroundColor().name());
+                        return userColor;
+                };
+
+                QString userColor = Cache::userColor(userName_->toolTip());
+
+                // If the color is empty, then generate it asynchronously
+                if (userColor.isEmpty()) {
+                        colorGenerating_->setFuture(QtConcurrent::run(generate));
+                } else {
+                        userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+                }
+        }
+}
+
+void
+TimelineItem::finishedGeneratingColor()
+{
+        nhlog::ui()->debug("finishedGeneratingColor for: {}", userName_->toolTip().toStdString());
+        QString userColor = colorGenerating_->result();
+
+        if (!userColor.isEmpty()) {
+                // another TimelineItem might have inserted in the meantime.
+                if (Cache::userColor(userName_->toolTip()).isEmpty()) {
+                        Cache::insertUserColor(userName_->toolTip(), userColor);
+                }
+                userName_->setStyleSheet("QLabel { color : " + userColor + "; }");
+        }
+}
 // The username/timestamp is displayed along with the message body.
 void
 TimelineItem::generateBody(const QString &user_id, const QString &displayname, const QString &body)
@@ -623,7 +678,7 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         }
 
         QFont usernameFont;
-        usernameFont.setPointSizeF(usernameFont.pointSizeF());
+        usernameFont.setPointSizeF(usernameFont.pointSizeF() * 1.1);
         usernameFont.setWeight(QFont::Medium);
 
         QFontMetrics fm(usernameFont);
@@ -636,6 +691,10 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setAttribute(Qt::WA_Hover);
         userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+
+        // Set the user color asynchronously if it hasn't been generated yet,
+        // otherwise this will just set it.
+        refreshAuthorColor();
 
         auto filter = new UserProfileFilter(user_id, userName_);
         userName_->installEventFilter(filter);
@@ -665,6 +724,25 @@ TimelineItem::generateTimestamp(const QDateTime &time)
         timestamp_->setFont(timestampFont_);
         timestamp_->setText(
           QString("<span style=\"color: #999\"> %1 </span>").arg(time.toString("HH:mm")));
+}
+
+QString
+TimelineItem::replaceEmoji(const QString &body)
+{
+        QString fmtBody = "";
+
+        QVector<uint> utf32_string = body.toUcs4();
+
+        for (auto &code : utf32_string) {
+                // TODO: Be more precise here.
+                if (code > 9000)
+                        fmtBody += QString("<span style=\"font-family:  emoji;\">") +
+                                   QString::fromUcs4(&code, 1) + "</span>";
+                else
+                        fmtBody += QString::fromUcs4(&code, 1);
+        }
+
+        return fmtBody;
 }
 
 void

@@ -158,6 +158,7 @@ ImageItem::mousePressEvent(QMouseEvent *event)
         } else {
                 auto imgDialog = new dialogs::ImageOverlay(image_);
                 imgDialog->show();
+                connect(imgDialog, &dialogs::ImageOverlay::saving, this, &ImageItem::saveAs);
         }
 }
 
