@@ -15,7 +15,7 @@ export ICU_LIB="$(brew --prefix icu4c)/lib"
 mkdir -p nheko.app/Contents/Frameworks
 find ${ICU_LIB} -type l -name "*.dylib" -exec cp -a -n {} nheko.app/Contents/Frameworks/ \; || true
 
-sudo macdeployqt nheko.app -dmg
+sudo macdeployqt nheko.app -dmg -always-overwrite
 
 user=$(id -nu)
 sudo chown ${user} nheko.dmg
