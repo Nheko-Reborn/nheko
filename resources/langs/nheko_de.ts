@@ -66,7 +66,7 @@
     <message>
         <location filename="../../src/LoginPage.cc" line="+79"/>
         <source>Matrix ID</source>
-        <translation>Matrix ID</translation>
+        <translation>Matrix-ID</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -94,7 +94,7 @@
     <message>
         <location filename="../../src/MatrixClient.cc" line="+164"/>
         <source>Wrong username or password</source>
-        <translation>Falscher Nutzername oder Passwort</translation>
+        <translation>Falscher Benutzername oder Passwort</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -117,7 +117,7 @@
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+79"/>
         <source>Room members</source>
-        <translation>Teilnehmer Liste</translation>
+        <translation>Teilnehmerliste</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -138,7 +138,7 @@
     <message>
         <location filename="../../src/RegisterPage.cc" line="+76"/>
         <source>Username</source>
-        <translation>Nutzername</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -148,7 +148,7 @@
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation>Passwort-Bestätigung</translation>
+        <translation>Passwortbestätigung</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -163,7 +163,7 @@
     <message>
         <location line="+76"/>
         <source>Invalid username</source>
-        <translation>Ungültiger Nutzername</translation>
+        <translation>Ungültiger Benutzername</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -196,7 +196,7 @@
     <message>
         <location line="+1"/>
         <source>Decline</source>
-        <translation>Untersagen</translation>
+        <translation>Ablehnen</translation>
     </message>
 </context>
 <context>
@@ -209,7 +209,7 @@
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation>In Raum eintreten</translation>
+        <translation>Raum betreten</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
     <message>
         <location filename="../../src/TopRoomBar.cc" line="+87"/>
         <source>Invite users</source>
-        <translation>Nutzer einladen</translation>
+        <translation>Benutzer einladen</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -271,12 +271,12 @@
     <message>
         <location filename="../../src/TypingDisplay.cc" line="+26"/>
         <source> is typing</source>
-        <translation> tippt ein</translation>
+        <translation> tippt</translation>
     </message>
     <message>
         <location line="+2"/>
         <source> are typing</source>
-        <translation> tippen ein</translation>
+        <translation> tippen</translation>
     </message>
 </context>
 <context>
@@ -284,17 +284,17 @@
     <message>
         <location filename="../../src/UserSettingsPage.cc" line="+121"/>
         <source>User Settings</source>
-        <translation>Nutzer Einstellungen</translation>
+        <translation>Benutzereinstellungen</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Ins Benachrichtigungsfeld minimieren</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Im Benachrichtigungsfeld starten</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -304,7 +304,7 @@
     <message>
         <location line="+9"/>
         <source>Group&apos;s sidebar</source>
-        <translation>Gruppen-Seiten-Panel</translation>
+        <translation>Gruppen-Seitenleiste</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -319,7 +319,7 @@
     <message>
         <location line="+9"/>
         <source>Theme</source>
-        <translation>Thema</translation>
+        <translation>Erscheinungsbild</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -398,7 +398,7 @@
     <message>
         <location line="+11"/>
         <source>User ID to invite</source>
-        <translation>Nutzer ID, die eingeladen werden soll</translation>
+        <translation>Benutzer-ID, die eingeladen werden soll</translation>
     </message>
 </context>
 <context>
@@ -424,7 +424,7 @@
     <message>
         <location line="+10"/>
         <source>Are you sure you want to leave?</source>
-        <translation>Bist du sicher, dass du den Raum verlassen willst?</translation>
+        <translation>Willst du wirklich den Raum verlassen?</translation>
     </message>
 </context>
 <context>
@@ -437,7 +437,7 @@
     <message>
         <location line="+10"/>
         <source>Logout. Are you sure?</source>
-        <translation>Bist du dir sicher, dass du dich abmelden willst?</translation>
+        <translation>Willst du dich wirklich abmelden?</translation>
     </message>
 </context>
 <context>
@@ -508,7 +508,7 @@ Medien-Größe: %2
     <message>
         <location line="+1"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur Erwähnungen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -518,7 +518,7 @@ Medien-Größe: %2
     <message>
         <location line="+8"/>
         <source>Room access</source>
-        <translation>Raum Zugang</translation>
+        <translation>Raumzugang</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -533,7 +533,7 @@ Medien-Größe: %2
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation>Nur Personen, die eingeladen wurden</translation>
+        <translation>Nur Eingeladene</translation>
     </message>
 </context>
 <context>
