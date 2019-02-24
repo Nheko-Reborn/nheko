@@ -13,6 +13,10 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     sudo update-alternatives --set g++ "/usr/bin/${CXX_COMPILER}"
 fi
 
+if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    source /opt/qt${QT_PKG}/bin/qt${QT_PKG}-env.sh || true;
+fi
+
 if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
 fi

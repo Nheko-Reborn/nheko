@@ -73,10 +73,10 @@ set(SPDLOG_URL https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz)
 set(SPDLOG_HASH
     3dbcbfd8c07e25f5e0d662b194d3a7772ef214358c49ada23c044c4747ce8b19)
 
-set(JSON_HEADER_URL
-    https://github.com/nlohmann/json/releases/download/v3.2.0/json.hpp)
-set(JSON_HEADER_HASH
-    ce6b5610a051ec6795fa11c33854abebb086f0fd67c311f5921c3c07f9531b44)
+set(JSON_URL
+    https://github.com/nlohmann/json.git)
+set(JSON_TAG
+    v3.2.0)
 
 if(USE_BUNDLED_JSON)
   include(Json)
