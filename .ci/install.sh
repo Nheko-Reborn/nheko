@@ -44,5 +44,5 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
         qttools5-dev \
         libqt5svg5-dev \
         qtmultimedia5-dev \
-        liblmdb-dev \
+        liblmdb-dev
 fi
