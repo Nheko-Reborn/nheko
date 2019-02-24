@@ -38,11 +38,12 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     ./configure && make && make check && sudo make install
     popd
 
+    sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
     sudo apt-get update -qq
     sudo apt-get install -qq -y \
-        qtbase5-dev \
-        qttools5-dev \
-        libqt5svg5-dev \
-        qtmultimedia5-dev \
+        qt${QT_PKG}base \
+        qt${QT_PKG}tools \
+        qt${QT_PKG}svg \
+        qt${QT_PKG}multimedia \
         liblmdb-dev
 fi
