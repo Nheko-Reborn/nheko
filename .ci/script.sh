@@ -24,7 +24,8 @@ fi
 # Build & install dependencies
 cmake -GNinja -Hdeps -B.deps \
     -DUSE_BUNDLED_BOOST=${USE_BUNDLED_BOOST} \
-    -DUSE_BUNDLED_CMARK=${USE_BUNDLED_CMARK}
+    -DUSE_BUNDLED_CMARK=${USE_BUNDLED_CMARK} \
+    -DUSE_BUNDLED_JSON=${USE_BUNDLED_JSON}
 cmake --build .deps
 
 # Build nheko

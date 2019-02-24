@@ -11,6 +11,7 @@ RUN \
 
 RUN \
     apt-get install -y \
+        nlohmann-json-dev \
         make \
         pkg-config \
         ninja-build \

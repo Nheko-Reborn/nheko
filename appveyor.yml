@@ -57,6 +57,7 @@ build_script:
     - cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
         -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
         -DUSE_BUNDLED_BOOST=OFF
+        -DUSE_BUNDLED_JSON=OFF
     - cmake --build .deps --config Release
 
     # Build nheko
@@ -67,6 +68,7 @@ build_script:
       -DTWEENY_INCLUDE_DIR=.deps/usr/include
       -DCMARK_INCLUDE_DIR=C:/projects/nheko/.deps/usr/include
       -DCMARK_LIBRARY=C:/projects/nheko/.deps/usr/lib/cmark.lib
+      -DJSON_INCLUDE_DIR=.deps/usr/include
     - cmake --build build --config Release
 
 after_build:

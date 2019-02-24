@@ -1,6 +1,6 @@
 language: cpp
 sudo: required
-dist: trusty
+dist: bionic
 
 notifications:
   webhooks:
@@ -20,6 +20,7 @@ matrix:
               - DEPLOYMENT=1
               - USE_BUNDLED_BOOST=0
               - USE_BUNDLED_CMARK=0
+              - USE_BUNDLED_JSON=0
         - os: linux
           compiler: gcc
           env:
@@ -30,6 +31,7 @@ matrix:
               - DEPLOYMENT=1
               - USE_BUNDLED_BOOST=1
               - USE_BUNDLED_CMARK=1
+              - USE_BUNDLED_JSON=0
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
@@ -43,6 +45,7 @@ matrix:
               - QT_PKG=57
               - USE_BUNDLED_BOOST=1
               - USE_BUNDLED_CMARK=1
+              - USE_BUNDLED_JSON=0
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test"]
@@ -56,6 +59,7 @@ matrix:
               - QT_PKG=59
               - USE_BUNDLED_BOOST=1
               - USE_BUNDLED_CMARK=1
+              - USE_BUNDLED_JSON=0
           addons:
               apt:
                   sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
