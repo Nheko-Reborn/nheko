@@ -1,14 +1,12 @@
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 
 RUN \
     apt-get update -qq && \
     apt-get install -y software-properties-common && \
-    add-apt-repository -y ppa:beineri/opt-qt-5.10.1-trusty && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
-    add-apt-repository -y ppa:chris-lea/libsodium && \
     apt-get update -qq && \
     apt-get install -y \
-        qt510base qt510tools qt510svg qt510multimedia \
+        qtbase5-dev qttools5-dev libqt5svg5-dev qtmultimedia5-dev \
         gcc-5 g++-5
 
 RUN \
@@ -26,7 +24,7 @@ RUN \
 
 RUN \
     wget https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.sh && \
-    sudo sh cmake-3.12.2-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
+    sh cmake-3.12.2-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
 
 RUN \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 10 && \
