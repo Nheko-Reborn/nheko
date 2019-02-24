@@ -45,5 +45,4 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
         libqt5svg5-dev \
         qtmultimedia5-dev \
         liblmdb-dev \
-        nlohmann-json-dev
 fi
