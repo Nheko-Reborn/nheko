@@ -29,6 +29,7 @@ option(USE_BUNDLED_TWEENY "Use the bundled version of Tweeny." ${USE_BUNDLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdbxx." ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
        ${USE_BUNDLED})
+option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json." ${USE_BUNDLED})
 
 if(USE_BUNDLED_BOOST)
   # bundled boost is 1.68, which requires CMake 3.12 or greater.
@@ -44,11 +45,10 @@ set(BOOST_SHA256
 
 set(
   MTXCLIENT_URL
-  https://github.com/Nheko-Reborn/mtxclient/archive/8659d011f93cad63de34a79f9b0543705d5da825.tar.gz
+  https://github.com/Nheko-Reborn/mtxclient/archive/67d39691666bcdf3cc660db19ccc0d9941df13fd.tar.gz
   )
 set(MTXCLIENT_HASH
-  7857a16cd2dd9c42ab51a8c188f4c60ca318eabbd6f7fd5db6815e60ef1cd3ad)
-
+  4aeb69a3261aec96bd1fbce2fedc10e3771d87a5a82657bab8bc6006b7f1ad10)
 set(
   TWEENY_URL
   https://github.com/mobius3/tweeny/archive/b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf.tar.gz
@@ -78,8 +78,9 @@ set(JSON_HEADER_URL
 set(JSON_HEADER_HASH
     ce6b5610a051ec6795fa11c33854abebb086f0fd67c311f5921c3c07f9531b44)
 
-file(DOWNLOAD ${JSON_HEADER_URL} ${DEPS_INSTALL_DIR}/include/json.hpp
-     EXPECTED_HASH SHA256=${JSON_HEADER_HASH})
+if(USE_BUNDLED_JSON)
+  include(Json)
+endif()
 
 if(USE_BUNDLED_BOOST)
   include(Boost)

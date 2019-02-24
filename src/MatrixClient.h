@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 
-#include "json.hpp"
+#include "nlohmann/json.hpp"
 #include <mtx/responses.hpp>
 #include <mtxclient/http/client.hpp>
 

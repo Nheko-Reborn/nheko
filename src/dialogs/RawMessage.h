@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "json.hpp"
+#include "nlohmann/json.hpp"
 
 #include "Logging.h"
 #include "MainWindow.h"

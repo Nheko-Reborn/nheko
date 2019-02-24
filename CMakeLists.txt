@@ -251,6 +251,8 @@ set(SRC_FILES
 # ExternalProject dependencies
 set(EXTERNAL_PROJECT_DEPS "")
 
+include(FeatureSummary)
+
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_USE_MULTITHREADED ON)
@@ -269,6 +271,12 @@ find_package(MatrixClient 0.1.0 REQUIRED)
 find_package(Olm 2 REQUIRED)
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
 find_package(cmark REQUIRED)
+find_package(nlohmann_json 3.2.0)
+set_package_properties(nlohmann_json PROPERTIES
+    DESCRIPTION "JSON for Modern C++, a C++11 header-only JSON class"
+    URL "https://nlohmann.github.io/json/"
+    TYPE REQUIRED
+)
 
 if(NOT LMDBXX_INCLUDE_DIR)
     find_path(LMDBXX_INCLUDE_DIR
@@ -295,6 +303,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 # local inclue directory
 include_directories(includes)
+
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 qt5_wrap_cpp(MOC_HEADERS
     # Dialogs
@@ -387,7 +397,8 @@ set(COMMON_LIBS
     Qt5::Widgets
     Qt5::Svg
     Qt5::Concurrent
-    Qt5::Multimedia)
+    Qt5::Multimedia
+    nlohmann_json::nlohmann_json)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
