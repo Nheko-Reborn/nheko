@@ -6,7 +6,7 @@ RUN \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     apt-get update -qq && \
     apt-get install -y \
-        qtbase5-dev qttools5-dev libqt5svg5-dev qtmultimedia5-dev \
+        qtbase5-dev qttools5-dev libqt5svg5-dev qtmultimedia5-dev qt5-default \
         gcc-5 g++-5
 
 RUN \
