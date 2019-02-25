@@ -24,12 +24,12 @@
 #include <QImage>
 #include <QString>
 
-#include <nlohmann/json.hpp>
 #include <lmdb++.h>
 #include <mtx/events/join_rules.hpp>
 #include <mtx/responses.hpp>
 #include <mtxclient/crypto/client.hpp>
 #include <mutex>
+#include <nlohmann/json.hpp>
 
 #include "Logging.h"
 
