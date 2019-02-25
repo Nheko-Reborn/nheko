@@ -33,8 +33,8 @@ unset LD_LIBRARY_PATH
 export ARCH=$(uname -m)
 export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
 
-./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -bundle-non-qt-libs
-./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -appimage
+./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs
+./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -appimage
 
 chmod +x nheko-*x86_64.AppImage
 

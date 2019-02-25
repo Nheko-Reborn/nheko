@@ -8,7 +8,7 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew upgrade boost cmake icu4c || true
 
     brew tap nlohmann/json
-    brew install nlohmann_json
+    brew install --with-cmake nlohmann_json
 
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     sudo python get-pip.py
