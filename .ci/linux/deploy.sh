@@ -31,7 +31,7 @@ unset QT_PLUGIN_PATH
 unset LD_LIBRARY_PATH
 
 export ARCH=$(uname -m)
-export LD_LIBRARY_PATH=.deps/usr/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$(pwd)/.deps/usr/lib/:$LD_LIBRARY_PATH
 
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs
 ./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -appimage
