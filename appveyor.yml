@@ -21,7 +21,6 @@ install:
     - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
     - vcpkg install
-            nlohmann-json:%PLATFORM%-windows
             boost-asio:%PLATFORM%-windows
             boost-beast:%PLATFORM%-windows
             boost-iostreams:%PLATFORM%-windows
@@ -57,7 +56,7 @@ build_script:
     - cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
         -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
         -DUSE_BUNDLED_BOOST=OFF
-        -DUSE_BUNDLED_JSON=OFF
+        -DUSE_BUNDLED_JSON=ON
     - cmake --build .deps --config Release
 
     # Build nheko
