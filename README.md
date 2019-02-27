@@ -260,9 +260,12 @@ See [CONTRIBUTING](.github/CONTRIBUTING.md)
 
 ### Screens
 
-Here is a screen shot to get a feel for the UI, but things will probably change.
+Here are some screen shots to get a feel for the UI, but things will probably change.
 
-![nheko](https://dl.dropboxusercontent.com/s/3zjcezdtk8kqe4i/nheko-v0.4.0.png)
+![nheko start](https://nheko-reborn.github.io/images/screenshots/Start.png)
+![nheko login](https://nheko-reborn.github.io/images/screenshots/login.png)
+![nheko chat](https://nheko-reborn.github.io/images/screenshots/chat.png)
+![nheko settings](https://nheko-reborn.github.io/images/screenshots/settings.png)
 
 ### Third party
 
