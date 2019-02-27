@@ -1,12 +1,13 @@
-FROM ubuntu:bionic
+FROM ubuntu:trusty
 
 RUN \
     apt-get update -qq && \
     apt-get install -y software-properties-common && \
+    add-apt-repository -y ppa:beineri/opt-qt-5.10.1-trusty && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     apt-get update -qq && \
     apt-get install -y \
-        qtbase5-dev qttools5-dev libqt5svg5-dev qtmultimedia5-dev qt5-default \
+        qt510base qt510tools qt510svg qt510multimedia \
         gcc-5 g++-5
 
 RUN \
@@ -14,7 +15,6 @@ RUN \
         make \
         pkg-config \
         ninja-build \
-        libsodium-dev \
         liblmdb-dev \
         libssl-dev \
         mesa-common-dev \
@@ -31,6 +31,14 @@ RUN \
     update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 10 && \
     update-alternatives --set gcc "/usr/bin/gcc-5" && \
     update-alternatives --set g++ "/usr/bin/g++-5"
+
+RUN \
+    mkdir libsodium-1.0.14 && \
+    wget https://download.libsodium.org/libsodium/releases/old/libsodium-1.0.14.tar.gz && \
+    tar -xzvf libsodium-1.0.14.tar.gz -C libsodium-1.0.14 && \
+    cd libsodium-1.0.14/libsodium-1.0.14 && \
+    ./configure && \
+    make && make install
 
 ENV PATH=/opt/qt510/bin:$PATH
 
