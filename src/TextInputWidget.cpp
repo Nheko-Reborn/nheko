@@ -448,8 +448,8 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         QFont f;
         f.setPointSizeF(f.pointSizeF());
         const int fontHeight    = QFontMetrics(f).height();
-        const int contentHeight = fontHeight * 2.5;
-        const int InputHeight   = fontHeight * 1.5;
+        const int contentHeight = static_cast<int>(fontHeight * 2.5);
+        const int InputHeight   = static_cast<int>(fontHeight * 1.5);
 
         setFixedHeight(contentHeight);
         setCursor(Qt::ArrowCursor);
