@@ -456,7 +456,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         topLayout_ = new QHBoxLayout();
         topLayout_->setSpacing(0);
-        topLayout_->setContentsMargins(13, 0, 13, 0);
+        topLayout_->setContentsMargins(13, 1, 13, 0);
 
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");
@@ -481,10 +481,10 @@ TextInputWidget::TextInputWidget(QWidget *parent)
                 &FilteredTextEdit::heightChanged,
                 this,
                 [this, InputHeight, contentHeight](int height) {
-                        int textInputHeight =
-                          std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, InputHeight));
                         int widgetHeight =
                           std::min(MAX_TEXTINPUT_HEIGHT, std::max(height, contentHeight));
+                        int textInputHeight =
+                          std::min(widgetHeight - 1, std::max(height, InputHeight));
 
                         setFixedHeight(widgetHeight);
                         input_->setFixedHeight(textInputHeight);
