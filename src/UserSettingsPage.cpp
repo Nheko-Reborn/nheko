@@ -25,6 +25,7 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSettings>
+#include <QTextStream>
 
 #include "Config.h"
 #include "MatrixClient.h"
@@ -499,7 +500,7 @@ UserSettingsPage::importSessionKeys()
 
         try {
                 auto sessions = mtx::crypto::decrypt_exported_sessions(
-                  mtx::crypto::base642bin(payload), password.toStdString());
+                  payload, password.toStdString());
                 cache::client()->importSessionKeys(std::move(sessions));
         } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
@@ -534,7 +535,7 @@ UserSettingsPage::exportSessionKeys()
           QFileDialog::getSaveFileName(this, tr("File to save the exported session keys"), "", "");
 
         QFile file(fileName);
-        if (!file.open(QIODevice::WriteOnly)) {
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
                 QMessageBox::warning(this, tr("Error"), file.errorString());
                 return;
         }
@@ -544,9 +545,14 @@ UserSettingsPage::exportSessionKeys()
                 auto encrypted_blob = mtx::crypto::encrypt_exported_sessions(
                   cache::client()->exportSessionKeys(), password.toStdString());
 
-                auto b64 = mtx::crypto::bin2base64(encrypted_blob);
+                QString b64 = QString::fromStdString( mtx::crypto::bin2base64(encrypted_blob));
 
-                file.write(b64.data(), b64.size());
+                QString prefix("-----BEGIN MEGOLM SESSION DATA-----");
+                QString suffix("-----END MEGOLM SESSION DATA-----");
+                QString newline("\n");
+                QTextStream out(&file);
+                out << prefix << newline << b64 << newline << suffix;
+                file.close();
         } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         } catch (const lmdb::error &e) {
