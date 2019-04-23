@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/sh
+
+set -eu
 
 PREFIX=$(basename "$(pwd -P)")
 {
