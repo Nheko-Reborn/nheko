@@ -499,8 +499,8 @@ UserSettingsPage::importSessionKeys()
         }
 
         try {
-                auto sessions = mtx::crypto::decrypt_exported_sessions(
-                  payload, password.toStdString());
+                auto sessions =
+                  mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
                 cache::client()->importSessionKeys(std::move(sessions));
         } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
@@ -545,7 +545,7 @@ UserSettingsPage::exportSessionKeys()
                 auto encrypted_blob = mtx::crypto::encrypt_exported_sessions(
                   cache::client()->exportSessionKeys(), password.toStdString());
 
-                QString b64 = QString::fromStdString( mtx::crypto::bin2base64(encrypted_blob));
+                QString b64 = QString::fromStdString(mtx::crypto::bin2base64(encrypted_blob));
 
                 QString prefix("-----BEGIN MEGOLM SESSION DATA-----");
                 QString suffix("-----END MEGOLM SESSION DATA-----");
