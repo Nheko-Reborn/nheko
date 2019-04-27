@@ -28,6 +28,11 @@ cmake -GNinja -Hdeps -B.deps \
     -DUSE_BUNDLED_JSON=${USE_BUNDLED_JSON}
 cmake --build .deps
 
+if [ "${USE_BUNDLED_BOOST}" == "1" ]; then
+    BOOST_ROOT=.deps/usr/lib
+    export BOOST_ROOT
+fi
+
 # Build nheko
 cmake -GNinja -H. -Bbuild \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
