@@ -29,8 +29,12 @@ cmake -GNinja -Hdeps -B.deps \
 cmake --build .deps
 
 if [ "${USE_BUNDLED_BOOST}" == "1" ]; then
-    BOOST_ROOT=.deps/usr/lib
+    BOOST_ROOT=.deps/usr
+    BOOST_LIBRARYDIR=${BOOST_ROOT}/lib
+    BOOST_INCLUDEDIR=${BOOST_ROOT}/include
     export BOOST_ROOT
+    export BOOST_LIBRARYDIR
+    export BOOST_INCLUDEDIR
 fi
 
 # Build nheko
