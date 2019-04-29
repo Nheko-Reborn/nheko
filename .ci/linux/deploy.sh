@@ -1,13 +1,17 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-set -ex
+set -eux
 
 APP=nheko
 DIR=${APP}.AppDir
-TAG=`git tag -l --points-at HEAD`
+# unused but may be useful...
+#TAG=$(git tag -l --points-at HEAD)
 
 # Set up AppImage structure.
-mkdir -p ${DIR}/usr/{bin,lib,share/pixmaps,share/applications}
+for d in bin lib share/pixmaps share/applications
+do
+    mkdir -p ${DIR}/usr/$d
+done
 
 # Copy resources.
 cp build/nheko ${DIR}/usr/bin
@@ -27,18 +31,25 @@ fi
 chmod a+x linuxdeployqt*.AppImage
 
 unset QTDIR
-unset QT_PLUGIN_PATH 
+unset QT_PLUGIN_PATH
 unset LD_LIBRARY_PATH
 
-export ARCH=$(uname -m)
-export LD_LIBRARY_PATH=$(pwd)/.deps/usr/lib/:$LD_LIBRARY_PATH
+ARCH=$(uname -m)
+export ARCH
+LD_LIBRARY_PATH=$(pwd)/.deps/usr/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
 
-./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs
-./linuxdeployqt*.AppImage ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -appimage
+for res in ./linuxdeployqt*.AppImage
+do
+    linuxdeployqt=$res
+done
+
+./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs
+./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -appimage
 
 chmod +x nheko-*x86_64.AppImage
 
-if [ ! -z $VERSION ]; then
+if [ ! -z "$VERSION" ]; then
     # commented out for now, as AppImage file appears to already contain the version.
     #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
     echo "nheko-${VERSION}-x86_64.AppImage"
