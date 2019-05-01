@@ -291,65 +291,9 @@ utils::linkifyMessage(const QString &body)
 {
         // Convert to valid XML.
         auto doc = QString("<html>%1</html>").arg(body);
+        doc.replace(conf::strings::url_regex, conf::strings::url_html);
 
-        doc.replace("<mx-reply>", "");
-        doc.replace("</mx-reply>", "");
-        doc.replace("<br>", "<br></br>");
-
-        QXmlStreamReader xml{doc};
-
-        QString textString;
-        while (!xml.atEnd() && !xml.hasError()) {
-                auto t = xml.readNext();
-
-                switch (t) {
-                case QXmlStreamReader::Characters: {
-                        auto text = xml.text().toString();
-                        text.replace(conf::strings::url_regex, conf::strings::url_html);
-
-                        textString += text;
-                        break;
-                }
-                case QXmlStreamReader::StartDocument:
-                case QXmlStreamReader::EndDocument:
-                        break;
-                case QXmlStreamReader::StartElement: {
-                        if (xml.name() == "html")
-                                break;
-
-                        textString += QString("<%1").arg(xml.name().toString());
-
-                        const auto attrs = xml.attributes();
-                        for (const auto &e : attrs)
-                                textString += QString(" %1=\"%2\"")
-                                                .arg(e.name().toString())
-                                                .arg(e.value().toString());
-
-                        textString += ">";
-
-                        break;
-                }
-                case QXmlStreamReader::EndElement: {
-                        if (xml.name() == "html")
-                                break;
-
-                        textString += QString("</%1>").arg(xml.name().toString());
-                        break;
-                }
-                default: {
-                        break;
-                }
-                }
-        }
-
-        if (xml.hasError()) {
-                qWarning() << "error while parsing xml" << xml.errorString() << doc;
-                doc.replace("<html>", "");
-                doc.replace("</html>", "");
-                return doc;
-        }
-
-        return textString;
+        return doc;
 }
 
 QString
