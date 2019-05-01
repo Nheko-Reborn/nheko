@@ -63,7 +63,7 @@ set(
 set(LMDBXX_HASH
     c57b501a4e8fa1187fa7fd348da415c7685a50a7cb25b17b3f257b9e9426f73d)
 
-set(OLM_URL https://git.matrix.org/git/olm.git)
+set(OLM_URL https://gitlab.matrix.org/matrix-org/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)
 
 set(CMARK_URL https://github.com/commonmark/cmark/archive/0.28.3.tar.gz)
