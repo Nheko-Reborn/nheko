@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-set -eux
+set -ex
 
 APP=nheko
 DIR=${APP}.AppDir
