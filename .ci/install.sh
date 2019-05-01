@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-set -eux
+set -ex
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     brew update
