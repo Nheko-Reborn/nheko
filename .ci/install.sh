@@ -38,6 +38,9 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       ./configure && make && make check && sudo make install )
 
     sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
+    # needed for git-lfs, otherwise the follow apt update fails.
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6B05F25D762E3157
+
     sudo apt update -qq
     sudo apt install -qq -y \
         qt${QT_PKG}base \
