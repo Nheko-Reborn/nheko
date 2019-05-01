@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eux
+set -ex
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     export CC=${C_COMPILER}
