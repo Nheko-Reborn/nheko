@@ -256,6 +256,8 @@ include(FeatureSummary)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_USE_MULTITHREADED ON)
+#Temporary debug to identify travis issues.
+set(Boost_DEBUG TRUE)
 find_package(Boost 1.66 REQUIRED
              COMPONENTS atomic
                         chrono
