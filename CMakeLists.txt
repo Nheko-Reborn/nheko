@@ -104,7 +104,8 @@ if(NOT MSVC)
         -pedantic \
         -fsized-deallocation \
         -fdiagnostics-color=always \
-        -Wunreachable-code"
+        -Wunreachable-code \
+        -std=c++14"
     )
     if (NOT CMAKE_COMPILER_IS_GNUCXX)
         # -Wshadow is buggy and broken in GCC, so do not enable it.
@@ -256,8 +257,6 @@ include(FeatureSummary)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_USE_MULTITHREADED ON)
-#Temporary debug to identify travis issues.
-set(Boost_DEBUG TRUE)
 find_package(Boost 1.66 REQUIRED
              COMPONENTS atomic
                         chrono
