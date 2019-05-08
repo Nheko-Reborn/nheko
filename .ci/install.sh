@@ -30,12 +30,8 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     wget https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.sh
     sudo sh cmake-3.12.2-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
 
-    mkdir -p build-libsodium
-    ( cd build-libsodium
-      curl -L https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz -o libsodium-1.0.16.tar.gz
-      tar xfz libsodium-1.0.16.tar.gz
-      cd libsodium-1.0.16/
-      ./configure && make && make check && sudo make install )
+    pyenv global 3.6.3
+    pip3 install cget
 
     sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
     # needed for git-lfs, otherwise the follow apt update fails.

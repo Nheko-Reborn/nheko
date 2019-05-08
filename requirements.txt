@@ -1,0 +1,9 @@
+https://github.com/jedisct1/libsodium/releases/download/1.0.17/libsodium-1.0.17.tar.gz --cmake autotools
+https://gitlab.matrix.org/matrix-org/olm/-/archive/3.0.0/olm-3.0.0.zip -DBUILD_SHARED_LIBS=OFF
+nlohmann/json
+gabime/spdlog -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLES=OFF -DSPDLOG_BUILD_TESTS=OFF
+boost,http://downloads.sourceforge.net/project/boost/boost/1.69.0/boost_1_69_0.tar.bz2 --cmake boost -DBOOST_WITH_ATOMIC=1 -DBOOST_WITH_ATOMIC=1 -DBOOST_WITH_CHRONO=1 -DBOOST_WITH_DATE_TIME=1 -DBOOST_WITH_IOSTREAMS=1 -DBOOST_WITH_RANDOM=1 -DBOOST_WITH_REGEX=1 -DBOOST_WITH_SYSTEM=1 -DBOOST_WITH_THREAD=1
+Nheko-Reborn/mtxclient -DBUILD_LIB_EXAMPLES=off -DBUILD_LIB_TESTS=OFF
+https://github.com/mobius3/tweeny/archive/b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf.tar.gz
+https://raw.githubusercontent.com/bendiken/lmdbxx/0b43ca87d8cfabba392dfe884eb1edb83874de02/lmdb++.h --cmake header
+https://github.com/commonmark/cmark/archive/0.28.3.tar.gz

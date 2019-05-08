@@ -23,25 +23,14 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
 fi
 
 # Build & install dependencies
-cmake -GNinja -Hdeps -B.deps \
-    -DUSE_BUNDLED_BOOST="${USE_BUNDLED_BOOST}" \
-    -DUSE_BUNDLED_CMARK="${USE_BUNDLED_CMARK}" \
-    -DUSE_BUNDLED_JSON="${USE_BUNDLED_JSON}"
-cmake --build .deps
-
-if [ "${USE_BUNDLED_BOOST}" == "1" ]; then
-    BOOST_ROOT=.deps/usr
-    BOOST_LIBRARYDIR=${BOOST_ROOT}/lib
-    BOOST_INCLUDEDIR=${BOOST_ROOT}/include
-    export BOOST_ROOT
-    export BOOST_LIBRARYDIR
-    export BOOST_INCLUDEDIR
-fi
+cget init --prefix .deps/usr --std=c++14
+cget install --prefix .deps/usr -f requirements.txt -GNinja
 
 # Build nheko
 cmake -GNinja -H. -Bbuild \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DCMAKE_INSTALL_PREFIX=.deps/usr
+    -DCMAKE_INSTALL_PREFIX=.deps/usr \
+    -DCMAKE_TOOLCHAIN_FILE=.deps/usr/cget/cget.cmake
 cmake --build build
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
