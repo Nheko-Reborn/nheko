@@ -39,16 +39,15 @@ endif()
 include(ExternalProject)
 
 set(BOOST_URL
-    https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2)
+    https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.bz2)
 set(BOOST_SHA256
-    7f6130bc3cf65f56a618888ce9d5ea704fa10b462be126ad053e80e553d6d8b7)
+    8f32d4617390d1c2d16f26a27ab60d97807b35440d45891fa340fc2648b04406)
 
 set(
   MTXCLIENT_URL
-  https://github.com/Nheko-Reborn/mtxclient/archive/5dc567a4a494a2152658c6586e0d7637ecba85b4.tar.gz
-  )
+  https://github.com/Nheko-Reborn/mtxclient/archive/49226a29626ff6c801931e48a12d7669e8ebcb23.tar.gz)
 set(MTXCLIENT_HASH
-  afea7b9681657233f6e833cccd161af66e320654be0c6bcffba855420e37f415)
+  1538e7aa83b56e8ab5cca3598ba03a668937089698b8bd7495d6e65607e52d10)
 set(
   TWEENY_URL
   https://github.com/mobius3/tweeny/archive/b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf.tar.gz
