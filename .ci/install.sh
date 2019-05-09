@@ -41,6 +41,9 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     # needed for git-lfs, otherwise the follow apt update fails.
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6B05F25D762E3157
 
+    # needed for mongodb repository: https://github.com/travis-ci/travis-ci/issues/9037
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+
     sudo apt update -qq
     sudo apt install -qq -y \
         qt${QT_PKG}base \
