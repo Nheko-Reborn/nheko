@@ -104,7 +104,8 @@ if(NOT MSVC)
         -pedantic \
         -fsized-deallocation \
         -fdiagnostics-color=always \
-        -Wunreachable-code"
+        -Wunreachable-code \
+	-std=c++14"
     )
     if (NOT CMAKE_COMPILER_IS_GNUCXX)
         # -Wshadow is buggy and broken in GCC, so do not enable it.
