@@ -28,6 +28,7 @@ ExternalProject_Add(
         -DBUILD_LIB_EXAMPLES=OFF
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         ${BOOST_BUNDLE_ROOT}
+        -DMTX_STATIC=${MTX_STATIC}
         ${PLATFORM_FLAGS}
         ${DEPS_BUILD_DIR}/mtxclient
   BUILD_COMMAND 
