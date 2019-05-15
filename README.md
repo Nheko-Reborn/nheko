@@ -6,6 +6,7 @@ nheko
 [![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/nightly)
 [![#nheko-reborn:matrix.org](https://img.shields.io/matrix/nheko-reborn:matrix.org.svg?label=%23nheko-reborn:matrix.org)](https://matrix.to/#/#nheko-reborn:matrix.org)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
+[![Flathub](https://flathub.org/assets/badges/flathub-badge-en.png)](https://flathub.org/apps/details/io.github.NhekoReborn.Nheko)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
@@ -70,7 +71,7 @@ sudo apk add nheko
 #### Flatpak
 
 ```
-flatpak install flathub io.github.mujx.Nheko
+flatpak install flathub io.github.NhekoReborn.Nheko
 ```
 
 #### macOS (10.12 and above)
