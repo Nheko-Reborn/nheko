@@ -36,7 +36,7 @@ steps:
     ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
 # delete the release if it already exists to avoid an error
 - task: GitHubRelease@0
-  condition: and(succeeded(), eq(variables['buildSuccess'], 'true') )
+  condition: succeeded(), eq(variables['buildSuccess'], 'true')
   continueOnError: true
   inputs:
     gitHubConnection: nheko-reborn-pipeline
@@ -55,7 +55,7 @@ steps:
     #isPreRelease: true # Optional
     #addChangeLog: true # Optional
 - task: GitHubRelease@0
-  condition: and(succeeded(), eq(variables['buildSuccess'], 'true') )
+  condition: eq(variables['buildSuccess'], 'true')
   continueOnError: true
   inputs:
     gitHubConnection: nheko-reborn-pipeline
