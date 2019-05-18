@@ -54,3 +54,7 @@ if [ -n "$VERSION" ]; then
     #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
     echo "nheko-${VERSION}-x86_64.AppImage"
 fi
+
+if [ -n "$ARTIFACT_STAGING_DIRECTORY" ]; then
+    cp "nheko-${VERSION}-x86_64.AppImage" "${ARTIFACT_STAGING_DIRECTORY}"
+fi

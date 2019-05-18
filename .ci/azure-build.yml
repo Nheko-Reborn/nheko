@@ -15,16 +15,18 @@ steps:
     ./.ci/script.sh
     sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     cp ./.ci/bintray-release.json .
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: $(Build.Repository.LocalPath) # Optional
-    contents: |
-      '**/nheko*.dmg'
-      '**/nheko*.AppImage'
-    targetFolder: $(Build.ArtifactStagingDirectory)
-    #cleanTargetFolder: false # Optional
-    overWrite: true # Optional
-    flattenFolders: true # Optional
+  env:
+    ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
+# - task: CopyFiles@2
+#   inputs:
+#     sourceFolder: $(Build.Repository.LocalPath) # Optional
+#     contents: |
+#       '**/nheko*.dmg'
+#       '**/nheko*.AppImage'
+#     targetFolder: $(Build.ArtifactStagingDirectory)
+#     #cleanTargetFolder: false # Optional
+#     overWrite: true # Optional
+#     flattenFolders: true # Optional
   # Create a variable for build success
 - bash: ls ${ARTIFACT_STAGING_DIRECTORY}
   env:

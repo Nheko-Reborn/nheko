@@ -28,3 +28,7 @@ dmgbuild -s ./.ci/macos/settings.json "Nheko" nheko.dmg
 if [ -n "$VERSION" ]; then
     mv nheko.dmg "nheko-${VERSION}.dmg"
 fi
+
+if [ -n "$ARTIFACT_STAGING_DIRECTORY" ]; then
+    cp "nheko-${VERSION}.dmg" "${ARTIFACT_STAGING_DIRECTORY}"
+fi
