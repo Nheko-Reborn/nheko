@@ -23,7 +23,7 @@ stages:
 
   - job: macOS
     pool:
-      vmImage: 'macOS-10.12'
+      vmImage: 'macOS-10.13'
     steps:
     - template: .ci/azure-build.yml
 
