@@ -1,12 +1,9 @@
-parameters:
-  osName: 'linux'
 
 steps:
 - bash: |
     ./.ci/install.sh
     export PATH=/usr/local/bin:${PATH}
 - bash: |
-    export TRAVIS_OS_NAME=${{ osName }}
     export CXX=${CXX_COMPILER}
     export CC=${C_COMPILER}
     # Use TRAVIS_TAG if defined, or the short commit SHA otherwise

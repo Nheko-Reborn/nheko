@@ -17,7 +17,6 @@ stages:
   - job: Linux
     pool:
       vmImage: 'ubuntu-16.04'
-
     variables:
       CXX_COMPILER: 'clang++-5.0'
       C_COMPILER: 'clang-5.0'
@@ -26,6 +25,7 @@ stages:
       USE_BUNDLED_BOOST: '1'
       USE_BUNDLED_CMARK: '1'
       USE_BUNDLED_JSON: '1'
+      TRAVIS_OS_NAME: 'linux'
     steps:
     - template: .ci/azure-build.yml
       parameters:
@@ -39,6 +39,7 @@ stages:
       USE_BUNDLED_BOOST: '0'
       USE_BUNDLED_CMARK: '0'
       USE_BUNDLED_JSON: '0'
+      TRAVIS_OS_NAME: 'osx'
     steps:
     - template: .ci/azure-build.yml
       parameters:
@@ -47,7 +48,8 @@ stages:
   - job: Windows
     pool:
       vmImage: 'vs2017-win2016'
-
+    variables:
+      TRAVIS_OS_NAME: 'windows'
     steps:
     - template: .ci/azure-build.yml
       parameters:
