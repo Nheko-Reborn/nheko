@@ -37,6 +37,7 @@ steps:
 # delete the release if it already exists to avoid an error
 - task: GitHubRelease@0
   condition: and(succeeded(), eq(variables['buildSuccess'], 'true') )
+  continueOnError: true
   inputs:
     gitHubConnection: nheko-reborn-pipeline
     repositoryName: '$(Build.Repository.Name)'
@@ -55,6 +56,7 @@ steps:
     #addChangeLog: true # Optional
 - task: GitHubRelease@0
   condition: and(succeeded(), eq(variables['buildSuccess'], 'true') )
+  continueOnError: true
   inputs:
     gitHubConnection: nheko-reborn-pipeline
     repositoryName: '$(Build.Repository.Name)'
