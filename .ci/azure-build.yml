@@ -17,14 +17,14 @@ steps:
     cp ./.ci/bintray-release.json .
 - task: CopyFiles@2
   inputs:
-    #sourceFolder: # Optional
+    sourceFolder: $(Build.Repository.LocalPath) # Optional
     contents: |
-      'nheko*.dmg'
-      'nheko*.AppImage'
+      '**/nheko*.dmg'
+      '**/nheko*.AppImage'
     targetFolder: $(Build.ArtifactStagingDirectory)
     #cleanTargetFolder: false # Optional
-    #overWrite: false # Optional
-    #flattenFolders: false # Optional
+    overWrite: true # Optional
+    flattenFolders: true # Optional
   # Create a variable for build success
 - bash: ls ${ARTIFACT_STAGING_DIRECTORY}
   env:
