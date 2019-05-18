@@ -1,5 +1,8 @@
 
 steps:
+- bash: mkdir -p ${ARTIFACT_STAGING_DIRECTORY}
+  env:
+    ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
 - bash: |
     export CXX=${CXX_COMPILER}
     export CC=${C_COMPILER}
