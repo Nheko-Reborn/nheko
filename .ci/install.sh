@@ -4,7 +4,7 @@ set -ex
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     brew update
-    brew install qt5 lmdb clang-format ninja libsodium cmark autoconf automake libtool || true
+    brew install qt5 lmdb clang-format ninja libsodium cmark autoconf automake libtool pkg-config || true
 
     # probably should update this to check if these are actually installed or not
     # but this installs boost, cmake, and icu4c if they aren't installed already
