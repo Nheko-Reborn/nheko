@@ -1,0 +1,13 @@
+steps:
+- script: |
+    export CXX=${CXX_COMPILER}
+    export CC=${C_COMPILER}
+    # Use TRAVIS_TAG if defined, or the short commit SHA otherwise
+    export VERSION=${TRAVIS_TAG:-$(git rev-parse --short HEAD)}
+- script: |
+    ./.ci/script.sh
+    sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
+    cp ./.ci/bintray-release.json .
+- script: |
+    ./.ci/install.sh
+    export PATH=/usr/local/bin:${PATH}

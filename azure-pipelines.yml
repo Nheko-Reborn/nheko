@@ -4,16 +4,32 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  - master
+  - releases/*
 
-pool:
-  vmImage: 'ubuntu-latest'
+pr:
+  - master
+  - releases/*
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- stage: Build
+  jobs:
+  - job: Linux
+    pool:
+      vmImage: 'ubuntu-16.04'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    steps:
+    - template: .ci/azure-build.yml
+
+  - job: macOS
+    pool:
+      vmImage: 'macOS-10.12'
+    steps:
+    - template: .ci/azure-build.yml
+
+  - job: Windows
+    pool:
+      vmImage: 'vs2017-win2016'
+    
+    steps:
+    - template: .ci/azure-build.yml
