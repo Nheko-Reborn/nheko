@@ -37,7 +37,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       cd libsodium-1.0.16/
       ./configure && make && make check && sudo make install )
 
-    UBUNTU_RELEASE = $(lsb_release -sc)
+    UBUNTU_RELEASE=$(lsb_release -sc)
 
     if [ "$UBUNTU_RELEASE" eq "trusty" ]; then
         curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
