@@ -5,6 +5,11 @@ set -ex
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     brew update
     brew install qt5 lmdb clang-format ninja libsodium cmark
+
+    # probably should update this to check if these are actually installed or not
+    # but this installs boost, cmake, and icu4c if they aren't installed already
+    # and upgrades them if they are
+    brew install boost cmake icu4c || true
     brew upgrade boost cmake icu4c || true
 
     brew tap nlohmann/json
