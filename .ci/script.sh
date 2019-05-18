@@ -3,6 +3,7 @@
 set -ex
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+
     export CC=${C_COMPILER}
     export CXX=${CXX_COMPILER}
     # make build use all available cores
