@@ -46,25 +46,27 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     if [ "$UBUNTU_RELEASE" = "trusty" ]; then
         curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main"
+        sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-5.0 main"
 
         sudo apt-get update -qq
         sudo apt-get install -qq -y clang-5.0
 
         sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
-        # needed for git-lfs, otherwise the follow apt update fails.
-        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6B05F25D762E3157
+
     elif [ "$UBUNTU_RELEASE" = "xenial" ]; then
         curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main"
+        sudo apt-add-repository -y "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main"
         sudo apt-get update -qq
         sudo apt-get install -qq -y clang-6.0
-        sudo add-apt-repository ppa:beineri/opt-qt-5.11.1-xenial
+        sudo add-apt-repository -y ppa:beineri/opt-qt-5.11.1-xenial
     fi
+
+    # needed for git-lfs, otherwise the follow apt update fails.
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6B05F25D762E3157
     # needed for mongodb repository: https://github.com/travis-ci/travis-ci/issues/9037
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
 
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 
     sudo apt update -qq
     sudo apt install -qq -y \
