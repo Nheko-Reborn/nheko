@@ -22,6 +22,7 @@ stages:
       C_COMPILER: 'clang-6.0'
       QT_VERSION: '5.11.1'
       QT_PKG: '511'
+      DEPLOYMENT: '1'
       USE_BUNDLED_BOOST: '1'
       USE_BUNDLED_CMARK: '1'
       USE_BUNDLED_JSON: '1'
