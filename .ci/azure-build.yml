@@ -12,6 +12,7 @@ steps:
     ./.ci/script.sh
     sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     cp ./.ci/bintray-release.json .
+  failOnStderr: 'true'
 - task: CopyFiles@2
   inputs:
     #sourceFolder: # Optional
@@ -23,6 +24,7 @@ steps:
     #overWrite: false # Optional
     #flattenFolders: false # Optional
 - task: GitHubRelease@0
+  condition: succeeded()
   inputs:
     gitHubConnection: nheko-reborn-pipeline
     repositoryName: '$(Build.Repository.Name)'
