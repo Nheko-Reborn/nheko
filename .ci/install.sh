@@ -39,7 +39,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     UBUNTU_RELEASE = $(lsb_release -sc)
 
-    if [ "$UBUNTU_RELEASE" eq "trusty" ]
+    if [ "$UBUNTU_RELEASE" eq "trusty" ]; then
         curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main"
 
@@ -49,7 +49,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
         # needed for git-lfs, otherwise the follow apt update fails.
         sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6B05F25D762E3157
-    elif [ "$UBUNTU_RELEASE" eq "xenial" ]
+    elif [ "$UBUNTU_RELEASE" eq "xenial" ]; then
         curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main"
         sudo apt-get update -qq
