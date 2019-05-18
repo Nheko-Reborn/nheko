@@ -17,8 +17,8 @@ steps:
   inputs:
     #sourceFolder: # Optional
     contents: |
-      '**/*.dmg'
-      '**/*.AppImage'
+      'nheko*.dmg'
+      'nheko*.AppImage'
     targetFolder: $(Build.ArtifactStagingDirectory)
     #cleanTargetFolder: false # Optional
     #overWrite: false # Optional
