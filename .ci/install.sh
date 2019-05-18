@@ -4,7 +4,7 @@ set -ex
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     brew update
-    brew install qt5 lmdb clang-format ninja libsodium cmark
+    brew install qt5 lmdb clang-format ninja libsodium cmark autoconf automake libtool || true
 
     # probably should update this to check if these are actually installed or not
     # but this installs boost, cmake, and icu4c if they aren't installed already
@@ -49,7 +49,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-5.0 main"
 
         sudo apt-get update -qq
-        sudo apt-get install -qq -y clang-5.0
+        sudo apt-get install -qq -y clang
 
         sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
 
