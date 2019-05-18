@@ -23,7 +23,9 @@ steps:
     #overWrite: false # Optional
     #flattenFolders: false # Optional
   # Create a variable for build success
-- bash: ls ${BUILD.ARTIFACTSTAGINGDIRECTORY}
+- bash: ls ${ARTIFACT_STAGING_DIRECTORY}
+  env:
+    ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
 - pwsh: if( (Get-ChildItem $(Build.ArtifactStagingDirectory) | Measure-Object).Count -eq 0) { echo '##vso[task.setvariable variable=buildSuccess]false' } else { echo '##vso[task.setvariable variable=buildSuccess]true' }
 # delete the release if it already exists to avoid an error
 - task: GitHubRelease@0
