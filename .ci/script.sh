@@ -41,11 +41,11 @@ cmake --build build
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     make lint;
 
-    if [ "$DEPLOYMENT" = 1 ] && [ ! -z "$VERSION" ] ; then
+    if [ "$DEPLOYMENT" = 1 ] && [ -n "$VERSION" ] ; then
         make macos-deploy;
     fi
 fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$DEPLOYMENT" = 1 ] && [ ! -z "$VERSION" ]; then
+if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$DEPLOYMENT" = 1 ] && [ -n "$VERSION" ]; then
     make linux-deploy;
 fi
