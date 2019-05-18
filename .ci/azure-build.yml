@@ -23,8 +23,10 @@ steps:
     #cleanTargetFolder: false # Optional
     #overWrite: false # Optional
     #flattenFolders: false # Optional
+  # Create a variable for build success
+- pwsh: if( (Get-ChildItem $(Build.ArtifactStagingDirectory) | Measure-Object).Count -eq 0) { echo '##vso[task.setvariable variable=buildSuccess]false' } else { echo '##vso[task.setvariable variable=buildSuccess]true' }
 - task: GitHubRelease@0
-  condition: succeeded()
+  condition: and(succeeded(), eq( $(buildSuccess), 'true' ) )
   inputs:
     gitHubConnection: nheko-reborn-pipeline
     repositoryName: '$(Build.Repository.Name)'
