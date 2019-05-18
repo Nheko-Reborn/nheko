@@ -12,7 +12,6 @@ steps:
     ./.ci/script.sh
     sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     cp ./.ci/bintray-release.json .
-  failOnStderr: 'true'
 - task: CopyFiles@2
   inputs:
     #sourceFolder: # Optional
