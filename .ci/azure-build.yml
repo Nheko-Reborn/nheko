@@ -3,6 +3,7 @@ steps:
 - bash: mkdir -p ${ARTIFACT_STAGING_DIRECTORY}
   env:
     ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
+  name: createStaging
 - bash: |
     export CXX=${CXX_COMPILER}
     export CC=${C_COMPILER}
@@ -17,6 +18,8 @@ steps:
     cp ./.ci/bintray-release.json .
   env:
     ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
+  name: build
+  displayName: build
 # - task: CopyFiles@2
 #   inputs:
 #     sourceFolder: $(Build.Repository.LocalPath) # Optional
@@ -28,15 +31,19 @@ steps:
 #     overWrite: true # Optional
 #     flattenFolders: true # Optional
   # Create a variable for build success
-- bash: ls ${ARTIFACT_STAGING_DIRECTORY}
+- bash: |
+    echo ${ARTIFACT_STAGING_DIRECTORY}
+    ls ${ARTIFACT_STAGING_DIRECTORY}
   env:
     ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
 - pwsh: if( (Get-ChildItem $ENV:ARTIFACT_STAGING_DIRECTORY | Measure-Object).Count -eq 0) { echo '##vso[task.setvariable variable=buildSuccess]false' } else { echo '##vso[task.setvariable variable=buildSuccess]true' }
   env:
     ARTIFACT_STAGING_DIRECTORY: $(Build.ArtifactStagingDirectory))
+  name: buildCheck
 - task: GitHubRelease@0
   condition: eq(variables['buildSuccess'], 'true')
   continueOnError: true
+  name: GitHubRelease
   inputs:
     gitHubConnection: nheko-reborn-pipeline
     repositoryName: '$(Build.Repository.Name)'
@@ -45,8 +52,8 @@ steps:
     tagSource: 'manual' # Required when action == Create# Options: auto, manual
     tag: $(Build.BuildNumber) # Required when action == Edit || Action == Delete || TagSource == Manual
     #title: # Optional
-    releaseNotesSource: 'file' # Optional. Options: file, input
-    releaseNotesFile: CHANGELOG.md # Optional
+    #releaseNotesSource: 'file' # Optional. Options: file, input
+    #releaseNotesFile: CHANGELOG.md # Optional
     #releaseNotes: # Optional
     #assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
     assetUploadMode: 'delete' # Optional. Options: delete, replace
@@ -65,8 +72,8 @@ steps:
     tagSource: 'manual' # Required when action == Create# Options: auto, manual
     tag: $(Build.BuildNumber) # Required when action == Edit || Action == Delete || TagSource == Manual
     #title: # Optional
-    releaseNotesSource: 'file' # Optional. Options: file, input
-    releaseNotesFile: CHANGELOG.md # Optional
+    #releaseNotesSource: 'file' # Optional. Options: file, input
+    #releaseNotesFile: CHANGELOG.md # Optional
     #releaseNotes: # Optional
     #assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
     assetUploadMode: 'delete' # Optional. Options: delete, replace

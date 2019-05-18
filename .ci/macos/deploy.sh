@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-set -eux
+set -ex
 
 # unused
 #TAG=$(git tag -l --points-at HEAD)
