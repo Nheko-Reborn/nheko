@@ -59,6 +59,7 @@ build_script:
         -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
         -DUSE_BUNDLED_BOOST=OFF
         -DUSE_BUNDLED_JSON=OFF
+        -DMTX_STATIC=ON
     - cmake --build .deps --config Release
 
     # Build nheko
@@ -104,8 +105,8 @@ after_build:
     # Copy installer data
     - copy %BUILD%\resources\nheko.ico installer\config
     - copy %BUILD%\resources\nheko.png installer\config
-    - copy %BUILD%\LICENSE installer\packages\com.mujx.nheko\meta\license.txt
-    - copy %BUILD%\LICENSE installer\packages\com.mujx.nheko.cleanup\meta\license.txt
+    - copy %BUILD%\COPYING installer\packages\com.mujx.nheko\meta\license.txt
+    - copy %BUILD%\COPYING installer\packages\com.mujx.nheko.cleanup\meta\license.txt
     - copy %BUILD%\deploy\installer\config.xml installer\config
     - copy %BUILD%\deploy\installer\controlscript.qs installer\config
     - copy %BUILD%\deploy\installer\uninstall.qs installer\packages\com.mujx.nheko\data

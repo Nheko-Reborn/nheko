@@ -30,6 +30,7 @@ option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdbxx." ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
        ${USE_BUNDLED})
 option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json." ${USE_BUNDLED})
+option(MTX_STATIC "Compile / link bundled mtx client statically" OFF)
 
 if(USE_BUNDLED_BOOST)
   # bundled boost is 1.68, which requires CMake 3.12 or greater.
