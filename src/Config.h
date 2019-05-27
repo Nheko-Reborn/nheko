@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QString>
 
 // Non-theme app configuration. Layouts, fonts spacing etc.
@@ -51,8 +51,11 @@ constexpr auto LABEL_BIG_SIZE_RATIO    = 2;
 
 namespace strings {
 const QString url_html = "<a href=\"\\1\">\\1</a>";
-const QRegExp url_regex(
-  "((www\\.(?!\\.)|[a-z][a-z0-9+.-]*://)[^\\s<>'\"]+[^!,\\.\\s<>'\"\\]\\)\\:])");
+const QRegularExpression url_regex(
+  // match an URL, that is not quoted, i.e.
+  // vvvvvvv match quote via negative lookahead/lookbehind                                 vvvvvv
+  //        vvvv atomic match url -> fail if there is a " before or after                vv
+  "(?<!\")(?>((www\\.(?!\\.)|[a-z][a-z0-9+.-]*://)[^\\s<>'\"]+[^!,\\.\\s<>'\"\\]\\)\\:]))(?!\")");
 }
 
 // Window geometry.

@@ -1,6 +1,6 @@
 ---
 
-version: 0.6.3-{build}
+version: 0.6.4-{build}
 
 configuration: Release
 image: Visual Studio 2017
@@ -20,7 +20,9 @@ install:
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
     - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+    - cd "C:\Tools\vcpkg"&& git pull && .\bootstrap-vcpkg.bat && cd %APPVEYOR_BUILD_FOLDER%
     - vcpkg install
+            nlohmann-json:%PLATFORM%-windows
             boost-asio:%PLATFORM%-windows
             boost-beast:%PLATFORM%-windows
             boost-iostreams:%PLATFORM%-windows
@@ -37,8 +39,8 @@ build_script:
     # VERSION format:     branch-master/branch-1.2
     # INSTVERSION format: x.y.z
     # WINVERSION format:  9999.0.0.123/1.2.0.234
-    - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.6.3
-    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.6.3
+    - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.6.4
+    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.6.4
     - if "%APPVEYOR_REPO_TAG%"=="false" if "%APPVEYOR_REPO_BRANCH%"=="master" set INSTVERSION=9999.0
     - if "%APPVEYOR_REPO_TAG%"=="false" set WINVERSION=%INSTVERSION%.0.%APPVEYOR_BUILD_NUMBER%
     # VERSION format:     v1.2.3/v1.3.4
@@ -56,7 +58,8 @@ build_script:
     - cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
         -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
         -DUSE_BUNDLED_BOOST=OFF
-        -DUSE_BUNDLED_JSON=ON
+        -DUSE_BUNDLED_JSON=OFF
+        -DMTX_STATIC=ON
     - cmake --build .deps --config Release
 
     # Build nheko
@@ -102,8 +105,8 @@ after_build:
     # Copy installer data
     - copy %BUILD%\resources\nheko.ico installer\config
     - copy %BUILD%\resources\nheko.png installer\config
-    - copy %BUILD%\LICENSE installer\packages\com.mujx.nheko\meta\license.txt
-    - copy %BUILD%\LICENSE installer\packages\com.mujx.nheko.cleanup\meta\license.txt
+    - copy %BUILD%\COPYING installer\packages\com.mujx.nheko\meta\license.txt
+    - copy %BUILD%\COPYING installer\packages\com.mujx.nheko.cleanup\meta\license.txt
     - copy %BUILD%\deploy\installer\config.xml installer\config
     - copy %BUILD%\deploy\installer\controlscript.qs installer\config
     - copy %BUILD%\deploy\installer\uninstall.qs installer\packages\com.mujx.nheko\data
@@ -112,9 +115,9 @@ after_build:
     - copy %BUILD%\deploy\installer\cleanup\package.xml installer\packages\com.mujx.nheko.cleanup\meta
     - copy %BUILD%\deploy\installer\cleanup\installscript.qs installer\packages\com.mujx.nheko.cleanup\meta
     # Amend version and date
-    - sed -i "s/__VERSION__/0.6.3/" installer\config\config.xml
-    - sed -i "s/__VERSION__/0.6.3/" installer\packages\com.mujx.nheko\meta\package.xml
-    - sed -i "s/__VERSION__/0.6.3/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
+    - sed -i "s/__VERSION__/0.6.4/" installer\config\config.xml
+    - sed -i "s/__VERSION__/0.6.4/" installer\packages\com.mujx.nheko\meta\package.xml
+    - sed -i "s/__VERSION__/0.6.4/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
     - sed -i "s/__DATE__/%DATE%/" installer\packages\com.mujx.nheko\meta\package.xml
     - sed -i "s/__DATE__/%DATE%/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
     # Copy nheko data

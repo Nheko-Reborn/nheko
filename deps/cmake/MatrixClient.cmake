@@ -13,6 +13,12 @@ endif()
 # instead of the bundled version of Boost, like we wanted.
 set(BOOST_BUNDLE_ROOT "-DBOOST_ROOT=${DEPS_BUILD_DIR}/boost")
 
+set (MTX_SHARED ON)
+
+if (MTX_STATIC)
+    set (MTX_SHARED OFF)
+endif()
+
 ExternalProject_Add(
   MatrixClient
 
@@ -28,6 +34,7 @@ ExternalProject_Add(
         -DBUILD_LIB_EXAMPLES=OFF
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         ${BOOST_BUNDLE_ROOT}
+        -DBUILD_SHARED_LIBS=${MTX_SHARED}
         ${PLATFORM_FLAGS}
         ${DEPS_BUILD_DIR}/mtxclient
   BUILD_COMMAND 

@@ -16,7 +16,7 @@ include(QtCommon)
 project(nheko LANGUAGES C CXX)
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "6")
-set(CPACK_PACKAGE_VERSION_PATCH "3")
+set(CPACK_PACKAGE_VERSION_PATCH "4")
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR})
 set(PROJECT_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH})
@@ -104,7 +104,8 @@ if(NOT MSVC)
         -pedantic \
         -fsized-deallocation \
         -fdiagnostics-color=always \
-        -Wunreachable-code"
+        -Wunreachable-code \
+	-std=c++14"
     )
     if (NOT CMAKE_COMPILER_IS_GNUCXX)
         # -Wshadow is buggy and broken in GCC, so do not enable it.

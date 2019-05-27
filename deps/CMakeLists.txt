@@ -30,6 +30,7 @@ option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdbxx." ${USE_BUNDLED})
 option(USE_BUNDLED_MATRIX_CLIENT "Use the bundled version of mtxclient."
        ${USE_BUNDLED})
 option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json." ${USE_BUNDLED})
+option(MTX_STATIC "Compile / link bundled mtx client statically" OFF)
 
 if(USE_BUNDLED_BOOST)
   # bundled boost is 1.68, which requires CMake 3.12 or greater.
@@ -39,9 +40,9 @@ endif()
 include(ExternalProject)
 
 set(BOOST_URL
-    https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2)
+    https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.bz2)
 set(BOOST_SHA256
-    7f6130bc3cf65f56a618888ce9d5ea704fa10b462be126ad053e80e553d6d8b7)
+    8f32d4617390d1c2d16f26a27ab60d97807b35440d45891fa340fc2648b04406)
 
 set(
   MTXCLIENT_URL
@@ -63,7 +64,7 @@ set(
 set(LMDBXX_HASH
     c57b501a4e8fa1187fa7fd348da415c7685a50a7cb25b17b3f257b9e9426f73d)
 
-set(OLM_URL https://git.matrix.org/git/olm.git)
+set(OLM_URL https://gitlab.matrix.org/matrix-org/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)
 
 set(CMARK_URL https://github.com/commonmark/cmark/archive/0.28.3.tar.gz)

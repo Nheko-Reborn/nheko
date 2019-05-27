@@ -2,10 +2,11 @@ nheko
 ----
 [![Build Status](https://travis-ci.org/Nheko-Reborn/nheko.svg?branch=master)](https://travis-ci.org/Nheko-Reborn/nheko)
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/redsky17/nheko/branch/master)
-[![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/v0.6.3)
-[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/nightly)
+[![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/v0.6.4)
+[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://bintray.com/nheko-reborn/nheko/nheko)
 [![#nheko-reborn:matrix.org](https://img.shields.io/matrix/nheko-reborn:matrix.org.svg?label=%23nheko-reborn:matrix.org)](https://matrix.to/#/#nheko-reborn:matrix.org)
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
+<a href='https://flathub.org/apps/details/io.github.NhekoReborn.Nheko'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
@@ -70,7 +71,7 @@ sudo apk add nheko
 #### Flatpak
 
 ```
-flatpak install flathub io.github.mujx.Nheko
+flatpak install flathub io.github.NhekoReborn.Nheko
 ```
 
 #### macOS (10.12 and above)

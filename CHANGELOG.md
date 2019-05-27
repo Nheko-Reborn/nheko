@@ -2,6 +2,28 @@
 
 ## [Unreleased]
 
+## [0.6.4] - 2019-05-22
+
+*Most* of the below fixes are due to updates in mtxclient.  Make sure you compile against 0.2.1
+if you do not use the mtxclient bundled with nheko to get these fixes.
+
+### Features
+- Support V3 Rooms
+
+### Improvements
+- Fix #19
+    - Fix initial sync issue caused by matrix-org/synapse#4898 (thanks @monokelpinguin)
+    - Add additional lmbd max_dbs setting (thanks @AndrewJDR)
+- Update DE translations (thanks @miocho)
+- Update Dutch translations (thanks @vistaus)
+- Fix text input UI bug (thanks @0xd800)
+- Update linkifyMessage to parse HTML better (thanks @monokelpinguin)
+- Update to Boost 1.69.0
+- Fix some memory-leak scenarios due to mismatched new / delete (thanks @monokelpinguin)
+
+### Other Changes
+- mtxclient now builds as a Shared Library by default (instead of statically)
+
 ## [0.6.3] - 2019-02-08
 
 ### Features
