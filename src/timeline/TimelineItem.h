@@ -289,7 +289,7 @@ private:
 
         QHBoxLayout *topLayout_     = nullptr;
         QHBoxLayout *messageLayout_ = nullptr;
-        QHBoxLayout *actionLayout_ = nullptr;
+        QHBoxLayout *actionLayout_  = nullptr;
         QVBoxLayout *mainLayout_    = nullptr;
         QHBoxLayout *widgetLayout_  = nullptr;
 
@@ -307,7 +307,6 @@ private:
 
         FlatButton *replyBtn_;
         FlatButton *contextBtn_;
-
 };
 
 template<class Widget>

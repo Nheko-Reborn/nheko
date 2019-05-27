@@ -126,8 +126,8 @@ void
 TimelineItem::adjustMessageLayoutForWidget()
 {
         messageLayout_->addLayout(widgetLayout_, 1);
-        actionLayout_->addWidget(replyBtn_); 
-        actionLayout_->addWidget(contextBtn_); 
+        actionLayout_->addWidget(replyBtn_);
+        actionLayout_->addWidget(contextBtn_);
         messageLayout_->addLayout(actionLayout_);
         messageLayout_->addWidget(statusIndicator_);
         messageLayout_->addWidget(timestamp_);
@@ -145,8 +145,8 @@ void
 TimelineItem::adjustMessageLayout()
 {
         messageLayout_->addWidget(body_, 1);
-        actionLayout_->addWidget(replyBtn_); 
-        actionLayout_->addWidget(contextBtn_); 
+        actionLayout_->addWidget(replyBtn_);
+        actionLayout_->addWidget(contextBtn_);
         messageLayout_->addLayout(actionLayout_);
         messageLayout_->addWidget(statusIndicator_);
         messageLayout_->addWidget(timestamp_);
@@ -163,10 +163,10 @@ TimelineItem::adjustMessageLayout()
 void
 TimelineItem::init()
 {
-        userAvatar_ = nullptr;
-        timestamp_  = nullptr;
-        userName_   = nullptr;
-        body_       = nullptr;
+        userAvatar_      = nullptr;
+        timestamp_       = nullptr;
+        userName_        = nullptr;
+        body_            = nullptr;
         auto buttonSize_ = 32;
 
         contextMenu_      = new QMenu(this);
@@ -178,7 +178,6 @@ TimelineItem::init()
         contextMenu_->addAction(viewRawMessage_);
         contextMenu_->addAction(markAsRead_);
         contextMenu_->addAction(redactMsg_);
-
 
         connect(showReadReceipts_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
@@ -221,7 +220,7 @@ TimelineItem::init()
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
         messageLayout_ = new QHBoxLayout;
-        actionLayout_ = new QHBoxLayout;
+        actionLayout_  = new QHBoxLayout;
         messageLayout_->setContentsMargins(0, 0, MSG_RIGHT_MARGIN, 0);
         messageLayout_->setSpacing(MSG_PADDING);
 
@@ -870,13 +869,13 @@ TimelineItem::addReplyAction()
 }
 
 void
-TimelineItem::replyAction() {
-                        if (!body_)
-                                return;
+TimelineItem::replyAction()
+{
+        if (!body_)
+                return;
 
-                        emit ChatPage::instance()->messageReply(
-                          Cache::displayName(room_id_, descriptionMsg_.userid),
-                          body_->toPlainText());
+        emit ChatPage::instance()->messageReply(
+          Cache::displayName(room_id_, descriptionMsg_.userid), body_->toPlainText());
 }
 
 void
