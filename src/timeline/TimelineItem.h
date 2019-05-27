@@ -35,6 +35,8 @@
 #include "Cache.h"
 #include "MatrixClient.h"
 
+#include "ui/FlatButton.h"
+
 class ImageItem;
 class StickerItem;
 class AudioItem;
@@ -222,6 +224,7 @@ public:
         void setRoomId(QString room_id) { room_id_ = room_id; }
         void sendReadReceipt() const;
         void openRawMessageViewer() const;
+        void replyAction();
 
         //! Add a user avatar for this event.
         void addAvatar();
@@ -286,6 +289,7 @@ private:
 
         QHBoxLayout *topLayout_     = nullptr;
         QHBoxLayout *messageLayout_ = nullptr;
+        QHBoxLayout *actionLayout_ = nullptr;
         QVBoxLayout *mainLayout_    = nullptr;
         QHBoxLayout *widgetLayout_  = nullptr;
 
@@ -300,6 +304,10 @@ private:
         TextLabel *body_;
 
         QColor backgroundColor_;
+
+        FlatButton *replyBtn_;
+        FlatButton *contextBtn_;
+
 };
 
 template<class Widget>

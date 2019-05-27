@@ -62,6 +62,8 @@
 
         <file>icons/ui/edit.png</file>
         <file>icons/ui/edit@2x.png</file>
+    
+        <file>icons/ui/mail-reply.png</file>
 
         <file>icons/emoji-categories/people.png</file>
         <file>icons/emoji-categories/people@2x.png</file>

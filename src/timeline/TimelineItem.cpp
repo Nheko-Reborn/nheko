@@ -126,11 +126,17 @@ void
 TimelineItem::adjustMessageLayoutForWidget()
 {
         messageLayout_->addLayout(widgetLayout_, 1);
+        actionLayout_->addWidget(replyBtn_); 
+        actionLayout_->addWidget(contextBtn_); 
+        messageLayout_->addLayout(actionLayout_);
         messageLayout_->addWidget(statusIndicator_);
         messageLayout_->addWidget(timestamp_);
 
+        actionLayout_->setAlignment(replyBtn_, Qt::AlignTop | Qt::AlignRight);
+        actionLayout_->setAlignment(contextBtn_, Qt::AlignTop | Qt::AlignRight);
         messageLayout_->setAlignment(statusIndicator_, Qt::AlignTop);
         messageLayout_->setAlignment(timestamp_, Qt::AlignTop);
+        messageLayout_->setAlignment(actionLayout_, Qt::AlignTop);
 
         mainLayout_->addLayout(messageLayout_);
 }
@@ -139,11 +145,17 @@ void
 TimelineItem::adjustMessageLayout()
 {
         messageLayout_->addWidget(body_, 1);
+        actionLayout_->addWidget(replyBtn_); 
+        actionLayout_->addWidget(contextBtn_); 
+        messageLayout_->addLayout(actionLayout_);
         messageLayout_->addWidget(statusIndicator_);
         messageLayout_->addWidget(timestamp_);
 
+        actionLayout_->setAlignment(replyBtn_, Qt::AlignTop | Qt::AlignRight);
+        actionLayout_->setAlignment(contextBtn_, Qt::AlignTop | Qt::AlignRight);
         messageLayout_->setAlignment(statusIndicator_, Qt::AlignTop);
         messageLayout_->setAlignment(timestamp_, Qt::AlignTop);
+        messageLayout_->setAlignment(actionLayout_, Qt::AlignTop);
 
         mainLayout_->addLayout(messageLayout_);
 }
@@ -155,6 +167,7 @@ TimelineItem::init()
         timestamp_  = nullptr;
         userName_   = nullptr;
         body_       = nullptr;
+        auto buttonSize_ = 32;
 
         contextMenu_      = new QMenu(this);
         showReadReceipts_ = new QAction("Read receipts", this);
@@ -165,6 +178,7 @@ TimelineItem::init()
         contextMenu_->addAction(viewRawMessage_);
         contextMenu_->addAction(markAsRead_);
         contextMenu_->addAction(redactMsg_);
+
 
         connect(showReadReceipts_, &QAction::triggered, this, [this]() {
                 if (!event_id_.isEmpty())
@@ -207,8 +221,12 @@ TimelineItem::init()
         topLayout_     = new QHBoxLayout(this);
         mainLayout_    = new QVBoxLayout;
         messageLayout_ = new QHBoxLayout;
+        actionLayout_ = new QHBoxLayout;
         messageLayout_->setContentsMargins(0, 0, MSG_RIGHT_MARGIN, 0);
         messageLayout_->setSpacing(MSG_PADDING);
+
+        actionLayout_->setContentsMargins(13, 1, 13, 0);
+        actionLayout_->setSpacing(0);
 
         topLayout_->setContentsMargins(
           conf::timeline::msgLeftMargin, conf::timeline::msgTopMargin, 0, 0);
@@ -217,6 +235,28 @@ TimelineItem::init()
 
         mainLayout_->setContentsMargins(conf::timeline::headerLeftMargin, 0, 0, 0);
         mainLayout_->setSpacing(0);
+
+        replyBtn_ = new FlatButton(this);
+        replyBtn_->setToolTip(tr("Reply"));
+        replyBtn_->setFixedSize(buttonSize_, buttonSize_);
+        replyBtn_->setCornerRadius(buttonSize_ / 2);
+
+        QIcon reply_icon;
+        reply_icon.addFile(":/icons/icons/ui/mail-reply.png");
+        replyBtn_->setIcon(reply_icon);
+        replyBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
+        connect(replyBtn_, &FlatButton::clicked, this, &TimelineItem::replyAction);
+
+        contextBtn_ = new FlatButton(this);
+        contextBtn_->setToolTip(tr("Options"));
+        contextBtn_->setFixedSize(buttonSize_, buttonSize_);
+        contextBtn_->setCornerRadius(buttonSize_ / 2);
+
+        QIcon context_icon;
+        context_icon.addFile(":/icons/icons/ui/vertical-ellipsis.png");
+        contextBtn_->setIcon(context_icon);
+        contextBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
+        contextBtn_->setMenu(contextMenu_);
 
         timestampFont_.setPointSizeF(timestampFont_.pointSizeF() * 0.9);
         timestampFont_.setFamily("Monospace");
@@ -825,15 +865,18 @@ TimelineItem::addReplyAction()
                 auto replyAction = new QAction("Reply", this);
                 contextMenu_->addAction(replyAction);
 
-                connect(replyAction, &QAction::triggered, this, [this]() {
+                connect(replyAction, &QAction::triggered, this, &TimelineItem::replyAction);
+        }
+}
+
+void
+TimelineItem::replyAction() {
                         if (!body_)
                                 return;
 
                         emit ChatPage::instance()->messageReply(
                           Cache::displayName(room_id_, descriptionMsg_.userid),
                           body_->toPlainText());
-                });
-        }
 }
 
 void
