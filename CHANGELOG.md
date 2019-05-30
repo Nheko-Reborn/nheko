@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### [0.7.0] -- Unreleased
+
+#### Features
+- Make nheko session import / export format match riot.  Fixes #48
+
+#### Improvements
+- Add dedicated reply button to Timeline items.  Add button for other options so
+    that right click isn't always required.
+
 ## [0.6.4] - 2019-05-22
 
 *Most* of the below fixes are due to updates in mtxclient.  Make sure you compile against 0.2.1
