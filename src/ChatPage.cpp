@@ -265,6 +265,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 SLOT(queueTextMessage(const QString &)));
 
         connect(text_input_,
+                SIGNAL(sendReplyMessage(const QString &, const QString &)),
+                view_manager_,
+                SLOT(queueReplyMessage(const QString &, const QString &)));
+
+        connect(text_input_,
                 SIGNAL(sendEmoteMessage(const QString &)),
                 view_manager_,
                 SLOT(queueEmoteMessage(const QString &)));

@@ -54,6 +54,7 @@ public:
         QSize minimumSizeHint() const override;
 
         void submit();
+        void setRelatedEvent(const QString &event) { related_event_ = event; }
 
 signals:
         void heightChanged(int height);
@@ -61,6 +62,7 @@ signals:
         void stoppedTyping();
         void startedUpload();
         void message(QString);
+        void reply(QString, QString);
         void command(QString name, QString args);
         void image(QSharedPointer<QIODevice> data, const QString &filename);
         void audio(QSharedPointer<QIODevice> data, const QString &filename);
@@ -93,6 +95,9 @@ private:
         QTimer *typingTimer_;
 
         SuggestionsPopup popup_;
+
+        // Used for replies
+        QString related_event_;
 
         enum class AnchorType
         {
@@ -158,13 +163,14 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void addReply(const QString &username, const QString &msg);
+        void addReply(const QString &username, const QString &msg, const QString &related_event);
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
 
 signals:
         void sendTextMessage(QString msg);
+        void sendReplyMessage(QString msg, QString event_id);
         void sendEmoteMessage(QString msg);
         void heightChanged(int height);
 
@@ -188,6 +194,9 @@ private:
 
         QHBoxLayout *topLayout_;
         FilteredTextEdit *input_;
+
+        // Used for replies
+        QString related_event_;
 
         LoadingIndicator *spinner_;
 

@@ -79,6 +79,19 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 }
 
 void
+TimelineViewManager::queueReplyMessage(const QString &reply,
+                                       const QString &related_event)
+{
+        if (active_room_.isEmpty())
+                return;
+
+        auto room_id = active_room_;
+        auto view    = views_[room_id];
+
+        view->addUserMessage(mtx::events::MessageType::Text, reply, related_event);
+}
+
+void
 TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
                                        const QString &url,

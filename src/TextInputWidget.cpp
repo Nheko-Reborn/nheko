@@ -398,13 +398,23 @@ FilteredTextEdit::submit()
                 auto name = text.mid(1, command_end - 1);
                 auto args = text.mid(command_end + 1);
                 if (name.isEmpty() || name == "/") {
-                        message(args);
+                        if (!related_event_.isEmpty()) {
+                                reply(args, related_event_);
+                        } else {
+                                message(args);
+                        }
                 } else {
                         command(name, args);
                 }
         } else {
-                message(std::move(text));
+                if (!related_event_.isEmpty()) {
+                        reply(std::move(text), std::move(related_event_));
+                } else {
+                        message(std::move(text));
+                }
         }
+
+        related_event_ = "";
 
         clear();
 }
@@ -536,6 +546,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
         connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
+        connect(input_, &FilteredTextEdit::reply, this, &TextInputWidget::sendReplyMessage);
         connect(input_, &FilteredTextEdit::command, this, &TextInputWidget::command);
         connect(input_, &FilteredTextEdit::image, this, &TextInputWidget::uploadImage);
         connect(input_, &FilteredTextEdit::audio, this, &TextInputWidget::uploadAudio);
@@ -653,7 +664,7 @@ TextInputWidget::paintEvent(QPaintEvent *)
 }
 
 void
-TextInputWidget::addReply(const QString &username, const QString &msg)
+TextInputWidget::addReply(const QString &username, const QString &msg, const QString &replied_event)
 {
         input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
         input_->setFocus();
@@ -661,4 +672,5 @@ TextInputWidget::addReply(const QString &username, const QString &msg)
         auto cursor = input_->textCursor();
         cursor.movePosition(QTextCursor::End);
         input_->setTextCursor(cursor);
+        input_->setRelatedEvent(replied_event);
 }

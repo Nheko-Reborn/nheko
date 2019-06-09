@@ -875,7 +875,7 @@ TimelineItem::replyAction()
                 return;
 
         emit ChatPage::instance()->messageReply(
-          Cache::displayName(room_id_, descriptionMsg_.userid), body_->toPlainText());
+          Cache::displayName(room_id_, descriptionMsg_.userid), body_->toPlainText(), eventId());
 }
 
 void

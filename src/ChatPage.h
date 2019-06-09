@@ -83,7 +83,7 @@ signals:
         void connectionLost();
         void connectionRestored();
 
-        void messageReply(const QString &username, const QString &msg);
+        void messageReply(const QString &username, const QString &msg, const QString &related_event);
 
         void notificationsRetrieved(const mtx::responses::Notifications &);
 

@@ -63,6 +63,8 @@ public slots:
 
         void setHistoryView(const QString &room_id);
         void queueTextMessage(const QString &msg);
+        void queueReplyMessage(const QString &reply,
+                               const QString &related_event);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
                                const QString &filename,

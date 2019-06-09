@@ -690,7 +690,7 @@ TimelineView::updatePendingMessage(const std::string &txn_id, const QString &eve
 }
 
 void
-TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
+TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body, const QString &related_event)
 {
         auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
 
@@ -702,6 +702,9 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
         message.txn_id = http::client()->generate_txn_id();
         message.body   = body;
         message.widget = view_item;
+        if (!related_event.isEmpty()) {
+                message.related_event = related_event.toStdString();
+        }
 
         try {
                 message.is_encrypted = cache::client()->isRoomEncrypted(room_id_.toStdString());
@@ -720,6 +723,12 @@ TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 
         saveLastMessageInfo(local_user_, QDateTime::currentDateTime());
         handleNewUserMessage(message);
+}
+
+void
+TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
+{
+        addUserMessage(ty, body, "");
 }
 
 void
@@ -1266,6 +1275,10 @@ toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
 
         if (html != m.body.trimmed().toHtmlEscaped())
                 text.formatted_body = html.toStdString();
+
+        if (!m.related_event.empty()) {
+                text.relates_to.in_reply_to.event_id = m.related_event;
+        }
 
         return text;
 }
