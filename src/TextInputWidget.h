@@ -28,7 +28,8 @@
 #include <QTextEdit>
 #include <QWidget>
 
-#include "SuggestionsPopup.h"
+#include "popups/SuggestionsPopup.h"
+#include "popups/ReplyPopup.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
 
@@ -55,6 +56,7 @@ public:
 
         void submit();
         void setRelatedEvent(const QString &event) { related_event_ = event; }
+        void showReplyPopup(const QString &user, const QString &msg, const QString &event_id);
 
 signals:
         void heightChanged(int height);
@@ -85,7 +87,7 @@ protected:
         void insertFromMimeData(const QMimeData *source) override;
         void focusOutEvent(QFocusEvent *event) override
         {
-                popup_.hide();
+                suggestionsPopup_.hide();
                 QTextEdit::focusOutEvent(event);
         }
 
@@ -94,7 +96,8 @@ private:
         size_t history_index_;
         QTimer *typingTimer_;
 
-        SuggestionsPopup popup_;
+        SuggestionsPopup suggestionsPopup_;
+        ReplyPopup replyPopup_;
 
         // Used for replies
         QString related_event_;
@@ -109,7 +112,8 @@ private:
 
         int anchorWidth(AnchorType anchor) { return static_cast<int>(anchor); }
 
-        void closeSuggestions() { popup_.hide(); }
+        void closeSuggestions() { suggestionsPopup_.hide(); }
+        void closeReply() { replyPopup_.hide(); }
         void resetAnchor() { atTriggerPosition_ = -1; }
         bool isAnchorValid() { return atTriggerPosition_ != -1; }
         bool hasAnchor(int pos, AnchorType anchor)

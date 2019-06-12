@@ -23,7 +23,7 @@
 #include <QtConcurrent>
 
 #include "QuickSwitcher.h"
-#include "SuggestionsPopup.h"
+#include "popups/SuggestionsPopup.h"
 
 RoomSearchInput::RoomSearchInput(QWidget *parent)
   : TextField(parent)

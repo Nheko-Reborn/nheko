@@ -48,7 +48,8 @@ static constexpr int ButtonHeight          = 22;
 FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
   , history_index_{0}
-  , popup_{parent}
+  , suggestionsPopup_{parent}
+  , replyPopup_{parent}
   , previewDialog_{parent}
 {
         setFrameStyle(QFrame::NoFrame);
@@ -75,29 +76,34 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                 &FilteredTextEdit::uploadData);
 
         connect(this, &FilteredTextEdit::resultsRetrieved, this, &FilteredTextEdit::showResults);
-        connect(&popup_, &SuggestionsPopup::itemSelected, this, [this](const QString &text) {
-                popup_.hide();
-
-                auto cursor   = textCursor();
-                const int end = cursor.position();
-
-                cursor.setPosition(atTriggerPosition_, QTextCursor::MoveAnchor);
-                cursor.setPosition(end, QTextCursor::KeepAnchor);
-                cursor.removeSelectedText();
-                cursor.insertText(text);
+        connect(&replyPopup_, &ReplyPopup::userSelected, this, [this](const QString &text) {
+                // TODO: Show user avatar window.
+                nhlog::ui()->info("User selected: " + text.toStdString());
         });
+        connect(
+          &suggestionsPopup_, &SuggestionsPopup::itemSelected, this, [this](const QString &text) {
+                  suggestionsPopup_.hide();
+
+                  auto cursor   = textCursor();
+                  const int end = cursor.position();
+
+                  cursor.setPosition(atTriggerPosition_, QTextCursor::MoveAnchor);
+                  cursor.setPosition(end, QTextCursor::KeepAnchor);
+                  cursor.removeSelectedText();
+                  cursor.insertText(text);
+          });
 
         // For cycling through the suggestions by hitting tab.
         connect(this,
                 &FilteredTextEdit::selectNextSuggestion,
-                &popup_,
+                &suggestionsPopup_,
                 &SuggestionsPopup::selectNextSuggestion);
         connect(this,
                 &FilteredTextEdit::selectPreviousSuggestion,
-                &popup_,
+                &suggestionsPopup_,
                 &SuggestionsPopup::selectPreviousSuggestion);
         connect(this, &FilteredTextEdit::selectHoveredSuggestion, this, [this]() {
-                popup_.selectHoveredSuggestion<UserItem>();
+                suggestionsPopup_.selectHoveredSuggestion<UserItem>();
         });
 
         previewDialog_.hide();
@@ -117,9 +123,9 @@ FilteredTextEdit::showResults(const QVector<SearchResult> &results)
                 pos       = viewport()->mapToGlobal(rect.topLeft());
         }
 
-        popup_.addUsers(results);
-        popup_.move(pos.x(), pos.y() - popup_.height() - 10);
-        popup_.show();
+        suggestionsPopup_.addUsers(results);
+        suggestionsPopup_.move(pos.x(), pos.y() - suggestionsPopup_.height() - 10);
+        suggestionsPopup_.show();
 }
 
 void
@@ -146,7 +152,7 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 closeSuggestions();
         }
 
-        if (popup_.isVisible()) {
+        if (suggestionsPopup_.isVisible()) {
                 switch (event->key()) {
                 case Qt::Key_Down:
                 case Qt::Key_Tab:
@@ -168,6 +174,19 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                         break;
                 }
         }
+
+        if (replyPopup_.isVisible()) {
+                switch (event->key())
+                {
+                case Qt::Key_Escape:
+                        closeReply();
+                        return;
+                
+                default:
+                        break;
+                }
+        }
+
 
         switch (event->key()) {
         case Qt::Key_At:
@@ -420,6 +439,24 @@ FilteredTextEdit::submit()
 }
 
 void
+FilteredTextEdit::showReplyPopup(const QString &user, const QString &msg, const QString &event_id)
+{
+        QPoint pos;
+
+        if (isAnchorValid()) {
+                auto cursor = textCursor();
+                cursor.setPosition(atTriggerPosition_);
+                pos = viewport()->mapToGlobal(cursorRect(cursor).topLeft());
+        } else {
+                auto rect = cursorRect();
+                pos       = viewport()->mapToGlobal(rect.topLeft());
+        }
+        replyPopup_.setReplyContent(user, msg, event_id);
+        replyPopup_.move(pos.x(), pos.y() - replyPopup_.height() - 10);
+        replyPopup_.show();
+}
+
+void
 FilteredTextEdit::textChanged()
 {
         working_history_[history_index_] = toPlainText();
@@ -666,9 +703,10 @@ TextInputWidget::paintEvent(QPaintEvent *)
 void
 TextInputWidget::addReply(const QString &username, const QString &msg, const QString &replied_event)
 {
-        input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
+        // input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
         input_->setFocus();
 
+        input_->showReplyPopup(username, msg, replied_event);
         auto cursor = input_->textCursor();
         cursor.movePosition(QTextCursor::End);
         input_->setTextCursor(cursor);
