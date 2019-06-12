@@ -3,10 +3,10 @@
 #include <QStyleOption>
 
 #include "../Config.h"
-#include "SuggestionsPopup.h"
 #include "../Utils.h"
 #include "../ui/Avatar.h"
 #include "../ui/DropShadow.h"
+#include "SuggestionsPopup.h"
 
 SuggestionsPopup::SuggestionsPopup(QWidget *parent)
   : QWidget(parent)

@@ -176,17 +176,15 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         if (replyPopup_.isVisible()) {
-                switch (event->key())
-                {
+                switch (event->key()) {
                 case Qt::Key_Escape:
                         closeReply();
                         return;
-                
+
                 default:
                         break;
                 }
         }
-
 
         switch (event->key()) {
         case Qt::Key_At:

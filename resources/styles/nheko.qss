@@ -46,6 +46,10 @@ SuggestionsPopup {
     background-color: white;
 }
 
+ReplyPopup {
+    background-color: white;
+}
+
 PopupItem {
     background-color: white;
     qproperty-hoverColor: rgba(192, 193, 195, 120);
