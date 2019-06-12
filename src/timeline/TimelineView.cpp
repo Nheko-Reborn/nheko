@@ -690,7 +690,9 @@ TimelineView::updatePendingMessage(const std::string &txn_id, const QString &eve
 }
 
 void
-TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body, const QString &related_event)
+TimelineView::addUserMessage(mtx::events::MessageType ty,
+                             const QString &body,
+                             const QString &related_event)
 {
         auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
 

@@ -76,7 +76,7 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                 &FilteredTextEdit::uploadData);
 
         connect(this, &FilteredTextEdit::resultsRetrieved, this, &FilteredTextEdit::showResults);
-        connect(&replyPopup_, &ReplyPopup::userSelected, this, [this](const QString &text) {
+        connect(&replyPopup_, &ReplyPopup::userSelected, this, [](const QString &text) {
                 // TODO: Show user avatar window.
                 nhlog::ui()->info("User selected: " + text.toStdString());
         });
