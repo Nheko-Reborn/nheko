@@ -79,8 +79,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 }
 
 void
-TimelineViewManager::queueReplyMessage(const QString &reply,
-                                       const QString &related_event)
+TimelineViewManager::queueReplyMessage(const QString &reply, const QString &related_event)
 {
         if (active_room_.isEmpty())
                 return;

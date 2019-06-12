@@ -10,7 +10,6 @@
 #include "../ChatPage.h"
 #include "PopupItem.h"
 
-
 class SuggestionsPopup : public QWidget
 {
         Q_OBJECT

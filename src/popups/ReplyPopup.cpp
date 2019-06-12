@@ -1,5 +1,5 @@
-#include <QPaintEvent>
 #include <QLabel>
+#include <QPaintEvent>
 #include <QPainter>
 #include <QStyleOption>
 
@@ -32,7 +32,7 @@ ReplyPopup::setReplyContent(const QString &user, const QString &msg, const QStri
         // layout position.
         // if (!item) {
         auto userItem = new UserItem(this, user);
-        auto *text = new QLabel(this);
+        auto *text    = new QLabel(this);
         text->setText(msg);
         auto *event = new QLabel(this);
         event->setText(srcEvent);

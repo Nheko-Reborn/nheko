@@ -2,9 +2,9 @@
 #include <QPainter>
 #include <QStyleOption>
 
-#include "PopupItem.h"
 #include "../Utils.h"
 #include "../ui/Avatar.h"
+#include "PopupItem.h"
 
 constexpr int PopupHMargin    = 4;
 constexpr int PopupItemMargin = 3;

@@ -28,5 +28,4 @@ signals:
 
 private:
         QVBoxLayout *layout_;
-
 };

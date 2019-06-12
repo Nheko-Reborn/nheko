@@ -28,10 +28,10 @@
 #include <QTextEdit>
 #include <QWidget>
 
-#include "popups/SuggestionsPopup.h"
-#include "popups/ReplyPopup.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
+#include "popups/ReplyPopup.h"
+#include "popups/SuggestionsPopup.h"
 
 namespace dialogs {
 class PreviewUploadOverlay;
