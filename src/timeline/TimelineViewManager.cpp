@@ -23,6 +23,7 @@
 
 #include "Cache.h"
 #include "Logging.h"
+#include "Utils.h"
 #include "timeline/TimelineView.h"
 #include "timeline/TimelineViewManager.h"
 #include "timeline/widgets/AudioItem.h"
@@ -79,7 +80,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 }
 
 void
-TimelineViewManager::queueReplyMessage(const QString &reply, const QString &related_event)
+TimelineViewManager::queueReplyMessage(const QString &reply, const RelatedInfo &related)
 {
         if (active_room_.isEmpty())
                 return;
@@ -87,7 +88,7 @@ TimelineViewManager::queueReplyMessage(const QString &reply, const QString &rela
         auto room_id = active_room_;
         auto view    = views_[room_id];
 
-        view->addUserMessage(mtx::events::MessageType::Text, reply, related_event);
+        view->addUserMessage(mtx::events::MessageType::Text, reply, related);
 }
 
 void

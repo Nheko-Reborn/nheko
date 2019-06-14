@@ -28,6 +28,7 @@
 #include <QTextEdit>
 #include <QWidget>
 
+#include "Utils.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
 #include "popups/ReplyPopup.h"
@@ -55,7 +56,7 @@ public:
         QSize minimumSizeHint() const override;
 
         void submit();
-        void setRelatedEvent(const QString &event) { related_event_ = event; }
+        void setRelated(const RelatedInfo &related) { related_ = related; }
         void showReplyPopup(const QString &user, const QString &msg, const QString &event_id);
 
 signals:
@@ -64,7 +65,7 @@ signals:
         void stoppedTyping();
         void startedUpload();
         void message(QString);
-        void reply(QString, QString);
+        void reply(QString, const RelatedInfo &);
         void command(QString name, QString args);
         void image(QSharedPointer<QIODevice> data, const QString &filename);
         void audio(QSharedPointer<QIODevice> data, const QString &filename);
@@ -100,7 +101,7 @@ private:
         ReplyPopup replyPopup_;
 
         // Used for replies
-        QString related_event_;
+        RelatedInfo related_;
 
         enum class AnchorType
         {
@@ -113,7 +114,11 @@ private:
         int anchorWidth(AnchorType anchor) { return static_cast<int>(anchor); }
 
         void closeSuggestions() { suggestionsPopup_.hide(); }
-        void closeReply() { replyPopup_.hide(); }
+        void closeReply()
+        {
+                replyPopup_.hide();
+                related_ = {};
+        }
         void resetAnchor() { atTriggerPosition_ = -1; }
         bool isAnchorValid() { return atTriggerPosition_ != -1; }
         bool hasAnchor(int pos, AnchorType anchor)
@@ -167,14 +172,14 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void addReply(const QString &username, const QString &msg, const QString &related_event);
+        void addReply(const RelatedInfo &related);
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
 
 signals:
         void sendTextMessage(QString msg);
-        void sendReplyMessage(QString msg, QString event_id);
+        void sendReplyMessage(QString msg, const RelatedInfo &related);
         void sendEmoteMessage(QString msg);
         void heightChanged(int height);
 

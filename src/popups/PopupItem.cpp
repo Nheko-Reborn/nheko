@@ -36,6 +36,16 @@ PopupItem::paintEvent(QPaintEvent *)
                 p.fillRect(rect(), hoverColor_);
 }
 
+UserItem::UserItem(QWidget *parent)
+  : PopupItem(parent)
+{
+        userName_ = new QLabel("Placeholder", this);
+        avatar_->setSize(conf::popup::avatar);
+        avatar_->setLetter("P");
+        topLayout_->addWidget(avatar_);
+        topLayout_->addWidget(userName_, 1);
+}
+
 UserItem::UserItem(QWidget *parent, const QString &user_id)
   : PopupItem(parent)
   , userId_{user_id}

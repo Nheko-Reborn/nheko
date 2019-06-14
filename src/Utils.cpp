@@ -315,6 +315,20 @@ utils::markdownToHtml(const QString &text)
 }
 
 QString
+utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
+{
+        return QString("<mx-reply><blockquote><a "
+                       "href=\"https://matrix.to/#/!%1\">In reply "
+                       "to</a><a href=\"https://matrix.to/#/%2\">%3</a><br "
+                       "/>%4</blockquote></mx-reply>")
+                 .arg(QString::fromStdString(related.related_event),
+                      related.quoted_user,
+                      related.quoted_user,
+                      related.quoted_body) +
+               html;
+}
+
+QString
 utils::linkColor()
 {
         QSettings settings;

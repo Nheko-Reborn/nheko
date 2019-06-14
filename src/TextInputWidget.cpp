@@ -93,6 +93,8 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                   cursor.insertText(text);
           });
 
+        connect(&replyPopup_, &ReplyPopup::cancel, this, [this]() { closeReply(); });
+
         // For cycling through the suggestions by hitting tab.
         connect(this,
                 &FilteredTextEdit::selectNextSuggestion,
@@ -219,6 +221,7 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
                         stopTyping();
                         submit();
+                        closeReply();
                 } else {
                         QTextEdit::keyPressEvent(event);
                 }
@@ -415,8 +418,8 @@ FilteredTextEdit::submit()
                 auto name = text.mid(1, command_end - 1);
                 auto args = text.mid(command_end + 1);
                 if (name.isEmpty() || name == "/") {
-                        if (!related_event_.isEmpty()) {
-                                reply(args, related_event_);
+                        if (!related_.related_event.empty()) {
+                                reply(args, related_);
                         } else {
                                 message(args);
                         }
@@ -424,14 +427,14 @@ FilteredTextEdit::submit()
                         command(name, args);
                 }
         } else {
-                if (!related_event_.isEmpty()) {
-                        reply(std::move(text), std::move(related_event_));
+                if (!related_.related_event.empty()) {
+                        reply(std::move(text), std::move(related_));
                 } else {
                         message(std::move(text));
                 }
         }
 
-        related_event_ = "";
+        related_ = {};
 
         clear();
 }
@@ -439,16 +442,8 @@ FilteredTextEdit::submit()
 void
 FilteredTextEdit::showReplyPopup(const QString &user, const QString &msg, const QString &event_id)
 {
-        QPoint pos;
+        QPoint pos = viewport()->mapToGlobal(this->pos());
 
-        if (isAnchorValid()) {
-                auto cursor = textCursor();
-                cursor.setPosition(atTriggerPosition_);
-                pos = viewport()->mapToGlobal(cursorRect(cursor).topLeft());
-        } else {
-                auto rect = cursorRect();
-                pos       = viewport()->mapToGlobal(rect.topLeft());
-        }
         replyPopup_.setReplyContent(user, msg, event_id);
         replyPopup_.move(pos.x(), pos.y() - replyPopup_.height() - 10);
         replyPopup_.show();
@@ -699,14 +694,15 @@ TextInputWidget::paintEvent(QPaintEvent *)
 }
 
 void
-TextInputWidget::addReply(const QString &username, const QString &msg, const QString &replied_event)
+TextInputWidget::addReply(const RelatedInfo &related)
 {
         // input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
         input_->setFocus();
 
-        input_->showReplyPopup(username, msg, replied_event);
+        input_->showReplyPopup(
+          related.quoted_user, related.quoted_body, QString::fromStdString(related.related_event));
         auto cursor = input_->textCursor();
         cursor.movePosition(QTextCursor::End);
         input_->setTextCursor(cursor);
-        input_->setRelatedEvent(replied_event);
+        input_->setRelated(related);
 }

@@ -50,6 +50,7 @@ class UserItem : public PopupItem
         Q_OBJECT
 
 public:
+        UserItem(QWidget *parent);
         UserItem(QWidget *parent, const QString &user_id);
         QString selectedText() const { return userId_; }
         void updateItem(const QString &user_id);

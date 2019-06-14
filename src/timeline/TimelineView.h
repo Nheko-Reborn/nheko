@@ -30,6 +30,7 @@
 #include <mtx/events.hpp>
 #include <mtx/responses/messages.hpp>
 
+#include "../Utils.h"
 #include "MatrixClient.h"
 #include "timeline/TimelineItem.h"
 
@@ -63,7 +64,7 @@ struct PendingMessage
 {
         mtx::events::MessageType ty;
         std::string txn_id;
-        std::string related_event;
+        RelatedInfo related;
         QString body;
         QString filename;
         QString mime;
@@ -123,7 +124,7 @@ public:
         void addEvents(const mtx::responses::Timeline &timeline);
         void addUserMessage(mtx::events::MessageType ty,
                             const QString &body,
-                            const QString &related_event);
+                            const RelatedInfo &related);
         void addUserMessage(mtx::events::MessageType ty, const QString &msg);
 
         template<class Widget, mtx::events::MessageType MsgType>

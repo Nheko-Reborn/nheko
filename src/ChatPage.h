@@ -30,6 +30,7 @@
 #include "Cache.h"
 #include "CommunitiesList.h"
 #include "MatrixClient.h"
+#include "Utils.h"
 #include "notifications/Manager.h"
 
 class OverlayModal;
@@ -83,9 +84,7 @@ signals:
         void connectionLost();
         void connectionRestored();
 
-        void messageReply(const QString &username,
-                          const QString &msg,
-                          const QString &related_event);
+        void messageReply(const RelatedInfo &related);
 
         void notificationsRetrieved(const mtx::responses::Notifications &);
 

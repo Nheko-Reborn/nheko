@@ -18,6 +18,15 @@
 
 class QComboBox;
 
+// Contains information about related events for
+// outgoing messages
+struct RelatedInfo
+{
+        QString quoted_body;
+        std::string related_event;
+        QString quoted_user;
+};
+
 namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
@@ -224,6 +233,10 @@ linkifyMessage(const QString &body);
 //! Convert the input markdown text to html.
 QString
 markdownToHtml(const QString &text);
+
+//! Generate a Rich Reply quote message
+QString
+getFormattedQuoteBody(const RelatedInfo &related, const QString &html);
 
 //! Retrieve the color of the links based on the current theme.
 QString

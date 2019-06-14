@@ -692,7 +692,7 @@ TimelineView::updatePendingMessage(const std::string &txn_id, const QString &eve
 void
 TimelineView::addUserMessage(mtx::events::MessageType ty,
                              const QString &body,
-                             const QString &related_event)
+                             const RelatedInfo &related = RelatedInfo())
 {
         auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
 
@@ -700,13 +700,11 @@ TimelineView::addUserMessage(mtx::events::MessageType ty,
           new TimelineItem(ty, local_user_, body, with_sender, room_id_, scroll_widget_);
 
         PendingMessage message;
-        message.ty     = ty;
-        message.txn_id = http::client()->generate_txn_id();
-        message.body   = body;
-        message.widget = view_item;
-        if (!related_event.isEmpty()) {
-                message.related_event = related_event.toStdString();
-        }
+        message.ty      = ty;
+        message.txn_id  = http::client()->generate_txn_id();
+        message.body    = body;
+        message.widget  = view_item;
+        message.related = related;
 
         try {
                 message.is_encrypted = cache::client()->isRoomEncrypted(room_id_.toStdString());
@@ -730,7 +728,7 @@ TimelineView::addUserMessage(mtx::events::MessageType ty,
 void
 TimelineView::addUserMessage(mtx::events::MessageType ty, const QString &body)
 {
-        addUserMessage(ty, body, "");
+        addUserMessage(ty, body, RelatedInfo());
 }
 
 void
@@ -1273,13 +1271,20 @@ toRoomMessage<mtx::events::msg::Text>(const PendingMessage &m)
         auto html = utils::markdownToHtml(m.body);
 
         mtx::events::msg::Text text;
+
         text.body = m.body.trimmed().toStdString();
 
-        if (html != m.body.trimmed().toHtmlEscaped())
-                text.formatted_body = html.toStdString();
+        if (html != m.body.trimmed().toHtmlEscaped()) {
+                if (!m.related.quoted_body.isEmpty()) {
+                        text.formatted_body =
+                          utils::getFormattedQuoteBody(m.related, html).toStdString();
+                } else {
+                        text.formatted_body = html.toStdString();
+                }
+        }
 
-        if (!m.related_event.empty()) {
-                text.relates_to.in_reply_to.event_id = m.related_event;
+        if (!m.related.related_event.empty()) {
+                text.relates_to.in_reply_to.event_id = m.related.related_event;
         }
 
         return text;

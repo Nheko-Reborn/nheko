@@ -11,41 +11,69 @@
 
 ReplyPopup::ReplyPopup(QWidget *parent)
   : QWidget(parent)
+  , userItem_{0}
+  , msgLabel_{0}
+  , eventLabel_{0}
 {
         setAttribute(Qt::WA_ShowWithoutActivating, true);
         setWindowFlags(Qt::ToolTip | Qt::NoDropShadowWindowHint);
 
-        layout_ = new QVBoxLayout(this);
-        layout_->setMargin(0);
-        layout_->setSpacing(0);
+        mainLayout_ = new QVBoxLayout(this);
+        mainLayout_->setMargin(0);
+        mainLayout_->setSpacing(0);
+
+        topLayout_ = new QHBoxLayout();
+        topLayout_->setSpacing(0);
+        topLayout_->setContentsMargins(13, 1, 13, 0);
+
+        userItem_ = new UserItem(this);
+        connect(userItem_, &UserItem::clicked, this, &ReplyPopup::userSelected);
+        topLayout_->addWidget(userItem_);
+
+        buttonLayout_ = new QHBoxLayout();
+        buttonLayout_->setSpacing(0);
+        buttonLayout_->setMargin(0);
+
+        topLayout_->addLayout(buttonLayout_);
+        QFont f;
+        f.setPointSizeF(f.pointSizeF());
+        const int fontHeight = QFontMetrics(f).height();
+        buttonSize_          = std::min(fontHeight, 20);
+
+        closeBtn_ = new FlatButton(this);
+        closeBtn_->setToolTip(tr("Logout"));
+        closeBtn_->setCornerRadius(buttonSize_ / 2);
+        closeBtn_->setText("X");
+
+        QIcon icon;
+        icon.addFile(":/icons/icons/ui/remove-symbol.png");
+
+        closeBtn_->setIcon(icon);
+        closeBtn_->setIconSize(QSize(buttonSize_, buttonSize_));
+        connect(closeBtn_, &FlatButton::clicked, this, [this]() { emit cancel(); });
+
+        buttonLayout_->addWidget(closeBtn_);
+
+        topLayout_->addLayout(buttonLayout_);
+
+        mainLayout_->addLayout(topLayout_);
+        msgLabel_ = new QLabel(this);
+        mainLayout_->addWidget(msgLabel_);
+        eventLabel_ = new QLabel(this);
+        mainLayout_->addWidget(eventLabel_);
+
+        setLayout(mainLayout_);
 }
 
 void
 ReplyPopup::setReplyContent(const QString &user, const QString &msg, const QString &srcEvent)
 {
-        QLayoutItem *child;
-        while ((child = layout_->takeAt(0)) != 0) {
-                delete child->widget();
-                delete child;
-        }
-        // Create a new widget if there isn't already one in that
-        // layout position.
-        // if (!item) {
-        auto userItem = new UserItem(this, user);
-        auto *text    = new QLabel(this);
-        text->setText(msg);
-        auto *event = new QLabel(this);
-        event->setText(srcEvent);
-        connect(userItem, &UserItem::clicked, this, &ReplyPopup::userSelected);
-        layout_->addWidget(userItem);
-        layout_->addWidget(text);
-        layout_->addWidget(event);
-        // } else {
         // Update the current widget with the new data.
-        // auto userWidget = qobject_cast<UserItem *>(item->widget());
-        // if (userWidget)
-        // userWidget->updateItem(users.at(i).user_id);
-        // }
+        userItem_->updateItem(user);
+
+        msgLabel_->setText(msg);
+
+        eventLabel_->setText(srcEvent);
 
         adjustSize();
 }
@@ -57,4 +85,14 @@ ReplyPopup::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+ReplyPopup::mousePressEvent(QMouseEvent *event)
+{
+        if (event->buttons() != Qt::RightButton) {
+                emit clicked(eventLabel_->text());
+        }
+
+        QWidget::mousePressEvent(event);
 }

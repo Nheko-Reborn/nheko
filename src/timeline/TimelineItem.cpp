@@ -874,8 +874,12 @@ TimelineItem::replyAction()
         if (!body_)
                 return;
 
-        emit ChatPage::instance()->messageReply(
-          Cache::displayName(room_id_, descriptionMsg_.userid), body_->toPlainText(), eventId());
+        RelatedInfo related;
+        related.quoted_body   = body_->toPlainText();
+        related.quoted_user   = descriptionMsg_.userid;
+        related.related_event = eventId().toStdString();
+
+        emit ChatPage::instance()->messageReply(related);
 }
 
 void

@@ -3,11 +3,13 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPoint>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include "../AvatarProvider.h"
 #include "../Cache.h"
 #include "../ChatPage.h"
+#include "../ui/FlatButton.h"
 #include "PopupItem.h"
 
 class ReplyPopup : public QWidget
@@ -22,10 +24,22 @@ public slots:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
 
 signals:
         void userSelected(const QString &user);
+        void clicked(const QString &text);
+        void cancel();
 
 private:
-        QVBoxLayout *layout_;
+        QHBoxLayout *topLayout_;
+        QVBoxLayout *mainLayout_;
+        QHBoxLayout *buttonLayout_;
+
+        UserItem *userItem_;
+        FlatButton *closeBtn_;
+        QLabel *msgLabel_;
+        QLabel *eventLabel_;
+
+        int buttonSize_;
 };
