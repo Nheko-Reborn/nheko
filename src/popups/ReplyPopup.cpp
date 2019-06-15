@@ -7,6 +7,7 @@
 #include "../Utils.h"
 #include "../ui/Avatar.h"
 #include "../ui/DropShadow.h"
+#include "../ui/TextLabel.h"
 #include "ReplyPopup.h"
 
 ReplyPopup::ReplyPopup(QWidget *parent)
@@ -42,7 +43,7 @@ ReplyPopup::ReplyPopup(QWidget *parent)
 
         closeBtn_ = new FlatButton(this);
         closeBtn_->setToolTip(tr("Logout"));
-        closeBtn_->setCornerRadius(buttonSize_ / 2);
+        closeBtn_->setCornerRadius(buttonSize_ / 4);
         closeBtn_->setText("X");
 
         QIcon icon;
@@ -57,7 +58,8 @@ ReplyPopup::ReplyPopup(QWidget *parent)
         topLayout_->addLayout(buttonLayout_);
 
         mainLayout_->addLayout(topLayout_);
-        msgLabel_ = new QLabel(this);
+        msgLabel_ = new TextLabel(this);
+        msgLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
         mainLayout_->addWidget(msgLabel_);
         eventLabel_ = new QLabel(this);
         mainLayout_->addWidget(eventLabel_);
@@ -66,14 +68,16 @@ ReplyPopup::ReplyPopup(QWidget *parent)
 }
 
 void
-ReplyPopup::setReplyContent(const QString &user, const QString &msg, const QString &srcEvent)
+ReplyPopup::setReplyContent(const RelatedInfo &related)
 {
         // Update the current widget with the new data.
-        userItem_->updateItem(user);
+        userItem_->updateItem(related.quoted_user);
 
-        msgLabel_->setText(msg);
+        msgLabel_->setText(utils::getFormattedQuoteBody(related, "")
+                             .replace("<mx-reply>", "")
+                             .replace("</mx-reply>", ""));
 
-        eventLabel_->setText(srcEvent);
+        // eventLabel_->setText(srcEvent);
 
         adjustSize();
 }

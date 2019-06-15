@@ -316,6 +316,8 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
         }
 
         formatted_body = utils::linkifyMessage(formatted_body);
+        formatted_body.replace("mx-reply", "div");
+        nhlog::ui()->info("formatted_body: {}", formatted_body.toStdString());
 
         generateTimestamp(timestamp);
 

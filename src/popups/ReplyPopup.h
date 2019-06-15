@@ -9,7 +9,9 @@
 #include "../AvatarProvider.h"
 #include "../Cache.h"
 #include "../ChatPage.h"
+#include "../Utils.h"
 #include "../ui/FlatButton.h"
+#include "../ui/TextLabel.h"
 #include "PopupItem.h"
 
 class ReplyPopup : public QWidget
@@ -20,7 +22,7 @@ public:
         explicit ReplyPopup(QWidget *parent = nullptr);
 
 public slots:
-        void setReplyContent(const QString &user, const QString &msg, const QString &srcEvent);
+        void setReplyContent(const RelatedInfo &related);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -38,7 +40,7 @@ private:
 
         UserItem *userItem_;
         FlatButton *closeBtn_;
-        QLabel *msgLabel_;
+        TextLabel *msgLabel_;
         QLabel *eventLabel_;
 
         int buttonSize_;

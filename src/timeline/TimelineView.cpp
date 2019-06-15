@@ -696,15 +696,21 @@ TimelineView::addUserMessage(mtx::events::MessageType ty,
 {
         auto with_sender = (lastSender_ != local_user_) || isDateDifference(lastMsgTimestamp_);
 
+        QString full_body;
+        if (related.related_event.empty()) {
+                full_body = body;
+        } else {
+                full_body = utils::getFormattedQuoteBody(related, body);
+        }
         TimelineItem *view_item =
-          new TimelineItem(ty, local_user_, body, with_sender, room_id_, scroll_widget_);
+          new TimelineItem(ty, local_user_, full_body, with_sender, room_id_, scroll_widget_);
 
         PendingMessage message;
         message.ty      = ty;
         message.txn_id  = http::client()->generate_txn_id();
         message.body    = body;
-        message.widget  = view_item;
         message.related = related;
+        message.widget  = view_item;
 
         try {
                 message.is_encrypted = cache::client()->isRoomEncrypted(room_id_.toStdString());

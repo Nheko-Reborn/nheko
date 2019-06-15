@@ -440,12 +440,13 @@ FilteredTextEdit::submit()
 }
 
 void
-FilteredTextEdit::showReplyPopup(const QString &user, const QString &msg, const QString &event_id)
+FilteredTextEdit::showReplyPopup(const RelatedInfo &related)
 {
         QPoint pos = viewport()->mapToGlobal(this->pos());
 
-        replyPopup_.setReplyContent(user, msg, event_id);
+        replyPopup_.setReplyContent(related);
         replyPopup_.move(pos.x(), pos.y() - replyPopup_.height() - 10);
+        replyPopup_.setFixedWidth(this->parentWidget()->width());
         replyPopup_.show();
 }
 
@@ -699,8 +700,7 @@ TextInputWidget::addReply(const RelatedInfo &related)
         // input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
         input_->setFocus();
 
-        input_->showReplyPopup(
-          related.quoted_user, related.quoted_body, QString::fromStdString(related.related_event));
+        input_->showReplyPopup(related);
         auto cursor = input_->textCursor();
         cursor.movePosition(QTextCursor::End);
         input_->setTextCursor(cursor);

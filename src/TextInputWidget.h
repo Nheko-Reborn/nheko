@@ -57,7 +57,7 @@ public:
 
         void submit();
         void setRelated(const RelatedInfo &related) { related_ = related; }
-        void showReplyPopup(const QString &user, const QString &msg, const QString &event_id);
+        void showReplyPopup(const RelatedInfo &related);
 
 signals:
         void heightChanged(int height);
