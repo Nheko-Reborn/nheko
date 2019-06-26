@@ -456,6 +456,8 @@ if(EXTERNAL_PROJECT_DEPS)
     add_dependencies(nheko ${EXTERNAL_PROJECT_DEPS})
 endif()
 
+set_target_properties(nheko PROPERTIES SKIP_BUILD_RPATH TRUE)
+
 if(UNIX AND NOT APPLE)
     install (TARGETS nheko RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install (FILES "resources/nheko-16.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps" RENAME "nheko.png")
