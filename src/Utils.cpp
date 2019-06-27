@@ -342,10 +342,10 @@ utils::linkColor()
         return QPalette().color(QPalette::Link).name();
 }
 
-int
+uint32_t
 utils::hashQString(const QString &input)
 {
-        auto hash = 0;
+        uint32_t hash = 0;
 
         for (int i = 0; i < input.length(); i++) {
                 hash = input.at(i).digitValue() + ((hash << 5) - hash);
@@ -363,7 +363,7 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
         // Create a color for the input
         auto hash = hashQString(input);
         // create a hue value based on the hash of the input.
-        auto userHue = qAbs(hash % 360);
+        auto userHue = static_cast<int>(qAbs(hash % 360));
         // start with moderate saturation and lightness values.
         auto sat       = 220;
         auto lightness = 125;

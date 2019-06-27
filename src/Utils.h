@@ -243,7 +243,7 @@ QString
 linkColor();
 
 //! Returns the hash code of the input QString
-int
+uint32_t
 hashQString(const QString &input);
 
 //! Generate a color (matching #RRGGBB) that has an acceptable contrast to background that is based
