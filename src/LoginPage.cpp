@@ -315,6 +315,12 @@ LoginPage::onLoginButtonClicked()
                           return;
                   }
 
+                  if (res.well_known) {
+                          http::client()->set_server(res.well_known->homeserver.base_url);
+                          nhlog::net()->info("Login requested to user server: " +
+                                             res.well_known->homeserver.base_url);
+                  }
+
                   emit loginOk(res);
           });
 
