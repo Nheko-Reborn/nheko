@@ -142,7 +142,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+79"/>
+        <location filename="../../src/LoginPage.cpp" line="+80"/>
         <source>Matrix ID</source>
         <translation>ID Matrixa</translation>
     </message>
@@ -167,17 +167,17 @@
         <translation>ZALOGUJ</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+84"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Nie odnaleziono wymaganych punktów końcowych. To może nie być serwer Matriksa.</translation>
     </message>
@@ -272,6 +272,14 @@
         <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
         <source>Logout</source>
         <translation type="unfinished">Wyloguj</translation>
+    </message>
+</context>
+<context>
+    <name>RoomInfo</name>
+    <message>
+        <location filename="../../src/Cache.cpp" line="+2204"/>
+        <source>no version stored</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -803,6 +811,11 @@ Rozmiar multimediów: %2
         <translation>Wewnętrzne ID</translation>
     </message>
     <message>
+        <location line="+10"/>
+        <source>Room Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+4"/>
         <source>Notifications</source>
         <translation>Powiadomienia</translation>
@@ -881,7 +894,7 @@ Rozmiar multimediów: %2
         </translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+71"/>
         <source>ESC</source>
         <translation type="unfinished"></translation>
     </message>

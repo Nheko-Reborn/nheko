@@ -106,6 +106,8 @@ struct RoomInfo
         std::string topic;
         //! The calculated avatar url of the room.
         std::string avatar_url;
+        //! The calculated version of this room set at creation time.
+        std::string version;
         //! Whether or not the room is an invite.
         bool is_invite = false;
         //! Total number of members in the room.
@@ -119,39 +121,11 @@ struct RoomInfo
         std::vector<std::string> tags;
 };
 
-inline void
-to_json(json &j, const RoomInfo &info)
-{
-        j["name"]         = info.name;
-        j["topic"]        = info.topic;
-        j["avatar_url"]   = info.avatar_url;
-        j["is_invite"]    = info.is_invite;
-        j["join_rule"]    = info.join_rule;
-        j["guest_access"] = info.guest_access;
+void
+to_json(json &j, const RoomInfo &info);
 
-        if (info.member_count != 0)
-                j["member_count"] = info.member_count;
-
-        if (info.tags.size() != 0)
-                j["tags"] = info.tags;
-}
-
-inline void
-from_json(const json &j, RoomInfo &info)
-{
-        info.name         = j.at("name");
-        info.topic        = j.at("topic");
-        info.avatar_url   = j.at("avatar_url");
-        info.is_invite    = j.at("is_invite");
-        info.join_rule    = j.at("join_rule");
-        info.guest_access = j.at("guest_access");
-
-        if (j.count("member_count"))
-                info.member_count = j.at("member_count");
-
-        if (j.count("tags"))
-                info.tags = j.at("tags").get<std::vector<std::string>>();
-}
+void
+from_json(const json &j, RoomInfo &info);
 
 //! Basic information per member;
 struct MemberInfo
@@ -322,6 +296,8 @@ public:
                                  lmdb::dbi &statesdb,
                                  lmdb::dbi &membersdb,
                                  const QString &room_id);
+        //! Retrieve the version of the room if any.
+        QString getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
 
         //! Retrieve member info from a room.
         std::vector<RoomMember> getMembers(const std::string &room_id,

@@ -19,6 +19,7 @@
 #include <stdexcept>
 
 #include <QByteArray>
+#include <QCoreApplication>
 #include <QFile>
 #include <QHash>
 #include <QSettings>
@@ -958,6 +959,7 @@ Cache::saveState(const mtx::responses::Sync &res)
                 updatedInfo.avatar_url =
                   getRoomAvatarUrl(txn, statesdb, membersdb, QString::fromStdString(room.first))
                     .toStdString();
+                updatedInfo.version = getRoomVersion(txn, statesdb).toStdString();
 
                 // Process the account_data associated with this room
                 bool has_new_tags = false;
@@ -1549,6 +1551,32 @@ Cache::getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
         }
 
         return QString();
+}
+
+QString
+Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomCreate)), event);
+
+        if (res) {
+                try {
+                        StateEvent<Create> msg =
+                          json::parse(std::string(event.data(), event.size()));
+
+                        if (!msg.content.room_version.empty())
+                                return QString::fromStdString(msg.content.room_version);
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse m.room.create event: {}", e.what());
+                }
+        }
+
+	nhlog::db()->warn("m.room.create event is missing room version, assuming version \"1\"");
+        return QString("1");
 }
 
 QString
@@ -2147,4 +2175,40 @@ void
 Cache::clearUserColors()
 {
         UserColors.clear();
+}
+
+void
+to_json(json &j, const RoomInfo &info)
+{
+        j["name"]         = info.name;
+        j["topic"]        = info.topic;
+        j["avatar_url"]   = info.avatar_url;
+        j["version"]   = info.version;
+        j["is_invite"]    = info.is_invite;
+        j["join_rule"]    = info.join_rule;
+        j["guest_access"] = info.guest_access;
+
+        if (info.member_count != 0)
+                j["member_count"] = info.member_count;
+
+        if (info.tags.size() != 0)
+                j["tags"] = info.tags;
+}
+
+void
+from_json(const json &j, RoomInfo &info)
+{
+        info.name         = j.at("name");
+        info.topic        = j.at("topic");
+        info.avatar_url   = j.at("avatar_url");
+	info.version      = j.value("version", QCoreApplication::translate("RoomInfo", "no version stored").toStdString());
+        info.is_invite    = j.at("is_invite");
+        info.join_rule    = j.at("join_rule");
+        info.guest_access = j.at("guest_access");
+
+        if (j.count("member_count"))
+                info.member_count = j.at("member_count");
+
+        if (j.count("tags"))
+                info.tags = j.at("tags").get<std::vector<std::string>>();
 }

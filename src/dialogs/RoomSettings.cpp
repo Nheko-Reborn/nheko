@@ -199,6 +199,16 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                                 Qt::AlignBottom | Qt::AlignLeft);
         roomIdLayout->addWidget(roomIdLabel, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto roomVersionLabel = new QLabel(QString::fromStdString(info_.version), this);
+        roomVersionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        roomVersionLabel->setFont(monospaceFont);
+
+        auto roomVersionLayout = new QHBoxLayout;
+        roomVersionLayout->setMargin(0);
+        roomVersionLayout->addWidget(new QLabel(tr("Room Version"), this),
+                                Qt::AlignBottom | Qt::AlignLeft);
+        roomVersionLayout->addWidget(roomVersionLabel, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto notifLabel = new QLabel(tr("Notifications"), this);
         auto notifCombo = new QComboBox(this);
         notifCombo->setDisabled(true);
@@ -400,6 +410,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addLayout(keyRequestsLayout);
         layout->addWidget(infoLabel, Qt::AlignLeft);
         layout->addLayout(roomIdLayout);
+        layout->addLayout(roomVersionLayout);
         layout->addWidget(errorLabel_);
         layout->addLayout(buttonLayout);
         layout->addLayout(spinnerLayout);
