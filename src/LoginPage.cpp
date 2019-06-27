@@ -20,6 +20,7 @@
 #include <mtx/identifiers.hpp>
 
 #include "Config.h"
+#include "Logging.h"
 #include "LoginPage.h"
 #include "MatrixClient.h"
 #include "ui/FlatButton.h"
@@ -186,7 +187,37 @@ LoginPage::onMatrixIdEntered()
                 serverInput_->setText(homeServer);
 
                 http::client()->set_server(user.hostname());
-                checkHomeserverVersion();
+                http::client()->well_known([this](const mtx::responses::WellKnown &res,
+                                                  mtx::http::RequestErr err) {
+                        if (err) {
+                                using namespace boost::beast::http;
+
+                                if (err->status_code == status::not_found) {
+                                        nhlog::net()->info("Autodiscovery: No .well-known.");
+                                        checkHomeserverVersion();
+                                        return;
+                                }
+
+                                if (!err->parse_error.empty()) {
+                                        emit versionErrorCb(
+                                          tr("Autodiscovery failed. Received malformed response."));
+                                        nhlog::net()->error(
+                                          "Autodiscovery failed. Received malformed response.");
+                                        return;
+                                }
+
+                                emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
+                                                       "requesting .well-known."));
+                                nhlog::net()->error("Autodiscovery failed. Unknown error when "
+                                                    "requesting .weel-known.");
+                                return;
+                        }
+
+                        nhlog::net()->info("Autodiscovery: Discovered '" + res.homeserver.base_url +
+                                           "'");
+                        http::client()->set_server(res.homeserver.base_url);
+                        checkHomeserverVersion();
+                });
         }
 }
 
@@ -272,7 +303,6 @@ LoginPage::onLoginButtonClicked()
         if (password_input_->text().isEmpty())
                 return loginError(tr("Empty password"));
 
-        http::client()->set_server(serverInput_->text().toStdString());
         http::client()->login(
           user.localpart(),
           password_input_->text().toStdString(),

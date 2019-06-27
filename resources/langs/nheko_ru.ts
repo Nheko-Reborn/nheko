@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+304"/>
+        <location filename="../../src/ChatPage.cpp" line="+309"/>
         <source>Failed to upload image. Please try again.</source>
         <translation>Не удалось загрузить изображение. Пожалуйста, попробуйте еще раз.</translation>
     </message>
@@ -32,7 +32,7 @@
         <translation>Не удалось загрузить видео. Пожалуйста, попробуйте еще раз.</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+376"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Не удалось восстановить учетную запись OLM. Пожалуйста, войдите снова.</translation>
     </message>
@@ -42,13 +42,13 @@
         <translation>Не удалось восстановить сохраненные данные. Пожалуйста, войдите снова.</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+169"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Не удалось настроить ключи шифрования. Ответ сервера:%1 %2. Пожалуйста, попробуйте позже.</translation>
     </message>
     <message>
         <location line="+51"/>
-        <location line="+152"/>
+        <location line="+153"/>
         <source>Please try to login again: %1</source>
         <translation>Повторите попытку входа: %1</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>ImageItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+237"/>
+        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+238"/>
         <source>Save image</source>
         <translation>Сохранить изображение</translation>
     </message>
@@ -167,7 +167,17 @@
         <translation>ВОЙТИ</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+83"/>
+        <source>Autodiscovery failed. Received malformed response.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Необходимые конечные точки не найдены. Возможно, это не сервер Matrix.</translation>
     </message>
@@ -257,6 +267,14 @@
     </message>
 </context>
 <context>
+    <name>ReplyPopup</name>
+    <message>
+        <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
+        <source>Logout</source>
+        <translation type="unfinished">Выйти</translation>
+    </message>
+</context>
+<context>
     <name>RoomInfoListItem</name>
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+92"/>
@@ -264,7 +282,7 @@
         <translation>Покинуть комнату</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+174"/>
         <source>Accept</source>
         <translation>Принять</translation>
     </message>
@@ -305,7 +323,7 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+105"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+106"/>
         <source>Encrypted</source>
         <translation>Зашифровано</translation>
     </message>
@@ -328,13 +346,13 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+465"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+506"/>
         <source>Send a file</source>
         <translation>Отправить файл</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+153"/>
+        <location filename="../../src/TextInputWidget.h" line="+168"/>
         <source>Write a message...</source>
         <translation>Написать сообщение...</translation>
     </message>
@@ -344,7 +362,12 @@
         <translation>Отправить сообщение</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+8"/>
+        <source>Emoji</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+75"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -362,9 +385,19 @@
 <context>
     <name>TimelineItem</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+72"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+85"/>
         <source>Message redaction failed: %1</source>
         <translation>Ошибка редактирования сообщения: %1</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -440,7 +473,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+147"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+156"/>
         <source>Minimize to tray</source>
         <translation>Сворачивать в системную панель</translation>
     </message>
@@ -481,11 +514,16 @@
     </message>
     <message>
         <location line="+11"/>
+        <source>Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Theme</source>
         <translation>Тема</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+27"/>
         <source>Device ID</source>
         <translation>ID устройства</translation>
     </message>
@@ -520,7 +558,7 @@
         <translation>ГЛАВНОЕ</translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+150"/>
         <source>Open Sessions File</source>
         <translation>Открыть файл сеансов</translation>
     </message>
@@ -532,14 +570,14 @@
         <location line="+2"/>
         <location line="+19"/>
         <location line="+10"/>
-        <location line="+13"/>
+        <location line="+18"/>
         <location line="+2"/>
         <location line="+2"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location line="-68"/>
+        <location line="-73"/>
         <location line="+32"/>
         <source>File Password</source>
         <translatorcomment>Или введите пароль?</translatorcomment>
@@ -909,6 +947,49 @@ Media size: %2
         <location line="+39"/>
         <source>ESC</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>emoji::Panel</name>
+    <message>
+        <location filename="../../src/emoji/Panel.cpp" line="+125"/>
+        <source>Smileys &amp; People</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Animals &amp; Nature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Food &amp; Drink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Travel &amp; Places</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Flags</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
