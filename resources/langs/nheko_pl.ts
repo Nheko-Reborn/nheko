@@ -4,7 +4,7 @@
 <context>
     <name>AudioItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+118"/>
+        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+117"/>
         <source>Save File</source>
         <translation>Zapisz plik</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+303"/>
+        <location filename="../../src/ChatPage.cpp" line="+309"/>
         <source>Failed to upload image. Please try again.</source>
         <translation>Nie udało się wysłać obrazu. Spróbuj ponownie.</translation>
     </message>
@@ -32,7 +32,7 @@
         <translation>Nie udało się wysłać filmu. Spróbuj ponownie.</translation>
     </message>
     <message>
-        <location line="+366"/>
+        <location line="+376"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Nie udało się przywrócić konta OLM. Spróbuj zalogować się ponownie.</translation>
     </message>
@@ -42,8 +42,13 @@
         <translation>Nie udało się przywrócić zapisanych danych. Spróbuj zalogować się ponownie.</translation>
     </message>
     <message>
-        <location line="+212"/>
-        <location line="+150"/>
+        <location line="+169"/>
+        <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <location line="+153"/>
         <source>Please try to login again: %1</source>
         <translation>Spróbuj zalogować się ponownie: %1</translation>
     </message>
@@ -59,32 +64,48 @@
     </message>
 </context>
 <context>
-    <name>DateSeparator</name>
+    <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/ui/InfoMessage.cpp" line="+68"/>
-        <source>Today</source>
-        <translation>Dzisiaj</translation>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+130"/>
+        <source>All rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Favourite rooms</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Yesterday</source>
-        <translation>Wczoraj</translation>
+        <source>Low priority rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source> (tag)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source> (community)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+59"/>
-        <source>APPLY</source>
-        <translation>ZASTOSUJ</translation>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>CANCEL</source>
-        <translation>ANULUJ</translation>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+10"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
@@ -97,7 +118,7 @@
 <context>
     <name>FileItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+108"/>
+        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+106"/>
         <source>Save File</source>
         <translation>Zapisz plik</translation>
     </message>
@@ -105,9 +126,17 @@
 <context>
     <name>ImageItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+236"/>
+        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+238"/>
         <source>Save image</source>
         <translation>Zapisz obraz</translation>
+    </message>
+</context>
+<context>
+    <name>InviteeItem</name>
+    <message>
+        <location filename="../../src/InviteeItem.cpp" line="+17"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -138,7 +167,17 @@
         <translation>ZALOGUJ</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+83"/>
+        <source>Autodiscovery failed. Received malformed response.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Nie odnaleziono wymaganych punktów końcowych. To może nie być serwer Matriksa.</translation>
     </message>
@@ -161,14 +200,14 @@
 <context>
     <name>MemberList</name>
     <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+82"/>
+        <location filename="../../src/dialogs/MemberList.cpp" line="+96"/>
         <source>Room members</source>
         <translation>Członkowie pokoju</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>SHOW MORE</source>
-        <translation>POKAŻ WIĘCEJ</translation>
+        <location line="+33"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -202,7 +241,7 @@
         <translation>Serwer domowy</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+16"/>
         <source>REGISTER</source>
         <translation>ZAREJESTRUJ</translation>
     </message>
@@ -228,14 +267,22 @@
     </message>
 </context>
 <context>
+    <name>ReplyPopup</name>
+    <message>
+        <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
+        <source>Logout</source>
+        <translation type="unfinished">Wyloguj</translation>
+    </message>
+</context>
+<context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+77"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+92"/>
         <source>Leave room</source>
         <translation>Opuść pokój</translation>
     </message>
     <message>
-        <location line="+153"/>
+        <location line="+174"/>
         <source>Accept</source>
         <translation>Akceptuj</translation>
     </message>
@@ -248,7 +295,7 @@
 <context>
     <name>SideBarActions</name>
     <message>
-        <location filename="../../src/SideBarActions.cpp" line="+32"/>
+        <location filename="../../src/SideBarActions.cpp" line="+38"/>
         <source>User settings</source>
         <translation>Ustawienia użytkownika</translation>
     </message>
@@ -276,7 +323,7 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+126"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+106"/>
         <source>Encrypted</source>
         <translation>Szyfrowana</translation>
     </message>
@@ -299,18 +346,18 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+452"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+506"/>
         <source>Send a file</source>
         <translation>Wyślij plik</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location filename="../../src/TextInputWidget.h" line="+154"/>
+        <location line="+13"/>
+        <location filename="../../src/TextInputWidget.h" line="+168"/>
         <source>Write a message...</source>
         <translation>Napisz wiadomość…</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+31"/>
         <source>Send a message</source>
         <translation>Wyślij wiadomość</translation>
     </message>
@@ -320,7 +367,7 @@
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+75"/>
         <source>Select a file</source>
         <translation>Wybierz plik</translation>
     </message>
@@ -338,9 +385,19 @@
 <context>
     <name>TimelineItem</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+76"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+85"/>
         <source>Message redaction failed: %1</source>
         <translation>Redagowanie wiadomości nie powiodło się: %1</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -354,7 +411,7 @@
 <context>
     <name>TopRoomBar</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+68"/>
+        <location filename="../../src/TopRoomBar.cpp" line="+79"/>
         <source>Room options</source>
         <translation>Ustawienia pokoju</translation>
     </message>
@@ -382,7 +439,7 @@
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+116"/>
+        <location filename="../../src/TrayIcon.cpp" line="+120"/>
         <source>Show</source>
         <translation>Pokaż</translation>
     </message>
@@ -395,7 +452,7 @@
 <context>
     <name>TypingDisplay</name>
     <message>
-        <location filename="../../src/TypingDisplay.cpp" line="+49"/>
+        <location filename="../../src/TypingDisplay.cpp" line="+45"/>
         <source> is typing</source>
         <translation> pisze</translation>
     </message>
@@ -408,7 +465,7 @@
 <context>
     <name>UserInfoWidget</name>
     <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+78"/>
+        <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
         <source>Logout</source>
         <translation>Wyloguj</translation>
     </message>
@@ -416,7 +473,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+140"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+156"/>
         <source>Minimize to tray</source>
         <translation>Zminimalizuj do paska zadań</translation>
     </message>
@@ -426,12 +483,7 @@
         <translation>Rozpocznij na pasku zadań</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Re-order rooms based on activity</source>
-        <translation>Porządkuj pokoje na podstawie aktywności</translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>Group&apos;s sidebar</source>
         <translation>Pasek boczny grupy</translation>
     </message>
@@ -452,23 +504,48 @@
     </message>
     <message>
         <location line="+9"/>
-        <source>Scale factor (requires restart)</source>
-        <translation>Czynnik skalowania (wymaga ponownego uruchomienia)</translation>
+        <source>Scale factor</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+11"/>
+        <source>Font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Theme</source>
         <translation>Motyw</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+27"/>
         <source>Device ID</source>
         <translation>ID urządzenia</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Device Fingerprint</source>
         <translation>Odcisk palca urządzenia</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Session Keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>IMPORT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>EXPORT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
@@ -476,15 +553,61 @@
         <translation>SZYFROWANIE</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>GENERAL</source>
         <translation>OGÓLNE</translation>
+    </message>
+    <message>
+        <location line="+150"/>
+        <source>Open Sessions File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+18"/>
+        <location line="+9"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+19"/>
+        <location line="+10"/>
+        <location line="+18"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-73"/>
+        <location line="+32"/>
+        <source>File Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-31"/>
+        <source>Enter the passphrase to decrypt the file:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location line="+32"/>
+        <source>The password cannot be empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-8"/>
+        <source>Enter passphrase to encrypt your session keys:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>File to save the exported session keys</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../../src/WelcomePage.cpp" line="+44"/>
+        <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Witamy w nheko! Desktopowy klient protokołu Matrix.</translation>
     </message>
@@ -494,12 +617,12 @@
         <translation>Udanego pobytu!</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+23"/>
         <source>REGISTER</source>
         <translation>ZAREJESTRUJ SIĘ</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>LOGIN</source>
         <translation>ZALOGUJ SIĘ</translation>
     </message>
@@ -507,12 +630,17 @@
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+41"/>
-        <source>CANCEL</source>
-        <translation>ANULUJ</translation>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
+        <source>Create room</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
@@ -545,9 +673,9 @@
 <context>
     <name>dialogs::InviteUsers</name>
     <message>
-        <location filename="../../src/dialogs/InviteUsers.cpp" line="+40"/>
-        <source>CANCEL</source>
-        <translation>ANULUJ</translation>
+        <location filename="../../src/dialogs/InviteUsers.cpp" line="+41"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -558,12 +686,17 @@
 <context>
     <name>dialogs::JoinRoom</name>
     <message>
-        <location filename="../../src/dialogs/JoinRoom.cpp" line="+34"/>
-        <source>CANCEL</source>
-        <translation>ANULUJ</translation>
+        <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Room ID or alias</source>
         <translation>ID pokoju lub alias</translation>
     </message>
@@ -571,12 +704,12 @@
 <context>
     <name>dialogs::LeaveRoom</name>
     <message>
-        <location filename="../../src/dialogs/LeaveRoom.cpp" line="+33"/>
-        <source>CANCEL</source>
-        <translation>ANULUJ</translation>
+        <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Are you sure you want to leave?</source>
         <translation>Czy na pewno chcesz wyjść?</translation>
     </message>
@@ -584,12 +717,12 @@
 <context>
     <name>dialogs::Logout</name>
     <message>
-        <location filename="../../src/dialogs/Logout.cpp" line="+52"/>
-        <source>CANCEL</source>
-        <translation>ANULUJ</translation>
+        <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+8"/>
         <source>Logout. Are you sure?</source>
         <translation>Czy na pewno chcesz wylogować się?</translation>
     </message>
@@ -607,7 +740,7 @@
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+84"/>
         <source>Media type: %1
 Media size: %2
 </source>
@@ -619,14 +752,14 @@ Rozmiar multimediów: %2
 <context>
     <name>dialogs::ReCaptcha</name>
     <message>
-        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+38"/>
-        <source>CONFIRM</source>
-        <translation>POTWIERDŹ</translation>
+        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>CANCEL</source>
-        <translation>ANULUJ</translation>
+        <location line="+1"/>
+        <source>Confirm</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -637,15 +770,25 @@ Rozmiar multimediów: %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+104"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+119"/>
         <source>Read receipts</source>
         <translation>Potwierdzenia przeczytania</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>dialogs::RoomSettings</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+116"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+113"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
@@ -655,7 +798,7 @@ Rozmiar multimediów: %2
         <translation>Informacje</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+11"/>
         <source>Internal ID</source>
         <translation>Wewnętrzne ID</translation>
     </message>
@@ -738,12 +881,17 @@ Rozmiar multimediów: %2
         </translation>
     </message>
     <message>
-        <location line="+125"/>
+        <location line="+70"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Nie udało się włączyć szyfrowania: %1</translation>
     </message>
     <message>
-        <location line="+158"/>
+        <location line="+149"/>
         <source>Select an avatar</source>
         <translation>Wybierz awatar</translation>
     </message>
@@ -772,7 +920,7 @@ Rozmiar multimediów: %2
 <context>
     <name>dialogs::UserProfile</name>
     <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+59"/>
+        <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
         <source>Ban the user from the room</source>
         <translation>Zablokuj użytkownika w tym pokoju</translation>
     </message>
@@ -792,9 +940,14 @@ Rozmiar multimediów: %2
         <translation>Rozpocznij rozmowę</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+57"/>
         <source>Devices</source>
         <translation>Urządzenia</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

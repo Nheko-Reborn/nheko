@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+304"/>
+        <location filename="../../src/ChatPage.cpp" line="+309"/>
         <source>Failed to upload image. Please try again.</source>
         <translation>上传图像失败。请重试。</translation>
     </message>
@@ -32,7 +32,7 @@
         <translation>上传视频失败。请重试。</translation>
     </message>
     <message>
-        <location line="+371"/>
+        <location line="+376"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>恢复 OLM 账户失败。请重新登录。</translation>
     </message>
@@ -42,13 +42,13 @@
         <translation>恢复保存的数据失败。请重新登录。</translation>
     </message>
     <message>
-        <location line="+167"/>
-        <source>Failed to setup encryption keys. Server response: %s %d. Please try again later.</source>
-        <translation>建立加密密钥失败。 服务器返回：%s %d. 请稍后重试。</translation>
+        <location line="+169"/>
+        <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+51"/>
-        <location line="+150"/>
+        <location line="+153"/>
         <source>Please try to login again: %1</source>
         <translation>请尝试再次登录：%1</translation>
     </message>
@@ -64,32 +64,48 @@
     </message>
 </context>
 <context>
-    <name>DateSeparator</name>
+    <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/ui/InfoMessage.cpp" line="+68"/>
-        <source>Today</source>
-        <translation>今天</translation>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+130"/>
+        <source>All rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Favourite rooms</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Yesterday</source>
-        <translation>昨天</translation>
+        <source>Low priority rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source> (tag)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source> (community)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+60"/>
-        <source>APPLY</source>
-        <translation>应用</translation>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>CANCEL</source>
-        <translation>取消</translation>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+10"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
@@ -113,6 +129,14 @@
         <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+238"/>
         <source>Save image</source>
         <translation>保存图像</translation>
+    </message>
+</context>
+<context>
+    <name>InviteeItem</name>
+    <message>
+        <location filename="../../src/InviteeItem.cpp" line="+17"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -143,7 +167,17 @@
         <translation>登录</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+83"/>
+        <source>Autodiscovery failed. Received malformed response.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>没找到要求的终端。可能不是一个 Matrix 服务器。</translation>
     </message>
@@ -166,14 +200,14 @@
 <context>
     <name>MemberList</name>
     <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+82"/>
+        <location filename="../../src/dialogs/MemberList.cpp" line="+96"/>
         <source>Room members</source>
         <translation>聊天室成员</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>SHOW MORE</source>
-        <translation>显示更多</translation>
+        <location line="+33"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -207,7 +241,7 @@
         <translation>服务器</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+16"/>
         <source>REGISTER</source>
         <translation>注册</translation>
     </message>
@@ -233,14 +267,22 @@
     </message>
 </context>
 <context>
+    <name>ReplyPopup</name>
+    <message>
+        <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
+        <source>Logout</source>
+        <translation type="unfinished">登出</translation>
+    </message>
+</context>
+<context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+79"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+92"/>
         <source>Leave room</source>
         <translation>离开聊天室</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+174"/>
         <source>Accept</source>
         <translation>接受</translation>
     </message>
@@ -253,7 +295,7 @@
 <context>
     <name>SideBarActions</name>
     <message>
-        <location filename="../../src/SideBarActions.cpp" line="+32"/>
+        <location filename="../../src/SideBarActions.cpp" line="+38"/>
         <source>User settings</source>
         <translation>用户设置</translation>
     </message>
@@ -281,7 +323,7 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+169"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+106"/>
         <source>Encrypted</source>
         <translation>加密的</translation>
     </message>
@@ -304,18 +346,18 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+452"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+506"/>
         <source>Send a file</source>
         <translation>发送一个文件</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location filename="../../src/TextInputWidget.h" line="+154"/>
+        <location line="+13"/>
+        <location filename="../../src/TextInputWidget.h" line="+168"/>
         <source>Write a message...</source>
         <translation>写一条消息...</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+31"/>
         <source>Send a message</source>
         <translation>发送一条消息</translation>
     </message>
@@ -325,7 +367,7 @@
         <translation></translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+75"/>
         <source>Select a file</source>
         <translation>选择一个文件</translation>
     </message>
@@ -343,9 +385,19 @@
 <context>
     <name>TimelineItem</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+78"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+85"/>
         <source>Message redaction failed: %1</source>
         <translation>删除消息失败：%1</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -359,7 +411,7 @@
 <context>
     <name>TopRoomBar</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+68"/>
+        <location filename="../../src/TopRoomBar.cpp" line="+79"/>
         <source>Room options</source>
         <translation>聊天室选项</translation>
     </message>
@@ -387,7 +439,7 @@
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+116"/>
+        <location filename="../../src/TrayIcon.cpp" line="+120"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
@@ -400,7 +452,7 @@
 <context>
     <name>TypingDisplay</name>
     <message>
-        <location filename="../../src/TypingDisplay.cpp" line="+49"/>
+        <location filename="../../src/TypingDisplay.cpp" line="+45"/>
         <source> is typing</source>
         <translation> 正在打字</translation>
     </message>
@@ -413,7 +465,7 @@
 <context>
     <name>UserInfoWidget</name>
     <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+78"/>
+        <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
         <source>Logout</source>
         <translation>登出</translation>
     </message>
@@ -421,7 +473,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+143"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+156"/>
         <source>Minimize to tray</source>
         <translation>最小化至托盘</translation>
     </message>
@@ -431,12 +483,7 @@
         <translation>在托盘启动</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Re-order rooms based on activity</source>
-        <translation>根据活动重排序聊天室</translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>Group&apos;s sidebar</source>
         <translation>群组侧边栏</translation>
     </message>
@@ -457,26 +504,36 @@
     </message>
     <message>
         <location line="+9"/>
-        <source>Scale factor (requires restart)</source>
-        <translation>缩放系数（需要重启）</translation>
+        <source>Scale factor</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+11"/>
+        <source>Font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+27"/>
         <source>Device ID</source>
         <translation>设备 ID</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Device Fingerprint</source>
         <translation>设备指纹</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Session Keys</source>
         <translation>会话密钥</translation>
     </message>
@@ -501,48 +558,48 @@
         <translation>通用</translation>
     </message>
     <message>
-        <location line="+184"/>
+        <location line="+150"/>
         <source>Open Sessions File</source>
         <translation>打开会话文件</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+16"/>
+        <location line="+18"/>
         <location line="+9"/>
         <location line="+2"/>
         <location line="+2"/>
-        <location line="+17"/>
+        <location line="+19"/>
         <location line="+10"/>
-        <location line="+13"/>
+        <location line="+18"/>
         <location line="+2"/>
         <location line="+2"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+30"/>
+        <location line="-73"/>
+        <location line="+32"/>
         <source>File Password</source>
         <translation>文件密码</translation>
     </message>
     <message>
-        <location line="-29"/>
+        <location line="-31"/>
         <source>Enter the passphrase to decrypt the file:</source>
         <translation>输入密码以解密文件：</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location line="+30"/>
+        <location line="+8"/>
+        <location line="+32"/>
         <source>The password cannot be empty</source>
         <translation>密码不能为空</translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
         <translation>输入密码以加密你的会话密钥：</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+14"/>
         <source>File to save the exported session keys</source>
         <translation>保存导出的会话密钥的文件</translation>
     </message>
@@ -550,7 +607,7 @@
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../../src/WelcomePage.cpp" line="+44"/>
+        <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>欢迎使用 nheko! Matrix 协议的桌面客户端。</translation>
     </message>
@@ -560,12 +617,12 @@
         <translation>祝您使用愉快！</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+23"/>
         <source>REGISTER</source>
         <translation>注册</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>LOGIN</source>
         <translation>登录</translation>
     </message>
@@ -573,12 +630,17 @@
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+41"/>
-        <source>CANCEL</source>
-        <translation>取消</translation>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
+        <source>Create room</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
@@ -611,9 +673,9 @@
 <context>
     <name>dialogs::InviteUsers</name>
     <message>
-        <location filename="../../src/dialogs/InviteUsers.cpp" line="+40"/>
-        <source>CANCEL</source>
-        <translation>取消</translation>
+        <location filename="../../src/dialogs/InviteUsers.cpp" line="+41"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -624,12 +686,17 @@
 <context>
     <name>dialogs::JoinRoom</name>
     <message>
-        <location filename="../../src/dialogs/JoinRoom.cpp" line="+34"/>
-        <source>CANCEL</source>
-        <translation>取消</translation>
+        <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Room ID or alias</source>
         <translation>聊天室 ID 或别名</translation>
     </message>
@@ -637,12 +704,12 @@
 <context>
     <name>dialogs::LeaveRoom</name>
     <message>
-        <location filename="../../src/dialogs/LeaveRoom.cpp" line="+33"/>
-        <source>CANCEL</source>
-        <translation>取消</translation>
+        <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Are you sure you want to leave?</source>
         <translation>你确定要离开吗？</translation>
     </message>
@@ -650,12 +717,12 @@
 <context>
     <name>dialogs::Logout</name>
     <message>
-        <location filename="../../src/dialogs/Logout.cpp" line="+52"/>
-        <source>CANCEL</source>
-        <translation>取消</translation>
+        <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+8"/>
         <source>Logout. Are you sure?</source>
         <translation>登出。确定吗？</translation>
     </message>
@@ -673,7 +740,7 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+84"/>
         <source>Media type: %1
 Media size: %2
 </source>
@@ -685,14 +752,14 @@ Media size: %2
 <context>
     <name>dialogs::ReCaptcha</name>
     <message>
-        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+38"/>
-        <source>CONFIRM</source>
-        <translation>确定</translation>
+        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>CANCEL</source>
-        <translation>取消</translation>
+        <location line="+1"/>
+        <source>Confirm</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -703,15 +770,25 @@ Media size: %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+104"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+119"/>
         <source>Read receipts</source>
         <translation>阅读回执</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>dialogs::RoomSettings</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+109"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+113"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -802,12 +879,17 @@ Media size: %2
         </translation>
     </message>
     <message>
-        <location line="+126"/>
+        <location line="+70"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
         <source>Failed to enable encryption: %1</source>
         <translation>启用加密失败：%1</translation>
     </message>
     <message>
-        <location line="+158"/>
+        <location line="+149"/>
         <source>Select an avatar</source>
         <translation>选择一个头像</translation>
     </message>
@@ -836,7 +918,7 @@ Media size: %2
 <context>
     <name>dialogs::UserProfile</name>
     <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+59"/>
+        <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
         <source>Ban the user from the room</source>
         <translation>在这个聊天室封禁这个用户</translation>
     </message>
@@ -856,9 +938,14 @@ Media size: %2
         <translation>开始一个聊天</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+57"/>
         <source>Devices</source>
         <translation>设备</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
