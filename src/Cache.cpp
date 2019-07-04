@@ -1575,7 +1575,7 @@ Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
                 }
         }
 
-	nhlog::db()->warn("m.room.create event is missing room version, assuming version \"1\"");
+        nhlog::db()->warn("m.room.create event is missing room version, assuming version \"1\"");
         return QString("1");
 }
 
@@ -2183,7 +2183,7 @@ to_json(json &j, const RoomInfo &info)
         j["name"]         = info.name;
         j["topic"]        = info.topic;
         j["avatar_url"]   = info.avatar_url;
-        j["version"]   = info.version;
+        j["version"]      = info.version;
         j["is_invite"]    = info.is_invite;
         j["join_rule"]    = info.join_rule;
         j["guest_access"] = info.guest_access;
@@ -2198,10 +2198,11 @@ to_json(json &j, const RoomInfo &info)
 void
 from_json(const json &j, RoomInfo &info)
 {
-        info.name         = j.at("name");
-        info.topic        = j.at("topic");
-        info.avatar_url   = j.at("avatar_url");
-	info.version      = j.value("version", QCoreApplication::translate("RoomInfo", "no version stored").toStdString());
+        info.name       = j.at("name");
+        info.topic      = j.at("topic");
+        info.avatar_url = j.at("avatar_url");
+        info.version    = j.value(
+          "version", QCoreApplication::translate("RoomInfo", "no version stored").toStdString());
         info.is_invite    = j.at("is_invite");
         info.join_rule    = j.at("join_rule");
         info.guest_access = j.at("guest_access");

@@ -206,7 +206,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         auto roomVersionLayout = new QHBoxLayout;
         roomVersionLayout->setMargin(0);
         roomVersionLayout->addWidget(new QLabel(tr("Room Version"), this),
-                                Qt::AlignBottom | Qt::AlignLeft);
+                                     Qt::AlignBottom | Qt::AlignLeft);
         roomVersionLayout->addWidget(roomVersionLabel, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto notifLabel = new QLabel(tr("Notifications"), this);
