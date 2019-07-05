@@ -3,6 +3,7 @@
 #include <QFontMetrics>
 #include <QPaintDevice>
 #include <QPainter>
+#include <QtGlobal>
 
 class Painter : public QPainter
 {
@@ -21,8 +22,12 @@ public:
         {
                 QFontMetrics m(fontMetrics());
                 if (textWidth < 0) {
-                        // deprecated in 5.13:      textWidth = m.width(text);
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+                        // deprecated in 5.13:
+                        textWidth = m.width(text);
+#else
                         textWidth = m.horizontalAdvance(text);
+#endif
                 }
                 drawText((outerw - x - textWidth), y + m.ascent(), text);
         }

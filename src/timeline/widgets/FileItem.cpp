@@ -21,6 +21,7 @@
 #include <QFileDialog>
 #include <QPainter>
 #include <QPixmap>
+#include <QtGlobal>
 
 #include "Logging.h"
 #include "MatrixClient.h"
@@ -153,10 +154,14 @@ FileItem::resizeEvent(QResizeEvent *event)
         font.setWeight(QFont::Medium);
 
         QFontMetrics fm(font);
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+        const int computedWidth = std::min(
+          fm.width(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding, (double)MaxWidth);
+#else
         const int computedWidth =
           std::min(fm.horizontalAdvance(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding,
                    (double)MaxWidth);
-
+#endif
         resize(computedWidth, Height);
 
         event->accept();

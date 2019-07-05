@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QPainter>
 #include <QPen>
+#include <QtGlobal>
 
 constexpr int VPadding = 6;
 constexpr int HPadding = 12;
@@ -22,7 +23,13 @@ InfoMessage::InfoMessage(QString msg, QWidget *parent)
         initFont();
 
         QFontMetrics fm{font()};
-        width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+        // width deprecated in 5.13
+        width_ = fm.width(msg_) + HPadding * 2;
+#else
+        width_ = fm.horizontalAdvance(msg_) + HPadding * 2;
+#endif
+
         height_ = fm.ascent() + 2 * VPadding;
 
         setFixedHeight(height_ + 2 * HMargin);
@@ -64,7 +71,12 @@ DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
         msg_ = datetime.toString(fmt);
 
         QFontMetrics fm{font()};
-        width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+        // width deprecated in 5.13
+        width_ = fm.width(msg_) + HPadding * 2;
+#else
+        width_ = fm.horizontalAdvance(msg_) + HPadding * 2;
+#endif
         height_ = fm.ascent() + 2 * VPadding;
 
         setFixedHeight(height_ + 2 * HMargin);

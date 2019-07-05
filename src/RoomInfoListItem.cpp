@@ -19,6 +19,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QtGlobal>
 
 #include "Cache.h"
 #include "Config.h"
@@ -182,9 +183,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                 QFont tsFont;
                 tsFont.setPointSizeF(tsFont.pointSizeF() * 0.9);
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+                const int msgStampWidth = QFontMetrics(tsFont).width(lastMsgInfo_.timestamp) + 4;
+#else
                 const int msgStampWidth =
                   QFontMetrics(tsFont).horizontalAdvance(lastMsgInfo_.timestamp) + 4;
-
+#endif
                 // We use the full width of the widget if there is no unread msg bubble.
                 const int bottomLineWidthLimit = (unreadMsgCount_ > 0) ? msgStampWidth : 0;
 
@@ -212,8 +216,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         p.setFont(QFont{});
                         p.drawText(QPoint(2 * wm.padding + wm.iconSize, bottom_y), userName);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+                        int nameWidth = QFontMetrics(QFont{}).width(userName);
+#else
                         int nameWidth = QFontMetrics(QFont{}).horizontalAdvance(userName);
-
+#endif
                         p.setFont(QFont{});
 
                         // The limit is the space between the end of the username and the start of

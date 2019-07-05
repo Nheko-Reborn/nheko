@@ -21,6 +21,7 @@
 #include <QFontDatabase>
 #include <QMenu>
 #include <QTimer>
+#include <QtGlobal>
 
 #include "ChatPage.h"
 #include "Config.h"
@@ -731,11 +732,13 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setToolTipDuration(1500);
         userName_->setAttribute(Qt::WA_Hover);
         userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
         // width deprecated in 5.13:
-        // userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+        userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+#else
         userName_->setFixedWidth(
           QFontMetrics(userName_->font()).horizontalAdvance(userName_->text()));
-
+#endif
         // Set the user color asynchronously if it hasn't been generated yet,
         // otherwise this will just set it.
         refreshAuthorColor();

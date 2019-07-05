@@ -22,6 +22,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QUuid>
+#include <QtGlobal>
 
 #include "Config.h"
 #include "ImageItem.h"
@@ -191,9 +192,11 @@ ImageItem::paintEvent(QPaintEvent *event)
 
         if (image_.isNull()) {
                 QString elidedText = metrics.elidedText(text_, Qt::ElideRight, max_width_ - 10);
-
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+                setFixedSize(metrics.width(elidedText), fontHeight);
+#else
                 setFixedSize(metrics.horizontalAdvance(elidedText), fontHeight);
-
+#endif
                 painter.setFont(font);
                 painter.setPen(QPen(QColor(66, 133, 244)));
                 painter.drawText(QPoint(0, fontHeight / 2), elidedText);
