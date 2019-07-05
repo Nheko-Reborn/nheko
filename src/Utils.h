@@ -22,6 +22,9 @@ class QComboBox;
 // outgoing messages
 struct RelatedInfo
 {
+        using MsgType = mtx::events::MessageType;
+        MsgType type;
+        QString room;
         QString quoted_body;
         std::string related_event;
         QString quoted_user;
@@ -237,6 +240,10 @@ markdownToHtml(const QString &text);
 //! Generate a Rich Reply quote message
 QString
 getFormattedQuoteBody(const RelatedInfo &related, const QString &html);
+
+//! Get the body for the quote, depending on the event type.
+QString
+getQuoteBody(const RelatedInfo &related);
 
 //! Retrieve the color of the links based on the current theme.
 QString

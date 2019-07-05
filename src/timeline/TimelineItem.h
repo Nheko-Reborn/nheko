@@ -28,6 +28,8 @@
 
 #include <QtConcurrent>
 
+#include "mtx/events.hpp"
+
 #include "AvatarProvider.h"
 #include "RoomInfoListItem.h"
 #include "Utils.h"
@@ -276,6 +278,7 @@ private:
 
         QString replaceEmoji(const QString &body);
         QString event_id_;
+        mtx::events::MessageType message_type_;
         QString room_id_;
 
         DescInfo descriptionMsg_;
@@ -349,6 +352,11 @@ TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSen
 {
         init();
 
+        //if (event.type == mtx::events::EventType::RoomMessage) {
+        //        message_type_ = mtx::events::getMessageType(event.content.msgtype);
+        //}
+        // TODO: Fix this.
+        message_type_ = mtx::events::MessageType::Unknown;
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 

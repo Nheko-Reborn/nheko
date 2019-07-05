@@ -21,10 +21,12 @@
 #include <QDir>
 #include <QFile>
 #include <QFontDatabase>
+#include <QGuiApplication>
 #include <QLabel>
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QPoint>
+#include <QScreen>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QTranslator>
@@ -72,7 +74,8 @@ registerSignalHandlers()
 QPoint
 screenCenter(int width, int height)
 {
-        QRect screenGeometry = QApplication::desktop()->screenGeometry();
+        // Deprecated in 5.13: QRect screenGeometry = QApplication::desktop()->screenGeometry();
+        QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
 
         int x = (screenGeometry.width() - width) / 2;
         int y = (screenGeometry.height() - height) / 2;

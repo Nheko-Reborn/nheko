@@ -731,7 +731,9 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
         userName_->setToolTipDuration(1500);
         userName_->setAttribute(Qt::WA_Hover);
         userName_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-        userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+        // width deprecated in 5.13:
+        // userName_->setFixedWidth(QFontMetrics(userName_->font()).width(userName_->text()));
+        userName_->setFixedWidth(QFontMetrics(userName_->font()).horizontalAdvance(userName_->text()));
 
         // Set the user color asynchronously if it hasn't been generated yet,
         // otherwise this will just set it.
@@ -877,9 +879,11 @@ TimelineItem::replyAction()
                 return;
 
         RelatedInfo related;
+        related.type          = message_type_;
         related.quoted_body   = body_->toPlainText();
         related.quoted_user   = descriptionMsg_.userid;
         related.related_event = eventId().toStdString();
+        related.room          = room_id_;
 
         emit ChatPage::instance()->messageReply(related);
 }

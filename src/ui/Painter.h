@@ -20,8 +20,10 @@ public:
         void drawTextRight(int x, int y, int outerw, const QString &text, int textWidth = -1)
         {
                 QFontMetrics m(fontMetrics());
-                if (textWidth < 0)
-                        textWidth = m.width(text);
+                if (textWidth < 0) {
+                        // deprecated in 5.13:      textWidth = m.width(text);
+                        textWidth = m.horizontalAdvance(text);
+                }
                 drawText((outerw - x - textWidth), y + m.ascent(), text);
         }
 

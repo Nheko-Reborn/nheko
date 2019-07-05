@@ -46,17 +46,16 @@ set(BOOST_SHA256
 
 set(
   MTXCLIENT_URL
-  https://github.com/Nheko-Reborn/mtxclient/archive/32065798a2efa205052fcd2f470c52326a46d0b9.tar.gz
+  https://github.com/Nheko-Reborn/mtxclient/archive/35b596a98d516e044a6a25803ba6b93b6c0a538b.tar.gz
   )
 set(MTXCLIENT_HASH
-  3ddc6a482b5f388533bbaa69c44f1621d65a4e38fcb6cafaff83330975ea7e2b)
+  ea770f52afaad45706b8050aa3d860fa98780c60f2d3f061f2c89dfd3b3bf9be)
 set(
   TWEENY_URL
   https://github.com/mobius3/tweeny/archive/b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf.tar.gz
   )
 set(TWEENY_HASH
     9a632b9da84823fae002ad5d9ba02c8d77c0a3810479974c6b637c5504165475)
-
 set(
   LMDBXX_HEADER_URL
   https://raw.githubusercontent.com/bendiken/lmdbxx/0b43ca87d8cfabba392dfe884eb1edb83874de02/lmdb%2B%2B.h

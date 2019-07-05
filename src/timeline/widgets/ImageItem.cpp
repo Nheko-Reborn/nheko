@@ -192,7 +192,7 @@ ImageItem::paintEvent(QPaintEvent *event)
         if (image_.isNull()) {
                 QString elidedText = metrics.elidedText(text_, Qt::ElideRight, max_width_ - 10);
 
-                setFixedSize(metrics.width(elidedText), fontHeight);
+                setFixedSize(metrics.horizontalAdvance(elidedText), fontHeight);
 
                 painter.setFont(font);
                 painter.setPen(QPen(QColor(66, 133, 244)));

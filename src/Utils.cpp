@@ -3,6 +3,8 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QSettings>
 #include <QTextDocument>
 #include <QXmlStreamReader>
@@ -229,8 +231,10 @@ utils::scaleImageToPixmap(const QImage &img, int size)
         if (img.isNull())
                 return QPixmap();
 
+        // Deprecated in 5.13: const double sz =
+        //  std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
         const double sz =
-          std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
+          std::ceil(QGuiApplication::primaryScreen()->devicePixelRatio() * (double)size);
         return QPixmap::fromImage(
           img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
@@ -318,14 +322,42 @@ QString
 utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
 {
         return QString("<mx-reply><blockquote><a "
-                       "href=\"https://matrix.to/#/!%1\">In reply "
-                       "to</a><a href=\"https://matrix.to/#/%2\">%3</a><br "
-                       "/>%4</blockquote></mx-reply>")
-                 .arg(QString::fromStdString(related.related_event),
+                       "href=\"https://matrix.to/#/%1/%2\">In reply "
+                       "to</a>* <a href=\"https://matrix.to/#/%3\">%4</a><br "
+                       "/>%5</blockquote></mx-reply>")
+                 .arg(related.room,
+                      QString::fromStdString(related.related_event),
                       related.quoted_user,
                       related.quoted_user,
-                      related.quoted_body) +
+                      getQuoteBody(related)) +
                html;
+}
+
+QString
+utils::getQuoteBody(const RelatedInfo &related)
+{
+        using MsgType = mtx::events::MessageType;
+
+        switch (related.type) {
+        case MsgType::Text: {
+                return markdownToHtml(related.quoted_body);
+        }
+        case MsgType::File: {
+                return QString("sent a file.");
+        }
+        case MsgType::Image: {
+                return QString("sent an image.");
+        }
+        case MsgType::Audio: {
+                return QString("sent an audio file.");
+        }
+        case MsgType::Video: {
+                return QString("sent a video");
+        }
+        default: {
+                return related.quoted_body;
+        }
+        }
 }
 
 QString
@@ -475,7 +507,8 @@ utils::centerWidget(QWidget *widget, QWidget *parent)
                 return;
         }
 
-        widget->move(findCenter(QApplication::desktop()->screenGeometry()));
+        // Deprecated in 5.13: widget->move(findCenter(QApplication::desktop()->screenGeometry()));
+        widget->move(findCenter(QGuiApplication::primaryScreen()->geometry()));
 }
 
 void

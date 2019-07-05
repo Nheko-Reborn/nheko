@@ -22,7 +22,7 @@ InfoMessage::InfoMessage(QString msg, QWidget *parent)
         initFont();
 
         QFontMetrics fm{font()};
-        width_  = fm.width(msg_) + HPadding * 2;
+        width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
         height_ = fm.ascent() + 2 * VPadding;
 
         setFixedHeight(height_ + 2 * HMargin);
@@ -64,7 +64,7 @@ DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
         msg_ = datetime.toString(fmt);
 
         QFontMetrics fm{font()};
-        width_  = fm.width(msg_) + HPadding * 2;
+        width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
         height_ = fm.ascent() + 2 * VPadding;
 
         setFixedHeight(height_ + 2 * HMargin);

@@ -17,7 +17,9 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QGuiApplication>
 #include <QPainter>
+#include <QScreen>
 
 #include "dialogs/ImageOverlay.h"
 
@@ -39,7 +41,8 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
         setAttribute(Qt::WA_DeleteOnClose, true);
         setWindowState(Qt::WindowFullScreen);
 
-        screen_ = QApplication::desktop()->availableGeometry();
+        // Deprecated in 5.13: screen_ = QApplication::desktop()->availableGeometry();
+        screen_ = QGuiApplication::primaryScreen()->availableGeometry();
 
         move(QApplication::desktop()->mapToGlobal(screen_.topLeft()));
         resize(screen_.size());

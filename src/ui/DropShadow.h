@@ -30,7 +30,11 @@ public:
                 gradient.setStart(right0);
                 gradient.setFinalStop(right1);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(
+                // Deprecated in 5.13: painter.drawRoundRect(
+                //  QRectF(QPointF(width - margin * radius, margin), QPointF(width, height - margin)),
+                //  0.0,
+                //  0.0);
+                painter.drawRoundedRect(
                   QRectF(QPointF(width - margin * radius, margin), QPointF(width, height - margin)),
                   0.0,
                   0.0);
@@ -41,7 +45,7 @@ public:
                 gradient.setStart(left0);
                 gradient.setFinalStop(left1);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(
+                painter.drawRoundedRect(
                   QRectF(QPointF(margin * radius, margin), QPointF(0, height - margin)), 0.0, 0.0);
 
                 // Top
@@ -50,7 +54,7 @@ public:
                 gradient.setStart(top0);
                 gradient.setFinalStop(top1);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(
+                painter.drawRoundedRect(
                   QRectF(QPointF(width - margin, 0), QPointF(margin, margin)), 0.0, 0.0);
 
                 // Bottom
@@ -59,7 +63,7 @@ public:
                 gradient.setStart(bottom0);
                 gradient.setFinalStop(bottom1);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(
+                painter.drawRoundedRect(
                   QRectF(QPointF(margin, height - margin), QPointF(width - margin, height)),
                   0.0,
                   0.0);
@@ -71,7 +75,7 @@ public:
                 gradient.setFinalStop(bottomright1);
                 gradient.setColorAt(endPosition1, end);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(QRectF(bottomright0, bottomright1), 0.0, 0.0);
+                painter.drawRoundedRect(QRectF(bottomright0, bottomright1), 0.0, 0.0);
 
                 // BottomLeft
                 QPointF bottomleft0(margin, height - margin);
@@ -80,7 +84,7 @@ public:
                 gradient.setFinalStop(bottomleft1);
                 gradient.setColorAt(endPosition1, end);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(QRectF(bottomleft0, bottomleft1), 0.0, 0.0);
+                painter.drawRoundedRect(QRectF(bottomleft0, bottomleft1), 0.0, 0.0);
 
                 // TopLeft
                 QPointF topleft0(margin, margin);
@@ -89,7 +93,7 @@ public:
                 gradient.setFinalStop(topleft1);
                 gradient.setColorAt(endPosition1, end);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(QRectF(topleft0, topleft1), 0.0, 0.0);
+                painter.drawRoundedRect(QRectF(topleft0, topleft1), 0.0, 0.0);
 
                 // TopRight
                 QPointF topright0(width - margin, margin);
@@ -98,12 +102,12 @@ public:
                 gradient.setFinalStop(topright1);
                 gradient.setColorAt(endPosition1, end);
                 painter.setBrush(QBrush(gradient));
-                painter.drawRoundRect(QRectF(topright0, topright1), 0.0, 0.0);
+                painter.drawRoundedRect(QRectF(topright0, topright1), 0.0, 0.0);
 
                 // Widget
                 painter.setBrush(QBrush("#FFFFFF"));
                 painter.setRenderHint(QPainter::Antialiasing);
-                painter.drawRoundRect(
+                painter.drawRoundedRect(
                   QRectF(QPointF(margin, margin), QPointF(width - margin, height - margin)),
                   radius,
                   radius);

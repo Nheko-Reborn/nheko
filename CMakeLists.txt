@@ -270,7 +270,7 @@ find_package(Boost 1.66 REQUIRED
                         thread)
 find_package(ZLIB REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(MatrixClient 0.1.0 REQUIRED)
+find_package(MatrixClient 0.3.0 REQUIRED)
 find_package(Olm 2 REQUIRED)
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
 find_package(cmark REQUIRED)
