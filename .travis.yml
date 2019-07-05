@@ -5,7 +5,7 @@ dist: trusty
 notifications:
   webhooks:
     urls:
-    - https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MHJlZF9za3klM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbS8lMjFldkFxa1BIWnVQSElHZWVuaGklM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbQ
+    - https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MHJlZF9za3klM0FuaGVrby5pbS8lMjFVYkNtSWxHVEhOSWdJUlpjcHQlM0FuaGVrby5pbQ
     on_success: always
     on_failure: always
     on_start: never
