@@ -182,7 +182,8 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                 QFont tsFont;
                 tsFont.setPointSizeF(tsFont.pointSizeF() * 0.9);
-                const int msgStampWidth = QFontMetrics(tsFont).horizontalAdvance(lastMsgInfo_.timestamp) + 4;
+                const int msgStampWidth =
+                  QFontMetrics(tsFont).horizontalAdvance(lastMsgInfo_.timestamp) + 4;
 
                 // We use the full width of the widget if there is no unread msg bubble.
                 const int bottomLineWidthLimit = (unreadMsgCount_ > 0) ? msgStampWidth : 0;

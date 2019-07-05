@@ -31,9 +31,8 @@ public:
                 gradient.setFinalStop(right1);
                 painter.setBrush(QBrush(gradient));
                 // Deprecated in 5.13: painter.drawRoundRect(
-                //  QRectF(QPointF(width - margin * radius, margin), QPointF(width, height - margin)),
-                //  0.0,
-                //  0.0);
+                //  QRectF(QPointF(width - margin * radius, margin), QPointF(width, height -
+                //  margin)), 0.0, 0.0);
                 painter.drawRoundedRect(
                   QRectF(QPointF(width - margin * radius, margin), QPointF(width, height - margin)),
                   0.0,

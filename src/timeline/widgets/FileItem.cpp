@@ -153,8 +153,9 @@ FileItem::resizeEvent(QResizeEvent *event)
         font.setWeight(QFont::Medium);
 
         QFontMetrics fm(font);
-        const int computedWidth = std::min(
-          fm.horizontalAdvance(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding, (double)MaxWidth);
+        const int computedWidth =
+          std::min(fm.horizontalAdvance(text_) + 2 * IconRadius + VerticalPadding * 2 + TextPadding,
+                   (double)MaxWidth);
 
         resize(computedWidth, Height);
 

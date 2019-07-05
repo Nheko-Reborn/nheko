@@ -352,11 +352,11 @@ TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSen
 {
         init();
 
-        //if (event.type == mtx::events::EventType::RoomMessage) {
+        // if (event.type == mtx::events::EventType::RoomMessage) {
         //        message_type_ = mtx::events::getMessageType(event.content.msgtype);
         //}
         // TODO: Fix this.
-        message_type_ = mtx::events::MessageType::Unknown;
+        message_type_     = mtx::events::MessageType::Unknown;
         event_id_         = QString::fromStdString(event.event_id);
         const auto sender = QString::fromStdString(event.sender);
 

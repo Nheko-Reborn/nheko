@@ -69,7 +69,8 @@ TypingDisplay::paintEvent(QPaintEvent *)
         text_ = fm.elidedText(text_, Qt::ElideRight, (double)(width() * 0.75));
 
         QPainterPath path;
-        path.addRoundedRect(QRectF(0, 0, fm.horizontalAdvance(text_) + 2 * LEFT_PADDING, height()), 3, 3);
+        path.addRoundedRect(
+          QRectF(0, 0, fm.horizontalAdvance(text_) + 2 * LEFT_PADDING, height()), 3, 3);
 
         p.fillPath(path, backgroundColor());
         p.drawText(region, Qt::AlignVCenter, text_);
