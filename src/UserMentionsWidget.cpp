@@ -210,7 +210,7 @@ UserMentionsWidget::paintEvent(QPaintEvent *event)
                 const int msgStampWidth = QFontMetrics(tsFont).horizontalAdvance("timestamp") + 4;
 #endif
                 // We use the full width of the widget if there is no unread msg bubble.
-                //const int bottomLineWidthLimit = (unreadMsgCount_ > 0) ? msgStampWidth : 0;
+                // const int bottomLineWidthLimit = (unreadMsgCount_ > 0) ? msgStampWidth : 0;
 
                 // Name line.
                 QFontMetrics fontNameMetrics(headingFont);
@@ -229,7 +229,8 @@ UserMentionsWidget::paintEvent(QPaintEvent *event)
                 // timestamp.
                 int usernameLimit =
                   std::max(0, width() - 3 * wm.padding - msgStampWidth - wm.iconSize - 20);
-                auto userName = metrics.elidedText("Show Mentioned Messages", Qt::ElideRight, usernameLimit);
+                auto userName =
+                  metrics.elidedText("Show Mentioned Messages", Qt::ElideRight, usernameLimit);
 
                 p.setFont(QFont{});
                 p.drawText(QPoint(2 * wm.padding + wm.iconSize, bottom_y), userName);

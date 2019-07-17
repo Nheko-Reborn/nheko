@@ -90,7 +90,6 @@ signals:
         void notificationsRetrieved(const mtx::responses::Notifications &);
         void highlightedNotifsRetrieved(const mtx::responses::Notifications &);
 
-
         void uploadFailed(const QString &msg);
         void imageUploaded(const QString &roomid,
                            const QString &filename,
@@ -208,7 +207,6 @@ private:
         void sendDesktopNotifications(const mtx::responses::Notifications &);
 
         void showNotificationsDialog(const mtx::responses::Notifications &);
-
 
         QStringList generateTypingUsers(const QString &room_id,
                                         const std::vector<std::string> &typing_users);

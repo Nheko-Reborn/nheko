@@ -6,7 +6,7 @@
 using namespace dialogs;
 
 UserMentions::UserMentions(QWidget *parent)
-          : QWidget{parent}
+  : QWidget{parent}
 {
         top_layout_ = new QVBoxLayout(this);
         top_layout_->setSpacing(0);
@@ -38,22 +38,21 @@ UserMentions::UserMentions(QWidget *parent)
 }
 
 void
-UserMentions::pushItem(const QString &event_id, const QString &user_id, const QString &body, const QString &room_id) {
-        TimelineItem *view_item =
-          new TimelineItem(mtx::events::MessageType::Text,
-                           user_id,
-                           body,
-                           true,
-                           room_id,
-                           scroll_widget_);
-                view_item->setEventId(event_id);
-                setUpdatesEnabled(false);
-                view_item->hide();
+UserMentions::pushItem(const QString &event_id,
+                       const QString &user_id,
+                       const QString &body,
+                       const QString &room_id)
+{
+        TimelineItem *view_item = new TimelineItem(
+          mtx::events::MessageType::Text, user_id, body, true, room_id, scroll_widget_);
+        view_item->setEventId(event_id);
+        setUpdatesEnabled(false);
+        view_item->hide();
 
-                scroll_layout_->addWidget(view_item);
-                QTimer::singleShot(0, this, [view_item, this]() {
-                        view_item->show();
-                        view_item->adjustSize();
-                        setUpdatesEnabled(true);
-                });
+        scroll_layout_->addWidget(view_item);
+        QTimer::singleShot(0, this, [view_item, this]() {
+                view_item->show();
+                view_item->adjustSize();
+                setUpdatesEnabled(true);
+        });
 }

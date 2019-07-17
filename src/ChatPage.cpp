@@ -90,9 +90,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::joinRoom, this, &ChatPage::joinRoom);
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
-        user_info_widget_ = new UserInfoWidget(sideBar_);
+        user_info_widget_     = new UserInfoWidget(sideBar_);
         user_mentions_widget_ = new UserMentionsWidget(sideBar_);
-        room_list_        = new RoomList(sideBar_);
+        room_list_            = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);
@@ -155,22 +155,20 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
 
         connect(user_mentions_widget_, &UserMentionsWidget::clicked, this, [this]() {
-                        http::client()->notifications(
-                          1000,
-                          "",
-                          "highlight",
-                          [this](const mtx::responses::Notifications &res,
-                                 mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::net()->warn(
-                                            "failed to retrieve notifications: {} ({})",
-                                            err->matrix_error.error,
-                                            static_cast<int>(err->status_code));
-                                          return;
-                                  }
+                http::client()->notifications(
+                  1000,
+                  "",
+                  "highlight",
+                  [this](const mtx::responses::Notifications &res, mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->warn("failed to retrieve notifications: {} ({})",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                                  return;
+                          }
 
-                                  emit highlightedNotifsRetrieved(std::move(res));
-                          });
+                          emit highlightedNotifsRetrieved(std::move(res));
+                  });
         });
 
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
@@ -520,7 +518,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
-        connect(this, &ChatPage::highlightedNotifsRetrieved, this, &ChatPage::showNotificationsDialog);
+        connect(
+          this, &ChatPage::highlightedNotifsRetrieved, this, &ChatPage::showNotificationsDialog);
 
         connect(communitiesList_,
                 &CommunitiesList::communityChanged,
@@ -998,7 +997,7 @@ ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res)
                 try {
                         const auto room_id = QString::fromStdString(item.room_id);
                         const auto user_id = utils::event_sender(item.event);
-                        const auto body = utils::event_body(item.event);
+                        const auto body    = utils::event_body(item.event);
 
                         notifDialog->pushItem(event_id, user_id, body, room_id);
 
