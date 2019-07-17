@@ -35,6 +35,7 @@
 #include "TopRoomBar.h"
 #include "TypingDisplay.h"
 #include "UserInfoWidget.h"
+#include "UserMentionsWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/OverlayModal.h"
@@ -43,6 +44,7 @@
 #include "notifications/Manager.h"
 
 #include "dialogs/ReadReceipts.h"
+#include "dialogs/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
 
 // TODO: Needs to be updated with an actual secret.
@@ -89,10 +91,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
+        user_mentions_widget_ = new UserMentionsWidget(sideBar_);
         room_list_        = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);
+        sideBarLayout_->addWidget(user_mentions_widget_);
         sideBarLayout_->addWidget(room_list_);
         sideBarLayout_->addWidget(sidebarActions_);
 
@@ -148,6 +152,25 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 // Drop all pending connections.
                 http::client()->shutdown();
                 trySync();
+        });
+
+        connect(user_mentions_widget_, &UserMentionsWidget::clicked, this, [this]() {
+                        http::client()->notifications(
+                          1000,
+                          "",
+                          "highlight",
+                          [this](const mtx::responses::Notifications &res,
+                                 mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn(
+                                            "failed to retrieve notifications: {} ({})",
+                                            err->matrix_error.error,
+                                            static_cast<int>(err->status_code));
+                                          return;
+                                  }
+
+                                  emit highlightedNotifsRetrieved(std::move(res));
+                          });
         });
 
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
@@ -497,6 +520,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
+        connect(this, &ChatPage::highlightedNotifsRetrieved, this, &ChatPage::showNotificationsDialog);
 
         connect(communitiesList_,
                 &CommunitiesList::communityChanged,
@@ -562,6 +586,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 if (hasNotifications && userSettings_->hasDesktopNotifications())
                         http::client()->notifications(
                           5,
+                          "",
+                          "",
                           [this](const mtx::responses::Notifications &res,
                                  mtx::http::RequestErr err) {
                                   if (err) {
@@ -958,6 +984,32 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
                         nhlog::db()->warn("error while sending desktop notification: {}", e.what());
                 }
         }
+}
+
+void
+ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res)
+{
+        // TODO: This should NOT BE A DIALOG.  Make the TimelineView support
+        // creating a timeline view from notifications (similarly to how it can show history views)
+        auto notifDialog = new dialogs::UserMentions();
+        for (const auto &item : res.notifications) {
+                const auto event_id = QString::fromStdString(utils::event_id(item.event));
+
+                try {
+                        const auto room_id = QString::fromStdString(item.room_id);
+                        const auto user_id = utils::event_sender(item.event);
+                        const auto body = utils::event_body(item.event);
+
+                        notifDialog->pushItem(event_id, user_id, body, room_id);
+
+                } catch (const lmdb::error &e) {
+                        nhlog::db()->warn("error while sending desktop notification: {}", e.what());
+                }
+        }
+        notifDialog->setFixedWidth(width());
+        notifDialog->setFixedHeight(height());
+        notifDialog->raise();
+        notifDialog->show();
 }
 
 void

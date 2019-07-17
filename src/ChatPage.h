@@ -43,6 +43,7 @@ class TimelineViewManager;
 class TopRoomBar;
 class TypingDisplay;
 class UserInfoWidget;
+class UserMentionsWidget;
 class UserSettings;
 class NotificationsManager;
 
@@ -87,6 +88,8 @@ signals:
         void messageReply(const RelatedInfo &related);
 
         void notificationsRetrieved(const mtx::responses::Notifications &);
+        void highlightedNotifsRetrieved(const mtx::responses::Notifications &);
+
 
         void uploadFailed(const QString &msg);
         void imageUploaded(const QString &roomid,
@@ -204,6 +207,9 @@ private:
         //! Send desktop notification for the received messages.
         void sendDesktopNotifications(const mtx::responses::Notifications &);
 
+        void showNotificationsDialog(const mtx::responses::Notifications &);
+
+
         QStringList generateTypingUsers(const QString &room_id,
                                         const std::vector<std::string> &typing_users);
 
@@ -235,6 +241,8 @@ private:
         QString current_community_;
 
         UserInfoWidget *user_info_widget_;
+
+        UserMentionsWidget *user_mentions_widget_;
 
         // Keeps track of the users currently typing on each room.
         std::map<QString, QList<QString>> typingUsers_;

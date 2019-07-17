@@ -122,6 +122,35 @@ RoomInfoListItem {
     qproperty-bubbleBgColor: #4d84c7;
 }
 
+UserMentionsWidget {
+    qproperty-mentionedColor: #a82353;
+    qproperty-highlightedBackgroundColor: #4d84c7;
+    qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
+    qproperty-backgroundColor: #2d3139;
+
+    qproperty-titleColor: #e4e5e8;
+    qproperty-subtitleColor: #caccd1;
+
+    qproperty-hoverTitleColor: #f4f5f8;
+    qproperty-hoverSubtitleColor: white;
+
+    qproperty-highlightedTitleColor: #f4f4f5;
+    qproperty-highlightedSubtitleColor: #e4e5e8;
+
+    qproperty-btnColor: #414A59;
+    qproperty-btnTextColor: white;
+
+    qproperty-timestampColor: #727274;
+    qproperty-highlightedTimestampColor: #e7e7e9;
+    qproperty-hoverTimestampColor: #f4f5f8;
+
+    qproperty-avatarBgColor: #202228;
+    qproperty-avatarFgColor: white;
+
+    qproperty-bubbleFgColor: white;
+    qproperty-bubbleBgColor: #4d84c7;
+}
+
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #4d84c7;
     qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
