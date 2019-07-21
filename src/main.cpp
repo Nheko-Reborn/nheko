@@ -118,12 +118,12 @@ main(int argc, char *argv[])
         }
 #endif
 
-        QApplication app(argc, argv);
         QCoreApplication::setApplicationName("nheko");
         QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QApplication app(argc, argv);
 
         QCommandLineParser parser;
         parser.addHelpOption();
