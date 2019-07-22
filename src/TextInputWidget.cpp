@@ -306,8 +306,9 @@ FilteredTextEdit::insertFromMimeData(const QMimeData *source)
         const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
         const auto video   = formats.filter("video/", Qt::CaseInsensitive);
 
-        if (!image.empty()) {
-                showPreview(source, image);
+        if (source->hasImage()) {
+                QImage img = qvariant_cast<QImage>(source->imageData());
+                previewDialog_.setPreview(img, image.front());
         } else if (!audio.empty()) {
                 showPreview(source, audio);
         } else if (!video.empty()) {
