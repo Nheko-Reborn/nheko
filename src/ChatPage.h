@@ -24,6 +24,7 @@
 #include <QHBoxLayout>
 #include <QMap>
 #include <QPixmap>
+#include <QPoint>
 #include <QTimer>
 #include <QWidget>
 
@@ -88,7 +89,7 @@ signals:
         void messageReply(const RelatedInfo &related);
 
         void notificationsRetrieved(const mtx::responses::Notifications &);
-        void highlightedNotifsRetrieved(const mtx::responses::Notifications &);
+        void highlightedNotifsRetrieved(const mtx::responses::Notifications &, const QPoint widgetPos);
 
         void uploadFailed(const QString &msg);
         void imageUploaded(const QString &roomid,
@@ -206,7 +207,7 @@ private:
         //! Send desktop notification for the received messages.
         void sendDesktopNotifications(const mtx::responses::Notifications &);
 
-        void showNotificationsDialog(const mtx::responses::Notifications &);
+        void showNotificationsDialog(const mtx::responses::Notifications &, const QPoint &point);
 
         QStringList generateTypingUsers(const QString &room_id,
                                         const std::vector<std::string> &typing_users);

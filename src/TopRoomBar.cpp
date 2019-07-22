@@ -80,10 +80,20 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         settingsBtn_->setFixedSize(buttonSize_, buttonSize_);
         settingsBtn_->setCornerRadius(buttonSize_ / 2);
 
+        mentionsBtn_ = new FlatButton(this);
+        mentionsBtn_->setToolTip(tr("Mentions"));
+        mentionsBtn_->setFixedSize(buttonSize_, buttonSize_);
+        mentionsBtn_->setCornerRadius(buttonSize_ / 2);
+
         QIcon settings_icon;
         settings_icon.addFile(":/icons/icons/ui/vertical-ellipsis.png");
         settingsBtn_->setIcon(settings_icon);
         settingsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
+
+        QIcon mentions_icon;
+        mentions_icon.addFile(":/icons/icons/ui/at-solid.svg");
+        mentionsBtn_->setIcon(mentions_icon);
+        mentionsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
 
         backBtn_ = new FlatButton(this);
         backBtn_->setFixedSize(buttonSize_, buttonSize_);
@@ -100,6 +110,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(backBtn_);
         topLayout_->addLayout(textLayout_, 1);
+        topLayout_->addWidget(mentionsBtn_, 0, Qt::AlignRight);
         topLayout_->addWidget(settingsBtn_, 0, Qt::AlignRight);
 
         menu_ = new Menu(this);
@@ -134,6 +145,11 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                 auto pos = mapToGlobal(settingsBtn_->pos());
                 menu_->popup(
                   QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(), pos.y() + buttonSize_));
+        });
+
+        connect(mentionsBtn_, &QPushButton::clicked, this, [this]() {
+                auto pos = mapToGlobal(mentionsBtn_->pos());
+                emit mentionsClicked(pos);
         });
 }
 

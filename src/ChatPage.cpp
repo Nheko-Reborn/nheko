@@ -91,12 +91,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
         user_info_widget_     = new UserInfoWidget(sideBar_);
-        user_mentions_widget_ = new UserMentionsWidget(sideBar_);
+        //user_mentions_widget_ = new UserMentionsWidget(sideBar_);
         room_list_            = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);
-        sideBarLayout_->addWidget(user_mentions_widget_);
+        //sideBarLayout_->addWidget(user_mentions_widget_);
         sideBarLayout_->addWidget(room_list_);
         sideBarLayout_->addWidget(sidebarActions_);
 
@@ -154,12 +154,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 trySync();
         });
 
-        connect(user_mentions_widget_, &UserMentionsWidget::clicked, this, [this]() {
+        connect(top_bar_, &TopRoomBar::mentionsClicked, this, [this](const QPoint &mentionsPos) {
                 http::client()->notifications(
                   1000,
                   "",
                   "highlight",
-                  [this](const mtx::responses::Notifications &res, mtx::http::RequestErr err) {
+                  [this, mentionsPos](const mtx::responses::Notifications &res, mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("failed to retrieve notifications: {} ({})",
                                                      err->matrix_error.error,
@@ -167,7 +167,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   return;
                           }
 
-                          emit highlightedNotifsRetrieved(std::move(res));
+                          emit highlightedNotifsRetrieved(std::move(res), mentionsPos);
                   });
         });
 
@@ -217,6 +217,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         });
                 }
         });
+
+
 
         connect(room_list_, &RoomList::roomChanged, this, [this](const QString &roomid) {
                 QStringList users;
@@ -986,7 +988,7 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 }
 
 void
-ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res)
+ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res, const QPoint &widgetPos)
 {
         // TODO: This should NOT BE A DIALOG.  Make the TimelineView support
         // creating a timeline view from notifications (similarly to how it can show history views)
@@ -1005,8 +1007,10 @@ ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res)
                         nhlog::db()->warn("error while sending desktop notification: {}", e.what());
                 }
         }
-        notifDialog->setFixedWidth(width());
-        notifDialog->setFixedHeight(height());
+        notifDialog->setGeometry(widgetPos.x() - (width() / 10), widgetPos.y() + 25, width() / 5, height() / 2); 
+        //notifDialog->move(widgetPos.x(), widgetPos.y());
+        //notifDialog->setFixedWidth(width() / 10);
+        //notifDialog->setFixedHeight(height() / 2);
         notifDialog->raise();
         notifDialog->show();
 }

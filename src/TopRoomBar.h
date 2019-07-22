@@ -24,6 +24,7 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPen>
+#include <QPoint>
 #include <QStyle>
 #include <QStyleOption>
 #include <QVBoxLayout>
@@ -63,6 +64,7 @@ public slots:
 signals:
         void inviteUsers(QStringList users);
         void showRoomList();
+        void mentionsClicked(const QPoint &pos);
 
 protected:
         void mousePressEvent(QMouseEvent *) override
@@ -93,6 +95,7 @@ private:
         QAction *inviteUsers_  = nullptr;
 
         FlatButton *settingsBtn_;
+        FlatButton *mentionsBtn_;
         FlatButton *backBtn_;
 
         Avatar *avatar_;

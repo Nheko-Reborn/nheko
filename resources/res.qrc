@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/icons">
+        <file>icons/ui/at-solid.svg</file>
         <file>icons/ui/volume-off-indicator.png</file>
         <file>icons/ui/volume-off-indicator@2x.png</file>
         <file>icons/ui/black-bubble-speech.png</file>
