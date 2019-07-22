@@ -34,10 +34,6 @@
 #include "popups/ReplyPopup.h"
 #include "popups/SuggestionsPopup.h"
 
-namespace dialogs {
-class PreviewUploadOverlay;
-}
-
 struct SearchResult;
 
 class FlatButton;
