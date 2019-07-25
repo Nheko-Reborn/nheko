@@ -85,10 +85,10 @@ QListWidget {
     background-color: palette(window);
 }
 
-RoomInfoListItem {
+RoomInfoListItem, UserMentionsWidget {
     qproperty-mentionedColor: palette(alternate-base);
     qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(base);
+    qproperty-hoverBackgroundColor: palette(light);
     qproperty-backgroundColor: palette(window);
 
     qproperty-titleColor: palette(text);
@@ -116,7 +116,7 @@ RoomInfoListItem {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(base);
+    qproperty-hoverBackgroundColor: palette(light);
     qproperty-backgroundColor: palette(window);
 
     qproperty-avatarBgColor: palette(base);
@@ -129,6 +129,22 @@ LoadingIndicator {
 
 #ChatPageLoadSpinner {
     qproperty-color: palette(light);
+}
+
+emoji--Panel,
+emoji--Panel > * {
+    background-color: palette(base);
+    color: palette(text);
+}
+
+emoji--Category {
+    qproperty-hoverBackgroundColor: palette(highlight);
+}
+
+emoji--Category,
+emoji--Category > * {
+    background-color: palette(window);
+    color: palette(text);
 }
 
 FloatingButton {

@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QColor>
 #include <QLabel>
 #include <QLayout>
 #include <QListView>
@@ -29,9 +30,13 @@ namespace emoji {
 class Category : public QWidget
 {
         Q_OBJECT
+        Q_PROPERTY(
+          QColor hoverBackgroundColor READ hoverBackgroundColor WRITE setHoverBackgroundColor)
 
 public:
         Category(QString category, std::vector<Emoji> emoji, QWidget *parent = nullptr);
+        QColor hoverBackgroundColor() const { return hoverBackgroundColor_; }
+        void setHoverBackgroundColor(QColor color) { hoverBackgroundColor_ = color; }
 
 signals:
         void emojiSelected(const QString &emoji);
@@ -55,5 +60,7 @@ private:
         emoji::ItemDelegate *delegate_;
 
         QLabel *category_;
+
+        QColor hoverBackgroundColor_;
 };
 } // namespace emoji

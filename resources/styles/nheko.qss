@@ -200,6 +200,10 @@ emoji--Panel > * {
     color: #333;
 }
 
+emoji--Category {
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
+}
+
 emoji--Category,
 emoji--Category > * {
     background-color: white;

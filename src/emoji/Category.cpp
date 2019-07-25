@@ -43,15 +43,18 @@ Category::Category(QString category, std::vector<Emoji> emoji, QWidget *parent)
         emojiListView_->setViewMode(QListView::IconMode);
         emojiListView_->setFlow(QListView::LeftToRight);
         emojiListView_->setResizeMode(QListView::Adjust);
+        emojiListView_->setMouseTracking(true);
         emojiListView_->verticalScrollBar()->setEnabled(false);
         emojiListView_->horizontalScrollBar()->setEnabled(false);
 
         const int cols = 7;
-        const int rows = emoji.size() / 7;
+        const int rows = emoji.size() / 7 + 1;
 
+        const int emojiSize = 48;
+        const int gridSize  = emojiSize + 4;
         // TODO: Be precise here. Take the parent into consideration.
-        emojiListView_->setFixedSize(cols * 50 + 20, rows * 50 + 20);
-        emojiListView_->setGridSize(QSize(50, 50));
+        emojiListView_->setFixedSize(cols * gridSize + 20, rows * gridSize);
+        emojiListView_->setGridSize(QSize(gridSize, gridSize));
         emojiListView_->setDragEnabled(false);
         emojiListView_->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -59,7 +62,7 @@ Category::Category(QString category, std::vector<Emoji> emoji, QWidget *parent)
                 data_->unicode = e.unicode;
 
                 auto item = new QStandardItem;
-                item->setSizeHint(QSize(24, 24));
+                item->setSizeHint(QSize(emojiSize, emojiSize));
 
                 QVariant unicode(data_->unicode);
                 item->setData(unicode.toString(), Qt::UserRole);

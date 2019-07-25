@@ -232,6 +232,10 @@ emoji--Panel > * {
     color: #caccd1;
 }
 
+emoji--Category {
+    qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
+}
+
 emoji--Category,
 emoji--Category > * {
     background-color: #2d3139;

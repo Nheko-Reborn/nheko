@@ -37,12 +37,22 @@ ItemDelegate::paint(QPainter *painter,
 {
         Q_UNUSED(index);
 
+        painter->save();
+
         QStyleOptionViewItem viewOption(option);
 
         auto emoji = index.data(Qt::UserRole).toString();
 
-        // QFont font("Emoji One");
         QFont font;
+        font.setFamily("emoji");
+        font.setPixelSize(48);
         painter->setFont(font);
+        if (option.state & QStyle::State_MouseOver) {
+                painter->setBackgroundMode(Qt::OpaqueMode);
+                QColor hoverColor = parent()->property("hoverBackgroundColor").value<QColor>();
+                painter->setBackground(hoverColor);
+        }
         painter->drawText(viewOption.rect, Qt::AlignCenter, emoji);
+
+        painter->restore();
 }
