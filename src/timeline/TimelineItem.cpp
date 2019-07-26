@@ -727,7 +727,7 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
 
         userName_ = new QLabel(this);
         userName_->setFont(usernameFont);
-        userName_->setText(fm.elidedText(sender, Qt::ElideRight, 500));
+        userName_->setText(replaceEmoji(fm.elidedText(sender, Qt::ElideRight, 500)));
         userName_->setToolTip(user_id);
         userName_->setToolTipDuration(1500);
         userName_->setAttribute(Qt::WA_Hover);
@@ -780,11 +780,15 @@ TimelineItem::replaceEmoji(const QString &body)
 
         QVector<uint> utf32_string = body.toUcs4();
 
+        QSettings settings;
+        QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
+
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
                 if (code > 9000)
-                        fmtBody += QString("<span style=\"font-family:  emoji;\">") +
-                                   QString::fromUcs4(&code, 1) + "</span>";
+                        fmtBody +=
+                          QString("<span style=\"font-family: " + userFontFamily + ";\">") +
+                          QString::fromUcs4(&code, 1) + "</span>";
                 else
                         fmtBody += QString::fromUcs4(&code, 1);
         }

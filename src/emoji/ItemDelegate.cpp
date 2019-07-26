@@ -17,6 +17,7 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QSettings>
 
 #include "emoji/ItemDelegate.h"
 
@@ -43,9 +44,17 @@ ItemDelegate::paint(QPainter *painter,
 
         auto emoji = index.data(Qt::UserRole).toString();
 
+        QSettings settings;
+
         QFont font;
-        font.setFamily("emoji");
-        font.setPixelSize(48);
+        QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
+        if (!userFontFamily.isEmpty()) {
+                font.setFamily(userFontFamily);
+        } else {
+                font.setFamily("emoji");
+        }
+
+        font.setPixelSize(36);
         painter->setFont(font);
         if (option.state & QStyle::State_MouseOver) {
                 painter->setBackgroundMode(Qt::OpaqueMode);

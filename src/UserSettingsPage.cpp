@@ -51,6 +51,7 @@ UserSettings::load()
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", "light").toString();
         font_                         = settings.value("user/font_family", "default").toString();
+        emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
         applyTheme();
@@ -67,6 +68,13 @@ void
 UserSettings::setFontFamily(QString family)
 {
         font_ = family;
+        save();
+}
+
+void
+UserSettings::setEmojiFontFamily(QString family)
+{
+        emojiFont_ = family;
         save();
 }
 
@@ -115,6 +123,8 @@ UserSettings::save()
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("theme", theme());
         settings.setValue("font_family", font_);
+        settings.setValue("emoji_font_family", emojiFont_);
+
         settings.endGroup();
 }
 
@@ -230,21 +240,40 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         fontSizeOptionLayout->addWidget(fontSizeCombo_, 0, Qt::AlignRight);
 
         auto fontFamilyOptionLayout = new QHBoxLayout;
+        auto emojiFontFamilyOptionLayout = new QHBoxLayout;
         fontFamilyOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto fontFamilyLabel = new QLabel(tr("Font Family"), this);
+        emojiFontFamilyOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto fontFamilyLabel  = new QLabel(tr("Font Family"), this);
+        auto emojiFamilyLabel = new QLabel(tr("Emoji Font Famly"), this);
         fontFamilyLabel->setFont(font);
-        fontSelectionCombo_ = new QComboBox(this);
+        emojiFamilyLabel->setFont(font);
+        fontSelectionCombo_      = new QComboBox(this);
+        emojiFontSelectionCombo_ = new QComboBox(this);
         QFontDatabase fontDb;
         auto fontFamilies = fontDb.families();
+        // TODO: Is there a way to limit to just emojis, rather than
+        // all emoji fonts?
+        auto emojiFamilies = fontDb.families(QFontDatabase::Symbol);
+
         for (const auto &family : fontFamilies) {
                 fontSelectionCombo_->addItem(family);
+        }
+
+        for (const auto &family : emojiFamilies) {
+                emojiFontSelectionCombo_->addItem(family);
         }
 
         int fontIndex = fontSelectionCombo_->findText(settings_->font());
         fontSelectionCombo_->setCurrentIndex(fontIndex);
 
+        fontIndex = emojiFontSelectionCombo_->findText(settings_->emojiFont());
+        emojiFontSelectionCombo_->setCurrentIndex(fontIndex);
+
         fontFamilyOptionLayout->addWidget(fontFamilyLabel);
         fontFamilyOptionLayout->addWidget(fontSelectionCombo_, 0, Qt::AlignRight);
+
+        emojiFontFamilyOptionLayout->addWidget(emojiFamilyLabel);
+        emojiFontFamilyOptionLayout->addWidget(emojiFontSelectionCombo_, 0, Qt::AlignRight);
 
         auto themeOptionLayout_ = new QHBoxLayout;
         themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -346,11 +375,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 #if defined(Q_OS_MAC)
         scaleFactorLabel->hide();
         scaleFactorCombo_->hide();
+        emojiFamilyLabel->hide();
+        emojiFontSelectionCombo_->hide();
 #endif
 
         mainLayout_->addLayout(scaleFactorOptionLayout);
         mainLayout_->addLayout(fontSizeOptionLayout);
         mainLayout_->addLayout(fontFamilyOptionLayout);
+        mainLayout_->addLayout(emojiFontFamilyOptionLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(themeOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
@@ -393,6 +425,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(fontSelectionCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [this](const QString &family) { settings_->setFontFamily(family.trimmed()); });
+        connect(emojiFontSelectionCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
         connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTray(!isDisabled);
                 if (isDisabled) {

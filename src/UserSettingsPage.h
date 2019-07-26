@@ -56,6 +56,7 @@ public:
 
         void setFontSize(double size);
         void setFontFamily(QString family);
+        void setEmojiFontFamily(QString family);
 
         void setGroupView(bool state)
         {
@@ -93,6 +94,8 @@ public:
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         double fontSize() const { return baseFontSize_; }
         QString font() const { return font_; }
+        QString emojiFont() const { return emojiFont_; }
+
 
 signals:
         void groupViewStateChanged(bool state);
@@ -107,6 +110,8 @@ private:
         bool hasDesktopNotifications_;
         double baseFontSize_;
         QString font_;
+        QString emojiFont_;
+
 };
 
 class HorizontalLine : public QFrame
@@ -160,6 +165,7 @@ private:
         QComboBox *scaleFactorCombo_;
         QComboBox *fontSizeCombo_;
         QComboBox *fontSelectionCombo_;
+        QComboBox *emojiFontSelectionCombo_;
 
         int sideMargin_ = 0;
 };
