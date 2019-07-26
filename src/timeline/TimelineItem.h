@@ -276,7 +276,6 @@ private:
 
         QFutureWatcher<QString> *colorGenerating_;
 
-        QString replaceEmoji(const QString &body);
         QString event_id_;
         mtx::events::MessageType message_type_;
         QString room_id_;

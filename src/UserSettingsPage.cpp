@@ -239,7 +239,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         fontSizeOptionLayout->addWidget(fontSizeLabel);
         fontSizeOptionLayout->addWidget(fontSizeCombo_, 0, Qt::AlignRight);
 
-        auto fontFamilyOptionLayout = new QHBoxLayout;
+        auto fontFamilyOptionLayout      = new QHBoxLayout;
         auto emojiFontFamilyOptionLayout = new QHBoxLayout;
         fontFamilyOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
         emojiFontFamilyOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);

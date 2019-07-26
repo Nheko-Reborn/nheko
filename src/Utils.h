@@ -35,6 +35,9 @@ namespace utils {
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
 QString
+replaceEmoji(const QString &body);
+
+QString
 localUser();
 
 float

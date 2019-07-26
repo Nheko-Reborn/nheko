@@ -89,7 +89,8 @@ signals:
         void messageReply(const RelatedInfo &related);
 
         void notificationsRetrieved(const mtx::responses::Notifications &);
-        void highlightedNotifsRetrieved(const mtx::responses::Notifications &, const QPoint widgetPos);
+        void highlightedNotifsRetrieved(const mtx::responses::Notifications &,
+                                        const QPoint widgetPos);
 
         void uploadFailed(const QString &msg);
         void imageUploaded(const QString &roomid,

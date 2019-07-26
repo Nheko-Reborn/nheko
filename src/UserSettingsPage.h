@@ -96,7 +96,6 @@ public:
         QString font() const { return font_; }
         QString emojiFont() const { return emojiFont_; }
 
-
 signals:
         void groupViewStateChanged(bool state);
 
@@ -111,7 +110,6 @@ private:
         double baseFontSize_;
         QString font_;
         QString emojiFont_;
-
 };
 
 class HorizontalLine : public QFrame

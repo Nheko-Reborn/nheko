@@ -26,6 +26,29 @@ utils::localUser()
         return settings.value("auth/user_id").toString();
 }
 
+QString
+utils::replaceEmoji(const QString &body)
+{
+        QString fmtBody = "";
+
+        QVector<uint> utf32_string = body.toUcs4();
+
+        QSettings settings;
+        QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
+
+        for (auto &code : utf32_string) {
+                // TODO: Be more precise here.
+                if (code > 9000)
+                        fmtBody +=
+                          QString("<span style=\"font-family: " + userFontFamily + ";\">") +
+                          QString::fromUcs4(&code, 1) + "</span>";
+                else
+                        fmtBody += QString::fromUcs4(&code, 1);
+        }
+
+        return fmtBody;
+}
+
 void
 utils::setScaleFactor(float factor)
 {

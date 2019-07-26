@@ -650,7 +650,7 @@ TimelineItem::markReceived(bool isEncrypted)
 void
 TimelineItem::generateBody(const QString &body)
 {
-        body_ = new TextLabel(replaceEmoji(body), this);
+        body_ = new TextLabel(utils::replaceEmoji(body), this);
         body_->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
 
         connect(body_, &TextLabel::userProfileTriggered, this, [](const QString &user_id) {
@@ -727,7 +727,7 @@ TimelineItem::generateUserName(const QString &user_id, const QString &displaynam
 
         userName_ = new QLabel(this);
         userName_->setFont(usernameFont);
-        userName_->setText(replaceEmoji(fm.elidedText(sender, Qt::ElideRight, 500)));
+        userName_->setText(utils::replaceEmoji(fm.elidedText(sender, Qt::ElideRight, 500)));
         userName_->setToolTip(user_id);
         userName_->setToolTipDuration(1500);
         userName_->setAttribute(Qt::WA_Hover);
@@ -771,29 +771,6 @@ TimelineItem::generateTimestamp(const QDateTime &time)
         timestamp_->setFont(timestampFont_);
         timestamp_->setText(
           QString("<span style=\"color: #999\"> %1 </span>").arg(time.toString("HH:mm")));
-}
-
-QString
-TimelineItem::replaceEmoji(const QString &body)
-{
-        QString fmtBody = "";
-
-        QVector<uint> utf32_string = body.toUcs4();
-
-        QSettings settings;
-        QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
-
-        for (auto &code : utf32_string) {
-                // TODO: Be more precise here.
-                if (code > 9000)
-                        fmtBody +=
-                          QString("<span style=\"font-family: " + userFontFamily + ";\">") +
-                          QString::fromUcs4(&code, 1) + "</span>";
-                else
-                        fmtBody += QString::fromUcs4(&code, 1);
-        }
-
-        return fmtBody;
 }
 
 void
