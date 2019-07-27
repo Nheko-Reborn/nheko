@@ -14,22 +14,22 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+309"/>
         <source>Failed to upload image. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hochladen der Bilddatei fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Failed to upload file. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hochladen der Datei fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Failed to upload audio. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hochladen der Audiodatei fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Failed to upload video. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hochladen der Videodatei fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
         <location line="+376"/>
@@ -39,7 +39,7 @@
     <message>
         <location line="+5"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nachrichten konnten nicht aus dem Cache geladen werden. Bitte melde dich erneut an.</translation>
     </message>
     <message>
         <location line="+169"/>
@@ -50,17 +50,17 @@
         <location line="+51"/>
         <location line="+153"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitte melde dich erneut an: %1</translation>
     </message>
     <message>
         <location line="-45"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Raum konnte nicht erstellt werden: %1</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte den Raum nicht verlassen: %1</translation>
     </message>
 </context>
 <context>
