@@ -6,7 +6,7 @@
     <message>
         <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+117"/>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Save File</translation>
     </message>
 </context>
 <context>
@@ -14,27 +14,27 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+309"/>
         <source>Failed to upload image. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to upload image. Please try again.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Failed to upload file. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to upload file. Please try again.</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Failed to upload audio. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to upload audio. Please try again.</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Failed to upload video. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to upload video. Please try again.</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to restart OLM account. Please login again.</translation>
     </message>
     <message>
         <location line="+5"/>
