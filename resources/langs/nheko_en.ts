@@ -34,7 +34,7 @@
     <message>
         <location line="+376"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation>Failed to restart OLM account. Please login again.</translation>
+        <translation>Failed to restore OLM account. Please login again.</translation>
     </message>
     <message>
         <location line="+5"/>
