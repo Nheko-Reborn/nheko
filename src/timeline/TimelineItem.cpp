@@ -282,6 +282,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(ty)
   , room_id_{room_id}
 {
         init();
@@ -341,6 +342,7 @@ TimelineItem::TimelineItem(ImageItem *image,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget{parent}
+  , message_type_(mtx::events::MessageType::Image)
   , room_id_{room_id}
 {
         init();
@@ -356,6 +358,7 @@ TimelineItem::TimelineItem(FileItem *file,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget{parent}
+  , message_type_(mtx::events::MessageType::File)
   , room_id_{room_id}
 {
         init();
@@ -369,6 +372,7 @@ TimelineItem::TimelineItem(AudioItem *audio,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget{parent}
+  , message_type_(mtx::events::MessageType::Audio)
   , room_id_{room_id}
 {
         init();
@@ -382,6 +386,7 @@ TimelineItem::TimelineItem(VideoItem *video,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget{parent}
+  , message_type_(mtx::events::MessageType::Video)
   , room_id_{room_id}
 {
         init();
@@ -395,6 +400,7 @@ TimelineItem::TimelineItem(ImageItem *image,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(mtx::events::MessageType::Image)
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Image>, ImageItem>(
@@ -426,6 +432,7 @@ TimelineItem::TimelineItem(FileItem *file,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(mtx::events::MessageType::File)
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::File>, FileItem>(
@@ -440,6 +447,7 @@ TimelineItem::TimelineItem(AudioItem *audio,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(mtx::events::MessageType::Audio)
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Audio>, AudioItem>(
@@ -454,6 +462,7 @@ TimelineItem::TimelineItem(VideoItem *video,
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(mtx::events::MessageType::Video)
   , room_id_{room_id}
 {
         setupWidgetLayout<mtx::events::RoomEvent<mtx::events::msg::Video>, VideoItem>(
@@ -470,6 +479,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(mtx::events::MessageType::Notice)
   , room_id_{room_id}
 {
         init();
@@ -517,6 +527,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(mtx::events::MessageType::Emote)
   , room_id_{room_id}
 {
         init();
@@ -565,6 +576,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
                            const QString &room_id,
                            QWidget *parent)
   : QWidget(parent)
+  , message_type_(mtx::events::MessageType::Text)
   , room_id_{room_id}
 {
         init();

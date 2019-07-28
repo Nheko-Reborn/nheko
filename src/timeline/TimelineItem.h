@@ -277,7 +277,7 @@ private:
         QFutureWatcher<QString> *colorGenerating_;
 
         QString event_id_;
-        mtx::events::MessageType message_type_;
+        mtx::events::MessageType message_type_     = mtx::events::MessageType::Unknown;
         QString room_id_;
 
         DescInfo descriptionMsg_;
