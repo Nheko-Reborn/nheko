@@ -207,7 +207,7 @@
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -419,31 +419,31 @@
         <location line="+65"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Encrypted Event (No keys found for decryption) --</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Decryption Error (failed to communicate with DB) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Decryption Error (failed to retrieve megolm keys from db) --</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Decryption Error (%1) --</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Encrypted Event (Unknown event type) --</translation>
     </message>
 </context>
 <context>
@@ -456,7 +456,7 @@
     <message>
         <location line="+5"/>
         <source>Mentions</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentions</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -562,7 +562,7 @@
     <message>
         <location line="+1"/>
         <source>Emoji Font Famly</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji Font Family</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -679,7 +679,7 @@
     <message>
         <location filename="../../src/Utils.cpp" line="+104"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Yesterday</translation>
     </message>
 </context>
 <context>
@@ -840,12 +840,12 @@ Media size: %2
     <message>
         <location line="-44"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Today %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Yesterday %1</translation>
     </message>
 </context>
 <context>
@@ -1053,27 +1053,27 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.cpp" line="+46"/>
         <source>You</source>
-        <translation type="unfinished"></translation>
+        <translation>You</translation>
     </message>
     <message>
         <location line="+219"/>
         <source>sent a file.</source>
-        <translation type="unfinished"></translation>
+        <translation>sent a file.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>sent an image.</source>
-        <translation type="unfinished"></translation>
+        <translation>sent an image.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>sent an audio file.</source>
-        <translation type="unfinished"></translation>
+        <translation>sent an audio file.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>sent a video.</translation>
     </message>
 </context>
 </TS>
