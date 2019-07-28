@@ -11,6 +11,11 @@ nheko
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
 
+### Translations ###
+[![Translation status](http://weblate.nheko.im/widgets/nheko/-/nheko-master/svg-badge.svg)](http://weblate.nheko.im/engage/nheko/?utm_source=widget)
+
+Help us with translations so as many people as possible will be able to use nheko!
+
 ### Note regarding End-to-End encryption
 
 Currently the implementation is at best a **proof of concept** and it should only be used for
