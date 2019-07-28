@@ -96,28 +96,28 @@ messageDescription(const QString &username = "",
 
         // Sometimes the verb form of sent changes in some languages depending on the actor.
         auto remoteSent =
-          QCoreApplication::translate("utils", "sent", "For when you are the sender");
+          QCoreApplication::translate("message-description: ", "sent", "For when you are the sender");
         auto localSent =
-          QCoreApplication::translate("utils", "sent", "For when someone else is the sender");
+          QCoreApplication::translate("message-description:", "sent", "For when someone else is the sender");
         QString sentVerb = isLocal ? localSent : remoteSent;
         if (std::is_same<T, AudioItem>::value || std::is_same<T, Audio>::value) {
-                return QCoreApplication::translate("utils", "%1 an audio clip").arg(sentVerb);
+                return QCoreApplication::translate("message-description sent:", "%1 an audio clip").arg(sentVerb);
         } else if (std::is_same<T, ImageItem>::value || std::is_same<T, Image>::value) {
-                return QCoreApplication::translate("utils", "%1 an image").arg(sentVerb);
+                return QCoreApplication::translate("message-description sent:", "%1 an image").arg(sentVerb);
         } else if (std::is_same<T, FileItem>::value || std::is_same<T, File>::value) {
-                return QCoreApplication::translate("utils", "%1 a file").arg(sentVerb);
+                return QCoreApplication::translate("message-description sent:", "%1 a file").arg(sentVerb);
         } else if (std::is_same<T, VideoItem>::value || std::is_same<T, Video>::value) {
-                return QCoreApplication::translate("utils", "%1 a video clip").arg(sentVerb);
+                return QCoreApplication::translate("message-description sent:", "%1 a video clip").arg(sentVerb);
         } else if (std::is_same<T, StickerItem>::value || std::is_same<T, Sticker>::value) {
-                return QCoreApplication::translate("utils", "%1 a sticker").arg(sentVerb);
+                return QCoreApplication::translate("message-description sent:", "%1 a sticker").arg(sentVerb);
         } else if (std::is_same<T, Notice>::value) {
-                return QCoreApplication::translate("utils", "%1 a notification").arg(sentVerb);
+                return QCoreApplication::translate("message-description sent:", "%1 a notification").arg(sentVerb);
         } else if (std::is_same<T, Text>::value) {
                 return QString(": %1").arg(body);
         } else if (std::is_same<T, Emote>::value) {
                 return QString("* %1 %2").arg(username).arg(body);
         } else if (std::is_same<T, Encrypted>::value) {
-                return QCoreApplication::translate("utils", "%1 an encrypted message")
+                return QCoreApplication::translate("message-description sent:", "%1 an encrypted message")
                   .arg(sentVerb);
         } else {
                 return QCoreApplication::translate("utils", "Unknown Message Type");

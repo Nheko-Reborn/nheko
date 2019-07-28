@@ -1051,10 +1051,66 @@ Media size: %2
     </message>
 </context>
 <context>
+    <name>message-description sent:</name>
+    <message>
+        <location filename="../../src/Utils.h" line="+104"/>
+        <source>%1 an audio clip</source>
+        <translation type="unfinished">%1 an audio clip</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 an image</source>
+        <translation type="unfinished">%1 an image</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a file</source>
+        <translation type="unfinished">%1 a file</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a video clip</source>
+        <translation type="unfinished">%1 a video clip</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a sticker</source>
+        <translation type="unfinished">%1 a sticker</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a notification</source>
+        <translation type="unfinished">%1 a notification</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 an encrypted message</source>
+        <translation type="unfinished">%1 an encrypted message</translation>
+    </message>
+</context>
+<context>
+    <name>message-description:</name>
+    <message>
+        <location line="-19"/>
+        <source>sent</source>
+        <comment>For when someone else is the sender</comment>
+        <translation type="unfinished">sent</translation>
+    </message>
+</context>
+<context>
+    <name>message-description: </name>
+    <message>
+        <location line="-2"/>
+        <source>sent</source>
+        <comment>For when you are the sender</comment>
+        <translation type="unfinished">sent</translation>
+    </message>
+</context>
+<context>
     <name>utils</name>
     <message>
         <location filename="../../src/Utils.cpp" line="+46"/>
-        <location filename="../../src/Utils.h" line="+141"/>
+        <location filename="../../src/Utils.h" line="+47"/>
         <source>You</source>
         <translation>You</translation>
     </message>
@@ -1079,54 +1135,7 @@ Media size: %2
         <translation>sent a video.</translation>
     </message>
     <message>
-        <location filename="../../src/Utils.h" line="-45"/>
-        <source>sent</source>
-        <comment>For when you are the sender</comment>
-        <translation>sent</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>sent</source>
-        <comment>For when someone else is the sender</comment>
-        <translation>sent</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>%1 an audio clip</source>
-        <translation>%1 an audio clip</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>%1 an image</source>
-        <translation>%1 an image</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>%1 a file</source>
-        <translation>%1 a file</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>%1 a video clip</source>
-        <translation>%1 a video clip</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>%1 a sticker</source>
-        <translation>%1 a sticker</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>%1 a notification</source>
-        <translation>%1 a notification</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>%1 an encrypted message</source>
-        <translation>%1 an encrypted message</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location filename="../../src/Utils.h" line="-23"/>
         <source>Unknown Message Type</source>
         <translation>Unknown Message Type</translation>
     </message>

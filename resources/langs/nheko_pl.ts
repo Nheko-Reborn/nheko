@@ -1053,47 +1053,9 @@ Rozmiar multimediów: %2
     </message>
 </context>
 <context>
-    <name>utils</name>
+    <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+46"/>
-        <location filename="../../src/Utils.h" line="+141"/>
-        <source>You</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+219"/>
-        <source>sent a file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>sent an image.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>sent an audio file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>sent a video</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/Utils.h" line="-45"/>
-        <source>sent</source>
-        <comment>For when you are the sender</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>sent</source>
-        <comment>For when someone else is the sender</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location filename="../../src/Utils.h" line="+104"/>
         <source>%1 an audio clip</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1127,8 +1089,55 @@ Rozmiar multimediów: %2
         <source>%1 an encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>message-description:</name>
+    <message>
+        <location line="-19"/>
+        <source>sent</source>
+        <comment>For when someone else is the sender</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>message-description: </name>
+    <message>
+        <location line="-2"/>
+        <source>sent</source>
+        <comment>For when you are the sender</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>utils</name>
+    <message>
+        <location filename="../../src/Utils.cpp" line="+46"/>
+        <location filename="../../src/Utils.h" line="+47"/>
+        <source>You</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+219"/>
+        <source>sent a file.</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location line="+3"/>
+        <source>sent an image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent an audio file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent a video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/Utils.h" line="-23"/>
         <source>Unknown Message Type</source>
         <translation type="unfinished"></translation>
     </message>
