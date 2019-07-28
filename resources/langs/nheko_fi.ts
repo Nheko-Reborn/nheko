@@ -207,7 +207,7 @@
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -419,31 +419,31 @@
         <location line="+65"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Virhe purkaessa salausta (tietokannan kanssa kommunikointi epäonnistui) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Virhe purkaessa salausta (megolm-avaimien hakeminen tietokannasta epäonnistui) --</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Virhe purkaessa salausta (%1) --</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Salattu viesti (tuntematon viestityyppi) --</translation>
     </message>
 </context>
 <context>
@@ -456,7 +456,7 @@
     <message>
         <location line="+5"/>
         <source>Mentions</source>
-        <translation type="unfinished"></translation>
+        <translation>Maininnat</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -489,7 +489,7 @@
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished">Lopeta</translation>
+        <translation>Lopeta</translation>
     </message>
 </context>
 <context>
@@ -498,9 +498,9 @@
         <location filename="../../src/TypingDisplay.cpp" line="+37"/>
         <source>%1 and %2 are typing</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 kirjoittaa</numerusform>
+            <numerusform>%1 ja %2 kirjoittavat</numerusform>
         </translation>
     </message>
 </context>
@@ -557,12 +557,12 @@
     <message>
         <location line="+13"/>
         <source>Font Family</source>
-        <translation>Fontti</translation>
+        <translation>Fonttiperhe</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Emoji Font Famly</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji-fonttiperhe</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -679,7 +679,7 @@
     <message>
         <location filename="../../src/Utils.cpp" line="+104"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Eilen</translation>
     </message>
 </context>
 <context>
@@ -840,12 +840,12 @@ Median koko: %2
     <message>
         <location line="-44"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tänään %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eilen %1</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@ Median koko: %2
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salaus on tällä hetkellä kokeellinen ja asiat saattavat mennä rikki odottamattomasti.&lt;br&gt;Huomaa, ettei sitä voi poistaa käytöstä jälkikäteen.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -935,7 +935,9 @@ Median koko: %2
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pitäisikö asiakasohjelman palauttaa salausavaimet automaattisesti pyydettäessä.
+ Käytä varoen, tämä on väliaikainen vaihtoehto salausjärjestelmän testausta varten,
+ kunnes laitteiden vahvistus on valmis.</translation>
     </message>
     <message numerus="yes">
         <location line="+53"/>
@@ -987,7 +989,7 @@ Median koko: %2
     <message>
         <location line="+9"/>
         <source>Ignore messages from this user</source>
-        <translation type="unfinished">Piilota tämän käyttäjän viestit</translation>
+        <translation>Jätä tämän käyttäjän viestit huomiotta</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1053,7 +1055,7 @@ Median koko: %2
     <message>
         <location filename="../../src/Utils.cpp" line="+46"/>
         <source>You</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinä</translation>
     </message>
     <message>
         <location line="+219"/>
