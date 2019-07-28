@@ -55,12 +55,12 @@
     <message>
         <location line="-45"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Room creation failed: %1</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to leave room: %1</translation>
     </message>
 </context>
 <context>
@@ -68,28 +68,28 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+130"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>All rooms</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Favourite rooms</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Low priority rooms</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (tag)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation> (community)</translation>
     </message>
 </context>
 <context>
@@ -97,22 +97,22 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Apply</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Topic</translation>
     </message>
 </context>
 <context>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../../src/timeline/widgets/FileItem.cpp" line="+106"/>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Save File</translation>
     </message>
 </context>
 <context>
@@ -128,7 +128,7 @@
     <message>
         <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+238"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Save image</translation>
     </message>
 </context>
 <context>
@@ -136,7 +136,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+17"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove</translation>
     </message>
 </context>
 <context>
@@ -144,57 +144,57 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+80"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>e.g @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Device name</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGIN</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autodiscovery failed. Received malformed response.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autodiscovery failed. Unknown error while requesting .well-known.</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>The required endpoints were not found. Possibly not a Matrix server.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Received malformed response. Make sure the homeserver domain is valid.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>An unknown error occured. Make sure the homeserver domain is valid.</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Empty password</translation>
     </message>
 </context>
 <context>
@@ -202,7 +202,7 @@
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+96"/>
         <source>Room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Room members</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
         <source>Search for a room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Search for a room...</translation>
     </message>
 </context>
 <context>
@@ -223,47 +223,47 @@
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+77"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Username</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Password confirmation</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Home Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Home Server</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTER</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Invalid username</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid username</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>Password is not long enough (min 8 chars)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwords don&apos;t match</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid server name</translation>
     </message>
 </context>
 <context>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Logout</translation>
     </message>
 </context>
 <context>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+2204"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>no version stored</translation>
     </message>
 </context>
 <context>
@@ -287,17 +287,17 @@
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+92"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Leave room</translation>
     </message>
     <message>
         <location line="+174"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Accept</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Decline</translation>
     </message>
 </context>
 <context>
@@ -305,27 +305,27 @@
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+38"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>User settings</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Create new room</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Join a room</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Start a new chat</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Room directory</translation>
     </message>
 </context>
 <context>
