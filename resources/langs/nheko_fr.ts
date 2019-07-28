@@ -495,15 +495,14 @@
 </context>
 <context>
     <name>TypingDisplay</name>
-    <message>
-        <location filename="../../src/TypingDisplay.cpp" line="+46"/>
-        <source> is typing</source>
-        <translation> est en train d&apos;écrire</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source> are typing</source>
-        <translation> sont en train d&apos;écrire</translation>
+    <message numerus="yes">
+        <location filename="../../src/TypingDisplay.cpp" line="+37"/>
+        <source>%1 and %2 are typing</source>
+        <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

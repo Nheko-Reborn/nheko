@@ -33,6 +33,14 @@ TypingDisplay::setUsers(const QStringList &uid)
 
         text_.clear();
 
+        QString temp = text_ +=
+          tr("%1 and %2 are typing",
+             "Multiple users are typing. First argument is a comma separated list of potentially "
+             "multiple users. Second argument is the last user of that list. (If only one user is "
+             "typing, %1 is empty. You should still use it in your string though to silence Qt "
+             "warnings.)",
+             uid.size());
+
         if (uid.isEmpty()) {
                 hide();
                 update();
@@ -40,12 +48,9 @@ TypingDisplay::setUsers(const QStringList &uid)
                 return;
         }
 
-        text_ = uid.join(", ");
-
-        if (uid.size() == 1)
-                text_ += tr(" is typing");
-        else if (uid.size() > 1)
-                text_ += tr(" are typing");
+        QStringList uidWithoutLast = uid;
+        uidWithoutLast.pop_back();
+        text_ = temp.arg(uidWithoutLast.join(", ")).arg(uid.back());
 
         show();
         update();
