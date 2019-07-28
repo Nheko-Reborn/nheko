@@ -14,7 +14,7 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+331"/>
         <source>Failed to upload image. Please try again.</source>
-        <translation>Hochladen der Bilddatei fehlgeschlagen. Bitte versuche es erneut.</translation>
+        <translation>Hochladen des Bildes fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
         <location line="+45"/>
