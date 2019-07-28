@@ -6,7 +6,7 @@
     <message>
         <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+117"/>
         <source>Save File</source>
-        <translation>Datei speichern</translation>
+        <translation>In Datei speichern</translation>
     </message>
 </context>
 <context>
@@ -34,7 +34,7 @@
     <message>
         <location line="+376"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellung des OLM Accounts fehlgeschlagen. Bitte logge dich erneut ein.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -44,7 +44,7 @@
     <message>
         <location line="+169"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellung des Schlüsselmaterials fehlgeschlagen. Antwort des Servers: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
     <message>
         <location line="+51"/>
@@ -68,23 +68,23 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+130"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Räume</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoriten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unwichtige Räume</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> (tag)</translation>
     </message>
     <message>
         <location line="+3"/>
