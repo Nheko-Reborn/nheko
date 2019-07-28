@@ -6,7 +6,7 @@
     <message>
         <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+117"/>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Tallenna tiedosto</translation>
     </message>
 </context>
 <context>
@@ -14,53 +14,53 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+309"/>
         <source>Failed to upload image. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvan lähettäminen epäonnistui. Ole hyvä ja yritä uudelleen.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Failed to upload file. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiedoston lähettäminen epäonnistui. Ole hyvä ja yritä uudelleen.</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Failed to upload audio. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Äänitiedoston lähettäminen epäonnistui. Ole hyvä ja yritä uudelleen.</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Failed to upload video. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Videon lähettäminen epäonnistui. Ole hyvä ja yritä uudelleen.</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>OLM-tilin palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tallennettujen tietojen palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
     <message>
         <location line="+169"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salausavainten lähetys epäonnistui. Palvelimen vastaus: %1 %2. Ole hyvä ja yritä uudelleen myöhemmin.</translation>
     </message>
     <message>
         <location line="+51"/>
         <location line="+153"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ole hyvä ja yritä kirjautua sisään uudelleen: %1</translation>
     </message>
     <message>
         <location line="-45"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen luominen epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneesta poistuminen epäonnistui: %1</translation>
     </message>
 </context>
 <context>
@@ -68,28 +68,28 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+130"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki huoneet</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Suosikkihuoneet</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Alhaisen prioriteetin huoneet</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (tag)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation> (community)</translation>
     </message>
 </context>
 <context>
@@ -97,22 +97,22 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Tallenna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Aihe</translation>
     </message>
 </context>
 <context>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../../src/timeline/widgets/FileItem.cpp" line="+106"/>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Tallenna tiedosto</translation>
     </message>
 </context>
 <context>
@@ -128,7 +128,7 @@
     <message>
         <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+238"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Tallenna kuva</translation>
     </message>
 </context>
 <context>
@@ -136,7 +136,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+17"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista</translation>
     </message>
 </context>
 <context>
@@ -144,57 +144,57 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+80"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix-tunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>esim. @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasana</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Laitteen nimi</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>KIRJAUDU</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Palvelimen tietojen hakeminen epäonnistui: virheellinen vastaus.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Palvelimen tietojen hakeminen epäonnistui: tuntematon virhe hakiessa .well-known -tiedostoa.</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaadittuja päätepisteitä ei löydetty. Mahdollisesti ei Matrix-palvelin.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaanotettiin virheellinen vastaus. Varmista, että kotipalvelimen osoite on pätevä.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tapahtui tuntematon virhe. Varmista, että kotipalvelimen osoite on pätevä.</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tyhjä salasana</translation>
     </message>
 </context>
 <context>
@@ -202,7 +202,7 @@
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+96"/>
         <source>Room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen jäsenet</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
         <source>Search for a room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Etsi huonetta…</translation>
     </message>
 </context>
 <context>
@@ -223,47 +223,47 @@
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+77"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjänimi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasana</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasanan varmistus</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Home Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Kotipalvelin</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REKISTERÖIDY</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Invalid username</source>
-        <translation type="unfinished"></translation>
+        <translation>Epäkelpo käyttäjänimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasana ei ole tarpeeksi pitkä (vähintään 8 merkkiä)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasanat eivät täsmää</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Epäkelpo palvelimen nimi</translation>
     </message>
 </context>
 <context>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu ulos</translation>
     </message>
 </context>
 <context>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+2204"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>ei tallennettua versiota</translation>
     </message>
 </context>
 <context>
@@ -287,17 +287,17 @@
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+92"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Poistu huoneesta</translation>
     </message>
     <message>
         <location line="+174"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Hyväksy</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Hylkää</translation>
     </message>
 </context>
 <context>
@@ -305,27 +305,27 @@
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+38"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjäasetukset</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo uusi huone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Liity huoneeseen</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Aloita uusi keskustelu</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneluettelo</translation>
     </message>
 </context>
 <context>
@@ -333,22 +333,22 @@
     <message>
         <location filename="../../src/timeline/TimelineItem.cpp" line="+106"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Salattu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Delivered</source>
-        <translation type="unfinished"></translation>
+        <translation>Toimitettu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Seen</source>
-        <translation type="unfinished"></translation>
+        <translation>Luettu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetetty</translation>
     </message>
 </context>
 <context>
@@ -356,38 +356,38 @@
     <message>
         <location filename="../../src/TextInputWidget.cpp" line="+506"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä tiedosto</translation>
     </message>
     <message>
         <location line="+13"/>
         <location filename="../../src/TextInputWidget.h" line="+168"/>
         <source>Write a message...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjoita viesti…</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä viesti</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji</translation>
     </message>
     <message>
         <location line="+75"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse tiedosto</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki tiedostot (*)</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
         <source>Connection lost. Nheko is trying to re-connect...</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteys kadotettu. Nheko yrittää muodostaa yhteyttä uudelleen…</translation>
     </message>
 </context>
 <context>
@@ -395,17 +395,17 @@
     <message>
         <location filename="../../src/timeline/TimelineItem.cpp" line="+85"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Viestin poisto epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Asetukset</translation>
     </message>
 </context>
 <context>
@@ -413,7 +413,7 @@
     <message>
         <location filename="../../src/timeline/TimelineView.cpp" line="+245"/>
         <source>Encryption is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Salaus on käytössä</translation>
     </message>
 </context>
 <context>
@@ -421,27 +421,27 @@
     <message>
         <location filename="../../src/TopRoomBar.cpp" line="+79"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Huonevaihtoehdot</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu käyttäjiä</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Jäsenet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Poistu huoneesta</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Asetukset</translation>
     </message>
 </context>
 <context>
@@ -449,12 +449,12 @@
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+120"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lopeta</translation>
     </message>
 </context>
 <context>
@@ -462,12 +462,12 @@
     <message>
         <location filename="../../src/TypingDisplay.cpp" line="+45"/>
         <source> is typing</source>
-        <translation type="unfinished"></translation>
+        <translation> kirjoittaa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source> are typing</source>
-        <translation type="unfinished"></translation>
+        <translation> kirjoittavat</translation>
     </message>
 </context>
 <context>
@@ -475,7 +475,7 @@
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu ulos</translation>
     </message>
 </context>
 <context>
@@ -483,92 +483,92 @@
     <message>
         <location filename="../../src/UserSettingsPage.cpp" line="+156"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Pienennä ilmoitusalueelle</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Aloita ilmoitusalueella</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Ryhmäsivupalkki</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjoitusilmoitukset</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lukukuittaukset</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Työpöytäilmoitukset</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittakerroin</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonttikoko</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontti</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Laitteen tunnus</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Laitteen sormenjälki</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Istunnon avaimet</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>TUO</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>VIE</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>SALAUS</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>YLEISET ASETUKSET</translation>
     </message>
     <message>
         <location line="+150"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa Istuntoavaintiedosto</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -582,34 +582,34 @@
         <location line="+2"/>
         <location line="+2"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Virhe</translation>
     </message>
     <message>
         <location line="-73"/>
         <location line="+32"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiedoston Salasana</translation>
     </message>
     <message>
         <location line="-31"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna salasana tiedoston salauksen purkamiseksi:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+32"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasana ei voi olla tyhjä</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna salasana istuntoavaimien salaamiseksi:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiedosto, johon viedyt istuntoavaimet tallennetaan</translation>
     </message>
 </context>
 <context>
@@ -617,7 +617,7 @@
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tervetuloa nhekoon! Työpöytäsovellus Matrix-protokollalle.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -627,12 +627,12 @@
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REKISTERÖIDY</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>KIRJAUDU</translation>
     </message>
 </context>
 <context>
@@ -640,42 +640,42 @@
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo huone</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Aihe</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Osoite</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen näkyvyys</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen esiasetus</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Suora keskustelu</translation>
     </message>
 </context>
 <context>
@@ -683,12 +683,12 @@
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+41"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjätunnus kutsuttavaksi</translation>
     </message>
 </context>
 <context>
@@ -696,17 +696,17 @@
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liity</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen tunnus tai osoite</translation>
     </message>
 </context>
 <context>
@@ -714,12 +714,12 @@
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Oletko varma, että haluat poistua?</translation>
     </message>
 </context>
 <context>
@@ -727,12 +727,12 @@
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudutaan ulos. Oletko varma?</translation>
     </message>
 </context>
 <context>
@@ -740,19 +740,21 @@
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+42"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Median tyyppi: %1
+Median koko: %2
+</translation>
     </message>
 </context>
 <context>
@@ -760,17 +762,17 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Vahvista</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Ratkaise reCAPTCHA ja paina varmista-nappia</translation>
     </message>
 </context>
 <context>
@@ -778,12 +780,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+119"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lukukuittaukset</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sulje</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -796,72 +798,72 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+113"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Asetukset</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiedot</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisäinen tunnus</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen versio</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilmoitukset</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaimennettu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Vain maininnat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki viestit</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Pääsy huoneeseen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki (mukaanlukien vieraat)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki (poislukien vieraat)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsutut käyttäjät</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Salaus</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Päästä-päähän-salaus</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -871,7 +873,7 @@ Media size: %2
     <message>
         <location line="+27"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa avainpyyntöihin</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -883,9 +885,9 @@ Media size: %2
     <message numerus="yes">
         <location line="+53"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n käyttäjä</numerusform>
+            <numerusform>%n käyttäjää</numerusform>
         </translation>
     </message>
     <message>
@@ -896,33 +898,33 @@ Media size: %2
     <message>
         <location line="+69"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Salauksen aktivointi epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+149"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse profiilikuva</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki Tiedostot (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected media is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Valittu tiedosto ei ole kuva</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading media: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virhe lukiessa tiedostoa: %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvan lähetys epäonnistui: %s</translation>
     </message>
 </context>
 <context>
@@ -930,27 +932,27 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
         <source>Ban the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna käyttäjälle porttikielto huoneesta</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ignore messages from this user</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Piilota tämän käyttäjän viestit</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Kick the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Potki käyttäjä huoneesta</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start a conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Aloita keskustelu</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Laitteet</translation>
     </message>
     <message>
         <location line="+39"/>
@@ -963,42 +965,42 @@ Media size: %2
     <message>
         <location filename="../../src/emoji/Panel.cpp" line="+125"/>
         <source>Smileys &amp; People</source>
-        <translation type="unfinished"></translation>
+        <translation>Hymiöt ja ihmiset</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Animals &amp; Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Eläimet ja luonto</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Food &amp; Drink</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruoka ja juoma</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviteetti</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Travel &amp; Places</source>
-        <translation type="unfinished"></translation>
+        <translation>Matkailu ja paikat</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Esineet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbolit</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Liput</translation>
     </message>
 </context>
 </TS>
