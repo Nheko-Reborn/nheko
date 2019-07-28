@@ -39,7 +39,7 @@
     <message>
         <location line="+5"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished">Nachrichten konnten nicht aus dem Cache geladen werden. Bitte melde dich erneut an.</translation>
+        <translation>Nachrichten konnten nicht aus dem Cache geladen werden. Bitte melde dich erneut an.</translation>
     </message>
     <message>
         <location line="+169"/>
@@ -50,7 +50,7 @@
         <location line="+51"/>
         <location line="+153"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished">Bitte melde dich erneut an: %1</translation>
+        <translation>Bitte melde dich erneut an: %1</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -102,7 +102,7 @@
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location line="+10"/>
