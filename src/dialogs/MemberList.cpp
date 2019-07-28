@@ -126,7 +126,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
                 qCritical() << e.what();
         }
 
-        auto closeShortcut = new QShortcut(QKeySequence("ESC"), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &MemberList::close);
         connect(okBtn, &QPushButton::clicked, this, &MemberList::close);
 }

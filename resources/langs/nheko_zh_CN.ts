@@ -835,16 +835,11 @@ Media size: %2
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="+11"/>
-        <source>ESC</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dialogs::ReceiptItem</name>
     <message>
-        <location line="-55"/>
+        <location line="-44"/>
         <source>Today %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -953,12 +948,7 @@ Media size: %2
         </translation>
     </message>
     <message>
-        <location line="+71"/>
-        <source>ESC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+69"/>
+        <location line="+140"/>
         <source>Failed to enable encryption: %1</source>
         <translation>启用加密失败：%1</translation>
     </message>
@@ -974,13 +964,13 @@ Media size: %2
     </message>
     <message>
         <location line="+12"/>
-        <source>The selected media is not an image</source>
-        <translation>选择的媒体不是一个图像</translation>
+        <source>The selected file is not an image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>Error while reading media: %1</source>
-        <translation>读取媒体时失败：%1</translation>
+        <source>Error while reading file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
@@ -1015,11 +1005,6 @@ Media size: %2
         <location line="+57"/>
         <source>Devices</source>
         <translation>设备</translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>ESC</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -133,7 +133,7 @@ ReadReceipts::ReadReceipts(QWidget *parent)
         layout->addWidget(userList_);
         layout->addLayout(buttonLayout);
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &ReadReceipts::close);
         connect(okBtn, &QPushButton::clicked, this, &ReadReceipts::close);
 }

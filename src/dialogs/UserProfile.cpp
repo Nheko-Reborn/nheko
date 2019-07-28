@@ -183,7 +183,7 @@ UserProfile::UserProfile(QWidget *parent)
 
         qRegisterMetaType<std::vector<DeviceInfo>>();
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &UserProfile::close);
         connect(okBtn, &QPushButton::clicked, this, &UserProfile::close);
 }
