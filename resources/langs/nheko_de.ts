@@ -962,13 +962,13 @@ Medien-Größe: %2
     </message>
     <message>
         <location line="+12"/>
-        <source>The selected media is not an image</source>
-        <translation>Die ausgewählte Datei ist keine Bilddatei</translation>
+        <source>The selected file is not an image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>Error while reading media: %1</source>
-        <translation>Fehler beim lesen der Datei: %1</translation>
+        <source>Error while reading file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
@@ -1052,6 +1052,7 @@ Medien-Größe: %2
     <name>utils</name>
     <message>
         <location filename="../../src/Utils.cpp" line="+46"/>
+        <location filename="../../src/Utils.h" line="+141"/>
         <source>You</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1073,6 +1074,58 @@ Medien-Größe: %2
     <message>
         <location line="+3"/>
         <source>sent a video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/Utils.h" line="-45"/>
+        <source>sent</source>
+        <comment>For when you are the sender</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>sent</source>
+        <comment>For when someone else is the sender</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 an audio clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 an image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a video clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 a notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 an encrypted message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Unknown Message Type</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
