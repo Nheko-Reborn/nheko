@@ -965,12 +965,12 @@ Media size: %2
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>The selected file is not an image</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Error while reading file: %1</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -1082,53 +1082,53 @@ Media size: %2
         <location filename="../../src/Utils.h" line="-45"/>
         <source>sent</source>
         <comment>For when you are the sender</comment>
-        <translation type="unfinished"></translation>
+        <translation>sent</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>sent</source>
         <comment>For when someone else is the sender</comment>
-        <translation type="unfinished"></translation>
+        <translation>sent</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 an audio clip</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 an image</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a file</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 a video clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a video clip</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a sticker</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a notification</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 an encrypted message</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown Message Type</translation>
     </message>
 </context>
 </TS>
