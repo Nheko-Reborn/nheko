@@ -923,7 +923,7 @@ Media size: %2
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -935,7 +935,9 @@ Media size: %2
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Whether or not the client should respond automatically with the session keys
+ upon request. Use with caution, this is a temporary measure to test the
+ E2E implementation until device verification is completed.</translation>
     </message>
     <message numerus="yes">
         <location line="+53"/>
