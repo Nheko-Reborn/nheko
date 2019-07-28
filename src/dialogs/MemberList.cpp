@@ -97,7 +97,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         topLabel_->setAlignment(Qt::AlignCenter);
         topLabel_->setFont(font);
 
-        auto okBtn = new QPushButton("OK", this);
+        auto okBtn = new QPushButton(tr("OK"), this);
 
         auto buttonLayout = new QHBoxLayout();
         buttonLayout->setSpacing(15);
@@ -126,7 +126,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
                 qCritical() << e.what();
         }
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &MemberList::close);
         connect(okBtn, &QPushButton::clicked, this, &MemberList::close);
 }

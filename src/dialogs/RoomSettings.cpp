@@ -438,7 +438,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 resetErrorLabel();
         });
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &RoomSettings::close);
         connect(okBtn, &QPushButton::clicked, this, &RoomSettings::close);
 }
@@ -668,12 +668,12 @@ RoomSettings::updateAvatar()
 
         QFile file{fileName, this};
         if (format != "image") {
-                displayErrorMessage(tr("The selected media is not an image"));
+                displayErrorMessage(tr("The selected file is not an image"));
                 return;
         }
 
         if (!file.open(QIODevice::ReadOnly)) {
-                displayErrorMessage(tr("Error while reading media: %1").arg(file.errorString()));
+                displayErrorMessage(tr("Error while reading file: %1").arg(file.errorString()));
                 return;
         }
 
