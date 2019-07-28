@@ -4,7 +4,7 @@
 <context>
     <name>AudioItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+117"/>
+        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+118"/>
         <source>Save File</source>
         <translation>Enregistrer le fichier</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+309"/>
+        <location filename="../../src/ChatPage.cpp" line="+331"/>
         <source>Failed to upload image. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -32,7 +32,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+380"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -42,7 +42,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+169"/>
+        <location line="+198"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -118,7 +118,7 @@
 <context>
     <name>FileItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+106"/>
+        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+107"/>
         <source>Save File</source>
         <translation>Enregistrer le fichier</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>ImageItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+238"/>
+        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+241"/>
         <source>Save image</source>
         <translation>Enregistrer l&apos;image</translation>
     </message>
@@ -205,8 +205,8 @@
         <translation>Membres du salon</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>ESC</source>
+        <location line="+4"/>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -278,7 +278,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2204"/>
+        <location filename="../../src/Cache.cpp" line="+2205"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -286,12 +286,12 @@
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+92"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+93"/>
         <source>Leave room</source>
         <translation>Quitter le salon</translation>
     </message>
     <message>
-        <location line="+174"/>
+        <location line="+181"/>
         <source>Accept</source>
         <translation>Accepter</translation>
     </message>
@@ -332,7 +332,7 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+106"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+107"/>
         <source>Encrypted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -355,13 +355,13 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+506"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+507"/>
         <source>Send a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+168"/>
+        <location filename="../../src/TextInputWidget.h" line="+164"/>
         <source>Write a message...</source>
         <translation>Écrivez un message...</translation>
     </message>
@@ -425,7 +425,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+5"/>
+        <source>Mentions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>Invite users</source>
         <translation>Inviter des utilisateurs</translation>
     </message>
@@ -461,7 +466,7 @@
 <context>
     <name>TypingDisplay</name>
     <message>
-        <location filename="../../src/TypingDisplay.cpp" line="+45"/>
+        <location filename="../../src/TypingDisplay.cpp" line="+46"/>
         <source> is typing</source>
         <translation> est en train d&apos;écrire</translation>
     </message>
@@ -482,7 +487,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+156"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+166"/>
         <source>Minimize to tray</source>
         <translation>Réduire à la barre des tâches</translation>
     </message>
@@ -522,12 +527,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+13"/>
         <source>Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+1"/>
+        <source>Emoji Font Famly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
         <source>Theme</source>
         <translation>Thème</translation>
     </message>
@@ -567,7 +577,7 @@
         <translation>GÉNÉRAL</translation>
     </message>
     <message>
-        <location line="+150"/>
+        <location line="+156"/>
         <source>Open Sessions File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -634,6 +644,14 @@
         <location line="+5"/>
         <source>LOGIN</source>
         <translation>CONNEXION</translation>
+    </message>
+</context>
+<context>
+    <name>descriptiveTime</name>
+    <message>
+        <location filename="../../src/Utils.cpp" line="+104"/>
+        <source>Yesterday</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -779,7 +797,7 @@ Taille du média : %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+119"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+121"/>
         <source>Read receipts</source>
         <translation>Accusés de lecture</translation>
     </message>
@@ -791,6 +809,19 @@ Taille du média : %2
     <message>
         <location line="+11"/>
         <source>ESC</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::ReceiptItem</name>
+    <message>
+        <location line="-55"/>
+        <source>Today %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Yesterday %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1002,6 +1033,34 @@ Taille du média : %2
         <location line="+3"/>
         <source>Flags</source>
         <translation>Drapeaux</translation>
+    </message>
+</context>
+<context>
+    <name>utils</name>
+    <message>
+        <location filename="../../src/Utils.cpp" line="+46"/>
+        <source>You</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+219"/>
+        <source>sent a file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent an image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent an audio file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent a video</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

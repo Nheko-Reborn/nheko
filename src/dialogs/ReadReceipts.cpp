@@ -78,13 +78,15 @@ ReceiptItem::dateFormat(const QDateTime &then) const
         auto days = then.daysTo(now);
 
         if (days == 0)
-                return QString("Today %1").arg(then.toString("HH:mm"));
+                return tr("Today %1").arg(then.time().toString(Qt::DefaultLocaleShortDate));
         else if (days < 2)
-                return QString("Yesterday %1").arg(then.toString("HH:mm"));
-        else if (days < 365)
-                return then.toString("dd/MM HH:mm");
+                return tr("Yesterday %1").arg(then.time().toString(Qt::DefaultLocaleShortDate));
+        else if (days < 7)
+                return QString("%1 %2")
+                  .arg(then.toString("dddd"))
+                  .arg(then.time().toString(Qt::DefaultLocaleShortDate));
 
-        return then.toString("dd/MM/yy");
+        return then.toString(Qt::DefaultLocaleShortDate);
 }
 
 ReadReceipts::ReadReceipts(QWidget *parent)

@@ -99,13 +99,13 @@ utils::descriptiveTime(const QDateTime &then)
         const auto days = then.daysTo(now);
 
         if (days == 0)
-                return then.toString("HH:mm");
+                return then.time().toString(Qt::DefaultLocaleShortDate);
         else if (days < 2)
-                return QString("Yesterday");
-        else if (days < 365)
-                return then.toString("dd/MM");
+                return QString(QCoreApplication::translate("descriptiveTime", "Yesterday"));
+        else if (days < 7)
+                return then.toString("dddd");
 
-        return then.toString("dd/MM/yy");
+        return then.date().toString(Qt::DefaultLocaleShortDate);
 }
 
 DescInfo
@@ -147,7 +147,7 @@ utils::getMessageDescription(const TimelineEvent &event,
 
                 DescInfo info;
                 if (sender == localUser)
-                        info.username = "You";
+                        info.username = QCoreApplication::translate("utils", "You");
                 else
                         info.username = username;
 
@@ -366,16 +366,16 @@ utils::getQuoteBody(const RelatedInfo &related)
                 return markdownToHtml(related.quoted_body);
         }
         case MsgType::File: {
-                return QString("sent a file.");
+                return QString(QCoreApplication::translate("utils", "sent a file."));
         }
         case MsgType::Image: {
-                return QString("sent an image.");
+                return QString(QCoreApplication::translate("utils", "sent an image."));
         }
         case MsgType::Audio: {
-                return QString("sent an audio file.");
+                return QString(QCoreApplication::translate("utils", "sent an audio file."));
         }
         case MsgType::Video: {
-                return QString("sent a video");
+                return QString(QCoreApplication::translate("utils", "sent a video"));
         }
         default: {
                 return related.quoted_body;
