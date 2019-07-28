@@ -97,7 +97,7 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Anwenden</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -107,7 +107,7 @@
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation>Titel</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location line="+2"/>
