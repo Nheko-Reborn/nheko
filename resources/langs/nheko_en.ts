@@ -39,18 +39,18 @@
     <message>
         <location line="+5"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to restore save data. Please login again.</translation>
     </message>
     <message>
         <location line="+169"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
     <message>
         <location line="+51"/>
         <location line="+153"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Please try to login again: %1</translation>
     </message>
     <message>
         <location line="-45"/>
