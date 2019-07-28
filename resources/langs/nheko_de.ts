@@ -39,12 +39,12 @@
     <message>
         <location line="+5"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation>Nachrichten konnten nicht aus dem Cache geladen werden. Bitte melde dich erneut an.</translation>
+        <translation>Gespeicherte Nachrichten konnten nicht wiederhergestellt werden. Bitte melde Dich erneut an.</translation>
     </message>
     <message>
         <location line="+198"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation>Erstellung des Schlüsselmaterials fehlgeschlagen. Antwort des Servers: %1 %2. Bitte versuche es später erneut.</translation>
+        <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
     <message>
         <location line="+51"/>
@@ -84,12 +84,12 @@
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"> (tag)</translation>
+        <translation> (tag)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation> (community)</translation>
     </message>
 </context>
 <context>
@@ -207,7 +207,7 @@
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -419,31 +419,31 @@
         <location line="+65"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- verschlüsselter Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Entschlüsselungsfehler (Fehler bei Kommunikation mit Datenbank) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Entschlüsselungsfehler (Fehler bei Suche nach megolm Schlüsseln in Datenbank) --</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Entschlüsselungsfehler (%1) --</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- verschlüsselter Event (Unbekannter Eventtyp) --</translation>
     </message>
 </context>
 <context>
@@ -456,7 +456,7 @@
     <message>
         <location line="+5"/>
         <source>Mentions</source>
-        <translation type="unfinished"></translation>
+        <translation>Erwähnungen</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -542,7 +542,7 @@
     <message>
         <location line="+9"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktopbenachrichtigungen</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -562,7 +562,7 @@
     <message>
         <location line="+1"/>
         <source>Emoji Font Famly</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji Schriftart</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -577,7 +577,7 @@
     <message>
         <location line="+12"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerätefingerabdruck</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -607,7 +607,7 @@
     <message>
         <location line="+156"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne Sessions Datei</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -661,7 +661,7 @@
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation>Genieße deinen Aufenthalt!</translation>
+        <translation>Viel Vergnügen!</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -679,7 +679,7 @@
     <message>
         <location filename="../../src/Utils.cpp" line="+104"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestern</translation>
     </message>
 </context>
 <context>
@@ -840,12 +840,12 @@ Medien-Größe: %2
     <message>
         <location line="-44"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Heute %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestern %1</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@ Medien-Größe: %2
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung befindet sich momentan in einem experimentellen Stadium, unerwartete Fehler können auftreten. &lt;br&gt;Sie kann anschließend nicht wieder deaktiviert werden.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -935,7 +935,7 @@ Medien-Größe: %2
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob nheko automatisch auf Anfragen mit Sessionschlüsseln antworten soll, oder nicht. Bitte mit Vorsicht nutzen, da dies eine temporäre Massnahme ist. Sie dient dem Test von E2E Verschlüsselung, bis die Geräteverifikation fertig gestellt ist.</translation>
     </message>
     <message numerus="yes">
         <location line="+53"/>
@@ -1053,7 +1053,7 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/Utils.cpp" line="+46"/>
         <source>You</source>
-        <translation type="unfinished"></translation>
+        <translation>Du</translation>
     </message>
     <message>
         <location line="+219"/>
