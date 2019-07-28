@@ -441,7 +441,7 @@
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Leave room</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -480,7 +480,7 @@
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Logout</translation>
     </message>
 </context>
 <context>
@@ -637,12 +637,12 @@
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">REGISTER</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LOGIN</translation>
     </message>
 </context>
 <context>
@@ -663,17 +663,17 @@
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Name</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Topic</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -701,7 +701,7 @@
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+41"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -719,7 +719,7 @@
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -732,7 +732,7 @@
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -745,7 +745,7 @@
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -763,7 +763,7 @@
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -778,7 +778,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location line="+1"/>
