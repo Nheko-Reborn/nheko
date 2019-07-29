@@ -963,12 +963,12 @@ Medien-Größe: %2
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Die ausgewählte Datei ist kein Bild</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Lesen der DateI: %1</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -982,12 +982,12 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/dialogs/UserMentions.cpp" line="+53"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Raum</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Räume</translation>
     </message>
 </context>
 <context>
@@ -1066,37 +1066,37 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/Utils.h" line="+104"/>
         <source>%1 an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 einen Audioclip</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ein Bild</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eine Datei</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 a video clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 einen Videoclip</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 einen Sticker</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>1% eine Benachrichtigung</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>1% eine verschüsselte Nachricht</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1148,7 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/Utils.h" line="-23"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Nachrichtentyp</translation>
     </message>
 </context>
 </TS>
