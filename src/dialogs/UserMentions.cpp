@@ -93,7 +93,7 @@ UserMentions::pushItem(const QString &event_id,
 
                 local_scroll_layout_->addWidget(local_view_item);
 
-                QTimer::singleShot(0, this, [local_view_item, this]() {
+                QTimer::singleShot(0, this, [local_view_item]() {
                         local_view_item->show();
                         local_view_item->adjustSize();
                 });
