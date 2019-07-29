@@ -984,12 +984,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/UserMentions.cpp" line="+53"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>This Room</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>All Rooms</translation>
     </message>
 </context>
 <context>
