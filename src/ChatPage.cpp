@@ -91,12 +91,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
-        // user_mentions_widget_ = new UserMentionsWidget(sideBar_);
+        // user_mentions_widget_ = new UserMentionsWidget(top_bar_);
         room_list_ = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);
-        // sideBarLayout_->addWidget(user_mentions_widget_);
         sideBarLayout_->addWidget(room_list_);
         sideBarLayout_->addWidget(sidebarActions_);
 
@@ -1000,7 +999,7 @@ ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res, cons
                         const auto user_id = utils::event_sender(item.event);
                         const auto body    = utils::event_body(item.event);
 
-                        notifDialog->pushItem(event_id, user_id, body, room_id);
+                        notifDialog->pushItem(event_id, user_id, body, room_id, current_room_);
 
                 } catch (const lmdb::error &e) {
                         nhlog::db()->warn("error while sending desktop notification: {}", e.what());

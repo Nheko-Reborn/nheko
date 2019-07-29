@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+331"/>
+        <location filename="../../src/ChatPage.cpp" line="+330"/>
         <source>Failed to upload image. Please try again.</source>
         <translation>Kuvan lähettäminen epäonnistui. Ole hyvä ja yritä uudelleen.</translation>
     </message>
@@ -980,6 +980,19 @@ Median koko: %2
     </message>
 </context>
 <context>
+    <name>dialogs::UserMentions</name>
+    <message>
+        <location filename="../../src/dialogs/UserMentions.cpp" line="+53"/>
+        <source>This Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>All Rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>dialogs::UserProfile</name>
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
@@ -1058,32 +1071,32 @@ Median koko: %2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>%1 an image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>%1 a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>%1 a video clip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>%1 a sticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>%1 a notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>%1 an encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1091,7 +1104,7 @@ Median koko: %2
 <context>
     <name>message-description:</name>
     <message>
-        <location line="-19"/>
+        <location line="-26"/>
         <source>sent</source>
         <comment>For when someone else is the sender</comment>
         <translation type="unfinished"></translation>
@@ -1110,7 +1123,7 @@ Median koko: %2
     <name>utils</name>
     <message>
         <location filename="../../src/Utils.cpp" line="+46"/>
-        <location filename="../../src/Utils.h" line="+47"/>
+        <location filename="../../src/Utils.h" line="+55"/>
         <source>You</source>
         <translation>Sinä</translation>
     </message>
