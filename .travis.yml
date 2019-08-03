@@ -80,6 +80,18 @@ script:
     - sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     - cp ./.ci/bintray-release.json .
 deploy:
+- provider: s3
+  access_key_id: $ARTIFACTS_KEY
+  secret_access_key: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
+  region: $AWS_DEFAULT_REGION
+  detect_encoding: true
+  cache_control: "max-age=31536000"
+  skip_cleanup: true
+  file_glob: true
+  file:
+  - nheko-${VERSION}-x86_64.AppImage
+  - nheko-${VERSION}.dmg
 - provider: bintray
   user: "redsky17"
   key:
