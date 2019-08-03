@@ -92,6 +92,11 @@ deploy:
   file:
   - nheko-${VERSION}-x86_64.AppImage
   - nheko-${VERSION}.dmg
+  on:
+    condition: "$DEPLOYMENT == 1"
+    repo: Nheko-Reborn/nheko
+    tags: false
+    all_branches: true
 - provider: bintray
   user: "redsky17"
   key:
