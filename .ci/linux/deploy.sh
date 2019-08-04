@@ -49,7 +49,10 @@ done
 
 chmod +x nheko-*x86_64.AppImage
 
-if [ ! -z "$VERSION" ]; then
+mkdir artifacts
+cp nheko-*x86_64.AppImage artifacts/
+
+if [ -n "$VERSION" ]; then
     # commented out for now, as AppImage file appears to already contain the version.
     #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
     echo "nheko-${VERSION}-x86_64.AppImage"

@@ -88,10 +88,8 @@ deploy:
   detect_encoding: true
   cache_control: "max-age=31536000"
   skip_cleanup: true
-  file_glob: true
-  file:
-  - nheko-${VERSION}-x86_64.AppImage
-  - nheko-${VERSION}.dmg
+  acl: public_read
+  local_dir: artifacts
   on:
     condition: "$DEPLOYMENT == 1"
     repo: Nheko-Reborn/nheko
