@@ -1972,7 +1972,6 @@ Cache::saveTimelineMentions(lmdb::txn &txn,
         using namespace mtx::events::state;
 
         for (const auto &n : res.notifications) {
-
                 const auto event_id = utils::event_id(n.event);
 
                 // double check that we have the correct room_id...
@@ -1981,10 +1980,7 @@ Cache::saveTimelineMentions(lmdb::txn &txn,
 
                 json obj = json::object();
 
-                lmdb::dbi_put(txn,
-                              db,
-                              lmdb::val(event_id),
-                              lmdb::val(obj.dump()));
+                lmdb::dbi_put(txn, db, lmdb::val(event_id), lmdb::val(obj.dump()));
         }
 
         txn.commit();

@@ -407,7 +407,8 @@ public:
                                   const std::string &room_id,
                                   const mtx::responses::Notifications &res);
         //! Get timeline items that a user was mentions in
-        mtx::responses::Notifications getTimelineMentions(lmdb::txn &txn, const std::string &room_id);
+        mtx::responses::Notifications getTimelineMentions(lmdb::txn &txn,
+                                                          const std::string &room_id);
 
         //! Remove old unused data.
         void deleteOldMessages();
