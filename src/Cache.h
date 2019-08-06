@@ -402,6 +402,13 @@ public:
         //! Check if we have sent a desktop notification for the given event id.
         bool isNotificationSent(const std::string &event_id);
 
+        //! Add a notification containing a user mention to the db.
+        void saveTimelineMentions(lmdb::txn &txn,
+                                  const std::string &room_id,
+                                  const mtx::responses::Notifications &res);
+        //! Get timeline items that a user was mentions in
+        mtx::responses::Notifications getTimelineMentions(lmdb::txn &txn, const std::string &room_id);
+
         //! Remove old unused data.
         void deleteOldMessages();
         void deleteOldData() noexcept;
@@ -658,6 +665,11 @@ private:
         lmdb::dbi getMembersDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(txn, std::string(room_id + "/members").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getMentionsDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(txn, std::string(room_id + "/mentions").c_str(), MDB_CREATE);
         }
 
         //! Retrieves or creates the database that stores the open OLM sessions between our device

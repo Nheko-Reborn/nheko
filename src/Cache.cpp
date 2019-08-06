@@ -1934,6 +1934,61 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                               lmdb::val(obj.dump()));
         }
 }
+mtx::responses::Notifications
+Cache::getTimelineMentions(lmdb::txn &txn, const std::string &room_id)
+{
+        auto db = getMentionsDb(txn, room_id);
+
+        mtx::responses::Notifications notif;
+        std::string event_id, msg;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        while (cursor.get(event_id, msg, MDB_NEXT)) {
+                auto obj = json::parse(msg);
+
+                if (obj.count("event") == 0 || obj.count("token") == 0)
+                        continue;
+
+                mtx::responses::Notification notification;
+                mtx::responses::from_json(obj.at("notification"), notification);
+
+                notif.notifications.push_back(notification);
+        }
+        cursor.close();
+
+        std::reverse(notif.notifications.begin(), notif.notifications.end());
+
+        return notif;
+}
+void
+Cache::saveTimelineMentions(lmdb::txn &txn,
+                            const std::string &room_id,
+                            const mtx::responses::Notifications &res)
+{
+        auto db = getMentionsDb(txn, room_id);
+
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        for (const auto &n : res.notifications) {
+
+                const auto event_id = utils::event_id(n.event);
+
+                // double check that we have the correct room_id...
+                if (room_id.compare(n.room_id) != 0)
+                        continue;
+
+                json obj = json::object();
+
+                lmdb::dbi_put(txn,
+                              db,
+                              lmdb::val(event_id),
+                              lmdb::val(obj.dump()));
+        }
+
+        txn.commit();
+}
 
 void
 Cache::markSentNotification(const std::string &event_id)
