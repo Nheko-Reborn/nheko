@@ -482,7 +482,7 @@ private:
 
         //! Get timeline items that a user was mentions in for a given room
         mtx::responses::Notifications getTimelineMentionsForRoom(lmdb::txn &txn,
-                                                          const std::string &room_id);
+                                                                 const std::string &room_id);
 
         QString getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);

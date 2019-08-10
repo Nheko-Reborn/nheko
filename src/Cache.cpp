@@ -1253,7 +1253,6 @@ Cache::getTimelineMentions()
         return notifs;
 }
 
-
 mtx::responses::Timeline
 Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id)
 {
@@ -2022,7 +2021,8 @@ Cache::saveTimelineMentions(lmdb::txn &txn,
 
         int i = 0;
         for (const auto &notif : res) {
-                nhlog::db()->debug("Storing notification " + std::to_string(i++) + " for room " + room_id);
+                nhlog::db()->debug("Storing notification " + std::to_string(i++) + " for room " +
+                                   room_id);
                 const auto event_id = utils::event_id(notif.event);
 
                 // double check that we have the correct room_id...

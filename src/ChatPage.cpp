@@ -89,9 +89,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::joinRoom, this, &ChatPage::joinRoom);
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
-        user_info_widget_ = new UserInfoWidget(sideBar_);
+        user_info_widget_    = new UserInfoWidget(sideBar_);
         user_mentions_popup_ = new popups::UserMentions();
-        room_list_ = new RoomList(sideBar_);
+        room_list_           = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);
