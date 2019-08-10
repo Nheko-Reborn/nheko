@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QDesktopWidget>
 #include <QGuiApplication>
+#include <QProcessEnvironment>
 #include <QScreen>
 #include <QSettings>
 #include <QTextDocument>
@@ -387,14 +388,20 @@ QString
 utils::linkColor()
 {
         QSettings settings;
-        const auto theme = settings.value("user/theme", "light").toString();
+        // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
+        QString defaultTheme =
+          QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
+            ? "light"
+            : "system";
+        const auto theme = settings.value("user/theme", defaultTheme).toString();
 
-        if (theme == "light")
+        if (theme == "light") {
                 return "#0077b5";
-        else if (theme == "dark")
+        } else if (theme == "dark") {
                 return "#38A3D8";
-
-        return QPalette().color(QPalette::Link).name();
+        } else {
+                return QPalette().color(QPalette::Link).name();
+        }
 }
 
 uint32_t

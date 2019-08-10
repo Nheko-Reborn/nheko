@@ -85,7 +85,7 @@ public:
                 save();
         }
 
-        QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
+        QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
@@ -100,6 +100,11 @@ signals:
         void groupViewStateChanged(bool state);
 
 private:
+        // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
+        QString defaultTheme_ =
+          QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
+            ? "light"
+            : "system";
         QString theme_;
         bool isTrayEnabled_;
         bool isStartInTrayEnabled_;

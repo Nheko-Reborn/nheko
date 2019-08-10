@@ -22,9 +22,11 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QProcessEnvironment>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSettings>
+#include <QString>
 #include <QTextStream>
 
 #include "Config.h"
@@ -49,7 +51,7 @@ UserSettings::load()
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
-        theme_                        = settings.value("user/theme", "light").toString();
+        theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
