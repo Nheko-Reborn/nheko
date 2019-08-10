@@ -1,12 +1,15 @@
 #pragma once
 
+#include <mtx/responses.hpp>
+
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QString>
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QWidget>
 
-namespace dialogs {
+namespace popups {
 
 class UserMentions : public QWidget
 {
@@ -18,6 +21,8 @@ public:
                       const QString &body,
                       const QString &room_id,
                       const QString &current_room_id);
+
+        void initializeMentions(const std::map<QString, mtx::responses::Notifications> &notifs);
 
 private:
         QTabWidget *tab_layout_;

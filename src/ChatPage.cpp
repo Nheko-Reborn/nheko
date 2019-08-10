@@ -35,7 +35,6 @@
 #include "TopRoomBar.h"
 #include "TypingDisplay.h"
 #include "UserInfoWidget.h"
-#include "UserMentionsWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/OverlayModal.h"
@@ -44,7 +43,7 @@
 #include "notifications/Manager.h"
 
 #include "dialogs/ReadReceipts.h"
-#include "dialogs/UserMentions.h"
+#include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
 
 // TODO: Needs to be updated with an actual secret.
@@ -91,7 +90,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
-        // user_mentions_widget_ = new UserMentionsWidget(top_bar_);
+        user_mentions_popup_ = new popups::UserMentions();
         room_list_ = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
@@ -518,8 +517,17 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
-        connect(
-          this, &ChatPage::highlightedNotifsRetrieved, this, &ChatPage::showNotificationsDialog);
+        connect(this,
+                &ChatPage::highlightedNotifsRetrieved,
+                this,
+                [this](const mtx::responses::Notifications &notif, const QPoint &widgetPos) {
+                        try {
+                                cache::client()->saveTimelineMentions(notif);
+                        } catch (const lmdb::error &e) {
+                                nhlog::db()->error("failed to save mentions: {}", e.what());
+                        }
+                        showNotificationsDialog(notif, widgetPos);
+                });
 
         connect(communitiesList_,
                 &CommunitiesList::communityChanged,
@@ -558,6 +566,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
                 &TimelineViewManager::initWithMessages);
+        connect(this,
+                &ChatPage::initializeMentions,
+                user_mentions_popup_,
+                &popups::UserMentions::initializeMentions);
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 try {
                         room_list_->cleanupInvites(cache::client()->invites());
@@ -830,6 +842,7 @@ ChatPage::loadStateFromCache()
 
                         emit initializeEmptyViews(cache::client()->roomMessages());
                         emit initializeRoomList(cache::client()->roomInfo());
+                        emit initializeMentions(cache::client()->getTimelineMentions());
                         emit syncTags(cache::client()->roomInfo().toStdMap());
 
                         cache::client()->calculateRoomReadStatus();
@@ -988,9 +1001,7 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 void
 ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res, const QPoint &widgetPos)
 {
-        // TODO: This should NOT BE A DIALOG.  Make the TimelineView support
-        // creating a timeline view from notifications (similarly to how it can show history views)
-        auto notifDialog = new dialogs::UserMentions();
+        auto notifDialog = user_mentions_popup_;
         for (const auto &item : res.notifications) {
                 const auto event_id = QString::fromStdString(utils::event_id(item.event));
 
@@ -1242,6 +1253,8 @@ ChatPage::sendTypingNotifications()
 void
 ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err)
 {
+        // TODO: Initial Sync should include mentions as well...
+
         if (err) {
                 const auto error      = QString::fromStdString(err->matrix_error.error);
                 const auto msg        = tr("Please try to login again: %1").arg(error);

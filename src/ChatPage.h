@@ -19,6 +19,7 @@
 
 #include <atomic>
 #include <boost/variant.hpp>
+#include <mtx/responses.hpp>
 
 #include <QFrame>
 #include <QHBoxLayout>
@@ -33,6 +34,7 @@
 #include "MatrixClient.h"
 #include "Utils.h"
 #include "notifications/Manager.h"
+#include "popups/UserMentions.h"
 
 class OverlayModal;
 class QuickSwitcher;
@@ -44,7 +46,6 @@ class TimelineViewManager;
 class TopRoomBar;
 class TypingDisplay;
 class UserInfoWidget;
-class UserMentionsWidget;
 class UserSettings;
 class NotificationsManager;
 
@@ -139,6 +140,7 @@ signals:
         void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
         void initializeEmptyViews(const std::map<QString, mtx::responses::Timeline> &msgs);
+        void initializeMentions(const std::map<QString, mtx::responses::Notifications> &notifs);
         void syncUI(const mtx::responses::Rooms &rooms);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
         void syncTags(const std::map<QString, RoomInfo> &updates);
@@ -242,7 +244,7 @@ private:
 
         UserInfoWidget *user_info_widget_;
 
-        UserMentionsWidget *user_mentions_widget_;
+        popups::UserMentions *user_mentions_popup_;
 
         // Keeps track of the users currently typing on each room.
         std::map<QString, QList<QString>> typingUsers_;

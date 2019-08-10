@@ -4,7 +4,7 @@
 #include "UserMentions.h"
 #include "timeline/TimelineItem.h"
 
-using namespace dialogs;
+using namespace popups;
 
 UserMentions::UserMentions(QWidget *parent)
   : QWidget{parent}
@@ -55,6 +55,13 @@ UserMentions::UserMentions(QWidget *parent)
         top_layout_->addWidget(tab_layout_);
 
         setLayout(top_layout_);
+}
+
+void
+UserMentions::initializeMentions(const std::map<QString, mtx::responses::Notifications> &notifs)
+{
+        Q_UNUSED(notifs);
+        // Very TODO:
 }
 
 void

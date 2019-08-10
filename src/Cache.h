@@ -323,6 +323,8 @@ public:
 
         std::map<QString, mtx::responses::Timeline> roomMessages();
 
+        std::map<QString, mtx::responses::Notifications> getTimelineMentions();
+
         //! Retrieve all the user ids from a room.
         std::vector<std::string> roomMembers(const std::string &room_id);
 
@@ -402,13 +404,8 @@ public:
         //! Check if we have sent a desktop notification for the given event id.
         bool isNotificationSent(const std::string &event_id);
 
-        //! Add a notification containing a user mention to the db.
-        void saveTimelineMentions(lmdb::txn &txn,
-                                  const std::string &room_id,
-                                  const mtx::responses::Notifications &res);
-        //! Get timeline items that a user was mentions in
-        mtx::responses::Notifications getTimelineMentions(lmdb::txn &txn,
-                                                          const std::string &room_id);
+        //! Add all notifications containing a user mention to the db.
+        void saveTimelineMentions(const mtx::responses::Notifications &res);
 
         //! Remove old unused data.
         void deleteOldMessages();
@@ -477,6 +474,15 @@ private:
                         lmdb::dbi &statesdb,
                         lmdb::dbi &membersdb,
                         const mtx::responses::InvitedRoom &room);
+
+        //! Add a notification containing a user mention to the db.
+        void saveTimelineMentions(lmdb::txn &txn,
+                                  const std::string &room_id,
+                                  const QList<mtx::responses::Notification> &res);
+
+        //! Get timeline items that a user was mentions in for a given room
+        mtx::responses::Notifications getTimelineMentionsForRoom(lmdb::txn &txn,
+                                                          const std::string &room_id);
 
         QString getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);

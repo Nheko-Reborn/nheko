@@ -1232,6 +1232,28 @@ Cache::roomMessages()
         return msgs;
 }
 
+std::map<QString, mtx::responses::Notifications>
+Cache::getTimelineMentions()
+{
+        // TODO: Should be read-only, but getMentionsDb will attempt to create a DB
+        // if it doesn't exist, throwing an error.
+        auto txn = lmdb::txn::begin(env_, nullptr);
+
+        std::map<QString, mtx::responses::Notifications> notifs;
+
+        auto room_ids = getRoomIds(txn);
+
+        for (const auto &room_id : room_ids) {
+                auto roomNotifs = getTimelineMentionsForRoom(txn, room_id);
+                notifs.emplace(QString::fromStdString(room_id), roomNotifs);
+        }
+
+        txn.commit();
+
+        return notifs;
+}
+
+
 mtx::responses::Timeline
 Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id)
 {
@@ -1934,10 +1956,15 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                               lmdb::val(obj.dump()));
         }
 }
+
 mtx::responses::Notifications
-Cache::getTimelineMentions(lmdb::txn &txn, const std::string &room_id)
+Cache::getTimelineMentionsForRoom(lmdb::txn &txn, const std::string &room_id)
 {
         auto db = getMentionsDb(txn, room_id);
+
+        if (db.size(txn) == 0) {
+                return mtx::responses::Notifications{};
+        }
 
         mtx::responses::Notifications notif;
         std::string event_id, msg;
@@ -1961,29 +1988,52 @@ Cache::getTimelineMentions(lmdb::txn &txn, const std::string &room_id)
 
         return notif;
 }
+
+//! Add all notifications containing a user mention to the db.
+void
+Cache::saveTimelineMentions(const mtx::responses::Notifications &res)
+{
+        QMap<std::string, QList<mtx::responses::Notification>> notifsByRoom;
+
+        // Sort into room-specific 'buckets'
+        for (const auto &notif : res.notifications) {
+                notifsByRoom[notif.room_id].push_back(notif);
+        }
+
+        auto txn = lmdb::txn::begin(env_);
+        // Insert the entire set of mentions for each room at a time.
+        for (const auto &room : notifsByRoom.keys()) {
+                nhlog::db()->debug("Storing notifications for " + room);
+                saveTimelineMentions(txn, room, notifsByRoom[room]);
+        }
+
+        txn.commit();
+}
+
 void
 Cache::saveTimelineMentions(lmdb::txn &txn,
                             const std::string &room_id,
-                            const mtx::responses::Notifications &res)
+                            const QList<mtx::responses::Notification> &res)
 {
         auto db = getMentionsDb(txn, room_id);
 
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        for (const auto &n : res.notifications) {
-                const auto event_id = utils::event_id(n.event);
+        int i = 0;
+        for (const auto &notif : res) {
+                nhlog::db()->debug("Storing notification " + std::to_string(i++) + " for room " + room_id);
+                const auto event_id = utils::event_id(notif.event);
 
                 // double check that we have the correct room_id...
-                if (room_id.compare(n.room_id) != 0)
-                        continue;
+                if (room_id.compare(notif.room_id) != 0) {
+                        return;
+                }
 
                 json obj = json::object();
 
                 lmdb::dbi_put(txn, db, lmdb::val(event_id), lmdb::val(obj.dump()));
         }
-
-        txn.commit();
 }
 
 void
