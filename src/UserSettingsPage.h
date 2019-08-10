@@ -22,6 +22,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
+#include <QProcessEnvironment>
 #include <QSharedPointer>
 #include <QWidget>
 
