@@ -323,7 +323,7 @@ public:
 
         std::map<QString, mtx::responses::Timeline> roomMessages();
 
-        std::map<QString, mtx::responses::Notifications> getTimelineMentions();
+        QMap<QString, mtx::responses::Notifications> getTimelineMentions();
 
         //! Retrieve all the user ids from a room.
         std::vector<std::string> roomMembers(const std::string &room_id);

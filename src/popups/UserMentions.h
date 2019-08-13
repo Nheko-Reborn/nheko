@@ -2,6 +2,7 @@
 
 #include <mtx/responses.hpp>
 
+#include <QMap>
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QString>
@@ -16,15 +17,16 @@ class UserMentions : public QWidget
         Q_OBJECT
 public:
         UserMentions(QWidget *parent = nullptr);
+
+        void showPopup();
+        void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
+
+private:
         void pushItem(const QString &event_id,
                       const QString &user_id,
                       const QString &body,
                       const QString &room_id,
                       const QString &current_room_id);
-
-        void initializeMentions(const std::map<QString, mtx::responses::Notifications> &notifs);
-
-private:
         QTabWidget *tab_layout_;
         QVBoxLayout *top_layout_;
         QVBoxLayout *local_scroll_layout_;

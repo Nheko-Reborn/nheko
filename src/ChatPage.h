@@ -140,7 +140,7 @@ signals:
         void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
         void initializeEmptyViews(const std::map<QString, mtx::responses::Timeline> &msgs);
-        void initializeMentions(const std::map<QString, mtx::responses::Notifications> &notifs);
+        void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
         void syncUI(const mtx::responses::Rooms &rooms);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
         void syncTags(const std::map<QString, RoomInfo> &updates);

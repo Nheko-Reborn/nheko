@@ -153,21 +153,26 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
 
         connect(top_bar_, &TopRoomBar::mentionsClicked, this, [this](const QPoint &mentionsPos) {
-                http::client()->notifications(
-                  1000,
-                  "",
-                  "highlight",
-                  [this, mentionsPos](const mtx::responses::Notifications &res,
-                                      mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn("failed to retrieve notifications: {} ({})",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                                  return;
-                          }
+                if (user_mentions_popup_->isVisible()) {
+                        user_mentions_popup_->hide();
+                } else {
+                        http::client()->notifications(
+                          1000,
+                          "",
+                          "highlight",
+                          [this, mentionsPos](const mtx::responses::Notifications &res,
+                                              mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn(
+                                            "failed to retrieve notifications: {} ({})",
+                                            err->matrix_error.error,
+                                            static_cast<int>(err->status_code));
+                                          return;
+                                  }
 
-                          emit highlightedNotifsRetrieved(std::move(res), mentionsPos);
-                  });
+                                  emit highlightedNotifsRetrieved(std::move(res), mentionsPos);
+                          });
+                }
         });
 
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
@@ -1001,28 +1006,32 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 void
 ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res, const QPoint &widgetPos)
 {
+        // TODO: Remove notifications from this function call.
+        Q_UNUSED(res);
+
         auto notifDialog = user_mentions_popup_;
-        for (const auto &item : res.notifications) {
-                const auto event_id = QString::fromStdString(utils::event_id(item.event));
+        // for (const auto &item : res.notifications) {
+        //         const auto event_id = QString::fromStdString(utils::event_id(item.event));
 
-                try {
-                        const auto room_id = QString::fromStdString(item.room_id);
-                        const auto user_id = utils::event_sender(item.event);
-                        const auto body    = utils::event_body(item.event);
+        //         try {
+        //                 const auto room_id = QString::fromStdString(item.room_id);
+        //                 const auto user_id = utils::event_sender(item.event);
+        //                 const auto body    = utils::event_body(item.event);
 
-                        notifDialog->pushItem(event_id, user_id, body, room_id, current_room_);
+        //                 notifDialog->pushItem(event_id, user_id, body, room_id, current_room_);
 
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->warn("error while sending desktop notification: {}", e.what());
-                }
-        }
+        //         } catch (const lmdb::error &e) {
+        //                 nhlog::db()->warn("error while sending desktop notification: {}",
+        //                 e.what());
+        //         }
+        // }
         notifDialog->setGeometry(
           widgetPos.x() - (width() / 10), widgetPos.y() + 25, width() / 5, height() / 2);
         // notifDialog->move(widgetPos.x(), widgetPos.y());
         // notifDialog->setFixedWidth(width() / 10);
         // notifDialog->setFixedHeight(height() / 2);
         notifDialog->raise();
-        notifDialog->show();
+        notifDialog->showPopup();
 }
 
 void
@@ -1292,6 +1301,7 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
 
                 emit initializeViews(std::move(res.rooms));
                 emit initializeRoomList(cache::client()->roomInfo());
+                emit initializeMentions(cache::client()->getTimelineMentions());
 
                 cache::client()->calculateRoomReadStatus();
                 emit syncTags(cache::client()->roomInfo().toStdMap());

@@ -1,6 +1,8 @@
 #include <QTabWidget>
 #include <QTimer>
 
+#include "Cache.h"
+#include "ChatPage.h"
 #include "UserMentions.h"
 #include "timeline/TimelineItem.h"
 
@@ -9,6 +11,9 @@ using namespace popups;
 UserMentions::UserMentions(QWidget *parent)
   : QWidget{parent}
 {
+        setAttribute(Qt::WA_ShowWithoutActivating, true);
+        setWindowFlags(Qt::ToolTip | Qt::NoDropShadowWindowHint);
+
         tab_layout_ = new QTabWidget(this);
 
         top_layout_ = new QVBoxLayout(this);
@@ -37,12 +42,12 @@ UserMentions::UserMentions(QWidget *parent)
         local_scroll_layout_ = new QVBoxLayout(local_scroll_widget_);
         local_scroll_layout_->setContentsMargins(4, 0, 15, bottomMargin);
         local_scroll_layout_->setSpacing(0);
-        local_scroll_layout_->setObjectName("localcrollarea");
+        local_scroll_layout_->setObjectName("localscrollarea");
 
         all_scroll_layout_ = new QVBoxLayout(all_scroll_widget_);
         all_scroll_layout_->setContentsMargins(4, 0, 15, bottomMargin);
         all_scroll_layout_->setSpacing(0);
-        all_scroll_layout_->setObjectName("allcrollarea");
+        all_scroll_layout_->setObjectName("allscrollarea");
 
         local_scroll_area_->setWidget(local_scroll_widget_);
         local_scroll_area_->setAlignment(Qt::AlignBottom);
@@ -58,10 +63,46 @@ UserMentions::UserMentions(QWidget *parent)
 }
 
 void
-UserMentions::initializeMentions(const std::map<QString, mtx::responses::Notifications> &notifs)
+UserMentions::initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs)
 {
-        Q_UNUSED(notifs);
-        // Very TODO:
+        nhlog::ui()->debug("Initializing " + std::to_string(notifs.size()) + " notifications.");
+        for (auto widget : all_scroll_layout_->findChildren<QWidget *>()) {
+                delete widget;
+        }
+        for (auto widget : local_scroll_layout_->findChildren<QWidget *>()) {
+                delete widget;
+        }
+        for (const auto &item : notifs) {
+                for (const auto notif : item.notifications) {
+                        const auto event_id = QString::fromStdString(utils::event_id(notif.event));
+
+                        try {
+                                const auto room_id = QString::fromStdString(notif.room_id);
+                                const auto user_id = utils::event_sender(notif.event);
+                                const auto body    = utils::event_body(notif.event);
+
+                                pushItem(event_id,
+                                         user_id,
+                                         body,
+                                         room_id,
+                                         ChatPage::instance()->currentRoom());
+
+                        } catch (const lmdb::error &e) {
+                                nhlog::db()->warn("error while sending desktop notification: {}",
+                                                  e.what());
+                        }
+                }
+        }
+}
+
+void
+UserMentions::showPopup()
+{
+        auto notifs = cache::client()->getTimelineMentions();
+
+        initializeMentions(notifs);
+
+        show();
 }
 
 void
