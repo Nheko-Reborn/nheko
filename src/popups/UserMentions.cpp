@@ -3,6 +3,7 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
+#include "Logging.h"
 #include "UserMentions.h"
 #include "timeline/TimelineItem.h"
 
@@ -12,7 +13,7 @@ UserMentions::UserMentions(QWidget *parent)
   : QWidget{parent}
 {
         setAttribute(Qt::WA_ShowWithoutActivating, true);
-        setWindowFlags(Qt::ToolTip | Qt::NoDropShadowWindowHint);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
 
         tab_layout_ = new QTabWidget(this);
 
@@ -66,12 +67,7 @@ void
 UserMentions::initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs)
 {
         nhlog::ui()->debug("Initializing " + std::to_string(notifs.size()) + " notifications.");
-        for (auto widget : all_scroll_layout_->findChildren<QWidget *>()) {
-                delete widget;
-        }
-        for (auto widget : local_scroll_layout_->findChildren<QWidget *>()) {
-                delete widget;
-        }
+
         for (const auto &item : notifs) {
                 for (const auto notif : item.notifications) {
                         const auto event_id = QString::fromStdString(utils::event_id(notif.event));
@@ -98,10 +94,16 @@ UserMentions::initializeMentions(const QMap<QString, mtx::responses::Notificatio
 void
 UserMentions::showPopup()
 {
+        for (auto widget : all_scroll_layout_->findChildren<QWidget *>()) {
+                delete widget;
+        }
+        for (auto widget : local_scroll_layout_->findChildren<QWidget *>()) {
+                delete widget;
+        }
+
         auto notifs = cache::client()->getTimelineMentions();
 
         initializeMentions(notifs);
-
         show();
 }
 

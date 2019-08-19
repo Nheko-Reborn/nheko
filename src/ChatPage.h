@@ -210,7 +210,7 @@ private:
         //! Send desktop notification for the received messages.
         void sendDesktopNotifications(const mtx::responses::Notifications &);
 
-        void showNotificationsDialog(const mtx::responses::Notifications &, const QPoint &point);
+        void showNotificationsDialog(const QPoint &point);
 
         QStringList generateTypingUsers(const QString &room_id,
                                         const std::vector<std::string> &typing_users);

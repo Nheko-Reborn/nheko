@@ -156,6 +156,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 if (user_mentions_popup_->isVisible()) {
                         user_mentions_popup_->hide();
                 } else {
+                        showNotificationsDialog(mentionsPos);
                         http::client()->notifications(
                           1000,
                           "",
@@ -525,13 +526,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this,
                 &ChatPage::highlightedNotifsRetrieved,
                 this,
-                [this](const mtx::responses::Notifications &notif, const QPoint &widgetPos) {
+                [this](const mtx::responses::Notifications &notif) {
                         try {
                                 cache::client()->saveTimelineMentions(notif);
                         } catch (const lmdb::error &e) {
                                 nhlog::db()->error("failed to save mentions: {}", e.what());
                         }
-                        showNotificationsDialog(notif, widgetPos);
                 });
 
         connect(communitiesList_,
@@ -1004,32 +1004,13 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 }
 
 void
-ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res, const QPoint &widgetPos)
+ChatPage::showNotificationsDialog(const QPoint &widgetPos)
 {
-        // TODO: Remove notifications from this function call.
-        Q_UNUSED(res);
-
         auto notifDialog = user_mentions_popup_;
-        // for (const auto &item : res.notifications) {
-        //         const auto event_id = QString::fromStdString(utils::event_id(item.event));
 
-        //         try {
-        //                 const auto room_id = QString::fromStdString(item.room_id);
-        //                 const auto user_id = utils::event_sender(item.event);
-        //                 const auto body    = utils::event_body(item.event);
-
-        //                 notifDialog->pushItem(event_id, user_id, body, room_id, current_room_);
-
-        //         } catch (const lmdb::error &e) {
-        //                 nhlog::db()->warn("error while sending desktop notification: {}",
-        //                 e.what());
-        //         }
-        // }
         notifDialog->setGeometry(
           widgetPos.x() - (width() / 10), widgetPos.y() + 25, width() / 5, height() / 2);
-        // notifDialog->move(widgetPos.x(), widgetPos.y());
-        // notifDialog->setFixedWidth(width() / 10);
-        // notifDialog->setFixedHeight(height() / 2);
+
         notifDialog->raise();
         notifDialog->showPopup();
 }

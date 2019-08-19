@@ -2,6 +2,8 @@
 
 #include <mtx/responses.hpp>
 
+#include <QApplication>
+#include <QEvent>
 #include <QMap>
 #include <QScrollArea>
 #include <QScrollBar>
@@ -9,6 +11,9 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <Qt>
+
+#include "Logging.h"
 
 namespace popups {
 
@@ -18,8 +23,8 @@ class UserMentions : public QWidget
 public:
         UserMentions(QWidget *parent = nullptr);
 
-        void showPopup();
         void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
+        void showPopup();
 
 private:
         void pushItem(const QString &event_id,
