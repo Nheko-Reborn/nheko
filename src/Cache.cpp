@@ -1993,8 +1993,6 @@ Cache::getTimelineMentionsForRoom(lmdb::txn &txn, const std::string &room_id)
 void
 Cache::saveTimelineMentions(const mtx::responses::Notifications &res)
 {
-        json notif = res;
-
         QMap<std::string, QList<mtx::responses::Notification>> notifsByRoom;
 
         // Sort into room-specific 'buckets'

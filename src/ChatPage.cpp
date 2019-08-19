@@ -526,7 +526,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this,
                 &ChatPage::highlightedNotifsRetrieved,
                 this,
-                [this](const mtx::responses::Notifications &notif) {
+                [](const mtx::responses::Notifications &notif) {
                         try {
                                 cache::client()->saveTimelineMentions(notif);
                         } catch (const lmdb::error &e) {
