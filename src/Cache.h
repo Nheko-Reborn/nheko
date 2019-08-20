@@ -32,6 +32,7 @@
 #include <nlohmann/json.hpp>
 
 #include "Logging.h"
+#include "MatrixClient.h"
 
 using mtx::events::state::JoinRule;
 

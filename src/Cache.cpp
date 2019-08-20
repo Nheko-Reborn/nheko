@@ -92,6 +92,7 @@ init(const QString &user_id)
         qRegisterMetaType<RoomSearchResult>();
         qRegisterMetaType<RoomInfo>();
         qRegisterMetaType<QMap<QString, RoomInfo>>();
+        qRegisterMetaType<QMap<QString, mtx::responses::Notifications>>();
         qRegisterMetaType<std::map<QString, RoomInfo>>();
         qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
 
