@@ -46,9 +46,8 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         topLayout_->setContentsMargins(
           2 * widgetMargin, widgetMargin, 2 * widgetMargin, widgetMargin);
 
-        avatar_ = new Avatar(this);
+        avatar_ = new Avatar(this, fontHeight * 2);
         avatar_->setLetter("");
-        avatar_->setSize(fontHeight * 2);
 
         textLayout_ = new QVBoxLayout();
         textLayout_->setSpacing(0);
@@ -183,7 +182,7 @@ TopRoomBar::reset()
 }
 
 void
-TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
+TopRoomBar::updateRoomAvatar(const QString &avatar_image)
 {
         avatar_->setImage(avatar_image);
         update();

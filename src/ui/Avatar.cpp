@@ -1,12 +1,13 @@
 #include <QPainter>
 
+#include "AvatarProvider.h"
 #include "Utils.h"
 #include "ui/Avatar.h"
 
-Avatar::Avatar(QWidget *parent)
+Avatar::Avatar(QWidget *parent, int size)
   : QWidget(parent)
+  , size_(size)
 {
-        size_   = ui::AvatarSize;
         type_   = ui::AvatarType::Letter;
         letter_ = "A";
 
@@ -61,21 +62,6 @@ Avatar::setBackgroundColor(const QColor &color)
 }
 
 void
-Avatar::setSize(int size)
-{
-        size_ = size;
-
-        if (!image_.isNull())
-                pixmap_ = utils::scaleImageToPixmap(image_, size_);
-
-        QFont _font(font());
-        _font.setPointSizeF(size_ * (ui::FontSize) / 40);
-
-        setFont(_font);
-        update();
-}
-
-void
 Avatar::setLetter(const QString &letter)
 {
         letter_ = letter;
@@ -84,12 +70,23 @@ Avatar::setLetter(const QString &letter)
 }
 
 void
-Avatar::setImage(const QImage &image)
+Avatar::setImage(const QString &avatar_url)
 {
-        image_  = image;
-        type_   = ui::AvatarType::Image;
-        pixmap_ = utils::scaleImageToPixmap(image_, size_);
-        update();
+        AvatarProvider::resolve(avatar_url, size_, this, [this](QPixmap pm) {
+                type_   = ui::AvatarType::Image;
+                pixmap_ = pm;
+                update();
+        });
+}
+
+void
+Avatar::setImage(const QString &room, const QString &user)
+{
+        AvatarProvider::resolve(room, user, size_, this, [this](QPixmap pm) {
+                type_   = ui::AvatarType::Image;
+                pixmap_ = pm;
+                update();
+        });
 }
 
 void

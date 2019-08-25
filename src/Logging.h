@@ -18,4 +18,6 @@ db();
 
 std::shared_ptr<spdlog::logger>
 crypto();
+
+extern bool enable_debug_log_from_commandline;
 }

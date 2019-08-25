@@ -153,7 +153,6 @@ struct RoomSearchResult
 {
         std::string room_id;
         RoomInfo info;
-        QImage img;
 };
 
 Q_DECLARE_METATYPE(RoomSearchResult)

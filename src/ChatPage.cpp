@@ -774,12 +774,12 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 }
 
 void
-ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
+ChatPage::updateTopBarAvatar(const QString &roomid, const QString &img)
 {
         if (current_room_ != roomid)
                 return;
 
-        top_bar_->updateRoomAvatar(img.toImage());
+        top_bar_->updateRoomAvatar(img);
 }
 
 void
@@ -807,7 +807,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                 if (img.isNull())
                         top_bar_->updateRoomAvatarFromName(name);
                 else
-                        top_bar_->updateRoomAvatar(img);
+                        top_bar_->updateRoomAvatar(avatar_url);
 
         } catch (const lmdb::error &e) {
                 nhlog::ui()->error("failed to change top bar room info: {}", e.what());
@@ -1337,37 +1337,7 @@ ChatPage::getProfileInfo()
 
                   emit setUserDisplayName(QString::fromStdString(res.display_name));
 
-                  if (cache::client()) {
-                          auto data = cache::client()->image(res.avatar_url);
-                          if (!data.isNull()) {
-                                  emit setUserAvatar(QImage::fromData(data));
-                                  return;
-                          }
-                  }
-
-                  if (res.avatar_url.empty())
-                          return;
-
-                  http::client()->download(
-                    res.avatar_url,
-                    [this, res](const std::string &data,
-                                const std::string &,
-                                const std::string &,
-                                mtx::http::RequestErr err) {
-                            if (err) {
-                                    nhlog::net()->warn(
-                                      "failed to download user avatar: {} - {}",
-                                      mtx::errors::to_string(err->matrix_error.errcode),
-                                      err->matrix_error.error);
-                                    return;
-                            }
-
-                            if (cache::client())
-                                    cache::client()->saveImage(res.avatar_url, data);
-
-                            emit setUserAvatar(
-                              QImage::fromData(QByteArray(data.data(), data.size())));
-                    });
+                  emit setUserAvatar(QString::fromStdString(res.avatar_url));
           });
 
         http::client()->joined_groups(

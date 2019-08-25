@@ -326,8 +326,7 @@ TimelineItem::TimelineItem(mtx::events::MessageType ty,
                 generateBody(userid, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
-                AvatarProvider::resolve(
-                  room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
+                setUserAvatar(userid);
         } else {
                 generateBody(formatted_body);
                 setupSimpleLayout();
@@ -509,8 +508,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Notice
                 generateBody(sender, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
-                AvatarProvider::resolve(
-                  room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
+                setUserAvatar(sender);
         } else {
                 generateBody(formatted_body);
                 setupSimpleLayout();
@@ -558,8 +556,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Emote>
                 generateBody(sender, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
-                AvatarProvider::resolve(
-                  room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
+                setUserAvatar(sender);
         } else {
                 generateBody(formatted_body);
                 setupSimpleLayout();
@@ -607,8 +604,7 @@ TimelineItem::TimelineItem(const mtx::events::RoomEvent<mtx::events::msg::Text> 
                 generateBody(sender, displayName, formatted_body);
                 setupAvatarLayout(displayName);
 
-                AvatarProvider::resolve(
-                  room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
+                setUserAvatar(sender);
         } else {
                 generateBody(formatted_body);
                 setupSimpleLayout();
@@ -793,9 +789,8 @@ TimelineItem::setupAvatarLayout(const QString &userName)
         QFont f;
         f.setPointSizeF(f.pointSizeF());
 
-        userAvatar_ = new Avatar(this);
+        userAvatar_ = new Avatar(this, QFontMetrics(f).height() * 2);
         userAvatar_->setLetter(QChar(userName[0]).toUpper());
-        userAvatar_->setSize(QFontMetrics(f).height() * 2);
 
         // TODO: The provided user name should be a UserId class
         if (userName[0] == '@' && userName.size() > 1)
@@ -822,12 +817,12 @@ TimelineItem::setupSimpleLayout()
 }
 
 void
-TimelineItem::setUserAvatar(const QImage &avatar)
+TimelineItem::setUserAvatar(const QString &userid)
 {
         if (userAvatar_ == nullptr)
                 return;
 
-        userAvatar_->setImage(avatar);
+        userAvatar_->setImage(room_id_, userid);
 }
 
 void
@@ -911,8 +906,7 @@ TimelineItem::addAvatar()
 
         setupAvatarLayout(displayName);
 
-        AvatarProvider::resolve(
-          room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
+        setUserAvatar(userid);
 }
 
 void
