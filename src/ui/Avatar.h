@@ -43,7 +43,5 @@ private:
         QColor text_color_;
         QIcon icon_;
         QPixmap pixmap_;
-        const std::string room;
-        const std::string user;
         int size_;
 };
