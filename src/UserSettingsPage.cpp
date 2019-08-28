@@ -28,6 +28,7 @@
 #include <QSettings>
 #include <QString>
 #include <QTextStream>
+#include <QByteArray>
 
 #include "Config.h"
 #include "MatrixClient.h"
@@ -51,10 +52,24 @@ UserSettings::load()
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
-        theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+
+        if (qgetenv("QT_QPA_PLATFORMTHEME").isEmpty()) {
+            QVariant themeVariant = settings.value("user/theme");
+
+            if (!themeVariant.isValid()) {
+                setTheme("system");
+                return;
+            }
+
+            theme_ = themeVariant.toString();
+
+        } else {
+            theme_ = settings.value("user/theme", defaultTheme_).toString();
+        }
+
 
         applyTheme();
 }
