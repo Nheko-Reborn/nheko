@@ -104,3 +104,9 @@ package.dir
 
 # Archives
 *.bz2
+
+# GTAGS
+GPATH
+GRTAGS
+GTAGS
+
