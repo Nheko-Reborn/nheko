@@ -56,7 +56,7 @@ UserSettings::load()
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
-        if (qgetenv("QT_QPA_PLATFORMTHEME").isEmpty()) {
+        if (!qgetenv("QT_QPA_PLATFORMTHEME").isEmpty()) {
             QVariant themeVariant = settings.value("user/theme");
 
             if (!themeVariant.isValid()) {
