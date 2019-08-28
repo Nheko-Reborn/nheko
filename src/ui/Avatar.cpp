@@ -3,12 +3,15 @@
 #include "Utils.h"
 #include "ui/Avatar.h"
 
+#define AVATAR_RECT_ROUND 5
+
 Avatar::Avatar(QWidget *parent)
   : QWidget(parent)
 {
-        size_   = ui::AvatarSize;
-        type_   = ui::AvatarType::Letter;
-        letter_ = "A";
+        size_    = ui::AvatarSize;
+        type_    = ui::AvatarType::Letter;
+        letter_  = "A";
+        rounded_ = true;
 
         QFont _font(font());
         _font.setPointSizeF(ui::FontSize);
@@ -101,6 +104,11 @@ Avatar::setIcon(const QIcon &icon)
 }
 
 void
+Avatar::rounded(bool setting)
+{
+        rounded_ = setting;
+}
+
 Avatar::paintEvent(QPaintEvent *)
 {
         QPainter painter(this);
@@ -116,7 +124,11 @@ Avatar::paintEvent(QPaintEvent *)
 
                 painter.setPen(Qt::NoPen);
                 painter.setBrush(brush);
-                painter.drawEllipse(r.center(), hs, hs);
+                rounded_ ?
+                  painter.drawEllipse(r.center(), hs, hs) :
+                  painter.drawRoundedRect( r,
+                                           AVATAR_RECT_ROUND,
+                                           AVATAR_RECT_ROUND);
         }
 
         switch (type_) {
@@ -129,7 +141,13 @@ Avatar::paintEvent(QPaintEvent *)
         }
         case ui::AvatarType::Image: {
                 QPainterPath ppath;
-                ppath.addEllipse(width() / 2 - hs, height() / 2 - hs, size_, size_);
+
+                rounded_ ?
+                  ppath.addEllipse(width() / 2 - hs, height() / 2 - hs, size_, size_) :
+                  ppath.addRoundedRect( r,
+                                        AVATAR_RECT_ROUND,
+                                        AVATAR_RECT_ROUND);
+
                 painter.setClipPath(ppath);
                 painter.drawPixmap(QRect(width() / 2 - hs, height() / 2 - hs, size_, size_),
                                    pixmap_);

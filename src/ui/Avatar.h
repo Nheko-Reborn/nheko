@@ -23,6 +23,7 @@ public:
         void setLetter(const QString &letter);
         void setSize(int size);
         void setTextColor(const QColor &color);
+        void rounded(bool setting);
 
         QColor backgroundColor() const;
         QColor textColor() const;
@@ -44,4 +45,5 @@ private:
         QImage image_;
         QPixmap pixmap_;
         int size_;
+        bool rounded_;
 };
