@@ -42,7 +42,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                 return;
 
         QPixmap pixmap;
-        if (avatar_cache.find(cacheKey, pixmap)) {
+        if (avatar_cache.find(cacheKey, &pixmap)) {
                 nhlog::net()->info("cached pixmap {}", avatarUrl.toStdString());
                 callback(pixmap);
                 return;

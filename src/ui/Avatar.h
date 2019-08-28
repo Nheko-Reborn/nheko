@@ -22,7 +22,6 @@ public:
         void setImage(const QString &avatar_url);
         void setImage(const QString &room, const QString &user);
         void setLetter(const QString &letter);
-        //        void setSize(int size);
         void setTextColor(const QColor &color);
 
         QColor backgroundColor() const;
