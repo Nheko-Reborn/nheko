@@ -287,7 +287,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setPen(Qt::NoPen);
                 p.setBrush(brush);
 
-                p.drawEllipse(avatarRegion.center(), wm.iconSize / 2, wm.iconSize / 2);
+                rounded_ ?
+                  p.drawEllipse(avatarRegion.center(), wm.iconSize / 2, wm.iconSize / 2) :
+                  p.drawRoundedRect( avatarRegion,
+                                     AVATAR_RECT_ROUND,
+                                     AVATAR_RECT_ROUND);
 
                 QFont bubbleFont;
                 bubbleFont.setPointSizeF(bubbleFont.pointSizeF() * 1.4);
@@ -300,7 +304,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.save();
 
                 QPainterPath path;
-                path.addEllipse(wm.padding, wm.padding, wm.iconSize, wm.iconSize);
+                rounded_ ?
+                  path.addEllipse(wm.padding, wm.padding, wm.iconSize, wm.iconSize) :
+                  path.addRoundedRect( avatarRegion,
+                                       AVATAR_RECT_ROUND,
+                                       AVATAR_RECT_ROUND);
+
                 p.setClipPath(path);
 
                 p.drawPixmap(avatarRegion, roomAvatar_);
@@ -445,4 +454,10 @@ RoomInfoListItem::setDescriptionMessage(const DescInfo &info)
 {
         lastMsgInfo_ = info;
         update();
+}
+
+void
+RoomInfoListItem::setRounded(bool setting)
+{
+        rounded_ = setting;
 }

@@ -109,6 +109,7 @@ public:
         void setTimestampColor(QColor &color) { timestampColor_ = color; }
         void setAvatarFgColor(QColor &color) { avatarFgColor_ = color; }
         void setAvatarBgColor(QColor &color) { avatarBgColor_ = color; }
+        void setAvatarRounded(bool setting) { rounded_ = setting; }
 
         void setHighlightedTitleColor(QColor &color) { highlightedTitleColor_ = color; }
         void setHighlightedSubtitleColor(QColor &color) { highlightedSubtitleColor_ = color; }
@@ -186,6 +187,7 @@ private:
 
         bool isPressed_         = false;
         bool hasUnreadMessages_ = true;
+        bool rounded_ = true;
 
         int unreadMsgCount_            = 0;
         int unreadHighlightedMsgCount_ = 0;

@@ -104,11 +104,12 @@ Avatar::setIcon(const QIcon &icon)
 }
 
 void
-Avatar::rounded(bool setting)
+Avatar::setRounded(bool setting)
 {
         rounded_ = setting;
 }
 
+void
 Avatar::paintEvent(QPaintEvent *)
 {
         QPainter painter(this);

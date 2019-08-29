@@ -45,5 +45,5 @@ private:
         QImage image_;
         QPixmap pixmap_;
         int size_;
-        bool rounded_;
+        bool rounded_ = true;
 };
