@@ -24,6 +24,17 @@ TimelineView > * {
     border: none;
 }
 
+UserMentionsWidget,
+UserMentionsWidget > * {
+    background-color: white;
+    border: none;
+}
+
+UserMentionsWidget > TimelineItem {
+    qproperty-backgroundColor: white;
+    qproperty-hoverColor: rgba(192, 193, 195, 120);
+}
+
 #scroll_widget {
     background-color: white;
 }

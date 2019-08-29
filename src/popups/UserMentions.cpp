@@ -1,3 +1,5 @@
+#include <QPainter>
+#include <QStyleOption>
 #include <QTabWidget>
 #include <QTimer>
 
@@ -140,7 +142,6 @@ UserMentions::pushItem(const QString &event_id,
                                                                  local_scroll_widget_);
                 local_view_item->setEventId(event_id);
                 local_view_item->hide();
-
                 local_scroll_layout_->addWidget(local_view_item);
 
                 QTimer::singleShot(0, this, [local_view_item]() {
@@ -148,4 +149,13 @@ UserMentions::pushItem(const QString &event_id,
                         local_view_item->adjustSize();
                 });
         }
+}
+
+void
+UserMentions::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
