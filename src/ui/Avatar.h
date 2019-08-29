@@ -23,7 +23,7 @@ public:
         void setLetter(const QString &letter);
         void setSize(int size);
         void setTextColor(const QColor &color);
-        void rounded(bool setting);
+        void setRounded(bool setting);
 
         QColor backgroundColor() const;
         QColor textColor() const;

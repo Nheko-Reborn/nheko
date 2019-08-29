@@ -135,10 +135,11 @@ UserInfoWidget::reset()
 }
 
 void
-UserInfoWidget::setAvatar(const QImage &img)
+UserInfoWidget::setAvatar(const QImage &img, bool rounded)
 {
         avatar_image_ = img;
         userAvatar_->setImage(img);
+        userAvatar_->setRounded(rounded);
         update();
 }
 
