@@ -114,4 +114,7 @@
         <file>styles/nheko.qss</file>
         <file>styles/nheko-dark.qss</file>
     </qresource>
+    <qresource prefix="/">
+        <file>qml/TimelineView.qml</file>
+    </qresource>
 </RCC>

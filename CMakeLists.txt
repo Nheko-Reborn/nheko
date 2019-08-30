@@ -69,7 +69,7 @@ include(LMDB)
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 REQUIRED)
 find_package(Qt5DBus)
 
 if (APPLE)
@@ -191,13 +191,14 @@ set(SRC_FILES
     src/emoji/Provider.cpp
 
     # Timeline
-    src/timeline/TimelineViewManager.cpp
-    src/timeline/TimelineItem.cpp
-    src/timeline/TimelineView.cpp
-    src/timeline/widgets/AudioItem.cpp
-    src/timeline/widgets/FileItem.cpp
-    src/timeline/widgets/ImageItem.cpp
-    src/timeline/widgets/VideoItem.cpp
+    src/timeline2/TimelineViewManager.cpp
+    #src/timeline/TimelineViewManager.cpp
+    #src/timeline/TimelineItem.cpp
+    #src/timeline/TimelineView.cpp
+    #src/timeline/widgets/AudioItem.cpp
+    #src/timeline/widgets/FileItem.cpp
+    #src/timeline/widgets/ImageItem.cpp
+    #src/timeline/widgets/VideoItem.cpp
 
     # UI components
     src/ui/Avatar.cpp
@@ -333,13 +334,14 @@ qt5_wrap_cpp(MOC_HEADERS
     src/emoji/PickButton.h
 
     # Timeline
-    src/timeline/TimelineItem.h
-    src/timeline/TimelineView.h
-    src/timeline/TimelineViewManager.h
-    src/timeline/widgets/AudioItem.h
-    src/timeline/widgets/FileItem.h
-    src/timeline/widgets/ImageItem.h
-    src/timeline/widgets/VideoItem.h
+    src/timeline2/TimelineViewManager.h
+    #src/timeline/TimelineItem.h
+    #src/timeline/TimelineView.h
+    #src/timeline/TimelineViewManager.h
+    #src/timeline/widgets/AudioItem.h
+    #src/timeline/widgets/FileItem.h
+    #src/timeline/widgets/ImageItem.h
+    #src/timeline/widgets/VideoItem.h
 
     # UI components
     src/ui/Avatar.h
@@ -405,6 +407,8 @@ set(COMMON_LIBS
     Qt5::Svg
     Qt5::Concurrent
     Qt5::Multimedia
+    Qt5::Qml
+    Qt5::QuickControls2
     nlohmann_json::nlohmann_json)
 
 if(APPVEYOR_BUILD)

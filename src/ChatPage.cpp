@@ -44,7 +44,7 @@
 
 #include "dialogs/ReadReceipts.h"
 #include "popups/UserMentions.h"
-#include "timeline/TimelineViewManager.h"
+#include "timeline2/TimelineViewManager.h"
 
 // TODO: Needs to be updated with an actual secret.
 static const std::string STORAGE_SECRET_KEY("secret");
@@ -113,7 +113,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         view_manager_ = new TimelineViewManager(this);
 
         contentLayout_->addWidget(top_bar_);
-        contentLayout_->addWidget(view_manager_);
+        contentLayout_->addWidget(view_manager_->getWidget());
 
         connect(this,
                 &ChatPage::removeTimelineEvent,
