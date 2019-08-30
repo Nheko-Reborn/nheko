@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <QImage>
+#include <QPixmap>
 #include <functional>
 
 class AvatarProxy : public QObject
@@ -28,9 +28,15 @@ signals:
         void avatarDownloaded(const QByteArray &data);
 };
 
-using AvatarCallback = std::function<void(QImage)>;
+using AvatarCallback = std::function<void(QPixmap)>;
 
 namespace AvatarProvider {
 void
-resolve(const QString &room_id, const QString &user_id, QObject *receiver, AvatarCallback cb);
+resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback cb);
+void
+resolve(const QString &room_id,
+        const QString &user_id,
+        int size,
+        QObject *receiver,
+        AvatarCallback cb);
 }

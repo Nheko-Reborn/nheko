@@ -16,6 +16,8 @@ constexpr auto MAX_LOG_FILES = 3;
 }
 
 namespace nhlog {
+bool enable_debug_log_from_commandline = false;
+
 void
 init(const std::string &file_path)
 {

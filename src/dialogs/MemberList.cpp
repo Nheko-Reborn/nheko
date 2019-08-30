@@ -9,7 +9,6 @@
 
 #include "dialogs/MemberList.h"
 
-#include "AvatarProvider.h"
 #include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"
@@ -28,17 +27,10 @@ MemberItem::MemberItem(const RoomMember &member, QWidget *parent)
         textLayout_->setMargin(0);
         textLayout_->setSpacing(0);
 
-        avatar_ = new Avatar(this);
-        avatar_->setSize(44);
+        avatar_ = new Avatar(this, 44);
         avatar_->setLetter(utils::firstChar(member.display_name));
 
-        if (!member.avatar.isNull())
-                avatar_->setImage(member.avatar);
-        else
-                AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
-                                        member.user_id,
-                                        this,
-                                        [this](const QImage &img) { avatar_->setImage(img); });
+        avatar_->setImage(ChatPage::instance()->currentRoom(), member.user_id);
 
         QFont nameFont;
         nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);

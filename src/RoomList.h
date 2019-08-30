@@ -61,12 +61,12 @@ signals:
         void totalUnreadMessageCountUpdated(int count);
         void acceptInvite(const QString &room_id);
         void declineInvite(const QString &room_id);
-        void roomAvatarChanged(const QString &room_id, const QPixmap &img);
+        void roomAvatarChanged(const QString &room_id, const QString &img);
         void joinRoom(const QString &room_id);
-        void updateRoomAvatarCb(const QString &room_id, const QPixmap &img);
+        void updateRoomAvatarCb(const QString &room_id, const QString &img);
 
 public slots:
-        void updateRoomAvatar(const QString &roomid, const QPixmap &img);
+        void updateRoomAvatar(const QString &roomid, const QString &img);
         void highlightSelectedRoom(const QString &room_id);
         void updateUnreadMessageCount(const QString &roomid, int count, int highlightedCount);
         void updateRoomDescription(const QString &roomid, const DescInfo &info);

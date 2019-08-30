@@ -21,6 +21,7 @@
 #include <QPainter>
 #include <QtGlobal>
 
+#include "AvatarProvider.h"
 #include "Cache.h"
 #include "Config.h"
 #include "RoomInfoListItem.h"
@@ -434,10 +435,12 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 }
 
 void
-RoomInfoListItem::setAvatar(const QImage &img)
+RoomInfoListItem::setAvatar(const QString &avatar_url)
 {
-        roomAvatar_ = utils::scaleImageToPixmap(img, IconSize);
-        update();
+        AvatarProvider::resolve(avatar_url, IconSize, this, [this](const QPixmap &img) {
+                roomAvatar_ = img;
+                update();
+        });
 }
 
 void

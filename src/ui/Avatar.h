@@ -15,13 +15,13 @@ class Avatar : public QWidget
         Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
 
 public:
-        explicit Avatar(QWidget *parent = 0);
+        explicit Avatar(QWidget *parent = 0, int size = ui::AvatarSize);
 
         void setBackgroundColor(const QColor &color);
         void setIcon(const QIcon &icon);
-        void setImage(const QImage &image);
+        void setImage(const QString &avatar_url);
+        void setImage(const QString &room, const QString &user);
         void setLetter(const QString &letter);
-        void setSize(int size);
         void setTextColor(const QColor &color);
 
         QColor backgroundColor() const;
@@ -41,7 +41,6 @@ private:
         QColor background_color_;
         QColor text_color_;
         QIcon icon_;
-        QImage image_;
         QPixmap pixmap_;
         int size_;
 };

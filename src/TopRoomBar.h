@@ -44,7 +44,7 @@ class TopRoomBar : public QWidget
 public:
         TopRoomBar(QWidget *parent = 0);
 
-        void updateRoomAvatar(const QImage &avatar_image);
+        void updateRoomAvatar(const QString &avatar_image);
         void updateRoomAvatar(const QIcon &icon);
         void updateRoomName(const QString &name);
         void updateRoomTopic(QString topic);

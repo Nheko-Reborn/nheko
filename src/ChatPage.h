@@ -129,7 +129,7 @@ signals:
 
         void ownProfileOk();
         void setUserDisplayName(const QString &name);
-        void setUserAvatar(const QImage &avatar);
+        void setUserAvatar(const QString &avatar);
         void loggedOut();
 
         void trySyncCb();
@@ -159,7 +159,7 @@ signals:
 
 private slots:
         void showUnreadMessageNotification(int count);
-        void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
+        void updateTopBarAvatar(const QString &roomid, const QString &img);
         void changeTopRoomInfo(const QString &room_id);
         void logout();
         void removeRoom(const QString &room_id);

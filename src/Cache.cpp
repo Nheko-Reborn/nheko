@@ -1830,10 +1830,7 @@ Cache::searchRooms(const std::string &query, std::uint8_t max_items)
 
         std::vector<RoomSearchResult> results;
         for (auto it = items.begin(); it != end; it++) {
-                results.push_back(
-                  RoomSearchResult{it->second.first,
-                                   it->second.second,
-                                   QImage::fromData(image(txn, it->second.second.avatar_url))});
+                results.push_back(RoomSearchResult{it->second.first, it->second.second});
         }
 
         txn.commit();
