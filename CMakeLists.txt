@@ -192,6 +192,7 @@ set(SRC_FILES
 
     # Timeline
     src/timeline2/TimelineViewManager.cpp
+    src/timeline2/TimelineModel.cpp
     #src/timeline/TimelineViewManager.cpp
     #src/timeline/TimelineItem.cpp
     #src/timeline/TimelineView.cpp
@@ -335,6 +336,7 @@ qt5_wrap_cpp(MOC_HEADERS
 
     # Timeline
     src/timeline2/TimelineViewManager.h
+    src/timeline2/TimelineModel.h
     #src/timeline/TimelineItem.h
     #src/timeline/TimelineView.h
     #src/timeline/TimelineViewManager.h
