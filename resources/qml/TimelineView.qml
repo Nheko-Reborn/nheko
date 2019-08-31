@@ -4,19 +4,28 @@ Rectangle {
 	anchors.fill: parent
 
 	Text {
-		visible: !timeline
+		visible: !timelineManager.timeline
 		anchors.centerIn: parent
 		text: qsTr("No room open")
 		font.pointSize: 24
 	}
+	Text {
+		visible: timelineManager.timeline != null
+		anchors.centerIn: parent
+		text: qsTr("room open")
+		font.pointSize: 24
+	}
 
 	ListView {
-		visible: timeline != undefined
+		visible: timelineManager.timeline != null
 		anchors.fill: parent
 
-		model: timeline
+		id: chat
+
+		model: timelineManager.timeline
 		delegate: Text {
-			text: userId
+			height: contentHeight
+			text: model.userId
 		}
-					}
+	}
 }

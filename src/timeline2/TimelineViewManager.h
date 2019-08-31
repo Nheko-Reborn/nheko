@@ -7,6 +7,7 @@
 #include <mtx/responses.hpp>
 
 #include "Cache.h"
+#include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
 
@@ -17,6 +18,10 @@
 class TimelineViewManager : public QObject
 {
         Q_OBJECT
+
+        Q_PROPERTY(
+          TimelineModel *timeline MEMBER timeline_ READ activeTimeline NOTIFY activeTimelineChanged)
+
 public:
         TimelineViewManager(QWidget *parent = 0);
         QWidget *getWidget() const { return container; }
@@ -27,9 +32,16 @@ public:
         void sync(const mtx::responses::Rooms &rooms) {}
         void clearAll() { models.clear(); }
 
+        Q_INVOKABLE TimelineModel *activeTimeline() const
+        {
+                nhlog::ui()->info("aaaa");
+                return timeline_;
+        }
+
 signals:
         void clearRoomMessageCount(QString roomid);
         void updateRoomsLastMessage(const QString &user, const DescInfo &info);
+        void activeTimelineChanged(TimelineModel *timeline);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids) {}
@@ -70,6 +82,7 @@ public slots:
 private:
         QQuickView *view;
         QWidget *container;
+        TimelineModel *timeline_ = nullptr;
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
 };

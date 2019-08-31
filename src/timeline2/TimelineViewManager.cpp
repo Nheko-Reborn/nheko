@@ -10,6 +10,7 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
         view      = new QQuickView();
         container = QWidget::createWindowContainer(view, parent);
         container->setMinimumSize(200, 200);
+        view->rootContext()->setContextProperty("timelineManager", this);
         view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
 }
 
@@ -18,9 +19,8 @@ TimelineViewManager::initialize(const mtx::responses::Rooms &rooms)
 {
         for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
                 addRoom(QString::fromStdString(it->first));
+                models.value(QString::fromStdString(it->first))->addEvents(it->second.timeline);
         }
-
-        sync(rooms);
 }
 
 void
@@ -37,8 +37,8 @@ TimelineViewManager::setHistoryView(const QString &room_id)
 
         auto room = models.find(room_id);
         if (room != models.end()) {
-                view->rootContext()->setContextProperty("timeline",
-                                                        QVariant::fromValue(room.value().data()));
+                timeline_ = room.value().get();
+                emit activeTimelineChanged(timeline_);
                 nhlog::ui()->info("Activated room {}", room_id.toStdString());
         }
 }
@@ -48,5 +48,7 @@ TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Ti
 {
         for (const auto &e : msgs) {
                 addRoom(e.first);
+
+                models.value(e.first)->addEvents(e.second);
         }
 }
