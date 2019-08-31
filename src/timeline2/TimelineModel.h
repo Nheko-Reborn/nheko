@@ -1,12 +1,10 @@
 #pragma once
 
-#include <map>
-#include <vector>
-
 #include <QAbstractListModel>
 #include <QColor>
+#include <QHash>
 
-#include <mtx/events/collections.hpp>
+#include <mtx/responses.hpp>
 
 class TimelineModel : public QAbstractListModel
 {
@@ -33,10 +31,12 @@ public:
 
         Q_INVOKABLE QColor userColor(QString id, QColor background);
 
+        void addEvents(const mtx::responses::Timeline &events);
+
 private:
-        std::map<QString, mtx::events::collections::TimelineEvents> events;
+        QHash<QString, mtx::events::collections::TimelineEvents> events;
         std::vector<QString> eventOrder;
 
-        std::map<QString, QColor> userColors;
+        QHash<QString, QColor> userColors;
 };
   
