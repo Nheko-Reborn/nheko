@@ -24,6 +24,14 @@ senderId(const T &event)
 }
 }
 
+TimelineModel::TimelineModel(QString room_id, QObject *parent)
+  : QAbstractListModel(parent)
+  , room_id_(room_id)
+{
+        connect(
+          this, &TimelineModel::oldMessagesRetrieved, this, &TimelineModel::addBackwardsEvents);
+}
+
 QHash<int, QByteArray>
 TimelineModel::roleNames() const
 {
@@ -65,6 +73,11 @@ TimelineModel::data(const QModelIndex &index, int role) const
 void
 TimelineModel::addEvents(const mtx::responses::Timeline &events)
 {
+        if (isInitialSync) {
+                prev_batch_token_ = QString::fromStdString(events.prev_batch);
+                isInitialSync     = false;
+        }
+
         nhlog::ui()->info("add {} events", events.events.size());
         std::vector<QString> ids;
         for (const auto &e : events.events) {
@@ -81,6 +94,58 @@ TimelineModel::addEvents(const mtx::responses::Timeline &events)
                         static_cast<int>(this->events.size() + ids.size() - 1));
         this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
         endInsertRows();
+}
+
+void
+TimelineModel::fetchHistory()
+{
+        if (paginationInProgress) {
+                nhlog::ui()->warn("Already loading older messages");
+                return;
+        }
+
+        paginationInProgress = true;
+        mtx::http::MessagesOpts opts;
+        opts.room_id = room_id_.toStdString();
+        opts.from    = prev_batch_token_.toStdString();
+
+        nhlog::ui()->info("Paginationg room {}", opts.room_id);
+
+        http::client()->messages(
+          opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->error("failed to call /messages ({}): {} - {}",
+                                              opts.room_id,
+                                              mtx::errors::to_string(err->matrix_error.errcode),
+                                              err->matrix_error.error);
+                          return;
+                  }
+
+                  emit oldMessagesRetrieved(std::move(res));
+          });
+}
+
+void
+TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
+{
+        nhlog::ui()->info("add {} backwards events", msgs.chunk.size());
+        std::vector<QString> ids;
+        for (const auto &e : msgs.chunk) {
+                QString id =
+                  boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
+
+                this->events.insert(id, e);
+                ids.push_back(id);
+                nhlog::ui()->info("add event {}", id.toStdString());
+        }
+
+        beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
+        this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
+        endInsertRows();
+
+        prev_batch_token_ = QString::fromStdString(msgs.end);
+
+        paginationInProgress = false;
 }
 
 QColor
