@@ -11,9 +11,7 @@ class TimelineModel : public QAbstractListModel
         Q_OBJECT
 
 public:
-        explicit TimelineModel(QObject *parent = 0)
-          : QAbstractListModel(parent)
-        {}
+        explicit TimelineModel(QString room_id, QObject *parent = 0);
 
         enum Roles
         {
@@ -31,11 +29,28 @@ public:
 
         Q_INVOKABLE QColor userColor(QString id, QColor background);
 
+
         void addEvents(const mtx::responses::Timeline &events);
+
+public slots:
+        void fetchHistory();
+
+private slots:
+        // Add old events at the top of the timeline.
+        void addBackwardsEvents(const mtx::responses::Messages &msgs);
+
+signals:
+        void oldMessagesRetrieved(const mtx::responses::Messages &res);
 
 private:
         QHash<QString, mtx::events::collections::TimelineEvents> events;
         std::vector<QString> eventOrder;
+
+        QString room_id_;
+        QString prev_batch_token_;
+
+        bool isInitialSync = true;
+        bool paginationInProgress = false;
 
         QHash<QString, QColor> userColors;
 };

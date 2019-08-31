@@ -9,12 +9,6 @@ Rectangle {
 		text: qsTr("No room open")
 		font.pointSize: 24
 	}
-	Text {
-		visible: timelineManager.timeline != null
-		anchors.centerIn: parent
-		text: qsTr("room open")
-		font.pointSize: 24
-	}
 
 	ListView {
 		visible: timelineManager.timeline != null

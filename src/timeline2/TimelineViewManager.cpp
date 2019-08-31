@@ -27,7 +27,7 @@ void
 TimelineViewManager::addRoom(const QString &room_id)
 {
         if (!models.contains(room_id))
-                models.insert(room_id, QSharedPointer<TimelineModel>(new TimelineModel()));
+                models.insert(room_id, QSharedPointer<TimelineModel>(new TimelineModel(room_id)));
 }
 
 void
@@ -38,6 +38,7 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         auto room = models.find(room_id);
         if (room != models.end()) {
                 timeline_ = room.value().get();
+                timeline_->fetchHistory();
                 emit activeTimelineChanged(timeline_);
                 nhlog::ui()->info("Activated room {}", room_id.toStdString());
         }
