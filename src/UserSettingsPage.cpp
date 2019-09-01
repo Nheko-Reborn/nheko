@@ -133,6 +133,7 @@ UserSettings::save()
         settings.setValue("emoji_font_family", emojiFont_);
 
         settings.endGroup();
+
 }
 
 HorizontalLine::HorizontalLine(QWidget *parent)
@@ -204,7 +205,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         avatarCircles_ = new Toggle(this);
 
         avatarViewLayout->addWidget(avatarViewLabel);
-        avatarViewLayout->addWidget(avatarCircles_);
+        avatarViewLayout->addWidget(avatarCircles_, 0, Qt::AlignRight);
 
         auto typingLayout = new QHBoxLayout;
         typingLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -464,7 +465,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setGroupView(!isDisabled);
         });
 
-        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
+        connect(avatarCircles_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setAvatarCircles(!isDisabled);
         });
 
