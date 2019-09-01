@@ -16,30 +16,44 @@
  */
 
 #include <QBuffer>
+#include <QPixmapCache>
 #include <memory>
+#include <unordered_map>
 
 #include "AvatarProvider.h"
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 
+static QPixmapCache avatar_cache;
+
 namespace AvatarProvider {
-
 void
-resolve(const QString &room_id, const QString &user_id, QObject *receiver, AvatarCallback callback)
+resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback callback)
 {
-        const auto key       = QString("%1 %2").arg(room_id).arg(user_id);
-        const auto avatarUrl = Cache::avatarUrl(room_id, user_id);
+        avatar_cache.setCacheLimit(1024 * 1024);
 
-        if (!Cache::AvatarUrls.contains(key) || !cache::client())
+        const auto cacheKey = avatarUrl + "_size_" + size;
+
+        if (!cache::client())
                 return;
 
         if (avatarUrl.isEmpty())
                 return;
 
+        QPixmap pixmap;
+        if (avatar_cache.find(cacheKey, &pixmap)) {
+                nhlog::net()->info("cached pixmap {}", avatarUrl.toStdString());
+                callback(pixmap);
+                return;
+        }
+
         auto data = cache::client()->image(avatarUrl);
         if (!data.isNull()) {
-                callback(QImage::fromData(data));
+                pixmap.loadFromData(data);
+                avatar_cache.insert(cacheKey, pixmap);
+                nhlog::net()->info("loaded pixmap from disk cache {}", avatarUrl.toStdString());
+                callback(pixmap);
                 return;
         }
 
@@ -47,7 +61,12 @@ resolve(const QString &room_id, const QString &user_id, QObject *receiver, Avata
         QObject::connect(proxy.get(),
                          &AvatarProxy::avatarDownloaded,
                          receiver,
-                         [callback](const QByteArray &data) { callback(QImage::fromData(data)); });
+                         [callback, cacheKey](const QByteArray &data) {
+                                 QPixmap pm;
+                                 pm.loadFromData(data);
+                                 avatar_cache.insert(cacheKey, pm);
+                                 callback(pm);
+                         });
 
         mtx::http::ThumbOpts opts;
         opts.width   = 256;
@@ -67,8 +86,26 @@ resolve(const QString &room_id, const QString &user_id, QObject *receiver, Avata
 
                   cache::client()->saveImage(opts.mxc_url, res);
 
-                  auto data = QByteArray(res.data(), res.size());
-                  emit proxy->avatarDownloaded(data);
+                  nhlog::net()->info("downloaded pixmap {}", opts.mxc_url);
+
+                  emit proxy->avatarDownloaded(QByteArray(res.data(), res.size()));
           });
+}
+
+void
+resolve(const QString &room_id,
+        const QString &user_id,
+        int size,
+        QObject *receiver,
+        AvatarCallback callback)
+{
+        const auto key       = QString("%1 %2").arg(room_id).arg(user_id);
+        const auto avatarUrl = Cache::avatarUrl(room_id, user_id);
+        const auto cacheKey  = avatarUrl + "_size_" + size;
+
+        if (!Cache::AvatarUrls.contains(key) || !cache::client())
+                return;
+
+        resolve(avatarUrl, size, receiver, callback);
 }
 }

@@ -53,10 +53,9 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         textLayout_->setSpacing(widgetMargin / 2);
         textLayout_->setContentsMargins(widgetMargin * 2, widgetMargin, widgetMargin, widgetMargin);
 
-        userAvatar_ = new Avatar(this);
+        userAvatar_ = new Avatar(this, fontHeight * 2.5);
         userAvatar_->setObjectName("userAvatar");
         userAvatar_->setLetter(QChar('?'));
-        userAvatar_->setSize(fontHeight * 2.5);
 
         QFont nameFont;
         nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
@@ -136,14 +135,6 @@ UserInfoWidget::reset()
 }
 
 void
-UserInfoWidget::setAvatar(const QImage &img)
-{
-        avatar_image_ = img;
-        userAvatar_->setImage(img);
-        update();
-}
-
-void
 UserInfoWidget::setDisplayName(const QString &name)
 {
         if (name.isEmpty())
@@ -161,6 +152,14 @@ UserInfoWidget::setUserId(const QString &userid)
 {
         user_id_ = userid;
         userIdLabel_->setText(userid);
+        update();
+}
+
+void
+UserInfoWidget::setAvatar(const QString &url)
+{
+        userAvatar_->setImage(url);
+        update();
 }
 
 void

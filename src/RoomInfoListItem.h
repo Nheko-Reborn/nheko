@@ -73,7 +73,7 @@ public:
         bool isPressed() const { return isPressed_; }
         int unreadMessageCount() const { return unreadMsgCount_; }
 
-        void setAvatar(const QImage &avatar_image);
+        void setAvatar(const QString &avatar_url);
         void setDescriptionMessage(const DescInfo &info);
         DescInfo lastMessageInfo() const { return lastMsgInfo_; }
 

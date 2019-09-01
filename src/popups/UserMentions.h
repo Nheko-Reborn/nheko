@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QEvent>
 #include <QMap>
+#include <QPaintEvent>
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QString>
@@ -25,6 +26,9 @@ public:
 
         void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
         void showPopup();
+
+protected:
+        void paintEvent(QPaintEvent *) override;
 
 private:
         void pushItem(const QString &event_id,
