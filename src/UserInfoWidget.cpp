@@ -1,3 +1,4 @@
+
 /*
  * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
  *
@@ -135,11 +136,10 @@ UserInfoWidget::reset()
 }
 
 void
-UserInfoWidget::setAvatar(const QImage &img, bool rounded)
+UserInfoWidget::setAvatar(const QImage &img)
 {
         avatar_image_ = img;
         userAvatar_->setImage(img);
-        userAvatar_->setRounded(rounded);
         update();
 }
 

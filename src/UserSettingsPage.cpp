@@ -53,7 +53,7 @@ UserSettings::load()
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
-        avatarCircles_                = settings.value("user/avatar/circles", true).toString();
+        avatarCircles_                = settings.value("user/avatar/circles", true).toBool();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
@@ -119,7 +119,7 @@ UserSettings::save()
         settings.setValue("start_in_tray", isStartInTrayEnabled_);
         settings.endGroup();
 
-        settings.startGroup("avatar");
+        settings.beginGroup("avatar");
         settings.setValue("circles", avatarCircles_);
         settings.endGroup();
 
@@ -383,7 +383,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(groupViewLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
-        mainLayout_->addWidget(avatarViewLayout);
+        mainLayout_->addLayout(avatarViewLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(typingLayout);
         mainLayout_->addLayout(receiptsLayout);
@@ -465,7 +465,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         });
 
         connect(groupViewToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setRounded(!isDisabled);
+                settings_->setAvatarCircles(!isDisabled);
         });
 
         connect(typingNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {

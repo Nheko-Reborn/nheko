@@ -109,7 +109,6 @@ public:
         void setTimestampColor(QColor &color) { timestampColor_ = color; }
         void setAvatarFgColor(QColor &color) { avatarFgColor_ = color; }
         void setAvatarBgColor(QColor &color) { avatarBgColor_ = color; }
-        void setAvatarRounded(bool setting) { rounded_ = setting; }
 
         void setHighlightedTitleColor(QColor &color) { highlightedTitleColor_ = color; }
         void setHighlightedSubtitleColor(QColor &color) { highlightedSubtitleColor_ = color; }
