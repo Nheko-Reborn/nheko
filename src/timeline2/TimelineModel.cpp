@@ -22,6 +22,13 @@ senderId(const T &event)
 {
         return QString::fromStdString(event.sender);
 }
+
+template<class T>
+QDateTime
+eventTimestamp(const T &event)
+{
+        return QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
+}
 }
 
 TimelineModel::TimelineModel(QString room_id, QObject *parent)
@@ -36,6 +43,7 @@ QHash<int, QByteArray>
 TimelineModel::roleNames() const
 {
         return {
+          {Section, "section"},
           {Type, "type"},
           {Body, "body"},
           {FormattedBody, "formattedBody"},
@@ -55,16 +63,49 @@ TimelineModel::rowCount(const QModelIndex &parent) const
 QVariant
 TimelineModel::data(const QModelIndex &index, int role) const
 {
-        nhlog::ui()->info("data");
         if (index.row() < 0 && index.row() >= (int)eventOrder.size())
                 return QVariant();
 
         QString id = eventOrder[index.row()];
 
         switch (role) {
+        case Section: {
+                QDateTime date = boost::apply_visitor(
+                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, events.value(id));
+                date.setTime(QTime());
+
+                QString userId = boost::apply_visitor(
+                  [](const auto &e) -> QString { return senderId(e); }, events.value(id));
+
+                for (int r = index.row() - 1; r > 0; r--) {
+                        QDateTime prevDate = boost::apply_visitor(
+                          [](const auto &e) -> QDateTime { return eventTimestamp(e); },
+                          events.value(eventOrder[r]));
+                        prevDate.setTime(QTime());
+                        if (prevDate != date)
+                                return QString("%2 %1").arg(date.toMSecsSinceEpoch()).arg(userId);
+
+                        QString prevUserId =
+                          boost::apply_visitor([](const auto &e) -> QString { return senderId(e); },
+                                               events.value(eventOrder[r]));
+                        if (userId != prevUserId)
+                                break;
+                }
+
+                return QString("%1").arg(userId);
+        }
         case UserId:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return senderId(e); }, events.value(id)));
+        case UserName:
+                return QVariant(Cache::displayName(
+                  room_id_,
+                  boost::apply_visitor([](const auto &e) -> QString { return senderId(e); },
+                                       events.value(id))));
+
+        case Timestamp:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, events.value(id)));
         default:
                 return QVariant();
         }

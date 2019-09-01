@@ -34,7 +34,6 @@ public:
 
         Q_INVOKABLE TimelineModel *activeTimeline() const
         {
-                nhlog::ui()->info("aaaa");
                 return timeline_;
         }
 

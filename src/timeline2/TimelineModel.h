@@ -15,6 +15,7 @@ public:
 
         enum Roles
         {
+                Section,
                 Type,
                 Body,
                 FormattedBody,
