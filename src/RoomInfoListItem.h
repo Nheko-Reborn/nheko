@@ -186,7 +186,6 @@ private:
 
         bool isPressed_         = false;
         bool hasUnreadMessages_ = true;
-        bool rounded_ = true;
 
         int unreadMsgCount_            = 0;
         int unreadHighlightedMsgCount_ = 0;
