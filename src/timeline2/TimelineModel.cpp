@@ -56,7 +56,6 @@ int
 TimelineModel::rowCount(const QModelIndex &parent) const
 {
         Q_UNUSED(parent);
-        nhlog::ui()->info("current order size: {}", eventOrder.size());
         return (int)this->eventOrder.size();
 }
 
@@ -98,10 +97,8 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return senderId(e); }, events.value(id)));
         case UserName:
-                return QVariant(Cache::displayName(
-                  room_id_,
-                  boost::apply_visitor([](const auto &e) -> QString { return senderId(e); },
-                                       events.value(id))));
+                return QVariant(displayName(boost::apply_visitor(
+                  [](const auto &e) -> QString { return senderId(e); }, events.value(id))));
 
         case Timestamp:
                 return QVariant(boost::apply_visitor(
@@ -119,7 +116,6 @@ TimelineModel::addEvents(const mtx::responses::Timeline &events)
                 isInitialSync     = false;
         }
 
-        nhlog::ui()->info("add {} events", events.events.size());
         std::vector<QString> ids;
         for (const auto &e : events.events) {
                 QString id =
@@ -127,7 +123,6 @@ TimelineModel::addEvents(const mtx::responses::Timeline &events)
 
                 this->events.insert(id, e);
                 ids.push_back(id);
-                nhlog::ui()->info("add event {}", id.toStdString());
         }
 
         beginInsertRows(QModelIndex(),
@@ -169,7 +164,6 @@ TimelineModel::fetchHistory()
 void
 TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
-        nhlog::ui()->info("add {} backwards events", msgs.chunk.size());
         std::vector<QString> ids;
         for (const auto &e : msgs.chunk) {
                 QString id =
@@ -177,7 +171,6 @@ TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
 
                 this->events.insert(id, e);
                 ids.push_back(id);
-                nhlog::ui()->info("add event {}", id.toStdString());
         }
 
         beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
@@ -196,4 +189,10 @@ TimelineModel::userColor(QString id, QColor background)
                 userColors.insert(
                   id, QColor(utils::generateContrastingHexColor(id, background.name())));
         return userColors.value(id);
+}
+
+QString
+TimelineModel::displayName(QString id) const
+{
+        return Cache::displayName(room_id_, id);
 }

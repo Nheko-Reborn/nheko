@@ -29,7 +29,7 @@ public:
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
         Q_INVOKABLE QColor userColor(QString id, QColor background);
-
+        Q_INVOKABLE QString displayName(QString id) const;
 
         void addEvents(const mtx::responses::Timeline &events);
 
