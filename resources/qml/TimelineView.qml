@@ -13,18 +13,29 @@ Rectangle {
 	}
 
 	ListView {
+		id: chat
+
 		visible: timelineManager.timeline != null
 		anchors.fill: parent
 
-		id: chat
+		ScrollBar.vertical: ScrollBar {
+			id: scrollbar
+			anchors.top: parent.top
+			anchors.right: parent.right
+			anchors.bottom: parent.bottom
+		}
 
 		model: timelineManager.timeline
 		delegate: RowLayout {
-			width: chat.width
+			anchors.leftMargin: 52
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.rightMargin: scrollbar.width
+
 			Text {
 				Layout.fillWidth: true
 				height: contentHeight
-				text: model.userName
+				text: "Event content"
 			}
 
 			Button {
@@ -88,7 +99,9 @@ Rectangle {
 			property: "section"
 			delegate: Column {
 				width: parent.width
+				height: dateBubble.visible ? dateBubble.height + userName.height : userName.height
 				Label {
+					id: dateBubble
 					anchors.horizontalCenter: parent.horizontalCenter
 					visible: section.includes(" ")
 					text: Qt.formatDate(new Date(Number(section.split(" ")[1])))
@@ -100,7 +113,20 @@ Rectangle {
 						color: "black"
 					}
 				}
-				Text { text: section.split(" ")[0] }
+				Row {
+					spacing: 4
+					Rectangle {
+						width: 48
+						height: 48
+						color: "green"
+					}
+
+					Text { 
+						id: userName
+						text: chat.model.displayName(section.split(" ")[0])
+						color: chat.model.userColor(section.split(" ")[0], "#ffffff")
+					}
+				}
 			}
 		}
 	}
