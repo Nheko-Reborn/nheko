@@ -77,7 +77,7 @@ utils::setScaleFactor(float factor)
 float
 utils::scaleFactor()
 {
-        QSettings settings("nheko", "nheko");
+        QSettings settings;
         return settings.value("settings/scale_factor", -1).toFloat();
 }
 
