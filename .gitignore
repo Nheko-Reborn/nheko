@@ -52,6 +52,9 @@ ui_*.h
 *.qmlproject.user
 *.qmlproject.user.*
 
+# Vim
+*.swp
+
 #####=== CMake ===#####
 
 CMakeCache.txt
