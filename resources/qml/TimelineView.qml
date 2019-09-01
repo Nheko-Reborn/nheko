@@ -104,7 +104,7 @@ Rectangle {
 					id: dateBubble
 					anchors.horizontalCenter: parent.horizontalCenter
 					visible: section.includes(" ")
-					text: Qt.formatDate(new Date(Number(section.split(" ")[1])))
+					text: chat.model.formatDateSeparator(new Date(Number(section.split(" ")[1])))
 					height: contentHeight * 1.2
 					width: contentWidth * 1.2
 					horizontalAlignment: Text.AlignHCenter

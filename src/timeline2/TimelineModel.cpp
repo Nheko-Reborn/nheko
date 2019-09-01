@@ -1,5 +1,7 @@
 #include "TimelineModel.h"
 
+#include <QRegularExpression>
+
 #include "Logging.h"
 #include "Utils.h"
 
@@ -195,4 +197,19 @@ QString
 TimelineModel::displayName(QString id) const
 {
         return Cache::displayName(room_id_, id);
+}
+
+QString
+TimelineModel::formatDateSeparator(QDate date) const
+{
+        auto now = QDateTime::currentDateTime();
+
+        QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
+
+        if (now.date().year() == date.year()) {
+                QRegularExpression rx("[^a-zA-Z]*y+[^a-zA-Z]*");
+                fmt = fmt.remove(rx);
+        }
+
+        return date.toString(fmt);
 }
