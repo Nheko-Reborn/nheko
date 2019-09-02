@@ -7,6 +7,13 @@
 
 TimelineViewManager::TimelineViewManager(QWidget *parent)
 {
+        qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
+                                         "com.github.nheko",
+                                         1,
+                                         0,
+                                         "MtxEvent",
+                                         "Can't instantiate enum!");
+
         view      = new QQuickView();
         container = QWidget::createWindowContainer(view, parent);
         container->setMinimumSize(200, 200);

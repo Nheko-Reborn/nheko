@@ -1,6 +1,8 @@
-import QtQuick 2.5
+import QtQuick 2.6
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.5
+
+import com.github.nheko 1.0
 
 Rectangle {
 	anchors.fill: parent
@@ -26,20 +28,43 @@ Rectangle {
 		}
 
 		model: timelineManager.timeline
+		spacing: 4
 		delegate: RowLayout {
 			anchors.leftMargin: 52
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.rightMargin: scrollbar.width
 
-			Text {
+			Loader {
+				id: loader
 				Layout.fillWidth: true
-				height: contentHeight
-				text: "Event content"
+				height: item.height
+				Layout.alignment: Qt.AlignTop
+
+				source: switch(model.type) {
+					case MtxEvent.Aliases: return "delegates/Aliases.qml"
+					case MtxEvent.Avatar: return "delegates/Avatar.qml"
+					case MtxEvent.CanonicalAlias: return "delegates/CanonicalAlias.qml"
+					case MtxEvent.Create: return "delegates/Create.qml"
+					case MtxEvent.GuestAccess: return "delegates/GuestAccess.qml"
+					case MtxEvent.HistoryVisibility: return "delegates/HistoryVisibility.qml"
+					case MtxEvent.JoinRules: return "delegates/JoinRules.qml"
+					case MtxEvent.Member: return "delegates/Member.qml"
+					case MtxEvent.Name: return "delegates/Name.qml"
+					case MtxEvent.PowerLevels: return "delegates/PowerLevels.qml"
+					case MtxEvent.Topic: return "delegates/Topic.qml"
+					case MtxEvent.NoticeMessage: return "delegates/NoticeMessage.qml"
+					case MtxEvent.TextMessage: return "delegates/TextMessage.qml"
+					case MtxEvent.ImageMessage: return "delegates/ImageMessage.qml"
+					case MtxEvent.VideoMessage: return "delegates/VideoMessage.qml"
+					default: return "delegates/placeholder.qml"
+				}
+				property variant eventData: model
 			}
 
+
 			Button {
-				Layout.alignment: Qt.AlignRight
+				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				id: replyButton
 				flat: true
 				height: replyButtonImg.contentHeight
@@ -54,7 +79,7 @@ Rectangle {
 				}
 			}
 			Button {
-				Layout.alignment: Qt.AlignRight
+				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				id: optionsButton
 				flat: true
 				height: optionsButtonImg.contentHeight
@@ -90,7 +115,7 @@ Rectangle {
 			}
 
 			Text {
-				Layout.alignment: Qt.AlignRight
+				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				text: model.timestamp.toLocaleTimeString("HH:mm")
 			}
 		}
@@ -98,13 +123,18 @@ Rectangle {
 		section {
 			property: "section"
 			delegate: Column {
+				topPadding: 4
+				bottomPadding: 4
+				spacing: 8
+
 				width: parent.width
-				height: dateBubble.visible ? dateBubble.height + userName.height : userName.height
+
 				Label {
 					id: dateBubble
 					anchors.horizontalCenter: parent.horizontalCenter
 					visible: section.includes(" ")
 					text: chat.model.formatDateSeparator(new Date(Number(section.split(" ")[1])))
+
 					height: contentHeight * 1.2
 					width: contentWidth * 1.2
 					horizontalAlignment: Text.AlignHCenter
@@ -114,6 +144,7 @@ Rectangle {
 					}
 				}
 				Row {
+					height: userName.height
 					spacing: 4
 					Rectangle {
 						width: 48
