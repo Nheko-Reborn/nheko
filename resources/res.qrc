@@ -116,5 +116,6 @@
     </qresource>
     <qresource prefix="/">
         <file>qml/TimelineView.qml</file>
+        <file>qml/delegates/TextMessage.qml</file>
     </qresource>
 </RCC>
