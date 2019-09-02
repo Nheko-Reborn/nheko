@@ -86,6 +86,12 @@ public:
                 save();
         }
 
+        void setAvatarCircles(bool state)
+        {
+                avatarCircles_ = state;
+                save();
+        }
+
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
