@@ -383,7 +383,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addLayout(startInTrayOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(groupViewLayout);
-        mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(avatarViewLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(typingLayout);
