@@ -112,9 +112,8 @@ private:
         QString room_id_;
         QString prev_batch_token_;
 
-        bool isInitialSync = true;
+        bool isInitialSync        = true;
         bool paginationInProgress = false;
 
         QHash<QString, QColor> userColors;
 };
-

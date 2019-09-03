@@ -32,10 +32,7 @@ public:
         void sync(const mtx::responses::Rooms &rooms) {}
         void clearAll() { models.clear(); }
 
-        Q_INVOKABLE TimelineModel *activeTimeline() const
-        {
-                return timeline_;
-        }
+        Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
 
 signals:
         void clearRoomMessageCount(QString roomid);
