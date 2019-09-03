@@ -89,8 +89,9 @@ sudo port install nheko
 
 ### Build Requirements
 
-- Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
-  Freetype, which is essential to properly support emoji.
+- Qt5 (5.8 or greater). Qt 5.7 adds support for color font rendering with
+  Freetype, which is essential to properly support emoji, 5.8 adds some features
+  to make interopability with Qml easier.
 - CMake 3.1 or greater.
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
