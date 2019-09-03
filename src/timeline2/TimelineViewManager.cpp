@@ -44,7 +44,7 @@ TimelineViewManager::setHistoryView(const QString &room_id)
 
         auto room = models.find(room_id);
         if (room != models.end()) {
-                timeline_ = room.value().get();
+                timeline_ = room.value().data();
                 timeline_->fetchHistory();
                 emit activeTimelineChanged(timeline_);
                 nhlog::ui()->info("Activated room {}", room_id.toStdString());
