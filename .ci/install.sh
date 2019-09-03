@@ -54,5 +54,6 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         qt${QT_PKG}tools \
         qt${QT_PKG}svg \
         qt${QT_PKG}multimedia \
+        qt${QT_PKG}quickcontrols2 \
         liblmdb-dev
 fi
