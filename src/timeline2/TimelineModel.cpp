@@ -234,15 +234,15 @@ TimelineModel::data(const QModelIndex &index, int role) const
 }
 
 void
-TimelineModel::addEvents(const mtx::responses::Timeline &events)
+TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
         if (isInitialSync) {
-                prev_batch_token_ = QString::fromStdString(events.prev_batch);
+                prev_batch_token_ = QString::fromStdString(timeline.prev_batch);
                 isInitialSync     = false;
         }
 
         std::vector<QString> ids;
-        for (const auto &e : events.events) {
+        for (const auto &e : timeline.events) {
                 QString id =
                   boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
 
