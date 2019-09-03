@@ -101,7 +101,6 @@ Avatar::setIcon(const QIcon &icon)
 void
 Avatar::paintEvent(QPaintEvent *)
 {
-
         bool rounded = QSettings().value("user/avatar/circles", true).toBool();
 
         QPainter painter(this);
@@ -117,9 +116,8 @@ Avatar::paintEvent(QPaintEvent *)
 
                 painter.setPen(Qt::NoPen);
                 painter.setBrush(brush);
-                rounded ?
-                  painter.drawEllipse(r.center(), hs, hs) :
-                  painter.drawRoundedRect(r, 3, 3);
+                rounded ? painter.drawEllipse(r.center(), hs, hs)
+                        : painter.drawRoundedRect(r, 3, 3);
         }
 
         switch (type_) {
@@ -133,9 +131,8 @@ Avatar::paintEvent(QPaintEvent *)
         case ui::AvatarType::Image: {
                 QPainterPath ppath;
 
-                rounded ?
-                  ppath.addEllipse(width() / 2 - hs, height() / 2 - hs, size_, size_) :
-                  ppath.addRoundedRect(r, 3, 3);
+                rounded ? ppath.addEllipse(width() / 2 - hs, height() / 2 - hs, size_, size_)
+                        : ppath.addRoundedRect(r, 3, 3);
 
                 painter.setClipPath(ppath);
                 painter.drawPixmap(QRect(width() / 2 - hs, height() / 2 - hs, size_, size_),
