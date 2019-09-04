@@ -53,6 +53,7 @@ UserSettings::load()
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
+        avatarCircles_                = settings.value("user/avatar/circles", true).toBool();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
@@ -116,6 +117,10 @@ UserSettings::save()
         settings.beginGroup("window");
         settings.setValue("tray", isTrayEnabled_);
         settings.setValue("start_in_tray", isStartInTrayEnabled_);
+        settings.endGroup();
+
+        settings.beginGroup("avatar");
+        settings.setValue("circles", avatarCircles_);
         settings.endGroup();
 
         settings.setValue("font_size", baseFontSize_);
@@ -191,6 +196,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         groupViewLayout->addWidget(groupViewLabel);
         groupViewLayout->addWidget(groupViewToggle_, 0, Qt::AlignRight);
+
+        auto avatarViewLayout = new QHBoxLayout;
+        avatarViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
+        auto avatarViewLabel = new QLabel(tr("Circular Avatars"), this);
+        avatarViewLabel->setFont(font);
+        avatarCircles_ = new Toggle(this);
+
+        avatarViewLayout->addWidget(avatarViewLabel);
+        avatarViewLayout->addWidget(avatarCircles_, 0, Qt::AlignRight);
 
         auto typingLayout = new QHBoxLayout;
         typingLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -368,6 +382,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addLayout(startInTrayOptionLayout_);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(groupViewLayout);
+        mainLayout_->addLayout(avatarViewLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(typingLayout);
         mainLayout_->addLayout(receiptsLayout);
@@ -446,6 +461,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(groupViewToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setGroupView(!isDisabled);
+        });
+
+        connect(avatarCircles_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setAvatarCircles(!isDisabled);
         });
 
         connect(typingNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
