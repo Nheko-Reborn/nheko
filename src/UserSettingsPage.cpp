@@ -133,7 +133,6 @@ UserSettings::save()
         settings.setValue("emoji_font_family", emojiFont_);
 
         settings.endGroup();
-
 }
 
 HorizontalLine::HorizontalLine(QWidget *parent)
