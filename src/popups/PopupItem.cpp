@@ -11,7 +11,7 @@ constexpr int PopupItemMargin = 3;
 
 PopupItem::PopupItem(QWidget *parent)
   : QWidget(parent)
-  , avatar_{new Avatar(this)}
+  , avatar_{new Avatar(this, conf::popup::avatar)}
   , hovering_{false}
 {
         setMouseTracking(true);
@@ -40,7 +40,6 @@ UserItem::UserItem(QWidget *parent)
   : PopupItem(parent)
 {
         userName_ = new QLabel("Placeholder", this);
-        avatar_->setSize(conf::popup::avatar);
         avatar_->setLetter("P");
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(userName_, 1);
@@ -52,7 +51,6 @@ UserItem::UserItem(QWidget *parent, const QString &user_id)
 {
         auto displayName = Cache::displayName(ChatPage::instance()->currentRoom(), userId_);
 
-        avatar_->setSize(conf::popup::avatar);
         avatar_->setLetter(utils::firstChar(displayName));
 
         // If it's a matrix id we use the second letter.
@@ -87,16 +85,7 @@ UserItem::updateItem(const QString &user_id)
 void
 UserItem::resolveAvatar(const QString &user_id)
 {
-        AvatarProvider::resolve(
-          ChatPage::instance()->currentRoom(), userId_, this, [this, user_id](const QImage &img) {
-                  // The user on the widget when the avatar is resolved,
-                  // might be different from the user that made the call.
-                  if (user_id == userId_)
-                          avatar_->setImage(img);
-                  else
-                          // We try to resolve the avatar again.
-                          resolveAvatar(userId_);
-          });
+        avatar_->setImage(ChatPage::instance()->currentRoom(), user_id);
 }
 
 void
@@ -116,7 +105,6 @@ RoomItem::RoomItem(QWidget *parent, const RoomSearchResult &res)
         auto name = QFontMetrics(QFont()).elidedText(
           QString::fromStdString(res.info.name), Qt::ElideRight, parentWidget()->width() - 10);
 
-        avatar_->setSize(conf::popup::avatar + 6);
         avatar_->setLetter(utils::firstChar(name));
 
         roomName_ = new QLabel(name, this);
@@ -125,8 +113,7 @@ RoomItem::RoomItem(QWidget *parent, const RoomSearchResult &res)
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(roomName_, 1);
 
-        if (!res.img.isNull())
-                avatar_->setImage(res.img);
+        avatar_->setImage(QString::fromStdString(res.info.avatar_url));
 }
 
 void
@@ -141,10 +128,7 @@ RoomItem::updateItem(const RoomSearchResult &result)
 
         roomName_->setText(name);
 
-        if (!result.img.isNull())
-                avatar_->setImage(result.img);
-        else
-                avatar_->setLetter(utils::firstChar(name));
+        avatar_->setImage(QString::fromStdString(result.info.avatar_url));
 }
 
 void

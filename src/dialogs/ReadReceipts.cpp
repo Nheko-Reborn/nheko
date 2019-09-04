@@ -37,8 +37,7 @@ ReceiptItem::ReceiptItem(QWidget *parent,
 
         auto displayName = Cache::displayName(room_id, user_id);
 
-        avatar_ = new Avatar(this);
-        avatar_->setSize(44);
+        avatar_ = new Avatar(this, 44);
         avatar_->setLetter(utils::firstChar(displayName));
 
         // If it's a matrix id we use the second letter.
@@ -56,10 +55,7 @@ ReceiptItem::ReceiptItem(QWidget *parent,
         topLayout_->addWidget(avatar_);
         topLayout_->addLayout(textLayout_, 1);
 
-        AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
-                                user_id,
-                                this,
-                                [this](const QImage &img) { avatar_->setImage(img); });
+        avatar_->setImage(ChatPage::instance()->currentRoom(), user_id);
 }
 
 void

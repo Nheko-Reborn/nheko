@@ -52,7 +52,7 @@ class ThreadProxy : public QObject
 
 signals:
         void error(const QString &msg);
-        void avatarChanged(const QImage &img);
+        void avatarChanged();
         void nameEventSent(const QString &);
         void topicEventSent();
 };
@@ -140,7 +140,7 @@ private:
         void resetErrorLabel();
         void displayErrorMessage(const QString &msg);
 
-        void setAvatar(const QImage &img);
+        void setAvatar();
         void setupEditButton();
         //! Retrieve the current room information from cache.
         void retrieveRoomInfo();
