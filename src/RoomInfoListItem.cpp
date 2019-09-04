@@ -19,8 +19,8 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QtGlobal>
 #include <QSettings>
+#include <QtGlobal>
 
 #include "AvatarProvider.h"
 #include "Cache.h"
@@ -291,9 +291,8 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.setPen(Qt::NoPen);
                 p.setBrush(brush);
 
-                rounded ?
-                  p.drawEllipse(avatarRegion.center(), wm.iconSize / 2, wm.iconSize / 2) :
-                  p.drawRoundedRect(avatarRegion, 3, 3);
+                rounded ? p.drawEllipse(avatarRegion.center(), wm.iconSize / 2, wm.iconSize / 2)
+                        : p.drawRoundedRect(avatarRegion, 3, 3);
 
                 QFont bubbleFont;
                 bubbleFont.setPointSizeF(bubbleFont.pointSizeF() * 1.4);
@@ -306,9 +305,8 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 p.save();
 
                 QPainterPath path;
-                rounded ?
-                  path.addEllipse(wm.padding, wm.padding, wm.iconSize, wm.iconSize) :
-                  path.addRoundedRect(avatarRegion, 3, 3);
+                rounded ? path.addEllipse(wm.padding, wm.padding, wm.iconSize, wm.iconSize)
+                        : path.addRoundedRect(avatarRegion, 3, 3);
 
                 p.setClipPath(path);
 
