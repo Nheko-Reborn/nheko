@@ -1,17 +1,23 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.5
+import QtGraphicalEffects 1.0
 
 import com.github.nheko 1.0
 
 Rectangle {
 	anchors.fill: parent
 
+	SystemPalette { id: colors; colorGroup: SystemPalette.Active }
+	SystemPalette { id: inactiveColors; colorGroup: SystemPalette.Disabled }
+	color: colors.window
+
 	Text {
 		visible: !timelineManager.timeline
 		anchors.centerIn: parent
 		text: qsTr("No room open")
 		font.pointSize: 24
+		color: colors.windowText
 	}
 
 	ListView {
@@ -67,15 +73,21 @@ Rectangle {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				id: replyButton
 				flat: true
-				height: replyButtonImg.contentHeight
-				width: replyButtonImg.contentWidth
+				height: 32
+				width: 32
 				ToolTip.visible: hovered
 				ToolTip.text: qsTr("Reply")
+
 				Image {
 					id: replyButtonImg
 					// Workaround, can't get icon.source working for now...
 					anchors.fill: parent
 					source: "qrc:/icons/icons/ui/mail-reply.png"
+				}
+				ColorOverlay {
+					anchors.fill: replyButtonImg
+					source: replyButtonImg
+					color: colors.buttonText
 				}
 			}
 			Button {
@@ -91,6 +103,11 @@ Rectangle {
 					// Workaround, can't get icon.source working for now...
 					anchors.fill: parent
 					source: "qrc:/icons/icons/ui/vertical-ellipsis.png"
+				}
+				ColorOverlay {
+					anchors.fill: optionsButtonImg
+					source: optionsButtonImg
+					color: colors.buttonText
 				}
 
 				onClicked: contextMenu.open()
@@ -117,6 +134,7 @@ Rectangle {
 			Text {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				text: model.timestamp.toLocaleTimeString("HH:mm")
+				color: inactiveColors.text
 			}
 		}
 
@@ -134,13 +152,14 @@ Rectangle {
 					anchors.horizontalCenter: parent.horizontalCenter
 					visible: section.includes(" ")
 					text: chat.model.formatDateSeparator(new Date(Number(section.split(" ")[1])))
+					color: colors.windowText
 
 					height: contentHeight * 1.2
 					width: contentWidth * 1.2
 					horizontalAlignment: Text.AlignHCenter
 					background: Rectangle {
 						radius: parent.height / 2
-						color: "black"
+						color: colors.dark
 					}
 				}
 				Row {
@@ -155,7 +174,7 @@ Rectangle {
 					Text { 
 						id: userName
 						text: chat.model.displayName(section.split(" ")[0])
-						color: chat.model.userColor(section.split(" ")[0], "#ffffff")
+						color: chat.model.userColor(section.split(" ")[0], colors.window)
 					}
 				}
 			}

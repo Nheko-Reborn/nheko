@@ -7,5 +7,6 @@ TextEdit {
 	wrapMode: Text.Wrap
 	width: parent.width
 	selectByMouse: true
-	color: colors.text
+	font.italic: true
+	color: inactiveColors.text
 }
