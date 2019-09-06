@@ -86,6 +86,12 @@ public:
                 save();
         }
 
+        void setAvatarCircles(bool state)
+        {
+                avatarCircles_ = state;
+                save();
+        }
+
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
@@ -113,6 +119,7 @@ private:
         bool isTypingNotificationsEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
+        bool avatarCircles_;
         double baseFontSize_;
         QString font_;
         QString emojiFont_;
@@ -162,6 +169,7 @@ private:
         Toggle *typingNotifications_;
         Toggle *readReceipts_;
         Toggle *desktopNotifications_;
+        Toggle *avatarCircles_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
 

@@ -1,7 +1,13 @@
 build
 tags
+cscope*
 .clang_complete
 *wintoastlib*
+
+# GTAGS
+GTAGS
+GRTAGS
+GPATH
 
 # C++ objects and libs
 
