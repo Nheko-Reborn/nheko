@@ -326,6 +326,12 @@ TimelineModel::displayName(QString id) const
 }
 
 QString
+TimelineModel::avatarUrl(QString id) const
+{
+        return Cache::avatarUrl(room_id_, id);
+}
+
+QString
 TimelineModel::formatDateSeparator(QDate date) const
 {
         auto now = QDateTime::currentDateTime();

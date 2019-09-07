@@ -90,6 +90,7 @@ public:
 
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString displayName(QString id) const;
+        Q_INVOKABLE QString avatarUrl(QString id) const;
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
         Q_INVOKABLE QString escapeEmoji(QString str) const;
 

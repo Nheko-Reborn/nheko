@@ -116,6 +116,7 @@
     </qresource>
     <qresource prefix="/">
         <file>qml/TimelineView.qml</file>
+        <file>qml/Avatar.qml</file>
         <file>qml/delegates/TextMessage.qml</file>
         <file>qml/delegates/NoticeMessage.qml</file>
     </qresource>
