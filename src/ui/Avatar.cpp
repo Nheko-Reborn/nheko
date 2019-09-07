@@ -101,7 +101,7 @@ Avatar::setIcon(const QIcon &icon)
 void
 Avatar::paintEvent(QPaintEvent *)
 {
-        bool rounded = QSettings().value("user/avatar/circles", true).toBool();
+        bool rounded = QSettings().value("user/avatar_circles", true).toBool();
 
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);

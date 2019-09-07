@@ -142,7 +142,7 @@ RoomInfoListItem::resizeEvent(QResizeEvent *)
 void
 RoomInfoListItem::paintEvent(QPaintEvent *event)
 {
-        bool rounded = QSettings().value("user/avatar/circles", true).toBool();
+        bool rounded = QSettings().value("user/avatar_circles", true).toBool();
 
         Q_UNUSED(event);
 

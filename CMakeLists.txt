@@ -231,6 +231,7 @@ set(SRC_FILES
     src/Logging.cpp
     src/MainWindow.cpp
     src/MatrixClient.cpp
+    src/MxcImageProvider.cpp
     src/QuickSwitcher.cpp
     src/Olm.cpp
     src/RegisterPage.cpp

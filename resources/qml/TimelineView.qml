@@ -181,10 +181,11 @@ Rectangle {
 				Row {
 					height: userName.height
 					spacing: 4
-					Rectangle {
+					Avatar {
 						width: 48
 						height: 48
-						color: "green"
+						url: chat.model.avatarUrl(section.split(" ")[0]).replace("mxc://", "image://MxcImage/")
+						displayName: chat.model.displayName(section.split(" ")[0])
 					}
 
 					Text { 

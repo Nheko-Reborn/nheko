@@ -4,6 +4,7 @@
 #include <QQmlContext>
 
 #include "Logging.h"
+#include "MxcImageProvider.h"
 
 TimelineViewManager::TimelineViewManager(QWidget *parent)
 {
@@ -18,6 +19,7 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
         container = QWidget::createWindowContainer(view, parent);
         container->setMinimumSize(200, 200);
         view->rootContext()->setContextProperty("timelineManager", this);
+        view->engine()->addImageProvider("MxcImage", new MxcImageProvider());
         view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
 }
 
