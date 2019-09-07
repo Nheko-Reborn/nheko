@@ -241,6 +241,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                 isInitialSync     = false;
         }
 
+        if (timeline.events.empty())
+                return;
+
         std::vector<QString> ids;
         for (const auto &e : timeline.events) {
                 QString id =
@@ -251,8 +254,8 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         }
 
         beginInsertRows(QModelIndex(),
-                        static_cast<int>(this->events.size()),
-                        static_cast<int>(this->events.size() + ids.size() - 1));
+                        static_cast<int>(this->eventOrder.size()),
+                        static_cast<int>(this->eventOrder.size() + ids.size() - 1));
         this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
         endInsertRows();
 }
