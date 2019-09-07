@@ -73,10 +73,13 @@ Rectangle {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				id: replyButton
 				flat: true
-				height: 32
-				width: 32
+				Layout.preferredHeight: 16
 				ToolTip.visible: hovered
 				ToolTip.text: qsTr("Reply")
+
+				// disable background, because we don't want a border on hover
+				background: Item {
+				}
 
 				Image {
 					id: replyButtonImg
@@ -87,17 +90,21 @@ Rectangle {
 				ColorOverlay {
 					anchors.fill: replyButtonImg
 					source: replyButtonImg
-					color: colors.buttonText
+					color: replyButton.hovered ? colors.highlight : colors.buttonText
 				}
 			}
 			Button {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				id: optionsButton
 				flat: true
-				height: optionsButtonImg.contentHeight
-				width: optionsButtonImg.contentWidth
+				Layout.preferredHeight: 16
 				ToolTip.visible: hovered
 				ToolTip.text: qsTr("Options")
+
+				// disable background, because we don't want a border on hover
+				background: Item {
+				}
+
 				Image {
 					id: optionsButtonImg
 					// Workaround, can't get icon.source working for now...
@@ -107,7 +114,7 @@ Rectangle {
 				ColorOverlay {
 					anchors.fill: optionsButtonImg
 					source: optionsButtonImg
-					color: colors.buttonText
+					color: optionsButton.hovered ? colors.highlight : colors.buttonText
 				}
 
 				onClicked: contextMenu.open()
@@ -135,6 +142,15 @@ Rectangle {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				text: model.timestamp.toLocaleTimeString("HH:mm")
 				color: inactiveColors.text
+
+				ToolTip.visible: ma.containsMouse
+				ToolTip.text: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
+
+				MouseArea{
+					id: ma
+					anchors.fill: parent
+					hoverEnabled: true
+				}
 			}
 		}
 
