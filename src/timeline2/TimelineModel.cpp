@@ -336,3 +336,9 @@ TimelineModel::formatDateSeparator(QDate date) const
 
         return date.toString(fmt);
 }
+
+QString
+TimelineModel::escapeEmoji(QString str) const
+{
+        return utils::replaceEmoji(str);
+}

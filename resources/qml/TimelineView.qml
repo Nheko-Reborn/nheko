@@ -173,8 +173,9 @@ Rectangle {
 
 					Text { 
 						id: userName
-						text: chat.model.displayName(section.split(" ")[0])
+						text: chat.model.escapeEmoji(chat.model.displayName(section.split(" ")[0]))
 						color: chat.model.userColor(section.split(" ")[0], colors.window)
+						textFormat: Text.RichText
 					}
 				}
 			}

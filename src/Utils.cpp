@@ -40,9 +40,8 @@ utils::replaceEmoji(const QString &body)
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
                 if (code > 9000)
-                        fmtBody +=
-                          QString("<span style=\"font-family: " + userFontFamily + ";\">") +
-                          QString::fromUcs4(&code, 1) + "</span>";
+                        fmtBody += QString("<font face=\"" + userFontFamily + "\">") +
+                                   QString::fromUcs4(&code, 1) + "</font>";
                 else
                         fmtBody += QString::fromUcs4(&code, 1);
         }
