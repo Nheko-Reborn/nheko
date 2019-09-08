@@ -59,6 +59,20 @@ eventFormattedBody(const mtx::events::RoomEvent<T> &e)
 }
 
 template<class T>
+QString
+eventUrl(const T &)
+{
+        return "";
+}
+template<class T>
+auto
+eventUrl(const mtx::events::RoomEvent<T> &e)
+  -> std::enable_if_t<std::is_same<decltype(e.content.url), std::string>::value, QString>
+{
+        return QString::fromStdString(e.content.url);
+}
+
+template<class T>
 qml_mtx_events::EventType
 toRoomEventType(const mtx::events::Event<T> &e)
 {
@@ -146,6 +160,41 @@ toRoomEventType(const mtx::events::Event<mtx::events::msg::Video> &)
 }
 // ::EventType::Type toRoomEventType(const Event<mtx::events::msg::Location> &e) { return
 // ::EventType::LocationMessage; }
+
+template<class T>
+uint64_t
+eventHeight(const mtx::events::Event<T> &)
+{
+        return -1;
+}
+template<class T>
+auto
+eventHeight(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.info.h)
+{
+        return e.content.info.h;
+}
+template<class T>
+uint64_t
+eventWidth(const mtx::events::Event<T> &)
+{
+        return -1;
+}
+template<class T>
+auto
+eventWidth(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.info.w)
+{
+        return e.content.info.w;
+}
+
+template<class T>
+double
+eventPropHeight(const mtx::events::RoomEvent<T> &e)
+{
+        auto w = eventWidth(e);
+        if (w == 0)
+                w = 1;
+        return eventHeight(e) / (double)w;
+}
 }
 
 TimelineModel::TimelineModel(QString room_id, QObject *parent)
@@ -167,6 +216,10 @@ TimelineModel::roleNames() const
           {UserId, "userId"},
           {UserName, "userName"},
           {Timestamp, "timestamp"},
+          {Url, "url"},
+          {Height, "height"},
+          {Width, "width"},
+          {ProportionalHeight, "proportionalHeight"},
         };
 }
 int
@@ -228,6 +281,19 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QVariant(utils::replaceEmoji(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventFormattedBody(e); },
                   events.value(id))));
+        case Url:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventUrl(e); }, events.value(id)));
+        case Height:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> qulonglong { return eventHeight(e); }, events.value(id)));
+        case Width:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> qulonglong { return eventWidth(e); }, events.value(id)));
+        case ProportionalHeight:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> double { return eventPropHeight(e); }, events.value(id)));
+
         default:
                 return QVariant();
         }
