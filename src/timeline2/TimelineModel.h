@@ -86,6 +86,7 @@ public:
                 Height,
                 Width,
                 ProportionalHeight,
+                Id,
         };
 
         QHash<int, QByteArray> roleNames() const override;
@@ -97,6 +98,7 @@ public:
         Q_INVOKABLE QString avatarUrl(QString id) const;
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
         Q_INVOKABLE QString escapeEmoji(QString str) const;
+        Q_INVOKABLE void viewRawMessage(QString id) const;
 
         void addEvents(const mtx::responses::Timeline &events);
 
