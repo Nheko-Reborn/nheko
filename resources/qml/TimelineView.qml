@@ -42,11 +42,9 @@ Rectangle {
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.rightMargin: scrollbar.width
-			height: loader.height
 
 			Loader {
 				id: loader
-				asynchronous: false
 				Layout.fillWidth: true
 				Layout.alignment: Qt.AlignTop
 				height: item.height
@@ -135,6 +133,7 @@ Rectangle {
 					}
 					MenuItem {
 						text: "View raw message"
+						onTriggered: chat.model.viewRawMessage(model.id)
 					}
 					MenuItem {
 						text: "Redact message"

@@ -6,6 +6,7 @@
 
 #include "Logging.h"
 #include "Utils.h"
+#include "dialogs/RawMessage.h"
 
 namespace {
 template<class T>
@@ -220,6 +221,7 @@ TimelineModel::roleNames() const
           {Height, "height"},
           {Width, "width"},
           {ProportionalHeight, "proportionalHeight"},
+          {Id, "id"},
         };
 }
 int
@@ -293,7 +295,8 @@ TimelineModel::data(const QModelIndex &index, int role) const
         case ProportionalHeight:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> double { return eventPropHeight(e); }, events.value(id)));
-
+        case Id:
+                return id;
         default:
                 return QVariant();
         }
@@ -416,4 +419,12 @@ QString
 TimelineModel::escapeEmoji(QString str) const
 {
         return utils::replaceEmoji(str);
+}
+
+void
+TimelineModel::viewRawMessage(QString id) const
+{
+        std::string ev = utils::serialize_event(events.value(id)).dump(4);
+        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
+        Q_UNUSED(dialog);
 }
