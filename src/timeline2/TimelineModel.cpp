@@ -514,11 +514,11 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
         json event_array = json::array();
         event_array.push_back(body);
 
-        std::vector<mtx::events::collections::TimelineEvents> events;
-        mtx::responses::utils::parse_timeline_events(event_array, events);
+        std::vector<mtx::events::collections::TimelineEvents> temp_events;
+        mtx::responses::utils::parse_timeline_events(event_array, temp_events);
 
-        if (events.size() == 1)
-                return {events.at(0), true};
+        if (temp_events.size() == 1)
+                return {temp_events.at(0), true};
 
         dummy.content.body =
           tr("-- Encrypted Event (Unknown event type) --",
