@@ -45,4 +45,3 @@ public:
 private:
         QThreadPool pool;
 };
-

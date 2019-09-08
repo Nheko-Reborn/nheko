@@ -119,5 +119,6 @@
         <file>qml/Avatar.qml</file>
         <file>qml/delegates/TextMessage.qml</file>
         <file>qml/delegates/NoticeMessage.qml</file>
+        <file>qml/delegates/ImageMessage.qml</file>
     </qresource>
 </RCC>

@@ -82,6 +82,10 @@ public:
                 UserId,
                 UserName,
                 Timestamp,
+                Url,
+                Height,
+                Width,
+                ProportionalHeight,
         };
 
         QHash<int, QByteArray> roleNames() const override;

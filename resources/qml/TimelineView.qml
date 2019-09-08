@@ -23,6 +23,8 @@ Rectangle {
 	ListView {
 		id: chat
 
+		cacheBuffer: 4*parent.height
+
 		visible: timelineManager.timeline != null
 		anchors.fill: parent
 
@@ -40,12 +42,14 @@ Rectangle {
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.rightMargin: scrollbar.width
+			height: loader.height
 
 			Loader {
 				id: loader
+				asynchronous: false
 				Layout.fillWidth: true
-				height: item.height
 				Layout.alignment: Qt.AlignTop
+				height: item.height
 
 				source: switch(model.type) {
 					case MtxEvent.Aliases: return "delegates/Aliases.qml"
