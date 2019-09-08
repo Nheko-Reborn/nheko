@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 
 #include "Logging.h"
+#include "Olm.h"
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
 
@@ -239,14 +240,20 @@ TimelineModel::data(const QModelIndex &index, int role) const
 
         QString id = eventOrder[index.row()];
 
+        mtx::events::collections::TimelineEvents event = events.value(id);
+
+        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+                event = decryptEvent(*e).event;
+        }
+
         switch (role) {
         case Section: {
                 QDateTime date = boost::apply_visitor(
-                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, events.value(id));
+                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, event);
                 date.setTime(QTime());
 
-                QString userId = boost::apply_visitor(
-                  [](const auto &e) -> QString { return senderId(e); }, events.value(id));
+                QString userId =
+                  boost::apply_visitor([](const auto &e) -> QString { return senderId(e); }, event);
 
                 for (int r = index.row() - 1; r > 0; r--) {
                         QDateTime prevDate = boost::apply_visitor(
@@ -267,34 +274,33 @@ TimelineModel::data(const QModelIndex &index, int role) const
         }
         case UserId:
                 return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return senderId(e); }, events.value(id)));
+                  [](const auto &e) -> QString { return senderId(e); }, event));
         case UserName:
                 return QVariant(displayName(boost::apply_visitor(
-                  [](const auto &e) -> QString { return senderId(e); }, events.value(id))));
+                  [](const auto &e) -> QString { return senderId(e); }, event)));
 
         case Timestamp:
                 return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, events.value(id)));
+                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, event));
         case Type:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> qml_mtx_events::EventType { return toRoomEventType(e); },
-                  events.value(id)));
+                  event));
         case FormattedBody:
                 return QVariant(utils::replaceEmoji(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventFormattedBody(e); },
-                  events.value(id))));
+                  [](const auto &e) -> QString { return eventFormattedBody(e); }, event)));
         case Url:
                 return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventUrl(e); }, events.value(id)));
+                  [](const auto &e) -> QString { return eventUrl(e); }, event));
         case Height:
                 return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> qulonglong { return eventHeight(e); }, events.value(id)));
+                  [](const auto &e) -> qulonglong { return eventHeight(e); }, event));
         case Width:
                 return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> qulonglong { return eventWidth(e); }, events.value(id)));
+                  [](const auto &e) -> qulonglong { return eventWidth(e); }, event));
         case ProportionalHeight:
                 return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> double { return eventPropHeight(e); }, events.value(id)));
+                  [](const auto &e) -> double { return eventPropHeight(e); }, event));
         case Id:
                 return id;
         default:
@@ -427,4 +433,97 @@ TimelineModel::viewRawMessage(QString id) const
         std::string ev = utils::serialize_event(events.value(id)).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
+}
+
+DecryptionResult
+TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const
+{
+        MegolmSessionIndex index;
+        index.room_id    = room_id_.toStdString();
+        index.session_id = e.content.session_id;
+        index.sender_key = e.content.sender_key;
+
+        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
+        dummy.origin_server_ts = e.origin_server_ts;
+        dummy.event_id         = e.event_id;
+        dummy.sender           = e.sender;
+        dummy.content.body =
+          tr("-- Encrypted Event (No keys found for decryption) --",
+             "Placeholder, when the message was not decrypted yet or can't be decrypted")
+            .toStdString();
+
+        try {
+                if (!cache::client()->inboundMegolmSessionExists(index)) {
+                        nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
+                                              index.room_id,
+                                              index.session_id,
+                                              e.sender);
+                        // TODO: request megolm session_id & session_key from the sender.
+                        return {dummy, false};
+                }
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to check megolm session's existence: {}", e.what());
+                dummy.content.body = tr("-- Decryption Error (failed to communicate with DB) --",
+                                        "Placeholder, when the message can't be decrypted, because "
+                                        "the DB access failed when trying to lookup the session.")
+                                       .toStdString();
+                return {dummy, false};
+        }
+
+        std::string msg_str;
+        try {
+                auto session = cache::client()->getInboundMegolmSession(index);
+                auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
+                msg_str      = std::string((char *)res.data.data(), res.data.size());
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
+                                      index.room_id,
+                                      index.session_id,
+                                      index.sender_key,
+                                      e.what());
+                dummy.content.body =
+                  tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
+                     "Placeholder, when the message can't be decrypted, because the DB access "
+                     "failed.")
+                    .toStdString();
+                return {dummy, false};
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
+                                          index.room_id,
+                                          index.session_id,
+                                          index.sender_key,
+                                          e.what());
+                dummy.content.body =
+                  tr("-- Decryption Error (%1) --",
+                     "Placeholder, when the message can't be decrypted. In this case, the Olm "
+                     "decrytion returned an error, which is passed ad %1")
+                    .arg(e.what())
+                    .toStdString();
+                return {dummy, false};
+        }
+
+        // Add missing fields for the event.
+        json body                = json::parse(msg_str);
+        body["event_id"]         = e.event_id;
+        body["sender"]           = e.sender;
+        body["origin_server_ts"] = e.origin_server_ts;
+        body["unsigned"]         = e.unsigned_data;
+
+        nhlog::crypto()->debug("decrypted event: {}", e.event_id);
+
+        json event_array = json::array();
+        event_array.push_back(body);
+
+        std::vector<mtx::events::collections::TimelineEvents> events;
+        mtx::responses::utils::parse_timeline_events(event_array, events);
+
+        if (events.size() == 1)
+                return {events.at(0), true};
+
+        dummy.content.body =
+          tr("-- Encrypted Event (Unknown event type) --",
+             "Placeholder, when the message was decrypted, but we couldn't parse it, because "
+             "Nheko/mtxclient don't support that event type yet")
+            .toStdString();
+        return {dummy, false};
 }

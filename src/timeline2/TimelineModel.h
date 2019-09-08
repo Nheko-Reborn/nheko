@@ -1,11 +1,11 @@
 #pragma once
 
+#include <mtx/responses.hpp>
+
 #include <QAbstractListModel>
 #include <QColor>
 #include <QDate>
 #include <QHash>
-
-#include <mtx/responses.hpp>
 
 namespace qml_mtx_events {
 Q_NAMESPACE
@@ -66,6 +66,14 @@ enum EventType
 Q_ENUM_NS(EventType)
 }
 
+struct DecryptionResult
+{
+        //! The decrypted content as a normal plaintext event.
+        mtx::events::collections::TimelineEvents event;
+        //! Whether or not the decryption was successful.
+        bool isDecrypted = false;
+};
+
 class TimelineModel : public QAbstractListModel
 {
         Q_OBJECT
@@ -114,6 +122,9 @@ signals:
         void oldMessagesRetrieved(const mtx::responses::Messages &res);
 
 private:
+        DecryptionResult decryptEvent(
+          const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const;
+
         QHash<QString, mtx::events::collections::TimelineEvents> events;
         std::vector<QString> eventOrder;
 
