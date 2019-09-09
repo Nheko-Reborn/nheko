@@ -324,9 +324,15 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                 QString id =
                   boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
 
+                if (this->events.contains(id))
+                        continue;
+
                 this->events.insert(id, e);
                 ids.push_back(id);
         }
+
+        if (ids.empty)
+                return;
 
         beginInsertRows(QModelIndex(),
                         static_cast<int>(this->eventOrder.size()),
@@ -372,13 +378,18 @@ TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
                 QString id =
                   boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
 
+                if (this->events.contains(id))
+                        continue;
+
                 this->events.insert(id, e);
                 ids.push_back(id);
         }
 
-        beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
-        this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
-        endInsertRows();
+        if (!ids.empty()) {
+                beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
+                this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
+                endInsertRows();
+        }
 
         prev_batch_token_ = QString::fromStdString(msgs.end);
 
