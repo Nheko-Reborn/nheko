@@ -61,6 +61,7 @@ enum EventType
         NoticeMessage,
         TextMessage,
         VideoMessage,
+        Redacted,
         UnknownMessage,
 };
 Q_ENUM_NS(EventType)
@@ -124,6 +125,8 @@ signals:
 private:
         DecryptionResult decryptEvent(
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const;
+        std::vector<QString> internalAddEvents(
+          const std::vector<mtx::events::collections::TimelineEvents> &timeline);
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
         std::vector<QString> eventOrder;

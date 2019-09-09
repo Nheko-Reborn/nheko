@@ -1,5 +1,6 @@
 #include "TimelineModel.h"
 
+#include <algorithm>
 #include <type_traits>
 
 #include <QRegularExpression>
@@ -160,6 +161,12 @@ toRoomEventType(const mtx::events::Event<mtx::events::msg::Video> &)
 {
         return qml_mtx_events::EventType::VideoMessage;
 }
+
+qml_mtx_events::EventType
+toRoomEventType(const mtx::events::Event<mtx::events::msg::Redacted> &)
+{
+        return qml_mtx_events::EventType::Redacted;
+}
 // ::EventType::Type toRoomEventType(const Event<mtx::events::msg::Location> &e) { return
 // ::EventType::LocationMessage; }
 
@@ -319,19 +326,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         if (timeline.events.empty())
                 return;
 
-        std::vector<QString> ids;
-        for (const auto &e : timeline.events) {
-                QString id =
-                  boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
+        std::vector<QString> ids = internalAddEvents(timeline.events);
 
-                if (this->events.contains(id))
-                        continue;
-
-                this->events.insert(id, e);
-                ids.push_back(id);
-        }
-
-        if (ids.empty)
+        if (ids.empty())
                 return;
 
         beginInsertRows(QModelIndex(),
@@ -339,6 +336,52 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                         static_cast<int>(this->eventOrder.size() + ids.size() - 1));
         this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
         endInsertRows();
+}
+
+std::vector<QString>
+TimelineModel::internalAddEvents(
+  const std::vector<mtx::events::collections::TimelineEvents> &timeline)
+{
+        std::vector<QString> ids;
+        for (const auto &e : timeline) {
+                QString id =
+                  boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
+
+                if (this->events.contains(id))
+                        continue;
+
+                if (auto redaction =
+                      boost::get<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
+                        QString redacts = QString::fromStdString(redaction->redacts);
+                        auto redacted   = std::find(eventOrder.begin(), eventOrder.end(), redacts);
+
+                        if (redacted != eventOrder.end()) {
+                                auto redactedEvent = boost::apply_visitor(
+                                  [](const auto &ev)
+                                    -> mtx::events::RoomEvent<mtx::events::msg::Redacted> {
+                                          mtx::events::RoomEvent<mtx::events::msg::Redacted>
+                                            replacement                = {};
+                                          replacement.event_id         = ev.event_id;
+                                          replacement.room_id          = ev.room_id;
+                                          replacement.sender           = ev.sender;
+                                          replacement.origin_server_ts = ev.origin_server_ts;
+                                          replacement.type             = ev.type;
+                                          return replacement;
+                                  },
+                                  e);
+                                events.insert(redacts, redactedEvent);
+
+                                int row = (int)std::distance(eventOrder.begin(), redacted);
+                                emit dataChanged(index(row, 0), index(row, 0));
+                        }
+
+                        continue; // don't insert redaction into timeline
+                }
+
+                this->events.insert(id, e);
+                ids.push_back(id);
+        }
+        return ids;
 }
 
 void
@@ -373,17 +416,7 @@ TimelineModel::fetchHistory()
 void
 TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
-        std::vector<QString> ids;
-        for (const auto &e : msgs.chunk) {
-                QString id =
-                  boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
-
-                if (this->events.contains(id))
-                        continue;
-
-                this->events.insert(id, e);
-                ids.push_back(id);
-        }
+        std::vector<QString> ids = internalAddEvents(msgs.chunk);
 
         if (!ids.empty()) {
                 beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
