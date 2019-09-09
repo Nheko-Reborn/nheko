@@ -23,7 +23,7 @@ Rectangle {
 	ListView {
 		id: chat
 
-		cacheBuffer: 4*parent.height
+		cacheBuffer: parent.height
 
 		visible: timelineManager.timeline != null
 		anchors.fill: parent
@@ -65,6 +65,7 @@ Rectangle {
 					case MtxEvent.TextMessage: return "delegates/TextMessage.qml"
 					case MtxEvent.ImageMessage: return "delegates/ImageMessage.qml"
 					case MtxEvent.VideoMessage: return "delegates/VideoMessage.qml"
+					case MtxEvent.Redacted: return "delegates/Redacted.qml"
 					default: return "delegates/placeholder.qml"
 				}
 				property variant eventData: model
