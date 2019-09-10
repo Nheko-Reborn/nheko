@@ -7,6 +7,9 @@
 #include <QDate>
 #include <QHash>
 
+#include "Logging.h"
+#include "MatrixClient.h"
+
 namespace qml_mtx_events {
 Q_NAMESPACE
 
@@ -110,6 +113,8 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
 
         void addEvents(const mtx::responses::Timeline &events);
+        template<class T>
+        void sendMessage(const T &msg);
 
 public slots:
         void fetchHistory();
@@ -121,6 +126,8 @@ private slots:
 
 signals:
         void oldMessagesRetrieved(const mtx::responses::Messages &res);
+        void messageFailed(const std::string txn_id);
+        void messageSent(const std::string txn_id, std::string event_id);
 
 private:
         DecryptionResult decryptEvent(
@@ -139,3 +146,25 @@ private:
 
         QHash<QString, QColor> userColors;
 };
+
+template<class T>
+void
+TimelineModel::sendMessage(const T &msg)
+{
+        auto txn_id = http::client()->generate_txn_id();
+        http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
+          room_id_.toStdString(),
+          txn_id,
+          msg,
+          [this, txn_id](const mtx::responses::EventId &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          const int status_code = static_cast<int>(err->status_code);
+                          nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                             txn_id,
+                                             err->matrix_error.error,
+                                             status_code);
+                          emit messageFailed(txn_id);
+                  }
+                  emit messageSent(txn_id, res.event_id.to_string());
+          });
+}
