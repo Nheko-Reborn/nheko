@@ -95,6 +95,8 @@ Rectangle {
 					source: replyButtonImg
 					color: replyButton.hovered ? colors.highlight : colors.buttonText
 				}
+
+				onClicked: chat.model.replyAction(model.id)
 			}
 			Button {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop

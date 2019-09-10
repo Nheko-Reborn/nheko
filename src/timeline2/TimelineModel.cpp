@@ -5,6 +5,7 @@
 
 #include <QRegularExpression>
 
+#include "ChatPage.h"
 #include "Logging.h"
 #include "Olm.h"
 #include "Utils.h"
@@ -35,6 +36,33 @@ QDateTime
 eventTimestamp(const T &event)
 {
         return QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
+}
+
+template<class T>
+std::string
+eventMsgType(const mtx::events::Event<T> &)
+{
+        return "";
+}
+template<class T>
+auto
+eventMsgType(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.msgtype)
+{
+        return e.content.msgtype;
+}
+
+template<class T>
+QString
+eventBody(const mtx::events::Event<T> &)
+{
+        return QString("");
+}
+template<class T>
+auto
+eventBody(const mtx::events::RoomEvent<T> &e)
+  -> std::enable_if_t<std::is_same<decltype(e.content.body), std::string>::value, QString>
+{
+        return QString::fromStdString(e.content.body);
 }
 
 template<class T>
@@ -293,6 +321,9 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> qml_mtx_events::EventType { return toRoomEventType(e); },
                   event));
+        case Body:
+                return QVariant(utils::replaceEmoji(boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventBody(e); }, event)));
         case FormattedBody:
                 return QVariant(utils::replaceEmoji(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventFormattedBody(e); }, event)));
@@ -570,4 +601,27 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
              "Nheko/mtxclient don't support that event type yet")
             .toStdString();
         return {dummy, false};
+}
+
+void
+TimelineModel::replyAction(QString id)
+{
+        auto event          = events.value(id);
+        RelatedInfo related = boost::apply_visitor(
+          [](const auto &ev) -> RelatedInfo {
+                  RelatedInfo related_   = {};
+                  related_.quoted_user   = QString::fromStdString(ev.sender);
+                  related_.related_event = ev.event_id;
+                  return related_;
+          },
+          event);
+        related.type = mtx::events::getMessageType(boost::apply_visitor(
+          [](const auto &e) -> std::string { return eventMsgType(e); }, event));
+        related.quoted_body =
+          boost::apply_visitor([](const auto &e) -> QString { return eventBody(e); }, event);
+
+        if (related.quoted_body.isEmpty())
+                return;
+
+        emit ChatPage::instance()->messageReply(related);
 }
