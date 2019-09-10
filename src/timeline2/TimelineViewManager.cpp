@@ -82,7 +82,7 @@ TimelineViewManager::queueReplyMessage(const QString &reply, const RelatedInfo &
 
         QString body;
         bool firstLine = true;
-        for (const auto &line : related.quoted_body.splitRef("\n")) {
+        for (const auto &line : related.quoted_body.split("\n")) {
                 if (firstLine) {
                         firstLine = false;
                         body      = QString("> <%1> %2\n").arg(related.quoted_user).arg(line);
