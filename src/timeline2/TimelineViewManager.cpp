@@ -62,3 +62,41 @@ TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Ti
                 models.value(e.first)->addEvents(e.second);
         }
 }
+
+void
+TimelineViewManager::queueTextMessage(const QString &msg)
+{
+        mtx::events::msg::Text text = {};
+        text.body                   = msg.trimmed().toStdString();
+        text.format                 = "org.matrix.custom.html";
+        text.formatted_body         = utils::markdownToHtml(msg).toStdString();
+
+        if (timeline_)
+                timeline_->sendMessage(text);
+}
+
+void
+TimelineViewManager::queueReplyMessage(const QString &reply, const RelatedInfo &related)
+{
+        mtx::events::msg::Text text = {};
+
+        QString body;
+        bool firstLine = true;
+        for (const auto &line : related.quoted_body.splitRef("\n")) {
+                if (firstLine) {
+                        firstLine = false;
+                        body      = QString("> <%1> %2\n").arg(related.quoted_user).arg(line);
+                } else {
+                        body = QString("%1\n> %2\n").arg(body).arg(line);
+                }
+        }
+
+        text.body   = QString("%1\n%2").arg(body).arg(reply).toStdString();
+        text.format = "org.matrix.custom.html";
+        text.formatted_body =
+          utils::getFormattedQuoteBody(related, utils::markdownToHtml(reply)).toStdString();
+        text.relates_to.in_reply_to.event_id = related.related_event;
+
+        if (timeline_)
+                timeline_->sendMessage(text);
+}
