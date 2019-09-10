@@ -111,6 +111,7 @@ public:
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
+        Q_INVOKABLE void replyAction(QString id);
 
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>
