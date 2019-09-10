@@ -48,32 +48,28 @@ public slots:
 
         void queueTextMessage(const QString &msg);
         void queueReplyMessage(const QString &reply, const RelatedInfo &related);
-        void queueEmoteMessage(const QString &msg) {}
+        void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
                                const QString &filename,
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize,
-                               const QSize &dimensions)
-        {}
+                               const QSize &dimensions);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
                               const QString &url,
                               const QString &mime,
-                              uint64_t dsize)
-        {}
+                              uint64_t dsize);
         void queueAudioMessage(const QString &roomid,
                                const QString &filename,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize)
-        {}
+                               uint64_t dsize);
         void queueVideoMessage(const QString &roomid,
                                const QString &filename,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize)
-        {}
+                               uint64_t dsize);
 
 private:
         QQuickView *view;

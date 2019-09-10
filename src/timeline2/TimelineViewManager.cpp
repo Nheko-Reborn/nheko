@@ -100,3 +100,81 @@ TimelineViewManager::queueReplyMessage(const QString &reply, const RelatedInfo &
         if (timeline_)
                 timeline_->sendMessage(text);
 }
+
+void
+TimelineViewManager::queueEmoteMessage(const QString &msg)
+{
+        auto html = utils::markdownToHtml(msg);
+
+        mtx::events::msg::Emote emote;
+        emote.body = msg.trimmed().toStdString();
+
+        if (html != msg.trimmed().toHtmlEscaped())
+                emote.formatted_body = html.toStdString();
+
+        if (timeline_)
+                timeline_->sendMessage(emote);
+}
+
+void
+TimelineViewManager::queueImageMessage(const QString &roomid,
+                                       const QString &filename,
+                                       const QString &url,
+                                       const QString &mime,
+                                       uint64_t dsize,
+                                       const QSize &dimensions)
+{
+        mtx::events::msg::Image image;
+        image.info.mimetype = mime.toStdString();
+        image.info.size     = dsize;
+        image.body          = filename.toStdString();
+        image.url           = url.toStdString();
+        image.info.h        = dimensions.height();
+        image.info.w        = dimensions.width();
+        models.value(roomid)->sendMessage(image);
+}
+
+void
+TimelineViewManager::queueFileMessage(const QString &roomid,
+                                      const QString &filename,
+                                      const QString &url,
+                                      const QString &mime,
+                                      uint64_t dsize)
+{
+        mtx::events::msg::File file;
+        file.info.mimetype = mime.toStdString();
+        file.info.size     = dsize;
+        file.body          = filename.toStdString();
+        file.url           = url.toStdString();
+        models.value(roomid)->sendMessage(file);
+}
+
+void
+TimelineViewManager::queueAudioMessage(const QString &roomid,
+                                       const QString &filename,
+                                       const QString &url,
+                                       const QString &mime,
+                                       uint64_t dsize)
+{
+        mtx::events::msg::Audio audio;
+        audio.info.mimetype = mime.toStdString();
+        audio.info.size     = dsize;
+        audio.body          = filename.toStdString();
+        audio.url           = url.toStdString();
+        models.value(roomid)->sendMessage(audio);
+}
+
+void
+TimelineViewManager::queueVideoMessage(const QString &roomid,
+                                       const QString &filename,
+                                       const QString &url,
+                                       const QString &mime,
+                                       uint64_t dsize)
+{
+        mtx::events::msg::Video video;
+        video.info.mimetype = mime.toStdString();
+        video.info.size     = dsize;
+        video.body          = filename.toStdString();
+        video.url           = url.toStdString();
+        models.value(roomid)->sendMessage(video);
+}
