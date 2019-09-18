@@ -2,6 +2,7 @@ import QtQuick 2.6
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.5
 import QtGraphicalEffects 1.0
+import QtQuick.Window 2.2
 
 import com.github.nheko 1.0
 
@@ -28,20 +29,64 @@ Rectangle {
 		visible: timelineManager.timeline != null
 		anchors.fill: parent
 
+		model: timelineManager.timeline
+
+		onModelChanged: {
+			if (model) {
+				currentIndex = model.currentIndex
+				if (model.currentIndex == count - 1) {
+					positionViewAtEnd()
+				} else {
+					positionViewAtIndex(model.currentIndex, ListView.End)
+				}
+			}
+		}
+
 		ScrollBar.vertical: ScrollBar {
 			id: scrollbar
 			anchors.top: parent.top
 			anchors.right: parent.right
 			anchors.bottom: parent.bottom
+			onPressedChanged: if (!pressed) chat.updatePosition()
 		}
 
-		model: timelineManager.timeline
+		property bool atBottom: false
+		onCountChanged: {
+			if (atBottom && Window.active) {
+				var newIndex = count - 1 // last index
+				positionViewAtEnd()
+				currentIndex = newIndex
+				model.currentIndex = newIndex
+			}
+		}
+
+		function updatePosition() {
+			for (var y = chat.contentY + chat.height; y > chat.height; y -= 5) {
+				var i = chat.itemAt(100, y);
+				if (!i) continue;
+				if (!i.isFullyVisible()) continue;
+				chat.model.currentIndex = i.getIndex();
+				chat.currentIndex = i.getIndex()
+				atBottom = i.getIndex() == count - 1;
+				console.log("bottom:" + atBottom)
+				break;
+			}
+		}
+		onMovementEnded: updatePosition()
+
 		spacing: 4
 		delegate: RowLayout {
 			anchors.leftMargin: 52
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.rightMargin: scrollbar.width
+
+			function isFullyVisible() {
+				return (y - chat.contentY - 1) + height < chat.height
+			}
+			function getIndex() {
+				return index;
+			}
 
 			Loader {
 				id: loader

@@ -14,7 +14,6 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
                                          0,
                                          "MtxEvent",
                                          "Can't instantiate enum!");
-
         view      = new QQuickView();
         container = QWidget::createWindowContainer(view, parent);
         container->setMinimumSize(200, 200);

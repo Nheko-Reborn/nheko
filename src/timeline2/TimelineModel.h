@@ -81,6 +81,8 @@ struct DecryptionResult
 class TimelineModel : public QAbstractListModel
 {
         Q_OBJECT
+        Q_PROPERTY(
+          int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 
 public:
         explicit TimelineModel(QString room_id, QObject *parent = 0);
@@ -112,6 +114,8 @@ public:
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void replyAction(QString id);
+        Q_INVOKABLE int idToIndex(QString id) const;
+        Q_INVOKABLE QString indexToId(int index) const;
 
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>
@@ -119,6 +123,12 @@ public:
 
 public slots:
         void fetchHistory();
+        void setCurrentIndex(int index)
+        {
+                currentId = indexToId(index);
+                emit currentIndexChanged(index);
+        }
+        int currentIndex() const { return idToIndex(currentId); }
 
 private slots:
         // Add old events at the top of the timeline.
@@ -129,6 +139,7 @@ signals:
         void oldMessagesRetrieved(const mtx::responses::Messages &res);
         void messageFailed(const std::string txn_id);
         void messageSent(const std::string txn_id, std::string event_id);
+        void currentIndexChanged(int index);
 
 private:
         DecryptionResult decryptEvent(
@@ -146,6 +157,7 @@ private:
         bool paginationInProgress = false;
 
         QHash<QString, QColor> userColors;
+        QString currentId;
 };
 
 template<class T>
