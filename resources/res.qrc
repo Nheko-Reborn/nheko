@@ -121,5 +121,6 @@
         <file>qml/delegates/NoticeMessage.qml</file>
         <file>qml/delegates/ImageMessage.qml</file>
         <file>qml/delegates/Redacted.qml</file>
+        <file>qml/delegates/placeholder.qml</file>
     </qresource>
 </RCC>
