@@ -7,6 +7,7 @@
 
 #include "ChatPage.h"
 #include "Logging.h"
+#include "MainWindow.h"
 #include "Olm.h"
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
@@ -376,6 +377,8 @@ TimelineModel::data(const QModelIndex &index, int role) const
                         return qml_mtx_events::Failed;
                 else if (pending.contains(id))
                         return qml_mtx_events::Sent;
+                else if (read.contains(id))
+                        return qml_mtx_events::Read;
                 else
                         return qml_mtx_events::Received;
         default:
@@ -664,7 +667,13 @@ TimelineModel::replyAction(QString id)
         if (related.quoted_body.isEmpty())
                 return;
 
-        emit ChatPage::instance()->messageReply(related);
+        ChatPage::instance()->messageReply(related);
+}
+
+void
+TimelineModel::readReceiptsAction(QString id) const
+{
+        MainWindow::instance()->openReadReceiptsDialog(id);
 }
 
 int
@@ -684,4 +693,18 @@ TimelineModel::indexToId(int index) const
         if (index < 0 || index >= (int)eventOrder.size())
                 return "";
         return eventOrder[index];
+}
+
+void
+TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
+{
+        for (const auto &id : event_ids) {
+                read.insert(id);
+                int idx = idToIndex(id);
+                if (idx < 0) {
+                        nhlog::ui()->warn("Read index out of range");
+                        return;
+                }
+                emit dataChanged(index(idx, 0), index(idx, 0));
+        }
 }
