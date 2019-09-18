@@ -240,6 +240,35 @@ TimelineModel::TimelineModel(QString room_id, QObject *parent)
 {
         connect(
           this, &TimelineModel::oldMessagesRetrieved, this, &TimelineModel::addBackwardsEvents);
+        connect(this, &TimelineModel::messageFailed, this, [this](QString txn_id) {
+                pending.remove(txn_id);
+                failed.insert(txn_id);
+                int idx = idToIndex(txn_id);
+                if (idx < 0) {
+                        nhlog::ui()->warn("Failed index out of range");
+                        return;
+                }
+                emit dataChanged(index(idx, 0), index(idx, 0));
+        });
+        connect(this, &TimelineModel::messageSent, this, [this](QString txn_id, QString event_id) {
+                int idx = idToIndex(txn_id);
+                if (idx < 0) {
+                        nhlog::ui()->warn("Sent index out of range");
+                        return;
+                }
+                eventOrder[idx] = event_id;
+                auto ev         = events.value(txn_id);
+                ev              = boost::apply_visitor(
+                  [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
+                          auto eventCopy     = e;
+                          eventCopy.event_id = event_id.toStdString();
+                          return eventCopy;
+                  },
+                  ev);
+                events.remove(txn_id);
+                events.insert(event_id, ev);
+                emit dataChanged(index(idx, 0), index(idx, 0));
+        });
 }
 
 QHash<int, QByteArray>
@@ -258,6 +287,7 @@ TimelineModel::roleNames() const
           {Width, "width"},
           {ProportionalHeight, "proportionalHeight"},
           {Id, "id"},
+          {State, "state"},
         };
 }
 int
@@ -341,6 +371,13 @@ TimelineModel::data(const QModelIndex &index, int role) const
                   [](const auto &e) -> double { return eventPropHeight(e); }, event));
         case Id:
                 return id;
+        case State:
+                if (failed.contains(id))
+                        return qml_mtx_events::Failed;
+                else if (pending.contains(id))
+                        return qml_mtx_events::Sent;
+                else
+                        return qml_mtx_events::Received;
         default:
                 return QVariant();
         }
@@ -378,8 +415,12 @@ TimelineModel::internalAddEvents(
                 QString id =
                   boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
 
-                if (this->events.contains(id))
+                if (this->events.contains(id)) {
+                        this->events.insert(id, e);
+                        int idx = idToIndex(id);
+                        emit dataChanged(index(idx, 0), index(idx, 0));
                         continue;
+                }
 
                 if (auto redaction =
                       boost::get<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
