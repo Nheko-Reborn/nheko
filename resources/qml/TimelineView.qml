@@ -180,6 +180,7 @@ Rectangle {
 
 					MenuItem {
 						text: "Read receipts"
+						onTriggered: chat.model.readReceiptsAction(model.id)
 					}
 					MenuItem {
 						text: "Mark as read"

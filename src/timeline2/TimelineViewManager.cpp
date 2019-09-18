@@ -53,6 +53,16 @@ TimelineViewManager::setHistoryView(const QString &room_id)
 }
 
 void
+TimelineViewManager::updateReadReceipts(const QString &room_id,
+                                        const std::vector<QString> &event_ids)
+{
+        auto room = models.find(room_id);
+        if (room != models.end()) {
+                room.value()->markEventsAsRead(event_ids);
+        }
+}
+
+void
 TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
 {
         for (const auto &e : msgs) {

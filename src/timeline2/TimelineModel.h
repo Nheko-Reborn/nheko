@@ -131,6 +131,7 @@ public:
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void replyAction(QString id);
+        Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
 
@@ -146,10 +147,10 @@ public slots:
                 emit currentIndexChanged(index);
         }
         int currentIndex() const { return idToIndex(currentId); }
+        void markEventsAsRead(const std::vector<QString> &event_ids);
 
 private slots:
         // Add old events at the top of the timeline.
-
         void addBackwardsEvents(const mtx::responses::Messages &msgs);
 
 signals:
@@ -165,7 +166,7 @@ private:
           const std::vector<mtx::events::collections::TimelineEvents> &timeline);
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
-        QSet<QString> pending, failed;
+        QSet<QString> pending, failed, read;
         std::vector<QString> eventOrder;
 
         QString room_id_;
