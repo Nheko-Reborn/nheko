@@ -116,6 +116,11 @@ Rectangle {
 				property variant eventData: model
 			}
 
+			StatusIndicator {
+				state: model.state
+				Layout.alignment: Qt.AlignRight | Qt.AlignTop
+				Layout.preferredHeight: 16
+			}
 
 			Button {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop

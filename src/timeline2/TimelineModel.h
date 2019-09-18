@@ -6,6 +6,7 @@
 #include <QColor>
 #include <QDate>
 #include <QHash>
+#include <QSet>
 
 #include "Logging.h"
 #include "MatrixClient.h"
@@ -68,6 +69,21 @@ enum EventType
         UnknownMessage,
 };
 Q_ENUM_NS(EventType)
+
+enum EventState
+{
+        //! The plaintext message was received by the server.
+        Received,
+        //! At least one of the participants has read the message.
+        Read,
+        //! The client sent the message. Not yet received.
+        Sent,
+        //! When the message is loaded from cache or backfill.
+        Empty,
+        //! When the message failed to send
+        Failed,
+};
+Q_ENUM_NS(EventState)
 }
 
 struct DecryptionResult
@@ -101,6 +117,7 @@ public:
                 Width,
                 ProportionalHeight,
                 Id,
+                State,
         };
 
         QHash<int, QByteArray> roleNames() const override;
@@ -137,8 +154,8 @@ private slots:
 
 signals:
         void oldMessagesRetrieved(const mtx::responses::Messages &res);
-        void messageFailed(const std::string txn_id);
-        void messageSent(const std::string txn_id, std::string event_id);
+        void messageFailed(QString txn_id);
+        void messageSent(QString txn_id, QString event_id);
         void currentIndexChanged(int index);
 
 private:
@@ -148,6 +165,7 @@ private:
           const std::vector<mtx::events::collections::TimelineEvents> &timeline);
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
+        QSet<QString> pending, failed;
         std::vector<QString> eventOrder;
 
         QString room_id_;
@@ -164,20 +182,37 @@ template<class T>
 void
 TimelineModel::sendMessage(const T &msg)
 {
-        auto txn_id = http::client()->generate_txn_id();
+        auto txn_id                       = http::client()->generate_txn_id();
+        mtx::events::RoomEvent<T> msgCopy = {};
+        msgCopy.content                   = msg;
+        msgCopy.type                      = mtx::events::EventType::RoomMessage;
+        msgCopy.event_id                  = txn_id;
+        msgCopy.sender                    = http::client()->user_id().to_string();
+        msgCopy.origin_server_ts          = QDateTime::currentMSecsSinceEpoch();
+        internalAddEvents({msgCopy});
+
+        QString txn_id_qstr = QString::fromStdString(txn_id);
+        beginInsertRows(QModelIndex(),
+                        static_cast<int>(this->eventOrder.size()),
+                        static_cast<int>(this->eventOrder.size()));
+        pending.insert(txn_id_qstr);
+        this->eventOrder.insert(this->eventOrder.end(), txn_id_qstr);
+        endInsertRows();
+
         http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
           room_id_.toStdString(),
           txn_id,
           msg,
-          [this, txn_id](const mtx::responses::EventId &res, mtx::http::RequestErr err) {
+          [this, txn_id, txn_id_qstr](const mtx::responses::EventId &res,
+                                      mtx::http::RequestErr err) {
                   if (err) {
                           const int status_code = static_cast<int>(err->status_code);
                           nhlog::net()->warn("[{}] failed to send message: {} {}",
                                              txn_id,
                                              err->matrix_error.error,
                                              status_code);
-                          emit messageFailed(txn_id);
+                          emit messageFailed(txn_id_qstr);
                   }
-                  emit messageSent(txn_id, res.event_id.to_string());
+                  emit messageSent(txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
           });
 }
