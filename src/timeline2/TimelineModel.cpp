@@ -625,3 +625,22 @@ TimelineModel::replyAction(QString id)
 
         emit ChatPage::instance()->messageReply(related);
 }
+
+int
+TimelineModel::idToIndex(QString id) const
+{
+        if (id.isEmpty())
+                return -1;
+        for (int i = 0; i < (int)eventOrder.size(); i++)
+                if (id == eventOrder[i])
+                        return i;
+        return -1;
+}
+
+QString
+TimelineModel::indexToId(int index) const
+{
+        if (index < 0 || index >= (int)eventOrder.size())
+                return "";
+        return eventOrder[index];
+}
