@@ -719,3 +719,304 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
                 emit dataChanged(index(idx, 0), index(idx, 0));
         }
 }
+
+void
+TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json content)
+{
+        const auto room_id = room_id_.toStdString();
+
+        using namespace mtx::events;
+        using namespace mtx::identifiers;
+
+        json doc{{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
+
+        try {
+                // Check if we have already an outbound megolm session then we can use.
+                if (cache::client()->outboundMegolmSessionExists(room_id)) {
+                        auto data = olm::encrypt_group_message(
+                          room_id, http::client()->device_id(), doc.dump());
+
+                        http::client()->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
+                          room_id,
+                          txn_id,
+                          data,
+                          [this, txn_id](const mtx::responses::EventId &res,
+                                         mtx::http::RequestErr err) {
+                                  if (err) {
+                                          const int status_code =
+                                            static_cast<int>(err->status_code);
+                                          nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                                             txn_id,
+                                                             err->matrix_error.error,
+                                                             status_code);
+                                          emit messageFailed(QString::fromStdString(txn_id));
+                                  }
+                                  emit messageSent(
+                                    QString::fromStdString(txn_id),
+                                    QString::fromStdString(res.event_id.to_string()));
+                          });
+                        return;
+                }
+
+                nhlog::ui()->debug("creating new outbound megolm session");
+
+                // Create a new outbound megolm session.
+                auto outbound_session  = olm::client()->init_outbound_group_session();
+                const auto session_id  = mtx::crypto::session_id(outbound_session.get());
+                const auto session_key = mtx::crypto::session_key(outbound_session.get());
+
+                // TODO: needs to be moved in the lib.
+                auto megolm_payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
+                                           {"room_id", room_id},
+                                           {"session_id", session_id},
+                                           {"session_key", session_key}};
+
+                // Saving the new megolm session.
+                // TODO: Maybe it's too early to save.
+                OutboundGroupSessionData session_data;
+                session_data.session_id    = session_id;
+                session_data.session_key   = session_key;
+                session_data.message_index = 0; // TODO Update me
+                cache::client()->saveOutboundMegolmSession(
+                  room_id, session_data, std::move(outbound_session));
+
+                const auto members = cache::client()->roomMembers(room_id);
+                nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
+
+                auto keeper =
+                  std::make_shared<StateKeeper>([megolm_payload, room_id, doc, txn_id, this]() {
+                          try {
+                                  auto data = olm::encrypt_group_message(
+                                    room_id, http::client()->device_id(), doc.dump());
+
+                                  http::client()
+                                    ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
+                                      room_id,
+                                      txn_id,
+                                      data,
+                                      [this, txn_id](const mtx::responses::EventId &res,
+                                                     mtx::http::RequestErr err) {
+                                              if (err) {
+                                                      const int status_code =
+                                                        static_cast<int>(err->status_code);
+                                                      nhlog::net()->warn(
+                                                        "[{}] failed to send message: {} {}",
+                                                        txn_id,
+                                                        err->matrix_error.error,
+                                                        status_code);
+                                                      emit messageFailed(
+                                                        QString::fromStdString(txn_id));
+                                              }
+                                              emit messageSent(
+                                                QString::fromStdString(txn_id),
+                                                QString::fromStdString(res.event_id.to_string()));
+                                      });
+                          } catch (const lmdb::error &e) {
+                                  nhlog::db()->critical(
+                                    "failed to save megolm outbound session: {}", e.what());
+                          }
+                  });
+
+                mtx::requests::QueryKeys req;
+                for (const auto &member : members)
+                        req.device_keys[member] = {};
+
+                http::client()->query_keys(
+                  req,
+                  [keeper = std::move(keeper), megolm_payload, this](
+                    const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->warn("failed to query device keys: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                                  // TODO: Mark the event as failed. Communicate with the UI.
+                                  return;
+                          }
+
+                          for (const auto &user : res.device_keys) {
+                                  // Mapping from a device_id with valid identity keys to the
+                                  // generated room_key event used for sharing the megolm session.
+                                  std::map<std::string, std::string> room_key_msgs;
+                                  std::map<std::string, DevicePublicKeys> deviceKeys;
+
+                                  room_key_msgs.clear();
+                                  deviceKeys.clear();
+
+                                  for (const auto &dev : user.second) {
+                                          const auto user_id   = ::UserId(dev.second.user_id);
+                                          const auto device_id = DeviceId(dev.second.device_id);
+
+                                          const auto device_keys = dev.second.keys;
+                                          const auto curveKey    = "curve25519:" + device_id.get();
+                                          const auto edKey       = "ed25519:" + device_id.get();
+
+                                          if ((device_keys.find(curveKey) == device_keys.end()) ||
+                                              (device_keys.find(edKey) == device_keys.end())) {
+                                                  nhlog::net()->debug(
+                                                    "ignoring malformed keys for device {}",
+                                                    device_id.get());
+                                                  continue;
+                                          }
+
+                                          DevicePublicKeys pks;
+                                          pks.ed25519    = device_keys.at(edKey);
+                                          pks.curve25519 = device_keys.at(curveKey);
+
+                                          try {
+                                                  if (!mtx::crypto::verify_identity_signature(
+                                                        json(dev.second), device_id, user_id)) {
+                                                          nhlog::crypto()->warn(
+                                                            "failed to verify identity keys: {}",
+                                                            json(dev.second).dump(2));
+                                                          continue;
+                                                  }
+                                          } catch (const json::exception &e) {
+                                                  nhlog::crypto()->warn(
+                                                    "failed to parse device key json: {}",
+                                                    e.what());
+                                                  continue;
+                                          } catch (const mtx::crypto::olm_exception &e) {
+                                                  nhlog::crypto()->warn(
+                                                    "failed to verify device key json: {}",
+                                                    e.what());
+                                                  continue;
+                                          }
+
+                                          auto room_key = olm::client()
+                                                            ->create_room_key_event(
+                                                              user_id, pks.ed25519, megolm_payload)
+                                                            .dump();
+
+                                          room_key_msgs.emplace(device_id, room_key);
+                                          deviceKeys.emplace(device_id, pks);
+                                  }
+
+                                  std::vector<std::string> valid_devices;
+                                  valid_devices.reserve(room_key_msgs.size());
+                                  for (auto const &d : room_key_msgs) {
+                                          valid_devices.push_back(d.first);
+
+                                          nhlog::net()->info("{}", d.first);
+                                          nhlog::net()->info("  curve25519 {}",
+                                                             deviceKeys.at(d.first).curve25519);
+                                          nhlog::net()->info("  ed25519 {}",
+                                                             deviceKeys.at(d.first).ed25519);
+                                  }
+
+                                  nhlog::net()->info(
+                                    "sending claim request for user {} with {} devices",
+                                    user.first,
+                                    valid_devices.size());
+
+                                  http::client()->claim_keys(
+                                    user.first,
+                                    valid_devices,
+                                    std::bind(&TimelineModel::handleClaimedKeys,
+                                              this,
+                                              keeper,
+                                              room_key_msgs,
+                                              deviceKeys,
+                                              user.first,
+                                              std::placeholders::_1,
+                                              std::placeholders::_2));
+
+                                  // TODO: Wait before sending the next batch of requests.
+                                  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                          }
+                  });
+
+                // TODO: Let the user know about the errors.
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical(
+                  "failed to open outbound megolm session ({}): {}", room_id, e.what());
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical(
+                  "failed to open outbound megolm session ({}): {}", room_id, e.what());
+        }
+}
+
+void
+TimelineModel::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
+                                 const std::map<std::string, std::string> &room_keys,
+                                 const std::map<std::string, DevicePublicKeys> &pks,
+                                 const std::string &user_id,
+                                 const mtx::responses::ClaimKeys &res,
+                                 mtx::http::RequestErr err)
+{
+        if (err) {
+                nhlog::net()->warn("claim keys error: {} {} {}",
+                                   err->matrix_error.error,
+                                   err->parse_error,
+                                   static_cast<int>(err->status_code));
+                return;
+        }
+
+        nhlog::net()->debug("claimed keys for {}", user_id);
+
+        if (res.one_time_keys.size() == 0) {
+                nhlog::net()->debug("no one-time keys found for user_id: {}", user_id);
+                return;
+        }
+
+        if (res.one_time_keys.find(user_id) == res.one_time_keys.end()) {
+                nhlog::net()->debug("no one-time keys found for user_id: {}", user_id);
+                return;
+        }
+
+        auto retrieved_devices = res.one_time_keys.at(user_id);
+
+        // Payload with all the to_device message to be sent.
+        json body;
+        body["messages"][user_id] = json::object();
+
+        for (const auto &rd : retrieved_devices) {
+                const auto device_id = rd.first;
+                nhlog::net()->debug("{} : \n {}", device_id, rd.second.dump(2));
+
+                // TODO: Verify signatures
+                auto otk = rd.second.begin()->at("key");
+
+                if (pks.find(device_id) == pks.end()) {
+                        nhlog::net()->critical("couldn't find public key for device: {}",
+                                               device_id);
+                        continue;
+                }
+
+                auto id_key = pks.at(device_id).curve25519;
+                auto s      = olm::client()->create_outbound_session(id_key, otk);
+
+                if (room_keys.find(device_id) == room_keys.end()) {
+                        nhlog::net()->critical("couldn't find m.room_key for device: {}",
+                                               device_id);
+                        continue;
+                }
+
+                auto device_msg = olm::client()->create_olm_encrypted_content(
+                  s.get(), room_keys.at(device_id), pks.at(device_id).curve25519);
+
+                try {
+                        cache::client()->saveOlmSession(id_key, std::move(s));
+                } catch (const lmdb::error &e) {
+                        nhlog::db()->critical("failed to save outbound olm session: {}", e.what());
+                } catch (const mtx::crypto::olm_exception &e) {
+                        nhlog::crypto()->critical("failed to pickle outbound olm session: {}",
+                                                  e.what());
+                }
+
+                body["messages"][user_id][device_id] = device_msg;
+        }
+
+        nhlog::net()->info("send_to_device: {}", user_id);
+
+        http::client()->send_to_device(
+          "m.room.encrypted", body, [keeper](mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to send "
+                                             "send_to_device "
+                                             "message: {}",
+                                             err->matrix_error.error);
+                  }
+
+                  (void)keeper;
+          });
+}
