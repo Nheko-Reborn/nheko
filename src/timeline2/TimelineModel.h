@@ -132,6 +132,7 @@ public:
                 ProportionalHeight,
                 Id,
                 State,
+                IsEncrypted,
         };
 
         QHash<int, QByteArray> roleNames() const override;

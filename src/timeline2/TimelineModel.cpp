@@ -293,6 +293,7 @@ TimelineModel::roleNames() const
           {ProportionalHeight, "proportionalHeight"},
           {Id, "id"},
           {State, "state"},
+          {IsEncrypted, "isEncrypted"},
         };
 }
 int
@@ -391,6 +392,11 @@ TimelineModel::data(const QModelIndex &index, int role) const
                         return qml_mtx_events::Read;
                 else
                         return qml_mtx_events::Received;
+        case IsEncrypted: {
+                auto tempEvent = events[id];
+                return boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                         &tempEvent) != nullptr;
+        }
         default:
                 return QVariant();
         }
