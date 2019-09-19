@@ -124,6 +124,12 @@ Rectangle {
 				Layout.preferredHeight: 16
 			}
 
+			EncryptionIndicator {
+				visible: model.isEncrypted
+				Layout.alignment: Qt.AlignRight | Qt.AlignTop
+				Layout.preferredHeight: 16
+			}
+
 			Button {
 				Layout.alignment: Qt.AlignRight | Qt.AlignTop
 				id: replyButton
