@@ -268,6 +268,10 @@ TimelineModel::TimelineModel(QString room_id, QObject *parent)
                   ev);
                 events.remove(txn_id);
                 events.insert(event_id, ev);
+
+                // ask to be notified for read receipts
+                cache::client()->addPendingReceipt(room_id_, event_id);
+
                 emit dataChanged(index(idx, 0), index(idx, 0));
         });
 }
@@ -373,11 +377,17 @@ TimelineModel::data(const QModelIndex &index, int role) const
         case Id:
                 return id;
         case State:
-                if (failed.contains(id))
+                // only show read receipts for messages not from us
+                if (boost::apply_visitor([](const auto &e) -> QString { return senderId(e); },
+                                         event)
+                      .toStdString() != http::client()->user_id().to_string())
+                        return qml_mtx_events::Empty;
+                else if (failed.contains(id))
                         return qml_mtx_events::Failed;
                 else if (pending.contains(id))
                         return qml_mtx_events::Sent;
-                else if (read.contains(id))
+                else if (read.contains(id) ||
+                         cache::client()->readReceipts(id, room_id_).size() > 1)
                         return qml_mtx_events::Read;
                 else
                         return qml_mtx_events::Received;
@@ -695,6 +705,7 @@ TimelineModel::indexToId(int index) const
         return eventOrder[index];
 }
 
+// Note: this will only be called for our messages
 void
 TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
 {
