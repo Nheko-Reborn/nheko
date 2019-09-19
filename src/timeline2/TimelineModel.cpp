@@ -638,8 +638,6 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
         body["origin_server_ts"] = e.origin_server_ts;
         body["unsigned"]         = e.unsigned_data;
 
-        nhlog::crypto()->debug("decrypted event: {}", e.event_id);
-
         json event_array = json::array();
         event_array.push_back(body);
 
