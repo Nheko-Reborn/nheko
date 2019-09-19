@@ -8,6 +8,7 @@
 #include <QHash>
 #include <QSet>
 
+#include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 
@@ -85,6 +86,19 @@ enum EventState
 };
 Q_ENUM_NS(EventState)
 }
+
+class StateKeeper
+{
+public:
+        StateKeeper(std::function<void()> &&fn)
+          : fn_(std::move(fn))
+        {}
+
+        ~StateKeeper() { fn_(); }
+
+private:
+        std::function<void()> fn_;
+};
 
 struct DecryptionResult
 {
@@ -164,6 +178,13 @@ private:
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const;
         std::vector<QString> internalAddEvents(
           const std::vector<mtx::events::collections::TimelineEvents> &timeline);
+        void sendEncryptedMessage(const std::string &txn_id, nlohmann::json content);
+        void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
+                               const std::map<std::string, std::string> &room_key,
+                               const std::map<std::string, DevicePublicKeys> &pks,
+                               const std::string &user_id,
+                               const mtx::responses::ClaimKeys &res,
+                               mtx::http::RequestErr err);
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
         QSet<QString> pending, failed, read;
@@ -200,20 +221,24 @@ TimelineModel::sendMessage(const T &msg)
         this->eventOrder.insert(this->eventOrder.end(), txn_id_qstr);
         endInsertRows();
 
-        http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
-          room_id_.toStdString(),
-          txn_id,
-          msg,
-          [this, txn_id, txn_id_qstr](const mtx::responses::EventId &res,
-                                      mtx::http::RequestErr err) {
-                  if (err) {
-                          const int status_code = static_cast<int>(err->status_code);
-                          nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                             txn_id,
-                                             err->matrix_error.error,
-                                             status_code);
-                          emit messageFailed(txn_id_qstr);
-                  }
-                  emit messageSent(txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
-          });
+        if (cache::client()->isRoomEncrypted(room_id_.toStdString()))
+                sendEncryptedMessage(txn_id, nlohmann::json(msg));
+        else
+                http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
+                  room_id_.toStdString(),
+                  txn_id,
+                  msg,
+                  [this, txn_id, txn_id_qstr](const mtx::responses::EventId &res,
+                                              mtx::http::RequestErr err) {
+                          if (err) {
+                                  const int status_code = static_cast<int>(err->status_code);
+                                  nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                                     txn_id,
+                                                     err->matrix_error.error,
+                                                     status_code);
+                                  emit messageFailed(txn_id_qstr);
+                          }
+                          emit messageSent(txn_id_qstr,
+                                           QString::fromStdString(res.event_id.to_string()));
+                  });
 }
