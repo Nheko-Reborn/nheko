@@ -11,6 +11,8 @@ Rectangle {
 
 	SystemPalette { id: colors; colorGroup: SystemPalette.Active }
 	SystemPalette { id: inactiveColors; colorGroup: SystemPalette.Disabled }
+	property int avatarSize: 32
+
 	color: colors.window
 
 	Text {
@@ -76,7 +78,7 @@ Rectangle {
 
 		spacing: 4
 		delegate: RowLayout {
-			anchors.leftMargin: 52
+			anchors.leftMargin: avatarSize + 4
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.rightMargin: scrollbar.width
@@ -239,8 +241,8 @@ Rectangle {
 					height: userName.height
 					spacing: 4
 					Avatar {
-						width: 48
-						height: 48
+						width: avatarSize
+						height: avatarSize
 						url: chat.model.avatarUrl(section.split(" ")[0]).replace("mxc://", "image://MxcImage/")
 						displayName: chat.model.displayName(section.split(" ")[0])
 					}
