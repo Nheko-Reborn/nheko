@@ -15,6 +15,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
+class MxcImageProvider;
+
 class TimelineViewManager : public QObject
 {
         Q_OBJECT
@@ -33,6 +35,7 @@ public:
         void clearAll() { models.clear(); }
 
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
+        Q_INVOKABLE void openImageOverlay(QString url) const;
 
 signals:
         void clearRoomMessageCount(QString roomid);
@@ -75,6 +78,7 @@ private:
         QQuickView *view;
         QWidget *container;
         TimelineModel *timeline_ = nullptr;
+        MxcImageProvider *imgProvider;
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
 };
