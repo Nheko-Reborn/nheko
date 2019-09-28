@@ -5,8 +5,10 @@
 
 #include "Logging.h"
 #include "MxcImageProvider.h"
+#include "dialogs/ImageOverlay.h"
 
 TimelineViewManager::TimelineViewManager(QWidget *parent)
+  : imgProvider(new MxcImageProvider())
 {
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "com.github.nheko",
@@ -18,7 +20,7 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
         container = QWidget::createWindowContainer(view, parent);
         container->setMinimumSize(200, 200);
         view->rootContext()->setContextProperty("timelineManager", this);
-        view->engine()->addImageProvider("MxcImage", new MxcImageProvider());
+        view->engine()->addImageProvider("MxcImage", imgProvider);
         view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
 }
 
@@ -50,6 +52,27 @@ TimelineViewManager::setHistoryView(const QString &room_id)
                 emit activeTimelineChanged(timeline_);
                 nhlog::ui()->info("Activated room {}", room_id.toStdString());
         }
+}
+
+void
+TimelineViewManager::openImageOverlay(QString url) const
+{
+        QQuickImageResponse *imgResponse =
+          imgProvider->requestImageResponse(url.remove("image://mxcimage/"), QSize());
+        connect(imgResponse, &QQuickImageResponse::finished, this, [imgResponse]() {
+                if (!imgResponse->errorString().isEmpty()) {
+                        nhlog::ui()->error("Error when retrieving image for overlay: {}",
+                                           imgResponse->errorString().toStdString());
+                        return;
+                }
+                auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
+
+                auto imgDialog = new dialogs::ImageOverlay(pixmap);
+                imgDialog->show();
+                // connect(imgDialog, &dialogs::ImageOverlay::saving, this,
+                // &ImageItem::saveAs);
+                Q_UNUSED(imgDialog);
+        });
 }
 
 void
