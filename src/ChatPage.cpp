@@ -115,11 +115,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->addWidget(top_bar_);
         contentLayout_->addWidget(view_manager_->getWidget());
 
-        connect(this,
-                &ChatPage::removeTimelineEvent,
-                view_manager_,
-                &TimelineViewManager::removeTimelineEvent);
-
         // Splitter
         splitter->addWidget(sideBar_);
         splitter->addWidget(content_);

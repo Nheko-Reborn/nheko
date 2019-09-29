@@ -321,6 +321,9 @@ TimelineModel::TimelineModel(QString room_id, QObject *parent)
 
                 emit dataChanged(index(idx, 0), index(idx, 0));
         });
+        connect(this, &TimelineModel::redactionFailed, this, [](const QString &msg) {
+                emit ChatPage::instance()->showNotification(msg);
+        });
 }
 
 QHash<int, QByteArray>
@@ -743,6 +746,25 @@ void
 TimelineModel::readReceiptsAction(QString id) const
 {
         MainWindow::instance()->openReadReceiptsDialog(id);
+}
+
+void
+TimelineModel::redactEvent(QString id)
+{
+        if (!id.isEmpty())
+                http::client()->redact_event(
+                  room_id_.toStdString(),
+                  id.toStdString(),
+                  [this, id](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                          if (err) {
+                                  emit redactionFailed(
+                                    tr("Message redaction failed: %1")
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+                                  return;
+                          }
+
+                          emit eventRedacted(id);
+                  });
 }
 
 int
