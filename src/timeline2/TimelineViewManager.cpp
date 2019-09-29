@@ -1,6 +1,8 @@
 #include "TimelineViewManager.h"
 
+#include <QFileDialog>
 #include <QMetaType>
+#include <QMimeDatabase>
 #include <QQmlContext>
 
 #include "Logging.h"
@@ -55,24 +57,88 @@ TimelineViewManager::setHistoryView(const QString &room_id)
 }
 
 void
-TimelineViewManager::openImageOverlay(QString url) const
+TimelineViewManager::openImageOverlay(QString mxcUrl,
+                                      QString originalFilename,
+                                      QString mimeType,
+                                      qml_mtx_events::EventType eventType) const
 {
         QQuickImageResponse *imgResponse =
-          imgProvider->requestImageResponse(url.remove("image://mxcimage/"), QSize());
-        connect(imgResponse, &QQuickImageResponse::finished, this, [imgResponse]() {
-                if (!imgResponse->errorString().isEmpty()) {
-                        nhlog::ui()->error("Error when retrieving image for overlay: {}",
-                                           imgResponse->errorString().toStdString());
-                        return;
-                }
-                auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
+          imgProvider->requestImageResponse(mxcUrl.remove("mxc://"), QSize());
+        connect(imgResponse,
+                &QQuickImageResponse::finished,
+                this,
+                [this, mxcUrl, originalFilename, mimeType, eventType, imgResponse]() {
+                        if (!imgResponse->errorString().isEmpty()) {
+                                nhlog::ui()->error("Error when retrieving image for overlay: {}",
+                                                   imgResponse->errorString().toStdString());
+                                return;
+                        }
+                        auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
 
-                auto imgDialog = new dialogs::ImageOverlay(pixmap);
-                imgDialog->show();
-                // connect(imgDialog, &dialogs::ImageOverlay::saving, this,
-                // &ImageItem::saveAs);
-                Q_UNUSED(imgDialog);
-        });
+                        auto imgDialog = new dialogs::ImageOverlay(pixmap);
+                        imgDialog->show();
+                        connect(imgDialog,
+                                &dialogs::ImageOverlay::saving,
+                                this,
+                                [this, mxcUrl, originalFilename, mimeType, eventType]() {
+                                        saveMedia(mxcUrl, originalFilename, mimeType, eventType);
+                                });
+                });
+}
+
+void
+TimelineViewManager::saveMedia(QString mxcUrl,
+                               QString originalFilename,
+                               QString mimeType,
+                               qml_mtx_events::EventType eventType) const
+{
+        QString dialogTitle;
+        if (eventType == qml_mtx_events::EventType::ImageMessage) {
+                dialogTitle = tr("Save image");
+        } else if (eventType == qml_mtx_events::EventType::VideoMessage) {
+                dialogTitle = tr("Save video");
+        } else if (eventType == qml_mtx_events::EventType::AudioMessage) {
+                dialogTitle = tr("Save audio");
+        } else {
+                dialogTitle = tr("Save file");
+        }
+
+        QString filterString = QMimeDatabase().mimeTypeForName(mimeType).filterString();
+
+        auto filename =
+          QFileDialog::getSaveFileName(container, dialogTitle, originalFilename, filterString);
+
+        if (filename.isEmpty())
+                return;
+
+        const auto url = mxcUrl.toStdString();
+
+        http::client()->download(
+          url,
+          [filename, url](const std::string &data,
+                          const std::string &,
+                          const std::string &,
+                          mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
+                                             url,
+                                             err->matrix_error.error,
+                                             static_cast<int>(err->status_code));
+                          return;
+                  }
+
+                  try {
+                          QFile file(filename);
+
+                          if (!file.open(QIODevice::WriteOnly))
+                                  return;
+
+                          file.write(QByteArray(data.data(), data.size()));
+                          file.close();
+                  } catch (const std::exception &e) {
+                          nhlog::ui()->warn("Error while saving file to: {}", e.what());
+                  }
+          });
 }
 
 void

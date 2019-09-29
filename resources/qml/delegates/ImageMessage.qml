@@ -14,7 +14,7 @@ Item {
 
 		MouseArea {
 			anchors.fill: parent
-			onClicked: timelineManager.openImageOverlay(img.source)
+			onClicked: timelineManager.openImageOverlay(eventData.url, eventData.filename, eventData.mimetype, eventData.type)
 		}
 	}
 }

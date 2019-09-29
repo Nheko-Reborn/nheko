@@ -35,7 +35,30 @@ public:
         void clearAll() { models.clear(); }
 
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
-        Q_INVOKABLE void openImageOverlay(QString url) const;
+        void openImageOverlay(QString mxcUrl,
+                              QString originalFilename,
+                              QString mimeType,
+                              qml_mtx_events::EventType eventType) const;
+        void saveMedia(QString mxcUrl,
+                       QString originalFilename,
+                       QString mimeType,
+                       qml_mtx_events::EventType eventType) const;
+        // Qml can only pass enum as int
+        Q_INVOKABLE void openImageOverlay(QString mxcUrl,
+                                          QString originalFilename,
+                                          QString mimeType,
+                                          int eventType) const
+        {
+                openImageOverlay(
+                  mxcUrl, originalFilename, mimeType, (qml_mtx_events::EventType)eventType);
+        }
+        Q_INVOKABLE void saveMedia(QString mxcUrl,
+                                   QString originalFilename,
+                                   QString mimeType,
+                                   int eventType) const
+        {
+                saveMedia(mxcUrl, originalFilename, mimeType, (qml_mtx_events::EventType)eventType);
+        }
 
 signals:
         void clearRoomMessageCount(QString roomid);

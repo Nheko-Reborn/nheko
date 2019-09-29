@@ -105,6 +105,53 @@ eventUrl(const mtx::events::RoomEvent<T> &e)
 }
 
 template<class T>
+QString
+eventFilename(const T &)
+{
+        return "";
+}
+QString
+eventFilename(const mtx::events::RoomEvent<mtx::events::msg::Audio> &e)
+{
+        // body may be the original filename
+        return QString::fromStdString(e.content.body);
+}
+QString
+eventFilename(const mtx::events::RoomEvent<mtx::events::msg::Video> &e)
+{
+        // body may be the original filename
+        return QString::fromStdString(e.content.body);
+}
+QString
+eventFilename(const mtx::events::RoomEvent<mtx::events::msg::Image> &e)
+{
+        // body may be the original filename
+        return QString::fromStdString(e.content.body);
+}
+QString
+eventFilename(const mtx::events::RoomEvent<mtx::events::msg::File> &e)
+{
+        // body may be the original filename
+        if (!e.content.filename.empty())
+                return QString::fromStdString(e.content.filename);
+        return QString::fromStdString(e.content.body);
+}
+
+template<class T>
+QString
+eventMimeType(const T &)
+{
+        return QString();
+}
+template<class T>
+auto
+eventMimeType(const mtx::events::RoomEvent<T> &e)
+  -> std::enable_if_t<std::is_same<decltype(e.content.info.mimetype), std::string>::value, QString>
+{
+        return QString::fromStdString(e.content.info.mimetype);
+}
+
+template<class T>
 qml_mtx_events::EventType
 toRoomEventType(const mtx::events::Event<T> &e)
 {
@@ -288,6 +335,8 @@ TimelineModel::roleNames() const
           {UserName, "userName"},
           {Timestamp, "timestamp"},
           {Url, "url"},
+          {Filename, "filename"},
+          {MimeType, "mimetype"},
           {Height, "height"},
           {Width, "width"},
           {ProportionalHeight, "proportionalHeight"},
@@ -366,6 +415,12 @@ TimelineModel::data(const QModelIndex &index, int role) const
         case Url:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventUrl(e); }, event));
+        case Filename:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventFilename(e); }, event));
+        case MimeType:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventMimeType(e); }, event));
         case Height:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> qulonglong { return eventHeight(e); }, event));
