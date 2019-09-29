@@ -20,16 +20,6 @@ Q_DECLARE_METATYPE(nlohmann::json)
 Q_DECLARE_METATYPE(std::vector<std::string>)
 Q_DECLARE_METATYPE(std::vector<QString>)
 
-class MediaProxy : public QObject
-{
-        Q_OBJECT
-
-signals:
-        void imageDownloaded(const QPixmap &);
-        void imageSaved(const QString &, const QByteArray &);
-        void fileDownloaded(const QByteArray &);
-};
-
 namespace http {
 mtx::http::Client *
 client();

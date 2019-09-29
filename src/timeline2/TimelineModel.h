@@ -127,6 +127,8 @@ public:
                 UserName,
                 Timestamp,
                 Url,
+                Filename,
+                MimeType,
                 Height,
                 Width,
                 ProportionalHeight,

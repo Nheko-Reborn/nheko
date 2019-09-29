@@ -187,18 +187,23 @@ Rectangle {
 					id: contextMenu
 
 					MenuItem {
-						text: "Read receipts"
+						text: qsTr("Read receipts")
 						onTriggered: chat.model.readReceiptsAction(model.id)
 					}
 					MenuItem {
-						text: "Mark as read"
+						text: qsTr("Mark as read")
 					}
 					MenuItem {
-						text: "View raw message"
+						text: qsTr("View raw message")
 						onTriggered: chat.model.viewRawMessage(model.id)
 					}
 					MenuItem {
-						text: "Redact message"
+						text: qsTr("Redact message")
+					}
+					MenuItem {
+						visible: model.type == MtxEvent.ImageMessage || model.type == MtxEvent.VideoMessage || model.type == MtxEvent.AudioMessage || model.type == MtxEvent.FileMessage
+						text: qsTr("Save as")
+						onTriggered: timelineManager.saveMedia(model.url, model.filename, model.mimetype, model.type)
 					}
 				}
 			}
