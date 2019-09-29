@@ -199,6 +199,7 @@ Rectangle {
 					}
 					MenuItem {
 						text: qsTr("Redact message")
+						onTriggered: chat.model.redactEvent(model.id)
 					}
 					MenuItem {
 						visible: model.type == MtxEvent.ImageMessage || model.type == MtxEvent.VideoMessage || model.type == MtxEvent.AudioMessage || model.type == MtxEvent.FileMessage

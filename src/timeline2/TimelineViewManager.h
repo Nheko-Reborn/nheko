@@ -66,7 +66,6 @@ signals:
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
-        void removeTimelineEvent(const QString &room_id, const QString &event_id) {}
         void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
 
         void setHistoryView(const QString &room_id);

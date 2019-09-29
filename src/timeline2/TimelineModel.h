@@ -149,6 +149,7 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
+        Q_INVOKABLE void redactEvent(QString id);
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
 
@@ -175,6 +176,8 @@ signals:
         void messageFailed(QString txn_id);
         void messageSent(QString txn_id, QString event_id);
         void currentIndexChanged(int index);
+        void redactionFailed(QString id);
+        void eventRedacted(QString id);
 
 private:
         DecryptionResult decryptEvent(
