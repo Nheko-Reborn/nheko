@@ -27,9 +27,10 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
 }
 
 void
-TimelineViewManager::initialize(const mtx::responses::Rooms &rooms)
+TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 {
         for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
+                // addRoom will only add the room, if it doesn't exist
                 addRoom(QString::fromStdString(it->first));
                 models.value(QString::fromStdString(it->first))->addEvents(it->second.timeline);
         }

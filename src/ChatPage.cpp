@@ -566,7 +566,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this,
                 &ChatPage::initializeViews,
                 view_manager_,
-                [this](const mtx::responses::Rooms &rooms) { view_manager_->initialize(rooms); });
+                [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); });
         connect(this,
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
@@ -582,7 +582,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         nhlog::db()->error("failed to retrieve invites: {}", e.what());
                 }
 
-                view_manager_->initialize(rooms);
+                view_manager_->sync(rooms);
                 removeLeftRooms(rooms.leave);
 
                 bool hasNotifications = false;

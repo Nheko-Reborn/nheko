@@ -28,10 +28,9 @@ public:
         TimelineViewManager(QWidget *parent = 0);
         QWidget *getWidget() const { return container; }
 
-        void initialize(const mtx::responses::Rooms &rooms);
+        void sync(const mtx::responses::Rooms &rooms);
         void addRoom(const QString &room_id);
 
-        void sync(const mtx::responses::Rooms &rooms) {}
         void clearAll() { models.clear(); }
 
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
