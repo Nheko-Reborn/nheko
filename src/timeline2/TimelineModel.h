@@ -108,6 +108,8 @@ struct DecryptionResult
         bool isDecrypted = false;
 };
 
+class TimelineViewManager;
+
 class TimelineModel : public QAbstractListModel
 {
         Q_OBJECT
@@ -115,7 +117,7 @@ class TimelineModel : public QAbstractListModel
           int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 
 public:
-        explicit TimelineModel(QString room_id, QObject *parent = 0);
+        explicit TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent = 0);
 
         enum Roles
         {
@@ -145,6 +147,7 @@ public:
         Q_INVOKABLE QString displayName(QString id) const;
         Q_INVOKABLE QString avatarUrl(QString id) const;
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
+
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void replyAction(QString id);
@@ -204,6 +207,8 @@ private:
 
         QHash<QString, QColor> userColors;
         QString currentId;
+
+        TimelineViewManager *manager_;
 };
 
 template<class T>
