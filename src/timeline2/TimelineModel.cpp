@@ -87,8 +87,9 @@ eventFormattedBody(const mtx::events::RoomEvent<T> &e)
                 if (pos != std::string::npos)
                         temp.erase(pos, std::string("</mx-reply>").size());
                 return QString::fromStdString(temp);
-        } else
-                return QString::fromStdString(e.content.body);
+        } else {
+                return QString::fromStdString(e.content.body).toHtmlEscaped().replace("\n", "<br>");
+        }
 }
 
 template<class T>
@@ -136,6 +137,20 @@ eventFilename(const mtx::events::RoomEvent<mtx::events::msg::File> &e)
         if (!e.content.filename.empty())
                 return QString::fromStdString(e.content.filename);
         return QString::fromStdString(e.content.body);
+}
+
+template<class T>
+auto
+eventFilesize(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.info.size)
+{
+        return e.content.info.size;
+}
+
+template<class T>
+int64_t
+eventFilesize(const T &)
+{
+        return 0;
 }
 
 template<class T>
@@ -341,6 +356,7 @@ TimelineModel::roleNames() const
           {Timestamp, "timestamp"},
           {Url, "url"},
           {Filename, "filename"},
+          {Filesize, "filesize"},
           {MimeType, "mimetype"},
           {Height, "height"},
           {Width, "width"},
@@ -423,6 +439,12 @@ TimelineModel::data(const QModelIndex &index, int role) const
         case Filename:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventFilename(e); }, event));
+        case Filesize:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QString {
+                          return utils::humanReadableFileSize(eventFilesize(e));
+                  },
+                  event));
         case MimeType:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventMimeType(e); }, event));
