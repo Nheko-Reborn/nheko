@@ -9,6 +9,7 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "Olm.h"
+#include "TimelineViewManager.h"
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
 
@@ -282,9 +283,10 @@ eventPropHeight(const mtx::events::RoomEvent<T> &e)
 }
 }
 
-TimelineModel::TimelineModel(QString room_id, QObject *parent)
+TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent)
   : QAbstractListModel(parent)
   , room_id_(room_id)
+  , manager_(manager)
 {
         connect(
           this, &TimelineModel::oldMessagesRetrieved, this, &TimelineModel::addBackwardsEvents);
@@ -481,6 +483,26 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                         static_cast<int>(this->eventOrder.size() + ids.size() - 1));
         this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
         endInsertRows();
+
+        for (auto id = ids.rbegin(); id != ids.rend(); id++) {
+                auto event = events.value(*id);
+                if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                      &event)) {
+                        event = decryptEvent(*e).event;
+                }
+
+                auto type = boost::apply_visitor(
+                  [](const auto &e) -> mtx::events::EventType { return e.type; }, event);
+                if (type == mtx::events::EventType::RoomMessage ||
+                    type == mtx::events::EventType::Sticker) {
+                        auto description = utils::getMessageDescription(
+                          event,
+                          QString::fromStdString(http::client()->user_id().to_string()),
+                          room_id_);
+                        emit manager_->updateRoomsLastMessage(room_id_, description);
+                        break;
+                }
+        }
 }
 
 std::vector<QString>

@@ -61,7 +61,7 @@ public:
 
 signals:
         void clearRoomMessageCount(QString roomid);
-        void updateRoomsLastMessage(const QString &user, const DescInfo &info);
+        void updateRoomsLastMessage(QString roomid, const DescInfo &info);
         void activeTimelineChanged(TimelineModel *timeline);
 
 public slots:

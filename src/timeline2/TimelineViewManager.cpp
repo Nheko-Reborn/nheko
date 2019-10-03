@@ -40,7 +40,8 @@ void
 TimelineViewManager::addRoom(const QString &room_id)
 {
         if (!models.contains(room_id))
-                models.insert(room_id, QSharedPointer<TimelineModel>(new TimelineModel(room_id)));
+                models.insert(room_id,
+                              QSharedPointer<TimelineModel>(new TimelineModel(this, room_id)));
 }
 
 void
