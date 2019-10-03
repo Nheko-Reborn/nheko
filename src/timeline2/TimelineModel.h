@@ -130,6 +130,7 @@ public:
                 Timestamp,
                 Url,
                 Filename,
+                Filesize,
                 MimeType,
                 Height,
                 Width,
