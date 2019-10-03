@@ -585,6 +585,27 @@ TimelineModel::fetchHistory()
 }
 
 void
+TimelineModel::setCurrentIndex(int index)
+{
+        auto oldIndex = idToIndex(currentId);
+        currentId = indexToId(index);
+        emit currentIndexChanged(index);
+
+        if (oldIndex < index) {
+                http::client()->read_event(room_id_.toStdString(),
+                                           currentId.toStdString(),
+                                           [this](mtx::http::RequestErr err) {
+                                                   if (err) {
+                                                           nhlog::net()->warn(
+                                                             "failed to read_event ({}, {})",
+                                                             room_id_.toStdString(),
+                                                             currentId.toStdString());
+                                                   }
+                                           });
+        }
+}
+
+void
 TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
         std::vector<QString> ids = internalAddEvents(msgs.chunk);
