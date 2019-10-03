@@ -162,11 +162,7 @@ public:
 
 public slots:
         void fetchHistory();
-        void setCurrentIndex(int index)
-        {
-                currentId = indexToId(index);
-                emit currentIndexChanged(index);
-        }
+        void setCurrentIndex(int index);
         int currentIndex() const { return idToIndex(currentId); }
         void markEventsAsRead(const std::vector<QString> &event_ids);
 
