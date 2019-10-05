@@ -1,19 +1,22 @@
 import QtQuick 2.6
+import QtQuick.Layouts 1.6
 
-Row {
 Rectangle {
 	radius: 10
 	color: colors.dark
-	height: row.height
-	width: row.width
+	height: row.height + 24
+	width: parent.width
 
-	Row {
+	RowLayout {
 		id: row
 
+		anchors.centerIn: parent
+		width: parent.width - 24
+
 		spacing: 15
-		padding: 12
 
 		Rectangle {
+			id: button
 			color: colors.light
 			radius: 22
 			height: 44
@@ -32,26 +35,23 @@ Rectangle {
 				cursorShape: Qt.PointingHandCursor
 			}
 		}
-		Column {
-			TextEdit {
+		ColumnLayout {
+			id: col
+
+			Text {
+				Layout.fillWidth: true
 				text: eventData.body
-				textFormat: TextEdit.PlainText
-				readOnly: true
-				wrapMode: Text.Wrap
-				selectByMouse: true
+				textFormat: Text.PlainText
+				elide: Text.ElideRight
 				color: colors.text
 			}
-			TextEdit {
+			Text {
+				Layout.fillWidth: true
 				text: eventData.filesize
-				textFormat: TextEdit.PlainText
-				readOnly: true
-				wrapMode: Text.Wrap
-				selectByMouse: true
+				textFormat: Text.PlainText
+				elide: Text.ElideRight
 				color: colors.text
 			}
 		}
 	}
-}
-Rectangle {
-}
 }
