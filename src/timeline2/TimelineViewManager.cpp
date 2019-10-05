@@ -4,6 +4,7 @@
 #include <QMetaType>
 #include <QMimeDatabase>
 #include <QQmlContext>
+#include <QStandardPaths>
 
 #include "Logging.h"
 #include "MxcImageProvider.h"
@@ -140,6 +141,64 @@ TimelineViewManager::saveMedia(QString mxcUrl,
                   } catch (const std::exception &e) {
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());
                   }
+          });
+}
+
+void
+TimelineViewManager::cacheMedia(QString mxcUrl, QString mimeType)
+{
+        // If the message is a link to a non mxcUrl, don't download it
+        if (!mxcUrl.startsWith("mxc://")) {
+                emit mediaCached(mxcUrl, mxcUrl);
+                return;
+        }
+
+        QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
+
+        const auto url = mxcUrl.toStdString();
+        QFileInfo filename(QString("%1/media_cache/%2.%3")
+                             .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                             .arg(QString(mxcUrl).remove("mxc://"))
+                             .arg(suffix));
+        if (QDir::cleanPath(filename.path()) != filename.path()) {
+                nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
+                return;
+        }
+
+        QDir().mkpath(filename.path());
+
+        if (filename.isReadable()) {
+                emit mediaCached(mxcUrl, filename.filePath());
+                return;
+        }
+
+        http::client()->download(
+          url,
+          [this, mxcUrl, filename, url](const std::string &data,
+                                        const std::string &,
+                                        const std::string &,
+                                        mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
+                                             url,
+                                             err->matrix_error.error,
+                                             static_cast<int>(err->status_code));
+                          return;
+                  }
+
+                  try {
+                          QFile file(filename.filePath());
+
+                          if (!file.open(QIODevice::WriteOnly))
+                                  return;
+
+                          file.write(QByteArray(data.data(), data.size()));
+                          file.close();
+                  } catch (const std::exception &e) {
+                          nhlog::ui()->warn("Error while saving file to: {}", e.what());
+                  }
+
+                  emit mediaCached(mxcUrl, filename.filePath());
           });
 }
 

@@ -42,6 +42,7 @@ public:
                        QString originalFilename,
                        QString mimeType,
                        qml_mtx_events::EventType eventType) const;
+        Q_INVOKABLE void cacheMedia(QString mxcUrl, QString mimeType);
         // Qml can only pass enum as int
         Q_INVOKABLE void openImageOverlay(QString mxcUrl,
                                           QString originalFilename,
@@ -63,6 +64,7 @@ signals:
         void clearRoomMessageCount(QString roomid);
         void updateRoomsLastMessage(QString roomid, const DescInfo &info);
         void activeTimelineChanged(TimelineModel *timeline);
+        void mediaCached(QString mxcUrl, QString cacheUrl);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
