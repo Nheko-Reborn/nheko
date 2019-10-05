@@ -110,7 +110,9 @@ Rectangle {
 					//case MtxEvent.Topic: return "delegates/Topic.qml"
 					case MtxEvent.NoticeMessage: return "delegates/NoticeMessage.qml"
 					case MtxEvent.TextMessage: return "delegates/TextMessage.qml"
+					case MtxEvent.EmoteMessage: return "delegates/TextMessage.qml"
 					case MtxEvent.ImageMessage: return "delegates/ImageMessage.qml"
+					case MtxEvent.Sticker: return "delegates/ImageMessage.qml"
 					case MtxEvent.FileMessage: return "delegates/FileMessage.qml"
 					case MtxEvent.VideoMessage: return "delegates/PlayableMediaMessage.qml"
 					case MtxEvent.AudioMessage: return "delegates/PlayableMediaMessage.qml"
@@ -204,7 +206,7 @@ Rectangle {
 						onTriggered: chat.model.redactEvent(model.id)
 					}
 					MenuItem {
-						visible: model.type == MtxEvent.ImageMessage || model.type == MtxEvent.VideoMessage || model.type == MtxEvent.AudioMessage || model.type == MtxEvent.FileMessage
+						visible: model.type == MtxEvent.ImageMessage || model.type == MtxEvent.VideoMessage || model.type == MtxEvent.AudioMessage || model.type == MtxEvent.FileMessage || model.type == MtxEvent.Sticker
 						text: qsTr("Save as")
 						onTriggered: timelineManager.saveMedia(model.url, model.filename, model.mimetype, model.type)
 					}
