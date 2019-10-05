@@ -112,8 +112,8 @@ Rectangle {
 					case MtxEvent.TextMessage: return "delegates/TextMessage.qml"
 					case MtxEvent.ImageMessage: return "delegates/ImageMessage.qml"
 					case MtxEvent.FileMessage: return "delegates/FileMessage.qml"
-					//case MtxEvent.VideoMessage: return "delegates/VideoMessage.qml"
-					case MtxEvent.AudioMessage: return "delegates/AudioMessage.qml"
+					case MtxEvent.VideoMessage: return "delegates/PlayableMediaMessage.qml"
+					case MtxEvent.AudioMessage: return "delegates/PlayableMediaMessage.qml"
 					case MtxEvent.Redacted: return "delegates/Redacted.qml"
 					default: return "delegates/placeholder.qml"
 				}

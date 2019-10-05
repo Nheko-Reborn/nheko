@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.6
 import QtQuick.Controls 2.5
 import QtMultimedia 5.6
 
+import com.github.nheko 1.0
+
 Rectangle {
 	radius: 10
 	color: colors.dark
@@ -13,6 +15,15 @@ Rectangle {
 		id: content
 		width: parent.width - 24
 		anchors.centerIn: parent
+
+		VideoOutput {
+			visible: eventData.type == MtxEvent.VideoMessage
+			Layout.maximumHeight: 300
+			Layout.minimumHeight: 300
+			Layout.maximumWidth: 500
+			fillMode: VideoOutput.PreserveAspectFit
+			source: media
+		}
 
 		RowLayout {
 			Text {
@@ -91,6 +102,7 @@ Rectangle {
 					id: media
 					onError: console.log(errorString)
 					onStatusChanged: if(status == MediaPlayer.Loaded) progress.updatePositionTexts()
+					autoPlay: true
 				}
 
 				Connections {
