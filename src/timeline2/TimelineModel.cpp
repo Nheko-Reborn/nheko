@@ -16,26 +16,26 @@
 namespace {
 template<class T>
 QString
-eventId(const T &event)
+eventId(const mtx::events::RoomEvent<T> &event)
 {
         return QString::fromStdString(event.event_id);
 }
 template<class T>
 QString
-roomId(const T &event)
+roomId(const mtx::events::Event<T> &event)
 {
         return QString::fromStdString(event.room_id);
 }
 template<class T>
 QString
-senderId(const T &event)
+senderId(const mtx::events::RoomEvent<T> &event)
 {
         return QString::fromStdString(event.sender);
 }
 
 template<class T>
 QDateTime
-eventTimestamp(const T &event)
+eventTimestamp(const mtx::events::RoomEvent<T> &event)
 {
         return QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
 }
@@ -94,7 +94,7 @@ eventFormattedBody(const mtx::events::RoomEvent<T> &e)
 
 template<class T>
 QString
-eventUrl(const T &)
+eventUrl(const mtx::events::Event<T> &)
 {
         return "";
 }
@@ -108,7 +108,7 @@ eventUrl(const mtx::events::RoomEvent<T> &e)
 
 template<class T>
 QString
-eventFilename(const T &)
+eventFilename(const mtx::events::Event<T> &)
 {
         return "";
 }
@@ -148,14 +148,14 @@ eventFilesize(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.info.siz
 
 template<class T>
 int64_t
-eventFilesize(const T &)
+eventFilesize(const mtx::events::Event<T> &)
 {
         return 0;
 }
 
 template<class T>
 QString
-eventMimeType(const T &)
+eventMimeType(const mtx::events::Event<T> &)
 {
         return QString();
 }
