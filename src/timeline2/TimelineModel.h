@@ -1,12 +1,13 @@
 #pragma once
 
-#include <mtx/responses.hpp>
 
 #include <QAbstractListModel>
 #include <QColor>
 #include <QDate>
 #include <QHash>
 #include <QSet>
+
+#include <mtx/responses.hpp>
 
 #include "Cache.h"
 #include "Logging.h"
