@@ -39,6 +39,7 @@ Rectangle {
 		anchors.fill: stateImg
 		source: stateImg
 		color: colors.buttonText
+		visible: stateImg.source != ""
 	}
 }
 

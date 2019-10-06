@@ -102,7 +102,6 @@ Rectangle {
 					id: media
 					onError: console.log(errorString)
 					onStatusChanged: if(status == MediaPlayer.Loaded) progress.updatePositionTexts()
-					autoPlay: true
 				}
 
 				Connections {
