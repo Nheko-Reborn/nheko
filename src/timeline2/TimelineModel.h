@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <QAbstractListModel>
 #include <QColor>
 #include <QDate>
