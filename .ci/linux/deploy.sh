@@ -44,8 +44,7 @@ do
     linuxdeployqt=$res
 done
 
-./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs
-./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -appimage
+./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs -qmldir=./resources/qml -appimage
 
 chmod +x nheko-*x86_64.AppImage
 
