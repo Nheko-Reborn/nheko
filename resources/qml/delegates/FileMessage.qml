@@ -1,5 +1,5 @@
 import QtQuick 2.6
-import QtQuick.Layouts 1.6
+import QtQuick.Layouts 1.2
 
 Rectangle {
 	radius: 10
