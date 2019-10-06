@@ -1,6 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.6
-import QtQuick.Controls 2.5
+import QtQuick.Controls 2.1
 import QtMultimedia 5.6
 
 import com.github.nheko 1.0

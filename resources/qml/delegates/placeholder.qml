@@ -1,5 +1,5 @@
 import QtQuick 2.5
-import QtQuick.Controls 2.5
+import QtQuick.Controls 2.1
 
 Label {
 	text: qsTr("unimplemented event: ") + eventData.type
