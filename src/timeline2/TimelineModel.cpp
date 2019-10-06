@@ -610,7 +610,7 @@ void
 TimelineModel::setCurrentIndex(int index)
 {
         auto oldIndex = idToIndex(currentId);
-        currentId = indexToId(index);
+        currentId     = indexToId(index);
         emit currentIndexChanged(index);
 
         if (oldIndex < index) {
