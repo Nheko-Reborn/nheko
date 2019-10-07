@@ -7,7 +7,7 @@ RUN \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     apt-get update -qq && \
     apt-get install -y \
-        qt510base qt510tools qt510svg qt510multimedia \
+        qt510base qt510tools qt510svg qt510multimedia qt510quickcontrols2 qt510graphicaleffects \
         gcc-5 g++-5
 
 RUN \
