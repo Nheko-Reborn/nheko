@@ -126,6 +126,6 @@
         <file>qml/delegates/PlayableMediaMessage.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
         <file>qml/delegates/Redacted.qml</file>
-        <file>qml/delegates/placeholder.qml</file>
+        <file>qml/delegates/Placeholder.qml</file>
     </qresource>
 </RCC>

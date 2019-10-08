@@ -118,6 +118,10 @@ Rectangle {
 				roleValue: MtxEvent.Redacted
 				TimelineRow { view: chat; Redacted { id: kid } }
 			}
+			DelegateChoice {
+				//roleValue: MtxEvent.Redacted
+				TimelineRow { view: chat; Placeholder { id: kid } }
+			}
 		}
 
 
@@ -129,6 +133,8 @@ Rectangle {
 				spacing: 8
 
 				width: parent.width
+
+				Component.onCompleted: chat.forceLayout()
 
 				Label {
 					id: dateBubble
