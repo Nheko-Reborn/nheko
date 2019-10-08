@@ -119,6 +119,7 @@
         <file>qml/Avatar.qml</file>
         <file>qml/StatusIndicator.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
+        <file>qml/delegates/TimelineRow.qml</file>
         <file>qml/delegates/TextMessage.qml</file>
         <file>qml/delegates/NoticeMessage.qml</file>
         <file>qml/delegates/ImageMessage.qml</file>

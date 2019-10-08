@@ -31,7 +31,7 @@ Rectangle {
 			}
 			MouseArea {
 				anchors.fill: parent
-				onClicked: timelineManager.saveMedia(eventData.url, eventData.filename, eventData.mimetype, eventData.type)
+				onClicked: timelineManager.saveMedia(model.url, model.filename, model.mimetype, model.type)
 				cursorShape: Qt.PointingHandCursor
 			}
 		}
@@ -40,14 +40,14 @@ Rectangle {
 
 			Text {
 				Layout.fillWidth: true
-				text: eventData.body
+				text: model.body
 				textFormat: Text.PlainText
 				elide: Text.ElideRight
 				color: colors.text
 			}
 			Text {
 				Layout.fillWidth: true
-				text: eventData.filesize
+				text: model.filesize
 				textFormat: Text.PlainText
 				elide: Text.ElideRight
 				color: colors.text

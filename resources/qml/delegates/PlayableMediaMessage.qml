@@ -17,7 +17,7 @@ Rectangle {
 		anchors.centerIn: parent
 
 		VideoOutput {
-			visible: eventData.type == MtxEvent.VideoMessage
+			visible: model.type == MtxEvent.VideoMessage
 			Layout.maximumHeight: 300
 			Layout.minimumHeight: 300
 			Layout.maximumWidth: 500
@@ -85,7 +85,7 @@ Rectangle {
 					anchors.fill: parent
 					onClicked: {
 						switch (button.state) {
-							case "": timelineManager.cacheMedia(eventData.url, eventData.mimetype); break;
+							case "": timelineManager.cacheMedia(model.url, model.mimetype); break;
 							case "stopped":
 							media.play(); console.log("play");
 							button.state = "playing"
@@ -107,7 +107,7 @@ Rectangle {
 				Connections {
 					target: timelineManager
 					onMediaCached: {
-						if (mxcUrl == eventData.url) {
+						if (mxcUrl == model.url) {
 							media.source = "file://" + cacheUrl
 							button.state = "stopped"
 							console.log("media loaded: " + mxcUrl + " at " + cacheUrl)
@@ -132,14 +132,14 @@ Rectangle {
 
 				Text {
 					Layout.fillWidth: true
-					text: eventData.body
+					text: model.body
 					textFormat: Text.PlainText
 					elide: Text.ElideRight
 					color: colors.text
 				}
 				Text {
 					Layout.fillWidth: true
-					text: eventData.filesize
+					text: model.filesize
 					textFormat: Text.PlainText
 					elide: Text.ElideRight
 					color: colors.text

@@ -1,7 +1,7 @@
 import QtQuick 2.5
 
 TextEdit {
-	text: eventData.formattedBody
+	text: model.formattedBody
 	textFormat: TextEdit.RichText
 	readOnly: true
 	wrapMode: Text.Wrap
