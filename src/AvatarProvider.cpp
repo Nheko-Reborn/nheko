@@ -67,8 +67,8 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                          });
 
         mtx::http::ThumbOpts opts;
-        opts.width   = 256;
-        opts.height  = 256;
+        opts.width   = size;
+        opts.height  = size;
         opts.mxc_url = avatarUrl.toStdString();
 
         http::client()->get_thumbnail(

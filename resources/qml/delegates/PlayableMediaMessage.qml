@@ -6,26 +6,38 @@ import QtMultimedia 5.6
 import com.github.nheko 1.0
 
 Rectangle {
+	id: bg
 	radius: 10
 	color: colors.dark
 	height: content.height + 24
 	width: parent.width
 
-	ColumnLayout { 
+	Column { 
 		id: content
 		width: parent.width - 24
 		anchors.centerIn: parent
 
-		VideoOutput {
+		Rectangle {
+			id: videoContainer
 			visible: model.type == MtxEvent.VideoMessage
-			Layout.maximumHeight: 300
-			Layout.minimumHeight: 300
-			Layout.maximumWidth: 500
-			fillMode: VideoOutput.PreserveAspectFit
-			source: media
+			width: Math.min(parent.width, model.width)
+			height: width*model.proportionalHeight
+			Image {
+				anchors.fill: parent
+				source: model.thumbnailUrl.replace("mxc://", "image://MxcImage/")
+				asynchronous: true
+				fillMode: Image.PreserveAspectFit
+
+				VideoOutput {
+					anchors.fill: parent
+					fillMode: VideoOutput.PreserveAspectFit
+					source: media
+				}
+			}
 		}
 
 		RowLayout {
+			width: parent.width
 			Text {
 				id: positionText
 				text: "--:--:--"
@@ -102,6 +114,7 @@ Rectangle {
 					id: media
 					onError: console.log(errorString)
 					onStatusChanged: if(status == MediaPlayer.Loaded) progress.updatePositionTexts()
+					onStopped: button.state = "stopped"
 				}
 
 				Connections {

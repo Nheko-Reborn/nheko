@@ -3,8 +3,8 @@ import QtQuick 2.6
 import com.github.nheko 1.0
 
 Item {
-	width: 300
-	height: 300 * model.proportionalHeight
+	width: Math.min(parent.width, model.width)
+	height: width * model.proportionalHeight
 
 	Image {
 		id: img

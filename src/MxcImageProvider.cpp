@@ -38,7 +38,8 @@ MxcImageResponse::run()
                           auto data = QByteArray(res.data(), res.size());
                           cache::client()->saveImage(fileName, data);
                           m_image.loadFromData(data);
-                          m_image = m_image.scaled(m_requestedSize, Qt::KeepAspectRatio);
+                          m_image = m_image.scaled(
+                            m_requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                           m_image.setText("mxc url", "mxc://" + m_id);
 
                           emit finished();

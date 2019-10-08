@@ -129,6 +129,7 @@ public:
                 UserName,
                 Timestamp,
                 Url,
+                ThumbnailUrl,
                 Filename,
                 Filesize,
                 MimeType,

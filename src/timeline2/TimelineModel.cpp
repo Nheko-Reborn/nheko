@@ -108,6 +108,21 @@ eventUrl(const mtx::events::RoomEvent<T> &e)
 
 template<class T>
 QString
+eventThumbnailUrl(const mtx::events::Event<T> &)
+{
+        return "";
+}
+template<class T>
+auto
+eventThumbnailUrl(const mtx::events::RoomEvent<T> &e)
+  -> std::enable_if_t<std::is_same<decltype(e.content.info.thumbnail_url), std::string>::value,
+                      QString>
+{
+        return QString::fromStdString(e.content.info.thumbnail_url);
+}
+
+template<class T>
+QString
 eventFilename(const mtx::events::Event<T> &)
 {
         return "";
@@ -355,6 +370,7 @@ TimelineModel::roleNames() const
           {UserName, "userName"},
           {Timestamp, "timestamp"},
           {Url, "url"},
+          {ThumbnailUrl, "thumbnailUrl"},
           {Filename, "filename"},
           {Filesize, "filesize"},
           {MimeType, "mimetype"},
@@ -436,6 +452,9 @@ TimelineModel::data(const QModelIndex &index, int role) const
         case Url:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventUrl(e); }, event));
+        case ThumbnailUrl:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventThumbnailUrl(e); }, event));
         case Filename:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventFilename(e); }, event));
