@@ -44,6 +44,10 @@ Rectangle {
 				} else {
 					positionViewAtIndex(model.currentIndex, ListView.End)
 				}
+
+				if (contentHeight < height) {
+					model.fetchHistory();
+				}
 			}
 		}
 
@@ -63,7 +67,13 @@ Rectangle {
 				currentIndex = newIndex
 				model.currentIndex = newIndex
 			}
+
+			if (contentHeight < height) {
+				model.fetchHistory();
+			}
 		}
+
+		onAtYBeginningChanged: if (atYBeginning) model.fetchHistory()
 
 		function updatePosition() {
 			for (var y = chat.contentY + chat.height; y > chat.height; y -= 5) {
