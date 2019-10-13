@@ -618,10 +618,12 @@ TimelineModel::fetchHistory()
                                               opts.room_id,
                                               mtx::errors::to_string(err->matrix_error.errcode),
                                               err->matrix_error.error);
+                          paginationInProgress = false;
                           return;
                   }
 
                   emit oldMessagesRetrieved(std::move(res));
+                  paginationInProgress = false;
           });
 }
 
@@ -658,8 +660,6 @@ TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
         }
 
         prev_batch_token_ = QString::fromStdString(msgs.end);
-
-        paginationInProgress = false;
 }
 
 QColor

@@ -68,7 +68,7 @@ Rectangle {
 				model.currentIndex = newIndex
 			}
 
-			if (contentHeight < height) {
+			if (contentHeight < height && model) {
 				model.fetchHistory();
 			}
 		}
@@ -143,8 +143,7 @@ Rectangle {
 				spacing: 8
 
 				width: parent.width
-
-				Component.onCompleted: chat.forceLayout()
+				height: (section.includes(" ") ? dateBubble.height + 8 + userName.height : userName.height) + 8
 
 				Label {
 					id: dateBubble
