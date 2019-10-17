@@ -1,5 +1,5 @@
 import QtQuick 2.6
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
@@ -48,8 +48,12 @@ RowLayout {
 		id: replyButton
 		flat: true
 		Layout.preferredHeight: 16
-		ToolTip.visible: hovered
-		ToolTip.text: qsTr("Reply")
+
+		ToolTip {
+			visible: replyButton.hovered
+			text: qsTr("Reply")
+			palette: colors
+		}
 
 		// disable background, because we don't want a border on hover
 		background: Item {
@@ -74,8 +78,12 @@ RowLayout {
 		id: optionsButton
 		flat: true
 		Layout.preferredHeight: 16
-		ToolTip.visible: hovered
-		ToolTip.text: qsTr("Options")
+
+		ToolTip {
+			visible: optionsButton.hovered
+			text: qsTr("Options")
+			palette: colors
+		}
 
 		// disable background, because we don't want a border on hover
 		background: Item {
@@ -98,6 +106,7 @@ RowLayout {
 		Menu {
 			y: optionsButton.height
 			id: contextMenu
+			palette: colors
 
 			MenuItem {
 				text: qsTr("Read receipts")
@@ -127,13 +136,16 @@ RowLayout {
 		text: model.timestamp.toLocaleTimeString("HH:mm")
 		color: inactiveColors.text
 
-		ToolTip.visible: ma.containsMouse
-		ToolTip.text: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
-
 		MouseArea{
 			id: ma
 			anchors.fill: parent
 			hoverEnabled: true
+		}
+
+		ToolTip {
+			visible: ma.containsMouse
+			text: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
+			palette: colors
 		}
 	}
 }

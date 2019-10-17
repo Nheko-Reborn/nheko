@@ -71,6 +71,7 @@ public slots:
         void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
 
         void setHistoryView(const QString &room_id);
+        void updateColorPalette();
 
         void queueTextMessage(const QString &msg);
         void queueReplyMessage(const QString &reply, const RelatedInfo &related);

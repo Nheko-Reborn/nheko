@@ -323,19 +323,29 @@ utils::linkifyMessage(const QString &body)
         return doc;
 }
 
-QByteArray escapeRawHtml(const QByteArray &data) {
-      QByteArray buffer;
-      const size_t length = data.size();
-      buffer.reserve(length);
-      for(size_t pos = 0; pos != length; ++pos) {
-            switch(data.at(pos)) {
-                  case '&':  buffer.append("&amp;");      break;
-                  case '<':  buffer.append("&lt;");       break;
-                  case '>':  buffer.append("&gt;");       break;
-                  default:   buffer.append(data.at(pos)); break;
-            }
-      }
-     return buffer;
+QByteArray
+escapeRawHtml(const QByteArray &data)
+{
+        QByteArray buffer;
+        const size_t length = data.size();
+        buffer.reserve(length);
+        for (size_t pos = 0; pos != length; ++pos) {
+                switch (data.at(pos)) {
+                case '&':
+                        buffer.append("&amp;");
+                        break;
+                case '<':
+                        buffer.append("&lt;");
+                        break;
+                case '>':
+                        buffer.append("&gt;");
+                        break;
+                default:
+                        buffer.append(data.at(pos));
+                        break;
+                }
+        }
+        return buffer;
 }
 
 QString

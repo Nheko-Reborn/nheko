@@ -3,12 +3,50 @@
 #include <QFileDialog>
 #include <QMetaType>
 #include <QMimeDatabase>
+#include <QPalette>
 #include <QQmlContext>
 #include <QStandardPaths>
 
+#include "ChatPage.h"
 #include "Logging.h"
 #include "MxcImageProvider.h"
+#include "UserSettingsPage.h"
 #include "dialogs/ImageOverlay.h"
+
+void
+TimelineViewManager::updateColorPalette()
+{
+        UserSettings settings;
+        if (settings.theme() == "light") {
+                QPalette lightActive(/*windowText*/ QColor("#333"),
+                                     /*button*/ QColor("#333"),
+                                     /*light*/ QColor(),
+                                     /*dark*/ QColor(220, 220, 220, 120),
+                                     /*mid*/ QColor(),
+                                     /*text*/ QColor("#333"),
+                                     /*bright_text*/ QColor(),
+                                     /*base*/ QColor("white"),
+                                     /*window*/ QColor("white"));
+                view->rootContext()->setContextProperty("currentActivePalette", lightActive);
+                view->rootContext()->setContextProperty("currentInactivePalette", lightActive);
+        } else if (settings.theme() == "dark") {
+                QPalette darkActive(/*windowText*/ QColor("#caccd1"),
+                                    /*button*/ QColor("#caccd1"),
+                                    /*light*/ QColor(),
+                                    /*dark*/ QColor(45, 49, 57, 120),
+                                    /*mid*/ QColor(),
+                                    /*text*/ QColor("#caccd1"),
+                                    /*bright_text*/ QColor(),
+                                    /*base*/ QColor("#202228"),
+                                    /*window*/ QColor("#202228"));
+                darkActive.setColor(QPalette::Highlight, QColor("#e7e7e9"));
+                view->rootContext()->setContextProperty("currentActivePalette", darkActive);
+                view->rootContext()->setContextProperty("currentInactivePalette", darkActive);
+        } else {
+                view->rootContext()->setContextProperty("currentActivePalette", QPalette());
+                view->rootContext()->setContextProperty("currentInactivePalette", nullptr);
+        }
+}
 
 TimelineViewManager::TimelineViewManager(QWidget *parent)
   : imgProvider(new MxcImageProvider())
@@ -23,8 +61,14 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
         container = QWidget::createWindowContainer(view, parent);
         container->setMinimumSize(200, 200);
         view->rootContext()->setContextProperty("timelineManager", this);
+        updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
+
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::themeChanged,
+                this,
+                &TimelineViewManager::updateColorPalette);
 }
 
 void

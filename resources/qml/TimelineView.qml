@@ -12,8 +12,9 @@ import "./delegates"
 Rectangle {
 	anchors.fill: parent
 
-	SystemPalette { id: colors; colorGroup: SystemPalette.Active }
-	SystemPalette { id: inactiveColors; colorGroup: SystemPalette.Disabled }
+	property var colors: currentActivePalette
+	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
+	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
 	property int avatarSize: 32
 
 	color: colors.window
