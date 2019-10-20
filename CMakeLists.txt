@@ -193,6 +193,7 @@ set(SRC_FILES
     # Timeline
     src/timeline2/TimelineViewManager.cpp
     src/timeline2/TimelineModel.cpp
+    src/timeline2/DelegateChooser.cpp
     #src/timeline/TimelineViewManager.cpp
     #src/timeline/TimelineItem.cpp
     #src/timeline/TimelineView.cpp
@@ -338,6 +339,7 @@ qt5_wrap_cpp(MOC_HEADERS
     # Timeline
     src/timeline2/TimelineViewManager.h
     src/timeline2/TimelineModel.h
+    src/timeline2/DelegateChooser.h
     #src/timeline/TimelineItem.h
     #src/timeline/TimelineView.h
     #src/timeline/TimelineViewManager.h
@@ -410,6 +412,7 @@ set(COMMON_LIBS
     Qt5::Concurrent
     Qt5::Multimedia
     Qt5::Qml
+    Qt5::QmlPrivate
     Qt5::QuickControls2
     nlohmann_json::nlohmann_json)
 

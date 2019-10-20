@@ -116,6 +116,7 @@
     </qresource>
     <qresource prefix="/">
         <file>qml/TimelineView.qml</file>
+        <file>qml/RowDelegateChooser.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/StatusIndicator.qml</file>
         <file>qml/EncryptionIndicator.qml</file>

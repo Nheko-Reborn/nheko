@@ -8,6 +8,7 @@
 #include <QStandardPaths>
 
 #include "ChatPage.h"
+#include "DelegateChooser.h"
 #include "Logging.h"
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
@@ -57,6 +58,9 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
                                          0,
                                          "MtxEvent",
                                          "Can't instantiate enum!");
+        qmlRegisterType<DelegateChoice>("com.github.nheko", 1, 0, "DelegateChoice");
+        qmlRegisterType<DelegateChooser>("com.github.nheko", 1, 0, "DelegateChooser");
+
         view      = new QQuickView();
         container = QWidget::createWindowContainer(view, parent);
         container->setMinimumSize(200, 200);
