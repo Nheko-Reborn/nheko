@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QQmlComponent>
+#include <QQmlIncubator>
 #include <QQmlListProperty>
 #include <QQuickItem>
 #include <QtCore/QObject>
@@ -59,9 +60,21 @@ signals:
         void roleValueChanged();
 
 private:
+        struct DelegateIncubator : public QQmlIncubator
+        {
+                DelegateIncubator(DelegateChooser &parent)
+                  : QQmlIncubator(QQmlIncubator::AsynchronousIfNested)
+                  , chooser(parent)
+                {}
+                void statusChanged(QQmlIncubator::Status status) override;
+
+                DelegateChooser &chooser;
+        };
+
         QVariant roleValue_;
         QList<DelegateChoice *> choices_;
-        QQuickItem *child;
+        QQuickItem *child = nullptr;
+        DelegateIncubator incubator{*this};
 
         static void appendChoice(QQmlListProperty<DelegateChoice> *, DelegateChoice *);
         static int choiceCount(QQmlListProperty<DelegateChoice> *);

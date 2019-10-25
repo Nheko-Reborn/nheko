@@ -95,17 +95,11 @@ DelegateChooser::recalcChild()
                 auto choiceValue = choice->roleValue();
                 if (!roleValue_.isValid() || !choiceValue.isValid() || choiceValue == roleValue_) {
                         if (child) {
-                                // delete child;
+                                child->setParentItem(nullptr);
                                 child = nullptr;
                         }
 
-                        child = dynamic_cast<QQuickItem *>(
-                          choice->delegate()->create(QQmlEngine::contextForObject(this)));
-                        child->setParentItem(this);
-                        connect(this->child, &QQuickItem::heightChanged, this, [this]() {
-                                this->setHeight(this->child->height());
-                        });
-                        this->setHeight(this->child->height());
+                        choice->delegate()->create(incubator, QQmlEngine::contextForObject(this));
                         return;
                 }
         }
@@ -118,3 +112,28 @@ DelegateChooser::componentComplete()
         recalcChild();
 }
 
+void
+DelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
+{
+        if (status == QQmlIncubator::Ready) {
+                chooser.child = dynamic_cast<QQuickItem *>(object());
+                if (chooser.child == nullptr) {
+                        nhlog::ui()->error("Delegate has to be derived of Item!");
+                        delete chooser.child;
+                        return;
+                }
+
+                chooser.child->setParentItem(&chooser);
+                connect(chooser.child, &QQuickItem::heightChanged, &chooser, [this]() {
+                        chooser.setHeight(chooser.child->height());
+                });
+                chooser.setHeight(chooser.child->height());
+                QQmlEngine::setObjectOwnership(chooser.child,
+                                               QQmlEngine::ObjectOwnership::JavaScriptOwnership);
+
+        } else if (status == QQmlIncubator::Error) {
+                for (const auto &e : errors())
+                        nhlog::ui()->error("Error instantiating delegate: {}",
+                                           e.toString().toStdString());
+        }
+}

@@ -29,7 +29,7 @@ Rectangle {
 	ListView {
 		id: chat
 
-		cacheBuffer: parent.height
+		cacheBuffer: 2000
 
 		visible: timelineManager.timeline != null
 		anchors.fill: parent
