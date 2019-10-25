@@ -412,7 +412,6 @@ set(COMMON_LIBS
     Qt5::Concurrent
     Qt5::Multimedia
     Qt5::Qml
-    Qt5::QmlPrivate
     Qt5::QuickControls2
     nlohmann_json::nlohmann_json)
 
