@@ -90,7 +90,15 @@ Rectangle {
 		onMovementEnded: updatePosition()
 
 		spacing: 4
-		delegate: RowDelegateChooser {}
+		delegate: RowDelegateChooser {
+			function isFullyVisible() {
+				return height > 1 && (y - chat.contentY - 1) + height < chat.height
+			}
+			function getIndex() {
+				return index;
+			}
+
+		}
 
 		section {
 			property: "section"

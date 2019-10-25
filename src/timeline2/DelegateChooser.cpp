@@ -5,11 +5,6 @@
 // uses private API, which moved between versions
 #include <QQmlEngine>
 #include <QtGlobal>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-#include <QtQmlModels/private/qqmladaptormodel_p.h>
-#else
-#include <QtQml/private/qqmladaptormodel_p.h>
-#endif
 
 QQmlComponent *
 DelegateChoice::delegate() const
@@ -70,44 +65,11 @@ DelegateChooser::choices()
                                                 &DelegateChooser::clearChoices);
 }
 
-QString
-DelegateChooser::role() const
-{
-        return role_;
-}
-
-void
-DelegateChooser::setRole(const QString &role)
-{
-        if (role != role_) {
-                role_ = role;
-                emit roleChanged();
-        }
-}
-
-QQmlComponent *
-DelegateChooser::delegate(QQmlAdaptorModel *adaptorModel, int row, int column) const
-{
-        auto value = adaptorModel->value(adaptorModel->indexAt(row, column), role_);
-
-        for (const auto choice : choices_) {
-                auto choiceValue = choice->roleValue();
-                if (!value.isValid() || choiceValue == value) {
-                        nhlog::ui()->debug("Returned delegate for {}", role_.toStdString());
-                        return choice->delegate();
-                }
-        }
-
-        nhlog::ui()->debug("Returned null delegate");
-        return nullptr;
-}
-
 void
 DelegateChooser::appendChoice(QQmlListProperty<DelegateChoice> *p, DelegateChoice *c)
 {
         DelegateChooser *dc = static_cast<DelegateChooser *>(p->object);
         dc->choices_.append(c);
-        // dc->recalcChild();
 }
 
 int
@@ -132,8 +94,6 @@ DelegateChooser::recalcChild()
         for (const auto choice : choices_) {
                 auto choiceValue = choice->roleValue();
                 if (!roleValue_.isValid() || !choiceValue.isValid() || choiceValue == roleValue_) {
-                        nhlog::ui()->debug("Returned delegate for {}", role_.toStdString());
-
                         if (child) {
                                 // delete child;
                                 child = nullptr;

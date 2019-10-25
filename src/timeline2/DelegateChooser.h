@@ -44,18 +44,12 @@ class DelegateChooser : public QQuickItem
 
 public:
         Q_PROPERTY(QQmlListProperty<DelegateChoice> choices READ choices CONSTANT)
-        Q_PROPERTY(QString role READ role WRITE setRole NOTIFY roleChanged)
         Q_PROPERTY(QVariant roleValue READ roleValue WRITE setRoleValue NOTIFY roleValueChanged)
 
         QQmlListProperty<DelegateChoice> choices();
 
-        QString role() const;
-        void setRole(const QString &role);
-
         QVariant roleValue() const;
         void setRoleValue(const QVariant &value);
-
-        QQmlComponent *delegate(QQmlAdaptorModel *adaptorModel, int row, int column = 0) const;
 
         void recalcChild();
         void componentComplete() override;
@@ -65,7 +59,6 @@ signals:
         void roleValueChanged();
 
 private:
-        QString role_;
         QVariant roleValue_;
         QList<DelegateChoice *> choices_;
         QQuickItem *child;

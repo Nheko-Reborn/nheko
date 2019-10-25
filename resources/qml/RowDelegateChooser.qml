@@ -5,7 +5,7 @@ import com.github.nheko 1.0
 import "./delegates"
 
 DelegateChooser {
-	role: "type"
+	//role: "type" //< not supported in our custom implementation, have to use roleValue
 	width: chat.width
 	roleValue: model.type
 
@@ -46,7 +46,6 @@ DelegateChooser {
 		TimelineRow { view: chat; Redacted { id: kid } }
 	}
 	DelegateChoice {
-		//roleValue: MtxEvent.Redacted
 		TimelineRow { view: chat; Placeholder { id: kid } }
 	}
 }
