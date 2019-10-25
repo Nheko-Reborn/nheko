@@ -1,6 +1,5 @@
-// A DelegateChooser like the one, that was added to Qt5.12 (in labs), but compatible with older Qt versions
-// see KDE/kquickitemviews
-// see qtdeclarative/qqmldelagatecomponent
+// A DelegateChooser like the one, that was added to Qt5.12 (in labs), but compatible with older Qt
+// versions see KDE/kquickitemviews see qtdeclarative/qqmldelagatecomponent
 
 #pragma once
 
@@ -40,8 +39,8 @@ private:
 
 class DelegateChooser : public QQuickItem
 {
-	Q_OBJECT
-	Q_CLASSINFO("DefaultProperty", "choices")
+        Q_OBJECT
+        Q_CLASSINFO("DefaultProperty", "choices")
 
 public:
         Q_PROPERTY(QQmlListProperty<DelegateChoice> choices READ choices CONSTANT)
@@ -81,4 +80,3 @@ private:
         static DelegateChoice *choice(QQmlListProperty<DelegateChoice> *, int index);
         static void clearChoices(QQmlListProperty<DelegateChoice> *);
 };
-

@@ -9,7 +9,7 @@
 QQmlComponent *
 DelegateChoice::delegate() const
 {
-	return delegate_;
+        return delegate_;
 }
 
 void
