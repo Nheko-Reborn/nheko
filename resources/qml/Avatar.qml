@@ -30,6 +30,7 @@ Rectangle {
 		id: img
 		anchors.fill: parent
 		asynchronous: true
+		fillMode: Image.PreserveAspectCrop
 
 		layer.enabled: true
 		layer.effect: OpacityMask {

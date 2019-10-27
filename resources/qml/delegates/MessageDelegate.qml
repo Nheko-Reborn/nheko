@@ -2,50 +2,49 @@ import QtQuick 2.6
 import Qt.labs.qmlmodels 1.0
 import com.github.nheko 1.0
 
-import "./delegates"
-
 DelegateChooser {
 	//role: "type" //< not supported in our custom implementation, have to use roleValue
-	width: chat.width
 	roleValue: model.type
+
+	width: parent.width
 
 	DelegateChoice {
 		roleValue: MtxEvent.TextMessage
-		TimelineRow { view: chat; TextMessage { id: kid } }
+		TextMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.NoticeMessage
-		TimelineRow { view: chat; NoticeMessage { id: kid } }
+		NoticeMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.EmoteMessage
-		TimelineRow { view: chat; TextMessage { id: kid } }
+		TextMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.ImageMessage
-		TimelineRow { view: chat; ImageMessage { id: kid } }
+		ImageMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.Sticker
-		TimelineRow { view: chat; ImageMessage { id: kid } }
+		ImageMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.FileMessage
-		TimelineRow { view: chat; FileMessage { id: kid } }
+		FileMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.VideoMessage
-		TimelineRow { view: chat; PlayableMediaMessage { id: kid } }
+		PlayableMediaMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.AudioMessage
-		TimelineRow { view: chat; PlayableMediaMessage { id: kid } }
+		PlayableMediaMessage {}
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.Redacted
-		TimelineRow { view: chat; Redacted { id: kid } }
+		Redacted {}
 	}
 	DelegateChoice {
-		TimelineRow { view: chat; Placeholder { id: kid } }
+		Placeholder {}
 	}
 }

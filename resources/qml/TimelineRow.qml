@@ -6,29 +6,22 @@ import QtQuick.Window 2.2
 
 import com.github.nheko 1.0
 
-import ".."
+import "./delegates"
 
 RowLayout {
-	property var view: undefined
-	default property alias data: contentItem.data
+	property var view: chat
 
-	height: kid.height // TODO: fix this, we shouldn't need to give the child of contentItem this id!
 	anchors.leftMargin: avatarSize + 4
+	anchors.rightMargin: scrollbar.width
 	anchors.left: parent.left
 	anchors.right: parent.right
-	anchors.rightMargin: scrollbar.width
 
-	function isFullyVisible() {
-		return (y - view.contentY - 1) + height < view.height
-	}
-	function getIndex() {
-		return index;
-	}
+	height: contentItem.height
 
-	Item {
-		id: contentItem
+	MessageDelegate {
 		Layout.fillWidth: true
 		Layout.alignment: Qt.AlignTop
+		id: contentItem
 	}
 
 	StatusIndicator {

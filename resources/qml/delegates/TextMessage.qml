@@ -5,7 +5,7 @@ TextEdit {
 	textFormat: TextEdit.RichText
 	readOnly: true
 	wrapMode: Text.Wrap
-	width: parent.width
+	width: parent ? parent.width : undefined
 	selectByMouse: true
 	color: colors.text
 }

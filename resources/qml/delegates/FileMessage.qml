@@ -5,7 +5,7 @@ Rectangle {
 	radius: 10
 	color: colors.dark
 	height: row.height + 24
-	width: parent.width
+	width: parent ? parent.width : undefined
 
 	RowLayout {
 		id: row

@@ -10,7 +10,7 @@ Rectangle {
 	radius: 10
 	color: colors.dark
 	height: content.height + 24
-	width: parent.width
+	width: parent ? parent.width : undefined
 
 	Column { 
 		id: content
