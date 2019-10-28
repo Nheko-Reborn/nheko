@@ -525,7 +525,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
         endInsertRows();
 
-        for (auto id = ids.rbegin(); id != ids.rend(); id++) {
+        for (auto id = eventOrder.rbegin(); id != eventOrder.rend(); id++) {
                 auto event = events.value(*id);
                 if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                       &event)) {
