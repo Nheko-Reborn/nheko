@@ -16,7 +16,7 @@ RowLayout {
 	anchors.left: parent.left
 	anchors.right: parent.right
 
-	height: contentItem.height
+	implicitHeight: contentItem.childrenRect.height
 
 	MessageDelegate {
 		Layout.fillWidth: true
