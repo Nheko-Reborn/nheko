@@ -49,6 +49,12 @@ can be found in the [Github releases](https://github.com/Nheko-Reborn/nheko/rele
 pacaur -S nheko # nheko-git
 ```
 
+#### Debian (10 and above)
+
+```bash
+sudo apt install nheko
+```
+
 #### Fedora
 ```bash
 sudo dnf install nheko
