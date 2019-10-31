@@ -348,6 +348,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 events.remove(txn_id);
                 events.insert(event_id, ev);
 
+                // mark our messages as read
+                readEvent(event_id.toStdString());
+
                 // ask to be notified for read receipts
                 cache::client()->addPendingReceipt(room_id_, event_id);
 
@@ -525,25 +528,20 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
         endInsertRows();
 
-        for (auto id = eventOrder.rbegin(); id != eventOrder.rend(); id++) {
-                auto event = events.value(*id);
-                if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                      &event)) {
-                        event = decryptEvent(*e).event;
-                }
+        updateLastMessage();
+}
 
-                auto type = boost::apply_visitor(
-                  [](const auto &e) -> mtx::events::EventType { return e.type; }, event);
-                if (type == mtx::events::EventType::RoomMessage ||
-                    type == mtx::events::EventType::Sticker) {
-                        auto description = utils::getMessageDescription(
-                          event,
-                          QString::fromStdString(http::client()->user_id().to_string()),
-                          room_id_);
-                        emit manager_->updateRoomsLastMessage(room_id_, description);
-                        break;
-                }
+void
+TimelineModel::updateLastMessage()
+{
+        auto event = events.value(eventOrder.back());
+        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+                event = decryptEvent(*e).event;
         }
+
+        auto description = utils::getMessageDescription(
+          event, QString::fromStdString(http::client()->user_id().to_string()), room_id_);
+        emit manager_->updateRoomsLastMessage(room_id_, description);
 }
 
 std::vector<QString>
@@ -634,18 +632,21 @@ TimelineModel::setCurrentIndex(int index)
         currentId     = indexToId(index);
         emit currentIndexChanged(index);
 
-        if (oldIndex < index) {
-                http::client()->read_event(room_id_.toStdString(),
-                                           currentId.toStdString(),
-                                           [this](mtx::http::RequestErr err) {
-                                                   if (err) {
-                                                           nhlog::net()->warn(
-                                                             "failed to read_event ({}, {})",
-                                                             room_id_.toStdString(),
-                                                             currentId.toStdString());
-                                                   }
-                                           });
+        if (oldIndex < index && !pending.contains(currentId)) {
+                readEvent(currentId.toStdString());
         }
+}
+
+void
+TimelineModel::readEvent(const std::string &id)
+{
+        http::client()->read_event(room_id_.toStdString(), id, [this](mtx::http::RequestErr err) {
+                if (err) {
+                        nhlog::net()->warn("failed to read_event ({}, {})",
+                                           room_id_.toStdString(),
+                                           currentId.toStdString());
+                }
+        });
 }
 
 void

@@ -192,6 +192,8 @@ private:
                                const std::string &user_id,
                                const mtx::responses::ClaimKeys &res,
                                mtx::http::RequestErr err);
+        void updateLastMessage();
+        void readEvent(const std::string &id);
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
         QSet<QString> pending, failed, read;
@@ -229,6 +231,7 @@ TimelineModel::sendMessage(const T &msg)
         pending.insert(txn_id_qstr);
         this->eventOrder.insert(this->eventOrder.end(), txn_id_qstr);
         endInsertRows();
+        updateLastMessage();
 
         if (cache::client()->isRoomEncrypted(room_id_.toStdString()))
                 sendEncryptedMessage(txn_id, nlohmann::json(msg));
