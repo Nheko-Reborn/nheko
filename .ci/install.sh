@@ -4,6 +4,10 @@ set -ex
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     brew update
+
+    # uninstall packages, that would get upgraded by upgrading cmake (and we don't need)
+    brew uninstall --force cgal node sfcgal postgis
+
     brew install qt5 lmdb clang-format ninja libsodium cmark
     brew upgrade boost cmake icu4c || true
 

@@ -324,10 +324,25 @@ utils::linkifyMessage(const QString &body)
         return doc;
 }
 
+QByteArray escapeRawHtml(const QByteArray &data) {
+      QByteArray buffer;
+      const size_t length = data.size();
+      buffer.reserve(length);
+      for(size_t pos = 0; pos != length; ++pos) {
+            switch(data.at(pos)) {
+                  case '&':  buffer.append("&amp;");      break;
+                  case '<':  buffer.append("&lt;");       break;
+                  case '>':  buffer.append("&gt;");       break;
+                  default:   buffer.append(data.at(pos)); break;
+            }
+      }
+     return buffer;
+}
+
 QString
 utils::markdownToHtml(const QString &text)
 {
-        const auto str = text.toUtf8();
+        const auto str = escapeRawHtml(text.toUtf8());
         const char *tmp_buf =
           cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_DEFAULT);
 
