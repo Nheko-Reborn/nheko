@@ -33,9 +33,9 @@ class UserInfoWidget : public QWidget
 public:
         UserInfoWidget(QWidget *parent = 0);
 
-        void setAvatar(const QImage &img);
         void setDisplayName(const QString &name);
         void setUserId(const QString &userid);
+        void setAvatar(const QString &url);
 
         void reset();
 

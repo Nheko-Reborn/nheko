@@ -89,40 +89,7 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
         if (url.isEmpty())
                 return;
 
-        QByteArray savedImgData;
-
-        if (cache::client())
-                savedImgData = cache::client()->image(url);
-
-        if (savedImgData.isEmpty()) {
-                mtx::http::ThumbOpts opts;
-                opts.mxc_url = url.toStdString();
-                http::client()->get_thumbnail(
-                  opts, [room_id, opts, this](const std::string &res, mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn(
-                                    "failed to download room avatar: {} {} {}",
-                                    opts.mxc_url,
-                                    mtx::errors::to_string(err->matrix_error.errcode),
-                                    err->matrix_error.error);
-                                  return;
-                          }
-
-                          if (cache::client())
-                                  cache::client()->saveImage(opts.mxc_url, res);
-
-                          auto data = QByteArray(res.data(), res.size());
-                          QPixmap pixmap;
-                          pixmap.loadFromData(data);
-
-                          emit updateRoomAvatarCb(room_id, pixmap);
-                  });
-        } else {
-                QPixmap img;
-                img.loadFromData(savedImgData);
-
-                updateRoomAvatar(room_id, img);
-        }
+        emit updateRoomAvatarCb(room_id, url);
 }
 
 void
@@ -252,7 +219,7 @@ RoomList::highlightSelectedRoom(const QString &room_id)
 }
 
 void
-RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
+RoomList::updateRoomAvatar(const QString &roomid, const QString &img)
 {
         if (!roomExists(roomid)) {
                 nhlog::ui()->warn("avatar update on non-existent room_id: {}",
@@ -260,7 +227,7 @@ RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
                 return;
         }
 
-        rooms_[roomid]->setAvatar(img.toImage());
+        rooms_[roomid]->setAvatar(img);
 
         // Used to inform other widgets for the new image data.
         emit roomAvatarChanged(roomid, img);

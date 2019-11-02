@@ -350,12 +350,12 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 keyRequestsToggle_->hide();
         }
 
-        avatar_ = new Avatar(this);
-        avatar_->setSize(128);
+        avatar_ = new Avatar(this, 128);
         if (avatarImg_.isNull())
                 avatar_->setLetter(utils::firstChar(QString::fromStdString(info_.name)));
         else
-                avatar_->setImage(avatarImg_);
+                avatar_->setImage(room_id_,
+                                  QString::fromStdString(http::client()->user_id().to_string()));
 
         if (canChangeAvatar(room_id_.toStdString(), utils::localUser().toStdString())) {
                 auto filter = new ClickableFilter(this);
@@ -438,7 +438,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 resetErrorLabel();
         });
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &RoomSettings::close);
         connect(okBtn, &QPushButton::clicked, this, &RoomSettings::close);
 }
@@ -487,7 +487,7 @@ RoomSettings::retrieveRoomInfo()
         try {
                 usesEncryption_ = cache::client()->isRoomEncrypted(room_id_.toStdString());
                 info_           = cache::client()->singleRoomInfo(room_id_.toStdString());
-                setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
+                setAvatar();
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("failed to retrieve room info from cache: {}",
                                   room_id_.toStdString());
@@ -633,14 +633,13 @@ RoomSettings::displayErrorMessage(const QString &msg)
 }
 
 void
-RoomSettings::setAvatar(const QImage &img)
+RoomSettings::setAvatar()
 {
         stopLoadingSpinner();
 
-        avatarImg_ = img;
-
         if (avatar_)
-                avatar_->setImage(img);
+                avatar_->setImage(room_id_,
+                                  QString::fromStdString(http::client()->user_id().to_string()));
 }
 
 void
@@ -668,12 +667,12 @@ RoomSettings::updateAvatar()
 
         QFile file{fileName, this};
         if (format != "image") {
-                displayErrorMessage(tr("The selected media is not an image"));
+                displayErrorMessage(tr("The selected file is not an image"));
                 return;
         }
 
         if (!file.open(QIODevice::ReadOnly)) {
-                displayErrorMessage(tr("Error while reading media: %1").arg(file.errorString()));
+                displayErrorMessage(tr("Error while reading file: %1").arg(file.errorString()));
                 return;
         }
 
@@ -733,7 +732,7 @@ RoomSettings::updateAvatar()
                                     return;
                             }
 
-                            emit proxy->avatarChanged(QImage::fromData(content));
+                            emit proxy->avatarChanged();
                     });
           });
 }

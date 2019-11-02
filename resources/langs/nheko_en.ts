@@ -4,7 +4,7 @@
 <context>
     <name>AudioItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+117"/>
+        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+118"/>
         <source>Save File</source>
         <translation>Save File</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+309"/>
+        <location filename="../../src/ChatPage.cpp" line="+330"/>
         <source>Failed to upload image. Please try again.</source>
         <translation>Failed to upload image. Please try again.</translation>
     </message>
@@ -32,7 +32,7 @@
         <translation>Failed to upload video. Please try again.</translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+380"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Failed to restore OLM account. Please login again.</translation>
     </message>
@@ -42,7 +42,7 @@
         <translation>Failed to restore save data. Please login again.</translation>
     </message>
     <message>
-        <location line="+169"/>
+        <location line="+198"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
@@ -55,12 +55,12 @@
     <message>
         <location line="-45"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Room creation failed: %1</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to leave room: %1</translation>
     </message>
 </context>
 <context>
@@ -68,28 +68,28 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+130"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>All rooms</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Favourite rooms</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Low priority rooms</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (tag)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation> (community)</translation>
     </message>
 </context>
 <context>
@@ -97,38 +97,38 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Apply</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Topic</translation>
     </message>
 </context>
 <context>
     <name>FileItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+106"/>
+        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+107"/>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Save File</translation>
     </message>
 </context>
 <context>
     <name>ImageItem</name>
     <message>
-        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+238"/>
+        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+241"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Save image</translation>
     </message>
 </context>
 <context>
@@ -136,7 +136,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+17"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove</translation>
     </message>
 </context>
 <context>
@@ -144,57 +144,57 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+80"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>e.g @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Device name</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGIN</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autodiscovery failed. Received malformed response.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autodiscovery failed. Unknown error while requesting .well-known.</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>The required endpoints were not found. Possibly not a Matrix server.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Received malformed response. Make sure the homeserver domain is valid.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>An unknown error occured. Make sure the homeserver domain is valid.</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Empty password</translation>
     </message>
 </context>
 <context>
@@ -202,12 +202,12 @@
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+96"/>
         <source>Room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Room members</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>ESC</source>
-        <translation type="unfinished"></translation>
+        <location line="+4"/>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
         <source>Search for a room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Search for a room…</translation>
     </message>
 </context>
 <context>
@@ -223,47 +223,47 @@
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+77"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Username</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Password confirmation</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Home Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Home Server</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTER</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Invalid username</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid username</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>Password is not long enough (min 8 chars)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwords don&apos;t match</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid server name</translation>
     </message>
 </context>
 <context>
@@ -271,33 +271,33 @@
     <message>
         <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Logout</translation>
     </message>
 </context>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2204"/>
+        <location filename="../../src/Cache.cpp" line="+2205"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>no version stored</translation>
     </message>
 </context>
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+92"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+93"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Leave room</translation>
     </message>
     <message>
-        <location line="+174"/>
+        <location line="+181"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Accept</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Decline</translation>
     </message>
 </context>
 <context>
@@ -305,89 +305,89 @@
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+38"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>User settings</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Create new room</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Join a room</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Start a new chat</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Room directory</translation>
     </message>
 </context>
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+106"/>
+        <location filename="../../src/timeline/TimelineItem.cpp" line="+107"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Encrypted</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Delivered</source>
-        <translation type="unfinished"></translation>
+        <translation>Delivered</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Seen</source>
-        <translation type="unfinished"></translation>
+        <translation>Seen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Sent</translation>
     </message>
 </context>
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+506"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+507"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a file</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+168"/>
+        <location filename="../../src/TextInputWidget.h" line="+164"/>
         <source>Write a message...</source>
-        <translation type="unfinished"></translation>
+        <translation>Write a message…</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a message</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji</translation>
     </message>
     <message>
         <location line="+75"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Select a file</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>All Files (*)</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
         <source>Connection lost. Nheko is trying to re-connect...</source>
-        <translation type="unfinished"></translation>
+        <translation>Connection lost. Nheko is trying to re-connect…</translation>
     </message>
 </context>
 <context>
@@ -395,17 +395,17 @@
     <message>
         <location filename="../../src/timeline/TimelineItem.cpp" line="+85"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Message redaction failed: %1</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Reply</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
 </context>
 <context>
@@ -413,7 +413,37 @@
     <message>
         <location filename="../../src/timeline/TimelineView.cpp" line="+245"/>
         <source>Encryption is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption is enabled</translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>-- Encrypted Event (No keys found for decryption) --</source>
+        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
+        <translation>-- Encrypted Event (No keys found for decryption) --</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>-- Decryption Error (failed to communicate with DB) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
+        <translation>-- Decryption Error (failed to communicate with DB) --</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
+        <translation>-- Decryption Error (failed to retrieve megolm keys from db) --</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>-- Decryption Error (%1) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
+        <translation>-- Decryption Error (%1) --</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>-- Encrypted Event (Unknown event type) --</source>
+        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
+        <translation>-- Encrypted Event (Unknown event type) --</translation>
     </message>
 </context>
 <context>
@@ -421,27 +451,32 @@
     <message>
         <location filename="../../src/TopRoomBar.cpp" line="+79"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Room options</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+5"/>
+        <source>Mentions</source>
+        <translation>Mentions</translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Invite users</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Members</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Leave room</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
 </context>
 <context>
@@ -449,25 +484,24 @@
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+120"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Show</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quit</translation>
     </message>
 </context>
 <context>
     <name>TypingDisplay</name>
-    <message>
-        <location filename="../../src/TypingDisplay.cpp" line="+45"/>
-        <source> is typing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source> are typing</source>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location filename="../../src/TypingDisplay.cpp" line="+37"/>
+        <source>%1 and %2 are typing</source>
+        <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
+        <translation>
+            <numerusform>%1%2 is typing</numerusform>
+            <numerusform>%1 and %2 are typing</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -475,100 +509,105 @@
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Logout</translation>
     </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+156"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+166"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimize to tray</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Start in tray</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Group&apos;s sidebar</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Typing notifications</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Read receipts</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop notifications</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Scale factor</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Font size</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+13"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Font Family</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+1"/>
+        <source>Emoji Font Famly</source>
+        <translation>Emoji Font Family</translation>
+    </message>
+    <message>
+        <location line="+33"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Theme</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Device ID</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Device Fingerprint</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Session Keys</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORT</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORT</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>ENCRYPTION</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>GENERAL</translation>
     </message>
     <message>
-        <location line="+150"/>
+        <location line="+156"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Open Sessions File</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -582,34 +621,34 @@
         <location line="+2"/>
         <location line="+2"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location line="-73"/>
         <location line="+32"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>File Password</translation>
     </message>
     <message>
         <location line="-31"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter the passphrase to decrypt the file:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+32"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>The password cannot be empty</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter passphrase to encrypt your session keys:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>File to save the exported session keys</translation>
     </message>
 </context>
 <context>
@@ -617,22 +656,30 @@
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Welcome to nheko! The desktop client for the Matrix protocol.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Enjoy your stay!</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTER</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGIN</translation>
+    </message>
+</context>
+<context>
+    <name>descriptiveTime</name>
+    <message>
+        <location filename="../../src/Utils.cpp" line="+104"/>
+        <source>Yesterday</source>
+        <translation>Yesterday</translation>
     </message>
 </context>
 <context>
@@ -640,42 +687,42 @@
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Create room</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Topic</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Room Visibility</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Room Preset</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Direct Chat</translation>
     </message>
 </context>
 <context>
@@ -683,12 +730,12 @@
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+41"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>User ID to invite</translation>
     </message>
 </context>
 <context>
@@ -696,17 +743,17 @@
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Join</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Room ID or alias</translation>
     </message>
 </context>
 <context>
@@ -714,12 +761,12 @@
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Are you sure you want to leave?</translation>
     </message>
 </context>
 <context>
@@ -727,12 +774,12 @@
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Logout. Are you sure?</translation>
     </message>
 </context>
 <context>
@@ -740,19 +787,21 @@
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+42"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Upload</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Media type: %1
+Media size: %2
+</translation>
     </message>
 </context>
 <context>
@@ -760,35 +809,43 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Solve the reCAPTCHA and press the confirm button</translation>
     </message>
 </context>
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+119"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+121"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Read receipts</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Close</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::ReceiptItem</name>
+    <message>
+        <location line="-44"/>
+        <source>Today %1</source>
+        <translation>Today %1</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>ESC</source>
-        <translation type="unfinished"></translation>
+        <location line="+2"/>
+        <source>Yesterday %1</source>
+        <translation>Yesterday %1</translation>
     </message>
 </context>
 <context>
@@ -796,133 +853,143 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+113"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Internal ID</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Room Version</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifications</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Muted</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentions only</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>All messages</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Room access</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Anyone and guests</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Anyone who knows the room link (no guests)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Invited users</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>End-to-End Encryption</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Respond to key requests</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Whether or not the client should respond automatically with the session keys
+ upon request. Use with caution, this is a temporary measure to test the
+ E2E implementation until device verification is completed.</translation>
     </message>
     <message numerus="yes">
         <location line="+53"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n member</numerusform>
+            <numerusform>%n members</numerusform>
         </translation>
     </message>
     <message>
-        <location line="+71"/>
-        <source>ESC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+69"/>
+        <location line="+140"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to enable encryption: %1</translation>
     </message>
     <message>
         <location line="+149"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Select an avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>All Files (*)</translation>
     </message>
     <message>
         <location line="+12"/>
-        <source>The selected media is not an image</source>
-        <translation type="unfinished"></translation>
+        <source>The selected file is not an image</source>
+        <translation>The selected file is not an image</translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>Error while reading media: %1</source>
-        <translation type="unfinished"></translation>
+        <source>Error while reading file: %1</source>
+        <translation>Error while reading file: %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to upload image: %s</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::UserMentions</name>
+    <message>
+        <location filename="../../src/dialogs/UserMentions.cpp" line="+53"/>
+        <source>This Room</source>
+        <translation>This Room</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>All Rooms</source>
+        <translation>All Rooms</translation>
     </message>
 </context>
 <context>
@@ -930,32 +997,27 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
         <source>Ban the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ban the user from the room</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ignore messages from this user</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignore messages from this user</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Kick the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Kick the user from the room</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start a conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Start a conversation</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>ESC</source>
-        <translation type="unfinished"></translation>
+        <translation>Devices</translation>
     </message>
 </context>
 <context>
@@ -963,42 +1025,132 @@ Media size: %2
     <message>
         <location filename="../../src/emoji/Panel.cpp" line="+125"/>
         <source>Smileys &amp; People</source>
-        <translation type="unfinished">Smileys &amp; People</translation>
+        <translation>Smileys &amp; People</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Animals &amp; Nature</source>
-        <translation type="unfinished">Animals &amp; Nature</translation>
+        <translation>Animals &amp; Nature</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Food &amp; Drink</source>
-        <translation type="unfinished">Food &amp; Drink</translation>
+        <translation>Food &amp; Drink</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Activity</source>
-        <translation type="unfinished">Activity</translation>
+        <translation>Activity</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Travel &amp; Places</source>
-        <translation type="unfinished">Travel &amp; Places</translation>
+        <translation>Travel &amp; Places</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Objects</source>
-        <translation type="unfinished">Objects</translation>
+        <translation>Objects</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symbols</translation>
+        <translation>Symbols</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Flags</source>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
+    </message>
+</context>
+<context>
+    <name>message-description sent:</name>
+    <message>
+        <location filename="../../src/Utils.h" line="+104"/>
+        <source>%1 an audio clip</source>
+        <translation>%1 an audio clip</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 an image</source>
+        <translation>%1 an image</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 a file</source>
+        <translation>%1 a file</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 a video clip</source>
+        <translation>%1 a video clip</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 a sticker</source>
+        <translation>%1 a sticker</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 a notification</source>
+        <translation>%1 a notification</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 an encrypted message</source>
+        <translation>%1 an encrypted message</translation>
+    </message>
+</context>
+<context>
+    <name>message-description:</name>
+    <message>
+        <location line="-26"/>
+        <source>sent</source>
+        <comment>For when someone else is the sender</comment>
+        <translation>sent</translation>
+    </message>
+</context>
+<context>
+    <name>message-description: </name>
+    <message>
+        <location line="-2"/>
+        <source>sent</source>
+        <comment>For when you are the sender</comment>
+        <translation>sent</translation>
+    </message>
+</context>
+<context>
+    <name>utils</name>
+    <message>
+        <location filename="../../src/Utils.cpp" line="+46"/>
+        <location filename="../../src/Utils.h" line="+55"/>
+        <source>You</source>
+        <translation>You</translation>
+    </message>
+    <message>
+        <location line="+219"/>
+        <source>sent a file.</source>
+        <translation>sent a file.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent an image.</source>
+        <translation>sent an image.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent an audio file.</source>
+        <translation>sent an audio file.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>sent a video</source>
+        <translation>sent a video.</translation>
+    </message>
+    <message>
+        <location filename="../../src/Utils.h" line="-23"/>
+        <source>Unknown Message Type</source>
+        <translation>Unknown Message Type</translation>
     </message>
 </context>
 </TS>

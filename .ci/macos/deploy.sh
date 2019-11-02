@@ -25,6 +25,8 @@ PATH=/usr/local/opt/qt/bin/:${PATH}
 
 dmgbuild -s ./.ci/macos/settings.json "Nheko" nheko.dmg
 
-if [ ! -z "$VERSION" ]; then
+if [ -n "$VERSION" ]; then
     mv nheko.dmg "nheko-${VERSION}.dmg"
+    mkdir artifacts
+    cp "nheko-${VERSION}.dmg" artifacts/
 fi

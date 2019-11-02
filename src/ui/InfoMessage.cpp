@@ -2,6 +2,7 @@
 #include "Config.h"
 
 #include <QDateTime>
+#include <QLocale>
 #include <QPainter>
 #include <QPen>
 #include <QtGlobal>
@@ -61,14 +62,14 @@ DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
 {
         auto now = QDateTime::currentDateTime();
 
-        QString fmt;
+        QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
 
-        if (now.date().year() != datetime.date().year())
-                fmt = QString("ddd d MMMM yy");
-        else
-                fmt = QString("ddd d MMMM");
+        if (now.date().year() == datetime.date().year()) {
+                QRegularExpression rx("[^a-zA-Z]*y+[^a-zA-Z]*");
+                fmt = fmt.remove(rx);
+        }
 
-        msg_ = datetime.toString(fmt);
+        msg_ = datetime.date().toString(fmt);
 
         QFontMetrics fm{font()};
 #if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)

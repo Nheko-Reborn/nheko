@@ -306,7 +306,10 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         dummy.origin_server_ts = e.origin_server_ts;
         dummy.event_id         = e.event_id;
         dummy.sender           = e.sender;
-        dummy.content.body     = "-- Encrypted Event (No keys found for decryption) --";
+        dummy.content.body =
+          tr("-- Encrypted Event (No keys found for decryption) --",
+             "Placeholder, when the message was not decrypted yet or can't be decrypted")
+            .toStdString();
 
         try {
                 if (!cache::client()->inboundMegolmSessionExists(index)) {
@@ -319,7 +322,10 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
                 }
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("failed to check megolm session's existence: {}", e.what());
-                dummy.content.body = "-- Decryption Error (failed to communicate with DB) --";
+                dummy.content.body = tr("-- Decryption Error (failed to communicate with DB) --",
+                                        "Placeholder, when the message can't be decrypted, because "
+                                        "the DB access failed when trying to lookup the session.")
+                                       .toStdString();
                 return {dummy, false};
         }
 
@@ -335,7 +341,10 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
                                       index.sender_key,
                                       e.what());
                 dummy.content.body =
-                  "-- Decryption Error (failed to retrieve megolm keys from db) --";
+                  tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
+                     "Placeholder, when the message can't be decrypted, because the DB access "
+                     "failed.")
+                    .toStdString();
                 return {dummy, false};
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
@@ -343,7 +352,12 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
                                           index.session_id,
                                           index.sender_key,
                                           e.what());
-                dummy.content.body = "-- Decryption Error (" + std::string(e.what()) + ") --";
+                dummy.content.body =
+                  tr("-- Decryption Error (%1) --",
+                     "Placeholder, when the message can't be decrypted. In this case, the Olm "
+                     "decrytion returned an error, which is passed ad %1")
+                    .arg(e.what())
+                    .toStdString();
                 return {dummy, false};
         }
 
@@ -365,7 +379,11 @@ TimelineView::parseEncryptedEvent(const mtx::events::EncryptedEvent<mtx::events:
         if (events.size() == 1)
                 return {events.at(0), true};
 
-        dummy.content.body = "-- Encrypted Event (Unknown event type) --";
+        dummy.content.body =
+          tr("-- Encrypted Event (Unknown event type) --",
+             "Placeholder, when the message was decrypted, but we couldn't parse it, because "
+             "Nheko/mtxclient don't support that event type yet")
+            .toStdString();
         return {dummy, false};
 }
 

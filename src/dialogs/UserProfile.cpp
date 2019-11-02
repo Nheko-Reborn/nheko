@@ -114,9 +114,8 @@ UserProfile::UserProfile(QWidget *parent)
         btnLayout->setSpacing(8);
         btnLayout->setMargin(0);
 
-        avatar_ = new Avatar(this);
+        avatar_ = new Avatar(this, 128);
         avatar_->setLetter("X");
-        avatar_->setSize(128);
 
         QFont font;
         font.setPointSizeF(font.pointSizeF() * 2);
@@ -183,7 +182,7 @@ UserProfile::UserProfile(QWidget *parent)
 
         qRegisterMetaType<std::vector<DeviceInfo>>();
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &UserProfile::close);
         connect(okBtn, &QPushButton::clicked, this, &UserProfile::close);
 }
@@ -210,8 +209,7 @@ UserProfile::init(const QString &userId, const QString &roomId)
         displayNameLabel_->setText(displayName);
         avatar_->setLetter(utils::firstChar(displayName));
 
-        AvatarProvider::resolve(
-          roomId, userId, this, [this](const QImage &img) { avatar_->setImage(img); });
+        avatar_->setImage(roomId, userId);
 
         auto localUser = utils::localUser();
 

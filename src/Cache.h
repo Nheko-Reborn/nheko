@@ -32,6 +32,7 @@
 #include <nlohmann/json.hpp>
 
 #include "Logging.h"
+#include "MatrixClient.h"
 
 using mtx::events::state::JoinRule;
 
@@ -152,7 +153,6 @@ struct RoomSearchResult
 {
         std::string room_id;
         RoomInfo info;
-        QImage img;
 };
 
 Q_DECLARE_METATYPE(RoomSearchResult)
@@ -323,6 +323,8 @@ public:
 
         std::map<QString, mtx::responses::Timeline> roomMessages();
 
+        QMap<QString, mtx::responses::Notifications> getTimelineMentions();
+
         //! Retrieve all the user ids from a room.
         std::vector<std::string> roomMembers(const std::string &room_id);
 
@@ -402,6 +404,9 @@ public:
         //! Check if we have sent a desktop notification for the given event id.
         bool isNotificationSent(const std::string &event_id);
 
+        //! Add all notifications containing a user mention to the db.
+        void saveTimelineMentions(const mtx::responses::Notifications &res);
+
         //! Remove old unused data.
         void deleteOldMessages();
         void deleteOldData() noexcept;
@@ -469,6 +474,15 @@ private:
                         lmdb::dbi &statesdb,
                         lmdb::dbi &membersdb,
                         const mtx::responses::InvitedRoom &room);
+
+        //! Add a notification containing a user mention to the db.
+        void saveTimelineMentions(lmdb::txn &txn,
+                                  const std::string &room_id,
+                                  const QList<mtx::responses::Notification> &res);
+
+        //! Get timeline items that a user was mentions in for a given room
+        mtx::responses::Notifications getTimelineMentionsForRoom(lmdb::txn &txn,
+                                                                 const std::string &room_id);
 
         QString getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
@@ -658,6 +672,11 @@ private:
         lmdb::dbi getMembersDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(txn, std::string(room_id + "/members").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getMentionsDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(txn, std::string(room_id + "/mentions").c_str(), MDB_CREATE);
         }
 
         //! Retrieves or creates the database that stores the open OLM sessions between our device

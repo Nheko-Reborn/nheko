@@ -179,7 +179,6 @@ set(SRC_FILES
     src/dialogs/LeaveRoom.cpp
     src/dialogs/Logout.cpp
     src/dialogs/UserProfile.cpp
-    src/dialogs/UserMentions.cpp
     src/dialogs/ReadReceipts.cpp
     src/dialogs/ReCaptcha.cpp
     src/dialogs/RoomSettings.cpp
@@ -241,13 +240,13 @@ set(SRC_FILES
     src/popups/SuggestionsPopup.cpp
     src/popups/PopupItem.cpp
     src/popups/ReplyPopup.cpp
+    src/popups/UserMentions.cpp
     src/TextInputWidget.cpp
     src/TopRoomBar.cpp
     src/TrayIcon.cpp
     src/TypingDisplay.cpp
     src/Utils.cpp
     src/UserInfoWidget.cpp
-    src/UserMentionsWidget.cpp
     src/UserSettingsPage.cpp
     src/WelcomePage.cpp
     src/main.cpp
@@ -321,7 +320,6 @@ qt5_wrap_cpp(MOC_HEADERS
     src/dialogs/MemberList.h
     src/dialogs/LeaveRoom.h
     src/dialogs/Logout.h
-    src/dialogs/UserMentions.h
     src/dialogs/UserProfile.h
     src/dialogs/RawMessage.h
     src/dialogs/ReadReceipts.h
@@ -383,12 +381,12 @@ qt5_wrap_cpp(MOC_HEADERS
     src/popups/SuggestionsPopup.h
     src/popups/ReplyPopup.h
     src/popups/PopupItem.h
+    src/popups/UserMentions.h
     src/TextInputWidget.h
     src/TopRoomBar.h
     src/TrayIcon.h
     src/TypingDisplay.h
     src/UserInfoWidget.h
-    src/UserMentionsWidget.h
     src/UserSettingsPage.h
     src/WelcomePage.h
 )

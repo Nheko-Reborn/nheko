@@ -28,7 +28,8 @@ fi
 cmake -GNinja -Hdeps -B.deps \
     -DUSE_BUNDLED_BOOST="${USE_BUNDLED_BOOST}" \
     -DUSE_BUNDLED_CMARK="${USE_BUNDLED_CMARK}" \
-    -DUSE_BUNDLED_JSON="${USE_BUNDLED_JSON}"
+    -DUSE_BUNDLED_JSON="${USE_BUNDLED_JSON}" \
+    -DMTX_STATIC="${MTX_STATIC:-OFF}"
 cmake --build .deps
 
 # Build nheko
@@ -40,11 +41,11 @@ cmake --build build
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     make lint;
 
-    if [ "$DEPLOYMENT" = 1 ] && [ ! -z "$VERSION" ] ; then
+    if [ "$DEPLOYMENT" = 1 ] && [ -n "$VERSION" ] ; then
         make macos-deploy;
     fi
 fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$DEPLOYMENT" = 1 ] && [ ! -z "$VERSION" ]; then
+if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$DEPLOYMENT" = 1 ] && [ -n "$VERSION" ]; then
     make linux-deploy;
 fi

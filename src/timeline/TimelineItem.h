@@ -215,7 +215,7 @@ public:
         void setBackgroundColor(const QColor &color) { backgroundColor_ = color; }
         QColor backgroundColor() const { return backgroundColor_; }
 
-        void setUserAvatar(const QImage &pixmap);
+        void setUserAvatar(const QString &userid);
         DescInfo descriptionMessage() const { return descriptionMsg_; }
         QString eventId() const { return event_id_; }
         void setEventId(const QString &event_id) { event_id_ = event_id; }
@@ -277,7 +277,7 @@ private:
         QFutureWatcher<QString> *colorGenerating_;
 
         QString event_id_;
-        mtx::events::MessageType message_type_;
+        mtx::events::MessageType message_type_ = mtx::events::MessageType::Unknown;
         QString room_id_;
 
         DescInfo descriptionMsg_;
@@ -336,8 +336,7 @@ TimelineItem::setupLocalWidgetLayout(Widget *widget, const QString &userid, bool
                 generateBody(userid, displayName, "");
                 setupAvatarLayout(displayName);
 
-                AvatarProvider::resolve(
-                  room_id_, userid, this, [this](const QImage &img) { setUserAvatar(img); });
+                setUserAvatar(userid);
         } else {
                 setupSimpleLayout();
         }
@@ -381,8 +380,7 @@ TimelineItem::setupWidgetLayout(Widget *widget, const Event &event, bool withSen
                 generateBody(sender, displayName, "");
                 setupAvatarLayout(displayName);
 
-                AvatarProvider::resolve(
-                  room_id_, sender, this, [this](const QImage &img) { setUserAvatar(img); });
+                setUserAvatar(sender);
         } else {
                 setupSimpleLayout();
         }

@@ -21,6 +21,7 @@ matrix:
               - USE_BUNDLED_BOOST=0
               - USE_BUNDLED_CMARK=0
               - USE_BUNDLED_JSON=0
+              - MTX_STATIC=1
         - os: linux
           compiler: gcc
           env:
@@ -79,6 +80,21 @@ script:
     - sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     - cp ./.ci/bintray-release.json .
 deploy:
+- provider: s3
+  access_key_id: $ARTIFACTS_KEY
+  secret_access_key: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
+  region: $AWS_DEFAULT_REGION
+  detect_encoding: true
+  cache_control: "max-age=31536000"
+  skip_cleanup: true
+  acl: public_read
+  local_dir: artifacts
+  on:
+    condition: "$DEPLOYMENT == 1"
+    repo: Nheko-Reborn/nheko
+    tags: false
+    all_branches: true
 - provider: bintray
   user: "redsky17"
   key:

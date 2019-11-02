@@ -35,7 +35,6 @@
 #include "TopRoomBar.h"
 #include "TypingDisplay.h"
 #include "UserInfoWidget.h"
-#include "UserMentionsWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/OverlayModal.h"
@@ -44,7 +43,7 @@
 #include "notifications/Manager.h"
 
 #include "dialogs/ReadReceipts.h"
-#include "dialogs/UserMentions.h"
+#include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
 
 // TODO: Needs to be updated with an actual secret.
@@ -90,13 +89,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::joinRoom, this, &ChatPage::joinRoom);
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
-        user_info_widget_ = new UserInfoWidget(sideBar_);
-        // user_mentions_widget_ = new UserMentionsWidget(sideBar_);
-        room_list_ = new RoomList(sideBar_);
+        user_info_widget_    = new UserInfoWidget(sideBar_);
+        user_mentions_popup_ = new popups::UserMentions();
+        room_list_           = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);
-        // sideBarLayout_->addWidget(user_mentions_widget_);
         sideBarLayout_->addWidget(room_list_);
         sideBarLayout_->addWidget(sidebarActions_);
 
@@ -155,21 +153,27 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
 
         connect(top_bar_, &TopRoomBar::mentionsClicked, this, [this](const QPoint &mentionsPos) {
-                http::client()->notifications(
-                  1000,
-                  "",
-                  "highlight",
-                  [this, mentionsPos](const mtx::responses::Notifications &res,
-                                      mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn("failed to retrieve notifications: {} ({})",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                                  return;
-                          }
+                if (user_mentions_popup_->isVisible()) {
+                        user_mentions_popup_->hide();
+                } else {
+                        showNotificationsDialog(mentionsPos);
+                        http::client()->notifications(
+                          1000,
+                          "",
+                          "highlight",
+                          [this, mentionsPos](const mtx::responses::Notifications &res,
+                                              mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn(
+                                            "failed to retrieve notifications: {} ({})",
+                                            err->matrix_error.error,
+                                            static_cast<int>(err->status_code));
+                                          return;
+                                  }
 
-                          emit highlightedNotifsRetrieved(std::move(res), mentionsPos);
-                  });
+                                  emit highlightedNotifsRetrieved(std::move(res), mentionsPos);
+                          });
+                }
         });
 
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
@@ -519,8 +523,16 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
-        connect(
-          this, &ChatPage::highlightedNotifsRetrieved, this, &ChatPage::showNotificationsDialog);
+        connect(this,
+                &ChatPage::highlightedNotifsRetrieved,
+                this,
+                [](const mtx::responses::Notifications &notif) {
+                        try {
+                                cache::client()->saveTimelineMentions(notif);
+                        } catch (const lmdb::error &e) {
+                                nhlog::db()->error("failed to save mentions: {}", e.what());
+                        }
+                });
 
         connect(communitiesList_,
                 &CommunitiesList::communityChanged,
@@ -559,6 +571,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
                 &TimelineViewManager::initWithMessages);
+        connect(this,
+                &ChatPage::initializeMentions,
+                user_mentions_popup_,
+                &popups::UserMentions::initializeMentions);
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 try {
                         room_list_->cleanupInvites(cache::client()->invites());
@@ -758,12 +774,12 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 }
 
 void
-ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
+ChatPage::updateTopBarAvatar(const QString &roomid, const QString &img)
 {
         if (current_room_ != roomid)
                 return;
 
-        top_bar_->updateRoomAvatar(img.toImage());
+        top_bar_->updateRoomAvatar(img);
 }
 
 void
@@ -791,7 +807,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                 if (img.isNull())
                         top_bar_->updateRoomAvatarFromName(name);
                 else
-                        top_bar_->updateRoomAvatar(img);
+                        top_bar_->updateRoomAvatar(avatar_url);
 
         } catch (const lmdb::error &e) {
                 nhlog::ui()->error("failed to change top bar room info: {}", e.what());
@@ -831,6 +847,7 @@ ChatPage::loadStateFromCache()
 
                         emit initializeEmptyViews(cache::client()->roomMessages());
                         emit initializeRoomList(cache::client()->roomInfo());
+                        emit initializeMentions(cache::client()->getTimelineMentions());
                         emit syncTags(cache::client()->roomInfo().toStdMap());
 
                         cache::client()->calculateRoomReadStatus();
@@ -987,32 +1004,15 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 }
 
 void
-ChatPage::showNotificationsDialog(const mtx::responses::Notifications &res, const QPoint &widgetPos)
+ChatPage::showNotificationsDialog(const QPoint &widgetPos)
 {
-        // TODO: This should NOT BE A DIALOG.  Make the TimelineView support
-        // creating a timeline view from notifications (similarly to how it can show history views)
-        auto notifDialog = new dialogs::UserMentions();
-        for (const auto &item : res.notifications) {
-                const auto event_id = QString::fromStdString(utils::event_id(item.event));
+        auto notifDialog = user_mentions_popup_;
 
-                try {
-                        const auto room_id = QString::fromStdString(item.room_id);
-                        const auto user_id = utils::event_sender(item.event);
-                        const auto body    = utils::event_body(item.event);
-
-                        notifDialog->pushItem(event_id, user_id, body, room_id);
-
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->warn("error while sending desktop notification: {}", e.what());
-                }
-        }
         notifDialog->setGeometry(
           widgetPos.x() - (width() / 10), widgetPos.y() + 25, width() / 5, height() / 2);
-        // notifDialog->move(widgetPos.x(), widgetPos.y());
-        // notifDialog->setFixedWidth(width() / 10);
-        // notifDialog->setFixedHeight(height() / 2);
+
         notifDialog->raise();
-        notifDialog->show();
+        notifDialog->showPopup();
 }
 
 void
@@ -1243,6 +1243,8 @@ ChatPage::sendTypingNotifications()
 void
 ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err)
 {
+        // TODO: Initial Sync should include mentions as well...
+
         if (err) {
                 const auto error      = QString::fromStdString(err->matrix_error.error);
                 const auto msg        = tr("Please try to login again: %1").arg(error);
@@ -1280,6 +1282,7 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
 
                 emit initializeViews(std::move(res.rooms));
                 emit initializeRoomList(cache::client()->roomInfo());
+                emit initializeMentions(cache::client()->getTimelineMentions());
 
                 cache::client()->calculateRoomReadStatus();
                 emit syncTags(cache::client()->roomInfo().toStdMap());
@@ -1334,37 +1337,7 @@ ChatPage::getProfileInfo()
 
                   emit setUserDisplayName(QString::fromStdString(res.display_name));
 
-                  if (cache::client()) {
-                          auto data = cache::client()->image(res.avatar_url);
-                          if (!data.isNull()) {
-                                  emit setUserAvatar(QImage::fromData(data));
-                                  return;
-                          }
-                  }
-
-                  if (res.avatar_url.empty())
-                          return;
-
-                  http::client()->download(
-                    res.avatar_url,
-                    [this, res](const std::string &data,
-                                const std::string &,
-                                const std::string &,
-                                mtx::http::RequestErr err) {
-                            if (err) {
-                                    nhlog::net()->warn(
-                                      "failed to download user avatar: {} - {}",
-                                      mtx::errors::to_string(err->matrix_error.errcode),
-                                      err->matrix_error.error);
-                                    return;
-                            }
-
-                            if (cache::client())
-                                    cache::client()->saveImage(res.avatar_url, data);
-
-                            emit setUserAvatar(
-                              QImage::fromData(QByteArray(data.data(), data.size())));
-                    });
+                  emit setUserAvatar(QString::fromStdString(res.avatar_url));
           });
 
         http::client()->joined_groups(

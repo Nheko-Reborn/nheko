@@ -25,8 +25,8 @@ for iconSize in 16 32 48 64 128 256 512; do
 done
 
 # Only download the file when not already present
-if ! [ -f linuxdeployqt-continuous-x86_64.AppImage ] ; then
-	wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+if ! [ -f linuxdeployqt-6-x86_64.AppImage ] ; then
+	wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage"
 fi
 chmod a+x linuxdeployqt*.AppImage
 
@@ -49,7 +49,10 @@ done
 
 chmod +x nheko-*x86_64.AppImage
 
-if [ ! -z "$VERSION" ]; then
+mkdir artifacts
+cp nheko-*x86_64.AppImage artifacts/
+
+if [ -n "$VERSION" ]; then
     # commented out for now, as AppImage file appears to already contain the version.
     #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
     echo "nheko-${VERSION}-x86_64.AppImage"

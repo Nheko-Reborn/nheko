@@ -22,6 +22,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
+#include <QProcessEnvironment>
 #include <QSharedPointer>
 #include <QWidget>
 
@@ -85,7 +86,13 @@ public:
                 save();
         }
 
-        QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
+        void setAvatarCircles(bool state)
+        {
+                avatarCircles_ = state;
+                save();
+        }
+
+        QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
@@ -100,6 +107,11 @@ signals:
         void groupViewStateChanged(bool state);
 
 private:
+        // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
+        QString defaultTheme_ =
+          QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
+            ? "light"
+            : "system";
         QString theme_;
         bool isTrayEnabled_;
         bool isStartInTrayEnabled_;
@@ -107,6 +119,7 @@ private:
         bool isTypingNotificationsEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
+        bool avatarCircles_;
         double baseFontSize_;
         QString font_;
         QString emojiFont_;
@@ -156,6 +169,7 @@ private:
         Toggle *typingNotifications_;
         Toggle *readReceipts_;
         Toggle *desktopNotifications_;
+        Toggle *avatarCircles_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
 

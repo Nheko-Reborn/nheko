@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QDesktopWidget>
 #include <QGuiApplication>
+#include <QProcessEnvironment>
 #include <QScreen>
 #include <QSettings>
 #include <QTextDocument>
@@ -99,13 +100,13 @@ utils::descriptiveTime(const QDateTime &then)
         const auto days = then.daysTo(now);
 
         if (days == 0)
-                return then.toString("HH:mm");
+                return then.time().toString(Qt::DefaultLocaleShortDate);
         else if (days < 2)
-                return QString("Yesterday");
-        else if (days < 365)
-                return then.toString("dd/MM");
+                return QString(QCoreApplication::translate("descriptiveTime", "Yesterday"));
+        else if (days < 7)
+                return then.toString("dddd");
 
-        return then.toString("dd/MM/yy");
+        return then.date().toString(Qt::DefaultLocaleShortDate);
 }
 
 DescInfo
@@ -147,7 +148,7 @@ utils::getMessageDescription(const TimelineEvent &event,
 
                 DescInfo info;
                 if (sender == localUser)
-                        info.username = "You";
+                        info.username = QCoreApplication::translate("utils", "You");
                 else
                         info.username = username;
 
@@ -323,10 +324,25 @@ utils::linkifyMessage(const QString &body)
         return doc;
 }
 
+QByteArray escapeRawHtml(const QByteArray &data) {
+      QByteArray buffer;
+      const size_t length = data.size();
+      buffer.reserve(length);
+      for(size_t pos = 0; pos != length; ++pos) {
+            switch(data.at(pos)) {
+                  case '&':  buffer.append("&amp;");      break;
+                  case '<':  buffer.append("&lt;");       break;
+                  case '>':  buffer.append("&gt;");       break;
+                  default:   buffer.append(data.at(pos)); break;
+            }
+      }
+     return buffer;
+}
+
 QString
 utils::markdownToHtml(const QString &text)
 {
-        const auto str = text.toUtf8();
+        const auto str = escapeRawHtml(text.toUtf8());
         const char *tmp_buf =
           cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_DEFAULT);
 
@@ -366,16 +382,16 @@ utils::getQuoteBody(const RelatedInfo &related)
                 return markdownToHtml(related.quoted_body);
         }
         case MsgType::File: {
-                return QString("sent a file.");
+                return QString(QCoreApplication::translate("utils", "sent a file."));
         }
         case MsgType::Image: {
-                return QString("sent an image.");
+                return QString(QCoreApplication::translate("utils", "sent an image."));
         }
         case MsgType::Audio: {
-                return QString("sent an audio file.");
+                return QString(QCoreApplication::translate("utils", "sent an audio file."));
         }
         case MsgType::Video: {
-                return QString("sent a video");
+                return QString(QCoreApplication::translate("utils", "sent a video"));
         }
         default: {
                 return related.quoted_body;
@@ -387,14 +403,20 @@ QString
 utils::linkColor()
 {
         QSettings settings;
-        const auto theme = settings.value("user/theme", "light").toString();
+        // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
+        QString defaultTheme =
+          QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
+            ? "light"
+            : "system";
+        const auto theme = settings.value("user/theme", defaultTheme).toString();
 
-        if (theme == "light")
+        if (theme == "light") {
                 return "#0077b5";
-        else if (theme == "dark")
+        } else if (theme == "dark") {
                 return "#38A3D8";
-
-        return QPalette().color(QPalette::Link).name();
+        } else {
+                return QPalette().color(QPalette::Link).name();
+        }
 }
 
 uint32_t

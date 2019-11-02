@@ -9,6 +9,7 @@
 #include "timeline/widgets/ImageItem.h"
 #include "timeline/widgets/VideoItem.h"
 
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QPixmap>
 #include <mtx/events/collections.hpp>
@@ -79,7 +80,9 @@ event_body(const mtx::events::collections::TimelineEvents &event);
 //! Match widgets/events with a description message.
 template<class T>
 QString
-messageDescription(const QString &username = "", const QString &body = "")
+messageDescription(const QString &username = "",
+                   const QString &body     = "",
+                   const bool isLocal      = false)
 {
         using Audio     = mtx::events::RoomEvent<mtx::events::msg::Audio>;
         using Emote     = mtx::events::RoomEvent<mtx::events::msg::Emote>;
@@ -91,24 +94,41 @@ messageDescription(const QString &username = "", const QString &body = "")
         using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
         using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
-        if (std::is_same<T, AudioItem>::value || std::is_same<T, Audio>::value)
-                return QString("sent an audio clip");
-        else if (std::is_same<T, ImageItem>::value || std::is_same<T, Image>::value)
-                return QString("sent an image");
-        else if (std::is_same<T, FileItem>::value || std::is_same<T, File>::value)
-                return QString("sent a file");
-        else if (std::is_same<T, VideoItem>::value || std::is_same<T, Video>::value)
-                return QString("sent a video clip");
-        else if (std::is_same<T, StickerItem>::value || std::is_same<T, Sticker>::value)
-                return QString("sent a sticker");
-        else if (std::is_same<T, Notice>::value)
-                return QString("sent a notification");
-        else if (std::is_same<T, Text>::value)
+        // Sometimes the verb form of sent changes in some languages depending on the actor.
+        auto remoteSent = QCoreApplication::translate(
+          "message-description: ", "sent", "For when you are the sender");
+        auto localSent = QCoreApplication::translate(
+          "message-description:", "sent", "For when someone else is the sender");
+        QString sentVerb = isLocal ? localSent : remoteSent;
+        if (std::is_same<T, AudioItem>::value || std::is_same<T, Audio>::value) {
+                return QCoreApplication::translate("message-description sent:", "%1 an audio clip")
+                  .arg(sentVerb);
+        } else if (std::is_same<T, ImageItem>::value || std::is_same<T, Image>::value) {
+                return QCoreApplication::translate("message-description sent:", "%1 an image")
+                  .arg(sentVerb);
+        } else if (std::is_same<T, FileItem>::value || std::is_same<T, File>::value) {
+                return QCoreApplication::translate("message-description sent:", "%1 a file")
+                  .arg(sentVerb);
+        } else if (std::is_same<T, VideoItem>::value || std::is_same<T, Video>::value) {
+                return QCoreApplication::translate("message-description sent:", "%1 a video clip")
+                  .arg(sentVerb);
+        } else if (std::is_same<T, StickerItem>::value || std::is_same<T, Sticker>::value) {
+                return QCoreApplication::translate("message-description sent:", "%1 a sticker")
+                  .arg(sentVerb);
+        } else if (std::is_same<T, Notice>::value) {
+                return QCoreApplication::translate("message-description sent:", "%1 a notification")
+                  .arg(sentVerb);
+        } else if (std::is_same<T, Text>::value) {
                 return QString(": %1").arg(body);
-        else if (std::is_same<T, Emote>::value)
+        } else if (std::is_same<T, Emote>::value) {
                 return QString("* %1 %2").arg(username).arg(body);
-        else if (std::is_same<T, Encrypted>::value)
-                return QString("sent an encrypted message");
+        } else if (std::is_same<T, Encrypted>::value) {
+                return QCoreApplication::translate("message-description sent:",
+                                                   "%1 an encrypted message")
+                  .arg(sentVerb);
+        } else {
+                return QCoreApplication::translate("utils", "Unknown Message Type");
+        }
 }
 
 template<class T, class Event>
@@ -129,10 +149,12 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
 
         return DescInfo{
           QString::fromStdString(msg.event_id),
-          isEmote ? "" : (sender == localUser ? "You" : username),
+          isEmote ? ""
+                  : (sender == localUser ? QCoreApplication::translate("utils", "You") : username),
           sender,
           (isText || isEmote)
-            ? messageDescription<T>(username, QString::fromStdString(msg.content.body).trimmed())
+            ? messageDescription<T>(
+                username, QString::fromStdString(msg.content.body).trimmed(), sender == localUser)
             : QString(" %1").arg(messageDescription<T>()),
           utils::descriptiveTime(ts),
           ts};

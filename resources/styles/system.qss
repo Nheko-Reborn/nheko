@@ -12,6 +12,16 @@ TimelineView > * {
     border: none;
 }
 
+UserMentionsWidget,
+UserMentionsWidget > * {
+    border: none;
+}
+
+UserMentionsWidget > TimelineItem {
+    qproperty-backgroundColor: palette(window);
+    qproperty-hoverColor: palette(base);
+}
+
 TextInputWidget {
     border: none;
     border-top: 1px solid palette(mid);
