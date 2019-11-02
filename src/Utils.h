@@ -169,9 +169,6 @@ template<class T, class Event>
 DescInfo
 createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
 {
-        using Text  = mtx::events::RoomEvent<mtx::events::msg::Text>;
-        using Emote = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-
         const auto msg    = boost::get<T>(event);
         const auto sender = QString::fromStdString(msg.sender);
 

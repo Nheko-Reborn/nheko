@@ -91,7 +91,6 @@ from_json(const json &j, ReadReceiptKey &key)
 struct DescInfo
 {
         QString event_id;
-        QString username;
         QString userid;
         QString body;
         QString timestamp;
