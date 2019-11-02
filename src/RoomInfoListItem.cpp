@@ -118,7 +118,7 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *pare
         // so we can't use them for sorting.
         if (roomType_ == RoomType::Invited)
                 lastMsgInfo_ = {
-                  emptyEventId, "-", "-", "-", "-", QDateTime::currentDateTime().addYears(10)};
+                  emptyEventId, "-", "-", "-", QDateTime::currentDateTime().addYears(10)};
 }
 
 void
@@ -210,33 +210,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         p.setFont(QFont{});
                         p.setPen(subtitlePen);
 
-                        // The limit is the space between the end of the avatar and the start of the
-                        // timestamp.
-                        int usernameLimit =
-                          std::max(0, width() - 3 * wm.padding - msgStampWidth - wm.iconSize - 20);
-                        auto userName =
-                          metrics.elidedText(lastMsgInfo_.username, Qt::ElideRight, usernameLimit);
-
-                        p.setFont(QFont{});
-                        p.drawText(QPoint(2 * wm.padding + wm.iconSize, bottom_y), userName);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
-                        int nameWidth = QFontMetrics(QFont{}).width(userName);
-#else
-                        int nameWidth = QFontMetrics(QFont{}).horizontalAdvance(userName);
-#endif
-                        p.setFont(QFont{});
-
-                        // The limit is the space between the end of the username and the start of
-                        // the timestamp.
-                        int descriptionLimit =
-                          std::max(0,
-                                   width() - 3 * wm.padding - bottomLineWidthLimit - wm.iconSize -
-                                     nameWidth - 5);
+                        int descriptionLimit = std::max(
+                          0, width() - 3 * wm.padding - bottomLineWidthLimit - wm.iconSize);
                         auto description =
                           metrics.elidedText(lastMsgInfo_.body, Qt::ElideRight, descriptionLimit);
-                        p.drawText(QPoint(2 * wm.padding + wm.iconSize + nameWidth, bottom_y),
-                                   description);
+                        p.drawText(QPoint(2 * wm.padding + wm.iconSize, bottom_y), description);
 
                         // We show the last message timestamp.
                         p.save();

@@ -146,11 +146,6 @@ utils::getMessageDescription(const TimelineEvent &event,
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
                 DescInfo info;
-                if (sender == localUser)
-                        info.username = QCoreApplication::translate("utils", "You");
-                else
-                        info.username = username;
-
                 info.userid    = sender;
                 info.body      = QString(" %1").arg(messageDescription<Encrypted>());
                 info.timestamp = utils::descriptiveTime(ts);
