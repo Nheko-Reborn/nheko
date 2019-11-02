@@ -1,5 +1,4 @@
 import QtQuick 2.6
-import Qt.labs.qmlmodels 1.0
 import com.github.nheko 1.0
 
 DelegateChooser {
