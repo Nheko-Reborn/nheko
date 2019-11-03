@@ -713,6 +713,13 @@ TimelineModel::viewRawMessage(QString id) const
         Q_UNUSED(dialog);
 }
 
+void
+
+TimelineModel::openUserProfile(QString userid) const
+{
+        MainWindow::instance()->openUserProfile(userid, room_id_);
+}
+
 DecryptionResult
 TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const
 {

@@ -152,6 +152,7 @@ public:
 
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
+        Q_INVOKABLE void openUserProfile(QString userid) const;
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);

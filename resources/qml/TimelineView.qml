@@ -135,6 +135,12 @@ Rectangle {
 						height: avatarSize
 						url: chat.model.avatarUrl(section.split(" ")[0]).replace("mxc://", "image://MxcImage/")
 						displayName: chat.model.displayName(section.split(" ")[0])
+
+						MouseArea {
+							anchors.fill: parent
+							onClicked: chat.model.openUserProfile(section.split(" ")[0])
+							cursorShape: Qt.PointingHandCursor
+						}
 					}
 
 					Text { 
@@ -142,6 +148,12 @@ Rectangle {
 						text: chat.model.escapeEmoji(chat.model.displayName(section.split(" ")[0]))
 						color: chat.model.userColor(section.split(" ")[0], colors.window)
 						textFormat: Text.RichText
+
+						MouseArea {
+							anchors.fill: parent
+							onClicked: chat.model.openUserProfile(section.split(" ")[0])
+							cursorShape: Qt.PointingHandCursor
+						}
 					}
 				}
 			}

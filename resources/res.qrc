@@ -117,6 +117,7 @@
     <qresource prefix="/">
         <file>qml/TimelineView.qml</file>
         <file>qml/Avatar.qml</file>
+        <file>qml/ImageButton.qml</file>
         <file>qml/StatusIndicator.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
         <file>qml/TimelineRow.qml</file>

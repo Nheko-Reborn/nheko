@@ -1,7 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
 
 import com.github.nheko 1.0
@@ -35,62 +34,30 @@ RowLayout {
 		Layout.preferredHeight: 16
 	}
 
-	Button {
+	ImageButton {
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
-		id: replyButton
-		flat: true
 		Layout.preferredHeight: 16
+		id: replyButton
 
+		image: "qrc:/icons/icons/ui/mail-reply.png"
 		ToolTip {
 			visible: replyButton.hovered
 			text: qsTr("Reply")
 			palette: colors
 		}
 
-		// disable background, because we don't want a border on hover
-		background: Item {
-		}
-
-		Image {
-			id: replyButtonImg
-			// Workaround, can't get icon.source working for now...
-			anchors.fill: parent
-			source: "qrc:/icons/icons/ui/mail-reply.png"
-		}
-		ColorOverlay {
-			anchors.fill: replyButtonImg
-			source: replyButtonImg
-			color: replyButton.hovered ? colors.highlight : colors.buttonText
-		}
-
 		onClicked: view.model.replyAction(model.id)
 	}
-	Button {
+	ImageButton {
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
-		id: optionsButton
-		flat: true
 		Layout.preferredHeight: 16
+		id: optionsButton
 
+		image: "qrc:/icons/icons/ui/vertical-ellipsis.png"
 		ToolTip {
 			visible: optionsButton.hovered
 			text: qsTr("Options")
 			palette: colors
-		}
-
-		// disable background, because we don't want a border on hover
-		background: Item {
-		}
-
-		Image {
-			id: optionsButtonImg
-			// Workaround, can't get icon.source working for now...
-			anchors.fill: parent
-			source: "qrc:/icons/icons/ui/vertical-ellipsis.png"
-		}
-		ColorOverlay {
-			anchors.fill: optionsButtonImg
-			source: optionsButtonImg
-			color: optionsButton.hovered ? colors.highlight : colors.buttonText
 		}
 
 		onClicked: contextMenu.open()
