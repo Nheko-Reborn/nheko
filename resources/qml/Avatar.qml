@@ -31,6 +31,11 @@ Rectangle {
 		anchors.fill: parent
 		asynchronous: true
 		fillMode: Image.PreserveAspectCrop
+		mipmap: true
+		smooth: false
+
+		sourceSize.width: avatar.width
+		sourceSize.height: avatar.height
 
 		layer.enabled: true
 		layer.effect: OpacityMask {

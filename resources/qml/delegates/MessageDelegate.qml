@@ -5,8 +5,6 @@ DelegateChooser {
 	//role: "type" //< not supported in our custom implementation, have to use roleValue
 	roleValue: model.type
 
-	width: parent.width
-
 	DelegateChoice {
 		roleValue: MtxEvent.TextMessage
 		TextMessage {}

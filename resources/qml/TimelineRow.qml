@@ -12,7 +12,6 @@ RowLayout {
 	property var view: chat
 
 	anchors.leftMargin: avatarSize + 4
-	anchors.rightMargin: scrollbar.width
 	anchors.left: parent.left
 	anchors.right: parent.right
 

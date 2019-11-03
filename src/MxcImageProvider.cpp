@@ -6,7 +6,7 @@ void
 MxcImageResponse::run()
 {
         if (m_requestedSize.isValid()) {
-                QString fileName = QString("%1_%2x%3")
+                QString fileName = QString("%1_%2x%3_crop")
                                      .arg(m_id)
                                      .arg(m_requestedSize.width())
                                      .arg(m_requestedSize.height());
@@ -23,7 +23,7 @@ MxcImageResponse::run()
                 opts.mxc_url = "mxc://" + m_id.toStdString();
                 opts.width   = m_requestedSize.width() > 0 ? m_requestedSize.width() : -1;
                 opts.height  = m_requestedSize.height() > 0 ? m_requestedSize.height() : -1;
-                opts.method  = "scale";
+                opts.method  = "crop";
                 http::client()->get_thumbnail(
                   opts, [this, fileName](const std::string &res, mtx::http::RequestErr err) {
                           if (err) {
@@ -38,8 +38,6 @@ MxcImageResponse::run()
                           auto data = QByteArray(res.data(), res.size());
                           cache::client()->saveImage(fileName, data);
                           m_image.loadFromData(data);
-                          m_image = m_image.scaled(
-                            m_requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                           m_image.setText("mxc url", "mxc://" + m_id);
 
                           emit finished();

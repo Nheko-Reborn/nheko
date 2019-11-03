@@ -14,7 +14,7 @@ Rectangle {
 	property var colors: currentActivePalette
 	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
-	property int avatarSize: 32
+	property int avatarSize: 40
 
 	color: colors.window
 
@@ -33,6 +33,9 @@ Rectangle {
 
 		visible: timelineManager.timeline != null
 		anchors.fill: parent
+
+		anchors.leftMargin: 4
+		anchors.rightMargin: scrollbar.width
 
 		model: timelineManager.timeline
 
@@ -54,7 +57,7 @@ Rectangle {
 		ScrollBar.vertical: ScrollBar {
 			id: scrollbar
 			anchors.top: parent.top
-			anchors.right: parent.right
+			anchors.left: parent.right
 			anchors.bottom: parent.bottom
 			onPressedChanged: if (!pressed) chat.updatePosition()
 		}
