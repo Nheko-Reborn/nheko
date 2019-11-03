@@ -827,6 +827,7 @@ TimelineModel::replyAction(QString id)
           [](const auto &e) -> std::string { return eventMsgType(e); }, event));
         related.quoted_body =
           boost::apply_visitor([](const auto &e) -> QString { return eventBody(e); }, event);
+        related.room = room_id_;
 
         if (related.quoted_body.isEmpty())
                 return;
