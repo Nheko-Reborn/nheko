@@ -366,7 +366,7 @@ utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
 {
         return QString("<mx-reply><blockquote><a "
                        "href=\"https://matrix.to/#/%1/%2\">In reply "
-                       "to</a>* <a href=\"https://matrix.to/#/%3\">%4</a><br "
+                       "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
                        "/>%5</blockquote></mx-reply>")
                  .arg(related.room,
                       QString::fromStdString(related.related_event),
@@ -382,9 +382,6 @@ utils::getQuoteBody(const RelatedInfo &related)
         using MsgType = mtx::events::MessageType;
 
         switch (related.type) {
-        case MsgType::Text: {
-                return markdownToHtml(related.quoted_body);
-        }
         case MsgType::File: {
                 return QString(QCoreApplication::translate("utils", "sent a file."));
         }

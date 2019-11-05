@@ -13,6 +13,8 @@
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
 
+Q_DECLARE_METATYPE(QModelIndex)
+
 namespace {
 template<class T>
 QString
@@ -80,12 +82,6 @@ eventFormattedBody(const mtx::events::RoomEvent<T> &e)
 {
         auto temp = e.content.formatted_body;
         if (!temp.empty()) {
-                auto pos = temp.find("<mx-reply>");
-                if (pos != std::string::npos)
-                        temp.erase(pos, std::string("<mx-reply>").size());
-                pos = temp.find("</mx-reply>");
-                if (pos != std::string::npos)
-                        temp.erase(pos, std::string("</mx-reply>").size());
                 return QString::fromStdString(temp);
         } else {
                 return QString::fromStdString(e.content.body).toHtmlEscaped().replace("\n", "<br>");
@@ -180,6 +176,21 @@ eventMimeType(const mtx::events::RoomEvent<T> &e)
   -> std::enable_if_t<std::is_same<decltype(e.content.info.mimetype), std::string>::value, QString>
 {
         return QString::fromStdString(e.content.info.mimetype);
+}
+
+template<class T>
+QString
+eventRelatesTo(const mtx::events::Event<T> &)
+{
+        return QString();
+}
+template<class T>
+auto
+eventRelatesTo(const mtx::events::RoomEvent<T> &e) -> std::enable_if_t<
+  std::is_same<decltype(e.content.relates_to.in_reply_to.event_id), std::string>::value,
+  QString>
+{
+        return QString::fromStdString(e.content.relates_to.in_reply_to.event_id);
 }
 
 template<class T>
@@ -383,6 +394,7 @@ TimelineModel::roleNames() const
           {Id, "id"},
           {State, "state"},
           {IsEncrypted, "isEncrypted"},
+          {ReplyTo, "replyTo"},
         };
 }
 int
@@ -450,8 +462,12 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QVariant(utils::replaceEmoji(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventBody(e); }, event)));
         case FormattedBody:
-                return QVariant(utils::replaceEmoji(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventFormattedBody(e); }, event)));
+                return QVariant(
+                  utils::replaceEmoji(
+                    boost::apply_visitor(
+                      [](const auto &e) -> QString { return eventFormattedBody(e); }, event))
+                    .remove("<mx-reply>")
+                    .remove("</mx-reply>"));
         case Url:
                 return QVariant(boost::apply_visitor(
                   [](const auto &e) -> QString { return eventUrl(e); }, event));
@@ -500,6 +516,11 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 auto tempEvent = events[id];
                 return boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                          &tempEvent) != nullptr;
+        }
+        case ReplyTo: {
+                QString evId = boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventRelatesTo(e); }, event);
+                return QVariant(evId);
         }
         default:
                 return QVariant();
@@ -825,8 +846,11 @@ TimelineModel::replyAction(QString id)
           event);
         related.type = mtx::events::getMessageType(boost::apply_visitor(
           [](const auto &e) -> std::string { return eventMsgType(e); }, event));
-        related.quoted_body =
-          boost::apply_visitor([](const auto &e) -> QString { return eventBody(e); }, event);
+        related.quoted_body = boost::apply_visitor(
+          [](const auto &e) -> QString { return eventFormattedBody(e); }, event);
+        related.quoted_body.remove(QRegularExpression(
+          "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
+        nhlog::ui()->debug("after replacement: {}", related.quoted_body.toStdString());
         related.room = room_id_;
 
         if (related.quoted_body.isEmpty())

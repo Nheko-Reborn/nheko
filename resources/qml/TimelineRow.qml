@@ -14,12 +14,23 @@ RowLayout {
 	anchors.left: parent.left
 	anchors.right: parent.right
 
-	implicitHeight: contentItem.childrenRect.height
+	implicitHeight: contentItem.height
 
-	MessageDelegate {
+	Column {
 		Layout.fillWidth: true
 		Layout.alignment: Qt.AlignTop
 		id: contentItem
+
+		//property var replyTo: model.replyTo
+
+		//Text {
+		//	property int idx: timelineManager.timeline.idToIndex(replyTo)
+		//	text: "" + (idx != -1 ? timelineManager.timeline.data(timelineManager.timeline.index(idx, 0), 2) : "nothing")
+		//}
+		MessageDelegate {
+			width: parent.width
+			height: childrenRect.height
+		}
 	}
 
 	StatusIndicator {

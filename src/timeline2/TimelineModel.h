@@ -139,6 +139,7 @@ public:
                 Id,
                 State,
                 IsEncrypted,
+                ReplyTo,
         };
 
         QHash<int, QByteArray> roleNames() const override;
