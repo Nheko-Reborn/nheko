@@ -10,8 +10,8 @@ TextEdit {
 
 	onLinkActivated: {
 		if (/^https:\/\/matrix.to\/#\/(@.*)$/.test(link)) chat.model.openUserProfile(/^https:\/\/matrix.to\/#\/(@.*)$/.exec(link)[1])
-		if (/^https:\/\/matrix.to\/#\/(![^\/]*)$/.test(link)) timelineManager.setHistoryView(/^https:\/\/matrix.to\/#\/(!.*)$/.exec(link)[1])
-		if (/^https:\/\/matrix.to\/#\/(![^\/]*)\/(\$.*)$/.test(link)) {
+		else if (/^https:\/\/matrix.to\/#\/(![^\/]*)$/.test(link)) timelineManager.setHistoryView(/^https:\/\/matrix.to\/#\/(!.*)$/.exec(link)[1])
+		else if (/^https:\/\/matrix.to\/#\/(![^\/]*)\/(\$.*)$/.test(link)) {
 			var match = /^https:\/\/matrix.to\/#\/(![^\/]*)\/(\$.*)$/.exec(link)
 			timelineManager.setHistoryView(match[1])
 			chat.positionViewAtIndex(chat.model.idToIndex(match[2]), ListView.Contain)
