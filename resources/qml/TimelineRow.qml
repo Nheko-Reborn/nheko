@@ -50,7 +50,7 @@ RowLayout {
 		Layout.preferredHeight: 16
 		id: replyButton
 
-		image: "qrc:/icons/icons/ui/mail-reply.png"
+		image: ":/icons/icons/ui/mail-reply.png"
 		ToolTip {
 			visible: replyButton.hovered
 			text: qsTr("Reply")
@@ -64,7 +64,7 @@ RowLayout {
 		Layout.preferredHeight: 16
 		id: optionsButton
 
-		image: "qrc:/icons/icons/ui/vertical-ellipsis.png"
+		image: ":/icons/icons/ui/vertical-ellipsis.png"
 		ToolTip {
 			visible: optionsButton.hovered
 			text: qsTr("Options")

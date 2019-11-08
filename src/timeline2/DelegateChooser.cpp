@@ -119,7 +119,6 @@ DelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
                 chooser.child = dynamic_cast<QQuickItem *>(object());
                 if (chooser.child == nullptr) {
                         nhlog::ui()->error("Delegate has to be derived of Item!");
-                        delete chooser.child;
                         return;
                 }
 

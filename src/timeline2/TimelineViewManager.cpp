@@ -8,6 +8,7 @@
 #include <QStandardPaths>
 
 #include "ChatPage.h"
+#include "ColorImageProvider.h"
 #include "DelegateChooser.h"
 #include "Logging.h"
 #include "MxcImageProvider.h"
@@ -51,6 +52,7 @@ TimelineViewManager::updateColorPalette()
 
 TimelineViewManager::TimelineViewManager(QWidget *parent)
   : imgProvider(new MxcImageProvider())
+  , colorImgProvider(new ColorImageProvider())
 {
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "com.github.nheko",
@@ -61,12 +63,24 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
         qmlRegisterType<DelegateChoice>("com.github.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("com.github.nheko", 1, 0, "DelegateChooser");
 
+#ifdef USE_QUICK_VIEW
         view      = new QQuickView();
         container = QWidget::createWindowContainer(view, parent);
+#else
+        view      = new QQuickWidget(parent);
+        container = view;
+        view->setResizeMode(QQuickWidget::SizeRootObjectToView);
+        container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        connect(view, &QQuickWidget::statusChanged, this, [](QQuickWidget::Status status) {
+                nhlog::ui()->debug("Status changed to {}", status);
+        });
+#endif
         container->setMinimumSize(200, 200);
         view->rootContext()->setContextProperty("timelineManager", this);
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
+        view->engine()->addImageProvider("colorimage", colorImgProvider);
         view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
 
         connect(dynamic_cast<ChatPage *>(parent),

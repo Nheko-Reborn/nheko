@@ -844,7 +844,7 @@ TimelineModel::replyAction(QString id)
                   return related_;
           },
           event);
-        related.type = mtx::events::getMessageType(boost::apply_visitor(
+        related.type        = mtx::events::getMessageType(boost::apply_visitor(
           [](const auto &e) -> std::string { return eventMsgType(e); }, event));
         related.quoted_body = boost::apply_visitor(
           [](const auto &e) -> QString { return eventFormattedBody(e); }, event);

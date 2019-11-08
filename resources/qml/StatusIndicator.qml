@@ -1,6 +1,5 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.1
-import QtGraphicalEffects 1.0
 import com.github.nheko 1.0
 
 Rectangle {
@@ -28,18 +27,12 @@ Rectangle {
 		// Workaround, can't get icon.source working for now...
 		anchors.fill: parent
 		source: switch (indicator.state) {
-			case MtxEvent.Failed: return "qrc:/icons/icons/ui/remove-symbol.png"
-			case MtxEvent.Sent: return "qrc:/icons/icons/ui/clock.png"
-			case MtxEvent.Received: return "qrc:/icons/icons/ui/checkmark.png"
-			case MtxEvent.Read: return "qrc:/icons/icons/ui/double-tick-indicator.png"
+			case MtxEvent.Failed: return "image://colorimage/:/icons/icons/ui/remove-symbol.png?" + colors.buttonText
+			case MtxEvent.Sent: return "image://colorimage/:/icons/icons/ui/clock.png?" + colors.buttonText
+			case MtxEvent.Received: return "image://colorimage/:/icons/icons/ui/checkmark.png?" + colors.buttonText
+			case MtxEvent.Read: return "image://colorimage/:/icons/icons/ui/double-tick-indicator.png?" + colors.buttonText
 			default: return ""
 		}
-	}
-	ColorOverlay {
-		anchors.fill: stateImg
-		source: stateImg
-		color: colors.buttonText
-		visible: stateImg.source != ""
 	}
 }
 

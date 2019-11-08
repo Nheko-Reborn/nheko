@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QQuickView>
+#include <QQuickWidget>
 #include <QSharedPointer>
 #include <QWidget>
 
@@ -16,6 +17,7 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 class MxcImageProvider;
+class ColorImageProvider;
 
 class TimelineViewManager : public QObject
 {
@@ -99,10 +101,15 @@ public slots:
                                uint64_t dsize);
 
 private:
+#ifdef USE_QUICK_VIEW
         QQuickView *view;
+#else
+        QQuickWidget *view;
+#endif
         QWidget *container;
         TimelineModel *timeline_ = nullptr;
         MxcImageProvider *imgProvider;
+        ColorImageProvider *colorImgProvider;
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
 };

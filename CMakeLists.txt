@@ -69,7 +69,7 @@ include(LMDB)
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
 find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
 
@@ -234,6 +234,7 @@ set(SRC_FILES
     src/MainWindow.cpp
     src/MatrixClient.cpp
     src/MxcImageProvider.cpp
+    src/ColorImageProvider.cpp
     src/QuickSwitcher.cpp
     src/Olm.cpp
     src/RegisterPage.cpp
@@ -414,6 +415,7 @@ set(COMMON_LIBS
     Qt5::Multimedia
     Qt5::Qml
     Qt5::QuickControls2
+    Qt5::QuickWidgets
     nlohmann_json::nlohmann_json)
 
 if(APPVEYOR_BUILD)
