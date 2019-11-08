@@ -14,12 +14,11 @@ RowLayout {
 	anchors.left: parent.left
 	anchors.right: parent.right
 
-	implicitHeight: contentItem.height
+	height: Math.max(contentItem.height, 16)
 
 	Column {
 		Layout.fillWidth: true
 		Layout.alignment: Qt.AlignTop
-		id: contentItem
 
 		//property var replyTo: model.replyTo
 
@@ -28,6 +27,8 @@ RowLayout {
 		//	text: "" + (idx != -1 ? timelineManager.timeline.data(timelineManager.timeline.index(idx, 0), 2) : "nothing")
 		//}
 		MessageDelegate {
+			id: contentItem
+
 			width: parent.width
 			height: childrenRect.height
 		}
