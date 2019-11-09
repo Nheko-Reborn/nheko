@@ -552,17 +552,40 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         updateLastMessage();
 }
 
+template<typename T>
+auto
+isMessage(const mtx::events::RoomEvent<T> &e)
+  -> std::enable_if_t<std::is_same<decltype(e.content.msgtype), std::string>::value, bool>
+{
+        return true;
+}
+
+template<typename T>
+auto
+isMessage(const mtx::events::Event<T> &)
+{
+        return false;
+}
+
 void
 TimelineModel::updateLastMessage()
 {
-        auto event = events.value(eventOrder.back());
-        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
-                event = decryptEvent(*e).event;
-        }
+        for (auto it = eventOrder.rbegin(); it != eventOrder.rend(); ++it) {
+                auto event = events.value(*it);
+                if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                      &event)) {
+                        event = decryptEvent(*e).event;
+                }
 
-        auto description = utils::getMessageDescription(
-          event, QString::fromStdString(http::client()->user_id().to_string()), room_id_);
-        emit manager_->updateRoomsLastMessage(room_id_, description);
+                if (!boost::apply_visitor([](const auto &e) -> bool { return isMessage(e); },
+                                          event))
+                        continue;
+
+                auto description = utils::getMessageDescription(
+                  event, QString::fromStdString(http::client()->user_id().to_string()), room_id_);
+                emit manager_->updateRoomsLastMessage(room_id_, description);
+                return;
+        }
 }
 
 std::vector<QString>
