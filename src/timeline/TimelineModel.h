@@ -173,6 +173,8 @@ public slots:
 private slots:
         // Add old events at the top of the timeline.
         void addBackwardsEvents(const mtx::responses::Messages &msgs);
+        void processOnePendingMessage();
+        void addPendingMessage(mtx::events::collections::TimelineEvents event);
 
 signals:
         void oldMessagesRetrieved(const mtx::responses::Messages &res);
@@ -181,6 +183,8 @@ signals:
         void currentIndexChanged(int index);
         void redactionFailed(QString id);
         void eventRedacted(QString id);
+        void nextPendingMessage();
+        void newMessageToSend(mtx::events::collections::TimelineEvents event);
 
 private:
         DecryptionResult decryptEvent(
@@ -198,7 +202,8 @@ private:
         void readEvent(const std::string &id);
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
-        QSet<QString> pending, failed, read;
+        QSet<QString> failed, read;
+        QList<QString> pending;
         std::vector<QString> eventOrder;
 
         QString room_id_;
@@ -206,11 +211,14 @@ private:
 
         bool isInitialSync        = true;
         bool paginationInProgress = false;
+        bool isProcessingPending  = false;
 
         QHash<QString, QColor> userColors;
         QString currentId;
 
         TimelineViewManager *manager_;
+
+        friend struct SendMessageVisitor;
 };
 
 template<class T>
@@ -224,35 +232,6 @@ TimelineModel::sendMessage(const T &msg)
         msgCopy.event_id                  = txn_id;
         msgCopy.sender                    = http::client()->user_id().to_string();
         msgCopy.origin_server_ts          = QDateTime::currentMSecsSinceEpoch();
-        internalAddEvents({msgCopy});
 
-        QString txn_id_qstr = QString::fromStdString(txn_id);
-        beginInsertRows(QModelIndex(),
-                        static_cast<int>(this->eventOrder.size()),
-                        static_cast<int>(this->eventOrder.size()));
-        pending.insert(txn_id_qstr);
-        this->eventOrder.insert(this->eventOrder.end(), txn_id_qstr);
-        endInsertRows();
-        updateLastMessage();
-
-        if (cache::client()->isRoomEncrypted(room_id_.toStdString()))
-                sendEncryptedMessage(txn_id, nlohmann::json(msg));
-        else
-                http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
-                  room_id_.toStdString(),
-                  txn_id,
-                  msg,
-                  [this, txn_id, txn_id_qstr](const mtx::responses::EventId &res,
-                                              mtx::http::RequestErr err) {
-                          if (err) {
-                                  const int status_code = static_cast<int>(err->status_code);
-                                  nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                                     txn_id,
-                                                     err->matrix_error.error,
-                                                     status_code);
-                                  emit messageFailed(txn_id_qstr);
-                          }
-                          emit messageSent(txn_id_qstr,
-                                           QString::fromStdString(res.event_id.to_string()));
-                  });
+        emit newMessageToSend(msgCopy);
 }

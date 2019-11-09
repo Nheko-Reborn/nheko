@@ -332,16 +332,18 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(
           this, &TimelineModel::oldMessagesRetrieved, this, &TimelineModel::addBackwardsEvents);
         connect(this, &TimelineModel::messageFailed, this, [this](QString txn_id) {
-                pending.remove(txn_id);
+                pending.removeOne(txn_id);
                 failed.insert(txn_id);
                 int idx = idToIndex(txn_id);
                 if (idx < 0) {
                         nhlog::ui()->warn("Failed index out of range");
                         return;
                 }
+                isProcessingPending = false;
                 emit dataChanged(index(idx, 0), index(idx, 0));
         });
         connect(this, &TimelineModel::messageSent, this, [this](QString txn_id, QString event_id) {
+                pending.removeOne(txn_id);
                 int idx = idToIndex(txn_id);
                 if (idx < 0) {
                         nhlog::ui()->warn("Sent index out of range");
@@ -365,11 +367,19 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 // ask to be notified for read receipts
                 cache::client()->addPendingReceipt(room_id_, event_id);
 
+                isProcessingPending = false;
                 emit dataChanged(index(idx, 0), index(idx, 0));
+
+                if (pending.size() > 0)
+                        emit nextPendingMessage();
         });
         connect(this, &TimelineModel::redactionFailed, this, [](const QString &msg) {
                 emit ChatPage::instance()->showNotification(msg);
         });
+
+        connect(
+          this, &TimelineModel::nextPendingMessage, this, &TimelineModel::processOnePendingMessage);
+        connect(this, &TimelineModel::newMessageToSend, this, &TimelineModel::addPendingMessage);
 }
 
 QHash<int, QByteArray>
@@ -1035,6 +1045,7 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
                           } catch (const lmdb::error &e) {
                                   nhlog::db()->critical(
                                     "failed to save megolm outbound session: {}", e.what());
+                                  emit messageFailed(QString::fromStdString(txn_id));
                           }
                   });
 
@@ -1044,13 +1055,14 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
 
                 http::client()->query_keys(
                   req,
-                  [keeper = std::move(keeper), megolm_payload, this](
+                  [keeper = std::move(keeper), megolm_payload, txn_id, this](
                     const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("failed to query device keys: {} {}",
                                                      err->matrix_error.error,
                                                      static_cast<int>(err->status_code));
                                   // TODO: Mark the event as failed. Communicate with the UI.
+                                  emit messageFailed(QString::fromStdString(txn_id));
                                   return;
                           }
 
@@ -1150,9 +1162,11 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical(
                   "failed to open outbound megolm session ({}): {}", room_id, e.what());
+                emit messageFailed(QString::fromStdString(txn_id));
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to open outbound megolm session ({}): {}", room_id, e.what());
+                emit messageFailed(QString::fromStdString(txn_id));
         }
 }
 
@@ -1240,4 +1254,83 @@ TimelineModel::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
 
                   (void)keeper;
           });
+}
+
+struct SendMessageVisitor
+{
+        SendMessageVisitor(const QString &txn_id, TimelineModel *model)
+          : txn_id_qstr_(txn_id)
+          , model_(model)
+        {}
+
+        template<typename T>
+        void operator()(const mtx::events::Event<T> &)
+        {}
+
+        template<typename T,
+                 std::enable_if_t<std::is_same<decltype(T::msgtype), std::string>::value, int> = 0>
+        void operator()(const mtx::events::RoomEvent<T> &msg)
+
+        {
+                if (cache::client()->isRoomEncrypted(model_->room_id_.toStdString())) {
+                        model_->sendEncryptedMessage(txn_id_qstr_.toStdString(),
+                                                     nlohmann::json(msg.content));
+                } else {
+                        QString txn_id_qstr  = txn_id_qstr_;
+                        TimelineModel *model = model_;
+                        http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
+                          model->room_id_.toStdString(),
+                          txn_id_qstr.toStdString(),
+                          msg.content,
+                          [txn_id_qstr, model](const mtx::responses::EventId &res,
+                                               mtx::http::RequestErr err) {
+                                  if (err) {
+                                          const int status_code =
+                                            static_cast<int>(err->status_code);
+                                          nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                                             txn_id_qstr.toStdString(),
+                                                             err->matrix_error.error,
+                                                             status_code);
+                                          emit model->messageFailed(txn_id_qstr);
+                                  }
+                                  emit model->messageSent(
+                                    txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
+                          });
+                }
+        }
+
+        QString txn_id_qstr_;
+        TimelineModel *model_;
+};
+
+void
+TimelineModel::processOnePendingMessage()
+{
+        if (isProcessingPending || pending.isEmpty())
+                return;
+
+        isProcessingPending = true;
+
+        QString txn_id_qstr = pending.first();
+
+        boost::apply_visitor(SendMessageVisitor{txn_id_qstr, this}, events.value(txn_id_qstr));
+}
+
+void
+TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
+{
+        internalAddEvents({event});
+
+        QString txn_id_qstr =
+          boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, event);
+        beginInsertRows(QModelIndex(),
+                        static_cast<int>(this->eventOrder.size()),
+                        static_cast<int>(this->eventOrder.size()));
+        pending.push_back(txn_id_qstr);
+        this->eventOrder.insert(this->eventOrder.end(), txn_id_qstr);
+        endInsertRows();
+        updateLastMessage();
+
+        if (!isProcessingPending)
+                emit nextPendingMessage();
 }

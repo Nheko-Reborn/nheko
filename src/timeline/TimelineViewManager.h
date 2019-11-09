@@ -12,10 +12,6 @@
 #include "TimelineModel.h"
 #include "Utils.h"
 
-// temporary for stubs
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-
 class MxcImageProvider;
 class ColorImageProvider;
 
@@ -25,6 +21,8 @@ class TimelineViewManager : public QObject
 
         Q_PROPERTY(
           TimelineModel *timeline MEMBER timeline_ READ activeTimeline NOTIFY activeTimelineChanged)
+        Q_PROPERTY(
+          bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
 
 public:
         TimelineViewManager(QWidget *parent = 0);
@@ -36,6 +34,7 @@ public:
         void clearAll() { models.clear(); }
 
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
+        Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         void openImageOverlay(QString mxcUrl,
                               QString originalFilename,
                               QString mimeType,
@@ -66,6 +65,7 @@ signals:
         void clearRoomMessageCount(QString roomid);
         void updateRoomsLastMessage(QString roomid, const DescInfo &info);
         void activeTimelineChanged(TimelineModel *timeline);
+        void initialSyncChanged(bool isInitialSync);
         void mediaCached(QString mxcUrl, QString cacheUrl);
 
 public slots:
@@ -107,11 +107,11 @@ private:
         QQuickWidget *view;
 #endif
         QWidget *container;
-        TimelineModel *timeline_ = nullptr;
+
         MxcImageProvider *imgProvider;
         ColorImageProvider *colorImgProvider;
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
+        TimelineModel *timeline_ = nullptr;
+        bool isInitialSync_      = true;
 };
-
-#pragma GCC diagnostic pop

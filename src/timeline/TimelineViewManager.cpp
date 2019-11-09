@@ -97,6 +97,9 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
                 addRoom(QString::fromStdString(it->first));
                 models.value(QString::fromStdString(it->first))->addEvents(it->second.timeline);
         }
+
+        this->isInitialSync_ = false;
+        emit initialSyncChanged(false);
 }
 
 void

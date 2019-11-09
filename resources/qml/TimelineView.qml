@@ -19,11 +19,18 @@ Item {
 		color: colors.window
 
 		Text {
-			visible: !timelineManager.timeline
+			visible: !timelineManager.timeline && !timelineManager.isInitialSync
 			anchors.centerIn: parent
 			text: qsTr("No room open")
 			font.pointSize: 24
 			color: colors.windowText
+		}
+
+		BusyIndicator {
+			anchors.centerIn: parent
+			running: timelineManager.isInitialSync
+			height: 200
+			width: 200
 		}
 
 		ListView {
@@ -47,10 +54,6 @@ Item {
 					} else {
 						positionViewAtIndex(model.currentIndex, ListView.End)
 					}
-
-					//if (contentHeight < height) {
-					//	model.fetchHistory();
-					//}
 				}
 			}
 
