@@ -44,7 +44,7 @@
 
 #include "dialogs/ReadReceipts.h"
 #include "popups/UserMentions.h"
-#include "timeline2/TimelineViewManager.h"
+#include "timeline/TimelineViewManager.h"
 
 // TODO: Needs to be updated with an actual secret.
 static const std::string STORAGE_SECRET_KEY("secret");

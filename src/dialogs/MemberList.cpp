@@ -1,4 +1,5 @@
 #include <QAbstractSlider>
+#include <QLabel>
 #include <QListWidgetItem>
 #include <QPainter>
 #include <QPushButton>

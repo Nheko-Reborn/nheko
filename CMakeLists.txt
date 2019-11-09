@@ -192,16 +192,9 @@ set(SRC_FILES
     src/emoji/Provider.cpp
 
     # Timeline
-    src/timeline2/TimelineViewManager.cpp
-    src/timeline2/TimelineModel.cpp
-    src/timeline2/DelegateChooser.cpp
-    #src/timeline/TimelineViewManager.cpp
-    #src/timeline/TimelineItem.cpp
-    #src/timeline/TimelineView.cpp
-    #src/timeline/widgets/AudioItem.cpp
-    #src/timeline/widgets/FileItem.cpp
-    #src/timeline/widgets/ImageItem.cpp
-    #src/timeline/widgets/VideoItem.cpp
+    src/timeline/TimelineViewManager.cpp
+    src/timeline/TimelineModel.cpp
+    src/timeline/DelegateChooser.cpp
 
     # UI components
     src/ui/Avatar.cpp
@@ -339,16 +332,9 @@ qt5_wrap_cpp(MOC_HEADERS
     src/emoji/PickButton.h
 
     # Timeline
-    src/timeline2/TimelineViewManager.h
-    src/timeline2/TimelineModel.h
-    src/timeline2/DelegateChooser.h
-    #src/timeline/TimelineItem.h
-    #src/timeline/TimelineView.h
-    #src/timeline/TimelineViewManager.h
-    #src/timeline/widgets/AudioItem.h
-    #src/timeline/widgets/FileItem.h
-    #src/timeline/widgets/ImageItem.h
-    #src/timeline/widgets/VideoItem.h
+    src/timeline/TimelineViewManager.h
+    src/timeline/TimelineModel.h
+    src/timeline/DelegateChooser.h
 
     # UI components
     src/ui/Avatar.h

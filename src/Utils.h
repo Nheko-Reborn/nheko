@@ -4,10 +4,6 @@
 
 #include "Cache.h"
 #include "RoomInfoListItem.h"
-#include "timeline/widgets/AudioItem.h"
-#include "timeline/widgets/FileItem.h"
-#include "timeline/widgets/ImageItem.h"
-#include "timeline/widgets/VideoItem.h"
 
 #include <QCoreApplication>
 #include <QDateTime>
@@ -94,7 +90,7 @@ messageDescription(const QString &username = "",
         using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
         using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
-        if (std::is_same<T, AudioItem>::value || std::is_same<T, Audio>::value) {
+        if (std::is_same<T, Audio>::value) {
                 if (isLocal)
                         return QCoreApplication::translate("message-description sent:",
                                                            "You sent an audio clip");
@@ -102,7 +98,7 @@ messageDescription(const QString &username = "",
                         return QCoreApplication::translate("message-description sent:",
                                                            "%1 sent an audio clip")
                           .arg(username);
-        } else if (std::is_same<T, ImageItem>::value || std::is_same<T, Image>::value) {
+        } else if (std::is_same<T, Image>::value) {
                 if (isLocal)
                         return QCoreApplication::translate("message-description sent:",
                                                            "You sent an image");
@@ -110,7 +106,7 @@ messageDescription(const QString &username = "",
                         return QCoreApplication::translate("message-description sent:",
                                                            "%1 sent an image")
                           .arg(username);
-        } else if (std::is_same<T, FileItem>::value || std::is_same<T, File>::value) {
+        } else if (std::is_same<T, File>::value) {
                 if (isLocal)
                         return QCoreApplication::translate("message-description sent:",
                                                            "You sent a file");
@@ -118,7 +114,7 @@ messageDescription(const QString &username = "",
                         return QCoreApplication::translate("message-description sent:",
                                                            "%1 sent a file")
                           .arg(username);
-        } else if (std::is_same<T, VideoItem>::value || std::is_same<T, Video>::value) {
+        } else if (std::is_same<T, Video>::value) {
                 if (isLocal)
                         return QCoreApplication::translate("message-description sent:",
                                                            "You sent a video");
@@ -126,7 +122,7 @@ messageDescription(const QString &username = "",
                         return QCoreApplication::translate("message-description sent:",
                                                            "%1 sent a video")
                           .arg(username);
-        } else if (std::is_same<T, StickerItem>::value || std::is_same<T, Sticker>::value) {
+        } else if (std::is_same<T, Sticker>::value) {
                 if (isLocal)
                         return QCoreApplication::translate("message-description sent:",
                                                            "You sent a sticker");
