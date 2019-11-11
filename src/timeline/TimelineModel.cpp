@@ -869,7 +869,11 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
 void
 TimelineModel::replyAction(QString id)
 {
-        auto event          = events.value(id);
+        auto event = events.value(id);
+        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+                event = decryptEvent(*e).event;
+        }
+
         RelatedInfo related = boost::apply_visitor(
           [](const auto &ev) -> RelatedInfo {
                   RelatedInfo related_   = {};
