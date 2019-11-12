@@ -200,7 +200,7 @@ TimelineViewManager::saveMedia(QString mxcUrl,
                           if (!file.open(QIODevice::WriteOnly))
                                   return;
 
-                          file.write(QByteArray(data.data(), data.size()));
+                          file.write(QByteArray(data.data(), (int)data.size()));
                           file.close();
                   } catch (const std::exception &e) {
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());

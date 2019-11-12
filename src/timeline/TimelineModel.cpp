@@ -438,16 +438,17 @@ TimelineModel::data(const QModelIndex &index, int role) const
                   boost::apply_visitor([](const auto &e) -> QString { return senderId(e); }, event);
 
                 for (int r = index.row() - 1; r > 0; r--) {
+                        auto tempEv        = events.value(eventOrder[r]);
                         QDateTime prevDate = boost::apply_visitor(
                           [](const auto &e) -> QDateTime { return eventTimestamp(e); },
-                          events.value(eventOrder[r]));
+                          tempEv);
                         prevDate.setTime(QTime());
                         if (prevDate != date)
                                 return QString("%2 %1").arg(date.toMSecsSinceEpoch()).arg(userId);
 
                         QString prevUserId =
                           boost::apply_visitor([](const auto &e) -> QString { return senderId(e); },
-                                               events.value(eventOrder[r]));
+                                               tempEv);
                         if (userId != prevUserId)
                                 break;
                 }
@@ -1313,7 +1314,8 @@ TimelineModel::processOnePendingMessage()
 
         QString txn_id_qstr = pending.first();
 
-        boost::apply_visitor(SendMessageVisitor{txn_id_qstr, this}, events.value(txn_id_qstr));
+        auto event = events.value(txn_id_qstr);
+        boost::apply_visitor(SendMessageVisitor{txn_id_qstr, this}, event);
 }
 
 void
