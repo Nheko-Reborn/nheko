@@ -440,15 +440,13 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 for (int r = index.row() - 1; r > 0; r--) {
                         auto tempEv        = events.value(eventOrder[r]);
                         QDateTime prevDate = boost::apply_visitor(
-                          [](const auto &e) -> QDateTime { return eventTimestamp(e); },
-                          tempEv);
+                          [](const auto &e) -> QDateTime { return eventTimestamp(e); }, tempEv);
                         prevDate.setTime(QTime());
                         if (prevDate != date)
                                 return QString("%2 %1").arg(date.toMSecsSinceEpoch()).arg(userId);
 
-                        QString prevUserId =
-                          boost::apply_visitor([](const auto &e) -> QString { return senderId(e); },
-                                               tempEv);
+                        QString prevUserId = boost::apply_visitor(
+                          [](const auto &e) -> QString { return senderId(e); }, tempEv);
                         if (userId != prevUserId)
                                 break;
                 }
