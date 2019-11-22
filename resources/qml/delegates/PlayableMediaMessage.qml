@@ -20,7 +20,7 @@ Rectangle {
 		Rectangle {
 			id: videoContainer
 			visible: model.type == MtxEvent.VideoMessage
-			width: Math.min(parent.width, model.width)
+			width: Math.min(parent.width, model.width ? model.width : 400) // some media has 0 as size...
 			height: width*model.proportionalHeight
 			Image {
 				anchors.fill: parent

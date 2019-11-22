@@ -79,7 +79,7 @@ Item {
 				}
 			}
 
-			onAtYBeginningChanged: if (atYBeginning) model.fetchHistory()
+			onAtYBeginningChanged: if (atYBeginning) { chat.model.currentIndex = 0; chat.currentIndex = 0; model.fetchHistory(); }
 
 			function updatePosition() {
 				for (var y = chat.contentY + chat.height; y > chat.height; y -= 9) {

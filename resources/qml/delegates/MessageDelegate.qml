@@ -39,7 +39,15 @@ DelegateChooser {
 	}
 	DelegateChoice {
 		roleValue: MtxEvent.Redacted
-		Redacted {}
+		Pill {
+			text: qsTr("redacted")
+		}
+	}
+	DelegateChoice {
+		roleValue: MtxEvent.Encryption
+		Pill {
+			text: qsTr("Encryption enabled")
+		}
 	}
 	DelegateChoice {
 		Placeholder {}

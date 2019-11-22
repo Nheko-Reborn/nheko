@@ -2,7 +2,6 @@ import QtQuick 2.5
 import QtQuick.Controls 2.1
 
 Label {
-	text: qsTr("redacted")
 	color: inactiveColors.text
 	horizontalAlignment: Text.AlignHCenter
 

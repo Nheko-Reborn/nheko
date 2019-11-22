@@ -320,7 +320,10 @@ eventPropHeight(const mtx::events::RoomEvent<T> &e)
         auto w = eventWidth(e);
         if (w == 0)
                 w = 1;
-        return eventHeight(e) / (double)w;
+
+        double prop = eventHeight(e) / (double)w;
+
+        return prop > 0 ? prop : 1.;
 }
 }
 
