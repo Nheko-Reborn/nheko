@@ -685,7 +685,8 @@ TimelineModel::setCurrentIndex(int index)
         currentId     = indexToId(index);
         emit currentIndexChanged(index);
 
-        if (oldIndex < index && !pending.contains(currentId)) {
+        if (oldIndex < index && !pending.contains(currentId) &&
+            ChatPage::instance()->isActiveWindow()) {
                 readEvent(currentId.toStdString());
         }
 }
