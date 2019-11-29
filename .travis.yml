@@ -15,7 +15,8 @@ matrix:
     include:
         - os: osx
           compiler: clang
-          osx_image: xcode9.2
+          # Use the default osx image, because that one is actually tested to work with homebrew and probably the oldest supported version
+          #          osx_image: xcode9
           env:
               - DEPLOYMENT=1
               - USE_BUNDLED_BOOST=0
@@ -42,8 +43,8 @@ matrix:
           env:
               - CXX_COMPILER=g++-8
               - C_COMPILER=gcc-8
-              - QT_VERSION=571
-              - QT_PKG=57
+              - QT_VERSION=58
+              - QT_PKG=58
               - USE_BUNDLED_BOOST=1
               - USE_BUNDLED_CMARK=1
               - USE_BUNDLED_JSON=1

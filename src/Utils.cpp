@@ -40,9 +40,8 @@ utils::replaceEmoji(const QString &body)
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
                 if (code > 9000)
-                        fmtBody +=
-                          QString("<span style=\"font-family: " + userFontFamily + ";\">") +
-                          QString::fromUcs4(&code, 1) + "</span>";
+                        fmtBody += QString("<font face=\"" + userFontFamily + "\">") +
+                                   QString::fromUcs4(&code, 1) + "</font>";
                 else
                         fmtBody += QString::fromUcs4(&code, 1);
         }
@@ -147,11 +146,6 @@ utils::getMessageDescription(const TimelineEvent &event,
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
                 DescInfo info;
-                if (sender == localUser)
-                        info.username = QCoreApplication::translate("utils", "You");
-                else
-                        info.username = username;
-
                 info.userid    = sender;
                 info.body      = QString(" %1").arg(messageDescription<Encrypted>());
                 info.timestamp = utils::descriptiveTime(ts);
@@ -324,19 +318,29 @@ utils::linkifyMessage(const QString &body)
         return doc;
 }
 
-QByteArray escapeRawHtml(const QByteArray &data) {
-      QByteArray buffer;
-      const size_t length = data.size();
-      buffer.reserve(length);
-      for(size_t pos = 0; pos != length; ++pos) {
-            switch(data.at(pos)) {
-                  case '&':  buffer.append("&amp;");      break;
-                  case '<':  buffer.append("&lt;");       break;
-                  case '>':  buffer.append("&gt;");       break;
-                  default:   buffer.append(data.at(pos)); break;
-            }
-      }
-     return buffer;
+QByteArray
+escapeRawHtml(const QByteArray &data)
+{
+        QByteArray buffer;
+        const size_t length = data.size();
+        buffer.reserve(length);
+        for (size_t pos = 0; pos != length; ++pos) {
+                switch (data.at(pos)) {
+                case '&':
+                        buffer.append("&amp;");
+                        break;
+                case '<':
+                        buffer.append("&lt;");
+                        break;
+                case '>':
+                        buffer.append("&gt;");
+                        break;
+                default:
+                        buffer.append(data.at(pos));
+                        break;
+                }
+        }
+        return buffer;
 }
 
 QString
@@ -362,7 +366,7 @@ utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
 {
         return QString("<mx-reply><blockquote><a "
                        "href=\"https://matrix.to/#/%1/%2\">In reply "
-                       "to</a>* <a href=\"https://matrix.to/#/%3\">%4</a><br "
+                       "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
                        "/>%5</blockquote></mx-reply>")
                  .arg(related.room,
                       QString::fromStdString(related.related_event),
@@ -378,9 +382,6 @@ utils::getQuoteBody(const RelatedInfo &related)
         using MsgType = mtx::events::MessageType;
 
         switch (related.type) {
-        case MsgType::Text: {
-                return markdownToHtml(related.quoted_body);
-        }
         case MsgType::File: {
                 return QString(QCoreApplication::translate("utils", "sent a file."));
         }

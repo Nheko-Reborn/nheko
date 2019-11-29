@@ -2,14 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fi">
 <context>
-    <name>AudioItem</name>
-    <message>
-        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+118"/>
-        <source>Save File</source>
-        <translation>Tallenna tiedosto</translation>
-    </message>
-</context>
-<context>
     <name>ChatPage</name>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+330"/>
@@ -32,7 +24,7 @@
         <translation>Videon lähettäminen epäonnistui. Ole hyvä ja yritä uudelleen.</translation>
     </message>
     <message>
-        <location line="+380"/>
+        <location line="+393"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLM-tilin palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
@@ -42,18 +34,18 @@
         <translation>Tallennettujen tietojen palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
     <message>
-        <location line="+198"/>
+        <location line="+181"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Salausavainten lähetys epäonnistui. Palvelimen vastaus: %1 %2. Ole hyvä ja yritä uudelleen myöhemmin.</translation>
     </message>
     <message>
         <location line="+51"/>
-        <location line="+153"/>
+        <location line="+155"/>
         <source>Please try to login again: %1</source>
         <translation>Ole hyvä ja yritä kirjautua sisään uudelleen: %1</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-47"/>
         <source>Room creation failed: %1</source>
         <translation>Huoneen luominen epäonnistui: %1</translation>
     </message>
@@ -116,19 +108,11 @@
     </message>
 </context>
 <context>
-    <name>FileItem</name>
+    <name>EncryptionIndicator</name>
     <message>
-        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+107"/>
-        <source>Save File</source>
-        <translation>Tallenna tiedosto</translation>
-    </message>
-</context>
-<context>
-    <name>ImageItem</name>
-    <message>
-        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+241"/>
-        <source>Save image</source>
-        <translation>Tallenna kuva</translation>
+        <location filename="../qml/EncryptionIndicator.qml" line="+11"/>
+        <source>Encrypted</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -200,7 +184,7 @@
 <context>
     <name>MemberList</name>
     <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+96"/>
+        <location filename="../../src/dialogs/MemberList.cpp" line="+89"/>
         <source>Room members</source>
         <translation>Huoneen jäsenet</translation>
     </message>
@@ -211,11 +195,27 @@
     </message>
 </context>
 <context>
+    <name>Placeholder</name>
+    <message>
+        <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
+        <source>unimplemented event: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QuickSwitcher</name>
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
         <source>Search for a room...</source>
         <translation>Etsi huonetta…</translation>
+    </message>
+</context>
+<context>
+    <name>Redacted</name>
+    <message>
+        <location filename="../qml/delegates/Redacted.qml" line="+5"/>
+        <source>redacted</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -277,7 +277,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2205"/>
+        <location filename="../../src/Cache.cpp" line="+2307"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -285,12 +285,12 @@
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+93"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+95"/>
         <source>Leave room</source>
         <translation>Poistu huoneesta</translation>
     </message>
     <message>
-        <location line="+181"/>
+        <location line="+161"/>
         <source>Accept</source>
         <translation>Hyväksy</translation>
     </message>
@@ -331,24 +331,24 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+107"/>
-        <source>Encrypted</source>
-        <translation>Salattu</translation>
+        <location filename="../qml/StatusIndicator.qml" line="+13"/>
+        <source>Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Delivered</source>
-        <translation>Toimitettu</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Seen</source>
-        <translation>Luettu</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Sent</source>
-        <translation>Lähetetty</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Read</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -391,65 +391,116 @@
     </message>
 </context>
 <context>
-    <name>TimelineItem</name>
+    <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+85"/>
-        <source>Message redaction failed: %1</source>
-        <translation>Viestin poisto epäonnistui: %1</translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>Reply</source>
-        <translation>Vastaa</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Options</source>
-        <translation>Asetukset</translation>
-    </message>
-</context>
-<context>
-    <name>TimelineView</name>
-    <message>
-        <location filename="../../src/timeline/TimelineView.cpp" line="+245"/>
-        <source>Encryption is enabled</source>
-        <translation>Salaus on käytössä</translation>
-    </message>
-    <message>
-        <location line="+65"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+780"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation>-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
+        <translation type="unfinished">-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation>-- Virhe purkaessa salausta (tietokannan kanssa kommunikointi epäonnistui) --</translation>
+        <translation type="unfinished">-- Virhe purkaessa salausta (tietokannan kanssa kommunikointi epäonnistui) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation>-- Virhe purkaessa salausta (megolm-avaimien hakeminen tietokannasta epäonnistui) --</translation>
+        <translation type="unfinished">-- Virhe purkaessa salausta (megolm-avaimien hakeminen tietokannasta epäonnistui) --</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
-        <translation>-- Virhe purkaessa salausta (%1) --</translation>
+        <translation type="unfinished">-- Virhe purkaessa salausta (%1) --</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+25"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation>-- Salattu viesti (tuntematon viestityyppi) --</translation>
+        <translation type="unfinished">-- Salattu viesti (tuntematon viestityyppi) --</translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>Message redaction failed: %1</source>
+        <translation type="unfinished">Viestin poisto epäonnistui: %1</translation>
+    </message>
+</context>
+<context>
+    <name>TimelineRow</name>
+    <message>
+        <location filename="../qml/TimelineRow.qml" line="+57"/>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Read receipts</source>
+        <translation type="unfinished">Lukukuittaukset</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>View raw message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Redact message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimelineView</name>
+    <message>
+        <location filename="../qml/TimelineView.qml" line="+24"/>
+        <source>No room open</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimelineViewManager</name>
+    <message>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+161"/>
+        <source>Save image</source>
+        <translation type="unfinished">Tallenna kuva</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TopRoomBar</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+79"/>
+        <location filename="../../src/TopRoomBar.cpp" line="+78"/>
         <source>Room options</source>
         <translation>Huonevaihtoehdot</translation>
     </message>
@@ -515,7 +566,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+166"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+171"/>
         <source>Minimize to tray</source>
         <translation>Pienennä ilmoitusalueelle</translation>
     </message>
@@ -528,6 +579,11 @@
         <location line="+11"/>
         <source>Group&apos;s sidebar</source>
         <translation>Ryhmäsivupalkki</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Circular Avatars</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
@@ -605,7 +661,7 @@
         <translation>YLEISET ASETUKSET</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+161"/>
         <source>Open Sessions File</source>
         <translation>Avaa Istuntoavaintiedosto</translation>
     </message>
@@ -825,7 +881,7 @@ Median koko: %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+121"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+117"/>
         <source>Read receipts</source>
         <translation>Lukukuittaukset</translation>
     </message>
@@ -953,7 +1009,7 @@ Median koko: %2
         <translation>Salauksen aktivointi epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+148"/>
         <source>Select an avatar</source>
         <translation>Valitse profiilikuva</translation>
     </message>
@@ -980,19 +1036,6 @@ Median koko: %2
     </message>
 </context>
 <context>
-    <name>dialogs::UserMentions</name>
-    <message>
-        <location filename="../../src/dialogs/UserMentions.cpp" line="+53"/>
-        <source>This Room</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>All Rooms</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>dialogs::UserProfile</name>
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
@@ -1015,7 +1058,7 @@ Median koko: %2
         <translation>Aloita keskustelu</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+56"/>
         <source>Devices</source>
         <translation>Laitteet</translation>
     </message>
@@ -1066,69 +1109,103 @@ Median koko: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+104"/>
-        <source>%1 an audio clip</source>
+        <location filename="../../src/Utils.h" line="+95"/>
+        <source>You sent an audio clip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 an image</source>
+        <source>%1 sent an audio clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent an image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a file</source>
+        <source>%1 sent an image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a video clip</source>
+        <source>%1 sent a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a sticker</source>
+        <source>%1 sent a video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a sticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a notification</source>
+        <source>%1 sent a sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 sent a notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>%1 an encrypted message</source>
+        <source>You sent an encrypted message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 sent an encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>message-description:</name>
+    <name>popups::UserMentions</name>
     <message>
-        <location line="-26"/>
-        <source>sent</source>
-        <comment>For when someone else is the sender</comment>
+        <location filename="../../src/popups/UserMentions.cpp" line="+61"/>
+        <source>This Room</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>message-description: </name>
     <message>
-        <location line="-2"/>
-        <source>sent</source>
-        <comment>For when you are the sender</comment>
+        <location line="+1"/>
+        <source>All Rooms</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+46"/>
-        <location filename="../../src/Utils.h" line="+55"/>
-        <source>You</source>
-        <translation>Sinä</translation>
-    </message>
-    <message>
-        <location line="+219"/>
+        <location filename="../../src/Utils.cpp" line="+282"/>
         <source>sent a file.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1148,7 +1225,7 @@ Median koko: %2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Utils.h" line="-23"/>
+        <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
         <translation type="unfinished"></translation>
     </message>

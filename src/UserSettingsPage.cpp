@@ -53,7 +53,7 @@ UserSettings::load()
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
-        avatarCircles_                = settings.value("user/avatar/circles", true).toBool();
+        avatarCircles_                = settings.value("user/avatar_circles", true).toBool();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
@@ -119,9 +119,7 @@ UserSettings::save()
         settings.setValue("start_in_tray", isStartInTrayEnabled_);
         settings.endGroup();
 
-        settings.beginGroup("avatar");
-        settings.setValue("circles", avatarCircles_);
-        settings.endGroup();
+        settings.setValue("avatar_circles", avatarCircles_);
 
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);

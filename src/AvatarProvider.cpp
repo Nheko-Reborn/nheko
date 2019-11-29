@@ -43,7 +43,6 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
 
         QPixmap pixmap;
         if (avatar_cache.find(cacheKey, &pixmap)) {
-                nhlog::net()->info("cached pixmap {}", avatarUrl.toStdString());
                 callback(pixmap);
                 return;
         }
@@ -52,7 +51,6 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
         if (!data.isNull()) {
                 pixmap.loadFromData(data);
                 avatar_cache.insert(cacheKey, pixmap);
-                nhlog::net()->info("loaded pixmap from disk cache {}", avatarUrl.toStdString());
                 callback(pixmap);
                 return;
         }
@@ -69,8 +67,8 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                          });
 
         mtx::http::ThumbOpts opts;
-        opts.width   = 256;
-        opts.height  = 256;
+        opts.width   = size;
+        opts.height  = size;
         opts.mxc_url = avatarUrl.toStdString();
 
         http::client()->get_thumbnail(
@@ -85,8 +83,6 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                   }
 
                   cache::client()->saveImage(opts.mxc_url, res);
-
-                  nhlog::net()->info("downloaded pixmap {}", opts.mxc_url);
 
                   emit proxy->avatarDownloaded(QByteArray(res.data(), res.size()));
           });

@@ -113,12 +113,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         view_manager_ = new TimelineViewManager(this);
 
         contentLayout_->addWidget(top_bar_);
-        contentLayout_->addWidget(view_manager_);
-
-        connect(this,
-                &ChatPage::removeTimelineEvent,
-                view_manager_,
-                &TimelineViewManager::removeTimelineEvent);
+        contentLayout_->addWidget(view_manager_->getWidget());
 
         // Splitter
         splitter->addWidget(sideBar_);
@@ -566,7 +561,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this,
                 &ChatPage::initializeViews,
                 view_manager_,
-                [this](const mtx::responses::Rooms &rooms) { view_manager_->initialize(rooms); });
+                [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); });
         connect(this,
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
@@ -582,7 +577,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         nhlog::db()->error("failed to retrieve invites: {}", e.what());
                 }
 
-                view_manager_->initialize(rooms);
+                view_manager_->sync(rooms);
                 removeLeftRooms(rooms.leave);
 
                 bool hasNotifications = false;

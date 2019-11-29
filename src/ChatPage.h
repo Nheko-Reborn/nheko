@@ -125,8 +125,6 @@ signals:
         void showUserSettingsPage();
         void showOverlayProgressBar();
 
-        void removeTimelineEvent(const QString &room_id, const QString &event_id);
-
         void ownProfileOk();
         void setUserDisplayName(const QString &name);
         void setUserAvatar(const QString &avatar);

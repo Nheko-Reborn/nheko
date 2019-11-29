@@ -2,14 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>AudioItem</name>
-    <message>
-        <location filename="../../src/timeline/widgets/AudioItem.cpp" line="+118"/>
-        <source>Save File</source>
-        <translation>保存文件</translation>
-    </message>
-</context>
-<context>
     <name>ChatPage</name>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+330"/>
@@ -32,7 +24,7 @@
         <translation>上传视频失败。请重试。</translation>
     </message>
     <message>
-        <location line="+380"/>
+        <location line="+393"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>恢复 OLM 账户失败。请重新登录。</translation>
     </message>
@@ -42,18 +34,18 @@
         <translation>恢复保存的数据失败。请重新登录。</translation>
     </message>
     <message>
-        <location line="+198"/>
+        <location line="+181"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+51"/>
-        <location line="+153"/>
+        <location line="+155"/>
         <source>Please try to login again: %1</source>
         <translation>请尝试再次登录：%1</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-47"/>
         <source>Room creation failed: %1</source>
         <translation>创建聊天室失败：%1</translation>
     </message>
@@ -116,19 +108,11 @@
     </message>
 </context>
 <context>
-    <name>FileItem</name>
+    <name>EncryptionIndicator</name>
     <message>
-        <location filename="../../src/timeline/widgets/FileItem.cpp" line="+107"/>
-        <source>Save File</source>
-        <translation>保存文件</translation>
-    </message>
-</context>
-<context>
-    <name>ImageItem</name>
-    <message>
-        <location filename="../../src/timeline/widgets/ImageItem.cpp" line="+241"/>
-        <source>Save image</source>
-        <translation>保存图像</translation>
+        <location filename="../qml/EncryptionIndicator.qml" line="+11"/>
+        <source>Encrypted</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -200,7 +184,7 @@
 <context>
     <name>MemberList</name>
     <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+96"/>
+        <location filename="../../src/dialogs/MemberList.cpp" line="+89"/>
         <source>Room members</source>
         <translation>聊天室成员</translation>
     </message>
@@ -211,11 +195,27 @@
     </message>
 </context>
 <context>
+    <name>Placeholder</name>
+    <message>
+        <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
+        <source>unimplemented event: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QuickSwitcher</name>
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
         <source>Search for a room...</source>
         <translation>寻找一个聊天室...</translation>
+    </message>
+</context>
+<context>
+    <name>Redacted</name>
+    <message>
+        <location filename="../qml/delegates/Redacted.qml" line="+5"/>
+        <source>redacted</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -277,7 +277,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2205"/>
+        <location filename="../../src/Cache.cpp" line="+2307"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -285,12 +285,12 @@
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+93"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+95"/>
         <source>Leave room</source>
         <translation>离开聊天室</translation>
     </message>
     <message>
-        <location line="+181"/>
+        <location line="+161"/>
         <source>Accept</source>
         <translation>接受</translation>
     </message>
@@ -331,24 +331,24 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+107"/>
-        <source>Encrypted</source>
-        <translation>加密的</translation>
+        <location filename="../qml/StatusIndicator.qml" line="+13"/>
+        <source>Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Delivered</source>
-        <translation>已送达</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Seen</source>
-        <translation>已阅读</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Sent</source>
-        <translation>已发送</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Read</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -391,32 +391,9 @@
     </message>
 </context>
 <context>
-    <name>TimelineItem</name>
+    <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineItem.cpp" line="+85"/>
-        <source>Message redaction failed: %1</source>
-        <translation>删除消息失败：%1</translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>Reply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TimelineView</name>
-    <message>
-        <location filename="../../src/timeline/TimelineView.cpp" line="+245"/>
-        <source>Encryption is enabled</source>
-        <translation>加密已启用</translation>
-    </message>
-    <message>
-        <location line="+65"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+780"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation type="unfinished"></translation>
@@ -440,16 +417,90 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+25"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>Message redaction failed: %1</source>
+        <translation type="unfinished">删除消息失败：%1</translation>
+    </message>
+</context>
+<context>
+    <name>TimelineRow</name>
+    <message>
+        <location filename="../qml/TimelineRow.qml" line="+57"/>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Read receipts</source>
+        <translation type="unfinished">阅读回执</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>View raw message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Redact message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimelineView</name>
+    <message>
+        <location filename="../qml/TimelineView.qml" line="+24"/>
+        <source>No room open</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimelineViewManager</name>
+    <message>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+161"/>
+        <source>Save image</source>
+        <translation type="unfinished">保存图像</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TopRoomBar</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+79"/>
+        <location filename="../../src/TopRoomBar.cpp" line="+78"/>
         <source>Room options</source>
         <translation>聊天室选项</translation>
     </message>
@@ -514,7 +565,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+166"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+171"/>
         <source>Minimize to tray</source>
         <translation>最小化至托盘</translation>
     </message>
@@ -527,6 +578,11 @@
         <location line="+11"/>
         <source>Group&apos;s sidebar</source>
         <translation>群组侧边栏</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Circular Avatars</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
@@ -604,7 +660,7 @@
         <translation>通用</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+161"/>
         <source>Open Sessions File</source>
         <translation>打开会话文件</translation>
     </message>
@@ -824,7 +880,7 @@ Media size: %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+121"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+117"/>
         <source>Read receipts</source>
         <translation>阅读回执</translation>
     </message>
@@ -951,7 +1007,7 @@ Media size: %2
         <translation>启用加密失败：%1</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+148"/>
         <source>Select an avatar</source>
         <translation>选择一个头像</translation>
     </message>
@@ -978,19 +1034,6 @@ Media size: %2
     </message>
 </context>
 <context>
-    <name>dialogs::UserMentions</name>
-    <message>
-        <location filename="../../src/dialogs/UserMentions.cpp" line="+53"/>
-        <source>This Room</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>All Rooms</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>dialogs::UserProfile</name>
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
@@ -1013,7 +1056,7 @@ Media size: %2
         <translation>开始一个聊天</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+56"/>
         <source>Devices</source>
         <translation>设备</translation>
     </message>
@@ -1072,69 +1115,103 @@ Media size: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+104"/>
-        <source>%1 an audio clip</source>
+        <location filename="../../src/Utils.h" line="+95"/>
+        <source>You sent an audio clip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 an image</source>
+        <source>%1 sent an audio clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent an image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a file</source>
+        <source>%1 sent an image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a video clip</source>
+        <source>%1 sent a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a sticker</source>
+        <source>%1 sent a video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a sticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 a notification</source>
+        <source>%1 sent a sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You sent a notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 sent a notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>%1 an encrypted message</source>
+        <source>You sent an encrypted message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 sent an encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>message-description:</name>
+    <name>popups::UserMentions</name>
     <message>
-        <location line="-26"/>
-        <source>sent</source>
-        <comment>For when someone else is the sender</comment>
+        <location filename="../../src/popups/UserMentions.cpp" line="+61"/>
+        <source>This Room</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>message-description: </name>
     <message>
-        <location line="-2"/>
-        <source>sent</source>
-        <comment>For when you are the sender</comment>
+        <location line="+1"/>
+        <source>All Rooms</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+46"/>
-        <location filename="../../src/Utils.h" line="+55"/>
-        <source>You</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+219"/>
+        <location filename="../../src/Utils.cpp" line="+282"/>
         <source>sent a file.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1154,7 +1231,7 @@ Media size: %2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Utils.h" line="-23"/>
+        <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
         <translation type="unfinished"></translation>
     </message>
