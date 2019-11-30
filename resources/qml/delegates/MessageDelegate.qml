@@ -1,5 +1,5 @@
 import QtQuick 2.6
-import com.github.nheko 1.0
+import im.nheko 1.0
 
 DelegateChooser {
 	//role: "type" //< not supported in our custom implementation, have to use roleValue

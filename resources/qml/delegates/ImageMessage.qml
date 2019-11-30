@@ -1,6 +1,6 @@
 import QtQuick 2.6
 
-import com.github.nheko 1.0
+import im.nheko 1.0
 
 Item {
 	width: Math.min(parent ? parent.width : undefined, model.width)

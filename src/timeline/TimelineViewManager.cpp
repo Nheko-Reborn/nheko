@@ -55,13 +55,13 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
   , colorImgProvider(new ColorImageProvider())
 {
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
-                                         "com.github.nheko",
+                                         "im.nheko",
                                          1,
                                          0,
                                          "MtxEvent",
                                          "Can't instantiate enum!");
-        qmlRegisterType<DelegateChoice>("com.github.nheko", 1, 0, "DelegateChoice");
-        qmlRegisterType<DelegateChooser>("com.github.nheko", 1, 0, "DelegateChooser");
+        qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
+        qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView();

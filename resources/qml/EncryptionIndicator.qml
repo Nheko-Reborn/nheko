@@ -1,6 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.1
-import com.github.nheko 1.0
+import im.nheko 1.0
 
 Rectangle {
 	id: indicator

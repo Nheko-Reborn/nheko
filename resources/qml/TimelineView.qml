@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
 
-import com.github.nheko 1.0
+import im.nheko 1.0
 
 import "./delegates"
 
