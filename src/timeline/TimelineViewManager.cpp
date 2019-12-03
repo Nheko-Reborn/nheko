@@ -276,4 +276,3 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         video.url           = url.toStdString();
         models.value(roomid)->sendMessage(video);
 }
-
