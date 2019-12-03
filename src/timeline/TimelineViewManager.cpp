@@ -102,9 +102,14 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 void
 TimelineViewManager::addRoom(const QString &room_id)
 {
-        if (!models.contains(room_id))
-                models.insert(room_id,
-                              QSharedPointer<TimelineModel>(new TimelineModel(this, room_id)));
+        if (!models.contains(room_id)) {
+                QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
+                connect(newRoom.data(),
+                        &TimelineModel::newEncryptedImage,
+                        imgProvider,
+                        &MxcImageProvider::addEncryptionInfo);
+                models.insert(room_id, std::move(newRoom));
+        }
 }
 
 void

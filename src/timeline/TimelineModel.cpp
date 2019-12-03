@@ -673,6 +673,19 @@ TimelineModel::internalAddEvents(
                         continue; // don't insert redaction into timeline
                 }
 
+                if (auto event =
+                      boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
+                        auto temp    = decryptEvent(*event).event;
+                        auto encInfo = boost::apply_visitor(
+                          [](const auto &ev) -> boost::optional<mtx::crypto::EncryptedFile> {
+                                  return eventEncryptionInfo(ev);
+                          },
+                          temp);
+
+                        if (encInfo)
+                                emit newEncryptedImage(encInfo.value());
+                }
+
                 this->events.insert(id, e);
                 ids.push_back(id);
         }

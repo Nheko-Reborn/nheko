@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QSet>
 
+#include <mtx/common.hpp>
 #include <mtx/responses.hpp>
 
 #include "Cache.h"
@@ -188,6 +189,7 @@ signals:
         void nextPendingMessage();
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void mediaCached(QString mxcUrl, QString cacheUrl);
+        void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
 
 private:
         DecryptionResult decryptEvent(

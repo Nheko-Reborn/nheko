@@ -365,6 +365,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/CommunitiesList.h
     src/LoginPage.h
     src/MainWindow.h
+    src/MxcImageProvider.h
     src/InviteeItem.h
     src/QuickSwitcher.h
     src/RegisterPage.h
