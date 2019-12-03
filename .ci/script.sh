@@ -13,6 +13,9 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     sudo update-alternatives --set gcc "/usr/bin/${C_COMPILER}"
     sudo update-alternatives --set g++ "/usr/bin/${CXX_COMPILER}"
+
+    export PATH="/usr/local/bin/:${PATH}"
+    cmake --version
 fi
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
