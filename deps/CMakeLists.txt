@@ -46,10 +46,10 @@ set(BOOST_SHA256
 
 set(
   MTXCLIENT_URL
-  https://github.com/Nheko-Reborn/mtxclient/archive/6eee767cc25a9db9f125843e584656cde1ebb6c5.tar.gz
+  https://github.com/Nheko-Reborn/mtxclient/archive/f719236b08d373d9508f2467bbfc6dfa953b1f8d.zip
   )
 set(MTXCLIENT_HASH
-  72fe77da4fed98b3cf069299f66092c820c900359a27ec26070175f9ad208a03)
+    0660756c16cf297e02b0b29c07a59fc851723cc65f305893ae7238e6dd2e41c8)
 set(
   TWEENY_URL
   https://github.com/mobius3/tweeny/archive/b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf.tar.gz

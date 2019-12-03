@@ -97,7 +97,7 @@ RowLayout {
 			MenuItem {
 				visible: model.type == MtxEvent.ImageMessage || model.type == MtxEvent.VideoMessage || model.type == MtxEvent.AudioMessage || model.type == MtxEvent.FileMessage || model.type == MtxEvent.Sticker
 				text: qsTr("Save as")
-				onTriggered: timelineManager.saveMedia(model.url, model.filename, model.mimetype, model.type)
+				onTriggered: timelineManager.timeline.saveMedia(model.id)
 			}
 		}
 	}

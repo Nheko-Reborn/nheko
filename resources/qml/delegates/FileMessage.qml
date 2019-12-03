@@ -31,7 +31,7 @@ Rectangle {
 			}
 			MouseArea {
 				anchors.fill: parent
-				onClicked: timelineManager.saveMedia(model.url, model.filename, model.mimetype, model.type)
+				onClicked: timelineManager.timeline.saveMedia(model.id)
 				cursorShape: Qt.PointingHandCursor
 			}
 		}
