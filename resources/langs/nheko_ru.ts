@@ -4,27 +4,12 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+330"/>
-        <source>Failed to upload image. Please try again.</source>
-        <translation>Не удалось загрузить изображение. Пожалуйста, попробуйте еще раз.</translation>
+        <location filename="../../src/ChatPage.cpp" line="+346"/>
+        <source>Failed to upload media. Please try again.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Failed to upload file. Please try again.</source>
-        <translation>Не удалось загрузить файл. Пожалуйста, попробуйте еще раз.</translation>
-    </message>
-    <message>
-        <location line="+43"/>
-        <source>Failed to upload audio. Please try again.</source>
-        <translation>Не удалось загрузить аудио. Пожалуйста, попробуйте еще раз.</translation>
-    </message>
-    <message>
-        <location line="+42"/>
-        <source>Failed to upload video. Please try again.</source>
-        <translation>Не удалось загрузить видео. Пожалуйста, попробуйте еще раз.</translation>
-    </message>
-    <message>
-        <location line="+393"/>
+        <location line="+389"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Не удалось восстановить учетную запись OLM. Пожалуйста, войдите снова.</translation>
     </message>
@@ -195,6 +180,19 @@
     </message>
 </context>
 <context>
+    <name>MessageDelegate</name>
+    <message>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+43"/>
+        <source>redacted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Encryption enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Placeholder</name>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
@@ -208,14 +206,6 @@
         <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
         <source>Search for a room...</source>
         <translation>Поиск комнаты...</translation>
-    </message>
-</context>
-<context>
-    <name>Redacted</name>
-    <message>
-        <location filename="../qml/delegates/Redacted.qml" line="+5"/>
-        <source>redacted</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -354,13 +344,13 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+507"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+502"/>
         <source>Send a file</source>
         <translation>Отправить файл</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+164"/>
+        <location filename="../../src/TextInputWidget.h" line="+161"/>
         <source>Write a message...</source>
         <translation>Написать сообщение...</translation>
     </message>
@@ -375,7 +365,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+75"/>
+        <location line="+72"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -393,7 +383,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+780"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+835"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation type="unfinished"></translation>
@@ -423,9 +413,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+54"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished">Ошибка редактирования сообщения: %1</translation>
+    </message>
+    <message>
+        <location line="+453"/>
+        <source>Save image</source>
+        <translation type="unfinished">Сохранить изображение</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Save file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -471,29 +481,6 @@
     <message>
         <location filename="../qml/TimelineView.qml" line="+24"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TimelineViewManager</name>
-    <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+161"/>
-        <source>Save image</source>
-        <translation type="unfinished">Сохранить изображение</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Save video</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Save audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Save file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
