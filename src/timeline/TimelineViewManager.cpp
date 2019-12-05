@@ -222,6 +222,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 void
 TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
+                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize,
@@ -234,27 +235,32 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
         image.url           = url.toStdString();
         image.info.h        = dimensions.height();
         image.info.w        = dimensions.width();
+        image.file          = file;
         models.value(roomid)->sendMessage(image);
 }
 
 void
-TimelineViewManager::queueFileMessage(const QString &roomid,
-                                      const QString &filename,
-                                      const QString &url,
-                                      const QString &mime,
-                                      uint64_t dsize)
+TimelineViewManager::queueFileMessage(
+  const QString &roomid,
+  const QString &filename,
+  const boost::optional<mtx::crypto::EncryptedFile> &encryptedFile,
+  const QString &url,
+  const QString &mime,
+  uint64_t dsize)
 {
         mtx::events::msg::File file;
         file.info.mimetype = mime.toStdString();
         file.info.size     = dsize;
         file.body          = filename.toStdString();
         file.url           = url.toStdString();
+        file.file          = encryptedFile;
         models.value(roomid)->sendMessage(file);
 }
 
 void
 TimelineViewManager::queueAudioMessage(const QString &roomid,
                                        const QString &filename,
+                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize)
@@ -264,12 +270,14 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
         audio.info.size     = dsize;
         audio.body          = filename.toStdString();
         audio.url           = url.toStdString();
+        audio.file          = file;
         models.value(roomid)->sendMessage(audio);
 }
 
 void
 TimelineViewManager::queueVideoMessage(const QString &roomid,
                                        const QString &filename,
+                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize)
@@ -279,5 +287,6 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         video.info.size     = dsize;
         video.body          = filename.toStdString();
         video.url           = url.toStdString();
+        video.file          = file;
         models.value(roomid)->sendMessage(video);
 }
