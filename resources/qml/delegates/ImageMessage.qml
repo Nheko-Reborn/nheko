@@ -17,7 +17,7 @@ Item {
 		MouseArea {
 			enabled: model.type == MtxEvent.ImageMessage
 			anchors.fill: parent
-			onClicked: timelineManager.openImageOverlay(model.url, model.filename, model.mimetype, model.type)
+			onClicked: timelineManager.openImageOverlay(model.url, model.id)
 		}
 	}
 }

@@ -259,7 +259,7 @@ include(FeatureSummary)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66 REQUIRED
+find_package(Boost 1.70 REQUIRED
              COMPONENTS atomic
                         chrono
                         date_time
@@ -365,6 +365,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/CommunitiesList.h
     src/LoginPage.h
     src/MainWindow.h
+    src/MxcImageProvider.h
     src/InviteeItem.h
     src/QuickSwitcher.h
     src/RegisterPage.h

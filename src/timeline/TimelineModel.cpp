@@ -3,11 +3,15 @@
 #include <algorithm>
 #include <type_traits>
 
+#include <QFileDialog>
+#include <QMimeDatabase>
 #include <QRegularExpression>
+#include <QStandardPaths>
 
 #include "ChatPage.h"
 #include "Logging.h"
 #include "MainWindow.h"
+#include "MxcImageProvider.h"
 #include "Olm.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
@@ -89,16 +93,41 @@ eventFormattedBody(const mtx::events::RoomEvent<T> &e)
 }
 
 template<class T>
+boost::optional<mtx::crypto::EncryptedFile>
+eventEncryptionInfo(const mtx::events::Event<T> &)
+{
+        return boost::none;
+}
+
+template<class T>
+auto
+eventEncryptionInfo(const mtx::events::RoomEvent<T> &e) -> std::enable_if_t<
+  std::is_same<decltype(e.content.file), boost::optional<mtx::crypto::EncryptedFile>>::value,
+  boost::optional<mtx::crypto::EncryptedFile>>
+{
+        return e.content.file;
+}
+
+template<class T>
 QString
 eventUrl(const mtx::events::Event<T> &)
 {
         return "";
 }
+
+QString
+eventUrl(const mtx::events::StateEvent<mtx::events::state::Avatar> &e)
+{
+        return QString::fromStdString(e.content.url);
+}
+
 template<class T>
 auto
 eventUrl(const mtx::events::RoomEvent<T> &e)
   -> std::enable_if_t<std::is_same<decltype(e.content.url), std::string>::value, QString>
 {
+        if (e.content.file)
+                return QString::fromStdString(e.content.file->url);
         return QString::fromStdString(e.content.url);
 }
 
@@ -642,6 +671,19 @@ TimelineModel::internalAddEvents(
                         }
 
                         continue; // don't insert redaction into timeline
+                }
+
+                if (auto event =
+                      boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
+                        auto temp    = decryptEvent(*event).event;
+                        auto encInfo = boost::apply_visitor(
+                          [](const auto &ev) -> boost::optional<mtx::crypto::EncryptedFile> {
+                                  return eventEncryptionInfo(ev);
+                          },
+                          temp);
+
+                        if (encInfo)
+                                emit newEncryptedImage(encInfo.value());
                 }
 
                 this->events.insert(id, e);
@@ -1341,4 +1383,159 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 
         if (!isProcessingPending)
                 emit nextPendingMessage();
+}
+
+void
+TimelineModel::saveMedia(QString eventId) const
+{
+        mtx::events::collections::TimelineEvents event = events.value(eventId);
+
+        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+                event = decryptEvent(*e).event;
+        }
+
+        QString mxcUrl =
+          boost::apply_visitor([](const auto &e) -> QString { return eventUrl(e); }, event);
+        QString originalFilename =
+          boost::apply_visitor([](const auto &e) -> QString { return eventFilename(e); }, event);
+        QString mimeType =
+          boost::apply_visitor([](const auto &e) -> QString { return eventMimeType(e); }, event);
+
+        using EncF = boost::optional<mtx::crypto::EncryptedFile>;
+        EncF encryptionInfo =
+          boost::apply_visitor([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
+
+        qml_mtx_events::EventType eventType = boost::apply_visitor(
+          [](const auto &e) -> qml_mtx_events::EventType { return toRoomEventType(e); }, event);
+
+        QString dialogTitle;
+        if (eventType == qml_mtx_events::EventType::ImageMessage) {
+                dialogTitle = tr("Save image");
+        } else if (eventType == qml_mtx_events::EventType::VideoMessage) {
+                dialogTitle = tr("Save video");
+        } else if (eventType == qml_mtx_events::EventType::AudioMessage) {
+                dialogTitle = tr("Save audio");
+        } else {
+                dialogTitle = tr("Save file");
+        }
+
+        QString filterString = QMimeDatabase().mimeTypeForName(mimeType).filterString();
+
+        auto filename = QFileDialog::getSaveFileName(
+          manager_->getWidget(), dialogTitle, originalFilename, filterString);
+
+        if (filename.isEmpty())
+                return;
+
+        const auto url = mxcUrl.toStdString();
+
+        http::client()->download(
+          url,
+          [filename, url, encryptionInfo](const std::string &data,
+                                          const std::string &,
+                                          const std::string &,
+                                          mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
+                                             url,
+                                             err->matrix_error.error,
+                                             static_cast<int>(err->status_code));
+                          return;
+                  }
+
+                  try {
+                          auto temp = data;
+                          if (encryptionInfo)
+                                  temp = mtx::crypto::to_string(
+                                    mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
+
+                          QFile file(filename);
+
+                          if (!file.open(QIODevice::WriteOnly))
+                                  return;
+
+                          file.write(QByteArray(temp.data(), (int)temp.size()));
+                          file.close();
+                  } catch (const std::exception &e) {
+                          nhlog::ui()->warn("Error while saving file to: {}", e.what());
+                  }
+          });
+}
+
+void
+TimelineModel::cacheMedia(QString eventId)
+{
+        mtx::events::collections::TimelineEvents event = events.value(eventId);
+
+        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+                event = decryptEvent(*e).event;
+        }
+
+        QString mxcUrl =
+          boost::apply_visitor([](const auto &e) -> QString { return eventUrl(e); }, event);
+        QString mimeType =
+          boost::apply_visitor([](const auto &e) -> QString { return eventMimeType(e); }, event);
+
+        using EncF = boost::optional<mtx::crypto::EncryptedFile>;
+        EncF encryptionInfo =
+          boost::apply_visitor([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
+
+        // If the message is a link to a non mxcUrl, don't download it
+        if (!mxcUrl.startsWith("mxc://")) {
+                emit mediaCached(mxcUrl, mxcUrl);
+                return;
+        }
+
+        QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
+
+        const auto url = mxcUrl.toStdString();
+        QFileInfo filename(QString("%1/media_cache/%2.%3")
+                             .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                             .arg(QString(mxcUrl).remove("mxc://"))
+                             .arg(suffix));
+        if (QDir::cleanPath(filename.path()) != filename.path()) {
+                nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
+                return;
+        }
+
+        QDir().mkpath(filename.path());
+
+        if (filename.isReadable()) {
+                emit mediaCached(mxcUrl, filename.filePath());
+                return;
+        }
+
+        http::client()->download(
+          url,
+          [this, mxcUrl, filename, url, encryptionInfo](const std::string &data,
+                                                        const std::string &,
+                                                        const std::string &,
+                                                        mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
+                                             url,
+                                             err->matrix_error.error,
+                                             static_cast<int>(err->status_code));
+                          return;
+                  }
+
+                  try {
+                          auto temp = data;
+                          if (encryptionInfo)
+                                  temp = mtx::crypto::to_string(
+                                    mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
+
+                          QFile file(filename.filePath());
+
+                          if (!file.open(QIODevice::WriteOnly))
+                                  return;
+
+                          file.write(QByteArray(temp.data(), temp.size()));
+                          file.close();
+                  } catch (const std::exception &e) {
+                          nhlog::ui()->warn("Error while saving file to: {}", e.what());
+                  }
+
+                  emit mediaCached(mxcUrl, filename.filePath());
+          });
 }

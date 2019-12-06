@@ -33,23 +33,23 @@ option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json." ${USE_BUNDLE
 option(MTX_STATIC "Compile / link bundled mtx client statically" OFF)
 
 if(USE_BUNDLED_BOOST)
-  # bundled boost is 1.68, which requires CMake 3.12 or greater.
-  cmake_minimum_required(VERSION 3.12)
+  # bundled boost is 1.70, which requires CMake 3.15 or greater.
+  cmake_minimum_required(VERSION 3.15)
 endif()
 
 include(ExternalProject)
 
 set(BOOST_URL
-    https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.bz2)
+    https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.bz2)
 set(BOOST_SHA256
-    8f32d4617390d1c2d16f26a27ab60d97807b35440d45891fa340fc2648b04406)
+    430ae8354789de4fd19ee52f3b1f739e1fba576f0aded0897c3c2bc00fb38778)
 
 set(
   MTXCLIENT_URL
-  https://github.com/Nheko-Reborn/mtxclient/archive/6eee767cc25a9db9f125843e584656cde1ebb6c5.tar.gz
+  https://github.com/Nheko-Reborn/mtxclient/archive/64182a84e35378113f7d3a80f3073894416480e7.zip
   )
 set(MTXCLIENT_HASH
-  72fe77da4fed98b3cf069299f66092c820c900359a27ec26070175f9ad208a03)
+    c9973501920046f04c72983472451736343d00e7a40f4d4a12181191093a5fab)
 set(
   TWEENY_URL
   https://github.com/mobius3/tweeny/archive/b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf.tar.gz

@@ -31,8 +31,8 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         QT_PKG="59"
     fi
 
-    wget https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.sh
-    sudo sh cmake-3.12.2-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
+    wget https://cmake.org/files/v3.15/cmake-3.15.5-Linux-x86_64.sh
+    sudo sh cmake-3.15.5-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
 
     mkdir -p build-libsodium
     ( cd build-libsodium

@@ -5,7 +5,7 @@
 void
 MxcImageResponse::run()
 {
-        if (m_requestedSize.isValid()) {
+        if (m_requestedSize.isValid() && !m_encryptionInfo) {
                 QString fileName = QString("%1_%2x%3_crop")
                                      .arg(m_id)
                                      .arg(m_requestedSize.width())
@@ -65,7 +65,12 @@ MxcImageResponse::run()
                                   return;
                           }
 
-                          auto data = QByteArray(res.data(), res.size());
+                          auto temp = res;
+                          if (m_encryptionInfo)
+                                  temp = mtx::crypto::to_string(
+                                    mtx::crypto::decrypt_file(temp, m_encryptionInfo.value()));
+
+                          auto data = QByteArray(temp.data(), temp.size());
                           m_image.loadFromData(data);
                           m_image.setText("original filename",
                                           QString::fromStdString(originalFilename));

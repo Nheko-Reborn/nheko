@@ -18,7 +18,9 @@
 #pragma once
 
 #include <atomic>
+#include <boost/optional.hpp>
 #include <boost/variant.hpp>
+#include <mtx/common.hpp>
 #include <mtx/responses.hpp>
 
 #include <QFrame>
@@ -94,27 +96,14 @@ signals:
                                         const QPoint widgetPos);
 
         void uploadFailed(const QString &msg);
-        void imageUploaded(const QString &roomid,
+        void mediaUploaded(const QString &roomid,
                            const QString &filename,
+                           const boost::optional<mtx::crypto::EncryptedFile> &file,
                            const QString &url,
+                           const QString &mimeClass,
                            const QString &mime,
                            qint64 dsize,
                            const QSize &dimensions);
-        void fileUploaded(const QString &roomid,
-                          const QString &filename,
-                          const QString &url,
-                          const QString &mime,
-                          qint64 dsize);
-        void audioUploaded(const QString &roomid,
-                           const QString &filename,
-                           const QString &url,
-                           const QString &mime,
-                           qint64 dsize);
-        void videoUploaded(const QString &roomid,
-                           const QString &filename,
-                           const QString &url,
-                           const QString &mime,
-                           qint64 dsize);
 
         void contentLoaded();
         void closing();

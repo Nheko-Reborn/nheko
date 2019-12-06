@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QSet>
 
+#include <mtx/common.hpp>
 #include <mtx/responses.hpp>
 
 #include "Cache.h"
@@ -159,6 +160,8 @@ public:
         Q_INVOKABLE void redactEvent(QString id);
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
+        Q_INVOKABLE void cacheMedia(QString eventId);
+        Q_INVOKABLE void saveMedia(QString eventId) const;
 
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>
@@ -185,6 +188,8 @@ signals:
         void eventRedacted(QString id);
         void nextPendingMessage();
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
+        void mediaCached(QString mxcUrl, QString cacheUrl);
+        void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
 
 private:
         DecryptionResult decryptEvent(

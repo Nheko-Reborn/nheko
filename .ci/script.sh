@@ -13,6 +13,9 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     sudo update-alternatives --set gcc "/usr/bin/${C_COMPILER}"
     sudo update-alternatives --set g++ "/usr/bin/${CXX_COMPILER}"
+
+    export PATH="/usr/local/bin/:${PATH}"
+    cmake --version
 fi
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
@@ -35,7 +38,8 @@ cmake --build .deps
 # Build nheko
 cmake -GNinja -H. -Bbuild \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DCMAKE_INSTALL_PREFIX=.deps/usr
+    -DCMAKE_INSTALL_PREFIX=.deps/usr \
+    -DBUILD_SHARED_LIBS=ON # weird workaround, as the boost 1.70 cmake files seem to be broken?
 cmake --build build
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then

@@ -1,11 +1,8 @@
 #include "TimelineViewManager.h"
 
-#include <QFileDialog>
 #include <QMetaType>
-#include <QMimeDatabase>
 #include <QPalette>
 #include <QQmlContext>
-#include <QStandardPaths>
 
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
@@ -105,9 +102,14 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 void
 TimelineViewManager::addRoom(const QString &room_id)
 {
-        if (!models.contains(room_id))
-                models.insert(room_id,
-                              QSharedPointer<TimelineModel>(new TimelineModel(this, room_id)));
+        if (!models.contains(room_id)) {
+                QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
+                connect(newRoom.data(),
+                        &TimelineModel::newEncryptedImage,
+                        imgProvider,
+                        &MxcImageProvider::addEncryptionInfo);
+                models.insert(room_id, std::move(newRoom));
+        }
 }
 
 void
@@ -124,146 +126,24 @@ TimelineViewManager::setHistoryView(const QString &room_id)
 }
 
 void
-TimelineViewManager::openImageOverlay(QString mxcUrl,
-                                      QString originalFilename,
-                                      QString mimeType,
-                                      qml_mtx_events::EventType eventType) const
+TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
 {
         QQuickImageResponse *imgResponse =
           imgProvider->requestImageResponse(mxcUrl.remove("mxc://"), QSize());
-        connect(imgResponse,
-                &QQuickImageResponse::finished,
-                this,
-                [this, mxcUrl, originalFilename, mimeType, eventType, imgResponse]() {
-                        if (!imgResponse->errorString().isEmpty()) {
-                                nhlog::ui()->error("Error when retrieving image for overlay: {}",
-                                                   imgResponse->errorString().toStdString());
-                                return;
-                        }
-                        auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
+        connect(imgResponse, &QQuickImageResponse::finished, this, [this, eventId, imgResponse]() {
+                if (!imgResponse->errorString().isEmpty()) {
+                        nhlog::ui()->error("Error when retrieving image for overlay: {}",
+                                           imgResponse->errorString().toStdString());
+                        return;
+                }
+                auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
 
-                        auto imgDialog = new dialogs::ImageOverlay(pixmap);
-                        imgDialog->show();
-                        connect(imgDialog,
-                                &dialogs::ImageOverlay::saving,
-                                this,
-                                [this, mxcUrl, originalFilename, mimeType, eventType]() {
-                                        saveMedia(mxcUrl, originalFilename, mimeType, eventType);
-                                });
+                auto imgDialog = new dialogs::ImageOverlay(pixmap);
+                imgDialog->show();
+                connect(imgDialog, &dialogs::ImageOverlay::saving, timeline_, [this, eventId]() {
+                        timeline_->saveMedia(eventId);
                 });
-}
-
-void
-TimelineViewManager::saveMedia(QString mxcUrl,
-                               QString originalFilename,
-                               QString mimeType,
-                               qml_mtx_events::EventType eventType) const
-{
-        QString dialogTitle;
-        if (eventType == qml_mtx_events::EventType::ImageMessage) {
-                dialogTitle = tr("Save image");
-        } else if (eventType == qml_mtx_events::EventType::VideoMessage) {
-                dialogTitle = tr("Save video");
-        } else if (eventType == qml_mtx_events::EventType::AudioMessage) {
-                dialogTitle = tr("Save audio");
-        } else {
-                dialogTitle = tr("Save file");
-        }
-
-        QString filterString = QMimeDatabase().mimeTypeForName(mimeType).filterString();
-
-        auto filename =
-          QFileDialog::getSaveFileName(container, dialogTitle, originalFilename, filterString);
-
-        if (filename.isEmpty())
-                return;
-
-        const auto url = mxcUrl.toStdString();
-
-        http::client()->download(
-          url,
-          [filename, url](const std::string &data,
-                          const std::string &,
-                          const std::string &,
-                          mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
-                                             url,
-                                             err->matrix_error.error,
-                                             static_cast<int>(err->status_code));
-                          return;
-                  }
-
-                  try {
-                          QFile file(filename);
-
-                          if (!file.open(QIODevice::WriteOnly))
-                                  return;
-
-                          file.write(QByteArray(data.data(), (int)data.size()));
-                          file.close();
-                  } catch (const std::exception &e) {
-                          nhlog::ui()->warn("Error while saving file to: {}", e.what());
-                  }
-          });
-}
-
-void
-TimelineViewManager::cacheMedia(QString mxcUrl, QString mimeType)
-{
-        // If the message is a link to a non mxcUrl, don't download it
-        if (!mxcUrl.startsWith("mxc://")) {
-                emit mediaCached(mxcUrl, mxcUrl);
-                return;
-        }
-
-        QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
-
-        const auto url = mxcUrl.toStdString();
-        QFileInfo filename(QString("%1/media_cache/%2.%3")
-                             .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                             .arg(QString(mxcUrl).remove("mxc://"))
-                             .arg(suffix));
-        if (QDir::cleanPath(filename.path()) != filename.path()) {
-                nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
-                return;
-        }
-
-        QDir().mkpath(filename.path());
-
-        if (filename.isReadable()) {
-                emit mediaCached(mxcUrl, filename.filePath());
-                return;
-        }
-
-        http::client()->download(
-          url,
-          [this, mxcUrl, filename, url](const std::string &data,
-                                        const std::string &,
-                                        const std::string &,
-                                        mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
-                                             url,
-                                             err->matrix_error.error,
-                                             static_cast<int>(err->status_code));
-                          return;
-                  }
-
-                  try {
-                          QFile file(filename.filePath());
-
-                          if (!file.open(QIODevice::WriteOnly))
-                                  return;
-
-                          file.write(QByteArray(data.data(), data.size()));
-                          file.close();
-                  } catch (const std::exception &e) {
-                          nhlog::ui()->warn("Error while saving file to: {}", e.what());
-                  }
-
-                  emit mediaCached(mxcUrl, filename.filePath());
-          });
+        });
 }
 
 void
@@ -342,6 +222,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 void
 TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
+                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize,
@@ -354,27 +235,32 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
         image.url           = url.toStdString();
         image.info.h        = dimensions.height();
         image.info.w        = dimensions.width();
+        image.file          = file;
         models.value(roomid)->sendMessage(image);
 }
 
 void
-TimelineViewManager::queueFileMessage(const QString &roomid,
-                                      const QString &filename,
-                                      const QString &url,
-                                      const QString &mime,
-                                      uint64_t dsize)
+TimelineViewManager::queueFileMessage(
+  const QString &roomid,
+  const QString &filename,
+  const boost::optional<mtx::crypto::EncryptedFile> &encryptedFile,
+  const QString &url,
+  const QString &mime,
+  uint64_t dsize)
 {
         mtx::events::msg::File file;
         file.info.mimetype = mime.toStdString();
         file.info.size     = dsize;
         file.body          = filename.toStdString();
         file.url           = url.toStdString();
+        file.file          = encryptedFile;
         models.value(roomid)->sendMessage(file);
 }
 
 void
 TimelineViewManager::queueAudioMessage(const QString &roomid,
                                        const QString &filename,
+                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize)
@@ -384,12 +270,14 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
         audio.info.size     = dsize;
         audio.body          = filename.toStdString();
         audio.url           = url.toStdString();
+        audio.file          = file;
         models.value(roomid)->sendMessage(audio);
 }
 
 void
 TimelineViewManager::queueVideoMessage(const QString &roomid,
                                        const QString &filename,
+                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize)
@@ -399,5 +287,6 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         video.info.size     = dsize;
         video.body          = filename.toStdString();
         video.url           = url.toStdString();
+        video.file          = file;
         models.value(roomid)->sendMessage(video);
 }

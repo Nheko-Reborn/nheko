@@ -54,6 +54,8 @@ constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
 constexpr int RETRY_TIMEOUT               = 5'000;
 constexpr size_t MAX_ONETIME_KEYS         = 50;
 
+Q_DECLARE_METATYPE(boost::optional<mtx::crypto::EncryptedFile>)
+
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
   , isConnected_(true)
@@ -61,6 +63,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , notificationsManager(this)
 {
         setObjectName("chatPage");
+
+        qRegisterMetaType<boost::optional<mtx::crypto::EncryptedFile>>(
+          "boost::optional<mtx::crypto::EncryptedFile>");
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -299,9 +304,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(
           text_input_,
-          &TextInputWidget::uploadImage,
+          &TextInputWidget::uploadMedia,
           this,
-          [this](QSharedPointer<QIODevice> dev, const QString &fn) {
+          [this](QSharedPointer<QIODevice> dev, QString mimeClass, const QString &fn) {
                   QMimeDatabase db;
                   QMimeType mime = db.mimeTypeForData(dev.data());
 
@@ -311,9 +316,18 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                           return;
                   }
 
-                  auto bin        = dev->peek(dev->size());
-                  auto payload    = std::string(bin.data(), bin.size());
-                  auto dimensions = QImageReader(dev.data()).size();
+                  auto bin     = dev->peek(dev->size());
+                  auto payload = std::string(bin.data(), bin.size());
+                  boost::optional<mtx::crypto::EncryptedFile> encryptedFile;
+                  if (cache::client()->isRoomEncrypted(current_room_.toStdString())) {
+                          mtx::crypto::BinaryBuf buf;
+                          std::tie(buf, encryptedFile) = mtx::crypto::encrypt_file(payload);
+                          payload                      = mtx::crypto::to_string(buf);
+                  }
+
+                  QSize dimensions;
+                  if (mimeClass == "image")
+                          dimensions = QImageReader(dev.data()).size();
 
                   http::client()->upload(
                     payload,
@@ -322,193 +336,61 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                     [this,
                      room_id  = current_room_,
                      filename = fn,
-                     mime     = mime.name(),
-                     size     = payload.size(),
+                     encryptedFile,
+                     mimeClass,
+                     mime = mime.name(),
+                     size = payload.size(),
                      dimensions](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
                             if (err) {
                                     emit uploadFailed(
-                                      tr("Failed to upload image. Please try again."));
-                                    nhlog::net()->warn("failed to upload image: {} {} ({})",
+                                      tr("Failed to upload media. Please try again."));
+                                    nhlog::net()->warn("failed to upload media: {} {} ({})",
                                                        err->matrix_error.error,
                                                        to_string(err->matrix_error.errcode),
                                                        static_cast<int>(err->status_code));
                                     return;
                             }
 
-                            emit imageUploaded(room_id,
+                            emit mediaUploaded(room_id,
                                                filename,
+                                               encryptedFile,
                                                QString::fromStdString(res.content_uri),
+                                               mimeClass,
                                                mime,
                                                size,
                                                dimensions);
                     });
           });
 
-        connect(text_input_,
-                &TextInputWidget::uploadFile,
-                this,
-                [this](QSharedPointer<QIODevice> dev, const QString &fn) {
-                        QMimeDatabase db;
-                        QMimeType mime = db.mimeTypeForData(dev.data());
-
-                        if (!dev->open(QIODevice::ReadOnly)) {
-                                emit uploadFailed(
-                                  QString("Error while reading media: %1").arg(dev->errorString()));
-                                return;
-                        }
-
-                        auto bin     = dev->readAll();
-                        auto payload = std::string(bin.data(), bin.size());
-
-                        http::client()->upload(
-                          payload,
-                          mime.name().toStdString(),
-                          QFileInfo(fn).fileName().toStdString(),
-                          [this,
-                           room_id  = current_room_,
-                           filename = fn,
-                           mime     = mime.name(),
-                           size     = payload.size()](const mtx::responses::ContentURI &res,
-                                                  mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit uploadFailed(
-                                            tr("Failed to upload file. Please try again."));
-                                          nhlog::net()->warn("failed to upload file: {} ({})",
-                                                             err->matrix_error.error,
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
-
-                                  emit fileUploaded(room_id,
-                                                    filename,
-                                                    QString::fromStdString(res.content_uri),
-                                                    mime,
-                                                    size);
-                          });
-                });
-
-        connect(text_input_,
-                &TextInputWidget::uploadAudio,
-                this,
-                [this](QSharedPointer<QIODevice> dev, const QString &fn) {
-                        QMimeDatabase db;
-                        QMimeType mime = db.mimeTypeForData(dev.data());
-
-                        if (!dev->open(QIODevice::ReadOnly)) {
-                                emit uploadFailed(
-                                  QString("Error while reading media: %1").arg(dev->errorString()));
-                                return;
-                        }
-
-                        auto bin     = dev->readAll();
-                        auto payload = std::string(bin.data(), bin.size());
-
-                        http::client()->upload(
-                          payload,
-                          mime.name().toStdString(),
-                          QFileInfo(fn).fileName().toStdString(),
-                          [this,
-                           room_id  = current_room_,
-                           filename = fn,
-                           mime     = mime.name(),
-                           size     = payload.size()](const mtx::responses::ContentURI &res,
-                                                  mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit uploadFailed(
-                                            tr("Failed to upload audio. Please try again."));
-                                          nhlog::net()->warn("failed to upload audio: {} ({})",
-                                                             err->matrix_error.error,
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
-
-                                  emit audioUploaded(room_id,
-                                                     filename,
-                                                     QString::fromStdString(res.content_uri),
-                                                     mime,
-                                                     size);
-                          });
-                });
-        connect(text_input_,
-                &TextInputWidget::uploadVideo,
-                this,
-                [this](QSharedPointer<QIODevice> dev, const QString &fn) {
-                        QMimeDatabase db;
-                        QMimeType mime = db.mimeTypeForData(dev.data());
-
-                        if (!dev->open(QIODevice::ReadOnly)) {
-                                emit uploadFailed(
-                                  QString("Error while reading media: %1").arg(dev->errorString()));
-                                return;
-                        }
-
-                        auto bin     = dev->readAll();
-                        auto payload = std::string(bin.data(), bin.size());
-
-                        http::client()->upload(
-                          payload,
-                          mime.name().toStdString(),
-                          QFileInfo(fn).fileName().toStdString(),
-                          [this,
-                           room_id  = current_room_,
-                           filename = fn,
-                           mime     = mime.name(),
-                           size     = payload.size()](const mtx::responses::ContentURI &res,
-                                                  mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit uploadFailed(
-                                            tr("Failed to upload video. Please try again."));
-                                          nhlog::net()->warn("failed to upload video: {} ({})",
-                                                             err->matrix_error.error,
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
-
-                                  emit videoUploaded(room_id,
-                                                     filename,
-                                                     QString::fromStdString(res.content_uri),
-                                                     mime,
-                                                     size);
-                          });
-                });
-
         connect(this, &ChatPage::uploadFailed, this, [this](const QString &msg) {
                 text_input_->hideUploadSpinner();
                 emit showNotification(msg);
         });
         connect(this,
-                &ChatPage::imageUploaded,
+                &ChatPage::mediaUploaded,
                 this,
                 [this](QString roomid,
                        QString filename,
+                       boost::optional<mtx::crypto::EncryptedFile> encryptedFile,
                        QString url,
+                       QString mimeClass,
                        QString mime,
                        qint64 dsize,
                        QSize dimensions) {
                         text_input_->hideUploadSpinner();
-                        view_manager_->queueImageMessage(
-                          roomid, filename, url, mime, dsize, dimensions);
-                });
-        connect(this,
-                &ChatPage::fileUploaded,
-                this,
-                [this](QString roomid, QString filename, QString url, QString mime, qint64 dsize) {
-                        text_input_->hideUploadSpinner();
-                        view_manager_->queueFileMessage(roomid, filename, url, mime, dsize);
-                });
-        connect(this,
-                &ChatPage::audioUploaded,
-                this,
-                [this](QString roomid, QString filename, QString url, QString mime, qint64 dsize) {
-                        text_input_->hideUploadSpinner();
-                        view_manager_->queueAudioMessage(roomid, filename, url, mime, dsize);
-                });
-        connect(this,
-                &ChatPage::videoUploaded,
-                this,
-                [this](QString roomid, QString filename, QString url, QString mime, qint64 dsize) {
-                        text_input_->hideUploadSpinner();
-                        view_manager_->queueVideoMessage(roomid, filename, url, mime, dsize);
+
+                        if (mimeClass == "image")
+                                view_manager_->queueImageMessage(
+                                  roomid, filename, encryptedFile, url, mime, dsize, dimensions);
+                        else if (mimeClass == "audio")
+                                view_manager_->queueAudioMessage(
+                                  roomid, filename, encryptedFile, url, mime, dsize);
+                        else if (mimeClass == "video")
+                                view_manager_->queueVideoMessage(
+                                  roomid, filename, encryptedFile, url, mime, dsize);
+                        else
+                                view_manager_->queueFileMessage(
+                                  roomid, filename, encryptedFile, url, mime, dsize);
                 });
 
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
