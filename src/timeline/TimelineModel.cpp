@@ -505,8 +505,8 @@ TimelineModel::data(const QModelIndex &index, int role) const
         case FormattedBody:
                 return QVariant(
                   utils::replaceEmoji(
-                    boost::apply_visitor(
-                      [](const auto &e) -> QString { return eventFormattedBody(e); }, event))
+                    utils::linkifyMessage(boost::apply_visitor(
+                      [](const auto &e) -> QString { return eventFormattedBody(e); }, event)))
                     .remove("<mx-reply>")
                     .remove("</mx-reply>"));
         case Url:
