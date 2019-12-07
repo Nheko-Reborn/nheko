@@ -59,9 +59,10 @@ Item {
 
 			ScrollBar.vertical: ScrollBar {
 				id: scrollbar
-				anchors.top: parent.top
-				anchors.left: parent.right
-				anchors.bottom: parent.bottom
+				parent: chat.parent
+				anchors.top: chat.top
+				anchors.left: chat.right
+				anchors.bottom: chat.bottom
 				onPressedChanged: if (!pressed) chat.updatePosition()
 			}
 
