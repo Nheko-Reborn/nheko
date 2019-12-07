@@ -43,8 +43,8 @@ matrix:
           env:
               - CXX_COMPILER=g++-8
               - C_COMPILER=gcc-8
-              - QT_VERSION=58
-              - QT_PKG=58
+              - QT_VERSION=592
+              - QT_PKG=59
               - USE_BUNDLED_BOOST=1
               - USE_BUNDLED_CMARK=1
               - USE_BUNDLED_JSON=1

@@ -1,4 +1,4 @@
-import QtQuick 2.6
+import QtQuick 2.9
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
@@ -45,6 +45,29 @@ Item {
 			anchors.rightMargin: scrollbar.width
 
 			model: timelineManager.timeline
+
+			boundsBehavior: Flickable.StopAtBounds
+
+			onVerticalOvershootChanged: contentY = contentY - verticalOvershoot
+
+			MouseArea {
+				anchors.fill: parent
+				acceptedButtons: Qt.NoButton
+				propagateComposedEvents: true
+				z: -1
+				onWheel: {
+					if (wheel.angleDelta != 0) {
+						chat.contentY = chat.contentY - wheel.angleDelta.y
+						if (wheel.angleDelta.y > 0 && chat.contentY > chat.contentHeight - chat.height)
+							chat.contentY = chat.contentHeight - chat.height
+						else if (wheel.angleDelta < 0 && chat.contentY < 0)
+							chat.contentY = 0
+						wheel.accepted = true
+						chat.forceLayout()
+						chat.updatePosition()
+					}
+				}
+			}
 
 			onModelChanged: {
 				if (model) {

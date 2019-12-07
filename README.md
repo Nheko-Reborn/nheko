@@ -89,7 +89,7 @@ sudo port install nheko
 
 ### Build Requirements
 
-- Qt5 (5.8 or greater). Qt 5.7 adds support for color font rendering with
+- Qt5 (5.9 or greater). Qt 5.7 adds support for color font rendering with
   Freetype, which is essential to properly support emoji, 5.8 adds some features
   to make interopability with Qml easier.
 - CMake 3.15 or greater. (Lower version may work, but may break boost linking)
@@ -132,7 +132,7 @@ sudo pacman -S qt5-base \
 ##### Gentoo Linux
 
 ```bash
-sudo emerge -a ">=dev-qt/qtgui-5.7.1" media-libs/fontconfig
+sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
 ```
 
 ##### Ubuntu (e.g 14.04)
