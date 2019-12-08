@@ -68,7 +68,7 @@ update-translations:
 		-locations relative \
 		-Iinclude/dialogs \
 		-Iinclude \
-		src/ -ts resources/langs/nheko_*.ts -no-obsolete
+		src/ resources/qml/ -ts resources/langs/nheko_*.ts -no-obsolete
 
 clean:
 	rm -rf build

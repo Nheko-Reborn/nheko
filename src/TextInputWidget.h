@@ -63,10 +63,7 @@ signals:
         void message(QString);
         void reply(QString, const RelatedInfo &);
         void command(QString name, QString args);
-        void image(QSharedPointer<QIODevice> data, const QString &filename);
-        void audio(QSharedPointer<QIODevice> data, const QString &filename);
-        void video(QSharedPointer<QIODevice> data, const QString &filename);
-        void file(QSharedPointer<QIODevice> data, const QString &filename);
+        void media(QSharedPointer<QIODevice> data, QString mimeClass, const QString &filename);
 
         //! Trigger the suggestion popup.
         void showSuggestions(const QString &query);
@@ -179,10 +176,9 @@ signals:
         void sendEmoteMessage(QString msg);
         void heightChanged(int height);
 
-        void uploadImage(const QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadFile(const QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadAudio(const QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadVideo(const QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadMedia(const QSharedPointer<QIODevice> data,
+                         QString mimeClass,
+                         const QString &filename);
 
         void sendJoinRoomRequest(const QString &room);
 

@@ -11,6 +11,11 @@ nheko
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Riot], Telegram etc) and less like an IRC client.
 
+### Translations ###
+[![Translation status](http://weblate.nheko.im/widgets/nheko/-/nheko-master/svg-badge.svg)](http://weblate.nheko.im/engage/nheko/?utm_source=widget)
+
+Help us with translations so as many people as possible will be able to use nheko!
+
 ### Note regarding End-to-End encryption
 
 Currently the implementation is at best a **proof of concept** and it should only be used for
@@ -84,13 +89,14 @@ sudo port install nheko
 
 ### Build Requirements
 
-- Qt5 (5.7 or greater). Qt 5.7 adds support for color font rendering with
-  Freetype, which is essential to properly support emoji.
-- CMake 3.1 or greater.
+- Qt5 (5.9 or greater). Qt 5.7 adds support for color font rendering with
+  Freetype, which is essential to properly support emoji, 5.8 adds some features
+  to make interopability with Qml easier.
+- CMake 3.15 or greater. (Lower version may work, but may break boost linking)
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
 - [cmark](https://github.com/commonmark/cmark)
-- Boost 1.66 or greater.
+- Boost 1.70 or greater.
 - [libolm](https://git.matrix.org/git/olm)
 - [libsodium](https://github.com/jedisct1/libsodium)
 - [spdlog](https://github.com/gabime/spdlog)
@@ -126,7 +132,7 @@ sudo pacman -S qt5-base \
 ##### Gentoo Linux
 
 ```bash
-sudo emerge -a ">=dev-qt/qtgui-5.7.1" media-libs/fontconfig
+sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
 ```
 
 ##### Ubuntu (e.g 14.04)

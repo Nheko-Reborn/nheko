@@ -41,7 +41,6 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
         setAttribute(Qt::WA_DeleteOnClose, true);
         setWindowState(Qt::WindowFullScreen);
 
-        // Deprecated in 5.13: screen_ = QApplication::desktop()->availableGeometry();
         screen_ = QGuiApplication::primaryScreen()->availableGeometry();
 
         move(QApplication::desktop()->mapToGlobal(screen_.topLeft()));

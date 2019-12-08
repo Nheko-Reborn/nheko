@@ -34,6 +34,7 @@ install:
             lmdb:%PLATFORM%-windows
             openssl:%PLATFORM%-windows
             zlib:%PLATFORM%-windows
+    - vcpkg upgrade --no-dry-run
 
 build_script:
     # VERSION format:     branch-master/branch-1.2

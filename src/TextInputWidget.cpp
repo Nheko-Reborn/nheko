@@ -458,21 +458,16 @@ FilteredTextEdit::textChanged()
 }
 
 void
-FilteredTextEdit::uploadData(const QByteArray data, const QString &media, const QString &filename)
+FilteredTextEdit::uploadData(const QByteArray data,
+                             const QString &mediaType,
+                             const QString &filename)
 {
         QSharedPointer<QBuffer> buffer{new QBuffer{this}};
         buffer->setData(data);
 
         emit startedUpload();
 
-        if (media == "image")
-                emit image(buffer, filename);
-        else if (media == "audio")
-                emit audio(buffer, filename);
-        else if (media == "video")
-                emit video(buffer, filename);
-        else
-                emit file(buffer, filename);
+        emit media(buffer, mediaType, filename);
 }
 
 void
@@ -580,10 +575,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
         connect(input_, &FilteredTextEdit::reply, this, &TextInputWidget::sendReplyMessage);
         connect(input_, &FilteredTextEdit::command, this, &TextInputWidget::command);
-        connect(input_, &FilteredTextEdit::image, this, &TextInputWidget::uploadImage);
-        connect(input_, &FilteredTextEdit::audio, this, &TextInputWidget::uploadAudio);
-        connect(input_, &FilteredTextEdit::video, this, &TextInputWidget::uploadVideo);
-        connect(input_, &FilteredTextEdit::file, this, &TextInputWidget::uploadFile);
+        connect(input_, &FilteredTextEdit::media, this, &TextInputWidget::uploadMedia);
         connect(emojiBtn_,
                 SIGNAL(emojiSelected(const QString &)),
                 this,
@@ -642,14 +634,8 @@ TextInputWidget::openFileSelection()
         const auto format = mime.name().split("/")[0];
 
         QSharedPointer<QFile> file{new QFile{fileName, this}};
-        if (format == "image")
-                emit uploadImage(file, fileName);
-        else if (format == "audio")
-                emit uploadAudio(file, fileName);
-        else if (format == "video")
-                emit uploadVideo(file, fileName);
-        else
-                emit uploadFile(file, fileName);
+
+        emit uploadMedia(file, format, fileName);
 
         showUploadSpinner();
 }

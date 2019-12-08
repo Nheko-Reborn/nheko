@@ -7,7 +7,7 @@
 #include "ChatPage.h"
 #include "Logging.h"
 #include "UserMentions.h"
-#include "timeline/TimelineItem.h"
+//#include "timeline/TimelineItem.h"
 
 using namespace popups;
 
@@ -116,39 +116,46 @@ UserMentions::pushItem(const QString &event_id,
                        const QString &room_id,
                        const QString &current_room_id)
 {
-        setUpdatesEnabled(false);
-
-        // Add to the 'all' section
-        TimelineItem *view_item = new TimelineItem(
-          mtx::events::MessageType::Text, user_id, body, true, room_id, all_scroll_widget_);
-        view_item->setEventId(event_id);
-        view_item->hide();
-
-        all_scroll_layout_->addWidget(view_item);
-        QTimer::singleShot(0, this, [view_item, this]() {
-                view_item->show();
-                view_item->adjustSize();
-                setUpdatesEnabled(true);
-        });
-
-        // if it matches the current room... add it to the current room as well.
-        if (QString::compare(room_id, current_room_id, Qt::CaseInsensitive) == 0) {
-                // Add to the 'local' section
-                TimelineItem *local_view_item = new TimelineItem(mtx::events::MessageType::Text,
-                                                                 user_id,
-                                                                 body,
-                                                                 true,
-                                                                 room_id,
-                                                                 local_scroll_widget_);
-                local_view_item->setEventId(event_id);
-                local_view_item->hide();
-                local_scroll_layout_->addWidget(local_view_item);
-
-                QTimer::singleShot(0, this, [local_view_item]() {
-                        local_view_item->show();
-                        local_view_item->adjustSize();
-                });
-        }
+        (void)event_id;
+        (void)user_id;
+        (void)body;
+        (void)room_id;
+        (void)current_room_id;
+        //        setUpdatesEnabled(false);
+        //
+        //        // Add to the 'all' section
+        //        TimelineItem *view_item = new TimelineItem(
+        //          mtx::events::MessageType::Text, user_id, body, true, room_id,
+        //          all_scroll_widget_);
+        //        view_item->setEventId(event_id);
+        //        view_item->hide();
+        //
+        //        all_scroll_layout_->addWidget(view_item);
+        //        QTimer::singleShot(0, this, [view_item, this]() {
+        //                view_item->show();
+        //                view_item->adjustSize();
+        //                setUpdatesEnabled(true);
+        //        });
+        //
+        //        // if it matches the current room... add it to the current room as well.
+        //        if (QString::compare(room_id, current_room_id, Qt::CaseInsensitive) == 0) {
+        //                // Add to the 'local' section
+        //                TimelineItem *local_view_item = new
+        //                TimelineItem(mtx::events::MessageType::Text,
+        //                                                                 user_id,
+        //                                                                 body,
+        //                                                                 true,
+        //                                                                 room_id,
+        //                                                                 local_scroll_widget_);
+        //                local_view_item->setEventId(event_id);
+        //                local_view_item->hide();
+        //                local_scroll_layout_->addWidget(local_view_item);
+        //
+        //                QTimer::singleShot(0, this, [local_view_item]() {
+        //                        local_view_item->show();
+        //                        local_view_item->adjustSize();
+        //                });
+        //        }
 }
 
 void

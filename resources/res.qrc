@@ -114,4 +114,21 @@
         <file>styles/nheko.qss</file>
         <file>styles/nheko-dark.qss</file>
     </qresource>
+    <qresource prefix="/">
+        <file>qml/TimelineView.qml</file>
+        <file>qml/Avatar.qml</file>
+        <file>qml/ImageButton.qml</file>
+        <file>qml/MatrixText.qml</file>
+        <file>qml/StatusIndicator.qml</file>
+        <file>qml/EncryptionIndicator.qml</file>
+        <file>qml/TimelineRow.qml</file>
+        <file>qml/delegates/MessageDelegate.qml</file>
+        <file>qml/delegates/TextMessage.qml</file>
+        <file>qml/delegates/NoticeMessage.qml</file>
+        <file>qml/delegates/ImageMessage.qml</file>
+        <file>qml/delegates/PlayableMediaMessage.qml</file>
+        <file>qml/delegates/FileMessage.qml</file>
+        <file>qml/delegates/Pill.qml</file>
+        <file>qml/delegates/Placeholder.qml</file>
+    </qresource>
 </RCC>

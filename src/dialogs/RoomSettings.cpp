@@ -488,7 +488,7 @@ RoomSettings::retrieveRoomInfo()
                 usesEncryption_ = cache::client()->isRoomEncrypted(room_id_.toStdString());
                 info_           = cache::client()->singleRoomInfo(room_id_.toStdString());
                 setAvatar();
-        } catch (const lmdb::error &e) {
+        } catch (const lmdb::error &) {
                 nhlog::db()->warn("failed to retrieve room info from cache: {}",
                                   room_id_.toStdString());
         }

@@ -69,7 +69,8 @@ include(LMDB)
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
+find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
 
 if (APPLE)
@@ -192,12 +193,8 @@ set(SRC_FILES
 
     # Timeline
     src/timeline/TimelineViewManager.cpp
-    src/timeline/TimelineItem.cpp
-    src/timeline/TimelineView.cpp
-    src/timeline/widgets/AudioItem.cpp
-    src/timeline/widgets/FileItem.cpp
-    src/timeline/widgets/ImageItem.cpp
-    src/timeline/widgets/VideoItem.cpp
+    src/timeline/TimelineModel.cpp
+    src/timeline/DelegateChooser.cpp
 
     # UI components
     src/ui/Avatar.cpp
@@ -229,6 +226,8 @@ set(SRC_FILES
     src/Logging.cpp
     src/MainWindow.cpp
     src/MatrixClient.cpp
+    src/MxcImageProvider.cpp
+    src/ColorImageProvider.cpp
     src/QuickSwitcher.cpp
     src/Olm.cpp
     src/RegisterPage.cpp
@@ -260,7 +259,7 @@ include(FeatureSummary)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66 REQUIRED
+find_package(Boost 1.70 REQUIRED
              COMPONENTS atomic
                         chrono
                         date_time
@@ -333,13 +332,9 @@ qt5_wrap_cpp(MOC_HEADERS
     src/emoji/PickButton.h
 
     # Timeline
-    src/timeline/TimelineItem.h
-    src/timeline/TimelineView.h
     src/timeline/TimelineViewManager.h
-    src/timeline/widgets/AudioItem.h
-    src/timeline/widgets/FileItem.h
-    src/timeline/widgets/ImageItem.h
-    src/timeline/widgets/VideoItem.h
+    src/timeline/TimelineModel.h
+    src/timeline/DelegateChooser.h
 
     # UI components
     src/ui/Avatar.h
@@ -370,7 +365,7 @@ qt5_wrap_cpp(MOC_HEADERS
     src/CommunitiesList.h
     src/LoginPage.h
     src/MainWindow.h
-    src/MatrixClient.h
+    src/MxcImageProvider.h
     src/InviteeItem.h
     src/QuickSwitcher.h
     src/RegisterPage.h
@@ -405,6 +400,9 @@ set(COMMON_LIBS
     Qt5::Svg
     Qt5::Concurrent
     Qt5::Multimedia
+    Qt5::Qml
+    Qt5::QuickControls2
+    Qt5::QuickWidgets
     nlohmann_json::nlohmann_json)
 
 if(APPVEYOR_BUILD)
@@ -448,6 +446,7 @@ if(APPLE)
     target_link_libraries (nheko ${NHEKO_LIBS} Qt5::MacExtras)
 elseif(WIN32)
     add_executable (nheko ${OS_BUNDLE} ${ICON_FILE} ${NHEKO_DEPS})
+    target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
     target_link_libraries (nheko ${NTDLIB} ${NHEKO_LIBS} Qt5::WinMain)
 else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
