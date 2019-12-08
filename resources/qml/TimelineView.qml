@@ -58,10 +58,6 @@ Item {
 				onWheel: {
 					if (wheel.angleDelta != 0) {
 						chat.contentY = chat.contentY - wheel.angleDelta.y
-						if (wheel.angleDelta.y > 0 && chat.contentY > chat.contentHeight - chat.height)
-							chat.contentY = chat.contentHeight - chat.height
-						else if (wheel.angleDelta < 0 && chat.contentY < 0)
-							chat.contentY = 0
 						wheel.accepted = true
 						chat.forceLayout()
 						chat.updatePosition()
