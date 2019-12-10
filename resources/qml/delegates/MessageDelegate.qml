@@ -50,6 +50,18 @@ DelegateChooser {
 		}
 	}
 	DelegateChoice {
+		roleValue: MtxEvent.Name
+		NoticeMessage {
+			notice: model.roomName ? qsTr("room name changed to: %1").arg(model.roomName) : qsTr("removed room name")
+		}
+	}
+	DelegateChoice {
+		roleValue: MtxEvent.Topic
+		NoticeMessage {
+			notice: model.roomTopic ? qsTr("topic changed to: %1").arg(model.roomTopic) : qsTr("removed topic")
+		}
+	}
+	DelegateChoice {
 		Placeholder {}
 	}
 }

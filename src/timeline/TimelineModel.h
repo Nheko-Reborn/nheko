@@ -141,6 +141,8 @@ public:
                 State,
                 IsEncrypted,
                 ReplyTo,
+                RoomName,
+                RoomTopic,
         };
 
         QHash<int, QByteArray> roleNames() const override;

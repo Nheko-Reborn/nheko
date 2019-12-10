@@ -61,6 +61,30 @@ eventMsgType(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.msgtype)
 
 template<class T>
 QString
+eventRoomName(const T &)
+{
+        return "";
+}
+QString
+eventRoomName(const mtx::events::StateEvent<mtx::events::state::Name> &e)
+{
+        return QString::fromStdString(e.content.name);
+}
+
+template<class T>
+QString
+eventRoomTopic(const T &)
+{
+        return "";
+}
+QString
+eventRoomTopic(const mtx::events::StateEvent<mtx::events::state::Topic> &e)
+{
+        return QString::fromStdString(e.content.topic);
+}
+
+template<class T>
+QString
 eventBody(const mtx::events::Event<T> &)
 {
         return QString("");
@@ -437,6 +461,8 @@ TimelineModel::roleNames() const
           {State, "state"},
           {IsEncrypted, "isEncrypted"},
           {ReplyTo, "replyTo"},
+          {RoomName, "roomName"},
+          {RoomTopic, "roomTopic"},
         };
 }
 int
@@ -563,6 +589,12 @@ TimelineModel::data(const QModelIndex &index, int role) const
                   [](const auto &e) -> QString { return eventRelatesTo(e); }, event);
                 return QVariant(evId);
         }
+        case RoomName:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventRoomName(e); }, event));
+        case RoomTopic:
+                return QVariant(boost::apply_visitor(
+                  [](const auto &e) -> QString { return eventRoomTopic(e); }, event));
         default:
                 return QVariant();
         }
