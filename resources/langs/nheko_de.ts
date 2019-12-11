@@ -191,6 +191,26 @@
         <source>Encryption enabled</source>
         <translation>Verschlüsselung aktiviert</translation>
     </message>
+    <message>
+        <location line="+6"/>
+        <source>room name changed to: %1</source>
+        <translation>Raumname wurde gändert auf: %1</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>removed room name</source>
+        <translation>Raumname wurde entfernt</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>topic changed to: %1</source>
+        <translation>Raumthema wurde geändert auf: %1</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>removed topic</source>
+        <translation>Raumthema wurde entfernt.</translation>
+    </message>
 </context>
 <context>
     <name>Placeholder</name>
@@ -383,7 +403,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+835"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+867"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation>-- verschlüsselter Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
