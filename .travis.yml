@@ -11,6 +11,10 @@ notifications:
     on_start: never
   email: false
 
+cache:
+  directories:
+    - .deps
+
 matrix:
     include:
         - os: osx
