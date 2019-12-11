@@ -10,7 +10,9 @@ environment:
     BINTRAY_APIKEY:
         secure: "iGl5mzE9/ta9kFELUxDw9XtlYMSCMai9xowXIkYzU8WKHz7NfW0mLwMJZvblZFXJ"
 
-cache: c:\tools\vcpkg\installed\
+cache:
+  - c:\tools\vcpkg\installed\ -> appveyor.yml
+  - .deps -> appveyor.yml, deps/CMakeLists.txt
 
 build:
     verbosity: minimal
