@@ -331,7 +331,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
                   http::client()->upload(
                     payload,
-                    mime.name().toStdString(),
+                    encryptedFile ? "application/octet-stream" : mime.name().toStdString(),
                     QFileInfo(fn).fileName().toStdString(),
                     [this,
                      room_id  = current_room_,
@@ -378,6 +378,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                        qint64 dsize,
                        QSize dimensions) {
                         text_input_->hideUploadSpinner();
+
+                        if (encryptedFile)
+                                encryptedFile->url = url.toStdString();
 
                         if (mimeClass == "image")
                                 view_manager_->queueImageMessage(
