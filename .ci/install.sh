@@ -36,10 +36,10 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     mkdir -p build-libsodium
     ( cd build-libsodium
-      curl -L https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz -o libsodium-1.0.16.tar.gz
-      tar xfz libsodium-1.0.16.tar.gz
-      cd libsodium-1.0.16/
-      ./configure && make && make check && sudo make install )
+      curl -L https://download.libsodium.org/libsodium/releases/libsodium-1.0.17.tar.gz -o libsodium-1.0.17.tar.gz
+      tar xfz libsodium-1.0.17.tar.gz
+      cd libsodium-1.0.17/
+      ./configure && make && sudo make install )
 
     sudo add-apt-repository -y ppa:beineri/opt-qt${QT_VERSION}-trusty
     # needed for git-lfs, otherwise the follow apt update fails.
