@@ -65,7 +65,7 @@ getMetrics(const QFont &font)
         m.unreadLineOffset = m.padding - m.padding / 4;
 
         m.inviteBtnX = m.iconSize + 2 * m.padding;
-        m.inviteBtnX = m.iconSize / 2.0 + m.padding + m.padding / 3.0;
+        m.inviteBtnY = m.iconSize / 2.0 + m.padding + m.padding / 3.0;
 
         return m;
 }
@@ -241,8 +241,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                         p.setPen(QPen(btnTextColor_));
                         p.setFont(QFont{});
-                        p.drawText(acceptBtnRegion_, Qt::AlignCenter, tr("Accept"));
-                        p.drawText(declineBtnRegion_, Qt::AlignCenter, tr("Decline"));
+                        p.drawText(acceptBtnRegion_,
+                                   Qt::AlignCenter,
+                                   metrics.elidedText(tr("Accept"), Qt::ElideRight, btnWidth));
+                        p.drawText(declineBtnRegion_,
+                                   Qt::AlignCenter,
+                                   metrics.elidedText(tr("Decline"), Qt::ElideRight, btnWidth));
                 }
         }
 
