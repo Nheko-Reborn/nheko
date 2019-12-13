@@ -12,7 +12,7 @@ environment:
 
 cache:
   - c:\tools\vcpkg\installed\ -> appveyor.yml
-  - .deps -> appveyor.yml, deps/CMakeLists.txt
+  - .deps -> deps/CMakeLists.txt, appveyor.yml
 
 build:
     verbosity: minimal
