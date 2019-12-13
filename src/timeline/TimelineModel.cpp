@@ -414,6 +414,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                           return eventCopy;
                   },
                   ev);
+
                 events.remove(txn_id);
                 events.insert(event_id, ev);
 
@@ -666,7 +667,7 @@ TimelineModel::internalAddEvents(
   const std::vector<mtx::events::collections::TimelineEvents> &timeline)
 {
         std::vector<QString> ids;
-        for (const auto &e : timeline) {
+        for (auto e : timeline) {
                 QString id =
                   boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
 
@@ -707,16 +708,16 @@ TimelineModel::internalAddEvents(
 
                 if (auto event =
                       boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
-                        auto temp    = decryptEvent(*event).event;
-                        auto encInfo = boost::apply_visitor(
-                          [](const auto &ev) -> boost::optional<mtx::crypto::EncryptedFile> {
-                                  return eventEncryptionInfo(ev);
-                          },
-                          temp);
-
-                        if (encInfo)
-                                emit newEncryptedImage(encInfo.value());
+                        e = decryptEvent(*event).event;
                 }
+                auto encInfo = boost::apply_visitor(
+                  [](const auto &ev) -> boost::optional<mtx::crypto::EncryptedFile> {
+                          return eventEncryptionInfo(ev);
+                  },
+                  e);
+
+                if (encInfo)
+                        emit newEncryptedImage(encInfo.value());
 
                 this->events.insert(id, e);
                 ids.push_back(id);
