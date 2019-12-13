@@ -107,18 +107,6 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *pare
   , unreadHighlightedMsgCount_(0)
 {
         init(parent);
-
-        QString emptyEventId;
-
-        // HACK
-        // We use fake message info with an old date to pin
-        // the invite events to the top.
-        //
-        // State events in invited rooms don't contain timestamp info,
-        // so we can't use them for sorting.
-        if (roomType_ == RoomType::Invited)
-                lastMsgInfo_ = {
-                  emptyEventId, "-", "-", "-", QDateTime::currentDateTime().addYears(10)};
 }
 
 void

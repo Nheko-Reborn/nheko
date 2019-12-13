@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <limits>
+
 #include <QApplication>
 #include <QBuffer>
 #include <QObject>
@@ -191,6 +193,9 @@ RoomList::sync(const std::map<QString, RoomInfo> &info)
 {
         for (const auto &room : info)
                 updateRoom(room.first, room.second);
+
+        if (!info.empty())
+                sortRoomsByLastMessage();
 }
 
 void
@@ -270,7 +275,9 @@ RoomList::sortRoomsByLastMessage()
                         continue;
 
                 // Not a room message.
-                if (room->lastMessageInfo().userid.isEmpty())
+                if (room->isInvite())
+                        times.emplace(std::numeric_limits<uint64_t>::max(), room);
+                else if (room->lastMessageInfo().userid.isEmpty())
                         times.emplace(0, room);
                 else
                         times.emplace(room->lastMessageInfo().datetime.toMSecsSinceEpoch(), room);
