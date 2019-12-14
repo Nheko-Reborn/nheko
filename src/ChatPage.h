@@ -32,7 +32,7 @@
 #include <QTimer>
 #include <QWidget>
 
-#include "Cache.h"
+#include "CacheStructs.h"
 #include "CommunitiesList.h"
 #include "MatrixClient.h"
 #include "Utils.h"

@@ -22,8 +22,9 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include "Cache.h"
 #include <mtx/responses.hpp>
+
+#include "CacheStructs.h"
 
 class Menu;
 class RippleOverlay;
@@ -64,7 +65,7 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor btnTextColor READ btnTextColor WRITE setBtnTextColor)
 
 public:
-        RoomInfoListItem(QString room_id, RoomInfo info, QWidget *parent = 0);
+        RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent = 0);
 
         void updateUnreadMessageCount(int count, int highlightedCount);
         void clearUnreadMessageCount() { updateUnreadMessageCount(0, 0); };

@@ -28,224 +28,16 @@
 #include <lmdb++.h>
 #include <nlohmann/json.hpp>
 
-#include <mtx/events/join_rules.hpp>
 #include <mtx/responses.hpp>
 #include <mtxclient/crypto/client.hpp>
 
+#include "CacheCryptoStructs.h"
+#include "CacheStructs.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 
-using mtx::events::state::JoinRule;
-
-struct RoomMember
-{
-        QString user_id;
-        QString display_name;
-        QImage avatar;
-};
-
-struct SearchResult
-{
-        QString user_id;
-        QString display_name;
-};
-
-static int
-numeric_key_comparison(const MDB_val *a, const MDB_val *b)
-{
-        auto lhs = std::stoull(std::string((char *)a->mv_data, a->mv_size));
-        auto rhs = std::stoull(std::string((char *)b->mv_data, b->mv_size));
-
-        if (lhs < rhs)
-                return 1;
-        else if (lhs == rhs)
-                return 0;
-
-        return -1;
-}
-
-Q_DECLARE_METATYPE(SearchResult)
-Q_DECLARE_METATYPE(QVector<SearchResult>)
-Q_DECLARE_METATYPE(RoomMember)
-Q_DECLARE_METATYPE(mtx::responses::Timeline)
-
-//! Used to uniquely identify a list of read receipts.
-struct ReadReceiptKey
-{
-        std::string event_id;
-        std::string room_id;
-};
-
-inline void
-to_json(json &j, const ReadReceiptKey &key)
-{
-        j = json{{"event_id", key.event_id}, {"room_id", key.room_id}};
-}
-
-inline void
-from_json(const json &j, ReadReceiptKey &key)
-{
-        key.event_id = j.at("event_id").get<std::string>();
-        key.room_id  = j.at("room_id").get<std::string>();
-}
-
-struct DescInfo
-{
-        QString event_id;
-        QString userid;
-        QString body;
-        QString timestamp;
-        QDateTime datetime;
-};
-
-//! UI info associated with a room.
-struct RoomInfo
-{
-        //! The calculated name of the room.
-        std::string name;
-        //! The topic of the room.
-        std::string topic;
-        //! The calculated avatar url of the room.
-        std::string avatar_url;
-        //! The calculated version of this room set at creation time.
-        std::string version;
-        //! Whether or not the room is an invite.
-        bool is_invite = false;
-        //! Total number of members in the room.
-        int16_t member_count = 0;
-        //! Who can access to the room.
-        JoinRule join_rule = JoinRule::Public;
-        bool guest_access  = false;
-        //! Metadata describing the last message in the timeline.
-        DescInfo msgInfo;
-        //! The list of tags associated with this room
-        std::vector<std::string> tags;
-};
-
-void
-to_json(json &j, const RoomInfo &info);
-
-void
-from_json(const json &j, RoomInfo &info);
-
-//! Basic information per member;
-struct MemberInfo
-{
-        std::string name;
-        std::string avatar_url;
-};
-
-inline void
-to_json(json &j, const MemberInfo &info)
-{
-        j["name"]       = info.name;
-        j["avatar_url"] = info.avatar_url;
-}
-
-inline void
-from_json(const json &j, MemberInfo &info)
-{
-        info.name       = j.at("name");
-        info.avatar_url = j.at("avatar_url");
-}
-
-struct RoomSearchResult
-{
-        std::string room_id;
-        RoomInfo info;
-};
-
-Q_DECLARE_METATYPE(RoomSearchResult)
-Q_DECLARE_METATYPE(RoomInfo)
-
-// Extra information associated with an outbound megolm session.
-struct OutboundGroupSessionData
-{
-        std::string session_id;
-        std::string session_key;
-        uint64_t message_index = 0;
-};
-
-inline void
-to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg)
-{
-        obj["session_id"]    = msg.session_id;
-        obj["session_key"]   = msg.session_key;
-        obj["message_index"] = msg.message_index;
-}
-
-inline void
-from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg)
-{
-        msg.session_id    = obj.at("session_id");
-        msg.session_key   = obj.at("session_key");
-        msg.message_index = obj.at("message_index");
-}
-
-struct OutboundGroupSessionDataRef
-{
-        OlmOutboundGroupSession *session;
-        OutboundGroupSessionData data;
-};
-
-struct DevicePublicKeys
-{
-        std::string ed25519;
-        std::string curve25519;
-};
-
-inline void
-to_json(nlohmann::json &obj, const DevicePublicKeys &msg)
-{
-        obj["ed25519"]    = msg.ed25519;
-        obj["curve25519"] = msg.curve25519;
-}
-
-inline void
-from_json(const nlohmann::json &obj, DevicePublicKeys &msg)
-{
-        msg.ed25519    = obj.at("ed25519");
-        msg.curve25519 = obj.at("curve25519");
-}
-
-//! Represents a unique megolm session identifier.
-struct MegolmSessionIndex
-{
-        //! The room in which this session exists.
-        std::string room_id;
-        //! The session_id of the megolm session.
-        std::string session_id;
-        //! The curve25519 public key of the sender.
-        std::string sender_key;
-};
-
-inline void
-to_json(nlohmann::json &obj, const MegolmSessionIndex &msg)
-{
-        obj["room_id"]    = msg.room_id;
-        obj["session_id"] = msg.session_id;
-        obj["sender_key"] = msg.sender_key;
-}
-
-inline void
-from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
-{
-        msg.room_id    = obj.at("room_id");
-        msg.session_id = obj.at("session_id");
-        msg.sender_key = obj.at("sender_key");
-}
-
-struct OlmSessionStorage
-{
-        // Megolm sessions
-        std::map<std::string, mtx::crypto::InboundGroupSessionPtr> group_inbound_sessions;
-        std::map<std::string, mtx::crypto::OutboundGroupSessionPtr> group_outbound_sessions;
-        std::map<std::string, OutboundGroupSessionData> group_outbound_session_data;
-
-        // Guards for accessing megolm sessions.
-        std::mutex group_outbound_mtx;
-        std::mutex group_inbound_mtx;
-};
+int
+numeric_key_comparison(const MDB_val *a, const MDB_val *b);
 
 class Cache : public QObject
 {
@@ -287,7 +79,7 @@ public:
         //! Calculate & return the name of the room.
         QString getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
         //! Get room join rules
-        JoinRule getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb);
+        mtx::events::state::JoinRule getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb);
         bool getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb);
         //! Retrieve the topic of the room if any.
         QString getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);

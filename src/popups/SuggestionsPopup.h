@@ -10,6 +10,8 @@
 #include "../ChatPage.h"
 #include "PopupItem.h"
 
+Q_DECLARE_METATYPE(QVector<SearchResult>)
+
 class SuggestionsPopup : public QWidget
 {
         Q_OBJECT

@@ -78,6 +78,13 @@ constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
+Q_DECLARE_METATYPE(SearchResult)
+Q_DECLARE_METATYPE(QVector<SearchResult>)
+Q_DECLARE_METATYPE(RoomMember)
+Q_DECLARE_METATYPE(mtx::responses::Timeline)
+Q_DECLARE_METATYPE(RoomSearchResult)
+Q_DECLARE_METATYPE(RoomInfo)
+
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
@@ -1504,7 +1511,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
         return "Empty Room";
 }
 
-JoinRule
+mtx::events::state::JoinRule
 Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
 {
         using namespace mtx::events;
@@ -1516,14 +1523,14 @@ Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
 
         if (res) {
                 try {
-                        StateEvent<JoinRules> msg =
+                        StateEvent<state::JoinRules> msg =
                           json::parse(std::string(event.data(), event.size()));
                         return msg.content.join_rule;
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.join_rule event: {}", e.what());
                 }
         }
-        return JoinRule::Knock;
+        return state::JoinRule::Knock;
 }
 
 bool
@@ -2313,3 +2320,91 @@ from_json(const json &j, RoomInfo &info)
         if (j.count("tags"))
                 info.tags = j.at("tags").get<std::vector<std::string>>();
 }
+
+int
+numeric_key_comparison(const MDB_val *a, const MDB_val *b)
+{
+        auto lhs = std::stoull(std::string((char *)a->mv_data, a->mv_size));
+        auto rhs = std::stoull(std::string((char *)b->mv_data, b->mv_size));
+
+        if (lhs < rhs)
+                return 1;
+        else if (lhs == rhs)
+                return 0;
+
+        return -1;
+}
+
+void
+to_json(json &j, const ReadReceiptKey &key)
+{
+        j = json{{"event_id", key.event_id}, {"room_id", key.room_id}};
+}
+
+void
+from_json(const json &j, ReadReceiptKey &key)
+{
+        key.event_id = j.at("event_id").get<std::string>();
+        key.room_id  = j.at("room_id").get<std::string>();
+}
+
+void
+to_json(json &j, const MemberInfo &info)
+{
+        j["name"]       = info.name;
+        j["avatar_url"] = info.avatar_url;
+}
+
+void
+from_json(const json &j, MemberInfo &info)
+{
+        info.name       = j.at("name");
+        info.avatar_url = j.at("avatar_url");
+}
+
+void
+to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg)
+{
+        obj["session_id"]    = msg.session_id;
+        obj["session_key"]   = msg.session_key;
+        obj["message_index"] = msg.message_index;
+}
+
+void
+from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg)
+{
+        msg.session_id    = obj.at("session_id");
+        msg.session_key   = obj.at("session_key");
+        msg.message_index = obj.at("message_index");
+}
+
+void
+to_json(nlohmann::json &obj, const DevicePublicKeys &msg)
+{
+        obj["ed25519"]    = msg.ed25519;
+        obj["curve25519"] = msg.curve25519;
+}
+
+void
+from_json(const nlohmann::json &obj, DevicePublicKeys &msg)
+{
+        msg.ed25519    = obj.at("ed25519");
+        msg.curve25519 = obj.at("curve25519");
+}
+
+void
+to_json(nlohmann::json &obj, const MegolmSessionIndex &msg)
+{
+        obj["room_id"]    = msg.room_id;
+        obj["session_id"] = msg.session_id;
+        obj["sender_key"] = msg.sender_key;
+}
+
+void
+from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
+{
+        msg.room_id    = obj.at("room_id");
+        msg.session_id = obj.at("session_id");
+        msg.sender_key = obj.at("sender_key");
+}
+

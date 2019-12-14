@@ -4,7 +4,7 @@
 #include <QSharedPointer>
 #include <QVBoxLayout>
 
-#include "Cache.h"
+#include "CacheStructs.h"
 #include "CommunitiesListItem.h"
 #include "ui/Theme.h"
 
@@ -53,3 +53,4 @@ private:
 
         std::map<QString, QSharedPointer<CommunitiesListItem>> communities_;
 };
+

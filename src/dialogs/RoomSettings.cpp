@@ -248,10 +248,10 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                         switch (index) {
                         case 0:
                         case 1:
-                                event.join_rule = JoinRule::Public;
+                                event.join_rule = state::JoinRule::Public;
                                 break;
                         default:
-                                event.join_rule = JoinRule::Invite;
+                                event.join_rule = state::JoinRule::Invite;
                         }
 
                         return event;
@@ -260,7 +260,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 updateAccessRules(room_id_.toStdString(), join_rule, guest_access);
         });
 
-        if (info_.join_rule == JoinRule::Public) {
+        if (info_.join_rule == state::JoinRule::Public) {
                 if (info_.guest_access) {
                         accessCombo->setCurrentIndex(0);
                 } else {
@@ -342,7 +342,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         }
 
         // Hide encryption option for public rooms.
-        if (!usesEncryption_ && (info_.join_rule == JoinRule::Public)) {
+        if (!usesEncryption_ && (info_.join_rule == state::JoinRule::Public)) {
                 encryptionToggle_->hide();
                 encryptionLabel->hide();
 

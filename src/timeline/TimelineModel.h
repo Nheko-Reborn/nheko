@@ -9,7 +9,7 @@
 #include <mtx/common.hpp>
 #include <mtx/responses.hpp>
 
-#include "Cache.h"
+#include "CacheCryptoStructs.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 

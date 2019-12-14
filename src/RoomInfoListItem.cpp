@@ -97,7 +97,7 @@ RoomInfoListItem::init(QWidget *parent)
         menu_->addAction(leaveRoom_);
 }
 
-RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent)
   : QWidget(parent)
   , roomType_{info.is_invite ? RoomType::Invited : RoomType::Joined}
   , roomId_(std::move(room_id))
