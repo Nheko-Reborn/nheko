@@ -53,4 +53,3 @@ private:
 
         std::map<QString, QSharedPointer<CommunitiesListItem>> communities_;
 };
-

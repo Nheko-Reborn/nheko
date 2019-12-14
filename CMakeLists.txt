@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 
 option(APPVEYOR_BUILD "Build on appveyor" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
+option(QML_DEBUGGING "Enable qml debugging" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -448,6 +449,10 @@ elseif(WIN32)
 else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
     target_link_libraries (nheko ${NHEKO_LIBS} Qt5::DBus)
+endif()
+
+if(QML_DEBUGGING)
+	target_compile_definitions(nheko PRIVATE QML_DEBUGGING)
 endif()
 
 if(EXTERNAL_PROJECT_DEPS)

@@ -47,6 +47,11 @@
 #include <boost/stacktrace.hpp>
 #include <signal.h>
 
+#ifdef QML_DEBUGGING
+#include <QQmlDebuggingEnabler>
+QQmlDebuggingEnabler enabler;
+#endif
+
 void
 stacktraceHandler(int signum)
 {
