@@ -79,7 +79,7 @@ sudo apk add nheko
 flatpak install flathub io.github.NhekoReborn.Nheko
 ```
 
-#### macOS (10.12 and above)
+#### macOS (10.14 and above)
 
 with [macports](https://www.macports.org/) :
 
@@ -100,8 +100,8 @@ sudo port install nheko
 - [libolm](https://git.matrix.org/git/olm)
 - [libsodium](https://github.com/jedisct1/libsodium)
 - [spdlog](https://github.com/gabime/spdlog)
-- A compiler that supports C++ 14:
-    - Clang 5 (tested on Travis CI)
+- A compiler that supports C++ 17:
+    - Clang 6 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)
     - MSVC 19.13 (tested on AppVeyor)
 
@@ -135,17 +135,17 @@ sudo pacman -S qt5-base \
 sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
 ```
 
-##### Ubuntu (e.g 14.04)
+##### Ubuntu (e.g 16.04)
 
 ```bash
-sudo add-apt-repository ppa:beineri/opt-qt592-trusty
+sudo add-apt-repository ppa:beineri/opt-qt592-xenial
 sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo add-apt-repository ppa:ubuntu-toolchain-r-test
 sudo apt-get update
 sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev
 ```
 
-##### macOS (Xcode 8 or later)
+##### macOS (Xcode 10.2 or later)
 
 ```bash
 brew update
