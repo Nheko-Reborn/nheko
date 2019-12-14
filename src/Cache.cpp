@@ -37,13 +37,13 @@
 static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.09.21");
 static const std::string SECRET("secret");
 
-static const lmdb::val NEXT_BATCH_KEY("next_batch");
-static const lmdb::val OLM_ACCOUNT_KEY("olm_account");
-static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
+static lmdb::val NEXT_BATCH_KEY("next_batch");
+static lmdb::val OLM_ACCOUNT_KEY("olm_account");
+static lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 
 constexpr size_t MAX_RESTORED_MESSAGES = 30;
 
-constexpr auto DB_SIZE = 512UL * 1024UL * 1024UL; // 512 MB
+constexpr auto DB_SIZE = 512UL * 1024UL * 1024UL * 1024UL; // 512 GB
 constexpr auto MAX_DBS = 8092UL;
 
 //! Cache databases and their format.
@@ -2407,4 +2407,3 @@ from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
         msg.session_id = obj.at("session_id");
         msg.sender_key = obj.at("sender_key");
 }
-
