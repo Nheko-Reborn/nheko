@@ -17,7 +17,8 @@
 
 #pragma once
 
-#include <boost/optional.hpp>
+#include <mutex>
+#include <optional>
 
 #include <QDateTime>
 #include <QDir>
@@ -25,11 +26,11 @@
 #include <QString>
 
 #include <lmdb++.h>
+#include <nlohmann/json.hpp>
+
 #include <mtx/events/join_rules.hpp>
 #include <mtx/responses.hpp>
 #include <mtxclient/crypto/client.hpp>
-#include <mutex>
-#include <nlohmann/json.hpp>
 
 #include "Logging.h"
 #include "MatrixClient.h"
@@ -453,8 +454,8 @@ public:
         //
         void saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
         std::vector<std::string> getOlmSessions(const std::string &curve25519);
-        boost::optional<mtx::crypto::OlmSessionPtr> getOlmSession(const std::string &curve25519,
-                                                                  const std::string &session_id);
+        std::optional<mtx::crypto::OlmSessionPtr> getOlmSession(const std::string &curve25519,
+                                                                const std::string &session_id);
 
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
@@ -517,52 +518,50 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                if (boost::get<StateEvent<Member>>(&event) != nullptr) {
-                        const auto e = boost::get<StateEvent<Member>>(event);
-
-                        switch (e.content.membership) {
+                if (auto e = std::get_if<StateEvent<Member>>(&event); e != nullptr) {
+                        switch (e->content.membership) {
                         //
                         // We only keep users with invite or join membership.
                         //
                         case Membership::Invite:
                         case Membership::Join: {
-                                auto display_name = e.content.display_name.empty()
-                                                      ? e.state_key
-                                                      : e.content.display_name;
+                                auto display_name = e->content.display_name.empty()
+                                                      ? e->state_key
+                                                      : e->content.display_name;
 
                                 // Lightweight representation of a member.
-                                MemberInfo tmp{display_name, e.content.avatar_url};
+                                MemberInfo tmp{display_name, e->content.avatar_url};
 
                                 lmdb::dbi_put(txn,
                                               membersdb,
-                                              lmdb::val(e.state_key),
+                                              lmdb::val(e->state_key),
                                               lmdb::val(json(tmp).dump()));
 
                                 insertDisplayName(QString::fromStdString(room_id),
-                                                  QString::fromStdString(e.state_key),
+                                                  QString::fromStdString(e->state_key),
                                                   QString::fromStdString(display_name));
 
                                 insertAvatarUrl(QString::fromStdString(room_id),
-                                                QString::fromStdString(e.state_key),
-                                                QString::fromStdString(e.content.avatar_url));
+                                                QString::fromStdString(e->state_key),
+                                                QString::fromStdString(e->content.avatar_url));
 
                                 break;
                         }
                         default: {
                                 lmdb::dbi_del(
-                                  txn, membersdb, lmdb::val(e.state_key), lmdb::val(""));
+                                  txn, membersdb, lmdb::val(e->state_key), lmdb::val(""));
 
                                 removeDisplayName(QString::fromStdString(room_id),
-                                                  QString::fromStdString(e.state_key));
+                                                  QString::fromStdString(e->state_key));
                                 removeAvatarUrl(QString::fromStdString(room_id),
-                                                QString::fromStdString(e.state_key));
+                                                QString::fromStdString(e->state_key));
 
                                 break;
                         }
                         }
 
                         return;
-                } else if (boost::get<StateEvent<Encryption>>(&event) != nullptr) {
+                } else if (std::holds_alternative<StateEvent<Encryption>>(event)) {
                         setEncryptedRoom(txn, room_id);
                         return;
                 }
@@ -570,7 +569,7 @@ private:
                 if (!isStateEvent(event))
                         return;
 
-                boost::apply_visitor(
+                std::visit(
                   [&txn, &statesdb](auto e) {
                           lmdb::dbi_put(
                             txn, statesdb, lmdb::val(to_string(e.type)), lmdb::val(json(e).dump()));
@@ -584,17 +583,17 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                return boost::get<StateEvent<Aliases>>(&e) != nullptr ||
-                       boost::get<StateEvent<state::Avatar>>(&e) != nullptr ||
-                       boost::get<StateEvent<CanonicalAlias>>(&e) != nullptr ||
-                       boost::get<StateEvent<Create>>(&e) != nullptr ||
-                       boost::get<StateEvent<GuestAccess>>(&e) != nullptr ||
-                       boost::get<StateEvent<HistoryVisibility>>(&e) != nullptr ||
-                       boost::get<StateEvent<JoinRules>>(&e) != nullptr ||
-                       boost::get<StateEvent<Name>>(&e) != nullptr ||
-                       boost::get<StateEvent<Member>>(&e) != nullptr ||
-                       boost::get<StateEvent<PowerLevels>>(&e) != nullptr ||
-                       boost::get<StateEvent<Topic>>(&e) != nullptr;
+                return std::holds_alternative<StateEvent<Aliases>>(e) ||
+                       std::holds_alternative<StateEvent<state::Avatar>>(e) ||
+                       std::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
+                       std::holds_alternative<StateEvent<Create>>(e) ||
+                       std::holds_alternative<StateEvent<GuestAccess>>(e) ||
+                       std::holds_alternative<StateEvent<HistoryVisibility>>(e) ||
+                       std::holds_alternative<StateEvent<JoinRules>>(e) ||
+                       std::holds_alternative<StateEvent<Name>>(e) ||
+                       std::holds_alternative<StateEvent<Member>>(e) ||
+                       std::holds_alternative<StateEvent<PowerLevels>>(e) ||
+                       std::holds_alternative<StateEvent<Topic>>(e);
         }
 
         template<class T>
@@ -603,11 +602,11 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                return boost::get<StateEvent<state::Avatar>>(&e) != nullptr ||
-                       boost::get<StateEvent<CanonicalAlias>>(&e) != nullptr ||
-                       boost::get<StateEvent<Name>>(&e) != nullptr ||
-                       boost::get<StateEvent<Member>>(&e) != nullptr ||
-                       boost::get<StateEvent<Topic>>(&e) != nullptr;
+                return std::holds_alternative<StateEvent<state::Avatar>>(e) ||
+                       std::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
+                       std::holds_alternative<StateEvent<Name>>(e) ||
+                       std::holds_alternative<StateEvent<Member>>(e) ||
+                       std::holds_alternative<StateEvent<Topic>>(e);
         }
 
         bool containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
@@ -615,11 +614,11 @@ private:
                 using namespace mtx::events;
                 using namespace mtx::events::state;
 
-                return boost::get<StrippedEvent<state::Avatar>>(&e) != nullptr ||
-                       boost::get<StrippedEvent<CanonicalAlias>>(&e) != nullptr ||
-                       boost::get<StrippedEvent<Name>>(&e) != nullptr ||
-                       boost::get<StrippedEvent<Member>>(&e) != nullptr ||
-                       boost::get<StrippedEvent<Topic>>(&e) != nullptr;
+                return std::holds_alternative<StrippedEvent<state::Avatar>>(e) ||
+                       std::holds_alternative<StrippedEvent<CanonicalAlias>>(e) ||
+                       std::holds_alternative<StrippedEvent<Name>>(e) ||
+                       std::holds_alternative<StrippedEvent<Member>>(e) ||
+                       std::holds_alternative<StrippedEvent<Topic>>(e);
         }
 
         void saveInvites(lmdb::txn &txn,

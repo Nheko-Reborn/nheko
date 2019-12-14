@@ -17,6 +17,7 @@
 
 #include <limits>
 #include <stdexcept>
+#include <variant>
 
 #include <QByteArray>
 #include <QCoreApplication>
@@ -26,7 +27,6 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-#include <boost/variant.hpp>
 #include <mtx/responses/common.hpp>
 
 #include "Cache.h"
@@ -395,7 +395,7 @@ Cache::saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr 
         txn.commit();
 }
 
-boost::optional<mtx::crypto::OlmSessionPtr>
+std::optional<mtx::crypto::OlmSessionPtr>
 Cache::getOlmSession(const std::string &curve25519, const std::string &session_id)
 {
         using namespace mtx::crypto;
@@ -413,7 +413,7 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
                 return unpickle<SessionObject>(data, SECRET);
         }
 
-        return boost::none;
+        return std::nullopt;
 }
 
 std::vector<std::string>
@@ -967,8 +967,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                 bool has_new_tags = false;
                 for (const auto &evt : room.second.account_data.events) {
                         // for now only fetch tag events
-                        if (evt.type() == typeid(Event<account_data::Tag>)) {
-                                auto tags_evt = boost::get<Event<account_data::Tag>>(evt);
+                        if (std::holds_alternative<Event<account_data::Tag>>(evt)) {
+                                auto tags_evt = std::get<Event<account_data::Tag>>(evt);
                                 has_new_tags  = true;
                                 for (const auto &tag : tags_evt.content.tags) {
                                         updatedInfo.tags.push_back(tag.first);
@@ -1049,19 +1049,17 @@ Cache::saveInvite(lmdb::txn &txn,
         using namespace mtx::events::state;
 
         for (const auto &e : room.invite_state) {
-                if (boost::get<StrippedEvent<Member>>(&e) != nullptr) {
-                        auto msg = boost::get<StrippedEvent<Member>>(e);
+                if (auto msg = std::get_if<StrippedEvent<Member>>(&e)) {
+                        auto display_name = msg->content.display_name.empty()
+                                              ? msg->state_key
+                                              : msg->content.display_name;
 
-                        auto display_name = msg.content.display_name.empty()
-                                              ? msg.state_key
-                                              : msg.content.display_name;
-
-                        MemberInfo tmp{display_name, msg.content.avatar_url};
+                        MemberInfo tmp{display_name, msg->content.avatar_url};
 
                         lmdb::dbi_put(
-                          txn, membersdb, lmdb::val(msg.state_key), lmdb::val(json(tmp).dump()));
+                          txn, membersdb, lmdb::val(msg->state_key), lmdb::val(json(tmp).dump()));
                 } else {
-                        boost::apply_visitor(
+                        std::visit(
                           [&txn, &statesdb](auto msg) {
                                   bool res = lmdb::dbi_put(txn,
                                                            statesdb,
@@ -1122,7 +1120,7 @@ Cache::roomsWithTagUpdates(const mtx::responses::Sync &res)
         for (const auto &room : res.rooms.join) {
                 bool hasUpdates = false;
                 for (const auto &evt : room.second.account_data.events) {
-                        if (evt.type() == typeid(Event<account_data::Tag>)) {
+                        if (std::holds_alternative<Event<account_data::Tag>>(evt)) {
                                 hasUpdates = true;
                         }
                 }
@@ -1940,7 +1938,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                 if (isStateEvent(e))
                         continue;
 
-                if (boost::get<RedactionEvent<msg::Redaction>>(&e) != nullptr)
+                if (std::holds_alternative<RedactionEvent<msg::Redaction>>(e))
                         continue;
 
                 json obj = json::object();

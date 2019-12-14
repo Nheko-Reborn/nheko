@@ -5,9 +5,6 @@ option(ASAN "Compile with address sanitizers" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-add_definitions(-DBOOST_MPL_LIMIT_LIST_SIZE=30)
-add_definitions(-DBOOST_MPL_CFG_NO_PREPROCESSED_HEADERS)
-
 include(GNUInstallDirs)
 
 # Include Qt basic functions
@@ -15,8 +12,8 @@ include(QtCommon)
 
 project(nheko LANGUAGES C CXX)
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "6")
-set(CPACK_PACKAGE_VERSION_PATCH "4")
+set(CPACK_PACKAGE_VERSION_MINOR "7")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR})
 set(PROJECT_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH})
@@ -27,7 +24,7 @@ fix_project_version()
 
 # Set additional project information
 set(COMPANY "Nheko")
-set(COPYRIGHT "Copyright (c) 2018 Nheko Contributors")
+set(COPYRIGHT "Copyright (c) 2019 Nheko Contributors")
 set(IDENTIFIER "com.github.mujx.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
@@ -91,7 +88,7 @@ if (NOT MSVC)
     set(CMAKE_C_COMPILER gcc)
 endif(NOT MSVC)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if(NOT MSVC)
@@ -106,7 +103,7 @@ if(NOT MSVC)
         -fsized-deallocation \
         -fdiagnostics-color=always \
         -Wunreachable-code \
-	-std=c++14"
+	-std=c++17"
     )
     if (NOT CMAKE_COMPILER_IS_GNUCXX)
         # -Wshadow is buggy and broken in GCC, so do not enable it.

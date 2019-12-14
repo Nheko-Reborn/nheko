@@ -54,7 +54,7 @@ constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
 constexpr int RETRY_TIMEOUT               = 5'000;
 constexpr size_t MAX_ONETIME_KEYS         = 50;
 
-Q_DECLARE_METATYPE(boost::optional<mtx::crypto::EncryptedFile>)
+Q_DECLARE_METATYPE(std::optional<mtx::crypto::EncryptedFile>)
 
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
@@ -64,8 +64,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 {
         setObjectName("chatPage");
 
-        qRegisterMetaType<boost::optional<mtx::crypto::EncryptedFile>>(
-          "boost::optional<mtx::crypto::EncryptedFile>");
+        qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>(
+          "std::optional<mtx::crypto::EncryptedFile>");
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -318,7 +318,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
                   auto bin     = dev->peek(dev->size());
                   auto payload = std::string(bin.data(), bin.size());
-                  boost::optional<mtx::crypto::EncryptedFile> encryptedFile;
+                  std::optional<mtx::crypto::EncryptedFile> encryptedFile;
                   if (cache::client()->isRoomEncrypted(current_room_.toStdString())) {
                           mtx::crypto::BinaryBuf buf;
                           std::tie(buf, encryptedFile) = mtx::crypto::encrypt_file(payload);
@@ -371,7 +371,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 this,
                 [this](QString roomid,
                        QString filename,
-                       boost::optional<mtx::crypto::EncryptedFile> encryptedFile,
+                       std::optional<mtx::crypto::EncryptedFile> encryptedFile,
                        QString url,
                        QString mimeClass,
                        QString mime,

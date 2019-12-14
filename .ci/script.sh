@@ -3,16 +3,8 @@
 set -ex
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-    export CC=${C_COMPILER}
-    export CXX=${CXX_COMPILER}
     # make build use all available cores
     export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
-
-    sudo update-alternatives --install /usr/bin/gcc gcc "/usr/bin/${C_COMPILER}" 10
-    sudo update-alternatives --install /usr/bin/g++ g++ "/usr/bin/${CXX_COMPILER}" 10
-
-    sudo update-alternatives --set gcc "/usr/bin/${C_COMPILER}"
-    sudo update-alternatives --set g++ "/usr/bin/${CXX_COMPILER}"
 
     export PATH="/usr/local/bin/:${PATH}"
     cmake --version

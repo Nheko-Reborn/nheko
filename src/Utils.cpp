@@ -9,9 +9,10 @@
 #include <QSettings>
 #include <QTextDocument>
 #include <QXmlStreamReader>
-#include <cmath>
 
-#include <boost/variant.hpp>
+#include <cmath>
+#include <variant>
+
 #include <cmark.h>
 
 #include "Config.h"
@@ -122,34 +123,33 @@ utils::getMessageDescription(const TimelineEvent &event,
         using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
         using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
-        if (boost::get<Audio>(&event) != nullptr) {
+        if (std::holds_alternative<Audio>(event)) {
                 return createDescriptionInfo<Audio>(event, localUser, room_id);
-        } else if (boost::get<Emote>(&event) != nullptr) {
+        } else if (std::holds_alternative<Emote>(event)) {
                 return createDescriptionInfo<Emote>(event, localUser, room_id);
-        } else if (boost::get<File>(&event) != nullptr) {
+        } else if (std::holds_alternative<File>(event)) {
                 return createDescriptionInfo<File>(event, localUser, room_id);
-        } else if (boost::get<Image>(&event) != nullptr) {
+        } else if (std::holds_alternative<Image>(event)) {
                 return createDescriptionInfo<Image>(event, localUser, room_id);
-        } else if (boost::get<Notice>(&event) != nullptr) {
+        } else if (std::holds_alternative<Notice>(event)) {
                 return createDescriptionInfo<Notice>(event, localUser, room_id);
-        } else if (boost::get<Text>(&event) != nullptr) {
+        } else if (std::holds_alternative<Text>(event)) {
                 return createDescriptionInfo<Text>(event, localUser, room_id);
-        } else if (boost::get<Video>(&event) != nullptr) {
+        } else if (std::holds_alternative<Video>(event)) {
                 return createDescriptionInfo<Video>(event, localUser, room_id);
-        } else if (boost::get<mtx::events::Sticker>(&event) != nullptr) {
+        } else if (std::holds_alternative<mtx::events::Sticker>(event)) {
                 return createDescriptionInfo<mtx::events::Sticker>(event, localUser, room_id);
-        } else if (boost::get<Encrypted>(&event) != nullptr) {
-                const auto msg    = boost::get<Encrypted>(event);
-                const auto sender = QString::fromStdString(msg.sender);
+        } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {
+                const auto sender = QString::fromStdString(msg->sender);
 
                 const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg->origin_server_ts);
 
                 DescInfo info;
                 info.userid    = sender;
                 info.body      = QString(" %1").arg(messageDescription<Encrypted>());
                 info.timestamp = utils::descriptiveTime(ts);
-                info.event_id  = QString::fromStdString(msg.event_id);
+                info.event_id  = QString::fromStdString(msg->event_id);
                 info.datetime  = ts;
 
                 return info;
@@ -217,30 +217,25 @@ utils::levenshtein_distance(const std::string &s1, const std::string &s2)
 }
 
 QString
-utils::event_body(const mtx::events::collections::TimelineEvents &event)
+utils::event_body(const mtx::events::collections::TimelineEvents &e)
 {
         using namespace mtx::events;
-        using namespace mtx::events::msg;
+        if (auto ev = std::get_if<RoomEvent<msg::Audio>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Emote>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::File>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Image>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Notice>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Text>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Video>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
 
-        if (boost::get<RoomEvent<Audio>>(&event) != nullptr) {
-                return message_body<RoomEvent<Audio>>(event);
-        } else if (boost::get<RoomEvent<Emote>>(&event) != nullptr) {
-                return message_body<RoomEvent<Emote>>(event);
-        } else if (boost::get<RoomEvent<File>>(&event) != nullptr) {
-                return message_body<RoomEvent<File>>(event);
-        } else if (boost::get<RoomEvent<Image>>(&event) != nullptr) {
-                return message_body<RoomEvent<Image>>(event);
-        } else if (boost::get<RoomEvent<Notice>>(&event) != nullptr) {
-                return message_body<RoomEvent<Notice>>(event);
-        } else if (boost::get<Sticker>(&event) != nullptr) {
-                return message_body<Sticker>(event);
-        } else if (boost::get<RoomEvent<Text>>(&event) != nullptr) {
-                return message_body<RoomEvent<Text>>(event);
-        } else if (boost::get<RoomEvent<Video>>(&event) != nullptr) {
-                return message_body<RoomEvent<Video>>(event);
-        }
-
-        return QString();
+        return "";
 }
 
 QPixmap

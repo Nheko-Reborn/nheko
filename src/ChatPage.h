@@ -18,8 +18,9 @@
 #pragma once
 
 #include <atomic>
-#include <boost/optional.hpp>
-#include <boost/variant.hpp>
+#include <optional>
+#include <variant>
+
 #include <mtx/common.hpp>
 #include <mtx/responses.hpp>
 
@@ -98,7 +99,7 @@ signals:
         void uploadFailed(const QString &msg);
         void mediaUploaded(const QString &roomid,
                            const QString &filename,
-                           const boost::optional<mtx::crypto::EncryptedFile> &file,
+                           const std::optional<mtx::crypto::EncryptedFile> &file,
                            const QString &url,
                            const QString &mimeClass,
                            const QString &mime,
@@ -252,9 +253,8 @@ ChatPage::getMemberships(const std::vector<Collection> &collection) const
         using Member = mtx::events::StateEvent<mtx::events::state::Member>;
 
         for (const auto &event : collection) {
-                if (boost::get<Member>(event) != nullptr) {
-                        auto member = boost::get<Member>(event);
-                        memberships.emplace(member.state_key, member);
+                if (auto member = std::get_if<Member>(event)) {
+                        memberships.emplace(member->state_key, *member);
                 }
         }
 

@@ -56,26 +56,26 @@ public slots:
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
                                const QString &filename,
-                               const boost::optional<mtx::crypto::EncryptedFile> &file,
+                               const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize,
                                const QSize &dimensions);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
-                              const boost::optional<mtx::crypto::EncryptedFile> &file,
+                              const std::optional<mtx::crypto::EncryptedFile> &file,
                               const QString &url,
                               const QString &mime,
                               uint64_t dsize);
         void queueAudioMessage(const QString &roomid,
                                const QString &filename,
-                               const boost::optional<mtx::crypto::EncryptedFile> &file,
+                               const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize);
         void queueVideoMessage(const QString &roomid,
                                const QString &filename,
-                               const boost::optional<mtx::crypto::EncryptedFile> &file,
+                               const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize);

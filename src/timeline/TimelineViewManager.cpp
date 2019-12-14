@@ -222,7 +222,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 void
 TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
-                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
+                                       const std::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize,
@@ -243,7 +243,7 @@ void
 TimelineViewManager::queueFileMessage(
   const QString &roomid,
   const QString &filename,
-  const boost::optional<mtx::crypto::EncryptedFile> &encryptedFile,
+  const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
   const QString &url,
   const QString &mime,
   uint64_t dsize)
@@ -260,7 +260,7 @@ TimelineViewManager::queueFileMessage(
 void
 TimelineViewManager::queueAudioMessage(const QString &roomid,
                                        const QString &filename,
-                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
+                                       const std::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize)
@@ -277,7 +277,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
 void
 TimelineViewManager::queueVideoMessage(const QString &roomid,
                                        const QString &filename,
-                                       const boost::optional<mtx::crypto::EncryptedFile> &file,
+                                       const std::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize)

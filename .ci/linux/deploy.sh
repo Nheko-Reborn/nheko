@@ -36,7 +36,7 @@ unset LD_LIBRARY_PATH
 
 ARCH=$(uname -m)
 export ARCH
-LD_LIBRARY_PATH=$(pwd)/.deps/usr/lib/:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$(pwd)/.deps/usr/lib/:/usr/local/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 
 for res in ./linuxdeployqt*.AppImage

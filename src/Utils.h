@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/variant.hpp>
+#include <variant>
 
 #include "Cache.h"
 #include "RoomInfoListItem.h"
@@ -165,7 +165,7 @@ template<class T, class Event>
 DescInfo
 createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
 {
-        const auto msg    = boost::get<T>(event);
+        const auto msg    = std::get<T>(event);
         const auto sender = QString::fromStdString(msg.sender);
 
         const auto username = Cache::displayName(room_id, sender);
@@ -200,25 +200,25 @@ erase_if(ContainerT &items, const PredicateT &predicate)
 inline uint64_t
 event_timestamp(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return msg.origin_server_ts; }, event);
+        return std::visit([](auto msg) { return msg.origin_server_ts; }, event);
 }
 
 inline nlohmann::json
 serialize_event(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return json(msg); }, event);
+        return std::visit([](auto msg) { return json(msg); }, event);
 }
 
 inline mtx::events::EventType
 event_type(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return msg.type; }, event);
+        return std::visit([](auto msg) { return msg.type; }, event);
 }
 
 inline std::string
 event_id(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return msg.event_id; }, event);
+        return std::visit([](auto msg) { return msg.event_id; }, event);
 }
 
 inline QString
@@ -230,15 +230,14 @@ eventId(const mtx::events::collections::TimelineEvents &event)
 inline QString
 event_sender(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return QString::fromStdString(msg.sender); },
-                                    event);
+        return std::visit([](auto msg) { return QString::fromStdString(msg.sender); }, event);
 }
 
 template<class T>
 QString
 message_body(const mtx::events::collections::TimelineEvents &event)
 {
-        return QString::fromStdString(boost::get<T>(event).content.body);
+        return QString::fromStdString(std::get<T>(event).content.body);
 }
 
 //! Calculate the Levenshtein distance between two strings with character skipping.

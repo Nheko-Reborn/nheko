@@ -13,7 +13,7 @@ ExternalProject_Add(
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
 
   BUILD_COMMAND ${CMAKE_COMMAND} --build ${DEPS_BUILD_DIR}/json 
-  INSTALL_COMMAND make install
+  INSTALL_COMMAND ${CMAKE_COMMAND} --build ${DEPS_BUILD_DIR}/json --target install
 )
 
 list(APPEND THIRD_PARTY_DEPS Json)

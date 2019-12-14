@@ -117,17 +117,17 @@ eventFormattedBody(const mtx::events::RoomEvent<T> &e)
 }
 
 template<class T>
-boost::optional<mtx::crypto::EncryptedFile>
+std::optional<mtx::crypto::EncryptedFile>
 eventEncryptionInfo(const mtx::events::Event<T> &)
 {
-        return boost::none;
+        return std::nullopt;
 }
 
 template<class T>
 auto
 eventEncryptionInfo(const mtx::events::RoomEvent<T> &e) -> std::enable_if_t<
-  std::is_same<decltype(e.content.file), boost::optional<mtx::crypto::EncryptedFile>>::value,
-  boost::optional<mtx::crypto::EncryptedFile>>
+  std::is_same<decltype(e.content.file), std::optional<mtx::crypto::EncryptedFile>>::value,
+  std::optional<mtx::crypto::EncryptedFile>>
 {
         return e.content.file;
 }
@@ -407,7 +407,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 }
                 eventOrder[idx] = event_id;
                 auto ev         = events.value(txn_id);
-                ev              = boost::apply_visitor(
+                ev              = std::visit(
                   [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
                           auto eventCopy     = e;
                           eventCopy.event_id = event_id.toStdString();
@@ -483,29 +483,30 @@ TimelineModel::data(const QModelIndex &index, int role) const
 
         mtx::events::collections::TimelineEvents event = events.value(id);
 
-        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+        if (auto e =
+              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
                 event = decryptEvent(*e).event;
         }
 
         switch (role) {
         case Section: {
-                QDateTime date = boost::apply_visitor(
-                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, event);
+                QDateTime date =
+                  std::visit([](const auto &e) -> QDateTime { return eventTimestamp(e); }, event);
                 date.setTime(QTime());
 
                 QString userId =
-                  boost::apply_visitor([](const auto &e) -> QString { return senderId(e); }, event);
+                  std::visit([](const auto &e) -> QString { return senderId(e); }, event);
 
                 for (int r = index.row() - 1; r > 0; r--) {
                         auto tempEv        = events.value(eventOrder[r]);
-                        QDateTime prevDate = boost::apply_visitor(
+                        QDateTime prevDate = std::visit(
                           [](const auto &e) -> QDateTime { return eventTimestamp(e); }, tempEv);
                         prevDate.setTime(QTime());
                         if (prevDate != date)
                                 return QString("%2 %1").arg(date.toMSecsSinceEpoch()).arg(userId);
 
-                        QString prevUserId = boost::apply_visitor(
-                          [](const auto &e) -> QString { return senderId(e); }, tempEv);
+                        QString prevUserId =
+                          std::visit([](const auto &e) -> QString { return senderId(e); }, tempEv);
                         if (userId != prevUserId)
                                 break;
                 }
@@ -513,62 +514,61 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QString("%1").arg(userId);
         }
         case UserId:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return senderId(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QString { return senderId(e); }, event));
         case UserName:
-                return QVariant(displayName(boost::apply_visitor(
-                  [](const auto &e) -> QString { return senderId(e); }, event)));
+                return QVariant(displayName(
+                  std::visit([](const auto &e) -> QString { return senderId(e); }, event)));
 
         case Timestamp:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QDateTime { return eventTimestamp(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QDateTime { return eventTimestamp(e); }, event));
         case Type:
-                return QVariant(boost::apply_visitor(
+                return QVariant(std::visit(
                   [](const auto &e) -> qml_mtx_events::EventType { return toRoomEventType(e); },
                   event));
         case Body:
-                return QVariant(utils::replaceEmoji(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventBody(e); }, event)));
+                return QVariant(utils::replaceEmoji(
+                  std::visit([](const auto &e) -> QString { return eventBody(e); }, event)));
         case FormattedBody:
                 return QVariant(
                   utils::replaceEmoji(
-                    utils::linkifyMessage(boost::apply_visitor(
+                    utils::linkifyMessage(std::visit(
                       [](const auto &e) -> QString { return eventFormattedBody(e); }, event)))
                     .remove("<mx-reply>")
                     .remove("</mx-reply>"));
         case Url:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventUrl(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QString { return eventUrl(e); }, event));
         case ThumbnailUrl:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventThumbnailUrl(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QString { return eventThumbnailUrl(e); }, event));
         case Filename:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventFilename(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QString { return eventFilename(e); }, event));
         case Filesize:
-                return QVariant(boost::apply_visitor(
+                return QVariant(std::visit(
                   [](const auto &e) -> QString {
                           return utils::humanReadableFileSize(eventFilesize(e));
                   },
                   event));
         case MimeType:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventMimeType(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QString { return eventMimeType(e); }, event));
         case Height:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> qulonglong { return eventHeight(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> qulonglong { return eventHeight(e); }, event));
         case Width:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> qulonglong { return eventWidth(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> qulonglong { return eventWidth(e); }, event));
         case ProportionalHeight:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> double { return eventPropHeight(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> double { return eventPropHeight(e); }, event));
         case Id:
                 return id;
         case State:
                 // only show read receipts for messages not from us
-                if (boost::apply_visitor([](const auto &e) -> QString { return senderId(e); },
-                                         event)
+                if (std::visit([](const auto &e) -> QString { return senderId(e); }, event)
                       .toStdString() != http::client()->user_id().to_string())
                         return qml_mtx_events::Empty;
                 else if (failed.contains(id))
@@ -582,20 +582,20 @@ TimelineModel::data(const QModelIndex &index, int role) const
                         return qml_mtx_events::Received;
         case IsEncrypted: {
                 auto tempEvent = events[id];
-                return boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                         &tempEvent) != nullptr;
+                return std::holds_alternative<
+                  mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(tempEvent);
         }
         case ReplyTo: {
-                QString evId = boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventRelatesTo(e); }, event);
+                QString evId =
+                  std::visit([](const auto &e) -> QString { return eventRelatesTo(e); }, event);
                 return QVariant(evId);
         }
         case RoomName:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventRoomName(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QString { return eventRoomName(e); }, event));
         case RoomTopic:
-                return QVariant(boost::apply_visitor(
-                  [](const auto &e) -> QString { return eventRoomTopic(e); }, event));
+                return QVariant(
+                  std::visit([](const auto &e) -> QString { return eventRoomTopic(e); }, event));
         default:
                 return QVariant();
         }
@@ -646,13 +646,12 @@ TimelineModel::updateLastMessage()
 {
         for (auto it = eventOrder.rbegin(); it != eventOrder.rend(); ++it) {
                 auto event = events.value(*it);
-                if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                if (auto e = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                       &event)) {
                         event = decryptEvent(*e).event;
                 }
 
-                if (!boost::apply_visitor([](const auto &e) -> bool { return isMessage(e); },
-                                          event))
+                if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, event))
                         continue;
 
                 auto description = utils::getMessageDescription(
@@ -668,8 +667,7 @@ TimelineModel::internalAddEvents(
 {
         std::vector<QString> ids;
         for (auto e : timeline) {
-                QString id =
-                  boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, e);
+                QString id = std::visit([](const auto &e) -> QString { return eventId(e); }, e);
 
                 if (this->events.contains(id)) {
                         this->events.insert(id, e);
@@ -679,12 +677,12 @@ TimelineModel::internalAddEvents(
                 }
 
                 if (auto redaction =
-                      boost::get<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
+                      std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
                         QString redacts = QString::fromStdString(redaction->redacts);
                         auto redacted   = std::find(eventOrder.begin(), eventOrder.end(), redacts);
 
                         if (redacted != eventOrder.end()) {
-                                auto redactedEvent = boost::apply_visitor(
+                                auto redactedEvent = std::visit(
                                   [](const auto &ev)
                                     -> mtx::events::RoomEvent<mtx::events::msg::Redacted> {
                                           mtx::events::RoomEvent<mtx::events::msg::Redacted>
@@ -707,11 +705,11 @@ TimelineModel::internalAddEvents(
                 }
 
                 if (auto event =
-                      boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
+                      std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
                         e = decryptEvent(*event).event;
                 }
-                auto encInfo = boost::apply_visitor(
-                  [](const auto &ev) -> boost::optional<mtx::crypto::EncryptedFile> {
+                auto encInfo = std::visit(
+                  [](const auto &ev) -> std::optional<mtx::crypto::EncryptedFile> {
                           return eventEncryptionInfo(ev);
                   },
                   e);
@@ -947,11 +945,12 @@ void
 TimelineModel::replyAction(QString id)
 {
         auto event = events.value(id);
-        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+        if (auto e =
+              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
                 event = decryptEvent(*e).event;
         }
 
-        RelatedInfo related = boost::apply_visitor(
+        RelatedInfo related = std::visit(
           [](const auto &ev) -> RelatedInfo {
                   RelatedInfo related_   = {};
                   related_.quoted_user   = QString::fromStdString(ev.sender);
@@ -959,10 +958,10 @@ TimelineModel::replyAction(QString id)
                   return related_;
           },
           event);
-        related.type        = mtx::events::getMessageType(boost::apply_visitor(
-          [](const auto &e) -> std::string { return eventMsgType(e); }, event));
-        related.quoted_body = boost::apply_visitor(
-          [](const auto &e) -> QString { return eventFormattedBody(e); }, event);
+        related.type = mtx::events::getMessageType(
+          std::visit([](const auto &e) -> std::string { return eventMsgType(e); }, event));
+        related.quoted_body =
+          std::visit([](const auto &e) -> QString { return eventFormattedBody(e); }, event);
         related.quoted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
         nhlog::ui()->debug("after replacement: {}", related.quoted_body.toStdString());
@@ -1396,7 +1395,7 @@ TimelineModel::processOnePendingMessage()
         QString txn_id_qstr = pending.first();
 
         auto event = events.value(txn_id_qstr);
-        boost::apply_visitor(SendMessageVisitor{txn_id_qstr, this}, event);
+        std::visit(SendMessageVisitor{txn_id_qstr, this}, event);
 }
 
 void
@@ -1405,7 +1404,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
         internalAddEvents({event});
 
         QString txn_id_qstr =
-          boost::apply_visitor([](const auto &e) -> QString { return eventId(e); }, event);
+          std::visit([](const auto &e) -> QString { return eventId(e); }, event);
         beginInsertRows(QModelIndex(),
                         static_cast<int>(this->eventOrder.size()),
                         static_cast<int>(this->eventOrder.size()));
@@ -1423,22 +1422,22 @@ TimelineModel::saveMedia(QString eventId) const
 {
         mtx::events::collections::TimelineEvents event = events.value(eventId);
 
-        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+        if (auto e =
+              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
                 event = decryptEvent(*e).event;
         }
 
-        QString mxcUrl =
-          boost::apply_visitor([](const auto &e) -> QString { return eventUrl(e); }, event);
+        QString mxcUrl = std::visit([](const auto &e) -> QString { return eventUrl(e); }, event);
         QString originalFilename =
-          boost::apply_visitor([](const auto &e) -> QString { return eventFilename(e); }, event);
+          std::visit([](const auto &e) -> QString { return eventFilename(e); }, event);
         QString mimeType =
-          boost::apply_visitor([](const auto &e) -> QString { return eventMimeType(e); }, event);
+          std::visit([](const auto &e) -> QString { return eventMimeType(e); }, event);
 
-        using EncF = boost::optional<mtx::crypto::EncryptedFile>;
+        using EncF = std::optional<mtx::crypto::EncryptedFile>;
         EncF encryptionInfo =
-          boost::apply_visitor([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
+          std::visit([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
 
-        qml_mtx_events::EventType eventType = boost::apply_visitor(
+        qml_mtx_events::EventType eventType = std::visit(
           [](const auto &e) -> qml_mtx_events::EventType { return toRoomEventType(e); }, event);
 
         QString dialogTitle;
@@ -1500,18 +1499,18 @@ TimelineModel::cacheMedia(QString eventId)
 {
         mtx::events::collections::TimelineEvents event = events.value(eventId);
 
-        if (auto e = boost::get<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+        if (auto e =
+              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
                 event = decryptEvent(*e).event;
         }
 
-        QString mxcUrl =
-          boost::apply_visitor([](const auto &e) -> QString { return eventUrl(e); }, event);
+        QString mxcUrl = std::visit([](const auto &e) -> QString { return eventUrl(e); }, event);
         QString mimeType =
-          boost::apply_visitor([](const auto &e) -> QString { return eventMimeType(e); }, event);
+          std::visit([](const auto &e) -> QString { return eventMimeType(e); }, event);
 
-        using EncF = boost::optional<mtx::crypto::EncryptedFile>;
+        using EncF = std::optional<mtx::crypto::EncryptedFile>;
         EncF encryptionInfo =
-          boost::apply_visitor([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
+          std::visit([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
 
         // If the message is a link to a non mxcUrl, don't download it
         if (!mxcUrl.startsWith("mxc://")) {
