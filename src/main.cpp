@@ -45,7 +45,7 @@
 
 #if defined(Q_OS_LINUX)
 #include <boost/stacktrace.hpp>
-#include <signal.h>
+#include <csignal>
 
 #ifdef QML_DEBUGGING
 #include <QQmlDebuggingEnabler>
