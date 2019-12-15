@@ -1,8 +1,8 @@
 #include "MxcImageProvider.h"
 
 #include "Cache.h"
-#include "MatrixClient.h"
 #include "Logging.h"
+#include "MatrixClient.h"
 
 void
 MxcImageResponse::run()

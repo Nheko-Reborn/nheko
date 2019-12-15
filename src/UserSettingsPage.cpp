@@ -29,6 +29,7 @@
 #include <QString>
 #include <QTextStream>
 
+#include "Cache.h"
 #include "Config.h"
 #include "MatrixClient.h"
 #include "Olm.h"

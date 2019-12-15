@@ -15,6 +15,7 @@
 
 #include <cmark.h>
 
+#include "Cache.h"
 #include "Config.h"
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;

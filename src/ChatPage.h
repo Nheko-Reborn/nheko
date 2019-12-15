@@ -22,6 +22,7 @@
 #include <variant>
 
 #include <mtx/common.hpp>
+#include <mtx/requests.hpp>
 #include <mtx/responses.hpp>
 #include <mtxclient/http/errors.hpp>
 

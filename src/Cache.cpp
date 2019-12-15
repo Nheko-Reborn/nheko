@@ -104,7 +104,6 @@ numeric_key_comparison(const MDB_val *a, const MDB_val *b)
         return -1;
 }
 
-
 Cache::Cache(const QString &userId, QObject *parent)
   : QObject{parent}
   , env_{nullptr}
@@ -2901,4 +2900,3 @@ restoreSessions()
         return instance_->restoreSessions();
 }
 } // namespace cache
-

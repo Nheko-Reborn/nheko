@@ -16,6 +16,7 @@
 
 #include "dialogs/RoomSettings.h"
 
+#include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"

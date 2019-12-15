@@ -22,6 +22,7 @@
 #include <QTimer>
 #include <QtConcurrent>
 
+#include "Cache.h"
 #include "QuickSwitcher.h"
 #include "popups/SuggestionsPopup.h"
 

@@ -2,7 +2,6 @@
 
 #include <variant>
 
-#include "Cache.h"
 #include "RoomInfoListItem.h"
 
 #include <QCoreApplication>
@@ -12,6 +11,12 @@
 #include <mtx/events/common.hpp>
 
 #include <qmath.h>
+
+namespace cache {
+// Forward declarations to prevent dependency on Cache.h, since this header is included often!
+QString
+displayName(const QString &room_id, const QString &user_id);
+}
 
 class QComboBox;
 
