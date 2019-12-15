@@ -23,6 +23,7 @@
 
 #include <mtx/common.hpp>
 #include <mtx/responses.hpp>
+#include <mtxclient/http/errors.hpp>
 
 #include <QFrame>
 #include <QHBoxLayout>
@@ -34,7 +35,6 @@
 
 #include "CacheStructs.h"
 #include "CommunitiesList.h"
-#include "MatrixClient.h"
 #include "Utils.h"
 #include "notifications/Manager.h"
 #include "popups/UserMentions.h"
@@ -55,6 +55,10 @@ class NotificationsManager;
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
 constexpr int TYPING_REFRESH_TIMEOUT = 10000;
+
+namespace mtx::http {
+using RequestErr = const std::optional<mtx::http::ClientError> &;
+}
 
 class ChatPage : public QWidget
 {

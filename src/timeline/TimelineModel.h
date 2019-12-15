@@ -8,10 +8,14 @@
 
 #include <mtx/common.hpp>
 #include <mtx/responses.hpp>
+#include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "Logging.h"
-#include "MatrixClient.h"
+
+namespace mtx::http {
+using RequestErr = const std::optional<mtx::http::ClientError> &;
+}
 
 namespace qml_mtx_events {
 Q_NAMESPACE
@@ -232,13 +236,7 @@ template<class T>
 void
 TimelineModel::sendMessage(const T &msg)
 {
-        auto txn_id                       = http::client()->generate_txn_id();
         mtx::events::RoomEvent<T> msgCopy = {};
         msgCopy.content                   = msg;
-        msgCopy.type                      = mtx::events::EventType::RoomMessage;
-        msgCopy.event_id                  = txn_id;
-        msgCopy.sender                    = http::client()->user_id().to_string();
-        msgCopy.origin_server_ts          = QDateTime::currentMSecsSinceEpoch();
-
         emit newMessageToSend(msgCopy);
 }

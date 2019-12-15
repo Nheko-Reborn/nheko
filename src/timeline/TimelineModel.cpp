@@ -11,6 +11,7 @@
 #include "ChatPage.h"
 #include "Logging.h"
 #include "MainWindow.h"
+#include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "Olm.h"
 #include "TimelineViewManager.h"
@@ -1400,6 +1401,15 @@ TimelineModel::processOnePendingMessage()
 void
 TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 {
+        std::visit(
+          [](auto &msg) {
+                  msg.type             = mtx::events::EventType::RoomMessage;
+                  msg.event_id         = http::client()->generate_txn_id();
+                  msg.sender           = http::client()->user_id().to_string();
+                  msg.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
+          },
+          event);
+
         internalAddEvents({event});
 
         QString txn_id_qstr =
