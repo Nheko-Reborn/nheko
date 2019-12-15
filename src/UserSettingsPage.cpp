@@ -555,7 +555,7 @@ UserSettingsPage::importSessionKeys()
         try {
                 auto sessions =
                   mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
-                cache::client()->importSessionKeys(std::move(sessions));
+                cache::importSessionKeys(std::move(sessions));
         } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         } catch (const lmdb::error &e) {
@@ -597,7 +597,7 @@ UserSettingsPage::exportSessionKeys()
         // Export sessions & save to file.
         try {
                 auto encrypted_blob = mtx::crypto::encrypt_exported_sessions(
-                  cache::client()->exportSessionKeys(), password.toStdString());
+                  cache::exportSessionKeys(), password.toStdString());
 
                 QString b64 = QString::fromStdString(mtx::crypto::bin2base64(encrypted_blob));
 

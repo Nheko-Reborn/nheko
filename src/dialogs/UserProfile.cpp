@@ -203,7 +203,7 @@ UserProfile::init(const QString &userId, const QString &roomId)
 {
         resetToDefaults();
 
-        auto displayName = Cache::displayName(roomId, userId);
+        auto displayName = cache::displayName(roomId, userId);
 
         userIdLabel_->setText(userId);
         displayNameLabel_->setText(displayName);
@@ -215,9 +215,9 @@ UserProfile::init(const QString &userId, const QString &roomId)
 
         try {
                 bool hasMemberRights =
-                  cache::client()->hasEnoughPowerLevel({mtx::events::EventType::RoomMember},
-                                                       roomId.toStdString(),
-                                                       localUser.toStdString());
+                  cache::hasEnoughPowerLevel({mtx::events::EventType::RoomMember},
+                                             roomId.toStdString(),
+                                             localUser.toStdString());
                 if (!hasMemberRights) {
                         kickBtn_->hide();
                         banBtn_->hide();

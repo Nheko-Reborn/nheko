@@ -6,7 +6,6 @@
 #include <QWidget>
 
 #include "../AvatarProvider.h"
-#include "../Cache.h"
 #include "../ChatPage.h"
 
 class Avatar;

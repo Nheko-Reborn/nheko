@@ -8,6 +8,7 @@
 #include "../ui/Avatar.h"
 #include "../ui/DropShadow.h"
 #include "../ui/TextLabel.h"
+#include "PopupItem.h"
 #include "ReplyPopup.h"
 
 ReplyPopup::ReplyPopup(QWidget *parent)

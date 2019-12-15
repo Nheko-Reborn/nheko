@@ -1,6 +1,8 @@
 #include "MxcImageProvider.h"
 
 #include "Cache.h"
+#include "MatrixClient.h"
+#include "Logging.h"
 
 void
 MxcImageResponse::run()
@@ -11,7 +13,7 @@ MxcImageResponse::run()
                                      .arg(m_requestedSize.width())
                                      .arg(m_requestedSize.height());
 
-                auto data = cache::client()->image(fileName);
+                auto data = cache::image(fileName);
                 if (!data.isNull() && m_image.loadFromData(data)) {
                         m_image = m_image.scaled(m_requestedSize, Qt::KeepAspectRatio);
                         m_image.setText("mxc url", "mxc://" + m_id);
@@ -36,14 +38,14 @@ MxcImageResponse::run()
                           }
 
                           auto data = QByteArray(res.data(), res.size());
-                          cache::client()->saveImage(fileName, data);
+                          cache::saveImage(fileName, data);
                           m_image.loadFromData(data);
                           m_image.setText("mxc url", "mxc://" + m_id);
 
                           emit finished();
                   });
         } else {
-                auto data = cache::client()->image(m_id);
+                auto data = cache::image(m_id);
                 if (!data.isNull() && m_image.loadFromData(data)) {
                         m_image.setText("mxc url", "mxc://" + m_id);
                         emit finished();
@@ -75,7 +77,7 @@ MxcImageResponse::run()
                           m_image.setText("original filename",
                                           QString::fromStdString(originalFilename));
                           m_image.setText("mxc url", "mxc://" + m_id);
-                          cache::client()->saveImage(m_id, data);
+                          cache::saveImage(m_id, data);
 
                           emit finished();
                   });

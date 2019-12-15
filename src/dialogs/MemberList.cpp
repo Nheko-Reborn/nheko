@@ -110,11 +110,11 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
                 const size_t numMembers = list_->count() - 1;
 
                 if (numMembers > 0)
-                        addUsers(cache::client()->getMembers(room_id_.toStdString(), numMembers));
+                        addUsers(cache::getMembers(room_id_.toStdString(), numMembers));
         });
 
         try {
-                addUsers(cache::client()->getMembers(room_id_.toStdString()));
+                addUsers(cache::getMembers(room_id_.toStdString()));
         } catch (const lmdb::error &e) {
                 qCritical() << e.what();
         }

@@ -5,9 +5,8 @@
 #include <QPoint>
 #include <QWidget>
 
-#include "../AvatarProvider.h"
-#include "../Cache.h"
-#include "../ChatPage.h"
+#include "CacheStructs.h"
+#include "ChatPage.h"
 #include "PopupItem.h"
 
 Q_DECLARE_METATYPE(QVector<SearchResult>)
@@ -28,7 +27,7 @@ public:
 
                 const auto &widget = qobject_cast<Item *>(item->widget());
                 emit itemSelected(
-                  Cache::displayName(ChatPage::instance()->currentRoom(), widget->selectedText()));
+                  cache::displayName(ChatPage::instance()->currentRoom(), widget->selectedText()));
 
                 resetSelection();
         }

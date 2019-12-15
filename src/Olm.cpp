@@ -121,7 +121,7 @@ handle_pre_key_olm_message(const std::string &sender,
 
                 // We also remove the one time key used to establish that
                 // session so we'll have to update our copy of the account object.
-                cache::client()->saveOlmAccount(olm::client()->save("secret"));
+                cache::saveOlmAccount(olm::client()->save("secret"));
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to create inbound session with {}: {}", sender, e.what());
@@ -149,7 +149,7 @@ handle_pre_key_olm_message(const std::string &sender,
         nhlog::crypto()->debug("decrypted message: \n {}", plaintext.dump(2));
 
         try {
-                cache::client()->saveOlmSession(sender_key, std::move(inbound_session));
+                cache::saveOlmSession(sender_key, std::move(inbound_session));
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn(
                   "failed to save inbound olm session from {}: {}", sender, e.what());
@@ -166,7 +166,7 @@ encrypt_group_message(const std::string &room_id,
         using namespace mtx::events;
 
         // Always chech before for existence.
-        auto res     = cache::client()->getOutboundMegolmSession(room_id);
+        auto res     = cache::getOutboundMegolmSession(room_id);
         auto payload = olm::client()->encrypt_group_message(res.session, body);
 
         // Prepare the m.room.encrypted event.
@@ -181,7 +181,7 @@ encrypt_group_message(const std::string &room_id,
         nhlog::crypto()->info("next message_index {}", message_index);
 
         // We need to re-pickle the session after we send a message to save the new message_index.
-        cache::client()->updateOutboundMegolmSession(room_id, message_index);
+        cache::updateOutboundMegolmSession(room_id, message_index);
 
         return data;
 }
@@ -189,13 +189,13 @@ encrypt_group_message(const std::string &room_id,
 nlohmann::json
 try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCipherContent &msg)
 {
-        auto session_ids = cache::client()->getOlmSessions(sender_key);
+        auto session_ids = cache::getOlmSessions(sender_key);
 
         nhlog::crypto()->info("attempt to decrypt message with {} known session_ids",
                               session_ids.size());
 
         for (const auto &id : session_ids) {
-                auto session = cache::client()->getOlmSession(sender_key, id);
+                auto session = cache::getOlmSession(sender_key, id);
 
                 if (!session)
                         continue;
@@ -204,7 +204,7 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
 
                 try {
                         text = olm::client()->decrypt_message(session->get(), msg.type, msg.body);
-                        cache::client()->saveOlmSession(id, std::move(session.value()));
+                        cache::saveOlmSession(id, std::move(session.value()));
                 } catch (const mtx::crypto::olm_exception &e) {
                         nhlog::crypto()->debug("failed to decrypt olm message ({}, {}) with {}: {}",
                                                msg.type,
@@ -252,7 +252,7 @@ create_inbound_megolm_session(const std::string &sender,
 
         try {
                 auto megolm_session = olm::client()->init_inbound_group_session(session_key);
-                cache::client()->saveInboundMegolmSession(index, std::move(megolm_session));
+                cache::saveInboundMegolmSession(index, std::move(megolm_session));
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
                 return;
@@ -268,7 +268,7 @@ void
 mark_keys_as_published()
 {
         olm::client()->mark_keys_as_published();
-        cache::client()->saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
+        cache::saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
 }
 
 void
@@ -355,13 +355,13 @@ handle_key_request_message(const mtx::events::msg::KeyRequest &req)
         }
 
         // Check if we have the keys for the requested session.
-        if (!cache::client()->outboundMegolmSessionExists(req.room_id)) {
+        if (!cache::outboundMegolmSessionExists(req.room_id)) {
                 nhlog::crypto()->warn("requested session not found in room: {}", req.room_id);
                 return;
         }
 
         // Check that the requested session_id and the one we have saved match.
-        const auto session = cache::client()->getOutboundMegolmSession(req.room_id);
+        const auto session = cache::getOutboundMegolmSession(req.room_id);
         if (req.session_id != session.data.session_id) {
                 nhlog::crypto()->warn("session id of retrieved session doesn't match the request: "
                                       "requested({}), ours({})",
@@ -370,7 +370,7 @@ handle_key_request_message(const mtx::events::msg::KeyRequest &req)
                 return;
         }
 
-        if (!cache::client()->isRoomMember(req.sender, req.room_id)) {
+        if (!cache::isRoomMember(req.sender, req.room_id)) {
                 nhlog::crypto()->warn(
                   "user {} that requested the session key is not member of the room {}",
                   req.sender,
@@ -509,8 +509,7 @@ send_megolm_key_to_device(const std::string &user_id,
                                     device_msg = olm::client()->create_olm_encrypted_content(
                                       olm_session.get(), room_key, pks.curve25519);
 
-                                    cache::client()->saveOlmSession(pks.curve25519,
-                                                                    std::move(olm_session));
+                                    cache::saveOlmSession(pks.curve25519, std::move(olm_session));
                             } catch (const json::exception &e) {
                                     nhlog::crypto()->warn("creating outbound session: {}",
                                                           e.what());

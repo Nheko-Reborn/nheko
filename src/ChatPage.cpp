@@ -22,6 +22,7 @@
 
 #include "AvatarProvider.h"
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -319,7 +320,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                   auto bin     = dev->peek(dev->size());
                   auto payload = std::string(bin.data(), bin.size());
                   std::optional<mtx::crypto::EncryptedFile> encryptedFile;
-                  if (cache::client()->isRoomEncrypted(current_room_.toStdString())) {
+                  if (cache::isRoomEncrypted(current_room_.toStdString())) {
                           mtx::crypto::BinaryBuf buf;
                           std::tie(buf, encryptedFile) = mtx::crypto::encrypt_file(payload);
                           payload                      = mtx::crypto::to_string(buf);
@@ -408,7 +409,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 this,
                 [](const mtx::responses::Notifications &notif) {
                         try {
-                                cache::client()->saveTimelineMentions(notif);
+                                cache::saveTimelineMentions(notif);
                         } catch (const lmdb::error &e) {
                                 nhlog::db()->error("failed to save mentions: {}", e.what());
                         }
@@ -457,7 +458,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &popups::UserMentions::initializeMentions);
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 try {
-                        room_list_->cleanupInvites(cache::client()->invites());
+                        room_list_->cleanupInvites(cache::invites());
                 } catch (const lmdb::error &e) {
                         nhlog::db()->error("failed to retrieve invites: {}", e.what());
                 }
@@ -575,7 +576,7 @@ ChatPage::deleteConfigs()
         settings.remove("");
         settings.endGroup();
 
-        cache::client()->deleteData();
+        cache::deleteData();
         http::client()->clear();
 }
 
@@ -610,18 +611,18 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 connect(
                   cache::client(), &Cache::roomReadStatus, room_list_, &RoomList::updateReadStatus);
 
-                const bool isInitialized = cache::client()->isInitialized();
-                const bool isValid       = cache::client()->isFormatValid();
+                const bool isInitialized = cache::isInitialized();
+                const bool isValid       = cache::isFormatValid();
 
                 if (!isInitialized) {
-                        cache::client()->setCurrentFormat();
+                        cache::setCurrentFormat();
                 } else if (isInitialized && !isValid) {
                         // TODO: Deleting session data but keep using the
                         //	 same device doesn't work.
-                        cache::client()->deleteData();
+                        cache::deleteData();
 
                         cache::init(userid);
-                        cache::client()->setCurrentFormat();
+                        cache::setCurrentFormat();
                 } else if (isInitialized) {
                         loadStateFromCache();
                         return;
@@ -629,7 +630,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("failure during boot: {}", e.what());
-                cache::client()->deleteData();
+                cache::deleteData();
                 nhlog::net()->info("falling back to initial sync");
         }
 
@@ -638,7 +639,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 // There isn't a saved olm account to restore.
                 nhlog::crypto()->info("creating new olm account");
                 olm::client()->create_new_account();
-                cache::client()->saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
+                cache::saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save olm account {}", e.what());
                 emit dropToLoginPageCb(QString::fromStdString(e.what()));
@@ -671,7 +672,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
         }
 
         try {
-                auto room_info = cache::client()->getRoomInfo({room_id.toStdString()});
+                auto room_info = cache::getRoomInfo({room_id.toStdString()});
 
                 if (room_info.find(room_id) == room_info.end())
                         return;
@@ -682,7 +683,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                 top_bar_->updateRoomName(name);
                 top_bar_->updateRoomTopic(QString::fromStdString(room_info[room_id].topic));
 
-                auto img = cache::client()->getRoomAvatar(room_id);
+                auto img = cache::getRoomAvatar(room_id);
 
                 if (img.isNull())
                         top_bar_->updateRoomAvatarFromName(name);
@@ -719,18 +720,17 @@ ChatPage::loadStateFromCache()
 
         QtConcurrent::run([this]() {
                 try {
-                        cache::client()->restoreSessions();
-                        olm::client()->load(cache::client()->restoreOlmAccount(),
-                                            STORAGE_SECRET_KEY);
+                        cache::restoreSessions();
+                        olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
-                        cache::client()->populateMembers();
+                        cache::populateMembers();
 
-                        emit initializeEmptyViews(cache::client()->roomMessages());
-                        emit initializeRoomList(cache::client()->roomInfo());
-                        emit initializeMentions(cache::client()->getTimelineMentions());
-                        emit syncTags(cache::client()->roomInfo().toStdMap());
+                        emit initializeEmptyViews(cache::roomMessages());
+                        emit initializeRoomList(cache::roomInfo());
+                        emit initializeMentions(cache::getTimelineMentions());
+                        emit syncTags(cache::roomInfo().toStdMap());
 
-                        cache::client()->calculateRoomReadStatus();
+                        cache::calculateRoomReadStatus();
 
                 } catch (const mtx::crypto::olm_exception &e) {
                         nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
@@ -773,8 +773,8 @@ void
 ChatPage::removeRoom(const QString &room_id)
 {
         try {
-                cache::client()->removeRoom(room_id);
-                cache::client()->removeInvite(room_id.toStdString());
+                cache::removeRoom(room_id);
+                cache::removeInvite(room_id.toStdString());
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("failure while removing room: {}", e.what());
                 // TODO: Notify the user.
@@ -807,7 +807,7 @@ ChatPage::generateTypingUsers(const QString &room_id, const std::vector<std::str
                 if (remote_user == local_user)
                         continue;
 
-                users.append(Cache::displayName(room_id, remote_user));
+                users.append(cache::displayName(room_id, remote_user));
         }
 
         users.sort();
@@ -853,16 +853,16 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 
                 try {
                         if (item.read) {
-                                cache::client()->removeReadNotification(event_id);
+                                cache::removeReadNotification(event_id);
                                 continue;
                         }
 
-                        if (!cache::client()->isNotificationSent(event_id)) {
+                        if (!cache::isNotificationSent(event_id)) {
                                 const auto room_id = QString::fromStdString(item.room_id);
                                 const auto user_id = utils::event_sender(item.event);
 
                                 // We should only sent one notification per event.
-                                cache::client()->markSentNotification(event_id);
+                                cache::markSentNotification(event_id);
 
                                 // Don't send a notification when the current room is opened.
                                 if (isRoomActive(room_id))
@@ -871,11 +871,10 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
                                 notificationsManager.postNotification(
                                   room_id,
                                   QString::fromStdString(event_id),
-                                  QString::fromStdString(
-                                    cache::client()->singleRoomInfo(item.room_id).name),
-                                  Cache::displayName(room_id, user_id),
+                                  QString::fromStdString(cache::singleRoomInfo(item.room_id).name),
+                                  cache::displayName(room_id, user_id),
                                   utils::event_body(item.event),
-                                  cache::client()->getRoomAvatar(room_id));
+                                  cache::getRoomAvatar(room_id));
                         }
                 } catch (const lmdb::error &e) {
                         nhlog::db()->warn("error while sending desktop notification: {}", e.what());
@@ -962,7 +961,7 @@ ChatPage::trySync()
                 connectivityTimer_.start();
 
         try {
-                opts.since = cache::client()->nextBatchToken();
+                opts.since = cache::nextBatchToken();
         } catch (const lmdb::error &e) {
                 nhlog::db()->error("failed to retrieve next batch token: {}", e.what());
                 return;
@@ -1015,22 +1014,22 @@ ChatPage::trySync()
 
                   // TODO: fine grained error handling
                   try {
-                          cache::client()->saveState(res);
+                          cache::saveState(res);
                           olm::handle_to_device_messages(res.to_device);
 
                           emit syncUI(res.rooms);
 
-                          auto updates = cache::client()->roomUpdates(res);
+                          auto updates = cache::roomUpdates(res);
 
                           emit syncTopBar(updates);
                           emit syncRoomlist(updates);
 
-                          emit syncTags(cache::client()->roomTagUpdates(res));
+                          emit syncTags(cache::roomTagUpdates(res));
 
-                          cache::client()->deleteOldData();
+                          cache::deleteOldData();
                   } catch (const lmdb::map_full_error &e) {
                           nhlog::db()->error("lmdb is full: {}", e.what());
-                          cache::client()->deleteOldData();
+                          cache::deleteOldData();
                   } catch (const lmdb::error &e) {
                           nhlog::db()->error("saving sync response: {}", e.what());
                   }
@@ -1058,7 +1057,7 @@ ChatPage::joinRoom(const QString &room)
 
                   // We remove any invites with the same room_id.
                   try {
-                          cache::client()->removeInvite(room_id);
+                          cache::removeInvite(room_id);
                   } catch (const lmdb::error &e) {
                           emit showNotification(
                             QString("Failed to remove invite: %1").arg(e.what()));
@@ -1156,16 +1155,16 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
         nhlog::net()->info("initial sync completed");
 
         try {
-                cache::client()->saveState(res);
+                cache::saveState(res);
 
                 olm::handle_to_device_messages(res.to_device);
 
                 emit initializeViews(std::move(res.rooms));
-                emit initializeRoomList(cache::client()->roomInfo());
-                emit initializeMentions(cache::client()->getTimelineMentions());
+                emit initializeRoomList(cache::roomInfo());
+                emit initializeMentions(cache::getTimelineMentions());
 
-                cache::client()->calculateRoomReadStatus();
-                emit syncTags(cache::client()->roomInfo().toStdMap());
+                cache::calculateRoomReadStatus();
+                emit syncTags(cache::roomInfo().toStdMap());
         } catch (const lmdb::error &e) {
                 nhlog::db()->error("failed to save state after initial sync: {}", e.what());
                 startInitialSync();

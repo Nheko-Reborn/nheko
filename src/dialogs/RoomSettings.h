@@ -5,7 +5,9 @@
 #include <QImage>
 #include <QLabel>
 
-#include "Cache.h"
+#include <mtx/events/guest_access.hpp>
+
+#include "CacheStructs.h"
 
 class Avatar;
 class FlatButton;

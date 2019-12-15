@@ -103,7 +103,7 @@ UserMentions::showPopup()
                 delete widget;
         }
 
-        auto notifs = cache::client()->getTimelineMentions();
+        auto notifs = cache::getTimelineMentions();
 
         initializeMentions(notifs);
         show();

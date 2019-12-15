@@ -114,7 +114,7 @@ MainWindow::MainWindow(QWidget *parent)
         connect(
           userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
         connect(userSettingsPage_, &UserSettingsPage::themeChanged, this, []() {
-                Cache::clearUserColors();
+                cache::clearUserColors();
         });
         connect(
           userSettingsPage_, &UserSettingsPage::themeChanged, chat_page_, &ChatPage::themeChanged);
@@ -444,7 +444,7 @@ MainWindow::openReadReceiptsDialog(const QString &event_id)
         const auto room_id = chat_page_->currentRoom();
 
         try {
-                dialog->addUsers(cache::client()->readReceipts(event_id, room_id));
+                dialog->addUsers(cache::readReceipts(event_id, room_id));
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("failed to retrieve read receipts for {} {}",
                                   event_id.toStdString(),

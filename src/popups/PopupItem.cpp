@@ -49,7 +49,7 @@ UserItem::UserItem(QWidget *parent, const QString &user_id)
   : PopupItem(parent)
   , userId_{user_id}
 {
-        auto displayName = Cache::displayName(ChatPage::instance()->currentRoom(), userId_);
+        auto displayName = cache::displayName(ChatPage::instance()->currentRoom(), userId_);
 
         avatar_->setLetter(utils::firstChar(displayName));
 
@@ -70,7 +70,7 @@ UserItem::updateItem(const QString &user_id)
 {
         userId_ = user_id;
 
-        auto displayName = Cache::displayName(ChatPage::instance()->currentRoom(), userId_);
+        auto displayName = cache::displayName(ChatPage::instance()->currentRoom(), userId_);
 
         // If it's a matrix id we use the second letter.
         if (displayName.size() > 1 && displayName.at(0) == '@')
@@ -93,7 +93,7 @@ UserItem::mousePressEvent(QMouseEvent *event)
 {
         if (event->buttons() != Qt::RightButton)
                 emit clicked(
-                  Cache::displayName(ChatPage::instance()->currentRoom(), selectedText()));
+                  cache::displayName(ChatPage::instance()->currentRoom(), selectedText()));
 
         QWidget::mousePressEvent(event);
 }

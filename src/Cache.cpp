@@ -30,6 +30,7 @@
 #include <mtx/responses/common.hpp>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
@@ -89,29 +90,20 @@ namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
 
-namespace cache {
-void
-init(const QString &user_id)
+int
+numeric_key_comparison(const MDB_val *a, const MDB_val *b)
 {
-        qRegisterMetaType<SearchResult>();
-        qRegisterMetaType<QVector<SearchResult>>();
-        qRegisterMetaType<RoomMember>();
-        qRegisterMetaType<RoomSearchResult>();
-        qRegisterMetaType<RoomInfo>();
-        qRegisterMetaType<QMap<QString, RoomInfo>>();
-        qRegisterMetaType<QMap<QString, mtx::responses::Notifications>>();
-        qRegisterMetaType<std::map<QString, RoomInfo>>();
-        qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
+        auto lhs = std::stoull(std::string((char *)a->mv_data, a->mv_size));
+        auto rhs = std::stoull(std::string((char *)b->mv_data, b->mv_size));
 
-        instance_ = std::make_unique<Cache>(user_id);
+        if (lhs < rhs)
+                return 1;
+        else if (lhs == rhs)
+                return 0;
+
+        return -1;
 }
 
-Cache *
-client()
-{
-        return instance_.get();
-}
-} // namespace cache
 
 Cache::Cache(const QString &userId, QObject *parent)
   : QObject{parent}
@@ -2321,20 +2313,6 @@ from_json(const json &j, RoomInfo &info)
                 info.tags = j.at("tags").get<std::vector<std::string>>();
 }
 
-int
-numeric_key_comparison(const MDB_val *a, const MDB_val *b)
-{
-        auto lhs = std::stoull(std::string((char *)a->mv_data, a->mv_size));
-        auto rhs = std::stoull(std::string((char *)b->mv_data, b->mv_size));
-
-        if (lhs < rhs)
-                return 1;
-        else if (lhs == rhs)
-                return 0;
-
-        return -1;
-}
-
 void
 to_json(json &j, const ReadReceiptKey &key)
 {
@@ -2407,3 +2385,520 @@ from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
         msg.session_id = obj.at("session_id");
         msg.sender_key = obj.at("sender_key");
 }
+
+namespace cache {
+void
+init(const QString &user_id)
+{
+        qRegisterMetaType<SearchResult>();
+        qRegisterMetaType<QVector<SearchResult>>();
+        qRegisterMetaType<RoomMember>();
+        qRegisterMetaType<RoomSearchResult>();
+        qRegisterMetaType<RoomInfo>();
+        qRegisterMetaType<QMap<QString, RoomInfo>>();
+        qRegisterMetaType<QMap<QString, mtx::responses::Notifications>>();
+        qRegisterMetaType<std::map<QString, RoomInfo>>();
+        qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
+
+        instance_ = std::make_unique<Cache>(user_id);
+}
+
+Cache *
+client()
+{
+        return instance_.get();
+}
+
+std::string
+displayName(const std::string &room_id, const std::string &user_id)
+{
+        return instance_->displayName(room_id, user_id);
+}
+
+QString
+displayName(const QString &room_id, const QString &user_id)
+{
+        return instance_->displayName(room_id, user_id);
+}
+QString
+avatarUrl(const QString &room_id, const QString &user_id)
+{
+        return instance_->avatarUrl(room_id, user_id);
+}
+
+QString
+userColor(const QString &user_id)
+{
+        return instance_->userColor(user_id);
+}
+
+void
+removeDisplayName(const QString &room_id, const QString &user_id)
+{
+        instance_->removeDisplayName(room_id, user_id);
+}
+void
+removeAvatarUrl(const QString &room_id, const QString &user_id)
+{
+        instance_->removeAvatarUrl(room_id, user_id);
+}
+void
+removeUserColor(const QString &user_id)
+{
+        instance_->removeUserColor(user_id);
+}
+
+void
+insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name)
+{
+        instance_->insertDisplayName(room_id, user_id, display_name);
+}
+void
+insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
+{
+        instance_->insertAvatarUrl(room_id, user_id, avatar_url);
+}
+void
+insertUserColor(const QString &user_id, const QString &color_name)
+{
+        instance_->insertUserColor(user_id, color_name);
+}
+
+void
+clearUserColors()
+{
+        instance_->clearUserColors();
+}
+
+//! Load saved data for the display names & avatars.
+void
+populateMembers()
+{
+        instance_->populateMembers();
+}
+
+std::vector<std::string>
+joinedRooms()
+{
+        return instance_->joinedRooms();
+}
+
+QMap<QString, RoomInfo>
+roomInfo(bool withInvites)
+{
+        return instance_->roomInfo(withInvites);
+}
+std::map<QString, bool>
+invites()
+{
+        return instance_->invites();
+}
+
+QString
+getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
+{
+        return instance_->getRoomName(txn, statesdb, membersdb);
+}
+mtx::events::state::JoinRule
+getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomJoinRule(txn, statesdb);
+}
+bool
+getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomGuestAccess(txn, statesdb);
+}
+QString
+getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomTopic(txn, statesdb);
+}
+QString
+getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb, const QString &room_id)
+{
+        return instance_->getRoomAvatarUrl(txn, statesdb, membersdb, room_id);
+}
+
+QString
+getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomVersion(txn, statesdb);
+}
+
+std::vector<RoomMember>
+getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
+{
+        return instance_->getMembers(room_id, startIndex, len);
+}
+
+void
+saveState(const mtx::responses::Sync &res)
+{
+        instance_->saveState(res);
+}
+bool
+isInitialized()
+{
+        return instance_->isInitialized();
+}
+
+std::string
+nextBatchToken()
+{
+        return instance_->nextBatchToken();
+}
+
+void
+deleteData()
+{
+        instance_->deleteData();
+}
+
+void
+removeInvite(lmdb::txn &txn, const std::string &room_id)
+{
+        instance_->removeInvite(txn, room_id);
+}
+void
+removeInvite(const std::string &room_id)
+{
+        instance_->removeInvite(room_id);
+}
+void
+removeRoom(lmdb::txn &txn, const std::string &roomid)
+{
+        instance_->removeRoom(txn, roomid);
+}
+void
+removeRoom(const std::string &roomid)
+{
+        instance_->removeRoom(roomid);
+}
+void
+removeRoom(const QString &roomid)
+{
+        instance_->removeRoom(roomid.toStdString());
+}
+void
+setup()
+{
+        instance_->setup();
+}
+
+bool
+isFormatValid()
+{
+        return instance_->isFormatValid();
+}
+void
+setCurrentFormat()
+{
+        instance_->setCurrentFormat();
+}
+
+std::map<QString, mtx::responses::Timeline>
+roomMessages()
+{
+        return instance_->roomMessages();
+}
+
+QMap<QString, mtx::responses::Notifications>
+getTimelineMentions()
+{
+        return instance_->getTimelineMentions();
+}
+
+//! Retrieve all the user ids from a room.
+std::vector<std::string>
+roomMembers(const std::string &room_id)
+{
+        return instance_->roomMembers(room_id);
+}
+
+//! Check if the given user has power leve greater than than
+//! lowest power level of the given events.
+bool
+hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
+                    const std::string &room_id,
+                    const std::string &user_id)
+{
+        return instance_->hasEnoughPowerLevel(eventTypes, room_id, user_id);
+}
+
+//! Retrieves the saved room avatar.
+QImage
+getRoomAvatar(const QString &id)
+{
+        return instance_->getRoomAvatar(id);
+}
+QImage
+getRoomAvatar(const std::string &id)
+{
+        return instance_->getRoomAvatar(id);
+}
+
+void
+updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Receipts &receipts)
+{
+        instance_->updateReadReceipt(txn, room_id, receipts);
+}
+
+UserReceipts
+readReceipts(const QString &event_id, const QString &room_id)
+{
+        return instance_->readReceipts(event_id, room_id);
+}
+
+//! Filter the events that have at least one read receipt.
+std::vector<QString>
+filterReadEvents(const QString &room_id,
+                 const std::vector<QString> &event_ids,
+                 const std::string &excluded_user)
+{
+        return instance_->filterReadEvents(room_id, event_ids, excluded_user);
+}
+//! Add event for which we are expecting some read receipts.
+void
+addPendingReceipt(const QString &room_id, const QString &event_id)
+{
+        instance_->addPendingReceipt(room_id, event_id);
+}
+void
+removePendingReceipt(lmdb::txn &txn, const std::string &room_id, const std::string &event_id)
+{
+        instance_->removePendingReceipt(txn, room_id, event_id);
+}
+void
+notifyForReadReceipts(const std::string &room_id)
+{
+        instance_->notifyForReadReceipts(room_id);
+}
+std::vector<QString>
+pendingReceiptsEvents(lmdb::txn &txn, const std::string &room_id)
+{
+        return instance_->pendingReceiptsEvents(txn, room_id);
+}
+
+QByteArray
+image(const QString &url)
+{
+        return instance_->image(url);
+}
+QByteArray
+image(lmdb::txn &txn, const std::string &url)
+{
+        return instance_->image(txn, url);
+}
+void
+saveImage(const std::string &url, const std::string &data)
+{
+        instance_->saveImage(url, data);
+}
+void
+saveImage(const QString &url, const QByteArray &data)
+{
+        instance_->saveImage(url, data);
+}
+
+RoomInfo
+singleRoomInfo(const std::string &room_id)
+{
+        return instance_->singleRoomInfo(room_id);
+}
+std::vector<std::string>
+roomsWithStateUpdates(const mtx::responses::Sync &res)
+{
+        return instance_->roomsWithStateUpdates(res);
+}
+std::vector<std::string>
+roomsWithTagUpdates(const mtx::responses::Sync &res)
+{
+        return instance_->roomsWithTagUpdates(res);
+}
+std::map<QString, RoomInfo>
+getRoomInfo(const std::vector<std::string> &rooms)
+{
+        return instance_->getRoomInfo(rooms);
+}
+
+//! Calculates which the read status of a room.
+//! Whether all the events in the timeline have been read.
+bool
+calculateRoomReadStatus(const std::string &room_id)
+{
+        return instance_->calculateRoomReadStatus(room_id);
+}
+void
+calculateRoomReadStatus()
+{
+        instance_->calculateRoomReadStatus();
+}
+
+QVector<SearchResult>
+searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
+{
+        return instance_->searchUsers(room_id, query, max_items);
+}
+std::vector<RoomSearchResult>
+searchRooms(const std::string &query, std::uint8_t max_items)
+{
+        return instance_->searchRooms(query, max_items);
+}
+
+void
+markSentNotification(const std::string &event_id)
+{
+        instance_->markSentNotification(event_id);
+}
+//! Removes an event from the sent notifications.
+void
+removeReadNotification(const std::string &event_id)
+{
+        instance_->removeReadNotification(event_id);
+}
+//! Check if we have sent a desktop notification for the given event id.
+bool
+isNotificationSent(const std::string &event_id)
+{
+        return instance_->isNotificationSent(event_id);
+}
+
+//! Add all notifications containing a user mention to the db.
+void
+saveTimelineMentions(const mtx::responses::Notifications &res)
+{
+        instance_->saveTimelineMentions(res);
+}
+
+//! Remove old unused data.
+void
+deleteOldMessages()
+{
+        instance_->deleteOldMessages();
+}
+void
+deleteOldData() noexcept
+{
+        instance_->deleteOldData();
+}
+//! Retrieve all saved room ids.
+std::vector<std::string>
+getRoomIds(lmdb::txn &txn)
+{
+        return instance_->getRoomIds(txn);
+}
+
+//! Mark a room that uses e2e encryption.
+void
+setEncryptedRoom(lmdb::txn &txn, const std::string &room_id)
+{
+        instance_->setEncryptedRoom(txn, room_id);
+}
+bool
+isRoomEncrypted(const std::string &room_id)
+{
+        return instance_->isRoomEncrypted(room_id);
+}
+
+//! Check if a user is a member of the room.
+bool
+isRoomMember(const std::string &user_id, const std::string &room_id)
+{
+        return instance_->isRoomMember(user_id, room_id);
+}
+
+//
+// Outbound Megolm Sessions
+//
+void
+saveOutboundMegolmSession(const std::string &room_id,
+                          const OutboundGroupSessionData &data,
+                          mtx::crypto::OutboundGroupSessionPtr session)
+{
+        instance_->saveOutboundMegolmSession(room_id, data, std::move(session));
+}
+OutboundGroupSessionDataRef
+getOutboundMegolmSession(const std::string &room_id)
+{
+        return instance_->getOutboundMegolmSession(room_id);
+}
+bool
+outboundMegolmSessionExists(const std::string &room_id) noexcept
+{
+        return instance_->outboundMegolmSessionExists(room_id);
+}
+void
+updateOutboundMegolmSession(const std::string &room_id, int message_index)
+{
+        instance_->updateOutboundMegolmSession(room_id, message_index);
+}
+
+void
+importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
+{
+        instance_->importSessionKeys(keys);
+}
+mtx::crypto::ExportedSessionKeys
+exportSessionKeys()
+{
+        return instance_->exportSessionKeys();
+}
+
+//
+// Inbound Megolm Sessions
+//
+void
+saveInboundMegolmSession(const MegolmSessionIndex &index,
+                         mtx::crypto::InboundGroupSessionPtr session)
+{
+        instance_->saveInboundMegolmSession(index, std::move(session));
+}
+OlmInboundGroupSession *
+getInboundMegolmSession(const MegolmSessionIndex &index)
+{
+        return instance_->getInboundMegolmSession(index);
+}
+bool
+inboundMegolmSessionExists(const MegolmSessionIndex &index)
+{
+        return instance_->inboundMegolmSessionExists(index);
+}
+
+//
+// Olm Sessions
+//
+void
+saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session)
+{
+        instance_->saveOlmSession(curve25519, std::move(session));
+}
+std::vector<std::string>
+getOlmSessions(const std::string &curve25519)
+{
+        return instance_->getOlmSessions(curve25519);
+}
+std::optional<mtx::crypto::OlmSessionPtr>
+getOlmSession(const std::string &curve25519, const std::string &session_id)
+{
+        return instance_->getOlmSession(curve25519, session_id);
+}
+
+void
+saveOlmAccount(const std::string &pickled)
+{
+        instance_->saveOlmAccount(pickled);
+}
+std::string
+restoreOlmAccount()
+{
+        return instance_->restoreOlmAccount();
+}
+
+void
+restoreSessions()
+{
+        return instance_->restoreSessions();
+}
+} // namespace cache
+

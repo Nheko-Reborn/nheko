@@ -2,17 +2,14 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QPoint>
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "../AvatarProvider.h"
-#include "../Cache.h"
-#include "../ChatPage.h"
-#include "../Utils.h"
 #include "../ui/FlatButton.h"
 #include "../ui/TextLabel.h"
-#include "PopupItem.h"
+
+struct RelatedInfo;
+class UserItem;
 
 class ReplyPopup : public QWidget
 {

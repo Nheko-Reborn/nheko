@@ -35,7 +35,7 @@ ReceiptItem::ReceiptItem(QWidget *parent,
         QFont nameFont;
         nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
 
-        auto displayName = Cache::displayName(room_id, user_id);
+        auto displayName = cache::displayName(room_id, user_id);
 
         avatar_ = new Avatar(this, 44);
         avatar_->setLetter(utils::firstChar(displayName));

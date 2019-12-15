@@ -422,7 +422,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 readEvent(event_id.toStdString());
 
                 // ask to be notified for read receipts
-                cache::client()->addPendingReceipt(room_id_, event_id);
+                cache::addPendingReceipt(room_id_, event_id);
 
                 isProcessingPending = false;
                 emit dataChanged(index(idx, 0), index(idx, 0));
@@ -575,8 +575,7 @@ TimelineModel::data(const QModelIndex &index, int role) const
                         return qml_mtx_events::Failed;
                 else if (pending.contains(id))
                         return qml_mtx_events::Sent;
-                else if (read.contains(id) ||
-                         cache::client()->readReceipts(id, room_id_).size() > 1)
+                else if (read.contains(id) || cache::readReceipts(id, room_id_).size() > 1)
                         return qml_mtx_events::Read;
                 else
                         return qml_mtx_events::Received;
@@ -805,13 +804,13 @@ TimelineModel::userColor(QString id, QColor background)
 QString
 TimelineModel::displayName(QString id) const
 {
-        return Cache::displayName(room_id_, id);
+        return cache::displayName(room_id_, id);
 }
 
 QString
 TimelineModel::avatarUrl(QString id) const
 {
-        return Cache::avatarUrl(room_id_, id);
+        return cache::avatarUrl(room_id_, id);
 }
 
 QString
@@ -868,7 +867,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
             .toStdString();
 
         try {
-                if (!cache::client()->inboundMegolmSessionExists(index)) {
+                if (!cache::inboundMegolmSessionExists(index)) {
                         nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
                                               index.room_id,
                                               index.session_id,
@@ -887,7 +886,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
 
         std::string msg_str;
         try {
-                auto session = cache::client()->getInboundMegolmSession(index);
+                auto session = cache::getInboundMegolmSession(index);
                 auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
                 msg_str      = std::string((char *)res.data.data(), res.data.size());
         } catch (const lmdb::error &e) {
@@ -1044,7 +1043,7 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
 
         try {
                 // Check if we have already an outbound megolm session then we can use.
-                if (cache::client()->outboundMegolmSessionExists(room_id)) {
+                if (cache::outboundMegolmSessionExists(room_id)) {
                         auto data = olm::encrypt_group_message(
                           room_id, http::client()->device_id(), doc.dump());
 
@@ -1089,10 +1088,10 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
                 session_data.session_id    = session_id;
                 session_data.session_key   = session_key;
                 session_data.message_index = 0; // TODO Update me
-                cache::client()->saveOutboundMegolmSession(
+                cache::saveOutboundMegolmSession(
                   room_id, session_data, std::move(outbound_session));
 
-                const auto members = cache::client()->roomMembers(room_id);
+                const auto members = cache::roomMembers(room_id);
                 nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
 
                 auto keeper =
@@ -1311,7 +1310,7 @@ TimelineModel::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
                   s.get(), room_keys.at(device_id), pks.at(device_id).curve25519);
 
                 try {
-                        cache::client()->saveOlmSession(id_key, std::move(s));
+                        cache::saveOlmSession(id_key, std::move(s));
                 } catch (const lmdb::error &e) {
                         nhlog::db()->critical("failed to save outbound olm session: {}", e.what());
                 } catch (const mtx::crypto::olm_exception &e) {
@@ -1353,7 +1352,7 @@ struct SendMessageVisitor
         void operator()(const mtx::events::RoomEvent<T> &msg)
 
         {
-                if (cache::client()->isRoomEncrypted(model_->room_id_.toStdString())) {
+                if (cache::isRoomEncrypted(model_->room_id_.toStdString())) {
                         model_->sendEncryptedMessage(txn_id_qstr_.toStdString(),
                                                      nlohmann::json(msg.content));
                 } else {

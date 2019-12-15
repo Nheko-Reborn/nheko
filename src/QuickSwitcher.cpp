@@ -93,8 +93,7 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
 
                 QtConcurrent::run([this, query = query.toLower()]() {
                         try {
-                                emit queryResults(
-                                  cache::client()->searchRooms(query.toStdString()));
+                                emit queryResults(cache::searchRooms(query.toStdString()));
                         } catch (const lmdb::error &e) {
                                 qWarning() << "room search failed:" << e.what();
                         }

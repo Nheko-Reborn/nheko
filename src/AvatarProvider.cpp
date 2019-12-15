@@ -35,9 +35,6 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
 
         const auto cacheKey = avatarUrl + "_size_" + size;
 
-        if (!cache::client())
-                return;
-
         if (avatarUrl.isEmpty())
                 return;
 
@@ -47,7 +44,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                 return;
         }
 
-        auto data = cache::client()->image(avatarUrl);
+        auto data = cache::image(avatarUrl);
         if (!data.isNull()) {
                 pixmap.loadFromData(data);
                 avatar_cache.insert(cacheKey, pixmap);
@@ -82,7 +79,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                           return;
                   }
 
-                  cache::client()->saveImage(opts.mxc_url, res);
+                  cache::saveImage(opts.mxc_url, res);
 
                   emit proxy->avatarDownloaded(QByteArray(res.data(), res.size()));
           });
@@ -95,12 +92,7 @@ resolve(const QString &room_id,
         QObject *receiver,
         AvatarCallback callback)
 {
-        const auto key       = QString("%1 %2").arg(room_id).arg(user_id);
-        const auto avatarUrl = Cache::avatarUrl(room_id, user_id);
-        const auto cacheKey  = avatarUrl + "_size_" + size;
-
-        if (!Cache::AvatarUrls.contains(key) || !cache::client())
-                return;
+        const auto avatarUrl = cache::avatarUrl(room_id, user_id);
 
         resolve(avatarUrl, size, receiver, callback);
 }

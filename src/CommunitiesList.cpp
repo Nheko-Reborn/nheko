@@ -215,7 +215,7 @@ CommunitiesList::highlightSelectedCommunity(const QString &community_id)
 void
 CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUrl)
 {
-        auto savedImgData = cache::client()->image(avatarUrl);
+        auto savedImgData = cache::image(avatarUrl);
         if (!savedImgData.isNull()) {
                 QPixmap pix;
                 pix.loadFromData(savedImgData);
@@ -238,7 +238,7 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
                           return;
                   }
 
-                  cache::client()->saveImage(opts.mxc_url, res);
+                  cache::saveImage(opts.mxc_url, res);
 
                   auto data = QByteArray(res.data(), res.size());
 

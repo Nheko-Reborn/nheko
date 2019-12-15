@@ -168,7 +168,7 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
         const auto msg    = std::get<T>(event);
         const auto sender = QString::fromStdString(msg.sender);
 
-        const auto username = Cache::displayName(room_id, sender);
+        const auto username = cache::displayName(room_id, sender);
         const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
         return DescInfo{QString::fromStdString(msg.event_id),

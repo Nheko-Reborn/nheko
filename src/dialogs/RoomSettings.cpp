@@ -485,8 +485,8 @@ void
 RoomSettings::retrieveRoomInfo()
 {
         try {
-                usesEncryption_ = cache::client()->isRoomEncrypted(room_id_.toStdString());
-                info_           = cache::client()->singleRoomInfo(room_id_.toStdString());
+                usesEncryption_ = cache::isRoomEncrypted(room_id_.toStdString());
+                info_           = cache::singleRoomInfo(room_id_.toStdString());
                 setAvatar();
         } catch (const lmdb::error &) {
                 nhlog::db()->warn("failed to retrieve room info from cache: {}",
@@ -529,8 +529,7 @@ bool
 RoomSettings::canChangeJoinRules(const std::string &room_id, const std::string &user_id) const
 {
         try {
-                return cache::client()->hasEnoughPowerLevel(
-                  {EventType::RoomJoinRules}, room_id, user_id);
+                return cache::hasEnoughPowerLevel({EventType::RoomJoinRules}, room_id, user_id);
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
         }
@@ -542,7 +541,7 @@ bool
 RoomSettings::canChangeNameAndTopic(const std::string &room_id, const std::string &user_id) const
 {
         try {
-                return cache::client()->hasEnoughPowerLevel(
+                return cache::hasEnoughPowerLevel(
                   {EventType::RoomName, EventType::RoomTopic}, room_id, user_id);
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
@@ -555,8 +554,7 @@ bool
 RoomSettings::canChangeAvatar(const std::string &room_id, const std::string &user_id) const
 {
         try {
-                return cache::client()->hasEnoughPowerLevel(
-                  {EventType::RoomAvatar}, room_id, user_id);
+                return cache::hasEnoughPowerLevel({EventType::RoomAvatar}, room_id, user_id);
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
         }

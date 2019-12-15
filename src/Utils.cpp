@@ -142,7 +142,7 @@ utils::getMessageDescription(const TimelineEvent &event,
         } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {
                 const auto sender = QString::fromStdString(msg->sender);
 
-                const auto username = Cache::displayName(room_id, sender);
+                const auto username = cache::displayName(room_id, sender);
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg->origin_server_ts);
 
                 DescInfo info;
