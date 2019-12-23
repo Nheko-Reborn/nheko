@@ -537,7 +537,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
                                 emit input_->resultsRetrieved(cache::searchUsers(
                                   ChatPage::instance()->currentRoom().toStdString(), q));
                         } catch (const lmdb::error &e) {
-                                std::cout << e.what() << '\n';
+                                nhlog::db()->error("Suggestion retrieval failed: {}", e.what());
                         }
                 });
         });

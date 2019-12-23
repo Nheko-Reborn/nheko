@@ -1065,8 +1065,8 @@ Cache::saveInvite(lmdb::txn &txn,
                                                            lmdb::val(json(msg).dump()));
 
                                   if (!res)
-                                          std::cout << "couldn't save data" << json(msg).dump()
-                                                    << '\n';
+                                          nhlog::db()->warn("couldn't save data: {}",
+                                                            json(msg).dump());
                           },
                           e);
                 }

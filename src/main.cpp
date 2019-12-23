@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDesktopWidget>
@@ -43,14 +45,14 @@
 #include "emoji/MacHelper.h"
 #endif
 
-#if defined(Q_OS_LINUX)
-#include <boost/stacktrace.hpp>
-#include <csignal>
-
 #ifdef QML_DEBUGGING
 #include <QQmlDebuggingEnabler>
 QQmlDebuggingEnabler enabler;
 #endif
+
+#if defined(Q_OS_LINUX)
+#include <boost/stacktrace.hpp>
+#include <csignal>
 
 void
 stacktraceHandler(int signum)
