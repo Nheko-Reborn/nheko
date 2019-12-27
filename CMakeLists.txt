@@ -219,6 +219,7 @@ set(SRC_FILES
     src/ChatPage.cpp
     src/CommunitiesListItem.cpp
     src/CommunitiesList.cpp
+    src/EventAccessors.cpp
     src/InviteeItem.cpp
     src/LoginPage.cpp
     src/Logging.cpp

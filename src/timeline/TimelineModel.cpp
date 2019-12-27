@@ -9,6 +9,7 @@
 #include <QStandardPaths>
 
 #include "ChatPage.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -21,364 +22,100 @@
 Q_DECLARE_METATYPE(QModelIndex)
 
 namespace {
-template<class T>
-QString
-eventId(const mtx::events::RoomEvent<T> &event)
+struct RoomEventType
 {
-        return QString::fromStdString(event.event_id);
-}
-template<class T>
-QString
-roomId(const mtx::events::Event<T> &event)
-{
-        return QString::fromStdString(event.room_id);
-}
-template<class T>
-QString
-senderId(const mtx::events::RoomEvent<T> &event)
-{
-        return QString::fromStdString(event.sender);
-}
-
-template<class T>
-QDateTime
-eventTimestamp(const mtx::events::RoomEvent<T> &event)
-{
-        return QDateTime::fromMSecsSinceEpoch(event.origin_server_ts);
-}
-
-template<class T>
-std::string
-eventMsgType(const mtx::events::Event<T> &)
-{
-        return "";
-}
-template<class T>
-auto
-eventMsgType(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.msgtype)
-{
-        return e.content.msgtype;
-}
-
-template<class T>
-QString
-eventRoomName(const T &)
-{
-        return "";
-}
-QString
-eventRoomName(const mtx::events::StateEvent<mtx::events::state::Name> &e)
-{
-        return QString::fromStdString(e.content.name);
-}
-
-template<class T>
-QString
-eventRoomTopic(const T &)
-{
-        return "";
-}
-QString
-eventRoomTopic(const mtx::events::StateEvent<mtx::events::state::Topic> &e)
-{
-        return QString::fromStdString(e.content.topic);
-}
-
-template<class T>
-QString
-eventBody(const mtx::events::Event<T> &)
-{
-        return QString("");
-}
-template<class T>
-auto
-eventBody(const mtx::events::RoomEvent<T> &e)
-  -> std::enable_if_t<std::is_same<decltype(e.content.body), std::string>::value, QString>
-{
-        return QString::fromStdString(e.content.body);
-}
-
-template<class T>
-QString
-eventFormattedBody(const mtx::events::Event<T> &)
-{
-        return QString("");
-}
-template<class T>
-auto
-eventFormattedBody(const mtx::events::RoomEvent<T> &e)
-  -> std::enable_if_t<std::is_same<decltype(e.content.formatted_body), std::string>::value, QString>
-{
-        auto temp = e.content.formatted_body;
-        if (!temp.empty()) {
-                return QString::fromStdString(temp);
-        } else {
-                return QString::fromStdString(e.content.body).toHtmlEscaped().replace("\n", "<br>");
+        template<class T>
+        qml_mtx_events::EventType operator()(const mtx::events::Event<T> &e)
+        {
+                using mtx::events::EventType;
+                switch (e.type) {
+                case EventType::RoomKeyRequest:
+                        return qml_mtx_events::EventType::KeyRequest;
+                case EventType::RoomAliases:
+                        return qml_mtx_events::EventType::Aliases;
+                case EventType::RoomAvatar:
+                        return qml_mtx_events::EventType::Avatar;
+                case EventType::RoomCanonicalAlias:
+                        return qml_mtx_events::EventType::CanonicalAlias;
+                case EventType::RoomCreate:
+                        return qml_mtx_events::EventType::Create;
+                case EventType::RoomEncrypted:
+                        return qml_mtx_events::EventType::Encrypted;
+                case EventType::RoomEncryption:
+                        return qml_mtx_events::EventType::Encryption;
+                case EventType::RoomGuestAccess:
+                        return qml_mtx_events::EventType::GuestAccess;
+                case EventType::RoomHistoryVisibility:
+                        return qml_mtx_events::EventType::HistoryVisibility;
+                case EventType::RoomJoinRules:
+                        return qml_mtx_events::EventType::JoinRules;
+                case EventType::RoomMember:
+                        return qml_mtx_events::EventType::Member;
+                case EventType::RoomMessage:
+                        return qml_mtx_events::EventType::UnknownMessage;
+                case EventType::RoomName:
+                        return qml_mtx_events::EventType::Name;
+                case EventType::RoomPowerLevels:
+                        return qml_mtx_events::EventType::PowerLevels;
+                case EventType::RoomTopic:
+                        return qml_mtx_events::EventType::Topic;
+                case EventType::RoomTombstone:
+                        return qml_mtx_events::EventType::Tombstone;
+                case EventType::RoomRedaction:
+                        return qml_mtx_events::EventType::Redaction;
+                case EventType::RoomPinnedEvents:
+                        return qml_mtx_events::EventType::PinnedEvents;
+                case EventType::Sticker:
+                        return qml_mtx_events::EventType::Sticker;
+                case EventType::Tag:
+                        return qml_mtx_events::EventType::Tag;
+                case EventType::Unsupported:
+                default:
+                        return qml_mtx_events::EventType::Unsupported;
+                }
         }
-}
-
-template<class T>
-std::optional<mtx::crypto::EncryptedFile>
-eventEncryptionInfo(const mtx::events::Event<T> &)
-{
-        return std::nullopt;
-}
-
-template<class T>
-auto
-eventEncryptionInfo(const mtx::events::RoomEvent<T> &e) -> std::enable_if_t<
-  std::is_same<decltype(e.content.file), std::optional<mtx::crypto::EncryptedFile>>::value,
-  std::optional<mtx::crypto::EncryptedFile>>
-{
-        return e.content.file;
-}
-
-template<class T>
-QString
-eventUrl(const mtx::events::Event<T> &)
-{
-        return "";
-}
-
-QString
-eventUrl(const mtx::events::StateEvent<mtx::events::state::Avatar> &e)
-{
-        return QString::fromStdString(e.content.url);
-}
-
-template<class T>
-auto
-eventUrl(const mtx::events::RoomEvent<T> &e)
-  -> std::enable_if_t<std::is_same<decltype(e.content.url), std::string>::value, QString>
-{
-        if (e.content.file)
-                return QString::fromStdString(e.content.file->url);
-        return QString::fromStdString(e.content.url);
-}
-
-template<class T>
-QString
-eventThumbnailUrl(const mtx::events::Event<T> &)
-{
-        return "";
-}
-template<class T>
-auto
-eventThumbnailUrl(const mtx::events::RoomEvent<T> &e)
-  -> std::enable_if_t<std::is_same<decltype(e.content.info.thumbnail_url), std::string>::value,
-                      QString>
-{
-        return QString::fromStdString(e.content.info.thumbnail_url);
-}
-
-template<class T>
-QString
-eventFilename(const mtx::events::Event<T> &)
-{
-        return "";
-}
-QString
-eventFilename(const mtx::events::RoomEvent<mtx::events::msg::Audio> &e)
-{
-        // body may be the original filename
-        return QString::fromStdString(e.content.body);
-}
-QString
-eventFilename(const mtx::events::RoomEvent<mtx::events::msg::Video> &e)
-{
-        // body may be the original filename
-        return QString::fromStdString(e.content.body);
-}
-QString
-eventFilename(const mtx::events::RoomEvent<mtx::events::msg::Image> &e)
-{
-        // body may be the original filename
-        return QString::fromStdString(e.content.body);
-}
-QString
-eventFilename(const mtx::events::RoomEvent<mtx::events::msg::File> &e)
-{
-        // body may be the original filename
-        if (!e.content.filename.empty())
-                return QString::fromStdString(e.content.filename);
-        return QString::fromStdString(e.content.body);
-}
-
-template<class T>
-auto
-eventFilesize(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.info.size)
-{
-        return e.content.info.size;
-}
-
-template<class T>
-int64_t
-eventFilesize(const mtx::events::Event<T> &)
-{
-        return 0;
-}
-
-template<class T>
-QString
-eventMimeType(const mtx::events::Event<T> &)
-{
-        return QString();
-}
-template<class T>
-auto
-eventMimeType(const mtx::events::RoomEvent<T> &e)
-  -> std::enable_if_t<std::is_same<decltype(e.content.info.mimetype), std::string>::value, QString>
-{
-        return QString::fromStdString(e.content.info.mimetype);
-}
-
-template<class T>
-QString
-eventRelatesTo(const mtx::events::Event<T> &)
-{
-        return QString();
-}
-template<class T>
-auto
-eventRelatesTo(const mtx::events::RoomEvent<T> &e) -> std::enable_if_t<
-  std::is_same<decltype(e.content.relates_to.in_reply_to.event_id), std::string>::value,
-  QString>
-{
-        return QString::fromStdString(e.content.relates_to.in_reply_to.event_id);
-}
-
-template<class T>
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<T> &e)
-{
-        using mtx::events::EventType;
-        switch (e.type) {
-        case EventType::RoomKeyRequest:
-                return qml_mtx_events::EventType::KeyRequest;
-        case EventType::RoomAliases:
-                return qml_mtx_events::EventType::Aliases;
-        case EventType::RoomAvatar:
-                return qml_mtx_events::EventType::Avatar;
-        case EventType::RoomCanonicalAlias:
-                return qml_mtx_events::EventType::CanonicalAlias;
-        case EventType::RoomCreate:
-                return qml_mtx_events::EventType::Create;
-        case EventType::RoomEncrypted:
-                return qml_mtx_events::EventType::Encrypted;
-        case EventType::RoomEncryption:
-                return qml_mtx_events::EventType::Encryption;
-        case EventType::RoomGuestAccess:
-                return qml_mtx_events::EventType::GuestAccess;
-        case EventType::RoomHistoryVisibility:
-                return qml_mtx_events::EventType::HistoryVisibility;
-        case EventType::RoomJoinRules:
-                return qml_mtx_events::EventType::JoinRules;
-        case EventType::RoomMember:
-                return qml_mtx_events::EventType::Member;
-        case EventType::RoomMessage:
-                return qml_mtx_events::EventType::UnknownMessage;
-        case EventType::RoomName:
-                return qml_mtx_events::EventType::Name;
-        case EventType::RoomPowerLevels:
-                return qml_mtx_events::EventType::PowerLevels;
-        case EventType::RoomTopic:
-                return qml_mtx_events::EventType::Topic;
-        case EventType::RoomTombstone:
-                return qml_mtx_events::EventType::Tombstone;
-        case EventType::RoomRedaction:
-                return qml_mtx_events::EventType::Redaction;
-        case EventType::RoomPinnedEvents:
-                return qml_mtx_events::EventType::PinnedEvents;
-        case EventType::Sticker:
-                return qml_mtx_events::EventType::Sticker;
-        case EventType::Tag:
-                return qml_mtx_events::EventType::Tag;
-        case EventType::Unsupported:
-        default:
-                return qml_mtx_events::EventType::Unsupported;
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Audio> &)
+        {
+                return qml_mtx_events::EventType::AudioMessage;
         }
-}
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::Audio> &)
-{
-        return qml_mtx_events::EventType::AudioMessage;
-}
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::Emote> &)
-{
-        return qml_mtx_events::EventType::EmoteMessage;
-}
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::File> &)
-{
-        return qml_mtx_events::EventType::FileMessage;
-}
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::Image> &)
-{
-        return qml_mtx_events::EventType::ImageMessage;
-}
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::Notice> &)
-{
-        return qml_mtx_events::EventType::NoticeMessage;
-}
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::Text> &)
-{
-        return qml_mtx_events::EventType::TextMessage;
-}
-qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::Video> &)
-{
-        return qml_mtx_events::EventType::VideoMessage;
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
+        {
+                return qml_mtx_events::EventType::EmoteMessage;
+        }
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::File> &)
+        {
+                return qml_mtx_events::EventType::FileMessage;
+        }
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Image> &)
+        {
+                return qml_mtx_events::EventType::ImageMessage;
+        }
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Notice> &)
+        {
+                return qml_mtx_events::EventType::NoticeMessage;
+        }
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Text> &)
+        {
+                return qml_mtx_events::EventType::TextMessage;
+        }
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Video> &)
+        {
+                return qml_mtx_events::EventType::VideoMessage;
+        }
+
+        qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Redacted> &)
+        {
+                return qml_mtx_events::EventType::Redacted;
+        }
+        // ::EventType::Type operator()(const Event<mtx::events::msg::Location> &e) { return
+        // ::EventType::LocationMessage; }
+};
 }
 
 qml_mtx_events::EventType
-toRoomEventType(const mtx::events::Event<mtx::events::msg::Redacted> &)
+toRoomEventType(const mtx::events::collections::TimelineEvents &event)
 {
-        return qml_mtx_events::EventType::Redacted;
-}
-// ::EventType::Type toRoomEventType(const Event<mtx::events::msg::Location> &e) { return
-// ::EventType::LocationMessage; }
-
-template<class T>
-uint64_t
-eventHeight(const mtx::events::Event<T> &)
-{
-        return -1;
-}
-template<class T>
-auto
-eventHeight(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.info.h)
-{
-        return e.content.info.h;
-}
-template<class T>
-uint64_t
-eventWidth(const mtx::events::Event<T> &)
-{
-        return -1;
-}
-template<class T>
-auto
-eventWidth(const mtx::events::RoomEvent<T> &e) -> decltype(e.content.info.w)
-{
-        return e.content.info.w;
-}
-
-template<class T>
-double
-eventPropHeight(const mtx::events::RoomEvent<T> &e)
-{
-        auto w = eventWidth(e);
-        if (w == 0)
-                w = 1;
-
-        double prop = eventHeight(e) / (double)w;
-
-        return prop > 0 ? prop : 1.;
-}
+        return std::visit(RoomEventType{}, event);
 }
 
 TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent)
@@ -477,6 +214,8 @@ TimelineModel::rowCount(const QModelIndex &parent) const
 QVariant
 TimelineModel::data(const QModelIndex &index, int role) const
 {
+        using namespace mtx::accessors;
+        namespace acc = mtx::accessors;
         if (index.row() < 0 && index.row() >= (int)eventOrder.size())
                 return QVariant();
 
@@ -491,86 +230,71 @@ TimelineModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case Section: {
-                QDateTime date =
-                  std::visit([](const auto &e) -> QDateTime { return eventTimestamp(e); }, event);
+                QDateTime date = origin_server_ts(event);
                 date.setTime(QTime());
 
-                QString userId =
-                  std::visit([](const auto &e) -> QString { return senderId(e); }, event);
+                std::string userId = acc::sender(event);
 
                 for (int r = index.row() - 1; r > 0; r--) {
                         auto tempEv        = events.value(eventOrder[r]);
-                        QDateTime prevDate = std::visit(
-                          [](const auto &e) -> QDateTime { return eventTimestamp(e); }, tempEv);
+                        QDateTime prevDate = origin_server_ts(tempEv);
                         prevDate.setTime(QTime());
                         if (prevDate != date)
-                                return QString("%2 %1").arg(date.toMSecsSinceEpoch()).arg(userId);
+                                return QString("%2 %1")
+                                  .arg(date.toMSecsSinceEpoch())
+                                  .arg(QString::fromStdString(userId));
 
-                        QString prevUserId =
-                          std::visit([](const auto &e) -> QString { return senderId(e); }, tempEv);
+                        std::string prevUserId = acc::sender(tempEv);
                         if (userId != prevUserId)
                                 break;
                 }
 
-                return QString("%1").arg(userId);
+                return QString("%1").arg(QString::fromStdString(userId));
         }
         case UserId:
-                return QVariant(
-                  std::visit([](const auto &e) -> QString { return senderId(e); }, event));
+                return QVariant(QString::fromStdString(acc::sender(event)));
         case UserName:
-                return QVariant(displayName(
-                  std::visit([](const auto &e) -> QString { return senderId(e); }, event)));
+                return QVariant(displayName(QString::fromStdString(acc::sender(event))));
 
         case Timestamp:
-                return QVariant(
-                  std::visit([](const auto &e) -> QDateTime { return eventTimestamp(e); }, event));
+                return QVariant(origin_server_ts(event));
         case Type:
-                return QVariant(std::visit(
-                  [](const auto &e) -> qml_mtx_events::EventType { return toRoomEventType(e); },
-                  event));
+                return QVariant(toRoomEventType(event));
         case Body:
-                return QVariant(utils::replaceEmoji(
-                  std::visit([](const auto &e) -> QString { return eventBody(e); }, event)));
+                return QVariant(utils::replaceEmoji(QString::fromStdString(body(event))));
         case FormattedBody:
                 return QVariant(
-                  utils::replaceEmoji(
-                    utils::linkifyMessage(std::visit(
-                      [](const auto &e) -> QString { return eventFormattedBody(e); }, event)))
+                  utils::replaceEmoji(utils::linkifyMessage(formattedBodyWithFallback(event)))
                     .remove("<mx-reply>")
                     .remove("</mx-reply>"));
         case Url:
-                return QVariant(
-                  std::visit([](const auto &e) -> QString { return eventUrl(e); }, event));
+                return QVariant(QString::fromStdString(url(event)));
         case ThumbnailUrl:
-                return QVariant(
-                  std::visit([](const auto &e) -> QString { return eventThumbnailUrl(e); }, event));
+                return QVariant(QString::fromStdString(thumbnail_url(event)));
         case Filename:
-                return QVariant(
-                  std::visit([](const auto &e) -> QString { return eventFilename(e); }, event));
+                return QVariant(QString::fromStdString(filename(event)));
         case Filesize:
-                return QVariant(std::visit(
-                  [](const auto &e) -> QString {
-                          return utils::humanReadableFileSize(eventFilesize(e));
-                  },
-                  event));
+                return QVariant(utils::humanReadableFileSize(filesize(event)));
         case MimeType:
-                return QVariant(
-                  std::visit([](const auto &e) -> QString { return eventMimeType(e); }, event));
+                return QVariant(QString::fromStdString(mimetype(event)));
         case Height:
-                return QVariant(
-                  std::visit([](const auto &e) -> qulonglong { return eventHeight(e); }, event));
+                return QVariant(qulonglong{media_height(event)});
         case Width:
-                return QVariant(
-                  std::visit([](const auto &e) -> qulonglong { return eventWidth(e); }, event));
-        case ProportionalHeight:
-                return QVariant(
-                  std::visit([](const auto &e) -> double { return eventPropHeight(e); }, event));
+                return QVariant(qulonglong{media_width(event)});
+        case ProportionalHeight: {
+                auto w = media_width(event);
+                if (w == 0)
+                        w = 1;
+
+                double prop = media_height(event) / (double)w;
+
+                return QVariant(prop > 0 ? prop : 1.);
+        }
         case Id:
                 return id;
         case State:
                 // only show read receipts for messages not from us
-                if (std::visit([](const auto &e) -> QString { return senderId(e); }, event)
-                      .toStdString() != http::client()->user_id().to_string())
+                if (acc::sender(event) != http::client()->user_id().to_string())
                         return qml_mtx_events::Empty;
                 else if (failed.contains(id))
                         return qml_mtx_events::Failed;
@@ -581,21 +305,15 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 else
                         return qml_mtx_events::Received;
         case IsEncrypted: {
-                auto tempEvent = events[id];
                 return std::holds_alternative<
-                  mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(tempEvent);
+                  mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(events[id]);
         }
-        case ReplyTo: {
-                QString evId =
-                  std::visit([](const auto &e) -> QString { return eventRelatesTo(e); }, event);
-                return QVariant(evId);
-        }
+        case ReplyTo:
+                return QVariant(QString::fromStdString(in_reply_to_event(event)));
         case RoomName:
-                return QVariant(
-                  std::visit([](const auto &e) -> QString { return eventRoomName(e); }, event));
+                return QVariant(QString::fromStdString(room_name(event)));
         case RoomTopic:
-                return QVariant(
-                  std::visit([](const auto &e) -> QString { return eventRoomTopic(e); }, event));
+                return QVariant(QString::fromStdString(room_topic(event)));
         default:
                 return QVariant();
         }
@@ -667,7 +385,7 @@ TimelineModel::internalAddEvents(
 {
         std::vector<QString> ids;
         for (auto e : timeline) {
-                QString id = std::visit([](const auto &e) -> QString { return eventId(e); }, e);
+                QString id = QString::fromStdString(mtx::accessors::event_id(e));
 
                 if (this->events.contains(id)) {
                         this->events.insert(id, e);
@@ -708,11 +426,7 @@ TimelineModel::internalAddEvents(
                       std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
                         e = decryptEvent(*event).event;
                 }
-                auto encInfo = std::visit(
-                  [](const auto &ev) -> std::optional<mtx::crypto::EncryptedFile> {
-                          return eventEncryptionInfo(ev);
-                  },
-                  e);
+                auto encInfo = mtx::accessors::file(e);
 
                 if (encInfo)
                         emit newEncryptedImage(encInfo.value());
@@ -950,25 +664,18 @@ TimelineModel::replyAction(QString id)
                 event = decryptEvent(*e).event;
         }
 
-        RelatedInfo related = std::visit(
-          [](const auto &ev) -> RelatedInfo {
-                  RelatedInfo related_   = {};
-                  related_.quoted_user   = QString::fromStdString(ev.sender);
-                  related_.related_event = ev.event_id;
-                  return related_;
-          },
-          event);
-        related.type = mtx::events::getMessageType(
-          std::visit([](const auto &e) -> std::string { return eventMsgType(e); }, event));
-        related.quoted_body =
-          std::visit([](const auto &e) -> QString { return eventFormattedBody(e); }, event);
+        RelatedInfo related   = {};
+        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
+        related.related_event = mtx::accessors::event_id(event);
+        related.type          = mtx::accessors::msg_type(event);
+        related.quoted_body   = mtx::accessors::formattedBodyWithFallback(event);
         related.quoted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
         nhlog::ui()->debug("after replacement: {}", related.quoted_body.toStdString());
         related.room = room_id_;
 
-        if (related.quoted_body.isEmpty())
-                return;
+        // if (related.quoted_body.isEmpty())
+        //        return;
 
         ChatPage::instance()->messageReply(related);
 }
@@ -1412,8 +1119,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 
         internalAddEvents({event});
 
-        QString txn_id_qstr =
-          std::visit([](const auto &e) -> QString { return eventId(e); }, event);
+        QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
         beginInsertRows(QModelIndex(),
                         static_cast<int>(this->eventOrder.size()),
                         static_cast<int>(this->eventOrder.size()));
@@ -1436,18 +1142,13 @@ TimelineModel::saveMedia(QString eventId) const
                 event = decryptEvent(*e).event;
         }
 
-        QString mxcUrl = std::visit([](const auto &e) -> QString { return eventUrl(e); }, event);
-        QString originalFilename =
-          std::visit([](const auto &e) -> QString { return eventFilename(e); }, event);
-        QString mimeType =
-          std::visit([](const auto &e) -> QString { return eventMimeType(e); }, event);
+        QString mxcUrl           = QString::fromStdString(mtx::accessors::url(event));
+        QString originalFilename = QString::fromStdString(mtx::accessors::filename(event));
+        QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(event));
 
-        using EncF = std::optional<mtx::crypto::EncryptedFile>;
-        EncF encryptionInfo =
-          std::visit([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
+        auto encryptionInfo = mtx::accessors::file(event);
 
-        qml_mtx_events::EventType eventType = std::visit(
-          [](const auto &e) -> qml_mtx_events::EventType { return toRoomEventType(e); }, event);
+        qml_mtx_events::EventType eventType = toRoomEventType(event);
 
         QString dialogTitle;
         if (eventType == qml_mtx_events::EventType::ImageMessage) {
@@ -1513,13 +1214,11 @@ TimelineModel::cacheMedia(QString eventId)
                 event = decryptEvent(*e).event;
         }
 
-        QString mxcUrl = std::visit([](const auto &e) -> QString { return eventUrl(e); }, event);
-        QString mimeType =
-          std::visit([](const auto &e) -> QString { return eventMimeType(e); }, event);
+        QString mxcUrl           = QString::fromStdString(mtx::accessors::url(event));
+        QString originalFilename = QString::fromStdString(mtx::accessors::filename(event));
+        QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(event));
 
-        using EncF = std::optional<mtx::crypto::EncryptedFile>;
-        EncF encryptionInfo =
-          std::visit([](const auto &e) -> EncF { return eventEncryptionInfo(e); }, event);
+        auto encryptionInfo = mtx::accessors::file(event);
 
         // If the message is a link to a non mxcUrl, don't download it
         if (!mxcUrl.startsWith("mxc://")) {
