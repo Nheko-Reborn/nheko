@@ -115,30 +115,68 @@ Item {
 			onMovementEnded: updatePosition()
 
 			spacing: 4
-			delegate: TimelineRow {
+			verticalLayoutDirection: ListView.BottomToTop
+
+			delegate: Rectangle {
+				// This would normally be previousSection, but our model's order is inverted.
+				property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
+
+				id: wrapper
+				property Item section
+				width: chat.width
+				height: section ? section.height + timelinerow.height : timelinerow.height
+
+				TimelineRow {
+					id: timelinerow
+					y: section ? section.y + section.height : 0
+				}
 				function isFullyVisible() {
 					return height > 1 && (y - chat.contentY - 1) + height < chat.height
 				}
 				function getIndex() {
 					return index;
 				}
+
+				onSectionBoundaryChanged: {
+					if (sectionBoundary) {
+						var properties = {
+							'modelData': model.dump,
+							'section': ListView.section,
+							'nextSection': ListView.nextSection
+						}
+						section = sectionHeader.createObject(wrapper, properties)
+					} else {
+						section.destroy()
+						section = null
+					}
+				}
+
 			}
 
 			section {
 				property: "section"
-				delegate: Column {
+			}
+			Component {
+				id: sectionHeader
+				Column {
+					property var modelData
+					property string section
+					property string nextSection
+
 					topPadding: 4
 					bottomPadding: 4
 					spacing: 8
+
+					visible: !!modelData
 
 					width: parent.width
 					height: (section.includes(" ") ? dateBubble.height + 8 + userName.height : userName.height) + 8
 
 					Label {
 						id: dateBubble
-						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 						visible: section.includes(" ")
-						text: chat.model.formatDateSeparator(new Date(Number(section.split(" ")[1])))
+						text: chat.model.formatDateSeparator(modelData.timestamp)
 						color: colors.windowText
 
 						height: contentHeight * 1.2
@@ -155,20 +193,20 @@ Item {
 						Avatar {
 							width: avatarSize
 							height: avatarSize
-							url: chat.model.avatarUrl(section.split(" ")[0]).replace("mxc://", "image://MxcImage/")
-							displayName: chat.model.displayName(section.split(" ")[0])
+							url: chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/")
+							displayName: modelData.userName
 
 							MouseArea {
 								anchors.fill: parent
-								onClicked: chat.model.openUserProfile(section.split(" ")[0])
+								onClicked: chat.model.openUserProfile(modelData.userId)
 								cursorShape: Qt.PointingHandCursor
 							}
 						}
 
 						Text { 
 							id: userName
-							text: chat.model.escapeEmoji(chat.model.displayName(section.split(" ")[0]))
-							color: chat.model.userColor(section.split(" ")[0], colors.window)
+							text: chat.model.escapeEmoji(modelData.userName)
+							color: chat.model.userColor(modelData.userId, colors.window)
 							textFormat: Text.RichText
 
 							MouseArea {

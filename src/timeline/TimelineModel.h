@@ -147,6 +147,7 @@ public:
                 ReplyTo,
                 RoomName,
                 RoomTopic,
+                Dump,
         };
 
         QHash<int, QByteArray> roleNames() const override;

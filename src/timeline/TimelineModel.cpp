@@ -202,6 +202,7 @@ TimelineModel::roleNames() const
           {ReplyTo, "replyTo"},
           {RoomName, "roomName"},
           {RoomTopic, "roomTopic"},
+          {Dump, "dump"},
         };
 }
 int
@@ -235,7 +236,7 @@ TimelineModel::data(const QModelIndex &index, int role) const
 
                 std::string userId = acc::sender(event);
 
-                for (int r = index.row() - 1; r > 0; r--) {
+                for (size_t r = index.row() + 1; r < eventOrder.size(); r++) {
                         auto tempEv        = events.value(eventOrder[r]);
                         QDateTime prevDate = origin_server_ts(tempEv);
                         prevDate.setTime(QTime());
@@ -314,6 +315,35 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QVariant(QString::fromStdString(room_name(event)));
         case RoomTopic:
                 return QVariant(QString::fromStdString(room_topic(event)));
+        case Dump: {
+                QVariantMap m;
+                auto names = roleNames();
+
+                // m.insert(names[Section], data(index, static_cast<int>(Section)));
+                m.insert(names[Type], data(index, static_cast<int>(Type)));
+                m.insert(names[Body], data(index, static_cast<int>(Body)));
+                m.insert(names[FormattedBody], data(index, static_cast<int>(FormattedBody)));
+                m.insert(names[UserId], data(index, static_cast<int>(UserId)));
+                m.insert(names[UserName], data(index, static_cast<int>(UserName)));
+                m.insert(names[Timestamp], data(index, static_cast<int>(Timestamp)));
+                m.insert(names[Url], data(index, static_cast<int>(Url)));
+                m.insert(names[ThumbnailUrl], data(index, static_cast<int>(ThumbnailUrl)));
+                m.insert(names[Filename], data(index, static_cast<int>(Filename)));
+                m.insert(names[Filesize], data(index, static_cast<int>(Filesize)));
+                m.insert(names[MimeType], data(index, static_cast<int>(MimeType)));
+                m.insert(names[Height], data(index, static_cast<int>(Height)));
+                m.insert(names[Width], data(index, static_cast<int>(Width)));
+                m.insert(names[ProportionalHeight],
+                         data(index, static_cast<int>(ProportionalHeight)));
+                m.insert(names[Id], data(index, static_cast<int>(Id)));
+                m.insert(names[State], data(index, static_cast<int>(State)));
+                m.insert(names[IsEncrypted], data(index, static_cast<int>(IsEncrypted)));
+                m.insert(names[ReplyTo], data(index, static_cast<int>(ReplyTo)));
+                m.insert(names[RoomName], data(index, static_cast<int>(RoomName)));
+                m.insert(names[RoomTopic], data(index, static_cast<int>(RoomTopic)));
+
+                return QVariant(m);
+        }
         default:
                 return QVariant();
         }
@@ -335,10 +365,8 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         if (ids.empty())
                 return;
 
-        beginInsertRows(QModelIndex(),
-                        static_cast<int>(this->eventOrder.size()),
-                        static_cast<int>(this->eventOrder.size() + ids.size() - 1));
-        this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
+        beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
+        this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
         endInsertRows();
 
         updateLastMessage();
@@ -362,7 +390,7 @@ isMessage(const mtx::events::Event<T> &)
 void
 TimelineModel::updateLastMessage()
 {
-        for (auto it = eventOrder.rbegin(); it != eventOrder.rend(); ++it) {
+        for (auto it = eventOrder.begin(); it != eventOrder.end(); ++it) {
                 auto event = events.value(*it);
                 if (auto e = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                       &event)) {
@@ -499,8 +527,10 @@ TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
         std::vector<QString> ids = internalAddEvents(msgs.chunk);
 
         if (!ids.empty()) {
-                beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
-                this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
+                beginInsertRows(QModelIndex(),
+                                static_cast<int>(this->eventOrder.size()),
+                                static_cast<int>(this->eventOrder.size() + ids.size() - 1));
+                this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
                 endInsertRows();
         }
 
@@ -1120,11 +1150,9 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
         internalAddEvents({event});
 
         QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
-        beginInsertRows(QModelIndex(),
-                        static_cast<int>(this->eventOrder.size()),
-                        static_cast<int>(this->eventOrder.size()));
+        beginInsertRows(QModelIndex(), 0, 0);
         pending.push_back(txn_id_qstr);
-        this->eventOrder.insert(this->eventOrder.end(), txn_id_qstr);
+        this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
         endInsertRows();
         updateLastMessage();
 
