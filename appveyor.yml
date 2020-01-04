@@ -138,15 +138,22 @@ on_success:
     - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -uredsky17:%BINTRAY_APIKEY% https://api.bintray.com/content/nheko-reborn/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
 
 deploy:
-    description: "Development builds"
-    provider: GitHub
-    auth_token:
-        secure: "ShStWeqp+TkYqJPQr7uFZb+B8ZTgC7Iwth+IkhjfRDCTLhy8gtWvlPzlQilder3E"
-    artifact: nheko-${APPVEYOR_REPO_TAG_NAME}-installer.exe
-    force_update: true
-    prerelease: true
-    on:
-        appveyor_repo_tag: true
+    - description: "Development builds"
+      provider: GitHub
+      auth_token:
+          secure: "ShStWeqp+TkYqJPQr7uFZb+B8ZTgC7Iwth+IkhjfRDCTLhy8gtWvlPzlQilder3E"
+      artifact: nheko-${APPVEYOR_REPO_TAG_NAME}-installer.exe
+      force_update: true
+      prerelease: true
+      on:
+          appveyor_repo_tag: true
+    - provider: S3
+      access_key_id: ${AWS_ACCESS_KEY}
+      secret_access_key: ${AWS_SECRET_KEY}
+      bucket: ${AWS_BUCKET_NAME}
+      region: ${AWS_DEFAULT_REGION}
+      set_public: true
+      artifact: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe, nheko_win_64.zip
 
 artifacts:
     - path: nheko_win_64.zip
