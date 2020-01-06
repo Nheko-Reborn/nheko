@@ -31,6 +31,7 @@ Item {
 			running: timelineManager.isInitialSync
 			height: 200
 			width: 200
+			z: 3
 		}
 
 		ListView {
@@ -48,8 +49,6 @@ Item {
 
 			boundsBehavior: Flickable.StopAtBounds
 
-			onVerticalOvershootChanged: contentY = contentY - verticalOvershoot
-
 			MouseArea {
 				anchors.fill: parent
 				acceptedButtons: Qt.NoButton
@@ -60,18 +59,7 @@ Item {
 						chat.contentY = chat.contentY - wheel.angleDelta.y
 						wheel.accepted = true
 						chat.forceLayout()
-						chat.updatePosition()
-					}
-				}
-			}
-
-			onModelChanged: {
-				if (model) {
-					currentIndex = model.currentIndex
-					if (model.currentIndex == count - 1) {
-						positionViewAtEnd()
-					} else {
-						positionViewAtIndex(model.currentIndex, ListView.End)
+						chat.returnToBounds()
 					}
 				}
 			}
@@ -82,36 +70,12 @@ Item {
 				anchors.top: chat.top
 				anchors.left: chat.right
 				anchors.bottom: chat.bottom
-				onPressedChanged: if (!pressed) chat.updatePosition()
 			}
-
-			property bool atBottom: false
-			onCountChanged: {
-				if (atBottom) {
-					var newIndex = count - 1 // last index
-					positionViewAtEnd()
-					currentIndex = newIndex
-					model.currentIndex = newIndex
-				}
-			}
-
-			onAtYBeginningChanged: if (atYBeginning) { chat.model.currentIndex = 0; chat.currentIndex = 0; }
-
-			function updatePosition() {
-				for (var y = chat.contentY + chat.height; y > chat.height; y -= 9) {
-					var i = chat.itemAt(100, y);
-					if (!i) continue;
-					if (!i.isFullyVisible()) continue;
-					chat.model.currentIndex = i.getIndex();
-					chat.currentIndex = i.getIndex()
-					atBottom = i.getIndex() == count - 1;
-					break;
-				}
-			}
-			onMovementEnded: updatePosition()
 
 			spacing: 4
 			verticalLayoutDirection: ListView.BottomToTop
+
+			onCountChanged: if (atYEnd) model.currentIndex = 0 // Mark last event as read, since we are at the bottom
 
 			delegate: Rectangle {
 				// This would normally be previousSection, but our model's order is inverted.
@@ -126,12 +90,6 @@ Item {
 					id: timelinerow
 					y: section ? section.y + section.height : 0
 				}
-				function isFullyVisible() {
-					return height > 1 && (y - chat.contentY - 1) + height < chat.height
-				}
-				function getIndex() {
-					return index;
-				}
 
 				onSectionBoundaryChanged: {
 					if (sectionBoundary) {
@@ -145,6 +103,14 @@ Item {
 						section.destroy()
 						section = null
 					}
+				}
+
+				Binding {
+					target: chat.model
+					property: "currentIndex"
+					when: y + height > chat.contentY + chat.height && y < chat.contentY + chat.height
+					value: index
+					delayed: true
 				}
 
 			}
