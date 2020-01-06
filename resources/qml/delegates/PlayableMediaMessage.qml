@@ -89,7 +89,7 @@ Rectangle {
 					id: img
 					anchors.centerIn: parent
 
-					source: "qrc:/icons/icons/ui/arrow-pointing-down.png"
+					source: "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?"+colors.dark
 					fillMode: Image.Pad
 
 				}
@@ -132,11 +132,11 @@ Rectangle {
 				states: [
 					State {
 						name: "stopped"
-						PropertyChanges { target: img; source: "qrc:/icons/icons/ui/play-sign.png" }
+						PropertyChanges { target: img; source: "image://colorimage/:/icons/icons/ui/play-sign.png?"+colors.dark }
 					},
 					State {
 						name: "playing"
-						PropertyChanges { target: img; source: "qrc:/icons/icons/ui/pause-symbol.png" }
+						PropertyChanges { target: img; source: "image://colorimage/:/icons/icons/ui/pause-symbol.png?"+colors.dark }
 					}
 				]
 			}

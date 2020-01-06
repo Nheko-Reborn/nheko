@@ -85,6 +85,7 @@ Item {
 				property Item section
 				width: chat.width
 				height: section ? section.height + timelinerow.height : timelinerow.height
+				color: "transparent"
 
 				TimelineRow {
 					id: timelinerow
