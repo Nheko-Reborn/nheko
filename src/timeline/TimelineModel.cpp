@@ -349,6 +349,50 @@ TimelineModel::data(const QModelIndex &index, int role) const
         }
 }
 
+bool
+TimelineModel::canFetchMore(const QModelIndex &) const
+{
+        if (eventOrder.empty())
+                return true;
+        if (!std::holds_alternative<mtx::events::StateEvent<mtx::events::state::Create>>(
+              events[eventOrder.back()]))
+                return true;
+        else
+
+                return false;
+}
+
+void
+TimelineModel::fetchMore(const QModelIndex &)
+{
+        if (paginationInProgress) {
+                nhlog::ui()->warn("Already loading older messages");
+                return;
+        }
+
+        paginationInProgress = true;
+        mtx::http::MessagesOpts opts;
+        opts.room_id = room_id_.toStdString();
+        opts.from    = prev_batch_token_.toStdString();
+
+        nhlog::ui()->debug("Paginationg room {}", opts.room_id);
+
+        http::client()->messages(
+          opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->error("failed to call /messages ({}): {} - {}",
+                                              opts.room_id,
+                                              mtx::errors::to_string(err->matrix_error.errcode),
+                                              err->matrix_error.error);
+                          paginationInProgress = false;
+                          return;
+                  }
+
+                  emit oldMessagesRetrieved(std::move(res));
+                  paginationInProgress = false;
+          });
+}
+
 void
 TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
@@ -463,37 +507,6 @@ TimelineModel::internalAddEvents(
                 ids.push_back(id);
         }
         return ids;
-}
-
-void
-TimelineModel::fetchHistory()
-{
-        if (paginationInProgress) {
-                nhlog::ui()->warn("Already loading older messages");
-                return;
-        }
-
-        paginationInProgress = true;
-        mtx::http::MessagesOpts opts;
-        opts.room_id = room_id_.toStdString();
-        opts.from    = prev_batch_token_.toStdString();
-
-        nhlog::ui()->info("Paginationg room {}", opts.room_id);
-
-        http::client()->messages(
-          opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->error("failed to call /messages ({}): {} - {}",
-                                              opts.room_id,
-                                              mtx::errors::to_string(err->matrix_error.errcode),
-                                              err->matrix_error.error);
-                          paginationInProgress = false;
-                          return;
-                  }
-
-                  emit oldMessagesRetrieved(std::move(res));
-                  paginationInProgress = false;
-          });
 }
 
 void

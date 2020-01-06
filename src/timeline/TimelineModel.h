@@ -154,6 +154,9 @@ public:
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+        bool canFetchMore(const QModelIndex &) const override;
+        void fetchMore(const QModelIndex &) override;
+
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString displayName(QString id) const;
         Q_INVOKABLE QString avatarUrl(QString id) const;
@@ -175,7 +178,6 @@ public:
         void sendMessage(const T &msg);
 
 public slots:
-        void fetchHistory();
         void setCurrentIndex(int index);
         int currentIndex() const { return idToIndex(currentId); }
         void markEventsAsRead(const std::vector<QString> &event_ids);

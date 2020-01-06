@@ -93,13 +93,9 @@ Item {
 					currentIndex = newIndex
 					model.currentIndex = newIndex
 				}
-
-				if (contentHeight < height && model) {
-					model.fetchHistory();
-				}
 			}
 
-			onAtYBeginningChanged: if (atYBeginning) { chat.model.currentIndex = 0; chat.currentIndex = 0; model.fetchHistory(); }
+			onAtYBeginningChanged: if (atYBeginning) { chat.model.currentIndex = 0; chat.currentIndex = 0; }
 
 			function updatePosition() {
 				for (var y = chat.contentY + chat.height; y > chat.height; y -= 9) {
