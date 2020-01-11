@@ -212,6 +212,14 @@ TimelineModel::rowCount(const QModelIndex &parent) const
         return (int)this->eventOrder.size();
 }
 
+QVariantMap
+TimelineModel::getDump(QString eventId) const
+{
+        if (events.contains(eventId))
+                return data(index(idToIndex(eventId), 0), Dump).toMap();
+        return {};
+}
+
 QVariant
 TimelineModel::data(const QModelIndex &index, int role) const
 {
@@ -263,11 +271,13 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QVariant(toRoomEventType(event));
         case Body:
                 return QVariant(utils::replaceEmoji(QString::fromStdString(body(event))));
-        case FormattedBody:
+        case FormattedBody: {
+                const static QRegularExpression replyFallback(
+                  "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
                 return QVariant(
                   utils::replaceEmoji(utils::linkifyMessage(formattedBodyWithFallback(event)))
-                    .remove("<mx-reply>")
-                    .remove("</mx-reply>"));
+                    .remove(replyFallback));
+        }
         case Url:
                 return QVariant(QString::fromStdString(url(event)));
         case ThumbnailUrl:

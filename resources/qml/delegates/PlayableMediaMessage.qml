@@ -19,12 +19,12 @@ Rectangle {
 
 		Rectangle {
 			id: videoContainer
-			visible: model.type == MtxEvent.VideoMessage
-			width: Math.min(parent.width, model.width ? model.width : 400) // some media has 0 as size...
-			height: width*model.proportionalHeight
+			visible: model.data.type == MtxEvent.VideoMessage
+			width: Math.min(parent.width, model.data.width ? model.data.width : 400) // some media has 0 as size...
+			height: width*model.data.proportionalHeight
 			Image {
 				anchors.fill: parent
-				source: model.thumbnailUrl.replace("mxc://", "image://MxcImage/")
+				source: model.data.thumbnailUrl.replace("mxc://", "image://MxcImage/")
 				asynchronous: true
 				fillMode: Image.PreserveAspectFit
 
@@ -97,7 +97,7 @@ Rectangle {
 					anchors.fill: parent
 					onClicked: {
 						switch (button.state) {
-							case "": timelineManager.timeline.cacheMedia(model.id); break;
+							case "": timelineManager.timeline.cacheMedia(model.data.id); break;
 							case "stopped":
 							media.play(); console.log("play");
 							button.state = "playing"
@@ -120,7 +120,7 @@ Rectangle {
 				Connections {
 					target: timelineManager.timeline
 					onMediaCached: {
-						if (mxcUrl == model.url) {
+						if (mxcUrl == model.data.url) {
 							media.source = "file://" + cacheUrl
 							button.state = "stopped"
 							console.log("media loaded: " + mxcUrl + " at " + cacheUrl)
@@ -145,14 +145,14 @@ Rectangle {
 
 				Text {
 					Layout.fillWidth: true
-					text: model.body
+					text: model.data.body
 					textFormat: Text.PlainText
 					elide: Text.ElideRight
 					color: colors.text
 				}
 				Text {
 					Layout.fillWidth: true
-					text: model.filesize
+					text: model.data.filesize
 					textFormat: Text.PlainText
 					elide: Text.ElideRight
 					color: colors.text

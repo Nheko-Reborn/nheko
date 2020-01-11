@@ -181,6 +181,7 @@ public slots:
         void setCurrentIndex(int index);
         int currentIndex() const { return idToIndex(currentId); }
         void markEventsAsRead(const std::vector<QString> &event_ids);
+        QVariantMap getDump(QString eventId) const;
 
 private slots:
         // Add old events at the top of the timeline.

@@ -14,23 +14,70 @@ RowLayout {
 	anchors.left: parent.left
 	anchors.right: parent.right
 
-	height: Math.max(contentItem.height, 16)
+	//height: Math.max(model.replyTo ? reply.height + contentItem.height + 4 : contentItem.height, 16)
 
 	Column {
 		Layout.fillWidth: true
 		Layout.alignment: Qt.AlignTop
+		spacing: 4
 
-		//property var replyTo: model.replyTo
+		// fancy reply, if this is a reply
+		Rectangle {
+			visible: model.replyTo
+			width: parent.width
+			height: replyContainer.height
 
-		//Text {
-		//	property int idx: timelineManager.timeline.idToIndex(replyTo)
-		//	text: "" + (idx != -1 ? timelineManager.timeline.data(timelineManager.timeline.index(idx, 0), 2) : "nothing")
-		//}
+			Rectangle {
+				id: colorLine
+				height: replyContainer.height
+				width: 4
+				color: chat.model.userColor(reply.modelData.userId, colors.window)
+			}
+
+			Column {
+				id: replyContainer
+				anchors.left: colorLine.right
+				anchors.leftMargin: 4
+				width: parent.width - 8
+
+
+				Text { 
+					id: userName
+					text: chat.model.escapeEmoji(reply.modelData.userName)
+					color: chat.model.userColor(reply.modelData.userId, colors.window)
+					textFormat: Text.RichText
+
+					MouseArea {
+						anchors.fill: parent
+						onClicked: chat.model.openUserProfile(reply.modelData.userId)
+						cursorShape: Qt.PointingHandCursor
+					}
+				}
+
+				MessageDelegate {
+					id: reply
+					width: parent.width
+
+					modelData: chat.model.getDump(model.replyTo)
+				}
+			}
+
+			color: { var col = chat.model.userColor(reply.modelData.userId, colors.window); col.a = 0.2; return col }
+
+			MouseArea {
+				anchors.fill: parent
+				onClicked: chat.positionViewAtIndex(chat.model.idToIndex(model.replyTo), ListView.Contain)
+				cursorShape: Qt.PointingHandCursor
+			}
+		}
+
+		// actual message content
 		MessageDelegate {
 			id: contentItem
 
 			width: parent.width
-			height: childrenRect.height
+
+			modelData: model
 		}
 	}
 
