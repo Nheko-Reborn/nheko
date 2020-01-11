@@ -70,8 +70,9 @@ struct RoomEventType
                 case EventType::Tag:
                         return qml_mtx_events::EventType::Tag;
                 case EventType::Unsupported:
-                default:
                         return qml_mtx_events::EventType::Unsupported;
+                default:
+                        return qml_mtx_events::EventType::UnknownMessage;
                 }
         }
         qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Audio> &)
@@ -175,6 +176,17 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(
           this, &TimelineModel::nextPendingMessage, this, &TimelineModel::processOnePendingMessage);
         connect(this, &TimelineModel::newMessageToSend, this, &TimelineModel::addPendingMessage);
+
+        connect(this,
+                &TimelineModel::replyFetched,
+                this,
+                [this](QString requestingEvent, mtx::events::collections::TimelineEvents event) {
+                        events.insert(QString::fromStdString(mtx::accessors::event_id(event)),
+                                      event);
+                        auto idx = idToIndex(requestingEvent);
+                        if (idx >= 0)
+                                emit dataChanged(index(idx, 0), index(idx, 0));
+                });
 }
 
 QHash<int, QByteArray>
@@ -216,20 +228,15 @@ QVariantMap
 TimelineModel::getDump(QString eventId) const
 {
         if (events.contains(eventId))
-                return data(index(idToIndex(eventId), 0), Dump).toMap();
+                return data(eventId, Dump).toMap();
         return {};
 }
 
 QVariant
-TimelineModel::data(const QModelIndex &index, int role) const
+TimelineModel::data(const QString &id, int role) const
 {
         using namespace mtx::accessors;
-        namespace acc = mtx::accessors;
-        if (index.row() < 0 && index.row() >= (int)eventOrder.size())
-                return QVariant();
-
-        QString id = eventOrder[index.row()];
-
+        namespace acc                                  = mtx::accessors;
         mtx::events::collections::TimelineEvents event = events.value(id);
 
         if (auto e =
@@ -238,28 +245,6 @@ TimelineModel::data(const QModelIndex &index, int role) const
         }
 
         switch (role) {
-        case Section: {
-                QDateTime date = origin_server_ts(event);
-                date.setTime(QTime());
-
-                std::string userId = acc::sender(event);
-
-                for (size_t r = index.row() + 1; r < eventOrder.size(); r++) {
-                        auto tempEv        = events.value(eventOrder[r]);
-                        QDateTime prevDate = origin_server_ts(tempEv);
-                        prevDate.setTime(QTime());
-                        if (prevDate != date)
-                                return QString("%2 %1")
-                                  .arg(date.toMSecsSinceEpoch())
-                                  .arg(QString::fromStdString(userId));
-
-                        std::string prevUserId = acc::sender(tempEv);
-                        if (userId != prevUserId)
-                                break;
-                }
-
-                return QString("%1").arg(QString::fromStdString(userId));
-        }
         case UserId:
                 return QVariant(QString::fromStdString(acc::sender(event)));
         case UserName:
@@ -329,34 +314,71 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 QVariantMap m;
                 auto names = roleNames();
 
-                // m.insert(names[Section], data(index, static_cast<int>(Section)));
-                m.insert(names[Type], data(index, static_cast<int>(Type)));
-                m.insert(names[Body], data(index, static_cast<int>(Body)));
-                m.insert(names[FormattedBody], data(index, static_cast<int>(FormattedBody)));
-                m.insert(names[UserId], data(index, static_cast<int>(UserId)));
-                m.insert(names[UserName], data(index, static_cast<int>(UserName)));
-                m.insert(names[Timestamp], data(index, static_cast<int>(Timestamp)));
-                m.insert(names[Url], data(index, static_cast<int>(Url)));
-                m.insert(names[ThumbnailUrl], data(index, static_cast<int>(ThumbnailUrl)));
-                m.insert(names[Filename], data(index, static_cast<int>(Filename)));
-                m.insert(names[Filesize], data(index, static_cast<int>(Filesize)));
-                m.insert(names[MimeType], data(index, static_cast<int>(MimeType)));
-                m.insert(names[Height], data(index, static_cast<int>(Height)));
-                m.insert(names[Width], data(index, static_cast<int>(Width)));
-                m.insert(names[ProportionalHeight],
-                         data(index, static_cast<int>(ProportionalHeight)));
-                m.insert(names[Id], data(index, static_cast<int>(Id)));
-                m.insert(names[State], data(index, static_cast<int>(State)));
-                m.insert(names[IsEncrypted], data(index, static_cast<int>(IsEncrypted)));
-                m.insert(names[ReplyTo], data(index, static_cast<int>(ReplyTo)));
-                m.insert(names[RoomName], data(index, static_cast<int>(RoomName)));
-                m.insert(names[RoomTopic], data(index, static_cast<int>(RoomTopic)));
+                // m.insert(names[Section], data(id, static_cast<int>(Section)));
+                m.insert(names[Type], data(id, static_cast<int>(Type)));
+                m.insert(names[Body], data(id, static_cast<int>(Body)));
+                m.insert(names[FormattedBody], data(id, static_cast<int>(FormattedBody)));
+                m.insert(names[UserId], data(id, static_cast<int>(UserId)));
+                m.insert(names[UserName], data(id, static_cast<int>(UserName)));
+                m.insert(names[Timestamp], data(id, static_cast<int>(Timestamp)));
+                m.insert(names[Url], data(id, static_cast<int>(Url)));
+                m.insert(names[ThumbnailUrl], data(id, static_cast<int>(ThumbnailUrl)));
+                m.insert(names[Filename], data(id, static_cast<int>(Filename)));
+                m.insert(names[Filesize], data(id, static_cast<int>(Filesize)));
+                m.insert(names[MimeType], data(id, static_cast<int>(MimeType)));
+                m.insert(names[Height], data(id, static_cast<int>(Height)));
+                m.insert(names[Width], data(id, static_cast<int>(Width)));
+                m.insert(names[ProportionalHeight], data(id, static_cast<int>(ProportionalHeight)));
+                m.insert(names[Id], data(id, static_cast<int>(Id)));
+                m.insert(names[State], data(id, static_cast<int>(State)));
+                m.insert(names[IsEncrypted], data(id, static_cast<int>(IsEncrypted)));
+                m.insert(names[ReplyTo], data(id, static_cast<int>(ReplyTo)));
+                m.insert(names[RoomName], data(id, static_cast<int>(RoomName)));
+                m.insert(names[RoomTopic], data(id, static_cast<int>(RoomTopic)));
 
                 return QVariant(m);
         }
         default:
                 return QVariant();
         }
+}
+
+QVariant
+TimelineModel::data(const QModelIndex &index, int role) const
+{
+        using namespace mtx::accessors;
+        namespace acc = mtx::accessors;
+        if (index.row() < 0 && index.row() >= (int)eventOrder.size())
+                return QVariant();
+
+        QString id = eventOrder[index.row()];
+
+        mtx::events::collections::TimelineEvents event = events.value(id);
+
+        if (role == Section) {
+                QDateTime date = origin_server_ts(event);
+                date.setTime(QTime());
+
+                std::string userId = acc::sender(event);
+
+                for (size_t r = index.row() + 1; r < eventOrder.size(); r++) {
+                        auto tempEv        = events.value(eventOrder[r]);
+                        QDateTime prevDate = origin_server_ts(tempEv);
+                        prevDate.setTime(QTime());
+                        if (prevDate != date)
+                                return QString("%2 %1")
+                                  .arg(date.toMSecsSinceEpoch())
+                                  .arg(QString::fromStdString(userId));
+
+                        std::string prevUserId = acc::sender(tempEv);
+                        if (userId != prevUserId)
+                                break;
+                }
+
+                return QString("%1").arg(QString::fromStdString(userId));
+        }
+
+        return data(id, role);
 }
 
 bool
@@ -515,6 +537,27 @@ TimelineModel::internalAddEvents(
 
                 this->events.insert(id, e);
                 ids.push_back(id);
+
+                auto replyTo  = mtx::accessors::in_reply_to_event(e);
+                auto qReplyTo = QString::fromStdString(replyTo);
+                if (!replyTo.empty() && !events.contains(qReplyTo)) {
+                        http::client()->get_event(
+                          this->room_id_.toStdString(),
+                          replyTo,
+                          [this, id, replyTo](
+                            const mtx::events::collections::TimelineEvents &timeline,
+                            mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->error(
+                                            "Failed to retrieve event with id {}, which was "
+                                            "requested to show the replyTo for event {}",
+                                            replyTo,
+                                            id.toStdString());
+                                          return;
+                                  }
+                                  emit replyFetched(id, timeline);
+                          });
+                }
         }
         return ids;
 }

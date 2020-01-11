@@ -12,6 +12,8 @@
 #include "UserSettingsPage.h"
 #include "dialogs/ImageOverlay.h"
 
+Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
+
 void
 TimelineViewManager::updateColorPalette()
 {
@@ -59,6 +61,7 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
                                          "Can't instantiate enum!");
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
+        qRegisterMetaType<mtx::events::collections::TimelineEvents>();
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView();

@@ -153,6 +153,7 @@ public:
         QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+        QVariant data(const QString &id, int role) const;
 
         bool canFetchMore(const QModelIndex &) const override;
         void fetchMore(const QModelIndex &) override;
@@ -200,6 +201,7 @@ signals:
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void mediaCached(QString mxcUrl, QString cacheUrl);
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
+        void replyFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
 
 private:
         DecryptionResult decryptEvent(

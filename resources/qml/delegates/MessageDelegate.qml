@@ -19,6 +19,10 @@ Item {
 		anchors.fill: parent
 
 		DelegateChoice {
+			roleValue: MtxEvent.UnknownMessage
+			Placeholder { text: "Unretrieved event" }
+		}
+		DelegateChoice {
 			roleValue: MtxEvent.TextMessage
 			TextMessage {}
 		}
