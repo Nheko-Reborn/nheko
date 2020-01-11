@@ -12,7 +12,7 @@ environment:
 
 cache:
   - c:\tools\vcpkg\installed\ -> appveyor.yml
-  - .deps -> appveyor.yml,deps\CMakeLists.txt
+#  - .deps -> appveyor.yml,deps\CMakeLists.txt <- disabled because it randomly seems to break everytime
 
 build:
     verbosity: minimal
