@@ -419,33 +419,25 @@ FilteredTextEdit::submit()
                 auto name = text.mid(1, command_end - 1);
                 auto args = text.mid(command_end + 1);
                 if (name.isEmpty() || name == "/") {
-                        if (!related_.related_event.empty()) {
-                                reply(args, related_);
-                        } else {
-                                message(args);
-                        }
+                        message(args, related);
                 } else {
                         command(name, args);
                 }
         } else {
-                if (!related_.related_event.empty()) {
-                        reply(std::move(text), std::move(related_));
-                } else {
-                        message(std::move(text));
-                }
+                message(std::move(text), std::move(related));
         }
 
-        related_ = {};
+        related = {};
 
         clear();
 }
 
 void
-FilteredTextEdit::showReplyPopup(const RelatedInfo &related)
+FilteredTextEdit::showReplyPopup(const RelatedInfo &related_)
 {
         QPoint pos = viewport()->mapToGlobal(this->pos());
 
-        replyPopup_.setReplyContent(related);
+        replyPopup_.setReplyContent(related_);
         replyPopup_.move(pos.x(), pos.y() - replyPopup_.height() - 10);
         replyPopup_.setFixedWidth(this->parentWidget()->width());
         replyPopup_.show();
@@ -467,7 +459,9 @@ FilteredTextEdit::uploadData(const QByteArray data,
 
         emit startedUpload();
 
-        emit media(buffer, mediaType, filename);
+        emit media(buffer, mediaType, filename, related);
+        related = {};
+        closeReply();
 }
 
 void
@@ -573,7 +567,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
         connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
-        connect(input_, &FilteredTextEdit::reply, this, &TextInputWidget::sendReplyMessage);
         connect(input_, &FilteredTextEdit::command, this, &TextInputWidget::command);
         connect(input_, &FilteredTextEdit::media, this, &TextInputWidget::uploadMedia);
         connect(emojiBtn_,
@@ -609,14 +602,16 @@ void
 TextInputWidget::command(QString command, QString args)
 {
         if (command == "me") {
-                sendEmoteMessage(args);
+                sendEmoteMessage(args, input_->related);
         } else if (command == "join") {
                 sendJoinRoomRequest(args);
         } else if (command == "shrug") {
-                sendTextMessage("¯\\_(ツ)_/¯");
+                sendTextMessage("¯\\_(ツ)_/¯", input_->related);
         } else if (command == "fliptable") {
-                sendTextMessage("(╯°□°)╯︵ ┻━┻");
+                sendTextMessage("(╯°□°)╯︵ ┻━┻", input_->related);
         }
+
+        input_->related = std::nullopt;
 }
 
 void
@@ -635,7 +630,9 @@ TextInputWidget::openFileSelection()
 
         QSharedPointer<QFile> file{new QFile{fileName, this}};
 
-        emit uploadMedia(file, format, fileName);
+        emit uploadMedia(file, format, fileName, input_->related);
+        input_->related = {};
+        input_->closeReply();
 
         showUploadSpinner();
 }
@@ -691,5 +688,5 @@ TextInputWidget::addReply(const RelatedInfo &related)
         auto cursor = input_->textCursor();
         cursor.movePosition(QTextCursor::End);
         input_->setTextCursor(cursor);
-        input_->setRelated(related);
+        input_->related = related;
 }

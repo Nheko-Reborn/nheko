@@ -109,7 +109,8 @@ signals:
                            const QString &mimeClass,
                            const QString &mime,
                            qint64 dsize,
-                           const QSize &dimensions);
+                           const QSize &dimensions,
+                           const std::optional<RelatedInfo> &related);
 
         void contentLoaded();
         void closing();

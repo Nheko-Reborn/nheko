@@ -170,38 +170,30 @@ TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Ti
 }
 
 void
-TimelineViewManager::queueTextMessage(const QString &msg)
+TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<RelatedInfo> &related)
 {
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
         text.format                 = "org.matrix.custom.html";
         text.formatted_body         = utils::markdownToHtml(msg).toStdString();
 
-        if (timeline_)
-                timeline_->sendMessage(text);
-}
-
-void
-TimelineViewManager::queueReplyMessage(const QString &reply, const RelatedInfo &related)
-{
-        mtx::events::msg::Text text = {};
-
-        QString body;
-        bool firstLine = true;
-        for (const auto &line : related.quoted_body.split("\n")) {
-                if (firstLine) {
-                        firstLine = false;
-                        body      = QString("> <%1> %2\n").arg(related.quoted_user).arg(line);
-                } else {
-                        body = QString("%1\n> %2\n").arg(body).arg(line);
+        if (related) {
+                QString body;
+                bool firstLine = true;
+                for (const auto &line : related->quoted_body.split("\n")) {
+                        if (firstLine) {
+                                firstLine = false;
+                                body = QString("> <%1> %2\n").arg(related->quoted_user).arg(line);
+                        } else {
+                                body = QString("%1\n> %2\n").arg(body).arg(line);
+                        }
                 }
-        }
 
-        text.body   = QString("%1\n%2").arg(body).arg(reply).toStdString();
-        text.format = "org.matrix.custom.html";
-        text.formatted_body =
-          utils::getFormattedQuoteBody(related, utils::markdownToHtml(reply)).toStdString();
-        text.relates_to.in_reply_to.event_id = related.related_event;
+                text.body = QString("%1\n%2").arg(body).arg(msg).toStdString();
+                text.formatted_body =
+                  utils::getFormattedQuoteBody(*related, utils::markdownToHtml(msg)).toStdString();
+                text.relates_to.in_reply_to.event_id = related->related_event;
+        }
 
         if (timeline_)
                 timeline_->sendMessage(text);
@@ -229,7 +221,8 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &url,
                                        const QString &mime,
                                        uint64_t dsize,
-                                       const QSize &dimensions)
+                                       const QSize &dimensions,
+                                       const std::optional<RelatedInfo> &related)
 {
         mtx::events::msg::Image image;
         image.info.mimetype = mime.toStdString();
@@ -239,6 +232,10 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
         image.info.h        = dimensions.height();
         image.info.w        = dimensions.width();
         image.file          = file;
+
+        if (related)
+                image.relates_to.in_reply_to.event_id = related->related_event;
+
         models.value(roomid)->sendMessage(image);
 }
 
@@ -249,7 +246,8 @@ TimelineViewManager::queueFileMessage(
   const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
   const QString &url,
   const QString &mime,
-  uint64_t dsize)
+  uint64_t dsize,
+  const std::optional<RelatedInfo> &related)
 {
         mtx::events::msg::File file;
         file.info.mimetype = mime.toStdString();
@@ -257,6 +255,10 @@ TimelineViewManager::queueFileMessage(
         file.body          = filename.toStdString();
         file.url           = url.toStdString();
         file.file          = encryptedFile;
+
+        if (related)
+                file.relates_to.in_reply_to.event_id = related->related_event;
+
         models.value(roomid)->sendMessage(file);
 }
 
@@ -266,7 +268,8 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
                                        const std::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
-                                       uint64_t dsize)
+                                       uint64_t dsize,
+                                       const std::optional<RelatedInfo> &related)
 {
         mtx::events::msg::Audio audio;
         audio.info.mimetype = mime.toStdString();
@@ -274,6 +277,10 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
         audio.body          = filename.toStdString();
         audio.url           = url.toStdString();
         audio.file          = file;
+
+        if (related)
+                audio.relates_to.in_reply_to.event_id = related->related_event;
+
         models.value(roomid)->sendMessage(audio);
 }
 
@@ -283,7 +290,8 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
                                        const std::optional<mtx::crypto::EncryptedFile> &file,
                                        const QString &url,
                                        const QString &mime,
-                                       uint64_t dsize)
+                                       uint64_t dsize,
+                                       const std::optional<RelatedInfo> &related)
 {
         mtx::events::msg::Video video;
         video.info.mimetype = mime.toStdString();
@@ -291,5 +299,9 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         video.body          = filename.toStdString();
         video.url           = url.toStdString();
         video.file          = file;
+
+        if (related)
+                video.relates_to.in_reply_to.event_id = related->related_event;
+
         models.value(roomid)->sendMessage(video);
 }

@@ -56,6 +56,7 @@ constexpr int RETRY_TIMEOUT               = 5'000;
 constexpr size_t MAX_ONETIME_KEYS         = 50;
 
 Q_DECLARE_METATYPE(std::optional<mtx::crypto::EncryptedFile>)
+Q_DECLARE_METATYPE(std::optional<RelatedInfo>)
 
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
@@ -65,8 +66,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 {
         setObjectName("chatPage");
 
-        qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>(
-          "std::optional<mtx::crypto::EncryptedFile>");
+        qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
+        qRegisterMetaType<std::optional<RelatedInfo>>();
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -287,19 +288,14 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 SLOT(showUnreadMessageNotification(int)));
 
         connect(text_input_,
-                SIGNAL(sendTextMessage(const QString &)),
+                &TextInputWidget::sendTextMessage,
                 view_manager_,
-                SLOT(queueTextMessage(const QString &)));
+                &TimelineViewManager::queueTextMessage);
 
         connect(text_input_,
-                SIGNAL(sendReplyMessage(const QString &, const RelatedInfo &)),
+                &TextInputWidget::sendEmoteMessage,
                 view_manager_,
-                SLOT(queueReplyMessage(const QString &, const RelatedInfo &)));
-
-        connect(text_input_,
-                SIGNAL(sendEmoteMessage(const QString &)),
-                view_manager_,
-                SLOT(queueEmoteMessage(const QString &)));
+                &TimelineViewManager::queueEmoteMessage);
 
         connect(text_input_, &TextInputWidget::sendJoinRoomRequest, this, &ChatPage::joinRoom);
 
@@ -307,7 +303,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           text_input_,
           &TextInputWidget::uploadMedia,
           this,
-          [this](QSharedPointer<QIODevice> dev, QString mimeClass, const QString &fn) {
+          [this](QSharedPointer<QIODevice> dev,
+                 QString mimeClass,
+                 const QString &fn,
+                 const std::optional<RelatedInfo> &related) {
                   QMimeDatabase db;
                   QMimeType mime = db.mimeTypeForData(dev.data());
 
@@ -341,7 +340,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                      mimeClass,
                      mime = mime.name(),
                      size = payload.size(),
-                     dimensions](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
+                     dimensions,
+                     related](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
                             if (err) {
                                     emit uploadFailed(
                                       tr("Failed to upload media. Please try again."));
@@ -359,7 +359,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                                mimeClass,
                                                mime,
                                                size,
-                                               dimensions);
+                                               dimensions,
+                                               related);
                     });
           });
 
@@ -367,35 +368,37 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 text_input_->hideUploadSpinner();
                 emit showNotification(msg);
         });
-        connect(this,
-                &ChatPage::mediaUploaded,
-                this,
-                [this](QString roomid,
-                       QString filename,
-                       std::optional<mtx::crypto::EncryptedFile> encryptedFile,
-                       QString url,
-                       QString mimeClass,
-                       QString mime,
-                       qint64 dsize,
-                       QSize dimensions) {
-                        text_input_->hideUploadSpinner();
+        connect(
+          this,
+          &ChatPage::mediaUploaded,
+          this,
+          [this](QString roomid,
+                 QString filename,
+                 std::optional<mtx::crypto::EncryptedFile> encryptedFile,
+                 QString url,
+                 QString mimeClass,
+                 QString mime,
+                 qint64 dsize,
+                 QSize dimensions,
+                 const std::optional<RelatedInfo> &related) {
+                  text_input_->hideUploadSpinner();
 
-                        if (encryptedFile)
-                                encryptedFile->url = url.toStdString();
+                  if (encryptedFile)
+                          encryptedFile->url = url.toStdString();
 
-                        if (mimeClass == "image")
-                                view_manager_->queueImageMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize, dimensions);
-                        else if (mimeClass == "audio")
-                                view_manager_->queueAudioMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize);
-                        else if (mimeClass == "video")
-                                view_manager_->queueVideoMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize);
-                        else
-                                view_manager_->queueFileMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize);
-                });
+                  if (mimeClass == "image")
+                          view_manager_->queueImageMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, dimensions, related);
+                  else if (mimeClass == "audio")
+                          view_manager_->queueAudioMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, related);
+                  else if (mimeClass == "video")
+                          view_manager_->queueVideoMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, related);
+                  else
+                          view_manager_->queueFileMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, related);
+          });
 
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
 

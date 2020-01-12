@@ -51,8 +51,7 @@ public slots:
         void setHistoryView(const QString &room_id);
         void updateColorPalette();
 
-        void queueTextMessage(const QString &msg);
-        void queueReplyMessage(const QString &reply, const RelatedInfo &related);
+        void queueTextMessage(const QString &msg, const std::optional<RelatedInfo> &related);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
                                const QString &filename,
@@ -60,25 +59,29 @@ public slots:
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize,
-                               const QSize &dimensions);
+                               const QSize &dimensions,
+                               const std::optional<RelatedInfo> &related);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
                               const std::optional<mtx::crypto::EncryptedFile> &file,
                               const QString &url,
                               const QString &mime,
-                              uint64_t dsize);
+                              uint64_t dsize,
+                              const std::optional<RelatedInfo> &related);
         void queueAudioMessage(const QString &roomid,
                                const QString &filename,
                                const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize);
+                               uint64_t dsize,
+                               const std::optional<RelatedInfo> &related);
         void queueVideoMessage(const QString &roomid,
                                const QString &filename,
                                const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize);
+                               uint64_t dsize,
+                               const std::optional<RelatedInfo> &related);
 
 private:
 #ifdef USE_QUICK_VIEW

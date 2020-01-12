@@ -20,6 +20,7 @@
 #include <deque>
 #include <iterator>
 #include <map>
+#include <optional>
 
 #include <QApplication>
 #include <QDebug>
@@ -52,18 +53,27 @@ public:
         QSize minimumSizeHint() const override;
 
         void submit();
-        void setRelated(const RelatedInfo &related) { related_ = related; }
-        void showReplyPopup(const RelatedInfo &related);
+        void showReplyPopup(const RelatedInfo &related_);
+        void closeReply()
+        {
+                replyPopup_.hide();
+                related = {};
+        }
+
+        // Used for replies
+        std::optional<RelatedInfo> related;
 
 signals:
         void heightChanged(int height);
         void startedTyping();
         void stoppedTyping();
         void startedUpload();
-        void message(QString);
-        void reply(QString, const RelatedInfo &);
+        void message(QString, const std::optional<RelatedInfo> &);
         void command(QString name, QString args);
-        void media(QSharedPointer<QIODevice> data, QString mimeClass, const QString &filename);
+        void media(QSharedPointer<QIODevice> data,
+                   QString mimeClass,
+                   const QString &filename,
+                   const std::optional<RelatedInfo> &related);
 
         //! Trigger the suggestion popup.
         void showSuggestions(const QString &query);
@@ -93,9 +103,6 @@ private:
         SuggestionsPopup suggestionsPopup_;
         ReplyPopup replyPopup_;
 
-        // Used for replies
-        RelatedInfo related_;
-
         enum class AnchorType
         {
                 Tab   = 0,
@@ -107,11 +114,6 @@ private:
         int anchorWidth(AnchorType anchor) { return static_cast<int>(anchor); }
 
         void closeSuggestions() { suggestionsPopup_.hide(); }
-        void closeReply()
-        {
-                replyPopup_.hide();
-                related_ = {};
-        }
         void resetAnchor() { atTriggerPosition_ = -1; }
         bool isAnchorValid() { return atTriggerPosition_ != -1; }
         bool hasAnchor(int pos, AnchorType anchor)
@@ -171,14 +173,14 @@ private slots:
         void addSelectedEmoji(const QString &emoji);
 
 signals:
-        void sendTextMessage(QString msg);
-        void sendReplyMessage(QString msg, const RelatedInfo &related);
-        void sendEmoteMessage(QString msg);
+        void sendTextMessage(const QString &msg, const std::optional<RelatedInfo> &related);
+        void sendEmoteMessage(QString msg, const std::optional<RelatedInfo> &related);
         void heightChanged(int height);
 
         void uploadMedia(const QSharedPointer<QIODevice> data,
                          QString mimeClass,
-                         const QString &filename);
+                         const QString &filename,
+                         const std::optional<RelatedInfo> &related);
 
         void sendJoinRoomRequest(const QString &room);
 
@@ -195,9 +197,6 @@ private:
 
         QHBoxLayout *topLayout_;
         FilteredTextEdit *input_;
-
-        // Used for replies
-        QString related_event_;
 
         LoadingIndicator *spinner_;
 
