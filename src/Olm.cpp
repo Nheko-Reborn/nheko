@@ -159,15 +159,22 @@ handle_pre_key_olm_message(const std::string &sender,
 }
 
 mtx::events::msg::Encrypted
-encrypt_group_message(const std::string &room_id,
-                      const std::string &device_id,
-                      const std::string &body)
+encrypt_group_message(const std::string &room_id, const std::string &device_id, nlohmann::json body)
 {
         using namespace mtx::events;
 
-        // Always chech before for existence.
+        nhlog::crypto()->info("message body {}", body.dump());
+
+        // relations shouldn't be encrypted...
+        mtx::common::RelatesTo relation;
+        if (body["content"].count("m.relates_to") != 0) {
+                relation = body["content"]["m.relates_to"];
+                body["content"].erase("m.relates_to");
+        }
+
+        // Always check before for existence.
         auto res     = cache::getOutboundMegolmSession(room_id);
-        auto payload = olm::client()->encrypt_group_message(res.session, body);
+        auto payload = olm::client()->encrypt_group_message(res.session, body.dump());
 
         // Prepare the m.room.encrypted event.
         msg::Encrypted data;
@@ -176,6 +183,7 @@ encrypt_group_message(const std::string &room_id,
         data.session_id = res.data.session_id;
         data.device_id  = device_id;
         data.algorithm  = MEGOLM_ALGO;
+        data.relates_to = relation;
 
         auto message_index = olm_outbound_group_session_message_index(res.session);
         nhlog::crypto()->info("next message_index {}", message_index);

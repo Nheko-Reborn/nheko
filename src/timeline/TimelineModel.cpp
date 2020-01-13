@@ -734,6 +734,10 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
         body["origin_server_ts"] = e.origin_server_ts;
         body["unsigned"]         = e.unsigned_data;
 
+        // relations are unencrypted in content...
+        if (json old_ev = e; old_ev["content"].count("m.relates_to") != 0)
+                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
+
         json event_array = json::array();
         event_array.push_back(body);
 
@@ -843,13 +847,13 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
         using namespace mtx::events;
         using namespace mtx::identifiers;
 
-        json doc{{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
+        json doc = {{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
 
         try {
                 // Check if we have already an outbound megolm session then we can use.
                 if (cache::outboundMegolmSessionExists(room_id)) {
-                        auto data = olm::encrypt_group_message(
-                          room_id, http::client()->device_id(), doc.dump());
+                        auto data =
+                          olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
 
                         http::client()->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
                           room_id,
@@ -902,7 +906,7 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
                   std::make_shared<StateKeeper>([megolm_payload, room_id, doc, txn_id, this]() {
                           try {
                                   auto data = olm::encrypt_group_message(
-                                    room_id, http::client()->device_id(), doc.dump());
+                                    room_id, http::client()->device_id(), doc);
 
                                   http::client()
                                     ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(

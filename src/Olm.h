@@ -62,7 +62,7 @@ handle_pre_key_olm_message(const std::string &sender,
 mtx::events::msg::Encrypted
 encrypt_group_message(const std::string &room_id,
                       const std::string &device_id,
-                      const std::string &body);
+                      nlohmann::json body);
 
 void
 mark_keys_as_published();
