@@ -260,8 +260,8 @@ TimelineModel::data(const QString &id, int role) const
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
                 return QVariant(
-                  utils::replaceEmoji(utils::linkifyMessage(formattedBodyWithFallback(event)))
-                    .remove(replyFallback));
+                  utils::replaceEmoji(utils::linkifyMessage(utils::escapeBlacklistedHtml(
+                    formattedBodyWithFallback(event).remove(replyFallback)))));
         }
         case Url:
                 return QVariant(QString::fromStdString(url(event)));

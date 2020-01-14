@@ -286,6 +286,10 @@ linkifyMessage(const QString &body);
 QString
 markdownToHtml(const QString &text);
 
+//! Escape every html tag, that was not whitelisted
+QString
+escapeBlacklistedHtml(const QString &data);
+
 //! Generate a Rich Reply quote message
 QString
 getFormattedQuoteBody(const RelatedInfo &related, const QString &html);

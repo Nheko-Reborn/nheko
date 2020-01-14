@@ -314,37 +314,67 @@ utils::linkifyMessage(const QString &body)
         return doc;
 }
 
-QByteArray
-escapeRawHtml(const QByteArray &data)
+QString
+utils::escapeBlacklistedHtml(const QString &rawStr)
 {
+        static const std::vector<std::string_view> allowedTags = {
+          "font",       "/font",       "del",    "/del",    "h1",    "/h1",    "h2",     "/h2",
+          "h3",         "/h3",         "h4",     "/h4",     "h5",    "/h5",    "h6",     "/h6",
+          "blockquote", "/blockquote", "p",      "/p",      "a",     "/a",     "ul",     "/ul",
+          "ol",         "/ol",         "sup",    "/sup",    "sub",   "/sub",   "li",     "/li",
+          "b",          "/b",          "i",      "/i",      "u",     "/u",     "strong", "/strong",
+          "em",         "/em",         "strike", "/strike", "code",  "/code",  "hr",     "/hr",
+          "br",         "br/",         "div",    "/div",    "table", "/table", "thead",  "/thead",
+          "tbody",      "/tbody",      "tr",     "/tr",     "th",    "/th",    "td",     "/td",
+          "caption",    "/caption",    "pre",    "/pre",    "span",  "/span",  "img",    "/img"};
+        QByteArray data = rawStr.toUtf8();
         QByteArray buffer;
         const size_t length = data.size();
         buffer.reserve(length);
+        bool escapingTag = false;
         for (size_t pos = 0; pos != length; ++pos) {
                 switch (data.at(pos)) {
-                case '&':
-                        buffer.append("&amp;");
+                case '<': {
+                        bool oneTagMatched = false;
+                        size_t endPos      = std::min(static_cast<size_t>(data.indexOf('>', pos)),
+                                                 static_cast<size_t>(data.indexOf(' ', pos)));
+
+                        auto mid = data.mid(pos + 1, endPos - pos - 1);
+                        for (const auto &tag : allowedTags) {
+                                // TODO: Check src and href attribute
+                                if (mid.compare(tag.data(), Qt::CaseInsensitive) == 0) {
+                                        oneTagMatched = true;
+                                }
+                        }
+                        if (oneTagMatched)
+                                buffer.append('<');
+                        else {
+                                escapingTag = true;
+                                buffer.append("&lt;");
+                        }
                         break;
-                case '<':
-                        buffer.append("&lt;");
-                        break;
+                }
                 case '>':
-                        buffer.append("&gt;");
+                        if (escapingTag)
+                                buffer.append("&gt;");
+                        else {
+                                escapingTag = false;
+                                buffer.append('>');
+                        }
                         break;
                 default:
                         buffer.append(data.at(pos));
                         break;
                 }
         }
-        return buffer;
+        return QString::fromUtf8(buffer);
 }
 
 QString
 utils::markdownToHtml(const QString &text)
 {
-        const auto str = escapeRawHtml(text.toUtf8());
-        const char *tmp_buf =
-          cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_DEFAULT);
+        const auto str      = text.toUtf8();
+        const char *tmp_buf = cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_UNSAFE);
 
         // Copy the null terminated output buffer.
         std::string html(tmp_buf);
@@ -352,7 +382,7 @@ utils::markdownToHtml(const QString &text)
         // The buffer is no longer needed.
         free((char *)tmp_buf);
 
-        auto result = QString::fromStdString(html).trimmed();
+        auto result = escapeBlacklistedHtml(QString::fromStdString(html)).trimmed();
 
         return result;
 }
