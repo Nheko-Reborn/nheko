@@ -66,6 +66,8 @@ Rectangle {
 					durationText.text = formatTime(new Date(media.duration))
 				}
 				onValueChanged: updatePositionTexts()
+
+				palette: colors
 			}
 			Text {
 				id: durationText
