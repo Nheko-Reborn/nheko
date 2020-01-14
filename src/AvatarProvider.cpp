@@ -31,8 +31,6 @@ namespace AvatarProvider {
 void
 resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback callback)
 {
-        avatar_cache.setCacheLimit(1024 * 1024);
-
         const auto cacheKey = avatarUrl + "_size_" + size;
 
         if (avatarUrl.isEmpty())
