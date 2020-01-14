@@ -37,8 +37,6 @@ Item {
 		ListView {
 			id: chat
 
-			cacheBuffer: 2000
-
 			visible: timelineManager.timeline != null
 			anchors.fill: parent
 
