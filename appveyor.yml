@@ -3,7 +3,7 @@
 version: 0.6.4-{build}
 
 configuration: Release
-image: Visual Studio 2017
+image: Visual Studio 2019
 platform: x64
 
 environment:
@@ -18,10 +18,10 @@ build:
     verbosity: minimal
 
 install:
-    - set QT_DIR=C:\Qt\5.10.1\msvc2017_64
+    - set QT_DIR=C:\Qt\5.14\msvc2017_64
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
-    - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
-    - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+    - set PATH=%PATH%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev1\mingw64\bin
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
     - cd "C:\Tools\vcpkg"&& git pull && .\bootstrap-vcpkg.bat && cd %APPVEYOR_BUILD_FOLDER%
     - vcpkg install
             nlohmann-json:%PLATFORM%-windows
@@ -58,7 +58,7 @@ build_script:
     - echo %DATE%
 
     # Build & install the dependencies
-    - cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
+    - cmake -G "Visual Studio 15 2019 Win64" -Hdeps -B.deps
         -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
         -DUSE_BUNDLED_BOOST=OFF
         -DUSE_BUNDLED_JSON=OFF
@@ -67,7 +67,7 @@ build_script:
 
     # Build nheko
     - rm -f cmake/FindOlm.cmake
-    - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
+    - cmake -G "Visual Studio 15 2019 Win64" -H. -Bbuild
       -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
       -DLMDBXX_INCLUDE_DIR=.deps/usr/include
       -DTWEENY_INCLUDE_DIR=.deps/usr/include
