@@ -58,7 +58,7 @@ build_script:
     - echo %DATE%
 
     # Build & install the dependencies
-    - cmake -G "Visual Studio 15 2019 Win64" -Hdeps -B.deps
+    - cmake -G "Visual Studio 16 2019" -A "Win64" -Hdeps -B.deps
         -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
         -DUSE_BUNDLED_BOOST=OFF
         -DUSE_BUNDLED_JSON=OFF
@@ -67,7 +67,7 @@ build_script:
 
     # Build nheko
     - rm -f cmake/FindOlm.cmake
-    - cmake -G "Visual Studio 15 2019 Win64" -H. -Bbuild
+    - cmake -G "Visual Studio 16 2019" -A "Win64" -H. -Bbuild
       -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
       -DLMDBXX_INCLUDE_DIR=.deps/usr/include
       -DTWEENY_INCLUDE_DIR=.deps/usr/include
