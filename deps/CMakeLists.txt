@@ -66,8 +66,8 @@ set(LMDBXX_HASH
 set(OLM_URL https://gitlab.matrix.org/matrix-org/olm.git)
 set(OLM_TAG 4065c8e11a33ba41133a086ed3de4da94dcb6bae)
 
-set(CMARK_URL https://github.com/commonmark/cmark/archive/0.28.3.tar.gz)
-set(CMARK_HASH acc98685d3c1b515ff787ac7c994188dadaf28a2d700c10c1221da4199bae1fc)
+set(CMARK_URL https://github.com/commonmark/cmark/archive/0.29.0.tar.gz)
+set(CMARK_HASH 2558ace3cbeff85610de3bda32858f722b359acdadf0c4691851865bb84924a6)
 
 set(SPDLOG_URL https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz)
 set(SPDLOG_HASH
