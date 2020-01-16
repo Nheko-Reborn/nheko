@@ -317,7 +317,7 @@ utils::linkifyMessage(const QString &body)
 QString
 utils::escapeBlacklistedHtml(const QString &rawStr)
 {
-        static const std::vector<std::string_view> allowedTags = {
+        static const std::array allowedTags = {
           "font",       "/font",       "del",    "/del",    "h1",    "/h1",    "h2",     "/h2",
           "h3",         "/h3",         "h4",     "/h4",     "h5",    "/h5",    "h6",     "/h6",
           "blockquote", "/blockquote", "p",      "/p",      "a",     "/a",     "ul",     "/ul",
@@ -342,7 +342,7 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                         auto mid = data.mid(pos + 1, endPos - pos - 1);
                         for (const auto &tag : allowedTags) {
                                 // TODO: Check src and href attribute
-                                if (mid.compare(tag.data(), Qt::CaseInsensitive) == 0) {
+                                if (mid.toLower() == tag) {
                                         oneTagMatched = true;
                                 }
                         }
