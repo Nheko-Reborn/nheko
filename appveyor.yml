@@ -84,10 +84,8 @@ after_build:
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
     - windeployqt --qmldir %QT_DIR%\qml\ --release NhekoRelease\nheko.exe
 
-    - copy C:\Tools\vcpkg\installed\x64-windows\lib\*.lib .\NhekoRelease\
     - copy C:\Tools\vcpkg\installed\x64-windows\bin\*.dll .\NhekoRelease\
 
-    - copy C:\projects\nheko\.deps\usr\lib\cmark.lib .\NhekoRelease\
     - copy C:\projects\nheko\.deps\usr\bin\cmark.dll .\NhekoRelease\
 
     - 7z a nheko_win_64.zip .\NhekoRelease\*
