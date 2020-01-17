@@ -8,6 +8,7 @@
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
 #include "Logging.h"
+#include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
 #include "dialogs/ImageOverlay.h"
@@ -92,10 +93,21 @@ TimelineViewManager::TimelineViewManager(QWidget *parent)
 void
 TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 {
-        for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
+        for (const auto &[room_id, room] : rooms.join) {
                 // addRoom will only add the room, if it doesn't exist
-                addRoom(QString::fromStdString(it->first));
-                models.value(QString::fromStdString(it->first))->addEvents(it->second.timeline);
+                addRoom(QString::fromStdString(room_id));
+                const auto &room_model = models.value(QString::fromStdString(room_id));
+                room_model->addEvents(room.timeline);
+
+                if (ChatPage::instance()->userSettings()->isTypingNotificationsEnabled()) {
+                        std::vector<QString> typing;
+                        typing.reserve(room.ephemeral.typing.size());
+                        for (const auto &user : room.ephemeral.typing) {
+                                if (user != http::client()->user_id().to_string())
+                                        typing.push_back(QString::fromStdString(user));
+                        }
+                        room_model->updateTypingUsers(typing);
+                }
         }
 
         this->isInitialSync_ = false;

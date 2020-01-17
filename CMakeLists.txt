@@ -242,7 +242,6 @@ set(SRC_FILES
     src/TextInputWidget.cpp
     src/TopRoomBar.cpp
     src/TrayIcon.cpp
-    src/TypingDisplay.cpp
     src/Utils.cpp
     src/UserInfoWidget.cpp
     src/UserSettingsPage.cpp
@@ -379,7 +378,6 @@ qt5_wrap_cpp(MOC_HEADERS
     src/TextInputWidget.h
     src/TopRoomBar.h
     src/TrayIcon.h
-    src/TypingDisplay.h
     src/UserInfoWidget.h
     src/UserSettingsPage.h
     src/WelcomePage.h

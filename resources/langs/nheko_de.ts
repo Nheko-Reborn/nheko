@@ -4,12 +4,12 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+346"/>
+        <location filename="../../src/ChatPage.cpp" line="+329"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
-        <location line="+389"/>
+        <location line="+392"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Wiederherstellung des OLM Accounts fehlgeschlagen. Bitte logge dich erneut ein.</translation>
     </message>
@@ -19,7 +19,7 @@
         <translation>Gespeicherte Nachrichten konnten nicht wiederhergestellt werden. Bitte melde Dich erneut an.</translation>
     </message>
     <message>
-        <location line="+181"/>
+        <location line="+148"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
@@ -72,7 +72,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+59"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
@@ -182,7 +182,7 @@
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+43"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+60"/>
         <source>redacted</source>
         <translation>gelöscht</translation>
     </message>
@@ -223,7 +223,7 @@
 <context>
     <name>QuickSwitcher</name>
     <message>
-        <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
+        <location filename="../../src/QuickSwitcher.cpp" line="+72"/>
         <source>Search for a room...</source>
         <translation>Raum suchen…</translation>
     </message>
@@ -279,7 +279,7 @@
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
+        <location filename="../../src/popups/ReplyPopup.cpp" line="+46"/>
         <source>Logout</source>
         <translation>Abmelden</translation>
     </message>
@@ -287,7 +287,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2307"/>
+        <location filename="../../src/Cache.cpp" line="+2303"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -300,12 +300,12 @@
         <translation>Raum verlassen</translation>
     </message>
     <message>
-        <location line="+161"/>
+        <location line="+151"/>
         <source>Accept</source>
         <translation>Akzeptieren</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Decline</source>
         <translation>Ablehnen</translation>
     </message>
@@ -364,13 +364,13 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+502"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+496"/>
         <source>Send a file</source>
         <translation>Versende Datei</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+161"/>
+        <location filename="../../src/TextInputWidget.h" line="+163"/>
         <source>Write a message...</source>
         <translation>Schreibe eine Nachricht…</translation>
     </message>
@@ -385,7 +385,7 @@
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+72"/>
+        <location line="+73"/>
         <source>Select a file</source>
         <translation>Datei auswählen</translation>
     </message>
@@ -403,7 +403,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+867"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+687"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation>-- verschlüsselter Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
@@ -427,18 +427,18 @@
         <translation>-- Entschlüsselungsfehler (%1) --</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+29"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
         <translation>-- verschlüsselter Event (Unbekannter Eventtyp) --</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+48"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+454"/>
         <source>Save image</source>
         <translation>Bild speichern</translation>
     </message>
@@ -457,11 +457,20 @@
         <source>Save file</source>
         <translation>Datei speichern</translation>
     </message>
+    <message numerus="yes">
+        <location line="+126"/>
+        <source>%1 and %2 are typing</source>
+        <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
+        <translation type="unfinished">
+            <numerusform>%1%2 tippt</numerusform>
+            <numerusform>%1 und %2 tippen</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+57"/>
+        <location filename="../qml/TimelineRow.qml" line="+104"/>
         <source>Reply</source>
         <translation>Antworten</translation>
     </message>
@@ -551,18 +560,6 @@
     </message>
 </context>
 <context>
-    <name>TypingDisplay</name>
-    <message numerus="yes">
-        <location filename="../../src/TypingDisplay.cpp" line="+37"/>
-        <source>%1 and %2 are typing</source>
-        <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation>
-            <numerusform>%1%2 tippt</numerusform>
-            <numerusform>%1 und %2 tippen</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UserInfoWidget</name>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
@@ -573,7 +570,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+171"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+172"/>
         <source>Minimize to tray</source>
         <translation>Ins Benachrichtigungsfeld minimieren</translation>
     </message>
@@ -740,7 +737,7 @@
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+104"/>
+        <location filename="../../src/Utils.cpp" line="+106"/>
         <source>Yesterday</source>
         <translation>Gestern</translation>
     </message>
@@ -1014,7 +1011,7 @@ Medien-Größe: %2
         <translation>Aktivierung der Verschlüsselung fehlgeschlagen: %1</translation>
     </message>
     <message>
-        <location line="+148"/>
+        <location line="+146"/>
         <source>Select an avatar</source>
         <translation>Wähle einen Avatar</translation>
     </message>
@@ -1114,7 +1111,7 @@ Medien-Größe: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+95"/>
+        <location filename="../../src/Utils.h" line="+100"/>
         <source>You sent an audio clip</source>
         <translation>Du hast eine Audiodatei gesendet.</translation>
     </message>
@@ -1210,7 +1207,7 @@ Medien-Größe: %2
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+282"/>
+        <location filename="../../src/Utils.cpp" line="+306"/>
         <source>sent a file.</source>
         <translation type="unfinished"></translation>
     </message>

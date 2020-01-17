@@ -1388,3 +1388,33 @@ TimelineModel::cacheMedia(QString eventId)
                   emit mediaCached(mxcUrl, filename.filePath());
           });
 }
+
+QString
+TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
+{
+        QString temp =
+          tr("%1 and %2 are typing",
+             "Multiple users are typing. First argument is a comma separated list of potentially "
+             "multiple users. Second argument is the last user of that list. (If only one user is "
+             "typing, %1 is empty. You should still use it in your string though to silence Qt "
+             "warnings.)",
+             users.size());
+
+        if (users.empty()) {
+                return "";
+        }
+
+        QStringList uidWithoutLast;
+
+        auto formatUser = [this, bg](const QString &user_id) -> QString {
+                return QString("<font color=\"%1\">%2</font>")
+                  .arg(userColor(user_id, bg).name())
+                  .arg(escapeEmoji(displayName(user_id).toHtmlEscaped()));
+        };
+
+        for (size_t i = 0; i + 1 < users.size(); i++) {
+                uidWithoutLast.append(formatUser(users[i]));
+        }
+
+        return temp.arg(uidWithoutLast.join(", ")).arg(formatUser(users.back()));
+}

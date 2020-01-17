@@ -34,7 +34,6 @@
 #include "Splitter.h"
 #include "TextInputWidget.h"
 #include "TopRoomBar.h"
-#include "TypingDisplay.h"
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -130,11 +129,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         text_input_ = new TextInputWidget(this);
         contentLayout_->addWidget(text_input_);
 
-        typingDisplay_ = new TypingDisplay(content_);
-        typingDisplay_->hide();
-        connect(
-          text_input_, &TextInputWidget::heightChanged, typingDisplay_, &TypingDisplay::setOffset);
-
         typingRefresher_ = new QTimer(this);
         typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
 
@@ -225,19 +219,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
         });
 
-        connect(room_list_, &RoomList::roomChanged, this, [this](const QString &roomid) {
-                QStringList users;
-
-                if (!userSettings_->isTypingNotificationsEnabled()) {
-                        typingDisplay_->setUsers(users);
-                        return;
-                }
-
-                if (typingUsers_.find(roomid) != typingUsers_.end())
-                        users = typingUsers_[roomid];
-
-                typingDisplay_->setUsers(users);
-        });
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
         connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
@@ -472,8 +453,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 bool hasNotifications = false;
                 for (const auto &room : rooms.join) {
                         auto room_id = QString::fromStdString(room.first);
-
-                        updateTypingUsers(room_id, room.second.ephemeral.typing);
                         updateRoomNotificationCount(
                           room_id,
                           room.second.unread_notifications.notification_count,
@@ -784,38 +763,6 @@ ChatPage::removeRoom(const QString &room_id)
         }
 
         room_list_->removeRoom(room_id, room_id == current_room_);
-}
-
-void
-ChatPage::updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids)
-{
-        if (!userSettings_->isTypingNotificationsEnabled())
-                return;
-
-        typingUsers_[roomid] = generateTypingUsers(roomid, user_ids);
-
-        if (current_room_ == roomid)
-                typingDisplay_->setUsers(typingUsers_[roomid]);
-}
-
-QStringList
-ChatPage::generateTypingUsers(const QString &room_id, const std::vector<std::string> &typing_users)
-{
-        QStringList users;
-        auto local_user = utils::localUser();
-
-        for (const auto &uid : typing_users) {
-                const auto remote_user = QString::fromStdString(uid);
-
-                if (remote_user == local_user)
-                        continue;
-
-                users.append(cache::displayName(room_id, remote_user));
-        }
-
-        users.sort();
-
-        return users;
 }
 
 void

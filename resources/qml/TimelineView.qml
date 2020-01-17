@@ -38,7 +38,11 @@ Item {
 			id: chat
 
 			visible: timelineManager.timeline != null
-			anchors.fill: parent
+
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.top: parent.top
+			anchors.bottom: chatFooter.top
 
 			anchors.leftMargin: 4
 			anchors.rightMargin: scrollbar.width
@@ -178,6 +182,31 @@ Item {
 						}
 					}
 				}
+			}
+
+		}
+
+		Rectangle {
+			id: chatFooter
+
+			height: Math.max(16, typingDisplay.height)
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.bottom: parent.bottom
+			z: 3
+
+			color: colors.window
+
+			Text {
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+				anchors.leftMargin: 10
+				anchors.rightMargin: 10
+
+				id: typingDisplay
+				text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, chatFooter.color) : ""
+				color: colors.windowText
 			}
 		}
 	}

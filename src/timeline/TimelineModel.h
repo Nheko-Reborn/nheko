@@ -120,6 +120,8 @@ class TimelineModel : public QAbstractListModel
         Q_OBJECT
         Q_PROPERTY(
           int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
+        Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
+                     typingUsersChanged)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent = 0);
@@ -162,6 +164,7 @@ public:
         Q_INVOKABLE QString displayName(QString id) const;
         Q_INVOKABLE QString avatarUrl(QString id) const;
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
+        Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, QColor bg);
 
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
@@ -183,6 +186,14 @@ public slots:
         int currentIndex() const { return idToIndex(currentId); }
         void markEventsAsRead(const std::vector<QString> &event_ids);
         QVariantMap getDump(QString eventId) const;
+        void updateTypingUsers(const std::vector<QString> &users)
+        {
+                if (this->typingUsers_ != users) {
+                        this->typingUsers_ = users;
+                        emit typingUsersChanged(typingUsers_);
+                }
+        }
+        std::vector<QString> typingUsers() const { return typingUsers_; }
 
 private slots:
         // Add old events at the top of the timeline.
@@ -202,6 +213,7 @@ signals:
         void mediaCached(QString mxcUrl, QString cacheUrl);
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
         void replyFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
+        void typingUsersChanged(std::vector<QString> users);
 
 private:
         DecryptionResult decryptEvent(
@@ -232,6 +244,7 @@ private:
 
         QHash<QString, QColor> userColors;
         QString currentId;
+        std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;
 

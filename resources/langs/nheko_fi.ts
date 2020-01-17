@@ -4,12 +4,12 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+346"/>
+        <location filename="../../src/ChatPage.cpp" line="+329"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+389"/>
+        <location line="+392"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLM-tilin palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
@@ -19,7 +19,7 @@
         <translation>Tallennettujen tietojen palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
     <message>
-        <location line="+181"/>
+        <location line="+148"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Salausavainten lähetys epäonnistui. Palvelimen vastaus: %1 %2. Ole hyvä ja yritä uudelleen myöhemmin.</translation>
     </message>
@@ -72,7 +72,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+58"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+59"/>
         <source>Apply</source>
         <translation>Tallenna</translation>
     </message>
@@ -182,7 +182,7 @@
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+43"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+60"/>
         <source>redacted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -223,7 +223,7 @@
 <context>
     <name>QuickSwitcher</name>
     <message>
-        <location filename="../../src/QuickSwitcher.cpp" line="+71"/>
+        <location filename="../../src/QuickSwitcher.cpp" line="+72"/>
         <source>Search for a room...</source>
         <translation>Etsi huonetta…</translation>
     </message>
@@ -279,7 +279,7 @@
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../../src/popups/ReplyPopup.cpp" line="+45"/>
+        <location filename="../../src/popups/ReplyPopup.cpp" line="+46"/>
         <source>Logout</source>
         <translation>Kirjaudu ulos</translation>
     </message>
@@ -287,7 +287,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2307"/>
+        <location filename="../../src/Cache.cpp" line="+2303"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -300,12 +300,12 @@
         <translation>Poistu huoneesta</translation>
     </message>
     <message>
-        <location line="+161"/>
+        <location line="+151"/>
         <source>Accept</source>
         <translation>Hyväksy</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Decline</source>
         <translation>Hylkää</translation>
     </message>
@@ -364,13 +364,13 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+502"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+496"/>
         <source>Send a file</source>
         <translation>Lähetä tiedosto</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+161"/>
+        <location filename="../../src/TextInputWidget.h" line="+163"/>
         <source>Write a message...</source>
         <translation>Kirjoita viesti…</translation>
     </message>
@@ -385,7 +385,7 @@
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+72"/>
+        <location line="+73"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>
@@ -403,7 +403,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+867"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+687"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation type="unfinished">-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
@@ -427,18 +427,18 @@
         <translation type="unfinished">-- Virhe purkaessa salausta (%1) --</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+29"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
         <translation type="unfinished">-- Salattu viesti (tuntematon viestityyppi) --</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+48"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished">Viestin poisto epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+454"/>
         <source>Save image</source>
         <translation type="unfinished">Tallenna kuva</translation>
     </message>
@@ -457,11 +457,20 @@
         <source>Save file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location line="+126"/>
+        <source>%1 and %2 are typing</source>
+        <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
+        <translation type="unfinished">
+            <numerusform>%1%2 kirjoittaa</numerusform>
+            <numerusform>%1 ja %2 kirjoittavat</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+57"/>
+        <location filename="../qml/TimelineRow.qml" line="+104"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -551,18 +560,6 @@
     </message>
 </context>
 <context>
-    <name>TypingDisplay</name>
-    <message numerus="yes">
-        <location filename="../../src/TypingDisplay.cpp" line="+37"/>
-        <source>%1 and %2 are typing</source>
-        <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation>
-            <numerusform>%1%2 kirjoittaa</numerusform>
-            <numerusform>%1 ja %2 kirjoittavat</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UserInfoWidget</name>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
@@ -573,7 +570,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+171"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+172"/>
         <source>Minimize to tray</source>
         <translation>Pienennä ilmoitusalueelle</translation>
     </message>
@@ -740,7 +737,7 @@
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+104"/>
+        <location filename="../../src/Utils.cpp" line="+106"/>
         <source>Yesterday</source>
         <translation>Eilen</translation>
     </message>
@@ -1016,7 +1013,7 @@ Median koko: %2
         <translation>Salauksen aktivointi epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+148"/>
+        <location line="+146"/>
         <source>Select an avatar</source>
         <translation>Valitse profiilikuva</translation>
     </message>
@@ -1116,7 +1113,7 @@ Median koko: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+95"/>
+        <location filename="../../src/Utils.h" line="+100"/>
         <source>You sent an audio clip</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1212,7 +1209,7 @@ Median koko: %2
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+282"/>
+        <location filename="../../src/Utils.cpp" line="+306"/>
         <source>sent a file.</source>
         <translation type="unfinished"></translation>
     </message>

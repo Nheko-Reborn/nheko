@@ -48,7 +48,6 @@ class Splitter;
 class TextInputWidget;
 class TimelineViewManager;
 class TopRoomBar;
-class TypingDisplay;
 class UserInfoWidget;
 class UserSettings;
 class NotificationsManager;
@@ -187,8 +186,6 @@ private:
         using LeftRooms = std::map<std::string, mtx::responses::LeftRoom>;
         void removeLeftRooms(const LeftRooms &rooms);
 
-        void updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids);
-
         void loadStateFromCache();
         void resetUI();
         //! Decides whether or not to hide the group's sidebar.
@@ -205,9 +202,6 @@ private:
         void sendDesktopNotifications(const mtx::responses::Notifications &);
 
         void showNotificationsDialog(const QPoint &point);
-
-        QStringList generateTypingUsers(const QString &room_id,
-                                        const std::vector<std::string> &typing_users);
 
         QHBoxLayout *topLayout_;
         Splitter *splitter;
@@ -228,7 +222,6 @@ private:
 
         TopRoomBar *top_bar_;
         TextInputWidget *text_input_;
-        TypingDisplay *typingDisplay_;
 
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;
@@ -240,8 +233,6 @@ private:
 
         popups::UserMentions *user_mentions_popup_;
 
-        // Keeps track of the users currently typing on each room.
-        std::map<QString, QList<QString>> typingUsers_;
         QTimer *typingRefresher_;
 
         // Global user settings.
