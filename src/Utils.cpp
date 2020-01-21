@@ -39,13 +39,23 @@ utils::replaceEmoji(const QString &body)
         QSettings settings;
         QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
 
+        bool insideFontBlock = true;
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
-                if (code > 9000)
-                        fmtBody += QString("<font face=\"" + userFontFamily + "\">") +
-                                   QString::fromUcs4(&code, 1) + "</font>";
-                else
-                        fmtBody += QString::fromUcs4(&code, 1);
+                if ((code >= 0x2600 && code <= 0x27bf) || (code >= 0x1f300 && code <= 0x1f3ff) ||
+                    (code >= 0x1f000 && code <= 0x1f64f) || (code >= 0x1f680 && code <= 0x1f6ff)) {
+                        if (!insideFontBlock) {
+                                fmtBody += QString("<font face=\"" + userFontFamily + "\">");
+                                insideFontBlock = true;
+                        }
+
+                } else {
+                        if (insideFontBlock) {
+                                fmtBody += "</font>";
+                                insideFontBlock = false;
+                        }
+                }
+                fmtBody += QString::fromUcs4(&code, 1);
         }
 
         return fmtBody;
