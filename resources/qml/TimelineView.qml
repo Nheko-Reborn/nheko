@@ -50,6 +50,7 @@ Item {
 			model: timelineManager.timeline
 
 			boundsBehavior: Flickable.StopAtBounds
+			pixelAligned: true
 
 			MouseArea {
 				anchors.fill: parent
