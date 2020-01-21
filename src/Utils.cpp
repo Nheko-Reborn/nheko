@@ -308,7 +308,7 @@ QString
 utils::linkifyMessage(const QString &body)
 {
         // Convert to valid XML.
-        auto doc = QString("<html>%1</html>").arg(body);
+        auto doc = body;
         doc.replace(conf::strings::url_regex, conf::strings::url_html);
 
         return doc;
@@ -382,7 +382,7 @@ utils::markdownToHtml(const QString &text)
         // The buffer is no longer needed.
         free((char *)tmp_buf);
 
-        auto result = escapeBlacklistedHtml(QString::fromStdString(html)).trimmed();
+        auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
 
         return result;
 }
@@ -390,6 +390,27 @@ utils::markdownToHtml(const QString &text)
 QString
 utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
 {
+        auto getFormattedBody = [related]() {
+                using MsgType = mtx::events::MessageType;
+
+                switch (related.type) {
+                case MsgType::File: {
+                        return QString(QCoreApplication::translate("utils", "sent a file."));
+                }
+                case MsgType::Image: {
+                        return QString(QCoreApplication::translate("utils", "sent an image."));
+                }
+                case MsgType::Audio: {
+                        return QString(QCoreApplication::translate("utils", "sent an audio file."));
+                }
+                case MsgType::Video: {
+                        return QString(QCoreApplication::translate("utils", "sent a video"));
+                }
+                default: {
+                        return related.quoted_formatted_body;
+                }
+                }
+        };
         return QString("<mx-reply><blockquote><a "
                        "href=\"https://matrix.to/#/%1/%2\">In reply "
                        "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
@@ -398,7 +419,7 @@ utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
                       QString::fromStdString(related.related_event),
                       related.quoted_user,
                       related.quoted_user,
-                      getQuoteBody(related)) +
+                      getFormattedBody()) +
                html;
 }
 

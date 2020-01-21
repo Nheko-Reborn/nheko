@@ -27,7 +27,7 @@ struct RelatedInfo
         using MsgType = mtx::events::MessageType;
         MsgType type;
         QString room;
-        QString quoted_body;
+        QString quoted_body, quoted_formatted_body;
         std::string related_event;
         QString quoted_user;
 };

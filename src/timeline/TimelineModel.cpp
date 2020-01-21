@@ -775,18 +775,17 @@ TimelineModel::replyAction(QString id)
                 event = decryptEvent(*e).event;
         }
 
-        RelatedInfo related   = {};
-        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
-        related.related_event = mtx::accessors::event_id(event);
-        related.type          = mtx::accessors::msg_type(event);
-        related.quoted_body   = mtx::accessors::formattedBodyWithFallback(event);
-        related.quoted_body.remove(QRegularExpression(
+        RelatedInfo related           = {};
+        related.quoted_user           = QString::fromStdString(mtx::accessors::sender(event));
+        related.related_event         = mtx::accessors::event_id(event);
+        related.type                  = mtx::accessors::msg_type(event);
+        related.quoted_body           = QString::fromStdString(mtx::accessors::body(event));
+        related.quoted_body           = utils::getQuoteBody(related);
+        related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
+        related.quoted_formatted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
         nhlog::ui()->debug("after replacement: {}", related.quoted_body.toStdString());
         related.room = room_id_;
-
-        // if (related.quoted_body.isEmpty())
-        //        return;
 
         ChatPage::instance()->messageReply(related);
 }
