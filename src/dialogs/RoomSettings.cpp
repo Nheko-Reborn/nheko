@@ -352,11 +352,9 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         }
 
         avatar_ = new Avatar(this, 128);
-        if (avatarImg_.isNull())
-                avatar_->setLetter(utils::firstChar(QString::fromStdString(info_.name)));
-        else
-                avatar_->setImage(room_id_,
-                                  QString::fromStdString(http::client()->user_id().to_string()));
+        avatar_->setLetter(utils::firstChar(QString::fromStdString(info_.name)));
+        if (!info_.avatar_url.empty())
+                avatar_->setImage(QString::fromStdString(info_.avatar_url));
 
         if (canChangeAvatar(room_id_.toStdString(), utils::localUser().toStdString())) {
                 auto filter = new ClickableFilter(this);
@@ -637,8 +635,7 @@ RoomSettings::setAvatar()
         stopLoadingSpinner();
 
         if (avatar_)
-                avatar_->setImage(room_id_,
-                                  QString::fromStdString(http::client()->user_id().to_string()));
+                avatar_->setImage(QString::fromStdString(info_.avatar_url));
 }
 
 void
