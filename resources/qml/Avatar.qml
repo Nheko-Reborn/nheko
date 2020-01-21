@@ -19,7 +19,8 @@ Rectangle {
 
 	Text {
 		anchors.fill: parent
-		text: String.fromCodePoint(displayName.codePointAt(0))
+		text: chat.model.escapeEmoji(String.fromCodePoint(displayName.codePointAt(0)))
+		textFormat: Text.RichText
 		color: colors.text
 		font.pixelSize: avatar.height/2
 		verticalAlignment: Text.AlignVCenter

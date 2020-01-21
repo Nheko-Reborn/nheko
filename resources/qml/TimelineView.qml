@@ -206,6 +206,7 @@ Item {
 
 				id: typingDisplay
 				text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, chatFooter.color) : ""
+				textFormat: Text.RichText
 				color: colors.windowText
 			}
 		}

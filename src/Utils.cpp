@@ -39,7 +39,7 @@ utils::replaceEmoji(const QString &body)
         QSettings settings;
         QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
 
-        bool insideFontBlock = true;
+        bool insideFontBlock = false;
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
                 if ((code >= 0x2600 && code <= 0x27bf) || (code >= 0x1f300 && code <= 0x1f3ff) ||
@@ -56,6 +56,9 @@ utils::replaceEmoji(const QString &body)
                         }
                 }
                 fmtBody += QString::fromUcs4(&code, 1);
+        }
+        if (insideFontBlock) {
+                fmtBody += "</font>";
         }
 
         return fmtBody;

@@ -1406,9 +1406,34 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
         QStringList uidWithoutLast;
 
         auto formatUser = [this, bg](const QString &user_id) -> QString {
-                return QString("<font color=\"%1\">%2</font>")
-                  .arg(userColor(user_id, bg).name())
-                  .arg(escapeEmoji(displayName(user_id).toHtmlEscaped()));
+                auto uncoloredUsername = escapeEmoji(displayName(user_id).toHtmlEscaped());
+                QString prefix = QString("<font color=\"%1\">").arg(userColor(user_id, bg).name());
+
+                // color only parts that don't have a font already specified
+                QString coloredUsername;
+                int index = 0;
+                do {
+                        auto startIndex = uncoloredUsername.indexOf("<font", index);
+
+                        if (startIndex - index != 0)
+                                coloredUsername +=
+                                  prefix +
+                                  uncoloredUsername.midRef(
+                                    index, startIndex > 0 ? startIndex - index : -1) +
+                                  "</font>";
+
+                        auto endIndex = uncoloredUsername.indexOf("</font>", startIndex);
+                        if (endIndex > 0)
+                                endIndex += sizeof("</font>") - 1;
+
+                        if (endIndex - startIndex != 0)
+                                coloredUsername +=
+                                  uncoloredUsername.midRef(startIndex, endIndex - startIndex);
+
+                        index = endIndex;
+                } while (index > 0 && index < uncoloredUsername.size());
+
+                return coloredUsername;
         };
 
         for (size_t i = 0; i + 1 < users.size(); i++) {
