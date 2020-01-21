@@ -111,7 +111,7 @@ Item {
 				Binding {
 					target: chat.model
 					property: "currentIndex"
-					when: y + height > chat.contentY + chat.height && y < chat.contentY + chat.height
+					when: y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height
 					value: index
 					delayed: true
 				}
