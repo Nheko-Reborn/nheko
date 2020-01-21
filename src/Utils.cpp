@@ -43,7 +43,7 @@ utils::replaceEmoji(const QString &body)
         for (auto &code : utf32_string) {
                 // TODO: Be more precise here.
                 if ((code >= 0x2600 && code <= 0x27bf) || (code >= 0x1f300 && code <= 0x1f3ff) ||
-                    (code >= 0x1f000 && code <= 0x1f64f) || (code >= 0x1f680 && code <= 0x1f6ff)) {
+                    (code >= 0x1f000 && code <= 0x1faff)) {
                         if (!insideFontBlock) {
                                 fmtBody += QString("<font face=\"" + userFontFamily + "\">");
                                 insideFontBlock = true;
