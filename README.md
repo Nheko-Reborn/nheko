@@ -274,11 +274,5 @@ Here are some screen shots to get a feel for the UI, but things will probably ch
 ![nheko chat](https://nheko-reborn.github.io/images/screenshots/chat.png)
 ![nheko settings](https://nheko-reborn.github.io/images/screenshots/settings.png)
 
-### Third party
-
-- [Emoji One](http://emojione.com)
-- [Font Awesome](http://fontawesome.io/)
-- [Open Sans](https://fonts.google.com/specimen/Open+Sans)
-
 [Matrix]:https://matrix.org
 [Riot]:https://riot.im
