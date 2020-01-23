@@ -35,12 +35,12 @@ TimelineViewManager::updateColorPalette()
                 QPalette darkActive(/*windowText*/ QColor("#caccd1"),
                                     /*button*/ QColor("#caccd1"),
                                     /*light*/ QColor(),
-                                    /*dark*/ QColor("#202228"),
+                                    /*dark*/ QColor("#2d3139"),
                                     /*mid*/ QColor(),
                                     /*text*/ QColor("#caccd1"),
                                     /*bright_text*/ QColor(),
-                                    /*base*/ QColor("#2d3139"),
-                                    /*window*/ QColor("#2d3139"));
+                                    /*base*/ QColor("#202228"),
+                                    /*window*/ QColor("#202228"));
                 darkActive.setColor(QPalette::Highlight, QColor("#e7e7e9"));
                 view->rootContext()->setContextProperty("currentActivePalette", darkActive);
                 view->rootContext()->setContextProperty("currentInactivePalette", darkActive);
