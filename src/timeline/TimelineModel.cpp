@@ -189,7 +189,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(this, &TimelineModel::newMessageToSend, this, &TimelineModel::addPendingMessage);
 
         connect(this,
-                &TimelineModel::replyFetched,
+                &TimelineModel::eventFetched,
                 this,
                 [this](QString requestingEvent, mtx::events::collections::TimelineEvents event) {
                         events.insert(QString::fromStdString(mtx::accessors::event_id(event)),
@@ -566,7 +566,7 @@ TimelineModel::internalAddEvents(
                                             id.toStdString());
                                           return;
                                   }
-                                  emit replyFetched(id, timeline);
+                                  emit eventFetched(id, timeline);
                           });
                 }
         }
@@ -1441,4 +1441,102 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
         }
 
         return temp.arg(uidWithoutLast.join(", ")).arg(formatUser(users.back()));
+}
+
+QString
+TimelineModel::formatMemberEvent(QString id)
+{
+        if (!events.contains(id))
+                return "";
+
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(&events[id]);
+        if (!event)
+                return "";
+
+        mtx::events::StateEvent<mtx::events::state::Member> *prevEvent = nullptr;
+        QString prevEventId = QString::fromStdString(event->unsigned_data.replaces_state);
+        if (!prevEventId.isEmpty()) {
+                if (!events.contains(prevEventId)) {
+                        http::client()->get_event(
+                          this->room_id_.toStdString(),
+                          event->unsigned_data.replaces_state,
+                          [this, id, prevEventId](
+                            const mtx::events::collections::TimelineEvents &timeline,
+                            mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->error(
+                                            "Failed to retrieve event with id {}, which was "
+                                            "requested to show the membership for event {}",
+                                            prevEventId.toStdString(),
+                                            id.toStdString());
+                                          return;
+                                  }
+                                  emit eventFetched(id, timeline);
+                          });
+                } else {
+                        prevEvent =
+                          std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(
+                            &events[prevEventId]);
+                }
+        }
+
+        QString user = QString::fromStdString(event->state_key);
+        QString name = escapeEmoji(displayName(user));
+
+        // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
+        using namespace mtx::events::state;
+        switch (event->content.membership) {
+        case Membership::Invite:
+                return tr("%1 was invited.").arg(name);
+        case Membership::Join:
+                if (prevEvent && prevEvent->content.membership == Membership::Join) {
+                        bool displayNameChanged =
+                          prevEvent->content.display_name != event->content.display_name;
+                        bool avatarChanged =
+                          prevEvent->content.avatar_url != event->content.avatar_url;
+
+                        if (displayNameChanged && avatarChanged)
+                                return tr("%1 changed their display name and avatar.").arg(name);
+                        else if (displayNameChanged)
+                                return tr("%1 changed their display name.").arg(name);
+                        else if (avatarChanged)
+                                return tr("%1 changed their avatar.").arg(name);
+                        // the case of nothing changed but join follows join shouldn't happen, so
+                        // just show it as join
+                }
+                return tr("%1 joined.").arg(name);
+        case Membership::Leave:
+                if (!prevEvent) // Should only ever happen temporarily
+                        return "";
+
+                if (prevEvent->content.membership == Membership::Invite) {
+                        if (event->state_key == event->sender)
+                                return tr("%1 rejected their invite.").arg(name);
+                        else
+                                return tr("Revoked the invite to %1.").arg(name);
+                } else if (prevEvent->content.membership == Membership::Join) {
+                        if (event->state_key == event->sender)
+                                return tr("%1 left the room.").arg(name);
+                        else
+                                return tr("Kicked %1.").arg(name);
+                } else if (prevEvent->content.membership == Membership::Ban) {
+                        return tr("Unbanned %1").arg(name);
+                } else if (prevEvent->content.membership == Membership::Knock) {
+                        if (event->state_key == event->sender)
+                                return tr("%1 redacted their knock.").arg(name);
+                        else
+                                return tr("Rejected the knock from %1.").arg(name);
+                } else
+                        return tr("%1 left after having already left!",
+                                  "This is a leave event after the user already left and shouln't "
+                                  "happen apart from state resets")
+                          .arg(name);
+
+        case Membership::Ban:
+                return tr("%1 was banned.").arg(name);
+        case Membership::Knock:
+                return tr("%1 knocked.").arg(name);
+        default:
+                return "";
+        }
 }

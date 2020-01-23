@@ -165,6 +165,7 @@ public:
         Q_INVOKABLE QString avatarUrl(QString id) const;
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
         Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, QColor bg);
+        Q_INVOKABLE QString formatMemberEvent(QString id);
 
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
@@ -212,7 +213,7 @@ signals:
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void mediaCached(QString mxcUrl, QString cacheUrl);
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
-        void replyFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
+        void eventFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
         void typingUsersChanged(std::vector<QString> users);
 
 private:

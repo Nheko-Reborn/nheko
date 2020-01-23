@@ -79,6 +79,12 @@ Item {
 			}
 		}
 		DelegateChoice {
+			roleValue: MtxEvent.Member
+			NoticeMessage {
+				notice: timelineManager.timeline.formatMemberEvent(model.data.id);
+			}
+		}
+		DelegateChoice {
 			Placeholder {}
 		}
 	}
