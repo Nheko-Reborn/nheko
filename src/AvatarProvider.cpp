@@ -42,7 +42,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                 return;
         }
 
-        auto data = cache::image(avatarUrl);
+        auto data = cache::image(cacheKey);
         if (!data.isNull()) {
                 pixmap.loadFromData(data);
                 avatar_cache.insert(cacheKey, pixmap);
@@ -68,7 +68,8 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
 
         http::client()->get_thumbnail(
           opts,
-          [opts, proxy = std::move(proxy)](const std::string &res, mtx::http::RequestErr err) {
+          [opts, cacheKey, proxy = std::move(proxy)](const std::string &res,
+                                                     mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to download avatar: {} - ({} {})",
                                              opts.mxc_url,
@@ -77,7 +78,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                           return;
                   }
 
-                  cache::saveImage(opts.mxc_url, res);
+                  cache::saveImage(cacheKey.toStdString(), res);
 
                   emit proxy->avatarDownloaded(QByteArray(res.data(), res.size()));
           });
