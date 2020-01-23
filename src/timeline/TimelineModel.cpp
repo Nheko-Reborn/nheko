@@ -119,6 +119,13 @@ toRoomEventType(const mtx::events::collections::TimelineEvents &event)
         return std::visit(RoomEventType{}, event);
 }
 
+QString
+toRoomEventTypeString(const mtx::events::collections::TimelineEvents &event)
+{
+        return std::visit([](const auto &e) { return QString::fromStdString(to_string(e.type)); },
+                          event);
+}
+
 TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent)
   : QAbstractListModel(parent)
   , room_id_(room_id)
@@ -206,6 +213,7 @@ TimelineModel::roleNames() const
         return {
           {Section, "section"},
           {Type, "type"},
+          {TypeString, "typeString"},
           {Body, "body"},
           {FormattedBody, "formattedBody"},
           {UserId, "userId"},
@@ -265,6 +273,8 @@ TimelineModel::data(const QString &id, int role) const
                 return QVariant(origin_server_ts(event));
         case Type:
                 return QVariant(toRoomEventType(event));
+        case TypeString:
+                return QVariant(toRoomEventTypeString(event));
         case Body:
                 return QVariant(utils::replaceEmoji(QString::fromStdString(body(event))));
         case FormattedBody: {
@@ -327,6 +337,7 @@ TimelineModel::data(const QString &id, int role) const
 
                 // m.insert(names[Section], data(id, static_cast<int>(Section)));
                 m.insert(names[Type], data(id, static_cast<int>(Type)));
+                m.insert(names[TypeString], data(id, static_cast<int>(TypeString)));
                 m.insert(names[Body], data(id, static_cast<int>(Body)));
                 m.insert(names[FormattedBody], data(id, static_cast<int>(FormattedBody)));
                 m.insert(names[UserId], data(id, static_cast<int>(UserId)));

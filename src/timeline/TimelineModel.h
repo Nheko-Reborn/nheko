@@ -130,6 +130,7 @@ public:
         {
                 Section,
                 Type,
+                TypeString,
                 Body,
                 FormattedBody,
                 UserId,
