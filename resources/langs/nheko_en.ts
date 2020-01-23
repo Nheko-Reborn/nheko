@@ -4,7 +4,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+329"/>
+        <location filename="../../src/ChatPage.cpp" line="+328"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -403,7 +403,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+687"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+698"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation type="unfinished">-- Encrypted Event (No keys found for decryption) --</translation>
@@ -433,7 +433,7 @@
         <translation type="unfinished">-- Encrypted Event (Unknown event type) --</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+47"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished">Message redaction failed: %1</translation>
     </message>
@@ -465,6 +465,82 @@
             <numerusform>%1%2 is typing</numerusform>
             <numerusform>%1 and %2 are typing</numerusform>
         </translation>
+    </message>
+    <message>
+        <location line="+95"/>
+        <source>%1 was invited.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>%1 changed their display name and avatar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 changed their display name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 changed their avatar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 joined.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 rejected their invite.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Revoked the invite to %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 left the room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Kicked %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Unbanned %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 redacted their knock.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Rejected the knock from %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 left after having already left!</source>
+        <comment>This is a leave event after the user already left and shouln&apos;t happen apart from state resets</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 was banned.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 knocked.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -737,7 +813,7 @@
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+106"/>
+        <location filename="../../src/Utils.cpp" line="+119"/>
         <source>Yesterday</source>
         <translation>Yesterday</translation>
     </message>
@@ -1000,7 +1076,7 @@ Media size: %2
  E2E implementation until device verification is completed.</translation>
     </message>
     <message numerus="yes">
-        <location line="+53"/>
+        <location line="+51"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n member</numerusform>
@@ -1013,7 +1089,7 @@ Media size: %2
         <translation>Failed to enable encryption: %1</translation>
     </message>
     <message>
-        <location line="+146"/>
+        <location line="+145"/>
         <source>Select an avatar</source>
         <translation>Select an avatar</translation>
     </message>
@@ -1209,22 +1285,26 @@ Media size: %2
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+306"/>
+        <location filename="../../src/Utils.cpp" line="+292"/>
+        <location line="+35"/>
         <source>sent a file.</source>
         <translation>sent a file.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-32"/>
+        <location line="+35"/>
         <source>sent an image.</source>
         <translation>sent an image.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-32"/>
+        <location line="+35"/>
         <source>sent an audio file.</source>
         <translation>sent an audio file.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-32"/>
+        <location line="+35"/>
         <source>sent a video</source>
         <translation>sent a video.</translation>
     </message>

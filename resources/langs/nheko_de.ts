@@ -4,7 +4,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+329"/>
+        <location filename="../../src/ChatPage.cpp" line="+328"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation>unimplementiertes event: </translation>
+        <translation>Unimplementiertes Event: </translation>
     </message>
 </context>
 <context>
@@ -403,7 +403,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+687"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+698"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation>-- verschlüsselter Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
@@ -433,7 +433,7 @@
         <translation>-- verschlüsselter Event (Unbekannter Eventtyp) --</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+47"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
@@ -461,10 +461,86 @@
         <location line="+126"/>
         <source>%1 and %2 are typing</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1%2 tippt</numerusform>
             <numerusform>%1 und %2 tippen</numerusform>
         </translation>
+    </message>
+    <message>
+        <location line="+95"/>
+        <source>%1 was invited.</source>
+        <translation>%1 wurde eingeladen.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>%1 changed their display name and avatar.</source>
+        <translation>%1 hat den Anzeigenamen und Avatar geändert.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 changed their display name.</source>
+        <translation>%1 hat den Anzeigenamen geändert.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 changed their avatar.</source>
+        <translation>%1 hat den Avatar geändert.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 joined.</source>
+        <translation>%1 hat den Raum betreten.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 rejected their invite.</source>
+        <translation>%1 hat die Einladung abgewiesen.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Revoked the invite to %1.</source>
+        <translation>Hat die Einladung an %1 zurückgezogen.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 left the room.</source>
+        <translation>%1 hat den Raum verlassen.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Kicked %1.</source>
+        <translation>%1 wurde gekickt.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Unbanned %1</source>
+        <translation>Hat die Verbannung von %1 zurückgezogen.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 redacted their knock.</source>
+        <translation>%1 hat das Anklopfen zurückgezogen.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Rejected the knock from %1.</source>
+        <translation>Hat das Anklopfen von %1 abgewiesen.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 left after having already left!</source>
+        <comment>This is a leave event after the user already left and shouln&apos;t happen apart from state resets</comment>
+        <translation>%1 hat den Raum verlassen.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 was banned.</source>
+        <translation>%1 wurde gebannt.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 knocked.</source>
+        <translation>%1 hat angeklopft.</translation>
     </message>
 </context>
 <context>
@@ -737,7 +813,7 @@
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+106"/>
+        <location filename="../../src/Utils.cpp" line="+119"/>
         <source>Yesterday</source>
         <translation>Gestern</translation>
     </message>
@@ -998,7 +1074,7 @@ Medien-Größe: %2
         <translation>Ob nheko automatisch auf Anfragen mit Sessionschlüsseln antworten soll, oder nicht. Bitte mit Vorsicht nutzen, da dies eine temporäre Massnahme ist. Sie dient dem Test von E2E Verschlüsselung, bis die Geräteverifikation fertig gestellt ist.</translation>
     </message>
     <message numerus="yes">
-        <location line="+53"/>
+        <location line="+51"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n Teilnehmer</numerusform>
@@ -1011,7 +1087,7 @@ Medien-Größe: %2
         <translation>Aktivierung der Verschlüsselung fehlgeschlagen: %1</translation>
     </message>
     <message>
-        <location line="+146"/>
+        <location line="+145"/>
         <source>Select an avatar</source>
         <translation>Wähle einen Avatar</translation>
     </message>
@@ -1207,22 +1283,26 @@ Medien-Größe: %2
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+306"/>
+        <location filename="../../src/Utils.cpp" line="+292"/>
+        <location line="+35"/>
         <source>sent a file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-32"/>
+        <location line="+35"/>
         <source>sent an image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-32"/>
+        <location line="+35"/>
         <source>sent an audio file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-32"/>
+        <location line="+35"/>
         <source>sent a video</source>
         <translation type="unfinished"></translation>
     </message>
