@@ -400,7 +400,8 @@ set(COMMON_LIBS
     Qt5::Qml
     Qt5::QuickControls2
     Qt5::QuickWidgets
-    nlohmann_json::nlohmann_json)
+    nlohmann_json::nlohmann_json
+    spdlog::spdlog)
 
 if(APPVEYOR_BUILD)
     set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
