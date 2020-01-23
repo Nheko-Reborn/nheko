@@ -24,6 +24,14 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
         std::string localMsg = msg.toStdString();
         const char *file     = context.file ? context.file : "";
         const char *function = context.function ? context.function : "";
+
+        // Surpress binding wrning for now, as we can't set restore mode to keep compat with qt 5.10
+        if (msg.endsWith(
+              "QML Binding: Not restoring previous value because restoreMode has not been set.This "
+              "behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= "
+              "6.0 the default is Binding.RestoreBindingOrValue."))
+                return;
+
         switch (type) {
         case QtDebugMsg:
                 nhlog::qml()->debug("{} ({}:{}, {})", localMsg, file, context.line, function);
