@@ -163,8 +163,6 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 {
         using namespace mtx::events;
 
-        nhlog::crypto()->info("message body {}", body.dump());
-
         // relations shouldn't be encrypted...
         mtx::common::RelatesTo relation;
         if (body["content"].count("m.relates_to") != 0) {
