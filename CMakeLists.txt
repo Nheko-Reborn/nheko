@@ -386,7 +386,7 @@ if(USE_BUNDLED_TWEENY)
 	FetchContent_Declare(
 		Tweeny
 		GIT_REPOSITORY https://github.com/mobius3/tweeny.git
-		GIT_TAG        v3
+		GIT_TAG        6a5033372fe53c4c731c66c8a2d56261746cd85c #v3 <- v3 has unfixed warnings
 		)
 	FetchContent_MakeAvailable(Tweeny)
 else()

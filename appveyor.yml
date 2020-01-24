@@ -22,7 +22,6 @@ install:
     - set PATH=%PATH%;%QT_DIR%\bin;C:\MinGW\bin
     - set PATH=%PATH%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev1\mingw64\bin
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-    - cd "C:\Tools\vcpkg"&& git pull && .\bootstrap-vcpkg.bat && cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:
     # VERSION format:     branch-master/branch-1.2
