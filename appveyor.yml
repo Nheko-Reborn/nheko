@@ -1,6 +1,6 @@
 ---
 
-version: 0.6.4-{build}
+version: 0.7.0-{build}
 
 configuration: Release
 image: Visual Studio 2019
@@ -11,8 +11,8 @@ environment:
         secure: "iGl5mzE9/ta9kFELUxDw9XtlYMSCMai9xowXIkYzU8WKHz7NfW0mLwMJZvblZFXJ"
 
 cache:
-  - c:\tools\vcpkg\installed\ -> appveyor.yml
-#  - .deps -> appveyor.yml,deps\CMakeLists.txt <- disabled because it randomly seems to break everytime
+  - c:\hunter\ -> appveyor.yml
+  - build\_deps -> appveyor.yml,deps\CMakeLists.txt
 
 build:
     verbosity: minimal
@@ -23,20 +23,6 @@ install:
     - set PATH=%PATH%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev1\mingw64\bin
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
     - cd "C:\Tools\vcpkg"&& git pull && .\bootstrap-vcpkg.bat && cd %APPVEYOR_BUILD_FOLDER%
-    - vcpkg install
-            nlohmann-json:%PLATFORM%-windows
-            boost-asio:%PLATFORM%-windows
-            boost-beast:%PLATFORM%-windows
-            boost-iostreams:%PLATFORM%-windows
-            boost-random:%PLATFORM%-windows
-            boost-signals2:%PLATFORM%-windows
-            boost-system:%PLATFORM%-windows
-            boost-thread:%PLATFORM%-windows
-            libsodium:%PLATFORM%-windows
-            lmdb:%PLATFORM%-windows
-            openssl:%PLATFORM%-windows
-            zlib:%PLATFORM%-windows
-    - vcpkg upgrade --no-dry-run
 
 build_script:
     # VERSION format:     branch-master/branch-1.2
@@ -57,23 +43,12 @@ build_script:
     - echo %INSTVERSION%
     - echo %DATE%
 
-    # Build & install the dependencies
-    - cmake -G "Visual Studio 16 2019" -A x64 -Hdeps -B.deps
-        -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
-        -DUSE_BUNDLED_BOOST=OFF
-        -DUSE_BUNDLED_JSON=OFF
-        -DMTX_STATIC=ON
-    - cmake --build .deps --config Release
-
     # Build nheko
-    - rm -f cmake/FindOlm.cmake
     - cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
-      -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
-      -DLMDBXX_INCLUDE_DIR=.deps/usr/include
-      -DTWEENY_INCLUDE_DIR=.deps/usr/include
-      -DCMARK_INCLUDE_DIR=C:/projects/nheko/.deps/usr/include
-      -DCMARK_LIBRARY=C:/projects/nheko/.deps/usr/lib/cmark.lib
-      -DJSON_INCLUDE_DIR=.deps/usr/include
+      -DHUNTER_ROOT="C:\hunter"
+      -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
+      -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
+
     - cmake --build build --config Release
 
 after_build:
@@ -83,10 +58,6 @@ after_build:
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
     - windeployqt --qmldir %QT_DIR%\qml\ --release NhekoRelease\nheko.exe
-
-    - copy C:\Tools\vcpkg\installed\x64-windows\bin\*.dll .\NhekoRelease\
-
-    - copy C:\projects\nheko\.deps\usr\bin\cmark.dll .\NhekoRelease\
 
     - 7z a nheko_win_64.zip .\NhekoRelease\*
     - ls -lh build\Release\

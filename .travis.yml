@@ -13,7 +13,7 @@ notifications:
 
 cache:
   directories:
-    - .deps
+    - .hunter
 
 matrix:
     include:
@@ -23,21 +23,12 @@ matrix:
           osx_image: xcode10.2
           env:
             - DEPLOYMENT=1
-            - USE_BUNDLED_BOOST=0
-            - USE_BUNDLED_CMARK=0
-            - USE_BUNDLED_JSON=0
-            - MTX_STATIC=1
           addons:
             homebrew:
               taps: nlohmann/json
               packages:
-                - boost
                 - clang-format
                 - cmake
-                - cmark
-                - icu4c
-                - libsodium
-                - lmdb
                 - ninja
                 - openssl
                 - qt5
@@ -48,9 +39,6 @@ matrix:
               - CC=gcc-7
               - QT_PKG=512
               - DEPLOYMENT=1
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-              - USE_BUNDLED_JSON=1
           addons:
               apt:
                   sources: 
@@ -73,9 +61,6 @@ matrix:
               - CXX=g++-8
               - CC=gcc-8
               - QT_PKG=59
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-              - USE_BUNDLED_JSON=1
           addons:
               apt:
                   sources: 
@@ -98,9 +83,6 @@ matrix:
               - CXX=clang++-6.0
               - CC=clang-6.0
               - QT_PKG=59
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-              - USE_BUNDLED_JSON=1
           addons:
               apt:
                   sources: 
