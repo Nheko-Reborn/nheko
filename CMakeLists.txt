@@ -1,17 +1,59 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.13)
 
 option(APPVEYOR_BUILD "Build on appveyor" OFF)
+option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(QML_DEBUGGING "Enable qml debugging" OFF)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(
+    CMAKE_TOOLCHAIN_FILE
+    "${CMAKE_CURRENT_LIST_DIR}/toolchain.cmake"
+    CACHE
+    FILEPATH
+    "Default toolchain"
+)
+
+
+option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.244.tar.gz"
+    SHA1 "2c0f491fd0b80f7b09e3d21adb97237161ef9835"
+    LOCAL
+)
+
+option(USE_BUNDLED_BOOST "Use the bundled version of Boost." ${HUNTER_ENABLED})
+option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog."
+        ${HUNTER_ENABLED})
+option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${HUNTER_ENABLED})
+option(USE_BUNDLED_GTEST "Use the bundled version of Google Test."
+        ${HUNTER_ENABLED})
+option(USE_BUNDLED_CMARK "Use the bundled version of cmark."
+	${HUNTER_ENABLED})
+option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json."
+	${HUNTER_ENABLED})
+option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
+        ${HUNTER_ENABLED})
+option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
+option(USE_BUNDLED_SODIUM "Use the bundled version of libsodium."
+        ${HUNTER_ENABLED})
+option(USE_BUNDLED_ZLIB "Use the bundled version of zlib."
+        ${HUNTER_ENABLED})
+option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
+        ${HUNTER_ENABLED})
+option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
+        ${HUNTER_ENABLED})
+option(USE_BUNDLED_TWEENY "Use the bundled version of tweeny."
+        ${HUNTER_ENABLED})
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 include(GNUInstallDirs)
 
 # Include Qt basic functions
 include(QtCommon)
 
-project(nheko LANGUAGES C CXX)
+project(nheko LANGUAGES CXX C)
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "7")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
@@ -29,10 +71,6 @@ set(COPYRIGHT "Copyright (c) 2019 Nheko Contributors")
 set(IDENTIFIER "com.github.mujx.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
-
-if(APPLE)
-    set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
-endif()
 
 if(NOT MSVC AND NOT APPLE)
   set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -62,7 +100,14 @@ endif()
 #
 # LMDB
 #
-include(LMDB)
+#include(LMDB)
+if(USE_BUNDLED_LMDB)
+	hunter_add_package(lmdb)
+	find_package(liblmdb CONFIG REQUIRED)
+else()
+	include(FindPkgConfig)
+	pkg_search_module(lmdb REQUIRED IMPORTED_TARGET lmdb)
+endif()
 
 #
 # Discover Qt dependencies.
@@ -82,15 +127,6 @@ if (Qt5Widgets_FOUND)
     endif()
 endif(Qt5Widgets_FOUND)
 
-#
-# Set up compiler flags.
-#
-if (NOT MSVC)
-    set(CMAKE_C_COMPILER gcc)
-endif(NOT MSVC)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if(NOT MSVC)
   set(
@@ -98,7 +134,6 @@ if(NOT MSVC)
     "${CMAKE_CXX_FLAGS} \
         -Wall \
         -Wextra \
-        -Werror \
         -pipe \
         -pedantic \
         -fsized-deallocation \
@@ -110,6 +145,9 @@ if(NOT MSVC)
         # -Wshadow is buggy and broken in GCC, so do not enable it.
         # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79328
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wshadow")
+    endif()
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR CI_BUILD)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
     endif()
 endif()
 
@@ -249,29 +287,75 @@ set(SRC_FILES
     src/main.cpp
 )
 
-# ExternalProject dependencies
-set(EXTERNAL_PROJECT_DEPS "")
 
 include(FeatureSummary)
 
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_STATIC_RUNTIME OFF)
-set(Boost_USE_MULTITHREADED ON)
+if(USE_BUNDLED_BOOST)
+        hunter_add_package(Boost COMPONENTS iostreams system thread)
+endif()
 find_package(Boost 1.70 REQUIRED
-             COMPONENTS atomic
-                        chrono
-                        date_time
-                        iostreams
-                        random
-                        regex
+             COMPONENTS iostreams
                         system
                         thread)
+if(USE_BUNDLED_ZLIB)
+	hunter_add_package(ZLIB)
+endif()
 find_package(ZLIB REQUIRED)
+if(USE_BUNDLED_OPENSSL)
+	hunter_add_package(OpenSSL)
+endif()
 find_package(OpenSSL REQUIRED)
-find_package(MatrixClient 0.3.0 REQUIRED)
-find_package(Olm 2 REQUIRED)
+if(USE_BUNDLED_MTXCLIENT)
+	include(FetchContent)
+	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
+	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
+	FetchContent_Declare(
+		MatrixClient
+		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
+		GIT_TAG        1fd59de2a37e6b547db8e5b52114f3f10171ef2f
+		)
+	FetchContent_MakeAvailable(MatrixClient)
+else()
+	find_package(MatrixClient 0.3.0 REQUIRED)
+endif()
+if(USE_BUNDLED_OLM)
+	include(FetchContent)
+	FetchContent_Declare(
+		Olm
+		GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
+		GIT_TAG        3.1.4
+		)
+	FetchContent_MakeAvailable(Olm)
+else()
+	find_package(Olm 3)
+	set_package_properties(Olm PROPERTIES
+		DESCRIPTION "An implementation of the Double Ratchet cryptographic ratchet"
+		URL "https://git.matrix.org/git/olm/about/"
+		TYPE REQUIRED
+		)
+endif()
+if(USE_BUNDLED_SPDLOG)
+	hunter_add_package(spdlog)
+endif()
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
-find_package(cmark REQUIRED)
+
+if(USE_BUNDLED_CMARK)
+	include(FetchContent)
+	FetchContent_Declare(
+		cmark
+		GIT_REPOSITORY https://github.com/commonmark/cmark.git
+		GIT_TAG        0.29.0
+		CMAKE_ARGS     "CMARK_STATIC=ON CMARK_TESTS=OFF CMARK_TESTS=OFF"
+		)
+	FetchContent_MakeAvailable(cmark)
+	add_library(cmark::cmark ALIAS libcmark_static)
+else()
+	find_package(cmark REQUIRED)
+endif()
+
+if(USE_BUNDLED_JSON)
+	hunter_add_package(nlohmann_json)
+endif()
 find_package(nlohmann_json 3.2.0)
 set_package_properties(nlohmann_json PROPERTIES
     DESCRIPTION "JSON for Modern C++, a C++11 header-only JSON class"
@@ -279,31 +363,35 @@ set_package_properties(nlohmann_json PROPERTIES
     TYPE REQUIRED
 )
 
-if(NOT LMDBXX_INCLUDE_DIR)
-    find_path(LMDBXX_INCLUDE_DIR
-            NAMES lmdb++.h
-            PATHS /usr/include
-                  /usr/local/include
-                  $ENV{LIB_DIR}/include
-                  $ENV{LIB_DIR}/include/lmdbxx)
+if(USE_BUNDLED_LMDBXX)
+	hunter_add_package(lmdbxx)
+	find_package(lmdbxx CONFIG REQUIRED)
+else()
+	if(NOT LMDBXX_INCLUDE_DIR)
+		find_path(LMDBXX_INCLUDE_DIR
+			NAMES lmdb++.h
+			PATHS /usr/include
+			/usr/local/include
+			$ENV{LIB_DIR}/include
+			$ENV{LIB_DIR}/include/lmdbxx)
+
+	endif()
+	add_library(lmdbxx INTERFACE)
+	target_include_directories(lmdbxx INTERFACE ${LMDBXX_INCLUDE_DIR})
+	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
 endif()
-include_directories(SYSTEM ${LMDBXX_INCLUDE_DIR})
 
-if(NOT TWEENY_INCLUDE_DIR)
-    find_path(TWEENY_INCLUDE_DIR
-            NAMES tweeny/tweeny.h
-            PATHS /usr/include/
-                  /usr/local/include/
-                  $ENV{LIB_DIR}/include/
-                  $ENV{LIB_DIR}/include/tweeny)
+if(USE_BUNDLED_TWEENY)
+	include(FetchContent)
+	FetchContent_Declare(
+		Tweeny
+		GIT_REPOSITORY https://github.com/mobius3/tweeny.git
+		GIT_TAG        v3
+		)
+	FetchContent_MakeAvailable(Tweeny)
+else()
+	find_package(Tweeny REQUIRED)
 endif()
-include_directories(SYSTEM ${TWEENY_INCLUDE_DIR})
-
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${Boost_INCLUDE_DIRS})
-
-# local inclue directory
-include_directories(includes)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -391,8 +479,11 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 set(COMMON_LIBS
     MatrixClient::MatrixClient
-    ${Boost_LIBRARIES}
+    Boost::iostreams
+    Boost::system
+    Boost::thread
     cmark::cmark
+    spdlog::spdlog
     Qt5::Widgets
     Qt5::Svg
     Qt5::Concurrent
@@ -401,12 +492,13 @@ set(COMMON_LIBS
     Qt5::QuickControls2
     Qt5::QuickWidgets
     nlohmann_json::nlohmann_json
-    spdlog::spdlog)
+    lmdbxx::lmdbxx
+    tweeny)
 
-if(APPVEYOR_BUILD)
-    set(NHEKO_LIBS ${COMMON_LIBS} lmdb)
+if(USE_BUNDLED_LMDB)
+    set(NHEKO_LIBS ${COMMON_LIBS} liblmdb::lmdb)
 else()
-    set(NHEKO_LIBS ${COMMON_LIBS} ${LMDB_LIBRARY})
+    set(NHEKO_LIBS ${COMMON_LIBS} PkgConfig::lmdb)
 endif()
 
 if (APPLE)
@@ -450,13 +542,10 @@ else()
     add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
     target_link_libraries (nheko ${NHEKO_LIBS} Qt5::DBus)
 endif()
+target_include_directories(nheko PRIVATE src includes)
 
 if(QML_DEBUGGING)
 	target_compile_definitions(nheko PRIVATE QML_DEBUGGING)
-endif()
-
-if(EXTERNAL_PROJECT_DEPS)
-    add_dependencies(nheko ${EXTERNAL_PROJECT_DEPS})
 endif()
 
 set_target_properties(nheko PROPERTIES SKIP_BUILD_RPATH TRUE)
