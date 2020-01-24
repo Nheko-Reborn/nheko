@@ -1283,30 +1283,6 @@ Medien-Größe: %2
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+292"/>
-        <location line="+35"/>
-        <source>sent a file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-32"/>
-        <location line="+35"/>
-        <source>sent an image.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-32"/>
-        <location line="+35"/>
-        <source>sent an audio file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-32"/>
-        <location line="+35"/>
-        <source>sent a video</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
         <translation>Unbekannter Nachrichtentyp</translation>

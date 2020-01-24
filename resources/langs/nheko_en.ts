@@ -1285,30 +1285,6 @@ Media size: %2
 <context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+292"/>
-        <location line="+35"/>
-        <source>sent a file.</source>
-        <translation>sent a file.</translation>
-    </message>
-    <message>
-        <location line="-32"/>
-        <location line="+35"/>
-        <source>sent an image.</source>
-        <translation>sent an image.</translation>
-    </message>
-    <message>
-        <location line="-32"/>
-        <location line="+35"/>
-        <source>sent an audio file.</source>
-        <translation>sent an audio file.</translation>
-    </message>
-    <message>
-        <location line="-32"/>
-        <location line="+35"/>
-        <source>sent a video</source>
-        <translation>sent a video.</translation>
-    </message>
-    <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
         <translation>Unknown Message Type</translation>

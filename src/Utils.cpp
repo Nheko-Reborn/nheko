@@ -403,21 +403,21 @@ utils::markdownToHtml(const QString &text)
 QString
 utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
 {
-        auto getFormattedBody = [related]() {
+        auto getFormattedBody = [related]() -> QString {
                 using MsgType = mtx::events::MessageType;
 
                 switch (related.type) {
                 case MsgType::File: {
-                        return QString(QCoreApplication::translate("utils", "sent a file."));
+                        return "sent a file.";
                 }
                 case MsgType::Image: {
-                        return QString(QCoreApplication::translate("utils", "sent an image."));
+                        return "sent an image.";
                 }
                 case MsgType::Audio: {
-                        return QString(QCoreApplication::translate("utils", "sent an audio file."));
+                        return "sent an audio file.";
                 }
                 case MsgType::Video: {
-                        return QString(QCoreApplication::translate("utils", "sent a video"));
+                        return "sent a video";
                 }
                 default: {
                         return related.quoted_formatted_body;
@@ -443,16 +443,16 @@ utils::getQuoteBody(const RelatedInfo &related)
 
         switch (related.type) {
         case MsgType::File: {
-                return QString(QCoreApplication::translate("utils", "sent a file."));
+                return "sent a file.";
         }
         case MsgType::Image: {
-                return QString(QCoreApplication::translate("utils", "sent an image."));
+                return "sent an image.";
         }
         case MsgType::Audio: {
-                return QString(QCoreApplication::translate("utils", "sent an audio file."));
+                return "sent an audio file.";
         }
         case MsgType::Video: {
-                return QString(QCoreApplication::translate("utils", "sent a video"));
+                return "sent a video";
         }
         default: {
                 return related.quoted_body;
