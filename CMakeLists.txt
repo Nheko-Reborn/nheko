@@ -315,6 +315,7 @@ else()
 endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)
+	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_Declare(
 		Olm
 		GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
