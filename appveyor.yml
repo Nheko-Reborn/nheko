@@ -3,7 +3,7 @@
 version: 0.7.0-{build}
 
 configuration: Release
-image: Visual Studio 2019
+image: Visual Studio 2017
 platform: x64
 
 environment:
@@ -18,9 +18,9 @@ build:
     verbosity: minimal
 
 install:
-    - set QT_DIR=C:\Qt\5.14\msvc2017_64
+    - set QT_DIR=C:\Qt\5.13\msvc2017_64
     - set PATH=%PATH%;%QT_DIR%\bin
-    - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
 build_script:
     # VERSION format:     branch-master/branch-1.2
@@ -41,11 +41,16 @@ build_script:
     - echo %INSTVERSION%
     - echo %DATE%
 
+    - dir "C:\OpenSSL-v111-Win64" 
+    - dir "C:\OpenSSL-v111-Win64\lib" 
+
     # Build nheko
-    - cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
+    #- cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
+    - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
       -DHUNTER_ROOT="C:\hunter"
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
-      -DCMAKE_BUILD_TYPE=Release # -DHUNTER_CONFIGURATION_TYPES=Release
+      -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
+      #-DUSE_BUNDLED_OPENSSL=OFF #-DOPENSSL_ROOT_DIR="C:\OpenSSL-v11-Win64" -DOPENSSL_INCLUDE_DIR="C:\OpenSSL-v11-Win64\include" -DOPENSSL_LIBRARIES="C:\OpenSSL-v11-Win64\lib"
 
     - cmake --build build --config Release
 
