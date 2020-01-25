@@ -533,6 +533,9 @@ target_link_libraries(nheko PRIVATE
 
 if(USE_BUNDLED_LMDB)
 	target_link_libraries(nheko PRIVATE liblmdb::lmdb)
+	if(MSVC)
+		target_link_libraries(nheko PRIVATE ntdll)
+	endif()
 else()
 	target_link_libraries(nheko PRIVATE PkgConfig::lmdb)
 endif()
