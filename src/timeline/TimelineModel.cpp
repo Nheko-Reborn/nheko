@@ -1,6 +1,7 @@
 #include "TimelineModel.h"
 
 #include <algorithm>
+#include <thread>
 #include <type_traits>
 
 #include <QFileDialog>
