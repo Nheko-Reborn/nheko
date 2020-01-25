@@ -46,7 +46,7 @@ build_script:
     - cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
       -DHUNTER_ROOT="C:\hunter"
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
-      -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
+      -DCMAKE_BUILD_TYPE=Release # -DHUNTER_CONFIGURATION_TYPES=Release
 
     - cmake --build build --config Release
 
