@@ -341,7 +341,7 @@ if(USE_BUNDLED_CMARK)
 		cmark
 		GIT_REPOSITORY https://github.com/commonmark/cmark.git
 		GIT_TAG        242e277a661ec7e51f34dcaf86c1925d550b1498 #0.29.0 << doesn't work with fetch content yet
-		CMAKE_ARGS     "CMARK_STATIC=ON CMARK_TESTS=OFF CMARK_TESTS=OFF"
+		CMAKE_ARGS     "CMARK_STATIC=ON CMARK_SHARED=OFF CMARK_TESTS=OFF CMARK_TESTS=OFF"
 		)
 	FetchContent_MakeAvailable(cmark)
 	add_library(cmark::cmark ALIAS libcmark_static)
