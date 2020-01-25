@@ -339,7 +339,7 @@ if(USE_BUNDLED_CMARK)
 	FetchContent_Declare(
 		cmark
 		GIT_REPOSITORY https://github.com/commonmark/cmark.git
-		GIT_TAG        1ff180e23cc38ae82f30615e12b07e98f0794676 #0.29.0 << doesn't work with fetch content yet
+		GIT_TAG        242e277a661ec7e51f34dcaf86c1925d550b1498 #0.29.0 << doesn't work with fetch content yet
 		CMAKE_ARGS     "CMARK_STATIC=ON CMARK_TESTS=OFF CMARK_TESTS=OFF"
 		)
 	FetchContent_MakeAvailable(cmark)
