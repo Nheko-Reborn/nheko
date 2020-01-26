@@ -41,16 +41,12 @@ build_script:
     - echo %INSTVERSION%
     - echo %DATE%
 
-    - dir "C:\OpenSSL-v111-Win64" 
-    - dir "C:\OpenSSL-v111-Win64\lib" 
-
     # Build nheko
     #- cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
     - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
       -DHUNTER_ROOT="C:\hunter"
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
       -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
-      #-DUSE_BUNDLED_OPENSSL=OFF #-DOPENSSL_ROOT_DIR="C:\OpenSSL-v11-Win64" -DOPENSSL_INCLUDE_DIR="C:\OpenSSL-v11-Win64\include" -DOPENSSL_LIBRARIES="C:\OpenSSL-v11-Win64\lib"
 
     - cmake --build build --config Release
 
@@ -60,6 +56,7 @@ after_build:
     - echo %BUILD%
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
+    - copy build\_deps\cmark-build\src\Release\cmark.dll NhekoRelease\cmark.dll
     - windeployqt --qmldir %QT_DIR%\qml\ --release NhekoRelease\nheko.exe
 
     - 7z a nheko_win_64.zip .\NhekoRelease\*
