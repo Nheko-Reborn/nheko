@@ -68,6 +68,12 @@ public:
                 save();
         }
 
+        void setMarkdownEnabled(bool state)
+        {
+                isMarkdownEnabled_ = state;
+                save();
+        }
+
         void setReadReceipts(bool state)
         {
                 isReadReceiptsEnabled_ = state;
@@ -96,6 +102,8 @@ public:
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
+        bool isAvatarCirclesEnabled() const { return avatarCircles_; }
+        bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
@@ -116,6 +124,7 @@ private:
         bool isTrayEnabled_;
         bool isStartInTrayEnabled_;
         bool isGroupViewEnabled_;
+        bool isMarkdownEnabled_;
         bool isTypingNotificationsEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
@@ -168,6 +177,7 @@ private:
         Toggle *groupViewToggle_;
         Toggle *typingNotifications_;
         Toggle *readReceipts_;
+        Toggle *markdownEnabled_;
         Toggle *desktopNotifications_;
         Toggle *avatarCircles_;
         QLabel *deviceFingerprintValue_;

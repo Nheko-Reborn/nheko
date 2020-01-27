@@ -116,7 +116,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->setMargin(0);
 
         top_bar_      = new TopRoomBar(this);
-        view_manager_ = new TimelineViewManager(this);
+        view_manager_ = new TimelineViewManager(userSettings_, this);
 
         contentLayout_->addWidget(top_bar_);
         contentLayout_->addWidget(view_manager_->getWidget());

@@ -15,6 +15,7 @@
 
 class MxcImageProvider;
 class ColorImageProvider;
+class UserSettings;
 
 class TimelineViewManager : public QObject
 {
@@ -26,7 +27,7 @@ class TimelineViewManager : public QObject
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
 
 public:
-        TimelineViewManager(QWidget *parent = 0);
+        TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
@@ -97,4 +98,6 @@ private:
         QHash<QString, QSharedPointer<TimelineModel>> models;
         TimelineModel *timeline_ = nullptr;
         bool isInitialSync_      = true;
+
+        QSharedPointer<UserSettings> settings;
 };

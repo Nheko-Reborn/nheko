@@ -18,8 +18,7 @@ Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 void
 TimelineViewManager::updateColorPalette()
 {
-        UserSettings settings;
-        if (settings.theme() == "light") {
+        if (settings->theme() == "light") {
                 QPalette lightActive(/*windowText*/ QColor("#333"),
                                      /*button*/ QColor("#333"),
                                      /*light*/ QColor(),
@@ -31,7 +30,7 @@ TimelineViewManager::updateColorPalette()
                                      /*window*/ QColor("white"));
                 view->rootContext()->setContextProperty("currentActivePalette", lightActive);
                 view->rootContext()->setContextProperty("currentInactivePalette", lightActive);
-        } else if (settings.theme() == "dark") {
+        } else if (settings->theme() == "dark") {
                 QPalette darkActive(/*windowText*/ QColor("#caccd1"),
                                     /*button*/ QColor("#caccd1"),
                                     /*light*/ QColor(),
@@ -50,9 +49,10 @@ TimelineViewManager::updateColorPalette()
         }
 }
 
-TimelineViewManager::TimelineViewManager(QWidget *parent)
+TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
+  , settings(userSettings)
 {
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
@@ -207,6 +207,11 @@ TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<Re
                 text.relates_to.in_reply_to.event_id = related->related_event;
         }
 
+        if (!settings->isMarkdownEnabled()) {
+                text.format         = "";
+                text.formatted_body = "";
+        }
+
         if (timeline_)
                 timeline_->sendMessage(text);
 }
@@ -219,8 +224,10 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
         mtx::events::msg::Emote emote;
         emote.body = msg.trimmed().toStdString();
 
-        if (html != msg.trimmed().toHtmlEscaped())
+        if (html != msg.trimmed().toHtmlEscaped() && settings->isMarkdownEnabled()) {
                 emote.formatted_body = html.toStdString();
+                emote.format         = "org.matrix.custom.html";
+        }
 
         if (timeline_)
                 timeline_->sendMessage(emote);
