@@ -188,8 +188,13 @@ TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<Re
         text.body                   = msg.trimmed().toStdString();
 
         if (settings->isMarkdownEnabled()) {
-                text.format         = "org.matrix.custom.html";
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
+
+                // Don't send formatted_body, when we don't need to
+                if (text.formatted_body == text.body)
+                        text.formatted_body = "";
+                else
+                        text.format = "org.matrix.custom.html";
         }
 
         if (related) {
