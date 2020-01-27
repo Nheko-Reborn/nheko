@@ -294,7 +294,7 @@ TimelineModel::data(const QString &id, int role) const
                                 if (body_.startsWith('\n'))
                                         body_ = body_.right(body_.size() - 1);
                         }
-                        formattedBody_ = body_.toHtmlEscaped();
+                        formattedBody_ = body_.toHtmlEscaped().replace('\n', "<br>");
                 } else {
                         if (isReply)
                                 formattedBody_ = formattedBody_.remove(replyFallback);
