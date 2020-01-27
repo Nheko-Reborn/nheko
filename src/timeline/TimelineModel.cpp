@@ -281,9 +281,26 @@ TimelineModel::data(const QString &id, int role) const
         case FormattedBody: {
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
-                return QVariant(
-                  utils::replaceEmoji(utils::linkifyMessage(utils::escapeBlacklistedHtml(
-                    formattedBodyWithFallback(event).remove(replyFallback)))));
+
+                bool isReply = !in_reply_to_event(event).empty();
+
+                auto formattedBody_ = QString::fromStdString(formatted_body(event));
+                if (formattedBody_.isEmpty()) {
+                        auto body_ = QString::fromStdString(body(event));
+
+                        if (isReply) {
+                                while (body_.startsWith("> "))
+                                        body_ = body_.right(body_.size() - body_.indexOf('\n') - 1);
+                                if (body_.startsWith('\n'))
+                                        body_ = body_.right(body_.size() - 1);
+                        }
+                        formattedBody_ = body_.toHtmlEscaped();
+                } else {
+                        if (isReply)
+                                formattedBody_ = formattedBody_.remove(replyFallback);
+                }
+                return QVariant(utils::replaceEmoji(
+                  utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));
         }
         case Url:
                 return QVariant(QString::fromStdString(url(event)));

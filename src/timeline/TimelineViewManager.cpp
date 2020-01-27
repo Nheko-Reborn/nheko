@@ -186,8 +186,11 @@ TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<Re
 {
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
-        text.format                 = "org.matrix.custom.html";
-        text.formatted_body         = utils::markdownToHtml(msg).toStdString();
+
+        if (settings->isMarkdownEnabled()) {
+                text.format         = "org.matrix.custom.html";
+                text.formatted_body = utils::markdownToHtml(msg).toStdString();
+        }
 
         if (related) {
                 QString body;
@@ -202,14 +205,18 @@ TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<Re
                 }
 
                 text.body = QString("%1\n%2").arg(body).arg(msg).toStdString();
-                text.formatted_body =
-                  utils::getFormattedQuoteBody(*related, utils::markdownToHtml(msg)).toStdString();
-                text.relates_to.in_reply_to.event_id = related->related_event;
-        }
 
-        if (!settings->isMarkdownEnabled()) {
-                text.format         = "";
-                text.formatted_body = "";
+                // NOTE(Nico): rich replies always need a formatted_body!
+                text.format = "org.matrix.custom.html";
+                if (settings->isMarkdownEnabled())
+                        text.formatted_body =
+                          utils::getFormattedQuoteBody(*related, utils::markdownToHtml(msg))
+                            .toStdString();
+                else
+                        text.formatted_body =
+                          utils::getFormattedQuoteBody(*related, msg.toHtmlEscaped()).toStdString();
+
+                text.relates_to.in_reply_to.event_id = related->related_event;
         }
 
         if (timeline_)
