@@ -209,7 +209,7 @@ cmake --build build
 To use bundled dependencies you can use hunter, i.e.:
 
 ```bash
-cmake -H. -Bbuild -DHUNTER_ENABLED=ON -DCMAKE_BUILD_TYPE=OFF -DUSE_BUNDLED_OPENSSL=OFF
+cmake -H. -Bbuild -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=OFF
 cmake --build build --config Release
 ```
 
