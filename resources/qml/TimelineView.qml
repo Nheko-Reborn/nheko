@@ -192,7 +192,7 @@ Item {
 		Rectangle {
 			id: chatFooter
 
-			height: Math.max(Math.max(16, typingDisplay.height), replyPopup.height)
+			height: Math.max(16, aaaaa.height)
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.bottom: parent.bottom
@@ -200,95 +200,53 @@ Item {
 
 			color: colors.window
 
-			Text {
+			Column {
+				id: aaaaa
 				anchors.left: parent.left
 				anchors.right: parent.right
-				anchors.bottom: parent.bottom
-				anchors.leftMargin: 10
-				anchors.rightMargin: 10
 
-				id: typingDisplay
-				text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, chatFooter.color) : ""
-				textFormat: Text.RichText
-				color: colors.windowText
-			}
-
-			Rectangle {
-				anchors.left: parent.left
-				anchors.right: parent.right
-				anchors.bottom: parent.bottom
-
-				id: replyPopup
-
-				visible: timelineManager.replyingEvent && chat.model
-				width: parent.width
-				// Height of child, plus margins, plus border
-				height: replyContent.height + 10
-				color: colors.dark
-
-				RowLayout {
-					id: replyContent
+				Text {
+					id: typingDisplay
 					anchors.left: parent.left
 					anchors.right: parent.right
-					anchors.top: parent.top
-					anchors.margins: 10
+					anchors.leftMargin: 10
+					anchors.rightMargin: 10
 
-					Column {
-						Layout.fillWidth: true
-						Layout.alignment: Qt.AlignTop
-						spacing: 4
-						Rectangle {
-							width: parent.width
-							height: replyContainer.height
-							anchors.leftMargin: 10
-							anchors.rightMargin: 10
+					text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
+					textFormat: Text.RichText
+					color: colors.windowText
+				}
 
-							Rectangle {
-								id: colorLine
-								height: replyContainer.height
-								width: 4
-								color: chat.model ? chat.model.userColor(reply.modelData.userId, colors.window) : colors.window
-							}
+				Rectangle {
+					anchors.left: parent.left
+					anchors.right: parent.right
 
-							Column {
-								id: replyContainer
-								anchors.left: colorLine.right
-								anchors.leftMargin: 4
-								width: parent.width - 8
+					id: replyPopup
 
-								Text { 
-									id: userName
-									text: chat.model ? chat.model.escapeEmoji(reply.modelData.userName) : ""
-									color: chat.model ? chat.model.userColor(reply.modelData.userId, colors.windowText) : colors.windowText
-									textFormat: Text.RichText
+					visible: timelineManager.replyingEvent && chat.model
+					// Height of child, plus margins, plus border
+					height: replyPreview.height + 10
+					color: colors.dark
 
-									MouseArea {
-										anchors.fill: parent
-										onClicked: chat.model.openUserProfile(reply.modelData.userId)
-										cursorShape: Qt.PointingHandCursor
-									}
-								}
 
-								MessageDelegate {
-									id: reply
-									width: parent.width
-									modelData: chat.model ? chat.model.getDump(timelineManager.replyingEvent) : {}
-								}
-							}
+					Reply {
+						id: replyPreview
 
-							color: { var col = chat.model ? chat.model.userColor(reply.modelData.userId, colors.window) : colors.window; col.a = 0.2; return col }
+						anchors.left: parent.left
+						anchors.leftMargin: 10
+						anchors.right: closeReplyButton.left
+						anchors.bottom: parent.bottom
 
-							MouseArea {
-								anchors.fill: parent
-								onClicked: chat.positionViewAtIndex(chat.model.idToIndex(timelineManager.replyingEvent), ListView.Contain)
-								cursorShape: Qt.PointingHandCursor
-							}
-						}
+						modelData: chat.model ? chat.model.getDump(timelineManager.replyingEvent) : {}
+						userColor: chat.model ? chat.model.userColor(modelData.userId, colors.window) : colors.window
 					}
+
 					ImageButton {
-						Layout.alignment: Qt.AlignRight | Qt.AlignTop
-						Layout.preferredHeight: 16
 						id: closeReplyButton
+
+						anchors.right: parent.right
+						anchors.rightMargin: 10
+						anchors.top: replyPreview.top
 
 						image: ":/icons/icons/ui/remove-symbol.png"
 						ToolTip {

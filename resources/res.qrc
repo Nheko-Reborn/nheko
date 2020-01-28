@@ -123,5 +123,6 @@
         <file>qml/delegates/FileMessage.qml</file>
         <file>qml/delegates/Pill.qml</file>
         <file>qml/delegates/Placeholder.qml</file>
+        <file>qml/delegates/Reply.qml</file>
     </qresource>
 </RCC>

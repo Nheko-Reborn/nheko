@@ -1,0 +1,57 @@
+import QtQuick 2.6
+import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.2
+import QtQuick.Window 2.2
+
+Rectangle {
+	id: replyComponent
+
+	property alias modelData: reply.modelData
+	property color userColor: "red"
+
+	width: parent.width
+	height: replyContainer.height
+
+	Rectangle {
+		id: colorLine
+
+		anchors.top: replyContainer.top
+		anchors.bottom: replyContainer.bottom
+		width: 4
+
+		color: chat.model ? chat.model.userColor(reply.modelData.userId, colors.window) : colors.window
+	}
+
+	Column {
+		id: replyContainer
+		anchors.left: colorLine.right
+		anchors.leftMargin: 4
+		width: parent.width - 8
+
+		Text { 
+			id: userName
+			text: chat.model ? chat.model.escapeEmoji(reply.modelData.userName) : ""
+			color: replyComponent.userColor
+			textFormat: Text.RichText
+
+			MouseArea {
+				anchors.fill: parent
+				onClicked: chat.model.openUserProfile(reply.modelData.userId)
+				cursorShape: Qt.PointingHandCursor
+			}
+		}
+
+		MessageDelegate {
+			id: reply
+			width: parent.width
+		}
+	}
+
+	color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.2)
+
+	MouseArea {
+		anchors.fill: parent
+		onClicked: chat.positionViewAtIndex(chat.model.idToIndex(timelineManager.replyingEvent), ListView.Contain)
+		cursorShape: Qt.PointingHandCursor
+	}
+}
