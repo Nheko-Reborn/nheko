@@ -223,18 +223,9 @@ Item {
 				visible: timelineManager.replyingEvent && chat.model
 				width: parent.width
 				// Height of child, plus margins, plus border
-				height: replyContent.height + 10 + 1
-				color: colors.window
+				height: replyContent.height + 10
+				color: colors.dark
 
-				// For a border on the top.
-				Rectangle {
-					anchors.left: parent.left
-				    anchors.right: parent.right
-					height: 1
-					width: parent.width
-					color: colors.mid
-				}
-			
 				RowLayout {
 					id: replyContent
 					anchors.left: parent.left
