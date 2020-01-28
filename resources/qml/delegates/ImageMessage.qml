@@ -6,10 +6,10 @@ Item {
 	property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width)
 	property double tempHeight: tempWidth * model.data.proportionalHeight
 
-	property bool tooHigh: tempHeight > chat.height - 40
+	property bool tooHigh: tempHeight > timelineRoot.height / 2
 
-	height: tooHigh ? chat.height - 40 : tempHeight
-	width: tooHigh ? (chat.height - 40) / model.data.proportionalHeight : tempWidth
+	height: tooHigh ? timelineRoot.height / 2 : tempHeight
+	width: tooHigh ? (timelineRoot.height / 2) / model.data.proportionalHeight : tempWidth
 
 	Image {
 		id: img

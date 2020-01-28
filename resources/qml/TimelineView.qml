@@ -14,6 +14,8 @@ Item {
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
 	property int avatarSize: 40
 
+	id: timelineRoot
+
 	Rectangle {
 		anchors.fill: parent
 		color: colors.window
