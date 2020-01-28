@@ -22,7 +22,11 @@
 #include <QImage>
 #include <QString>
 
+#if __has_include(<lmdbxx/lmdb++.h>)
+#include <lmdbxx/lmdb++.h>
+#else
 #include <lmdb++.h>
+#endif
 
 #include <mtx/responses.hpp>
 
