@@ -208,12 +208,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                                mtx::http::RequestErr err) {
                                           if (err) {
                                                   emit showNotification(
-                                                    QString("Failed to invite user: %1").arg(user));
+                                                    tr("Failed to invite user: %1").arg(user));
                                                   return;
                                           }
 
-                                          emit showNotification(
-                                            QString("Invited user: %1").arg(user));
+                                          emit showNotification(tr("Invited user: %1").arg(user));
                                   });
                         });
                 }
@@ -279,6 +278,89 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &TimelineViewManager::queueEmoteMessage);
 
         connect(text_input_, &TextInputWidget::sendJoinRoomRequest, this, &ChatPage::joinRoom);
+
+        // invites and bans via quick command
+        connect(text_input_,
+                &TextInputWidget::sendInviteRoomRequest,
+                this,
+                [this](QString userid, QString reason) {
+                        http::client()->invite_user(
+                          current_room_.toStdString(),
+                          userid.toStdString(),
+                          [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                                               mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit showNotification(tr("Failed to invite %1 to %2: %3")
+                                                                  .arg(userid)
+                                                                  .arg(room)
+                                                                  .arg(QString::fromStdString(
+                                                                    err->matrix_error.error)));
+                                  } else
+                                          emit showNotification(tr("Invited user: %1").arg(userid));
+                          },
+                          reason.trimmed().toStdString());
+                });
+        connect(text_input_,
+                &TextInputWidget::sendKickRoomRequest,
+                this,
+                [this](QString userid, QString reason) {
+                        http::client()->kick_user(
+                          current_room_.toStdString(),
+                          userid.toStdString(),
+                          [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                                               mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit showNotification(tr("Failed to kick %1 to %2: %3")
+                                                                  .arg(userid)
+                                                                  .arg(room)
+                                                                  .arg(QString::fromStdString(
+                                                                    err->matrix_error.error)));
+                                  } else
+                                          emit showNotification(tr("Kicked user: %1").arg(userid));
+                          },
+                          reason.trimmed().toStdString());
+                });
+        connect(text_input_,
+                &TextInputWidget::sendBanRoomRequest,
+                this,
+                [this](QString userid, QString reason) {
+                        http::client()->ban_user(
+                          current_room_.toStdString(),
+                          userid.toStdString(),
+                          [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                                               mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit showNotification(tr("Failed to ban %1 in %2: %3")
+                                                                  .arg(userid)
+                                                                  .arg(room)
+                                                                  .arg(QString::fromStdString(
+                                                                    err->matrix_error.error)));
+                                  } else
+                                          emit showNotification(tr("Banned user: %1").arg(userid));
+                          },
+                          reason.trimmed().toStdString());
+                });
+        connect(
+          text_input_,
+          &TextInputWidget::sendUnbanRoomRequest,
+          this,
+          [this](QString userid, QString reason) {
+                  http::client()->unban_user(
+                    current_room_.toStdString(),
+                    userid.toStdString(),
+                    [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                                         mtx::http::RequestErr err) {
+                            if (err) {
+                                    emit showNotification(
+                                      tr("Failed to unban %1 in %2: %3")
+                                        .arg(userid)
+                                        .arg(room)
+                                        .arg(QString::fromStdString(err->matrix_error.error)));
+                            } else
+                                    emit showNotification(tr("Unbanned user: %1").arg(userid));
+                    },
+                    reason.trimmed().toStdString());
+          });
 
         connect(
           text_input_,
@@ -998,19 +1080,18 @@ ChatPage::joinRoom(const QString &room)
           room_id, [this, room_id](const nlohmann::json &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
-                            QString("Failed to join room: %1")
+                            tr("Failed to join room: %1")
                               .arg(QString::fromStdString(err->matrix_error.error)));
                           return;
                   }
 
-                  emit showNotification("You joined the room");
+                  emit tr("You joined the room");
 
                   // We remove any invites with the same room_id.
                   try {
                           cache::removeInvite(room_id);
                   } catch (const lmdb::error &e) {
-                          emit showNotification(
-                            QString("Failed to remove invite: %1").arg(e.what()));
+                          emit showNotification(tr("Failed to remove invite: %1").arg(e.what()));
                   }
           });
 }
@@ -1033,8 +1114,8 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
                           return;
                   }
 
-                  emit showNotification(QString("Room %1 created")
-                                          .arg(QString::fromStdString(res.room_id.to_string())));
+                  emit showNotification(
+                    tr("Room %1 created").arg(QString::fromStdString(res.room_id.to_string())));
           });
 }
 
