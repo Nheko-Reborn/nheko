@@ -24,6 +24,8 @@ class TimelineViewManager : public QObject
           TimelineModel *timeline MEMBER timeline_ READ activeTimeline NOTIFY activeTimelineChanged)
         Q_PROPERTY(
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
+        Q_PROPERTY(QString replyingEvent READ getReplyingEvent WRITE updateReplyingEvent NOTIFY
+                     replyingEventChanged)
 
 public:
         TimelineViewManager(QWidget *parent = 0);
@@ -43,8 +45,17 @@ signals:
         void updateRoomsLastMessage(QString roomid, const DescInfo &info);
         void activeTimelineChanged(TimelineModel *timeline);
         void initialSyncChanged(bool isInitialSync);
+        void replyingEventChanged(QString replyingEvent);
 
 public slots:
+        void updateReplyingEvent(const QString &replyingEvent)
+        {
+                if (this->replyingEvent_ != replyingEvent) {
+                        this->replyingEvent_ = replyingEvent;
+                        emit replyingEventChanged(replyingEvent_);
+                }
+        }
+        QString getReplyingEvent() const { return replyingEvent_; }
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
 
@@ -97,4 +108,5 @@ private:
         QHash<QString, QSharedPointer<TimelineModel>> models;
         TimelineModel *timeline_ = nullptr;
         bool isInitialSync_      = true;
+        QString replyingEvent_;
 };

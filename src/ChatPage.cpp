@@ -504,6 +504,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
         connect(this, &ChatPage::messageReply, text_input_, &TextInputWidget::addReply);
+        connect(this, &ChatPage::messageReply, this, [this](const RelatedInfo &related) {
+                view_manager_->updateReplyingEvent(QString::fromStdString(related.related_event));
+        });
 
         instance_ = this;
 }

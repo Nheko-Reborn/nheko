@@ -47,5 +47,4 @@ private:
         QScrollArea *all_scroll_area_;
         QWidget *all_scroll_widget_;
 };
-
 }

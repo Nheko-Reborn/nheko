@@ -190,7 +190,7 @@ Item {
 		Rectangle {
 			id: chatFooter
 
-			height: Math.max(16, typingDisplay.height)
+			height: Math.max(Math.max(16, typingDisplay.height), replyPopup.height)
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.bottom: parent.bottom
@@ -209,6 +209,104 @@ Item {
 				text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, chatFooter.color) : ""
 				textFormat: Text.RichText
 				color: colors.windowText
+			}
+
+			Rectangle {
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+
+				id: replyPopup
+
+				visible: timelineManager.replyingEvent && chat.model
+				width: parent.width
+				// Height of child, plus margins, plus border
+				height: replyContent.height + 10 + 1
+				color: colors.window
+
+				// For a border on the top.
+				Rectangle {
+					anchors.left: parent.left
+				    anchors.right: parent.right
+					height: 1
+					width: parent.width
+					color: colors.mid
+				}
+			
+				RowLayout {
+					id: replyContent
+					anchors.left: parent.left
+					anchors.right: parent.right
+					anchors.top: parent.top
+					anchors.margins: 10
+
+					Column {
+						Layout.fillWidth: true
+						Layout.alignment: Qt.AlignTop
+						spacing: 4
+						Rectangle {
+							width: parent.width
+							height: replyContainer.height
+							anchors.leftMargin: 10
+							anchors.rightMargin: 10
+
+							Rectangle {
+								id: colorLine
+								height: replyContainer.height
+								width: 4
+								color: chat.model ? chat.model.userColor(reply.modelData.userId, colors.window) : colors.window
+							}
+
+							Column {
+								id: replyContainer
+								anchors.left: colorLine.right
+								anchors.leftMargin: 4
+								width: parent.width - 8
+
+								Text { 
+									id: userName
+									text: chat.model ? chat.model.escapeEmoji(reply.modelData.userName) : ""
+									color: chat.model ? chat.model.userColor(reply.modelData.userId, colors.windowText) : colors.windowText
+									textFormat: Text.RichText
+
+									MouseArea {
+										anchors.fill: parent
+										onClicked: chat.model.openUserProfile(reply.modelData.userId)
+										cursorShape: Qt.PointingHandCursor
+									}
+								}
+
+								MessageDelegate {
+									id: reply
+									width: parent.width
+									modelData: chat.model ? chat.model.getDump(timelineManager.replyingEvent) : {}
+								}
+							}
+
+							color: { var col = chat.model ? chat.model.userColor(reply.modelData.userId, colors.window) : colors.window; col.a = 0.2; return col }
+
+							MouseArea {
+								anchors.fill: parent
+								onClicked: chat.positionViewAtIndex(chat.model.idToIndex(timelineManager.replyingEvent), ListView.Contain)
+								cursorShape: Qt.PointingHandCursor
+							}
+						}
+					}
+					ImageButton {
+						Layout.alignment: Qt.AlignRight | Qt.AlignTop
+						Layout.preferredHeight: 16
+						id: closeReplyButton
+
+						image: ":/icons/icons/ui/remove-symbol.png"
+						ToolTip {
+							visible: closeReplyButton.hovered
+							text: qsTr("Close")
+							palette: colors
+						}
+
+						onClicked: timelineManager.updateReplyingEvent(undefined)
+					}
+				}
 			}
 		}
 	}

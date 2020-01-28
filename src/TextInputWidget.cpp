@@ -684,7 +684,7 @@ TextInputWidget::addReply(const RelatedInfo &related)
         // input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
         input_->setFocus();
 
-        input_->showReplyPopup(related);
+        // input_->showReplyPopup(related);
         auto cursor = input_->textCursor();
         cursor.movePosition(QTextCursor::End);
         input_->setTextCursor(cursor);
