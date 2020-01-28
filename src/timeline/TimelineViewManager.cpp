@@ -18,8 +18,7 @@ Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 void
 TimelineViewManager::updateColorPalette()
 {
-        UserSettings settings;
-        if (settings.theme() == "light") {
+        if (settings->theme() == "light") {
                 QPalette lightActive(/*windowText*/ QColor("#333"),
                                      /*button*/ QColor("#333"),
                                      /*light*/ QColor(),
@@ -31,7 +30,7 @@ TimelineViewManager::updateColorPalette()
                                      /*window*/ QColor("white"));
                 view->rootContext()->setContextProperty("currentActivePalette", lightActive);
                 view->rootContext()->setContextProperty("currentInactivePalette", lightActive);
-        } else if (settings.theme() == "dark") {
+        } else if (settings->theme() == "dark") {
                 QPalette darkActive(/*windowText*/ QColor("#caccd1"),
                                     /*button*/ QColor("#caccd1"),
                                     /*light*/ QColor(),
@@ -50,9 +49,10 @@ TimelineViewManager::updateColorPalette()
         }
 }
 
-TimelineViewManager::TimelineViewManager(QWidget *parent)
+TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
+  , settings(userSettings)
 {
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
@@ -186,8 +186,16 @@ TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<Re
 {
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
-        text.format                 = "org.matrix.custom.html";
-        text.formatted_body         = utils::markdownToHtml(msg).toStdString();
+
+        if (settings->isMarkdownEnabled()) {
+                text.formatted_body = utils::markdownToHtml(msg).toStdString();
+
+                // Don't send formatted_body, when we don't need to
+                if (text.formatted_body == text.body)
+                        text.formatted_body = "";
+                else
+                        text.format = "org.matrix.custom.html";
+        }
 
         if (related) {
                 QString body;
@@ -202,8 +210,17 @@ TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<Re
                 }
 
                 text.body = QString("%1\n%2").arg(body).arg(msg).toStdString();
-                text.formatted_body =
-                  utils::getFormattedQuoteBody(*related, utils::markdownToHtml(msg)).toStdString();
+
+                // NOTE(Nico): rich replies always need a formatted_body!
+                text.format = "org.matrix.custom.html";
+                if (settings->isMarkdownEnabled())
+                        text.formatted_body =
+                          utils::getFormattedQuoteBody(*related, utils::markdownToHtml(msg))
+                            .toStdString();
+                else
+                        text.formatted_body =
+                          utils::getFormattedQuoteBody(*related, msg.toHtmlEscaped()).toStdString();
+
                 text.relates_to.in_reply_to.event_id = related->related_event;
         }
 
@@ -219,8 +236,10 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
         mtx::events::msg::Emote emote;
         emote.body = msg.trimmed().toStdString();
 
-        if (html != msg.trimmed().toHtmlEscaped())
+        if (html != msg.trimmed().toHtmlEscaped() && settings->isMarkdownEnabled()) {
                 emote.formatted_body = html.toStdString();
+                emote.format         = "org.matrix.custom.html";
+        }
 
         if (timeline_)
                 timeline_->sendMessage(emote);

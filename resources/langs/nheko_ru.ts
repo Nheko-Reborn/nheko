@@ -4,7 +4,53 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+328"/>
+        <location filename="../../src/ChatPage.cpp" line="+211"/>
+        <source>Failed to invite user: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+84"/>
+        <source>Invited user: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-6"/>
+        <source>Failed to invite %1 to %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Failed to kick %1 to %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Kicked user: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Failed to ban %1 in %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Banned user: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Failed to unban %1 in %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Unbanned user: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+50"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -25,17 +71,37 @@
     </message>
     <message>
         <location line="+51"/>
-        <location line="+155"/>
+        <location line="+154"/>
         <source>Please try to login again: %1</source>
         <translation>Повторите попытку входа: %1</translation>
     </message>
     <message>
-        <location line="-47"/>
+        <location line="-77"/>
+        <source>Failed to join room: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You joined the room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Failed to remove invite: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Room creation failed: %1</source>
         <translation>Не удалось создать комнату: %1</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+5"/>
+        <source>Room %1 created</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to leave room: %1</source>
         <translation>Не удалось покинуть комнату: %1</translation>
     </message>
@@ -385,7 +451,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+81"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -403,7 +469,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+698"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+716"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation type="unfinished"></translation>
@@ -647,42 +713,47 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+172"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+188"/>
         <source>Minimize to tray</source>
         <translation>Сворачивать в системную панель</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+3"/>
         <source>Start in tray</source>
         <translation>Запускать в системной панели</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+5"/>
         <source>Group&apos;s sidebar</source>
         <translation>Боковая панель групп</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+3"/>
         <source>Circular Avatars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+3"/>
         <source>Typing notifications</source>
         <translation>Сообщать о наборе сообщения</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+3"/>
         <source>Read receipts</source>
         <translation>Подтверждать прочтение</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+3"/>
+        <source>Send messages as markdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Desktop notifications</source>
         <translation>Уведомления на рабочем столе</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+4"/>
         <source>Scale factor</source>
         <translation>Масштаб</translation>
     </message>
@@ -742,7 +813,7 @@
         <translation>ГЛАВНОЕ</translation>
     </message>
     <message>
-        <location line="+161"/>
+        <location line="+168"/>
         <source>Open Sessions File</source>
         <translation>Открыть файл сеансов</translation>
     </message>

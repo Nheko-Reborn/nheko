@@ -1,0 +1,24 @@
+sudo apt install cmake
+sudo apt install gcc make automake
+sudo apt install qt5-default
+sudo apt install liblmdb-dev
+sudo apt install qttools5-dev-tools
+sudo apt install qttools5-dev-tools
+sudo apt install qttools5
+sudo apt install qt5-qmltooling-plugins qml-module-qtgstreamer
+sudo apt install libqt5webview5-dev
+sudo apt install libqt5quickcontrols2-5
+sudo apt install qtquickcontrols2-5-dev
+sudo apt install libssl-dev
+sudo apt install qml-module-qtgraphicaleffects
+sudo apt install qml-module-qtquick-controls2
+sudo apt install qml-module-qtquick-layouts
+sudo apt install qml-module-qtmultimedia
+sudo apt install qml-module-qt-labs-settings qml-module-qt-labs-sharedimage
+sudo apt install qttools5-dev
+sudo apt install libqt5svg5-dev
+sudo apt install qt5multimedia
+sudo apt install libqt5multimedia5
+sudo apt install libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5multimediawidgets5
+sudo apt install qt5ct
+sudo apt install qtmultimedia5-dev
