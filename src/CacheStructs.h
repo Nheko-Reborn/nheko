@@ -29,10 +29,10 @@ struct ReadReceiptKey
 };
 
 void
-to_json(json &j, const ReadReceiptKey &key);
+to_json(nlohmann::json &j, const ReadReceiptKey &key);
 
 void
-from_json(const json &j, ReadReceiptKey &key);
+from_json(const nlohmann::json &j, ReadReceiptKey &key);
 
 struct DescInfo
 {
@@ -68,9 +68,9 @@ struct RoomInfo
 };
 
 void
-to_json(json &j, const RoomInfo &info);
+to_json(nlohmann::json &j, const RoomInfo &info);
 void
-from_json(const json &j, RoomInfo &info);
+from_json(const nlohmann::json &j, RoomInfo &info);
 
 //! Basic information per member;
 struct MemberInfo
@@ -80,9 +80,9 @@ struct MemberInfo
 };
 
 void
-to_json(json &j, const MemberInfo &info);
+to_json(nlohmann::json &j, const MemberInfo &info);
 void
-from_json(const json &j, MemberInfo &info);
+from_json(const nlohmann::json &j, MemberInfo &info);
 
 struct RoomSearchResult
 {

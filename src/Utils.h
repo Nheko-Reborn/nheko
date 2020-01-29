@@ -272,7 +272,7 @@ getMessageBody(const RoomMessageT &event)
         if (event.content.format.empty())
                 return QString::fromStdString(event.content.body).toHtmlEscaped();
 
-        if (event.content.format != common::FORMAT_MSG_TYPE)
+        if (event.content.format != mtx::common::FORMAT_MSG_TYPE)
                 return QString::fromStdString(event.content.body).toHtmlEscaped();
 
         return QString::fromStdString(event.content.formatted_body);
