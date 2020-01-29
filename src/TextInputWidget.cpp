@@ -605,6 +605,14 @@ TextInputWidget::command(QString command, QString args)
                 sendEmoteMessage(args, input_->related);
         } else if (command == "join") {
                 sendJoinRoomRequest(args);
+        } else if (command == "invite") {
+                sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (command == "kick") {
+                sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (command == "ban") {
+                sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (command == "unban") {
+                sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "shrug") {
                 sendTextMessage("¯\\_(ツ)_/¯", input_->related);
         } else if (command == "fliptable") {

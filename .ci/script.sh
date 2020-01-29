@@ -19,19 +19,32 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
 fi
 
-# Build & install dependencies
-cmake -GNinja -Hdeps -B.deps \
-    -DUSE_BUNDLED_BOOST="${USE_BUNDLED_BOOST}" \
-    -DUSE_BUNDLED_CMARK="${USE_BUNDLED_CMARK}" \
-    -DUSE_BUNDLED_JSON="${USE_BUNDLED_JSON}" \
-    -DMTX_STATIC="${MTX_STATIC:-OFF}"
-cmake --build .deps
+mkdir -p .deps/usr .hunter
 
 # Build nheko
+
+if [ "$TRAVIS_OS_NAME" = "osx" ]; then
 cmake -GNinja -H. -Bbuild \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_PREFIX=.deps/usr \
-    -DBUILD_SHARED_LIBS=ON # weird workaround, as the boost 1.70 cmake files seem to be broken?
+    -DHUNTER_ROOT=".hunter" \
+    -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
+    -DUSE_BUNDLED_OPENSSL=OFF \
+    -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
+    -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include \
+    -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 \
+    -DCI_BUILD=ON
+else
+cmake -GNinja -H. -Bbuild \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_INSTALL_PREFIX=.deps/usr \
+    -DHUNTER_ROOT=".hunter" \
+    -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
+    -DUSE_BUNDLED_OPENSSL=OFF \
+    -DCI_BUILD=ON
+fi
 cmake --build build
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then

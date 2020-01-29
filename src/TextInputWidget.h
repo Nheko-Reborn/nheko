@@ -183,6 +183,10 @@ signals:
                          const std::optional<RelatedInfo> &related);
 
         void sendJoinRoomRequest(const QString &room);
+        void sendInviteRoomRequest(const QString &userid, const QString &reason);
+        void sendKickRoomRequest(const QString &userid, const QString &reason);
+        void sendBanRoomRequest(const QString &userid, const QString &reason);
+        void sendUnbanRoomRequest(const QString &userid, const QString &reason);
 
         void startedTyping();
         void stoppedTyping();

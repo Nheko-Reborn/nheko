@@ -397,6 +397,10 @@ utils::markdownToHtml(const QString &text)
 
         auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
 
+        if (result.count("<p>") == 1 && result.startsWith("<p>") && result.endsWith("</p>")) {
+                result = result.mid(3, result.size() - 3 - 4);
+        }
+
         return result;
 }
 

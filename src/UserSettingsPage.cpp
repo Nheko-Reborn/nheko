@@ -50,6 +50,7 @@ UserSettings::load()
         hasDesktopNotifications_      = settings.value("user/desktop_notifications", true).toBool();
         isStartInTrayEnabled_         = settings.value("user/window/start_in_tray", false).toBool();
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
+        isMarkdownEnabled_            = settings.value("user/markdown_enabled", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", defaultTheme_).toString();
@@ -126,6 +127,7 @@ UserSettings::save()
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
         settings.setValue("read_receipts", isReadReceiptsEnabled_);
         settings.setValue("group_view", isGroupViewEnabled_);
+        settings.setValue("markdown_enabled", isMarkdownEnabled_);
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("theme", theme());
         settings.setValue("font_family", font_);
@@ -167,70 +169,46 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         topBarLayout_->addWidget(backBtn_, 1, Qt::AlignLeft | Qt::AlignVCenter);
         topBarLayout_->addStretch(1);
 
-        auto trayOptionLayout_ = new QHBoxLayout;
-        trayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto trayLabel = new QLabel(tr("Minimize to tray"), this);
-        trayLabel->setFont(font);
-        trayToggle_ = new Toggle(this);
+        auto addSetting = [this, &font](QString labelText) {
+                auto layout = new QHBoxLayout;
+                layout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
 
-        trayOptionLayout_->addWidget(trayLabel);
-        trayOptionLayout_->addWidget(trayToggle_, 0, Qt::AlignRight);
+                auto label = new QLabel(labelText, this);
+                label->setFont(font);
 
-        auto startInTrayOptionLayout_ = new QHBoxLayout;
-        startInTrayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto startInTrayLabel = new QLabel(tr("Start in tray"), this);
-        startInTrayLabel->setFont(font);
-        startInTrayToggle_ = new Toggle(this);
+                auto toggle = new Toggle(this);
+
+                layout->addWidget(label);
+                layout->addWidget(toggle, 0, Qt::AlignRight);
+
+                return std::pair{layout, toggle};
+        };
+
+        QHBoxLayout *trayOptionLayout_           = nullptr;
+        std::tie(trayOptionLayout_, trayToggle_) = addSetting(tr("Minimize to tray"));
+
+        QHBoxLayout *startInTrayOptionLayout_                  = nullptr;
+        std::tie(startInTrayOptionLayout_, startInTrayToggle_) = addSetting(tr("Start in tray"));
         if (!settings_->isTrayEnabled())
                 startInTrayToggle_->setDisabled(true);
 
-        startInTrayOptionLayout_->addWidget(startInTrayLabel);
-        startInTrayOptionLayout_->addWidget(startInTrayToggle_, 0, Qt::AlignRight);
+        QHBoxLayout *groupViewLayout                = nullptr;
+        std::tie(groupViewLayout, groupViewToggle_) = addSetting(tr("Group's sidebar"));
 
-        auto groupViewLayout = new QHBoxLayout;
-        groupViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto groupViewLabel = new QLabel(tr("Group's sidebar"), this);
-        groupViewLabel->setFont(font);
-        groupViewToggle_ = new Toggle(this);
+        QHBoxLayout *avatarViewLayout              = nullptr;
+        std::tie(avatarViewLayout, avatarCircles_) = addSetting(tr("Circular Avatars"));
 
-        groupViewLayout->addWidget(groupViewLabel);
-        groupViewLayout->addWidget(groupViewToggle_, 0, Qt::AlignRight);
+        QHBoxLayout *typingLayout                    = nullptr;
+        std::tie(typingLayout, typingNotifications_) = addSetting(tr("Typing notifications"));
 
-        auto avatarViewLayout = new QHBoxLayout;
-        avatarViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto avatarViewLabel = new QLabel(tr("Circular Avatars"), this);
-        avatarViewLabel->setFont(font);
-        avatarCircles_ = new Toggle(this);
+        QHBoxLayout *receiptsLayout             = nullptr;
+        std::tie(receiptsLayout, readReceipts_) = addSetting(tr("Read receipts"));
 
-        avatarViewLayout->addWidget(avatarViewLabel);
-        avatarViewLayout->addWidget(avatarCircles_, 0, Qt::AlignRight);
+        QHBoxLayout *markdownLayout                = nullptr;
+        std::tie(markdownLayout, markdownEnabled_) = addSetting(tr("Send messages as markdown"));
 
-        auto typingLayout = new QHBoxLayout;
-        typingLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto typingLabel = new QLabel(tr("Typing notifications"), this);
-        typingLabel->setFont(font);
-        typingNotifications_ = new Toggle(this);
-
-        typingLayout->addWidget(typingLabel);
-        typingLayout->addWidget(typingNotifications_, 0, Qt::AlignRight);
-
-        auto receiptsLayout = new QHBoxLayout;
-        receiptsLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto receiptsLabel = new QLabel(tr("Read receipts"), this);
-        receiptsLabel->setFont(font);
-        readReceipts_ = new Toggle(this);
-
-        receiptsLayout->addWidget(receiptsLabel);
-        receiptsLayout->addWidget(readReceipts_, 0, Qt::AlignRight);
-
-        auto desktopLayout = new QHBoxLayout;
-        desktopLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto desktopLabel = new QLabel(tr("Desktop notifications"), this);
-        desktopLabel->setFont(font);
-        desktopNotifications_ = new Toggle(this);
-
-        desktopLayout->addWidget(desktopLabel);
-        desktopLayout->addWidget(desktopNotifications_, 0, Qt::AlignRight);
+        QHBoxLayout *desktopLayout                     = nullptr;
+        std::tie(desktopLayout, desktopNotifications_) = addSetting(tr("Desktop notifications"));
 
         auto scaleFactorOptionLayout = new QHBoxLayout;
         scaleFactorOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -385,6 +363,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         mainLayout_->addWidget(new HorizontalLine(this));
         mainLayout_->addLayout(typingLayout);
         mainLayout_->addLayout(receiptsLayout);
+        mainLayout_->addLayout(markdownLayout);
         mainLayout_->addLayout(desktopLayout);
         mainLayout_->addWidget(new HorizontalLine(this));
 
@@ -466,6 +445,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setAvatarCircles(!isDisabled);
         });
 
+        connect(markdownEnabled_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setMarkdownEnabled(!isDisabled);
+        });
+
         connect(typingNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTypingNotifications(!isDisabled);
         });
@@ -496,8 +479,10 @@ UserSettingsPage::showEvent(QShowEvent *)
         trayToggle_->setState(!settings_->isTrayEnabled());
         startInTrayToggle_->setState(!settings_->isStartInTrayEnabled());
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
+        avatarCircles_->setState(!settings_->isAvatarCirclesEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
         readReceipts_->setState(!settings_->isReadReceiptsEnabled());
+        markdownEnabled_->setState(!settings_->isMarkdownEnabled());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
 

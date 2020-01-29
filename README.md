@@ -19,18 +19,20 @@ Help us with translations so as many people as possible will be able to use nhek
 ### Note regarding End-to-End encryption
 
 Currently the implementation is at best a **proof of concept** and it should only be used for
-testing purposes.
+testing purposes. Most importantly, it is missing device verification, so while your messages
+and media are encrypted, nheko doesn't verify who gets the messages.
 
 ## Features
 
 Most of the features you would expect from a chat application are missing right now
 but we are getting close to a more feature complete client.
 Specifically there is support for:
-- E2E encryption (text messages only: attachments are currently sent unencrypted).
+- E2E encryption.
 - User registration.
 - Creating, joining & leaving rooms.
 - Sending & receiving invites.
 - Sending & receiving files and emoji (inline widgets for images, audio and file messages).
+- Replies with text, images and other media (and actually render them as inline widgets).
 - Typing notifications.
 - Username auto-completion.
 - Message & mention notifications.
@@ -61,7 +63,7 @@ sudo dnf install nheko
 
 #### Gentoo Linux
 ```bash
-sudo layman -a matrix
+sudo eselect repository enable matrix
 sudo emerge -a nheko
 ```
 
@@ -105,6 +107,27 @@ sudo port install nheko
     - GCC 7 (tested on Travis CI)
     - MSVC 19.13 (tested on AppVeyor)
 
+Nheko can use bundled version for most of those libraries automatically, if the versions in your distro are too old.
+To use them, you can enable the hunter integration by passing `-DHUNTER_ENABLED=ON`.
+It is probably wise to link those dependencies statically by passing `-DBUILD_SHARED_LIBS=OFF`
+You can select which bundled dependencies you want to use py passing various `-DUSE_BUNDLED_*` flags. By default all dependencies are bundled *if* you enable hunter.
+
+The bundle flags are currently:
+
+- USE_BUNDLED_BOOST
+- USE_BUNDLED_SPDLOG
+- USE_BUNDLED_OLM
+- USE_BUNDLED_GTEST
+- USE_BUNDLED_CMARK
+- USE_BUNDLED_JSON
+- USE_BUNDLED_OPENSSL
+- USE_BUNDLED_MTXCLIENT
+- USE_BUNDLED_SODIUM
+- USE_BUNDLED_ZLIB
+- USE_BUNDLED_LMDB
+- USE_BUNDLED_LMDBXX
+- USE_BUNDLED_TWEENY
+
 #### Linux
 
 If you don't want to install any external dependencies, you can generate an AppImage locally using docker.
@@ -145,6 +168,17 @@ sudo apt-get update
 sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev
 ```
 
+##### Debian Buster (or higher probably)
+
+(User report, not sure if all of those are needed)
+
+```bash
+sudo apt install cmake gcc make automake liblmdb-dev libsodium-dev \
+    qt5-default libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev \
+    qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools \
+    qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts
+```
+
 ##### macOS (Xcode 10.2 or later)
 
 ```bash
@@ -158,60 +192,28 @@ brew install qt5 lmdb cmake llvm libsodium spdlog boost cmark
 (for the CMake integration) workloads.
 
 2. Download the latest Qt for windows installer and install it somewhere.
-Make sure to install the `MSVC 2017 64-bit` toolset for at least Qt 5.9
+Make sure to install the `MSVC 2017 64-bit` toolset for at least Qt 5.10
 (lower versions does not support VS2017).
 
-3. Install dependencies with `vcpkg`. You can simply clone it into a subfolder
-of the root nheko source directory.
-
-```powershell
-git clone http:\\github.com\Microsoft\vcpkg
-cd vcpkg
-.\bootstrap-vcpkg.bat
-.\vcpkg install --triplet x64-windows \
-	boost-asio \
-	boost-beast \
-	boost-iostreams \
-	boost-random \
-	boost-signals2 \
-	boost-system \
-	boost-thread \
-	cmark \
-	libsodium \
-	lmdb \
-	openssl \
-	zlib
-```
-
-4. Install dependencies not managed by vcpkg. (libolm, libmtxclient, libmatrix_structs)
-
-Inside the project root run the following (replacing the path to vcpkg as necessary).
-
-```bash
-cmake -G "Visual Studio 15 2017 Win64" -Hdeps -B.deps
-        -DCMAKE_TOOLCHAIN_FILE=C:/Users/<your-path>/vcpkg/scripts/buildsystems/vcpkg.cmake
-        -DUSE_BUNDLED_BOOST=OFF
-cmake --build .deps --config Release
-cmake --build .deps --config Debug
-```
+3. If you don't have openssl installed, you will need to install perl to build it (i.e. Strawberry Perl).
 
 ### Building
 
-First we need to install the rest of the dependencies that are not available in our system
+We can now build nheko:
 
 ```bash
-cmake -Hdeps -B.deps \
-    -DUSE_BUNDLED_BOOST=OFF # if we already have boost & spdlog installed.
-    -DUSE_BUNDLED_SPDLOG=OFF
-cmake --build .deps
-```
-
-We can now build nheko by pointing it to the path that we installed the dependencies.
-
-```bash
-cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.deps/usr
+cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
+
+To use bundled dependencies you can use hunter, i.e.:
+
+```bash
+cmake -H. -Bbuild -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=OFF
+cmake --build build --config Release
+```
+
+Adapt the USE_BUNDLED_* as needed.
 
 If the build fails with the following error
 ```
@@ -237,12 +239,13 @@ The `nheko` binary will be located in the `build` directory.
 After installing all dependencies, you need to edit the `CMakeSettings.json` to
 be able to load and compile nheko within Visual Studio.
 
-You need to fill out the paths for the `CMAKE_TOOLCHAIN_FILE` and the `Qt5_DIR`.
-The toolchain file should point to the `vcpkg.cmake` and the Qt5 dir to the `lib\cmake\Qt5` dir.
+You need to fill out the paths for the `Qt5_DIR`.
+The Qt5 dir should point to the `lib\cmake\Qt5` dir.
 
 Examples for the paths are:
- - `C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake`
  - `C:\\Qt\\5.10.1\\msvc2017_64\\lib\\cmake\\Qt5`
+
+You should also enable hunter by setting `HUNTER_ENABLED` to `ON` and `BUILD_SHARED_LIBS` to `OFF`.
 
 Now right click into the root nheko source directory and choose `Open in Visual Studio`.
 You can choose the build type Release and Debug in the top toolbar. 
@@ -260,6 +263,9 @@ windeployqt nheko.exe
 
 The final binary will be located inside `build-vc\Release\Release` for the Release build
 and `build-vc\Debug\Debug` for the Debug build.
+
+Also copy the respective cmark.dll to the binary dir from `build/cmark-build/src/Release` (or Debug).
+
 
 ### Contributing
 
