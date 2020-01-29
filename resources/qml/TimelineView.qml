@@ -192,7 +192,7 @@ Item {
 		Rectangle {
 			id: chatFooter
 
-			height: Math.max(16, aaaaa.height)
+			height: Math.max(16, footerContent.height)
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.bottom: parent.bottom
@@ -201,7 +201,7 @@ Item {
 			color: colors.window
 
 			Column {
-				id: aaaaa
+				id: footerContent
 				anchors.left: parent.left
 				anchors.right: parent.right
 
@@ -235,6 +235,7 @@ Item {
 						anchors.left: parent.left
 						anchors.leftMargin: 10
 						anchors.right: closeReplyButton.left
+						anchors.rightMargin: 20
 						anchors.bottom: parent.bottom
 
 						modelData: chat.model ? chat.model.getDump(timelineManager.replyingEvent) : {}
@@ -245,8 +246,9 @@ Item {
 						id: closeReplyButton
 
 						anchors.right: parent.right
-						anchors.rightMargin: 10
+						anchors.rightMargin: 15
 						anchors.top: replyPreview.top
+						hoverEnabled: true
 
 						image: ":/icons/icons/ui/remove-symbol.png"
 						ToolTip {

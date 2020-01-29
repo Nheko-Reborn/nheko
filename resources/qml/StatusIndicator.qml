@@ -8,13 +8,16 @@ Rectangle {
 	color: "transparent"
 	width: 16
 	height: 16
-	ToolTip.visible: ma.containsMouse && state != MtxEvent.Empty
-	ToolTip.text: switch (state) {
-		case MtxEvent.Failed: return qsTr("Failed")
-		case MtxEvent.Sent: return qsTr("Sent")
-		case MtxEvent.Received: return qsTr("Received")
-		case MtxEvent.Read: return qsTr("Read")
-		default: return ""
+	ToolTip {
+		palette: colors
+	    visible: ma.containsMouse && state != MtxEvent.Empty
+	    text: switch (state) {
+		    case MtxEvent.Failed: return qsTr("Failed")
+			case MtxEvent.Sent: return qsTr("Sent")
+			case MtxEvent.Received: return qsTr("Received")
+			case MtxEvent.Read: return qsTr("Read")
+			default: return ""
+		}
 	}
 	MouseArea{
 		id: ma

@@ -54,6 +54,8 @@ RowLayout {
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
 		Layout.preferredHeight: 16
 		id: replyButton
+    	hoverEnabled: true
+
 
 		image: ":/icons/icons/ui/mail-reply.png"
 		ToolTip {
@@ -68,6 +70,7 @@ RowLayout {
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
 		Layout.preferredHeight: 16
 		id: optionsButton
+		hoverEnabled: true
 
 		image: ":/icons/icons/ui/vertical-ellipsis.png"
 		ToolTip {
