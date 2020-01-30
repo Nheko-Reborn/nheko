@@ -71,11 +71,11 @@ Item {
 
 			Shortcut {
 				sequence: StandardKey.MoveToPreviousPage
-				onActivated: { chat.contentY = chat.contentY - chat.height; chat.returnToBounds(); }
+				onActivated: { chat.contentY = chat.contentY - chat.height / 2; chat.returnToBounds(); }
 			}
 			Shortcut {
 				sequence: StandardKey.MoveToNextPage
-				onActivated: { chat.contentY = chat.contentY + chat.height; chat.returnToBounds(); }
+				onActivated: { chat.contentY = chat.contentY + chat.height / 2; chat.returnToBounds(); }
 			}
 
 			ScrollBar.vertical: ScrollBar {
