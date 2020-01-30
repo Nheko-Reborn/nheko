@@ -333,7 +333,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        19e7d680bf5e8bc6a25586a225e881fe4e60d9fb
+		GIT_TAG        5404286b79e8c4e5dbaf69cba42c4054fb91ee18
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
