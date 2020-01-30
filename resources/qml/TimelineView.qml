@@ -249,6 +249,8 @@ Item {
 						anchors.rightMargin: 15
 						anchors.top: replyPreview.top
 						hoverEnabled: true
+						width: 16
+						height: 16
 
 						image: ":/icons/icons/ui/remove-symbol.png"
 						ToolTip {
