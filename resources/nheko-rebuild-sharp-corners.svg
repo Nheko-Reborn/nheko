@@ -15,7 +15,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 5da689c313, 2019-01-14"
-   sodipodi:docname="nheko-rebuild-sharp-corners.svg">
+   sodipodi:docname="nheko-rebuild-sharp-corners.svg"
+   inkscape:export-filename="/home/nicolas/Dokumente/devel/open-source/nheko/resources/nheko-rebuild-sharp-corners.svg.png"
+   inkscape:export-xdpi="130.048"
+   inkscape:export-ydpi="130.048">
   <defs
      id="defs2">
     <inkscape:path-effect
@@ -63,11 +66,11 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.94045202"
-     inkscape:cx="315.37954"
+     inkscape:cx="152.69181"
      inkscape:cy="377.95276"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
-     showgrid="false"
+     showgrid="true"
      inkscape:window-width="1920"
      inkscape:window-height="1015"
      inkscape:window-x="0"
@@ -121,7 +124,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -156,19 +159,19 @@
        inkscape:original-d="M -240.82391,134.38759 H -55.141923 Z" />
     <path
        style="fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.24111524px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 34.641012,157 H 177.82388 l -48.49742,84 h -20.78461 l 34.64102,-60 H 122.39826 L 87.757237,241 H 25.403408 l 34.64102,-60 H 20.78461 Z"
+       d="m 36.95041,161 h 143.18287 l -48.49742,84 h -20.78461 l 34.64102,-60 H 124.70766 L 90.066635,245 H 27.712806 l 34.64102,-60 H 23.094008 Z"
        id="path4834"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc" />
     <path
        style="fill:#c0def5;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 73.90083,157 H 94.68544 L 46.188018,241 H 25.403408 Z"
+       d="m 76.210228,161 h 20.78461 l -48.497422,84 h -20.78461 z"
        id="path4836"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:#87aade;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 46.188018,241 94.68544,157 h 20.78461 l -48.497423,84 z"
+       d="M 48.497416,245 96.994838,161 H 117.77945 L 69.282025,245 Z"
        id="path4838"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
