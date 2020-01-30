@@ -613,7 +613,8 @@ utils::centerWidget(QWidget *widget, QWidget *parent)
         };
 
         if (parent) {
-                widget->move(findCenter(parent->geometry()));
+                widget->move(parent->window()->frameGeometry().topLeft() +
+                             parent->window()->rect().center() - widget->rect().center());
                 return;
         }
 

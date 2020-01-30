@@ -90,6 +90,11 @@ public slots:
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
 
+        void inviteUser(QString userid, QString reason);
+        void kickUser(QString userid, QString reason);
+        void banUser(QString userid, QString reason);
+        void unbanUser(QString userid, QString reason);
+
 signals:
         void connectionLost();
         void connectionRestored();

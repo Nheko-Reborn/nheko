@@ -49,7 +49,6 @@ UserProfile::UserProfile(QWidget *parent)
 {
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
-        setWindowModality(Qt::WindowModal);
         setAttribute(Qt::WA_DeleteOnClose, true);
 
         QIcon banIcon, kickIcon, ignoreIcon, startChatIcon;
@@ -61,7 +60,6 @@ UserProfile::UserProfile(QWidget *parent)
         banBtn_->setIcon(banIcon);
         banBtn_->setIconSize(QSize(BUTTON_RADIUS, BUTTON_RADIUS));
         banBtn_->setToolTip(tr("Ban the user from the room"));
-        banBtn_->setDisabled(true); // Not used yet.
 
         ignoreIcon.addFile(":/icons/icons/ui/volume-off-indicator.png");
         ignoreBtn_ = new FlatButton(this);
@@ -79,7 +77,6 @@ UserProfile::UserProfile(QWidget *parent)
         kickBtn_->setIcon(kickIcon);
         kickBtn_->setIconSize(QSize(BUTTON_RADIUS, BUTTON_RADIUS));
         kickBtn_->setToolTip(tr("Kick the user from the room"));
-        kickBtn_->setDisabled(true); // Not used yet.
 
         startChatIcon.addFile(":/icons/icons/ui/black-bubble-speech.png");
         startChat_ = new FlatButton(this);
@@ -100,6 +97,13 @@ UserProfile::UserProfile(QWidget *parent)
                         req.invite = {user_id.toStdString()};
 
                 emit ChatPage::instance()->createRoom(req);
+        });
+
+        connect(banBtn_, &QPushButton::clicked, this, [this] {
+                ChatPage::instance()->banUser(userIdLabel_->text(), "");
+        });
+        connect(kickBtn_, &QPushButton::clicked, this, [this] {
+                ChatPage::instance()->kickUser(userIdLabel_->text(), "");
         });
 
         // Button line
@@ -166,10 +170,6 @@ UserProfile::UserProfile(QWidget *parent)
         vlayout->setAlignment(avatar_, Qt::AlignCenter | Qt::AlignTop);
         vlayout->setAlignment(userIdLabel_, Qt::AlignCenter | Qt::AlignTop);
 
-        setAutoFillBackground(true);
-        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
-        setWindowModality(Qt::WindowModal);
-
         QFont largeFont;
         largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
@@ -180,7 +180,8 @@ UserProfile::UserProfile(QWidget *parent)
         vlayout->setSpacing(WIDGET_SPACING);
         vlayout->setContentsMargins(WIDGET_MARGIN, TOP_WIDGET_MARGIN, WIDGET_MARGIN, WIDGET_MARGIN);
 
-        qRegisterMetaType<std::vector<DeviceInfo>>();
+        static auto ignored = qRegisterMetaType<std::vector<DeviceInfo>>();
+        (void)ignored;
 
         auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &UserProfile::close);
