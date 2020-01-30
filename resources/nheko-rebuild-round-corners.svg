@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 5da689c313, 2019-01-14"
-   sodipodi:docname="nheko-rebuild-sharp-corners.svg">
+   sodipodi:docname="nheko-rebuild-round-corners.svg">
   <defs
      id="defs2">
     <inkscape:path-effect
@@ -62,12 +62,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.94045202"
-     inkscape:cx="315.37954"
-     inkscape:cy="377.95276"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="-188.44991"
+     inkscape:cy="184.03187"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
-     showgrid="false"
+     showgrid="true"
      inkscape:window-width="1920"
      inkscape:window-height="1015"
      inkscape:window-x="0"
@@ -156,10 +156,10 @@
        inkscape:original-d="M -240.82391,134.38759 H -55.141923 Z" />
     <path
        style="fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.24111524px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 34.641012,157 H 177.82388 l -48.49742,84 h -20.78461 l 34.64102,-60 H 122.39826 L 87.757237,241 H 25.403408 l 34.64102,-60 H 20.78461 Z"
+       d="M 34.641012,157 H 175.51448 c 2.3094,0 2.3094,0 0.0931,3.83884 L 131.63586,237 c -2.3094,4 -2.3094,4 -4.6188,4 l -16.16581,0 c -2.3094,0 -2.3094,0 0,-4 l 32.33162,-56 H 122.39826 L 90.017301,237.08546 C 87.757241,241 87.757241,241 85.460417,241 H 25.403408 l 34.64102,-60 H 20.78461 Z"
        id="path4834"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccccc" />
+       sodipodi:nodetypes="ccccccccccccccc" />
     <path
        style="fill:#c0def5;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 73.90083,157 H 94.68544 L 46.188018,241 H 25.403408 Z"
