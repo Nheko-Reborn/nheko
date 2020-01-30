@@ -69,6 +69,15 @@ Item {
 				}
 			}
 
+			Shortcut {
+				sequence: StandardKey.MoveToPreviousPage
+				onActivated: { chat.contentY = chat.contentY - chat.height; chat.returnToBounds(); }
+			}
+			Shortcut {
+				sequence: StandardKey.MoveToNextPage
+				onActivated: { chat.contentY = chat.contentY + chat.height; chat.returnToBounds(); }
+			}
+
 			ScrollBar.vertical: ScrollBar {
 				id: scrollbar
 				parent: chat.parent
