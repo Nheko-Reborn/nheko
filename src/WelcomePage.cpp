@@ -17,6 +17,7 @@
 
 #include <QLabel>
 #include <QLayout>
+#include <QPainter>
 #include <QStyleOption>
 
 #include "Config.h"

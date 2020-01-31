@@ -1,11 +1,11 @@
 #pragma once
 
 #include <QColor>
-#include <QPaintEvent>
-#include <QPainter>
-#include <QTimer>
 #include <QWidget>
 
+class QPainter;
+class QTimer;
+class QPaintEvent;
 class LoadingIndicator : public QWidget
 {
         Q_OBJECT

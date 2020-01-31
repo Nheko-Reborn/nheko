@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QPainter>
 #include <QTimer>
 
 #include <iostream>
 
 #include "Config.h"
 #include "MainWindow.h"
+#include "Splitter.h"
 #include "UserInfoWidget.h"
-#include "Utils.h"
 #include "ui/Avatar.h"
 #include "ui/FlatButton.h"
 #include "ui/OverlayModal.h"
@@ -108,7 +109,7 @@ UserInfoWidget::resizeEvent(QResizeEvent *event)
 {
         Q_UNUSED(event);
 
-        const auto sz = utils::calculateSidebarSizes(QFont{});
+        const auto sz = splitter::calculateSidebarSizes(QFont{});
 
         if (width() <= sz.small) {
                 topLayout_->setContentsMargins(0, 0, logoutButtonSize_, 0);

@@ -22,6 +22,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QPainter>
 #include <QProcessEnvironment>
 #include <QPushButton>
 #include <QScrollArea>

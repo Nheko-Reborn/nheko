@@ -15,8 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
+#include <QAction>
+#include <QIcon>
+#include <QLabel>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QPen>
+#include <QPoint>
+#include <QStyle>
 #include <QStyleOption>
+#include <QVBoxLayout>
 
 #include "Config.h"
 #include "MainWindow.h"
@@ -209,4 +217,20 @@ TopRoomBar::updateRoomTopic(QString topic)
         topicLabel_->clearLinks();
         topicLabel_->setHtml(topic);
         update();
+}
+
+void
+TopRoomBar::mousePressEvent(QMouseEvent *)
+{
+        if (roomSettings_ != nullptr)
+                roomSettings_->trigger();
+}
+
+void
+TopRoomBar::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

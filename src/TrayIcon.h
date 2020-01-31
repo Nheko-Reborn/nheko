@@ -17,12 +17,13 @@
 
 #pragma once
 
-#include <QAction>
 #include <QIcon>
 #include <QIconEngine>
-#include <QPainter>
 #include <QRect>
 #include <QSystemTrayIcon>
+
+class QAction;
+class QPainter;
 
 class MsgCountComposedIcon : public QIconEngine
 {

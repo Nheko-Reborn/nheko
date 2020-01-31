@@ -16,7 +16,6 @@
  */
 
 #include <QDateTime>
-#include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSettings>
@@ -26,6 +25,7 @@
 #include "Cache.h"
 #include "Config.h"
 #include "RoomInfoListItem.h"
+#include "Splitter.h"
 #include "Utils.h"
 #include "ui/Menu.h"
 #include "ui/Ripple.h"
@@ -116,7 +116,7 @@ RoomInfoListItem::resizeEvent(QResizeEvent *)
         QPainterPath path;
         path.addRect(0, 0, width(), height());
 
-        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+        const auto sidebarSizes = splitter::calculateSidebarSizes(QFont{});
 
         if (width() > sidebarSizes.small)
                 setToolTip("");
@@ -165,7 +165,7 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         // Description line with the default font.
         int bottom_y = wm.maxHeight - wm.padding - metrics.ascent() / 2;
 
-        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+        const auto sidebarSizes = splitter::calculateSidebarSizes(QFont{});
 
         if (width() > sidebarSizes.small) {
                 QFont headingFont;

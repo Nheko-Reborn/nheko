@@ -17,18 +17,14 @@
 
 #include <limits>
 
-#include <QApplication>
-#include <QBuffer>
 #include <QObject>
+#include <QPainter>
 #include <QTimer>
 
-#include "Cache.h"
 #include "Logging.h"
 #include "MainWindow.h"
-#include "MatrixClient.h"
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
-#include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/OverlayModal.h"
 

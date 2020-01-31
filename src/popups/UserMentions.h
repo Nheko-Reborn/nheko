@@ -2,19 +2,14 @@
 
 #include <mtx/responses.hpp>
 
-#include <QApplication>
-#include <QEvent>
 #include <QMap>
 #include <QPaintEvent>
 #include <QScrollArea>
-#include <QScrollBar>
 #include <QString>
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <Qt>
 
-#include "Logging.h"
 
 namespace popups {
 

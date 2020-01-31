@@ -8,6 +8,11 @@
 #include "CommunitiesListItem.h"
 #include "ui/Theme.h"
 
+namespace mtx::responses {
+struct GroupProfile;
+struct JoinedGroups;
+}
+
 class CommunitiesList : public QWidget
 {
         Q_OBJECT

@@ -15,9 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QAction>
 #include <QApplication>
 #include <QList>
 #include <QMenu>
+#include <QPainter>
 #include <QTimer>
 
 #include "TrayIcon.h"

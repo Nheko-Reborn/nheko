@@ -2,8 +2,6 @@
 
 #include <variant>
 
-#include "RoomInfoListItem.h"
-
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QPixmap>
@@ -11,6 +9,8 @@
 #include <mtx/events/common.hpp>
 
 #include <qmath.h>
+
+struct DescInfo;
 
 namespace cache {
 // Forward declarations to prevent dependency on Cache.h, since this header is included often!
@@ -166,25 +166,6 @@ messageDescription(const QString &username = "",
         }
 }
 
-template<class T, class Event>
-DescInfo
-createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
-{
-        const auto msg    = std::get<T>(event);
-        const auto sender = QString::fromStdString(msg.sender);
-
-        const auto username = cache::displayName(room_id, sender);
-        const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-        return DescInfo{QString::fromStdString(msg.event_id),
-                        sender,
-                        messageDescription<T>(username,
-                                              QString::fromStdString(msg.content.body).trimmed(),
-                                              sender == localUser),
-                        utils::descriptiveTime(ts),
-                        ts};
-}
-
 //! Scale down an image to fit to the given width & height limitations.
 QPixmap
 scaleDown(uint64_t maxWidth, uint64_t maxHeight, const QPixmap &source);
@@ -326,14 +307,4 @@ centerWidget(QWidget *widget, QWidget *parent);
 void
 restoreCombobox(QComboBox *combo, const QString &value);
 
-struct SideBarSizes
-{
-        int small;
-        int normal;
-        int groups;
-        int collapsePoint;
-};
-
-SideBarSizes
-calculateSidebarSizes(const QFont &f);
 }

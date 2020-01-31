@@ -22,6 +22,25 @@ using TimelineEvent = mtx::events::collections::TimelineEvents;
 
 QHash<QString, QString> authorColors_;
 
+template<class T, class Event>
+static DescInfo
+createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
+{
+        const auto msg    = std::get<T>(event);
+        const auto sender = QString::fromStdString(msg.sender);
+
+        const auto username = cache::displayName(room_id, sender);
+        const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+
+        return DescInfo{
+          QString::fromStdString(msg.event_id),
+          sender,
+          utils::messageDescription<T>(
+            username, QString::fromStdString(msg.content.body).trimmed(), sender == localUser),
+          utils::descriptiveTime(ts),
+          ts};
+}
+
 QString
 utils::localUser()
 {
@@ -633,16 +652,3 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
         }
 }
 
-utils::SideBarSizes
-utils::calculateSidebarSizes(const QFont &f)
-{
-        const auto height = static_cast<double>(QFontMetrics{f}.lineSpacing());
-
-        SideBarSizes sz;
-        sz.small         = std::ceil(3.5 * height + height / 4.0);
-        sz.normal        = std::ceil(16 * height);
-        sz.groups        = std::ceil(3 * height);
-        sz.collapsePoint = 2 * sz.normal;
-
-        return sz;
-}

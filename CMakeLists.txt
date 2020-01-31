@@ -256,6 +256,7 @@ set(SRC_FILES
 	# UI components
 	src/ui/Avatar.cpp
 	src/ui/Badge.cpp
+	src/ui/DropShadow.cpp
 	src/ui/LoadingIndicator.cpp
 	src/ui/InfoMessage.cpp
 	src/ui/FlatButton.cpp

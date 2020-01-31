@@ -23,7 +23,6 @@
 #include <optional>
 
 #include <QApplication>
-#include <QDebug>
 #include <QHBoxLayout>
 #include <QPaintEvent>
 #include <QTextEdit>

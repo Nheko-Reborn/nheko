@@ -16,12 +16,9 @@
  */
 
 #include <QAbstractTextDocumentLayout>
-#include <QApplication>
 #include <QBuffer>
 #include <QClipboard>
-#include <QDebug>
 #include <QFileDialog>
-#include <QImageReader>
 #include <QMimeData>
 #include <QMimeDatabase>
 #include <QMimeType>
@@ -31,7 +28,7 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
-#include "Config.h"
+#include "Logging.h"
 #include "TextInputWidget.h"
 #include "Utils.h"
 #include "ui/FlatButton.h"

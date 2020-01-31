@@ -13,6 +13,7 @@
 #include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"
+#include "Logging.h"
 #include "Utils.h"
 #include "ui/Avatar.h"
 
@@ -116,7 +117,7 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         try {
                 addUsers(cache::getMembers(room_id_.toStdString()));
         } catch (const lmdb::error &e) {
-                qCritical() << e.what();
+                nhlog::db()->critical("Failed to retrieve members from cache: {}", e.what());
         }
 
         auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);

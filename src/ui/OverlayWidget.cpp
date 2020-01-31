@@ -1,5 +1,7 @@
 #include "OverlayWidget.h"
-#include <QEvent>
+
+#include <QPainter>
+#include <QStyleOption>
 
 OverlayWidget::OverlayWidget(QWidget *parent)
   : QWidget(parent)

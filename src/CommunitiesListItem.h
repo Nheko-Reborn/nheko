@@ -1,17 +1,14 @@
 #pragma once
 
-#include <QDebug>
-#include <QMouseEvent>
-#include <QPainter>
 #include <QSharedPointer>
 #include <QWidget>
-
-#include <mtx/responses/groups.hpp>
 
 #include "Config.h"
 #include "ui/Theme.h"
 
 class RippleOverlay;
+class QPainter;
+class QMouseEvent;
 
 class CommunitiesListItem : public QWidget
 {

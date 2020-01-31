@@ -2,7 +2,9 @@
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "Utils.h"
+#include "Splitter.h"
+
+#include <mtx/responses/groups.hpp>
 
 #include <QLabel>
 
@@ -20,7 +22,7 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);
 
-        const auto sideBarSizes = utils::calculateSidebarSizes(QFont{});
+        const auto sideBarSizes = splitter::calculateSidebarSizes(QFont{});
         setFixedWidth(sideBarSizes.groups);
 
         scrollArea_ = new QScrollArea(this);
@@ -185,7 +187,8 @@ void
 CommunitiesList::updateCommunityAvatar(const QString &community_id, const QPixmap &img)
 {
         if (!communityExists(community_id)) {
-                qWarning() << "Avatar update on nonexistent community" << community_id;
+                nhlog::ui()->warn("Avatar update on nonexistent community {}",
+                                  community_id.toStdString());
                 return;
         }
 
@@ -196,7 +199,7 @@ void
 CommunitiesList::highlightSelectedCommunity(const QString &community_id)
 {
         if (!communityExists(community_id)) {
-                qDebug() << "CommunitiesList: clicked unknown community";
+                nhlog::ui()->debug("CommunitiesList: clicked unknown community");
                 return;
         }
 

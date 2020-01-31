@@ -2,6 +2,8 @@
 #include <QFontDatabase>
 #include <QIcon>
 #include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPainter>
 #include <QPainterPath>
 #include <QResizeEvent>
 #include <QSignalTransition>

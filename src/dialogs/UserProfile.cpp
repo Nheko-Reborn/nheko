@@ -1,13 +1,12 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
-#include <QSettings>
 #include <QShortcut>
 #include <QVBoxLayout>
 
-#include "AvatarProvider.h"
 #include "Cache.h"
 #include "ChatPage.h"
+#include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"
 #include "dialogs/UserProfile.h"

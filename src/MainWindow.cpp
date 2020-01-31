@@ -31,6 +31,7 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "RegisterPage.h"
+#include "Splitter.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -191,7 +192,7 @@ MainWindow::resizeEvent(QResizeEvent *event)
 void
 MainWindow::adjustSideBars()
 {
-        const auto sz = utils::calculateSidebarSizes(QFont{});
+        const auto sz = splitter::calculateSidebarSizes(QFont{});
 
         const uint64_t timelineWidth     = chat_page_->timelineWidth();
         const uint64_t minAvailableWidth = sz.collapsePoint + sz.groups;

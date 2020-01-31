@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QPaintEvent>
-#include <QPainter>
 #include <QPushButton>
 #include <QStateMachine>
 

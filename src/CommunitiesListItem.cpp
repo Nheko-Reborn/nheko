@@ -1,4 +1,7 @@
 #include "CommunitiesListItem.h"
+
+#include <QMouseEvent>
+
 #include "Utils.h"
 #include "ui/Painter.h"
 #include "ui/Ripple.h"

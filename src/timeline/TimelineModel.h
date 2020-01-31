@@ -6,15 +6,17 @@
 #include <QHash>
 #include <QSet>
 
-#include <mtx/common.hpp>
-#include <mtx/responses.hpp>
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
-#include "Logging.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
+}
+namespace mtx::responses {
+struct Timeline;
+struct Messages;
+struct ClaimKeys;
 }
 
 namespace qml_mtx_events {
