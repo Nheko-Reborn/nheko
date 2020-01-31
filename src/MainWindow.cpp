@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
         setFont(font);
 
         userSettings_ = QSharedPointer<UserSettings>(new UserSettings);
-        trayIcon_     = new TrayIcon(":/logos/nheko-32.png", this);
+        trayIcon_     = new TrayIcon(":/logos/nheko.svg", this);
 
         welcome_page_     = new WelcomePage(this);
         login_page_       = new LoginPage(this);
