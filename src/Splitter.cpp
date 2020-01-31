@@ -15,15 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include <QDesktopWidget>
 #include <QSettings>
-#include <QShortcut>
 
-#include "Config.h"
 #include "Logging.h"
 #include "Splitter.h"
-#include "Utils.h"
 
 constexpr auto MaxWidth = (1 << 24) - 1;
 
@@ -180,4 +175,3 @@ splitter::calculateSidebarSizes(const QFont &f)
 
         return sz;
 }
-

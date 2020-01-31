@@ -1,6 +1,6 @@
 #include "TextField.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QEventTransition>
 #include <QFontDatabase>
 #include <QPaintEvent>

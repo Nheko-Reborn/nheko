@@ -1,5 +1,5 @@
-#include <QApplication>
 #include <QColor>
+#include <QCoreApplication>
 #include <QEvent>
 #include <QPainter>
 

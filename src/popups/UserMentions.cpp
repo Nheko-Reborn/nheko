@@ -1,7 +1,10 @@
+#include <QPaintEvent>
 #include <QPainter>
+#include <QScrollArea>
 #include <QStyleOption>
 #include <QTabWidget>
 #include <QTimer>
+#include <QVBoxLayout>
 
 #include "Cache.h"
 #include "ChatPage.h"

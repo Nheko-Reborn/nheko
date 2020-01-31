@@ -18,17 +18,14 @@
 #pragma once
 
 #include <deque>
-#include <iterator>
-#include <map>
 #include <optional>
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QHBoxLayout>
 #include <QPaintEvent>
 #include <QTextEdit>
 #include <QWidget>
 
-#include "Utils.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
 #include "popups/ReplyPopup.h"

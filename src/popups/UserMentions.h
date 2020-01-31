@@ -3,13 +3,13 @@
 #include <mtx/responses.hpp>
 
 #include <QMap>
-#include <QPaintEvent>
-#include <QScrollArea>
 #include <QString>
-#include <QTabWidget>
-#include <QVBoxLayout>
 #include <QWidget>
 
+class QPaintEvent;
+class QTabWidget;
+class QScrollArea;
+class QVBoxLayout;
 
 namespace popups {
 

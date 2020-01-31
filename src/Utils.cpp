@@ -651,4 +651,3 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
                 }
         }
 }
-
