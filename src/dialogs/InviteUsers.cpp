@@ -13,7 +13,7 @@
 #include "InviteeItem.h"
 #include "ui/TextField.h"
 
-#include "mtx.hpp"
+#include <mtx/identifiers.hpp>
 
 using namespace dialogs;
 

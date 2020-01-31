@@ -3,7 +3,7 @@
 #include <QLabel>
 #include <QWidget>
 
-#include "mtx.hpp"
+#include <mtx/identifiers.hpp>
 
 class QPushButton;
 

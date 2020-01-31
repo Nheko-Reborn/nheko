@@ -3,7 +3,8 @@
 #include <boost/optional.hpp>
 
 #include <memory>
-#include <mtx.hpp>
+#include <mtx/events.hpp>
+#include <mtx/events/encrypted.hpp>
 #include <mtxclient/crypto/client.hpp>
 
 constexpr auto OLM_ALGO = "m.olm.v1.curve25519-aes-sha2";

@@ -2,7 +2,7 @@
 
 #include <QFrame>
 
-#include <mtx.hpp>
+#include <mtx/requests.hpp>
 
 class QPushButton;
 class TextField;
