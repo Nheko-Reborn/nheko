@@ -18,7 +18,6 @@
 
 #pragma once
 
-#include <mutex>
 #include <optional>
 
 #include <QDateTime>
@@ -38,8 +37,6 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
-#include "Logging.h"
-#include "MatrixClient.h"
 
 int
 numeric_key_comparison(const MDB_val *a, const MDB_val *b);

@@ -31,6 +31,7 @@
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "Logging.h"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
