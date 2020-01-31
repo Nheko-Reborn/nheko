@@ -72,6 +72,8 @@ public slots:
         void updateRoomDescription(const QString &roomid, const DescInfo &info);
         void closeJoinRoomDialog(bool isJoining, QString roomAlias);
         void updateReadStatus(const std::map<QString, bool> &status);
+        void nextRoom();
+        void previousRoom();
 
 protected:
         void paintEvent(QPaintEvent *event) override;

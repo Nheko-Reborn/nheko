@@ -224,6 +224,72 @@ RoomList::highlightSelectedRoom(const QString &room_id)
 }
 
 void
+RoomList::nextRoom()
+{
+        for (int ii = 0; ii < contentsLayout_->count() - 1; ++ii) {
+                auto room = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(ii)->widget());
+
+                if (!room)
+                        continue;
+
+                if (room->roomId() == selectedRoom_) {
+                        auto nextRoom = qobject_cast<RoomInfoListItem *>(
+                          contentsLayout_->itemAt(ii + 1)->widget());
+
+                        // Not a room message.
+                        if (!nextRoom || nextRoom->isInvite())
+                                return;
+
+                        emit roomChanged(nextRoom->roomId());
+                        if (!roomExists(nextRoom->roomId())) {
+                                nhlog::ui()->warn("roomlist: clicked unknown room_id");
+                                return;
+                        }
+
+                        room->setPressedState(false);
+                        nextRoom->setPressedState(true);
+
+                        scrollArea_->ensureWidgetVisible(nextRoom);
+                        selectedRoom_ = nextRoom->roomId();
+                        return;
+                }
+        }
+}
+
+void
+RoomList::previousRoom()
+{
+        for (int ii = 1; ii < contentsLayout_->count(); ++ii) {
+                auto room = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(ii)->widget());
+
+                if (!room)
+                        continue;
+
+                if (room->roomId() == selectedRoom_) {
+                        auto nextRoom = qobject_cast<RoomInfoListItem *>(
+                          contentsLayout_->itemAt(ii - 1)->widget());
+
+                        // Not a room message.
+                        if (!nextRoom || nextRoom->isInvite())
+                                return;
+
+                        emit roomChanged(nextRoom->roomId());
+                        if (!roomExists(nextRoom->roomId())) {
+                                nhlog::ui()->warn("roomlist: clicked unknown room_id");
+                                return;
+                        }
+
+                        room->setPressedState(false);
+                        nextRoom->setPressedState(true);
+
+                        scrollArea_->ensureWidgetVisible(nextRoom);
+                        selectedRoom_ = nextRoom->roomId();
+                        return;
+                }
+        }
+}
+
+void
 RoomList::updateRoomAvatar(const QString &roomid, const QString &img)
 {
         if (!roomExists(roomid)) {

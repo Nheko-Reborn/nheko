@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QImageReader>
 #include <QSettings>
+#include <QShortcut>
 #include <QtConcurrent>
 
 #include "AvatarProvider.h"
@@ -147,6 +148,17 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 http::client()->shutdown();
                 trySync();
         });
+
+        connect(
+          new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
+                  if (isVisible())
+                          room_list_->nextRoom();
+          });
+        connect(
+          new QShortcut(QKeySequence("Ctrl+Up"), this), &QShortcut::activated, this, [this]() {
+                  if (isVisible())
+                          room_list_->previousRoom();
+          });
 
         connect(top_bar_, &TopRoomBar::mentionsClicked, this, [this](const QPoint &mentionsPos) {
                 if (user_mentions_popup_->isVisible()) {
