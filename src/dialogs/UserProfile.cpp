@@ -15,6 +15,8 @@
 
 using namespace dialogs;
 
+Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
+
 constexpr int BUTTON_SIZE       = 36;
 constexpr int BUTTON_RADIUS     = BUTTON_SIZE / 2;
 constexpr int WIDGET_MARGIN     = 20;

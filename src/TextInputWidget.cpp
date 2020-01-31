@@ -109,7 +109,7 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
 }
 
 void
-FilteredTextEdit::showResults(const QVector<SearchResult> &results)
+FilteredTextEdit::showResults(const std::vector<SearchResult> &results)
 {
         QPoint pos;
 

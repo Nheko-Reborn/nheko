@@ -19,6 +19,7 @@
 #include <QStyleOption>
 
 #include <mtx/identifiers.hpp>
+#include <mtx/responses/login.hpp>
 
 #include "Config.h"
 #include "Logging.h"

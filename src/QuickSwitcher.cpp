@@ -26,6 +26,8 @@
 #include "QuickSwitcher.h"
 #include "popups/SuggestionsPopup.h"
 
+Q_DECLARE_METATYPE(std::vector<RoomSearchResult>)
+
 RoomSearchInput::RoomSearchInput(QWidget *parent)
   : TextField(parent)
 {}

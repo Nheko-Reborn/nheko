@@ -25,8 +25,6 @@
 #include "popups/SuggestionsPopup.h"
 #include "ui/TextField.h"
 
-Q_DECLARE_METATYPE(std::vector<RoomSearchResult>)
-
 class RoomSearchInput : public TextField
 {
         Q_OBJECT

@@ -9,8 +9,6 @@
 #include "ChatPage.h"
 #include "PopupItem.h"
 
-Q_DECLARE_METATYPE(QVector<SearchResult>)
-
 class SuggestionsPopup : public QWidget
 {
         Q_OBJECT
@@ -33,7 +31,7 @@ public:
         }
 
 public slots:
-        void addUsers(const QVector<SearchResult> &users);
+        void addUsers(const std::vector<SearchResult> &users);
         void addRooms(const std::vector<RoomSearchResult> &rooms);
 
         //! Move to the next available suggestion item.

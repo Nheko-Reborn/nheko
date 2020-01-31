@@ -19,6 +19,8 @@
 #include <QStyleOption>
 #include <QTimer>
 
+#include <mtx/responses/register.hpp>
+
 #include "Config.h"
 #include "Logging.h"
 #include "MainWindow.h"

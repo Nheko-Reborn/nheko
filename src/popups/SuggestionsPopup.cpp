@@ -60,9 +60,9 @@ SuggestionsPopup::addRooms(const std::vector<RoomSearchResult> &rooms)
 }
 
 void
-SuggestionsPopup::addUsers(const QVector<SearchResult> &users)
+SuggestionsPopup::addUsers(const std::vector<SearchResult> &users)
 {
-        if (users.isEmpty()) {
+        if (users.empty()) {
                 hide();
                 return;
         }

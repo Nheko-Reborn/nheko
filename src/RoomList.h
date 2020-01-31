@@ -17,14 +17,11 @@
 
 #pragma once
 
-#include <QMetaType>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSharedPointer>
 #include <QVBoxLayout>
 #include <QWidget>
-
-#include <mtx.hpp>
 
 class LeaveRoomDialog;
 class OverlayModal;

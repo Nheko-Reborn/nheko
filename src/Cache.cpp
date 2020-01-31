@@ -80,7 +80,7 @@ using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
 Q_DECLARE_METATYPE(SearchResult)
-Q_DECLARE_METATYPE(QVector<SearchResult>)
+Q_DECLARE_METATYPE(std::vector<SearchResult>)
 Q_DECLARE_METATYPE(RoomMember)
 Q_DECLARE_METATYPE(mtx::responses::Timeline)
 Q_DECLARE_METATYPE(RoomSearchResult)
@@ -1834,7 +1834,7 @@ Cache::searchRooms(const std::string &query, std::uint8_t max_items)
         return results;
 }
 
-QVector<SearchResult>
+std::vector<SearchResult>
 Cache::searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
 {
         std::multimap<int, std::pair<std::string, std::string>> items;
@@ -1857,7 +1857,7 @@ Cache::searchUsers(const std::string &room_id, const std::string &query, std::ui
         else if (items.size() > 0)
                 std::advance(end, items.size());
 
-        QVector<SearchResult> results;
+        std::vector<SearchResult> results;
         for (auto it = items.begin(); it != end; it++) {
                 const auto user = it->second;
                 results.push_back(SearchResult{QString::fromStdString(user.first),
@@ -2390,12 +2390,11 @@ void
 init(const QString &user_id)
 {
         qRegisterMetaType<SearchResult>();
-        qRegisterMetaType<QVector<SearchResult>>();
+        qRegisterMetaType<std::vector<SearchResult>>();
         qRegisterMetaType<RoomMember>();
         qRegisterMetaType<RoomSearchResult>();
         qRegisterMetaType<RoomInfo>();
         qRegisterMetaType<QMap<QString, RoomInfo>>();
-        qRegisterMetaType<QMap<QString, mtx::responses::Notifications>>();
         qRegisterMetaType<std::map<QString, RoomInfo>>();
         qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
 
@@ -2734,7 +2733,7 @@ calculateRoomReadStatus()
         instance_->calculateRoomReadStatus();
 }
 
-QVector<SearchResult>
+std::vector<SearchResult>
 searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
 {
         return instance_->searchUsers(room_id, query, max_items);
