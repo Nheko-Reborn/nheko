@@ -614,6 +614,10 @@ TextInputWidget::command(QString command, QString args)
                 sendTextMessage("¯\\_(ツ)_/¯", input_->related);
         } else if (command == "fliptable") {
                 sendTextMessage("(╯°□°)╯︵ ┻━┻", input_->related);
+        } else if (command == "unfliptable") {
+                sendTextMessage(" ┯━┯╭( º _ º╭)", input_->related);
+        } else if (command == "sovietflip") {
+                sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\", input_->related);
         }
 
         input_->related = std::nullopt;
