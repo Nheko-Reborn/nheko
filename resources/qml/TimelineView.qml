@@ -17,6 +17,7 @@ Item {
 	Menu {
 		id: messageContextMenu
 		palette: colors
+		modal: true
 
 		function show(eventId_, eventType_, showAt) {
 			eventId = eventId_
