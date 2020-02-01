@@ -4,28 +4,28 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+211"/>
+        <location filename="../../src/ChatPage.cpp" line="+223"/>
         <source>Failed to invite user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+84"/>
+        <location line="+864"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-5"/>
         <source>Failed to invite %1 to %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+19"/>
         <source>Failed to kick %1 to %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>Kicked user: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -35,12 +35,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>Banned user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Failed to unban %1 in %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -50,12 +50,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="-803"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+392"/>
+        <location line="+395"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -71,12 +71,12 @@
     </message>
     <message>
         <location line="+51"/>
-        <location line="+154"/>
+        <location line="+231"/>
         <source>Please try to login again: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-154"/>
         <source>Failed to join room: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,7 +109,7 @@
 <context>
     <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+130"/>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
         <translation type="unfinished"></translation>
     </message>
@@ -161,7 +161,7 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+11"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+12"/>
         <source>Encrypted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -177,7 +177,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+80"/>
+        <location filename="../../src/LoginPage.cpp" line="+82"/>
         <source>Matrix ID</source>
         <translation>Matrix-id</translation>
     </message>
@@ -235,7 +235,7 @@
 <context>
     <name>MemberList</name>
     <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+89"/>
+        <location filename="../../src/dialogs/MemberList.cpp" line="+90"/>
         <source>Room members</source>
         <translation>Kamerleden</translation>
     </message>
@@ -289,7 +289,7 @@
 <context>
     <name>QuickSwitcher</name>
     <message>
-        <location filename="../../src/QuickSwitcher.cpp" line="+72"/>
+        <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
         <source>Search for a room...</source>
         <translation>Zoek een kamer...</translation>
     </message>
@@ -297,7 +297,7 @@
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+77"/>
+        <location filename="../../src/RegisterPage.cpp" line="+80"/>
         <source>Username</source>
         <translation>Gebruikersnaam</translation>
     </message>
@@ -407,7 +407,7 @@
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../qml/StatusIndicator.qml" line="+13"/>
+        <location filename="../qml/StatusIndicator.qml" line="+14"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -430,13 +430,13 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+496"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+493"/>
         <source>Send a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+163"/>
+        <location filename="../../src/TextInputWidget.h" line="+159"/>
         <source>Write a message...</source>
         <translation>Typ een bericht...</translation>
     </message>
@@ -612,7 +612,7 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+104"/>
+        <location filename="../qml/TimelineRow.qml" line="+64"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -621,8 +621,11 @@
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>TimelineView</name>
     <message>
-        <location line="+12"/>
+        <location filename="../qml/TimelineView.qml" line="+31"/>
         <source>Read receipts</source>
         <translation type="unfinished">Leesbevestigingen</translation>
     </message>
@@ -646,19 +649,21 @@
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+24"/>
+        <location line="+14"/>
         <source>No room open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+239"/>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TopRoomBar</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+78"/>
+        <location filename="../../src/TopRoomBar.cpp" line="+86"/>
         <source>Room options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -691,7 +696,7 @@
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+120"/>
+        <location filename="../../src/TrayIcon.cpp" line="+122"/>
         <source>Show</source>
         <translation>Tonen</translation>
     </message>
@@ -704,7 +709,7 @@
 <context>
     <name>UserInfoWidget</name>
     <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+87"/>
+        <location filename="../../src/UserInfoWidget.cpp" line="+88"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -712,7 +717,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+188"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+189"/>
         <source>Minimize to tray</source>
         <translation>Minimaliseren naar systeemvak</translation>
     </message>
@@ -861,7 +866,7 @@
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../../src/WelcomePage.cpp" line="+46"/>
+        <location filename="../../src/WelcomePage.cpp" line="+47"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Welkom bij nheko! Dé computerclient voor het Matrix-protocol.</translation>
     </message>
@@ -884,7 +889,7 @@
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+119"/>
+        <location filename="../../src/Utils.cpp" line="+138"/>
         <source>Yesterday</source>
         <translation type="unfinished"></translation>
     </message>
@@ -992,7 +997,7 @@
 <context>
     <name>dialogs::PreviewUploadOverlay</name>
     <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+42"/>
+        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
         <source>Upload</source>
         <translation>Uploaden</translation>
     </message>
@@ -1192,7 +1197,7 @@ Mediagrootte: %2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Ignore messages from this user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1202,12 +1207,12 @@ Mediagrootte: %2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Start a conversation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+63"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1215,7 +1220,7 @@ Mediagrootte: %2
 <context>
     <name>emoji::Panel</name>
     <message>
-        <location filename="../../src/emoji/Panel.cpp" line="+125"/>
+        <location filename="../../src/emoji/Panel.cpp" line="+126"/>
         <source>Smileys &amp; People</source>
         <translation>Smileys en mensen</translation>
     </message>
@@ -1341,7 +1346,7 @@ Mediagrootte: %2
 <context>
     <name>popups::UserMentions</name>
     <message>
-        <location filename="../../src/popups/UserMentions.cpp" line="+61"/>
+        <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
         <translation type="unfinished"></translation>
     </message>

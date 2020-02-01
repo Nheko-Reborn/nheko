@@ -14,8 +14,6 @@ RowLayout {
 	anchors.left: parent.left
 	anchors.right: parent.right
 
-	//height: Math.max(model.replyTo ? reply.height + contentItem.height + 4 : contentItem.height, 16)
-
 	Column {
 		Layout.fillWidth: true
 		Layout.alignment: Qt.AlignTop
@@ -42,71 +40,45 @@ RowLayout {
 		state: model.state
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
 		Layout.preferredHeight: 16
+		width: 16
 	}
 
 	EncryptionIndicator {
 		visible: model.isEncrypted
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
 		Layout.preferredHeight: 16
+		width: 16
 	}
 
 	ImageButton {
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
 		Layout.preferredHeight: 16
+		width: 16
 		id: replyButton
-    	hoverEnabled: true
+		hoverEnabled: true
 
 
 		image: ":/icons/icons/ui/mail-reply.png"
-		ToolTip {
-			visible: replyButton.hovered
-			text: qsTr("Reply")
-			palette: colors
-		}
+
+		ToolTip.visible: hovered
+		ToolTip.text: qsTr("Reply")
 
 		onClicked: view.model.replyAction(model.id)
 	}
 	ImageButton {
 		Layout.alignment: Qt.AlignRight | Qt.AlignTop
 		Layout.preferredHeight: 16
+		width: 16
 		id: optionsButton
 		hoverEnabled: true
 
 		image: ":/icons/icons/ui/vertical-ellipsis.png"
-		ToolTip {
-			visible: optionsButton.hovered
-			text: qsTr("Options")
-			palette: colors
-		}
 
-		onClicked: contextMenu.open()
+		ToolTip.visible: hovered
+		ToolTip.text: qsTr("Options")
 
-		Menu {
-			y: optionsButton.height
-			id: contextMenu
-			palette: colors
+		onClicked: messageContextMenu.show(model.id, model.type, optionsButton)
 
-			MenuItem {
-				text: qsTr("Read receipts")
-				onTriggered: view.model.readReceiptsAction(model.id)
-			}
-			MenuItem {
-				text: qsTr("Mark as read")
-			}
-			MenuItem {
-				text: qsTr("View raw message")
-				onTriggered: view.model.viewRawMessage(model.id)
-			}
-			MenuItem {
-				text: qsTr("Redact message")
-				onTriggered: view.model.redactEvent(model.id)
-			}
-			MenuItem {
-				visible: model.type == MtxEvent.ImageMessage || model.type == MtxEvent.VideoMessage || model.type == MtxEvent.AudioMessage || model.type == MtxEvent.FileMessage || model.type == MtxEvent.Sticker
-				text: qsTr("Save as")
-				onTriggered: timelineManager.timeline.saveMedia(model.id)
-			}
-		}
 	}
 
 	Text {
@@ -120,10 +92,7 @@ RowLayout {
 			hoverEnabled: true
 		}
 
-		ToolTip {
-			visible: ma.containsMouse
-			text: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
-			palette: colors
-		}
+		ToolTip.visible: ma.containsMouse
+		ToolTip.text: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
 	}
 }

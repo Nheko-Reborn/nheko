@@ -20,14 +20,12 @@ TextEdit {
 	}
 	MouseArea
 	{
+		id: ma
 		anchors.fill: parent
 		onPressed:  mouse.accepted = false
 		cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
 	}
 
-	ToolTip {
-		visible: parent.hoveredLink
-		text: parent.hoveredLink
-		palette: colors
-	}
+	ToolTip.visible: hoveredLink
+	ToolTip.text: hoveredLink
 }

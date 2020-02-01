@@ -1,5 +1,5 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
@@ -13,6 +13,41 @@ Item {
 	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
 	property int avatarSize: 40
+
+	Menu {
+		id: messageContextMenu
+		palette: colors
+
+		function show(eventId_, eventType_, showAt) {
+			eventId = eventId_
+			eventType = eventType_
+			popup(showAt)
+		}
+
+		property string eventId
+		property int eventType
+
+		MenuItem {
+			text: qsTr("Read receipts")
+			onTriggered: chat.model.readReceiptsAction(messageContextMenu.eventId)
+		}
+		MenuItem {
+			text: qsTr("Mark as read")
+		}
+		MenuItem {
+			text: qsTr("View raw message")
+			onTriggered: chat.model.viewRawMessage(messageContextMenu.eventId)
+		}
+		MenuItem {
+			text: qsTr("Redact message")
+			onTriggered: chat.model.redactEvent(messageContextMenu.eventId)
+		}
+		MenuItem {
+			visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+			text: qsTr("Save as")
+			onTriggered: timelineManager.timeline.saveMedia(messageContextMenu.eventId)
+		}
+	}
 
 	id: timelineRoot
 
@@ -63,7 +98,6 @@ Item {
 					if (wheel.angleDelta != 0) {
 						chat.contentY = chat.contentY - wheel.angleDelta.y
 						wheel.accepted = true
-						chat.forceLayout()
 						chat.returnToBounds()
 					}
 				}
@@ -262,11 +296,8 @@ Item {
 						height: 16
 
 						image: ":/icons/icons/ui/remove-symbol.png"
-						ToolTip {
-							visible: closeReplyButton.hovered
-							text: qsTr("Close")
-							palette: colors
-						}
+						ToolTip.visible: closeReplyButton.hovered
+						ToolTip.text: qsTr("Close")
 
 						onClicked: timelineManager.updateReplyingEvent(undefined)
 					}
