@@ -211,11 +211,91 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         roomVersionLayout->addWidget(roomVersionLabel, 0, Qt::AlignBottom | Qt::AlignRight);
 
         auto notifLabel = new QLabel(tr("Notifications"), this);
-        auto notifCombo = new QComboBox(this);
-        notifCombo->setDisabled(true);
-        notifCombo->addItem(tr("Muted"));
-        notifCombo->addItem(tr("Mentions only"));
-        notifCombo->addItem(tr("All messages"));
+        notifCombo      = new QComboBox(this);
+        notifCombo->addItem(tr(
+          "Muted")); //{"conditions":[{"kind":"event_match","key":"room_id","pattern":"!jxlRxnrZCsjpjDubDX:matrix.org"}],"actions":["dont_notify"]}
+        notifCombo->addItem(tr("Mentions only")); // {"actions":["dont_notify"]}
+        notifCombo->addItem(tr("All messages"));  // delete rule
+
+        connect(this, &RoomSettings::notifChanged, notifCombo, &QComboBox::setCurrentIndex);
+        http::client()->get_pushrules(
+          "global",
+          "override",
+          room_id_.toStdString(),
+          [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr &err) {
+                  if (err) {
+                          if (err->status_code == boost::beast::http::status::not_found)
+                                  emit notifChanged(2); // all messages
+                          return;
+                  }
+
+                  if (rule.actions.size() == 1 &&
+                      std::holds_alternative<mtx::pushrules::actions::dont_notify>(
+                        rule.actions[0])) {
+                          if (rule.conditions.empty())
+                                  emit notifChanged(1); // mentions only
+                          else
+                                  emit notifChanged(0); // muted
+                  }
+          });
+
+        connect(notifCombo, QOverload<int>::of(&QComboBox::activated), [this](int index) {
+                std::string room_id = room_id_.toStdString();
+                if (index == 0) {
+                        // mute room
+                        // delete old rule first, then add new rule
+                        mtx::pushrules::PushRule rule;
+                        rule.actions = {mtx::pushrules::actions::dont_notify{}};
+                        mtx::pushrules::PushCondition condition;
+                        condition.kind    = "event_match";
+                        condition.key     = "room_id";
+                        condition.pattern = room_id;
+                        rule.conditions   = {condition};
+
+                        http::client()->put_pushrules(
+                          "global",
+                          "override",
+                          room_id,
+                          rule,
+                          [room_id](mtx::http::RequestErr &err) {
+                                  if (err)
+                                          nhlog::net()->error(
+                                            "failed to set pushrule for room {}: {} {}",
+                                            room_id,
+                                            static_cast<int>(err->status_code),
+                                            err->matrix_error.error);
+                          });
+                } else if (index == 1) {
+                        // mentions only
+                        // delete old rule first, then add new rule
+                        mtx::pushrules::PushRule rule;
+                        rule.actions = {mtx::pushrules::actions::dont_notify{}};
+                        http::client()->put_pushrules(
+                          "global",
+                          "override",
+                          room_id,
+                          rule,
+                          [room_id](mtx::http::RequestErr &err) {
+                                  if (err)
+                                          nhlog::net()->error(
+                                            "failed to set pushrule for room {}: {} {}",
+                                            room_id,
+                                            static_cast<int>(err->status_code),
+                                            err->matrix_error.error);
+                          });
+                } else {
+                        // all messages
+                        http::client()->delete_pushrules(
+                          "global", "override", room_id, [room_id](mtx::http::RequestErr &err) {
+                                  if (err)
+                                          nhlog::net()->error(
+                                            "failed to delete pushrule for room {}: {} {}",
+                                            room_id,
+                                            static_cast<int>(err->status_code),
+                                            err->matrix_error.error);
+                          });
+                }
+        });
 
         auto notifOptionLayout_ = new QHBoxLayout;
         notifOptionLayout_->setMargin(0);

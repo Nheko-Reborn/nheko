@@ -119,6 +119,7 @@ signals:
         void enableEncryptionError(const QString &msg);
         void showErrorMessage(const QString &msg);
         void accessRulesUpdated();
+        void notifChanged(int index);
 
 protected:
         void showEvent(QShowEvent *event) override;
@@ -163,6 +164,7 @@ private:
         QLabel *errorLabel_        = nullptr;
         LoadingIndicator *spinner_ = nullptr;
 
+        QComboBox *notifCombo      = nullptr;
         QComboBox *accessCombo     = nullptr;
         Toggle *encryptionToggle_  = nullptr;
         Toggle *keyRequestsToggle_ = nullptr;
