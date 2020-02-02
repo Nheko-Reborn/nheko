@@ -85,6 +85,7 @@
     </qresource>
     <qresource prefix="/logos">
         <file>nheko.png</file>
+        <file>nheko.svg</file>
 
         <file>splash.png</file>
         <file>splash@2x.png</file>
