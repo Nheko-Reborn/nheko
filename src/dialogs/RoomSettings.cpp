@@ -225,18 +225,27 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
           [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr &err) {
                   if (err) {
                           if (err->status_code == boost::beast::http::status::not_found)
-                                  emit notifChanged(2); // all messages
+                                  http::client()->get_pushrules(
+                                    "global",
+                                    "room",
+                                    room_id_.toStdString(),
+                                    [this](const mtx::pushrules::PushRule &rule,
+                                           mtx::http::RequestErr &err) {
+                                            if (err) {
+                                                    emit notifChanged(2); // all messages
+                                                    return;
+                                            }
+
+                                            if (rule.enabled)
+                                                    emit notifChanged(1); // mentions only
+                                    });
                           return;
                   }
 
-                  if (rule.actions.size() == 1 &&
-                      std::holds_alternative<mtx::pushrules::actions::dont_notify>(
-                        rule.actions[0])) {
-                          if (rule.conditions.empty())
-                                  emit notifChanged(1); // mentions only
-                          else
-                                  emit notifChanged(0); // muted
-                  }
+                  if (rule.enabled)
+                          emit notifChanged(0); // muted
+                  else
+                          emit notifChanged(2); // all messages
           });
 
         connect(notifCombo, QOverload<int>::of(&QComboBox::activated), [this](int index) {
@@ -264,6 +273,9 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                                             room_id,
                                             static_cast<int>(err->status_code),
                                             err->matrix_error.error);
+                                  http::client()->delete_pushrules(
+                                    "global", "room", room_id, [room_id](mtx::http::RequestErr &) {
+                                    });
                           });
                 } else if (index == 1) {
                         // mentions only
@@ -271,28 +283,26 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                         mtx::pushrules::PushRule rule;
                         rule.actions = {mtx::pushrules::actions::dont_notify{}};
                         http::client()->put_pushrules(
-                          "global",
-                          "override",
-                          room_id,
-                          rule,
-                          [room_id](mtx::http::RequestErr &err) {
+                          "global", "room", room_id, rule, [room_id](mtx::http::RequestErr &err) {
                                   if (err)
                                           nhlog::net()->error(
                                             "failed to set pushrule for room {}: {} {}",
                                             room_id,
                                             static_cast<int>(err->status_code),
                                             err->matrix_error.error);
+                                  http::client()->delete_pushrules(
+                                    "global",
+                                    "override",
+                                    room_id,
+                                    [room_id](mtx::http::RequestErr &) {});
                           });
                 } else {
                         // all messages
                         http::client()->delete_pushrules(
-                          "global", "override", room_id, [room_id](mtx::http::RequestErr &err) {
-                                  if (err)
-                                          nhlog::net()->error(
-                                            "failed to delete pushrule for room {}: {} {}",
-                                            room_id,
-                                            static_cast<int>(err->status_code),
-                                            err->matrix_error.error);
+                          "global", "override", room_id, [room_id](mtx::http::RequestErr &) {
+                                  http::client()->delete_pushrules(
+                                    "global", "room", room_id, [room_id](mtx::http::RequestErr &) {
+                                    });
                           });
                 }
         });
