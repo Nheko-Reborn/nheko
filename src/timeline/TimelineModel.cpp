@@ -655,7 +655,7 @@ TimelineModel::userColor(QString id, QColor background)
 QString
 TimelineModel::displayName(QString id) const
 {
-        return cache::displayName(room_id_, id);
+        return cache::displayName(room_id_, id).toHtmlEscaped();
 }
 
 QString
