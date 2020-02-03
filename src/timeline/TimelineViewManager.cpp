@@ -22,11 +22,11 @@ TimelineViewManager::updateColorPalette()
                 QPalette lightActive(/*windowText*/ QColor("#333"),
                                      /*button*/ QColor("#333"),
                                      /*light*/ QColor(),
-                                     /*dark*/ QColor(220, 220, 220, 120),
+                                     /*dark*/ QColor(220, 220, 220),
                                      /*mid*/ QColor(),
                                      /*text*/ QColor("#333"),
                                      /*bright_text*/ QColor(),
-                                     /*base*/ QColor("white"),
+                                     /*base*/ QColor(220, 220, 220),
                                      /*window*/ QColor("white"));
                 lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
                 lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
@@ -40,7 +40,7 @@ TimelineViewManager::updateColorPalette()
                                     /*mid*/ QColor(),
                                     /*text*/ QColor("#caccd1"),
                                     /*bright_text*/ QColor(),
-                                    /*base*/ QColor("#202228"),
+                                    /*base*/ QColor("#2d3139"),
                                     /*window*/ QColor("#202228"));
                 darkActive.setColor(QPalette::Highlight, QColor("#e7e7e9"));
                 darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());

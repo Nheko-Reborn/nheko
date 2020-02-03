@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.2
 
 Rectangle {
 	radius: 10
-	color: colors.dark
+	color: colors.base
 	height: row.height + 24
 	width: parent ? parent.width : undefined
 

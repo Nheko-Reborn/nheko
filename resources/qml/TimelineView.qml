@@ -196,7 +196,7 @@ Item {
 						horizontalAlignment: Text.AlignHCenter
 						background: Rectangle {
 							radius: parent.height / 2
-							color: colors.dark
+							color: colors.base
 						}
 					}
 					Row {
@@ -242,7 +242,7 @@ Item {
 			anchors.bottom: parent.bottom
 			z: 3
 
-			color: colors.window
+			color: "transparent"
 
 			Column {
 				id: footerContent
@@ -270,7 +270,7 @@ Item {
 					visible: timelineManager.replyingEvent && chat.model
 					// Height of child, plus margins, plus border
 					height: replyPreview.height + 10
-					color: colors.dark
+					color: colors.base
 
 
 					Reply {

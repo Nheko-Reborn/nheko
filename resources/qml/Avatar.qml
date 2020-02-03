@@ -48,5 +48,5 @@ Rectangle {
 			}
 		}
 	}
-	color: colors.dark
+	color: colors.base
 }

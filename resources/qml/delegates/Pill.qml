@@ -9,6 +9,6 @@ Label {
 	width: contentWidth * 1.2
 	background: Rectangle {
 		radius: parent.height / 2
-		color: colors.dark
+		color: colors.base
 	}
 }

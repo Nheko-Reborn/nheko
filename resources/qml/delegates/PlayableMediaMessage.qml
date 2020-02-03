@@ -8,7 +8,7 @@ import im.nheko 1.0
 Rectangle {
 	id: bg
 	radius: 10
-	color: colors.dark
+	color: colors.base
 	height: content.height + 24
 	width: parent ? parent.width : undefined
 
@@ -83,15 +83,16 @@ Rectangle {
 
 			Rectangle {
 				id: button
-				color: colors.light
+				color: colors.window
 				radius: 22
 				height: 44
 				width: 44
 				Image {
 					id: img
 					anchors.centerIn: parent
+					z: 3
 
-					source: "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?"+colors.dark
+					source: "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?"+colors.text
 					fillMode: Image.Pad
 
 				}
@@ -134,11 +135,11 @@ Rectangle {
 				states: [
 					State {
 						name: "stopped"
-						PropertyChanges { target: img; source: "image://colorimage/:/icons/icons/ui/play-sign.png?"+colors.dark }
+						PropertyChanges { target: img; source: "image://colorimage/:/icons/icons/ui/play-sign.png?"+colors.text }
 					},
 					State {
 						name: "playing"
-						PropertyChanges { target: img; source: "image://colorimage/:/icons/icons/ui/pause-symbol.png?"+colors.dark }
+						PropertyChanges { target: img; source: "image://colorimage/:/icons/icons/ui/pause-symbol.png?"+colors.text }
 					}
 				]
 			}
