@@ -32,7 +32,7 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
   , originalImage_{image}
 {
         setMouseTracking(true);
-        setParent(0);
+        setParent(nullptr);
 
         setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
 

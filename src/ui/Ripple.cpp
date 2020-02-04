@@ -3,7 +3,7 @@
 
 Ripple::Ripple(const QPoint &center, QObject *parent)
   : QParallelAnimationGroup(parent)
-  , overlay_(0)
+  , overlay_(nullptr)
   , radius_anim_(animate("radius"))
   , opacity_anim_(animate("opacity"))
   , radius_(0)

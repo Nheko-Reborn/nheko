@@ -40,7 +40,7 @@ class TopRoomBar : public QWidget
         Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
 
 public:
-        TopRoomBar(QWidget *parent = 0);
+        TopRoomBar(QWidget *parent = nullptr);
 
         void updateRoomAvatar(const QString &avatar_image);
         void updateRoomAvatar(const QIcon &icon);

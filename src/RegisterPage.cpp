@@ -90,10 +90,10 @@ RegisterPage::RegisterPage(QWidget *parent)
         server_input_ = new TextField();
         server_input_->setLabel(tr("Home Server"));
 
-        form_layout_->addWidget(username_input_, Qt::AlignHCenter, 0);
-        form_layout_->addWidget(password_input_, Qt::AlignHCenter, 0);
-        form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter, 0);
-        form_layout_->addWidget(server_input_, Qt::AlignHCenter, 0);
+        form_layout_->addWidget(username_input_, Qt::AlignHCenter, nullptr);
+        form_layout_->addWidget(password_input_, Qt::AlignHCenter, nullptr);
+        form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter, nullptr);
+        form_layout_->addWidget(server_input_, Qt::AlignHCenter, nullptr);
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);

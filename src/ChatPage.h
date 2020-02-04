@@ -65,7 +65,7 @@ class ChatPage : public QWidget
         Q_OBJECT
 
 public:
-        ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
+        ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);

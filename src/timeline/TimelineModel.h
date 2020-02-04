@@ -126,7 +126,7 @@ class TimelineModel : public QAbstractListModel
                      typingUsersChanged)
 
 public:
-        explicit TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent = 0);
+        explicit TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent = nullptr);
 
         enum Roles
         {

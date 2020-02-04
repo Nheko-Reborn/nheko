@@ -62,7 +62,7 @@ class MainWindow : public QMainWindow
         Q_OBJECT
 
 public:
-        explicit MainWindow(QWidget *parent = 0);
+        explicit MainWindow(QWidget *parent = nullptr);
 
         static MainWindow *instance() { return instance_; };
         void saveCurrentWindowSize();

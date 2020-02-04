@@ -15,7 +15,7 @@ class Avatar : public QWidget
         Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
 
 public:
-        explicit Avatar(QWidget *parent = 0, int size = ui::AvatarSize);
+        explicit Avatar(QWidget *parent = nullptr, int size = ui::AvatarSize);
 
         void setBackgroundColor(const QColor &color);
         void setIcon(const QIcon &icon);

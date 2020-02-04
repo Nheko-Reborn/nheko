@@ -12,7 +12,7 @@ class LoadingIndicator : public QWidget
         Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
-        LoadingIndicator(QWidget *parent = 0);
+        LoadingIndicator(QWidget *parent = nullptr);
 
         void paintEvent(QPaintEvent *e);
 

@@ -16,8 +16,8 @@ class Ripple : public QParallelAnimationGroup
         Q_PROPERTY(qreal opacity WRITE setOpacity READ opacity)
 
 public:
-        explicit Ripple(const QPoint &center, QObject *parent = 0);
-        Ripple(const QPoint &center, RippleOverlay *overlay, QObject *parent = 0);
+        explicit Ripple(const QPoint &center, QObject *parent = nullptr);
+        Ripple(const QPoint &center, RippleOverlay *overlay, QObject *parent = nullptr);
 
         inline void setOverlay(RippleOverlay *overlay);
 

@@ -78,7 +78,7 @@ class Theme : public QObject
 {
         Q_OBJECT
 public:
-        explicit Theme(QObject *parent = 0);
+        explicit Theme(QObject *parent = nullptr);
 
         QColor getColor(const QString &key) const;
 

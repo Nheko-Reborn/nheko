@@ -13,9 +13,9 @@
 
 ReplyPopup::ReplyPopup(QWidget *parent)
   : QWidget(parent)
-  , userItem_{0}
-  , msgLabel_{0}
-  , eventLabel_{0}
+  , userItem_{nullptr}
+  , msgLabel_{nullptr}
+  , eventLabel_{nullptr}
 {
         setAttribute(Qt::WA_ShowWithoutActivating, true);
         setWindowFlags(Qt::ToolTip | Qt::NoDropShadowWindowHint);

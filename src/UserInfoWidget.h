@@ -31,7 +31,7 @@ class UserInfoWidget : public QWidget
         Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
 
 public:
-        UserInfoWidget(QWidget *parent = 0);
+        UserInfoWidget(QWidget *parent = nullptr);
 
         void setDisplayName(const QString &name);
         void setUserId(const QString &userid);

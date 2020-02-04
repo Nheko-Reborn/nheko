@@ -22,7 +22,7 @@ class TextField : public QLineEdit
         Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
 
 public:
-        explicit TextField(QWidget *parent = 0);
+        explicit TextField(QWidget *parent = nullptr);
 
         void setInkColor(const QColor &color);
         void setBackgroundColor(const QColor &color);

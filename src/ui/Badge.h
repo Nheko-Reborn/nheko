@@ -16,9 +16,9 @@ class Badge : public OverlayWidget
         Q_PROPERTY(QPointF relativePosition WRITE setRelativePosition READ relativePosition)
 
 public:
-        explicit Badge(QWidget *parent = 0);
-        explicit Badge(const QIcon &icon, QWidget *parent = 0);
-        explicit Badge(const QString &text, QWidget *parent = 0);
+        explicit Badge(QWidget *parent = nullptr);
+        explicit Badge(const QIcon &icon, QWidget *parent = nullptr);
+        explicit Badge(const QString &text, QWidget *parent = nullptr);
 
         void setBackgroundColor(const QColor &color);
         void setTextColor(const QColor &color);

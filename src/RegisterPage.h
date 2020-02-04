@@ -30,7 +30,7 @@ class RegisterPage : public QWidget
         Q_OBJECT
 
 public:
-        RegisterPage(QWidget *parent = 0);
+        RegisterPage(QWidget *parent = nullptr);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

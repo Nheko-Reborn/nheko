@@ -38,7 +38,7 @@ class LoginPage : public QWidget
         Q_OBJECT
 
 public:
-        LoginPage(QWidget *parent = 0);
+        LoginPage(QWidget *parent = nullptr);
 
         void reset();
 

@@ -147,7 +147,7 @@ class UserSettingsPage : public QWidget
         Q_OBJECT
 
 public:
-        UserSettingsPage(QSharedPointer<UserSettings> settings, QWidget *parent = 0);
+        UserSettingsPage(QSharedPointer<UserSettings> settings, QWidget *parent = nullptr);
 
 protected:
         void showEvent(QShowEvent *event) override;

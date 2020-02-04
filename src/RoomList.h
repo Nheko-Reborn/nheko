@@ -35,7 +35,7 @@ class RoomList : public QWidget
         Q_OBJECT
 
 public:
-        explicit RoomList(QWidget *parent = 0);
+        explicit RoomList(QWidget *parent = nullptr);
 
         void initialize(const QMap<QString, RoomInfo> &info);
         void sync(const std::map<QString, RoomInfo> &info);

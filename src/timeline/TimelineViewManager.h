@@ -29,7 +29,7 @@ class TimelineViewManager : public QObject
                      replyingEventChanged)
 
 public:
-        TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
+        TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);

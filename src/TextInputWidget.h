@@ -142,7 +142,7 @@ class TextInputWidget : public QWidget
         Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
 
 public:
-        TextInputWidget(QWidget *parent = 0);
+        TextInputWidget(QWidget *parent = nullptr);
 
         void stopTyping();
 

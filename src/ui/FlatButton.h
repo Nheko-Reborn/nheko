@@ -91,14 +91,14 @@ class FlatButton : public QPushButton
         Q_PROPERTY(qreal fontSize WRITE setFontSize READ fontSize)
 
 public:
-        explicit FlatButton(QWidget *parent         = 0,
+        explicit FlatButton(QWidget *parent         = nullptr,
                             ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
         explicit FlatButton(const QString &text,
-                            QWidget *parent         = 0,
+                            QWidget *parent         = nullptr,
                             ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
         FlatButton(const QString &text,
                    ui::Role role,
-                   QWidget *parent         = 0,
+                   QWidget *parent         = nullptr,
                    ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
         ~FlatButton();
 

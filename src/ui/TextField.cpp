@@ -16,7 +16,7 @@ TextField::TextField(QWidget *parent)
         QPalette pal;
 
         state_machine_    = new TextFieldStateMachine(this);
-        label_            = 0;
+        label_            = nullptr;
         label_font_size_  = 15;
         show_label_       = false;
         background_color_ = pal.color(QPalette::Window);
@@ -230,9 +230,9 @@ TextFieldStateMachine::TextFieldStateMachine(TextField *parent)
         normal_state_  = new QState;
         focused_state_ = new QState;
 
-        label_       = 0;
-        offset_anim_ = 0;
-        color_anim_  = 0;
+        label_       = nullptr;
+        offset_anim_ = nullptr;
+        color_anim_  = nullptr;
         progress_    = 0.0;
 
         addState(normal_state_);

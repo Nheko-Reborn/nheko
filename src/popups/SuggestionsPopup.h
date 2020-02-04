@@ -59,7 +59,7 @@ private:
                 size_t posToRemove = layout_->count() - 1;
 
                 QLayoutItem *item;
-                while (startingPos <= posToRemove && (item = layout_->takeAt(posToRemove)) != 0) {
+                while (startingPos <= posToRemove && (item = layout_->takeAt(posToRemove)) != nullptr) {
                         delete item->widget();
                         delete item;
 
