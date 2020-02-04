@@ -524,6 +524,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this, &ChatPage::messageReply, this, [this](const RelatedInfo &related) {
                 view_manager_->updateReplyingEvent(QString::fromStdString(related.related_event));
         });
+        connect(view_manager_, &TimelineViewManager::replyClosed, text_input_, &TextInputWidget::closeReplyPopup);
 
         instance_ = this;
 }

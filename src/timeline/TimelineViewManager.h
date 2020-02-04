@@ -47,6 +47,7 @@ signals:
         void activeTimelineChanged(TimelineModel *timeline);
         void initialSyncChanged(bool isInitialSync);
         void replyingEventChanged(QString replyingEvent);
+        void replyClosed();
 
 public slots:
         void updateReplyingEvent(const QString &replyingEvent)
@@ -55,6 +56,11 @@ public slots:
                         this->replyingEvent_ = replyingEvent;
                         emit replyingEventChanged(replyingEvent_);
                 }
+        }
+        void closeReply()
+        {
+                this->updateReplyingEvent(nullptr);
+                emit replyClosed();
         }
         QString getReplyingEvent() const { return replyingEvent_; }
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

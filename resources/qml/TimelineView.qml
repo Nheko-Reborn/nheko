@@ -300,7 +300,7 @@ Item {
 						ToolTip.visible: closeReplyButton.hovered
 						ToolTip.text: qsTr("Close")
 
-						onClicked: timelineManager.updateReplyingEvent(undefined)
+						onClicked: timelineManager.closeReply()
 					}
 				}
 			}

@@ -164,6 +164,7 @@ public slots:
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
         void addReply(const RelatedInfo &related);
+        void closeReplyPopup() { input_->closeReply(); }
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
