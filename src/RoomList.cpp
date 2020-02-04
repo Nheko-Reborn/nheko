@@ -158,6 +158,8 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
         if (rooms_.empty())
                 return;
 
+        sortRoomsByLastMessage();
+
         auto room = firstRoom();
         if (room.second.isNull())
                 return;
@@ -479,13 +481,16 @@ RoomList::addInvitedRoom(const QString &room_id, const RoomInfo &info)
 std::pair<QString, QSharedPointer<RoomInfoListItem>>
 RoomList::firstRoom() const
 {
-        auto firstRoom = rooms_.begin();
+        for (int i = 0; i < contentsLayout_->count(); i++) {
+                auto item = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
 
-        while (firstRoom->second.isNull() && firstRoom != rooms_.end())
-                firstRoom++;
+                if (item) {
+                        return std::pair<QString, QSharedPointer<RoomInfoListItem>>(
+                          item->roomId(), rooms_.at(item->roomId()));
+                }
+        }
 
-        return std::pair<QString, QSharedPointer<RoomInfoListItem>>(firstRoom->first,
-                                                                    firstRoom->second);
+        return {};
 }
 
 void
