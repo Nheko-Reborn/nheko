@@ -13,7 +13,7 @@ class RaisedButton : public FlatButton
 public:
         explicit RaisedButton(QWidget *parent = nullptr);
         explicit RaisedButton(const QString &text, QWidget *parent = nullptr);
-        ~RaisedButton();
+        ~RaisedButton() override;
 
 protected:
         bool event(QEvent *event) override;

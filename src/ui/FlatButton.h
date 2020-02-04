@@ -18,7 +18,7 @@ class FlatButtonStateMachine : public QStateMachine
 
 public:
         explicit FlatButtonStateMachine(FlatButton *parent);
-        ~FlatButtonStateMachine();
+        ~FlatButtonStateMachine() override;
 
         void setOverlayOpacity(qreal opacity);
         void setCheckedOverlayProgress(qreal opacity);
@@ -100,7 +100,7 @@ public:
                    ui::Role role,
                    QWidget *parent         = nullptr,
                    ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
-        ~FlatButton();
+        ~FlatButton() override;
 
         void applyPreset(ui::ButtonPreset preset);
 

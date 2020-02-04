@@ -14,7 +14,7 @@ class LoadingIndicator : public QWidget
 public:
         LoadingIndicator(QWidget *parent = nullptr);
 
-        void paintEvent(QPaintEvent *e);
+        void paintEvent(QPaintEvent *e) override;
 
         void start();
         void stop();

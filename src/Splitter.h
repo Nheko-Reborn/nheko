@@ -37,7 +37,7 @@ class Splitter : public QSplitter
         Q_OBJECT
 public:
         explicit Splitter(QWidget *parent = nullptr);
-        ~Splitter();
+        ~Splitter() override;
 
         void restoreSizes(int fallback);
 

@@ -35,7 +35,7 @@ signals:
         void clicked();
 
 protected:
-        bool eventFilter(QObject *obj, QEvent *event)
+        bool eventFilter(QObject *obj, QEvent *event) override
         {
                 if (event->type() == QEvent::MouseButtonRelease) {
                         emit clicked();

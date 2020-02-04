@@ -22,7 +22,7 @@ signals:
         void contextMenuIsOpening();
 
 protected:
-        bool eventFilter(QObject *obj, QEvent *event);
+        bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 class TextLabel : public QTextBrowser
