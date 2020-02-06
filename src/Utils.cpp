@@ -387,12 +387,11 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                         break;
                 }
                 case '>':
-                        if (escapingTag)
+                        if (escapingTag) {
                                 buffer.append("&gt;");
-                        else {
                                 escapingTag = false;
+                        } else
                                 buffer.append('>');
-                        }
                         break;
                 default:
                         buffer.append(data.at(pos));
