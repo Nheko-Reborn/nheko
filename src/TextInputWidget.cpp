@@ -639,7 +639,7 @@ TextInputWidget::openFileSelection()
 
         QSharedPointer<QFile> file{new QFile{fileName, this}};
 
-        emit uploadMedia(file, format, fileName, input_->related);
+        emit uploadMedia(file, format, QFileInfo(fileName).fileName(), input_->related);
         input_->related = {};
         input_->closeReply();
 
