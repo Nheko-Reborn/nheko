@@ -74,7 +74,7 @@ UserMentions::initializeMentions(const QMap<QString, mtx::responses::Notificatio
         nhlog::ui()->debug("Initializing " + std::to_string(notifs.size()) + " notifications.");
 
         for (const auto &item : notifs) {
-                for (const auto notif : item.notifications) {
+                for (const auto &notif : item.notifications) {
                         const auto event_id = QString::fromStdString(utils::event_id(notif.event));
 
                         try {

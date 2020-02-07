@@ -91,7 +91,7 @@ DelegateChooser::clearChoices(QQmlListProperty<DelegateChoice> *p)
 void
 DelegateChooser::recalcChild()
 {
-        for (const auto choice : choices_) {
+        for (const auto choice : qAsConst(choices_)) {
                 auto choiceValue = choice->roleValue();
                 if (!roleValue_.isValid() || !choiceValue.isValid() || choiceValue == roleValue_) {
                         if (child) {
