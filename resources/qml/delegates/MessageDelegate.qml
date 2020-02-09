@@ -32,7 +32,10 @@ Item {
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.EmoteMessage
-			TextMessage {}
+			NoticeMessage {
+				formatted: chat.model.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
+				color: chat.model.userColor(modelData.userId, colors.window)
+			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.ImageMessage
@@ -69,19 +72,19 @@ Item {
 		DelegateChoice {
 			roleValue: MtxEvent.Name
 			NoticeMessage {
-				notice: model.data.roomName ? qsTr("room name changed to: %1").arg(model.data.roomName) : qsTr("removed room name")
+				text: model.data.roomName ? qsTr("room name changed to: %1").arg(model.data.roomName) : qsTr("removed room name")
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.Topic
 			NoticeMessage {
-				notice: model.data.roomTopic ? qsTr("topic changed to: %1").arg(model.data.roomTopic) : qsTr("removed topic")
+				text: model.data.roomTopic ? qsTr("topic changed to: %1").arg(model.data.roomTopic) : qsTr("removed topic")
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.Member
 			NoticeMessage {
-				notice: timelineManager.timeline.formatMemberEvent(model.data.id);
+				text: timelineManager.timeline.formatMemberEvent(model.data.id);
 			}
 		}
 		DelegateChoice {
