@@ -20,9 +20,9 @@ If you're planning to work on a new feature leave a message on the Matrix room
 
 Example for a Japanese translation.
 - Create a new translation file using the prototype in English
-  - e.g `cp resources/langs/nheko_en.ts resources/langs/nheko_jp.ts`
+  - e.g `cp resources/langs/nheko_en.ts resources/langs/nheko_ja.ts`
 - Open the new translation file and change the line regarding the locale to reflect the current language.
-  - e.g `<TS version="2.1" language="en">` => `<TS version="2.1" language="jp">`
+  - e.g `<TS version="2.1" language="en">` => `<TS version="2.1" language="ja">`
 - Run `make update-translations` to update the translation files with any missing text.
 - Fill out the translation file (Qt Linguist can make things easier).
 - Submit a PR!
