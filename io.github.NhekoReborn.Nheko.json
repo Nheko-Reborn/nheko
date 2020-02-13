@@ -1,0 +1,187 @@
+{
+  "id": "io.github.NhekoReborn.Nheko",
+  "command": "nheko",
+  "branch": "0.7.0-dev",
+  "runtime": "org.kde.Platform",
+  "runtime-version": "5.14",
+  "sdk": "org.kde.Sdk",
+  "rename-icon": "nheko",
+  "rename-desktop-file": "nheko.desktop",
+  "rename-appdata-file": "nheko.appdata.xml",
+  "finish-args": [
+    "--device=dri",
+    "--filesystem=home",
+    "--share=ipc",
+    "--share=network",
+    "--socket=pulseaudio",
+    "--socket=wayland",
+    "--socket=x11",
+    "--talk-name=org.freedesktop.Notifications",
+    "--talk-name=org.kde.StatusNotifierWatcher"
+  ],
+  "cleanup": [
+    "/include",
+    "/bin/mdb*",
+    "*.a"
+  ],
+  "modules": [
+        {
+      "name": "lmdb",
+      "sources": [
+        {
+          "sha256": "f3927859882eb608868c8c31586bb7eb84562a40a6bf5cc3e13b6b564641ea28",
+          "type": "archive",
+          "url": "https://github.com/LMDB/lmdb/archive/LMDB_0.9.22.tar.gz"
+        }
+      ],
+      "make-install-args": [
+        "prefix=/app"
+      ],
+      "no-autogen": true,
+      "subdir": "libraries/liblmdb"
+    },
+    {
+      "name": "cmark",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+	"-DCMARK_TESTS=OFF"
+      ],
+      "sources": [
+        {
+          "sha256": "2558ace3cbeff85610de3bda32858f722b359acdadf0c4691851865bb84924a6",
+          "type": "archive",
+          "url": "https://github.com/commonmark/cmark/archive/0.29.0.tar.gz"
+        }
+      ]
+    },
+    {
+      "name": "spdlog",
+      "buildsystem": "cmake-ninja",
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DSPDLOG_BUILD_EXAMPLES=0",
+        "-DSPDLOG_BUILD_BENCH=0",
+        "-DSPDLOG_BUILD_TESTING=0"
+      ],
+      "sources": [
+        {
+          "sha256": "3dbcbfd8c07e25f5e0d662b194d3a7772ef214358c49ada23c044c4747ce8b19",
+          "type": "archive",
+          "url": "https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz"
+        }
+      ]
+    },
+    {
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release"
+      ],
+      "buildsystem": "cmake-ninja",
+      "name": "olm",
+      "sources": [
+        {
+          "commit": "6753595300767dd70150831dbbe6f92d64e75038",
+          "disable-shallow-clone": true,
+          "tag": "3.1.4",
+          "type": "git",
+          "url": "https://gitlab.matrix.org/matrix-org/olm.git"
+        }
+      ]
+    },
+    {
+      "config-opts":[
+        "-DJSON_BuildTests=OFF"
+      ],
+      "buildsystem":"cmake",
+      "name": "nlohmann",
+      "sources":[
+        {
+          "sha256": "d51a3a8d3efbb1139d7608e28782ea9efea7e7933157e8ff8184901efd8ee760",
+          "type": "archive",
+          "url": "https://github.com/nlohmann/json/archive/v3.7.0.tar.gz"
+        }
+      ]
+    },
+    {
+      "name": "sodium",
+      "sources": [
+        {
+          "sha256": "6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1",
+          "type": "archive",
+          "url": "https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18.tar.gz"
+        }
+      ]
+    },
+    {
+      "build-commands": [
+        "./bootstrap.sh --with-libraries=thread,system,iostreams --prefix=/app",
+        "./b2 -d0 variant=release link=static threading=multi --layout=system",
+        "./b2 -d0 install"
+      ],
+      "buildsystem": "simple",
+      "name": "boost",
+      "sources": [
+        {
+          "sha256": "430ae8354789de4fd19ee52f3b1f739e1fba576f0aded0897c3c2bc00fb38778",
+          "type": "archive",
+          "url": "https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.bz2"
+        }
+      ]
+    },
+    {
+      "config-opts": [
+        "-DBUILD_LIB_TESTS=OFF",
+        "-DBUILD_LIB_EXAMPLES=OFF",
+        "-DCMAKE_BUILD_TYPE=Release",
+	"-DBUILD_SHARED_LIBS=OFF"
+      ],
+      "buildsystem": "cmake-ninja",
+      "name": "mtxclient",
+      "sources": [
+        {
+          "sha256": "8cf5470570d2ed6affc0bbe0f4b6be9b0a2e2372e9f920b504126841bb73036f",
+          "type": "archive",
+          "url": "https://github.com/Nheko-Reborn/mtxclient/archive/5fbee216e640da45c05f25b1f84f03c88bca5910.tar.gz"
+        }
+      ]
+    },
+    {
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DTWEENY_BUILD_DOCUMENTATION=OFF",
+        "-DTWEENY_BUILD_EXAMPLES=OFF"
+      ],
+      "buildsystem": "cmake-ninja",
+      "name": "tweeny",
+      "sources": [
+        {
+          "sha256": "482857256a7235646004682912badb6521d361ed6987c8ebdae7986bf64ce694",
+          "type": "archive",
+          "url": "https://github.com/mobius3/tweeny/archive/43f4130f7e4a67c19d870b60864bc2862c19b81f.tar.gz"
+        }
+      ]
+    },
+    {
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DLMDBXX_INCLUDE_DIR=.deps/lmdbxx"
+      ],
+      "buildsystem": "cmake-ninja",
+      "name": "nheko",
+      "sources": [
+        {
+          "path": ".",
+          "type": "dir",
+	  "skip": ["build-flatpak"]
+        },
+        {
+          "dest": ".deps/lmdbxx",
+          "sha256": "93721132bbf5045d38ad62de2997655e9984c48ea5c9886746d42128f4b26fbd",
+          "type": "archive",
+          "url": "https://github.com/bendiken/lmdbxx/archive/0b43ca87d8cfabba392dfe884eb1edb83874de02.tar.gz"
+        }
+      ]
+    }
+  ]
+}

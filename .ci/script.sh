@@ -2,6 +2,19 @@
 
 set -ex
 
+if [ "$FLATPAK" ]; then
+	mkdir -p build-flatpak
+	cd build-flatpak
+
+	flatpak-builder --ccache --repo=repo --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
+	flatpak build-bundle repo nheko-${VERSION}-${ARCH}.flatpak io.github.NhekoReborn.Nheko 0.7.0-dev
+
+	mkdir ../artifacts
+	mv nheko-*.flatpak ../artifacts
+
+	exit
+fi
+
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     # make build use all available cores
     export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)

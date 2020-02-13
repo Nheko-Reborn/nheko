@@ -101,6 +101,19 @@ matrix:
                     - qt59graphicaleffects
                     - liblmdb-dev
                     - libgl1-mesa-dev # needed for missing gl.h
+        - os: linux
+          env:
+              - DEPLOY=1
+              - FLATPAK=1
+              - ARCH=amd64
+          addons:
+              apt:
+                  sources: 
+                    - sourceline: 'ppa:alexlarsson/flatpak'
+                  packages: 
+                    - flatpak
+                    - flatpak-builder
+                    - elfutils
 
 before_install:
     # Use TRAVIS_TAG if defined, or the short commit SHA otherwise

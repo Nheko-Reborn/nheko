@@ -2,6 +2,12 @@
 
 set -ex
 
+if [ "$FLATPAK" ]; then
+	flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	flatpak --noninteractive install --user flathub org.kde.Platform//5.14
+	flatpak --noninteractive install --user flathub org.kde.Sdk//5.14
+	exit
+fi
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     sudo python get-pip.py

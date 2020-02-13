@@ -129,8 +129,7 @@ if(USE_BUNDLED_LMDB)
 	hunter_add_package(lmdb)
 	find_package(liblmdb CONFIG REQUIRED)
 else()
-	include(FindPkgConfig)
-	pkg_search_module(lmdb REQUIRED IMPORTED_TARGET lmdb)
+	find_package(LMDB)
 endif()
 
 #
@@ -561,15 +560,11 @@ target_link_libraries(nheko PRIVATE
 	Qt5::QuickWidgets
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
+	liblmdb::lmdb
 	tweeny)
 
-if(USE_BUNDLED_LMDB)
-	target_link_libraries(nheko PRIVATE liblmdb::lmdb)
-	if(MSVC)
-		target_link_libraries(nheko PRIVATE ntdll)
-	endif()
-else()
-	target_link_libraries(nheko PRIVATE PkgConfig::lmdb)
+if(MSVC)
+	target_link_libraries(nheko PRIVATE ntdll)
 endif()
 
 
