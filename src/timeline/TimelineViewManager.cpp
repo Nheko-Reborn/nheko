@@ -158,7 +158,7 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
                 auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
 
                 auto imgDialog = new dialogs::ImageOverlay(pixmap);
-                imgDialog->show();
+                imgDialog->showFullScreen();
                 connect(imgDialog, &dialogs::ImageOverlay::saving, timeline_, [this, eventId]() {
                         timeline_->saveMedia(eventId);
                 });

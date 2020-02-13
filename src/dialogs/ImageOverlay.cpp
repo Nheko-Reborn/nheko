@@ -41,10 +41,6 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
         setAttribute(Qt::WA_DeleteOnClose, true);
         setWindowState(Qt::WindowFullScreen);
 
-        screen_ = QGuiApplication::primaryScreen()->availableGeometry();
-
-        resize(screen_.size());
-
         connect(this, SIGNAL(closing()), this, SLOT(close()));
 
         raise();
@@ -59,15 +55,15 @@ ImageOverlay::paintEvent(QPaintEvent *event)
         painter.setRenderHint(QPainter::Antialiasing);
 
         // Full screen overlay.
-        painter.fillRect(QRect(0, 0, screen_.width(), screen_.height()), QColor(55, 55, 55, 170));
+        painter.fillRect(QRect(0, 0, width(), height()), QColor(55, 55, 55, 170));
 
         // Left and Right margins
-        int outer_margin = screen_.width() * 0.12;
+        int outer_margin = width() * 0.12;
         int buttonSize   = 36;
         int margin       = outer_margin * 0.1;
 
-        int max_width  = screen_.width() - 2 * outer_margin;
-        int max_height = screen_.height();
+        int max_width  = width() - 2 * outer_margin;
+        int max_height = height();
 
         image_ = utils::scaleDown(max_width, max_height, originalImage_);
 
@@ -75,10 +71,9 @@ ImageOverlay::paintEvent(QPaintEvent *event)
         int diff_y = max_height - image_.height();
 
         content_ = QRect(outer_margin + diff_x / 2, diff_y / 2, image_.width(), image_.height());
-        close_button_ =
-          QRect(screen_.width() - margin - buttonSize, margin, buttonSize, buttonSize);
+        close_button_ = QRect(width() - margin - buttonSize, margin, buttonSize, buttonSize);
         save_button_ =
-          QRect(screen_.width() - (2 * margin) - (2 * buttonSize), margin, buttonSize, buttonSize);
+          QRect(width() - (2 * margin) - (2 * buttonSize), margin, buttonSize, buttonSize);
 
         // Draw main content_.
         painter.drawPixmap(content_, image_);
