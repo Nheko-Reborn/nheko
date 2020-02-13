@@ -293,7 +293,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         QFont monospaceFont;
         monospaceFont.setFamily("Monospace");
         monospaceFont.setStyleHint(QFont::Monospace);
-        monospaceFont.setPointSizeF(monospaceFont.pointSizeF() * 0.9);
+        monospaceFont.setPointSizeF(monospaceFont.pointSizeF() * 0.8);
 
         auto deviceIdLayout = new QHBoxLayout;
         deviceIdLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -310,6 +310,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         auto deviceFingerprintLayout = new QHBoxLayout;
         deviceFingerprintLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
 
+        auto deviceFingerprintValueLayout = new QHBoxLayout;
+        deviceFingerprintValueLayout->setContentsMargins(0, 0, 0, OptionMargin);
+
         auto deviceFingerprintLabel = new QLabel(tr("Device Fingerprint"), this);
         deviceFingerprintLabel->setFont(font);
         deviceFingerprintLabel->setMargin(0);
@@ -317,7 +320,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         deviceFingerprintValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
         deviceFingerprintValue_->setFont(monospaceFont);
         deviceFingerprintLayout->addWidget(deviceFingerprintLabel, 1);
-        deviceFingerprintLayout->addWidget(deviceFingerprintValue_);
+        deviceFingerprintValueLayout->addWidget(deviceFingerprintValue_, 0, Qt::AlignRight);
 
         auto sessionKeysLayout = new QHBoxLayout;
         sessionKeysLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
@@ -336,6 +339,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         encryptionLayout_->addLayout(deviceIdLayout);
         encryptionLayout_->addLayout(deviceFingerprintLayout);
+        encryptionLayout_->addLayout(deviceFingerprintValueLayout);
         encryptionLayout_->addWidget(new HorizontalLine{this});
         encryptionLayout_->addLayout(sessionKeysLayout);
 
