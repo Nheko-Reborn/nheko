@@ -1,109 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de">
+<TS version="2.1" language="ja_JP">
 <context>
     <name>ChatPage</name>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+223"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーを招待できませんでした: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+868"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>招待されたユーザー: %1</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%2に%1を招待できませんでした: %3</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%2に%1を一時的に追放できませんでした: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>一時的に追放されたユーザー: %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%2で%1を永久追放できませんでした: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>永久追放されたユーザー: %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%2で%1の永久追放を解除できませんでした: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>永久追放を解除されたユーザー: %1</translation>
     </message>
     <message>
         <location line="-807"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
+        <translation>メディアをアップロードできませんでした。やり直して下さい。</translation>
     </message>
     <message>
         <location line="+399"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation>Wiederherstellung des OLM Accounts fehlgeschlagen. Bitte logge dich erneut ein.</translation>
+        <translation>OLMアカウントを復元できませんでした。もう一度ログインして下さい。</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation>Gespeicherte Nachrichten konnten nicht wiederhergestellt werden. Bitte melde Dich erneut an.</translation>
+        <translation>セーブデータを復元できませんでした。もう一度ログインして下さい。</translation>
     </message>
     <message>
         <location line="+148"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
+        <translation>暗号化鍵を設定できませんでした。サーバーの応答: %1 %2. 後でやり直して下さい。</translation>
     </message>
     <message>
         <location line="+51"/>
         <location line="+231"/>
         <source>Please try to login again: %1</source>
-        <translation>Bitte melde dich erneut an: %1</translation>
+        <translation>もう一度ログインしてみて下さい: %1</translation>
     </message>
     <message>
         <location line="-154"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>部屋に参加できませんでした: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>部屋に参加しました</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>招待を削除できませんでした: %1</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room creation failed: %1</source>
-        <translation>Raum konnte nicht erstellt werden: %1</translation>
+        <translation>部屋を作成できませんでした: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Room %1 created</source>
-        <translation type="unfinished"></translation>
+        <translation>部屋 %1 を作成しました</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to leave room: %1</source>
-        <translation>Konnte den Raum nicht verlassen: %1</translation>
+        <translation>部屋から出られませんでした: %1</translation>
     </message>
 </context>
 <context>
@@ -111,28 +111,28 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
-        <translation>Alle Räume</translation>
+        <translation>全ての部屋</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation>Favoriten</translation>
+        <translation>お気に入りの部屋</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation>Räume niedriger Priorität</translation>
+        <translation>優先度の低い部屋</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation> (tag)</translation>
+        <translation> (タグ)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation> (community)</translation>
+        <translation> (コミュニティー)</translation>
     </message>
 </context>
 <context>
@@ -140,22 +140,22 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+59"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>適用</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation>Name</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation>Thema</translation>
+        <translation>話題</translation>
     </message>
 </context>
 <context>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+12"/>
         <source>Encrypted</source>
-        <translation>Verschlüsselt</translation>
+        <translation>暗号化されています</translation>
     </message>
 </context>
 <context>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+17"/>
         <source>Remove</source>
-        <translation>Löschen</translation>
+        <translation>削除</translation>
     </message>
 </context>
 <context>
@@ -179,57 +179,57 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+82"/>
         <source>Matrix ID</source>
-        <translation>Matrix-ID</translation>
+        <translation>Matrix ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation>z.B. @joe:matrix.org</translation>
+        <translation>例 @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Password</source>
-        <translation>Passwort</translation>
+        <translation>パスワード</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device name</source>
-        <translation>Gerätename</translation>
+        <translation>デバイス名</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>LOGIN</source>
-        <translation>ANMELDEN</translation>
+        <translation>ログイン</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation>Automatische Erkennung fehlgeschlagen. Antwort war fehlerhaft.</translation>
+        <translation>自動検出できませんでした。不正な形式の応答を受信しました。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation>Automatische Erkennung fehlgeschlagen. Unbekannter Fehler bei Anfrage .well-known.</translation>
+        <translation>自動検出できませんでした。.well-known要求時の不明なエラー。</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation>Benötigte Ansprechpunkte nicht auffindbar. Möglicherweise kein Matrixserver.</translation>
+        <translation>必要な端点が見つかりません。Matrixサーバーではないかもしれません。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation>Erhaltene Antwort war fehlerhaft. Bitte Homeserverdomain prüfen.</translation>
+        <translation>不正な形式の応答を受信しました。ホームサーバーのドメイン名が有効であるかを確認して下さい。</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation>Ein unbekannter Fehler ist aufgetreten. Bitte Homeserverdomain prüfen.</translation>
+        <translation>不明なエラーが発生しました。ホームサーバーのドメイン名が有効であるかを確認して下さい。</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Empty password</source>
-        <translation>Leeres Passwort</translation>
+        <translation>パスワードが入力されていません</translation>
     </message>
 </context>
 <context>
@@ -237,7 +237,7 @@
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+90"/>
         <source>Room members</source>
-        <translation>Teilnehmerliste</translation>
+        <translation>部屋の参加者</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -250,32 +250,32 @@
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+63"/>
         <source>redacted</source>
-        <translation>gelöscht</translation>
+        <translation>編集済み</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption enabled</source>
-        <translation>Verschlüsselung aktiviert</translation>
+        <translation>暗号化が有効です</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>room name changed to: %1</source>
-        <translation>Raumname wurde gändert auf: %1</translation>
+        <translation>部屋名が変更されました: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation>Raumname wurde entfernt</translation>
+        <translation>部屋名が削除されました</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>topic changed to: %1</source>
-        <translation>Raumthema wurde geändert auf: %1</translation>
+        <translation>話題が変更されました: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation>Raumthema wurde entfernt.</translation>
+        <translation>話題が削除されました</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation>Unimplementiertes Event: </translation>
+        <translation>未実装のイベント: </translation>
     </message>
 </context>
 <context>
@@ -291,7 +291,7 @@
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
         <source>Search for a room...</source>
-        <translation>Raum suchen…</translation>
+        <translation>部屋を探す...</translation>
     </message>
 </context>
 <context>
@@ -299,47 +299,47 @@
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+80"/>
         <source>Username</source>
-        <translation>Benutzername</translation>
+        <translation>ユーザー名</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Password</source>
-        <translation>Passwort</translation>
+        <translation>パスワード</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation>Passwortbestätigung</translation>
+        <translation>パスワード確認</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Home Server</source>
-        <translation>Homeserver</translation>
+        <translation>ホームサーバー</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>REGISTER</source>
-        <translation>REGISTRIEREN</translation>
+        <translation>登録</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Invalid username</source>
-        <translation>Ungültiger Benutzername</translation>
+        <translation>無効なユーザー名です</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation>Passwort nicht lang genug (mind. 8 Zeichen)</translation>
+        <translation>パスワード長が不足しています (最小8文字)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Passwords don&apos;t match</source>
-        <translation>Passwörter stimmen nicht überein</translation>
+        <translation>パスワードが一致しません</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invalid server name</source>
-        <translation>Ungültiger Servername</translation>
+        <translation>無効なサーバー名です</translation>
     </message>
 </context>
 <context>
@@ -347,7 +347,7 @@
     <message>
         <location filename="../../src/popups/ReplyPopup.cpp" line="+46"/>
         <source>Logout</source>
-        <translation>Abmelden</translation>
+        <translation>ログアウト</translation>
     </message>
 </context>
 <context>
@@ -355,7 +355,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+2304"/>
         <source>no version stored</source>
-        <translation>keine Version gespeichert</translation>
+        <translation>バージョンが保存されていません</translation>
     </message>
 </context>
 <context>
@@ -363,17 +363,17 @@
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+95"/>
         <source>Leave room</source>
-        <translation>Raum verlassen</translation>
+        <translation>部屋を出る</translation>
     </message>
     <message>
         <location line="+151"/>
         <source>Accept</source>
-        <translation>Akzeptieren</translation>
+        <translation>容認</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation>Ablehnen</translation>
+        <translation>拒否</translation>
     </message>
 </context>
 <context>
@@ -381,27 +381,27 @@
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+38"/>
         <source>User settings</source>
-        <translation>Benutzereinstellungen</translation>
+        <translation>ユーザー設定</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation>Neuen Raum erstellen</translation>
+        <translation>新しい部屋を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation>Raum betreten</translation>
+        <translation>部屋に参加</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation>Neues Gespräch beginnen</translation>
+        <translation>新しいチャットを開始</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation>Raumverzeichnis</translation>
+        <translation>部屋一覧</translation>
     </message>
 </context>
 <context>
@@ -409,22 +409,22 @@
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+14"/>
         <source>Failed</source>
-        <translation>Fehlgeschlagen</translation>
+        <translation>失敗</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent</source>
-        <translation>Gesendet</translation>
+        <translation>送信済み</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Received</source>
-        <translation>Empfangen</translation>
+        <translation>受信済み</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Read</source>
-        <translation>Gelesen</translation>
+        <translation>既読</translation>
     </message>
 </context>
 <context>
@@ -432,38 +432,38 @@
     <message>
         <location filename="../../src/TextInputWidget.cpp" line="+493"/>
         <source>Send a file</source>
-        <translation>Versende Datei</translation>
+        <translation>ファイルを送信</translation>
     </message>
     <message>
         <location line="+13"/>
         <location filename="../../src/TextInputWidget.h" line="+159"/>
         <source>Write a message...</source>
-        <translation>Schreibe eine Nachricht…</translation>
+        <translation>メッセージを書く...</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Send a message</source>
-        <translation>Versende eine Nachricht</translation>
+        <translation>メッセージを送信</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Emoji</source>
-        <translation>Emoji</translation>
+        <translation>絵文字</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>Select a file</source>
-        <translation>Datei auswählen</translation>
+        <translation>ファイルを選択</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation>Alle Dateien (*)</translation>
+        <translation>全てのファイル (*)</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
         <source>Connection lost. Nheko is trying to re-connect...</source>
-        <translation>Verbindung verloren. Nheko versucht sie wieder aufzunehmen…</translation>
+        <translation>接続が切れました。Nhekoは再接続を試みています...</translation>
     </message>
 </context>
 <context>
@@ -472,141 +472,141 @@
         <location filename="../../src/timeline/TimelineModel.cpp" line="+716"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation>-- verschlüsselter Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
+        <translation>-- 暗号化イベント (復号鍵が見つかりません) --</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation>-- Entschlüsselungsfehler (Fehler bei Kommunikation mit Datenbank) --</translation>
+        <translation>-- 復号エラー (データベースと通信できませんでした) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation>-- Entschlüsselungsfehler (Fehler bei Suche nach megolm Schlüsseln in Datenbank) --</translation>
+        <translation>-- 復号エラー (データベースからmegolm鍵を取得できませんでした) --</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
-        <translation>-- Entschlüsselungsfehler (%1) --</translation>
+        <translation>-- 復号エラー (%1) --</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation>-- verschlüsselter Event (Unbekannter Eventtyp) --</translation>
+        <translation>-- 暗号化イベント (不明なイベント型です) --</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Message redaction failed: %1</source>
-        <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
+        <translation>メッセージを編集できませんでした: %1</translation>
     </message>
     <message>
         <location line="+454"/>
         <source>Save image</source>
-        <translation>Bild speichern</translation>
+        <translation>画像を保存</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation>Video speichern</translation>
+        <translation>動画を保存</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation>Audiodatei speichern</translation>
+        <translation>音声を保存</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation>Datei speichern</translation>
+        <translation>ファイルを保存</translation>
     </message>
     <message numerus="yes">
         <location line="+126"/>
         <source>%1 and %2 are typing</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>%1%2 tippt</numerusform>
-            <numerusform>%1 und %2 tippen</numerusform>
+            <numerusform>%1%2が入力しています</numerusform>
+            <numerusform>%1と%2が入力しています</numerusform>
         </translation>
     </message>
     <message>
         <location line="+95"/>
         <source>%1 was invited.</source>
-        <translation>%1 wurde eingeladen.</translation>
+        <translation>%1が招待されました。</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 changed their display name and avatar.</source>
-        <translation>%1 hat den Anzeigenamen und Avatar geändert.</translation>
+        <translation>%1が表示名とアバターを変更しました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation>%1 hat den Anzeigenamen geändert.</translation>
+        <translation>%1が表示名を変更しました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their avatar.</source>
-        <translation>%1 hat den Avatar geändert.</translation>
+        <translation>%1がアバターを変更しました。</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 joined.</source>
-        <translation>%1 hat den Raum betreten.</translation>
+        <translation>%1が参加しました。</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 rejected their invite.</source>
-        <translation>%1 hat die Einladung abgewiesen.</translation>
+        <translation>%1が招待を拒否しました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation>Hat die Einladung an %1 zurückgezogen.</translation>
+        <translation>%1への招待を取り消しました。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation>%1 hat den Raum verlassen.</translation>
+        <translation>%1は退室しました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation>%1 wurde gekickt.</translation>
+        <translation>%1を一時的に追放しました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unbanned %1</source>
-        <translation>Hat die Verbannung von %1 zurückgezogen.</translation>
+        <translation>%1の永久追放を解除しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 redacted their knock.</source>
-        <translation>%1 hat das Anklopfen zurückgezogen.</translation>
+        <translation>%1がノックを編集しました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rejected the knock from %1.</source>
-        <translation>Hat das Anklopfen von %1 abgewiesen.</translation>
+        <translation>%1からのノックを拒否しました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouln&apos;t happen apart from state resets</comment>
-        <translation>%1 hat den Raum verlassen.</translation>
+        <translation>退出済みの%1が退出しました!</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 was banned.</source>
-        <translation>%1 wurde gebannt.</translation>
+        <translation>%1が永久追放されました。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 knocked.</source>
-        <translation>%1 hat angeklopft.</translation>
+        <translation>%1がノックしました。</translation>
     </message>
 </context>
 <context>
@@ -614,12 +614,12 @@
     <message>
         <location filename="../qml/TimelineRow.qml" line="+64"/>
         <source>Reply</source>
-        <translation>Antworten</translation>
+        <translation>返信</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Options</source>
-        <translation>Optionen</translation>
+        <translation>オプション</translation>
     </message>
 </context>
 <context>
@@ -627,37 +627,37 @@
     <message>
         <location filename="../qml/TimelineView.qml" line="+32"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lesebestätigungen</translation>
+        <translation>開封確認</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Mark as read</source>
-        <translation type="unfinished">Als gelesen markieren</translation>
+        <translation>既読にする</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>View raw message</source>
-        <translation type="unfinished">Zeige rohen Nachrichteninhalt</translation>
+        <translation>ソースを見る</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Redact message</source>
-        <translation type="unfinished">Nachricht löschen</translation>
+        <translation>メッセージを編集</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Save as</source>
-        <translation type="unfinished">Speichern als...</translation>
+        <translation>名前を付けて保存</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>No room open</source>
-        <translation>Kein Raum geöffnet</translation>
+        <translation>部屋が開いていません</translation>
     </message>
     <message>
         <location line="+239"/>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -665,32 +665,32 @@
     <message>
         <location filename="../../src/TopRoomBar.cpp" line="+86"/>
         <source>Room options</source>
-        <translation>Raumoptionen</translation>
+        <translation>部屋のオプション</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Mentions</source>
-        <translation>Erwähnungen</translation>
+        <translation>メンション</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Invite users</source>
-        <translation>Benutzer einladen</translation>
+        <translation>ユーザーを招待</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Members</source>
-        <translation>Teilnehmer</translation>
+        <translation>メンバー</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation>Raum verlassen</translation>
+        <translation>退室する</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation>Einstellungen</translation>
+        <translation>設定</translation>
     </message>
 </context>
 <context>
@@ -698,12 +698,12 @@
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+122"/>
         <source>Show</source>
-        <translation>Zeigen</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation>Schließen</translation>
+        <translation>終了</translation>
     </message>
 </context>
 <context>
@@ -711,7 +711,7 @@
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+88"/>
         <source>Logout</source>
-        <translation>Abmelden</translation>
+        <translation>ログアウト</translation>
     </message>
 </context>
 <context>
@@ -719,107 +719,107 @@
     <message>
         <location filename="../../src/UserSettingsPage.cpp" line="+189"/>
         <source>Minimize to tray</source>
-        <translation>Ins Benachrichtigungsfeld minimieren</translation>
+        <translation>トレイへ最小化</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start in tray</source>
-        <translation>Im Benachrichtigungsfeld starten</translation>
+        <translation>トレイで起動</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Group&apos;s sidebar</source>
-        <translation>Gruppen-Seitenleiste</translation>
+        <translation>グループサイドバー</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Circular Avatars</source>
-        <translation>Runde Profilbilder</translation>
+        <translation>円形アバター</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Typing notifications</source>
-        <translation>Schreibbenachrichtigungen</translation>
+        <translation>入力状態の通知</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Read receipts</source>
-        <translation>Lesebestätigungen</translation>
+        <translation>開封確認</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Send messages as markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>メッセージをmarkdownとして送信</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Desktop notifications</source>
-        <translation>Desktopbenachrichtigungen</translation>
+        <translation>デスクトップ通知</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Scale factor</source>
-        <translation>Skalierungsfaktor</translation>
+        <translation>尺度係数</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Font size</source>
-        <translation>Schriftgröße</translation>
+        <translation>フォントサイズ</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Font Family</source>
-        <translation>Schriftart</translation>
+        <translation>フォントファミリー</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Emoji Font Famly</source>
-        <translation>Emoji Schriftart</translation>
+        <translation>絵文字のフォントファミリー</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Theme</source>
-        <translation>Erscheinungsbild</translation>
+        <translation>テーマ</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Device ID</source>
-        <translation>Geräte-ID</translation>
+        <translation>デバイスID</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Device Fingerprint</source>
-        <translation>Gerätefingerabdruck</translation>
+        <translation>デバイスの指紋</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Session Keys</source>
-        <translation>Sitzungsschlüssel</translation>
+        <translation>セッション鍵</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation>IMPORTIEREN</translation>
+        <translation>インポート</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>EXPORT</source>
-        <translation>EXPORTIEREN</translation>
+        <translation>エクスポート</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>ENCRYPTION</source>
-        <translation>VERSCHLÜSSELUNG</translation>
+        <translation>暗号化</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>GENERAL</source>
-        <translation>ALLGEMEINES</translation>
+        <translation>全般</translation>
     </message>
     <message>
         <location line="+168"/>
         <source>Open Sessions File</source>
-        <translation>Öffne Sessions Datei</translation>
+        <translation>セッションファイルを開く</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -833,34 +833,34 @@
         <location line="+2"/>
         <location line="+2"/>
         <source>Error</source>
-        <translation>Feher</translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <location line="-73"/>
         <location line="+32"/>
         <source>File Password</source>
-        <translation>Password für Datei</translation>
+        <translation>ファイルのパスワード</translation>
     </message>
     <message>
         <location line="-31"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation>Bitte gib das Passwort zum Enschlüsseln der Datei ein:</translation>
+        <translation>ファイルを復号するためのパスフレーズを入力して下さい:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+32"/>
         <source>The password cannot be empty</source>
-        <translation>Das Passwort darf nicht leer sein</translation>
+        <translation>パスワードを空にはできません</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation>Bitte gib das Passwort zum Verschlüsseln der Sitzungsschlüssel ein:</translation>
+        <translation>セッション鍵を暗号化するためのパスフレーズを入力して下さい:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>File to save the exported session keys</source>
-        <translation>Datei zum Speichern der zu exportierenden Sitzungsschlüssel</translation>
+        <translation>エクスポートされたセッション鍵を保存するファイル</translation>
     </message>
 </context>
 <context>
@@ -868,22 +868,22 @@
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+47"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Willkommen bei nheko! Ein Desktop-Client für das Matrix-Protokoll.</translation>
+        <translation>Matrixプロトコルのデスクトップクライアント、nhekoへようこそ!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation>Viel Vergnügen!</translation>
+        <translation>会話を楽しんで下さい!</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation>REGISTRIEREN</translation>
+        <translation>登録</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation>ANMELDEN</translation>
+        <translation>ログイン</translation>
     </message>
 </context>
 <context>
@@ -891,7 +891,7 @@
     <message>
         <location filename="../../src/Utils.cpp" line="+138"/>
         <source>Yesterday</source>
-        <translation>Gestern</translation>
+        <translation>昨日</translation>
     </message>
 </context>
 <context>
@@ -899,42 +899,42 @@
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation>Raum erstellen</translation>
+        <translation>部屋を作成</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation>Raumname</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation>Thema</translation>
+        <translation>話題</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation>Raumalias</translation>
+        <translation>別名</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation>Raumsichtbarkeit</translation>
+        <translation>部屋の可視性</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation>Raumvorlage</translation>
+        <translation>部屋の初期値</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation>Direkter Chat</translation>
+        <translation>ダイレクトメッセージ</translation>
     </message>
 </context>
 <context>
@@ -942,12 +942,12 @@
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+41"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>User ID to invite</source>
-        <translation>Benutzer-ID, die eingeladen werden soll</translation>
+        <translation>招待するユーザーのID</translation>
     </message>
 </context>
 <context>
@@ -955,17 +955,17 @@
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation>Betreten</translation>
+        <translation>参加</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room ID or alias</source>
-        <translation>Raum-ID oder -Alias</translation>
+        <translation>部屋のID又は別名</translation>
     </message>
 </context>
 <context>
@@ -973,12 +973,12 @@
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Are you sure you want to leave?</source>
-        <translation>Willst du wirklich den Raum verlassen?</translation>
+        <translation>本当に退出しますか?</translation>
     </message>
 </context>
 <context>
@@ -986,12 +986,12 @@
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation>Willst du dich wirklich abmelden?</translation>
+        <translation>本当にログアウトしますか?</translation>
     </message>
 </context>
 <context>
@@ -999,20 +999,20 @@
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
         <source>Upload</source>
-        <translation>Hochladen</translation>
+        <translation>アップロード</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation>Medien-Typ: %1
-Medien-Größe: %2
+        <translation>メディアの種類: %1
+メディアのサイズ: %2
 </translation>
     </message>
 </context>
@@ -1021,17 +1021,17 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation>Bestätigen</translation>
+        <translation>確認</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation>Löse das reCAPTCHA und drücke den &quot;Bestätigen&quot;-Knopf</translation>
+        <translation>reCAPTCHAに解答して、確認ボタンを押して下さい</translation>
     </message>
 </context>
 <context>
@@ -1039,12 +1039,12 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+117"/>
         <source>Read receipts</source>
-        <translation>Lesebestätigungen</translation>
+        <translation>開封確認</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation>Schließen</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -1052,12 +1052,12 @@ Medien-Größe: %2
     <message>
         <location line="-44"/>
         <source>Today %1</source>
-        <translation>Heute %1</translation>
+        <translation>今日 %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Yesterday %1</source>
-        <translation>Gestern %1</translation>
+        <translation>昨日 %1</translation>
     </message>
 </context>
 <context>
@@ -1065,128 +1065,129 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+113"/>
         <source>Settings</source>
-        <translation>Einstellungen</translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation>Informationen</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation>interne ID</translation>
+        <translation>内部ID</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation>Raumversion</translation>
+        <translation>部屋のバージョン</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Notifications</source>
-        <translation>Benachrichtigungen</translation>
+        <translation>通知</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Muted</source>
-        <translation>Stumm</translation>
+        <translation>ミュート</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Mentions only</source>
-        <translation>Nur Erwähnungen</translation>
+        <translation>メンションのみ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All messages</source>
-        <translation>Alle Nachrichten</translation>
+        <translation>全てのメッセージ</translation>
     </message>
     <message>
         <location line="+97"/>
         <source>Room access</source>
-        <translation>Raumzugang</translation>
+        <translation>部屋のアクセス権</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Anyone and guests</source>
-        <translation>Alle, denen der Raum-Link bekannt ist (auch Gäste)</translation>
+        <translation>登録ユーザーとゲスト</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anyone</source>
-        <translation>Alle, denen der Raum-Link bekannt ist (ausgenommen Gäste)</translation>
+        <translation>登録ユーザーのみ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation>Nur Eingeladene</translation>
+        <translation>招待された登録ユーザーのみ</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation>Verschlüsselung</translation>
+        <translation>暗号化</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>End-to-End Encryption</source>
-        <translation>Ende-zu-Ende Verschlüsselung</translation>
+        <translation>エンドツーエンド暗号化</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation>Verschlüsselung befindet sich momentan in einem experimentellen Stadium, unerwartete Fehler können auftreten. &lt;br&gt;Sie kann anschließend nicht wieder deaktiviert werden.</translation>
+        <translation>暗号化機能は実験段階にあるので、予期せずに壊れるかもしれません。 &lt;br&gt;この機能を後から無効にできないことに注意して下さい。</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Respond to key requests</source>
-        <translation>Schlüsselnfrage beantworten</translation>
+        <translation>鍵の要求に応答する</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation>Ob nheko automatisch auf Anfragen mit Sessionschlüsseln antworten soll, oder nicht. Bitte mit Vorsicht nutzen, da dies eine temporäre Massnahme ist. Sie dient dem Test von E2E Verschlüsselung, bis die Geräteverifikation fertig gestellt ist.</translation>
+        <translation>クライアントがセッション鍵を要求された際に、自動的に応答するべきか否か。
+デバイス検証機能が実装されるまでのE2E暗号化を検査するための一時的な方法なので、
+これを利用する際は注意して下さい。</translation>
     </message>
     <message numerus="yes">
         <location line="+51"/>
         <source>%n member(s)</source>
         <translation>
-            <numerusform>%n Teilnehmer</numerusform>
-            <numerusform>%n Teilnehmer</numerusform>
+            <numerusform>%n人</numerusform>
         </translation>
     </message>
     <message>
         <location line="+140"/>
         <source>Failed to enable encryption: %1</source>
-        <translation>Aktivierung der Verschlüsselung fehlgeschlagen: %1</translation>
+        <translation>暗号化を有効にできませんでした: %1</translation>
     </message>
     <message>
         <location line="+145"/>
         <source>Select an avatar</source>
-        <translation>Wähle einen Avatar</translation>
+        <translation>アバターを選択</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation>Alle Dateien (*)</translation>
+        <translation>全てのファイル (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation>Die ausgewählte Datei ist kein Bild</translation>
+        <translation>選択したファイルは画像ではありません</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation>Fehler beim Lesen der DateI: %1</translation>
+        <translation>ファイルの読み込み時にエラーが発生しました: %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation>Hochladen der Bilddatei fehlgeschlagen: %s</translation>
+        <translation>画像をアップロードできませんでした: %s</translation>
     </message>
 </context>
 <context>
@@ -1194,27 +1195,27 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
         <source>Ban the user from the room</source>
-        <translation>Banne den Nutzer aus diesem Raum</translation>
+        <translation>ユーザーを部屋から永久追放する</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Ignore messages from this user</source>
-        <translation>Nachrichten von diesem Nutzer ignorieren</translation>
+        <translation>このユーザーからのメッセージを無視する</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Kick the user from the room</source>
-        <translation>Entferne diesen Nutzer aus dem Raum</translation>
+        <translation>ユーザーを部屋から一時的に追放する</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Start a conversation</source>
-        <translation>Gespräch beginnen</translation>
+        <translation>会話を始める</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Devices</source>
-        <translation>Geräte</translation>
+        <translation>デバイス</translation>
     </message>
 </context>
 <context>
@@ -1222,42 +1223,42 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/emoji/Panel.cpp" line="+126"/>
         <source>Smileys &amp; People</source>
-        <translation>Smileys &amp; Personen</translation>
+        <translation>表情と人</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Animals &amp; Nature</source>
-        <translation>Tiere &amp; Natur</translation>
+        <translation>動物と自然</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Food &amp; Drink</source>
-        <translation>Essen &amp; Trinken</translation>
+        <translation>飲食物</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Activity</source>
-        <translation>Aktivitäten</translation>
+        <translation>活動</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Travel &amp; Places</source>
-        <translation>Reisen &amp; Orte</translation>
+        <translation>旅行と場所</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Objects</source>
-        <translation>Objekte</translation>
+        <translation>物</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Symbols</source>
-        <translation>Symbole</translation>
+        <translation>記号</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Flags</source>
-        <translation>Flaggen</translation>
+        <translation>旗</translation>
     </message>
 </context>
 <context>
@@ -1265,67 +1266,67 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/Utils.h" line="+100"/>
         <source>You sent an audio clip</source>
-        <translation>Du hast eine Audiodatei gesendet.</translation>
+        <translation>音声データを送信しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation>%1 hat eine Audiodatei gesendet.</translation>
+        <translation>%1が音声データを送信しました</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation>Du hast ein Bild gesendet.</translation>
+        <translation>画像を送信しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation>%1 hat ein Bild gesendet.</translation>
+        <translation>%1が画像を送信しました</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation>Du hast eine Datei gesendet.</translation>
+        <translation>ファイルを送信しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation>%1 hat eine Datei gesendet.</translation>
+        <translation>%1がファイルを送信しました</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation>Du hast ein Video gesendet.</translation>
+        <translation>動画を送信しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation>%1 hat ein Video gesendet.</translation>
+        <translation>%1が動画を送信しました</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation>Du hast einen Sticker gesendet.</translation>
+        <translation>ステッカーを送信しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation>%1 hat einen Sticker gesendet.</translation>
+        <translation>%1がステッカーを送信しました</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation>Du hast eine Benachrichtigung gesendet.</translation>
+        <translation>通知を送信しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation>%1 hat eine Benachrichtigung gesendet.</translation>
+        <translation>%1が通知を送信しました</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation>Du: %1</translation>
+        <translation>あなた: %1</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1335,12 +1336,12 @@ Medien-Größe: %2
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation>Du hast eine verschlüsselte Nachricht gesendet.</translation>
+        <translation>暗号化されたメッセージを送信しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation>%1 hat eine verschlüsselte Nachricht gesendet.</translation>
+        <translation>%1が暗号化されたメッセージを送信しました</translation>
     </message>
 </context>
 <context>
@@ -1348,12 +1349,12 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation>Dieser Raum</translation>
+        <translation>この部屋</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation>Alle Räume</translation>
+        <translation>全ての部屋</translation>
     </message>
 </context>
 <context>
@@ -1361,7 +1362,7 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation>Unbekannter Nachrichtentyp</translation>
+        <translation>不明なメッセージ型です</translation>
     </message>
 </context>
 </TS>

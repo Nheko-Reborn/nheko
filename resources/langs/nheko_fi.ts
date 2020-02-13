@@ -10,7 +10,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+864"/>
+        <location line="+868"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -50,12 +50,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-803"/>
+        <location line="-807"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+395"/>
+        <location line="+399"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLM-tilin palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
@@ -248,7 +248,7 @@
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+60"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+63"/>
         <source>redacted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -353,7 +353,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2303"/>
+        <location filename="../../src/Cache.cpp" line="+2304"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -451,7 +451,7 @@
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+85"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>
@@ -625,7 +625,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+31"/>
+        <location filename="../qml/TimelineView.qml" line="+32"/>
         <source>Read receipts</source>
         <translation type="unfinished">Lukukuittaukset</translation>
     </message>
@@ -1088,12 +1088,12 @@ Median koko: %2
         <translation>Ilmoitukset</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Muted</source>
         <translation>Vaimennettu</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Mentions only</source>
         <translation>Vain maininnat</translation>
     </message>
@@ -1103,7 +1103,7 @@ Median koko: %2
         <translation>Kaikki viestit</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+97"/>
         <source>Room access</source>
         <translation>Pääsy huoneeseen</translation>
     </message>
