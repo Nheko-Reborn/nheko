@@ -43,7 +43,6 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
 
         screen_ = QGuiApplication::primaryScreen()->availableGeometry();
 
-        move(QApplication::desktop()->mapToGlobal(screen_.topLeft()));
         resize(screen_.size());
 
         connect(this, SIGNAL(closing()), this, SLOT(close()));
