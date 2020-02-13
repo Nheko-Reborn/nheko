@@ -44,6 +44,5 @@ private:
         QRect content_;
         QRect close_button_;
         QRect save_button_;
-        QRect screen_;
 };
 } // dialogs
