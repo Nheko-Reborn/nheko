@@ -24,6 +24,13 @@
     "/bin/mdb*",
     "*.a"
   ],
+  "build-options" : {
+	  "arch": {
+		  "aarch64": {
+			  "cxxflags": "-DBOOST_ASIO_DISABLE_EPOLL"
+		  }
+	  }
+  },
   "modules": [
         {
       "name": "lmdb",
