@@ -206,7 +206,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         std::tie(receiptsLayout, readReceipts_) = addSetting(tr("Read receipts"));
 
         QHBoxLayout *markdownLayout                = nullptr;
-        std::tie(markdownLayout, markdownEnabled_) = addSetting(tr("Send messages as markdown"));
+        std::tie(markdownLayout, markdownEnabled_) = addSetting(tr("Send messages as Markdown"));
 
         QHBoxLayout *desktopLayout                     = nullptr;
         std::tie(desktopLayout, desktopNotifications_) = addSetting(tr("Desktop notifications"));

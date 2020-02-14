@@ -747,7 +747,7 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Send messages as markdown</source>
+        <source>Send messages as Markdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

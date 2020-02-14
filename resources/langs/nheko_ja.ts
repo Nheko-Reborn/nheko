@@ -748,8 +748,8 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Send messages as markdown</source>
-        <translation>メッセージをmarkdownとして送信</translation>
+        <source>Send messages as Markdown</source>
+        <translation>メッセージをMarkdownとして送信</translation>
     </message>
     <message>
         <location line="+3"/>
