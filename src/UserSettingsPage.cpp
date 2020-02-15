@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <QProcessEnvironment>
 #include <QPushButton>
+#include <QResizeEvent>
 #include <QScrollArea>
 #include <QSettings>
 #include <QStandardPaths>
@@ -495,7 +496,17 @@ UserSettingsPage::showEvent(QShowEvent *)
 void
 UserSettingsPage::resizeEvent(QResizeEvent *event)
 {
-        sideMargin_ = width() * 0.2;
+        mainLayout_->setContentsMargins(0, LayoutTopMargin, 0, LayoutBottomMargin);
+        double contentMinWidth = mainLayout_->minimumSize().width();
+
+        if (event->size().width() * 0.6 > contentMinWidth)
+                sideMargin_ = width() * 0.2;
+        else
+                sideMargin_ = static_cast<double>(event->size().width() - contentMinWidth) / 2.;
+
+        if (sideMargin_ < 40)
+                sideMargin_ = 0;
+
         mainLayout_->setContentsMargins(
           sideMargin_, LayoutTopMargin, sideMargin_, LayoutBottomMargin);
 
