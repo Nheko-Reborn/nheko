@@ -1298,10 +1298,13 @@ TimelineModel::saveMedia(QString eventId) const
                 dialogTitle = tr("Save file");
         }
 
-        QString filterString = QMimeDatabase().mimeTypeForName(mimeType).filterString();
+        const QString filterString = QMimeDatabase().mimeTypeForName(mimeType).filterString();
+        const QString downloadsFolder =
+          QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+        const QString openLocation = downloadsFolder + "/" + originalFilename;
 
-        auto filename = QFileDialog::getSaveFileName(
-          manager_->getWidget(), dialogTitle, originalFilename, filterString);
+        const QString filename = QFileDialog::getSaveFileName(
+          manager_->getWidget(), dialogTitle, openLocation, filterString);
 
         if (filename.isEmpty())
                 return;

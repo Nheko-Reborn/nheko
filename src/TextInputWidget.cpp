@@ -626,8 +626,9 @@ TextInputWidget::command(QString command, QString args)
 void
 TextInputWidget::openFileSelection()
 {
+        const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
         const auto fileName =
-          QFileDialog::getOpenFileName(this, tr("Select a file"), "", tr("All Files (*)"));
+          QFileDialog::getOpenFileName(this, tr("Select a file"), homeFolder, tr("All Files (*)"));
 
         if (fileName.isEmpty())
                 return;

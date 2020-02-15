@@ -27,6 +27,7 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QString>
 #include <QTextStream>
 
@@ -513,7 +514,9 @@ UserSettingsPage::paintEvent(QPaintEvent *)
 void
 UserSettingsPage::importSessionKeys()
 {
-        auto fileName = QFileDialog::getOpenFileName(this, tr("Open Sessions File"), "", "");
+        const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        const QString fileName =
+          QFileDialog::getOpenFileName(this, tr("Open Sessions File"), homeFolder, "");
 
         QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly)) {
@@ -572,7 +575,8 @@ UserSettingsPage::exportSessionKeys()
         }
 
         // Open file dialog to save the file.
-        auto fileName =
+        const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        const QString fileName =
           QFileDialog::getSaveFileName(this, tr("File to save the exported session keys"), "", "");
 
         QFile file(fileName);
