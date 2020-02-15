@@ -19,6 +19,7 @@
 
 #include <QObject>
 #include <QPainter>
+#include <QScroller>
 #include <QTimer>
 
 #include "Logging.h"
@@ -40,6 +41,8 @@ RoomList::RoomList(QWidget *parent)
         scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignTop | Qt::AlignVCenter);
+
+        QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
 
         // The scrollbar on macOS will hide itself when not active so it won't interfere
         // with the content.

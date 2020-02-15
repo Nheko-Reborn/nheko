@@ -27,6 +27,7 @@
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QScrollArea>
+#include <QScroller>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QString>
@@ -397,6 +398,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignTop | Qt::AlignVCenter);
+
+        QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
 
         auto scrollAreaContents_ = new QWidget(this);
         scrollAreaContents_->setObjectName("UserSettingScrollWidget");
