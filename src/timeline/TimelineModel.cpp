@@ -538,6 +538,20 @@ TimelineModel::internalAddEvents(
                         continue;
                 }
 
+                QString txid = QString::fromStdString(mtx::accessors::transaction_id(e));
+                if (this->pending.removeOne(txid)) {
+                        this->events.insert(id, e);
+                        this->events.remove(txid);
+                        int idx = idToIndex(txid);
+                        if (idx < 0) {
+                                nhlog::ui()->warn("Received index out of range");
+                                continue;
+                        }
+                        eventOrder[idx] = id;
+                        emit dataChanged(index(idx, 0), index(idx, 0));
+                        continue;
+                }
+
                 if (auto redaction =
                       std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
                         QString redacts = QString::fromStdString(redaction->redacts);

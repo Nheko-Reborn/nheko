@@ -207,6 +207,20 @@ struct EventInReplyTo
         }
 };
 
+struct EventTransactionId
+{
+        template<class T>
+        std::string operator()(const mtx::events::RoomEvent<T> &e)
+        {
+                return e.unsigned_data.transaction_id;
+        }
+        template<class T>
+        std::string operator()(const mtx::events::Event<T> &e)
+        {
+                return e.unsigned_data.transaction_id;
+        }
+};
+
 struct EventMediaHeight
 {
         template<class Content>
@@ -342,6 +356,12 @@ std::string
 mtx::accessors::in_reply_to_event(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit(EventInReplyTo{}, event);
+}
+
+std::string
+mtx::accessors::transaction_id(const mtx::events::collections::TimelineEvents &event)
+{
+        return std::visit(EventTransactionId{}, event);
 }
 
 int64_t
