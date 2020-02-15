@@ -1299,7 +1299,8 @@ TimelineModel::saveMedia(QString eventId) const
         }
 
         const QString filterString = QMimeDatabase().mimeTypeForName(mimeType).filterString();
-        const QString downloadsFolder = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+        const QString downloadsFolder =
+          QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
         const QString openLocation = downloadsFolder + "/" + originalFilename;
 
         const QString filename = QFileDialog::getSaveFileName(

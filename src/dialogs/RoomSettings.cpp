@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QShortcut>
 #include <QShowEvent>
+#include <QStandardPaths>
 #include <QStyleOption>
 #include <QVBoxLayout>
 
@@ -740,8 +741,10 @@ RoomSettings::resetErrorLabel()
 void
 RoomSettings::updateAvatar()
 {
-        const auto fileName =
-          QFileDialog::getOpenFileName(this, tr("Select an avatar"), "", tr("All Files (*)"));
+        const QString picturesFolder =
+          QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+        const QString fileName = QFileDialog::getOpenFileName(
+          this, tr("Select an avatar"), picturesFolder, tr("All Files (*)"));
 
         if (fileName.isEmpty())
                 return;
