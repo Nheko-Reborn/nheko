@@ -148,19 +148,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(this, &TimelineModel::messageSent, this, [this](QString txn_id, QString event_id) {
                 pending.removeOne(txn_id);
 
-                // we could have received the message via sync
-                if (events.contains(event_id)) {
-                        int idx = idToIndex(event_id);
-                        if (idx >= 0) {
-                                beginRemoveRows(QModelIndex(), idx, idx);
-                                eventOrder.erase(eventOrder.begin() + idx);
-                                endRemoveRows();
-                        }
-                }
-
                 int idx = idToIndex(txn_id);
                 if (idx < 0) {
-                        nhlog::ui()->warn("Sent index out of range");
+                        // transaction already received via sync
                         return;
                 }
                 eventOrder[idx] = event_id;
