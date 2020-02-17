@@ -437,7 +437,7 @@ TimelineModel::fetchMore(const QModelIndex &)
         opts.room_id = room_id_.toStdString();
         opts.from    = prev_batch_token_.toStdString();
 
-        nhlog::ui()->debug("Paginationg room {}", opts.room_id);
+        nhlog::ui()->debug("Paginating room {}", opts.room_id);
 
         http::client()->messages(
           opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
