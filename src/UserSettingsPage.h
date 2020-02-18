@@ -167,9 +167,8 @@ private slots:
 private:
         // Layouts
         QVBoxLayout *topLayout_;
-        QFormLayout *formLayout_;
-        QVBoxLayout *mainLayout_;
         QHBoxLayout *topBarLayout_;
+        QFormLayout *formLayout_;
 
         // Shared settings object.
         QSharedPointer<UserSettings> settings_;
