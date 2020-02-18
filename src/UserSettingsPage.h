@@ -19,6 +19,7 @@
 
 #include <QComboBox>
 #include <QFontDatabase>
+#include <QFormLayout>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
@@ -166,6 +167,7 @@ private slots:
 private:
         // Layouts
         QVBoxLayout *topLayout_;
+        QFormLayout *formLayout_;
         QVBoxLayout *mainLayout_;
         QHBoxLayout *topBarLayout_;
 
