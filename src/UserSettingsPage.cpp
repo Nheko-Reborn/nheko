@@ -258,8 +258,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         deviceFingerprintValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
         deviceFingerprintValue_->setFont(monospaceFont);
 
-        std::string fingerprintPlaceHolder_(44, 'x');
-        deviceFingerprintValue_->setText(utils::humanReadableFingerprint(fingerprintPlaceHolder_));
+        deviceFingerprintValue_->setText(utils::humanReadableFingerprint(QString(44, 'X')));
 
         auto sessionKeysLabel = new QLabel{tr("Session Keys"), this};
         sessionKeysLabel->setFont(font);
