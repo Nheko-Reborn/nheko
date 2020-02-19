@@ -205,7 +205,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         avatarCircles_->setFixedSize(64, 48);
 
         auto uiLabel_ = new QLabel{tr("INTERFACE"), this};
-        uiLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+        uiLabel_->setFixedHeight(uiLabel_->minimumHeight() + LayoutTopMargin);
+        uiLabel_->setAlignment(Qt::AlignBottom);
         uiLabel_->setFont(font);
 
         for (double option = 1; option <= 3; option += 0.25)
@@ -242,7 +243,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         themeCombo_->setCurrentIndex(themeIndex);
 
         auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
-        encryptionLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+        encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
+        encryptionLabel_->setAlignment(Qt::AlignBottom);
         encryptionLabel_->setFont(font);
 
         QFont monospaceFont;
@@ -295,7 +297,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Read receipts"), readReceipts_);
         boxWrap(tr("Send messages as Markdown"), markdownEnabled_);
         boxWrap(tr("Desktop notifications"), desktopNotifications_);
-        formLayout_->addRow(new QLabel{"", this});
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
@@ -314,7 +315,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 #endif
 
         boxWrap(tr("Theme"), themeCombo_);
-        formLayout_->addRow(new QLabel{"", this});
         formLayout_->addRow(encryptionLabel_);
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Device ID"), deviceIdValue_);
