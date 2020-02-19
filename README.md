@@ -170,13 +170,9 @@ sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake li
 
 ##### Ubuntu 19.10
 
-(User report, not sure if all of those are needed)
-
 ```bash
-# Start with basics and QML modules:
-sudo apt install g++-7 cmake liblmdb-dev libsodium-dev qt{base,tools,multimedia}5-dev qml-module-qt{gstreamer,multimedia,quick-extras}
-# If you still have problems building or running, try installing these as well:
-sudo apt install libqt5svg5-dev qt{3d,script,webengine,quickcontrols2-}5-dev
+# Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
+sudo apt install g++-7 cmake liblmdb-dev libsodium-dev qt{base,tools,multimedia}5-dev qml-module-qt{gstreamer,multimedia,quick-extras} libqt5svg5-dev qt{script,quickcontrols2-}5-dev
 ```
 
 ##### Debian Buster (or higher probably)
