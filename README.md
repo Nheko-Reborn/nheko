@@ -158,7 +158,7 @@ sudo pacman -S qt5-base \
 sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
 ```
 
-##### Ubuntu (e.g 16.04)
+##### Ubuntu 16.04
 
 ```bash
 sudo add-apt-repository ppa:beineri/opt-qt592-xenial
@@ -166,6 +166,17 @@ sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo add-apt-repository ppa:ubuntu-toolchain-r-test
 sudo apt-get update
 sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev
+```
+
+##### Ubuntu 19.10
+
+(User report, not sure if all of those are needed)
+
+```bash
+# Start with basics and QML modules:
+sudo apt install g++-7 cmake liblmdb-dev libsodium-dev qt{base,tools,multimedia}5-dev qml-module-qt{gstreamer,multimedia,quick-extras}
+# If you still have problems building or running, try installing these as well:
+sudo apt install libqt5svg5-dev qt{3d,script,webengine,quickcontrols2-}5-dev
 ```
 
 ##### Debian Buster (or higher probably)
