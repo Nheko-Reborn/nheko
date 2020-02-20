@@ -43,25 +43,16 @@ QString
 displayName(const QString &room_id, const QString &user_id);
 QString
 avatarUrl(const QString &room_id, const QString &user_id);
-QString
-userColor(const QString &user_id);
 
 void
 removeDisplayName(const QString &room_id, const QString &user_id);
 void
 removeAvatarUrl(const QString &room_id, const QString &user_id);
-void
-removeUserColor(const QString &user_id);
 
 void
 insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name);
 void
 insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url);
-void
-insertUserColor(const QString &user_id, const QString &color_name);
-
-void
-clearUserColors();
 
 //! Load saved data for the display names & avatars.
 void

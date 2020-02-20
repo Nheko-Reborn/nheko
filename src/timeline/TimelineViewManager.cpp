@@ -18,6 +18,8 @@ Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 void
 TimelineViewManager::updateColorPalette()
 {
+        userColors.clear();
+
         if (settings->theme() == "light") {
                 QPalette lightActive(/*windowText*/ QColor("#333"),
                                      /*button*/ QColor("#333"),
@@ -51,6 +53,15 @@ TimelineViewManager::updateColorPalette()
                 view->rootContext()->setContextProperty("currentActivePalette", QPalette());
                 view->rootContext()->setContextProperty("currentInactivePalette", nullptr);
         }
+}
+
+QColor
+TimelineViewManager::userColor(QString id, QColor background)
+{
+        if (!userColors.contains(id))
+                userColors.insert(
+                  id, QColor(utils::generateContrastingHexColor(id, background.name())));
+        return userColors.value(id);
 }
 
 TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent)

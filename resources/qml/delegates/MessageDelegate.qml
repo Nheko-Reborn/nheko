@@ -34,7 +34,7 @@ Item {
 			roleValue: MtxEvent.EmoteMessage
 			NoticeMessage {
 				formatted: chat.model.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
-				color: chat.model.userColor(modelData.userId, colors.window)
+				color: timelineManager.userColor(modelData.userId, colors.window)
 			}
 		}
 		DelegateChoice {

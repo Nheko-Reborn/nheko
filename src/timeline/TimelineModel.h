@@ -165,7 +165,6 @@ public:
         bool canFetchMore(const QModelIndex &) const override;
         void fetchMore(const QModelIndex &) override;
 
-        Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString displayName(QString id) const;
         Q_INVOKABLE QString avatarUrl(QString id) const;
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
@@ -248,7 +247,6 @@ private:
         bool paginationInProgress = false;
         bool isProcessingPending  = false;
 
-        QHash<QString, QColor> userColors;
         QString currentId;
         std::vector<QString> typingUsers_;
 

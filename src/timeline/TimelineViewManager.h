@@ -40,6 +40,7 @@ public:
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
+        Q_INVOKABLE QColor userColor(QString id, QColor background);
 
 signals:
         void clearRoomMessageCount(QString roomid);
@@ -118,4 +119,5 @@ private:
         QString replyingEvent_;
 
         QSharedPointer<UserSettings> settings;
+        QHash<QString, QColor> userColors;
 };

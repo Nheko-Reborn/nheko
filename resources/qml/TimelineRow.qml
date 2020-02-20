@@ -23,7 +23,7 @@ RowLayout {
 		Reply {
 			visible: model.replyTo
 			modelData: chat.model.getDump(model.replyTo)
-			userColor: chat.model.userColor(modelData.userId, colors.window)
+			userColor: timelineManager.userColor(modelData.userId, colors.window)
 		}
 
 		// actual message content

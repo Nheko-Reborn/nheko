@@ -196,9 +196,6 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                         if (idx >= 0)
                                 emit dataChanged(index(idx, 0), index(idx, 0));
                 });
-
-        connect(
-          ChatPage::instance(), &ChatPage::themeChanged, this, [this]() { userColors.clear(); });
 }
 
 QHash<int, QByteArray>
@@ -648,15 +645,6 @@ TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
         }
 
         prev_batch_token_ = QString::fromStdString(msgs.end);
-}
-
-QColor
-TimelineModel::userColor(QString id, QColor background)
-{
-        if (!userColors.contains(id))
-                userColors.insert(
-                  id, QColor(utils::generateContrastingHexColor(id, background.name())));
-        return userColors.value(id);
 }
 
 QString
@@ -1446,7 +1434,8 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
 
         auto formatUser = [this, bg](const QString &user_id) -> QString {
                 auto uncoloredUsername = escapeEmoji(displayName(user_id).toHtmlEscaped());
-                QString prefix = QString("<font color=\"%1\">").arg(userColor(user_id, bg).name());
+                QString prefix =
+                  QString("<font color=\"%1\">").arg(manager_->userColor(user_id, bg).name());
 
                 // color only parts that don't have a font already specified
                 QString coloredUsername;

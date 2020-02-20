@@ -19,7 +19,7 @@ Rectangle {
 		anchors.bottom: replyContainer.bottom
 		width: 4
 
-		color: chat.model ? chat.model.userColor(reply.modelData.userId, colors.window) : colors.window
+		color: timelineManager.userColor(reply.modelData.userId, colors.window)
 	}
 
 	Column {

@@ -218,7 +218,7 @@ Item {
 						Text { 
 							id: userName
 							text: chat.model.escapeEmoji(modelData.userName)
-							color: chat.model.userColor(modelData.userId, colors.window)
+							color: timelineManager.userColor(modelData.userId, colors.window)
 							textFormat: Text.RichText
 
 							MouseArea {
@@ -283,7 +283,7 @@ Item {
 						anchors.bottom: parent.bottom
 
 						modelData: chat.model ? chat.model.getDump(timelineManager.replyingEvent) : {}
-						userColor: chat.model ? chat.model.userColor(modelData.userId, colors.window) : colors.window
+						userColor: timelineManager.userColor(modelData.userId, colors.window)
 					}
 
 					ImageButton {

@@ -2186,7 +2186,6 @@ Cache::roomMembers(const std::string &room_id)
 
 QHash<QString, QString> Cache::DisplayNames;
 QHash<QString, QString> Cache::AvatarUrls;
-QHash<QString, QString> Cache::UserColors;
 
 QString
 Cache::displayName(const QString &room_id, const QString &user_id)
@@ -2214,16 +2213,6 @@ Cache::avatarUrl(const QString &room_id, const QString &user_id)
         auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
         if (AvatarUrls.contains(fmt))
                 return AvatarUrls[fmt];
-
-        return QString();
-}
-
-QString
-Cache::userColor(const QString &user_id)
-{
-        if (UserColors.contains(user_id)) {
-                return UserColors[user_id];
-        }
 
         return QString();
 }
@@ -2256,24 +2245,6 @@ Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
 {
         auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
         AvatarUrls.remove(fmt);
-}
-
-void
-Cache::insertUserColor(const QString &user_id, const QString &color_name)
-{
-        UserColors.insert(user_id, color_name);
-}
-
-void
-Cache::removeUserColor(const QString &user_id)
-{
-        UserColors.remove(user_id);
-}
-
-void
-Cache::clearUserColors()
-{
-        UserColors.clear();
 }
 
 void
@@ -2425,12 +2396,6 @@ avatarUrl(const QString &room_id, const QString &user_id)
         return instance_->avatarUrl(room_id, user_id);
 }
 
-QString
-userColor(const QString &user_id)
-{
-        return instance_->userColor(user_id);
-}
-
 void
 removeDisplayName(const QString &room_id, const QString &user_id)
 {
@@ -2440,11 +2405,6 @@ void
 removeAvatarUrl(const QString &room_id, const QString &user_id)
 {
         instance_->removeAvatarUrl(room_id, user_id);
-}
-void
-removeUserColor(const QString &user_id)
-{
-        instance_->removeUserColor(user_id);
 }
 
 void
@@ -2456,17 +2416,6 @@ void
 insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
 {
         instance_->insertAvatarUrl(room_id, user_id, avatar_url);
-}
-void
-insertUserColor(const QString &user_id, const QString &color_name)
-{
-        instance_->insertUserColor(user_id, color_name);
-}
-
-void
-clearUserColors()
-{
-        instance_->clearUserColors();
 }
 
 //! Load saved data for the display names & avatars.
