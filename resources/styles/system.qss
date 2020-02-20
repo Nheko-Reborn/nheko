@@ -124,6 +124,11 @@ RoomInfoListItem, UserMentionsWidget {
     qproperty-bubbleFgColor: palette(text);
 }
 
+CommunitiesList,
+CommunitiesList > * {
+    border-style: none;
+}
+
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
     qproperty-hoverBackgroundColor: palette(light);
