@@ -19,6 +19,7 @@
 
 #include <QComboBox>
 #include <QFontDatabase>
+#include <QFormLayout>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
@@ -151,7 +152,6 @@ public:
 
 protected:
         void showEvent(QShowEvent *event) override;
-        void resizeEvent(QResizeEvent *event) override;
         void paintEvent(QPaintEvent *event) override;
 
 signals:
@@ -166,8 +166,8 @@ private slots:
 private:
         // Layouts
         QVBoxLayout *topLayout_;
-        QVBoxLayout *mainLayout_;
         QHBoxLayout *topBarLayout_;
+        QFormLayout *formLayout_;
 
         // Shared settings object.
         QSharedPointer<UserSettings> settings_;
