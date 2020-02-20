@@ -435,12 +435,12 @@ UserSettingsPage::showEvent(QShowEvent *)
 void
 UserSettingsPage::resizeEvent(QResizeEvent *event)
 {
-        auto preWidth_ = width();
+        auto preWidth = width();
 
-        if (preWidth_ * 0.5 > LayoutMinWidth)
-                sideMargin_ = preWidth_ * 0.25;
+        if (preWidth * 0.5 > LayoutMinWidth)
+                sideMargin_ = preWidth * 0.25;
         else
-                sideMargin_ = static_cast<double>(preWidth_ - LayoutMinWidth) / 2.;
+                sideMargin_ = static_cast<double>(preWidth - LayoutMinWidth) / 2.;
 
         if (sideMargin_ < 60)
                 sideMargin_ = 0;
