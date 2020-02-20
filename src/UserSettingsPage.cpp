@@ -437,10 +437,16 @@ UserSettingsPage::resizeEvent(QResizeEvent *event)
 {
         auto preWidth = width();
 
-        if (preWidth * 0.5 > LayoutMinWidth)
+        // based on the width of the widest item currently in the layout
+        // deviceFingerprintValue_ used for recalculating the margins of
+        // the formLayout_ on resize to help with small screens and mobile devices.
+
+        double minFormWidth = deviceFingerprintValue_->width();
+
+        if (preWidth * 0.5 > minFormWidth)
                 sideMargin_ = preWidth * 0.25;
         else
-                sideMargin_ = static_cast<double>(preWidth - LayoutMinWidth) / 2.;
+                sideMargin_ = static_cast<double>(preWidth - minFormWidth) / 2.;
 
         if (sideMargin_ < 60)
                 sideMargin_ = 0;

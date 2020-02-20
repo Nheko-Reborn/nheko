@@ -33,11 +33,6 @@ constexpr int OptionMargin       = 6;
 constexpr int LayoutTopMargin    = 50;
 constexpr int LayoutBottomMargin = LayoutTopMargin;
 
-// based on the width of the widest item currently in the layout (deviceFingerprintValue_)
-// used for recalculating the margins of the formLayout_ on resize to help with small screens and
-// mobile devices.
-constexpr int LayoutMinWidth = 385;
-
 class UserSettings : public QObject
 {
         Q_OBJECT
