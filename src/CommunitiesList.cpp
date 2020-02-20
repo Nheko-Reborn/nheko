@@ -16,8 +16,6 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         sizePolicy.setVerticalStretch(1);
         setSizePolicy(sizePolicy);
 
-        setStyleSheet("border-style: none;");
-
         topLayout_ = new QVBoxLayout(this);
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);

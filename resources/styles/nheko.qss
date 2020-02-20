@@ -78,6 +78,7 @@ RoomList > * {
 
 CommunitiesList,
 CommunitiesList > * {
+    border-style: none;
     background-color: #2e3649;
 }
 

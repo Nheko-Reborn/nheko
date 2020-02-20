@@ -78,8 +78,10 @@ TypingDisplay {
 
 CommunitiesList,
 CommunitiesList > * {
+    border-style: none;
     background-color: #2d3139;
 }
+
 
 FlatButton {
     qproperty-foregroundColor: #727274;
@@ -191,6 +193,10 @@ UserSettingsPage {
 
 #UserSettingScrollWidget {
     background-color: #202228;
+}
+
+#UserSettingScrollWidget > QComboBox {
+    color: #202228;
 }
 
 Avatar {
