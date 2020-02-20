@@ -437,15 +437,12 @@ UserSettingsPage::resizeEvent(QResizeEvent *event)
 {
         auto preWidth_ = width();
 
-        formLayout_->setContentsMargins(0, LayoutTopMargin, 0, LayoutBottomMargin);
-        double contentMinWidth = formLayout_->minimumSize().width();
-
-        if (preWidth_ * 0.6 > contentMinWidth)
-                sideMargin_ = preWidth_ * 0.2;
+        if (preWidth_ * 0.5 > LayoutMinWidth)
+                sideMargin_ = preWidth_ * 0.25;
         else
-                sideMargin_ = static_cast<double>(preWidth_ - contentMinWidth) / 2.;
+                sideMargin_ = static_cast<double>(preWidth_ - LayoutMinWidth) / 2.;
 
-        if (sideMargin_ < 40)
+        if (sideMargin_ < 60)
                 sideMargin_ = 0;
 
         formLayout_->setContentsMargins(
