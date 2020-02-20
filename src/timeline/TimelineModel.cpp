@@ -196,6 +196,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                         if (idx >= 0)
                                 emit dataChanged(index(idx, 0), index(idx, 0));
                 });
+
+        connect(
+          ChatPage::instance(), &ChatPage::themeChanged, this, [this]() { userColors.clear(); });
 }
 
 QHash<int, QByteArray>
