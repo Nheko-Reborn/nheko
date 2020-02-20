@@ -331,9 +331,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
 
+        auto spacingAroundForm = new QHBoxLayout;
+        spacingAroundForm->addStretch(1);
+        spacingAroundForm->addLayout(formLayout_, 0);
+        spacingAroundForm->addStretch(1);
+
         auto scrollAreaContents_ = new QWidget{this};
         scrollAreaContents_->setObjectName("UserSettingScrollWidget");
-        scrollAreaContents_->setLayout(formLayout_);
+        scrollAreaContents_->setLayout(spacingAroundForm);
 
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addLayout(topBarLayout_);
@@ -430,31 +435,6 @@ UserSettingsPage::showEvent(QShowEvent *)
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));
-}
-
-void
-UserSettingsPage::resizeEvent(QResizeEvent *event)
-{
-        auto preWidth = width();
-
-        // based on the width of the widest item currently in the layout
-        // deviceFingerprintValue_ used for recalculating the margins of
-        // the formLayout_ on resize to help with small screens and mobile devices.
-
-        double minFormWidth = deviceFingerprintValue_->width();
-
-        if (preWidth * 0.5 > minFormWidth)
-                sideMargin_ = preWidth * 0.25;
-        else
-                sideMargin_ = static_cast<double>(preWidth - minFormWidth) / 2.;
-
-        if (sideMargin_ < 60)
-                sideMargin_ = 0;
-
-        formLayout_->setContentsMargins(
-          sideMargin_, LayoutTopMargin, sideMargin_, LayoutBottomMargin);
-
-        QWidget::resizeEvent(event);
 }
 
 void
