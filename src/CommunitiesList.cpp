@@ -30,16 +30,14 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignTop | Qt::AlignVCenter);
 
-        scrollAreaContents_ = new QWidget();
-
-        contentsLayout_ = new QVBoxLayout(scrollAreaContents_);
+        contentsLayout_ = new QVBoxLayout();
         contentsLayout_->setSpacing(0);
         contentsLayout_->setMargin(0);
 
         addGlobalItem();
         contentsLayout_->addStretch(1);
 
-        scrollArea_->setWidget(scrollAreaContents_);
+        scrollArea_->setLayout(contentsLayout_);
         topLayout_->addWidget(scrollArea_);
 
         connect(

@@ -53,7 +53,6 @@ private:
 
         QVBoxLayout *topLayout_;
         QVBoxLayout *contentsLayout_;
-        QWidget *scrollAreaContents_;
         QScrollArea *scrollArea_;
 
         std::map<QString, QSharedPointer<CommunitiesListItem>> communities_;
