@@ -74,7 +74,6 @@ UserMentionsWidget > TimelineItem {
     qproperty-hoverColor: rgba(45, 49, 57, 120);
 }
 
-
 InfoMessage {
     qproperty-textColor: #caccd1;
     qproperty-boxColor: rgba(45, 49, 57, 120);

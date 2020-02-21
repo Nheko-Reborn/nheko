@@ -3,13 +3,33 @@ QLabel {
     color: #333;
 }
 
-TimelineItem {
-    qproperty-backgroundColor: white;
+QuickSwitcher,
+ReplyPopup,
+SuggestionsPopup,
+UserSettingsPage,
+#scroll_widget,
+#UserSettingScrollWidget {
+    background-color: white;
 }
 
 #chatPage,
-#chatPage > * {
+#chatPage > *,
+CommunitiesList,
+CommunitiesList > *,
+RoomList,
+RoomList > *,
+TimelineView,
+TimelineView > *,
+UserMentionsWidget,
+UserMentionsWidget > *,
+TimelineView,
+TimelineView > * {
     background-color: white;
+    border: none;
+}
+
+TimelineItem {
+    qproperty-backgroundColor: white;
 }
 
 #sideBar {
@@ -18,29 +38,9 @@ TimelineItem {
     border-left: 1px solid #dee1f3;
 }
 
-TimelineView,
-TimelineView > * {
-    background-color: white;
-    border: none;
-}
-
-UserMentionsWidget,
-UserMentionsWidget > * {
-    background-color: white;
-    border: none;
-}
-
 UserMentionsWidget > TimelineItem {
     qproperty-backgroundColor: white;
     qproperty-hoverColor: rgba(192, 193, 195, 120);
-}
-
-#scroll_widget {
-    background-color: white;
-}
-
-QuickSwitcher {
-    background-color: white;
 }
 
 InfoMessage {
@@ -53,21 +53,15 @@ TypingDisplay {
     qproperty-backgroundColor: white;
 }
 
-SuggestionsPopup {
-    background-color: white;
-}
-
-ReplyPopup {
-    background-color: white;
-}
-
 PopupItem {
     background-color: white;
     qproperty-hoverColor: rgba(192, 193, 195, 120);
 }
 
 RoomList,
-RoomList > * {
+RoomList > *,
+CommunitiesList,
+CommunitiesList > * {
     background-color: #2e3649;
     border: none;
 }
@@ -76,23 +70,12 @@ RoomList > * {
     background-color: #2e3649;
 }
 
-CommunitiesList,
-CommunitiesList > * {
-    border-style: none;
-    background-color: #2e3649;
-}
-
 FlatButton {
     qproperty-foregroundColor: #495057;
 }
 
+AudioItem,
 FileItem {
-    qproperty-textColor: #333;
-    qproperty-backgroundColor: #f2f2f2;
-    qproperty-iconColor: white;
-}
-
-AudioItem {
     qproperty-textColor: #333;
     qproperty-backgroundColor: #f2f2f2;
     qproperty-iconColor: white;
@@ -105,7 +88,7 @@ RaisedButton {
 RoomInfoListItem {
     qproperty-mentionedColor: #a82353;
     qproperty-highlightedBackgroundColor: #38A3D8;
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 40);
     qproperty-hoverTitleColor: #f2f5f8;
     qproperty-hoverSubtitleColor: white;
     qproperty-backgroundColor: #f2f5f8;
@@ -132,7 +115,7 @@ RoomInfoListItem {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
+    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 40);
     qproperty-backgroundColor: #f2f5f8;
 
     qproperty-avatarBgColor: #eee;
@@ -155,14 +138,6 @@ UserInfoWidget, UserInfoWidget > * {
 UserInfoWidget {
     border: none;
     border-bottom: 2px solid #ccc;
-}
-
-UserSettingsPage {
-    background-color: white;
-}
-
-#UserSettingScrollWidget {
-    background-color: white;
 }
 
 Avatar {
