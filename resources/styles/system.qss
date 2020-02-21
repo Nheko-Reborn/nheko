@@ -1,3 +1,16 @@
+#chatPage,
+#chatPage > *,
+CommunitiesList,
+CommunitiesList > *,
+RoomList,
+RoomList > *,
+TimelineView,
+TimelineView > *,
+UserMentionsWidget,
+UserMentionsWidget > * {
+    border: none;
+}
+
 TypingDisplay {
     qproperty-textColor: palette(text);
     qproperty-backgroundColor: palette(window);
@@ -7,31 +20,18 @@ TimelineItem {
     qproperty-backgroundColor: palette(window);
 }
 
-TimelineView,
-TimelineView > * {
-    border: none;
-}
-
-UserMentionsWidget,
-UserMentionsWidget > * {
-    border: none;
-}
-
 UserMentionsWidget > TimelineItem {
     qproperty-backgroundColor: palette(window);
     qproperty-hoverColor: palette(base);
 }
 
+SideBarActions,
 TextInputWidget {
     border: none;
     border-top: 1px solid palette(mid);
 }
 
-SideBarActions {
-    border: none;
-    border-top: 1px solid palette(mid);
-}
-
+UserInfoWidget,
 TopRoomBar {
     border: none;
     border-bottom: 1px solid palette(mid);
@@ -41,11 +41,6 @@ RoomList,
 RoomList > * {
     background-color: palette(window);
     border: none;
-}
-
-UserInfoWidget {
-    border: none;
-    border-bottom: 1px solid palette(mid);
 }
 
 #sideBar {
@@ -67,13 +62,8 @@ FlatButton {
     qproperty-foregroundColor: palette(text);
 }
 
+AudioItem,
 FileItem {
-    qproperty-textColor: palette(text);
-    qproperty-backgroundColor: palette(base);
-    qproperty-iconColor: palette(window);
-}
-
-AudioItem {
     qproperty-textColor: palette(text);
     qproperty-backgroundColor: palette(base);
     qproperty-iconColor: palette(window);
@@ -95,7 +85,8 @@ QListWidget {
     background-color: palette(window);
 }
 
-RoomInfoListItem, UserMentionsWidget {
+RoomInfoListItem,
+UserMentionsWidget {
     qproperty-mentionedColor: palette(alternate-base);
     qproperty-highlightedBackgroundColor: palette(highlight);
     qproperty-hoverBackgroundColor: palette(light);
@@ -122,11 +113,6 @@ RoomInfoListItem, UserMentionsWidget {
 
     qproperty-bubbleBgColor: palette(base);
     qproperty-bubbleFgColor: palette(text);
-}
-
-CommunitiesList,
-CommunitiesList > * {
-    border-style: none;
 }
 
 CommunitiesListItem {
@@ -170,10 +156,6 @@ FloatingButton {
 SnackBar {
     qproperty-textColor: palette(text);
     qproperty-bgColor: palette(base);
-}
-
-MemberItem {
-    background-color: palette(window);
 }
 
 Toggle {
