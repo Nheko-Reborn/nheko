@@ -52,11 +52,18 @@ dialogs--JoinRoom > QLineEdit {
     color: #caccd1;
 }
 
+emoji--Panel QWidget { border: none; }
+emoji--Panel QScrollBar:vertical { width: 0px; margin: 0px; }
+emoji--Panel QScrollBar::handle:vertical { min-height: 30px; }
+
 emoji--Category,
 emoji--Category > * {
     background-color: #2d3139;
-    color: #caccd1;
+    color: #727274;
+}
 
+emoji--Category QLabel {
+    margin: 20px 0 20px 8px;
 }
 
 TimelineItem {
@@ -237,3 +244,5 @@ SnackBar {
     qproperty-textColor: #caccd1;
     qproperty-bgColor: #202228;
 }
+
+QSplitter::handle { image: none; }

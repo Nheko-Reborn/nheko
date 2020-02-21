@@ -103,23 +103,6 @@ TextField::label() const
 }
 
 void
-TextField::setTextColor(const QColor &color)
-{
-        text_color_ = color;
-        setStyleSheet(QString("QLineEdit { color: %1; }").arg(color.name()));
-}
-
-QColor
-TextField::textColor() const
-{
-        if (!text_color_.isValid()) {
-                return QPalette().color(QPalette::Text);
-        }
-
-        return text_color_;
-}
-
-void
 TextField::setLabelColor(const QColor &color)
 {
         label_color_ = color;

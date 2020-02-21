@@ -15,7 +15,6 @@ class TextField : public QLineEdit
 {
         Q_OBJECT
 
-        Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
         Q_PROPERTY(QColor inkColor WRITE setInkColor READ inkColor)
         Q_PROPERTY(QColor labelColor WRITE setLabelColor READ labelColor)
         Q_PROPERTY(QColor underlineColor WRITE setUnderlineColor READ underlineColor)
@@ -30,12 +29,10 @@ public:
         void setLabelColor(const QColor &color);
         void setLabelFontSize(qreal size);
         void setShowLabel(bool value);
-        void setTextColor(const QColor &color);
         void setUnderlineColor(const QColor &color);
 
         QColor inkColor() const;
         QColor labelColor() const;
-        QColor textColor() const;
         QColor underlineColor() const;
         QColor backgroundColor() const;
         QString label() const;
@@ -52,7 +49,6 @@ private:
         QColor ink_color_;
         QColor background_color_;
         QColor label_color_;
-        QColor text_color_;
         QColor underline_color_;
         QString label_text_;
         TextFieldLabel *label_;
