@@ -35,10 +35,6 @@ Panel::Panel(QWidget *parent)
   , height_{350}
   , categoryIconSize_{20}
 {
-        setStyleSheet("QWidget {border: none;}"
-                      "QScrollBar:vertical { width: 0px; margin: 0px; }"
-                      "QScrollBar::handle:vertical { min-height: 30px; }");
-
         setAttribute(Qt::WA_ShowWithoutActivating, true);
         setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
 

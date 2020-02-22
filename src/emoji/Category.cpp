@@ -75,7 +75,6 @@ Category::Category(QString category, std::vector<Emoji> emoji, QWidget *parent)
 
         category_ = new QLabel(category, this);
         category_->setFont(font);
-        category_->setStyleSheet("margin: 20px 0 20px 8px;");
 
         mainLayout_->addWidget(category_);
         mainLayout_->addWidget(emojiListView_);

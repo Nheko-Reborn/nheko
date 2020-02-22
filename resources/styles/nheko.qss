@@ -187,6 +187,10 @@ emoji--Panel > * {
     color: #333;
 }
 
+emoji--Panel QWidget { border: none; }
+emoji--Panel QScrollBar:vertical { width: 0px; margin: 0px; }
+emoji--Panel QScrollBar::handle:vertical { min-height: 30px; }
+
 emoji--Category {
     qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
 }
@@ -196,6 +200,8 @@ emoji--Category > * {
     background-color: white;
     color: #ccc;
 }
+
+emoji--Category QLabel { margin: 20px 0 20px 8px; }
 
 FloatingButton {
     qproperty-backgroundColor: #efefef;
@@ -239,3 +245,5 @@ SnackBar {
     qproperty-textColor: white;
     qproperty-bgColor: #495057;
 }
+
+QSplitter::handle { image: none; }
