@@ -25,6 +25,7 @@ Rectangle {
 		font.pixelSize: avatar.height/2
 		verticalAlignment: Text.AlignVCenter
 		horizontalAlignment: Text.AlignHCenter
+		visible: img.status != Image.Ready
 	}
 
 	Image {
