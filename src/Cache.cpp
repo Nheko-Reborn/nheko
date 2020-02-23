@@ -918,6 +918,9 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
         const auto last_event_id = getLastMessageInfo(txn, room_id).event_id;
         const auto localUser     = utils::localUser().toStdString();
 
+        if (last_event_id.isEmpty())
+                return false;
+
         txn.commit();
 
         // Retrieve all read receipts for that event.
