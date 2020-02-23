@@ -33,6 +33,7 @@ matrix:
                 - ninja
                 - openssl
                 - qt5
+              update: true # workaround for broken travis homebrew
         - os: linux
           compiler: gcc-7
           env:

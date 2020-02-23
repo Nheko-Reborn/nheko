@@ -4,14 +4,14 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-#include "dialogs/ReCaptcha.h"
+#include "dialogs/FallbackAuth.h"
 
 #include "Config.h"
 #include "MatrixClient.h"
 
 using namespace dialogs;
 
-ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
+FallbackAuth::FallbackAuth(const QString &authType, const QString &session, QWidget *parent)
   : QWidget(parent)
 {
         setAutoFillBackground(true);
@@ -27,31 +27,33 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
         buttonLayout->setSpacing(8);
         buttonLayout->setMargin(0);
 
-        openCaptchaBtn_ = new QPushButton("Open reCAPTCHA", this);
-        cancelBtn_      = new QPushButton(tr("Cancel"), this);
-        confirmBtn_     = new QPushButton(tr("Confirm"), this);
+        openBtn_    = new QPushButton(tr("Open Fallback in Browser"), this);
+        cancelBtn_  = new QPushButton(tr("Cancel"), this);
+        confirmBtn_ = new QPushButton(tr("Confirm"), this);
         confirmBtn_->setDefault(true);
 
         buttonLayout->addStretch(1);
-        buttonLayout->addWidget(openCaptchaBtn_);
+        buttonLayout->addWidget(openBtn_);
         buttonLayout->addWidget(cancelBtn_);
         buttonLayout->addWidget(confirmBtn_);
 
         QFont font;
         font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
 
-        auto label = new QLabel(tr("Solve the reCAPTCHA and press the confirm button"), this);
+        auto label = new QLabel(
+          tr("Open the fallback, follow the steps and confirm after completing them."), this);
         label->setFont(font);
 
         layout->addWidget(label);
         layout->addLayout(buttonLayout);
 
-        connect(openCaptchaBtn_, &QPushButton::clicked, [session]() {
-                const auto url = QString("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
+        connect(openBtn_, &QPushButton::clicked, [session, authType]() {
+                const auto url = QString("https://%1:%2/_matrix/client/r0/auth/%4/"
                                          "fallback/web?session=%3")
                                    .arg(QString::fromStdString(http::client()->server()))
                                    .arg(http::client()->port())
-                                   .arg(session);
+                                   .arg(session)
+                                   .arg(authType);
 
                 QDesktopServices::openUrl(url);
         });

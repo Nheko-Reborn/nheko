@@ -3,22 +3,23 @@
 #include <QWidget>
 
 class QPushButton;
+class QLabel;
 
 namespace dialogs {
 
-class ReCaptcha : public QWidget
+class FallbackAuth : public QWidget
 {
         Q_OBJECT
 
 public:
-        ReCaptcha(const QString &session, QWidget *parent = nullptr);
+        FallbackAuth(const QString &authType, const QString &session, QWidget *parent = nullptr);
 
 signals:
         void confirmation();
         void cancel();
 
 private:
-        QPushButton *openCaptchaBtn_;
+        QPushButton *openBtn_;
         QPushButton *confirmBtn_;
         QPushButton *cancelBtn_;
 };

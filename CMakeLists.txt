@@ -228,17 +228,18 @@ configure_file(cmake/nheko.h config/nheko.h)
 set(SRC_FILES
 	# Dialogs
 	src/dialogs/CreateRoom.cpp
+	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
-	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/InviteUsers.cpp
 	src/dialogs/JoinRoom.cpp
-	src/dialogs/MemberList.cpp
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
-	src/dialogs/UserProfile.cpp
-	src/dialogs/ReadReceipts.cpp
+	src/dialogs/MemberList.cpp
+	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
+	src/dialogs/ReadReceipts.cpp
 	src/dialogs/RoomSettings.cpp
+	src/dialogs/UserProfile.cpp
 
 	# Emoji
 	src/emoji/Category.cpp
@@ -333,7 +334,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        5fbee216e640da45c05f25b1f84f03c88bca5910
+		GIT_TAG        5838f607d0e4c7595439249e8b9c213aec0667e9
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -424,18 +425,19 @@ feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAG
 qt5_wrap_cpp(MOC_HEADERS
 	# Dialogs
 	src/dialogs/CreateRoom.h
+	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
-	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/InviteUsers.h
 	src/dialogs/JoinRoom.h
-	src/dialogs/MemberList.h
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
-	src/dialogs/UserProfile.h
+	src/dialogs/MemberList.h
+	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
-	src/dialogs/ReadReceipts.h
 	src/dialogs/ReCaptcha.h
+	src/dialogs/ReadReceipts.h
 	src/dialogs/RoomSettings.h
+	src/dialogs/UserProfile.h
 
 	# Emoji
 	src/emoji/Category.h

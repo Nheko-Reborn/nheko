@@ -507,3 +507,33 @@ MainWindow::loadJdenticonPlugin()
         nhlog::ui()->info("jdenticon plugin not found.");
         return false;
 }
+void
+MainWindow::showWelcomePage()
+{
+        removeOverlayProgressBar();
+        pageStack_->addWidget(welcome_page_);
+        pageStack_->setCurrentWidget(welcome_page_);
+}
+
+void
+MainWindow::showLoginPage()
+{
+        if (modal_)
+                modal_->hide();
+
+        pageStack_->addWidget(login_page_);
+        pageStack_->setCurrentWidget(login_page_);
+}
+
+void
+MainWindow::showRegisterPage()
+{
+        pageStack_->addWidget(register_page_);
+        pageStack_->setCurrentWidget(register_page_);
+}
+
+void
+MainWindow::showUserSettingsPage()
+{
+        pageStack_->setCurrentWidget(userSettingsPage_);
+}
