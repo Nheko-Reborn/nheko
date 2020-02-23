@@ -43,9 +43,6 @@ cmake -GNinja -H. -Bbuild \
     -DHUNTER_ROOT=".hunter" \
     -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
-    -DUSE_BUNDLED_OPENSSL=OFF \
-    -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
-    -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include \
     -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 \
     -DCI_BUILD=ON
 else
