@@ -292,7 +292,6 @@ set(SRC_FILES
 	src/RegisterPage.cpp
 	src/RoomInfoListItem.cpp
 	src/RoomList.cpp
-	src/RunGuard.cpp
 	src/SideBarActions.cpp
 	src/Splitter.cpp
 	src/popups/SuggestionsPopup.cpp
@@ -419,6 +418,10 @@ if(USE_BUNDLED_TWEENY)
 else()
 	find_package(Tweeny REQUIRED)
 endif()
+
+# single instance functionality
+set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
+add_subdirectory(third_party/SingleApplication-3.0.19/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -563,7 +566,8 @@ target_link_libraries(nheko PRIVATE
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
 	liblmdb::lmdb
-	tweeny)
+	tweeny
+	SingleApplication::SingleApplication)
 
 if(MSVC)
 	target_link_libraries(nheko PRIVATE ntdll)

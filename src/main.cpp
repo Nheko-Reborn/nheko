@@ -37,9 +37,9 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
-#include "RunGuard.h"
 #include "Utils.h"
 #include "config/nheko.h"
+#include "singleapplication.h"
 
 #if defined(Q_OS_MAC)
 #include "emoji/MacHelper.h"
@@ -104,18 +104,6 @@ createCacheDirectory()
 int
 main(int argc, char *argv[])
 {
-        RunGuard guard("run_guard");
-
-        if (!guard.tryToRun()) {
-                QApplication a(argc, argv);
-
-                QMessageBox msgBox;
-                msgBox.setText("Another instance of Nheko is running");
-                msgBox.exec();
-
-                return 0;
-        }
-
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN) || defined(Q_OS_FREEBSD)
         if (qgetenv("QT_SCALE_FACTOR").size() == 0) {
                 float factor = utils::scaleFactor();
@@ -130,7 +118,12 @@ main(int argc, char *argv[])
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-        QApplication app(argc, argv);
+        SingleApplication app(argc,
+                              argv,
+                              false,
+                              SingleApplication::Mode::User |
+                                SingleApplication::Mode::ExcludeAppPath |
+                                SingleApplication::Mode::ExcludeAppVersion);
 
         QCommandLineParser parser;
         parser.addHelpOption();
@@ -191,6 +184,11 @@ main(int argc, char *argv[])
                         http::client()->close(true);
                         nhlog::net()->debug("bye");
                 }
+        });
+        QObject::connect(&app, &SingleApplication::instanceStarted, &w, [&w]() {
+                w.show();
+                w.raise();
+                w.activateWindow();
         });
 
 #if defined(Q_OS_MAC)
