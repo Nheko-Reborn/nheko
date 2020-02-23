@@ -80,6 +80,12 @@ sudo apk add nheko
 flatpak install flathub io.github.NhekoReborn.Nheko
 ```
 
+#### Guix
+
+```
+guix install nheko
+```
+
 #### macOS (10.12 and above)
 
 with [macports](https://www.macports.org/) :
@@ -143,6 +149,12 @@ sudo add-apt-repository ppa:george-edison55/cmake-3.x
 sudo add-apt-repository ppa:ubuntu-toolchain-r-test
 sudo apt-get update
 sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev
+```
+
+##### Guix
+
+```bash
+guix environment nheko
 ```
 
 ##### macOS (Xcode 8 or later)
