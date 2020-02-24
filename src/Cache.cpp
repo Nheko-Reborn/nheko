@@ -43,9 +43,9 @@ static lmdb::val NEXT_BATCH_KEY("next_batch");
 static lmdb::val OLM_ACCOUNT_KEY("olm_account");
 static lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 
-constexpr size_t MAX_RESTORED_MESSAGES = 30;
+constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
 
-constexpr auto DB_SIZE = 32UL * 1024UL * 1024UL * 1024ULL; // 32 GB
+constexpr auto DB_SIZE = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
 constexpr auto MAX_DBS = 8092UL;
 
 //! Cache databases and their format.
@@ -915,16 +915,17 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
         auto txn = lmdb::txn::begin(env_);
 
         // Get last event id on the room.
-        const auto last_event_id = getLastMessageInfo(txn, room_id).event_id;
+        const auto last_event_id = getLastEventId(txn, room_id);
         const auto localUser     = utils::localUser().toStdString();
-
-        if (last_event_id.isEmpty())
-                return false;
 
         txn.commit();
 
+        if (last_event_id.empty())
+                return false;
+
         // Retrieve all read receipts for that event.
-        const auto receipts = readReceipts(last_event_id, QString::fromStdString(room_id));
+        const auto receipts =
+          readReceipts(QString::fromStdString(last_event_id), QString::fromStdString(room_id));
 
         if (receipts.size() == 0)
                 return true;
@@ -1258,6 +1259,7 @@ Cache::getTimelineMentions()
 mtx::responses::Timeline
 Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id)
 {
+        // TODO(nico): Limit the messages returned by this maybe?
         auto db = getMessagesDb(txn, room_id);
 
         mtx::responses::Timeline timeline;
@@ -1325,6 +1327,31 @@ Cache::roomInfo(bool withInvites)
         return result;
 }
 
+std::string
+Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
+{
+        auto db = getMessagesDb(txn, room_id);
+
+        if (db.size(txn) == 0)
+                return {};
+
+        std::string timestamp, msg;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(timestamp, msg, MDB_NEXT)) {
+                auto obj = json::parse(msg);
+
+                if (obj.count("event") == 0)
+                        continue;
+
+                cursor.close();
+                return obj["event"]["event_id"];
+        }
+        cursor.close();
+
+        return {};
+}
+
 DescInfo
 Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 {
@@ -1336,13 +1363,14 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
         std::string timestamp, msg;
 
         QSettings settings;
-        auto local_user = settings.value("auth/user_id").toString();
+        const auto local_user = utils::localUser();
 
         auto cursor = lmdb::cursor::open(txn, db);
         while (cursor.get(timestamp, msg, MDB_NEXT)) {
                 auto obj = json::parse(msg);
 
-                if (obj.count("event") == 0)
+                if (obj.count("event") == 0 || !(obj["event"]["type"] == "m.room.message" ||
+                                                 obj["event"]["type"] == "m.sticker"))
                         continue;
 
                 mtx::events::collections::TimelineEvent event;
@@ -1937,9 +1965,6 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
         using namespace mtx::events::state;
 
         for (const auto &e : res.events) {
-                if (isStateEvent(e))
-                        continue;
-
                 if (std::holds_alternative<RedactionEvent<msg::Redaction>>(e))
                         continue;
 

@@ -250,6 +250,7 @@ private:
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
         QString getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
 
+        std::string getLastEventId(lmdb::txn &txn, const std::string &room_id);
         DescInfo getLastMessageInfo(lmdb::txn &txn, const std::string &room_id);
         void saveTimelineMessages(lmdb::txn &txn,
                                   const std::string &room_id,

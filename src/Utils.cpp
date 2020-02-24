@@ -17,6 +17,7 @@
 
 #include "Cache.h"
 #include "Config.h"
+#include "MatrixClient.h"
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
@@ -44,8 +45,7 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
 QString
 utils::localUser()
 {
-        QSettings settings;
-        return settings.value("auth/user_id").toString();
+        return QString::fromStdString(http::client()->user_id().to_string());
 }
 
 QString
