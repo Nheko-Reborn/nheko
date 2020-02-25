@@ -131,6 +131,7 @@ LoginPage::LoginPage(QWidget *parent)
 
         error_label_ = new QLabel(this);
         error_label_->setFont(font);
+        error_label_->setWordWrap(true);
 
         top_layout_->addLayout(top_bar_layout_);
         top_layout_->addStretch(1);
