@@ -12,6 +12,13 @@ Rectangle {
 	width: parent.width
 	height: replyContainer.height
 
+	MouseArea {
+		anchors.fill: parent
+		preventStealing: true
+		onClicked: chat.positionViewAtIndex(chat.model.idToIndex(timelineManager.replyingEvent), ListView.Contain)
+		cursorShape: Qt.PointingHandCursor
+	}
+
 	Rectangle {
 		id: colorLine
 
@@ -48,10 +55,4 @@ Rectangle {
 	}
 
 	color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.2)
-
-	MouseArea {
-		anchors.fill: parent
-		onClicked: chat.positionViewAtIndex(chat.model.idToIndex(timelineManager.replyingEvent), ListView.Contain)
-		cursorShape: Qt.PointingHandCursor
-	}
 }

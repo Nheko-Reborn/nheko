@@ -22,7 +22,8 @@ TextEdit {
 	{
 		id: ma
 		anchors.fill: parent
-		onPressed:  mouse.accepted = false
+		propagateComposedEvents: true
+		acceptedButtons: Qt.NoButton
 		cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
 	}
 
