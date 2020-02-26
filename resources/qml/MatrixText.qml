@@ -1,12 +1,15 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.3
 
-TextEdit {
+TextArea {
 	textFormat: TextEdit.RichText
 	readOnly: true
 	wrapMode: Text.Wrap
 	selectByMouse: true
-	color: colors.text
+	//color: colors.text
+	palette: colors
+
+	padding: 0
 
 	onLinkActivated: {
 		if (/^https:\/\/matrix.to\/#\/(@.*)$/.test(link)) chat.model.openUserProfile(/^https:\/\/matrix.to\/#\/(@.*)$/.exec(link)[1])

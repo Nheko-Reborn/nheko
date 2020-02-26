@@ -32,6 +32,7 @@ TimelineViewManager::updateColorPalette()
                                      /*window*/ QColor("white"));
                 lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
                 lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
+                lightActive.setColor(QPalette::Link, QColor("#0077b5"));
                 view->rootContext()->setContextProperty("currentActivePalette", lightActive);
                 view->rootContext()->setContextProperty("currentInactivePalette", lightActive);
         } else if (settings->theme() == "dark") {
@@ -47,6 +48,7 @@ TimelineViewManager::updateColorPalette()
                 darkActive.setColor(QPalette::Highlight, QColor("#e7e7e9"));
                 darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
                 darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
+                darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
                 view->rootContext()->setContextProperty("currentActivePalette", darkActive);
                 view->rootContext()->setContextProperty("currentInactivePalette", darkActive);
         } else {

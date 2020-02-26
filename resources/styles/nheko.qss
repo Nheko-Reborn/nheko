@@ -3,6 +3,11 @@ QLabel {
     color: #333;
 }
 
+TextLabel::a {
+    color: #0077b5;
+}
+
+
 QuickSwitcher,
 ReplyPopup,
 SuggestionsPopup,
