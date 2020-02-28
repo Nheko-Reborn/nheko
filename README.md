@@ -56,6 +56,12 @@ can be found in the [Github releases](https://github.com/Nheko-Reborn/nheko/rele
 pacaur -S nheko # nheko-git
 ```
 
+#### Debian (10 and above)
+
+```bash
+sudo apt install nheko
+```
+
 #### Fedora
 ```bash
 sudo dnf install nheko
@@ -81,7 +87,14 @@ sudo apk add nheko
 flatpak install flathub io.github.NhekoReborn.Nheko
 ```
 
+#### Guix
+
+```
+guix install nheko
+```
+
 #### macOS (10.14 and above)
+
 
 with [macports](https://www.macports.org/) :
 
@@ -186,7 +199,14 @@ sudo apt install cmake gcc make automake liblmdb-dev libsodium-dev \
     qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts
 ```
 
+##### Guix
+
+```bash
+guix environment nheko
+```
+
 ##### macOS (Xcode 10.2 or later)
+
 
 ```bash
 brew update
