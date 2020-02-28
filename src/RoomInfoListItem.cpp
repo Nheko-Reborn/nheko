@@ -33,8 +33,6 @@
 
 constexpr int MaxUnreadCountDisplayed = 99;
 
-constexpr int IconSize = 48;
-
 struct WidgetMetrics
 {
         int maxHeight;
