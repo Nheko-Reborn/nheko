@@ -108,12 +108,15 @@ UserMentionsWidget {
     qproperty-highlightedTimestampColor: palette(highlightedtext);
     qproperty-hoverTimestampColor: palette(highlightedtext);
 
-    qproperty-avatarBgColor: palette(base);
-    qproperty-avatarFgColor: palette(text);
-
     qproperty-bubbleBgColor: palette(base);
     qproperty-bubbleFgColor: palette(text);
 }
+
+RoomInfoListItem > Avatar {
+    qproperty-backgroundColor: palette(base);
+    qproperty-textColor: palette(text);
+}
+
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);

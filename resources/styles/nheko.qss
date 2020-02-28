@@ -111,11 +111,13 @@ RoomInfoListItem {
     qproperty-highlightedTimestampColor: #f4f4f5;
     qproperty-hoverTimestampColor: white;
 
-    qproperty-avatarBgColor: #eee;
-    qproperty-avatarFgColor: black;
-
     qproperty-bubbleFgColor: white;
     qproperty-bubbleBgColor: #38A3D8;
+}
+
+RoomInfoListItem > Avatar {
+    qproperty-backgroundColor: #eee;
+    qproperty-textColor: black;
 }
 
 CommunitiesListItem {

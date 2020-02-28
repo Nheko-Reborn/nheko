@@ -145,11 +145,13 @@ UserMentionsWidget {
     qproperty-highlightedTimestampColor: #e7e7e9;
     qproperty-hoverTimestampColor: #f4f5f8;
 
-    qproperty-avatarBgColor: #202228;
-    qproperty-avatarFgColor: white;
-
     qproperty-bubbleFgColor: white;
     qproperty-bubbleBgColor: #4d84c7;
+}
+
+RoomInfoListItem > Avatar {
+    qproperty-backgroundColor: #202228;
+    qproperty-textColor: white;
 }
 
 CommunitiesListItem {

@@ -33,8 +33,7 @@
 
 constexpr int MaxUnreadCountDisplayed = 99;
 
-constexpr int IconSize = 44;
-// constexpr int MaxHeight        = IconSize + 2 * Padding;
+constexpr int IconSize = 48;
 
 struct WidgetMetrics
 {
@@ -77,7 +76,8 @@ RoomInfoListItem::init(QWidget *parent)
         setMouseTracking(true);
         setAttribute(Qt::WA_Hover);
 
-        setFixedHeight(getMetrics(QFont{}).maxHeight);
+        auto wm = getMetrics(QFont{});
+        setFixedHeight(wm.maxHeight);
 
         QPainterPath path;
         path.addRect(0, 0, parent->width(), height());
@@ -85,6 +85,10 @@ RoomInfoListItem::init(QWidget *parent)
         ripple_overlay_ = new RippleOverlay(this);
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
+
+        avatar_ = new Avatar(this, wm.iconSize);
+        avatar_->setLetter(utils::firstChar(roomName_));
+        avatar_->move(wm.padding, wm.padding);
 
         unreadCountFont_.setPointSizeF(unreadCountFont_.pointSizeF() * 0.8);
         unreadCountFont_.setBold(true);
@@ -130,8 +134,6 @@ RoomInfoListItem::resizeEvent(QResizeEvent *)
 void
 RoomInfoListItem::paintEvent(QPaintEvent *event)
 {
-        bool rounded = QSettings().value("user/avatar_circles", true).toBool();
-
         Q_UNUSED(event);
 
         QPainter p(this);
@@ -159,8 +161,6 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 titlePen.setColor(titleColor_);
                 subtitlePen.setColor(subtitleColor_);
         }
-
-        QRect avatarRegion(wm.padding, wm.padding, wm.iconSize, wm.iconSize);
 
         // Description line with the default font.
         int bottom_y = wm.maxHeight - wm.padding - metrics.ascent() / 2;
@@ -251,38 +251,6 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
         }
 
         p.setPen(Qt::NoPen);
-
-        // We using the first letter of room's name.
-        if (roomAvatar_.isNull()) {
-                QBrush brush;
-                brush.setStyle(Qt::SolidPattern);
-                brush.setColor(avatarBgColor());
-
-                p.setPen(Qt::NoPen);
-                p.setBrush(brush);
-
-                rounded ? p.drawEllipse(avatarRegion.center(), wm.iconSize / 2, wm.iconSize / 2)
-                        : p.drawRoundedRect(avatarRegion, 3, 3);
-
-                QFont bubbleFont;
-                bubbleFont.setPointSizeF(bubbleFont.pointSizeF() * 1.4);
-                p.setFont(bubbleFont);
-                p.setPen(avatarFgColor());
-                p.setBrush(Qt::NoBrush);
-                p.drawText(
-                  avatarRegion.translated(0, -1), Qt::AlignCenter, utils::firstChar(roomName()));
-        } else {
-                p.save();
-
-                QPainterPath path;
-                rounded ? path.addEllipse(wm.padding, wm.padding, wm.iconSize, wm.iconSize)
-                        : path.addRoundedRect(avatarRegion, 3, 3);
-
-                p.setClipPath(path);
-
-                p.drawPixmap(avatarRegion, roomAvatar_);
-                p.restore();
-        }
 
         if (unreadMsgCount_ > 0) {
                 QBrush brush;
@@ -413,10 +381,7 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 void
 RoomInfoListItem::setAvatar(const QString &avatar_url)
 {
-        AvatarProvider::resolve(avatar_url, IconSize, this, [this](const QPixmap &img) {
-                roomAvatar_ = img;
-                update();
-        });
+        avatar_->setImage(avatar_url);
 }
 
 void

@@ -25,6 +25,7 @@
 #include <mtx/responses.hpp>
 
 #include "CacheStructs.h"
+#include "ui/Avatar.h"
 
 class Menu;
 class RippleOverlay;
@@ -37,9 +38,6 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(
           QColor hoverBackgroundColor READ hoverBackgroundColor WRITE setHoverBackgroundColor)
         Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
-
-        Q_PROPERTY(QColor avatarBgColor READ avatarBgColor WRITE setAvatarBgColor)
-        Q_PROPERTY(QColor avatarFgColor READ avatarFgColor WRITE setAvatarFgColor)
 
         Q_PROPERTY(QColor bubbleBgColor READ bubbleBgColor WRITE setBubbleBgColor)
         Q_PROPERTY(QColor bubbleFgColor READ bubbleFgColor WRITE setBubbleFgColor)
@@ -84,8 +82,6 @@ public:
         QColor hoverSubtitleColor() const { return hoverSubtitleColor_; }
         QColor hoverTimestampColor() const { return hoverTimestampColor_; }
         QColor backgroundColor() const { return backgroundColor_; }
-        QColor avatarBgColor() const { return avatarBgColor_; }
-        QColor avatarFgColor() const { return avatarFgColor_; }
 
         QColor highlightedTitleColor() const { return highlightedTitleColor_; }
         QColor highlightedSubtitleColor() const { return highlightedSubtitleColor_; }
@@ -108,8 +104,6 @@ public:
         void setHoverTimestampColor(QColor &color) { hoverTimestampColor_ = color; }
         void setBackgroundColor(QColor &color) { backgroundColor_ = color; }
         void setTimestampColor(QColor &color) { timestampColor_ = color; }
-        void setAvatarFgColor(QColor &color) { avatarFgColor_ = color; }
-        void setAvatarBgColor(QColor &color) { avatarBgColor_ = color; }
 
         void setHighlightedTitleColor(QColor &color) { highlightedTitleColor_ = color; }
         void setHighlightedSubtitleColor(QColor &color) { highlightedSubtitleColor_ = color; }
@@ -163,6 +157,7 @@ private:
         QString roomName() { return roomName_; }
 
         RippleOverlay *ripple_overlay_;
+        Avatar *avatar_;
 
         enum class RoomType
         {
@@ -179,8 +174,6 @@ private:
         QString roomName_;
 
         DescInfo lastMsgInfo_;
-
-        QPixmap roomAvatar_;
 
         Menu *menu_;
         QAction *leaveRoom_;
@@ -218,9 +211,6 @@ private:
         QColor timestampColor_;
         QColor highlightedTimestampColor_;
         QColor hoverTimestampColor_;
-
-        QColor avatarBgColor_;
-        QColor avatarFgColor_;
 
         QColor bubbleBgColor_;
         QColor bubbleFgColor_;

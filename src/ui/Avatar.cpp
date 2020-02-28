@@ -73,21 +73,31 @@ Avatar::setLetter(const QString &letter)
 void
 Avatar::setImage(const QString &avatar_url)
 {
-        AvatarProvider::resolve(avatar_url, size_, this, [this](QPixmap pm) {
-                type_   = ui::AvatarType::Image;
-                pixmap_ = pm;
-                update();
-        });
+        avatar_url_ = avatar_url;
+        AvatarProvider::resolve(avatar_url,
+                                static_cast<int>(size_ * pixmap_.devicePixelRatio()),
+                                this,
+                                [this](QPixmap pm) {
+                                        type_   = ui::AvatarType::Image;
+                                        pixmap_ = pm;
+                                        update();
+                                });
 }
 
 void
 Avatar::setImage(const QString &room, const QString &user)
 {
-        AvatarProvider::resolve(room, user, size_, this, [this](QPixmap pm) {
-                type_   = ui::AvatarType::Image;
-                pixmap_ = pm;
-                update();
-        });
+        room_ = room;
+        user_ = user;
+        AvatarProvider::resolve(room,
+                                user,
+                                static_cast<int>(size_ * pixmap_.devicePixelRatio()),
+                                this,
+                                [this](QPixmap pm) {
+                                        type_   = ui::AvatarType::Image;
+                                        pixmap_ = pm;
+                                        update();
+                                });
 }
 
 void
@@ -118,6 +128,16 @@ Avatar::paintEvent(QPaintEvent *)
                 painter.setBrush(brush);
                 rounded ? painter.drawEllipse(r.center(), hs, hs)
                         : painter.drawRoundedRect(r, 3, 3);
+        } else if (painter.isActive() &&
+                   abs(pixmap_.devicePixelRatio() - painter.device()->devicePixelRatioF()) > 0.01) {
+                pixmap_ =
+                  pixmap_.scaled(QSize(size_, size_) * painter.device()->devicePixelRatioF());
+                pixmap_.setDevicePixelRatio(painter.device()->devicePixelRatioF());
+
+                if (!avatar_url_.isEmpty())
+                        setImage(avatar_url_);
+                else
+                        setImage(room_, user_);
         }
 
         switch (type_) {

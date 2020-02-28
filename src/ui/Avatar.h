@@ -38,6 +38,7 @@ private:
 
         ui::AvatarType type_;
         QString letter_;
+        QString avatar_url_, room_, user_;
         QColor background_color_;
         QColor text_color_;
         QIcon icon_;
