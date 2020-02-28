@@ -1370,7 +1370,8 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                 auto obj = json::parse(msg);
 
                 if (obj.count("event") == 0 || !(obj["event"]["type"] == "m.room.message" ||
-                                                 obj["event"]["type"] == "m.sticker"))
+                                                 obj["event"]["type"] == "m.sticker" ||
+                                                 obj["event"]["type"] == "m.room.encrypted"))
                         continue;
 
                 mtx::events::collections::TimelineEvent event;
