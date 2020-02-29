@@ -82,6 +82,37 @@ Item {
 			}
 		}
 		DelegateChoice {
+			roleValue: MtxEvent.RoomCreate
+			NoticeMessage {
+				text: qsTr("%1 created and configured room: %2").arg(model.data.userName).arg(model.data.roomId)
+			}
+		}
+		DelegateChoice {
+			// TODO: make a more complex formatter for the power levels.
+			roleValue: MtxEvent.PowerLevels
+			NoticeMessage {
+				text: timelineManager.timeline.formatPowerLevelEvent(model.data.id)
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.RoomJoinRules
+			NoticeMessage {
+				text: timelineManager.timeline.formatJoinRuleEvent(model.data.id)
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.RoomHistoryVisibility
+			NoticeMessage {
+				text: timelineManager.timeline.formatHistoryVisibilityEvent(model.data.id)
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.RoomGuestAccess
+			NoticeMessage {
+				text: timelineManager.timeline.formatGuestAccessEvent(model.data.id)
+			}
+		}
+		DelegateChoice {
 			roleValue: MtxEvent.Member
 			NoticeMessage {
 				text: timelineManager.timeline.formatMemberEvent(model.data.id);

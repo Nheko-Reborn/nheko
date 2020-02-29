@@ -35,17 +35,17 @@ enum EventType
         /// m.room.canonical_alias
         CanonicalAlias,
         /// m.room.create
-        Create,
+        RoomCreate,
         /// m.room.encrypted.
         Encrypted,
         /// m.room.encryption.
         Encryption,
         /// m.room.guest_access
-        GuestAccess,
+        RoomGuestAccess,
         /// m.room.history_visibility
-        HistoryVisibility,
+        RoomHistoryVisibility,
         /// m.room.join_rules
-        JoinRules,
+        RoomJoinRules,
         /// m.room.member
         Member,
         /// m.room.name
@@ -152,6 +152,7 @@ public:
                 State,
                 IsEncrypted,
                 ReplyTo,
+                RoomId,
                 RoomName,
                 RoomTopic,
                 Dump,
@@ -170,6 +171,10 @@ public:
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
         Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, QColor bg);
         Q_INVOKABLE QString formatMemberEvent(QString id);
+        Q_INVOKABLE QString formatJoinRuleEvent(QString id);
+        Q_INVOKABLE QString formatHistoryVisibilityEvent(QString id);
+        Q_INVOKABLE QString formatGuestAccessEvent(QString id);
+        Q_INVOKABLE QString formatPowerLevelEvent(QString id);
 
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
