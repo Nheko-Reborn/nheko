@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export PATH="${PATH}:/usr/local/bin/"
+
 file=$(find artifacts/ -type f -exec basename {} \;)
 
 uri=$(curl -H "Authorization: Bearer ${MATRIX_ACCESS_TOKEN}" -H "Content-Type: application/x-compressed" -X POST --data-binary "@artifacts/${file}" "https://matrix.neko.dev/_matrix/media/r0/upload?filename=${file}" | python3 -c "import sys, json; print(json.load(sys.stdin)['content_uri'])")
