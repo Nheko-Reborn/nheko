@@ -13,7 +13,7 @@ $body = @{
     "size" = ${fileSize}
   }
   "msgtype" = "m.file"
-  "url" = "${response.content_uri}"
+  "url" = ${response}.content_uri
 } | ConvertTo-Json
 $room = "!TshDrgpBNBDmfDeEGN:neko.dev"
 
