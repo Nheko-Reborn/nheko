@@ -1,20 +1,20 @@
 #pragma once
 
 #include <QColor>
-#include <QPaintEvent>
-#include <QPainter>
-#include <QTimer>
 #include <QWidget>
 
+class QPainter;
+class QTimer;
+class QPaintEvent;
 class LoadingIndicator : public QWidget
 {
         Q_OBJECT
         Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
-        LoadingIndicator(QWidget *parent = 0);
+        LoadingIndicator(QWidget *parent = nullptr);
 
-        void paintEvent(QPaintEvent *e);
+        void paintEvent(QPaintEvent *e) override;
 
         void start();
         void stop();

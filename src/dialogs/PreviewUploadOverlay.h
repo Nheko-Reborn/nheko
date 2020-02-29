@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <QImage>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPixmap>
@@ -33,6 +34,7 @@ class PreviewUploadOverlay : public QWidget
 public:
         PreviewUploadOverlay(QWidget *parent = nullptr);
 
+        void setPreview(const QImage &src, const QString &mime);
         void setPreview(const QByteArray data, const QString &mime);
         void setPreview(const QString &path);
 

@@ -1,14 +1,8 @@
 #pragma once
 
-#include <boost/variant.hpp>
+#include <variant>
 
-#include "Cache.h"
-#include "RoomInfoListItem.h"
-#include "timeline/widgets/AudioItem.h"
-#include "timeline/widgets/FileItem.h"
-#include "timeline/widgets/ImageItem.h"
-#include "timeline/widgets/VideoItem.h"
-
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QPixmap>
 #include <mtx/events/collections.hpp>
@@ -16,11 +10,34 @@
 
 #include <qmath.h>
 
+struct DescInfo;
+
+namespace cache {
+// Forward declarations to prevent dependency on Cache.h, since this header is included often!
+QString
+displayName(const QString &room_id, const QString &user_id);
+}
+
 class QComboBox;
+
+// Contains information about related events for
+// outgoing messages
+struct RelatedInfo
+{
+        using MsgType = mtx::events::MessageType;
+        MsgType type;
+        QString room;
+        QString quoted_body, quoted_formatted_body;
+        std::string related_event;
+        QString quoted_user;
+};
 
 namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
+
+QString
+replaceEmoji(const QString &body);
 
 QString
 localUser();
@@ -64,7 +81,9 @@ event_body(const mtx::events::collections::TimelineEvents &event);
 //! Match widgets/events with a description message.
 template<class T>
 QString
-messageDescription(const QString &username = "", const QString &body = "")
+messageDescription(const QString &username = "",
+                   const QString &body     = "",
+                   const bool isLocal      = false)
 {
         using Audio     = mtx::events::RoomEvent<mtx::events::msg::Audio>;
         using Emote     = mtx::events::RoomEvent<mtx::events::msg::Emote>;
@@ -76,51 +95,75 @@ messageDescription(const QString &username = "", const QString &body = "")
         using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
         using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
-        if (std::is_same<T, AudioItem>::value || std::is_same<T, Audio>::value)
-                return QString("sent an audio clip");
-        else if (std::is_same<T, ImageItem>::value || std::is_same<T, Image>::value)
-                return QString("sent an image");
-        else if (std::is_same<T, FileItem>::value || std::is_same<T, File>::value)
-                return QString("sent a file");
-        else if (std::is_same<T, VideoItem>::value || std::is_same<T, Video>::value)
-                return QString("sent a video clip");
-        else if (std::is_same<T, StickerItem>::value || std::is_same<T, Sticker>::value)
-                return QString("sent a sticker");
-        else if (std::is_same<T, Notice>::value)
-                return QString("sent a notification");
-        else if (std::is_same<T, Text>::value)
-                return QString(": %1").arg(body);
-        else if (std::is_same<T, Emote>::value)
+        if (std::is_same<T, Audio>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "You sent an audio clip");
+                else
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "%1 sent an audio clip")
+                          .arg(username);
+        } else if (std::is_same<T, Image>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "You sent an image");
+                else
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "%1 sent an image")
+                          .arg(username);
+        } else if (std::is_same<T, File>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "You sent a file");
+                else
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "%1 sent a file")
+                          .arg(username);
+        } else if (std::is_same<T, Video>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "You sent a video");
+                else
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "%1 sent a video")
+                          .arg(username);
+        } else if (std::is_same<T, Sticker>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "You sent a sticker");
+                else
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "%1 sent a sticker")
+                          .arg(username);
+        } else if (std::is_same<T, Notice>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "You sent a notification");
+                else
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "%1 sent a notification")
+                          .arg(username);
+        } else if (std::is_same<T, Text>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:", "You: %1")
+                          .arg(body);
+                else
+                        return QCoreApplication::translate("message-description sent:", "%1: %2")
+                          .arg(username)
+                          .arg(body);
+        } else if (std::is_same<T, Emote>::value) {
                 return QString("* %1 %2").arg(username).arg(body);
-        else if (std::is_same<T, Encrypted>::value)
-                return QString("sent an encrypted message");
-}
-
-template<class T, class Event>
-DescInfo
-createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
-{
-        using Text  = mtx::events::RoomEvent<mtx::events::msg::Text>;
-        using Emote = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-
-        const auto msg    = boost::get<T>(event);
-        const auto sender = QString::fromStdString(msg.sender);
-
-        const auto username = Cache::displayName(room_id, sender);
-        const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-
-        bool isText  = std::is_same<T, Text>::value;
-        bool isEmote = std::is_same<T, Emote>::value;
-
-        return DescInfo{
-          QString::fromStdString(msg.event_id),
-          isEmote ? "" : (sender == localUser ? "You" : username),
-          sender,
-          (isText || isEmote)
-            ? messageDescription<T>(username, QString::fromStdString(msg.content.body).trimmed())
-            : QString(" %1").arg(messageDescription<T>()),
-          utils::descriptiveTime(ts),
-          ts};
+        } else if (std::is_same<T, Encrypted>::value) {
+                if (isLocal)
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "You sent an encrypted message");
+                else
+                        return QCoreApplication::translate("message-description sent:",
+                                                           "%1 sent an encrypted message")
+                          .arg(username);
+        } else {
+                return QCoreApplication::translate("utils", "Unknown Message Type");
+        }
 }
 
 //! Scale down an image to fit to the given width & height limitations.
@@ -143,25 +186,25 @@ erase_if(ContainerT &items, const PredicateT &predicate)
 inline uint64_t
 event_timestamp(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return msg.origin_server_ts; }, event);
+        return std::visit([](auto msg) { return msg.origin_server_ts; }, event);
 }
 
 inline nlohmann::json
 serialize_event(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return json(msg); }, event);
+        return std::visit([](auto msg) { return json(msg); }, event);
 }
 
 inline mtx::events::EventType
 event_type(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return msg.type; }, event);
+        return std::visit([](auto msg) { return msg.type; }, event);
 }
 
 inline std::string
 event_id(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return msg.event_id; }, event);
+        return std::visit([](auto msg) { return msg.event_id; }, event);
 }
 
 inline QString
@@ -173,15 +216,14 @@ eventId(const mtx::events::collections::TimelineEvents &event)
 inline QString
 event_sender(const mtx::events::collections::TimelineEvents &event)
 {
-        return boost::apply_visitor([](auto msg) { return QString::fromStdString(msg.sender); },
-                                    event);
+        return std::visit([](auto msg) { return QString::fromStdString(msg.sender); }, event);
 }
 
 template<class T>
 QString
 message_body(const mtx::events::collections::TimelineEvents &event)
 {
-        return QString::fromStdString(boost::get<T>(event).content.body);
+        return QString::fromStdString(std::get<T>(event).content.body);
 }
 
 //! Calculate the Levenshtein distance between two strings with character skipping.
@@ -211,7 +253,7 @@ getMessageBody(const RoomMessageT &event)
         if (event.content.format.empty())
                 return QString::fromStdString(event.content.body).toHtmlEscaped();
 
-        if (event.content.format != common::FORMAT_MSG_TYPE)
+        if (event.content.format != mtx::common::FORMAT_MSG_TYPE)
                 return QString::fromStdString(event.content.body).toHtmlEscaped();
 
         return QString::fromStdString(event.content.formatted_body);
@@ -225,12 +267,24 @@ linkifyMessage(const QString &body);
 QString
 markdownToHtml(const QString &text);
 
+//! Escape every html tag, that was not whitelisted
+QString
+escapeBlacklistedHtml(const QString &data);
+
+//! Generate a Rich Reply quote message
+QString
+getFormattedQuoteBody(const RelatedInfo &related, const QString &html);
+
+//! Get the body for the quote, depending on the event type.
+QString
+getQuoteBody(const RelatedInfo &related);
+
 //! Retrieve the color of the links based on the current theme.
 QString
 linkColor();
 
 //! Returns the hash code of the input QString
-int
+uint32_t
 hashQString(const QString &input);
 
 //! Generate a color (matching #RRGGBB) that has an acceptable contrast to background that is based
@@ -253,14 +307,4 @@ centerWidget(QWidget *widget, QWidget *parent);
 void
 restoreCombobox(QComboBox *combo, const QString &value);
 
-struct SideBarSizes
-{
-        int small;
-        int normal;
-        int groups;
-        int collapsePoint;
-};
-
-SideBarSizes
-calculateSidebarSizes(const QFont &f);
 }

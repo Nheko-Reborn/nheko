@@ -17,15 +17,27 @@
 
 #pragma once
 
-#include "Utils.h"
 #include <QSplitter>
+
+namespace splitter {
+struct SideBarSizes
+{
+        int small;
+        int normal;
+        int groups;
+        int collapsePoint;
+};
+
+SideBarSizes
+calculateSidebarSizes(const QFont &f);
+}
 
 class Splitter : public QSplitter
 {
         Q_OBJECT
 public:
         explicit Splitter(QWidget *parent = nullptr);
-        ~Splitter();
+        ~Splitter() override;
 
         void restoreSizes(int fallback);
 
@@ -45,5 +57,5 @@ private:
         int leftMoveCount_  = 0;
         int rightMoveCount_ = 0;
 
-        utils::SideBarSizes sz_;
+        splitter::SideBarSizes sz_;
 };

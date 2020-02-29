@@ -35,10 +35,9 @@ ReceiptItem::ReceiptItem(QWidget *parent,
         QFont nameFont;
         nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
 
-        auto displayName = Cache::displayName(room_id, user_id);
+        auto displayName = cache::displayName(room_id, user_id);
 
-        avatar_ = new Avatar(this);
-        avatar_->setSize(44);
+        avatar_ = new Avatar(this, 44);
         avatar_->setLetter(utils::firstChar(displayName));
 
         // If it's a matrix id we use the second letter.
@@ -56,10 +55,7 @@ ReceiptItem::ReceiptItem(QWidget *parent,
         topLayout_->addWidget(avatar_);
         topLayout_->addLayout(textLayout_, 1);
 
-        AvatarProvider::resolve(ChatPage::instance()->currentRoom(),
-                                user_id,
-                                this,
-                                [this](const QImage &img) { avatar_->setImage(img); });
+        avatar_->setImage(ChatPage::instance()->currentRoom(), user_id);
 }
 
 void
@@ -78,13 +74,15 @@ ReceiptItem::dateFormat(const QDateTime &then) const
         auto days = then.daysTo(now);
 
         if (days == 0)
-                return QString("Today %1").arg(then.toString("HH:mm"));
+                return tr("Today %1").arg(then.time().toString(Qt::DefaultLocaleShortDate));
         else if (days < 2)
-                return QString("Yesterday %1").arg(then.toString("HH:mm"));
-        else if (days < 365)
-                return then.toString("dd/MM HH:mm");
+                return tr("Yesterday %1").arg(then.time().toString(Qt::DefaultLocaleShortDate));
+        else if (days < 7)
+                return QString("%1 %2")
+                  .arg(then.toString("dddd"))
+                  .arg(then.time().toString(Qt::DefaultLocaleShortDate));
 
-        return then.toString("dd/MM/yy");
+        return then.toString(Qt::DefaultLocaleShortDate);
 }
 
 ReadReceipts::ReadReceipts(QWidget *parent)
@@ -131,7 +129,7 @@ ReadReceipts::ReadReceipts(QWidget *parent)
         layout->addWidget(userList_);
         layout->addLayout(buttonLayout);
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &ReadReceipts::close);
         connect(okBtn, &QPushButton::clicked, this, &ReadReceipts::close);
 }

@@ -3,25 +3,84 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QProcessEnvironment>
+#include <QScreen>
 #include <QSettings>
 #include <QTextDocument>
 #include <QXmlStreamReader>
-#include <cmath>
 
-#include <boost/variant.hpp>
+#include <cmath>
+#include <variant>
+
 #include <cmark.h>
 
+#include "Cache.h"
 #include "Config.h"
+#include "MatrixClient.h"
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
 QHash<QString, QString> authorColors_;
 
+template<class T, class Event>
+static DescInfo
+createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
+{
+        const auto msg    = std::get<T>(event);
+        const auto sender = QString::fromStdString(msg.sender);
+
+        const auto username = cache::displayName(room_id, sender);
+        const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+
+        return DescInfo{
+          QString::fromStdString(msg.event_id),
+          sender,
+          utils::messageDescription<T>(
+            username, QString::fromStdString(msg.content.body).trimmed(), sender == localUser),
+          utils::descriptiveTime(ts),
+          ts};
+}
+
 QString
 utils::localUser()
 {
+        return QString::fromStdString(http::client()->user_id().to_string());
+}
+
+QString
+utils::replaceEmoji(const QString &body)
+{
+        QString fmtBody = "";
+
+        QVector<uint> utf32_string = body.toUcs4();
+
         QSettings settings;
-        return settings.value("auth/user_id").toString();
+        QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
+
+        bool insideFontBlock = false;
+        for (auto &code : utf32_string) {
+                // TODO: Be more precise here.
+                if ((code >= 0x2600 && code <= 0x27bf) || (code >= 0x1f300 && code <= 0x1f3ff) ||
+                    (code >= 0x1f000 && code <= 0x1faff)) {
+                        if (!insideFontBlock) {
+                                fmtBody += QString("<font face=\"" + userFontFamily + "\">");
+                                insideFontBlock = true;
+                        }
+
+                } else {
+                        if (insideFontBlock) {
+                                fmtBody += "</font>";
+                                insideFontBlock = false;
+                        }
+                }
+                fmtBody += QString::fromUcs4(&code, 1);
+        }
+        if (insideFontBlock) {
+                fmtBody += "</font>";
+        }
+
+        return fmtBody;
 }
 
 void
@@ -37,7 +96,7 @@ utils::setScaleFactor(float factor)
 float
 utils::scaleFactor()
 {
-        QSettings settings("nheko", "nheko");
+        QSettings settings;
         return settings.value("settings/scale_factor", -1).toFloat();
 }
 
@@ -74,13 +133,13 @@ utils::descriptiveTime(const QDateTime &then)
         const auto days = then.daysTo(now);
 
         if (days == 0)
-                return then.toString("HH:mm");
+                return then.time().toString(Qt::DefaultLocaleShortDate);
         else if (days < 2)
-                return QString("Yesterday");
-        else if (days < 365)
-                return then.toString("dd/MM");
+                return QString(QCoreApplication::translate("descriptiveTime", "Yesterday"));
+        else if (days < 7)
+                return then.toString("dddd");
 
-        return then.toString("dd/MM/yy");
+        return then.date().toString(Qt::DefaultLocaleShortDate);
 }
 
 DescInfo
@@ -97,39 +156,33 @@ utils::getMessageDescription(const TimelineEvent &event,
         using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
         using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
-        if (boost::get<Audio>(&event) != nullptr) {
+        if (std::holds_alternative<Audio>(event)) {
                 return createDescriptionInfo<Audio>(event, localUser, room_id);
-        } else if (boost::get<Emote>(&event) != nullptr) {
+        } else if (std::holds_alternative<Emote>(event)) {
                 return createDescriptionInfo<Emote>(event, localUser, room_id);
-        } else if (boost::get<File>(&event) != nullptr) {
+        } else if (std::holds_alternative<File>(event)) {
                 return createDescriptionInfo<File>(event, localUser, room_id);
-        } else if (boost::get<Image>(&event) != nullptr) {
+        } else if (std::holds_alternative<Image>(event)) {
                 return createDescriptionInfo<Image>(event, localUser, room_id);
-        } else if (boost::get<Notice>(&event) != nullptr) {
+        } else if (std::holds_alternative<Notice>(event)) {
                 return createDescriptionInfo<Notice>(event, localUser, room_id);
-        } else if (boost::get<Text>(&event) != nullptr) {
+        } else if (std::holds_alternative<Text>(event)) {
                 return createDescriptionInfo<Text>(event, localUser, room_id);
-        } else if (boost::get<Video>(&event) != nullptr) {
+        } else if (std::holds_alternative<Video>(event)) {
                 return createDescriptionInfo<Video>(event, localUser, room_id);
-        } else if (boost::get<mtx::events::Sticker>(&event) != nullptr) {
+        } else if (std::holds_alternative<mtx::events::Sticker>(event)) {
                 return createDescriptionInfo<mtx::events::Sticker>(event, localUser, room_id);
-        } else if (boost::get<Encrypted>(&event) != nullptr) {
-                const auto msg    = boost::get<Encrypted>(event);
-                const auto sender = QString::fromStdString(msg.sender);
+        } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {
+                const auto sender = QString::fromStdString(msg->sender);
 
-                const auto username = Cache::displayName(room_id, sender);
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+                const auto username = cache::displayName(room_id, sender);
+                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg->origin_server_ts);
 
                 DescInfo info;
-                if (sender == localUser)
-                        info.username = "You";
-                else
-                        info.username = username;
-
                 info.userid    = sender;
                 info.body      = QString(" %1").arg(messageDescription<Encrypted>());
                 info.timestamp = utils::descriptiveTime(ts);
-                info.event_id  = QString::fromStdString(msg.event_id);
+                info.event_id  = QString::fromStdString(msg->event_id);
                 info.datetime  = ts;
 
                 return info;
@@ -197,30 +250,25 @@ utils::levenshtein_distance(const std::string &s1, const std::string &s2)
 }
 
 QString
-utils::event_body(const mtx::events::collections::TimelineEvents &event)
+utils::event_body(const mtx::events::collections::TimelineEvents &e)
 {
         using namespace mtx::events;
-        using namespace mtx::events::msg;
+        if (auto ev = std::get_if<RoomEvent<msg::Audio>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Emote>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::File>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Image>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Notice>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Text>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
+        if (auto ev = std::get_if<RoomEvent<msg::Video>>(&e); ev != nullptr)
+                return QString::fromStdString(ev->content.body);
 
-        if (boost::get<RoomEvent<Audio>>(&event) != nullptr) {
-                return message_body<RoomEvent<Audio>>(event);
-        } else if (boost::get<RoomEvent<Emote>>(&event) != nullptr) {
-                return message_body<RoomEvent<Emote>>(event);
-        } else if (boost::get<RoomEvent<File>>(&event) != nullptr) {
-                return message_body<RoomEvent<File>>(event);
-        } else if (boost::get<RoomEvent<Image>>(&event) != nullptr) {
-                return message_body<RoomEvent<Image>>(event);
-        } else if (boost::get<RoomEvent<Notice>>(&event) != nullptr) {
-                return message_body<RoomEvent<Notice>>(event);
-        } else if (boost::get<Sticker>(&event) != nullptr) {
-                return message_body<Sticker>(event);
-        } else if (boost::get<RoomEvent<Text>>(&event) != nullptr) {
-                return message_body<RoomEvent<Text>>(event);
-        } else if (boost::get<RoomEvent<Video>>(&event) != nullptr) {
-                return message_body<RoomEvent<Video>>(event);
-        }
-
-        return QString();
+        return "";
 }
 
 QPixmap
@@ -229,8 +277,10 @@ utils::scaleImageToPixmap(const QImage &img, int size)
         if (img.isNull())
                 return QPixmap();
 
+        // Deprecated in 5.13: const double sz =
+        //  std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
         const double sz =
-          std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
+          std::ceil(QGuiApplication::primaryScreen()->devicePixelRatio() * (double)size);
         return QPixmap::fromImage(
           img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
@@ -290,18 +340,72 @@ QString
 utils::linkifyMessage(const QString &body)
 {
         // Convert to valid XML.
-        auto doc = QString("<html>%1</html>").arg(body);
+        auto doc = body;
         doc.replace(conf::strings::url_regex, conf::strings::url_html);
 
         return doc;
 }
 
 QString
+utils::escapeBlacklistedHtml(const QString &rawStr)
+{
+        static const std::array allowedTags = {
+          "font",       "/font",       "del",    "/del",    "h1",    "/h1",    "h2",     "/h2",
+          "h3",         "/h3",         "h4",     "/h4",     "h5",    "/h5",    "h6",     "/h6",
+          "blockquote", "/blockquote", "p",      "/p",      "a",     "/a",     "ul",     "/ul",
+          "ol",         "/ol",         "sup",    "/sup",    "sub",   "/sub",   "li",     "/li",
+          "b",          "/b",          "i",      "/i",      "u",     "/u",     "strong", "/strong",
+          "em",         "/em",         "strike", "/strike", "code",  "/code",  "hr",     "/hr",
+          "br",         "br/",         "div",    "/div",    "table", "/table", "thead",  "/thead",
+          "tbody",      "/tbody",      "tr",     "/tr",     "th",    "/th",    "td",     "/td",
+          "caption",    "/caption",    "pre",    "/pre",    "span",  "/span",  "img",    "/img"};
+        QByteArray data = rawStr.toUtf8();
+        QByteArray buffer;
+        const size_t length = data.size();
+        buffer.reserve(length);
+        bool escapingTag = false;
+        for (size_t pos = 0; pos != length; ++pos) {
+                switch (data.at(pos)) {
+                case '<': {
+                        bool oneTagMatched = false;
+                        size_t endPos      = std::min(static_cast<size_t>(data.indexOf('>', pos)),
+                                                 static_cast<size_t>(data.indexOf(' ', pos)));
+
+                        auto mid = data.mid(pos + 1, endPos - pos - 1);
+                        for (const auto &tag : allowedTags) {
+                                // TODO: Check src and href attribute
+                                if (mid.toLower() == tag) {
+                                        oneTagMatched = true;
+                                }
+                        }
+                        if (oneTagMatched)
+                                buffer.append('<');
+                        else {
+                                escapingTag = true;
+                                buffer.append("&lt;");
+                        }
+                        break;
+                }
+                case '>':
+                        if (escapingTag) {
+                                buffer.append("&gt;");
+                                escapingTag = false;
+                        } else
+                                buffer.append('>');
+                        break;
+                default:
+                        buffer.append(data.at(pos));
+                        break;
+                }
+        }
+        return QString::fromUtf8(buffer);
+}
+
+QString
 utils::markdownToHtml(const QString &text)
 {
-        const auto str = text.toUtf8();
-        const char *tmp_buf =
-          cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_DEFAULT);
+        const auto str      = text.toUtf8();
+        const char *tmp_buf = cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_UNSAFE);
 
         // Copy the null terminated output buffer.
         std::string html(tmp_buf);
@@ -309,29 +413,99 @@ utils::markdownToHtml(const QString &text)
         // The buffer is no longer needed.
         free((char *)tmp_buf);
 
-        auto result = QString::fromStdString(html).trimmed();
+        auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
+
+        if (result.count("<p>") == 1 && result.startsWith("<p>") && result.endsWith("</p>")) {
+                result = result.mid(3, result.size() - 3 - 4);
+        }
 
         return result;
+}
+
+QString
+utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
+{
+        auto getFormattedBody = [related]() -> QString {
+                using MsgType = mtx::events::MessageType;
+
+                switch (related.type) {
+                case MsgType::File: {
+                        return "sent a file.";
+                }
+                case MsgType::Image: {
+                        return "sent an image.";
+                }
+                case MsgType::Audio: {
+                        return "sent an audio file.";
+                }
+                case MsgType::Video: {
+                        return "sent a video";
+                }
+                default: {
+                        return related.quoted_formatted_body;
+                }
+                }
+        };
+        return QString("<mx-reply><blockquote><a "
+                       "href=\"https://matrix.to/#/%1/%2\">In reply "
+                       "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
+                       "/>%5</blockquote></mx-reply>")
+                 .arg(related.room,
+                      QString::fromStdString(related.related_event),
+                      related.quoted_user,
+                      related.quoted_user,
+                      getFormattedBody()) +
+               html;
+}
+
+QString
+utils::getQuoteBody(const RelatedInfo &related)
+{
+        using MsgType = mtx::events::MessageType;
+
+        switch (related.type) {
+        case MsgType::File: {
+                return "sent a file.";
+        }
+        case MsgType::Image: {
+                return "sent an image.";
+        }
+        case MsgType::Audio: {
+                return "sent an audio file.";
+        }
+        case MsgType::Video: {
+                return "sent a video";
+        }
+        default: {
+                return related.quoted_body;
+        }
+        }
 }
 
 QString
 utils::linkColor()
 {
         QSettings settings;
-        const auto theme = settings.value("user/theme", "light").toString();
+        // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
+        QString defaultTheme =
+          QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
+            ? "light"
+            : "system";
+        const auto theme = settings.value("user/theme", defaultTheme).toString();
 
-        if (theme == "light")
+        if (theme == "light") {
                 return "#0077b5";
-        else if (theme == "dark")
+        } else if (theme == "dark") {
                 return "#38A3D8";
-
-        return QPalette().color(QPalette::Link).name();
+        } else {
+                return QPalette().color(QPalette::Link).name();
+        }
 }
 
-int
+uint32_t
 utils::hashQString(const QString &input)
 {
-        auto hash = 0;
+        uint32_t hash = 0;
 
         for (int i = 0; i < input.length(); i++) {
                 hash = input.at(i).digitValue() + ((hash << 5) - hash);
@@ -349,7 +523,7 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
         // Create a color for the input
         auto hash = hashQString(input);
         // create a hue value based on the hash of the input.
-        auto userHue = qAbs(hash % 360);
+        auto userHue = static_cast<int>(qAbs(hash % 360));
         // start with moderate saturation and lightness values.
         auto sat       = 220;
         auto lightness = 125;
@@ -457,11 +631,13 @@ utils::centerWidget(QWidget *widget, QWidget *parent)
         };
 
         if (parent) {
-                widget->move(findCenter(parent->geometry()));
+                widget->move(parent->window()->frameGeometry().topLeft() +
+                             parent->window()->rect().center() - widget->rect().center());
                 return;
         }
 
-        widget->move(findCenter(QApplication::desktop()->screenGeometry()));
+        // Deprecated in 5.13: widget->move(findCenter(QApplication::desktop()->screenGeometry()));
+        widget->move(findCenter(QGuiApplication::primaryScreen()->geometry()));
 }
 
 void
@@ -473,18 +649,4 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
                         break;
                 }
         }
-}
-
-utils::SideBarSizes
-utils::calculateSidebarSizes(const QFont &f)
-{
-        const auto height = static_cast<double>(QFontMetrics{f}.lineSpacing());
-
-        SideBarSizes sz;
-        sz.small         = std::ceil(3.5 * height + height / 4.0);
-        sz.normal        = std::ceil(16 * height);
-        sz.groups        = std::ceil(3 * height);
-        sz.collapsePoint = 2 * sz.normal;
-
-        return sz;
 }

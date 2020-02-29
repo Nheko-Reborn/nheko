@@ -3,6 +3,7 @@
 #include <QFontMetrics>
 #include <QPaintDevice>
 #include <QPainter>
+#include <QtGlobal>
 
 class Painter : public QPainter
 {
@@ -20,8 +21,14 @@ public:
         void drawTextRight(int x, int y, int outerw, const QString &text, int textWidth = -1)
         {
                 QFontMetrics m(fontMetrics());
-                if (textWidth < 0)
+                if (textWidth < 0) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+                        // deprecated in 5.13:
                         textWidth = m.width(text);
+#else
+                        textWidth = m.horizontalAdvance(text);
+#endif
+                }
                 drawText((outerw - x - textWidth), y + m.ascent(), text);
         }
 
@@ -133,8 +140,7 @@ public:
         {
                 static constexpr QPainter::RenderHint Hints[] = {QPainter::Antialiasing,
                                                                  QPainter::SmoothPixmapTransform,
-                                                                 QPainter::TextAntialiasing,
-                                                                 QPainter::HighQualityAntialiasing};
+                                                                 QPainter::TextAntialiasing};
 
                 auto hints = _painter.renderHints();
                 for (const auto &hint : Hints) {

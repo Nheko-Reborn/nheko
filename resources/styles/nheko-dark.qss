@@ -3,13 +3,75 @@ QLabel {
     color: #caccd1;
 }
 
-TimelineItem {
-    qproperty-backgroundColor: #202228;
+TextLabel::a {
+    color: #38a3d8;
+}
+
+QuickSwitcher,
+ReplyPopup,
+SuggestionsPopup,
+UserSettingsPage,
+#scroll_widget,
+#UserSettingScrollWidget {
+    background-color: #202228;
 }
 
 #chatPage,
-#chatPage > * {
+#chatPage > *,
+CommunitiesList,
+CommunitiesList > *,
+RoomList,
+RoomList > *,
+TimelineView,
+TimelineView > *,
+UserMentionsWidget,
+UserMentionsWidget > * {
+    background-color: #2d3139;
+    border: none;
+}
+
+QLineEdit,
+QListWidget,
+WelcomePage,
+LoginPage,
+RegisterPage,
+EditModal,
+emoji--Panel,
+emoji--Panel > *,
+dialogs--Logout,
+dialogs--ReCaptcha,
+dialogs--LeaveRoom,
+dialogs--CreateRoom,
+dialogs--RoomSettings,
+dialogs--InviteUsers,
+dialogs--ReadReceipts,
+dialogs--JoinRoom,
+dialogs--MemberList,
+dialogs--PreviewUploadOverlay,
+dialogs--UserProfile,
+dialogs--CreateRoom > QLineEdit,
+dialogs--InviteUsers > QLineEdit,
+dialogs--JoinRoom > QLineEdit {
     background-color: #202228;
+    color: #caccd1;
+}
+
+emoji--Panel QWidget { border: none; }
+emoji--Panel QScrollBar:vertical { width: 0px; margin: 0px; }
+emoji--Panel QScrollBar::handle:vertical { min-height: 30px; }
+
+emoji--Category,
+emoji--Category > * {
+    background-color: #2d3139;
+    color: #727274;
+}
+
+emoji--Category QLabel {
+    margin: 20px 0 20px 8px;
+}
+
+TimelineItem {
+    qproperty-backgroundColor: #202228;
 }
 
 #sideBar {
@@ -18,18 +80,9 @@ TimelineItem {
     border-left: 1px solid #202228;
 }
 
-TimelineView,
-TimelineView > * {
-    background-color: #202228;
-    border: none;
-}
-
-#scroll_widget {
-    background-color: #202228;
-}
-
-QuickSwitcher {
-    background-color: #202228;
+UserMentionsWidget > TimelineItem {
+    qproperty-backgroundColor: #202228;
+    qproperty-hoverColor: rgba(45, 49, 57, 120);
 }
 
 InfoMessage {
@@ -37,19 +90,9 @@ InfoMessage {
     qproperty-boxColor: rgba(45, 49, 57, 120);
 }
 
-SuggestionsPopup {
-    background-color: #202228;
-}
-
 PopupItem {
     background-color: #202228;
     qproperty-hoverColor: rgba(45, 49, 57, 120);
-}
-
-RoomList,
-RoomList > * {
-    background-color: #2d3139;
-    border: none;
 }
 
 TypingDisplay {
@@ -61,24 +104,14 @@ TypingDisplay {
     background-color: #2d3139;
 }
 
-CommunitiesList,
-CommunitiesList > * {
-    background-color: #2d3139;
-}
-
 FlatButton {
     qproperty-foregroundColor: #727274;
     qproperty-backgroundColor: #333;
     qproperty-disabledForegroundColor: #222;
 }
 
+AudioItem,
 FileItem {
-    qproperty-textColor: #caccd1;
-    qproperty-backgroundColor: #2d3139;
-    qproperty-iconColor: #caccd1;
-}
-
-AudioItem {
     qproperty-textColor: #caccd1;
     qproperty-backgroundColor: #2d3139;
     qproperty-iconColor: #caccd1;
@@ -89,7 +122,8 @@ RaisedButton {
     qproperty-backgroundColor: #333;
 }
 
-RoomInfoListItem {
+RoomInfoListItem,
+UserMentionsWidget {
     qproperty-mentionedColor: #a82353;
     qproperty-highlightedBackgroundColor: #4d84c7;
     qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
@@ -111,11 +145,13 @@ RoomInfoListItem {
     qproperty-highlightedTimestampColor: #e7e7e9;
     qproperty-hoverTimestampColor: #f4f5f8;
 
-    qproperty-avatarBgColor: #202228;
-    qproperty-avatarFgColor: white;
-
     qproperty-bubbleFgColor: white;
     qproperty-bubbleBgColor: #4d84c7;
+}
+
+RoomInfoListItem > Avatar {
+    qproperty-backgroundColor: #202228;
+    qproperty-textColor: white;
 }
 
 CommunitiesListItem {
@@ -141,12 +177,12 @@ UserInfoWidget {
     border-bottom: 1px solid #202228;
 }
 
-UserSettingsPage {
-    background-color: #202228;
+#UserSettingScrollWidget > QComboBox {
+    color: #202228;
 }
 
-#UserSettingScrollWidget {
-    background-color: #202228;
+#UserSettingScrollWidget > QComboBox {
+    color: #202228;
 }
 
 Avatar {
@@ -154,55 +190,17 @@ Avatar {
     qproperty-backgroundColor: #2d3139;
 }
 
-#displayNameLabel {
-    color: #f2f2f2;
-}
-
+#displayNameLabel,
 #userIdLabel {
     color: #f2f2f2;
-}
-
-dialogs--Logout,
-dialogs--ReCaptcha,
-dialogs--LeaveRoom,
-dialogs--CreateRoom,
-dialogs--RoomSettings,
-dialogs--InviteUsers,
-dialogs--ReadReceipts,
-dialogs--JoinRoom,
-dialogs--MemberList,
-dialogs--PreviewUploadOverlay,
-dialogs--UserProfile,
-dialogs--CreateRoom > QLineEdit,
-dialogs--InviteUsers > QLineEdit,
-EditModal,
-dialogs--JoinRoom > QLineEdit {
-    background-color: #202228;
-    color: #caccd1;
 }
 
 TopSection {
     qproperty-textColor: #caccd1;
 }
 
-QListWidget,
-WelcomePage,
-LoginPage,
-RegisterPage {
-    background-color: #202228;
-    color: #caccd1;
-}
-
-emoji--Panel,
-emoji--Panel > * {
-    background-color: #202228;
-    color: #caccd1;
-}
-
-emoji--Category,
-emoji--Category > * {
-    background-color: #2d3139;
-    color: #caccd1;
+emoji--Category {
+    qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
 }
 
 FloatingButton {
@@ -221,21 +219,12 @@ ScrollBar {
     qproperty-backgroundColor: #202228;
 }
 
-SideBarActions {
+SideBarActions,
+TopRoomBar
+{
     border: none;
     border-top: 1px solid #202228;
     background-color: #2d3139;
-}
-
-TopRoomBar {
-    border: none;
-    border-bottom: 1px solid #202228;
-    background-color: #2d3139;
-}
-
-QLineEdit {
-    background-color: #202228;
-    color: #caccd1;
 }
 
 TextInputWidget {
@@ -261,3 +250,5 @@ SnackBar {
     qproperty-textColor: #caccd1;
     qproperty-bgColor: #202228;
 }
+
+QSplitter::handle { image: none; }

@@ -60,5 +60,8 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
                 emit confirmation();
                 emit close();
         });
-        connect(cancelBtn_, &QPushButton::clicked, this, &dialogs::ReCaptcha::close);
+        connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
+                emit cancel();
+                emit close();
+        });
 }

@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
 #include <QBuffer>
 #include <QFile>
 #include <QFileInfo>
@@ -132,6 +131,28 @@ PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64
                 titleLabel_.setText(QString{tr(DEFAULT)}.arg("file"));
                 infoLabel_.setText(info);
         }
+}
+
+void
+PreviewUploadOverlay::setPreview(const QImage &src, const QString &mime)
+{
+        auto const &split = mime.split('/');
+        auto const &type  = split[1];
+
+        QBuffer buffer(&data_);
+        buffer.open(QIODevice::WriteOnly);
+        if (src.save(&buffer, type.toStdString().c_str()))
+                titleLabel_.setText(QString{tr(DEFAULT)}.arg("image"));
+        else
+                titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
+
+        mediaType_ = split[0];
+        filePath_  = "clipboard." + type;
+        image_.convertFromImage(src);
+        isImage_ = true;
+
+        titleLabel_.setText(QString{tr(DEFAULT)}.arg("image"));
+        init();
 }
 
 void

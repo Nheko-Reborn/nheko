@@ -1,73 +1,138 @@
 language: cpp
 sudo: required
-dist: trusty
+dist: xenial
 
 notifications:
   webhooks:
     urls:
-    - https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MHJlZF9za3klM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbS8lMjFldkFxa1BIWnVQSElHZWVuaGklM0FvY2Vhbi5qb2Vkb25vZnJ5LmNvbQ
+    - https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MHJlZF9za3klM0FuaGVrby5pbS8lMjFVYkNtSWxHVEhOSWdJUlpjcHQlM0FuaGVrby5pbQ
     on_success: always
     on_failure: always
     on_start: never
   email: false
 
+cache:
+  directories:
+    - .hunter
+    - build-flatpak/.flatpak-builder
+
 matrix:
     include:
         - os: osx
           compiler: clang
-          osx_image: xcode9
+          # C++17 support
+          osx_image: xcode10.2
           env:
-              - DEPLOYMENT=1
-              - USE_BUNDLED_BOOST=0
-              - USE_BUNDLED_CMARK=0
-              - USE_BUNDLED_JSON=0
+            - DEPLOYMENT=1
+          addons:
+            homebrew:
+              taps: nlohmann/json
+              packages:
+                - clang-format
+                - cmake
+                - ninja
+                - openssl
+                - qt5
+              update: true # workaround for broken travis homebrew
         - os: linux
-          compiler: gcc
+          compiler: gcc-7
           env:
-              - CXX_COMPILER=g++-5
-              - C_COMPILER=gcc-5
-              - QT_VERSION="-5.10.1"
-              - QT_PKG=510
+              - CXX=g++-7
+              - CC=gcc-7
+              - QT_PKG=512
               - DEPLOYMENT=1
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-              - USE_BUNDLED_JSON=1
           addons:
               apt:
-                  sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-5", "ninja-build"]
+                  sources: 
+                    - ubuntu-toolchain-r-test
+                    - sourceline: 'ppa:beineri/opt-qt-5.12.6-xenial'
+                  packages: 
+                    - g++-7 
+                    - ninja-build
+                    - qt512base
+                    - qt512tools
+                    - qt512svg
+                    - qt512multimedia
+                    - qt512quickcontrols2
+                    - qt512graphicaleffects
+                    - liblmdb-dev
+                    - libgl1-mesa-dev # needed for missing gl.h
         - os: linux
-          compiler: gcc
+          compiler: gcc-8
           env:
-              - CXX_COMPILER=g++-8
-              - C_COMPILER=gcc-8
-              - QT_VERSION=571
-              - QT_PKG=57
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-              - USE_BUNDLED_JSON=1
-          addons:
-              apt:
-                  sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-8", "ninja-build"]
-        - os: linux
-          compiler: clang
-          env:
-              - CXX_COMPILER=clang++-5.0
-              - C_COMPILER=clang-5.0
-              - QT_VERSION=592
+              - CXX=g++-8
+              - CC=gcc-8
               - QT_PKG=59
-              - USE_BUNDLED_BOOST=1
-              - USE_BUNDLED_CMARK=1
-              - USE_BUNDLED_JSON=1
           addons:
               apt:
-                  sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
-                  packages: ["clang-5.0", "g++-7", "ninja-build"]
+                  sources: 
+                    - ubuntu-toolchain-r-test
+                    - sourceline: 'ppa:beineri/opt-qt597-xenial'
+                  packages: 
+                    - g++-8 
+                    - ninja-build
+                    - qt59base
+                    - qt59tools
+                    - qt59svg
+                    - qt59multimedia
+                    - qt59quickcontrols2
+                    - qt59graphicaleffects
+                    - liblmdb-dev
+                    - libgl1-mesa-dev # needed for missing gl.h
+        - os: linux
+          compiler: clang-6
+          env:
+              - CXX=clang++-6.0
+              - CC=clang-6.0
+              - QT_PKG=59
+          addons:
+              apt:
+                  sources: 
+                    - ubuntu-toolchain-r-test
+                    - llvm-toolchain-xenial-6.0
+                    - sourceline: 'ppa:beineri/opt-qt597-xenial'
+                  packages: 
+                    - clang++-6.0
+                    - g++-7 
+                    - ninja-build
+                    - qt59base
+                    - qt59tools
+                    - qt59svg
+                    - qt59multimedia
+                    - qt59quickcontrols2
+                    - qt59graphicaleffects
+                    - liblmdb-dev
+                    - libgl1-mesa-dev # needed for missing gl.h
+        - os: linux
+          env:
+              - DEPLOYMENT=1
+              - FLATPAK=1
+              - ARCH=amd64
+          addons:
+              apt:
+                  sources: 
+                    - sourceline: 'ppa:alexlarsson/flatpak'
+                  packages: 
+                    - flatpak
+                    - flatpak-builder
+                    - elfutils
+        - os: linux
+          arch: arm64
+          env:
+              - DEPLOYMENT=1
+              - FLATPAK=1
+              - ARCH=arm64
+          addons:
+              apt:
+                  sources: 
+                    - sourceline: 'ppa:alexlarsson/flatpak'
+                  packages: 
+                    - flatpak
+                    - flatpak-builder
+                    - elfutils
+                    - librsvg2-bin
 
 before_install:
-    - export CXX=${CXX_COMPILER}
-    - export CC=${C_COMPILER}
     # Use TRAVIS_TAG if defined, or the short commit SHA otherwise
     - export VERSION=${TRAVIS_TAG:-$(git rev-parse --short HEAD)}
 install:
@@ -79,6 +144,21 @@ script:
     - sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     - cp ./.ci/bintray-release.json .
 deploy:
+- provider: s3
+  access_key_id: $ARTIFACTS_KEY
+  secret_access_key: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
+  region: $AWS_DEFAULT_REGION
+  detect_encoding: true
+  cache_control: "max-age=31536000"
+  skip_cleanup: true
+  acl: public_read
+  local_dir: artifacts
+  on:
+    condition: "$DEPLOYMENT == 1"
+    repo: Nheko-Reborn/nheko
+    tags: false
+    all_branches: true
 - provider: bintray
   user: "redsky17"
   key:

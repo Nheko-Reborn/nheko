@@ -15,8 +15,6 @@ struct DeviceInfo
         QString display_name;
 };
 
-Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
-
 class Proxy : public QObject
 {
         Q_OBJECT

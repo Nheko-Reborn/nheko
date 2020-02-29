@@ -15,16 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
 #include <QFontDatabase>
+#include <QGuiApplication>
 #include <QLabel>
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QPoint>
+#include <QScreen>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QTranslator>
@@ -33,17 +37,22 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
-#include "RunGuard.h"
 #include "Utils.h"
 #include "config/nheko.h"
+#include "singleapplication.h"
 
 #if defined(Q_OS_MAC)
 #include "emoji/MacHelper.h"
 #endif
 
+#ifdef QML_DEBUGGING
+#include <QQmlDebuggingEnabler>
+QQmlDebuggingEnabler enabler;
+#endif
+
 #if defined(Q_OS_LINUX)
 #include <boost/stacktrace.hpp>
-#include <signal.h>
+#include <csignal>
 
 void
 stacktraceHandler(int signum)
@@ -72,7 +81,8 @@ registerSignalHandlers()
 QPoint
 screenCenter(int width, int height)
 {
-        QRect screenGeometry = QApplication::desktop()->screenGeometry();
+        // Deprecated in 5.13: QRect screenGeometry = QApplication::desktop()->screenGeometry();
+        QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
 
         int x = (screenGeometry.width() - width) / 2;
         int y = (screenGeometry.height() - height) / 2;
@@ -94,18 +104,6 @@ createCacheDirectory()
 int
 main(int argc, char *argv[])
 {
-        RunGuard guard("run_guard");
-
-        if (!guard.tryToRun()) {
-                QApplication a(argc, argv);
-
-                QMessageBox msgBox;
-                msgBox.setText("Another instance of Nheko is running");
-                msgBox.exec();
-
-                return 0;
-        }
-
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN) || defined(Q_OS_FREEBSD)
         if (qgetenv("QT_SCALE_FACTOR").size() == 0) {
                 float factor = utils::scaleFactor();
@@ -115,23 +113,22 @@ main(int argc, char *argv[])
         }
 #endif
 
-        QApplication app(argc, argv);
         QCoreApplication::setApplicationName("nheko");
         QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        SingleApplication app(argc,
+                              argv,
+                              false,
+                              SingleApplication::Mode::User |
+                                SingleApplication::Mode::ExcludeAppPath |
+                                SingleApplication::Mode::ExcludeAppVersion);
 
         QCommandLineParser parser;
         parser.addHelpOption();
         parser.addVersionOption();
         parser.process(app);
-
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Regular.ttf");
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Italic.ttf");
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Bold.ttf");
-        QFontDatabase::addApplicationFont(":/fonts/fonts/OpenSans/OpenSans-Semibold.ttf");
-        QFontDatabase::addApplicationFont(":/fonts/fonts/EmojiOne/emojione-android.ttf");
 
         app.setWindowIcon(QIcon(":/logos/nheko.png"));
 
@@ -187,6 +184,11 @@ main(int argc, char *argv[])
                         http::client()->close(true);
                         nhlog::net()->debug("bye");
                 }
+        });
+        QObject::connect(&app, &SingleApplication::instanceStarted, &w, [&w]() {
+                w.show();
+                w.raise();
+                w.activateWindow();
         });
 
 #if defined(Q_OS_MAC)

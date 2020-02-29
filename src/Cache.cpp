@@ -17,17 +17,21 @@
 
 #include <limits>
 #include <stdexcept>
+#include <variant>
 
 #include <QByteArray>
+#include <QCoreApplication>
 #include <QFile>
 #include <QHash>
+#include <QMap>
 #include <QSettings>
 #include <QStandardPaths>
 
-#include <boost/variant.hpp>
 #include <mtx/responses/common.hpp>
 
 #include "Cache.h"
+#include "Cache_p.h"
+#include "Logging.h"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
@@ -35,13 +39,13 @@
 static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.09.21");
 static const std::string SECRET("secret");
 
-static const lmdb::val NEXT_BATCH_KEY("next_batch");
-static const lmdb::val OLM_ACCOUNT_KEY("olm_account");
-static const lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
+static lmdb::val NEXT_BATCH_KEY("next_batch");
+static lmdb::val OLM_ACCOUNT_KEY("olm_account");
+static lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 
-constexpr size_t MAX_RESTORED_MESSAGES = 30;
+constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
 
-constexpr auto DB_SIZE = 512UL * 1024UL * 1024UL; // 512 MB
+constexpr auto DB_SIZE = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
 constexpr auto MAX_DBS = 8092UL;
 
 //! Cache databases and their format.
@@ -76,32 +80,30 @@ constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
+Q_DECLARE_METATYPE(SearchResult)
+Q_DECLARE_METATYPE(std::vector<SearchResult>)
+Q_DECLARE_METATYPE(RoomMember)
+Q_DECLARE_METATYPE(mtx::responses::Timeline)
+Q_DECLARE_METATYPE(RoomSearchResult)
+Q_DECLARE_METATYPE(RoomInfo)
+
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
 
-namespace cache {
-void
-init(const QString &user_id)
+int
+numeric_key_comparison(const MDB_val *a, const MDB_val *b)
 {
-        qRegisterMetaType<SearchResult>();
-        qRegisterMetaType<QVector<SearchResult>>();
-        qRegisterMetaType<RoomMember>();
-        qRegisterMetaType<RoomSearchResult>();
-        qRegisterMetaType<RoomInfo>();
-        qRegisterMetaType<QMap<QString, RoomInfo>>();
-        qRegisterMetaType<std::map<QString, RoomInfo>>();
-        qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
+        auto lhs = std::stoull(std::string((char *)a->mv_data, a->mv_size));
+        auto rhs = std::stoull(std::string((char *)b->mv_data, b->mv_size));
 
-        instance_ = std::make_unique<Cache>(user_id);
-}
+        if (lhs < rhs)
+                return 1;
+        else if (lhs == rhs)
+                return 0;
 
-Cache *
-client()
-{
-        return instance_.get();
+        return -1;
 }
-} // namespace cache
 
 Cache::Cache(const QString &userId, QObject *parent)
   : QObject{parent}
@@ -392,7 +394,7 @@ Cache::saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr 
         txn.commit();
 }
 
-boost::optional<mtx::crypto::OlmSessionPtr>
+std::optional<mtx::crypto::OlmSessionPtr>
 Cache::getOlmSession(const std::string &curve25519, const std::string &session_id)
 {
         using namespace mtx::crypto;
@@ -410,7 +412,7 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
                 return unpickle<SessionObject>(data, SECRET);
         }
 
-        return boost::none;
+        return std::nullopt;
 }
 
 std::vector<std::string>
@@ -913,13 +915,17 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
         auto txn = lmdb::txn::begin(env_);
 
         // Get last event id on the room.
-        const auto last_event_id = getLastMessageInfo(txn, room_id).event_id;
+        const auto last_event_id = getLastEventId(txn, room_id);
         const auto localUser     = utils::localUser().toStdString();
 
         txn.commit();
 
+        if (last_event_id.empty())
+                return false;
+
         // Retrieve all read receipts for that event.
-        const auto receipts = readReceipts(last_event_id, QString::fromStdString(room_id));
+        const auto receipts =
+          readReceipts(QString::fromStdString(last_event_id), QString::fromStdString(room_id));
 
         if (receipts.size() == 0)
                 return true;
@@ -958,13 +964,14 @@ Cache::saveState(const mtx::responses::Sync &res)
                 updatedInfo.avatar_url =
                   getRoomAvatarUrl(txn, statesdb, membersdb, QString::fromStdString(room.first))
                     .toStdString();
+                updatedInfo.version = getRoomVersion(txn, statesdb).toStdString();
 
                 // Process the account_data associated with this room
                 bool has_new_tags = false;
                 for (const auto &evt : room.second.account_data.events) {
                         // for now only fetch tag events
-                        if (evt.type() == typeid(Event<account_data::Tag>)) {
-                                auto tags_evt = boost::get<Event<account_data::Tag>>(evt);
+                        if (std::holds_alternative<Event<account_data::Tag>>(evt)) {
+                                auto tags_evt = std::get<Event<account_data::Tag>>(evt);
                                 has_new_tags  = true;
                                 for (const auto &tag : tags_evt.content.tags) {
                                         updatedInfo.tags.push_back(tag.first);
@@ -1045,19 +1052,17 @@ Cache::saveInvite(lmdb::txn &txn,
         using namespace mtx::events::state;
 
         for (const auto &e : room.invite_state) {
-                if (boost::get<StrippedEvent<Member>>(&e) != nullptr) {
-                        auto msg = boost::get<StrippedEvent<Member>>(e);
+                if (auto msg = std::get_if<StrippedEvent<Member>>(&e)) {
+                        auto display_name = msg->content.display_name.empty()
+                                              ? msg->state_key
+                                              : msg->content.display_name;
 
-                        auto display_name = msg.content.display_name.empty()
-                                              ? msg.state_key
-                                              : msg.content.display_name;
-
-                        MemberInfo tmp{display_name, msg.content.avatar_url};
+                        MemberInfo tmp{display_name, msg->content.avatar_url};
 
                         lmdb::dbi_put(
-                          txn, membersdb, lmdb::val(msg.state_key), lmdb::val(json(tmp).dump()));
+                          txn, membersdb, lmdb::val(msg->state_key), lmdb::val(json(tmp).dump()));
                 } else {
-                        boost::apply_visitor(
+                        std::visit(
                           [&txn, &statesdb](auto msg) {
                                   bool res = lmdb::dbi_put(txn,
                                                            statesdb,
@@ -1065,8 +1070,8 @@ Cache::saveInvite(lmdb::txn &txn,
                                                            lmdb::val(json(msg).dump()));
 
                                   if (!res)
-                                          std::cout << "couldn't save data" << json(msg).dump()
-                                                    << '\n';
+                                          nhlog::db()->warn("couldn't save data: {}",
+                                                            json(msg).dump());
                           },
                           e);
                 }
@@ -1118,7 +1123,7 @@ Cache::roomsWithTagUpdates(const mtx::responses::Sync &res)
         for (const auto &room : res.rooms.join) {
                 bool hasUpdates = false;
                 for (const auto &evt : room.second.account_data.events) {
-                        if (evt.type() == typeid(Event<account_data::Tag>)) {
+                        if (std::holds_alternative<Event<account_data::Tag>>(evt)) {
                                 hasUpdates = true;
                         }
                 }
@@ -1230,9 +1235,31 @@ Cache::roomMessages()
         return msgs;
 }
 
+QMap<QString, mtx::responses::Notifications>
+Cache::getTimelineMentions()
+{
+        // TODO: Should be read-only, but getMentionsDb will attempt to create a DB
+        // if it doesn't exist, throwing an error.
+        auto txn = lmdb::txn::begin(env_, nullptr);
+
+        QMap<QString, mtx::responses::Notifications> notifs;
+
+        auto room_ids = getRoomIds(txn);
+
+        for (const auto &room_id : room_ids) {
+                auto roomNotifs                         = getTimelineMentionsForRoom(txn, room_id);
+                notifs[QString::fromStdString(room_id)] = roomNotifs;
+        }
+
+        txn.commit();
+
+        return notifs;
+}
+
 mtx::responses::Timeline
 Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id)
 {
+        // TODO(nico): Limit the messages returned by this maybe?
         auto db = getMessagesDb(txn, room_id);
 
         mtx::responses::Timeline timeline;
@@ -1300,6 +1327,31 @@ Cache::roomInfo(bool withInvites)
         return result;
 }
 
+std::string
+Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
+{
+        auto db = getMessagesDb(txn, room_id);
+
+        if (db.size(txn) == 0)
+                return {};
+
+        std::string timestamp, msg;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(timestamp, msg, MDB_NEXT)) {
+                auto obj = json::parse(msg);
+
+                if (obj.count("event") == 0)
+                        continue;
+
+                cursor.close();
+                return obj["event"]["event_id"];
+        }
+        cursor.close();
+
+        return {};
+}
+
 DescInfo
 Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 {
@@ -1311,13 +1363,15 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
         std::string timestamp, msg;
 
         QSettings settings;
-        auto local_user = settings.value("auth/user_id").toString();
+        const auto local_user = utils::localUser();
 
         auto cursor = lmdb::cursor::open(txn, db);
         while (cursor.get(timestamp, msg, MDB_NEXT)) {
                 auto obj = json::parse(msg);
 
-                if (obj.count("event") == 0)
+                if (obj.count("event") == 0 || !(obj["event"]["type"] == "m.room.message" ||
+                                                 obj["event"]["type"] == "m.sticker" ||
+                                                 obj["event"]["type"] == "m.room.encrypted"))
                         continue;
 
                 mtx::events::collections::TimelineEvent event;
@@ -1481,7 +1535,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
         return "Empty Room";
 }
 
-JoinRule
+mtx::events::state::JoinRule
 Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
 {
         using namespace mtx::events;
@@ -1493,14 +1547,14 @@ Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
 
         if (res) {
                 try {
-                        StateEvent<JoinRules> msg =
+                        StateEvent<state::JoinRules> msg =
                           json::parse(std::string(event.data(), event.size()));
                         return msg.content.join_rule;
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.join_rule event: {}", e.what());
                 }
         }
-        return JoinRule::Knock;
+        return state::JoinRule::Knock;
 }
 
 bool
@@ -1549,6 +1603,32 @@ Cache::getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
         }
 
         return QString();
+}
+
+QString
+Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomCreate)), event);
+
+        if (res) {
+                try {
+                        StateEvent<Create> msg =
+                          json::parse(std::string(event.data(), event.size()));
+
+                        if (!msg.content.room_version.empty())
+                                return QString::fromStdString(msg.content.room_version);
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse m.room.create event: {}", e.what());
+                }
+        }
+
+        nhlog::db()->warn("m.room.create event is missing room version, assuming version \"1\"");
+        return QString("1");
 }
 
 QString
@@ -1779,10 +1859,7 @@ Cache::searchRooms(const std::string &query, std::uint8_t max_items)
 
         std::vector<RoomSearchResult> results;
         for (auto it = items.begin(); it != end; it++) {
-                results.push_back(
-                  RoomSearchResult{it->second.first,
-                                   it->second.second,
-                                   QImage::fromData(image(txn, it->second.second.avatar_url))});
+                results.push_back(RoomSearchResult{it->second.first, it->second.second});
         }
 
         txn.commit();
@@ -1790,7 +1867,7 @@ Cache::searchRooms(const std::string &query, std::uint8_t max_items)
         return results;
 }
 
-QVector<SearchResult>
+std::vector<SearchResult>
 Cache::searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
 {
         std::multimap<int, std::pair<std::string, std::string>> items;
@@ -1813,7 +1890,7 @@ Cache::searchUsers(const std::string &room_id, const std::string &query, std::ui
         else if (items.size() > 0)
                 std::advance(end, items.size());
 
-        QVector<SearchResult> results;
+        std::vector<SearchResult> results;
         for (auto it = items.begin(); it != end; it++) {
                 const auto user = it->second;
                 results.push_back(SearchResult{QString::fromStdString(user.first),
@@ -1889,10 +1966,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
         using namespace mtx::events::state;
 
         for (const auto &e : res.events) {
-                if (isStateEvent(e))
-                        continue;
-
-                if (boost::get<RedactionEvent<msg::Redaction>>(&e) != nullptr)
+                if (std::holds_alternative<RedactionEvent<msg::Redaction>>(e))
                         continue;
 
                 json obj = json::object();
@@ -1904,6 +1978,88 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                               db,
                               lmdb::val(std::to_string(utils::event_timestamp(e))),
                               lmdb::val(obj.dump()));
+        }
+}
+
+mtx::responses::Notifications
+Cache::getTimelineMentionsForRoom(lmdb::txn &txn, const std::string &room_id)
+{
+        auto db = getMentionsDb(txn, room_id);
+
+        if (db.size(txn) == 0) {
+                return mtx::responses::Notifications{};
+        }
+
+        mtx::responses::Notifications notif;
+        std::string event_id, msg;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        while (cursor.get(event_id, msg, MDB_NEXT)) {
+                auto obj = json::parse(msg);
+
+                if (obj.count("event") == 0)
+                        continue;
+
+                mtx::responses::Notification notification;
+                mtx::responses::from_json(obj, notification);
+
+                notif.notifications.push_back(notification);
+        }
+        cursor.close();
+
+        std::reverse(notif.notifications.begin(), notif.notifications.end());
+
+        return notif;
+}
+
+//! Add all notifications containing a user mention to the db.
+void
+Cache::saveTimelineMentions(const mtx::responses::Notifications &res)
+{
+        QMap<std::string, QList<mtx::responses::Notification>> notifsByRoom;
+
+        // Sort into room-specific 'buckets'
+        for (const auto &notif : res.notifications) {
+                json val = notif;
+                notifsByRoom[notif.room_id].push_back(notif);
+        }
+
+        auto txn = lmdb::txn::begin(env_);
+        // Insert the entire set of mentions for each room at a time.
+        QMap<std::string, QList<mtx::responses::Notification>>::const_iterator it =
+          notifsByRoom.constBegin();
+        auto end = notifsByRoom.constEnd();
+        while (it != end) {
+                nhlog::db()->debug("Storing notifications for " + it.key());
+                saveTimelineMentions(txn, it.key(), std::move(it.value()));
+                ++it;
+        }
+
+        txn.commit();
+}
+
+void
+Cache::saveTimelineMentions(lmdb::txn &txn,
+                            const std::string &room_id,
+                            const QList<mtx::responses::Notification> &res)
+{
+        auto db = getMentionsDb(txn, room_id);
+
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        for (const auto &notif : res) {
+                const auto event_id = utils::event_id(notif.event);
+
+                // double check that we have the correct room_id...
+                if (room_id.compare(notif.room_id) != 0) {
+                        return;
+                }
+
+                json obj = notif;
+
+                lmdb::dbi_put(txn, db, lmdb::val(event_id), lmdb::val(obj.dump()));
         }
 }
 
@@ -2059,7 +2215,6 @@ Cache::roomMembers(const std::string &room_id)
 
 QHash<QString, QString> Cache::DisplayNames;
 QHash<QString, QString> Cache::AvatarUrls;
-QHash<QString, QString> Cache::UserColors;
 
 QString
 Cache::displayName(const QString &room_id, const QString &user_id)
@@ -2087,16 +2242,6 @@ Cache::avatarUrl(const QString &room_id, const QString &user_id)
         auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
         if (AvatarUrls.contains(fmt))
                 return AvatarUrls[fmt];
-
-        return QString();
-}
-
-QString
-Cache::userColor(const QString &user_id)
-{
-        if (UserColors.contains(user_id)) {
-                return UserColors[user_id];
-        }
 
         return QString();
 }
@@ -2132,19 +2277,604 @@ Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
 }
 
 void
-Cache::insertUserColor(const QString &user_id, const QString &color_name)
+to_json(json &j, const RoomInfo &info)
 {
-        UserColors.insert(user_id, color_name);
+        j["name"]         = info.name;
+        j["topic"]        = info.topic;
+        j["avatar_url"]   = info.avatar_url;
+        j["version"]      = info.version;
+        j["is_invite"]    = info.is_invite;
+        j["join_rule"]    = info.join_rule;
+        j["guest_access"] = info.guest_access;
+
+        if (info.member_count != 0)
+                j["member_count"] = info.member_count;
+
+        if (info.tags.size() != 0)
+                j["tags"] = info.tags;
 }
 
 void
-Cache::removeUserColor(const QString &user_id)
+from_json(const json &j, RoomInfo &info)
 {
-        UserColors.remove(user_id);
+        info.name       = j.at("name");
+        info.topic      = j.at("topic");
+        info.avatar_url = j.at("avatar_url");
+        info.version    = j.value(
+          "version", QCoreApplication::translate("RoomInfo", "no version stored").toStdString());
+        info.is_invite    = j.at("is_invite");
+        info.join_rule    = j.at("join_rule");
+        info.guest_access = j.at("guest_access");
+
+        if (j.count("member_count"))
+                info.member_count = j.at("member_count");
+
+        if (j.count("tags"))
+                info.tags = j.at("tags").get<std::vector<std::string>>();
 }
 
 void
-Cache::clearUserColors()
+to_json(json &j, const ReadReceiptKey &key)
 {
-        UserColors.clear();
+        j = json{{"event_id", key.event_id}, {"room_id", key.room_id}};
 }
+
+void
+from_json(const json &j, ReadReceiptKey &key)
+{
+        key.event_id = j.at("event_id").get<std::string>();
+        key.room_id  = j.at("room_id").get<std::string>();
+}
+
+void
+to_json(json &j, const MemberInfo &info)
+{
+        j["name"]       = info.name;
+        j["avatar_url"] = info.avatar_url;
+}
+
+void
+from_json(const json &j, MemberInfo &info)
+{
+        info.name       = j.at("name");
+        info.avatar_url = j.at("avatar_url");
+}
+
+void
+to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg)
+{
+        obj["session_id"]    = msg.session_id;
+        obj["session_key"]   = msg.session_key;
+        obj["message_index"] = msg.message_index;
+}
+
+void
+from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg)
+{
+        msg.session_id    = obj.at("session_id");
+        msg.session_key   = obj.at("session_key");
+        msg.message_index = obj.at("message_index");
+}
+
+void
+to_json(nlohmann::json &obj, const DevicePublicKeys &msg)
+{
+        obj["ed25519"]    = msg.ed25519;
+        obj["curve25519"] = msg.curve25519;
+}
+
+void
+from_json(const nlohmann::json &obj, DevicePublicKeys &msg)
+{
+        msg.ed25519    = obj.at("ed25519");
+        msg.curve25519 = obj.at("curve25519");
+}
+
+void
+to_json(nlohmann::json &obj, const MegolmSessionIndex &msg)
+{
+        obj["room_id"]    = msg.room_id;
+        obj["session_id"] = msg.session_id;
+        obj["sender_key"] = msg.sender_key;
+}
+
+void
+from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
+{
+        msg.room_id    = obj.at("room_id");
+        msg.session_id = obj.at("session_id");
+        msg.sender_key = obj.at("sender_key");
+}
+
+namespace cache {
+void
+init(const QString &user_id)
+{
+        qRegisterMetaType<SearchResult>();
+        qRegisterMetaType<std::vector<SearchResult>>();
+        qRegisterMetaType<RoomMember>();
+        qRegisterMetaType<RoomSearchResult>();
+        qRegisterMetaType<RoomInfo>();
+        qRegisterMetaType<QMap<QString, RoomInfo>>();
+        qRegisterMetaType<std::map<QString, RoomInfo>>();
+        qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
+
+        instance_ = std::make_unique<Cache>(user_id);
+}
+
+Cache *
+client()
+{
+        return instance_.get();
+}
+
+std::string
+displayName(const std::string &room_id, const std::string &user_id)
+{
+        return instance_->displayName(room_id, user_id);
+}
+
+QString
+displayName(const QString &room_id, const QString &user_id)
+{
+        return instance_->displayName(room_id, user_id);
+}
+QString
+avatarUrl(const QString &room_id, const QString &user_id)
+{
+        return instance_->avatarUrl(room_id, user_id);
+}
+
+void
+removeDisplayName(const QString &room_id, const QString &user_id)
+{
+        instance_->removeDisplayName(room_id, user_id);
+}
+void
+removeAvatarUrl(const QString &room_id, const QString &user_id)
+{
+        instance_->removeAvatarUrl(room_id, user_id);
+}
+
+void
+insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name)
+{
+        instance_->insertDisplayName(room_id, user_id, display_name);
+}
+void
+insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
+{
+        instance_->insertAvatarUrl(room_id, user_id, avatar_url);
+}
+
+//! Load saved data for the display names & avatars.
+void
+populateMembers()
+{
+        instance_->populateMembers();
+}
+
+std::vector<std::string>
+joinedRooms()
+{
+        return instance_->joinedRooms();
+}
+
+QMap<QString, RoomInfo>
+roomInfo(bool withInvites)
+{
+        return instance_->roomInfo(withInvites);
+}
+std::map<QString, bool>
+invites()
+{
+        return instance_->invites();
+}
+
+QString
+getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
+{
+        return instance_->getRoomName(txn, statesdb, membersdb);
+}
+mtx::events::state::JoinRule
+getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomJoinRule(txn, statesdb);
+}
+bool
+getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomGuestAccess(txn, statesdb);
+}
+QString
+getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomTopic(txn, statesdb);
+}
+QString
+getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb, const QString &room_id)
+{
+        return instance_->getRoomAvatarUrl(txn, statesdb, membersdb, room_id);
+}
+
+QString
+getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        return instance_->getRoomVersion(txn, statesdb);
+}
+
+std::vector<RoomMember>
+getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
+{
+        return instance_->getMembers(room_id, startIndex, len);
+}
+
+void
+saveState(const mtx::responses::Sync &res)
+{
+        instance_->saveState(res);
+}
+bool
+isInitialized()
+{
+        return instance_->isInitialized();
+}
+
+std::string
+nextBatchToken()
+{
+        return instance_->nextBatchToken();
+}
+
+void
+deleteData()
+{
+        instance_->deleteData();
+}
+
+void
+removeInvite(lmdb::txn &txn, const std::string &room_id)
+{
+        instance_->removeInvite(txn, room_id);
+}
+void
+removeInvite(const std::string &room_id)
+{
+        instance_->removeInvite(room_id);
+}
+void
+removeRoom(lmdb::txn &txn, const std::string &roomid)
+{
+        instance_->removeRoom(txn, roomid);
+}
+void
+removeRoom(const std::string &roomid)
+{
+        instance_->removeRoom(roomid);
+}
+void
+removeRoom(const QString &roomid)
+{
+        instance_->removeRoom(roomid.toStdString());
+}
+void
+setup()
+{
+        instance_->setup();
+}
+
+bool
+isFormatValid()
+{
+        return instance_->isFormatValid();
+}
+void
+setCurrentFormat()
+{
+        instance_->setCurrentFormat();
+}
+
+std::map<QString, mtx::responses::Timeline>
+roomMessages()
+{
+        return instance_->roomMessages();
+}
+
+QMap<QString, mtx::responses::Notifications>
+getTimelineMentions()
+{
+        return instance_->getTimelineMentions();
+}
+
+//! Retrieve all the user ids from a room.
+std::vector<std::string>
+roomMembers(const std::string &room_id)
+{
+        return instance_->roomMembers(room_id);
+}
+
+//! Check if the given user has power leve greater than than
+//! lowest power level of the given events.
+bool
+hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
+                    const std::string &room_id,
+                    const std::string &user_id)
+{
+        return instance_->hasEnoughPowerLevel(eventTypes, room_id, user_id);
+}
+
+//! Retrieves the saved room avatar.
+QImage
+getRoomAvatar(const QString &id)
+{
+        return instance_->getRoomAvatar(id);
+}
+QImage
+getRoomAvatar(const std::string &id)
+{
+        return instance_->getRoomAvatar(id);
+}
+
+void
+updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Receipts &receipts)
+{
+        instance_->updateReadReceipt(txn, room_id, receipts);
+}
+
+UserReceipts
+readReceipts(const QString &event_id, const QString &room_id)
+{
+        return instance_->readReceipts(event_id, room_id);
+}
+
+//! Filter the events that have at least one read receipt.
+std::vector<QString>
+filterReadEvents(const QString &room_id,
+                 const std::vector<QString> &event_ids,
+                 const std::string &excluded_user)
+{
+        return instance_->filterReadEvents(room_id, event_ids, excluded_user);
+}
+//! Add event for which we are expecting some read receipts.
+void
+addPendingReceipt(const QString &room_id, const QString &event_id)
+{
+        instance_->addPendingReceipt(room_id, event_id);
+}
+void
+removePendingReceipt(lmdb::txn &txn, const std::string &room_id, const std::string &event_id)
+{
+        instance_->removePendingReceipt(txn, room_id, event_id);
+}
+void
+notifyForReadReceipts(const std::string &room_id)
+{
+        instance_->notifyForReadReceipts(room_id);
+}
+std::vector<QString>
+pendingReceiptsEvents(lmdb::txn &txn, const std::string &room_id)
+{
+        return instance_->pendingReceiptsEvents(txn, room_id);
+}
+
+QByteArray
+image(const QString &url)
+{
+        return instance_->image(url);
+}
+QByteArray
+image(lmdb::txn &txn, const std::string &url)
+{
+        return instance_->image(txn, url);
+}
+void
+saveImage(const std::string &url, const std::string &data)
+{
+        instance_->saveImage(url, data);
+}
+void
+saveImage(const QString &url, const QByteArray &data)
+{
+        instance_->saveImage(url, data);
+}
+
+RoomInfo
+singleRoomInfo(const std::string &room_id)
+{
+        return instance_->singleRoomInfo(room_id);
+}
+std::vector<std::string>
+roomsWithStateUpdates(const mtx::responses::Sync &res)
+{
+        return instance_->roomsWithStateUpdates(res);
+}
+std::vector<std::string>
+roomsWithTagUpdates(const mtx::responses::Sync &res)
+{
+        return instance_->roomsWithTagUpdates(res);
+}
+std::map<QString, RoomInfo>
+getRoomInfo(const std::vector<std::string> &rooms)
+{
+        return instance_->getRoomInfo(rooms);
+}
+
+//! Calculates which the read status of a room.
+//! Whether all the events in the timeline have been read.
+bool
+calculateRoomReadStatus(const std::string &room_id)
+{
+        return instance_->calculateRoomReadStatus(room_id);
+}
+void
+calculateRoomReadStatus()
+{
+        instance_->calculateRoomReadStatus();
+}
+
+std::vector<SearchResult>
+searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
+{
+        return instance_->searchUsers(room_id, query, max_items);
+}
+std::vector<RoomSearchResult>
+searchRooms(const std::string &query, std::uint8_t max_items)
+{
+        return instance_->searchRooms(query, max_items);
+}
+
+void
+markSentNotification(const std::string &event_id)
+{
+        instance_->markSentNotification(event_id);
+}
+//! Removes an event from the sent notifications.
+void
+removeReadNotification(const std::string &event_id)
+{
+        instance_->removeReadNotification(event_id);
+}
+//! Check if we have sent a desktop notification for the given event id.
+bool
+isNotificationSent(const std::string &event_id)
+{
+        return instance_->isNotificationSent(event_id);
+}
+
+//! Add all notifications containing a user mention to the db.
+void
+saveTimelineMentions(const mtx::responses::Notifications &res)
+{
+        instance_->saveTimelineMentions(res);
+}
+
+//! Remove old unused data.
+void
+deleteOldMessages()
+{
+        instance_->deleteOldMessages();
+}
+void
+deleteOldData() noexcept
+{
+        instance_->deleteOldData();
+}
+//! Retrieve all saved room ids.
+std::vector<std::string>
+getRoomIds(lmdb::txn &txn)
+{
+        return instance_->getRoomIds(txn);
+}
+
+//! Mark a room that uses e2e encryption.
+void
+setEncryptedRoom(lmdb::txn &txn, const std::string &room_id)
+{
+        instance_->setEncryptedRoom(txn, room_id);
+}
+bool
+isRoomEncrypted(const std::string &room_id)
+{
+        return instance_->isRoomEncrypted(room_id);
+}
+
+//! Check if a user is a member of the room.
+bool
+isRoomMember(const std::string &user_id, const std::string &room_id)
+{
+        return instance_->isRoomMember(user_id, room_id);
+}
+
+//
+// Outbound Megolm Sessions
+//
+void
+saveOutboundMegolmSession(const std::string &room_id,
+                          const OutboundGroupSessionData &data,
+                          mtx::crypto::OutboundGroupSessionPtr session)
+{
+        instance_->saveOutboundMegolmSession(room_id, data, std::move(session));
+}
+OutboundGroupSessionDataRef
+getOutboundMegolmSession(const std::string &room_id)
+{
+        return instance_->getOutboundMegolmSession(room_id);
+}
+bool
+outboundMegolmSessionExists(const std::string &room_id) noexcept
+{
+        return instance_->outboundMegolmSessionExists(room_id);
+}
+void
+updateOutboundMegolmSession(const std::string &room_id, int message_index)
+{
+        instance_->updateOutboundMegolmSession(room_id, message_index);
+}
+
+void
+importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
+{
+        instance_->importSessionKeys(keys);
+}
+mtx::crypto::ExportedSessionKeys
+exportSessionKeys()
+{
+        return instance_->exportSessionKeys();
+}
+
+//
+// Inbound Megolm Sessions
+//
+void
+saveInboundMegolmSession(const MegolmSessionIndex &index,
+                         mtx::crypto::InboundGroupSessionPtr session)
+{
+        instance_->saveInboundMegolmSession(index, std::move(session));
+}
+OlmInboundGroupSession *
+getInboundMegolmSession(const MegolmSessionIndex &index)
+{
+        return instance_->getInboundMegolmSession(index);
+}
+bool
+inboundMegolmSessionExists(const MegolmSessionIndex &index)
+{
+        return instance_->inboundMegolmSessionExists(index);
+}
+
+//
+// Olm Sessions
+//
+void
+saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session)
+{
+        instance_->saveOlmSession(curve25519, std::move(session));
+}
+std::vector<std::string>
+getOlmSessions(const std::string &curve25519)
+{
+        return instance_->getOlmSessions(curve25519);
+}
+std::optional<mtx::crypto::OlmSessionPtr>
+getOlmSession(const std::string &curve25519, const std::string &session_id)
+{
+        return instance_->getOlmSession(curve25519, session_id);
+}
+
+void
+saveOlmAccount(const std::string &pickled)
+{
+        instance_->saveOlmAccount(pickled);
+}
+std::string
+restoreOlmAccount()
+{
+        return instance_->restoreOlmAccount();
+}
+
+void
+restoreSessions()
+{
+        return instance_->restoreSessions();
+}
+} // namespace cache

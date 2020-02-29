@@ -23,6 +23,7 @@
 
 #include <mtx/requests.hpp>
 
+#include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"
@@ -30,6 +31,7 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "RegisterPage.h"
+#include "Splitter.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -64,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
         setFont(font);
 
         userSettings_ = QSharedPointer<UserSettings>(new UserSettings);
-        trayIcon_     = new TrayIcon(":/logos/nheko-32.png", this);
+        trayIcon_     = new TrayIcon(":/logos/nheko.svg", this);
 
         welcome_page_     = new WelcomePage(this);
         login_page_       = new LoginPage(this);
@@ -113,9 +115,6 @@ MainWindow::MainWindow(QWidget *parent)
 
         connect(
           userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
-        connect(userSettingsPage_, &UserSettingsPage::themeChanged, this, []() {
-                Cache::clearUserColors();
-        });
         connect(
           userSettingsPage_, &UserSettingsPage::themeChanged, chat_page_, &ChatPage::themeChanged);
         connect(trayIcon_,
@@ -190,7 +189,7 @@ MainWindow::resizeEvent(QResizeEvent *event)
 void
 MainWindow::adjustSideBars()
 {
-        const auto sz = utils::calculateSidebarSizes(QFont{});
+        const auto sz = splitter::calculateSidebarSizes(QFont{});
 
         const uint64_t timelineWidth     = chat_page_->timelineWidth();
         const uint64_t minAvailableWidth = sz.collapsePoint + sz.groups;
@@ -444,7 +443,7 @@ MainWindow::openReadReceiptsDialog(const QString &event_id)
         const auto room_id = chat_page_->currentRoom();
 
         try {
-                dialog->addUsers(cache::client()->readReceipts(event_id, room_id));
+                dialog->addUsers(cache::readReceipts(event_id, room_id));
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("failed to retrieve read receipts for {} {}",
                                   event_id.toStdString(),
@@ -507,4 +506,34 @@ MainWindow::loadJdenticonPlugin()
 
         nhlog::ui()->info("jdenticon plugin not found.");
         return false;
+}
+void
+MainWindow::showWelcomePage()
+{
+        removeOverlayProgressBar();
+        pageStack_->addWidget(welcome_page_);
+        pageStack_->setCurrentWidget(welcome_page_);
+}
+
+void
+MainWindow::showLoginPage()
+{
+        if (modal_)
+                modal_->hide();
+
+        pageStack_->addWidget(login_page_);
+        pageStack_->setCurrentWidget(login_page_);
+}
+
+void
+MainWindow::showRegisterPage()
+{
+        pageStack_->addWidget(register_page_);
+        pageStack_->setCurrentWidget(register_page_);
+}
+
+void
+MainWindow::showUserSettingsPage()
+{
+        pageStack_->setCurrentWidget(userSettingsPage_);
 }

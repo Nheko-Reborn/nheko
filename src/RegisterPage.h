@@ -21,6 +21,8 @@
 #include <QLayout>
 #include <memory>
 
+#include <mtx/user_interactive.hpp>
+
 class FlatButton;
 class RaisedButton;
 class TextField;
@@ -30,7 +32,7 @@ class RegisterPage : public QWidget
         Q_OBJECT
 
 public:
-        RegisterPage(QWidget *parent = 0);
+        RegisterPage(QWidget *parent = nullptr);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -43,7 +45,10 @@ signals:
         void registerErrorCb(const QString &msg);
         void registrationFlow(const std::string &user,
                               const std::string &pass,
-                              const std::string &session);
+                              const mtx::user_interactive::Unauthorized &unauthorized);
+        void registerAuth(const std::string &user,
+                          const std::string &pass,
+                          const mtx::user_interactive::Auth &auth);
 
 private slots:
         void onBackButtonClicked();

@@ -15,6 +15,7 @@ public:
 
 signals:
         void confirmation();
+        void cancel();
 
 private:
         QPushButton *openCaptchaBtn_;

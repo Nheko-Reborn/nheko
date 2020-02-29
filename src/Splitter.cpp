@@ -15,24 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include <QDebug>
-#include <QDesktopWidget>
 #include <QSettings>
-#include <QShortcut>
 
-#include "Config.h"
+#include "Logging.h"
 #include "Splitter.h"
 
 constexpr auto MaxWidth = (1 << 24) - 1;
 
 Splitter::Splitter(QWidget *parent)
   : QSplitter(parent)
-  , sz_{utils::calculateSidebarSizes(QFont{})}
+  , sz_{splitter::calculateSidebarSizes(QFont{})}
 {
         connect(this, &QSplitter::splitterMoved, this, &Splitter::onSplitterMoved);
         setChildrenCollapsible(false);
-        setStyleSheet("QSplitter::handle { image: none; }");
 }
 
 void
@@ -80,7 +75,7 @@ Splitter::onSplitterMoved(int pos, int index)
         auto s = sizes();
 
         if (s.count() < 2) {
-                qWarning() << "Splitter needs at least two children";
+                nhlog::ui()->warn("Splitter needs at least two children");
                 return;
         }
 
@@ -164,4 +159,18 @@ Splitter::showFullRoomList()
 
         left->show();
         left->setMaximumWidth(MaxWidth);
+}
+
+splitter::SideBarSizes
+splitter::calculateSidebarSizes(const QFont &f)
+{
+        const auto height = static_cast<double>(QFontMetrics{f}.lineSpacing());
+
+        SideBarSizes sz;
+        sz.small         = std::ceil(3.8 * height);
+        sz.normal        = std::ceil(16 * height);
+        sz.groups        = std::ceil(3 * height);
+        sz.collapsePoint = 2 * sz.normal;
+
+        return sz;
 }

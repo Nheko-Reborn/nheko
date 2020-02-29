@@ -25,8 +25,8 @@ for iconSize in 16 32 48 64 128 256 512; do
 done
 
 # Only download the file when not already present
-if ! [ -f linuxdeployqt-continuous-x86_64.AppImage ] ; then
-	wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+if ! [ -f linuxdeployqt-6-x86_64.AppImage ] ; then
+	wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage"
 fi
 chmod a+x linuxdeployqt*.AppImage
 
@@ -36,7 +36,7 @@ unset LD_LIBRARY_PATH
 
 ARCH=$(uname -m)
 export ARCH
-LD_LIBRARY_PATH=$(pwd)/.deps/usr/lib/:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$(pwd)/.deps/usr/lib/:/usr/local/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 
 for res in ./linuxdeployqt*.AppImage
@@ -44,12 +44,14 @@ do
     linuxdeployqt=$res
 done
 
-./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs
-./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -appimage
+./"$linuxdeployqt" ${DIR}/usr/share/applications/*.desktop -unsupported-allow-new-glibc -bundle-non-qt-libs -qmldir=./resources/qml -appimage
 
 chmod +x nheko-*x86_64.AppImage
 
-if [ ! -z "$VERSION" ]; then
+mkdir artifacts
+cp nheko-*x86_64.AppImage artifacts/
+
+if [ -n "$VERSION" ]; then
     # commented out for now, as AppImage file appears to already contain the version.
     #mv nheko-*x86_64.AppImage nheko-${VERSION}-x86_64.AppImage
     echo "nheko-${VERSION}-x86_64.AppImage"

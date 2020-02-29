@@ -16,7 +16,7 @@ PATH=/usr/local/opt/qt/bin/:${PATH}
   mkdir -p nheko.app/Contents/Frameworks
   find "${ICU_LIB}" -type l -name "*.dylib" -exec cp -a -n {} nheko.app/Contents/Frameworks/ \; || true
 
-  sudo macdeployqt nheko.app -dmg -always-overwrite
+  sudo macdeployqt nheko.app -dmg -always-overwrite -qmldir=../resources/qml/
 
   user=$(id -nu)
   sudo chown "${user}" nheko.dmg
@@ -25,6 +25,8 @@ PATH=/usr/local/opt/qt/bin/:${PATH}
 
 dmgbuild -s ./.ci/macos/settings.json "Nheko" nheko.dmg
 
-if [ ! -z "$VERSION" ]; then
+if [ -n "$VERSION" ]; then
     mv nheko.dmg "nheko-${VERSION}.dmg"
+    mkdir artifacts
+    cp "nheko-${VERSION}.dmg" artifacts/
 fi

@@ -2,17 +2,25 @@
 
 set -ex
 
+if [ "$FLATPAK" ]; then
+	mkdir -p build-flatpak
+	cd build-flatpak
+
+	flatpak-builder --ccache --repo=repo --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
+	flatpak build-bundle repo nheko-${VERSION}-${ARCH}.flatpak io.github.NhekoReborn.Nheko 0.7.0-dev
+
+	mkdir ../artifacts
+	mv nheko-*.flatpak ../artifacts
+
+	exit
+fi
+
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-    export CC=${C_COMPILER}
-    export CXX=${CXX_COMPILER}
     # make build use all available cores
     export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
 
-    sudo update-alternatives --install /usr/bin/gcc gcc "/usr/bin/${C_COMPILER}" 10
-    sudo update-alternatives --install /usr/bin/g++ g++ "/usr/bin/${CXX_COMPILER}" 10
-
-    sudo update-alternatives --set gcc "/usr/bin/${C_COMPILER}"
-    sudo update-alternatives --set g++ "/usr/bin/${CXX_COMPILER}"
+    export PATH="/usr/local/bin/:${PATH}"
+    cmake --version
 fi
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
@@ -24,27 +32,39 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
 fi
 
-# Build & install dependencies
-cmake -GNinja -Hdeps -B.deps \
-    -DUSE_BUNDLED_BOOST="${USE_BUNDLED_BOOST}" \
-    -DUSE_BUNDLED_CMARK="${USE_BUNDLED_CMARK}" \
-    -DUSE_BUNDLED_JSON="${USE_BUNDLED_JSON}"
-cmake --build .deps
+mkdir -p .deps/usr .hunter
 
 # Build nheko
+
+if [ "$TRAVIS_OS_NAME" = "osx" ]; then
 cmake -GNinja -H. -Bbuild \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DCMAKE_INSTALL_PREFIX=.deps/usr
+    -DCMAKE_INSTALL_PREFIX=.deps/usr \
+    -DHUNTER_ROOT=".hunter" \
+    -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
+    -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 \
+    -DCI_BUILD=ON
+else
+cmake -GNinja -H. -Bbuild \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_INSTALL_PREFIX=.deps/usr \
+    -DHUNTER_ROOT=".hunter" \
+    -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
+    -DUSE_BUNDLED_OPENSSL=OFF \
+    -DCI_BUILD=ON
+fi
 cmake --build build
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     make lint;
 
-    if [ "$DEPLOYMENT" = 1 ] && [ ! -z "$VERSION" ] ; then
+    if [ "$DEPLOYMENT" = 1 ] && [ -n "$VERSION" ] ; then
         make macos-deploy;
     fi
 fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$DEPLOYMENT" = 1 ] && [ ! -z "$VERSION" ]; then
+if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$DEPLOYMENT" = 1 ] && [ -n "$VERSION" ]; then
     make linux-deploy;
 fi

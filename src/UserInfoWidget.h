@@ -31,11 +31,11 @@ class UserInfoWidget : public QWidget
         Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
 
 public:
-        UserInfoWidget(QWidget *parent = 0);
+        UserInfoWidget(QWidget *parent = nullptr);
 
-        void setAvatar(const QImage &img);
         void setDisplayName(const QString &name);
         void setUserId(const QString &userid);
+        void setAvatar(const QString &url);
 
         void reset();
 

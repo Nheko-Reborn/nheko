@@ -4,9 +4,14 @@
 #include <QSharedPointer>
 #include <QVBoxLayout>
 
-#include "Cache.h"
+#include "CacheStructs.h"
 #include "CommunitiesListItem.h"
 #include "ui/Theme.h"
+
+namespace mtx::responses {
+struct GroupProfile;
+struct JoinedGroups;
+}
 
 class CommunitiesList : public QWidget
 {
@@ -48,7 +53,6 @@ private:
 
         QVBoxLayout *topLayout_;
         QVBoxLayout *contentsLayout_;
-        QWidget *scrollAreaContents_;
         QScrollArea *scrollArea_;
 
         std::map<QString, QSharedPointer<CommunitiesListItem>> communities_;

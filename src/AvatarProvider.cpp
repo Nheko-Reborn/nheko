@@ -16,30 +16,37 @@
  */
 
 #include <QBuffer>
+#include <QPixmapCache>
 #include <memory>
+#include <unordered_map>
 
 #include "AvatarProvider.h"
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 
+static QPixmapCache avatar_cache;
+
 namespace AvatarProvider {
-
 void
-resolve(const QString &room_id, const QString &user_id, QObject *receiver, AvatarCallback callback)
+resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback callback)
 {
-        const auto key       = QString("%1 %2").arg(room_id).arg(user_id);
-        const auto avatarUrl = Cache::avatarUrl(room_id, user_id);
-
-        if (!Cache::AvatarUrls.contains(key) || !cache::client())
-                return;
+        const auto cacheKey = QString("%1_size_%2").arg(avatarUrl).arg(size);
 
         if (avatarUrl.isEmpty())
                 return;
 
-        auto data = cache::client()->image(avatarUrl);
+        QPixmap pixmap;
+        if (avatar_cache.find(cacheKey, &pixmap)) {
+                callback(pixmap);
+                return;
+        }
+
+        auto data = cache::image(cacheKey);
         if (!data.isNull()) {
-                callback(QImage::fromData(data));
+                pixmap.loadFromData(data);
+                avatar_cache.insert(cacheKey, pixmap);
+                callback(pixmap);
                 return;
         }
 
@@ -47,16 +54,22 @@ resolve(const QString &room_id, const QString &user_id, QObject *receiver, Avata
         QObject::connect(proxy.get(),
                          &AvatarProxy::avatarDownloaded,
                          receiver,
-                         [callback](const QByteArray &data) { callback(QImage::fromData(data)); });
+                         [callback, cacheKey](const QByteArray &data) {
+                                 QPixmap pm;
+                                 pm.loadFromData(data);
+                                 avatar_cache.insert(cacheKey, pm);
+                                 callback(pm);
+                         });
 
         mtx::http::ThumbOpts opts;
-        opts.width   = 256;
-        opts.height  = 256;
+        opts.width   = size;
+        opts.height  = size;
         opts.mxc_url = avatarUrl.toStdString();
 
         http::client()->get_thumbnail(
           opts,
-          [opts, proxy = std::move(proxy)](const std::string &res, mtx::http::RequestErr err) {
+          [opts, cacheKey, proxy = std::move(proxy)](const std::string &res,
+                                                     mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to download avatar: {} - ({} {})",
                                              opts.mxc_url,
@@ -65,10 +78,21 @@ resolve(const QString &room_id, const QString &user_id, QObject *receiver, Avata
                           return;
                   }
 
-                  cache::client()->saveImage(opts.mxc_url, res);
+                  cache::saveImage(cacheKey.toStdString(), res);
 
-                  auto data = QByteArray(res.data(), res.size());
-                  emit proxy->avatarDownloaded(data);
+                  emit proxy->avatarDownloaded(QByteArray(res.data(), res.size()));
           });
+}
+
+void
+resolve(const QString &room_id,
+        const QString &user_id,
+        int size,
+        QObject *receiver,
+        AvatarCallback callback)
+{
+        const auto avatarUrl = cache::avatarUrl(room_id, user_id);
+
+        resolve(avatarUrl, size, receiver, callback);
 }
 }

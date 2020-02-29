@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QPainter>
 #include <QPushButton>
 #include <QScrollBar>
 #include <QVBoxLayout>
@@ -34,10 +35,6 @@ Panel::Panel(QWidget *parent)
   , height_{350}
   , categoryIconSize_{20}
 {
-        setStyleSheet("QWidget {border: none;}"
-                      "QScrollBar:vertical { width: 0px; margin: 0px; }"
-                      "QScrollBar::handle:vertical { min-height: 30px; }");
-
         setAttribute(Qt::WA_ShowWithoutActivating, true);
         setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
 
@@ -202,14 +199,12 @@ Panel::showCategory(const Category *category)
                 return;
 
         // HACK
-        // If we want to go to a previous category and position the label at the top
-        // the 6*50 offset won't work because not all the categories have the same
-        // height. To ensure the category is at the top, we move to the top and go as
-        // normal to the next category.
+        // We want the top of the category to be visible, so scroll to the top first and then to the
+        // category
         if (current > posToGo)
                 this->scrollArea_->ensureVisible(0, 0, 0, 0);
 
-        posToGo += 6 * 50;
+        posToGo += scrollArea_->height();
         this->scrollArea_->ensureVisible(0, posToGo, 0, 0);
 }
 

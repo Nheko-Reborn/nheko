@@ -16,22 +16,22 @@
  */
 
 #include <QDateTime>
-#include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QSettings>
+#include <QtGlobal>
 
+#include "AvatarProvider.h"
 #include "Cache.h"
 #include "Config.h"
 #include "RoomInfoListItem.h"
+#include "Splitter.h"
 #include "Utils.h"
 #include "ui/Menu.h"
 #include "ui/Ripple.h"
 #include "ui/RippleOverlay.h"
 
 constexpr int MaxUnreadCountDisplayed = 99;
-
-constexpr int IconSize = 44;
-// constexpr int MaxHeight        = IconSize + 2 * Padding;
 
 struct WidgetMetrics
 {
@@ -62,7 +62,7 @@ getMetrics(const QFont &font)
         m.unreadLineOffset = m.padding - m.padding / 4;
 
         m.inviteBtnX = m.iconSize + 2 * m.padding;
-        m.inviteBtnX = m.iconSize / 2.0 + m.padding + m.padding / 3.0;
+        m.inviteBtnY = m.iconSize / 2.0 + m.padding + m.padding / 3.0;
 
         return m;
 }
@@ -74,7 +74,8 @@ RoomInfoListItem::init(QWidget *parent)
         setMouseTracking(true);
         setAttribute(Qt::WA_Hover);
 
-        setFixedHeight(getMetrics(QFont{}).maxHeight);
+        auto wm = getMetrics(QFont{});
+        setFixedHeight(wm.maxHeight);
 
         QPainterPath path;
         path.addRect(0, 0, parent->width(), height());
@@ -82,6 +83,10 @@ RoomInfoListItem::init(QWidget *parent)
         ripple_overlay_ = new RippleOverlay(this);
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
+
+        avatar_ = new Avatar(this, wm.iconSize);
+        avatar_->setLetter(utils::firstChar(roomName_));
+        avatar_->move(wm.padding, wm.padding);
 
         unreadCountFont_.setPointSizeF(unreadCountFont_.pointSizeF() * 0.8);
         unreadCountFont_.setBold(true);
@@ -94,7 +99,7 @@ RoomInfoListItem::init(QWidget *parent)
         menu_->addAction(leaveRoom_);
 }
 
-RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent)
   : QWidget(parent)
   , roomType_{info.is_invite ? RoomType::Invited : RoomType::Joined}
   , roomId_(std::move(room_id))
@@ -104,18 +109,6 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, RoomInfo info, QWidget *pare
   , unreadHighlightedMsgCount_(0)
 {
         init(parent);
-
-        QString emptyEventId;
-
-        // HACK
-        // We use fake message info with an old date to pin
-        // the invite events to the top.
-        //
-        // State events in invited rooms don't contain timestamp info,
-        // so we can't use them for sorting.
-        if (roomType_ == RoomType::Invited)
-                lastMsgInfo_ = {
-                  emptyEventId, "-", "-", "-", "-", QDateTime::currentDateTime().addYears(10)};
 }
 
 void
@@ -125,7 +118,7 @@ RoomInfoListItem::resizeEvent(QResizeEvent *)
         QPainterPath path;
         path.addRect(0, 0, width(), height());
 
-        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+        const auto sidebarSizes = splitter::calculateSidebarSizes(QFont{});
 
         if (width() > sidebarSizes.small)
                 setToolTip("");
@@ -167,12 +160,10 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                 subtitlePen.setColor(subtitleColor_);
         }
 
-        QRect avatarRegion(wm.padding, wm.padding, wm.iconSize, wm.iconSize);
-
         // Description line with the default font.
         int bottom_y = wm.maxHeight - wm.padding - metrics.ascent() / 2;
 
-        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+        const auto sidebarSizes = splitter::calculateSidebarSizes(QFont{});
 
         if (width() > sidebarSizes.small) {
                 QFont headingFont;
@@ -182,8 +173,12 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                 QFont tsFont;
                 tsFont.setPointSizeF(tsFont.pointSizeF() * 0.9);
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
                 const int msgStampWidth = QFontMetrics(tsFont).width(lastMsgInfo_.timestamp) + 4;
-
+#else
+                const int msgStampWidth =
+                  QFontMetrics(tsFont).horizontalAdvance(lastMsgInfo_.timestamp) + 4;
+#endif
                 // We use the full width of the widget if there is no unread msg bubble.
                 const int bottomLineWidthLimit = (unreadMsgCount_ > 0) ? msgStampWidth : 0;
 
@@ -201,30 +196,11 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
                         p.setFont(QFont{});
                         p.setPen(subtitlePen);
 
-                        // The limit is the space between the end of the avatar and the start of the
-                        // timestamp.
-                        int usernameLimit =
-                          std::max(0, width() - 3 * wm.padding - msgStampWidth - wm.iconSize - 20);
-                        auto userName =
-                          metrics.elidedText(lastMsgInfo_.username, Qt::ElideRight, usernameLimit);
-
-                        p.setFont(QFont{});
-                        p.drawText(QPoint(2 * wm.padding + wm.iconSize, bottom_y), userName);
-
-                        int nameWidth = QFontMetrics(QFont{}).width(userName);
-
-                        p.setFont(QFont{});
-
-                        // The limit is the space between the end of the username and the start of
-                        // the timestamp.
-                        int descriptionLimit =
-                          std::max(0,
-                                   width() - 3 * wm.padding - bottomLineWidthLimit - wm.iconSize -
-                                     nameWidth - 5);
+                        int descriptionLimit = std::max(
+                          0, width() - 3 * wm.padding - bottomLineWidthLimit - wm.iconSize);
                         auto description =
                           metrics.elidedText(lastMsgInfo_.body, Qt::ElideRight, descriptionLimit);
-                        p.drawText(QPoint(2 * wm.padding + wm.iconSize + nameWidth, bottom_y),
-                                   description);
+                        p.drawText(QPoint(2 * wm.padding + wm.iconSize, bottom_y), description);
 
                         // We show the last message timestamp.
                         p.save();
@@ -263,41 +239,16 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
                         p.setPen(QPen(btnTextColor_));
                         p.setFont(QFont{});
-                        p.drawText(acceptBtnRegion_, Qt::AlignCenter, tr("Accept"));
-                        p.drawText(declineBtnRegion_, Qt::AlignCenter, tr("Decline"));
+                        p.drawText(acceptBtnRegion_,
+                                   Qt::AlignCenter,
+                                   metrics.elidedText(tr("Accept"), Qt::ElideRight, btnWidth));
+                        p.drawText(declineBtnRegion_,
+                                   Qt::AlignCenter,
+                                   metrics.elidedText(tr("Decline"), Qt::ElideRight, btnWidth));
                 }
         }
 
         p.setPen(Qt::NoPen);
-
-        // We using the first letter of room's name.
-        if (roomAvatar_.isNull()) {
-                QBrush brush;
-                brush.setStyle(Qt::SolidPattern);
-                brush.setColor(avatarBgColor());
-
-                p.setPen(Qt::NoPen);
-                p.setBrush(brush);
-
-                p.drawEllipse(avatarRegion.center(), wm.iconSize / 2, wm.iconSize / 2);
-
-                QFont bubbleFont;
-                bubbleFont.setPointSizeF(bubbleFont.pointSizeF() * 1.4);
-                p.setFont(bubbleFont);
-                p.setPen(avatarFgColor());
-                p.setBrush(Qt::NoBrush);
-                p.drawText(
-                  avatarRegion.translated(0, -1), Qt::AlignCenter, utils::firstChar(roomName()));
-        } else {
-                p.save();
-
-                QPainterPath path;
-                path.addEllipse(wm.padding, wm.padding, wm.iconSize, wm.iconSize);
-                p.setClipPath(path);
-
-                p.drawPixmap(avatarRegion, roomAvatar_);
-                p.restore();
-        }
 
         if (unreadMsgCount_ > 0) {
                 QBrush brush;
@@ -426,10 +377,9 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 }
 
 void
-RoomInfoListItem::setAvatar(const QImage &img)
+RoomInfoListItem::setAvatar(const QString &avatar_url)
 {
-        roomAvatar_ = utils::scaleImageToPixmap(img, IconSize);
-        update();
+        avatar_->setImage(avatar_url);
 }
 
 void

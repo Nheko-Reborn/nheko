@@ -1,3 +1,4 @@
+
 /*
  * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
  *
@@ -15,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QPainter>
 #include <QTimer>
 
 #include <iostream>
 
 #include "Config.h"
 #include "MainWindow.h"
+#include "Splitter.h"
 #include "UserInfoWidget.h"
-#include "Utils.h"
 #include "ui/Avatar.h"
 #include "ui/FlatButton.h"
 #include "ui/OverlayModal.h"
@@ -52,10 +54,9 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         textLayout_->setSpacing(widgetMargin / 2);
         textLayout_->setContentsMargins(widgetMargin * 2, widgetMargin, widgetMargin, widgetMargin);
 
-        userAvatar_ = new Avatar(this);
+        userAvatar_ = new Avatar(this, fontHeight * 2.5);
         userAvatar_->setObjectName("userAvatar");
         userAvatar_->setLetter(QChar('?'));
-        userAvatar_->setSize(fontHeight * 2.5);
 
         QFont nameFont;
         nameFont.setPointSizeF(nameFont.pointSizeF() * 1.1);
@@ -108,7 +109,7 @@ UserInfoWidget::resizeEvent(QResizeEvent *event)
 {
         Q_UNUSED(event);
 
-        const auto sz = utils::calculateSidebarSizes(QFont{});
+        const auto sz = splitter::calculateSidebarSizes(QFont{});
 
         if (width() <= sz.small) {
                 topLayout_->setContentsMargins(0, 0, logoutButtonSize_, 0);
@@ -135,14 +136,6 @@ UserInfoWidget::reset()
 }
 
 void
-UserInfoWidget::setAvatar(const QImage &img)
-{
-        avatar_image_ = img;
-        userAvatar_->setImage(img);
-        update();
-}
-
-void
 UserInfoWidget::setDisplayName(const QString &name)
 {
         if (name.isEmpty())
@@ -160,6 +153,14 @@ UserInfoWidget::setUserId(const QString &userid)
 {
         user_id_ = userid;
         userIdLabel_->setText(userid);
+        update();
+}
+
+void
+UserInfoWidget::setAvatar(const QString &url)
+{
+        userAvatar_->setImage(url);
+        update();
 }
 
 void

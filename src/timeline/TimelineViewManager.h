@@ -1,95 +1,123 @@
-/*
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #pragma once
 
+#include <QQuickView>
+#include <QQuickWidget>
 #include <QSharedPointer>
-#include <QStackedWidget>
+#include <QWidget>
 
-#include <mtx.hpp>
+#include <mtx/common.hpp>
+#include <mtx/responses.hpp>
 
-class QFile;
+#include "Cache.h"
+#include "Logging.h"
+#include "TimelineModel.h"
+#include "Utils.h"
 
-class RoomInfoListItem;
-class TimelineView;
-struct DescInfo;
-struct SavedMessages;
+class MxcImageProvider;
+class ColorImageProvider;
+class UserSettings;
 
-class TimelineViewManager : public QStackedWidget
+class TimelineViewManager : public QObject
 {
         Q_OBJECT
 
+        Q_PROPERTY(
+          TimelineModel *timeline MEMBER timeline_ READ activeTimeline NOTIFY activeTimelineChanged)
+        Q_PROPERTY(
+          bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
+        Q_PROPERTY(QString replyingEvent READ getReplyingEvent WRITE updateReplyingEvent NOTIFY
+                     replyingEventChanged)
+
 public:
-        TimelineViewManager(QWidget *parent);
-
-        // Initialize with timeline events.
-        void initialize(const mtx::responses::Rooms &rooms);
-        // Empty initialization.
-        void initialize(const std::vector<std::string> &rooms);
-
-        void addRoom(const mtx::responses::JoinedRoom &room, const QString &room_id);
-        void addRoom(const QString &room_id);
+        TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
+        QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
-        void clearAll() { views_.clear(); }
+        void addRoom(const QString &room_id);
 
-        // Check if all the timelines have been loaded.
-        bool hasLoaded() const;
+        void clearAll() { models.clear(); }
 
-        static QString chooseRandomColor();
+        Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
+        Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
+        Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
+        Q_INVOKABLE QColor userColor(QString id, QColor background);
 
 signals:
         void clearRoomMessageCount(QString roomid);
-        void updateRoomsLastMessage(const QString &user, const DescInfo &info);
+        void updateRoomsLastMessage(QString roomid, const DescInfo &info);
+        void activeTimelineChanged(TimelineModel *timeline);
+        void initialSyncChanged(bool isInitialSync);
+        void replyingEventChanged(QString replyingEvent);
+        void replyClosed();
 
 public slots:
+        void updateReplyingEvent(const QString &replyingEvent)
+        {
+                if (this->replyingEvent_ != replyingEvent) {
+                        this->replyingEvent_ = replyingEvent;
+                        emit replyingEventChanged(replyingEvent_);
+                }
+        }
+        void closeReply()
+        {
+                this->updateReplyingEvent(nullptr);
+                emit replyClosed();
+        }
+        QString getReplyingEvent() const { return replyingEvent_; }
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
-        void removeTimelineEvent(const QString &room_id, const QString &event_id);
         void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
 
         void setHistoryView(const QString &room_id);
-        void queueTextMessage(const QString &msg);
+        void updateColorPalette();
+
+        void queueTextMessage(const QString &msg, const std::optional<RelatedInfo> &related);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
                                const QString &filename,
+                               const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize,
-                               const QSize &dimensions);
+                               const QSize &dimensions,
+                               const std::optional<RelatedInfo> &related);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
+                              const std::optional<mtx::crypto::EncryptedFile> &file,
                               const QString &url,
                               const QString &mime,
-                              uint64_t dsize);
+                              uint64_t dsize,
+                              const std::optional<RelatedInfo> &related);
         void queueAudioMessage(const QString &roomid,
                                const QString &filename,
+                               const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize);
+                               uint64_t dsize,
+                               const std::optional<RelatedInfo> &related);
         void queueVideoMessage(const QString &roomid,
                                const QString &filename,
+                               const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize);
+                               uint64_t dsize,
+                               const std::optional<RelatedInfo> &related);
 
 private:
-        //! Check if the given room id is managed by a TimelineView.
-        bool timelineViewExists(const QString &id) { return views_.find(id) != views_.end(); }
+#ifdef USE_QUICK_VIEW
+        QQuickView *view;
+#else
+        QQuickWidget *view;
+#endif
+        QWidget *container;
 
-        QString active_room_;
-        std::map<QString, QSharedPointer<TimelineView>> views_;
+        MxcImageProvider *imgProvider;
+        ColorImageProvider *colorImgProvider;
+
+        QHash<QString, QSharedPointer<TimelineModel>> models;
+        TimelineModel *timeline_ = nullptr;
+        bool isInitialSync_      = true;
+        QString replyingEvent_;
+
+        QSharedPointer<UserSettings> settings;
+        QHash<QString, QColor> userColors;
 };

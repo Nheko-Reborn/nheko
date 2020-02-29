@@ -15,8 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
+#include <QAction>
+#include <QIcon>
+#include <QLabel>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QPen>
+#include <QPoint>
+#include <QStyle>
 #include <QStyleOption>
+#include <QVBoxLayout>
 
 #include "Config.h"
 #include "MainWindow.h"
@@ -46,9 +54,8 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         topLayout_->setContentsMargins(
           2 * widgetMargin, widgetMargin, 2 * widgetMargin, widgetMargin);
 
-        avatar_ = new Avatar(this);
+        avatar_ = new Avatar(this, fontHeight * 2);
         avatar_->setLetter("");
-        avatar_->setSize(fontHeight * 2);
 
         textLayout_ = new QVBoxLayout();
         textLayout_->setSpacing(0);
@@ -80,10 +87,20 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         settingsBtn_->setFixedSize(buttonSize_, buttonSize_);
         settingsBtn_->setCornerRadius(buttonSize_ / 2);
 
+        mentionsBtn_ = new FlatButton(this);
+        mentionsBtn_->setToolTip(tr("Mentions"));
+        mentionsBtn_->setFixedSize(buttonSize_, buttonSize_);
+        mentionsBtn_->setCornerRadius(buttonSize_ / 2);
+
         QIcon settings_icon;
         settings_icon.addFile(":/icons/icons/ui/vertical-ellipsis.png");
         settingsBtn_->setIcon(settings_icon);
         settingsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
+
+        QIcon mentions_icon;
+        mentions_icon.addFile(":/icons/icons/ui/at-solid.svg");
+        mentionsBtn_->setIcon(mentions_icon);
+        mentionsBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
 
         backBtn_ = new FlatButton(this);
         backBtn_->setFixedSize(buttonSize_, buttonSize_);
@@ -100,6 +117,7 @@ TopRoomBar::TopRoomBar(QWidget *parent)
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(backBtn_);
         topLayout_->addLayout(textLayout_, 1);
+        topLayout_->addWidget(mentionsBtn_, 0, Qt::AlignRight);
         topLayout_->addWidget(settingsBtn_, 0, Qt::AlignRight);
 
         menu_ = new Menu(this);
@@ -135,6 +153,11 @@ TopRoomBar::TopRoomBar(QWidget *parent)
                 menu_->popup(
                   QPoint(pos.x() + buttonSize_ - menu_->sizeHint().width(), pos.y() + buttonSize_));
         });
+
+        connect(mentionsBtn_, &QPushButton::clicked, this, [this]() {
+                auto pos = mapToGlobal(mentionsBtn_->pos());
+                emit mentionsClicked(pos);
+        });
 }
 
 void
@@ -167,7 +190,7 @@ TopRoomBar::reset()
 }
 
 void
-TopRoomBar::updateRoomAvatar(const QImage &avatar_image)
+TopRoomBar::updateRoomAvatar(const QString &avatar_image)
 {
         avatar_->setImage(avatar_image);
         update();
@@ -194,4 +217,20 @@ TopRoomBar::updateRoomTopic(QString topic)
         topicLabel_->clearLinks();
         topicLabel_->setHtml(topic);
         update();
+}
+
+void
+TopRoomBar::mousePressEvent(QMouseEvent *)
+{
+        if (roomSettings_ != nullptr)
+                roomSettings_->trigger();
+}
+
+void
+TopRoomBar::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

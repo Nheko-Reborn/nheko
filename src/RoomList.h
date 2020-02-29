@@ -17,14 +17,11 @@
 
 #pragma once
 
-#include <QMetaType>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSharedPointer>
 #include <QVBoxLayout>
 #include <QWidget>
-
-#include <mtx.hpp>
 
 class LeaveRoomDialog;
 class OverlayModal;
@@ -38,7 +35,7 @@ class RoomList : public QWidget
         Q_OBJECT
 
 public:
-        explicit RoomList(QWidget *parent = 0);
+        explicit RoomList(QWidget *parent = nullptr);
 
         void initialize(const QMap<QString, RoomInfo> &info);
         void sync(const std::map<QString, RoomInfo> &info);
@@ -61,17 +58,19 @@ signals:
         void totalUnreadMessageCountUpdated(int count);
         void acceptInvite(const QString &room_id);
         void declineInvite(const QString &room_id);
-        void roomAvatarChanged(const QString &room_id, const QPixmap &img);
+        void roomAvatarChanged(const QString &room_id, const QString &img);
         void joinRoom(const QString &room_id);
-        void updateRoomAvatarCb(const QString &room_id, const QPixmap &img);
+        void updateRoomAvatarCb(const QString &room_id, const QString &img);
 
 public slots:
-        void updateRoomAvatar(const QString &roomid, const QPixmap &img);
+        void updateRoomAvatar(const QString &roomid, const QString &img);
         void highlightSelectedRoom(const QString &room_id);
         void updateUnreadMessageCount(const QString &roomid, int count, int highlightedCount);
         void updateRoomDescription(const QString &roomid, const DescInfo &info);
         void closeJoinRoomDialog(bool isJoining, QString roomAlias);
         void updateReadStatus(const std::map<QString, bool> &status);
+        void nextRoom();
+        void previousRoom();
 
 protected:
         void paintEvent(QPaintEvent *event) override;

@@ -17,22 +17,23 @@
 
 #pragma once
 
-#include <QAction>
 #include <QIcon>
 #include <QIconEngine>
-#include <QPainter>
 #include <QRect>
 #include <QSystemTrayIcon>
+
+class QAction;
+class QPainter;
 
 class MsgCountComposedIcon : public QIconEngine
 {
 public:
         MsgCountComposedIcon(const QString &filename);
 
-        virtual void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state);
-        virtual QIconEngine *clone() const;
-        virtual QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) const;
-        virtual QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state);
+        void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state) override;
+        QIconEngine *clone() const override;
+        QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) const override;
+        QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state) override;
 
         int msgCount = 0;
 

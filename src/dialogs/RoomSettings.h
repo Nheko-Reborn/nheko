@@ -5,7 +5,9 @@
 #include <QImage>
 #include <QLabel>
 
-#include "Cache.h"
+#include <mtx/events/guest_access.hpp>
+
+#include "CacheStructs.h"
 
 class Avatar;
 class FlatButton;
@@ -33,7 +35,7 @@ signals:
         void clicked();
 
 protected:
-        bool eventFilter(QObject *obj, QEvent *event)
+        bool eventFilter(QObject *obj, QEvent *event) override
         {
                 if (event->type() == QEvent::MouseButtonRelease) {
                         emit clicked();
@@ -52,7 +54,7 @@ class ThreadProxy : public QObject
 
 signals:
         void error(const QString &msg);
-        void avatarChanged(const QImage &img);
+        void avatarChanged();
         void nameEventSent(const QString &);
         void topicEventSent();
 };
@@ -117,6 +119,7 @@ signals:
         void enableEncryptionError(const QString &msg);
         void showErrorMessage(const QString &msg);
         void accessRulesUpdated();
+        void notifChanged(int index);
 
 protected:
         void showEvent(QShowEvent *event) override;
@@ -140,7 +143,7 @@ private:
         void resetErrorLabel();
         void displayErrorMessage(const QString &msg);
 
-        void setAvatar(const QImage &img);
+        void setAvatar();
         void setupEditButton();
         //! Retrieve the current room information from cache.
         void retrieveRoomInfo();
@@ -161,6 +164,7 @@ private:
         QLabel *errorLabel_        = nullptr;
         LoadingIndicator *spinner_ = nullptr;
 
+        QComboBox *notifCombo      = nullptr;
         QComboBox *accessCombo     = nullptr;
         Toggle *encryptionToggle_  = nullptr;
         Toggle *keyRequestsToggle_ = nullptr;

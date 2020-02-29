@@ -7,7 +7,7 @@ class WelcomePage : public QWidget
         Q_OBJECT
 
 public:
-        explicit WelcomePage(QWidget *parent = 0);
+        explicit WelcomePage(QWidget *parent = nullptr);
 
 protected:
         void paintEvent(QPaintEvent *) override;

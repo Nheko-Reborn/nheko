@@ -11,11 +11,13 @@
 #include <QPushButton>
 #include <QShortcut>
 #include <QShowEvent>
+#include <QStandardPaths>
 #include <QStyleOption>
 #include <QVBoxLayout>
 
 #include "dialogs/RoomSettings.h"
 
+#include "Cache.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"
@@ -199,12 +201,112 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                                 Qt::AlignBottom | Qt::AlignLeft);
         roomIdLayout->addWidget(roomIdLabel, 0, Qt::AlignBottom | Qt::AlignRight);
 
+        auto roomVersionLabel = new QLabel(QString::fromStdString(info_.version), this);
+        roomVersionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        roomVersionLabel->setFont(monospaceFont);
+
+        auto roomVersionLayout = new QHBoxLayout;
+        roomVersionLayout->setMargin(0);
+        roomVersionLayout->addWidget(new QLabel(tr("Room Version"), this),
+                                     Qt::AlignBottom | Qt::AlignLeft);
+        roomVersionLayout->addWidget(roomVersionLabel, 0, Qt::AlignBottom | Qt::AlignRight);
+
         auto notifLabel = new QLabel(tr("Notifications"), this);
-        auto notifCombo = new QComboBox(this);
-        notifCombo->setDisabled(true);
-        notifCombo->addItem(tr("Muted"));
-        notifCombo->addItem(tr("Mentions only"));
-        notifCombo->addItem(tr("All messages"));
+        notifCombo      = new QComboBox(this);
+        notifCombo->addItem(tr(
+          "Muted")); //{"conditions":[{"kind":"event_match","key":"room_id","pattern":"!jxlRxnrZCsjpjDubDX:matrix.org"}],"actions":["dont_notify"]}
+        notifCombo->addItem(tr("Mentions only")); // {"actions":["dont_notify"]}
+        notifCombo->addItem(tr("All messages"));  // delete rule
+
+        connect(this, &RoomSettings::notifChanged, notifCombo, &QComboBox::setCurrentIndex);
+        http::client()->get_pushrules(
+          "global",
+          "override",
+          room_id_.toStdString(),
+          [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr &err) {
+                  if (err) {
+                          if (err->status_code == boost::beast::http::status::not_found)
+                                  http::client()->get_pushrules(
+                                    "global",
+                                    "room",
+                                    room_id_.toStdString(),
+                                    [this](const mtx::pushrules::PushRule &rule,
+                                           mtx::http::RequestErr &err) {
+                                            if (err) {
+                                                    emit notifChanged(2); // all messages
+                                                    return;
+                                            }
+
+                                            if (rule.enabled)
+                                                    emit notifChanged(1); // mentions only
+                                    });
+                          return;
+                  }
+
+                  if (rule.enabled)
+                          emit notifChanged(0); // muted
+                  else
+                          emit notifChanged(2); // all messages
+          });
+
+        connect(notifCombo, QOverload<int>::of(&QComboBox::activated), [this](int index) {
+                std::string room_id = room_id_.toStdString();
+                if (index == 0) {
+                        // mute room
+                        // delete old rule first, then add new rule
+                        mtx::pushrules::PushRule rule;
+                        rule.actions = {mtx::pushrules::actions::dont_notify{}};
+                        mtx::pushrules::PushCondition condition;
+                        condition.kind    = "event_match";
+                        condition.key     = "room_id";
+                        condition.pattern = room_id;
+                        rule.conditions   = {condition};
+
+                        http::client()->put_pushrules(
+                          "global",
+                          "override",
+                          room_id,
+                          rule,
+                          [room_id](mtx::http::RequestErr &err) {
+                                  if (err)
+                                          nhlog::net()->error(
+                                            "failed to set pushrule for room {}: {} {}",
+                                            room_id,
+                                            static_cast<int>(err->status_code),
+                                            err->matrix_error.error);
+                                  http::client()->delete_pushrules(
+                                    "global", "room", room_id, [room_id](mtx::http::RequestErr &) {
+                                    });
+                          });
+                } else if (index == 1) {
+                        // mentions only
+                        // delete old rule first, then add new rule
+                        mtx::pushrules::PushRule rule;
+                        rule.actions = {mtx::pushrules::actions::dont_notify{}};
+                        http::client()->put_pushrules(
+                          "global", "room", room_id, rule, [room_id](mtx::http::RequestErr &err) {
+                                  if (err)
+                                          nhlog::net()->error(
+                                            "failed to set pushrule for room {}: {} {}",
+                                            room_id,
+                                            static_cast<int>(err->status_code),
+                                            err->matrix_error.error);
+                                  http::client()->delete_pushrules(
+                                    "global",
+                                    "override",
+                                    room_id,
+                                    [room_id](mtx::http::RequestErr &) {});
+                          });
+                } else {
+                        // all messages
+                        http::client()->delete_pushrules(
+                          "global", "override", room_id, [room_id](mtx::http::RequestErr &) {
+                                  http::client()->delete_pushrules(
+                                    "global", "room", room_id, [room_id](mtx::http::RequestErr &) {
+                                    });
+                          });
+                }
+        });
 
         auto notifOptionLayout_ = new QHBoxLayout;
         notifOptionLayout_->setMargin(0);
@@ -238,10 +340,10 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                         switch (index) {
                         case 0:
                         case 1:
-                                event.join_rule = JoinRule::Public;
+                                event.join_rule = state::JoinRule::Public;
                                 break;
                         default:
-                                event.join_rule = JoinRule::Invite;
+                                event.join_rule = state::JoinRule::Invite;
                         }
 
                         return event;
@@ -250,7 +352,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 updateAccessRules(room_id_.toStdString(), join_rule, guest_access);
         });
 
-        if (info_.join_rule == JoinRule::Public) {
+        if (info_.join_rule == state::JoinRule::Public) {
                 if (info_.guest_access) {
                         accessCombo->setCurrentIndex(0);
                 } else {
@@ -332,7 +434,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         }
 
         // Hide encryption option for public rooms.
-        if (!usesEncryption_ && (info_.join_rule == JoinRule::Public)) {
+        if (!usesEncryption_ && (info_.join_rule == state::JoinRule::Public)) {
                 encryptionToggle_->hide();
                 encryptionLabel->hide();
 
@@ -340,12 +442,10 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 keyRequestsToggle_->hide();
         }
 
-        avatar_ = new Avatar(this);
-        avatar_->setSize(128);
-        if (avatarImg_.isNull())
-                avatar_->setLetter(utils::firstChar(QString::fromStdString(info_.name)));
-        else
-                avatar_->setImage(avatarImg_);
+        avatar_ = new Avatar(this, 128);
+        avatar_->setLetter(utils::firstChar(QString::fromStdString(info_.name)));
+        if (!info_.avatar_url.empty())
+                avatar_->setImage(QString::fromStdString(info_.avatar_url));
 
         if (canChangeAvatar(room_id_.toStdString(), utils::localUser().toStdString())) {
                 auto filter = new ClickableFilter(this);
@@ -400,6 +500,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addLayout(keyRequestsLayout);
         layout->addWidget(infoLabel, Qt::AlignLeft);
         layout->addLayout(roomIdLayout);
+        layout->addLayout(roomVersionLayout);
         layout->addWidget(errorLabel_);
         layout->addLayout(buttonLayout);
         layout->addLayout(spinnerLayout);
@@ -427,7 +528,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 resetErrorLabel();
         });
 
-        auto closeShortcut = new QShortcut(QKeySequence(tr("ESC")), this);
+        auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &RoomSettings::close);
         connect(okBtn, &QPushButton::clicked, this, &RoomSettings::close);
 }
@@ -474,10 +575,10 @@ void
 RoomSettings::retrieveRoomInfo()
 {
         try {
-                usesEncryption_ = cache::client()->isRoomEncrypted(room_id_.toStdString());
-                info_           = cache::client()->singleRoomInfo(room_id_.toStdString());
-                setAvatar(QImage::fromData(cache::client()->image(info_.avatar_url)));
-        } catch (const lmdb::error &e) {
+                usesEncryption_ = cache::isRoomEncrypted(room_id_.toStdString());
+                info_           = cache::singleRoomInfo(room_id_.toStdString());
+                setAvatar();
+        } catch (const lmdb::error &) {
                 nhlog::db()->warn("failed to retrieve room info from cache: {}",
                                   room_id_.toStdString());
         }
@@ -518,8 +619,7 @@ bool
 RoomSettings::canChangeJoinRules(const std::string &room_id, const std::string &user_id) const
 {
         try {
-                return cache::client()->hasEnoughPowerLevel(
-                  {EventType::RoomJoinRules}, room_id, user_id);
+                return cache::hasEnoughPowerLevel({EventType::RoomJoinRules}, room_id, user_id);
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
         }
@@ -531,7 +631,7 @@ bool
 RoomSettings::canChangeNameAndTopic(const std::string &room_id, const std::string &user_id) const
 {
         try {
-                return cache::client()->hasEnoughPowerLevel(
+                return cache::hasEnoughPowerLevel(
                   {EventType::RoomName, EventType::RoomTopic}, room_id, user_id);
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
@@ -544,8 +644,7 @@ bool
 RoomSettings::canChangeAvatar(const std::string &room_id, const std::string &user_id) const
 {
         try {
-                return cache::client()->hasEnoughPowerLevel(
-                  {EventType::RoomAvatar}, room_id, user_id);
+                return cache::hasEnoughPowerLevel({EventType::RoomAvatar}, room_id, user_id);
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn("lmdb error: {}", e.what());
         }
@@ -622,14 +721,12 @@ RoomSettings::displayErrorMessage(const QString &msg)
 }
 
 void
-RoomSettings::setAvatar(const QImage &img)
+RoomSettings::setAvatar()
 {
         stopLoadingSpinner();
 
-        avatarImg_ = img;
-
         if (avatar_)
-                avatar_->setImage(img);
+                avatar_->setImage(QString::fromStdString(info_.avatar_url));
 }
 
 void
@@ -644,8 +741,10 @@ RoomSettings::resetErrorLabel()
 void
 RoomSettings::updateAvatar()
 {
-        const auto fileName =
-          QFileDialog::getOpenFileName(this, tr("Select an avatar"), "", tr("All Files (*)"));
+        const QString picturesFolder =
+          QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+        const QString fileName = QFileDialog::getOpenFileName(
+          this, tr("Select an avatar"), picturesFolder, tr("All Files (*)"));
 
         if (fileName.isEmpty())
                 return;
@@ -657,12 +756,12 @@ RoomSettings::updateAvatar()
 
         QFile file{fileName, this};
         if (format != "image") {
-                displayErrorMessage(tr("The selected media is not an image"));
+                displayErrorMessage(tr("The selected file is not an image"));
                 return;
         }
 
         if (!file.open(QIODevice::ReadOnly)) {
-                displayErrorMessage(tr("Error while reading media: %1").arg(file.errorString()));
+                displayErrorMessage(tr("Error while reading file: %1").arg(file.errorString()));
                 return;
         }
 
@@ -722,7 +821,7 @@ RoomSettings::updateAvatar()
                                     return;
                             }
 
-                            emit proxy->avatarChanged(QImage::fromData(content));
+                            emit proxy->avatarChanged();
                     });
           });
 }

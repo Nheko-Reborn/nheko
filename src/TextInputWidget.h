@@ -18,23 +18,18 @@
 #pragma once
 
 #include <deque>
-#include <iterator>
-#include <map>
+#include <optional>
 
-#include <QApplication>
-#include <QDebug>
+#include <QCoreApplication>
 #include <QHBoxLayout>
 #include <QPaintEvent>
 #include <QTextEdit>
 #include <QWidget>
 
-#include "SuggestionsPopup.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
-
-namespace dialogs {
-class PreviewUploadOverlay;
-}
+#include "popups/ReplyPopup.h"
+#include "popups/SuggestionsPopup.h"
 
 struct SearchResult;
 
@@ -54,28 +49,37 @@ public:
         QSize minimumSizeHint() const override;
 
         void submit();
+        void showReplyPopup(const RelatedInfo &related_);
+        void closeReply()
+        {
+                replyPopup_.hide();
+                related = {};
+        }
+
+        // Used for replies
+        std::optional<RelatedInfo> related;
 
 signals:
         void heightChanged(int height);
         void startedTyping();
         void stoppedTyping();
         void startedUpload();
-        void message(QString);
+        void message(QString, const std::optional<RelatedInfo> &);
         void command(QString name, QString args);
-        void image(QSharedPointer<QIODevice> data, const QString &filename);
-        void audio(QSharedPointer<QIODevice> data, const QString &filename);
-        void video(QSharedPointer<QIODevice> data, const QString &filename);
-        void file(QSharedPointer<QIODevice> data, const QString &filename);
+        void media(QSharedPointer<QIODevice> data,
+                   QString mimeClass,
+                   const QString &filename,
+                   const std::optional<RelatedInfo> &related);
 
         //! Trigger the suggestion popup.
         void showSuggestions(const QString &query);
-        void resultsRetrieved(const QVector<SearchResult> &results);
+        void resultsRetrieved(const std::vector<SearchResult> &results);
         void selectNextSuggestion();
         void selectPreviousSuggestion();
         void selectHoveredSuggestion();
 
 public slots:
-        void showResults(const QVector<SearchResult> &results);
+        void showResults(const std::vector<SearchResult> &results);
 
 protected:
         void keyPressEvent(QKeyEvent *event) override;
@@ -83,7 +87,7 @@ protected:
         void insertFromMimeData(const QMimeData *source) override;
         void focusOutEvent(QFocusEvent *event) override
         {
-                popup_.hide();
+                suggestionsPopup_.hide();
                 QTextEdit::focusOutEvent(event);
         }
 
@@ -92,7 +96,8 @@ private:
         size_t history_index_;
         QTimer *typingTimer_;
 
-        SuggestionsPopup popup_;
+        SuggestionsPopup suggestionsPopup_;
+        ReplyPopup replyPopup_;
 
         enum class AnchorType
         {
@@ -104,7 +109,7 @@ private:
 
         int anchorWidth(AnchorType anchor) { return static_cast<int>(anchor); }
 
-        void closeSuggestions() { popup_.hide(); }
+        void closeSuggestions() { suggestionsPopup_.hide(); }
         void resetAnchor() { atTriggerPosition_ = -1; }
         bool isAnchorValid() { return atTriggerPosition_ != -1; }
         bool hasAnchor(int pos, AnchorType anchor)
@@ -137,7 +142,7 @@ class TextInputWidget : public QWidget
         Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
 
 public:
-        TextInputWidget(QWidget *parent = 0);
+        TextInputWidget(QWidget *parent = nullptr);
 
         void stopTyping();
 
@@ -158,22 +163,27 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void addReply(const QString &username, const QString &msg);
+        void addReply(const RelatedInfo &related);
+        void closeReplyPopup() { input_->closeReply(); }
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
 
 signals:
-        void sendTextMessage(QString msg);
-        void sendEmoteMessage(QString msg);
+        void sendTextMessage(const QString &msg, const std::optional<RelatedInfo> &related);
+        void sendEmoteMessage(QString msg, const std::optional<RelatedInfo> &related);
         void heightChanged(int height);
 
-        void uploadImage(const QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadFile(const QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadAudio(const QSharedPointer<QIODevice> data, const QString &filename);
-        void uploadVideo(const QSharedPointer<QIODevice> data, const QString &filename);
+        void uploadMedia(const QSharedPointer<QIODevice> data,
+                         QString mimeClass,
+                         const QString &filename,
+                         const std::optional<RelatedInfo> &related);
 
         void sendJoinRoomRequest(const QString &room);
+        void sendInviteRoomRequest(const QString &userid, const QString &reason);
+        void sendKickRoomRequest(const QString &userid, const QString &reason);
+        void sendBanRoomRequest(const QString &userid, const QString &reason);
+        void sendUnbanRoomRequest(const QString &userid, const QString &reason);
 
         void startedTyping();
         void stoppedTyping();

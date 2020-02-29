@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/icons">
+        <file>icons/ui/at-solid.svg</file>
         <file>icons/ui/volume-off-indicator.png</file>
         <file>icons/ui/volume-off-indicator@2x.png</file>
         <file>icons/ui/black-bubble-speech.png</file>
@@ -62,6 +63,8 @@
 
         <file>icons/ui/edit.png</file>
         <file>icons/ui/edit@2x.png</file>
+    
+        <file>icons/ui/mail-reply.png</file>
 
         <file>icons/emoji-categories/people.png</file>
         <file>icons/emoji-categories/people@2x.png</file>
@@ -82,6 +85,7 @@
     </qresource>
     <qresource prefix="/logos">
         <file>nheko.png</file>
+        <file>nheko.svg</file>
 
         <file>splash.png</file>
         <file>splash@2x.png</file>
@@ -99,16 +103,27 @@
         <file>nheko-32.png</file>
         <file>nheko-16.png</file>
     </qresource>
-    <qresource prefix="/fonts">
-        <file>fonts/OpenSans/OpenSans-Regular.ttf</file>
-        <file>fonts/OpenSans/OpenSans-Italic.ttf</file>
-        <file>fonts/OpenSans/OpenSans-Bold.ttf</file>
-        <file>fonts/OpenSans/OpenSans-Semibold.ttf</file>
-        <file>fonts/EmojiOne/emojione-android.ttf</file>
-    </qresource>
     <qresource prefix="/styles">
         <file>styles/system.qss</file>
         <file>styles/nheko.qss</file>
         <file>styles/nheko-dark.qss</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>qml/TimelineView.qml</file>
+        <file>qml/Avatar.qml</file>
+        <file>qml/ImageButton.qml</file>
+        <file>qml/MatrixText.qml</file>
+        <file>qml/StatusIndicator.qml</file>
+        <file>qml/EncryptionIndicator.qml</file>
+        <file>qml/TimelineRow.qml</file>
+        <file>qml/delegates/MessageDelegate.qml</file>
+        <file>qml/delegates/TextMessage.qml</file>
+        <file>qml/delegates/NoticeMessage.qml</file>
+        <file>qml/delegates/ImageMessage.qml</file>
+        <file>qml/delegates/PlayableMediaMessage.qml</file>
+        <file>qml/delegates/FileMessage.qml</file>
+        <file>qml/delegates/Pill.qml</file>
+        <file>qml/delegates/Placeholder.qml</file>
+        <file>qml/delegates/Reply.qml</file>
     </qresource>
 </RCC>

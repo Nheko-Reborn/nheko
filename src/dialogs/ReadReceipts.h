@@ -22,7 +22,7 @@ public:
                     const QString &room_id);
 
 protected:
-        void paintEvent(QPaintEvent *);
+        void paintEvent(QPaintEvent *) override;
 
 private:
         QString dateFormat(const QDateTime &then) const;

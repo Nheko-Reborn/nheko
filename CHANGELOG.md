@@ -2,6 +2,25 @@
 
 ## [Unreleased]
 
+### [0.7.0] -- Unreleased
+
+0.7.0 *requires* mtxclient 0.3.0.  Make sure you compile against 0.3.0
+if you do not use the mtxclient bundled with nheko.
+
+#### Features
+- Make nheko session import / export format match riot.  Fixes #48 (WIP)
+- Implement proper replies (WIP)
+- Add .well-known support for auto-completing homeserver information
+- Add mentions viewer so you can see all the messages you have been mentioned in (WIP)
+- Add emoji font selection preference
+
+#### Improvements
+- Add dedicated reply button to Timeline items.  Add button for other options so
+    that right click isn't always required.
+- Fix various things with regards to emoji rendering and the emoji picker (WIP)
+- Lots and lots and lots of localization updates.
+- Additional tweaks to the system theme
+
 ## [0.6.4] - 2019-05-22
 
 *Most* of the below fixes are due to updates in mtxclient.  Make sure you compile against 0.2.1

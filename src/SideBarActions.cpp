@@ -1,15 +1,15 @@
-#include <QDebug>
 #include <QIcon>
+#include <QPainter>
+#include <QResizeEvent>
 
 #include <mtx/requests.hpp>
 
 #include "Config.h"
 #include "MainWindow.h"
 #include "SideBarActions.h"
-#include "Utils.h"
+#include "Splitter.h"
 #include "ui/FlatButton.h"
 #include "ui/Menu.h"
-#include "ui/OverlayModal.h"
 
 SideBarActions::SideBarActions(QWidget *parent)
   : QWidget{parent}
@@ -93,7 +93,7 @@ SideBarActions::resizeEvent(QResizeEvent *event)
 {
         Q_UNUSED(event);
 
-        const auto sidebarSizes = utils::calculateSidebarSizes(QFont{});
+        const auto sidebarSizes = splitter::calculateSidebarSizes(QFont{});
 
         if (width() <= sidebarSizes.small) {
                 roomDirectory_->hide();

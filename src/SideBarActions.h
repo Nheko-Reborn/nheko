@@ -2,7 +2,6 @@
 
 #include <QAction>
 #include <QHBoxLayout>
-#include <QResizeEvent>
 #include <QWidget>
 
 namespace mtx {
@@ -13,6 +12,7 @@ struct CreateRoom;
 
 class Menu;
 class FlatButton;
+class QResizeEvent;
 
 class SideBarActions : public QWidget
 {

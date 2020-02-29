@@ -18,10 +18,12 @@
 #include <QApplication>
 #include <QImageReader>
 #include <QSettings>
+#include <QShortcut>
 #include <QtConcurrent>
 
 #include "AvatarProvider.h"
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -33,7 +35,6 @@
 #include "Splitter.h"
 #include "TextInputWidget.h"
 #include "TopRoomBar.h"
-#include "TypingDisplay.h"
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -43,6 +44,7 @@
 #include "notifications/Manager.h"
 
 #include "dialogs/ReadReceipts.h"
+#include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
 
 // TODO: Needs to be updated with an actual secret.
@@ -53,6 +55,9 @@ constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
 constexpr int RETRY_TIMEOUT               = 5'000;
 constexpr size_t MAX_ONETIME_KEYS         = 50;
 
+Q_DECLARE_METATYPE(std::optional<mtx::crypto::EncryptedFile>)
+Q_DECLARE_METATYPE(std::optional<RelatedInfo>)
+
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
   , isConnected_(true)
@@ -60,6 +65,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , notificationsManager(this)
 {
         setObjectName("chatPage");
+
+        qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
+        qRegisterMetaType<std::optional<RelatedInfo>>();
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -76,7 +84,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         // SideBar
         sideBar_ = new QFrame(this);
         sideBar_->setObjectName("sideBar");
-        sideBar_->setMinimumWidth(utils::calculateSidebarSizes(QFont{}).normal);
+        sideBar_->setMinimumWidth(::splitter::calculateSidebarSizes(QFont{}).normal);
         sideBarLayout_ = new QVBoxLayout(sideBar_);
         sideBarLayout_->setSpacing(0);
         sideBarLayout_->setMargin(0);
@@ -88,8 +96,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::joinRoom, this, &ChatPage::joinRoom);
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
-        user_info_widget_ = new UserInfoWidget(sideBar_);
-        room_list_        = new RoomList(sideBar_);
+        user_info_widget_    = new UserInfoWidget(sideBar_);
+        user_mentions_popup_ = new popups::UserMentions();
+        room_list_           = new RoomList(sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);
@@ -108,15 +117,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->setMargin(0);
 
         top_bar_      = new TopRoomBar(this);
-        view_manager_ = new TimelineViewManager(this);
+        view_manager_ = new TimelineViewManager(userSettings_, this);
 
         contentLayout_->addWidget(top_bar_);
-        contentLayout_->addWidget(view_manager_);
-
-        connect(this,
-                &ChatPage::removeTimelineEvent,
-                view_manager_,
-                &TimelineViewManager::removeTimelineEvent);
+        contentLayout_->addWidget(view_manager_->getWidget());
 
         // Splitter
         splitter->addWidget(sideBar_);
@@ -125,11 +129,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         text_input_ = new TextInputWidget(this);
         contentLayout_->addWidget(text_input_);
-
-        typingDisplay_ = new TypingDisplay(content_);
-        typingDisplay_->hide();
-        connect(
-          text_input_, &TextInputWidget::heightChanged, typingDisplay_, &TypingDisplay::setOffset);
 
         typingRefresher_ = new QTimer(this);
         typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
@@ -148,6 +147,41 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 // Drop all pending connections.
                 http::client()->shutdown();
                 trySync();
+        });
+
+        connect(
+          new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
+                  if (isVisible())
+                          room_list_->nextRoom();
+          });
+        connect(
+          new QShortcut(QKeySequence("Ctrl+Up"), this), &QShortcut::activated, this, [this]() {
+                  if (isVisible())
+                          room_list_->previousRoom();
+          });
+
+        connect(top_bar_, &TopRoomBar::mentionsClicked, this, [this](const QPoint &mentionsPos) {
+                if (user_mentions_popup_->isVisible()) {
+                        user_mentions_popup_->hide();
+                } else {
+                        showNotificationsDialog(mentionsPos);
+                        http::client()->notifications(
+                          1000,
+                          "",
+                          "highlight",
+                          [this, mentionsPos](const mtx::responses::Notifications &res,
+                                              mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn(
+                                            "failed to retrieve notifications: {} ({})",
+                                            err->matrix_error.error,
+                                            static_cast<int>(err->status_code));
+                                          return;
+                                  }
+
+                                  emit highlightedNotifsRetrieved(std::move(res), mentionsPos);
+                          });
+                }
         });
 
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
@@ -186,30 +220,16 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                                mtx::http::RequestErr err) {
                                           if (err) {
                                                   emit showNotification(
-                                                    QString("Failed to invite user: %1").arg(user));
+                                                    tr("Failed to invite user: %1").arg(user));
                                                   return;
                                           }
 
-                                          emit showNotification(
-                                            QString("Invited user: %1").arg(user));
+                                          emit showNotification(tr("Invited user: %1").arg(user));
                                   });
                         });
                 }
         });
 
-        connect(room_list_, &RoomList::roomChanged, this, [this](const QString &roomid) {
-                QStringList users;
-
-                if (!userSettings_->isTypingNotificationsEnabled()) {
-                        typingDisplay_->setUsers(users);
-                        return;
-                }
-
-                if (typingUsers_.find(roomid) != typingUsers_.end())
-                        users = typingUsers_[roomid];
-
-                typingDisplay_->setUsers(users);
-        });
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
         connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
@@ -260,22 +280,31 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 SLOT(showUnreadMessageNotification(int)));
 
         connect(text_input_,
-                SIGNAL(sendTextMessage(const QString &)),
+                &TextInputWidget::sendTextMessage,
                 view_manager_,
-                SLOT(queueTextMessage(const QString &)));
+                &TimelineViewManager::queueTextMessage);
 
         connect(text_input_,
-                SIGNAL(sendEmoteMessage(const QString &)),
+                &TextInputWidget::sendEmoteMessage,
                 view_manager_,
-                SLOT(queueEmoteMessage(const QString &)));
+                &TimelineViewManager::queueEmoteMessage);
 
         connect(text_input_, &TextInputWidget::sendJoinRoomRequest, this, &ChatPage::joinRoom);
 
+        // invites and bans via quick command
+        connect(text_input_, &TextInputWidget::sendInviteRoomRequest, this, &ChatPage::inviteUser);
+        connect(text_input_, &TextInputWidget::sendKickRoomRequest, this, &ChatPage::kickUser);
+        connect(text_input_, &TextInputWidget::sendBanRoomRequest, this, &ChatPage::banUser);
+        connect(text_input_, &TextInputWidget::sendUnbanRoomRequest, this, &ChatPage::unbanUser);
+
         connect(
           text_input_,
-          &TextInputWidget::uploadImage,
+          &TextInputWidget::uploadMedia,
           this,
-          [this](QSharedPointer<QIODevice> dev, const QString &fn) {
+          [this](QSharedPointer<QIODevice> dev,
+                 QString mimeClass,
+                 const QString &fn,
+                 const std::optional<RelatedInfo> &related) {
                   QMimeDatabase db;
                   QMimeType mime = db.mimeTypeForData(dev.data());
 
@@ -285,205 +314,89 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                           return;
                   }
 
-                  auto bin        = dev->peek(dev->size());
-                  auto payload    = std::string(bin.data(), bin.size());
-                  auto dimensions = QImageReader(dev.data()).size();
+                  auto bin     = dev->peek(dev->size());
+                  auto payload = std::string(bin.data(), bin.size());
+                  std::optional<mtx::crypto::EncryptedFile> encryptedFile;
+                  if (cache::isRoomEncrypted(current_room_.toStdString())) {
+                          mtx::crypto::BinaryBuf buf;
+                          std::tie(buf, encryptedFile) = mtx::crypto::encrypt_file(payload);
+                          payload                      = mtx::crypto::to_string(buf);
+                  }
+
+                  QSize dimensions;
+                  if (mimeClass == "image")
+                          dimensions = QImageReader(dev.data()).size();
 
                   http::client()->upload(
                     payload,
-                    mime.name().toStdString(),
+                    encryptedFile ? "application/octet-stream" : mime.name().toStdString(),
                     QFileInfo(fn).fileName().toStdString(),
                     [this,
                      room_id  = current_room_,
                      filename = fn,
-                     mime     = mime.name(),
-                     size     = payload.size(),
-                     dimensions](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
+                     encryptedFile,
+                     mimeClass,
+                     mime = mime.name(),
+                     size = payload.size(),
+                     dimensions,
+                     related](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
                             if (err) {
                                     emit uploadFailed(
-                                      tr("Failed to upload image. Please try again."));
-                                    nhlog::net()->warn("failed to upload image: {} {} ({})",
+                                      tr("Failed to upload media. Please try again."));
+                                    nhlog::net()->warn("failed to upload media: {} {} ({})",
                                                        err->matrix_error.error,
                                                        to_string(err->matrix_error.errcode),
                                                        static_cast<int>(err->status_code));
                                     return;
                             }
 
-                            emit imageUploaded(room_id,
+                            emit mediaUploaded(room_id,
                                                filename,
+                                               encryptedFile,
                                                QString::fromStdString(res.content_uri),
+                                               mimeClass,
                                                mime,
                                                size,
-                                               dimensions);
+                                               dimensions,
+                                               related);
                     });
           });
-
-        connect(text_input_,
-                &TextInputWidget::uploadFile,
-                this,
-                [this](QSharedPointer<QIODevice> dev, const QString &fn) {
-                        QMimeDatabase db;
-                        QMimeType mime = db.mimeTypeForData(dev.data());
-
-                        if (!dev->open(QIODevice::ReadOnly)) {
-                                emit uploadFailed(
-                                  QString("Error while reading media: %1").arg(dev->errorString()));
-                                return;
-                        }
-
-                        auto bin     = dev->readAll();
-                        auto payload = std::string(bin.data(), bin.size());
-
-                        http::client()->upload(
-                          payload,
-                          mime.name().toStdString(),
-                          QFileInfo(fn).fileName().toStdString(),
-                          [this,
-                           room_id  = current_room_,
-                           filename = fn,
-                           mime     = mime.name(),
-                           size     = payload.size()](const mtx::responses::ContentURI &res,
-                                                  mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit uploadFailed(
-                                            tr("Failed to upload file. Please try again."));
-                                          nhlog::net()->warn("failed to upload file: {} ({})",
-                                                             err->matrix_error.error,
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
-
-                                  emit fileUploaded(room_id,
-                                                    filename,
-                                                    QString::fromStdString(res.content_uri),
-                                                    mime,
-                                                    size);
-                          });
-                });
-
-        connect(text_input_,
-                &TextInputWidget::uploadAudio,
-                this,
-                [this](QSharedPointer<QIODevice> dev, const QString &fn) {
-                        QMimeDatabase db;
-                        QMimeType mime = db.mimeTypeForData(dev.data());
-
-                        if (!dev->open(QIODevice::ReadOnly)) {
-                                emit uploadFailed(
-                                  QString("Error while reading media: %1").arg(dev->errorString()));
-                                return;
-                        }
-
-                        auto bin     = dev->readAll();
-                        auto payload = std::string(bin.data(), bin.size());
-
-                        http::client()->upload(
-                          payload,
-                          mime.name().toStdString(),
-                          QFileInfo(fn).fileName().toStdString(),
-                          [this,
-                           room_id  = current_room_,
-                           filename = fn,
-                           mime     = mime.name(),
-                           size     = payload.size()](const mtx::responses::ContentURI &res,
-                                                  mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit uploadFailed(
-                                            tr("Failed to upload audio. Please try again."));
-                                          nhlog::net()->warn("failed to upload audio: {} ({})",
-                                                             err->matrix_error.error,
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
-
-                                  emit audioUploaded(room_id,
-                                                     filename,
-                                                     QString::fromStdString(res.content_uri),
-                                                     mime,
-                                                     size);
-                          });
-                });
-        connect(text_input_,
-                &TextInputWidget::uploadVideo,
-                this,
-                [this](QSharedPointer<QIODevice> dev, const QString &fn) {
-                        QMimeDatabase db;
-                        QMimeType mime = db.mimeTypeForData(dev.data());
-
-                        if (!dev->open(QIODevice::ReadOnly)) {
-                                emit uploadFailed(
-                                  QString("Error while reading media: %1").arg(dev->errorString()));
-                                return;
-                        }
-
-                        auto bin     = dev->readAll();
-                        auto payload = std::string(bin.data(), bin.size());
-
-                        http::client()->upload(
-                          payload,
-                          mime.name().toStdString(),
-                          QFileInfo(fn).fileName().toStdString(),
-                          [this,
-                           room_id  = current_room_,
-                           filename = fn,
-                           mime     = mime.name(),
-                           size     = payload.size()](const mtx::responses::ContentURI &res,
-                                                  mtx::http::RequestErr err) {
-                                  if (err) {
-                                          emit uploadFailed(
-                                            tr("Failed to upload video. Please try again."));
-                                          nhlog::net()->warn("failed to upload video: {} ({})",
-                                                             err->matrix_error.error,
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
-
-                                  emit videoUploaded(room_id,
-                                                     filename,
-                                                     QString::fromStdString(res.content_uri),
-                                                     mime,
-                                                     size);
-                          });
-                });
 
         connect(this, &ChatPage::uploadFailed, this, [this](const QString &msg) {
                 text_input_->hideUploadSpinner();
                 emit showNotification(msg);
         });
-        connect(this,
-                &ChatPage::imageUploaded,
-                this,
-                [this](QString roomid,
-                       QString filename,
-                       QString url,
-                       QString mime,
-                       qint64 dsize,
-                       QSize dimensions) {
-                        text_input_->hideUploadSpinner();
-                        view_manager_->queueImageMessage(
-                          roomid, filename, url, mime, dsize, dimensions);
-                });
-        connect(this,
-                &ChatPage::fileUploaded,
-                this,
-                [this](QString roomid, QString filename, QString url, QString mime, qint64 dsize) {
-                        text_input_->hideUploadSpinner();
-                        view_manager_->queueFileMessage(roomid, filename, url, mime, dsize);
-                });
-        connect(this,
-                &ChatPage::audioUploaded,
-                this,
-                [this](QString roomid, QString filename, QString url, QString mime, qint64 dsize) {
-                        text_input_->hideUploadSpinner();
-                        view_manager_->queueAudioMessage(roomid, filename, url, mime, dsize);
-                });
-        connect(this,
-                &ChatPage::videoUploaded,
-                this,
-                [this](QString roomid, QString filename, QString url, QString mime, qint64 dsize) {
-                        text_input_->hideUploadSpinner();
-                        view_manager_->queueVideoMessage(roomid, filename, url, mime, dsize);
-                });
+        connect(
+          this,
+          &ChatPage::mediaUploaded,
+          this,
+          [this](QString roomid,
+                 QString filename,
+                 std::optional<mtx::crypto::EncryptedFile> encryptedFile,
+                 QString url,
+                 QString mimeClass,
+                 QString mime,
+                 qint64 dsize,
+                 QSize dimensions,
+                 const std::optional<RelatedInfo> &related) {
+                  text_input_->hideUploadSpinner();
+
+                  if (encryptedFile)
+                          encryptedFile->url = url.toStdString();
+
+                  if (mimeClass == "image")
+                          view_manager_->queueImageMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, dimensions, related);
+                  else if (mimeClass == "audio")
+                          view_manager_->queueAudioMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, related);
+                  else if (mimeClass == "video")
+                          view_manager_->queueVideoMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, related);
+                  else
+                          view_manager_->queueFileMessage(
+                            roomid, filename, encryptedFile, url, mime, dsize, related);
+          });
 
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
 
@@ -492,6 +405,16 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
+        connect(this,
+                &ChatPage::highlightedNotifsRetrieved,
+                this,
+                [](const mtx::responses::Notifications &notif) {
+                        try {
+                                cache::saveTimelineMentions(notif);
+                        } catch (const lmdb::error &e) {
+                                nhlog::db()->error("failed to save mentions: {}", e.what());
+                        }
+                });
 
         connect(communitiesList_,
                 &CommunitiesList::communityChanged,
@@ -525,26 +448,28 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this,
                 &ChatPage::initializeViews,
                 view_manager_,
-                [this](const mtx::responses::Rooms &rooms) { view_manager_->initialize(rooms); });
+                [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); });
         connect(this,
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
                 &TimelineViewManager::initWithMessages);
+        connect(this,
+                &ChatPage::initializeMentions,
+                user_mentions_popup_,
+                &popups::UserMentions::initializeMentions);
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 try {
-                        room_list_->cleanupInvites(cache::client()->invites());
+                        room_list_->cleanupInvites(cache::invites());
                 } catch (const lmdb::error &e) {
                         nhlog::db()->error("failed to retrieve invites: {}", e.what());
                 }
 
-                view_manager_->initialize(rooms);
+                view_manager_->sync(rooms);
                 removeLeftRooms(rooms.leave);
 
                 bool hasNotifications = false;
                 for (const auto &room : rooms.join) {
                         auto room_id = QString::fromStdString(room.first);
-
-                        updateTypingUsers(room_id, room.second.ephemeral.typing);
                         updateRoomNotificationCount(
                           room_id,
                           room.second.unread_notifications.notification_count,
@@ -557,6 +482,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 if (hasNotifications && userSettings_->hasDesktopNotifications())
                         http::client()->notifications(
                           5,
+                          "",
+                          "",
                           [this](const mtx::responses::Notifications &res,
                                  mtx::http::RequestErr err) {
                                   if (err) {
@@ -594,6 +521,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
         connect(this, &ChatPage::messageReply, text_input_, &TextInputWidget::addReply);
+        connect(this, &ChatPage::messageReply, this, [this](const RelatedInfo &related) {
+                view_manager_->updateReplyingEvent(QString::fromStdString(related.related_event));
+        });
+        connect(view_manager_,
+                &TimelineViewManager::replyClosed,
+                text_input_,
+                &TextInputWidget::closeReplyPopup);
 
         instance_ = this;
 }
@@ -648,7 +582,7 @@ ChatPage::deleteConfigs()
         settings.remove("");
         settings.endGroup();
 
-        cache::client()->deleteData();
+        cache::deleteData();
         http::client()->clear();
 }
 
@@ -683,18 +617,18 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 connect(
                   cache::client(), &Cache::roomReadStatus, room_list_, &RoomList::updateReadStatus);
 
-                const bool isInitialized = cache::client()->isInitialized();
-                const bool isValid       = cache::client()->isFormatValid();
+                const bool isInitialized = cache::isInitialized();
+                const bool isValid       = cache::isFormatValid();
 
                 if (!isInitialized) {
-                        cache::client()->setCurrentFormat();
+                        cache::setCurrentFormat();
                 } else if (isInitialized && !isValid) {
                         // TODO: Deleting session data but keep using the
                         //	 same device doesn't work.
-                        cache::client()->deleteData();
+                        cache::deleteData();
 
                         cache::init(userid);
-                        cache::client()->setCurrentFormat();
+                        cache::setCurrentFormat();
                 } else if (isInitialized) {
                         loadStateFromCache();
                         return;
@@ -702,7 +636,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("failure during boot: {}", e.what());
-                cache::client()->deleteData();
+                cache::deleteData();
                 nhlog::net()->info("falling back to initial sync");
         }
 
@@ -711,7 +645,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 // There isn't a saved olm account to restore.
                 nhlog::crypto()->info("creating new olm account");
                 olm::client()->create_new_account();
-                cache::client()->saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
+                cache::saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save olm account {}", e.what());
                 emit dropToLoginPageCb(QString::fromStdString(e.what()));
@@ -727,12 +661,12 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 }
 
 void
-ChatPage::updateTopBarAvatar(const QString &roomid, const QPixmap &img)
+ChatPage::updateTopBarAvatar(const QString &roomid, const QString &img)
 {
         if (current_room_ != roomid)
                 return;
 
-        top_bar_->updateRoomAvatar(img.toImage());
+        top_bar_->updateRoomAvatar(img);
 }
 
 void
@@ -744,7 +678,7 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
         }
 
         try {
-                auto room_info = cache::client()->getRoomInfo({room_id.toStdString()});
+                auto room_info = cache::getRoomInfo({room_id.toStdString()});
 
                 if (room_info.find(room_id) == room_info.end())
                         return;
@@ -755,12 +689,12 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                 top_bar_->updateRoomName(name);
                 top_bar_->updateRoomTopic(QString::fromStdString(room_info[room_id].topic));
 
-                auto img = cache::client()->getRoomAvatar(room_id);
+                auto img = cache::getRoomAvatar(room_id);
 
                 if (img.isNull())
                         top_bar_->updateRoomAvatarFromName(name);
                 else
-                        top_bar_->updateRoomAvatar(img);
+                        top_bar_->updateRoomAvatar(avatar_url);
 
         } catch (const lmdb::error &e) {
                 nhlog::ui()->error("failed to change top bar room info: {}", e.what());
@@ -792,17 +726,17 @@ ChatPage::loadStateFromCache()
 
         QtConcurrent::run([this]() {
                 try {
-                        cache::client()->restoreSessions();
-                        olm::client()->load(cache::client()->restoreOlmAccount(),
-                                            STORAGE_SECRET_KEY);
+                        cache::restoreSessions();
+                        olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
-                        cache::client()->populateMembers();
+                        cache::populateMembers();
 
-                        emit initializeEmptyViews(cache::client()->roomMessages());
-                        emit initializeRoomList(cache::client()->roomInfo());
-                        emit syncTags(cache::client()->roomInfo().toStdMap());
+                        emit initializeEmptyViews(cache::roomMessages());
+                        emit initializeRoomList(cache::roomInfo());
+                        emit initializeMentions(cache::getTimelineMentions());
+                        emit syncTags(cache::roomInfo().toStdMap());
 
-                        cache::client()->calculateRoomReadStatus();
+                        cache::calculateRoomReadStatus();
 
                 } catch (const mtx::crypto::olm_exception &e) {
                         nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
@@ -845,46 +779,14 @@ void
 ChatPage::removeRoom(const QString &room_id)
 {
         try {
-                cache::client()->removeRoom(room_id);
-                cache::client()->removeInvite(room_id.toStdString());
+                cache::removeRoom(room_id);
+                cache::removeInvite(room_id.toStdString());
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("failure while removing room: {}", e.what());
                 // TODO: Notify the user.
         }
 
         room_list_->removeRoom(room_id, room_id == current_room_);
-}
-
-void
-ChatPage::updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids)
-{
-        if (!userSettings_->isTypingNotificationsEnabled())
-                return;
-
-        typingUsers_[roomid] = generateTypingUsers(roomid, user_ids);
-
-        if (current_room_ == roomid)
-                typingDisplay_->setUsers(typingUsers_[roomid]);
-}
-
-QStringList
-ChatPage::generateTypingUsers(const QString &room_id, const std::vector<std::string> &typing_users)
-{
-        QStringList users;
-        auto local_user = utils::localUser();
-
-        for (const auto &uid : typing_users) {
-                const auto remote_user = QString::fromStdString(uid);
-
-                if (remote_user == local_user)
-                        continue;
-
-                users.append(Cache::displayName(room_id, remote_user));
-        }
-
-        users.sort();
-
-        return users;
 }
 
 void
@@ -925,16 +827,16 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 
                 try {
                         if (item.read) {
-                                cache::client()->removeReadNotification(event_id);
+                                cache::removeReadNotification(event_id);
                                 continue;
                         }
 
-                        if (!cache::client()->isNotificationSent(event_id)) {
+                        if (!cache::isNotificationSent(event_id)) {
                                 const auto room_id = QString::fromStdString(item.room_id);
                                 const auto user_id = utils::event_sender(item.event);
 
                                 // We should only sent one notification per event.
-                                cache::client()->markSentNotification(event_id);
+                                cache::markSentNotification(event_id);
 
                                 // Don't send a notification when the current room is opened.
                                 if (isRoomActive(room_id))
@@ -943,16 +845,27 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
                                 notificationsManager.postNotification(
                                   room_id,
                                   QString::fromStdString(event_id),
-                                  QString::fromStdString(
-                                    cache::client()->singleRoomInfo(item.room_id).name),
-                                  Cache::displayName(room_id, user_id),
+                                  QString::fromStdString(cache::singleRoomInfo(item.room_id).name),
+                                  cache::displayName(room_id, user_id),
                                   utils::event_body(item.event),
-                                  cache::client()->getRoomAvatar(room_id));
+                                  cache::getRoomAvatar(room_id));
                         }
                 } catch (const lmdb::error &e) {
                         nhlog::db()->warn("error while sending desktop notification: {}", e.what());
                 }
         }
+}
+
+void
+ChatPage::showNotificationsDialog(const QPoint &widgetPos)
+{
+        auto notifDialog = user_mentions_popup_;
+
+        notifDialog->setGeometry(
+          widgetPos.x() - (width() / 10), widgetPos.y() + 25, width() / 5, height() / 2);
+
+        notifDialog->raise();
+        notifDialog->showPopup();
 }
 
 void
@@ -1022,7 +935,7 @@ ChatPage::trySync()
                 connectivityTimer_.start();
 
         try {
-                opts.since = cache::client()->nextBatchToken();
+                opts.since = cache::nextBatchToken();
         } catch (const lmdb::error &e) {
                 nhlog::db()->error("failed to retrieve next batch token: {}", e.what());
                 return;
@@ -1075,22 +988,22 @@ ChatPage::trySync()
 
                   // TODO: fine grained error handling
                   try {
-                          cache::client()->saveState(res);
+                          cache::saveState(res);
                           olm::handle_to_device_messages(res.to_device);
 
                           emit syncUI(res.rooms);
 
-                          auto updates = cache::client()->roomUpdates(res);
+                          auto updates = cache::roomUpdates(res);
 
                           emit syncTopBar(updates);
                           emit syncRoomlist(updates);
 
-                          emit syncTags(cache::client()->roomTagUpdates(res));
+                          emit syncTags(cache::roomTagUpdates(res));
 
-                          cache::client()->deleteOldData();
+                          cache::deleteOldData();
                   } catch (const lmdb::map_full_error &e) {
                           nhlog::db()->error("lmdb is full: {}", e.what());
-                          cache::client()->deleteOldData();
+                          cache::deleteOldData();
                   } catch (const lmdb::error &e) {
                           nhlog::db()->error("saving sync response: {}", e.what());
                   }
@@ -1109,19 +1022,18 @@ ChatPage::joinRoom(const QString &room)
           room_id, [this, room_id](const nlohmann::json &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
-                            QString("Failed to join room: %1")
+                            tr("Failed to join room: %1")
                               .arg(QString::fromStdString(err->matrix_error.error)));
                           return;
                   }
 
-                  emit showNotification("You joined the room");
+                  emit tr("You joined the room");
 
                   // We remove any invites with the same room_id.
                   try {
-                          cache::client()->removeInvite(room_id);
+                          cache::removeInvite(room_id);
                   } catch (const lmdb::error &e) {
-                          emit showNotification(
-                            QString("Failed to remove invite: %1").arg(e.what()));
+                          emit showNotification(tr("Failed to remove invite: %1").arg(e.what()));
                   }
           });
 }
@@ -1144,8 +1056,8 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
                           return;
                   }
 
-                  emit showNotification(QString("Room %1 created")
-                                          .arg(QString::fromStdString(res.room_id.to_string())));
+                  emit showNotification(
+                    tr("Room %1 created").arg(QString::fromStdString(res.room_id.to_string())));
           });
 }
 
@@ -1166,6 +1078,83 @@ ChatPage::leaveRoom(const QString &room_id)
 }
 
 void
+ChatPage::inviteUser(QString userid, QString reason)
+{
+        http::client()->invite_user(
+          current_room_.toStdString(),
+          userid.toStdString(),
+          [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                               mtx::http::RequestErr err) {
+                  if (err) {
+                          emit showNotification(
+                            tr("Failed to invite %1 to %2: %3")
+                              .arg(userid)
+                              .arg(room)
+                              .arg(QString::fromStdString(err->matrix_error.error)));
+                  } else
+                          emit showNotification(tr("Invited user: %1").arg(userid));
+          },
+          reason.trimmed().toStdString());
+}
+void
+ChatPage::kickUser(QString userid, QString reason)
+{
+        http::client()->kick_user(
+          current_room_.toStdString(),
+          userid.toStdString(),
+          [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                               mtx::http::RequestErr err) {
+                  if (err) {
+                          emit showNotification(
+                            tr("Failed to kick %1 to %2: %3")
+                              .arg(userid)
+                              .arg(room)
+                              .arg(QString::fromStdString(err->matrix_error.error)));
+                  } else
+                          emit showNotification(tr("Kicked user: %1").arg(userid));
+          },
+          reason.trimmed().toStdString());
+}
+void
+ChatPage::banUser(QString userid, QString reason)
+{
+        http::client()->ban_user(
+          current_room_.toStdString(),
+          userid.toStdString(),
+          [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                               mtx::http::RequestErr err) {
+                  if (err) {
+                          emit showNotification(
+                            tr("Failed to ban %1 in %2: %3")
+                              .arg(userid)
+                              .arg(room)
+                              .arg(QString::fromStdString(err->matrix_error.error)));
+                  } else
+                          emit showNotification(tr("Banned user: %1").arg(userid));
+          },
+          reason.trimmed().toStdString());
+}
+void
+ChatPage::unbanUser(QString userid, QString reason)
+{
+        http::client()->unban_user(
+          current_room_.toStdString(),
+          userid.toStdString(),
+          [this, userid, room = current_room_](const mtx::responses::Empty &,
+                                               mtx::http::RequestErr err) {
+                  if (err) {
+                          emit showNotification(
+                            tr("Failed to unban %1 in %2: %3")
+                              .arg(userid)
+                              .arg(room)
+                              .arg(QString::fromStdString(err->matrix_error.error)));
+                  } else
+                          emit showNotification(tr("Unbanned user: %1").arg(userid));
+          },
+          reason.trimmed().toStdString());
+}
+
+void
 ChatPage::sendTypingNotifications()
 {
         if (!userSettings_->isTypingNotificationsEnabled())
@@ -1183,6 +1172,8 @@ ChatPage::sendTypingNotifications()
 void
 ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err)
 {
+        // TODO: Initial Sync should include mentions as well...
+
         if (err) {
                 const auto error      = QString::fromStdString(err->matrix_error.error);
                 const auto msg        = tr("Please try to login again: %1").arg(error);
@@ -1214,15 +1205,16 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
         nhlog::net()->info("initial sync completed");
 
         try {
-                cache::client()->saveState(res);
+                cache::saveState(res);
 
                 olm::handle_to_device_messages(res.to_device);
 
                 emit initializeViews(std::move(res.rooms));
-                emit initializeRoomList(cache::client()->roomInfo());
+                emit initializeRoomList(cache::roomInfo());
+                emit initializeMentions(cache::getTimelineMentions());
 
-                cache::client()->calculateRoomReadStatus();
-                emit syncTags(cache::client()->roomInfo().toStdMap());
+                cache::calculateRoomReadStatus();
+                emit syncTags(cache::roomInfo().toStdMap());
         } catch (const lmdb::error &e) {
                 nhlog::db()->error("failed to save state after initial sync: {}", e.what());
                 startInitialSync();
@@ -1274,37 +1266,7 @@ ChatPage::getProfileInfo()
 
                   emit setUserDisplayName(QString::fromStdString(res.display_name));
 
-                  if (cache::client()) {
-                          auto data = cache::client()->image(res.avatar_url);
-                          if (!data.isNull()) {
-                                  emit setUserAvatar(QImage::fromData(data));
-                                  return;
-                          }
-                  }
-
-                  if (res.avatar_url.empty())
-                          return;
-
-                  http::client()->download(
-                    res.avatar_url,
-                    [this, res](const std::string &data,
-                                const std::string &,
-                                const std::string &,
-                                mtx::http::RequestErr err) {
-                            if (err) {
-                                    nhlog::net()->warn(
-                                      "failed to download user avatar: {} - {}",
-                                      mtx::errors::to_string(err->matrix_error.errcode),
-                                      err->matrix_error.error);
-                                    return;
-                            }
-
-                            if (cache::client())
-                                    cache::client()->saveImage(res.avatar_url, data);
-
-                            emit setUserAvatar(
-                              QImage::fromData(QByteArray(data.data(), data.size())));
-                    });
+                  emit setUserAvatar(QString::fromStdString(res.avatar_url));
           });
 
         http::client()->joined_groups(
@@ -1349,7 +1311,7 @@ ChatPage::timelineWidth()
 bool
 ChatPage::isSideBarExpanded()
 {
-        const auto sz = utils::calculateSidebarSizes(QFont{});
+        const auto sz = splitter::calculateSidebarSizes(QFont{});
         return sideBar_->size().width() > sz.normal;
 }
 

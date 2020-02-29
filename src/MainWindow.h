@@ -24,16 +24,17 @@
 #include <QStackedWidget>
 #include <QSystemTrayIcon>
 
-#include "LoginPage.h"
-#include "RegisterPage.h"
 #include "UserSettingsPage.h"
-#include "WelcomePage.h"
 #include "dialogs/UserProfile.h"
 #include "ui/OverlayModal.h"
 
 #include "jdenticoninterface.h"
 
 class ChatPage;
+class RegisterPage;
+class LoginPage;
+class WelcomePage;
+
 class LoadingIndicator;
 class OverlayModal;
 class SnackBar;
@@ -62,7 +63,7 @@ class MainWindow : public QMainWindow
         Q_OBJECT
 
 public:
-        explicit MainWindow(QWidget *parent = 0);
+        explicit MainWindow(QWidget *parent = nullptr);
 
         static MainWindow *instance() { return instance_; };
         void saveCurrentWindowSize();
@@ -97,32 +98,16 @@ private slots:
         void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
         //! Show the welcome page in the main window.
-        void showWelcomePage()
-        {
-                removeOverlayProgressBar();
-                pageStack_->addWidget(welcome_page_);
-                pageStack_->setCurrentWidget(welcome_page_);
-        }
+        void showWelcomePage();
 
         //! Show the login page in the main window.
-        void showLoginPage()
-        {
-                if (modal_)
-                        modal_->hide();
-
-                pageStack_->addWidget(login_page_);
-                pageStack_->setCurrentWidget(login_page_);
-        }
+        void showLoginPage();
 
         //! Show the register page in the main window.
-        void showRegisterPage()
-        {
-                pageStack_->addWidget(register_page_);
-                pageStack_->setCurrentWidget(register_page_);
-        }
+        void showRegisterPage();
 
         //! Show user settings page.
-        void showUserSettingsPage() { pageStack_->setCurrentWidget(userSettingsPage_); }
+        void showUserSettingsPage();
 
         //! Show the chat page and start communicating with the given access token.
         void showChatPage();

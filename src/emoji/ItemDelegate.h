@@ -31,7 +31,7 @@ class ItemDelegate : public QStyledItemDelegate
 
 public:
         explicit ItemDelegate(QObject *parent = nullptr);
-        ~ItemDelegate();
+        ~ItemDelegate() override;
 
         void paint(QPainter *painter,
                    const QStyleOptionViewItem &option,

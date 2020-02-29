@@ -1,12 +1,14 @@
 #include <QPainter>
+#include <QSettings>
 
+#include "AvatarProvider.h"
 #include "Utils.h"
 #include "ui/Avatar.h"
 
-Avatar::Avatar(QWidget *parent)
+Avatar::Avatar(QWidget *parent, int size)
   : QWidget(parent)
+  , size_(size)
 {
-        size_   = ui::AvatarSize;
         type_   = ui::AvatarType::Letter;
         letter_ = "A";
 
@@ -61,21 +63,6 @@ Avatar::setBackgroundColor(const QColor &color)
 }
 
 void
-Avatar::setSize(int size)
-{
-        size_ = size;
-
-        if (!image_.isNull())
-                pixmap_ = utils::scaleImageToPixmap(image_, size_);
-
-        QFont _font(font());
-        _font.setPointSizeF(size_ * (ui::FontSize) / 40);
-
-        setFont(_font);
-        update();
-}
-
-void
 Avatar::setLetter(const QString &letter)
 {
         letter_ = letter;
@@ -84,12 +71,33 @@ Avatar::setLetter(const QString &letter)
 }
 
 void
-Avatar::setImage(const QImage &image)
+Avatar::setImage(const QString &avatar_url)
 {
-        image_  = image;
-        type_   = ui::AvatarType::Image;
-        pixmap_ = utils::scaleImageToPixmap(image_, size_);
-        update();
+        avatar_url_ = avatar_url;
+        AvatarProvider::resolve(avatar_url,
+                                static_cast<int>(size_ * pixmap_.devicePixelRatio()),
+                                this,
+                                [this](QPixmap pm) {
+                                        type_   = ui::AvatarType::Image;
+                                        pixmap_ = pm;
+                                        update();
+                                });
+}
+
+void
+Avatar::setImage(const QString &room, const QString &user)
+{
+        room_ = room;
+        user_ = user;
+        AvatarProvider::resolve(room,
+                                user,
+                                static_cast<int>(size_ * pixmap_.devicePixelRatio()),
+                                this,
+                                [this](QPixmap pm) {
+                                        type_   = ui::AvatarType::Image;
+                                        pixmap_ = pm;
+                                        update();
+                                });
 }
 
 void
@@ -103,6 +111,8 @@ Avatar::setIcon(const QIcon &icon)
 void
 Avatar::paintEvent(QPaintEvent *)
 {
+        bool rounded = QSettings().value("user/avatar_circles", true).toBool();
+
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
 
@@ -116,7 +126,18 @@ Avatar::paintEvent(QPaintEvent *)
 
                 painter.setPen(Qt::NoPen);
                 painter.setBrush(brush);
-                painter.drawEllipse(r.center(), hs, hs);
+                rounded ? painter.drawEllipse(r.center(), hs, hs)
+                        : painter.drawRoundedRect(r, 3, 3);
+        } else if (painter.isActive() &&
+                   abs(pixmap_.devicePixelRatio() - painter.device()->devicePixelRatioF()) > 0.01) {
+                pixmap_ =
+                  pixmap_.scaled(QSize(size_, size_) * painter.device()->devicePixelRatioF());
+                pixmap_.setDevicePixelRatio(painter.device()->devicePixelRatioF());
+
+                if (!avatar_url_.isEmpty())
+                        setImage(avatar_url_);
+                else
+                        setImage(room_, user_);
         }
 
         switch (type_) {
@@ -129,7 +150,10 @@ Avatar::paintEvent(QPaintEvent *)
         }
         case ui::AvatarType::Image: {
                 QPainterPath ppath;
-                ppath.addEllipse(width() / 2 - hs, height() / 2 - hs, size_, size_);
+
+                rounded ? ppath.addEllipse(width() / 2 - hs, height() / 2 - hs, size_, size_)
+                        : ppath.addRoundedRect(r, 3, 3);
+
                 painter.setClipPath(ppath);
                 painter.drawPixmap(QRect(width() / 2 - hs, height() / 2 - hs, size_, size_),
                                    pixmap_);

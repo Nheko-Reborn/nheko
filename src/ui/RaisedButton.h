@@ -11,9 +11,9 @@ class RaisedButton : public FlatButton
         Q_OBJECT
 
 public:
-        explicit RaisedButton(QWidget *parent = 0);
-        explicit RaisedButton(const QString &text, QWidget *parent = 0);
-        ~RaisedButton();
+        explicit RaisedButton(QWidget *parent = nullptr);
+        explicit RaisedButton(const QString &text, QWidget *parent = nullptr);
+        ~RaisedButton() override;
 
 protected:
         bool event(QEvent *event) override;

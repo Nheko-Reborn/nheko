@@ -5,17 +5,56 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include <iostream>
 
+#include <QString>
+#include <QtGlobal>
+
 namespace {
 std::shared_ptr<spdlog::logger> db_logger     = nullptr;
 std::shared_ptr<spdlog::logger> net_logger    = nullptr;
 std::shared_ptr<spdlog::logger> crypto_logger = nullptr;
 std::shared_ptr<spdlog::logger> ui_logger     = nullptr;
+std::shared_ptr<spdlog::logger> qml_logger    = nullptr;
 
 constexpr auto MAX_FILE_SIZE = 1024 * 1024 * 6;
 constexpr auto MAX_LOG_FILES = 3;
+
+void
+qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+        std::string localMsg = msg.toStdString();
+        const char *file     = context.file ? context.file : "";
+        const char *function = context.function ? context.function : "";
+
+        // Surpress binding wrning for now, as we can't set restore mode to keep compat with qt 5.10
+        if (msg.endsWith(
+              "QML Binding: Not restoring previous value because restoreMode has not been set.This "
+              "behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= "
+              "6.0 the default is Binding.RestoreBindingOrValue."))
+                return;
+
+        switch (type) {
+        case QtDebugMsg:
+                nhlog::qml()->debug("{} ({}:{}, {})", localMsg, file, context.line, function);
+                break;
+        case QtInfoMsg:
+                nhlog::qml()->info("{} ({}:{}, {})", localMsg, file, context.line, function);
+                break;
+        case QtWarningMsg:
+                nhlog::qml()->warn("{} ({}:{}, {})", localMsg, file, context.line, function);
+                break;
+        case QtCriticalMsg:
+                nhlog::qml()->critical("{} ({}:{}, {})", localMsg, file, context.line, function);
+                break;
+        case QtFatalMsg:
+                nhlog::qml()->critical("{} ({}:{}, {})", localMsg, file, context.line, function);
+                break;
+        }
+}
 }
 
 namespace nhlog {
+bool enable_debug_log_from_commandline = false;
+
 void
 init(const std::string &file_path)
 {
@@ -33,12 +72,15 @@ init(const std::string &file_path)
         db_logger  = std::make_shared<spdlog::logger>("db", std::begin(sinks), std::end(sinks));
         crypto_logger =
           std::make_shared<spdlog::logger>("crypto", std::begin(sinks), std::end(sinks));
+        qml_logger = std::make_shared<spdlog::logger>("qml", std::begin(sinks), std::end(sinks));
 
         if (nheko::enable_debug_log) {
                 db_logger->set_level(spdlog::level::trace);
                 ui_logger->set_level(spdlog::level::trace);
                 crypto_logger->set_level(spdlog::level::trace);
         }
+
+        qInstallMessageHandler(qmlMessageHandler);
 }
 
 std::shared_ptr<spdlog::logger>
@@ -63,5 +105,11 @@ std::shared_ptr<spdlog::logger>
 crypto()
 {
         return crypto_logger;
+}
+
+std::shared_ptr<spdlog::logger>
+qml()
+{
+        return qml_logger;
 }
 }

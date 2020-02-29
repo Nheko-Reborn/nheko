@@ -22,8 +22,11 @@
 #include <QTimer>
 #include <QtConcurrent>
 
+#include "Cache.h"
 #include "QuickSwitcher.h"
-#include "SuggestionsPopup.h"
+#include "popups/SuggestionsPopup.h"
+
+Q_DECLARE_METATYPE(std::vector<RoomSearchResult>)
 
 RoomSearchInput::RoomSearchInput(QWidget *parent)
   : TextField(parent)
@@ -93,8 +96,7 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
 
                 QtConcurrent::run([this, query = query.toLower()]() {
                         try {
-                                emit queryResults(
-                                  cache::client()->searchRooms(query.toStdString()));
+                                emit queryResults(cache::searchRooms(query.toStdString()));
                         } catch (const lmdb::error &e) {
                                 qWarning() << "room search failed:" << e.what();
                         }

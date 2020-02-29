@@ -17,22 +17,21 @@
 
 #pragma once
 
-#include <QAction>
-#include <QIcon>
-#include <QImage>
-#include <QLabel>
-#include <QPaintEvent>
-#include <QPainter>
-#include <QPen>
-#include <QStyle>
-#include <QStyleOption>
-#include <QVBoxLayout>
+#include <QColor>
+#include <QStringList>
+#include <QWidget>
 
 class Avatar;
 class FlatButton;
 class Menu;
 class TextLabel;
 class OverlayModal;
+
+class QPainter;
+class QLabel;
+class QIcon;
+class QHBoxLayout;
+class QVBoxLayout;
 
 class TopRoomBar : public QWidget
 {
@@ -41,9 +40,9 @@ class TopRoomBar : public QWidget
         Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
 
 public:
-        TopRoomBar(QWidget *parent = 0);
+        TopRoomBar(QWidget *parent = nullptr);
 
-        void updateRoomAvatar(const QImage &avatar_image);
+        void updateRoomAvatar(const QString &avatar_image);
         void updateRoomAvatar(const QIcon &icon);
         void updateRoomName(const QString &name);
         void updateRoomTopic(QString topic);
@@ -63,21 +62,11 @@ public slots:
 signals:
         void inviteUsers(QStringList users);
         void showRoomList();
+        void mentionsClicked(const QPoint &pos);
 
 protected:
-        void mousePressEvent(QMouseEvent *) override
-        {
-                if (roomSettings_ != nullptr)
-                        roomSettings_->trigger();
-        }
-
-        void paintEvent(QPaintEvent *) override
-        {
-                QStyleOption opt;
-                opt.init(this);
-                QPainter p(this);
-                style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-        }
+        void mousePressEvent(QMouseEvent *) override;
+        void paintEvent(QPaintEvent *) override;
 
 private:
         QHBoxLayout *topLayout_  = nullptr;
@@ -93,6 +82,7 @@ private:
         QAction *inviteUsers_  = nullptr;
 
         FlatButton *settingsBtn_;
+        FlatButton *mentionsBtn_;
         FlatButton *backBtn_;
 
         Avatar *avatar_;

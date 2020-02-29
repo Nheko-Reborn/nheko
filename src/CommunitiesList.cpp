@@ -2,7 +2,9 @@
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "Utils.h"
+#include "Splitter.h"
+
+#include <mtx/responses/groups.hpp>
 
 #include <QLabel>
 
@@ -14,13 +16,11 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         sizePolicy.setVerticalStretch(1);
         setSizePolicy(sizePolicy);
 
-        setStyleSheet("border-style: none;");
-
         topLayout_ = new QVBoxLayout(this);
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);
 
-        const auto sideBarSizes = utils::calculateSidebarSizes(QFont{});
+        const auto sideBarSizes = splitter::calculateSidebarSizes(QFont{});
         setFixedWidth(sideBarSizes.groups);
 
         scrollArea_ = new QScrollArea(this);
@@ -30,16 +30,14 @@ CommunitiesList::CommunitiesList(QWidget *parent)
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignTop | Qt::AlignVCenter);
 
-        scrollAreaContents_ = new QWidget();
-
-        contentsLayout_ = new QVBoxLayout(scrollAreaContents_);
+        contentsLayout_ = new QVBoxLayout();
         contentsLayout_->setSpacing(0);
         contentsLayout_->setMargin(0);
 
         addGlobalItem();
         contentsLayout_->addStretch(1);
 
-        scrollArea_->setWidget(scrollAreaContents_);
+        scrollArea_->setLayout(contentsLayout_);
         topLayout_->addWidget(scrollArea_);
 
         connect(
@@ -185,7 +183,8 @@ void
 CommunitiesList::updateCommunityAvatar(const QString &community_id, const QPixmap &img)
 {
         if (!communityExists(community_id)) {
-                qWarning() << "Avatar update on nonexistent community" << community_id;
+                nhlog::ui()->warn("Avatar update on nonexistent community {}",
+                                  community_id.toStdString());
                 return;
         }
 
@@ -196,7 +195,7 @@ void
 CommunitiesList::highlightSelectedCommunity(const QString &community_id)
 {
         if (!communityExists(community_id)) {
-                qDebug() << "CommunitiesList: clicked unknown community";
+                nhlog::ui()->debug("CommunitiesList: clicked unknown community");
                 return;
         }
 
@@ -215,7 +214,7 @@ CommunitiesList::highlightSelectedCommunity(const QString &community_id)
 void
 CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUrl)
 {
-        auto savedImgData = cache::client()->image(avatarUrl);
+        auto savedImgData = cache::image(avatarUrl);
         if (!savedImgData.isNull()) {
                 QPixmap pix;
                 pix.loadFromData(savedImgData);
@@ -238,7 +237,7 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
                           return;
                   }
 
-                  cache::client()->saveImage(opts.mxc_url, res);
+                  cache::saveImage(opts.mxc_url, res);
 
                   auto data = QByteArray(res.data(), res.size());
 

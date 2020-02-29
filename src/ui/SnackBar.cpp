@@ -1,6 +1,6 @@
 #include <QPainter>
 
-#include <tweeny/tweeny.h>
+#include <tweeny.h>
 
 #include "SnackBar.h"
 

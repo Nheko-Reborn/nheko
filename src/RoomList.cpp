@@ -15,18 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include <QBuffer>
+#include <limits>
+
 #include <QObject>
+#include <QPainter>
+#include <QScroller>
 #include <QTimer>
 
-#include "Cache.h"
 #include "Logging.h"
 #include "MainWindow.h"
-#include "MatrixClient.h"
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
-#include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/OverlayModal.h"
 
@@ -42,6 +41,8 @@ RoomList::RoomList(QWidget *parent)
         scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignTop | Qt::AlignVCenter);
+
+        QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
 
         // The scrollbar on macOS will hide itself when not active so it won't interfere
         // with the content.
@@ -89,40 +90,7 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
         if (url.isEmpty())
                 return;
 
-        QByteArray savedImgData;
-
-        if (cache::client())
-                savedImgData = cache::client()->image(url);
-
-        if (savedImgData.isEmpty()) {
-                mtx::http::ThumbOpts opts;
-                opts.mxc_url = url.toStdString();
-                http::client()->get_thumbnail(
-                  opts, [room_id, opts, this](const std::string &res, mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn(
-                                    "failed to download room avatar: {} {} {}",
-                                    opts.mxc_url,
-                                    mtx::errors::to_string(err->matrix_error.errcode),
-                                    err->matrix_error.error);
-                                  return;
-                          }
-
-                          if (cache::client())
-                                  cache::client()->saveImage(opts.mxc_url, res);
-
-                          auto data = QByteArray(res.data(), res.size());
-                          QPixmap pixmap;
-                          pixmap.loadFromData(data);
-
-                          emit updateRoomAvatarCb(room_id, pixmap);
-                  });
-        } else {
-                QPixmap img;
-                img.loadFromData(savedImgData);
-
-                updateRoomAvatar(room_id, img);
-        }
+        emit updateRoomAvatarCb(room_id, url);
 }
 
 void
@@ -193,6 +161,8 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
         if (rooms_.empty())
                 return;
 
+        sortRoomsByLastMessage();
+
         auto room = firstRoom();
         if (room.second.isNull())
                 return;
@@ -224,6 +194,9 @@ RoomList::sync(const std::map<QString, RoomInfo> &info)
 {
         for (const auto &room : info)
                 updateRoom(room.first, room.second);
+
+        if (!info.empty())
+                sortRoomsByLastMessage();
 }
 
 void
@@ -252,7 +225,73 @@ RoomList::highlightSelectedRoom(const QString &room_id)
 }
 
 void
-RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
+RoomList::nextRoom()
+{
+        for (int ii = 0; ii < contentsLayout_->count() - 1; ++ii) {
+                auto room = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(ii)->widget());
+
+                if (!room)
+                        continue;
+
+                if (room->roomId() == selectedRoom_) {
+                        auto nextRoom = qobject_cast<RoomInfoListItem *>(
+                          contentsLayout_->itemAt(ii + 1)->widget());
+
+                        // Not a room message.
+                        if (!nextRoom || nextRoom->isInvite())
+                                return;
+
+                        emit roomChanged(nextRoom->roomId());
+                        if (!roomExists(nextRoom->roomId())) {
+                                nhlog::ui()->warn("roomlist: clicked unknown room_id");
+                                return;
+                        }
+
+                        room->setPressedState(false);
+                        nextRoom->setPressedState(true);
+
+                        scrollArea_->ensureWidgetVisible(nextRoom);
+                        selectedRoom_ = nextRoom->roomId();
+                        return;
+                }
+        }
+}
+
+void
+RoomList::previousRoom()
+{
+        for (int ii = 1; ii < contentsLayout_->count(); ++ii) {
+                auto room = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(ii)->widget());
+
+                if (!room)
+                        continue;
+
+                if (room->roomId() == selectedRoom_) {
+                        auto nextRoom = qobject_cast<RoomInfoListItem *>(
+                          contentsLayout_->itemAt(ii - 1)->widget());
+
+                        // Not a room message.
+                        if (!nextRoom || nextRoom->isInvite())
+                                return;
+
+                        emit roomChanged(nextRoom->roomId());
+                        if (!roomExists(nextRoom->roomId())) {
+                                nhlog::ui()->warn("roomlist: clicked unknown room_id");
+                                return;
+                        }
+
+                        room->setPressedState(false);
+                        nextRoom->setPressedState(true);
+
+                        scrollArea_->ensureWidgetVisible(nextRoom);
+                        selectedRoom_ = nextRoom->roomId();
+                        return;
+                }
+        }
+}
+
+void
+RoomList::updateRoomAvatar(const QString &roomid, const QString &img)
 {
         if (!roomExists(roomid)) {
                 nhlog::ui()->warn("avatar update on non-existent room_id: {}",
@@ -260,7 +299,7 @@ RoomList::updateRoomAvatar(const QString &roomid, const QPixmap &img)
                 return;
         }
 
-        rooms_[roomid]->setAvatar(img.toImage());
+        rooms_[roomid]->setAvatar(img);
 
         // Used to inform other widgets for the new image data.
         emit roomAvatarChanged(roomid, img);
@@ -303,7 +342,9 @@ RoomList::sortRoomsByLastMessage()
                         continue;
 
                 // Not a room message.
-                if (room->lastMessageInfo().userid.isEmpty())
+                if (room->isInvite())
+                        times.emplace(std::numeric_limits<uint64_t>::max(), room);
+                else if (room->lastMessageInfo().userid.isEmpty())
                         times.emplace(0, room);
                 else
                         times.emplace(room->lastMessageInfo().datetime.toMSecsSinceEpoch(), room);
@@ -443,13 +484,16 @@ RoomList::addInvitedRoom(const QString &room_id, const RoomInfo &info)
 std::pair<QString, QSharedPointer<RoomInfoListItem>>
 RoomList::firstRoom() const
 {
-        auto firstRoom = rooms_.begin();
+        for (int i = 0; i < contentsLayout_->count(); i++) {
+                auto item = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
 
-        while (firstRoom->second.isNull() && firstRoom != rooms_.end())
-                firstRoom++;
+                if (item) {
+                        return std::pair<QString, QSharedPointer<RoomInfoListItem>>(
+                          item->roomId(), rooms_.at(item->roomId()));
+                }
+        }
 
-        return std::pair<QString, QSharedPointer<RoomInfoListItem>>(firstRoom->first,
-                                                                    firstRoom->second);
+        return {};
 }
 
 void

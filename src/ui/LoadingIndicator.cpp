@@ -1,7 +1,8 @@
 #include "LoadingIndicator.h"
 
-#include <QPoint>
-#include <QtGlobal>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QTimer>
 
 LoadingIndicator::LoadingIndicator(QWidget *parent)
   : QWidget(parent)

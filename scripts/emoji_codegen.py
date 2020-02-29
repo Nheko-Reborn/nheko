@@ -1,31 +1,19 @@
 #!/usr/bin/env python3
 
 import sys
-import json
+import re
 
 from jinja2 import Template
 
 
 class Emoji(object):
-    def __init__(self, code, shortname, category, order):
-        self.code = ''.join(list(map(code_to_bytes, code.split('-'))))
+    def __init__(self, code, shortname):
+        self.code = repr(code.encode('utf-8'))[1:].strip("'")
         self.shortname = shortname
-        self.category = category
-        self.order = int(order)
-
-
-def code_to_bytes(codepoint):
-    '''
-    Convert hex unicode codepoint to hex byte array.
-    '''
-    bytes = chr(int(codepoint, 16)).encode('utf-8')
-
-    return str(bytes)[1:].strip("'")
-
 
 def generate_code(emojis, category):
     tmpl = Template('''
-const QList<Emoji> EmojiProvider::{{ category }} = {
+const std::vector<Emoji> emoji::Provider::{{ category }} = {
     {%- for e in emoji %}
         Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}"},
     {%- endfor %}
@@ -38,44 +26,56 @@ const QList<Emoji> EmojiProvider::{{ category }} = {
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print('usage: emoji_codegen.py /path/to/emoji.json')
+        print('usage: emoji_codegen.py /path/to/emoji-test.txt')
         sys.exit(1)
 
     filename = sys.argv[1]
-    data = {}
 
-    with open(filename, 'r') as filename:
-        data = json.loads(filename.read())
+    people = []
+    nature = []
+    food = []
+    activity = []
+    travel = []
+    objects = []
+    symbols = []
+    flags = []
 
-    emojis = []
+    categories = {
+        'Smileys & Emotion': people,
+        'People & Body': people,
+        'Animals & Nature': nature,
+        'Food & Drink': food,
+        'Travel & Places': travel,
+        'Activities': activity,
+        'Objects': objects,
+        'Symbols': symbols,
+        'Flags': flags
+    }
 
-    for emoji_name in data:
-        tmp = data[emoji_name]
+    current_category = ''
+    for line in open(filename, 'r'):
+        if line.startswith('# group:'):
+            current_category = line.split(':', 1)[1].strip()
 
-        l = len(tmp['unicode'].split('-'))
-
-        if l > 1 and tmp['category'] == 'people':
+        if not line or line.startswith('#'):
             continue
 
-        emojis.append(
-            Emoji(
-                tmp['unicode'],
-                tmp['shortname'],
-                tmp['category'],
-                tmp['emoji_order']
-            )
-        )
+        segments = re.split(r'\s+[#;] ', line.strip())
+        if len(segments) != 3:
+            continue
 
-    emojis.sort(key=lambda x: x.order)
+        code, qualification, charAndName = segments
 
-    people = list(filter(lambda x: x.category == "people", emojis))
-    nature = list(filter(lambda x: x.category == "nature", emojis))
-    food = list(filter(lambda x: x.category == "food", emojis))
-    activity = list(filter(lambda x: x.category == "activity", emojis))
-    travel = list(filter(lambda x: x.category == "travel", emojis))
-    objects = list(filter(lambda x: x.category == "objects", emojis))
-    symbols = list(filter(lambda x: x.category == "symbols", emojis))
-    flags = list(filter(lambda x: x.category == "flags", emojis))
+        # skip fully qualified versions of same unicode
+        if code.endswith('FE0F'):
+            continue
+
+        if qualification == 'component':
+            continue
+
+        char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
+
+        categories[current_category].append(Emoji(char, name))
 
     # Use xclip to pipe the output to clipboard.
     # e.g ./codegen.py emoji.json | xclip -sel clip

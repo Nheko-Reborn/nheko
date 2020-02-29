@@ -18,19 +18,27 @@
 #pragma once
 
 #include <atomic>
-#include <boost/variant.hpp>
+#include <optional>
+#include <variant>
+
+#include <mtx/common.hpp>
+#include <mtx/requests.hpp>
+#include <mtx/responses.hpp>
+#include <mtxclient/http/errors.hpp>
 
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QMap>
 #include <QPixmap>
+#include <QPoint>
 #include <QTimer>
 #include <QWidget>
 
-#include "Cache.h"
+#include "CacheStructs.h"
 #include "CommunitiesList.h"
-#include "MatrixClient.h"
+#include "Utils.h"
 #include "notifications/Manager.h"
+#include "popups/UserMentions.h"
 
 class OverlayModal;
 class QuickSwitcher;
@@ -40,7 +48,6 @@ class Splitter;
 class TextInputWidget;
 class TimelineViewManager;
 class TopRoomBar;
-class TypingDisplay;
 class UserInfoWidget;
 class UserSettings;
 class NotificationsManager;
@@ -49,12 +56,16 @@ constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
 constexpr int TYPING_REFRESH_TIMEOUT = 10000;
 
+namespace mtx::http {
+using RequestErr = const std::optional<mtx::http::ClientError> &;
+}
+
 class ChatPage : public QWidget
 {
         Q_OBJECT
 
 public:
-        ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent = 0);
+        ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
@@ -79,36 +90,31 @@ public slots:
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
 
+        void inviteUser(QString userid, QString reason);
+        void kickUser(QString userid, QString reason);
+        void banUser(QString userid, QString reason);
+        void unbanUser(QString userid, QString reason);
+
 signals:
         void connectionLost();
         void connectionRestored();
 
-        void messageReply(const QString &username, const QString &msg);
+        void messageReply(const RelatedInfo &related);
 
         void notificationsRetrieved(const mtx::responses::Notifications &);
+        void highlightedNotifsRetrieved(const mtx::responses::Notifications &,
+                                        const QPoint widgetPos);
 
         void uploadFailed(const QString &msg);
-        void imageUploaded(const QString &roomid,
+        void mediaUploaded(const QString &roomid,
                            const QString &filename,
+                           const std::optional<mtx::crypto::EncryptedFile> &file,
                            const QString &url,
+                           const QString &mimeClass,
                            const QString &mime,
                            qint64 dsize,
-                           const QSize &dimensions);
-        void fileUploaded(const QString &roomid,
-                          const QString &filename,
-                          const QString &url,
-                          const QString &mime,
-                          qint64 dsize);
-        void audioUploaded(const QString &roomid,
-                           const QString &filename,
-                           const QString &url,
-                           const QString &mime,
-                           qint64 dsize);
-        void videoUploaded(const QString &roomid,
-                           const QString &filename,
-                           const QString &url,
-                           const QString &mime,
-                           qint64 dsize);
+                           const QSize &dimensions,
+                           const std::optional<RelatedInfo> &related);
 
         void contentLoaded();
         void closing();
@@ -119,11 +125,9 @@ signals:
         void showUserSettingsPage();
         void showOverlayProgressBar();
 
-        void removeTimelineEvent(const QString &room_id, const QString &event_id);
-
         void ownProfileOk();
         void setUserDisplayName(const QString &name);
-        void setUserAvatar(const QImage &avatar);
+        void setUserAvatar(const QString &avatar);
         void loggedOut();
 
         void trySyncCb();
@@ -134,6 +138,7 @@ signals:
         void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
         void initializeEmptyViews(const std::map<QString, mtx::responses::Timeline> &msgs);
+        void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
         void syncUI(const mtx::responses::Rooms &rooms);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
         void syncTags(const std::map<QString, RoomInfo> &updates);
@@ -152,7 +157,7 @@ signals:
 
 private slots:
         void showUnreadMessageNotification(int count);
-        void updateTopBarAvatar(const QString &roomid, const QPixmap &img);
+        void updateTopBarAvatar(const QString &roomid, const QString &img);
         void changeTopRoomInfo(const QString &room_id);
         void logout();
         void removeRoom(const QString &room_id);
@@ -186,8 +191,6 @@ private:
         using LeftRooms = std::map<std::string, mtx::responses::LeftRoom>;
         void removeLeftRooms(const LeftRooms &rooms);
 
-        void updateTypingUsers(const QString &roomid, const std::vector<std::string> &user_ids);
-
         void loadStateFromCache();
         void resetUI();
         //! Decides whether or not to hide the group's sidebar.
@@ -203,8 +206,7 @@ private:
         //! Send desktop notification for the received messages.
         void sendDesktopNotifications(const mtx::responses::Notifications &);
 
-        QStringList generateTypingUsers(const QString &room_id,
-                                        const std::vector<std::string> &typing_users);
+        void showNotificationsDialog(const QPoint &point);
 
         QHBoxLayout *topLayout_;
         Splitter *splitter;
@@ -225,7 +227,6 @@ private:
 
         TopRoomBar *top_bar_;
         TextInputWidget *text_input_;
-        TypingDisplay *typingDisplay_;
 
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;
@@ -235,8 +236,8 @@ private:
 
         UserInfoWidget *user_info_widget_;
 
-        // Keeps track of the users currently typing on each room.
-        std::map<QString, QList<QString>> typingUsers_;
+        popups::UserMentions *user_mentions_popup_;
+
         QTimer *typingRefresher_;
 
         // Global user settings.
@@ -254,9 +255,8 @@ ChatPage::getMemberships(const std::vector<Collection> &collection) const
         using Member = mtx::events::StateEvent<mtx::events::state::Member>;
 
         for (const auto &event : collection) {
-                if (boost::get<Member>(event) != nullptr) {
-                        auto member = boost::get<Member>(event);
-                        memberships.emplace(member.state_key, member);
+                if (auto member = std::get_if<Member>(event)) {
+                        memberships.emplace(member->state_key, *member);
                 }
         }
 

@@ -18,14 +18,23 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QFileDialog>
+#include <QFormLayout>
 #include <QInputDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QPainter>
+#include <QProcessEnvironment>
 #include <QPushButton>
+#include <QResizeEvent>
 #include <QScrollArea>
+#include <QScroller>
 #include <QSettings>
+#include <QStandardPaths>
+#include <QString>
+#include <QTextStream>
 
+#include "Cache.h"
 #include "Config.h"
 #include "MatrixClient.h"
 #include "Olm.h"
@@ -46,10 +55,13 @@ UserSettings::load()
         hasDesktopNotifications_      = settings.value("user/desktop_notifications", true).toBool();
         isStartInTrayEnabled_         = settings.value("user/window/start_in_tray", false).toBool();
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
+        isMarkdownEnabled_            = settings.value("user/markdown_enabled", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
-        theme_                        = settings.value("user/theme", "light").toString();
+        theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
+        avatarCircles_                = settings.value("user/avatar_circles", true).toBool();
+        emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
         applyTheme();
@@ -66,6 +78,13 @@ void
 UserSettings::setFontFamily(QString family)
 {
         font_ = family;
+        save();
+}
+
+void
+UserSettings::setEmojiFontFamily(QString family)
+{
+        emojiFont_ = family;
         save();
 }
 
@@ -107,13 +126,18 @@ UserSettings::save()
         settings.setValue("start_in_tray", isStartInTrayEnabled_);
         settings.endGroup();
 
+        settings.setValue("avatar_circles", avatarCircles_);
+
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
         settings.setValue("read_receipts", isReadReceiptsEnabled_);
         settings.setValue("group_view", isGroupViewEnabled_);
+        settings.setValue("markdown_enabled", isMarkdownEnabled_);
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("theme", theme());
         settings.setValue("font_family", font_);
+        settings.setValue("emoji_font_family", emojiFont_);
+
         settings.endGroup();
 }
 
@@ -128,12 +152,12 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
   : QWidget{parent}
   , settings_{settings}
 {
-        topLayout_ = new QVBoxLayout(this);
+        topLayout_ = new QVBoxLayout{this};
 
         QIcon icon;
         icon.addFile(":/icons/icons/ui/angle-pointing-to-left.png");
 
-        auto backBtn_ = new FlatButton(this);
+        auto backBtn_ = new FlatButton{this};
         backBtn_->setMinimumSize(QSize(24, 24));
         backBtn_->setIcon(icon);
         backBtn_->setIconSize(QSize(24, 24));
@@ -150,106 +174,65 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         topBarLayout_->addWidget(backBtn_, 1, Qt::AlignLeft | Qt::AlignVCenter);
         topBarLayout_->addStretch(1);
 
-        auto trayOptionLayout_ = new QHBoxLayout;
-        trayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto trayLabel = new QLabel(tr("Minimize to tray"), this);
-        trayLabel->setFont(font);
-        trayToggle_ = new Toggle(this);
+        formLayout_ = new QFormLayout;
 
-        trayOptionLayout_->addWidget(trayLabel);
-        trayOptionLayout_->addWidget(trayToggle_, 0, Qt::AlignRight);
+        formLayout_->setLabelAlignment(Qt::AlignLeft);
+        formLayout_->setFormAlignment(Qt::AlignRight);
+        formLayout_->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+        formLayout_->setRowWrapPolicy(QFormLayout::WrapLongRows);
+        formLayout_->setHorizontalSpacing(0);
 
-        auto startInTrayOptionLayout_ = new QHBoxLayout;
-        startInTrayOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto startInTrayLabel = new QLabel(tr("Start in tray"), this);
-        startInTrayLabel->setFont(font);
-        startInTrayToggle_ = new Toggle(this);
+        auto general_ = new QLabel{tr("GENERAL"), this};
+        general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+        general_->setFont(font);
+
+        trayToggle_              = new Toggle{this};
+        startInTrayToggle_       = new Toggle{this};
+        avatarCircles_           = new Toggle{this};
+        groupViewToggle_         = new Toggle{this};
+        typingNotifications_     = new Toggle{this};
+        readReceipts_            = new Toggle{this};
+        markdownEnabled_         = new Toggle{this};
+        desktopNotifications_    = new Toggle{this};
+        scaleFactorCombo_        = new QComboBox{this};
+        fontSizeCombo_           = new QComboBox{this};
+        fontSelectionCombo_      = new QComboBox{this};
+        emojiFontSelectionCombo_ = new QComboBox{this};
+
         if (!settings_->isTrayEnabled())
                 startInTrayToggle_->setDisabled(true);
 
-        startInTrayOptionLayout_->addWidget(startInTrayLabel);
-        startInTrayOptionLayout_->addWidget(startInTrayToggle_, 0, Qt::AlignRight);
+        avatarCircles_->setFixedSize(64, 48);
 
-        auto groupViewLayout = new QHBoxLayout;
-        groupViewLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto groupViewLabel = new QLabel(tr("Group's sidebar"), this);
-        groupViewLabel->setFont(font);
-        groupViewToggle_ = new Toggle(this);
+        auto uiLabel_ = new QLabel{tr("INTERFACE"), this};
+        uiLabel_->setFixedHeight(uiLabel_->minimumHeight() + LayoutTopMargin);
+        uiLabel_->setAlignment(Qt::AlignBottom);
+        uiLabel_->setFont(font);
 
-        groupViewLayout->addWidget(groupViewLabel);
-        groupViewLayout->addWidget(groupViewToggle_, 0, Qt::AlignRight);
-
-        auto typingLayout = new QHBoxLayout;
-        typingLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto typingLabel = new QLabel(tr("Typing notifications"), this);
-        typingLabel->setFont(font);
-        typingNotifications_ = new Toggle(this);
-
-        typingLayout->addWidget(typingLabel);
-        typingLayout->addWidget(typingNotifications_, 0, Qt::AlignRight);
-
-        auto receiptsLayout = new QHBoxLayout;
-        receiptsLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto receiptsLabel = new QLabel(tr("Read receipts"), this);
-        receiptsLabel->setFont(font);
-        readReceipts_ = new Toggle(this);
-
-        receiptsLayout->addWidget(receiptsLabel);
-        receiptsLayout->addWidget(readReceipts_, 0, Qt::AlignRight);
-
-        auto desktopLayout = new QHBoxLayout;
-        desktopLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto desktopLabel = new QLabel(tr("Desktop notifications"), this);
-        desktopLabel->setFont(font);
-        desktopNotifications_ = new Toggle(this);
-
-        desktopLayout->addWidget(desktopLabel);
-        desktopLayout->addWidget(desktopNotifications_, 0, Qt::AlignRight);
-
-        auto scaleFactorOptionLayout = new QHBoxLayout;
-        scaleFactorOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto scaleFactorLabel = new QLabel(tr("Scale factor"), this);
-        scaleFactorLabel->setFont(font);
-        scaleFactorCombo_ = new QComboBox(this);
         for (double option = 1; option <= 3; option += 0.25)
                 scaleFactorCombo_->addItem(QString::number(option));
-
-        scaleFactorOptionLayout->addWidget(scaleFactorLabel);
-        scaleFactorOptionLayout->addWidget(scaleFactorCombo_, 0, Qt::AlignRight);
-
-        auto fontSizeOptionLayout = new QHBoxLayout;
-        fontSizeOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto fontSizeLabel = new QLabel(tr("Font size"), this);
-        fontSizeLabel->setFont(font);
-        fontSizeCombo_ = new QComboBox(this);
         for (double option = 10; option < 17; option += 0.5)
                 fontSizeCombo_->addItem(QString("%1 ").arg(QString::number(option)));
 
-        fontSizeOptionLayout->addWidget(fontSizeLabel);
-        fontSizeOptionLayout->addWidget(fontSizeCombo_, 0, Qt::AlignRight);
-
-        auto fontFamilyOptionLayout = new QHBoxLayout;
-        fontFamilyOptionLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto fontFamilyLabel = new QLabel(tr("Font Family"), this);
-        fontFamilyLabel->setFont(font);
-        fontSelectionCombo_ = new QComboBox(this);
         QFontDatabase fontDb;
         auto fontFamilies = fontDb.families();
         for (const auto &family : fontFamilies) {
                 fontSelectionCombo_->addItem(family);
         }
 
-        int fontIndex = fontSelectionCombo_->findText(settings_->font());
-        fontSelectionCombo_->setCurrentIndex(fontIndex);
+        // TODO: Is there a way to limit to just emojis, rather than
+        // all emoji fonts?
+        auto emojiFamilies = fontDb.families(QFontDatabase::Symbol);
+        for (const auto &family : emojiFamilies) {
+                emojiFontSelectionCombo_->addItem(family);
+        }
 
-        fontFamilyOptionLayout->addWidget(fontFamilyLabel);
-        fontFamilyOptionLayout->addWidget(fontSelectionCombo_, 0, Qt::AlignRight);
+        fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(settings_->font()));
 
-        auto themeOptionLayout_ = new QHBoxLayout;
-        themeOptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto themeLabel_ = new QLabel(tr("Theme"), this);
-        themeLabel_->setFont(font);
-        themeCombo_ = new QComboBox(this);
+        emojiFontSelectionCombo_->setCurrentIndex(
+          emojiFontSelectionCombo_->findText(settings_->emojiFont()));
+
+        themeCombo_ = new QComboBox{this};
         themeCombo_->addItem("Light");
         themeCombo_->addItem("Dark");
         themeCombo_->addItem("System");
@@ -259,117 +242,103 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         int themeIndex = themeCombo_->findText(themeStr);
         themeCombo_->setCurrentIndex(themeIndex);
 
-        themeOptionLayout_->addWidget(themeLabel_);
-        themeOptionLayout_->addWidget(themeCombo_, 0, Qt::AlignRight);
-
-        auto encryptionLayout_ = new QVBoxLayout;
-        encryptionLayout_->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        encryptionLayout_->setAlignment(Qt::AlignVCenter);
+        auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
+        encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
+        encryptionLabel_->setAlignment(Qt::AlignBottom);
+        encryptionLabel_->setFont(font);
 
         QFont monospaceFont;
         monospaceFont.setFamily("Monospace");
         monospaceFont.setStyleHint(QFont::Monospace);
         monospaceFont.setPointSizeF(monospaceFont.pointSizeF() * 0.9);
 
-        auto deviceIdLayout = new QHBoxLayout;
-        deviceIdLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-
-        auto deviceIdLabel = new QLabel(tr("Device ID"), this);
-        deviceIdLabel->setFont(font);
-        deviceIdLabel->setMargin(0);
         deviceIdValue_ = new QLabel{this};
         deviceIdValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
         deviceIdValue_->setFont(monospaceFont);
-        deviceIdLayout->addWidget(deviceIdLabel, 1);
-        deviceIdLayout->addWidget(deviceIdValue_);
 
-        auto deviceFingerprintLayout = new QHBoxLayout;
-        deviceFingerprintLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-
-        auto deviceFingerprintLabel = new QLabel(tr("Device Fingerprint"), this);
-        deviceFingerprintLabel->setFont(font);
-        deviceFingerprintLabel->setMargin(0);
         deviceFingerprintValue_ = new QLabel{this};
         deviceFingerprintValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
         deviceFingerprintValue_->setFont(monospaceFont);
-        deviceFingerprintLayout->addWidget(deviceFingerprintLabel, 1);
-        deviceFingerprintLayout->addWidget(deviceFingerprintValue_);
 
-        auto sessionKeysLayout = new QHBoxLayout;
-        sessionKeysLayout->setContentsMargins(0, OptionMargin, 0, OptionMargin);
-        auto sessionKeysLabel = new QLabel(tr("Session Keys"), this);
+        deviceFingerprintValue_->setText(utils::humanReadableFingerprint(QString(44, 'X')));
+
+        auto sessionKeysLabel = new QLabel{tr("Session Keys"), this};
         sessionKeysLabel->setFont(font);
-        sessionKeysLayout->addWidget(sessionKeysLabel, 1);
+        sessionKeysLabel->setMargin(OptionMargin);
 
         auto sessionKeysImportBtn = new QPushButton{tr("IMPORT"), this};
-        connect(
-          sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
         auto sessionKeysExportBtn = new QPushButton{tr("EXPORT"), this};
-        connect(
-          sessionKeysExportBtn, &QPushButton::clicked, this, &UserSettingsPage::exportSessionKeys);
+
+        auto sessionKeysLayout = new QHBoxLayout;
+        sessionKeysLayout->addWidget(new QLabel{"", this}, 1, Qt::AlignRight);
         sessionKeysLayout->addWidget(sessionKeysExportBtn, 0, Qt::AlignRight);
         sessionKeysLayout->addWidget(sessionKeysImportBtn, 0, Qt::AlignRight);
 
-        encryptionLayout_->addLayout(deviceIdLayout);
-        encryptionLayout_->addLayout(deviceFingerprintLayout);
-        encryptionLayout_->addWidget(new HorizontalLine{this});
-        encryptionLayout_->addLayout(sessionKeysLayout);
+        auto boxWrap = [this, &font](QString labelText, QWidget *field) {
+                auto label = new QLabel{labelText, this};
+                label->setFont(font);
+                label->setMargin(OptionMargin);
 
-        font.setWeight(QFont::Medium);
+                auto layout = new QHBoxLayout;
+                layout->addWidget(field, 0, Qt::AlignRight);
 
-        auto encryptionLabel_ = new QLabel(tr("ENCRYPTION"), this);
-        encryptionLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
-        encryptionLabel_->setFont(font);
+                formLayout_->addRow(label, layout);
+        };
 
-        auto general_ = new QLabel(tr("GENERAL"), this);
-        general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
-        general_->setFont(font);
+        formLayout_->addRow(general_);
+        formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Minimize to tray"), trayToggle_);
+        boxWrap(tr("Start in tray"), startInTrayToggle_);
+        formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Circular Avatars"), avatarCircles_);
+        boxWrap(tr("Group's sidebar"), groupViewToggle_);
+        boxWrap(tr("Typing notifications"), typingNotifications_);
+        formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Read receipts"), readReceipts_);
+        boxWrap(tr("Send messages as Markdown"), markdownEnabled_);
+        boxWrap(tr("Desktop notifications"), desktopNotifications_);
+        formLayout_->addRow(uiLabel_);
+        formLayout_->addRow(new HorizontalLine{this});
 
-        mainLayout_ = new QVBoxLayout;
-        mainLayout_->setAlignment(Qt::AlignTop);
-        mainLayout_->setSpacing(7);
-        mainLayout_->setContentsMargins(
-          sideMargin_, LayoutTopMargin, sideMargin_, LayoutBottomMargin);
-        mainLayout_->addWidget(general_, 1, Qt::AlignLeft | Qt::AlignBottom);
-        mainLayout_->addWidget(new HorizontalLine(this));
-        mainLayout_->addLayout(trayOptionLayout_);
-        mainLayout_->addLayout(startInTrayOptionLayout_);
-        mainLayout_->addWidget(new HorizontalLine(this));
-        mainLayout_->addLayout(groupViewLayout);
-        mainLayout_->addWidget(new HorizontalLine(this));
-        mainLayout_->addLayout(typingLayout);
-        mainLayout_->addLayout(receiptsLayout);
-        mainLayout_->addLayout(desktopLayout);
-        mainLayout_->addWidget(new HorizontalLine(this));
-
-#if defined(Q_OS_MAC)
-        scaleFactorLabel->hide();
+#if !defined(Q_OS_MAC)
+        boxWrap(tr("Scale factor"), scaleFactorCombo_);
+#else
         scaleFactorCombo_->hide();
 #endif
+        boxWrap(tr("Font size"), fontSizeCombo_);
+        boxWrap(tr("Font Family"), fontSelectionCombo_);
 
-        mainLayout_->addLayout(scaleFactorOptionLayout);
-        mainLayout_->addLayout(fontSizeOptionLayout);
-        mainLayout_->addLayout(fontFamilyOptionLayout);
-        mainLayout_->addWidget(new HorizontalLine(this));
-        mainLayout_->addLayout(themeOptionLayout_);
-        mainLayout_->addWidget(new HorizontalLine(this));
+#if !defined(Q_OS_MAC)
+        boxWrap(tr("Emoji Font Family"), emojiFontSelectionCombo_);
+#else
+        emojiFontSelectionCombo_->hide();
+#endif
 
-        mainLayout_->addSpacing(50);
+        boxWrap(tr("Theme"), themeCombo_);
+        formLayout_->addRow(encryptionLabel_);
+        formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Device ID"), deviceIdValue_);
+        boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
+        formLayout_->addRow(new HorizontalLine{this});
+        formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
 
-        mainLayout_->addWidget(encryptionLabel_, 1, Qt::AlignLeft | Qt::AlignBottom);
-        mainLayout_->addWidget(new HorizontalLine(this));
-        mainLayout_->addLayout(encryptionLayout_);
-
-        auto scrollArea_ = new QScrollArea(this);
+        auto scrollArea_ = new QScrollArea{this};
         scrollArea_->setFrameShape(QFrame::NoFrame);
         scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignTop | Qt::AlignVCenter);
 
-        auto scrollAreaContents_ = new QWidget(this);
+        QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
+
+        auto spacingAroundForm = new QHBoxLayout;
+        spacingAroundForm->addStretch(1);
+        spacingAroundForm->addLayout(formLayout_, 0);
+        spacingAroundForm->addStretch(1);
+
+        auto scrollAreaContents_ = new QWidget{this};
         scrollAreaContents_->setObjectName("UserSettingScrollWidget");
-        scrollAreaContents_->setLayout(mainLayout_);
+        scrollAreaContents_->setLayout(spacingAroundForm);
 
         scrollArea_->setWidget(scrollAreaContents_);
         topLayout_->addLayout(topBarLayout_);
@@ -392,6 +361,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(fontSelectionCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
                 [this](const QString &family) { settings_->setFontFamily(family.trimmed()); });
+        connect(emojiFontSelectionCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
         connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTray(!isDisabled);
                 if (isDisabled) {
@@ -410,6 +382,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setGroupView(!isDisabled);
         });
 
+        connect(avatarCircles_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setAvatarCircles(!isDisabled);
+        });
+
+        connect(markdownEnabled_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setMarkdownEnabled(!isDisabled);
+        });
+
         connect(typingNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setTypingNotifications(!isDisabled);
         });
@@ -421,6 +401,12 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(desktopNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setDesktopNotifications(!isDisabled);
         });
+
+        connect(
+          sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
+
+        connect(
+          sessionKeysExportBtn, &QPushButton::clicked, this, &UserSettingsPage::exportSessionKeys);
 
         connect(backBtn_, &QPushButton::clicked, this, [this]() {
                 settings_->save();
@@ -440,23 +426,15 @@ UserSettingsPage::showEvent(QShowEvent *)
         trayToggle_->setState(!settings_->isTrayEnabled());
         startInTrayToggle_->setState(!settings_->isStartInTrayEnabled());
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
+        avatarCircles_->setState(!settings_->isAvatarCirclesEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
         readReceipts_->setState(!settings_->isReadReceiptsEnabled());
+        markdownEnabled_->setState(!settings_->isMarkdownEnabled());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));
-}
-
-void
-UserSettingsPage::resizeEvent(QResizeEvent *event)
-{
-        sideMargin_ = width() * 0.2;
-        mainLayout_->setContentsMargins(
-          sideMargin_, LayoutTopMargin, sideMargin_, LayoutBottomMargin);
-
-        QWidget::resizeEvent(event);
 }
 
 void
@@ -471,7 +449,9 @@ UserSettingsPage::paintEvent(QPaintEvent *)
 void
 UserSettingsPage::importSessionKeys()
 {
-        auto fileName = QFileDialog::getOpenFileName(this, tr("Open Sessions File"), "", "");
+        const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        const QString fileName =
+          QFileDialog::getOpenFileName(this, tr("Open Sessions File"), homeFolder, "");
 
         QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly)) {
@@ -498,9 +478,9 @@ UserSettingsPage::importSessionKeys()
         }
 
         try {
-                auto sessions = mtx::crypto::decrypt_exported_sessions(
-                  mtx::crypto::base642bin(payload), password.toStdString());
-                cache::client()->importSessionKeys(std::move(sessions));
+                auto sessions =
+                  mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
+                cache::importSessionKeys(std::move(sessions));
         } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         } catch (const lmdb::error &e) {
@@ -530,11 +510,12 @@ UserSettingsPage::exportSessionKeys()
         }
 
         // Open file dialog to save the file.
-        auto fileName =
+        const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        const QString fileName =
           QFileDialog::getSaveFileName(this, tr("File to save the exported session keys"), "", "");
 
         QFile file(fileName);
-        if (!file.open(QIODevice::WriteOnly)) {
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
                 QMessageBox::warning(this, tr("Error"), file.errorString());
                 return;
         }
@@ -542,11 +523,16 @@ UserSettingsPage::exportSessionKeys()
         // Export sessions & save to file.
         try {
                 auto encrypted_blob = mtx::crypto::encrypt_exported_sessions(
-                  cache::client()->exportSessionKeys(), password.toStdString());
+                  cache::exportSessionKeys(), password.toStdString());
 
-                auto b64 = mtx::crypto::bin2base64(encrypted_blob);
+                QString b64 = QString::fromStdString(mtx::crypto::bin2base64(encrypted_blob));
 
-                file.write(b64.data(), b64.size());
+                QString prefix("-----BEGIN MEGOLM SESSION DATA-----");
+                QString suffix("-----END MEGOLM SESSION DATA-----");
+                QString newline("\n");
+                QTextStream out(&file);
+                out << prefix << newline << b64 << newline << suffix;
+                file.close();
         } catch (const mtx::crypto::sodium_exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         } catch (const lmdb::error &e) {

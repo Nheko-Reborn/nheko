@@ -1,0 +1,9 @@
+/examples/*/*.o
+/examples/*/Makefile
+/examples/*/moc_*.cpp
+/examples/*/moc_predefs.h
+/examples/*/*.qmake.stash
+/examples/basic/basic
+/examples/calculator/calculator
+/examples/sending_arguments/sending_arguments
+CMakeLists.txt.user

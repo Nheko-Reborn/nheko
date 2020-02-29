@@ -15,8 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMetaType>
+#include <QPainter>
 #include <QStyleOption>
 #include <QTimer>
+
+#include <mtx/responses/register.hpp>
 
 #include "Config.h"
 #include "Logging.h"
@@ -27,11 +31,17 @@
 #include "ui/RaisedButton.h"
 #include "ui/TextField.h"
 
+#include "dialogs/FallbackAuth.h"
 #include "dialogs/ReCaptcha.h"
+
+Q_DECLARE_METATYPE(mtx::user_interactive::Unauthorized)
+Q_DECLARE_METATYPE(mtx::user_interactive::Auth)
 
 RegisterPage::RegisterPage(QWidget *parent)
   : QWidget(parent)
 {
+        qRegisterMetaType<mtx::user_interactive::Unauthorized>();
+        qRegisterMetaType<mtx::user_interactive::Auth>();
         top_layout_ = new QVBoxLayout();
 
         back_layout_ = new QHBoxLayout();
@@ -87,10 +97,10 @@ RegisterPage::RegisterPage(QWidget *parent)
         server_input_ = new TextField();
         server_input_->setLabel(tr("Home Server"));
 
-        form_layout_->addWidget(username_input_, Qt::AlignHCenter, 0);
-        form_layout_->addWidget(password_input_, Qt::AlignHCenter, 0);
-        form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter, 0);
-        form_layout_->addWidget(server_input_, Qt::AlignHCenter, 0);
+        form_layout_->addWidget(username_input_, Qt::AlignHCenter, nullptr);
+        form_layout_->addWidget(password_input_, Qt::AlignHCenter, nullptr);
+        form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter, nullptr);
+        form_layout_->addWidget(server_input_, Qt::AlignHCenter, nullptr);
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);
@@ -130,46 +140,139 @@ RegisterPage::RegisterPage(QWidget *parent)
           this,
           &RegisterPage::registrationFlow,
           this,
-          [this](const std::string &user, const std::string &pass, const std::string &session) {
-                  emit errorOccurred();
+          [this](const std::string &user,
+                 const std::string &pass,
+                 const mtx::user_interactive::Unauthorized &unauthorized) {
+                  auto completed_stages = unauthorized.completed;
+                  auto flows            = unauthorized.flows;
+                  auto session          = unauthorized.session;
 
-                  auto captchaDialog =
-                    new dialogs::ReCaptcha(QString::fromStdString(session), this);
+                  nhlog::ui()->info("Completed stages: {}", completed_stages.size());
 
-                  connect(captchaDialog,
-                          &dialogs::ReCaptcha::confirmation,
-                          this,
-                          [this, user, pass, session, captchaDialog]() {
-                                  captchaDialog->close();
-                                  captchaDialog->deleteLater();
+                  if (!completed_stages.empty())
+                          flows.erase(std::remove_if(
+                                        flows.begin(),
+                                        flows.end(),
+                                        [completed_stages](auto flow) {
+                                                if (completed_stages.size() > flow.stages.size())
+                                                        return true;
+                                                for (size_t f = 0; f < completed_stages.size(); f++)
+                                                        if (completed_stages[f] != flow.stages[f])
+                                                                return true;
+                                                return false;
+                                        }),
+                                      flows.end());
 
-                                  emit registering();
+                  if (flows.empty()) {
+                          nhlog::net()->error("No available registration flows!");
+                          emit registerErrorCb(tr("No supported registration flows!"));
+                          return;
+                  }
 
-                                  http::client()->flow_response(
-                                    user,
-                                    pass,
-                                    session,
-                                    "m.login.recaptcha",
-                                    [this](const mtx::responses::Register &res,
-                                           mtx::http::RequestErr err) {
-                                            if (err) {
-                                                    nhlog::net()->warn(
-                                                      "failed to retrieve registration flows: {}",
-                                                      err->matrix_error.error);
-                                                    emit errorOccurred();
-                                                    emit registerErrorCb(QString::fromStdString(
-                                                      err->matrix_error.error));
-                                                    return;
-                                            }
+                  auto current_stage = flows.front().stages.at(completed_stages.size());
 
-                                            http::client()->set_user(res.user_id);
-                                            http::client()->set_access_token(res.access_token);
+                  if (current_stage == mtx::user_interactive::auth_types::recaptcha) {
+                          auto captchaDialog =
+                            new dialogs::ReCaptcha(QString::fromStdString(session), this);
 
-                                            emit registerOk();
-                                    });
-                          });
+                          connect(captchaDialog,
+                                  &dialogs::ReCaptcha::confirmation,
+                                  this,
+                                  [this, user, pass, session, captchaDialog]() {
+                                          captchaDialog->close();
+                                          captchaDialog->deleteLater();
 
-                  QTimer::singleShot(1000, this, [captchaDialog]() { captchaDialog->show(); });
+                                          emit registerAuth(
+                                            user,
+                                            pass,
+                                            mtx::user_interactive::Auth{
+                                              session, mtx::user_interactive::auth::Fallback{}});
+                                  });
+                          connect(captchaDialog,
+                                  &dialogs::ReCaptcha::cancel,
+                                  this,
+                                  &RegisterPage::errorOccurred);
+
+                          QTimer::singleShot(
+                            1000, this, [captchaDialog]() { captchaDialog->show(); });
+                  } else if (current_stage == mtx::user_interactive::auth_types::dummy) {
+                          emit registerAuth(user,
+                                            pass,
+                                            mtx::user_interactive::Auth{
+                                              session, mtx::user_interactive::auth::Dummy{}});
+                  } else {
+                          // use fallback
+                          auto dialog =
+                            new dialogs::FallbackAuth(QString::fromStdString(current_stage),
+                                                      QString::fromStdString(session),
+                                                      this);
+
+                          connect(dialog,
+                                  &dialogs::FallbackAuth::confirmation,
+                                  this,
+                                  [this, user, pass, session, dialog]() {
+                                          dialog->close();
+                                          dialog->deleteLater();
+
+                                          emit registerAuth(
+                                            user,
+                                            pass,
+                                            mtx::user_interactive::Auth{
+                                              session, mtx::user_interactive::auth::Fallback{}});
+                                  });
+                          connect(dialog,
+                                  &dialogs::FallbackAuth::cancel,
+                                  this,
+                                  &RegisterPage::errorOccurred);
+
+                          dialog->show();
+                  }
+          });
+
+        connect(
+          this,
+          &RegisterPage::registerAuth,
+          this,
+          [this](const std::string &user,
+                 const std::string &pass,
+                 const mtx::user_interactive::Auth &auth) {
+                  http::client()->registration(
+                    user,
+                    pass,
+                    auth,
+                    [this, user, pass](const mtx::responses::Register &res,
+                                       mtx::http::RequestErr err) {
+                            if (!err) {
+                                    http::client()->set_user(res.user_id);
+                                    http::client()->set_access_token(res.access_token);
+
+                                    emit registerOk();
+                                    return;
+                            }
+
+                            // The server requires registration flows.
+                            if (err->status_code == boost::beast::http::status::unauthorized) {
+                                    if (err->matrix_error.unauthorized.session.empty()) {
+                                            nhlog::net()->warn(
+                                              "failed to retrieve registration flows: ({}) "
+                                              "{}",
+                                              static_cast<int>(err->status_code),
+                                              err->matrix_error.error);
+                                            emit registerErrorCb(
+                                              QString::fromStdString(err->matrix_error.error));
+                                            return;
+                                    }
+
+                                    emit registrationFlow(
+                                      user, pass, err->matrix_error.unauthorized);
+                                    return;
+                            }
+
+                            nhlog::net()->warn("failed to register: status_code ({})",
+                                               static_cast<int>(err->status_code));
+
+                            emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
+                    });
           });
 
         setLayout(top_layout_);
@@ -222,31 +325,27 @@ RegisterPage::onRegisterButtonClicked()
 
                           // The server requires registration flows.
                           if (err->status_code == boost::beast::http::status::unauthorized) {
-                                  http::client()->flow_register(
-                                    username,
-                                    password,
-                                    [this, username, password](
-                                      const mtx::responses::RegistrationFlows &res,
-                                      mtx::http::RequestErr err) {
-                                            if (res.session.empty() && err) {
-                                                    nhlog::net()->warn(
-                                                      "failed to retrieve registration flows: ({}) "
-                                                      "{}",
-                                                      static_cast<int>(err->status_code),
-                                                      err->matrix_error.error);
-                                                    emit errorOccurred();
-                                                    emit registerErrorCb(QString::fromStdString(
-                                                      err->matrix_error.error));
-                                                    return;
-                                            }
+                                  if (err->matrix_error.unauthorized.session.empty()) {
+                                          nhlog::net()->warn(
+                                            "failed to retrieve registration flows: ({}) "
+                                            "{}",
+                                            static_cast<int>(err->status_code),
+                                            err->matrix_error.error);
+                                          emit errorOccurred();
+                                          emit registerErrorCb(
+                                            QString::fromStdString(err->matrix_error.error));
+                                          return;
+                                  }
 
-                                            emit registrationFlow(username, password, res.session);
-                                    });
+                                  emit registrationFlow(
+                                    username, password, err->matrix_error.unauthorized);
                                   return;
                           }
 
-                          nhlog::net()->warn("failed to register: status_code ({})",
-                                             static_cast<int>(err->status_code));
+                          nhlog::net()->warn(
+                            "failed to register: status_code ({}), matrix_error({})",
+                            static_cast<int>(err->status_code),
+                            err->matrix_error.error);
 
                           emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
                           emit errorOccurred();

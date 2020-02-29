@@ -1,327 +1,355 @@
-/*
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+#include "TimelineViewManager.h"
 
-#include <random>
+#include <QMetaType>
+#include <QPalette>
+#include <QQmlContext>
 
-#include <QApplication>
-#include <QFileInfo>
-#include <QSettings>
-
-#include "Cache.h"
+#include "ChatPage.h"
+#include "ColorImageProvider.h"
+#include "DelegateChooser.h"
 #include "Logging.h"
-#include "timeline/TimelineView.h"
-#include "timeline/TimelineViewManager.h"
-#include "timeline/widgets/AudioItem.h"
-#include "timeline/widgets/FileItem.h"
-#include "timeline/widgets/ImageItem.h"
-#include "timeline/widgets/VideoItem.h"
+#include "MatrixClient.h"
+#include "MxcImageProvider.h"
+#include "UserSettingsPage.h"
+#include "dialogs/ImageOverlay.h"
 
-TimelineViewManager::TimelineViewManager(QWidget *parent)
-  : QStackedWidget(parent)
-{}
+Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 
 void
-TimelineViewManager::updateReadReceipts(const QString &room_id,
-                                        const std::vector<QString> &event_ids)
+TimelineViewManager::updateColorPalette()
 {
-        if (timelineViewExists(room_id)) {
-                auto view = views_[room_id];
-                if (view)
-                        emit view->markReadEvents(event_ids);
+        userColors.clear();
+
+        if (settings->theme() == "light") {
+                QPalette lightActive(/*windowText*/ QColor("#333"),
+                                     /*button*/ QColor("#333"),
+                                     /*light*/ QColor(),
+                                     /*dark*/ QColor(220, 220, 220),
+                                     /*mid*/ QColor(),
+                                     /*text*/ QColor("#333"),
+                                     /*bright_text*/ QColor(),
+                                     /*base*/ QColor(220, 220, 220),
+                                     /*window*/ QColor("white"));
+                lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
+                lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
+                lightActive.setColor(QPalette::Link, QColor("#0077b5"));
+                view->rootContext()->setContextProperty("currentActivePalette", lightActive);
+                view->rootContext()->setContextProperty("currentInactivePalette", lightActive);
+        } else if (settings->theme() == "dark") {
+                QPalette darkActive(/*windowText*/ QColor("#caccd1"),
+                                    /*button*/ QColor("#caccd1"),
+                                    /*light*/ QColor(),
+                                    /*dark*/ QColor("#2d3139"),
+                                    /*mid*/ QColor(),
+                                    /*text*/ QColor("#caccd1"),
+                                    /*bright_text*/ QColor(),
+                                    /*base*/ QColor("#2d3139"),
+                                    /*window*/ QColor("#202228"));
+                darkActive.setColor(QPalette::Highlight, QColor("#e7e7e9"));
+                darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
+                darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
+                darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
+                view->rootContext()->setContextProperty("currentActivePalette", darkActive);
+                view->rootContext()->setContextProperty("currentInactivePalette", darkActive);
+        } else {
+                view->rootContext()->setContextProperty("currentActivePalette", QPalette());
+                view->rootContext()->setContextProperty("currentInactivePalette", nullptr);
         }
 }
 
-void
-TimelineViewManager::removeTimelineEvent(const QString &room_id, const QString &event_id)
+QColor
+TimelineViewManager::userColor(QString id, QColor background)
 {
-        auto view = views_[room_id];
-
-        if (view)
-                view->removeEvent(event_id);
+        if (!userColors.contains(id))
+                userColors.insert(
+                  id, QColor(utils::generateContrastingHexColor(id, background.name())));
+        return userColors.value(id);
 }
 
-void
-TimelineViewManager::queueTextMessage(const QString &msg)
+TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent)
+  : imgProvider(new MxcImageProvider())
+  , colorImgProvider(new ColorImageProvider())
+  , settings(userSettings)
 {
-        if (active_room_.isEmpty())
-                return;
+        qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
+                                         "im.nheko",
+                                         1,
+                                         0,
+                                         "MtxEvent",
+                                         "Can't instantiate enum!");
+        qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
+        qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
+        qRegisterMetaType<mtx::events::collections::TimelineEvents>();
 
-        auto room_id = active_room_;
-        auto view    = views_[room_id];
+#ifdef USE_QUICK_VIEW
+        view      = new QQuickView();
+        container = QWidget::createWindowContainer(view, parent);
+#else
+        view      = new QQuickWidget(parent);
+        container = view;
+        view->setResizeMode(QQuickWidget::SizeRootObjectToView);
+        container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        view->addUserMessage(mtx::events::MessageType::Text, msg);
-}
+        connect(view, &QQuickWidget::statusChanged, this, [](QQuickWidget::Status status) {
+                nhlog::ui()->debug("Status changed to {}", status);
+        });
+#endif
+        container->setMinimumSize(200, 200);
+        view->rootContext()->setContextProperty("timelineManager", this);
+        updateColorPalette();
+        view->engine()->addImageProvider("MxcImage", imgProvider);
+        view->engine()->addImageProvider("colorimage", colorImgProvider);
+        view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
 
-void
-TimelineViewManager::queueEmoteMessage(const QString &msg)
-{
-        if (active_room_.isEmpty())
-                return;
-
-        auto room_id = active_room_;
-        auto view    = views_[room_id];
-
-        view->addUserMessage(mtx::events::MessageType::Emote, msg);
-}
-
-void
-TimelineViewManager::queueImageMessage(const QString &roomid,
-                                       const QString &filename,
-                                       const QString &url,
-                                       const QString &mime,
-                                       uint64_t size,
-                                       const QSize &dimensions)
-{
-        if (!timelineViewExists(roomid)) {
-                nhlog::ui()->warn("Cannot send m.image message to a non-managed view");
-                return;
-        }
-
-        auto view = views_[roomid];
-
-        view->addUserMessage<ImageItem, mtx::events::MessageType::Image>(
-          url, filename, mime, size, dimensions);
-}
-
-void
-TimelineViewManager::queueFileMessage(const QString &roomid,
-                                      const QString &filename,
-                                      const QString &url,
-                                      const QString &mime,
-                                      uint64_t size)
-{
-        if (!timelineViewExists(roomid)) {
-                nhlog::ui()->warn("cannot send m.file message to a non-managed view");
-                return;
-        }
-
-        auto view = views_[roomid];
-
-        view->addUserMessage<FileItem, mtx::events::MessageType::File>(url, filename, mime, size);
-}
-
-void
-TimelineViewManager::queueAudioMessage(const QString &roomid,
-                                       const QString &filename,
-                                       const QString &url,
-                                       const QString &mime,
-                                       uint64_t size)
-{
-        if (!timelineViewExists(roomid)) {
-                nhlog::ui()->warn("cannot send m.audio message to a non-managed view");
-                return;
-        }
-
-        auto view = views_[roomid];
-
-        view->addUserMessage<AudioItem, mtx::events::MessageType::Audio>(url, filename, mime, size);
-}
-
-void
-TimelineViewManager::queueVideoMessage(const QString &roomid,
-                                       const QString &filename,
-                                       const QString &url,
-                                       const QString &mime,
-                                       uint64_t size)
-{
-        if (!timelineViewExists(roomid)) {
-                nhlog::ui()->warn("cannot send m.video message to a non-managed view");
-                return;
-        }
-
-        auto view = views_[roomid];
-
-        view->addUserMessage<VideoItem, mtx::events::MessageType::Video>(url, filename, mime, size);
-}
-
-void
-TimelineViewManager::initialize(const mtx::responses::Rooms &rooms)
-{
-        for (auto it = rooms.join.cbegin(); it != rooms.join.cend(); ++it) {
-                addRoom(it->second, QString::fromStdString(it->first));
-        }
-
-        sync(rooms);
-}
-
-void
-TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
-{
-        for (auto it = msgs.cbegin(); it != msgs.cend(); ++it) {
-                if (timelineViewExists(it->first))
-                        return;
-
-                // Create a history view with the room events.
-                TimelineView *view = new TimelineView(it->second, it->first);
-                views_.emplace(it->first, QSharedPointer<TimelineView>(view));
-
-                connect(view,
-                        &TimelineView::updateLastTimelineMessage,
-                        this,
-                        &TimelineViewManager::updateRoomsLastMessage);
-
-                // Add the view in the widget stack.
-                addWidget(view);
-        }
-}
-
-void
-TimelineViewManager::initialize(const std::vector<std::string> &rooms)
-{
-        for (const auto &roomid : rooms)
-                addRoom(QString::fromStdString(roomid));
-}
-
-void
-TimelineViewManager::addRoom(const mtx::responses::JoinedRoom &room, const QString &room_id)
-{
-        if (timelineViewExists(room_id))
-                return;
-
-        // Create a history view with the room events.
-        TimelineView *view = new TimelineView(room.timeline, room_id);
-        views_.emplace(room_id, QSharedPointer<TimelineView>(view));
-
-        connect(view,
-                &TimelineView::updateLastTimelineMessage,
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::themeChanged,
                 this,
-                &TimelineViewManager::updateRoomsLastMessage);
-
-        // Add the view in the widget stack.
-        addWidget(view);
-}
-
-void
-TimelineViewManager::addRoom(const QString &room_id)
-{
-        if (timelineViewExists(room_id))
-                return;
-
-        // Create a history view without any events.
-        TimelineView *view = new TimelineView(room_id);
-        views_.emplace(room_id, QSharedPointer<TimelineView>(view));
-
-        connect(view,
-                &TimelineView::updateLastTimelineMessage,
-                this,
-                &TimelineViewManager::updateRoomsLastMessage);
-
-        // Add the view in the widget stack.
-        addWidget(view);
+                &TimelineViewManager::updateColorPalette);
 }
 
 void
 TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
 {
-        for (const auto &room : rooms.join) {
-                auto roomid = QString::fromStdString(room.first);
+        for (const auto &[room_id, room] : rooms.join) {
+                // addRoom will only add the room, if it doesn't exist
+                addRoom(QString::fromStdString(room_id));
+                const auto &room_model = models.value(QString::fromStdString(room_id));
+                room_model->addEvents(room.timeline);
 
-                if (!timelineViewExists(roomid)) {
-                        nhlog::ui()->warn("ignoring event from unknown room: {}",
-                                          roomid.toStdString());
-                        continue;
+                if (ChatPage::instance()->userSettings()->isTypingNotificationsEnabled()) {
+                        std::vector<QString> typing;
+                        typing.reserve(room.ephemeral.typing.size());
+                        for (const auto &user : room.ephemeral.typing) {
+                                if (user != http::client()->user_id().to_string())
+                                        typing.push_back(QString::fromStdString(user));
+                        }
+                        room_model->updateTypingUsers(typing);
                 }
+        }
 
-                auto view = views_.at(roomid);
+        this->isInitialSync_ = false;
+        emit initialSyncChanged(false);
+}
 
-                view->addEvents(room.second.timeline);
+void
+TimelineViewManager::addRoom(const QString &room_id)
+{
+        if (!models.contains(room_id)) {
+                QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
+                connect(newRoom.data(),
+                        &TimelineModel::newEncryptedImage,
+                        imgProvider,
+                        &MxcImageProvider::addEncryptionInfo);
+                models.insert(room_id, std::move(newRoom));
         }
 }
 
 void
 TimelineViewManager::setHistoryView(const QString &room_id)
 {
-        if (!timelineViewExists(room_id)) {
-                nhlog::ui()->warn("room from RoomList is not present in ViewManager: {}",
-                                  room_id.toStdString());
-                return;
+        nhlog::ui()->info("Trying to activate room {}", room_id.toStdString());
+
+        auto room = models.find(room_id);
+        if (room != models.end()) {
+                timeline_ = room.value().data();
+                emit activeTimelineChanged(timeline_);
+                nhlog::ui()->info("Activated room {}", room_id.toStdString());
         }
-
-        active_room_ = room_id;
-        auto view    = views_.at(room_id);
-
-        setCurrentWidget(view.data());
-
-        view->fetchHistory();
-        view->scrollDown();
 }
 
-QString
-TimelineViewManager::chooseRandomColor()
+void
+TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
 {
-        std::random_device random_device;
-        std::mt19937 engine{random_device()};
-        std::uniform_real_distribution<float> dist(0, 1);
+        QQuickImageResponse *imgResponse =
+          imgProvider->requestImageResponse(mxcUrl.remove("mxc://"), QSize());
+        connect(imgResponse, &QQuickImageResponse::finished, this, [this, eventId, imgResponse]() {
+                if (!imgResponse->errorString().isEmpty()) {
+                        nhlog::ui()->error("Error when retrieving image for overlay: {}",
+                                           imgResponse->errorString().toStdString());
+                        return;
+                }
+                auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
 
-        float hue        = dist(engine);
-        float saturation = 0.9;
-        float value      = 0.7;
-
-        int hue_i = hue * 6;
-
-        float f = hue * 6 - hue_i;
-
-        float p = value * (1 - saturation);
-        float q = value * (1 - f * saturation);
-        float t = value * (1 - (1 - f) * saturation);
-
-        float r = 0;
-        float g = 0;
-        float b = 0;
-
-        if (hue_i == 0) {
-                r = value;
-                g = t;
-                b = p;
-        } else if (hue_i == 1) {
-                r = q;
-                g = value;
-                b = p;
-        } else if (hue_i == 2) {
-                r = p;
-                g = value;
-                b = t;
-        } else if (hue_i == 3) {
-                r = p;
-                g = q;
-                b = value;
-        } else if (hue_i == 4) {
-                r = t;
-                g = p;
-                b = value;
-        } else if (hue_i == 5) {
-                r = value;
-                g = p;
-                b = q;
-        }
-
-        int ri = r * 256;
-        int gi = g * 256;
-        int bi = b * 256;
-
-        QColor color(ri, gi, bi);
-
-        return color.name();
-}
-
-bool
-TimelineViewManager::hasLoaded() const
-{
-        return std::all_of(views_.cbegin(), views_.cend(), [](const auto &view) {
-                return view.second->hasLoaded();
+                auto imgDialog = new dialogs::ImageOverlay(pixmap);
+                imgDialog->showFullScreen();
+                connect(imgDialog, &dialogs::ImageOverlay::saving, timeline_, [this, eventId]() {
+                        timeline_->saveMedia(eventId);
+                });
         });
+}
+
+void
+TimelineViewManager::updateReadReceipts(const QString &room_id,
+                                        const std::vector<QString> &event_ids)
+{
+        auto room = models.find(room_id);
+        if (room != models.end()) {
+                room.value()->markEventsAsRead(event_ids);
+        }
+}
+
+void
+TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
+{
+        for (const auto &e : msgs) {
+                addRoom(e.first);
+
+                models.value(e.first)->addEvents(e.second);
+        }
+}
+
+void
+TimelineViewManager::queueTextMessage(const QString &msg, const std::optional<RelatedInfo> &related)
+{
+        mtx::events::msg::Text text = {};
+        text.body                   = msg.trimmed().toStdString();
+
+        if (settings->isMarkdownEnabled()) {
+                text.formatted_body = utils::markdownToHtml(msg).toStdString();
+
+                // Don't send formatted_body, when we don't need to
+                if (text.formatted_body.find("<") == std::string::npos)
+                        text.formatted_body = "";
+                else
+                        text.format = "org.matrix.custom.html";
+        }
+
+        if (related) {
+                QString body;
+                bool firstLine = true;
+                for (const auto &line : related->quoted_body.split("\n")) {
+                        if (firstLine) {
+                                firstLine = false;
+                                body = QString("> <%1> %2\n").arg(related->quoted_user).arg(line);
+                        } else {
+                                body = QString("%1\n> %2\n").arg(body).arg(line);
+                        }
+                }
+
+                text.body = QString("%1\n%2").arg(body).arg(msg).toStdString();
+
+                // NOTE(Nico): rich replies always need a formatted_body!
+                text.format = "org.matrix.custom.html";
+                if (settings->isMarkdownEnabled())
+                        text.formatted_body =
+                          utils::getFormattedQuoteBody(*related, utils::markdownToHtml(msg))
+                            .toStdString();
+                else
+                        text.formatted_body =
+                          utils::getFormattedQuoteBody(*related, msg.toHtmlEscaped()).toStdString();
+
+                text.relates_to.in_reply_to.event_id = related->related_event;
+        }
+
+        if (timeline_)
+                timeline_->sendMessage(text);
+}
+
+void
+TimelineViewManager::queueEmoteMessage(const QString &msg)
+{
+        auto html = utils::markdownToHtml(msg);
+
+        mtx::events::msg::Emote emote;
+        emote.body = msg.trimmed().toStdString();
+
+        if (html != msg.trimmed().toHtmlEscaped() && settings->isMarkdownEnabled()) {
+                emote.formatted_body = html.toStdString();
+                emote.format         = "org.matrix.custom.html";
+        }
+
+        if (timeline_)
+                timeline_->sendMessage(emote);
+}
+
+void
+TimelineViewManager::queueImageMessage(const QString &roomid,
+                                       const QString &filename,
+                                       const std::optional<mtx::crypto::EncryptedFile> &file,
+                                       const QString &url,
+                                       const QString &mime,
+                                       uint64_t dsize,
+                                       const QSize &dimensions,
+                                       const std::optional<RelatedInfo> &related)
+{
+        mtx::events::msg::Image image;
+        image.info.mimetype = mime.toStdString();
+        image.info.size     = dsize;
+        image.body          = filename.toStdString();
+        image.url           = url.toStdString();
+        image.info.h        = dimensions.height();
+        image.info.w        = dimensions.width();
+        image.file          = file;
+
+        if (related)
+                image.relates_to.in_reply_to.event_id = related->related_event;
+
+        models.value(roomid)->sendMessage(image);
+}
+
+void
+TimelineViewManager::queueFileMessage(
+  const QString &roomid,
+  const QString &filename,
+  const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
+  const QString &url,
+  const QString &mime,
+  uint64_t dsize,
+  const std::optional<RelatedInfo> &related)
+{
+        mtx::events::msg::File file;
+        file.info.mimetype = mime.toStdString();
+        file.info.size     = dsize;
+        file.body          = filename.toStdString();
+        file.url           = url.toStdString();
+        file.file          = encryptedFile;
+
+        if (related)
+                file.relates_to.in_reply_to.event_id = related->related_event;
+
+        models.value(roomid)->sendMessage(file);
+}
+
+void
+TimelineViewManager::queueAudioMessage(const QString &roomid,
+                                       const QString &filename,
+                                       const std::optional<mtx::crypto::EncryptedFile> &file,
+                                       const QString &url,
+                                       const QString &mime,
+                                       uint64_t dsize,
+                                       const std::optional<RelatedInfo> &related)
+{
+        mtx::events::msg::Audio audio;
+        audio.info.mimetype = mime.toStdString();
+        audio.info.size     = dsize;
+        audio.body          = filename.toStdString();
+        audio.url           = url.toStdString();
+        audio.file          = file;
+
+        if (related)
+                audio.relates_to.in_reply_to.event_id = related->related_event;
+
+        models.value(roomid)->sendMessage(audio);
+}
+
+void
+TimelineViewManager::queueVideoMessage(const QString &roomid,
+                                       const QString &filename,
+                                       const std::optional<mtx::crypto::EncryptedFile> &file,
+                                       const QString &url,
+                                       const QString &mime,
+                                       uint64_t dsize,
+                                       const std::optional<RelatedInfo> &related)
+{
+        mtx::events::msg::Video video;
+        video.info.mimetype = mime.toStdString();
+        video.info.size     = dsize;
+        video.body          = filename.toStdString();
+        video.url           = url.toStdString();
+        video.file          = file;
+
+        if (related)
+                video.relates_to.in_reply_to.event_id = related->related_event;
+
+        models.value(roomid)->sendMessage(video);
 }

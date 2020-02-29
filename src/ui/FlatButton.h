@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QPaintEvent>
-#include <QPainter>
 #include <QPushButton>
 #include <QStateMachine>
 
@@ -20,7 +18,7 @@ class FlatButtonStateMachine : public QStateMachine
 
 public:
         explicit FlatButtonStateMachine(FlatButton *parent);
-        ~FlatButtonStateMachine();
+        ~FlatButtonStateMachine() override;
 
         void setOverlayOpacity(qreal opacity);
         void setCheckedOverlayProgress(qreal opacity);
@@ -93,16 +91,16 @@ class FlatButton : public QPushButton
         Q_PROPERTY(qreal fontSize WRITE setFontSize READ fontSize)
 
 public:
-        explicit FlatButton(QWidget *parent         = 0,
+        explicit FlatButton(QWidget *parent         = nullptr,
                             ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
         explicit FlatButton(const QString &text,
-                            QWidget *parent         = 0,
+                            QWidget *parent         = nullptr,
                             ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
         FlatButton(const QString &text,
                    ui::Role role,
-                   QWidget *parent         = 0,
+                   QWidget *parent         = nullptr,
                    ui::ButtonPreset preset = ui::ButtonPreset::FlatPreset);
-        ~FlatButton();
+        ~FlatButton() override;
 
         void applyPreset(ui::ButtonPreset preset);
 

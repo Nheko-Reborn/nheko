@@ -19,9 +19,11 @@
 
 #include <QComboBox>
 #include <QFontDatabase>
+#include <QFormLayout>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
+#include <QProcessEnvironment>
 #include <QSharedPointer>
 #include <QWidget>
 
@@ -56,6 +58,7 @@ public:
 
         void setFontSize(double size);
         void setFontFamily(QString family);
+        void setEmojiFontFamily(QString family);
 
         void setGroupView(bool state)
         {
@@ -63,6 +66,12 @@ public:
                         emit groupViewStateChanged(state);
 
                 isGroupViewEnabled_ = state;
+                save();
+        }
+
+        void setMarkdownEnabled(bool state)
+        {
+                isMarkdownEnabled_ = state;
                 save();
         }
 
@@ -84,29 +93,46 @@ public:
                 save();
         }
 
-        QString theme() const { return !theme_.isEmpty() ? theme_ : "light"; }
+        void setAvatarCircles(bool state)
+        {
+                avatarCircles_ = state;
+                save();
+        }
+
+        QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
+        bool isAvatarCirclesEnabled() const { return avatarCircles_; }
+        bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         double fontSize() const { return baseFontSize_; }
         QString font() const { return font_; }
+        QString emojiFont() const { return emojiFont_; }
 
 signals:
         void groupViewStateChanged(bool state);
 
 private:
+        // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
+        QString defaultTheme_ =
+          QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
+            ? "light"
+            : "system";
         QString theme_;
         bool isTrayEnabled_;
         bool isStartInTrayEnabled_;
         bool isGroupViewEnabled_;
+        bool isMarkdownEnabled_;
         bool isTypingNotificationsEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
+        bool avatarCircles_;
         double baseFontSize_;
         QString font_;
+        QString emojiFont_;
 };
 
 class HorizontalLine : public QFrame
@@ -122,11 +148,10 @@ class UserSettingsPage : public QWidget
         Q_OBJECT
 
 public:
-        UserSettingsPage(QSharedPointer<UserSettings> settings, QWidget *parent = 0);
+        UserSettingsPage(QSharedPointer<UserSettings> settings, QWidget *parent = nullptr);
 
 protected:
         void showEvent(QShowEvent *event) override;
-        void resizeEvent(QResizeEvent *event) override;
         void paintEvent(QPaintEvent *event) override;
 
 signals:
@@ -141,8 +166,8 @@ private slots:
 private:
         // Layouts
         QVBoxLayout *topLayout_;
-        QVBoxLayout *mainLayout_;
         QHBoxLayout *topBarLayout_;
+        QFormLayout *formLayout_;
 
         // Shared settings object.
         QSharedPointer<UserSettings> settings_;
@@ -152,7 +177,9 @@ private:
         Toggle *groupViewToggle_;
         Toggle *typingNotifications_;
         Toggle *readReceipts_;
+        Toggle *markdownEnabled_;
         Toggle *desktopNotifications_;
+        Toggle *avatarCircles_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
 
@@ -160,6 +187,7 @@ private:
         QComboBox *scaleFactorCombo_;
         QComboBox *fontSizeCombo_;
         QComboBox *fontSelectionCombo_;
+        QComboBox *emojiFontSelectionCombo_;
 
         int sideMargin_ = 0;
 };

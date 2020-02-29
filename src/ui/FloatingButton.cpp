@@ -1,3 +1,4 @@
+#include <QPainter>
 #include <QPainterPath>
 
 #include "FloatingButton.h"
