@@ -111,7 +111,7 @@ on_success:
     - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -uredsky17:%BINTRAY_APIKEY% https://api.bintray.com/content/nheko-reborn/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
 
 before_deploy:
-  - ps: .\.ci\upload-nightly.ps
+  - ps: .\.ci\upload-nightly.ps1
 deploy:
     - description: "Development builds"
       provider: GitHub
