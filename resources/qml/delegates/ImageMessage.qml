@@ -12,6 +12,20 @@ Item {
 	width: tooHigh ? (timelineRoot.height / 2) / model.data.proportionalHeight : tempWidth
 
 	Image {
+		id: blurhash
+		anchors.fill: parent
+		visible: img.status != Image.Ready
+
+		source: model.data.blurhash ? ("image://blurhash/" + model.data.blurhash) : ("image://colorimage/:/icons/icons/ui/do-not-disturb-rounded-sign@2x.png?"+colors.buttonText)
+		asynchronous: true
+		fillMode: Image.PreserveAspectFit
+
+
+		sourceSize.width: parent.width
+		sourceSize.height: parent.height
+	}
+
+	Image {
 		id: img
 		anchors.fill: parent
 

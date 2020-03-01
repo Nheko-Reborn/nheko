@@ -47,6 +47,8 @@ url(const mtx::events::collections::TimelineEvents &event);
 std::string
 thumbnail_url(const mtx::events::collections::TimelineEvents &event);
 std::string
+blurhash(const mtx::events::collections::TimelineEvents &event);
+std::string
 mimetype(const mtx::events::collections::TimelineEvents &event);
 std::string
 in_reply_to_event(const mtx::events::collections::TimelineEvents &event);

@@ -4,6 +4,7 @@
 #include <QPalette>
 #include <QQmlContext>
 
+#include "BlurhashProvider.h"
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
@@ -69,6 +70,7 @@ TimelineViewManager::userColor(QString id, QColor background)
 TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
+  , blurhashProvider(new BlurhashProvider())
   , settings(userSettings)
 {
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
@@ -99,6 +101,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
+        view->engine()->addImageProvider("blurhash", blurhashProvider);
         view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
 
         connect(dynamic_cast<ChatPage *>(parent),
@@ -270,11 +273,13 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &mime,
                                        uint64_t dsize,
                                        const QSize &dimensions,
+                                       const QString &blurhash,
                                        const std::optional<RelatedInfo> &related)
 {
         mtx::events::msg::Image image;
         image.info.mimetype = mime.toStdString();
         image.info.size     = dsize;
+        image.info.blurhash = blurhash.toStdString();
         image.body          = filename.toStdString();
         image.url           = url.toStdString();
         image.info.h        = dimensions.height();

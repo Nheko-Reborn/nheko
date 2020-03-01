@@ -14,6 +14,7 @@
 #include "Utils.h"
 
 class MxcImageProvider;
+class BlurhashProvider;
 class ColorImageProvider;
 class UserSettings;
 
@@ -79,6 +80,7 @@ public slots:
                                const QString &mime,
                                uint64_t dsize,
                                const QSize &dimensions,
+                               const QString &blurhash,
                                const std::optional<RelatedInfo> &related);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
@@ -112,6 +114,7 @@ private:
 
         MxcImageProvider *imgProvider;
         ColorImageProvider *colorImgProvider;
+        BlurhashProvider *blurhashProvider;
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
         TimelineModel *timeline_ = nullptr;

@@ -114,6 +114,7 @@ signals:
                            const QString &mime,
                            qint64 dsize,
                            const QSize &dimensions,
+                           const QString &blurhash,
                            const std::optional<RelatedInfo> &related);
 
         void contentLoaded();
