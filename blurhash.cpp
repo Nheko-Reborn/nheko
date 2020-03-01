@@ -4,7 +4,7 @@
 #include <array>
 #include <cassert>
 #include <cmath>
-#include <vector>
+#include <stdexcept>
 
 #ifdef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
