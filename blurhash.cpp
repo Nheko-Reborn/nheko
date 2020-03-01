@@ -155,7 +155,6 @@ struct Color
                 b /= scale;
                 return *this;
         }
-        friend Color operator/(Color lhs, float rhs) { return (lhs /= rhs); }
         Color &operator+=(const Color &rhs)
         {
                 r += rhs.r;
@@ -163,7 +162,6 @@ struct Color
                 b += rhs.b;
                 return *this;
         }
-        friend Color operator+(Color lhs, const Color &rhs) { return (lhs += rhs); }
 };
 
 Color
