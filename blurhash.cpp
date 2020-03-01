@@ -1,3 +1,5 @@
+#include "blurhash.hpp"
+
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -5,13 +7,12 @@
 #include <vector>
 
 #ifdef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
 #include <doctest.h>
 #endif
 
 using namespace std::literals;
 
+namespace {
 constexpr std::array<char, 84> int_to_b83{
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%*+,-.:;=?@[]^_{|}~"};
 
@@ -98,7 +99,7 @@ decodeMaxAC(std::string_view maxAC)
 int
 encodeMaxAC(float maxAC)
 {
-        return int(std::max(0., std::min(82., std::floor(maxAC * 166 - 0.5))));
+        return std::max(0, std::min(82, int(maxAC * 166 - 0.5)));
 }
 
 float
@@ -224,13 +225,29 @@ decodeAC(std::string_view value, float maximumValue)
         return decodeAC(decode83(value), maximumValue);
 }
 
-namespace blurhash {
-struct Image
+Color
+multiplyBasisFunction(Components components, int width, int height, unsigned char *pixels)
 {
-        size_t width, height;
-        std::vector<unsigned char> image; // pixels rgb
-};
+        Color c{};
+        float normalisation = (components.x == 0 && components.y == 0) ? 1 : 2;
 
+        for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                        float basis = std::cos(M_PI * components.x * x / float(width)) *
+                                      std::cos(M_PI * components.y * y / float(height));
+                        c.r += basis * srgbToLinear(pixels[3 * x + 0 + y * width * 3]);
+                        c.g += basis * srgbToLinear(pixels[3 * x + 1 + y * width * 3]);
+                        c.b += basis * srgbToLinear(pixels[3 * x + 2 + y * width * 3]);
+                }
+        }
+
+        float scale = normalisation / (width * height);
+        c *= scale;
+        return c;
+}
+}
+
+namespace blurhash {
 Image
 decode(std::string_view blurhash, size_t width, size_t height)
 {
@@ -283,6 +300,58 @@ decode(std::string_view blurhash, size_t width, size_t height)
         i.width  = width;
 
         return i;
+}
+
+std::string
+encode(unsigned char *image, size_t width, size_t height, int components_x, int components_y)
+{
+        if (width < 1 || height < 1 || components_x < 1 || components_x > 9 || components_y < 1 ||
+            components_y > 9 || !image)
+                return "";
+
+        std::vector<Color> factors;
+        factors.reserve(components_x * components_y);
+        for (int y = 0; y < components_y; y++) {
+                for (int x = 0; x < components_x; x++) {
+                        factors.push_back(multiplyBasisFunction({x, y}, width, height, image));
+                }
+        }
+
+        assert(factors.size() > 0);
+
+        auto dc = factors.front();
+        factors.erase(factors.begin());
+
+        std::string h;
+
+        h += leftPad(encode83(packComponents({components_x, components_y})), 1);
+
+        float maximumValue;
+        if (!factors.empty()) {
+                float actualMaximumValue = 0;
+                for (auto ac : factors) {
+                        actualMaximumValue = std::max({
+                          std::abs(ac.r),
+                          std::abs(ac.g),
+                          std::abs(ac.b),
+                          actualMaximumValue,
+                        });
+                }
+
+                int quantisedMaximumValue = encodeMaxAC(actualMaximumValue);
+                maximumValue = ((float)quantisedMaximumValue + 1) / 166;
+                h += leftPad(encode83(quantisedMaximumValue), 1);
+        } else {
+                maximumValue = 1;
+                h += leftPad(encode83(0), 1);
+        }
+
+        h += leftPad(encode83(encodeDC(dc)), 4);
+
+        for (auto ac : factors)
+                h += leftPad(encode83(encodeAC(ac, maximumValue)), 2);
+
+        return h;
 }
 }
 
@@ -385,5 +454,17 @@ TEST_CASE("decode")
         CHECK(i1.width == 0);
         CHECK(i1.height == 0);
         CHECK(i1.image.size() == 0);
+}
+
+TEST_CASE("encode")
+{
+        CHECK(blurhash::encode(nullptr, 360, 200, 4, 3) == "");
+
+        std::vector<unsigned char> black(360 * 200 * 3, 0);
+        CHECK(blurhash::encode(black.data(), 0, 200, 4, 3) == "");
+        CHECK(blurhash::encode(black.data(), 360, 0, 4, 3) == "");
+        CHECK(blurhash::encode(black.data(), 360, 200, 0, 3) == "");
+        CHECK(blurhash::encode(black.data(), 360, 200, 4, 0) == "");
+        CHECK(blurhash::encode(black.data(), 360, 200, 4, 3) == "L00000fQfQfQfQfQfQfQfQfQfQfQ");
 }
 #endif

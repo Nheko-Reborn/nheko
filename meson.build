@@ -2,7 +2,7 @@ project('blurhash', 'cpp',
   version : '0.1',
   default_options : ['warning_level=3', 'cpp_std=c++17'])
 
-static_library('blurhash',
+lib = static_library('blurhash',
            'blurhash.cpp',
            install : true)
 
@@ -14,3 +14,6 @@ tests = executable('blurhash-tests',
 	   dependencies: doctest_dep,
            install : false)
 test('blurhash-tests', tests)
+
+executable('blurhash2bmp', 'blurhash2bmp.cpp', link_with: lib, install: true)
+executable('blurhash', 'image2blurhash.cpp', link_with: lib, install: true)
