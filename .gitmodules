@@ -1,0 +1,3 @@
+[submodule "subprojects/doctest"]
+	path = subprojects/doctest
+	url = https://github.com/onqtam/doctest.git
