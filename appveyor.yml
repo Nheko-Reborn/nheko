@@ -9,10 +9,14 @@ platform: x64
 environment:
     BINTRAY_APIKEY:
         secure: "iGl5mzE9/ta9kFELUxDw9XtlYMSCMai9xowXIkYzU8WKHz7NfW0mLwMJZvblZFXJ"
+    MATRIX_ACCESS_TOKEN:
+        secure: Qoy+QQ8zWXYCQrck9GtXJsoPTv9r/rhgCDUlKJ6ue+gkteYG40E9MxgwP1svn6bse20H4z6Svrxn8kFbcJB7Wg2Cnv1s326/vsJJzhWir2eHFFGK+f4SB992/U0HoQmk3Cq5hPk7dLcA7KqHIa1g1PTSFPfl1VODJ2UqqAyn8nzbC5ym+wwU1buJqoWPlTyHBW7eE8wNe77+qI18XpF7NN8yuOOyg3Tzup9YyXLrI36XiJu/5JD3j3s3V1QiUTpuLyQzqwuBUOf1MHTbzuPwHm3ZwzSM98WD6aL6riaK9qa7mDbSx1aY0ukIYSY9IdAfHNwZY/DEAn+QAVD+ZTvPq04ASv+kmSFpOBKr07kpqfM=
+
+
 
 cache:
-  - c:\hunter\ -> appveyor.yml
-  - build\_deps -> appveyor.yml,deps\CMakeLists.txt
+  - c:\hunter\
+  - build\_deps -> appveyor.yml
 
 build:
     verbosity: minimal
@@ -106,6 +110,8 @@ after_build:
 on_success:
     - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -uredsky17:%BINTRAY_APIKEY% https://api.bintray.com/content/nheko-reborn/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
 
+before_deploy:
+  - ps: .\.ci\upload-nightly.ps1
 deploy:
     - description: "Development builds"
       provider: GitHub

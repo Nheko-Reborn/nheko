@@ -33,6 +33,7 @@ matrix:
                 - ninja
                 - openssl
                 - qt5
+                - python3 # for uploads
               update: true # workaround for broken travis homebrew
         - os: linux
           compiler: gcc-7
@@ -144,34 +145,14 @@ script:
     - sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     - cp ./.ci/bintray-release.json .
 deploy:
-- provider: s3
-  access_key_id: $ARTIFACTS_KEY
-  secret_access_key: $ARTIFACTS_SECRET
-  bucket: $ARTIFACTS_BUCKET
-  region: $AWS_DEFAULT_REGION
-  detect_encoding: true
-  cache_control: "max-age=31536000"
+- provider: script
+  script: ./.ci/upload-nightly.sh
   skip_cleanup: true
-  acl: public_read
-  local_dir: artifacts
   on:
     condition: "$DEPLOYMENT == 1"
     repo: Nheko-Reborn/nheko
     tags: false
     all_branches: true
-- provider: bintray
-  user: "redsky17"
-  key:
-    secure: "2C+ESOClZdNCDzfUfE8Rcdn9+BM3/5x1lebGS0qRxICMAuylx50C8RAxlqKIFNI1J+IMnj5xhK+1oWsLg6wUdo8B3JocvM6P1NbC/WwfY5UJVwtSmzcqvEC+IjM90Bng8OoM5f6ED3IAUyYPBgo8J14+2l5Oruvr99t0mrpniLXDf66TJrI9u/+05JYa2pm0EWlQkDVaziI+96zAt1pMIX9Z/ToTmUbq2OAlHaN8H4hR5aBRmYuF11FQVyARK64eqRsBV4RXKJ9DjW7BR+pQV008hQUoXrCxK8xIf/Qph9h1fz63961NJxfru62LeuZ4Z8MUcV9L+p0HYZzkhNdn5Z3QFf3SXbrVCYs6LK6+uKHpmYS7vB5XwjDx9SWc2szsd5OVKJg3YEdBcC4KUSL3VEbBHDSQ3GFsVKoBsZvopwHkyCmPotY47HtEiPBLdEcsOvcVyeU5Gfq9EOp9dB+nJbNrujBgav1l13CorkBG2rgD+NRivV1otclXnPsIj85ySrc6xk0VDN3zogLAdLw0f+fNOaK17N8GmhPbCu/iX2Vjem/fdjh4NPC4pSNDei2MoWUfqGBmoTxuQEsZeywigwV2c51W9RZuwo8X810N3ehVcBmmNyLjbKmYT+8Kp+dJbaf/ErFnvdZl06mX2bgyxFakv5iQY3dwX4WYHvl77c4="
-  skip_cleanup: true
-  overwrite: true
-  file: bintray-release.json
-  on:
-    condition: "$DEPLOYMENT == 1"
-    repo: Nheko-Reborn/nheko
-    tags: false
-    all_branches: true
-    deploy: 
 - skip_cleanup: true
   overwrite: true
   provider: releases
