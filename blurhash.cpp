@@ -1,5 +1,6 @@
 #include "blurhash.hpp"
 
+#define _USE_MATH_DEFINES
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -337,7 +338,7 @@ encode(unsigned char *image, size_t width, size_t height, int components_x, int 
                 }
 
                 int quantisedMaximumValue = encodeMaxAC(actualMaximumValue);
-                maximumValue = ((float)quantisedMaximumValue + 1) / 166;
+                maximumValue              = ((float)quantisedMaximumValue + 1) / 166;
                 h += leftPad(encode83(quantisedMaximumValue), 1);
         } else {
                 maximumValue = 1;
@@ -399,7 +400,7 @@ TEST_CASE("AC")
 {
         auto h = "00%#MwS|WCWEM{R*bbWBbH"sv;
         for (size_t i = 0; i < h.size(); i += 2) {
-                auto s = h.substr(i, 2);
+                auto s           = h.substr(i, 2);
                 const auto maxAC = 0.289157f;
                 CHECK(leftPad(encode83(encodeAC(decodeAC(decode83(s), maxAC), maxAC)), 2) == s);
         }
