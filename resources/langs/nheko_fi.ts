@@ -277,6 +277,11 @@
         <source>removed topic</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 created and configured room: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Placeholder</name>
@@ -474,7 +479,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+711"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+714"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation type="unfinished">-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
@@ -538,12 +543,57 @@
         </translation>
     </message>
     <message>
-        <location line="+96"/>
+        <location line="+68"/>
+        <source>%1 opened the room to the public</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 made this room require and invitation to join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>%1 made the room open to guests</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 has closed the room to guest access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>%1 made the room history world readable. Events may be now read by non-joined people</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 set the room history visible to members from this point on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 set the room history visible to members since they were invited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 set the room history visible to members since they joined the room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>%1 has changed the room&apos;s permissions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
         <source>%1 was invited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>%1 changed their display name and avatar.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -563,7 +613,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+9"/>
         <source>%1 rejected their invite.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -600,16 +650,21 @@
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
-        <comment>This is a leave event after the user already left and shouln&apos;t happen apart from state resets</comment>
+        <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>%1 was banned.</source>
+        <location line="+7"/>
+        <source>%1 was banned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+8"/>
+        <source> Reason: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-5"/>
         <source>%1 knocked.</source>
         <translation type="unfinished"></translation>
     </message>
