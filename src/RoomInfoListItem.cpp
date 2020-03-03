@@ -84,9 +84,9 @@ RoomInfoListItem::init(QWidget *parent)
         ripple_overlay_->setClipPath(path);
         ripple_overlay_->setClipping(true);
 
-        avatar_ = new Avatar(this, wm.iconSize);
+        avatar_ = new Avatar(nullptr, wm.iconSize);
         avatar_->setLetter(utils::firstChar(roomName_));
-        avatar_->move(wm.padding, wm.padding);
+        avatar_->resize(wm.iconSize, wm.iconSize);
 
         unreadCountFont_.setPointSizeF(unreadCountFont_.pointSizeF() * 0.8);
         unreadCountFont_.setBold(true);
@@ -146,19 +146,26 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
         auto wm = getMetrics(QFont{});
 
+        QPixmap pixmap(avatar_->size());
         if (isPressed_) {
                 p.fillRect(rect(), highlightedBackgroundColor_);
                 titlePen.setColor(highlightedTitleColor_);
                 subtitlePen.setColor(highlightedSubtitleColor_);
+                pixmap.fill(highlightedBackgroundColor_);
         } else if (underMouse()) {
                 p.fillRect(rect(), hoverBackgroundColor_);
                 titlePen.setColor(hoverTitleColor_);
                 subtitlePen.setColor(hoverSubtitleColor_);
+                pixmap.fill(hoverBackgroundColor_);
         } else {
                 p.fillRect(rect(), backgroundColor_);
                 titlePen.setColor(titleColor_);
                 subtitlePen.setColor(subtitleColor_);
+                pixmap.fill(backgroundColor_);
         }
+
+        avatar_->render(&pixmap, QPoint(), QRegion(), RenderFlags(DrawChildren));
+        p.drawPixmap(QPoint(wm.padding, wm.padding), pixmap);
 
         // Description line with the default font.
         int bottom_y = wm.maxHeight - wm.padding - metrics.ascent() / 2;

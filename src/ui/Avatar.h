@@ -26,7 +26,6 @@ public:
 
         QColor backgroundColor() const;
         QColor textColor() const;
-        int size() const;
 
         QSize sizeHint() const override;
 

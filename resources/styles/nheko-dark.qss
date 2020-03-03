@@ -126,7 +126,7 @@ RoomInfoListItem,
 UserMentionsWidget {
     qproperty-mentionedColor: #a82353;
     qproperty-highlightedBackgroundColor: #4d84c7;
-    qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
+    qproperty-hoverBackgroundColor: rgb(67, 70, 77);
     qproperty-backgroundColor: #2d3139;
 
     qproperty-titleColor: #e4e5e8;
@@ -156,7 +156,7 @@ RoomInfoListItem > Avatar {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #4d84c7;
-    qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
+    qproperty-hoverBackgroundColor: rgb(67, 70, 77);
     qproperty-backgroundColor: #2d3139;
 
     qproperty-avatarBgColor: #202228;
@@ -200,7 +200,7 @@ TopSection {
 }
 
 emoji--Category {
-    qproperty-hoverBackgroundColor: rgba(230, 230, 230, 30);
+    qproperty-hoverBackgroundColor: rgb(67, 70, 77);
 }
 
 FloatingButton {

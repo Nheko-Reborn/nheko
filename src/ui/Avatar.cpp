@@ -38,12 +38,6 @@ Avatar::backgroundColor() const
         return background_color_;
 }
 
-int
-Avatar::size() const
-{
-        return size_;
-}
-
 QSize
 Avatar::sizeHint() const
 {

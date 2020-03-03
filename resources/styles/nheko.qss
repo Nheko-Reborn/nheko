@@ -93,7 +93,7 @@ RaisedButton {
 RoomInfoListItem {
     qproperty-mentionedColor: #a82353;
     qproperty-highlightedBackgroundColor: #38A3D8;
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 40);
+    qproperty-hoverBackgroundColor: rgb(70, 77, 93);
     qproperty-hoverTitleColor: #f2f5f8;
     qproperty-hoverSubtitleColor: white;
     qproperty-backgroundColor: #f2f5f8;
@@ -122,7 +122,7 @@ RoomInfoListItem > Avatar {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 40);
+    qproperty-hoverBackgroundColor: rgb(70, 77, 93);
     qproperty-backgroundColor: #f2f5f8;
 
     qproperty-avatarBgColor: #eee;
@@ -199,7 +199,7 @@ emoji--Panel QScrollBar:vertical { width: 0px; margin: 0px; }
 emoji--Panel QScrollBar::handle:vertical { min-height: 30px; }
 
 emoji--Category {
-    qproperty-hoverBackgroundColor: rgba(200, 200, 200, 70);
+    qproperty-hoverBackgroundColor: rgb(70, 77, 93);
 }
 
 emoji--Category,
