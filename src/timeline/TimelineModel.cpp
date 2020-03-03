@@ -39,17 +39,17 @@ struct RoomEventType
                 case EventType::RoomCanonicalAlias:
                         return qml_mtx_events::EventType::CanonicalAlias;
                 case EventType::RoomCreate:
-                        return qml_mtx_events::EventType::Create;
+                        return qml_mtx_events::EventType::RoomCreate;
                 case EventType::RoomEncrypted:
                         return qml_mtx_events::EventType::Encrypted;
                 case EventType::RoomEncryption:
                         return qml_mtx_events::EventType::Encryption;
                 case EventType::RoomGuestAccess:
-                        return qml_mtx_events::EventType::GuestAccess;
+                        return qml_mtx_events::EventType::RoomGuestAccess;
                 case EventType::RoomHistoryVisibility:
-                        return qml_mtx_events::EventType::HistoryVisibility;
+                        return qml_mtx_events::EventType::RoomHistoryVisibility;
                 case EventType::RoomJoinRules:
-                        return qml_mtx_events::EventType::JoinRules;
+                        return qml_mtx_events::EventType::RoomJoinRules;
                 case EventType::RoomMember:
                         return qml_mtx_events::EventType::Member;
                 case EventType::RoomMessage:
@@ -222,6 +222,7 @@ TimelineModel::roleNames() const
           {State, "state"},
           {IsEncrypted, "isEncrypted"},
           {ReplyTo, "replyTo"},
+          {RoomId, "roomId"},
           {RoomName, "roomName"},
           {RoomTopic, "roomTopic"},
           {Dump, "dump"},
@@ -335,6 +336,8 @@ TimelineModel::data(const QString &id, int role) const
         }
         case ReplyTo:
                 return QVariant(QString::fromStdString(in_reply_to_event(event)));
+        case RoomId:
+                return QVariant(QString::fromStdString(room_id(event)));
         case RoomName:
                 return QVariant(QString::fromStdString(room_name(event)));
         case RoomTopic:
@@ -1472,6 +1475,107 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
 }
 
 QString
+TimelineModel::formatJoinRuleEvent(QString id)
+{
+        if (!events.contains(id))
+                return "";
+
+        auto event =
+          std::get_if<mtx::events::StateEvent<mtx::events::state::JoinRules>>(&events[id]);
+        if (!event)
+                return "";
+
+        QString user = QString::fromStdString(event->sender);
+        QString name = escapeEmoji(displayName(user));
+
+        switch (event->content.join_rule) {
+        case mtx::events::state::JoinRule::Public:
+                return tr("%1 opened the room to the public").arg(name);
+        case mtx::events::state::JoinRule::Invite:
+                return tr("%1 made this room require and invitation to join").arg(name);
+        default:
+                // Currently, knock and private are reserved keywords and not implemented in Matrix.
+                return "";
+        }
+}
+
+QString
+TimelineModel::formatGuestAccessEvent(QString id)
+{
+        if (!events.contains(id))
+                return "";
+
+        auto event =
+          std::get_if<mtx::events::StateEvent<mtx::events::state::GuestAccess>>(&events[id]);
+        if (!event)
+                return "";
+
+        QString user = QString::fromStdString(event->sender);
+        QString name = escapeEmoji(displayName(user));
+
+        switch (event->content.guest_access) {
+        case mtx::events::state::AccessState::CanJoin:
+                return tr("%1 made the room open to guests").arg(name);
+        case mtx::events::state::AccessState::Forbidden:
+                return tr("%1 has closed the room to guest access").arg(name);
+        default:
+                return "";
+        }
+}
+
+QString
+TimelineModel::formatHistoryVisibilityEvent(QString id)
+{
+        if (!events.contains(id))
+                return "";
+
+        auto event =
+          std::get_if<mtx::events::StateEvent<mtx::events::state::HistoryVisibility>>(&events[id]);
+
+        if (!event)
+                return "";
+
+        QString user = QString::fromStdString(event->sender);
+        QString name = escapeEmoji(displayName(user));
+
+        switch (event->content.history_visibility) {
+        case mtx::events::state::Visibility::WorldReadable:
+                return tr("%1 made the room history world readable. Events may be now read by "
+                          "non-joined people")
+                  .arg(name);
+        case mtx::events::state::Visibility::Shared:
+                return tr("%1 set the room history visible to members from this point on")
+                  .arg(name);
+        case mtx::events::state::Visibility::Invited:
+                return tr("%1 set the room history visible to members since they were invited")
+                  .arg(name);
+        case mtx::events::state::Visibility::Joined:
+                return tr("%1 set the room history visible to members since they joined the room")
+                  .arg(name);
+        default:
+                return "";
+        }
+}
+
+QString
+TimelineModel::formatPowerLevelEvent(QString id)
+{
+        if (!events.contains(id))
+                return "";
+
+        auto event =
+          std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(&events[id]);
+        if (!event)
+                return "";
+
+        QString user = QString::fromStdString(event->sender);
+        QString name = escapeEmoji(displayName(user));
+
+        // TODO: power levels rendering is actually a bit complex. work on this later.
+        return tr("%1 has changed the room's permissions.").arg(name);
+}
+
+QString
 TimelineModel::formatMemberEvent(QString id)
 {
         if (!events.contains(id))
@@ -1510,12 +1614,14 @@ TimelineModel::formatMemberEvent(QString id)
 
         QString user = QString::fromStdString(event->state_key);
         QString name = escapeEmoji(displayName(user));
+        QString rendered;
 
         // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
         using namespace mtx::events::state;
         switch (event->content.membership) {
         case Membership::Invite:
-                return tr("%1 was invited.").arg(name);
+                rendered = tr("%1 was invited.").arg(name);
+                break;
         case Membership::Join:
                 if (prevEvent && prevEvent->content.membership == Membership::Join) {
                         bool displayNameChanged =
@@ -1524,47 +1630,57 @@ TimelineModel::formatMemberEvent(QString id)
                           prevEvent->content.avatar_url != event->content.avatar_url;
 
                         if (displayNameChanged && avatarChanged)
-                                return tr("%1 changed their display name and avatar.").arg(name);
+                                rendered =
+                                  tr("%1 changed their display name and avatar.").arg(name);
                         else if (displayNameChanged)
-                                return tr("%1 changed their display name.").arg(name);
+                                rendered = tr("%1 changed their display name.").arg(name);
                         else if (avatarChanged)
-                                return tr("%1 changed their avatar.").arg(name);
+                                rendered = tr("%1 changed their avatar.").arg(name);
                         // the case of nothing changed but join follows join shouldn't happen, so
                         // just show it as join
+                } else {
+                        rendered = tr("%1 joined.").arg(name);
                 }
-                return tr("%1 joined.").arg(name);
+                break;
         case Membership::Leave:
                 if (!prevEvent) // Should only ever happen temporarily
                         return "";
 
                 if (prevEvent->content.membership == Membership::Invite) {
                         if (event->state_key == event->sender)
-                                return tr("%1 rejected their invite.").arg(name);
+                                rendered = tr("%1 rejected their invite.").arg(name);
                         else
-                                return tr("Revoked the invite to %1.").arg(name);
+                                rendered = tr("Revoked the invite to %1.").arg(name);
                 } else if (prevEvent->content.membership == Membership::Join) {
                         if (event->state_key == event->sender)
-                                return tr("%1 left the room.").arg(name);
+                                rendered = tr("%1 left the room.").arg(name);
                         else
-                                return tr("Kicked %1.").arg(name);
+                                rendered = tr("Kicked %1.").arg(name);
                 } else if (prevEvent->content.membership == Membership::Ban) {
-                        return tr("Unbanned %1").arg(name);
+                        rendered = tr("Unbanned %1").arg(name);
                 } else if (prevEvent->content.membership == Membership::Knock) {
                         if (event->state_key == event->sender)
-                                return tr("%1 redacted their knock.").arg(name);
+                                rendered = tr("%1 redacted their knock.").arg(name);
                         else
-                                return tr("Rejected the knock from %1.").arg(name);
+                                rendered = tr("Rejected the knock from %1.").arg(name);
                 } else
                         return tr("%1 left after having already left!",
-                                  "This is a leave event after the user already left and shouln't "
+                                  "This is a leave event after the user already left and shouldn't "
                                   "happen apart from state resets")
                           .arg(name);
+                break;
 
         case Membership::Ban:
-                return tr("%1 was banned.").arg(name);
+                rendered = tr("%1 was banned").arg(name);
+                break;
         case Membership::Knock:
-                return tr("%1 knocked.").arg(name);
-        default:
-                return "";
+                rendered = tr("%1 knocked.").arg(name);
+                break;
         }
+
+        if (event->content.reason != "") {
+                rendered += tr(" Reason: %1").arg(QString::fromStdString(event->content.reason));
+        }
+
+        return rendered;
 }
