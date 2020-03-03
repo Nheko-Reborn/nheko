@@ -1530,7 +1530,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
         if (total == 2)
                 return first_member;
         else if (total > 2)
-                return QString("%1 and %2 others").arg(first_member).arg(total);
+                return QString("%1 and %2 others").arg(first_member).arg(total - 1);
 
         return "Empty Room";
 }
