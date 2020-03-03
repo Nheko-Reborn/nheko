@@ -138,7 +138,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+59"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+60"/>
         <source>Apply</source>
         <translation>Apply</translation>
     </message>
@@ -202,7 +202,7 @@
         <translation>LOGIN</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+85"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autodiscovery failed. Received malformed response.</translation>
     </message>
@@ -297,7 +297,7 @@
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+80"/>
+        <location filename="../../src/RegisterPage.cpp" line="+87"/>
         <source>Username</source>
         <translation>Username</translation>
     </message>
@@ -322,7 +322,12 @@
         <translation>REGISTER</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+54"/>
+        <source>No supported registration flows!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+132"/>
         <source>Invalid username</source>
         <translation>Invalid username</translation>
     </message>
@@ -361,12 +366,12 @@
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+95"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+97"/>
         <source>Leave room</source>
         <translation>Leave room</translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+154"/>
         <source>Accept</source>
         <translation>Accept</translation>
     </message>
@@ -451,7 +456,7 @@
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+86"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -469,7 +474,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+716"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+711"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation type="unfinished">-- Encrypted Event (No keys found for decryption) --</translation>
@@ -524,7 +529,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+126"/>
+        <location line="+129"/>
         <source>%1 and %2 are typing</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -533,7 +538,7 @@
         </translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+96"/>
         <source>%1 was invited.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -612,12 +617,12 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+64"/>
+        <location filename="../qml/TimelineRow.qml" line="+84"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -717,82 +722,77 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+189"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+290"/>
         <source>Minimize to tray</source>
         <translation>Minimize to tray</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Start in tray</source>
         <translation>Start in tray</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
         <source>Group&apos;s sidebar</source>
         <translation>Group&apos;s sidebar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-1"/>
         <source>Circular Avatars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Typing notifications</source>
         <translation>Typing notifications</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Read receipts</source>
         <translation>Read receipts</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Send messages as Markdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Desktop notifications</source>
         <translation>Desktop notifications</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Scale factor</source>
         <translation>Scale factor</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+4"/>
         <source>Font size</source>
         <translation>Font size</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+1"/>
         <source>Font Family</source>
         <translation>Font Family</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Emoji Font Famly</source>
-        <translation>Emoji Font Family</translation>
-    </message>
-    <message>
-        <location line="+33"/>
+        <location line="+8"/>
         <source>Theme</source>
         <translation>Theme</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+3"/>
         <source>Device ID</source>
         <translation>Device ID</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+1"/>
         <source>Device Fingerprint</source>
         <translation>Device Fingerprint</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="-56"/>
         <source>Session Keys</source>
         <translation>Session Keys</translation>
     </message>
@@ -802,22 +802,32 @@
         <translation>IMPORT</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>EXPORT</source>
         <translation>EXPORT</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-25"/>
         <source>ENCRYPTION</source>
         <translation>ENCRYPTION</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-60"/>
         <source>GENERAL</source>
         <translation>GENERAL</translation>
     </message>
     <message>
-        <location line="+168"/>
+        <location line="+22"/>
+        <source>INTERFACE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+105"/>
+        <source>Emoji Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+142"/>
         <source>Open Sessions File</source>
         <translation>Open Sessions File</translation>
     </message>
@@ -828,7 +838,7 @@
         <location line="+2"/>
         <location line="+2"/>
         <location line="+19"/>
-        <location line="+10"/>
+        <location line="+11"/>
         <location line="+18"/>
         <location line="+2"/>
         <location line="+2"/>
@@ -836,7 +846,7 @@
         <translation>Error</translation>
     </message>
     <message>
-        <location line="-73"/>
+        <location line="-74"/>
         <location line="+32"/>
         <source>File Password</source>
         <translation>File Password</translation>
@@ -858,7 +868,7 @@
         <translation>Enter passphrase to encrypt your session keys:</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>File to save the exported session keys</source>
         <translation>File to save the exported session keys</translation>
     </message>
@@ -935,6 +945,29 @@
         <location line="+9"/>
         <source>Direct Chat</source>
         <translation>Direct Chat</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::FallbackAuth</name>
+    <message>
+        <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
+        <source>Open Fallback in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Confirm</source>
+        <translation type="unfinished">Confirm</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Open the fallback, follow the steps and confirm after completing them.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1165,7 +1198,7 @@ Media size: %2
         <translation>Failed to enable encryption: %1</translation>
     </message>
     <message>
-        <location line="+145"/>
+        <location line="+147"/>
         <source>Select an avatar</source>
         <translation>Select an avatar</translation>
     </message>
@@ -1222,7 +1255,7 @@ Media size: %2
 <context>
     <name>emoji::Panel</name>
     <message>
-        <location filename="../../src/emoji/Panel.cpp" line="+126"/>
+        <location filename="../../src/emoji/Panel.cpp" line="+122"/>
         <source>Smileys &amp; People</source>
         <translation>Smileys &amp; People</translation>
     </message>

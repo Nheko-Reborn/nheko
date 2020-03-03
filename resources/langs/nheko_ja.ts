@@ -138,7 +138,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+59"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+60"/>
         <source>Apply</source>
         <translation>適用</translation>
     </message>
@@ -202,7 +202,7 @@
         <translation>ログイン</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+85"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>自動検出できませんでした。不正な形式の応答を受信しました。</translation>
     </message>
@@ -297,7 +297,7 @@
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+80"/>
+        <location filename="../../src/RegisterPage.cpp" line="+87"/>
         <source>Username</source>
         <translation>ユーザー名</translation>
     </message>
@@ -322,7 +322,12 @@
         <translation>登録</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+54"/>
+        <source>No supported registration flows!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+132"/>
         <source>Invalid username</source>
         <translation>無効なユーザー名です</translation>
     </message>
@@ -361,12 +366,12 @@
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+95"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+97"/>
         <source>Leave room</source>
         <translation>部屋を出る</translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+154"/>
         <source>Accept</source>
         <translation>容認</translation>
     </message>
@@ -451,7 +456,7 @@
         <translation>絵文字</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+86"/>
         <source>Select a file</source>
         <translation>ファイルを選択</translation>
     </message>
@@ -469,7 +474,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+716"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+711"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation>-- 暗号化イベント (復号鍵が見つかりません) --</translation>
@@ -524,16 +529,15 @@
         <translation>ファイルを保存</translation>
     </message>
     <message numerus="yes">
-        <location line="+126"/>
+        <location line="+129"/>
         <source>%1 and %2 are typing</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
             <numerusform>%1%2が入力しています</numerusform>
-            <numerusform>%1と%2が入力しています</numerusform>
         </translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+96"/>
         <source>%1 was invited.</source>
         <translation>%1が招待されました。</translation>
     </message>
@@ -612,12 +616,12 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+64"/>
+        <location filename="../qml/TimelineRow.qml" line="+84"/>
         <source>Reply</source>
         <translation>返信</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Options</source>
         <translation>オプション</translation>
     </message>
@@ -717,82 +721,77 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+189"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+290"/>
         <source>Minimize to tray</source>
         <translation>トレイへ最小化</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Start in tray</source>
         <translation>トレイで起動</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
         <source>Group&apos;s sidebar</source>
         <translation>グループサイドバー</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-1"/>
         <source>Circular Avatars</source>
         <translation>円形アバター</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Typing notifications</source>
         <translation>入力状態の通知</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Read receipts</source>
         <translation>開封確認</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Send messages as Markdown</source>
         <translation>メッセージをMarkdownとして送信</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>Desktop notifications</source>
         <translation>デスクトップ通知</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Scale factor</source>
         <translation>尺度係数</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+4"/>
         <source>Font size</source>
         <translation>フォントサイズ</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+1"/>
         <source>Font Family</source>
         <translation>フォントファミリー</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Emoji Font Famly</source>
-        <translation>絵文字のフォントファミリー</translation>
-    </message>
-    <message>
-        <location line="+33"/>
+        <location line="+8"/>
         <source>Theme</source>
         <translation>テーマ</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+3"/>
         <source>Device ID</source>
         <translation>デバイスID</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+1"/>
         <source>Device Fingerprint</source>
         <translation>デバイスの指紋</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="-56"/>
         <source>Session Keys</source>
         <translation>セッション鍵</translation>
     </message>
@@ -802,22 +801,32 @@
         <translation>インポート</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
         <source>EXPORT</source>
         <translation>エクスポート</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-25"/>
         <source>ENCRYPTION</source>
         <translation>暗号化</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-60"/>
         <source>GENERAL</source>
         <translation>全般</translation>
     </message>
     <message>
-        <location line="+168"/>
+        <location line="+22"/>
+        <source>INTERFACE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+105"/>
+        <source>Emoji Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+142"/>
         <source>Open Sessions File</source>
         <translation>セッションファイルを開く</translation>
     </message>
@@ -828,7 +837,7 @@
         <location line="+2"/>
         <location line="+2"/>
         <location line="+19"/>
-        <location line="+10"/>
+        <location line="+11"/>
         <location line="+18"/>
         <location line="+2"/>
         <location line="+2"/>
@@ -836,7 +845,7 @@
         <translation>エラー</translation>
     </message>
     <message>
-        <location line="-73"/>
+        <location line="-74"/>
         <location line="+32"/>
         <source>File Password</source>
         <translation>ファイルのパスワード</translation>
@@ -858,7 +867,7 @@
         <translation>セッション鍵を暗号化するためのパスフレーズを入力して下さい:</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>File to save the exported session keys</source>
         <translation>エクスポートされたセッション鍵を保存するファイル</translation>
     </message>
@@ -935,6 +944,29 @@
         <location line="+9"/>
         <source>Direct Chat</source>
         <translation>ダイレクトメッセージ</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::FallbackAuth</name>
+    <message>
+        <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
+        <source>Open Fallback in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation type="unfinished">キャンセル</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Confirm</source>
+        <translation type="unfinished">確認</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Open the fallback, follow the steps and confirm after completing them.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1164,7 +1196,7 @@ Media size: %2
         <translation>暗号化を有効にできませんでした: %1</translation>
     </message>
     <message>
-        <location line="+145"/>
+        <location line="+147"/>
         <source>Select an avatar</source>
         <translation>アバターを選択</translation>
     </message>
@@ -1221,7 +1253,7 @@ Media size: %2
 <context>
     <name>emoji::Panel</name>
     <message>
-        <location filename="../../src/emoji/Panel.cpp" line="+126"/>
+        <location filename="../../src/emoji/Panel.cpp" line="+122"/>
         <source>Smileys &amp; People</source>
         <translation>表情と人</translation>
     </message>
