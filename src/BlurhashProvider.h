@@ -1,11 +1,51 @@
-#include <QQuickImageProvider>
+#pragma once
 
-class BlurhashProvider : public QQuickImageProvider
+#include <QQuickAsyncImageProvider>
+#include <QQuickImageResponse>
+
+#include <QImage>
+#include <QThreadPool>
+
+class BlurhashResponse
+  : public QQuickImageResponse
+  , public QRunnable
 {
 public:
-        BlurhashProvider()
-          : QQuickImageProvider(QQuickImageProvider::Image)
-        {}
+        BlurhashResponse(const QString &id, const QSize &requestedSize)
 
-        QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
+          : m_id(id)
+          , m_requestedSize(requestedSize)
+        {
+                setAutoDelete(false);
+        }
+
+        QQuickTextureFactory *textureFactory() const override
+        {
+                return QQuickTextureFactory::textureFactoryForImage(m_image);
+        }
+        QString errorString() const override { return m_error; }
+
+        void run() override;
+
+        QString m_id, m_error;
+        QSize m_requestedSize;
+        QImage m_image;
+};
+
+class BlurhashProvider
+  : public QObject
+  , public QQuickAsyncImageProvider
+{
+        Q_OBJECT
+public slots:
+        QQuickImageResponse *requestImageResponse(const QString &id,
+                                                  const QSize &requestedSize) override
+        {
+                BlurhashResponse *response = new BlurhashResponse(id, requestedSize);
+                pool.start(response);
+                return response;
+        }
+
+private:
+        QThreadPool pool;
 };

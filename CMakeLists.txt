@@ -479,6 +479,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/notifications/Manager.h
 
 	src/AvatarProvider.h
+	src/BlurhashProvider.h
 	src/Cache_p.h
 	src/ChatPage.h
 	src/CommunitiesList.h

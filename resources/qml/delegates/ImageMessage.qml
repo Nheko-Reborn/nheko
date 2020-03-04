@@ -20,7 +20,6 @@ Item {
 		asynchronous: true
 		fillMode: Image.PreserveAspectFit
 
-
 		sourceSize.width: parent.width
 		sourceSize.height: parent.height
 	}
