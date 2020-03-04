@@ -251,7 +251,7 @@ multiplyBasisFunction(Components components, int width, int height, unsigned cha
 
 namespace blurhash {
 Image
-decode(std::string_view blurhash, size_t width, size_t height)
+decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPixel)
 {
         Image i{};
 
@@ -295,6 +295,9 @@ decode(std::string_view blurhash, size_t width, size_t height)
                         i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.r)));
                         i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.g)));
                         i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.b)));
+
+                        for (size_t p = 3; p < bytesPerPixel; p++)
+                                i.image.push_back(255);
                 }
         }
 

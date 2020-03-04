@@ -332,6 +332,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
                           QImage img;
                           img.loadFromData(bin);
+                          if (img.height() > 200 && img.width() > 360)
+                                  img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
                           std::vector<unsigned char> data;
                           for (int y = 0; y < img.height(); y++) {
                                   for (int x = 0; x < img.width(); x++) {

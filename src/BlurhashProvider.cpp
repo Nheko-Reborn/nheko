@@ -17,26 +17,13 @@ BlurhashProvider::requestImage(const QString &id, QSize *size, const QSize &requ
                 *size = sz;
 
         auto decoded = blurhash::decode(
-          QUrl::fromPercentEncoding(id.toUtf8()).toStdString(), sz.width(), sz.height());
+          QUrl::fromPercentEncoding(id.toUtf8()).toStdString(), sz.width(), sz.height(), 4);
         if (decoded.image.empty()) {
                 *size = QSize();
                 return QImage();
         }
 
-        QImage image(sz, QImage::Format_RGB888);
+        QImage image(decoded.image.data(), decoded.width, decoded.height, QImage::Format_RGB32);
 
-        for (int y = 0; y < sz.height(); y++) {
-                for (int x = 0; x < sz.width(); x++) {
-                        int base = (y * sz.width() + x) * 3;
-                        image.setPixel(x,
-                                       y,
-                                       qRgb(decoded.image[base],
-                                            decoded.image[base + 1],
-                                            decoded.image[base + 2]));
-                }
-        }
-
-        // std::copy(decoded.image.begin(), decoded.image.end(), image.bits());
-
-        return image;
+        return image.copy();
 }
