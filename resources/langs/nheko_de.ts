@@ -6,13 +6,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+223"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutzer konnte nicht eingeladen werden: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+868"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingeladener Benutzer: %1</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -482,7 +482,7 @@
         <location filename="../../src/timeline/TimelineModel.cpp" line="+714"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation>-- verschlüsselter Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
+        <translation>-- Verschlüsseltes Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -506,7 +506,7 @@
         <location line="+29"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation>-- verschlüsselter Event (Unbekannter Eventtyp) --</translation>
+        <translation>-- Verschlüsseltes Event (Unbekannter Eventtyp) --</translation>
     </message>
     <message>
         <location line="+47"/>
