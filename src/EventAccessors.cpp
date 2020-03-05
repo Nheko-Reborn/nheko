@@ -134,6 +134,20 @@ struct EventThumbnailUrl
         }
 };
 
+struct EventBlurhash
+{
+        template<class Content>
+        using blurhash_t = decltype(Content::info.blurhash);
+        template<class T>
+        std::string operator()(const mtx::events::Event<T> &e)
+        {
+                if constexpr (is_detected<blurhash_t, T>::value) {
+                        return e.content.info.blurhash;
+                }
+                return "";
+        }
+};
+
 struct EventFilename
 {
         template<class T>
@@ -346,6 +360,11 @@ std::string
 mtx::accessors::thumbnail_url(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit(EventThumbnailUrl{}, event);
+}
+std::string
+mtx::accessors::blurhash(const mtx::events::collections::TimelineEvents &event)
+{
+        return std::visit(EventBlurhash{}, event);
 }
 std::string
 mtx::accessors::mimetype(const mtx::events::collections::TimelineEvents &event)

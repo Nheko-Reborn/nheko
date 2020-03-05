@@ -47,6 +47,8 @@
 #include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
 
+#include "blurhash.hpp"
+
 // TODO: Needs to be updated with an actual secret.
 static const std::string STORAGE_SECRET_KEY("secret");
 
@@ -324,8 +326,26 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                   }
 
                   QSize dimensions;
-                  if (mimeClass == "image")
+                  QString blurhash;
+                  if (mimeClass == "image") {
                           dimensions = QImageReader(dev.data()).size();
+
+                          QImage img;
+                          img.loadFromData(bin);
+                          if (img.height() > 200 && img.width() > 360)
+                                  img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
+                          std::vector<unsigned char> data;
+                          for (int y = 0; y < img.height(); y++) {
+                                  for (int x = 0; x < img.width(); x++) {
+                                          auto p = img.pixel(x, y);
+                                          data.push_back(static_cast<unsigned char>(qRed(p)));
+                                          data.push_back(static_cast<unsigned char>(qGreen(p)));
+                                          data.push_back(static_cast<unsigned char>(qBlue(p)));
+                                  }
+                          }
+                          blurhash = QString::fromStdString(
+                            blurhash::encode(data.data(), img.width(), img.height(), 4, 3));
+                  }
 
                   http::client()->upload(
                     payload,
@@ -339,6 +359,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                      mime = mime.name(),
                      size = payload.size(),
                      dimensions,
+                     blurhash,
                      related](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
                             if (err) {
                                     emit uploadFailed(
@@ -358,6 +379,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                                mime,
                                                size,
                                                dimensions,
+                                               blurhash,
                                                related);
                     });
           });
@@ -366,37 +388,44 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 text_input_->hideUploadSpinner();
                 emit showNotification(msg);
         });
-        connect(
-          this,
-          &ChatPage::mediaUploaded,
-          this,
-          [this](QString roomid,
-                 QString filename,
-                 std::optional<mtx::crypto::EncryptedFile> encryptedFile,
-                 QString url,
-                 QString mimeClass,
-                 QString mime,
-                 qint64 dsize,
-                 QSize dimensions,
-                 const std::optional<RelatedInfo> &related) {
-                  text_input_->hideUploadSpinner();
+        connect(this,
+                &ChatPage::mediaUploaded,
+                this,
+                [this](QString roomid,
+                       QString filename,
+                       std::optional<mtx::crypto::EncryptedFile> encryptedFile,
+                       QString url,
+                       QString mimeClass,
+                       QString mime,
+                       qint64 dsize,
+                       QSize dimensions,
+                       QString blurhash,
+                       const std::optional<RelatedInfo> &related) {
+                        text_input_->hideUploadSpinner();
 
-                  if (encryptedFile)
-                          encryptedFile->url = url.toStdString();
+                        if (encryptedFile)
+                                encryptedFile->url = url.toStdString();
 
-                  if (mimeClass == "image")
-                          view_manager_->queueImageMessage(
-                            roomid, filename, encryptedFile, url, mime, dsize, dimensions, related);
-                  else if (mimeClass == "audio")
-                          view_manager_->queueAudioMessage(
-                            roomid, filename, encryptedFile, url, mime, dsize, related);
-                  else if (mimeClass == "video")
-                          view_manager_->queueVideoMessage(
-                            roomid, filename, encryptedFile, url, mime, dsize, related);
-                  else
-                          view_manager_->queueFileMessage(
-                            roomid, filename, encryptedFile, url, mime, dsize, related);
-          });
+                        if (mimeClass == "image")
+                                view_manager_->queueImageMessage(roomid,
+                                                                 filename,
+                                                                 encryptedFile,
+                                                                 url,
+                                                                 mime,
+                                                                 dsize,
+                                                                 dimensions,
+                                                                 blurhash,
+                                                                 related);
+                        else if (mimeClass == "audio")
+                                view_manager_->queueAudioMessage(
+                                  roomid, filename, encryptedFile, url, mime, dsize, related);
+                        else if (mimeClass == "video")
+                                view_manager_->queueVideoMessage(
+                                  roomid, filename, encryptedFile, url, mime, dsize, related);
+                        else
+                                view_manager_->queueFileMessage(
+                                  roomid, filename, encryptedFile, url, mime, dsize, related);
+                });
 
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
 

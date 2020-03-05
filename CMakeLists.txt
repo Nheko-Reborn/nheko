@@ -275,37 +275,40 @@ set(SRC_FILES
 	src/ui/ThemeManager.cpp
 
 	src/AvatarProvider.cpp
+	src/BlurhashProvider.cpp
 	src/Cache.cpp
 	src/ChatPage.cpp
-	src/CommunitiesListItem.cpp
+	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
+	src/CommunitiesListItem.cpp
 	src/EventAccessors.cpp
 	src/InviteeItem.cpp
-	src/LoginPage.cpp
 	src/Logging.cpp
+	src/LoginPage.cpp
 	src/MainWindow.cpp
 	src/MatrixClient.cpp
 	src/MxcImageProvider.cpp
-	src/ColorImageProvider.cpp
-	src/QuickSwitcher.cpp
 	src/Olm.cpp
+	src/QuickSwitcher.cpp
 	src/RegisterPage.cpp
 	src/RoomInfoListItem.cpp
 	src/RoomList.cpp
 	src/SideBarActions.cpp
 	src/Splitter.cpp
-	src/popups/SuggestionsPopup.cpp
-	src/popups/PopupItem.cpp
-	src/popups/ReplyPopup.cpp
-	src/popups/UserMentions.cpp
 	src/TextInputWidget.cpp
 	src/TopRoomBar.cpp
 	src/TrayIcon.cpp
-	src/Utils.cpp
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
+	src/Utils.cpp
 	src/WelcomePage.cpp
+	src/popups/PopupItem.cpp
+	src/popups/ReplyPopup.cpp
+	src/popups/SuggestionsPopup.cpp
+	src/popups/UserMentions.cpp
 	src/main.cpp
+
+	third_party/blurhash/blurhash.cpp
 	)
 
 
@@ -333,7 +336,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        7fc1d357afaabb134cb6d9c593f94915973d31fa
+		GIT_TAG        c1ccd6c6cdaead3ff1c2bf336b719ca45fee2d33
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -476,30 +479,31 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/notifications/Manager.h
 
 	src/AvatarProvider.h
+	src/BlurhashProvider.h
 	src/Cache_p.h
 	src/ChatPage.h
-	src/CommunitiesListItem.h
 	src/CommunitiesList.h
+	src/CommunitiesListItem.h
+	src/InviteeItem.h
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MxcImageProvider.h
-	src/InviteeItem.h
 	src/QuickSwitcher.h
 	src/RegisterPage.h
 	src/RoomInfoListItem.h
 	src/RoomList.h
 	src/SideBarActions.h
 	src/Splitter.h
-	src/popups/SuggestionsPopup.h
-	src/popups/ReplyPopup.h
-	src/popups/PopupItem.h
-	src/popups/UserMentions.h
 	src/TextInputWidget.h
 	src/TopRoomBar.h
 	src/TrayIcon.h
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h
 	src/WelcomePage.h
+	src/popups/PopupItem.h
+	src/popups/ReplyPopup.h
+	src/popups/SuggestionsPopup.h
+	src/popups/UserMentions.h
 	)
 
 #
@@ -547,7 +551,7 @@ elseif(WIN32)
 else()
 	target_link_libraries (nheko PRIVATE Qt5::DBus)
 endif()
-target_include_directories(nheko PRIVATE src includes)
+target_include_directories(nheko PRIVATE src includes third_party/blurhash)
 
 target_link_libraries(nheko PRIVATE
 	MatrixClient::MatrixClient
