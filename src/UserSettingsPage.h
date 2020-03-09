@@ -87,6 +87,12 @@ public:
                 save();
         }
 
+        void setButtonsInTimeline(bool state)
+        {
+                isButtonsInTimelineEnabled_ = state;
+                save();
+        }
+
         void setDesktopNotifications(bool state)
         {
                 hasDesktopNotifications_ = state;
@@ -106,6 +112,7 @@ public:
         bool isAvatarCirclesEnabled() const { return avatarCircles_; }
         bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
+        bool isButtonsInTimelineEnabled() const { return isButtonsInTimelineEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         double fontSize() const { return baseFontSize_; }
@@ -127,6 +134,7 @@ private:
         bool isGroupViewEnabled_;
         bool isMarkdownEnabled_;
         bool isTypingNotificationsEnabled_;
+        bool isButtonsInTimelineEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
         bool avatarCircles_;
@@ -175,6 +183,7 @@ private:
         Toggle *trayToggle_;
         Toggle *startInTrayToggle_;
         Toggle *groupViewToggle_;
+        Toggle *timelineButtonsToggle_;
         Toggle *typingNotifications_;
         Toggle *readReceipts_;
         Toggle *markdownEnabled_;

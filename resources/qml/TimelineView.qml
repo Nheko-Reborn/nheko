@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
+import Qt.labs.settings 1.0
 
 import im.nheko 1.0
 
@@ -13,6 +14,18 @@ Item {
 	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
 	property int avatarSize: 40
+
+	Settings {
+		id: settings
+		category: "user"
+		property bool avatar_circles: true
+	}
+
+	Settings {
+		id: timelineSettings
+		category: "user/timeline"
+		property bool buttons: true
+	}
 
 	Menu {
 		id: messageContextMenu
@@ -28,6 +41,10 @@ Item {
 		property string eventId
 		property int eventType
 
+		MenuItem {
+			text: qsTr("Reply")
+			onClicked: chat.model.replyAction(messageContextMenu.eventId)
+		}
 		MenuItem {
 			text: qsTr("Read receipts")
 			onTriggered: chat.model.readReceiptsAction(messageContextMenu.eventId)
@@ -212,6 +229,7 @@ Item {
 								anchors.fill: parent
 								onClicked: chat.model.openUserProfile(modelData.userId)
 								cursorShape: Qt.PointingHandCursor
+								propagateComposedEvents: true
 							}
 						}
 
@@ -225,6 +243,7 @@ Item {
 								anchors.fill: parent
 								onClicked: chat.model.openUserProfile(section.split(" ")[0])
 								cursorShape: Qt.PointingHandCursor
+								propagateComposedEvents: true
 							}
 						}
 					}

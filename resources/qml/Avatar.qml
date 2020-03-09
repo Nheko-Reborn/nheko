@@ -1,18 +1,11 @@
 import QtQuick 2.6
 import QtGraphicalEffects 1.0
-import Qt.labs.settings 1.0
 
 Rectangle {
 	id: avatar
 	width: 48
 	height: 48
 	radius: settings.avatar_circles ? height/2 : 3
-
-	Settings {
-		id: settings
-		category: "user"
-		property bool avatar_circles: true
-	}
 
 	property alias url: img.source
 	property string displayName

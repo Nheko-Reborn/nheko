@@ -4,13 +4,13 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+223"/>
+        <location filename="../../src/ChatPage.cpp" line="+225"/>
         <source>Failed to invite user: %1</source>
         <translation>Nutzer konnte nicht eingeladen werden: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+868"/>
+        <location line="+894"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
@@ -50,12 +50,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-807"/>
+        <location line="-815"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
-        <location line="+399"/>
+        <location line="+407"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Wiederherstellung des OLM Accounts fehlgeschlagen. Bitte logge dich erneut ein.</translation>
     </message>
@@ -479,7 +479,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+714"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+718"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
         <translation>-- Verschlüsseltes Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
@@ -672,7 +672,7 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+84"/>
+        <location filename="../qml/TimelineRow.qml" line="+69"/>
         <source>Reply</source>
         <translation>Antworten</translation>
     </message>
@@ -685,7 +685,12 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+32"/>
+        <location filename="../qml/TimelineView.qml" line="+45"/>
+        <source>Reply</source>
+        <translation type="unfinished">Antworten</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Read receipts</source>
         <translation type="unfinished">Lesebestätigungen</translation>
     </message>
@@ -715,7 +720,7 @@
         <translation>Kein Raum geöffnet</translation>
     </message>
     <message>
-        <location line="+239"/>
+        <location line="+241"/>
         <source>Close</source>
         <translation type="unfinished">Schließen</translation>
     </message>
@@ -777,7 +782,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+290"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+296"/>
         <source>Minimize to tray</source>
         <translation>Ins Benachrichtigungsfeld minimieren</translation>
     </message>
@@ -798,6 +803,11 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Show buttons in timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Typing notifications</source>
         <translation>Schreibbenachrichtigungen</translation>
     </message>
@@ -847,7 +857,7 @@
         <translation>Gerätefingerabdruck</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-57"/>
         <source>Session Keys</source>
         <translation>Sitzungsschlüssel</translation>
     </message>
@@ -867,22 +877,22 @@
         <translation>VERSCHLÜSSELUNG</translation>
     </message>
     <message>
-        <location line="-60"/>
+        <location line="-61"/>
         <source>GENERAL</source>
         <translation>ALLGEMEINES</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+23"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+106"/>
         <source>Emoji Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+147"/>
         <source>Open Sessions File</source>
         <translation>Öffne Sessions Datei</translation>
     </message>
