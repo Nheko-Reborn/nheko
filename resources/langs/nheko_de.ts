@@ -524,7 +524,7 @@
     <message>
         <location line="+46"/>
         <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
         <translation type="unfinished">-- Entschlüsselungsfehler (%1) --</translation>
     </message>
     <message>
@@ -537,9 +537,9 @@
         <location line="+636"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 tippt</numerusform>
+            <numerusform>%1 und %2 tippen</numerusform>
         </translation>
     </message>
     <message>
@@ -635,7 +635,7 @@
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished">Hat die Verbannung von %1. zurückgezogen.</translation>
+        <translation type="unfinished">Hat die Verbannung von %1 zurückgezogen.</translation>
     </message>
     <message>
         <location line="+14"/>

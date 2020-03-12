@@ -525,7 +525,7 @@
     <message>
         <location line="+46"/>
         <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
