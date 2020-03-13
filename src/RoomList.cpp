@@ -16,6 +16,7 @@
  */
 
 #include <limits>
+#include <set>
 
 #include <QObject>
 #include <QPainter>
@@ -328,30 +329,47 @@ RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
         emit sortRoomsByLastMessage();
 }
 
+struct room_sort {
+        bool operator() (const RoomInfoListItem * a, const RoomInfoListItem * b) const {
+                // Sort by "importance" (i.e. invites before mentions before
+                // notifs before new events before old events), then secondly
+                // by recency.
+
+                // Checking importance first
+                const auto a_importance = a->calculateImportance();
+                const auto b_importance = b->calculateImportance();
+                if(a_importance != b_importance) {
+                        return a_importance > b_importance;
+                }
+
+                // Now sort by recency
+                // Zero if empty, otherwise the time that the event occured
+                const uint64_t a_recency = a->lastMessageInfo().userid.isEmpty() ? 0 :
+                                           a->lastMessageInfo().datetime.toMSecsSinceEpoch();
+                const uint64_t b_recency = b->lastMessageInfo().userid.isEmpty() ? 0 :
+                                           b->lastMessageInfo().datetime.toMSecsSinceEpoch();
+                return a_recency > b_recency;
+        }
+};
+
 void
 RoomList::sortRoomsByLastMessage()
 {
         isSortPending_ = false;
 
-        std::multimap<uint64_t, RoomInfoListItem *, std::greater<uint64_t>> times;
+        std::multiset<RoomInfoListItem *, room_sort> times;
 
         for (int ii = 0; ii < contentsLayout_->count(); ++ii) {
                 auto room = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(ii)->widget());
 
                 if (!room)
                         continue;
-
-                // Not a room message.
-                if (room->isInvite())
-                        times.emplace(std::numeric_limits<uint64_t>::max(), room);
-                else if (room->lastMessageInfo().userid.isEmpty())
-                        times.emplace(0, room);
                 else
-                        times.emplace(room->lastMessageInfo().datetime.toMSecsSinceEpoch(), room);
+                        times.insert(room);
         }
 
         for (auto it = times.cbegin(); it != times.cend(); ++it) {
-                const auto roomWidget   = it->second;
+                const auto roomWidget   = *it;
                 const auto currentIndex = contentsLayout_->indexOf(roomWidget);
                 const auto newIndex     = std::distance(times.cbegin(), it);
 

@@ -324,6 +324,15 @@ RoomInfoListItem::updateUnreadMessageCount(int count, int highlightedCount)
         update();
 }
 
+unsigned short int
+RoomInfoListItem::calculateImportance() const
+{
+        return (hasUnreadMessages_) +
+               (unreadMsgCount_ != 0) +
+               (unreadHighlightedMsgCount_ != 0) +
+               (isInvite()) * 4;
+}
+
 void
 RoomInfoListItem::setPressedState(bool state)
 {

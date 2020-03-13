@@ -68,6 +68,8 @@ public:
         void updateUnreadMessageCount(int count, int highlightedCount);
         void clearUnreadMessageCount() { updateUnreadMessageCount(0, 0); };
 
+        unsigned short int calculateImportance() const;
+
         QString roomId() { return roomId_; }
         bool isPressed() const { return isPressed_; }
         int unreadMessageCount() const { return unreadMsgCount_; }
@@ -128,7 +130,7 @@ public:
                         roomType_ = RoomType::Joined;
         }
 
-        bool isInvite() { return roomType_ == RoomType::Invited; }
+        bool isInvite() const { return roomType_ == RoomType::Invited; }
         void setReadState(bool hasUnreadMessages)
         {
                 if (hasUnreadMessages_ != hasUnreadMessages) {
