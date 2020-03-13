@@ -71,6 +71,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                          "Can't instantiate enum!");
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
+        qmlRegisterType<DeviceVerificationFlow>("im.nheko", 1, 0, "DeviceVerificationFlow");
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
 
 #ifdef USE_QUICK_VIEW
@@ -382,4 +383,10 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         }
 
         model->sendMessage(video);
+}
+
+void
+TimelineViewManager::startDummyVerification()
+{
+        emit deviceVerificationRequest(new DeviceVerificationFlow(this));
 }

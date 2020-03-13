@@ -282,6 +282,7 @@ set(SRC_FILES
 	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
 	src/CommunitiesListItem.cpp
+	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
 	src/InviteeItem.cpp
 	src/Logging.cpp
@@ -486,6 +487,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ChatPage.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
+	src/DeviceVerificationFlow.h
 	src/InviteeItem.h
 	src/LoginPage.h
 	src/MainWindow.h
