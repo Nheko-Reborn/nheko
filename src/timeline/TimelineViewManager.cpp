@@ -447,3 +447,9 @@ TimelineViewManager::startDummyVerification()
 {
         emit deviceVerificationRequest(new DeviceVerificationFlow(this));
 }
+
+void
+TimelineViewManager::startDummyVerification()
+{
+        emit deviceVerificationRequest(new DeviceVerificationFlow(this));
+}
