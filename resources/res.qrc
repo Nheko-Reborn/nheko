@@ -135,5 +135,6 @@
         <file>qml/delegates/Pill.qml</file>
         <file>qml/delegates/Placeholder.qml</file>
         <file>qml/delegates/Reply.qml</file>
+        <file>qml/device-verification/DeviceVerification.qml</file>
     </qresource>
 </RCC>

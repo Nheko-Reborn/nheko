@@ -3,12 +3,15 @@ import QtQuick.Controls 2.10
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.10
 
-Window {
+import im.nheko 1.0
+
+ApplicationWindow {
 	title: stack.currentItem.title
 	id: dialog
 
 	flags: Qt.Dialog
 
+	palette: colors
 
 	height: stack.implicitHeight
 	width: stack.implicitWidth
@@ -20,6 +23,19 @@ Window {
 	}
 
 	onClosing: stack.replace(newVerificationRequest)
+
+	property var flow
+	Connections {
+		target: flow
+		onVerificationCanceled: stack.replace(partnerAborted)
+		onTimedout: stack.replace(timedout)
+		onDeviceVerified: stack.replace(verificationSuccess)
+
+		onVerificationRequestAccepted: switch(method) {
+			case DeviceVerificationFlow.Decimal: stack.replace(digitVerification); break;
+			case DeviceVerificationFlow.Emoji: stack.replace(emojiVerification); break;
+		}
+	}
 
 	Component {
 		id: newVerificationRequest
@@ -51,7 +67,7 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Cancel"
-						onClicked: dialog.close()
+						onClicked: { dialog.close(); flow.cancelVerification(); }
 					}
 					Item {
 						Layout.fillWidth: true
@@ -59,7 +75,7 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "Start verification"
-						onClicked: stack.replace(awaitingVerificationRequestAccept)
+						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.acceptVerificationRequest(); }
 					}
 				}
 			}
@@ -90,16 +106,11 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Cancel"
-						onClicked: dialog.close()
+						onClicked: { dialog.close(); flow.cancelVerification(); }
 					}
 					Item {
 						Layout.fillWidth: true
 					}
-				}
-				Timer {
-					// temporary, until it is bound to a backend
-					interval: 5000; running: true;
-					onTriggered: if (Math.random() > 0.5) stack.replace(emojiVerification); else stack.replace(digitVerification);
 				}
 			}
 		}
@@ -141,7 +152,7 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "They do not match!"
-						onClicked: dialog.close()
+						onClicked: { dialog.close(); flow.cancelVerification(); }
 					}
 					Item {
 						Layout.fillWidth: true
@@ -149,7 +160,7 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "They match."
-						onClicked: stack.replace(awaitingVerificationConfirmation)
+						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.acceptDevice(); }
 					}
 				}
 			}
@@ -248,7 +259,7 @@ Window {
 						id: repeater
 						model: 7
 						delegate: Rectangle {
-							color: "red"
+							color: "transparent"
 							implicitHeight: Qt.application.font.pixelSize * 8
 							implicitWidth: col.width
 							ColumnLayout {
@@ -274,7 +285,7 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "They do not match!"
-						onClicked: dialog.close()
+						onClicked: { dialog.close(); flow.cancelVerification(); }
 					}
 					Item {
 						Layout.fillWidth: true
@@ -282,7 +293,7 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "They match."
-						onClicked: stack.replace(awaitingVerificationConfirmation)
+						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.acceptDevice(); }
 					}
 				}
 			}
@@ -313,16 +324,11 @@ Window {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Cancel"
-						onClicked: dialog.close()
+						onClicked: { dialog.close(); flow.cancelVerification(); }
 					}
 					Item {
 						Layout.fillWidth: true
 					}
-				}
-				Timer {
-					// temporary, until it is bound to a backend
-					interval: 5000; running: true;
-					onTriggered: Math.random() > 0.5 ? stack.replace(verificationSuccess) : stack.replace(partnerAborted)
 				}
 			}
 		}
@@ -372,6 +378,37 @@ Window {
 					wrapMode: Text.Wrap
 					id: content
 					text: "Verification canceled by the other party!"
+
+					verticalAlignment: Text.AlignVCenter
+				}
+
+				RowLayout {
+					Item {
+						Layout.fillWidth: true
+					}
+					Button {
+						Layout.alignment: Qt.AlignRight
+						text: "Close"
+						onClicked: dialog.close()
+					}
+				}
+			}
+		}
+	}
+
+	Component {
+		id: timedout
+		Pane {
+			property string title: "Verification timed out"
+			ColumnLayout {
+				spacing: 16
+				Text {
+					Layout.maximumWidth: 400
+					Layout.fillHeight: true
+					Layout.fillWidth: true
+					wrapMode: Text.Wrap
+					id: content
+					text: "Device verification timed out."
 
 					verticalAlignment: Text.AlignVCenter
 				}

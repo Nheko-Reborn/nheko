@@ -9,6 +9,7 @@ import im.nheko.EmojiModel 1.0
 
 import "./delegates"
 import "./emoji"
+import "./device-verification"
 
 Page {
 	property var colors: currentActivePalette
@@ -92,6 +93,24 @@ Page {
 	Rectangle {
 		anchors.fill: parent
 		color: colors.window
+
+		Component {
+			id: deviceVerificationDialog
+			DeviceVerification {}
+		}
+		Connections {
+			target: timelineManager
+			onDeviceVerificationRequest: {
+				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: deviceVerificationFlow});
+				dialog.show();
+			}
+		}
+
+		Button {
+			text: "test device verification"
+			onClicked: timelineManager.startDummyVerification()
+			z: 5
+		}
 
 		Label {
 			visible: !timelineManager.timeline && !timelineManager.isInitialSync
