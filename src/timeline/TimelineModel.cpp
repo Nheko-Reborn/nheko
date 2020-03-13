@@ -716,7 +716,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
         dummy.sender           = e.sender;
         dummy.content.body =
           tr("-- Encrypted Event (No keys found for decryption) --",
-             "Placeholder, when the message was not decrypted yet or can't be decrypted")
+             "Placeholder, when the message was not decrypted yet or can't be decrypted.")
             .toStdString();
 
         try {
@@ -763,7 +763,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
                 dummy.content.body =
                   tr("-- Decryption Error (%1) --",
                      "Placeholder, when the message can't be decrypted. In this case, the Olm "
-                     "decrytion returned an error, which is passed ad %1")
+                     "decrytion returned an error, which is passed ad %1.")
                     .arg(e.what())
                     .toStdString();
                 return {dummy, false};
@@ -792,7 +792,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
         dummy.content.body =
           tr("-- Encrypted Event (Unknown event type) --",
              "Placeholder, when the message was decrypted, but we couldn't parse it, because "
-             "Nheko/mtxclient don't support that event type yet")
+             "Nheko/mtxclient don't support that event type yet.")
             .toStdString();
         return {dummy, false};
 }
@@ -1426,7 +1426,7 @@ QString
 TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
 {
         QString temp =
-          tr("%1 and %2 are typing",
+          tr("%1 and %2 are typing.",
              "Multiple users are typing. First argument is a comma separated list of potentially "
              "multiple users. Second argument is the last user of that list. (If only one user is "
              "typing, %1 is empty. You should still use it in your string though to silence Qt "
@@ -1494,9 +1494,9 @@ TimelineModel::formatJoinRuleEvent(QString id)
 
         switch (event->content.join_rule) {
         case mtx::events::state::JoinRule::Public:
-                return tr("%1 opened the room to the public").arg(name);
+                return tr("%1 opened the room to the public.").arg(name);
         case mtx::events::state::JoinRule::Invite:
-                return tr("%1 made this room require and invitation to join").arg(name);
+                return tr("%1 made this room require and invitation to join.").arg(name);
         default:
                 // Currently, knock and private are reserved keywords and not implemented in Matrix.
                 return "";
@@ -1519,9 +1519,9 @@ TimelineModel::formatGuestAccessEvent(QString id)
 
         switch (event->content.guest_access) {
         case mtx::events::state::AccessState::CanJoin:
-                return tr("%1 made the room open to guests").arg(name);
+                return tr("%1 made the room open to guests.").arg(name);
         case mtx::events::state::AccessState::Forbidden:
-                return tr("%1 has closed the room to guest access").arg(name);
+                return tr("%1 has closed the room to guest access.").arg(name);
         default:
                 return "";
         }
@@ -1545,16 +1545,16 @@ TimelineModel::formatHistoryVisibilityEvent(QString id)
         switch (event->content.history_visibility) {
         case mtx::events::state::Visibility::WorldReadable:
                 return tr("%1 made the room history world readable. Events may be now read by "
-                          "non-joined people")
+                          "non-joined people.")
                   .arg(name);
         case mtx::events::state::Visibility::Shared:
-                return tr("%1 set the room history visible to members from this point on")
+                return tr("%1 set the room history visible to members from this point on.")
                   .arg(name);
         case mtx::events::state::Visibility::Invited:
-                return tr("%1 set the room history visible to members since they were invited")
+                return tr("%1 set the room history visible to members since they were invited.")
                   .arg(name);
         case mtx::events::state::Visibility::Joined:
-                return tr("%1 set the room history visible to members since they joined the room")
+                return tr("%1 set the room history visible to members since they joined the room.")
                   .arg(name);
         default:
                 return "";
@@ -1661,7 +1661,7 @@ TimelineModel::formatMemberEvent(QString id)
                         else
                                 rendered = tr("Kicked %1.").arg(name);
                 } else if (prevEvent->content.membership == Membership::Ban) {
-                        rendered = tr("Unbanned %1").arg(name);
+                        rendered = tr("Unbanned %1.").arg(name);
                 } else if (prevEvent->content.membership == Membership::Knock) {
                         if (event->state_key == event->sender)
                                 rendered = tr("%1 redacted their knock.").arg(name);
@@ -1675,7 +1675,7 @@ TimelineModel::formatMemberEvent(QString id)
                 break;
 
         case Membership::Ban:
-                rendered = tr("%1 was banned").arg(name);
+                rendered = tr("%1 was banned.").arg(name);
                 break;
         case Membership::Knock:
                 rendered = tr("%1 knocked.").arg(name);

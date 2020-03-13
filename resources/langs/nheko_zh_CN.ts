@@ -479,13 +479,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+718"/>
-        <source>-- Encrypted Event (No keys found for decryption) --</source>
-        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+15"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+733"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation type="unfinished"></translation>
@@ -497,19 +491,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+29"/>
-        <source>-- Encrypted Event (Unknown event type) --</source>
-        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+47"/>
+        <location line="+88"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished">删除消息失败：%1</translation>
     </message>
@@ -533,9 +515,27 @@
         <source>Save file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="-582"/>
+        <source>-- Encrypted Event (No keys found for decryption) --</source>
+        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>-- Decryption Error (%1) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>-- Encrypted Event (Unknown event type) --</source>
+        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+129"/>
-        <source>%1 and %2 are typing</source>
+        <location line="+636"/>
+        <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -543,42 +543,42 @@
     </message>
     <message>
         <location line="+68"/>
-        <source>%1 opened the room to the public</source>
+        <source>%1 opened the room to the public.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>%1 made this room require and invitation to join</source>
+        <source>%1 made this room require and invitation to join.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
-        <source>%1 made the room open to guests</source>
+        <source>%1 made the room open to guests.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>%1 has closed the room to guest access</source>
+        <source>%1 has closed the room to guest access.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
-        <source>%1 made the room history world readable. Events may be now read by non-joined people</source>
+        <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>%1 set the room history visible to members from this point on</source>
+        <source>%1 set the room history visible to members from this point on.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 set the room history visible to members since they were invited</source>
+        <source>%1 set the room history visible to members since they were invited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 set the room history visible to members since they joined the room</source>
+        <source>%1 set the room history visible to members since they joined the room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -633,11 +633,16 @@
     </message>
     <message>
         <location line="+2"/>
-        <source>Unbanned %1</source>
+        <source>Unbanned %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
+        <source>%1 was banned.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-11"/>
         <source>%1 redacted their knock.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -653,12 +658,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%1 was banned</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+15"/>
         <source> Reason: %1</source>
         <translation type="unfinished"></translation>
     </message>
