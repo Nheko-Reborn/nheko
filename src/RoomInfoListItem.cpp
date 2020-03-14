@@ -328,7 +328,7 @@ unsigned short int
 RoomInfoListItem::calculateImportance() const
 {
         return (hasUnreadMessages_) +
-               (unreadMsgCount_ != 0) +
+               (unreadHighlightedMsgCount_ + unreadMsgCount_ != 0) +
                (unreadHighlightedMsgCount_ != 0) +
                (isInvite()) * 4;
 }
