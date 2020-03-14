@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 2.10
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.10
+import Qt.labs.settings 1.0
 
 import im.nheko 1.0
 
@@ -12,6 +13,12 @@ ApplicationWindow {
 	flags: Qt.Dialog
 
 	palette: colors
+
+	Settings {
+		id: settings
+		category: "user"
+		property bool emoji_font_family: true
+	}
 
 	height: stack.implicitHeight
 	width: stack.implicitWidth
@@ -271,6 +278,7 @@ ApplicationWindow {
 									Layout.alignment: Qt.AlignHCenter
 									text: col.emoji.emoji
 									font.pixelSize: Qt.application.font.pixelSize * 4
+									font.family: settings.emoji_font_family
 								}
 								Text {
 									Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
