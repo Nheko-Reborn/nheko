@@ -123,6 +123,8 @@ RoomList::updateUnreadMessageCount(const QString &roomid, int count, int highlig
         rooms_[roomid]->updateUnreadMessageCount(count, highlightedCount);
 
         calculateUnreadMessageCount();
+
+        sortRoomsByLastMessage();
 }
 
 void
