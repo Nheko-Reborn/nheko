@@ -332,10 +332,8 @@ RoomInfoListItem::calculateImportance() const
         // 2: Contains unread messages
         // 3: Contains mentions
         // 4: Is a room invite
-        return (hasUnreadMessages_) +
-               (unreadHighlightedMsgCount_ + unreadMsgCount_ != 0) +
-               (unreadHighlightedMsgCount_ != 0) +
-               (isInvite()) * 4;
+        return (hasUnreadMessages_) + (unreadHighlightedMsgCount_ + unreadMsgCount_ != 0) +
+               (unreadHighlightedMsgCount_ != 0) + (isInvite()) * 4;
 }
 
 void

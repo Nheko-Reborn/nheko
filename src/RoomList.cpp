@@ -331,8 +331,10 @@ RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
         emit sortRoomsByLastMessage();
 }
 
-struct room_sort {
-        bool operator() (const RoomInfoListItem * a, const RoomInfoListItem * b) const {
+struct room_sort
+{
+        bool operator()(const RoomInfoListItem *a, const RoomInfoListItem *b) const
+        {
                 // Sort by "importance" (i.e. invites before mentions before
                 // notifs before new events before old events), then secondly
                 // by recency.
@@ -340,16 +342,18 @@ struct room_sort {
                 // Checking importance first
                 const auto a_importance = a->calculateImportance();
                 const auto b_importance = b->calculateImportance();
-                if(a_importance != b_importance) {
+                if (a_importance != b_importance) {
                         return a_importance > b_importance;
                 }
 
                 // Now sort by recency
                 // Zero if empty, otherwise the time that the event occured
-                const uint64_t a_recency = a->lastMessageInfo().userid.isEmpty() ? 0 :
-                                           a->lastMessageInfo().datetime.toMSecsSinceEpoch();
-                const uint64_t b_recency = b->lastMessageInfo().userid.isEmpty() ? 0 :
-                                           b->lastMessageInfo().datetime.toMSecsSinceEpoch();
+                const uint64_t a_recency = a->lastMessageInfo().userid.isEmpty()
+                                             ? 0
+                                             : a->lastMessageInfo().datetime.toMSecsSinceEpoch();
+                const uint64_t b_recency = b->lastMessageInfo().userid.isEmpty()
+                                             ? 0
+                                             : b->lastMessageInfo().datetime.toMSecsSinceEpoch();
                 return a_recency > b_recency;
         }
 };
