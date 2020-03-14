@@ -327,6 +327,11 @@ RoomInfoListItem::updateUnreadMessageCount(int count, int highlightedCount)
 unsigned short int
 RoomInfoListItem::calculateImportance() const
 {
+        // 0: All messages and minor events read
+        // 1: Contains unread minor events (joins/notices/muted messages)
+        // 2: Contains unread messages
+        // 3: Contains mentions
+        // 4: Is a room invite
         return (hasUnreadMessages_) +
                (unreadHighlightedMsgCount_ + unreadMsgCount_ != 0) +
                (unreadHighlightedMsgCount_ != 0) +
