@@ -324,6 +324,15 @@ RoomInfoListItem::updateUnreadMessageCount(int count, int highlightedCount)
         update();
 }
 
+enum NotificationImportance : unsigned short
+{
+        AllEventsRead  = 0,
+        NewMinorEvents = 1,
+        NewMessage     = 2,
+        NewMentions    = 3,
+        Invite         = 4
+};
+
 unsigned short int
 RoomInfoListItem::calculateImportance() const
 {
@@ -332,8 +341,17 @@ RoomInfoListItem::calculateImportance() const
         // 2: Contains unread messages
         // 3: Contains mentions
         // 4: Is a room invite
-        return (hasUnreadMessages_) + (unreadHighlightedMsgCount_ + unreadMsgCount_ != 0) +
-               (unreadHighlightedMsgCount_ != 0) + (isInvite()) * 4;
+        if (isInvite()) {
+                return Invite;
+        } else if (unreadHighlightedMsgCount_) {
+                return NewMentions;
+        } else if (unreadMsgCount_) {
+                return NewMessage;
+        } else if (hasUnreadMessages_) {
+                return NewMinorEvents;
+        } else {
+                return AllEventsRead;
+        }
 }
 
 void
