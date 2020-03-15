@@ -372,12 +372,12 @@
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+97"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+98"/>
         <source>Leave room</source>
         <translation>Quitter le salon</translation>
     </message>
     <message>
-        <location line="+154"/>
+        <location line="+158"/>
         <source>Accept</source>
         <translation>Accepter</translation>
     </message>
@@ -492,7 +492,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+88"/>
+        <location line="+12"/>
+        <source>-- Decryption Error (%1) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+76"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -523,13 +529,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+46"/>
-        <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+29"/>
+        <location line="+75"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
         <translation type="unfinished"></translation>
@@ -783,7 +783,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+296"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+299"/>
         <source>Minimize to tray</source>
         <translation>Réduire à la barre des tâches</translation>
     </message>
@@ -811,6 +811,11 @@
         <location line="+1"/>
         <source>Typing notifications</source>
         <translation>Notifications d&apos;écriture</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sort rooms by unreads</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -858,7 +863,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-58"/>
         <source>Session Keys</source>
         <translation type="unfinished"></translation>
     </message>
@@ -878,22 +883,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-61"/>
+        <location line="-62"/>
         <source>GENERAL</source>
         <translation>GÉNÉRAL</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+106"/>
+        <location line="+107"/>
         <source>Emoji Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+147"/>
+        <location line="+152"/>
         <source>Open Sessions File</source>
         <translation type="unfinished"></translation>
     </message>

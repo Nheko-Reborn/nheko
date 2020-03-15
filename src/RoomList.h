@@ -23,6 +23,9 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "CacheStructs.h"
+#include "UserSettingsPage.h"
+
 class LeaveRoomDialog;
 class OverlayModal;
 class RoomInfoListItem;
@@ -35,7 +38,7 @@ class RoomList : public QWidget
         Q_OBJECT
 
 public:
-        explicit RoomList(QWidget *parent = nullptr);
+        explicit RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
 
         void initialize(const QMap<QString, RoomInfo> &info);
         void sync(const std::map<QString, RoomInfo> &info);
@@ -100,4 +103,5 @@ private:
         QString selectedRoom_;
 
         bool isSortPending_ = false;
+        QSharedPointer<UserSettings> settings;
 };

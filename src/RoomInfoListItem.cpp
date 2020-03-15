@@ -26,6 +26,7 @@
 #include "Config.h"
 #include "RoomInfoListItem.h"
 #include "Splitter.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/Menu.h"
 #include "ui/Ripple.h"
@@ -99,7 +100,10 @@ RoomInfoListItem::init(QWidget *parent)
         menu_->addAction(leaveRoom_);
 }
 
-RoomInfoListItem::RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(QString room_id,
+                                   const RoomInfo &info,
+                                   QSharedPointer<UserSettings> userSettings,
+                                   QWidget *parent)
   : QWidget(parent)
   , roomType_{info.is_invite ? RoomType::Invited : RoomType::Joined}
   , roomId_(std::move(room_id))
@@ -107,6 +111,7 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, const RoomInfo &info, QWidge
   , isPressed_(false)
   , unreadMsgCount_(0)
   , unreadHighlightedMsgCount_(0)
+  , settings(userSettings)
 {
         init(parent);
 }
@@ -322,6 +327,34 @@ RoomInfoListItem::updateUnreadMessageCount(int count, int highlightedCount)
         unreadMsgCount_            = count;
         unreadHighlightedMsgCount_ = highlightedCount;
         update();
+}
+
+enum NotificationImportance : short
+{
+        ImportanceDisabled = -1,
+        AllEventsRead      = 0,
+        NewMessage         = 1,
+        NewMentions        = 2,
+        Invite             = 3
+};
+
+short int
+RoomInfoListItem::calculateImportance() const
+{
+        // Returns the degree of importance of the unread messages in the room.
+        // If sorting by importance is disabled in settings, this only ever
+        // returns ImportanceDisabled or Invite
+        if (isInvite()) {
+                return Invite;
+        } else if (!settings->isSortByImportanceEnabled()) {
+                return ImportanceDisabled;
+        } else if (unreadHighlightedMsgCount_) {
+                return NewMentions;
+        } else if (unreadMsgCount_) {
+                return NewMessage;
+        } else {
+                return AllEventsRead;
+        }
 }
 
 void

@@ -100,7 +100,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         user_info_widget_    = new UserInfoWidget(sideBar_);
         user_mentions_popup_ = new popups::UserMentions();
-        room_list_           = new RoomList(sideBar_);
+        room_list_           = new RoomList(userSettings, sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
 
         sideBarLayout_->addWidget(user_info_widget_);

@@ -87,6 +87,12 @@ public:
                 save();
         }
 
+        void setSortByImportance(bool state)
+        {
+                sortByImportance_ = state;
+                emit roomSortingChanged();
+        }
+
         void setButtonsInTimeline(bool state)
         {
                 isButtonsInTimelineEnabled_ = state;
@@ -112,6 +118,7 @@ public:
         bool isAvatarCirclesEnabled() const { return avatarCircles_; }
         bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
+        bool isSortByImportanceEnabled() const { return sortByImportance_; }
         bool isButtonsInTimelineEnabled() const { return isButtonsInTimelineEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
@@ -121,6 +128,7 @@ public:
 
 signals:
         void groupViewStateChanged(bool state);
+        void roomSortingChanged();
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -134,6 +142,7 @@ private:
         bool isGroupViewEnabled_;
         bool isMarkdownEnabled_;
         bool isTypingNotificationsEnabled_;
+        bool sortByImportance_;
         bool isButtonsInTimelineEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
@@ -185,6 +194,7 @@ private:
         Toggle *groupViewToggle_;
         Toggle *timelineButtonsToggle_;
         Toggle *typingNotifications_;
+        Toggle *sortByImportance_;
         Toggle *readReceipts_;
         Toggle *markdownEnabled_;
         Toggle *desktopNotifications_;

@@ -25,6 +25,7 @@
 #include <mtx/responses.hpp>
 
 #include "CacheStructs.h"
+#include "UserSettingsPage.h"
 #include "ui/Avatar.h"
 
 class Menu;
@@ -63,10 +64,15 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor btnTextColor READ btnTextColor WRITE setBtnTextColor)
 
 public:
-        RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent = nullptr);
+        RoomInfoListItem(QString room_id,
+                         const RoomInfo &info,
+                         QSharedPointer<UserSettings> userSettings,
+                         QWidget *parent = nullptr);
 
         void updateUnreadMessageCount(int count, int highlightedCount);
         void clearUnreadMessageCount() { updateUnreadMessageCount(0, 0); };
+
+        short int calculateImportance() const;
 
         QString roomId() { return roomId_; }
         bool isPressed() const { return isPressed_; }
@@ -128,7 +134,7 @@ public:
                         roomType_ = RoomType::Joined;
         }
 
-        bool isInvite() { return roomType_ == RoomType::Invited; }
+        bool isInvite() const { return roomType_ == RoomType::Invited; }
         void setReadState(bool hasUnreadMessages)
         {
                 if (hasUnreadMessages_ != hasUnreadMessages) {
@@ -214,4 +220,6 @@ private:
 
         QColor bubbleBgColor_;
         QColor bubbleFgColor_;
+
+        QSharedPointer<UserSettings> settings;
 };

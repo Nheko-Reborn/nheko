@@ -58,6 +58,7 @@ UserSettings::load()
         isButtonsInTimelineEnabled_   = settings.value("user/timeline/buttons", true).toBool();
         isMarkdownEnabled_            = settings.value("user/markdown_enabled", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
+        sortByImportance_             = settings.value("user/sort_by_unread", true).toBool();
         isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
         theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
@@ -135,6 +136,7 @@ UserSettings::save()
 
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
+        settings.setValue("minor_events", sortByImportance_);
         settings.setValue("read_receipts", isReadReceiptsEnabled_);
         settings.setValue("group_view", isGroupViewEnabled_);
         settings.setValue("markdown_enabled", isMarkdownEnabled_);
@@ -197,6 +199,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         groupViewToggle_         = new Toggle{this};
         timelineButtonsToggle_   = new Toggle{this};
         typingNotifications_     = new Toggle{this};
+        sortByImportance_        = new Toggle{this};
         readReceipts_            = new Toggle{this};
         markdownEnabled_         = new Toggle{this};
         desktopNotifications_    = new Toggle{this};
@@ -300,6 +303,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Group's sidebar"), groupViewToggle_);
         boxWrap(tr("Show buttons in timeline"), timelineButtonsToggle_);
         boxWrap(tr("Typing notifications"), typingNotifications_);
+        boxWrap(tr("Sort rooms by unreads"), sortByImportance_);
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Read receipts"), readReceipts_);
         boxWrap(tr("Send messages as Markdown"), markdownEnabled_);
@@ -401,6 +405,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setTypingNotifications(!isDisabled);
         });
 
+        connect(sortByImportance_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setSortByImportance(!isDisabled);
+        });
+
         connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setButtonsInTimeline(!isDisabled);
         });
@@ -439,6 +447,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
         avatarCircles_->setState(!settings_->isAvatarCirclesEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
+        sortByImportance_->setState(!settings_->isSortByImportanceEnabled());
         timelineButtonsToggle_->setState(!settings_->isButtonsInTimelineEnabled());
         readReceipts_->setState(!settings_->isReadReceiptsEnabled());
         markdownEnabled_->setState(!settings_->isMarkdownEnabled());
