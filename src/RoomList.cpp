@@ -65,7 +65,7 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         topLayout_->addWidget(scrollArea_);
 
         connect(this, &RoomList::updateRoomAvatarCb, this, &RoomList::updateRoomAvatar);
-        connect(userSettings.get(),
+        connect(userSettings.data(),
                 &UserSettings::roomSortingChanged,
                 this,
                 &RoomList::sortRoomsByLastMessage);
