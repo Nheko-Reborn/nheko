@@ -87,7 +87,11 @@ public:
                 save();
         }
 
-        void setIgnoreMinorEvents(bool state) { ignoreMinorEvents_ = state; }
+        void setIgnoreMinorEvents(bool state)
+        {
+                ignoreMinorEvents_ = state;
+                emit roomSortingChanged();
+        }
 
         void setButtonsInTimeline(bool state)
         {
@@ -124,6 +128,7 @@ public:
 
 signals:
         void groupViewStateChanged(bool state);
+        void roomSortingChanged();
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
