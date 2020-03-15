@@ -329,29 +329,32 @@ RoomInfoListItem::updateUnreadMessageCount(int count, int highlightedCount)
         update();
 }
 
-enum NotificationImportance : unsigned short
+enum NotificationImportance : short
 {
-        AllEventsRead  = 0,
-        NewMinorEvents = 1,
-        NewMessage     = 2,
-        NewMentions    = 3,
-        Invite         = 4
+        ImportanceDisabled = -1,
+        AllEventsRead      = 0,
+        NewMinorEvents     = 1, // This is currently unused
+        NewMessage         = 2,
+        NewMentions        = 3,
+        Invite             = 4
 };
 
 unsigned short int
 RoomInfoListItem::calculateImportance() const
 {
         // Returns the degree of importance of the unread messages in the room.
-        // If ignoreMinorEvents is set to true in the settings, then
-        // NewMinorEvents will always be rounded down to AllEventsRead
-        if (isInvite()) {
+        // If sorting by importance is disabled in settings, this only ever
+        // returns ImportanceDisabled
+        if (!settings->isSortByImportanceEnabled()) {
+                return ImportanceDisabled;
+        } else if (isInvite()) {
                 return Invite;
         } else if (unreadHighlightedMsgCount_) {
                 return NewMentions;
         } else if (unreadMsgCount_) {
                 return NewMessage;
-        } else if (hasUnreadMessages_ && !settings->isIgnoreMinorEventsEnabled()) {
-                return NewMinorEvents;
+                // } else if (hasUnreadMessages_ && !settings->isIgnoreMinorEventsEnabled()) {
+                //         return NewMinorEvents;
         } else {
                 return AllEventsRead;
         }

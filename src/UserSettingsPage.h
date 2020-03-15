@@ -87,9 +87,9 @@ public:
                 save();
         }
 
-        void setIgnoreMinorEvents(bool state)
+        void setSortByImportance(bool state)
         {
-                ignoreMinorEvents_ = state;
+                sortByImportance_ = state;
                 emit roomSortingChanged();
         }
 
@@ -118,7 +118,7 @@ public:
         bool isAvatarCirclesEnabled() const { return avatarCircles_; }
         bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
-        bool isIgnoreMinorEventsEnabled() const { return ignoreMinorEvents_; }
+        bool isSortByImportanceEnabled() const { return sortByImportance_; }
         bool isButtonsInTimelineEnabled() const { return isButtonsInTimelineEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
@@ -142,7 +142,7 @@ private:
         bool isGroupViewEnabled_;
         bool isMarkdownEnabled_;
         bool isTypingNotificationsEnabled_;
-        bool ignoreMinorEvents_;
+        bool sortByImportance_;
         bool isButtonsInTimelineEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
@@ -194,7 +194,7 @@ private:
         Toggle *groupViewToggle_;
         Toggle *timelineButtonsToggle_;
         Toggle *typingNotifications_;
-        Toggle *ignoreMinorEvents_;
+        Toggle *sortByImportance_;
         Toggle *readReceipts_;
         Toggle *markdownEnabled_;
         Toggle *desktopNotifications_;
