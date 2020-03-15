@@ -87,6 +87,12 @@ public:
                 save();
         }
 
+        void setIgnoreMinorEvents(bool state)
+        {
+                ignoreMinorEvents_ = state;
+                save();
+        }
+
         void setDesktopNotifications(bool state)
         {
                 hasDesktopNotifications_ = state;
@@ -106,6 +112,7 @@ public:
         bool isAvatarCirclesEnabled() const { return avatarCircles_; }
         bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
+        bool isIgnoreMinorEventsEnabled() const { return ignoreMinorEvents_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         double fontSize() const { return baseFontSize_; }
@@ -127,6 +134,7 @@ private:
         bool isGroupViewEnabled_;
         bool isMarkdownEnabled_;
         bool isTypingNotificationsEnabled_;
+        bool ignoreMinorEvents_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
         bool avatarCircles_;
@@ -176,6 +184,7 @@ private:
         Toggle *startInTrayToggle_;
         Toggle *groupViewToggle_;
         Toggle *typingNotifications_;
+        Toggle *ignoreMinorEvents_;
         Toggle *readReceipts_;
         Toggle *markdownEnabled_;
         Toggle *desktopNotifications_;

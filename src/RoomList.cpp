@@ -27,11 +27,13 @@
 #include "MainWindow.h"
 #include "RoomInfoListItem.h"
 #include "RoomList.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/OverlayModal.h"
 
-RoomList::RoomList(QWidget *parent)
+RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
+  , settings(userSettings)
 {
         topLayout_ = new QVBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -68,7 +70,7 @@ RoomList::RoomList(QWidget *parent)
 void
 RoomList::addRoom(const QString &room_id, const RoomInfo &info)
 {
-        auto room_item = new RoomInfoListItem(room_id, info, scrollArea_);
+        auto room_item = new RoomInfoListItem(room_id, info, settings, scrollArea_);
         room_item->setRoomName(QString::fromStdString(std::move(info.name)));
 
         connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
@@ -492,7 +494,7 @@ RoomList::updateRoom(const QString &room_id, const RoomInfo &info)
 void
 RoomList::addInvitedRoom(const QString &room_id, const RoomInfo &info)
 {
-        auto room_item = new RoomInfoListItem(room_id, info, scrollArea_);
+        auto room_item = new RoomInfoListItem(room_id, info, settings, scrollArea_);
 
         connect(room_item, &RoomInfoListItem::acceptInvite, this, &RoomList::acceptInvite);
         connect(room_item, &RoomInfoListItem::declineInvite, this, &RoomList::declineInvite);

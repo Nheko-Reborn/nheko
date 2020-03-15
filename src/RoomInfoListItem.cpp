@@ -26,6 +26,7 @@
 #include "Config.h"
 #include "RoomInfoListItem.h"
 #include "Splitter.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/Menu.h"
 #include "ui/Ripple.h"
@@ -99,7 +100,10 @@ RoomInfoListItem::init(QWidget *parent)
         menu_->addAction(leaveRoom_);
 }
 
-RoomInfoListItem::RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(QString room_id,
+                                   const RoomInfo &info,
+                                   QSharedPointer<UserSettings> userSettings,
+                                   QWidget *parent)
   : QWidget(parent)
   , roomType_{info.is_invite ? RoomType::Invited : RoomType::Joined}
   , roomId_(std::move(room_id))
@@ -107,6 +111,7 @@ RoomInfoListItem::RoomInfoListItem(QString room_id, const RoomInfo &info, QWidge
   , isPressed_(false)
   , unreadMsgCount_(0)
   , unreadHighlightedMsgCount_(0)
+  , settings(userSettings)
 {
         init(parent);
 }
@@ -336,18 +341,16 @@ enum NotificationImportance : unsigned short
 unsigned short int
 RoomInfoListItem::calculateImportance() const
 {
-        // 0: All messages and minor events read
-        // 1: Contains unread minor events (joins/notices/muted messages)
-        // 2: Contains unread messages
-        // 3: Contains mentions
-        // 4: Is a room invite
+        // Returns the degree of importance of the unread messages in the room.
+        // If ignoreMinorEvents is set to true in the settings, then
+        // NewMinorEvents will always be rounded down to AllEventsRead
         if (isInvite()) {
                 return Invite;
         } else if (unreadHighlightedMsgCount_) {
                 return NewMentions;
         } else if (unreadMsgCount_) {
                 return NewMessage;
-        } else if (hasUnreadMessages_) {
+        } else if (hasUnreadMessages_ && !settings->isIgnoreMinorEventsEnabled()) {
                 return NewMinorEvents;
         } else {
                 return AllEventsRead;
