@@ -72,7 +72,7 @@ public:
         void updateUnreadMessageCount(int count, int highlightedCount);
         void clearUnreadMessageCount() { updateUnreadMessageCount(0, 0); };
 
-        unsigned short int calculateImportance() const;
+        short int calculateImportance() const;
 
         QString roomId() { return roomId_; }
         bool isPressed() const { return isPressed_; }

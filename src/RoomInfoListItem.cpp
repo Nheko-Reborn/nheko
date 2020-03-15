@@ -338,7 +338,7 @@ enum NotificationImportance : short
         Invite             = 3
 };
 
-unsigned short int
+short int
 RoomInfoListItem::calculateImportance() const
 {
         // Returns the degree of importance of the unread messages in the room.
