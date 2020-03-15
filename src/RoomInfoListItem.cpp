@@ -333,10 +333,9 @@ enum NotificationImportance : short
 {
         ImportanceDisabled = -1,
         AllEventsRead      = 0,
-        NewMinorEvents     = 1, // This is currently unused
-        NewMessage         = 2,
-        NewMentions        = 3,
-        Invite             = 4
+        NewMessage         = 1,
+        NewMentions        = 2,
+        Invite             = 3
 };
 
 unsigned short int
@@ -344,11 +343,11 @@ RoomInfoListItem::calculateImportance() const
 {
         // Returns the degree of importance of the unread messages in the room.
         // If sorting by importance is disabled in settings, this only ever
-        // returns ImportanceDisabled
-        if (!settings->isSortByImportanceEnabled()) {
-                return ImportanceDisabled;
-        } else if (isInvite()) {
+        // returns ImportanceDisabled or Invite
+        if (isInvite()) {
                 return Invite;
+        } else if (!settings->isSortByImportanceEnabled()) {
+                return ImportanceDisabled;
         } else if (unreadHighlightedMsgCount_) {
                 return NewMentions;
         } else if (unreadMsgCount_) {
