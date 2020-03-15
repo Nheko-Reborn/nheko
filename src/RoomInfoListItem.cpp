@@ -353,8 +353,6 @@ RoomInfoListItem::calculateImportance() const
                 return NewMentions;
         } else if (unreadMsgCount_) {
                 return NewMessage;
-                // } else if (hasUnreadMessages_ && !settings->isIgnoreMinorEventsEnabled()) {
-                //         return NewMinorEvents;
         } else {
                 return AllEventsRead;
         }
