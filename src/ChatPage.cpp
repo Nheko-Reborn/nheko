@@ -307,16 +307,16 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                  QString mimeClass,
                  const QString &fn,
                  const std::optional<RelatedInfo> &related) {
-                  QMimeDatabase db;
-                  QMimeType mime = db.mimeTypeForData(dev.data());
-
                   if (!dev->open(QIODevice::ReadOnly)) {
                           emit uploadFailed(
                             QString("Error while reading media: %1").arg(dev->errorString()));
                           return;
                   }
 
-                  auto bin     = dev->peek(dev->size());
+                  auto bin = dev->readAll();
+                  QMimeDatabase db;
+                  QMimeType mime = db.mimeTypeForData(bin);
+
                   auto payload = std::string(bin.data(), bin.size());
                   std::optional<mtx::crypto::EncryptedFile> encryptedFile;
                   if (cache::isRoomEncrypted(current_room_.toStdString())) {
@@ -328,10 +328,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                   QSize dimensions;
                   QString blurhash;
                   if (mimeClass == "image") {
-                          dimensions = QImageReader(dev.data()).size();
-
                           QImage img;
                           img.loadFromData(bin);
+                          dimensions = img.size();
                           if (img.height() > 200 && img.width() > 360)
                                   img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
                           std::vector<unsigned char> data;

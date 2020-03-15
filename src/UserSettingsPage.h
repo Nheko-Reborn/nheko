@@ -90,6 +90,11 @@ public:
         void setIgnoreMinorEvents(bool state)
         {
                 ignoreMinorEvents_ = state;
+        }
+
+        void setButtonsInTimeline(bool state)
+        {
+                isButtonsInTimelineEnabled_ = state;
                 save();
         }
 
@@ -113,6 +118,7 @@ public:
         bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
         bool isIgnoreMinorEventsEnabled() const { return ignoreMinorEvents_; }
+        bool isButtonsInTimelineEnabled() const { return isButtonsInTimelineEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         double fontSize() const { return baseFontSize_; }
@@ -135,6 +141,7 @@ private:
         bool isMarkdownEnabled_;
         bool isTypingNotificationsEnabled_;
         bool ignoreMinorEvents_;
+        bool isButtonsInTimelineEnabled_;
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
         bool avatarCircles_;
@@ -183,6 +190,7 @@ private:
         Toggle *trayToggle_;
         Toggle *startInTrayToggle_;
         Toggle *groupViewToggle_;
+        Toggle *timelineButtonsToggle_;
         Toggle *typingNotifications_;
         Toggle *ignoreMinorEvents_;
         Toggle *readReceipts_;

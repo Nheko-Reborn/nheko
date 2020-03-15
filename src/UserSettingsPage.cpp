@@ -55,6 +55,7 @@ UserSettings::load()
         hasDesktopNotifications_      = settings.value("user/desktop_notifications", true).toBool();
         isStartInTrayEnabled_         = settings.value("user/window/start_in_tray", false).toBool();
         isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
+        isButtonsInTimelineEnabled_   = settings.value("user/timeline/buttons", true).toBool();
         isMarkdownEnabled_            = settings.value("user/markdown_enabled", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         ignoreMinorEvents_            = settings.value("user/minor_events", false).toBool();
@@ -127,6 +128,10 @@ UserSettings::save()
         settings.setValue("start_in_tray", isStartInTrayEnabled_);
         settings.endGroup();
 
+        settings.beginGroup("timeline");
+        settings.setValue("buttons", isButtonsInTimelineEnabled_);
+        settings.endGroup();
+
         settings.setValue("avatar_circles", avatarCircles_);
 
         settings.setValue("font_size", baseFontSize_);
@@ -192,6 +197,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         startInTrayToggle_       = new Toggle{this};
         avatarCircles_           = new Toggle{this};
         groupViewToggle_         = new Toggle{this};
+        timelineButtonsToggle_   = new Toggle{this};
         typingNotifications_     = new Toggle{this};
         ignoreMinorEvents_       = new Toggle{this};
         readReceipts_            = new Toggle{this};
@@ -295,6 +301,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Circular Avatars"), avatarCircles_);
         boxWrap(tr("Group's sidebar"), groupViewToggle_);
+        boxWrap(tr("Show buttons in timeline"), timelineButtonsToggle_);
         boxWrap(tr("Typing notifications"), typingNotifications_);
         boxWrap(tr("Ignore minor events in room list"), ignoreMinorEvents_);
         formLayout_->addRow(new HorizontalLine{this});
@@ -402,6 +409,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setIgnoreMinorEvents(!isDisabled);
         });
 
+        connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setButtonsInTimeline(!isDisabled);
+        });
+
         connect(readReceipts_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setReadReceipts(!isDisabled);
         });
@@ -437,6 +448,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         avatarCircles_->setState(!settings_->isAvatarCirclesEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
         ignoreMinorEvents_->setState(!settings_->isIgnoreMinorEventsEnabled());
+        timelineButtonsToggle_->setState(!settings_->isButtonsInTimelineEnabled());
         readReceipts_->setState(!settings_->isReadReceiptsEnabled());
         markdownEnabled_->setState(!settings_->isMarkdownEnabled());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());

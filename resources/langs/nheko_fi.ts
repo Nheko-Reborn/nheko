@@ -4,13 +4,13 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+223"/>
+        <location filename="../../src/ChatPage.cpp" line="+225"/>
         <source>Failed to invite user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+868"/>
+        <location line="+894"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -50,12 +50,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-807"/>
+        <location line="-815"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+399"/>
+        <location line="+407"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLM-tilin palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
@@ -479,13 +479,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+714"/>
-        <source>-- Encrypted Event (No keys found for decryption) --</source>
-        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted</comment>
-        <translation type="unfinished">-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
-    </message>
-    <message>
-        <location line="+15"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+733"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation type="unfinished">-- Virhe purkaessa salausta (tietokannan kanssa kommunikointi epäonnistui) --</translation>
@@ -497,19 +491,7 @@
         <translation type="unfinished">-- Virhe purkaessa salausta (megolm-avaimien hakeminen tietokannasta epäonnistui) --</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1</comment>
-        <translation type="unfinished">-- Virhe purkaessa salausta (%1) --</translation>
-    </message>
-    <message>
-        <location line="+29"/>
-        <source>-- Encrypted Event (Unknown event type) --</source>
-        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet</comment>
-        <translation type="unfinished">-- Salattu viesti (tuntematon viestityyppi) --</translation>
-    </message>
-    <message>
-        <location line="+47"/>
+        <location line="+88"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished">Viestin poisto epäonnistui: %1</translation>
     </message>
@@ -533,53 +515,71 @@
         <source>Save file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="-582"/>
+        <source>-- Encrypted Event (No keys found for decryption) --</source>
+        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
+        <translation type="unfinished">-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>-- Decryption Error (%1) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
+        <translation type="unfinished">-- Virhe purkaessa salausta (%1) --</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>-- Encrypted Event (Unknown event type) --</source>
+        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
+        <translation type="unfinished">-- Salattu viesti (tuntematon viestityyppi) --</translation>
+    </message>
     <message numerus="yes">
-        <location line="+129"/>
-        <source>%1 and %2 are typing</source>
+        <location line="+636"/>
+        <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1%2 kirjoittaa</numerusform>
             <numerusform>%1 ja %2 kirjoittavat</numerusform>
         </translation>
     </message>
     <message>
         <location line="+68"/>
-        <source>%1 opened the room to the public</source>
+        <source>%1 opened the room to the public.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>%1 made this room require and invitation to join</source>
+        <source>%1 made this room require and invitation to join.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
-        <source>%1 made the room open to guests</source>
+        <source>%1 made the room open to guests.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>%1 has closed the room to guest access</source>
+        <source>%1 has closed the room to guest access.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
-        <source>%1 made the room history world readable. Events may be now read by non-joined people</source>
+        <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>%1 set the room history visible to members from this point on</source>
+        <source>%1 set the room history visible to members from this point on.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 set the room history visible to members since they were invited</source>
+        <source>%1 set the room history visible to members since they were invited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>%1 set the room history visible to members since they joined the room</source>
+        <source>%1 set the room history visible to members since they joined the room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -634,11 +634,16 @@
     </message>
     <message>
         <location line="+2"/>
-        <source>Unbanned %1</source>
+        <source>Unbanned %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
+        <source>%1 was banned.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-11"/>
         <source>%1 redacted their knock.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -654,12 +659,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%1 was banned</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+15"/>
         <source> Reason: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -672,7 +672,7 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+84"/>
+        <location filename="../qml/TimelineRow.qml" line="+69"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -685,7 +685,12 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+32"/>
+        <location filename="../qml/TimelineView.qml" line="+45"/>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Read receipts</source>
         <translation type="unfinished">Lukukuittaukset</translation>
     </message>
@@ -715,7 +720,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+239"/>
+        <location line="+241"/>
         <source>Close</source>
         <translation type="unfinished">Sulje</translation>
     </message>
@@ -777,7 +782,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+290"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+296"/>
         <source>Minimize to tray</source>
         <translation>Pienennä ilmoitusalueelle</translation>
     </message>
@@ -798,6 +803,11 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Show buttons in timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Typing notifications</source>
         <translation>Kirjoitusilmoitukset</translation>
     </message>
@@ -847,7 +857,7 @@
         <translation>Laitteen sormenjälki</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-57"/>
         <source>Session Keys</source>
         <translation>Istunnon avaimet</translation>
     </message>
@@ -867,22 +877,22 @@
         <translation>SALAUS</translation>
     </message>
     <message>
-        <location line="-60"/>
+        <location line="-61"/>
         <source>GENERAL</source>
         <translation>YLEISET ASETUKSET</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+23"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+106"/>
         <source>Emoji Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+147"/>
         <source>Open Sessions File</source>
         <translation>Avaa Istuntoavaintiedosto</translation>
     </message>

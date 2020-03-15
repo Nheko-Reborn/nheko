@@ -3,7 +3,7 @@ import QtQuick 2.6
 import im.nheko 1.0
 
 Item {
-	property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width)
+	property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? parent.width : model.data.width)
 	property double tempHeight: tempWidth * model.data.proportionalHeight
 
 	property bool tooHigh: tempHeight > timelineRoot.height / 2

@@ -8,36 +8,21 @@ import im.nheko 1.0
 import "./delegates"
 
 MouseArea {
-	id: rowArea
-
 	anchors.left: parent.left
 	anchors.right: parent.right
 	height: row.height
-
-	hoverEnabled: true
-	preventStealing: true
 	propagateComposedEvents: true
-	acceptedButtons: Qt.NoButton
+	preventStealing: true
 
-	property bool showButtons: false
-
-	Timer {
-		running: rowArea.containsMouse
-		interval: 150
-		onTriggered: rowArea.state = "showButtons"
+	acceptedButtons: Qt.LeftButton | Qt.RightButton
+	onClicked: {
+		if (mouse.button === Qt.RightButton)
+		messageContextMenu.show(model.id, model.type, row)
 	}
-
-	states: [
-		State {
-			name: "hideButtons"
-			when: !rowArea.containsMouse
-			PropertyChanges { target: rowArea; showButtons: false; }
-		},
-		State {
-			name: "showButtons"
-			PropertyChanges { target: rowArea; showButtons: true; }
-		}
-	]
+	onPressAndHold: {
+		if (mouse.source === Qt.MouseEventNotSynthesized)
+		messageContextMenu.show(model.id, model.type, row)
+	}
 
 	RowLayout {
 		id: row
@@ -70,7 +55,7 @@ MouseArea {
 		}
 
 		ImageButton {
-			visible: rowArea.showButtons
+			visible: timelineSettings.buttons
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
@@ -86,7 +71,7 @@ MouseArea {
 			onClicked: chat.model.replyAction(model.id)
 		}
 		ImageButton {
-			visible: rowArea.showButtons
+			visible: timelineSettings.buttons
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
@@ -125,6 +110,7 @@ MouseArea {
 				id: ma
 				anchors.fill: parent
 				hoverEnabled: true
+				propagateComposedEvents: true
 			}
 
 			ToolTip.visible: ma.containsMouse
