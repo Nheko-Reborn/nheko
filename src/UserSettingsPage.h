@@ -87,10 +87,7 @@ public:
                 save();
         }
 
-        void setIgnoreMinorEvents(bool state)
-        {
-                ignoreMinorEvents_ = state;
-        }
+        void setIgnoreMinorEvents(bool state) { ignoreMinorEvents_ = state; }
 
         void setButtonsInTimeline(bool state)
         {
