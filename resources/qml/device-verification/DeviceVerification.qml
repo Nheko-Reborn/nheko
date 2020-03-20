@@ -267,17 +267,17 @@ ApplicationWindow {
 						model: 7
 						delegate: Rectangle {
 							color: "transparent"
-							implicitHeight: Qt.application.font.pixelSize * 8
+							implicitHeight: Qt.application.font.pixelSize * 3
 							implicitWidth: col.width
 							ColumnLayout {
 								id: col
 								anchors.bottom: parent.bottom
 								property var emoji: emojis.mapping[Math.floor(Math.random()*64)]
 								Text {
-									height: font.pixelSize * 2
+									//height: font.pixelSize * 2
 									Layout.alignment: Qt.AlignHCenter
 									text: col.emoji.emoji
-									font.pixelSize: Qt.application.font.pixelSize * 4
+									font.pixelSize: Qt.application.font.pixelSize * 2
 									font.family: settings.emoji_font_family
 								}
 								Text {
