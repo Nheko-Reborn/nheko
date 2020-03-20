@@ -186,7 +186,7 @@ public:
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
         Q_INVOKABLE void cacheMedia(QString eventId);
-        Q_INVOKABLE void saveMedia(QString eventId) const;
+        Q_INVOKABLE bool saveMedia(QString eventId) const;
 
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>

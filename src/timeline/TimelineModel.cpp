@@ -1271,7 +1271,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
                 emit nextPendingMessage();
 }
 
-void
+bool
 TimelineModel::saveMedia(QString eventId) const
 {
         mtx::events::collections::TimelineEvents event = events.value(eventId);
@@ -1309,7 +1309,7 @@ TimelineModel::saveMedia(QString eventId) const
           manager_->getWidget(), dialogTitle, openLocation, filterString);
 
         if (filename.isEmpty())
-                return;
+                return false;
 
         const auto url = mxcUrl.toStdString();
 
@@ -1340,10 +1340,13 @@ TimelineModel::saveMedia(QString eventId) const
 
                           file.write(QByteArray(temp.data(), (int)temp.size()));
                           file.close();
+
+                          return;
                   } catch (const std::exception &e) {
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());
                   }
           });
+        return true;
 }
 
 void

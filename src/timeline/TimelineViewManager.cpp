@@ -175,9 +175,20 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
 
                 auto imgDialog = new dialogs::ImageOverlay(pixmap);
                 imgDialog->showFullScreen();
-                connect(imgDialog, &dialogs::ImageOverlay::saving, timeline_, [this, eventId]() {
-                        timeline_->saveMedia(eventId);
-                });
+                connect(imgDialog,
+                        &dialogs::ImageOverlay::saving,
+                        timeline_,
+                        [this, eventId, imgDialog]() {
+                                // hide the overlay while presenting the save dialog for better
+                                // cross platform support.
+                                imgDialog->hide();
+
+                                if (!timeline_->saveMedia(eventId)) {
+                                        imgDialog->show();
+                                } else {
+                                        imgDialog->close();
+                                }
+                        });
         });
 }
 
