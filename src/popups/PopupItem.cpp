@@ -113,7 +113,8 @@ RoomItem::RoomItem(QWidget *parent, const RoomSearchResult &res)
         topLayout_->addWidget(avatar_);
         topLayout_->addWidget(roomName_, 1);
 
-        avatar_->setImage(QString::fromStdString(res.info.avatar_url));
+        if (!res.info.avatar_url.empty())
+                avatar_->setImage(QString::fromStdString(res.info.avatar_url));
 }
 
 void
@@ -128,7 +129,11 @@ RoomItem::updateItem(const RoomSearchResult &result)
 
         roomName_->setText(name);
 
-        avatar_->setImage(QString::fromStdString(result.info.avatar_url));
+        // if there is not an avatar set for the room, we want to at least show the letter
+        // correctly!
+        avatar_->setLetter(utils::firstChar(name));
+        if (!result.info.avatar_url.empty())
+                avatar_->setImage(QString::fromStdString(result.info.avatar_url));
 }
 
 void
