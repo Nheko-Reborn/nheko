@@ -717,11 +717,8 @@ ChatPage::changeTopRoomInfo(const QString &room_id)
                 top_bar_->updateRoomName(name);
                 top_bar_->updateRoomTopic(QString::fromStdString(room_info[room_id].topic));
 
-                auto img = cache::getRoomAvatar(room_id);
-
-                if (img.isNull())
-                        top_bar_->updateRoomAvatarFromName(name);
-                else
+                top_bar_->updateRoomAvatarFromName(name);
+                if (!avatar_url.isEmpty())
                         top_bar_->updateRoomAvatar(avatar_url);
 
         } catch (const lmdb::error &e) {
