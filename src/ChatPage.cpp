@@ -974,36 +974,15 @@ ChatPage::trySync()
                           const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
 
-                          if (status_code <= 0 || status_code >= 600) {
-                                  if (!http::is_logged_in())
-                                          return;
-
-                                  emit tryDelayedSyncCb();
+                          if (http::is_logged_in() && err->matrix_error.errcode ==
+                                                        mtx::errors::ErrorCode::M_UNKNOWN_TOKEN) {
+                                  emit dropToLoginPageCb(msg);
                                   return;
                           }
 
                           nhlog::net()->error("sync error: {} {}", status_code, err_code);
-
-                          switch (status_code) {
-                          case 502:
-                          case 504:
-                          case 524: {
-                                  emit trySyncCb();
-                                  return;
-                          }
-                          default: {
-                                  if (!http::is_logged_in())
-                                          return;
-
-                                  if (err->matrix_error.errcode ==
-                                      mtx::errors::ErrorCode::M_UNKNOWN_TOKEN)
-                                          emit dropToLoginPageCb(msg);
-                                  else
-                                          emit tryDelayedSyncCb();
-
-                                  return;
-                          }
-                          }
+                          emit tryDelayedSyncCb();
+                          return;
                   }
 
                   nhlog::net()->debug("sync completed: {}", res.next_batch);
