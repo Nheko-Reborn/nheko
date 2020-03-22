@@ -1423,7 +1423,8 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn,
                         StateEvent<Avatar> msg =
                           json::parse(std::string(event.data(), event.size()));
 
-                        return QString::fromStdString(msg.content.url);
+                        if (!msg.content.url.empty())
+                                return QString::fromStdString(msg.content.url);
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.avatar event: {}", e.what());
                 }

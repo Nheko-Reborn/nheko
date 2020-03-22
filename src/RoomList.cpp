@@ -94,9 +94,6 @@ RoomList::addRoom(const QString &room_id, const RoomInfo &info)
 void
 RoomList::updateAvatar(const QString &room_id, const QString &url)
 {
-        if (url.isEmpty())
-                return;
-
         emit updateRoomAvatarCb(room_id, url);
 }
 

@@ -419,7 +419,10 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
 void
 RoomInfoListItem::setAvatar(const QString &avatar_url)
 {
-        avatar_->setImage(avatar_url);
+        if (avatar_url.isEmpty())
+                avatar_->setLetter(utils::firstChar(roomName_));
+        else
+                avatar_->setImage(avatar_url);
 }
 
 void
