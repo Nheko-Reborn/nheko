@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QIcon>
 #include <QImage>
 #include <QPixmap>
 #include <QWidget>
@@ -18,7 +17,6 @@ public:
         explicit Avatar(QWidget *parent = nullptr, int size = ui::AvatarSize);
 
         void setBackgroundColor(const QColor &color);
-        void setIcon(const QIcon &icon);
         void setImage(const QString &avatar_url);
         void setImage(const QString &room, const QString &user);
         void setLetter(const QString &letter);
@@ -40,7 +38,6 @@ private:
         QString avatar_url_, room_, user_;
         QColor background_color_;
         QColor text_color_;
-        QIcon icon_;
         QPixmap pixmap_;
         int size_;
 };

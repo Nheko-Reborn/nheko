@@ -29,7 +29,6 @@ class OverlayModal;
 
 class QPainter;
 class QLabel;
-class QIcon;
 class QHBoxLayout;
 class QVBoxLayout;
 
@@ -43,7 +42,6 @@ public:
         TopRoomBar(QWidget *parent = nullptr);
 
         void updateRoomAvatar(const QString &avatar_image);
-        void updateRoomAvatar(const QIcon &icon);
         void updateRoomName(const QString &name);
         void updateRoomTopic(QString topic);
         void updateRoomAvatarFromName(const QString &name);

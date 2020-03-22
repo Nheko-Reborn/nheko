@@ -72,6 +72,8 @@ Avatar::setImage(const QString &avatar_url)
                                 static_cast<int>(size_ * pixmap_.devicePixelRatio()),
                                 this,
                                 [this](QPixmap pm) {
+                                        if (pm.isNull())
+                                                return;
                                         type_   = ui::AvatarType::Image;
                                         pixmap_ = pm;
                                         update();
@@ -88,18 +90,12 @@ Avatar::setImage(const QString &room, const QString &user)
                                 static_cast<int>(size_ * pixmap_.devicePixelRatio()),
                                 this,
                                 [this](QPixmap pm) {
+                                        if (pm.isNull())
+                                                return;
                                         type_   = ui::AvatarType::Image;
                                         pixmap_ = pm;
                                         update();
                                 });
-}
-
-void
-Avatar::setIcon(const QIcon &icon)
-{
-        icon_ = icon;
-        type_ = ui::AvatarType::Icon;
-        update();
 }
 
 void
@@ -135,13 +131,6 @@ Avatar::paintEvent(QPaintEvent *)
         }
 
         switch (type_) {
-        case ui::AvatarType::Icon: {
-                icon_.paint(&painter,
-                            QRect((width() - hs) / 2, (height() - hs) / 2, hs, hs),
-                            Qt::AlignCenter,
-                            QIcon::Normal);
-                break;
-        }
         case ui::AvatarType::Image: {
                 QPainterPath ppath;
 

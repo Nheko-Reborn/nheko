@@ -7,7 +7,6 @@
 namespace ui {
 enum class AvatarType
 {
-        Icon,
         Image,
         Letter
 };

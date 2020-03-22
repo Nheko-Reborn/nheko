@@ -197,13 +197,6 @@ TopRoomBar::updateRoomAvatar(const QString &avatar_image)
 }
 
 void
-TopRoomBar::updateRoomAvatar(const QIcon &icon)
-{
-        avatar_->setIcon(icon);
-        update();
-}
-
-void
 TopRoomBar::updateRoomName(const QString &name)
 {
         nameLabel_->setText(name);
