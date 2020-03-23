@@ -542,7 +542,12 @@ if(ASAN)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined")
 endif()
 
-add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
+if(WIN32)
+	add_executable (nheko WIN32 ${OS_BUNDLE} ${NHEKO_DEPS})
+else()
+	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
+endif()
+
 if(APPLE)
 	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
 elseif(WIN32)
