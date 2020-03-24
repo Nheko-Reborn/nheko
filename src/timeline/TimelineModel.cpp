@@ -1443,7 +1443,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
         QStringList uidWithoutLast;
 
         auto formatUser = [this, bg](const QString &user_id) -> QString {
-                auto uncoloredUsername = escapeEmoji(displayName(user_id).toHtmlEscaped());
+                auto uncoloredUsername = escapeEmoji(displayName(user_id));
                 QString prefix =
                   QString("<font color=\"%1\">").arg(manager_->userColor(user_id, bg).name());
 
