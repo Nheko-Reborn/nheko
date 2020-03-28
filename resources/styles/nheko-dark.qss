@@ -32,6 +32,7 @@ UserMentionsWidget > * {
 
 QLineEdit,
 QListWidget,
+QToolTip,
 WelcomePage,
 LoginPage,
 RegisterPage,

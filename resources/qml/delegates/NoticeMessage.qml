@@ -1,4 +1,4 @@
 TextMessage {
 	font.italic: true
-	color: inactiveColors.text
+	color: colors.buttonText
 }

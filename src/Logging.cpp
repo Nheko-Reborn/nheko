@@ -29,7 +29,7 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
         if (msg.endsWith(
               "QML Binding: Not restoring previous value because restoreMode has not been set.This "
               "behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= "
-              "6.0 the default is Binding.RestoreBindingOrValue."))
+              "6.0 the default is Binding.RestoreBindingOrValue.") || msg.endsWith("Both point size and pixel size set. Using pixel size."))
                 return;
 
         switch (type) {

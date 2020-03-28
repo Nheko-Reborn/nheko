@@ -1,4 +1,5 @@
 import QtQuick 2.6
+import QtQuick.Controls 2.3
 import QtGraphicalEffects 1.0
 
 Rectangle {
@@ -10,15 +11,15 @@ Rectangle {
 	property alias url: img.source
 	property string displayName
 
-	Text {
+	Label {
 		anchors.fill: parent
 		text: chat.model.escapeEmoji(String.fromCodePoint(displayName.codePointAt(0)))
 		textFormat: Text.RichText
-		color: colors.text
 		font.pixelSize: avatar.height/2
 		verticalAlignment: Text.AlignVCenter
 		horizontalAlignment: Text.AlignHCenter
 		visible: img.status != Image.Ready
+		color: colors.brightText
 	}
 
 	Image {
@@ -42,5 +43,5 @@ Rectangle {
 			}
 		}
 	}
-	color: colors.base
+	color: colors.dark
 }

@@ -183,6 +183,7 @@ TopSection {
 
 WelcomePage,
 LoginPage,
+QToolTip,
 RegisterPage {
     background-color: white;
     color: #333;
