@@ -11,13 +11,13 @@ Rectangle {
 		id: col
 		anchors.bottom: parent.bottom
 		property var emoji: emojis.mapping[Math.floor(Math.random()*64)]
-		Text {
+		Label {
 			height: font.pixelSize * 2
 			Layout.alignment: Qt.AlignHCenter
 			text: col.emoji.emoji
 			font.pixelSize: Qt.application.font.pixelSize * 2
 		}
-		Text {
+		Label {
 			Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
 			text: col.emoji.description
 		}

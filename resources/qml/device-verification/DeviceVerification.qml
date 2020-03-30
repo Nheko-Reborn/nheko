@@ -50,7 +50,7 @@ ApplicationWindow {
 			property string title: "Device Verification Request"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -60,7 +60,7 @@ ApplicationWindow {
 					verticalAlignment: Text.AlignVCenter
 				}
 
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -95,7 +95,7 @@ ApplicationWindow {
 			property string title: "Waiting for other party"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -129,7 +129,7 @@ ApplicationWindow {
 			property string title: "Verification Code"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -141,15 +141,15 @@ ApplicationWindow {
 
 				RowLayout {
 					Layout.alignment: Qt.AlignHCenter
-					Text {
+					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
 						text: "1234"
 					}
-					Text {
+					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
 						text: "1234"
 					}
-					Text {
+					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
 						text: "1234"
 					}
@@ -180,7 +180,7 @@ ApplicationWindow {
 			property string title: "Verification Code"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -273,14 +273,14 @@ ApplicationWindow {
 								id: col
 								anchors.bottom: parent.bottom
 								property var emoji: emojis.mapping[Math.floor(Math.random()*64)]
-								Text {
+								Label {
 									//height: font.pixelSize * 2
 									Layout.alignment: Qt.AlignHCenter
 									text: col.emoji.emoji
 									font.pixelSize: Qt.application.font.pixelSize * 2
 									font.family: settings.emoji_font_family
 								}
-								Text {
+								Label {
 									Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
 									text: col.emoji.description
 								}
@@ -314,7 +314,7 @@ ApplicationWindow {
 			property string title: "Awaiting Confirmation"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -348,7 +348,7 @@ ApplicationWindow {
 			property string title: "Successful Verification"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -379,7 +379,7 @@ ApplicationWindow {
 			property string title: "Verification aborted!"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
@@ -410,7 +410,7 @@ ApplicationWindow {
 			property string title: "Verification timed out"
 			ColumnLayout {
 				spacing: 16
-				Text {
+				Label {
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true
