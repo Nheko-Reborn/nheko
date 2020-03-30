@@ -142,8 +142,6 @@ UserProfile::UserProfile(QWidget *parent)
         devices_->setSelectionMode(QAbstractItemView::NoSelection);
         devices_->setAttribute(Qt::WA_MacShowFocusRect, 0);
         devices_->setSpacing(DEVICE_SPACING);
-        devices_->setMinimumHeight(devices_->sizeHint().height() * 1.2);
-        devices_->hide();
 
         QFont descriptionLabelFont;
         descriptionLabelFont.setWeight(65);
@@ -151,6 +149,7 @@ UserProfile::UserProfile(QWidget *parent)
         devicesLabel_ = new QLabel(tr("Devices").toUpper(), this);
         devicesLabel_->setFont(descriptionLabelFont);
         devicesLabel_->hide();
+        devicesLabel_->setFixedSize(devicesLabel_->sizeHint());
 
         auto okBtn = new QPushButton("OK", this);
 
@@ -160,29 +159,24 @@ UserProfile::UserProfile(QWidget *parent)
         closeLayout->addWidget(okBtn);
 
         auto vlayout = new QVBoxLayout{this};
-        vlayout->addWidget(avatar_);
+        vlayout->addWidget(avatar_, 0, Qt::AlignCenter | Qt::AlignTop);
         vlayout->addLayout(textLayout);
         vlayout->addLayout(btnLayout);
-        vlayout->addWidget(devicesLabel_, Qt::AlignLeft);
-        vlayout->addWidget(devices_);
+        vlayout->addWidget(devicesLabel_, 0, Qt::AlignLeft);
+        vlayout->addWidget(devices_, 1);
         vlayout->addLayout(closeLayout);
-        vlayout->addStretch(1);
-
-        vlayout->setAlignment(avatar_, Qt::AlignCenter | Qt::AlignTop);
-        vlayout->setAlignment(userIdLabel_, Qt::AlignCenter | Qt::AlignTop);
 
         QFont largeFont;
         largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
         setMinimumWidth(
           std::max(devices_->sizeHint().width() + 4 * WIDGET_MARGIN, conf::window::minModalWidth));
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         vlayout->setSpacing(WIDGET_SPACING);
         vlayout->setContentsMargins(WIDGET_MARGIN, TOP_WIDGET_MARGIN, WIDGET_MARGIN, WIDGET_MARGIN);
 
-        static auto ignored = qRegisterMetaType<std::vector<DeviceInfo>>();
-        (void)ignored;
+        qRegisterMetaType<std::vector<DeviceInfo>>();
 
         auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
         connect(closeShortcut, &QShortcut::activated, this, &UserProfile::close);
@@ -307,4 +301,5 @@ UserProfile::updateDeviceList(const QString &user_id, const std::vector<DeviceIn
 
         devicesLabel_->show();
         devices_->show();
+        adjustSize();
 }
