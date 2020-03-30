@@ -184,9 +184,31 @@ TopSection {
 WelcomePage,
 LoginPage,
 QToolTip,
+QComboBox,
+QPushButton,
 RegisterPage {
     background-color: white;
     color: #333;
+}
+
+QMenu {
+    background-color: white;
+    color: #333;
+    border: 1px solid darkblue;
+}
+
+QComboBox:hover,
+QAbstractItemView::item:hover,
+QMenu::item:hover,
+QPushButton:hover {
+    background: #38a3d8;
+    selection-background-color: #38a3d8;
+}
+
+QAbstractItemView::item:selected,
+QMenu::item:selected {
+    border-color: darkblue;
+    background: grey;
 }
 
 emoji--Panel,
@@ -220,6 +242,13 @@ TextField {
     qproperty-backgroundColor: white;
     qproperty-inkColor: #333;
     qproperty-labelColor: #333;
+}
+
+TextInputWidget,
+QTextEdit,
+QLineEdit {
+    background-color: white;
+    color: #333;
 }
 
 TextInputWidget {

@@ -32,7 +32,6 @@ UserMentionsWidget > * {
 
 QLineEdit,
 QListWidget,
-QToolTip,
 WelcomePage,
 LoginPage,
 RegisterPage,
@@ -178,12 +177,33 @@ UserInfoWidget {
     border-bottom: 1px solid #202228;
 }
 
-#UserSettingScrollWidget > QComboBox {
+QToolTip,
+QPushButton,
+QComboBox,
+QAbstractItemView,
+QMenu,
+QComboBox > * {
+    background: white;
     color: #202228;
 }
 
-#UserSettingScrollWidget > QComboBox {
-    color: #202228;
+QComboBox:hover,
+QAbstractItemView::item:hover,
+QMenu::item:hover,
+QPushButton:hover {
+    background: #38a3d8;
+    selection-background-color: #38a3d8;
+}
+
+
+QMenu::item {
+    border: 1px solid transparent; /* reserve space for selection border */
+}
+
+QAbstractItemView::item:selected,
+QMenu::item:selected {
+    border-color: darkblue;
+    background: grey;
 }
 
 Avatar {

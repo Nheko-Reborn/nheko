@@ -22,38 +22,11 @@ TimelineViewManager::updateColorPalette()
         userColors.clear();
 
         if (settings->theme() == "light") {
-                QPalette lightActive(/*windowText*/ QColor("#333"),
-                                     /*button*/ QColor("#333"),
-                                     /*light*/ QColor(),
-                                     /*dark*/ QColor(220, 220, 220),
-                                     /*mid*/ QColor(),
-                                     /*text*/ QColor("#333"),
-                                     /*bright_text*/ QColor(),
-                                     /*base*/ QColor(220, 220, 220),
-                                     /*window*/ QColor("white"));
-                lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
-                lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
-                lightActive.setColor(QPalette::Link, QColor("#0077b5"));
-                lightActive.setColor(QPalette::ButtonText, QColor("gray"));
-                view->rootContext()->setContextProperty("currentActivePalette", lightActive);
-                view->rootContext()->setContextProperty("currentInactivePalette", lightActive);
+                view->rootContext()->setContextProperty("currentActivePalette", QPalette());
+                view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
         } else if (settings->theme() == "dark") {
-                QPalette darkActive(/*windowText*/ QColor("#caccd1"),
-                                    /*button*/ QColor("#caccd1"),
-                                    /*light*/ QColor(),
-                                    /*dark*/ QColor("#2d3139"),
-                                    /*mid*/ QColor(),
-                                    /*text*/ QColor("#caccd1"),
-                                    /*bright_text*/ QColor(0xff, 0xff, 0xff),
-                                    /*base*/ QColor("#2d3139"),
-                                    /*window*/ QColor("#202228"));
-                darkActive.setColor(QPalette::Highlight, QColor("#e7e7e9"));
-                darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
-                darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
-                darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ButtonText, QColor("gray"));
-                view->rootContext()->setContextProperty("currentActivePalette", darkActive);
-                view->rootContext()->setContextProperty("currentInactivePalette", darkActive);
+                view->rootContext()->setContextProperty("currentActivePalette", QPalette());
+                view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
         } else {
                 view->rootContext()->setContextProperty("currentActivePalette", QPalette());
                 view->rootContext()->setContextProperty("currentInactivePalette", nullptr);
