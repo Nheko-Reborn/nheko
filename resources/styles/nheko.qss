@@ -183,7 +183,6 @@ TopSection {
 
 WelcomePage,
 LoginPage,
-QToolTip,
 QComboBox,
 QPushButton,
 RegisterPage {
@@ -191,22 +190,14 @@ RegisterPage {
     color: #333;
 }
 
-QMenu {
-    background-color: white;
-    color: #333;
-    border: 1px solid darkblue;
-}
-
 QComboBox:hover,
 QAbstractItemView::item:hover,
-QMenu::item:hover,
 QPushButton:hover {
     background: #38a3d8;
     selection-background-color: #38a3d8;
 }
 
-QAbstractItemView::item:selected,
-QMenu::item:selected {
+QAbstractItemView::item:selected {
     border-color: darkblue;
     background: grey;
 }
@@ -244,6 +235,7 @@ TextField {
     qproperty-labelColor: #333;
 }
 
+QListWidget,
 TextInputWidget,
 QTextEdit,
 QLineEdit {
