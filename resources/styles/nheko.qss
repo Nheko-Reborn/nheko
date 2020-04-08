@@ -190,18 +190,6 @@ RegisterPage {
     color: #333;
 }
 
-QComboBox:hover,
-QAbstractItemView::item:hover,
-QPushButton:hover {
-    background: #38a3d8;
-    selection-background-color: #38a3d8;
-}
-
-QAbstractItemView::item:selected {
-    border-color: darkblue;
-    background: grey;
-}
-
 emoji--Panel,
 emoji--Panel > * {
     background-color: #eee;

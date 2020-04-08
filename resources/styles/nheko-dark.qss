@@ -176,27 +176,6 @@ UserInfoWidget {
     border-bottom: 1px solid #202228;
 }
 
-QPushButton,
-QComboBox,
-QAbstractItemView,
-QComboBox > * {
-    background: white;
-    color: #202228;
-}
-
-QComboBox:hover,
-QAbstractItemView::item:hover,
-QPushButton:hover {
-    background: #38a3d8;
-    selection-background-color: #38a3d8;
-}
-
-
-QAbstractItemView::item:selected {
-    border-color: darkblue;
-    background: grey;
-}
-
 Avatar {
     qproperty-textColor: white;
     qproperty-backgroundColor: #2d3139;
