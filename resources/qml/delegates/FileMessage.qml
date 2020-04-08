@@ -1,8 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.2
 
-Rectangle {
-	color: "transparent"
+Item {
 	height: row.height + 24
 	width: parent ? parent.width : undefined
 

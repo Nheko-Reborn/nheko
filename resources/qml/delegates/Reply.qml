@@ -3,7 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 
-Rectangle {
+Item {
 	id: replyComponent
 
 	property alias modelData: reply.modelData
@@ -53,8 +53,6 @@ Rectangle {
 			width: parent.width
 		}
 	}
-
-	color: "transparent"
 
 	Rectangle {
 		id: backgroundItem
