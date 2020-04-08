@@ -25,12 +25,18 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
         const char *file     = context.file ? context.file : "";
         const char *function = context.function ? context.function : "";
 
-        // Surpress binding wrning for now, as we can't set restore mode to keep compat with qt 5.10
-        if (msg.endsWith(
-              "QML Binding: Not restoring previous value because restoreMode has not been set.This "
-              "behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= "
-              "6.0 the default is Binding.RestoreBindingOrValue.") ||
-            msg.endsWith("Both point size and pixel size set. Using pixel size."))
+        if (
+          // Surpress binding wrning for now, as we can't set restore mode to keep compat with
+          // qt 5.10
+          msg.endsWith(
+            "QML Binding: Not restoring previous value because restoreMode has not been set.This "
+            "behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= "
+            "6.0 the default is Binding.RestoreBindingOrValue.") ||
+          // The default style has the point size set. If you use pixel size anywhere, you get
+          // that warning, which is useless, since sometimes you need the pixel size to match the
+          // text to the size of the outer element for example. This is done in the avatar and
+          // without that you get one warning for every Avatar displayed, which is stupid!
+          msg.endsWith("Both point size and pixel size set. Using pixel size."))
                 return;
 
         switch (type) {
