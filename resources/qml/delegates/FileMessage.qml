@@ -2,8 +2,7 @@ import QtQuick 2.6
 import QtQuick.Layouts 1.2
 
 Rectangle {
-	radius: 10
-	color: colors.dark
+	color: "transparent"
 	height: row.height + 24
 	width: parent ? parent.width : undefined
 
@@ -39,6 +38,7 @@ Rectangle {
 			id: col
 
 			Text {
+				id: filename
 				Layout.fillWidth: true
 				text: model.data.body
 				textFormat: Text.PlainText
@@ -46,6 +46,7 @@ Rectangle {
 				color: colors.text
 			}
 			Text {
+				id: filesize
 				Layout.fillWidth: true
 				text: model.data.filesize
 				textFormat: Text.PlainText
@@ -54,4 +55,13 @@ Rectangle {
 			}
 		}
 	}
+
+	Rectangle {
+		color: colors.dark
+		z: -1
+		radius: 10
+		height: row.height + 24
+		width: 44 + 24 + 24 + Math.max(Math.min(filesize.width, filesize.implicitWidth), Math.min(filename.width, filename.implicitWidth))
+	}
+
 }
