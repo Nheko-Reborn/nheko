@@ -11,6 +11,7 @@ Item {
 	property alias modelData: model.data
 
 	height: chooser.childrenRect.height
+	property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
 
 	DelegateChooser {
 		id: chooser

@@ -45,11 +45,14 @@ class DelegateChooser : public QQuickItem
 public:
         Q_PROPERTY(QQmlListProperty<DelegateChoice> choices READ choices CONSTANT)
         Q_PROPERTY(QVariant roleValue READ roleValue WRITE setRoleValue NOTIFY roleValueChanged)
+        Q_PROPERTY(QQuickItem *child READ child NOTIFY childChanged)
 
         QQmlListProperty<DelegateChoice> choices();
 
         QVariant roleValue() const;
         void setRoleValue(const QVariant &value);
+
+        QQuickItem *child() const { return child_; }
 
         void recalcChild();
         void componentComplete() override;
@@ -57,6 +60,7 @@ public:
 signals:
         void roleChanged();
         void roleValueChanged();
+        void childChanged();
 
 private:
         struct DelegateIncubator : public QQmlIncubator
@@ -72,7 +76,7 @@ private:
 
         QVariant roleValue_;
         QList<DelegateChoice *> choices_;
-        QQuickItem *child = nullptr;
+        QQuickItem *child_ = nullptr;
         DelegateIncubator incubator{*this};
 
         static void appendChoice(QQmlListProperty<DelegateChoice> *, DelegateChoice *);

@@ -94,9 +94,9 @@ DelegateChooser::recalcChild()
         for (const auto choice : qAsConst(choices_)) {
                 auto choiceValue = choice->roleValue();
                 if (!roleValue_.isValid() || !choiceValue.isValid() || choiceValue == roleValue_) {
-                        if (child) {
-                                child->setParentItem(nullptr);
-                                child = nullptr;
+                        if (child_) {
+                                child_->setParentItem(nullptr);
+                                child_ = nullptr;
                         }
 
                         choice->delegate()->create(incubator, QQmlEngine::contextForObject(this));
@@ -116,19 +116,20 @@ void
 DelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
 {
         if (status == QQmlIncubator::Ready) {
-                chooser.child = dynamic_cast<QQuickItem *>(object());
-                if (chooser.child == nullptr) {
+                chooser.child_ = dynamic_cast<QQuickItem *>(object());
+                if (chooser.child_ == nullptr) {
                         nhlog::ui()->error("Delegate has to be derived of Item!");
                         return;
                 }
 
-                chooser.child->setParentItem(&chooser);
-                connect(chooser.child, &QQuickItem::heightChanged, &chooser, [this]() {
-                        chooser.setHeight(chooser.child->height());
+                chooser.child_->setParentItem(&chooser);
+                connect(chooser.child_, &QQuickItem::heightChanged, &chooser, [this]() {
+                        chooser.setHeight(chooser.child_->height());
                 });
-                chooser.setHeight(chooser.child->height());
-                QQmlEngine::setObjectOwnership(chooser.child,
+                chooser.setHeight(chooser.child_->height());
+                QQmlEngine::setObjectOwnership(chooser.child_,
                                                QQmlEngine::ObjectOwnership::JavaScriptOwnership);
+                emit chooser.childChanged();
 
         } else if (status == QQmlIncubator::Error) {
                 for (const auto &e : errors())

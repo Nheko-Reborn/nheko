@@ -54,5 +54,13 @@ Rectangle {
 		}
 	}
 
-	color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.2)
+	color: "transparent"
+
+	Rectangle {
+		id: backgroundItem
+		z: -1
+		height: replyContainer.height
+		width: Math.min(Math.max(reply.implicitWidth, userName.implicitWidth) + 8 + 4, parent.width)
+		color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.2)
+	}
 }
