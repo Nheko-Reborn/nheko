@@ -229,6 +229,7 @@ public:
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void roomReadStatus(const std::map<QString, bool> &status);
+        void removeNotification(const QString &room_id, const QString &event_id);
 
 private:
         //! Save an invited room.

@@ -645,6 +645,11 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 connect(
                   cache::client(), &Cache::roomReadStatus, room_list_, &RoomList::updateReadStatus);
 
+                connect(cache::client(),
+                        &Cache::removeNotification,
+                        &notificationsManager,
+                        &NotificationsManager::removeNotification);
+
                 const bool isInitialized = cache::isInitialized();
                 const bool isValid       = cache::isFormatValid();
 

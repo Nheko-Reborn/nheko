@@ -829,6 +829,7 @@ Cache::filterReadEvents(const QString &room_id,
 void
 Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Receipts &receipts)
 {
+        auto user_id = this->localUserId_.toStdString();
         for (const auto &receipt : receipts) {
                 const auto event_id = receipt.first;
                 auto event_receipts = receipt.second;
@@ -857,8 +858,13 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
                         }
 
                         // Append the new ones.
-                        for (const auto &event_receipt : event_receipts)
-                                saved_receipts.emplace(event_receipt.first, event_receipt.second);
+                        for (const auto &[read_by, timestamp] : event_receipts) {
+                                if (read_by == user_id) {
+                                        emit removeNotification(QString::fromStdString(room_id),
+                                                                QString::fromStdString(event_id));
+                                }
+                                saved_receipts.emplace(read_by, timestamp);
+                        }
 
                         // Save back the merged (or only the new) receipts.
                         nlohmann::json json_updated_value = saved_receipts;

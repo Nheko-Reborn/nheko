@@ -40,6 +40,7 @@ NotificationsManager::postNotification(const QString &roomid,
 {
         uint id             = showNotification(roomname, sender + ": " + text, icon);
         notificationIds[id] = roomEventId{roomid, eventid};
+        eventToNotificationId[roomEventId{roomid, eventid}] = id;
 }
 /**
  * This function is based on code from
@@ -54,6 +55,7 @@ NotificationsManager::showNotification(const QString summary,
 {
         QVariantMap hints;
         hints["image-data"] = image;
+        hints["sound-name"] = "message-new-instant";
         QList<QVariant> argumentList;
         argumentList << "nheko";                             // app_name
         argumentList << (uint)0;                             // replace_id
@@ -79,6 +81,44 @@ NotificationsManager::showNotification(const QString summary,
 }
 
 void
+NotificationsManager::closeNotification(uint id)
+{
+        QList<QVariant> argumentList;
+        argumentList << (uint)id; // replace_id
+
+        static QDBusInterface closeCall("org.freedesktop.Notifications",
+                                        "/org/freedesktop/Notifications",
+                                        "org.freedesktop.Notifications");
+        QDBusMessage reply =
+          closeCall.callWithArgumentList(QDBus::AutoDetect, "CloseNotification", argumentList);
+        if (reply.type() == QDBusMessage::ErrorMessage) {
+                qDebug() << "D-Bus Error:" << reply.errorMessage();
+        }
+}
+
+void
+NotificationsManager::removeNotification(const QString &roomId, const QString &eventId)
+{
+        roomEventId reId = {roomId, eventId};
+        if (eventToNotificationId.contains(reId)) {
+                for (auto elem = notificationIds.begin(); elem != notificationIds.end(); ++elem) {
+                        if (elem.value().roomId != roomId)
+                                continue;
+
+                        // close all notifications matching the eventId or having a lower
+                        // notificationId
+                        // This relies on the notificationId not wrapping around. This allows for
+                        // approximately 2,147,483,647 notifications, so it is a bit unlikely.
+                        // Otherwise we would need to store a 64bit counter instead.
+                        closeNotification(elem.key());
+
+                        if (elem.value() == reId)
+                                break;
+                }
+        }
+}
+
+void
 NotificationsManager::actionInvoked(uint id, QString action)
 {
         if (action == "default" && notificationIds.contains(id)) {
@@ -91,7 +131,7 @@ void
 NotificationsManager::notificationClosed(uint id, uint reason)
 {
         Q_UNUSED(reason);
-        notificationIds.remove(id);
+        eventToNotificationId.remove(notificationIds.take(id));
 }
 
 /**

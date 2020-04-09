@@ -63,3 +63,8 @@ NotificationsManager::postNotification(const QString &room_id,
 void NotificationsManager::actionInvoked(uint, QString) {}
 
 void NotificationsManager::notificationClosed(uint, uint) {}
+
+void
+NotificationsManager::removeNotification(const QString &roomId, const QString &eventId)
+{}
+
