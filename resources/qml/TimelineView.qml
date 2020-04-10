@@ -9,11 +9,13 @@ import im.nheko 1.0
 
 import "./delegates"
 
-Item {
+Page {
 	property var colors: currentActivePalette
 	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
 	property int avatarSize: 40
+
+	palette: colors
 
 	Settings {
 		id: settings
@@ -29,7 +31,6 @@ Item {
 
 	Menu {
 		id: messageContextMenu
-		palette: colors
 		modal: true
 
 		function show(eventId_, eventType_, showAt) {
@@ -73,12 +74,11 @@ Item {
 		anchors.fill: parent
 		color: colors.window
 
-		Text {
+		Label {
 			visible: !timelineManager.timeline && !timelineManager.isInitialSync
 			anchors.centerIn: parent
 			text: qsTr("No room open")
 			font.pointSize: 24
-			color: colors.windowText
 		}
 
 		BusyIndicator {
@@ -206,14 +206,14 @@ Item {
 						anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 						visible: section.includes(" ")
 						text: chat.model.formatDateSeparator(modelData.timestamp)
-						color: colors.windowText
+						color: colors.brightText
 
 						height: contentHeight * 1.2
 						width: contentWidth * 1.2
 						horizontalAlignment: Text.AlignHCenter
 						background: Rectangle {
 							radius: parent.height / 2
-							color: colors.base
+							color: colors.dark
 						}
 					}
 					Row {
@@ -233,7 +233,7 @@ Item {
 							}
 						}
 
-						Text { 
+						Label { 
 							id: userName
 							text: chat.model.escapeEmoji(modelData.userName)
 							color: timelineManager.userColor(modelData.userId, colors.window)
@@ -268,7 +268,7 @@ Item {
 				anchors.left: parent.left
 				anchors.right: parent.right
 
-				Text {
+				Label {
 					id: typingDisplay
 					anchors.left: parent.left
 					anchors.right: parent.right
@@ -277,7 +277,6 @@ Item {
 
 					text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
 					textFormat: Text.RichText
-					color: colors.windowText
 				}
 
 				Rectangle {

@@ -31,7 +31,6 @@ UserMentionsWidget > * {
 }
 
 QLineEdit,
-QListWidget,
 WelcomePage,
 LoginPage,
 RegisterPage,
@@ -160,7 +159,7 @@ CommunitiesListItem {
     qproperty-backgroundColor: #2d3139;
 
     qproperty-avatarBgColor: #202228;
-    qproperty-avatarFgColor: white;
+    qproperty-avatarFgColor: palette(window);
 }
 
 LoadingIndicator {
@@ -175,14 +174,6 @@ UserInfoWidget, UserInfoWidget > * {
 UserInfoWidget {
     border: none;
     border-bottom: 1px solid #202228;
-}
-
-#UserSettingScrollWidget > QComboBox {
-    color: #202228;
-}
-
-#UserSettingScrollWidget > QComboBox {
-    color: #202228;
 }
 
 Avatar {
@@ -244,6 +235,11 @@ Toggle {
     qproperty-disabledColor: gray;
     qproperty-inactiveColor: gray;
     qproperty-trackColor: rgb(240, 240, 240);
+}
+
+QListWidget {
+    color: #caccd1;
+    background-color: #202228;
 }
 
 SnackBar {

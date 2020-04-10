@@ -54,6 +54,20 @@ MouseArea {
 			}
 		}
 
+		StatusIndicator {
+			state: model.state
+			Layout.alignment: Qt.AlignRight | Qt.AlignTop
+			Layout.preferredHeight: 16
+			width: 16
+		}
+
+		EncryptionIndicator {
+			visible: model.isEncrypted
+			Layout.alignment: Qt.AlignRight | Qt.AlignTop
+			Layout.preferredHeight: 16
+			width: 16
+		}
+
 		ImageButton {
 			visible: timelineSettings.buttons
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
@@ -87,21 +101,7 @@ MouseArea {
 
 		}
 
-		StatusIndicator {
-			state: model.state
-			Layout.alignment: Qt.AlignRight | Qt.AlignTop
-			Layout.preferredHeight: 16
-			width: 16
-		}
-
-		EncryptionIndicator {
-			visible: model.isEncrypted
-			Layout.alignment: Qt.AlignRight | Qt.AlignTop
-			Layout.preferredHeight: 16
-			width: 16
-		}
-
-		Text {
+		Label {
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			text: model.timestamp.toLocaleTimeString("HH:mm")
 			color: inactiveColors.text

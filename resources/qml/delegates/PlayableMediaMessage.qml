@@ -8,7 +8,7 @@ import im.nheko 1.0
 Rectangle {
 	id: bg
 	radius: 10
-	color: colors.base
+	color: colors.dark
 	height: content.height + 24
 	width: parent ? parent.width : undefined
 

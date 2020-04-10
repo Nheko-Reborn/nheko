@@ -183,6 +183,8 @@ TopSection {
 
 WelcomePage,
 LoginPage,
+QComboBox,
+QPushButton,
 RegisterPage {
     background-color: white;
     color: #333;
@@ -219,6 +221,14 @@ TextField {
     qproperty-backgroundColor: white;
     qproperty-inkColor: #333;
     qproperty-labelColor: #333;
+}
+
+QListWidget,
+TextInputWidget,
+QTextEdit,
+QLineEdit {
+    background-color: white;
+    color: #333;
 }
 
 TextInputWidget {

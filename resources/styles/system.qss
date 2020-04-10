@@ -70,7 +70,7 @@ FileItem {
 }
 
 RaisedButton {
-    qproperty-foregroundColor: palette(buttonText);
+    qproperty-foregroundColor: palette(button-text);
 }
 
 TextField {
@@ -95,18 +95,18 @@ UserMentionsWidget {
     qproperty-titleColor: palette(text);
     qproperty-subtitleColor: palette(text);
 
-    qproperty-highlightedTitleColor: palette(highlightedtext);
-    qproperty-highlightedSubtitleColor: palette(highlightedtext);
+    qproperty-highlightedTitleColor: palette(highlighted-text);
+    qproperty-highlightedSubtitleColor: palette(highlighted-text);
 
     qproperty-hoverTitleColor: palette(highlightedtext);
     qproperty-hoverSubtitleColor: palette(highlightedtext);
 
-    qproperty-btnColor: palette(button);
-    qproperty-btnTextColor: palette(buttonText);
+    qproperty-btnColor: palette(dark);
+    qproperty-btnTextColor: palette(bright-text);
 
     qproperty-timestampColor: palette(text);
-    qproperty-highlightedTimestampColor: palette(highlightedtext);
-    qproperty-hoverTimestampColor: palette(highlightedtext);
+    qproperty-highlightedTimestampColor: palette(highlighted-text);
+    qproperty-hoverTimestampColor: palette(highlighted-text);
 
     qproperty-bubbleBgColor: palette(base);
     qproperty-bubbleFgColor: palette(text);
