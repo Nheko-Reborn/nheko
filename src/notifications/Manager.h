@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QHash>
 #include <QImage>
 #include <QObject>
 #include <QString>
@@ -17,24 +16,9 @@ struct roomEventId
 };
 
 inline bool
-operator<(const roomEventId &a, const roomEventId &b)
-{
-        if (a.roomId == b.roomId)
-                return a.eventId < b.eventId;
-        else
-                return a.roomId < b.roomId;
-}
-
-inline bool
 operator==(const roomEventId &a, const roomEventId &b)
 {
         return a.roomId == b.roomId && a.eventId == b.eventId;
-}
-
-inline uint
-qHash(const roomEventId &v, uint seed)
-{
-        return qHash(v.roomId, seed) ^ qHash(v.eventId, seed);
 }
 
 class NotificationsManager : public QObject
@@ -67,7 +51,6 @@ private:
 
         // notification ID to (room ID, event ID)
         QMap<uint, roomEventId> notificationIds;
-        QHash<roomEventId, uint> eventToNotificationId;
 #endif
 
         // these slots are platform specific (D-Bus only)

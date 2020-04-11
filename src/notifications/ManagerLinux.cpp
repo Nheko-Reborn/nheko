@@ -40,7 +40,6 @@ NotificationsManager::postNotification(const QString &roomid,
 {
         uint id             = showNotification(roomname, sender + ": " + text, icon);
         notificationIds[id] = roomEventId{roomid, eventid};
-        eventToNotificationId[roomEventId{roomid, eventid}] = id;
 }
 /**
  * This function is based on code from
@@ -98,23 +97,24 @@ NotificationsManager::closeNotification(uint id)
 
 void
 NotificationsManager::removeNotification(const QString &roomId, const QString &eventId)
-{
-        roomEventId reId = {roomId, eventId};
-        if (eventToNotificationId.contains(reId)) {
-                for (auto elem = notificationIds.begin(); elem != notificationIds.end(); ++elem) {
-                        if (elem.value().roomId != roomId)
-                                continue;
 
-                        // close all notifications matching the eventId or having a lower
-                        // notificationId
-                        // This relies on the notificationId not wrapping around. This allows for
-                        // approximately 2,147,483,647 notifications, so it is a bit unlikely.
-                        // Otherwise we would need to store a 64bit counter instead.
-                        closeNotification(elem.key());
+  roomEventId reId = {roomId, eventId};
+for (auto elem = notificationIds.begin(); elem != notificationIds.end(); ++elem) {
+        if (elem.value().roomId != roomId)
+                continue;
 
-                        if (elem.value() == reId)
-                                break;
-                }
+        // close all notifications matching the eventId or having a lower
+        // notificationId
+        // This relies on the notificationId not wrapping around. This allows for
+        // approximately 2,147,483,647 notifications, so it is a bit unlikely.
+        // Otherwise we would need to store a 64bit counter instead.
+        closeNotification(elem.key());
+
+        // FIXME: compare index of event id of the read receipt and the notification instead of just
+        // the id to prevent read receipts of events without notification clearing all notifications
+        // in that room!
+        if (elem.value() == reId)
+                break;
         }
 }
 
@@ -131,7 +131,7 @@ void
 NotificationsManager::notificationClosed(uint id, uint reason)
 {
         Q_UNUSED(reason);
-        eventToNotificationId.remove(notificationIds.take(id));
+        notificationIds.remove(id);
 }
 
 /**
