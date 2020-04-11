@@ -205,11 +205,6 @@ TextField {
     qproperty-labelColor: #caccd1;
 }
 
-ScrollBar {
-    qproperty-handleColor: #2d3139;
-    qproperty-backgroundColor: #202228;
-}
-
 SideBarActions,
 TopRoomBar
 {

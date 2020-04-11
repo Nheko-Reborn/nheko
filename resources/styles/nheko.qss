@@ -236,11 +236,6 @@ TextInputWidget {
     border-top: 1px solid #dcdcdc;
 }
 
-ScrollBar {
-    qproperty-handleColor: #ccc;
-    qproperty-backgroundColor: #efefef;
-}
-
 SideBarActions {
     border: none;
     border-top: 1px solid #dcdcdc;

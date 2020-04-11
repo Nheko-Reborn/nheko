@@ -111,7 +111,7 @@ UserSettings::applyTheme()
                   /*button*/ QColor("#333"),
                   /*light*/ QColor(0xef, 0xef, 0xef),
                   /*dark*/ QColor(220, 220, 220),
-                  /*mid*/ QColor(0, 0xff, 0), // not used anywhere, this is for debugging
+                  /*mid*/ QColor(110, 110, 110),
                   /*text*/ QColor("#333"),
                   /*bright_text*/ QColor("#333"),
                   /*base*/ QColor("white"),
@@ -129,7 +129,7 @@ UserSettings::applyTheme()
                   /*button*/ QColor(0xff, 0xff, 0xff),
                   /*light*/ QColor("#caccd1"),
                   /*dark*/ QColor("#2d3139"),
-                  /*mid*/ QColor(0, 0xff, 0), // not used anywhere, this is for debugging
+                  /*mid*/ QColor(110, 110, 110), // not used anywhere, this is for debugging
                   /*text*/ QColor("#caccd1"),
                   /*bright_text*/ QColor(0xff, 0xff, 0xff),
                   /*base*/ QColor("#2d3139"),
