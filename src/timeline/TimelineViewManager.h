@@ -26,8 +26,6 @@ class TimelineViewManager : public QObject
           TimelineModel *timeline MEMBER timeline_ READ activeTimeline NOTIFY activeTimelineChanged)
         Q_PROPERTY(
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
-        Q_PROPERTY(QString replyingEvent READ getReplyingEvent WRITE updateReplyingEvent NOTIFY
-                     replyingEventChanged)
 
 public:
         TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
@@ -52,26 +50,13 @@ signals:
         void replyClosed();
 
 public slots:
-        void updateReplyingEvent(const QString &replyingEvent)
-        {
-                if (this->replyingEvent_ != replyingEvent) {
-                        this->replyingEvent_ = replyingEvent;
-                        emit replyingEventChanged(replyingEvent_);
-                }
-        }
-        void closeReply()
-        {
-                this->updateReplyingEvent(nullptr);
-                emit replyClosed();
-        }
-        QString getReplyingEvent() const { return replyingEvent_; }
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
 
         void setHistoryView(const QString &room_id);
         void updateColorPalette();
 
-        void queueTextMessage(const QString &msg, const std::optional<RelatedInfo> &related);
+        void queueTextMessage(const QString &msg);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
                                const QString &filename,
@@ -80,29 +65,25 @@ public slots:
                                const QString &mime,
                                uint64_t dsize,
                                const QSize &dimensions,
-                               const QString &blurhash,
-                               const std::optional<RelatedInfo> &related);
+                               const QString &blurhash);
         void queueFileMessage(const QString &roomid,
                               const QString &filename,
                               const std::optional<mtx::crypto::EncryptedFile> &file,
                               const QString &url,
                               const QString &mime,
-                              uint64_t dsize,
-                              const std::optional<RelatedInfo> &related);
+                              uint64_t dsize);
         void queueAudioMessage(const QString &roomid,
                                const QString &filename,
                                const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize,
-                               const std::optional<RelatedInfo> &related);
+                               uint64_t dsize);
         void queueVideoMessage(const QString &roomid,
                                const QString &filename,
                                const std::optional<mtx::crypto::EncryptedFile> &file,
                                const QString &url,
                                const QString &mime,
-                               uint64_t dsize,
-                               const std::optional<RelatedInfo> &related);
+                               uint64_t dsize);
 
 private:
 #ifdef USE_QUICK_VIEW
@@ -119,7 +100,6 @@ private:
         QHash<QString, QSharedPointer<TimelineModel>> models;
         TimelineModel *timeline_ = nullptr;
         bool isInitialSync_      = true;
-        QString replyingEvent_;
 
         QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;

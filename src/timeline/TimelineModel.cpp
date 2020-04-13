@@ -800,6 +800,16 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
 void
 TimelineModel::replyAction(QString id)
 {
+        setReply(id);
+        ChatPage::instance()->focusMessageInput();
+}
+
+RelatedInfo
+TimelineModel::relatedInfo(QString id)
+{
+        if (!events.contains(id))
+                return {};
+
         auto event = events.value(id);
         if (auto e =
               std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
@@ -815,10 +825,9 @@ TimelineModel::replyAction(QString id)
         related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
         related.quoted_formatted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
-        nhlog::ui()->debug("after replacement: {}", related.quoted_body.toStdString());
         related.room = room_id_;
 
-        ChatPage::instance()->messageReply(related);
+        return related;
 }
 
 void

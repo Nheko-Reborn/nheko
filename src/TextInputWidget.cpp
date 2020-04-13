@@ -46,7 +46,6 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
   : QTextEdit{parent}
   , history_index_{0}
   , suggestionsPopup_{parent}
-  , replyPopup_{parent}
   , previewDialog_{parent}
 {
         setFrameStyle(QFrame::NoFrame);
@@ -73,10 +72,6 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                 &FilteredTextEdit::uploadData);
 
         connect(this, &FilteredTextEdit::resultsRetrieved, this, &FilteredTextEdit::showResults);
-        connect(&replyPopup_, &ReplyPopup::userSelected, this, [](const QString &text) {
-                // TODO: Show user avatar window.
-                nhlog::ui()->info("User selected: " + text.toStdString());
-        });
         connect(
           &suggestionsPopup_, &SuggestionsPopup::itemSelected, this, [this](const QString &text) {
                   suggestionsPopup_.hide();
@@ -89,8 +84,6 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                   cursor.removeSelectedText();
                   cursor.insertText(text);
           });
-
-        connect(&replyPopup_, &ReplyPopup::cancel, this, [this]() { closeReply(); });
 
         // For cycling through the suggestions by hitting tab.
         connect(this,
@@ -174,17 +167,6 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 }
         }
 
-        if (replyPopup_.isVisible()) {
-                switch (event->key()) {
-                case Qt::Key_Escape:
-                        closeReply();
-                        return;
-
-                default:
-                        break;
-                }
-        }
-
         switch (event->key()) {
         case Qt::Key_At:
                 atTriggerPosition_ = textCursor().position();
@@ -218,7 +200,6 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
                         stopTyping();
                         submit();
-                        closeReply();
                 } else {
                         QTextEdit::keyPressEvent(event);
                 }
@@ -416,28 +397,15 @@ FilteredTextEdit::submit()
                 auto name = text.mid(1, command_end - 1);
                 auto args = text.mid(command_end + 1);
                 if (name.isEmpty() || name == "/") {
-                        message(args, related);
+                        message(args);
                 } else {
                         command(name, args);
                 }
         } else {
-                message(std::move(text), std::move(related));
+                message(std::move(text));
         }
 
-        related = {};
-
         clear();
-}
-
-void
-FilteredTextEdit::showReplyPopup(const RelatedInfo &related_)
-{
-        QPoint pos = viewport()->mapToGlobal(this->pos());
-
-        replyPopup_.setReplyContent(related_);
-        replyPopup_.move(pos.x(), pos.y() - replyPopup_.height() - 10);
-        replyPopup_.setFixedWidth(this->parentWidget()->width());
-        replyPopup_.show();
 }
 
 void
@@ -456,9 +424,7 @@ FilteredTextEdit::uploadData(const QByteArray data,
 
         emit startedUpload();
 
-        emit media(buffer, mediaType, filename, related);
-        related = {};
-        closeReply();
+        emit media(buffer, mediaType, filename);
 }
 
 void
@@ -599,7 +565,7 @@ void
 TextInputWidget::command(QString command, QString args)
 {
         if (command == "me") {
-                sendEmoteMessage(args, input_->related);
+                sendEmoteMessage(args);
         } else if (command == "join") {
                 sendJoinRoomRequest(args);
         } else if (command == "invite") {
@@ -611,16 +577,14 @@ TextInputWidget::command(QString command, QString args)
         } else if (command == "unban") {
                 sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "shrug") {
-                sendTextMessage("¯\\_(ツ)_/¯", input_->related);
+                sendTextMessage("¯\\_(ツ)_/¯");
         } else if (command == "fliptable") {
-                sendTextMessage("(╯°□°)╯︵ ┻━┻", input_->related);
+                sendTextMessage("(╯°□°)╯︵ ┻━┻");
         } else if (command == "unfliptable") {
-                sendTextMessage(" ┯━┯╭( º _ º╭)", input_->related);
+                sendTextMessage(" ┯━┯╭( º _ º╭)");
         } else if (command == "sovietflip") {
-                sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\", input_->related);
+                sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
         }
-
-        input_->related = std::nullopt;
 }
 
 void
@@ -640,9 +604,7 @@ TextInputWidget::openFileSelection()
 
         QSharedPointer<QFile> file{new QFile{fileName, this}};
 
-        emit uploadMedia(file, format, QFileInfo(fileName).fileName(), input_->related);
-        input_->related = {};
-        input_->closeReply();
+        emit uploadMedia(file, format, QFileInfo(fileName).fileName());
 
         showUploadSpinner();
 }
@@ -686,17 +648,4 @@ TextInputWidget::paintEvent(QPaintEvent *)
         QPainter p(this);
 
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-void
-TextInputWidget::addReply(const RelatedInfo &related)
-{
-        // input_->setText(QString("> %1: %2\n\n").arg(username).arg(msg));
-        input_->setFocus();
-
-        // input_->showReplyPopup(related);
-        auto cursor = input_->textCursor();
-        cursor.movePosition(QTextCursor::End);
-        input_->setTextCursor(cursor);
-        input_->related = related;
 }

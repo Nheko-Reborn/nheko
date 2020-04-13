@@ -18,6 +18,7 @@ struct Timeline;
 struct Messages;
 struct ClaimKeys;
 }
+struct RelatedInfo;
 
 namespace qml_mtx_events {
 Q_NAMESPACE
@@ -124,6 +125,7 @@ class TimelineModel : public QAbstractListModel
           int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
         Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                      typingUsersChanged)
+        Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager,
@@ -191,6 +193,7 @@ public:
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>
         void sendMessage(const T &msg);
+        RelatedInfo relatedInfo(QString id);
 
 public slots:
         void setCurrentIndex(int index);
@@ -205,6 +208,22 @@ public slots:
                 }
         }
         std::vector<QString> typingUsers() const { return typingUsers_; }
+
+        QString reply() const { return reply_; }
+        void setReply(QString newReply)
+        {
+                if (reply_ != newReply) {
+                        reply_ = newReply;
+                        emit replyChanged(reply_);
+                }
+        }
+        void resetReply()
+        {
+                if (!reply_.isEmpty()) {
+                        reply_ = "";
+                        emit replyChanged(reply_);
+                }
+        }
 
 private slots:
         // Add old events at the top of the timeline.
@@ -225,6 +244,7 @@ signals:
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
         void eventFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
         void typingUsersChanged(std::vector<QString> users);
+        void replyChanged(QString reply);
 
 private:
         DecryptionResult decryptEvent(
@@ -254,6 +274,7 @@ private:
         bool isProcessingPending  = false;
 
         QString currentId;
+        QString reply_;
         std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;

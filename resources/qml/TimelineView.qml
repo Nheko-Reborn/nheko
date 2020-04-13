@@ -285,7 +285,7 @@ Page {
 
 					id: replyPopup
 
-					visible: timelineManager.replyingEvent && chat.model
+					visible: chat.model && chat.model.reply
 					// Height of child, plus margins, plus border
 					height: replyPreview.height + 10
 					color: colors.base
@@ -300,7 +300,7 @@ Page {
 						anchors.rightMargin: 20
 						anchors.bottom: parent.bottom
 
-						modelData: chat.model ? chat.model.getDump(timelineManager.replyingEvent) : {}
+						modelData: chat.model ? chat.model.getDump(chat.model.reply) : {}
 						userColor: timelineManager.userColor(modelData.userId, colors.window)
 					}
 
@@ -318,7 +318,7 @@ Page {
 						ToolTip.visible: closeReplyButton.hovered
 						ToolTip.text: qsTr("Close")
 
-						onClicked: timelineManager.closeReply()
+						onClicked: chat.model.reply = undefined
 					}
 				}
 			}

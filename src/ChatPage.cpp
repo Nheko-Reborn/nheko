@@ -303,10 +303,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           text_input_,
           &TextInputWidget::uploadMedia,
           this,
-          [this](QSharedPointer<QIODevice> dev,
-                 QString mimeClass,
-                 const QString &fn,
-                 const std::optional<RelatedInfo> &related) {
+          [this](QSharedPointer<QIODevice> dev, QString mimeClass, const QString &fn) {
                   if (!dev->open(QIODevice::ReadOnly)) {
                           emit uploadFailed(
                             QString("Error while reading media: %1").arg(dev->errorString()));
@@ -358,8 +355,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                      mime = mime.name(),
                      size = payload.size(),
                      dimensions,
-                     blurhash,
-                     related](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
+                     blurhash](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
                             if (err) {
                                     emit uploadFailed(
                                       tr("Failed to upload media. Please try again."));
@@ -378,8 +374,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                                mime,
                                                size,
                                                dimensions,
-                                               blurhash,
-                                               related);
+                                               blurhash);
                     });
           });
 
@@ -398,8 +393,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                        QString mime,
                        qint64 dsize,
                        QSize dimensions,
-                       QString blurhash,
-                       const std::optional<RelatedInfo> &related) {
+                       QString blurhash) {
                         text_input_->hideUploadSpinner();
 
                         if (encryptedFile)
@@ -413,17 +407,16 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                                                  mime,
                                                                  dsize,
                                                                  dimensions,
-                                                                 blurhash,
-                                                                 related);
+                                                                 blurhash);
                         else if (mimeClass == "audio")
                                 view_manager_->queueAudioMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize, related);
+                                  roomid, filename, encryptedFile, url, mime, dsize);
                         else if (mimeClass == "video")
                                 view_manager_->queueVideoMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize, related);
+                                  roomid, filename, encryptedFile, url, mime, dsize);
                         else
                                 view_manager_->queueFileMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize, related);
+                                  roomid, filename, encryptedFile, url, mime, dsize);
                 });
 
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
@@ -548,14 +541,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
-        connect(this, &ChatPage::messageReply, text_input_, &TextInputWidget::addReply);
-        connect(this, &ChatPage::messageReply, this, [this](const RelatedInfo &related) {
-                view_manager_->updateReplyingEvent(QString::fromStdString(related.related_event));
-        });
-        connect(view_manager_,
-                &TimelineViewManager::replyClosed,
-                text_input_,
-                &TextInputWidget::closeReplyPopup);
 
         instance_ = this;
 }
@@ -594,6 +579,12 @@ ChatPage::resetUI()
         view_manager_->clearAll();
 
         showUnreadMessageNotification(0);
+}
+
+void
+ChatPage::focusMessageInput()
+{
+        this->text_input_->focusLineEdit();
 }
 
 void

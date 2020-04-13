@@ -303,7 +303,6 @@ set(SRC_FILES
 	src/Utils.cpp
 	src/WelcomePage.cpp
 	src/popups/PopupItem.cpp
-	src/popups/ReplyPopup.cpp
 	src/popups/SuggestionsPopup.cpp
 	src/popups/UserMentions.cpp
 	src/main.cpp
@@ -501,7 +500,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/UserSettingsPage.h
 	src/WelcomePage.h
 	src/popups/PopupItem.h
-	src/popups/ReplyPopup.h
 	src/popups/SuggestionsPopup.h
 	src/popups/UserMentions.h
 	)

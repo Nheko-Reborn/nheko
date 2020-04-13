@@ -85,6 +85,7 @@ public:
         //! Show the room/group list (if it was visible).
         void showSideBars();
         void initiateLogout();
+        void focusMessageInput();
 
 public slots:
         void leaveRoom(const QString &room_id);
@@ -99,8 +100,6 @@ signals:
         void connectionLost();
         void connectionRestored();
 
-        void messageReply(const RelatedInfo &related);
-
         void notificationsRetrieved(const mtx::responses::Notifications &);
         void highlightedNotifsRetrieved(const mtx::responses::Notifications &,
                                         const QPoint widgetPos);
@@ -114,8 +113,7 @@ signals:
                            const QString &mime,
                            qint64 dsize,
                            const QSize &dimensions,
-                           const QString &blurhash,
-                           const std::optional<RelatedInfo> &related);
+                           const QString &blurhash);
 
         void contentLoaded();
         void closing();

@@ -28,7 +28,6 @@
 
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
-#include "popups/ReplyPopup.h"
 #include "popups/SuggestionsPopup.h"
 
 struct SearchResult;
@@ -49,27 +48,15 @@ public:
         QSize minimumSizeHint() const override;
 
         void submit();
-        void showReplyPopup(const RelatedInfo &related_);
-        void closeReply()
-        {
-                replyPopup_.hide();
-                related = {};
-        }
-
-        // Used for replies
-        std::optional<RelatedInfo> related;
 
 signals:
         void heightChanged(int height);
         void startedTyping();
         void stoppedTyping();
         void startedUpload();
-        void message(QString, const std::optional<RelatedInfo> &);
+        void message(QString msg);
         void command(QString name, QString args);
-        void media(QSharedPointer<QIODevice> data,
-                   QString mimeClass,
-                   const QString &filename,
-                   const std::optional<RelatedInfo> &related);
+        void media(QSharedPointer<QIODevice> data, QString mimeClass, const QString &filename);
 
         //! Trigger the suggestion popup.
         void showSuggestions(const QString &query);
@@ -97,7 +84,6 @@ private:
         QTimer *typingTimer_;
 
         SuggestionsPopup suggestionsPopup_;
-        ReplyPopup replyPopup_;
 
         enum class AnchorType
         {
@@ -163,21 +149,18 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void addReply(const RelatedInfo &related);
-        void closeReplyPopup() { input_->closeReply(); }
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
 
 signals:
-        void sendTextMessage(const QString &msg, const std::optional<RelatedInfo> &related);
-        void sendEmoteMessage(QString msg, const std::optional<RelatedInfo> &related);
+        void sendTextMessage(const QString &msg);
+        void sendEmoteMessage(QString msg);
         void heightChanged(int height);
 
         void uploadMedia(const QSharedPointer<QIODevice> data,
                          QString mimeClass,
-                         const QString &filename,
-                         const std::optional<RelatedInfo> &related);
+                         const QString &filename);
 
         void sendJoinRoomRequest(const QString &room);
         void sendInviteRoomRequest(const QString &userid, const QString &reason);
