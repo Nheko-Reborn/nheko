@@ -17,37 +17,37 @@
     <message>
         <location line="-5"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Einladung von %1 in Raum %2 fehlgeschlagen: %3</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 konnte nicht aus %2 gekickt werden: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wurde gekickt.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 konnte nicht aus %2 verbannt werden: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wurde gebannt.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbannung von %1 aus %2 konnte nicht aufgehoben werden: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbannung von %1 wurde aufgehoben.</translation>
     </message>
     <message>
         <location line="-815"/>
@@ -78,17 +78,17 @@
     <message>
         <location line="-154"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Raum nicht betreten: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Einladung konnte nicht zurückgezogen werden: %1</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -98,7 +98,7 @@
     <message>
         <location line="+5"/>
         <source>Room %1 created</source>
-        <translation type="unfinished"></translation>
+        <translation>Raum %1 wurde erstellt.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -280,7 +280,7 @@
     <message>
         <location line="+6"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat den Raum erstellt: %2</translation>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@
     <message>
         <location line="+54"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine unterstützten Registrierungsmethoden!</translation>
     </message>
     <message>
         <location line="+132"/>
@@ -494,7 +494,7 @@
         <location line="+12"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
-        <translation type="unfinished">-- Entschlüsselungsfehler (%1) --</translation>
+        <translation>-- Entschlüsselungsfehler (%1) --</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -525,13 +525,13 @@
         <location line="-582"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished">-- Verschlüsseltes Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
+        <translation>-- Verschlüsseltes Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
     </message>
     <message>
         <location line="+75"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished">-- Verschlüsseltes Event (Unbekannter Eventtyp) --</translation>
+        <translation>-- Verschlüsseltes Event (Unbekannter Eventtyp) --</translation>
     </message>
     <message numerus="yes">
         <location line="+636"/>
@@ -545,7 +545,7 @@
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat diesen Raum öffentlich gemacht.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -555,37 +555,37 @@
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat Gästen erlaubt den Raum zu betreten.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat Gästen verboten den Raum zu betreten.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat den Raum lesbar für alle gemacht. Nutzer, die nicht Teilnehmer dieses Raums sind, können nun Nachrichten in diesem Raum lesen.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat eingestellt, dass nur Teilnehmer Nachrichten in diesem Raum lesen können (ab diesem Punkt).</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat eingestellt, dass Teilnehmer die Historie dieses Raums lesen können ab dem Zeitpunkt, zu dem sie eingeladen wurden.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat eingestellt, dass Teilnehmer die Historie dieses Raums lesen können ab dem Zeitpunkt, zu dem sie beigetreten sind.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Berechtigungen dieses Raums bearbeitet.</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -635,12 +635,12 @@
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished">Hat die Verbannung von %1 zurückgezogen.</translation>
+        <translation>Hat die Verbannung von %1 zurückgezogen.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wurde gebannt.</translation>
     </message>
     <message>
         <location line="-11"/>
@@ -656,12 +656,12 @@
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished">%1 hat den Raum verlassen.</translation>
+        <translation>%1 hat den Raum verlassen, obwohl er gar nicht mehr am Raum teilnahm!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Grund: %1</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -687,17 +687,17 @@
     <message>
         <location filename="../qml/TimelineView.qml" line="+45"/>
         <source>Reply</source>
-        <translation type="unfinished">Antworten</translation>
+        <translation>Antworten</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lesebestätigungen</translation>
+        <translation>Lesebestätigungen</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Mark as read</source>
-        <translation type="unfinished">Als gelesen markieren</translation>
+        <translation>Als gelesen markieren</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -707,12 +707,12 @@
     <message>
         <location line="+4"/>
         <source>Redact message</source>
-        <translation type="unfinished">Nachricht löschen</translation>
+        <translation>Nachricht löschen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Save as</source>
-        <translation type="unfinished">Speichern als...</translation>
+        <translation>Speichern unter...</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -722,7 +722,7 @@
     <message>
         <location line="+241"/>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -814,7 +814,7 @@
     <message>
         <location line="+1"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortiere ungelesene Räume zuerst</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -824,7 +824,7 @@
     <message>
         <location line="+1"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende Nachrichten als Markdown formatiert</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -894,7 +894,7 @@
     <message>
         <location line="+107"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Emojischriftart</translation>
     </message>
     <message>
         <location line="+152"/>
@@ -1022,22 +1022,22 @@
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Öffne Fallback im Browser</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished">Bestätigen</translation>
+        <translation>Bestätigen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne das Fallback, folge den Anweisungen und bestätige nach Abschluss via &quot;Bestätigen&quot;.</translation>
     </message>
 </context>
 <context>
