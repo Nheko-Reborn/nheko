@@ -98,7 +98,7 @@
     <message>
         <location line="+5"/>
         <source>Room %1 created</source>
-        <translation>Room %1 created</translation>
+        <translation>Room %1 created.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -280,7 +280,7 @@
     <message>
         <location line="+6"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 created and configured room: %2</translation>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@
     <message>
         <location line="+54"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>No supported registration flows!</translation>
     </message>
     <message>
         <location line="+132"/>
@@ -494,7 +494,7 @@
         <location line="+12"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
-        <translation type="unfinished">-- Decryption Error (%1) --</translation>
+        <translation>-- Decryption Error (%1) --</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -525,13 +525,13 @@
         <location line="-582"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished">-- Encrypted Event (No keys found for decryption) --</translation>
+        <translation>-- Encrypted Event (No keys found for decryption) --</translation>
     </message>
     <message>
         <location line="+75"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished">-- Encrypted Event (Unknown event type) --</translation>
+        <translation>-- Encrypted Event (Unknown event type) --</translation>
     </message>
     <message numerus="yes">
         <location line="+636"/>
@@ -545,47 +545,47 @@
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 opened the room to the public.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 made this room require an invitation to join.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 made the room open to guests.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 has closed the room to guest access.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 made the room history world readable. Events may be now read by non-joined people.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 set the room history visible to members from this point on.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 set the room history visible to members since they were invited.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 set the room history visible to members since they joined the room.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 has changed the room&apos;s permissions.</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -635,12 +635,12 @@
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished">Unbanned %1.</translation>
+        <translation>Unbanned %1.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 was banned.</translation>
     </message>
     <message>
         <location line="-11"/>
@@ -656,12 +656,12 @@
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished">%1 left after having already left!</translation>
+        <translation>%1 left after having already left!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Reason: %1</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -687,7 +687,7 @@
     <message>
         <location filename="../qml/TimelineView.qml" line="+45"/>
         <source>Reply</source>
-        <translation type="unfinished">Reply</translation>
+        <translation>Reply</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -804,7 +804,7 @@
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Show buttons in timeline</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -814,7 +814,7 @@
     <message>
         <location line="+1"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Sort rooms by unreads</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -889,12 +889,12 @@
     <message>
         <location line="+24"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>INTERFACE</translation>
     </message>
     <message>
         <location line="+107"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji Font Family</translation>
     </message>
     <message>
         <location line="+152"/>
@@ -1022,22 +1022,22 @@
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Open Fallback in Browser</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished">Confirm</translation>
+        <translation>Confirm</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Open the fallback, follow the steps and confirm after completing them.</translation>
     </message>
 </context>
 <context>
