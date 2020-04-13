@@ -48,6 +48,6 @@ NotificationsManager::notificationClosed(uint, uint)
 }
 
 void
-NotificationsManager::removeNotification(const QString &roomId, const QString &eventId)
+NotificationsManager::removeNotification(const QString &, const QString &)
 {}
 
