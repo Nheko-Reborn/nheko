@@ -10,7 +10,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+894"/>
+        <location line="+866"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
@@ -50,12 +50,12 @@
         <translation>永久追放を解除されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-815"/>
+        <location line="-791"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>メディアをアップロードできませんでした。やり直して下さい。</translation>
     </message>
     <message>
-        <location line="+407"/>
+        <location line="+404"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLMアカウントを復元できませんでした。もう一度ログインして下さい。</translation>
     </message>
@@ -71,7 +71,7 @@
     </message>
     <message>
         <location line="+51"/>
-        <location line="+231"/>
+        <location line="+210"/>
         <source>Please try to login again: %1</source>
         <translation>もう一度ログインしてみて下さい: %1</translation>
     </message>
@@ -248,7 +248,7 @@
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+63"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+64"/>
         <source>redacted</source>
         <translation>編集済み</translation>
     </message>
@@ -353,17 +353,9 @@
     </message>
 </context>
 <context>
-    <name>ReplyPopup</name>
-    <message>
-        <location filename="../../src/popups/ReplyPopup.cpp" line="+46"/>
-        <source>Logout</source>
-        <translation>ログアウト</translation>
-    </message>
-</context>
-<context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2304"/>
+        <location filename="../../src/Cache.cpp" line="+2311"/>
         <source>no version stored</source>
         <translation>バージョンが保存されていません</translation>
     </message>
@@ -440,13 +432,13 @@
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+493"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+459"/>
         <source>Send a file</source>
         <translation>ファイルを送信</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+159"/>
+        <location filename="../../src/TextInputWidget.h" line="+145"/>
         <source>Write a message...</source>
         <translation>メッセージを書く...</translation>
     </message>
@@ -461,7 +453,7 @@
         <translation>絵文字</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+84"/>
         <source>Select a file</source>
         <translation>ファイルを選択</translation>
     </message>
@@ -497,7 +489,7 @@
         <translation type="unfinished">-- 復号エラー (%1) --</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+85"/>
         <source>Message redaction failed: %1</source>
         <translation>メッセージを編集できませんでした: %1</translation>
     </message>
@@ -522,7 +514,7 @@
         <translation>ファイルを保存</translation>
     </message>
     <message>
-        <location line="-582"/>
+        <location line="-591"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished">-- 暗号化イベント (復号鍵が見つかりません) --</translation>
@@ -534,7 +526,7 @@
         <translation type="unfinished">-- 暗号化イベント (不明なイベント型です) --</translation>
     </message>
     <message numerus="yes">
-        <location line="+636"/>
+        <location line="+648"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -671,7 +663,7 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+69"/>
+        <location filename="../qml/TimelineRow.qml" line="+83"/>
         <source>Reply</source>
         <translation>返信</translation>
     </message>
@@ -684,7 +676,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+45"/>
+        <location filename="../qml/TimelineView.qml" line="+46"/>
         <source>Reply</source>
         <translation type="unfinished">返信</translation>
     </message>
@@ -719,7 +711,7 @@
         <translation>部屋が開いていません</translation>
     </message>
     <message>
-        <location line="+241"/>
+        <location line="+239"/>
         <source>Close</source>
         <translation>閉じる</translation>
     </message>
@@ -781,7 +773,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+299"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+333"/>
         <source>Minimize to tray</source>
         <translation>トレイへ最小化</translation>
     </message>
@@ -1315,7 +1307,7 @@ Media size: %2
         <translation>会話を始める</translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+61"/>
         <source>Devices</source>
         <translation>デバイス</translation>
     </message>
