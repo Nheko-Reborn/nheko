@@ -579,12 +579,12 @@ TimelineModel::internalAddEvents(
 
                 if (auto event =
                       std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
-                        e = decryptEvent(*event).event;
-                }
-                auto encInfo = mtx::accessors::file(e);
+                        auto e_      = decryptEvent(*event).event;
+                        auto encInfo = mtx::accessors::file(e_);
 
-                if (encInfo)
-                        emit newEncryptedImage(encInfo.value());
+                        if (encInfo)
+                                emit newEncryptedImage(encInfo.value());
+                }
 
                 this->events.insert(id, e);
                 ids.push_back(id);
