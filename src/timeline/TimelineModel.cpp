@@ -4,6 +4,7 @@
 #include <thread>
 #include <type_traits>
 
+#include <QCache>
 #include <QFileDialog>
 #include <QMimeDatabase>
 #include <QRegularExpression>
@@ -21,6 +22,14 @@
 #include "dialogs/RawMessage.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
+
+namespace std {
+inline uint
+qHash(const std::string &key, uint seed = 0)
+{
+        return qHash(QByteArray::fromRawData(key.data(), key.length()), seed);
+}
+}
 
 namespace {
 struct RoomEventType
@@ -705,6 +714,11 @@ TimelineModel::openUserProfile(QString userid) const
 DecryptionResult
 TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const
 {
+        static QCache<std::string, DecryptionResult> decryptedEvents{300};
+
+        if (auto cachedEvent = decryptedEvents.object(e.event_id))
+                return *cachedEvent;
+
         MegolmSessionIndex index;
         index.room_id    = room_id_.toStdString();
         index.session_id = e.content.session_id;
@@ -726,6 +740,8 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
                                               index.session_id,
                                               e.sender);
                         // TODO: request megolm session_id & session_key from the sender.
+                        decryptedEvents.insert(
+                          dummy.event_id, new DecryptionResult{dummy, false}, 1);
                         return {dummy, false};
                 }
         } catch (const lmdb::error &e) {
@@ -734,6 +750,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
                                         "Placeholder, when the message can't be decrypted, because "
                                         "the DB access failed when trying to lookup the session.")
                                        .toStdString();
+                decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
                 return {dummy, false};
         }
 
@@ -753,6 +770,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
                      "Placeholder, when the message can't be decrypted, because the DB access "
                      "failed.")
                     .toStdString();
+                decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
                 return {dummy, false};
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
@@ -766,6 +784,7 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
                      "decrytion returned an error, which is passed ad %1.")
                     .arg(e.what())
                     .toStdString();
+                decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
                 return {dummy, false};
         }
 
@@ -786,14 +805,17 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
         std::vector<mtx::events::collections::TimelineEvents> temp_events;
         mtx::responses::utils::parse_timeline_events(event_array, temp_events);
 
-        if (temp_events.size() == 1)
-                return {temp_events.at(0), true};
+        if (temp_events.size() == 1) {
+                decryptedEvents.insert(e.event_id, new DecryptionResult{temp_events[0], true}, 1);
+                return {temp_events[0], true};
+        }
 
         dummy.content.body =
           tr("-- Encrypted Event (Unknown event type) --",
              "Placeholder, when the message was decrypted, but we couldn't parse it, because "
              "Nheko/mtxclient don't support that event type yet.")
             .toStdString();
+        decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
         return {dummy, false};
 }
 
