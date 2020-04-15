@@ -128,6 +128,8 @@ main(int argc, char *argv[])
         QCommandLineParser parser;
         parser.addHelpOption();
         parser.addVersionOption();
+        QCommandLineOption debugOption("debug", "Enable debug output");
+        parser.addOption(debugOption);
         parser.process(app);
 
         app.setWindowIcon(QIcon(":/logos/nheko.png"));
@@ -137,6 +139,9 @@ main(int argc, char *argv[])
         createCacheDirectory();
 
         registerSignalHandlers();
+
+        if (parser.isSet(debugOption))
+                nhlog::enable_debug_log_from_commandline = true;
 
         try {
                 nhlog::init(QString("%1/nheko.log")

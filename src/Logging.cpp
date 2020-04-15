@@ -81,10 +81,12 @@ init(const std::string &file_path)
           std::make_shared<spdlog::logger>("crypto", std::begin(sinks), std::end(sinks));
         qml_logger = std::make_shared<spdlog::logger>("qml", std::begin(sinks), std::end(sinks));
 
-        if (nheko::enable_debug_log) {
+        if (nheko::enable_debug_log || enable_debug_log_from_commandline) {
                 db_logger->set_level(spdlog::level::trace);
                 ui_logger->set_level(spdlog::level::trace);
                 crypto_logger->set_level(spdlog::level::trace);
+                net_logger->set_level(spdlog::level::trace);
+                qml_logger->set_level(spdlog::level::trace);
         }
 
         qInstallMessageHandler(qmlMessageHandler);
