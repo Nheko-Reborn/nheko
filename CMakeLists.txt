@@ -378,7 +378,7 @@ if(USE_BUNDLED_CMARK)
 		add_library(cmark::cmark ALIAS libcmark_static)
 	endif()
 else()
-	find_package(cmark REQUIRED)
+	find_package(cmark REQUIRED 0.29.0)
 endif()
 
 if(USE_BUNDLED_JSON)
