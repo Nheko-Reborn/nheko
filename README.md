@@ -185,7 +185,7 @@ sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake li
 
 ```bash
 # Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
-sudo apt install g++-7 cmake liblmdb-dev libsodium-dev libssl-dev qt{base,declarative,tools,multimedia,script,quickcontrols2-}5-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings} libqt5svg5-dev
+sudo apt install g++-7 cmake liblmdb-dev libsodium-dev libssl-dev qt{base,declarative,tools,multimedia,script,quickcontrols2-}5-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,graphicaleffects,quick-controls2} libqt5svg5-dev
 ```
 
 ##### Debian Buster (or higher probably)
