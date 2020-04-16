@@ -145,7 +145,8 @@ RegisterPage::RegisterPage(QWidget *parent)
                  const mtx::user_interactive::Unauthorized &unauthorized) {
                   auto completed_stages = unauthorized.completed;
                   auto flows            = unauthorized.flows;
-                  auto session          = unauthorized.session;
+                  auto session = unauthorized.session.empty() ? http::client()->generate_txn_id()
+                                                              : unauthorized.session;
 
                   nhlog::ui()->info("Completed stages: {}", completed_stages.size());
 
@@ -252,7 +253,7 @@ RegisterPage::RegisterPage(QWidget *parent)
 
                             // The server requires registration flows.
                             if (err->status_code == boost::beast::http::status::unauthorized) {
-                                    if (err->matrix_error.unauthorized.session.empty()) {
+                                    if (err->matrix_error.unauthorized.flows.empty()) {
                                             nhlog::net()->warn(
                                               "failed to retrieve registration flows: ({}) "
                                               "{}",
@@ -268,8 +269,11 @@ RegisterPage::RegisterPage(QWidget *parent)
                                     return;
                             }
 
-                            nhlog::net()->warn("failed to register: status_code ({})",
-                                               static_cast<int>(err->status_code));
+                            nhlog::net()->warn("failed to register: status_code ({}), "
+                                               "matrix_error: ({}), parser error ({})",
+                                               static_cast<int>(err->status_code),
+                                               err->matrix_error.error,
+                                               err->parse_error);
 
                             emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
                     });
@@ -325,9 +329,9 @@ RegisterPage::onRegisterButtonClicked()
 
                           // The server requires registration flows.
                           if (err->status_code == boost::beast::http::status::unauthorized) {
-                                  if (err->matrix_error.unauthorized.session.empty()) {
+                                  if (err->matrix_error.unauthorized.flows.empty()) {
                                           nhlog::net()->warn(
-                                            "failed to retrieve registration flows: ({}) "
+                                            "failed to retrieve registration flows1: ({}) "
                                             "{}",
                                             static_cast<int>(err->status_code),
                                             err->matrix_error.error);
@@ -342,7 +346,7 @@ RegisterPage::onRegisterButtonClicked()
                                   return;
                           }
 
-                          nhlog::net()->warn(
+                          nhlog::net()->error(
                             "failed to register: status_code ({}), matrix_error({})",
                             static_cast<int>(err->status_code),
                             err->matrix_error.error);
