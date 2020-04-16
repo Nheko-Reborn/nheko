@@ -144,15 +144,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(
           this, &TimelineModel::oldMessagesRetrieved, this, &TimelineModel::addBackwardsEvents);
         connect(this, &TimelineModel::messageFailed, this, [this](QString txn_id) {
-                pending.removeOne(txn_id);
-                failed.insert(txn_id);
-                int idx = idToIndex(txn_id);
-                if (idx < 0) {
-                        nhlog::ui()->warn("Failed index out of range");
-                        return;
-                }
-                isProcessingPending = false;
-                emit dataChanged(index(idx, 0), index(idx, 0));
+                nhlog::ui()->error("Failed to send {}, retrying", txn_id.toStdString());
+
+                QTimer::singleShot(5000, this, [this]() { emit nextPendingMessage(); });
         });
         connect(this, &TimelineModel::messageSent, this, [this](QString txn_id, QString event_id) {
                 pending.removeOne(txn_id);
@@ -181,7 +175,6 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 // ask to be notified for read receipts
                 cache::addPendingReceipt(room_id_, event_id);
 
-                isProcessingPending = false;
                 emit dataChanged(index(idx, 0), index(idx, 0));
 
                 if (pending.size() > 0)
@@ -334,8 +327,6 @@ TimelineModel::data(const QString &id, int role) const
                 // only show read receipts for messages not from us
                 if (acc::sender(event) != http::client()->user_id().to_string())
                         return qml_mtx_events::Empty;
-                else if (failed.contains(id))
-                        return qml_mtx_events::Failed;
                 else if (pending.contains(id))
                         return qml_mtx_events::Sent;
                 else if (read.contains(id) || cache::readReceipts(id, room_id_).size() > 1)
@@ -458,10 +449,11 @@ TimelineModel::fetchMore(const QModelIndex &)
         http::client()->messages(
           opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
                   if (err) {
-                          nhlog::net()->error("failed to call /messages ({}): {} - {}",
+                          nhlog::net()->error("failed to call /messages ({}): {} - {} - {}",
                                               opts.room_id,
                                               mtx::errors::to_string(err->matrix_error.errcode),
-                                              err->matrix_error.error);
+                                              err->matrix_error.error,
+                                              err->parse_error);
                           paginationInProgress = false;
                           return;
                   }
@@ -1266,10 +1258,8 @@ struct SendMessageVisitor
 void
 TimelineModel::processOnePendingMessage()
 {
-        if (isProcessingPending || pending.isEmpty())
+        if (pending.isEmpty())
                 return;
-
-        isProcessingPending = true;
 
         QString txn_id_qstr = pending.first();
 
@@ -1298,8 +1288,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
         endInsertRows();
         updateLastMessage();
 
-        if (!isProcessingPending)
-                emit nextPendingMessage();
+        emit nextPendingMessage();
 }
 
 bool

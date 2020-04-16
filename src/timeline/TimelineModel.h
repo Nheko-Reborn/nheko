@@ -89,8 +89,6 @@ enum EventState
         Sent,
         //! When the message is loaded from cache or backfill.
         Empty,
-        //! When the message failed to send
-        Failed,
 };
 Q_ENUM_NS(EventState)
 }
@@ -262,7 +260,7 @@ private:
         void readEvent(const std::string &id);
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
-        QSet<QString> failed, read;
+        QSet<QString> read;
         QList<QString> pending;
         std::vector<QString> eventOrder;
 
@@ -271,7 +269,6 @@ private:
 
         bool isInitialSync        = true;
         bool paginationInProgress = false;
-        bool isProcessingPending  = false;
 
         QString currentId;
         QString reply_;
