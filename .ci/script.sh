@@ -7,7 +7,7 @@ if [ "$FLATPAK" ]; then
 	cd build-flatpak
 
 	flatpak-builder --ccache --repo=repo --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
-	flatpak build-bundle repo nheko-${VERSION}-${ARCH}.flatpak io.github.NhekoReborn.Nheko 0.7.0-dev
+	flatpak build-bundle repo nheko-${VERSION}-${ARCH}.flatpak io.github.NhekoReborn.Nheko master
 
 	mkdir ../artifacts
 	mv nheko-*.flatpak ../artifacts
