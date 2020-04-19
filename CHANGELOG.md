@@ -9,17 +9,45 @@ if you do not use the mtxclient bundled with nheko.
 
 #### Features
 - Make nheko session import / export format match riot.  Fixes #48 (WIP)
-- Implement proper replies (WIP)
+- Implement proper replies
 - Add .well-known support for auto-completing homeserver information
 - Add mentions viewer so you can see all the messages you have been mentioned in (WIP)
 - Add emoji font selection preference
+- Encryption and decryption of media in E2EE rooms
+- Square avatars
+- Support for muting and unmuting rooms
+- Basic support for playing audio and video messages in the timeline
+- Support for a lot more event types (hiding them will come in the future)
+- Support for sending all messages as plain text
+- Support for inviting, kicking, banning and unbanning users
+- Sort the room list by importance of messages (thanks @Alch-Emi)
+- Experimental support for [blurhashes](https://github.com/matrix-org/matrix-doc/pull/2448)
 
 #### Improvements
 - Add dedicated reply button to Timeline items.  Add button for other options so
     that right click isn't always required.
-- Fix various things with regards to emoji rendering and the emoji picker (WIP)
+- Fix various things with regards to emoji rendering and the emoji picker
 - Lots and lots and lots of localization updates.
 - Additional tweaks to the system theme
+- Render timeline in Qml to drop memory usage
+- Reduce memory usage of avatars
+- Close notifications after they have been read on Linux
+- Escape html properly in most places
+- A lot of improvements around the image overlay
+- The settings page now resizes properly for small screens
+- Miscellaneous styling improvements
+- Simplify and speedup build
+- Display more emojis in the selected emoji font
+- Use 'system' theme as default if QT_QPA_PLATFORMTHEME is set
+
+#### Bugfixes
+
+- Fix messages stuck on unread
+- Reduce the amount of messages shown as "xxx sent an encrypted message"
+- Fix various race conditions and crashes
+- Fix some compatibility issues with the construct homeserver
+
+Be aware, that Nheko now requires Qt 5.10 and boost 1.70 or higher.
 
 ## [0.6.4] - 2019-05-22
 
