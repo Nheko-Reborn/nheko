@@ -30,8 +30,8 @@ build_script:
     # VERSION format:     branch-master/branch-1.2
     # INSTVERSION format: x.y.z
     # WINVERSION format:  9999.0.0.123/1.2.0.234
-    - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.6.4
-    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.6.4
+    - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.7.0
+    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.7.0
     - if "%APPVEYOR_REPO_TAG%"=="false" if "%APPVEYOR_REPO_BRANCH%"=="master" set INSTVERSION=9999.0
     - if "%APPVEYOR_REPO_TAG%"=="false" set WINVERSION=%INSTVERSION%.0.%APPVEYOR_BUILD_NUMBER%
     # VERSION format:     v1.2.3/v1.3.4
@@ -74,31 +74,31 @@ after_build:
     - mkdir installer
     - mkdir installer\config
     - mkdir installer\packages
-    - mkdir installer\packages\com.mujx.nheko
-    - mkdir installer\packages\com.mujx.nheko\data
-    - mkdir installer\packages\com.mujx.nheko\meta
-    - mkdir installer\packages\com.mujx.nheko.cleanup\meta
+    - mkdir installer\packages\io.github.nhekoreborn.nheko
+    - mkdir installer\packages\io.github.nhekoreborn.nheko\data
+    - mkdir installer\packages\io.github.nhekoreborn.nheko\meta
+    - mkdir installer\packages\io.github.nhekoreborn.nheko.cleanup\meta
     # Copy installer data
     - copy %BUILD%\resources\nheko.ico installer\config
     - copy %BUILD%\resources\nheko.png installer\config
-    - copy %BUILD%\COPYING installer\packages\com.mujx.nheko\meta\license.txt
-    - copy %BUILD%\COPYING installer\packages\com.mujx.nheko.cleanup\meta\license.txt
+    - copy %BUILD%\COPYING installer\packages\io.github.nhekoreborn.nheko\meta\license.txt
+    - copy %BUILD%\COPYING installer\packages\io.github.nhekoreborn.nheko.cleanup\meta\license.txt
     - copy %BUILD%\deploy\installer\config.xml installer\config
     - copy %BUILD%\deploy\installer\controlscript.qs installer\config
-    - copy %BUILD%\deploy\installer\uninstall.qs installer\packages\com.mujx.nheko\data
-    - copy %BUILD%\deploy\installer\gui\package.xml installer\packages\com.mujx.nheko\meta
-    - copy %BUILD%\deploy\installer\gui\installscript.qs installer\packages\com.mujx.nheko\meta
-    - copy %BUILD%\deploy\installer\cleanup\package.xml installer\packages\com.mujx.nheko.cleanup\meta
-    - copy %BUILD%\deploy\installer\cleanup\installscript.qs installer\packages\com.mujx.nheko.cleanup\meta
+    - copy %BUILD%\deploy\installer\uninstall.qs installer\packages\io.github.nhekoreborn.nheko\data
+    - copy %BUILD%\deploy\installer\gui\package.xml installer\packages\io.github.nhekoreborn.nheko\meta
+    - copy %BUILD%\deploy\installer\gui\installscript.qs installer\packages\io.github.nhekoreborn.nheko\meta
+    - copy %BUILD%\deploy\installer\cleanup\package.xml installer\packages\io.github.nhekoreborn.nheko.cleanup\meta
+    - copy %BUILD%\deploy\installer\cleanup\installscript.qs installer\packages\io.github.nhekoreborn.nheko.cleanup\meta
     # Amend version and date
-    - sed -i "s/__VERSION__/0.6.4/" installer\config\config.xml
-    - sed -i "s/__VERSION__/0.6.4/" installer\packages\com.mujx.nheko\meta\package.xml
-    - sed -i "s/__VERSION__/0.6.4/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
-    - sed -i "s/__DATE__/%DATE%/" installer\packages\com.mujx.nheko\meta\package.xml
-    - sed -i "s/__DATE__/%DATE%/" installer\packages\com.mujx.nheko.cleanup\meta\package.xml
+    - sed -i "s/__VERSION__/0.7.0/" installer\config\config.xml
+    - sed -i "s/__VERSION__/0.7.0/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
+    - sed -i "s/__VERSION__/0.7.0/" installer\packages\io.github.nhekoreborn.nheko.cleanup\meta\package.xml
+    - sed -i "s/__DATE__/%DATE%/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
+    - sed -i "s/__DATE__/%DATE%/" installer\packages\io.github.nhekoreborn.nheko.cleanup\meta\package.xml
     # Copy nheko data
-    - xcopy NhekoData\*.* installer\packages\com.mujx.nheko\data\*.* /s /e /c /y
-    - move NhekoRelease\nheko.exe installer\packages\com.mujx.nheko\data
+    - xcopy NhekoData\*.* installer\packages\io.github.nhekoreborn.nheko\data\*.* /s /e /c /y
+    - move NhekoRelease\nheko.exe installer\packages\io.github.nhekoreborn.nheko\data
     - mkdir tools
     - curl -L -O https://download.qt.io/official_releases/qt-installer-framework/3.0.4/QtInstallerFramework-win-x86.exe
     - 7z x QtInstallerFramework-win-x86.exe -otools -aoa

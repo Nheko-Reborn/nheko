@@ -1,17 +1,16 @@
 # Changelog
 
-## [Unreleased]
-
-### [0.7.0] -- Unreleased
+## [0.7.0] -- 2020-04-19
 
 0.7.0 *requires* mtxclient 0.3.0.  Make sure you compile against 0.3.0
 if you do not use the mtxclient bundled with nheko.
 
-#### Features
-- Make nheko session import / export format match riot.  Fixes #48 (WIP)
+### Features
+- Make nheko session import / export format match riot.  Fixes #48
 - Implement proper replies
 - Add .well-known support for auto-completing homeserver information
-- Add mentions viewer so you can see all the messages you have been mentioned in (WIP)
+- Add mentions viewer so you can see all the messages you have been mentioned in
+  - Currently broken due to QML changes.  Will be fixed in the future.
 - Add emoji font selection preference
 - Encryption and decryption of media in E2EE rooms
 - Square avatars
@@ -23,7 +22,7 @@ if you do not use the mtxclient bundled with nheko.
 - Sort the room list by importance of messages (thanks @Alch-Emi)
 - Experimental support for [blurhashes](https://github.com/matrix-org/matrix-doc/pull/2448)
 
-#### Improvements
+### Improvements
 - Add dedicated reply button to Timeline items.  Add button for other options so
     that right click isn't always required.
 - Fix various things with regards to emoji rendering and the emoji picker
@@ -40,7 +39,7 @@ if you do not use the mtxclient bundled with nheko.
 - Display more emojis in the selected emoji font
 - Use 'system' theme as default if QT_QPA_PLATFORMTHEME is set
 
-#### Bugfixes
+### Bugfixes
 
 - Fix messages stuck on unread
 - Reduce the amount of messages shown as "xxx sent an encrypted message"

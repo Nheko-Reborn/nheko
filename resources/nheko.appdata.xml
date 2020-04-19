@@ -43,6 +43,7 @@
     <url type="homepage">https://github.com/Nheko-Reborn/nheko</url>
     <update_contact>https://github.com/Nheko-Reborn</update_contact>
     <releases>
+        <release version="0.7.0" date="2020-04-19" />
         <release version="0.6.4" date="2019-05-22" />
         <release version="0.6.3" date="2019-02-08" />
         <release version="0.6.2" date="2018-10-07" />

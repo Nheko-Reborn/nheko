@@ -1,7 +1,7 @@
 {
   "id": "io.github.NhekoReborn.Nheko",
   "command": "nheko",
-  "branch": "0.7.0-dev",
+  "branch": "master",
   "runtime": "org.kde.Platform",
   "runtime-version": "5.14",
   "sdk": "org.kde.Sdk",
