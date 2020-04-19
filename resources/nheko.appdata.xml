@@ -1,57 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright 2019 mujx, nheko reborn developers -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2020 mujx, nheko reborn developers -->
 <component type="desktop">
-    <id>nheko.desktop</id>
-    <metadata_license>CC0-1.0</metadata_license>
-    <project_license>GPL-3.0-or-later and CC-BY</project_license>
-    <name>nheko</name>
-    <summary>Desktop client for the Matrix protocol</summary>
-    <description>
-        <p>The motivation behind the project is to provide a native
+  <id>nheko.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later and CC-BY</project_license>
+  <name>nheko</name>
+  <summary>Desktop client for the Matrix protocol</summary>
+  <description>
+    <p>The motivation behind the project is to provide a native
         desktop app for Matrix that feels more like a mainstream
         chat app.</p>
-    </description>
-    <translation/>
-    <languages>
-        <lang>de</lang>
-        <lang>el</lang>
-        <lang>en</lang>
-        <lang>fr</lang>
-        <lang>nl</lang>
-        <lang>pl</lang>
-        <lang>ru</lang>
-        <lang>zh_CN</lang>
-    </languages>
-    <content_rating type="oars-1.0">
-        <content_attribute id="social-chat">intense</content_attribute>
-        <content_attribute id="social-audio">intense</content_attribute>
-    </content_rating>
-    <screenshots>
-        <screenshot type="default">
-            <image>https://nheko-reborn.github.io/images/screenshots/chat-resized.png</image>
-        </screenshot>
-        <screenshot>
-            <image>https://nheko-reborn.github.io/images/screenshots/Start-resized.png</image>
-        </screenshot>
-        <screenshot>
-            <image>https://nheko-reborn.github.io/images/screenshots/settings-resized.png</image>
-        </screenshot>
-        <screenshot>
-            <image>https://nheko-reborn.github.io/images/screenshots/login-resized.png</image>
-        </screenshot>
-    </screenshots>
-    <url type="homepage">https://github.com/Nheko-Reborn/nheko</url>
-    <update_contact>https://github.com/Nheko-Reborn</update_contact>
-    <releases>
-        <release version="0.7.0" date="2020-04-19" />
-        <release version="0.6.4" date="2019-05-22" />
-        <release version="0.6.3" date="2019-02-08" />
-        <release version="0.6.2" date="2018-10-07" />
-        <release version="0.6.1" date="2018-09-26" />
-        <release version="0.6.0" date="2018-09-21" />
-        <release version="0.5.5" date="2018-09-01" />
-        <release version="0.5.4" date="2018-08-21" />
-        <release version="0.5.3" date="2018-08-12" />
-        <release version="0.5.2" date="2018-07-28" />
-    </releases>
+  </description>
+  <translation/>
+  <languages>
+    <lang>de</lang>
+    <lang>el</lang>
+    <lang>en</lang>
+    <lang>fr</lang>
+    <lang>nl</lang>
+    <lang>pl</lang>
+    <lang>ru</lang>
+    <lang>zh_CN</lang>
+  </languages>
+  <content_rating type="oars-1.0">
+    <content_attribute id="social-chat">intense</content_attribute>
+    <content_attribute id="social-audio">intense</content_attribute>
+  </content_rating>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://nheko-reborn.github.io/images/screenshots/chat-resized.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://nheko-reborn.github.io/images/screenshots/Starprojects/nheko/t-resized.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://nheko-reborn.github.io/images/screenshots/settings-resized.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://nheko-reborn.github.io/images/screenshots/login-resized.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/Nheko-Reborn/nheko</url>
+  <update_contact>https://github.com/Nheko-Reborn</update_contact>
+  <releases>
+    <release date="2020-04-19" version="0.7.0"/>
+    <release date="2019-05-22" version="0.6.4"/>
+    <release date="2019-02-08" version="0.6.3"/>
+    <release date="2018-10-07" version="0.6.2"/>
+    <release date="2018-09-26" version="0.6.1"/>
+    <release date="2018-09-21" version="0.6.0"/>
+    <release date="2018-09-01" version="0.5.5"/>
+    <release date="2018-08-21" version="0.5.4"/>
+    <release date="2018-08-12" version="0.5.3"/>
+    <release date="2018-07-28" version="0.5.2"/>
+  </releases>
+
+  <developer_name>Nheko Reborn</developer_name>
+
+  <url type="bugtracker">https://github.com/Nheko-Reborn/nheko/issues</url>
+
+  <url type="help">https://github.com/Nheko-Reborn/nheko/</url>
+
+  <url type="translate">https://weblate.nheko.im/projects/nheko/</url>
 </component>
