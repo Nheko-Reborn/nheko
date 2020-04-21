@@ -33,7 +33,7 @@ Item {
 		fillMode: Image.PreserveAspectFit
 
 		MouseArea {
-			enabled: model.data.type == MtxEvent.ImageMessage
+			enabled: model.data.type == MtxEvent.ImageMessage && img.status == Image.Ready
 			anchors.fill: parent
 			onClicked: timelineManager.openImageOverlay(model.data.url, model.data.id)
 		}
