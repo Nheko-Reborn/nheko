@@ -33,14 +33,16 @@ Page {
 		id: messageContextMenu
 		modal: true
 
-		function show(eventId_, eventType_, showAt) {
+		function show(eventId_, eventType_, isEncrypted_, showAt) {
 			eventId = eventId_
 			eventType = eventType_
+			isEncrypted = isEncrypted_
 			popup(showAt)
 		}
 
 		property string eventId
 		property int eventType
+		property bool isEncrypted
 
 		MenuItem {
 			text: qsTr("Reply")
@@ -58,11 +60,18 @@ Page {
 			onTriggered: chat.model.viewRawMessage(messageContextMenu.eventId)
 		}
 		MenuItem {
+			visible: messageContextMenu.isEncrypted
+			height: visible ? implicitHeight : 0
+			text: qsTr("View decrypted raw message")
+			onTriggered: chat.model.viewDecryptedRawMessage(messageContextMenu.eventId)
+		}
+		MenuItem {
 			text: qsTr("Redact message")
 			onTriggered: chat.model.redactEvent(messageContextMenu.eventId)
 		}
 		MenuItem {
 			visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+			height: visible ? implicitHeight : 0
 			text: qsTr("Save as")
 			onTriggered: timelineManager.timeline.saveMedia(messageContextMenu.eventId)
 		}

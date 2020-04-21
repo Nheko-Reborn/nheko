@@ -327,12 +327,12 @@
         <translation>注册</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+55"/>
         <source>No supported registration flows!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+132"/>
+        <location line="+135"/>
         <source>Invalid username</source>
         <translation>无效的用户名</translation>
     </message>
@@ -471,30 +471,30 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+733"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+754"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+89"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished">删除消息失败：%1</translation>
     </message>
     <message>
-        <location line="+454"/>
+        <location line="+455"/>
         <source>Save image</source>
         <translation type="unfinished">保存图像</translation>
     </message>
@@ -514,19 +514,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-591"/>
+        <location line="-600"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+75"/>
+        <location line="+82"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+648"/>
+        <location line="+650"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -676,7 +676,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+46"/>
+        <location filename="../qml/TimelineView.qml" line="+48"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -696,12 +696,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+6"/>
+        <source>View decrypted raw message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+4"/>
         <source>Redact message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>

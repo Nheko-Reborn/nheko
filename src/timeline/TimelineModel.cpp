@@ -697,7 +697,20 @@ TimelineModel::viewRawMessage(QString id) const
 }
 
 void
+TimelineModel::viewDecryptedRawMessage(QString id) const
+{
+        auto event = events.value(id);
+        if (auto e =
+              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
+                event = decryptEvent(*e).event;
+        }
 
+        std::string ev = utils::serialize_event(event).dump(4);
+        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
+        Q_UNUSED(dialog);
+}
+
+void
 TimelineModel::openUserProfile(QString userid) const
 {
         MainWindow::instance()->openUserProfile(userid, room_id_);

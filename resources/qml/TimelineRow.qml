@@ -17,11 +17,11 @@ MouseArea {
 	acceptedButtons: Qt.LeftButton | Qt.RightButton
 	onClicked: {
 		if (mouse.button === Qt.RightButton)
-		messageContextMenu.show(model.id, model.type, row)
+		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
 	}
 	onPressAndHold: {
 		if (mouse.source === Qt.MouseEventNotSynthesized)
-		messageContextMenu.show(model.id, model.type, row)
+		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
 	}
 
 	RowLayout {
@@ -97,8 +97,7 @@ MouseArea {
 			ToolTip.visible: hovered
 			ToolTip.text: qsTr("Options")
 
-			onClicked: messageContextMenu.show(model.id, model.type, optionsButton)
-
+			onClicked: messageContextMenu.show(model.id, model.type, model.isEncrypted, optionsButton)
 		}
 
 		Label {
