@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1] -- unreleased
+
+### Bugfixes
+
+- Fix display of images sent by the user (thank you, wnereiz and not-chicken for reporting)
+- Fix crash when trying to maximize image, that wasn't downloaded yet.
+- Fix Binding restorMode flooding logs on Qt 5.14.2+
+
 ## [0.7.0] -- 2020-04-19
 
 0.7.0 *requires* mtxclient 0.3.0.  Make sure you compile against 0.3.0
