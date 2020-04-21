@@ -1225,6 +1225,10 @@ struct SendMessageVisitor
 
         {
                 if (cache::isRoomEncrypted(model_->room_id_.toStdString())) {
+                        auto encInfo = mtx::accessors::file(msg);
+                        if (encInfo)
+                                emit model_->newEncryptedImage(encInfo.value());
+
                         model_->sendEncryptedMessage(txn_id_qstr_.toStdString(),
                                                      nlohmann::json(msg.content));
                 } else {
