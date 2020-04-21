@@ -28,10 +28,8 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
         if (
           // Surpress binding wrning for now, as we can't set restore mode to keep compat with
           // qt 5.10
-          msg.endsWith(
-            "QML Binding: Not restoring previous value because restoreMode has not been set.This "
-            "behavior is deprecated.In Qt < 6.0 the default is Binding.RestoreBinding.In Qt >= "
-            "6.0 the default is Binding.RestoreBindingOrValue.") ||
+          msg.contains(
+            "QML Binding: Not restoring previous value because restoreMode has not been set.") ||
           // The default style has the point size set. If you use pixel size anywhere, you get
           // that warning, which is useless, since sometimes you need the pixel size to match the
           // text to the size of the outer element for example. This is done in the avatar and
