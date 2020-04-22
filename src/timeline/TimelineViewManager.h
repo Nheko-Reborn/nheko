@@ -84,6 +84,7 @@ public slots:
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize);
+        void updateEncryptedDescriptions();
 
 private:
 #ifdef USE_QUICK_VIEW

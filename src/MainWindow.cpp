@@ -117,6 +117,10 @@ MainWindow::MainWindow(QWidget *parent)
           userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
         connect(
           userSettingsPage_, &UserSettingsPage::themeChanged, chat_page_, &ChatPage::themeChanged);
+        connect(userSettingsPage_,
+                &UserSettingsPage::decryptSidebarChanged,
+                chat_page_,
+                &ChatPage::decryptSidebarChanged);
         connect(trayIcon_,
                 SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 this,

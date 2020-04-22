@@ -432,6 +432,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(decryptSidebar_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setDecryptSidebar(!isDisabled);
+                emit decryptSidebarChanged();
         });
 
         connect(avatarCircles_, &Toggle::toggled, this, [this](bool isDisabled) {

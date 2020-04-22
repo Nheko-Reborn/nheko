@@ -17,6 +17,19 @@
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 
 void
+TimelineViewManager::updateEncryptedDescriptions()
+{
+        QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
+        for (i = models.begin(); i != models.end(); ++i) {
+                auto ptr = i.value();
+
+                if (!ptr.isNull()) {
+                        ptr->updateLastMessage();
+                }
+        }
+}
+
+void
 TimelineViewManager::updateColorPalette()
 {
         userColors.clear();
@@ -83,6 +96,10 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &ChatPage::themeChanged,
                 this,
                 &TimelineViewManager::updateColorPalette);
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::decryptSidebarChanged,
+                this,
+                &TimelineViewManager::updateEncryptedDescriptions);
 }
 
 void

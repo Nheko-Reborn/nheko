@@ -183,6 +183,7 @@ signals:
         void moveBack();
         void trayOptionChanged(bool value);
         void themeChanged();
+        void decryptSidebarChanged();
 
 private slots:
         void importSessionKeys();

@@ -184,7 +184,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
         data.relates_to = relation;
 
         auto message_index = olm_outbound_group_session_message_index(res.session);
-        nhlog::crypto()->info("next message_index {}", message_index);
+        nhlog::crypto()->debug("next message_index {}", message_index);
 
         // We need to re-pickle the session after we send a message to save the new message_index.
         cache::updateOutboundMegolmSession(room_id, message_index);

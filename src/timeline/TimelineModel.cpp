@@ -502,6 +502,13 @@ isMessage(const mtx::events::Event<T> &)
         return false;
 }
 
+template<typename T>
+auto
+isMessage(const mtx::events::EncryptedEvent<T> &)
+{
+        return true;
+}
+
 void
 TimelineModel::updateLastMessage()
 {
