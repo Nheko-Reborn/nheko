@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QMimeDatabase>
 #include <QRegularExpression>
+#include <QSettings>
 #include <QStandardPaths>
 
 #include "ChatPage.h"
@@ -504,11 +505,15 @@ isMessage(const mtx::events::Event<T> &)
 void
 TimelineModel::updateLastMessage()
 {
+        // Get the user setting to show decrypted messages in side bar
+        bool decrypt = QSettings().value("user/decrypt_sidebar", true).toBool();
         for (auto it = eventOrder.begin(); it != eventOrder.end(); ++it) {
                 auto event = events.value(*it);
                 if (auto e = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                       &event)) {
-                        event = decryptEvent(*e).event;
+                        if (decrypt) {
+                                event = decryptEvent(*e).event;
+                        }
                 }
 
                 if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, event))

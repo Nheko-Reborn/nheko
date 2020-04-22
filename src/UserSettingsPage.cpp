@@ -63,6 +63,7 @@ UserSettings::load()
         theme_                        = settings.value("user/theme", defaultTheme_).toString();
         font_                         = settings.value("user/font_family", "default").toString();
         avatarCircles_                = settings.value("user/avatar_circles", true).toBool();
+        decryptSidebar_               = settings.value("user/decrypt_sidebar", true).toBool();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
@@ -167,7 +168,7 @@ UserSettings::save()
         settings.endGroup();
 
         settings.setValue("avatar_circles", avatarCircles_);
-
+        settings.setValue("decrypt_sidebar", decryptSidebar_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
         settings.setValue("minor_events", sortByImportance_);
@@ -230,6 +231,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         trayToggle_              = new Toggle{this};
         startInTrayToggle_       = new Toggle{this};
         avatarCircles_           = new Toggle{this};
+        decryptSidebar_          = new Toggle(this);
         groupViewToggle_         = new Toggle{this};
         timelineButtonsToggle_   = new Toggle{this};
         typingNotifications_     = new Toggle{this};
@@ -335,6 +337,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Circular Avatars"), avatarCircles_);
         boxWrap(tr("Group's sidebar"), groupViewToggle_);
+        boxWrap(tr("Decrypt messages in sidebar"), decryptSidebar_);
         boxWrap(tr("Show buttons in timeline"), timelineButtonsToggle_);
         boxWrap(tr("Typing notifications"), typingNotifications_);
         boxWrap(tr("Sort rooms by unreads"), sortByImportance_);
@@ -427,6 +430,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setGroupView(!isDisabled);
         });
 
+        connect(decryptSidebar_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setDecryptSidebar(!isDisabled);
+        });
+
         connect(avatarCircles_, &Toggle::toggled, this, [this](bool isDisabled) {
                 settings_->setAvatarCircles(!isDisabled);
         });
@@ -479,6 +486,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         trayToggle_->setState(!settings_->isTrayEnabled());
         startInTrayToggle_->setState(!settings_->isStartInTrayEnabled());
         groupViewToggle_->setState(!settings_->isGroupViewEnabled());
+        decryptSidebar_->setState(!settings_->isDecryptSidebarEnabled());
         avatarCircles_->setState(!settings_->isAvatarCirclesEnabled());
         typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
         sortByImportance_->setState(!settings_->isSortByImportanceEnabled());

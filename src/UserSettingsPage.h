@@ -111,11 +111,18 @@ public:
                 save();
         }
 
+        void setDecryptSidebar(bool state)
+        {
+                decryptSidebar_ = state;
+                save();
+        }
+
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
         bool isAvatarCirclesEnabled() const { return avatarCircles_; }
+        bool isDecryptSidebarEnabled() const { return decryptSidebar_; }
         bool isMarkdownEnabled() const { return isMarkdownEnabled_; }
         bool isTypingNotificationsEnabled() const { return isTypingNotificationsEnabled_; }
         bool isSortByImportanceEnabled() const { return sortByImportance_; }
@@ -147,6 +154,7 @@ private:
         bool isReadReceiptsEnabled_;
         bool hasDesktopNotifications_;
         bool avatarCircles_;
+        bool decryptSidebar_;
         double baseFontSize_;
         QString font_;
         QString emojiFont_;
@@ -199,6 +207,7 @@ private:
         Toggle *markdownEnabled_;
         Toggle *desktopNotifications_;
         Toggle *avatarCircles_;
+        Toggle *decryptSidebar_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
 
