@@ -540,6 +540,7 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
         // If the contrast doesn't meet our criteria,
         // try again and again until they do by modifying first
         // the lightness and then the saturation of the color.
+        int iterationCount = 9;
         while (contrast < 5) {
                 // if our lightness is at it's bounds, try changing
                 // saturation instead.
@@ -586,6 +587,11 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
                                 }
                         }
                 }
+
+                // don't loop forever, just give up at some point!
+                // Someone smart may find a better solution
+                if (--iterationCount < 0)
+                        break;
         }
 
         // get the hex value of the generated color.
