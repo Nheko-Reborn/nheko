@@ -12,6 +12,7 @@
 - Fix crash when trying to maximize image, that wasn't downloaded yet.
 - Fix Binding restorMode flooding logs on Qt 5.14.2+
 - Fix with some qml styles hidden menu items leave empty space
+- Fix encrypted messages not showing a user in the sidebar
 
 ## [0.7.0] -- 2020-04-19
 
