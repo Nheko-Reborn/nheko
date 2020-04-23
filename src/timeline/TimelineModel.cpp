@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QMimeDatabase>
 #include <QRegularExpression>
+#include <QSettings>
 #include <QStandardPaths>
 
 #include "ChatPage.h"
@@ -476,14 +477,14 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 
         std::vector<QString> ids = internalAddEvents(timeline.events);
 
-        if (ids.empty())
-                return;
+        if (!ids.empty()) {
+                beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
+                this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
+                endInsertRows();
+        }
 
-        beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
-        this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
-        endInsertRows();
-
-        updateLastMessage();
+        if (!timeline.events.empty())
+                updateLastMessage();
 }
 
 template<typename T>
@@ -501,6 +502,13 @@ isMessage(const mtx::events::Event<T> &)
         return false;
 }
 
+template<typename T>
+auto
+isMessage(const mtx::events::EncryptedEvent<T> &)
+{
+        return true;
+}
+
 void
 TimelineModel::updateLastMessage()
 {
@@ -508,7 +516,9 @@ TimelineModel::updateLastMessage()
                 auto event = events.value(*it);
                 if (auto e = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                       &event)) {
-                        event = decryptEvent(*e).event;
+                        if (decryptDescription) {
+                                event = decryptEvent(*e).event;
+                        }
                 }
 
                 if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, event))

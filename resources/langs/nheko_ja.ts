@@ -471,7 +471,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+754"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+766"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation>-- 復号エラー (データベースと通信できませんでした) --</translation>
@@ -778,7 +778,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+333"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+335"/>
         <source>Minimize to tray</source>
         <translation>トレイへ最小化</translation>
     </message>
@@ -799,6 +799,11 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Decrypt messages in sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Show buttons in timeline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -858,7 +863,7 @@
         <translation>デバイスの指紋</translation>
     </message>
     <message>
-        <location line="-58"/>
+        <location line="-59"/>
         <source>Session Keys</source>
         <translation>セッション鍵</translation>
     </message>
@@ -878,22 +883,22 @@
         <translation>暗号化</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-63"/>
         <source>GENERAL</source>
         <translation>全般</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+108"/>
         <source>Emoji Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+152"/>
+        <location line="+158"/>
         <source>Open Sessions File</source>
         <translation>セッションファイルを開く</translation>
     </message>

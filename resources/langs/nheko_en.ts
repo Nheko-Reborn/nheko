@@ -471,7 +471,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+754"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+766"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation>-- Decryption Error (failed to communicate with DB) --</translation>
@@ -779,7 +779,7 @@
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+333"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+335"/>
         <source>Minimize to tray</source>
         <translation>Minimize to tray</translation>
     </message>
@@ -800,6 +800,11 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Decrypt messages in sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Show buttons in timeline</source>
         <translation>Show buttons in timeline</translation>
     </message>
@@ -859,7 +864,7 @@
         <translation>Device Fingerprint</translation>
     </message>
     <message>
-        <location line="-58"/>
+        <location line="-59"/>
         <source>Session Keys</source>
         <translation>Session Keys</translation>
     </message>
@@ -879,22 +884,22 @@
         <translation>ENCRYPTION</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-63"/>
         <source>GENERAL</source>
         <translation>GENERAL</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>INTERFACE</source>
         <translation>INTERFACE</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+108"/>
         <source>Emoji Font Family</source>
         <translation>Emoji Font Family</translation>
     </message>
     <message>
-        <location line="+152"/>
+        <location line="+158"/>
         <source>Open Sessions File</source>
         <translation>Open Sessions File</translation>
     </message>

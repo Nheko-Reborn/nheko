@@ -153,6 +153,7 @@ signals:
 
         void updateGroupsInfo(const mtx::responses::JoinedGroups &groups);
         void themeChanged();
+        void decryptSidebarChanged();
 
 private slots:
         void showUnreadMessageNotification(int count);

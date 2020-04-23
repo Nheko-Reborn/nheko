@@ -10,8 +10,9 @@
 
 - Fix display of images sent by the user (thank you, wnereiz and not-chicken for reporting)
 - Fix crash when trying to maximize image, that wasn't downloaded yet.
-- Fix Binding restorMode flooding logs on Qt 5.14.2+
+- Fix Binding restoreMode flooding logs on Qt 5.14.2+
 - Fix with some qml styles hidden menu items leave empty space
+- Fix encrypted messages not showing a user in the sidebar
 - Fix hangs when generating colors with some system theme color schemes (#172)
 
 ## [0.7.0] -- 2020-04-19

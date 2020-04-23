@@ -6,6 +6,7 @@ cscope*
 /.ccls-cache
 /.exrc
 .gdb_history
+.hunter
 
 # GTAGS
 GTAGS
@@ -70,7 +71,8 @@ install_manifest.txt
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*

@@ -306,5 +306,4 @@ centerWidget(QWidget *widget, QWidget *parent);
 
 void
 restoreCombobox(QComboBox *combo, const QString &value);
-
 }

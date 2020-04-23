@@ -179,8 +179,9 @@ utils::getMessageDescription(const TimelineEvent &event,
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg->origin_server_ts);
 
                 DescInfo info;
-                info.userid    = sender;
-                info.body      = QString(" %1").arg(messageDescription<Encrypted>());
+                info.userid = sender;
+                info.body   = QString(" %1").arg(
+                  messageDescription<Encrypted>(username, "", sender == localUser));
                 info.timestamp = utils::descriptiveTime(ts);
                 info.event_id  = QString::fromStdString(msg->event_id);
                 info.datetime  = ts;
