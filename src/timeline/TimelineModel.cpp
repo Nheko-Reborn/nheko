@@ -477,14 +477,14 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 
         std::vector<QString> ids = internalAddEvents(timeline.events);
 
-        if (ids.empty())
-                return;
+        if (!ids.empty()) {
+                beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
+                this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
+                endInsertRows();
+        }
 
-        beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
-        this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
-        endInsertRows();
-
-        updateLastMessage();
+        if (!timeline.events.empty())
+                updateLastMessage();
 }
 
 template<typename T>
