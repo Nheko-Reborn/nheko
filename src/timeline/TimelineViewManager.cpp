@@ -25,7 +25,8 @@ TimelineViewManager::updateEncryptedDescriptions()
                 auto ptr = i.value();
 
                 if (!ptr.isNull()) {
-                        ptr->updateLastMessage(decrypt);
+                        ptr->setDecryptDescription(decrypt);
+                        ptr->updateLastMessage();
                 }
         }
 }
@@ -132,6 +133,8 @@ TimelineViewManager::addRoom(const QString &room_id)
 {
         if (!models.contains(room_id)) {
                 QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
+                newRoom->setDecryptDescription(settings->isDecryptSidebarEnabled());
+
                 connect(newRoom.data(),
                         &TimelineModel::newEncryptedImage,
                         imgProvider,

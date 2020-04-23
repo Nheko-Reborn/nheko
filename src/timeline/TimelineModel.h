@@ -189,7 +189,7 @@ public:
         Q_INVOKABLE void cacheMedia(QString eventId);
         Q_INVOKABLE bool saveMedia(QString eventId) const;
 
-        void updateLastMessage(bool);
+        void updateLastMessage();
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>
         void sendMessage(const T &msg);
@@ -224,6 +224,7 @@ public slots:
                         emit replyChanged(reply_);
                 }
         }
+        void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
 
 private slots:
         // Add old events at the top of the timeline.
@@ -259,7 +260,6 @@ private:
                                const mtx::responses::ClaimKeys &res,
                                mtx::http::RequestErr err);
         void readEvent(const std::string &id);
-        void updateLastMessage();
 
         QHash<QString, mtx::events::collections::TimelineEvents> events;
         QSet<QString> read;
@@ -271,6 +271,7 @@ private:
 
         bool isInitialSync        = true;
         bool paginationInProgress = false;
+        bool decryptDescription   = true;
 
         QString currentId;
         QString reply_;
