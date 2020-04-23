@@ -5,6 +5,7 @@
 ### Features
 
 - Show decrypted message source (helps debugging)
+- Allow user to show / hide messages in encrypted rooms in sidebar
 
 ### Bugfixes
 
