@@ -19,12 +19,13 @@ Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 void
 TimelineViewManager::updateEncryptedDescriptions()
 {
+        auto decrypt = settings->isDecryptSidebarEnabled();
         QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
         for (i = models.begin(); i != models.end(); ++i) {
                 auto ptr = i.value();
 
                 if (!ptr.isNull()) {
-                        ptr->updateLastMessage();
+                        ptr->updateLastMessage(decrypt);
                 }
         }
 }

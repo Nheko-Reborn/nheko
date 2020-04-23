@@ -514,6 +514,12 @@ TimelineModel::updateLastMessage()
 {
         // Get the user setting to show decrypted messages in side bar
         bool decrypt = QSettings().value("user/decrypt_sidebar", true).toBool();
+        updateLastMessage(decrypt);
+}
+
+void
+TimelineModel::updateLastMessage(bool decrypt)
+{
         for (auto it = eventOrder.begin(); it != eventOrder.end(); ++it) {
                 auto event = events.value(*it);
                 if (auto e = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
