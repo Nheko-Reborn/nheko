@@ -24,6 +24,7 @@
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "Utils.h"
 
 static QPixmapCache avatar_cache;
 
@@ -44,7 +45,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
 
         auto data = cache::image(cacheKey);
         if (!data.isNull()) {
-                pixmap.loadFromData(data);
+                pixmap = QPixmap::fromImage(utils::readImage(&data));
                 avatar_cache.insert(cacheKey, pixmap);
                 callback(pixmap);
                 return;
@@ -54,9 +55,8 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
         QObject::connect(proxy.get(),
                          &AvatarProxy::avatarDownloaded,
                          receiver,
-                         [callback, cacheKey](const QByteArray &data) {
-                                 QPixmap pm;
-                                 pm.loadFromData(data);
+                         [callback, cacheKey](QByteArray data) {
+                                 QPixmap pm = QPixmap::fromImage(utils::readImage(&data));
                                  avatar_cache.insert(cacheKey, pm);
                                  callback(pm);
                          });

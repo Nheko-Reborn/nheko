@@ -1,9 +1,11 @@
 #include "Utils.h"
 
 #include <QApplication>
+#include <QBuffer>
 #include <QComboBox>
 #include <QDesktopWidget>
 #include <QGuiApplication>
+#include <QImageReader>
 #include <QProcessEnvironment>
 #include <QScreen>
 #include <QSettings>
@@ -656,4 +658,13 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
                         break;
                 }
         }
+}
+
+QImage
+utils::readImage(QByteArray *data)
+{
+        QBuffer buf(data);
+        QImageReader reader(&buf);
+        reader.setAutoTransform(true);
+        return reader.read();
 }

@@ -306,4 +306,8 @@ centerWidget(QWidget *widget, QWidget *parent);
 
 void
 restoreCombobox(QComboBox *combo, const QString &value);
+
+//! Read image respecting exif orientation
+QImage
+readImage(QByteArray *data);
 }

@@ -3,6 +3,7 @@
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "Utils.h"
 
 void
 MxcImageResponse::run()
@@ -14,11 +15,15 @@ MxcImageResponse::run()
                                      .arg(m_requestedSize.height());
 
                 auto data = cache::image(fileName);
-                if (!data.isNull() && m_image.loadFromData(data)) {
+                if (!data.isNull()) {
+                        m_image = utils::readImage(&data);
                         m_image = m_image.scaled(m_requestedSize, Qt::KeepAspectRatio);
                         m_image.setText("mxc url", "mxc://" + m_id);
-                        emit finished();
-                        return;
+
+                        if (!m_image.isNull()) {
+                                emit finished();
+                                return;
+                        }
                 }
 
                 mtx::http::ThumbOpts opts;
@@ -39,17 +44,22 @@ MxcImageResponse::run()
 
                           auto data = QByteArray(res.data(), res.size());
                           cache::saveImage(fileName, data);
-                          m_image.loadFromData(data);
+                          m_image = utils::readImage(&data);
                           m_image.setText("mxc url", "mxc://" + m_id);
 
                           emit finished();
                   });
         } else {
                 auto data = cache::image(m_id);
-                if (!data.isNull() && m_image.loadFromData(data)) {
+
+                if (!data.isNull()) {
+                        m_image = utils::readImage(&data);
                         m_image.setText("mxc url", "mxc://" + m_id);
-                        emit finished();
-                        return;
+
+                        if (!m_image.isNull()) {
+                                emit finished();
+                                return;
+                        }
                 }
 
                 http::client()->download(
@@ -73,11 +83,11 @@ MxcImageResponse::run()
                                     mtx::crypto::decrypt_file(temp, m_encryptionInfo.value()));
 
                           auto data = QByteArray(temp.data(), temp.size());
-                          m_image.loadFromData(data);
+                          cache::saveImage(m_id, data);
+                          m_image = utils::readImage(&data);
                           m_image.setText("original filename",
                                           QString::fromStdString(originalFilename));
                           m_image.setText("mxc url", "mxc://" + m_id);
-                          cache::saveImage(m_id, data);
 
                           emit finished();
                   });
