@@ -1000,7 +1000,13 @@ ChatPage::trySync()
 
                           emit syncTags(cache::roomTagUpdates(res));
 
-                          cache::deleteOldData();
+                          // if we process a lot of syncs (1 every 200ms), this means we clean the
+                          // db every 100s
+                          static int syncCounter = 0;
+                          if (syncCounter++ >= 500) {
+                                  cache::deleteOldData();
+                                  syncCounter = 0;
+                          }
                   } catch (const lmdb::map_full_error &e) {
                           nhlog::db()->error("lmdb is full: {}", e.what());
                           cache::deleteOldData();
