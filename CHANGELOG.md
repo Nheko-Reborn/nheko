@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.2] -- unreleased
+
+### Features
+
+- Respect exif rotation of images
+- perf: Only clean out old messages from the database every 500 syncs. (There is usually more than one sync every second)
+
+### Bugfixes
+
+- Fix not being able to join rooms
+
 ## [0.7.1] -- 2020-04-24
 
 ### Features
