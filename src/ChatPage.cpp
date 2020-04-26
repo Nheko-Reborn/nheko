@@ -325,8 +325,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                   QSize dimensions;
                   QString blurhash;
                   if (mimeClass == "image") {
-                          QImage img;
-                          img.loadFromData(bin);
+                          QImage img = utils::readImage(&bin);
+
                           dimensions = img.size();
                           if (img.height() > 200 && img.width() > 360)
                                   img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
