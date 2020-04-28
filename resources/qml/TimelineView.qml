@@ -93,7 +93,7 @@ Page {
 
 		BusyIndicator {
 			anchors.centerIn: parent
-			running: timelineManager.isInitialSync
+            running: timelineManager.isInitialSync || chat.model.paginationInProgress
 			height: 200
 			width: 200
 			z: 3

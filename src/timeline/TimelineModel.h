@@ -124,6 +124,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                      typingUsersChanged)
         Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
+        Q_PROPERTY(bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager,
@@ -208,6 +209,7 @@ public slots:
                 }
         }
         std::vector<QString> typingUsers() const { return typingUsers_; }
+        bool paginationInProgress() const { return m_paginationInProgress; }
 
         QString reply() const { return reply_; }
         void setReply(QString newReply)
@@ -246,6 +248,7 @@ signals:
         void eventFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
+        void paginationInProgressChanged(const bool);
 
 private:
         DecryptionResult decryptEvent(
@@ -261,6 +264,8 @@ private:
                                mtx::http::RequestErr err);
         void readEvent(const std::string &id);
 
+        void setPaginationInProgress(const bool paginationInProgress);
+
         QHash<QString, mtx::events::collections::TimelineEvents> events;
         QSet<QString> read;
         QList<QString> pending;
@@ -270,8 +275,8 @@ private:
         QString prev_batch_token_;
 
         bool isInitialSync        = true;
-        bool paginationInProgress = false;
         bool decryptDescription   = true;
+        bool m_paginationInProgress = false;
 
         QString currentId;
         QString reply_;

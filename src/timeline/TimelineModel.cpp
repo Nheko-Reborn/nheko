@@ -433,14 +433,25 @@ TimelineModel::canFetchMore(const QModelIndex &) const
 }
 
 void
+TimelineModel::setPaginationInProgress(const bool paginationInProgress)
+{
+        if (m_paginationInProgress == paginationInProgress) {
+                return;
+        }
+
+        m_paginationInProgress = paginationInProgress;
+        emit paginationInProgressChanged(m_paginationInProgress);
+}
+
+void
 TimelineModel::fetchMore(const QModelIndex &)
 {
-        if (paginationInProgress) {
+        if (m_paginationInProgress) {
                 nhlog::ui()->warn("Already loading older messages");
                 return;
         }
 
-        paginationInProgress = true;
+        setPaginationInProgress(true);
         mtx::http::MessagesOpts opts;
         opts.room_id = room_id_.toStdString();
         opts.from    = prev_batch_token_.toStdString();
@@ -455,12 +466,13 @@ TimelineModel::fetchMore(const QModelIndex &)
                                               mtx::errors::to_string(err->matrix_error.errcode),
                                               err->matrix_error.error,
                                               err->parse_error);
-                          paginationInProgress = false;
+                          emit oldMessagesRetrieved(std::move(res));
+                          setPaginationInProgress(false);
                           return;
                   }
 
                   emit oldMessagesRetrieved(std::move(res));
-                  paginationInProgress = false;
+                  setPaginationInProgress(false);
           });
 }
 
