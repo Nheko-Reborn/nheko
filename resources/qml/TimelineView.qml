@@ -116,19 +116,10 @@ Page {
 			boundsBehavior: Flickable.StopAtBounds
 			pixelAligned: true
 
-			MouseArea {
-				anchors.fill: parent
-				acceptedButtons: Qt.NoButton
-				propagateComposedEvents: true
-				z: -1
-				onWheel: {
-					if (wheel.angleDelta != 0) {
-						chat.contentY = chat.contentY - wheel.angleDelta.y
-						wheel.accepted = true
-						chat.returnToBounds()
-					}
-				}
-			}
+            ScrollHelper {
+                flickable: parent
+                anchors.fill: parent
+            }
 
 			Shortcut {
 				sequence: StandardKey.MoveToPreviousPage
