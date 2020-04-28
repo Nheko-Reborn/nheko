@@ -5,8 +5,10 @@ Label {
 	color: colors.brightText
 	horizontalAlignment: Text.AlignHCenter
 
-	height: contentHeight * 1.2
-	width: contentWidth * 1.2
+//	height: contentHeight * 1.2
+//	width: contentWidth * 1.2
+    padding: 12
+
 	background: Rectangle {
 		radius: parent.height / 2
 		color: colors.dark
