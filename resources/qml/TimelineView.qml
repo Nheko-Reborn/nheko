@@ -208,8 +208,6 @@ Page {
 						text: chat.model.formatDateSeparator(modelData.timestamp)
 						color: colors.brightText
 
-//						height: contentHeight * 1.2
-//						width: contentWidth * 1.2
                         leftPadding: 24
                         rightPadding: 24
                         topPadding: 8
