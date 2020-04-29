@@ -71,11 +71,12 @@ Avatar::setImage(const QString &avatar_url)
         AvatarProvider::resolve(avatar_url,
                                 static_cast<int>(size_ * pixmap_.devicePixelRatio()),
                                 this,
-                                [this](QPixmap pm) {
+                                [this, requestedRatio = pixmap_.devicePixelRatio()](QPixmap pm) {
                                         if (pm.isNull())
                                                 return;
                                         type_   = ui::AvatarType::Image;
                                         pixmap_ = pm;
+                                        pixmap_.setDevicePixelRatio(requestedRatio);
                                         update();
                                 });
 }
@@ -89,13 +90,28 @@ Avatar::setImage(const QString &room, const QString &user)
                                 user,
                                 static_cast<int>(size_ * pixmap_.devicePixelRatio()),
                                 this,
-                                [this](QPixmap pm) {
+                                [this, requestedRatio = pixmap_.devicePixelRatio()](QPixmap pm) {
                                         if (pm.isNull())
                                                 return;
                                         type_   = ui::AvatarType::Image;
                                         pixmap_ = pm;
+                                        pixmap_.setDevicePixelRatio(requestedRatio);
                                         update();
                                 });
+}
+
+void
+Avatar::setDevicePixelRatio(double ratio)
+{
+        if (type_ == ui::AvatarType::Image && abs(pixmap_.devicePixelRatio() - ratio) > 0.01) {
+                pixmap_ = pixmap_.scaled(QSize(size_, size_) * ratio);
+                pixmap_.setDevicePixelRatio(ratio);
+
+                if (!avatar_url_.isEmpty())
+                        setImage(avatar_url_);
+                else
+                        setImage(room_, user_);
+        }
 }
 
 void
@@ -106,7 +122,7 @@ Avatar::paintEvent(QPaintEvent *)
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        QRect r      = rect();
+        QRectF r     = rect();
         const int hs = size_ / 2;
 
         if (type_ != ui::AvatarType::Image) {
@@ -116,18 +132,9 @@ Avatar::paintEvent(QPaintEvent *)
 
                 painter.setPen(Qt::NoPen);
                 painter.setBrush(brush);
-                rounded ? painter.drawEllipse(r.center(), hs, hs)
-                        : painter.drawRoundedRect(r, 3, 3);
-        } else if (painter.isActive() &&
-                   abs(pixmap_.devicePixelRatio() - painter.device()->devicePixelRatioF()) > 0.01) {
-                pixmap_ =
-                  pixmap_.scaled(QSize(size_, size_) * painter.device()->devicePixelRatioF());
-                pixmap_.setDevicePixelRatio(painter.device()->devicePixelRatioF());
-
-                if (!avatar_url_.isEmpty())
-                        setImage(avatar_url_);
-                else
-                        setImage(room_, user_);
+                rounded ? painter.drawEllipse(r) : painter.drawRoundedRect(r, 3, 3);
+        } else if (painter.isActive()) {
+                setDevicePixelRatio(painter.device()->devicePixelRatioF());
         }
 
         switch (type_) {

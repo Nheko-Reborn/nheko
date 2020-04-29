@@ -151,7 +151,8 @@ RoomInfoListItem::paintEvent(QPaintEvent *event)
 
         auto wm = getMetrics(QFont{});
 
-        QPixmap pixmap(avatar_->size());
+        QPixmap pixmap(avatar_->size() * p.device()->devicePixelRatioF());
+        pixmap.setDevicePixelRatio(p.device()->devicePixelRatioF());
         if (isPressed_) {
                 p.fillRect(rect(), highlightedBackgroundColor_);
                 titlePen.setColor(highlightedTitleColor_);

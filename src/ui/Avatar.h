@@ -21,6 +21,7 @@ public:
         void setImage(const QString &room, const QString &user);
         void setLetter(const QString &letter);
         void setTextColor(const QColor &color);
+        void setDevicePixelRatio(double ratio);
 
         QColor backgroundColor() const;
         QColor textColor() const;
