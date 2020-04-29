@@ -22,7 +22,7 @@ import QtQuick.Controls 2.12
 
 /*
 * Shamelessly stolen from:
-* https://gitlab.com/spectral-im/spectral/-/blob/master/imports/Spectral/Component/ScrollHelper.qml
+* https://cgit.kde.org/kube.git/tree/framework/qml/ScrollHelper.qml
 *
 * The MouseArea + interactive: false + maximumFlickVelocity are required
 * to fix scrolling for desktop systems where we don't want flicking behaviour.
@@ -42,12 +42,13 @@ MouseArea {
     z: -1
     onFlickableChanged: {
         if (enabled) {
-            flickable.interactive = false
             flickable.maximumFlickVelocity = 100000
             flickable.boundsBehavior = Flickable.StopAtBounds
             root.parent = flickable
         }
     }
+
+    acceptedButtons: Qt.NoButton
 
     function calculateNewPosition(flickableItem, wheel) {
         //Nothing to scroll

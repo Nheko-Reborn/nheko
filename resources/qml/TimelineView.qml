@@ -114,7 +114,6 @@ Page {
 			model: timelineManager.timeline
 
 			boundsBehavior: Flickable.StopAtBounds
-			pixelAligned: true
 
             ScrollHelper {
                 flickable: parent
@@ -208,10 +207,8 @@ Page {
 						text: chat.model.formatDateSeparator(modelData.timestamp)
 						color: colors.brightText
 
-                        leftPadding: 24
-                        rightPadding: 24
-                        topPadding: 8
-                        bottomPadding: 8
+                        height: fontMetrics.height * 1.4
+                        width: contentWidth * 1.2
 
                         horizontalAlignment: Text.AlignHCenter
 						background: Rectangle {
@@ -221,7 +218,7 @@ Page {
 					}
 					Row {
 						height: userName.height
-						spacing: 4
+                        spacing: 4
 						Avatar {
 							width: avatarSize
 							height: avatarSize
@@ -327,4 +324,8 @@ Page {
 			}
 		}
 	}
+
+    FontMetrics {
+        id: fontMetrics
+    }
 }
