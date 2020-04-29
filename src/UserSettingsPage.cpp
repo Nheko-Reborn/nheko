@@ -121,7 +121,7 @@ UserSettings::applyTheme()
                 lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
                 lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
                 lightActive.setColor(QPalette::Link, QColor("#0077b5"));
-                lightActive.setColor(QPalette::ButtonText, QColor("gray"));
+                lightActive.setColor(QPalette::ButtonText, QColor(Qt::gray));
                 QApplication::setPalette(lightActive);
         } else if (this->theme() == "dark") {
                 stylefile.setFileName(":/styles/styles/nheko-dark.qss");
@@ -130,7 +130,7 @@ UserSettings::applyTheme()
                   /*button*/ QColor(0xff, 0xff, 0xff),
                   /*light*/ QColor("#caccd1"),
                   /*dark*/ QColor("#2d3139"),
-                  /*mid*/ QColor(110, 110, 110), // not used anywhere, this is for debugging
+                  /*mid*/ QColor(110, 110, 110),
                   /*text*/ QColor("#caccd1"),
                   /*bright_text*/ QColor(0xff, 0xff, 0xff),
                   /*base*/ QColor("#2d3139"),
@@ -139,7 +139,7 @@ UserSettings::applyTheme()
                 darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
                 darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
                 darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ButtonText, QColor(77, 77, 77));
+                darkActive.setColor(QPalette::ButtonText, QColor(0x90, 0x90, 0x90));
                 QApplication::setPalette(darkActive);
         } else {
                 stylefile.setFileName(":/styles/styles/system.qss");
