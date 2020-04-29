@@ -853,12 +853,22 @@ TimelineModel::relatedInfo(QString id)
                 event = decryptEvent(*e).event;
         }
 
-        RelatedInfo related           = {};
-        related.quoted_user           = QString::fromStdString(mtx::accessors::sender(event));
-        related.related_event         = mtx::accessors::event_id(event);
-        related.type                  = mtx::accessors::msg_type(event);
-        related.quoted_body           = QString::fromStdString(mtx::accessors::body(event));
-        related.quoted_body           = utils::getQuoteBody(related);
+        RelatedInfo related   = {};
+        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
+        related.related_event = mtx::accessors::event_id(event);
+        related.type          = mtx::accessors::msg_type(event);
+
+        // get body, strip reply fallback, then transform the event to text, if it is a media event
+        // etc
+        related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
+        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
+        while (related.quoted_body.startsWith(">"))
+                related.quoted_body.remove(plainQuote);
+        if (related.quoted_body.startsWith("\n"))
+                related.quoted_body.remove(0, 1);
+        related.quoted_body = utils::getQuoteBody(related);
+
+        // get quoted body and strip reply fallback
         related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
         related.quoted_formatted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
