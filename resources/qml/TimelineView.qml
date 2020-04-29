@@ -88,6 +88,7 @@ Page {
 			anchors.centerIn: parent
 			text: qsTr("No room open")
 			font.pointSize: 24
+			color: colors.text
 		}
 
 		BusyIndicator {
@@ -284,6 +285,7 @@ Page {
 					anchors.leftMargin: 10
 					anchors.rightMargin: 10
 
+					color: colors.text
 					text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
 					textFormat: Text.RichText
 				}
