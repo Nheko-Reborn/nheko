@@ -93,7 +93,7 @@ Page {
 
 		BusyIndicator {
 			anchors.centerIn: parent
-            running: timelineManager.isInitialSync || chat.model.paginationInProgress
+            running: timelineManager.isInitialSync
 			height: 200
 			width: 200
 			z: 3
@@ -251,6 +251,13 @@ Page {
 				}
 			}
 
+            footer:  BusyIndicator {
+                anchors.horizontalCenter: parent.horizontalCenter
+                running: chat.model && chat.model.paginationInProgress
+                height: 50
+                width: 50
+                z: 3
+            }
 		}
 
 		Rectangle {
