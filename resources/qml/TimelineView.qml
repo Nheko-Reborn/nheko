@@ -115,21 +115,11 @@ Page {
 			model: timelineManager.timeline
 
 			boundsBehavior: Flickable.StopAtBounds
-			pixelAligned: true
 
-			MouseArea {
-				anchors.fill: parent
-				acceptedButtons: Qt.NoButton
-				propagateComposedEvents: true
-				z: -1
-				onWheel: {
-					if (wheel.angleDelta != 0) {
-						chat.contentY = chat.contentY - wheel.angleDelta.y
-						wheel.accepted = true
-						chat.returnToBounds()
-					}
-				}
-			}
+            ScrollHelper {
+                flickable: parent
+                anchors.fill: parent
+            }
 
 			Shortcut {
 				sequence: StandardKey.MoveToPreviousPage
@@ -218,9 +208,10 @@ Page {
 						text: chat.model.formatDateSeparator(modelData.timestamp)
 						color: colors.brightText
 
-						height: contentHeight * 1.2
-						width: contentWidth * 1.2
-						horizontalAlignment: Text.AlignHCenter
+                        height: fontMetrics.height * 1.4
+                        width: contentWidth * 1.2
+
+                        horizontalAlignment: Text.AlignHCenter
 						background: Rectangle {
 							radius: parent.height / 2
 							color: colors.dark
@@ -228,7 +219,7 @@ Page {
 					}
 					Row {
 						height: userName.height
-						spacing: 4
+                        spacing: 4
 						Avatar {
 							width: avatarSize
 							height: avatarSize
@@ -335,4 +326,8 @@ Page {
 			}
 		}
 	}
+
+    FontMetrics {
+        id: fontMetrics
+    }
 }
