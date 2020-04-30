@@ -173,9 +173,6 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 // mark our messages as read
                 readEvent(event_id.toStdString());
 
-                // ask to be notified for read receipts
-                cache::addPendingReceipt(room_id_, event_id);
-
                 emit dataChanged(index(idx, 0), index(idx, 0));
 
                 if (pending.size() > 0)

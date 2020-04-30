@@ -62,6 +62,7 @@ constexpr auto SYNC_STATE_DB("sync_state");
 //! Read receipts per room/event.
 constexpr auto READ_RECEIPTS_DB("read_receipts");
 constexpr auto NOTIFICATIONS_DB("sent_notifications");
+//! TODO: delete pending_receipts database on old cache versions
 
 //! Encryption related databases.
 
@@ -703,70 +704,6 @@ Cache::setCurrentFormat()
         txn.commit();
 }
 
-std::vector<QString>
-Cache::pendingReceiptsEvents(lmdb::txn &txn, const std::string &room_id)
-{
-        auto db = getPendingReceiptsDb(txn);
-
-        std::string key, unused;
-        std::vector<QString> pending;
-
-        auto cursor = lmdb::cursor::open(txn, db);
-        while (cursor.get(key, unused, MDB_NEXT)) {
-                ReadReceiptKey receipt;
-                try {
-                        receipt = json::parse(key);
-                } catch (const nlohmann::json::exception &e) {
-                        nhlog::db()->warn("pendingReceiptsEvents: {}", e.what());
-                        continue;
-                }
-
-                if (receipt.room_id == room_id)
-                        pending.emplace_back(QString::fromStdString(receipt.event_id));
-        }
-
-        cursor.close();
-
-        return pending;
-}
-
-void
-Cache::removePendingReceipt(lmdb::txn &txn, const std::string &room_id, const std::string &event_id)
-{
-        auto db = getPendingReceiptsDb(txn);
-
-        ReadReceiptKey receipt_key{event_id, room_id};
-        auto key = json(receipt_key).dump();
-
-        try {
-                lmdb::dbi_del(txn, db, lmdb::val(key.data(), key.size()), nullptr);
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("removePendingReceipt: {}", e.what());
-        }
-}
-
-void
-Cache::addPendingReceipt(const QString &room_id, const QString &event_id)
-{
-        auto txn = lmdb::txn::begin(env_);
-        auto db  = getPendingReceiptsDb(txn);
-
-        ReadReceiptKey receipt_key{event_id.toStdString(), room_id.toStdString()};
-        auto key = json(receipt_key).dump();
-        std::string empty;
-
-        try {
-                lmdb::dbi_put(txn,
-                              db,
-                              lmdb::val(key.data(), key.size()),
-                              lmdb::val(empty.data(), empty.size()));
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("addPendingReceipt: {}", e.what());
-        }
-
-        txn.commit();
-}
-
 CachedReceipts
 Cache::readReceipts(const QString &event_id, const QString &room_id)
 {
@@ -800,30 +737,6 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
         }
 
         return receipts;
-}
-
-std::vector<QString>
-Cache::filterReadEvents(const QString &room_id,
-                        const std::vector<QString> &event_ids,
-                        const std::string &excluded_user)
-{
-        std::vector<QString> read_events;
-
-        for (const auto &event : event_ids) {
-                auto receipts = readReceipts(event, room_id);
-
-                if (receipts.size() == 0)
-                        continue;
-
-                if (receipts.size() == 1) {
-                        if (receipts.begin()->second == excluded_user)
-                                continue;
-                }
-
-                read_events.emplace_back(event);
-        }
-
-        return read_events;
 }
 
 void
@@ -879,27 +792,6 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
                         nhlog::db()->critical("updateReadReceipts: {}", e.what());
                 }
         }
-}
-
-void
-Cache::notifyForReadReceipts(const std::string &room_id)
-{
-        auto txn = lmdb::txn::begin(env_);
-
-        QSettings settings;
-        auto local_user = settings.value("auth/user_id").toString();
-
-        auto matches = filterReadEvents(QString::fromStdString(room_id),
-                                        pendingReceiptsEvents(txn, room_id),
-                                        local_user.toStdString());
-
-        for (const auto &m : matches)
-                removePendingReceipt(txn, room_id, m.toStdString());
-
-        if (!matches.empty())
-                emit newReadReceipts(QString::fromStdString(room_id), matches);
-
-        txn.commit();
 }
 
 void
@@ -1019,7 +911,12 @@ Cache::saveState(const mtx::responses::Sync &res)
         std::map<QString, bool> readStatus;
 
         for (const auto &room : res.rooms.join) {
-                notifyForReadReceipts(room.first);
+                if (!room.second.ephemeral.receipts.empty()) {
+                        std::vector<QString> receipts;
+                        for (const auto &receipt : room.second.ephemeral.receipts)
+                                receipts.push_back(QString::fromStdString(receipt.first));
+                        emit newReadReceipts(QString::fromStdString(room.first), receipts);
+                }
                 readStatus.emplace(QString::fromStdString(room.first),
                                    calculateRoomReadStatus(room.first));
         }
@@ -2632,36 +2529,6 @@ UserReceipts
 readReceipts(const QString &event_id, const QString &room_id)
 {
         return instance_->readReceipts(event_id, room_id);
-}
-
-//! Filter the events that have at least one read receipt.
-std::vector<QString>
-filterReadEvents(const QString &room_id,
-                 const std::vector<QString> &event_ids,
-                 const std::string &excluded_user)
-{
-        return instance_->filterReadEvents(room_id, event_ids, excluded_user);
-}
-//! Add event for which we are expecting some read receipts.
-void
-addPendingReceipt(const QString &room_id, const QString &event_id)
-{
-        instance_->addPendingReceipt(room_id, event_id);
-}
-void
-removePendingReceipt(lmdb::txn &txn, const std::string &room_id, const std::string &event_id)
-{
-        instance_->removePendingReceipt(txn, room_id, event_id);
-}
-void
-notifyForReadReceipts(const std::string &room_id)
-{
-        instance_->notifyForReadReceipts(room_id);
-}
-std::vector<QString>
-pendingReceiptsEvents(lmdb::txn &txn, const std::string &room_id)
-{
-        return instance_->pendingReceiptsEvents(txn, room_id);
 }
 
 QByteArray
