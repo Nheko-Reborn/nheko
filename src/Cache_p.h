@@ -137,18 +137,6 @@ public:
         using UserReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
         UserReceipts readReceipts(const QString &event_id, const QString &room_id);
 
-        //! Filter the events that have at least one read receipt.
-        std::vector<QString> filterReadEvents(const QString &room_id,
-                                              const std::vector<QString> &event_ids,
-                                              const std::string &excluded_user);
-        //! Add event for which we are expecting some read receipts.
-        void addPendingReceipt(const QString &room_id, const QString &event_id);
-        void removePendingReceipt(lmdb::txn &txn,
-                                  const std::string &room_id,
-                                  const std::string &event_id);
-        void notifyForReadReceipts(const std::string &room_id);
-        std::vector<QString> pendingReceiptsEvents(lmdb::txn &txn, const std::string &room_id);
-
         QByteArray image(const QString &url) const;
         QByteArray image(lmdb::txn &txn, const std::string &url) const;
         void saveImage(const std::string &url, const std::string &data);

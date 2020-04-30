@@ -100,6 +100,7 @@ private:
         OverlayModal *joinRoomModal_;
 
         std::map<QString, QSharedPointer<RoomInfoListItem>> rooms_;
+        std::vector<QSharedPointer<RoomInfoListItem>> rooms_sort_cache_;
         QString selectedRoom_;
 
         bool isSortPending_ = false;

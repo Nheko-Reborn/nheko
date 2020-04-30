@@ -41,6 +41,7 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
           utils::messageDescription<T>(
             username, QString::fromStdString(msg.content.body).trimmed(), sender == localUser),
           utils::descriptiveTime(ts),
+          msg.origin_server_ts,
           ts};
 }
 
@@ -184,9 +185,10 @@ utils::getMessageDescription(const TimelineEvent &event,
                 info.userid = sender;
                 info.body   = QString(" %1").arg(
                   messageDescription<Encrypted>(username, "", sender == localUser));
-                info.timestamp = utils::descriptiveTime(ts);
-                info.event_id  = QString::fromStdString(msg->event_id);
-                info.datetime  = ts;
+                info.timestamp       = msg->origin_server_ts;
+                info.descriptiveTime = utils::descriptiveTime(ts);
+                info.event_id        = QString::fromStdString(msg->event_id);
+                info.datetime        = ts;
 
                 return info;
         }

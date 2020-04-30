@@ -39,7 +39,8 @@ struct DescInfo
         QString event_id;
         QString userid;
         QString body;
-        QString timestamp;
+        QString descriptiveTime;
+        uint64_t timestamp;
         QDateTime datetime;
 };
 

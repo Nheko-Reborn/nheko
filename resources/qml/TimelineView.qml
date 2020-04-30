@@ -17,6 +17,10 @@ Page {
 
 	palette: colors
 
+	FontMetrics {
+		id: fontMetrics
+	}
+
 	Settings {
 		id: settings
 		category: "user"
@@ -116,10 +120,10 @@ Page {
 
 			boundsBehavior: Flickable.StopAtBounds
 
-            ScrollHelper {
-                flickable: parent
-                anchors.fill: parent
-            }
+			ScrollHelper {
+				flickable: parent
+				anchors.fill: parent
+			}
 
 			Shortcut {
 				sequence: StandardKey.MoveToPreviousPage
@@ -256,7 +260,7 @@ Page {
 		Rectangle {
 			id: chatFooter
 
-			height: Math.max(16, footerContent.height)
+			height: Math.max(fontMetrics.height * 1.2, footerContent.height)
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.bottom: parent.bottom
@@ -326,8 +330,4 @@ Page {
 			}
 		}
 	}
-
-    FontMetrics {
-        id: fontMetrics
-    }
 }

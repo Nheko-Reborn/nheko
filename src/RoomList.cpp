@@ -82,7 +82,9 @@ RoomList::addRoom(const QString &room_id, const RoomInfo &info)
                 MainWindow::instance()->openLeaveRoomDialog(room_id);
         });
 
-        rooms_.emplace(room_id, QSharedPointer<RoomInfoListItem>(room_item));
+        QSharedPointer<RoomInfoListItem> roomWidget(room_item);
+        rooms_.emplace(room_id, roomWidget);
+        rooms_sort_cache_.push_back(roomWidget);
 
         if (!info.avatar_url.empty())
                 updateAvatar(room_id, QString::fromStdString(info.avatar_url));
@@ -100,6 +102,14 @@ RoomList::updateAvatar(const QString &room_id, const QString &url)
 void
 RoomList::removeRoom(const QString &room_id, bool reset)
 {
+        auto roomIt = rooms_.find(room_id);
+        for (auto roomSortIt = rooms_sort_cache_.begin(); roomSortIt != rooms_sort_cache_.end();
+             ++roomSortIt) {
+                if (roomIt->second == *roomSortIt) {
+                        rooms_sort_cache_.erase(roomSortIt);
+                        break;
+                }
+        }
         rooms_.erase(room_id);
 
         if (rooms_.empty() || !reset)
@@ -336,7 +346,8 @@ RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
 
 struct room_sort
 {
-        bool operator()(const RoomInfoListItem *a, const RoomInfoListItem *b) const
+        bool operator()(const QSharedPointer<RoomInfoListItem> a,
+                        const QSharedPointer<RoomInfoListItem> b) const
         {
                 // Sort by "importance" (i.e. invites before mentions before
                 // notifs before new events before old events), then secondly
@@ -351,12 +362,10 @@ struct room_sort
 
                 // Now sort by recency
                 // Zero if empty, otherwise the time that the event occured
-                const uint64_t a_recency = a->lastMessageInfo().userid.isEmpty()
-                                             ? 0
-                                             : a->lastMessageInfo().datetime.toMSecsSinceEpoch();
-                const uint64_t b_recency = b->lastMessageInfo().userid.isEmpty()
-                                             ? 0
-                                             : b->lastMessageInfo().datetime.toMSecsSinceEpoch();
+                const uint64_t a_recency =
+                  a->lastMessageInfo().userid.isEmpty() ? 0 : a->lastMessageInfo().timestamp;
+                const uint64_t b_recency =
+                  b->lastMessageInfo().userid.isEmpty() ? 0 : b->lastMessageInfo().timestamp;
                 return a_recency > b_recency;
         }
 };
@@ -366,27 +375,17 @@ RoomList::sortRoomsByLastMessage()
 {
         isSortPending_ = false;
 
-        std::multiset<RoomInfoListItem *, room_sort> times;
+        std::sort(begin(rooms_sort_cache_), end(rooms_sort_cache_), room_sort{});
 
-        for (int ii = 0; ii < contentsLayout_->count(); ++ii) {
-                auto room = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(ii)->widget());
+        int newIndex = 0;
+        for (const auto &roomWidget : rooms_sort_cache_) {
+                const auto currentIndex = contentsLayout_->indexOf(roomWidget.get());
 
-                if (!room)
-                        continue;
-                else
-                        times.insert(room);
-        }
-
-        for (auto it = times.cbegin(); it != times.cend(); ++it) {
-                const auto roomWidget   = *it;
-                const auto currentIndex = contentsLayout_->indexOf(roomWidget);
-                const auto newIndex     = std::distance(times.cbegin(), it);
-
-                if (currentIndex == newIndex)
-                        continue;
-
-                contentsLayout_->removeWidget(roomWidget);
-                contentsLayout_->insertWidget(newIndex, roomWidget);
+                if (currentIndex != newIndex) {
+                        contentsLayout_->removeWidget(roomWidget.get());
+                        contentsLayout_->insertWidget(newIndex, roomWidget.get());
+                }
+                newIndex++;
         }
 }
 
@@ -500,7 +499,9 @@ RoomList::addInvitedRoom(const QString &room_id, const RoomInfo &info)
         connect(room_item, &RoomInfoListItem::acceptInvite, this, &RoomList::acceptInvite);
         connect(room_item, &RoomInfoListItem::declineInvite, this, &RoomList::declineInvite);
 
-        rooms_.emplace(room_id, QSharedPointer<RoomInfoListItem>(room_item));
+        QSharedPointer<RoomInfoListItem> roomWidget(room_item);
+        rooms_.emplace(room_id, roomWidget);
+        rooms_sort_cache_.push_back(roomWidget);
 
         updateAvatar(room_id, QString::fromStdString(info.avatar_url));
 
