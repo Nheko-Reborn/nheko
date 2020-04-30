@@ -89,8 +89,8 @@ fix_project_version()
 
 # Set additional project information
 set(COMPANY "Nheko")
-set(COPYRIGHT "Copyright (c) 2019 Nheko Contributors")
-set(IDENTIFIER "com.github.mujx.nheko")
+set(COPYRIGHT "Copyright (c) 2020 Nheko Contributors")
+set(IDENTIFIER "io.github.nheko-reborn.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
 
