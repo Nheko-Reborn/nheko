@@ -379,11 +379,11 @@ RoomList::sortRoomsByLastMessage()
 
         int newIndex = 0;
         for (const auto &roomWidget : rooms_sort_cache_) {
-                const auto currentIndex = contentsLayout_->indexOf(roomWidget.get());
+                const auto currentIndex = contentsLayout_->indexOf(roomWidget.data());
 
                 if (currentIndex != newIndex) {
-                        contentsLayout_->removeWidget(roomWidget.get());
-                        contentsLayout_->insertWidget(newIndex, roomWidget.get());
+                        contentsLayout_->removeWidget(roomWidget.data());
+                        contentsLayout_->insertWidget(newIndex, roomWidget.data());
                 }
                 newIndex++;
         }
