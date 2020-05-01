@@ -124,7 +124,8 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                      typingUsersChanged)
         Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
-        Q_PROPERTY(bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+        Q_PROPERTY(
+          bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager,
@@ -274,8 +275,8 @@ private:
         QString room_id_;
         QString prev_batch_token_;
 
-        bool isInitialSync        = true;
-        bool decryptDescription   = true;
+        bool isInitialSync          = true;
+        bool decryptDescription     = true;
         bool m_paginationInProgress = false;
 
         QString currentId;
