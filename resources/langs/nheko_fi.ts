@@ -4,13 +4,13 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+225"/>
+        <location filename="../../src/ChatPage.cpp" line="+226"/>
         <source>Failed to invite user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+866"/>
+        <location line="+888"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -50,12 +50,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-791"/>
+        <location line="-813"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+404"/>
+        <location line="+296"/>
+        <source>Cache migration failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Incompatible cache version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+111"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLM-tilin palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
@@ -71,7 +91,7 @@
     </message>
     <message>
         <location line="+51"/>
-        <location line="+210"/>
+        <location line="+215"/>
         <source>Please try to login again: %1</source>
         <translation>Ole hyvä ja yritä kirjautua sisään uudelleen: %1</translation>
     </message>
@@ -355,7 +375,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2311"/>
+        <location filename="../../src/Cache.cpp" line="+2213"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -368,7 +388,7 @@
         <translation>Poistu huoneesta</translation>
     </message>
     <message>
-        <location line="+158"/>
+        <location line="+160"/>
         <source>Accept</source>
         <translation>Hyväksy</translation>
     </message>
@@ -471,7 +491,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+766"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+773"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation type="unfinished">-- Virhe purkaessa salausta (tietokannan kanssa kommunikointi epäonnistui) --</translation>
@@ -489,7 +509,7 @@
         <translation type="unfinished">-- Virhe purkaessa salausta (%1) --</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+99"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished">Viestin poisto epäonnistui: %1</translation>
     </message>
@@ -514,7 +534,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-600"/>
+        <location line="-610"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished">-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
@@ -526,7 +546,7 @@
         <translation type="unfinished">-- Salattu viesti (tuntematon viestityyppi) --</translation>
     </message>
     <message numerus="yes">
-        <location line="+650"/>
+        <location line="+660"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -677,7 +697,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+48"/>
+        <location filename="../qml/TimelineView.qml" line="+52"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -971,7 +991,7 @@
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+138"/>
+        <location filename="../../src/Utils.cpp" line="+141"/>
         <source>Yesterday</source>
         <translation>Eilen</translation>
     </message>

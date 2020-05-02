@@ -665,8 +665,15 @@ Cache::deleteData()
         }
 }
 
+//! migrates db to the current format
 bool
-Cache::isFormatValid()
+Cache::runMigrations()
+{
+        return true;
+}
+
+cache::CacheVersion
+Cache::formatVersion()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
@@ -676,18 +683,16 @@ Cache::isFormatValid()
         txn.commit();
 
         if (!res)
-                return false;
+                return cache::CacheVersion::Older;
 
         std::string stored_version(current_version.data(), current_version.size());
 
-        if (stored_version != CURRENT_CACHE_FORMAT_VERSION) {
-                nhlog::db()->warn("breaking changes in the cache format. stored: {}, current: {}",
-                                  stored_version,
-                                  CURRENT_CACHE_FORMAT_VERSION);
-                return false;
-        }
-
-        return true;
+        if (stored_version < CURRENT_CACHE_FORMAT_VERSION)
+                return cache::CacheVersion::Older;
+        else if (stored_version > CURRENT_CACHE_FORMAT_VERSION)
+                return cache::CacheVersion::Older;
+        else
+                return cache::CacheVersion::Current;
 }
 
 void
@@ -2468,10 +2473,17 @@ setup()
 }
 
 bool
-isFormatValid()
+runMigrations()
 {
-        return instance_->isFormatValid();
+        return instance_->runMigrations();
 }
+
+cache::CacheVersion
+formatVersion()
+{
+        return instance_->formatVersion();
+}
+
 void
 setCurrentFormat()
 {
