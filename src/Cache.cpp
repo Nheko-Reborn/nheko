@@ -36,7 +36,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2018.09.21");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2020.05.01");
 static const std::string SECRET("secret");
 
 static lmdb::val NEXT_BATCH_KEY("next_batch");
@@ -669,6 +669,47 @@ Cache::deleteData()
 bool
 Cache::runMigrations()
 {
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::val current_version;
+        bool res = lmdb::dbi_get(txn, syncStateDb_, CACHE_FORMAT_VERSION_KEY, current_version);
+
+        txn.commit();
+
+        if (!res)
+                return false;
+
+        std::string stored_version(current_version.data(), current_version.size());
+
+        std::vector<std::pair<std::string, std::function<bool()>>> migrations{
+          {"2020.05.01",
+           [this]() {
+                   try {
+                           auto txn = lmdb::txn::begin(env_, nullptr);
+                           auto pending_receipts =
+                             lmdb::dbi::open(txn, "pending_receipts", MDB_CREATE);
+                           lmdb::dbi_drop(txn, pending_receipts, true);
+                           txn.commit();
+                   } catch (const lmdb::error &) {
+                           nhlog::db()->critical(
+                             "Failed to delete pending_receipts database in migration!");
+                           return false;
+                   }
+
+                   nhlog::db()->info("Successfully deleted pending receipts database.");
+                   return true;
+           }},
+        };
+
+        for (const auto &[target_version, migration] : migrations) {
+                if (target_version > stored_version)
+                        if (!migration()) {
+                                nhlog::db()->critical("migration failure!");
+                                return false;
+                        }
+        }
+
+        setCurrentFormat();
         return true;
 }
 
