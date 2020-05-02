@@ -111,10 +111,15 @@ removeRoom(const QString &roomid);
 void
 setup();
 
-bool
-isFormatValid();
+//! returns if the format is current, older or newer
+cache::CacheVersion
+formatVersion();
+//! set the format version to the current version
 void
 setCurrentFormat();
+//! migrates db to the current format
+bool
+runMigrations();
 
 std::map<QString, mtx::responses::Timeline>
 roomMessages();

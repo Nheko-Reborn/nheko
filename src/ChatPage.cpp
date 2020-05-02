@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QImageReader>
+#include <QMessageBox>
 #include <QSettings>
 #include <QShortcut>
 #include <QtConcurrent>
@@ -642,20 +643,37 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                         &NotificationsManager::removeNotification);
 
                 const bool isInitialized = cache::isInitialized();
-                const bool isValid       = cache::isFormatValid();
+                const auto cacheVersion  = cache::formatVersion();
 
                 if (!isInitialized) {
                         cache::setCurrentFormat();
-                } else if (isInitialized && !isValid) {
-                        // TODO: Deleting session data but keep using the
-                        //	 same device doesn't work.
-                        cache::deleteData();
-
-                        cache::init(userid);
-                        cache::setCurrentFormat();
-                } else if (isInitialized) {
-                        loadStateFromCache();
-                        return;
+                } else {
+                        if (cacheVersion == cache::CacheVersion::Current) {
+                                loadStateFromCache();
+                                return;
+                        } else if (cacheVersion == cache::CacheVersion::Older) {
+                                if (!cache::runMigrations()) {
+                                        QMessageBox::critical(
+                                          this,
+                                          tr("Cache migration failed!"),
+                                          tr("Migrating the cache to the current version failed. "
+                                             "This can have different reasons. Please open an "
+                                             "issue and try to use an older version in the mean "
+                                             "time. Alternatively you can try deleting the cache "
+                                             "manually"));
+                                        QCoreApplication::quit();
+                                }
+                                loadStateFromCache();
+                                return;
+                        } else if (cacheVersion == cache::CacheVersion::Newer) {
+                                QMessageBox::critical(
+                                  this,
+                                  tr("Incompatible cache version"),
+                                  tr("The cache on your disk is newer than this version of Nheko "
+                                     "supports. Please update or clear your cache."));
+                                QCoreApplication::quit();
+                                return;
+                        }
                 }
 
         } catch (const lmdb::error &e) {

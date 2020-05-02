@@ -8,6 +8,15 @@
 
 #include <mtx/events/join_rules.hpp>
 
+namespace cache {
+enum class CacheVersion : int
+{
+        Older   = -1,
+        Current = 0,
+        Newer   = 1,
+};
+}
+
 struct RoomMember
 {
         QString user_id;

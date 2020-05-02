@@ -102,8 +102,9 @@ public:
         void removeRoom(const std::string &roomid);
         void setup();
 
-        bool isFormatValid();
+        cache::CacheVersion formatVersion();
         void setCurrentFormat();
+        bool runMigrations();
 
         std::map<QString, mtx::responses::Timeline> roomMessages();
 
