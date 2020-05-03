@@ -887,6 +887,7 @@ void
 Cache::saveState(const mtx::responses::Sync &res)
 {
         using namespace mtx::events;
+        auto user_id = this->localUserId_.toStdString();
 
         auto txn = lmdb::txn::begin(env_);
 
@@ -960,8 +961,10 @@ Cache::saveState(const mtx::responses::Sync &res)
                 if (!room.second.ephemeral.receipts.empty()) {
                         std::vector<QString> receipts;
                         for (const auto &receipt : room.second.ephemeral.receipts)
-                                receipts.push_back(QString::fromStdString(receipt.first));
-                        emit newReadReceipts(QString::fromStdString(room.first), receipts);
+                                if (receipt.first != user_id)
+                                        receipts.push_back(QString::fromStdString(receipt.first));
+                        if (!receipts.empty())
+                                emit newReadReceipts(QString::fromStdString(room.first), receipts);
                 }
                 readStatus.emplace(QString::fromStdString(room.first),
                                    calculateRoomReadStatus(room.first));
