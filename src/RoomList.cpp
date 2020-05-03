@@ -160,7 +160,12 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
 
         rooms_.clear();
 
+        // prevent flickering and save time sorting over and over again
         setUpdatesEnabled(false);
+        disconnect(settings.data(),
+                   &UserSettings::roomSortingChanged,
+                   this,
+                   &RoomList::sortRoomsByLastMessage);
 
         for (auto it = info.begin(); it != info.end(); it++) {
                 if (it.value().is_invite)
@@ -172,6 +177,10 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
         for (auto it = info.begin(); it != info.end(); it++)
                 updateRoomDescription(it.key(), it.value().msgInfo);
 
+        connect(settings.data(),
+                &UserSettings::roomSortingChanged,
+                this,
+                &RoomList::sortRoomsByLastMessage);
         setUpdatesEnabled(true);
 
         if (rooms_.empty())
