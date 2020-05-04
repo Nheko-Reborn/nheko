@@ -518,6 +518,20 @@ isMessage(const mtx::events::EncryptedEvent<T> &)
         return true;
 }
 
+// Workaround. We also want to see a room at the top, if we just joined it
+auto
+isYourJoin(const mtx::events::StateEvent<mtx::events::state::Member> &e)
+{
+        return e.content.membership == mtx::events::state::Membership::Join &&
+               e.state_key == http::client()->user_id().to_string();
+}
+template<typename T>
+auto
+isYourJoin(const mtx::events::Event<T> &)
+{
+        return false;
+}
+
 void
 TimelineModel::updateLastMessage()
 {
@@ -530,6 +544,19 @@ TimelineModel::updateLastMessage()
                         }
                 }
 
+                if (std::visit([](const auto &e) -> bool { return isYourJoin(e); }, event)) {
+                        auto time   = mtx::accessors::origin_server_ts(event);
+                        uint64_t ts = time.toMSecsSinceEpoch();
+                        emit manager_->updateRoomsLastMessage(
+                          room_id_,
+                          DescInfo{QString::fromStdString(mtx::accessors::event_id(event)),
+                                   QString::fromStdString(http::client()->user_id().to_string()),
+                                   tr("You joined this room"),
+                                   utils::descriptiveTime(time),
+                                   ts,
+                                   time});
+                        return;
+                }
                 if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, event))
                         continue;
 

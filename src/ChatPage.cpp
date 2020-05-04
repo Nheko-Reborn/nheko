@@ -1009,12 +1009,12 @@ ChatPage::trySync()
                           cache::saveState(res);
                           olm::handle_to_device_messages(res.to_device);
 
-                          emit syncUI(res.rooms);
-
                           auto updates = cache::roomUpdates(res);
 
                           emit syncTopBar(updates);
                           emit syncRoomlist(updates);
+
+                          emit syncUI(res.rooms);
 
                           emit syncTags(cache::roomTagUpdates(res));
 

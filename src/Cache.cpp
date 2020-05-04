@@ -1314,16 +1314,33 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 
         std::string timestamp, msg;
 
-        QSettings settings;
         const auto local_user = utils::localUser();
+
+        DescInfo fallbackDesc{};
 
         auto cursor = lmdb::cursor::open(txn, db);
         while (cursor.get(timestamp, msg, MDB_NEXT)) {
                 auto obj = json::parse(msg);
 
-                if (obj.count("event") == 0 || !(obj["event"]["type"] == "m.room.message" ||
-                                                 obj["event"]["type"] == "m.sticker" ||
-                                                 obj["event"]["type"] == "m.room.encrypted"))
+                if (obj.count("event") == 0)
+                        continue;
+
+                if (fallbackDesc.event_id.isEmpty() && obj["event"]["type"] == "m.room.member" &&
+                    obj["event"]["state_key"] == local_user.toStdString() &&
+                    obj["event"]["content"]["membership"] == "join") {
+                        uint64_t ts  = obj["event"]["origin_server_ts"];
+                        auto time    = QDateTime::fromMSecsSinceEpoch(ts);
+                        fallbackDesc = DescInfo{QString::fromStdString(obj["event"]["event_id"]),
+                                                local_user,
+                                                tr("You joined this room"),
+                                                utils::descriptiveTime(time),
+                                                ts,
+                                                time};
+                }
+
+                if (!(obj["event"]["type"] == "m.room.message" ||
+                      obj["event"]["type"] == "m.sticker" ||
+                      obj["event"]["type"] == "m.room.encrypted"))
                         continue;
 
                 mtx::events::collections::TimelineEvent event;
@@ -1335,7 +1352,7 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
         }
         cursor.close();
 
-        return DescInfo{};
+        return fallbackDesc;
 }
 
 std::map<QString, bool>
