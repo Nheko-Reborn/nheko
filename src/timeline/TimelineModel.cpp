@@ -223,6 +223,7 @@ TimelineModel::roleNames() const
           {State, "state"},
           {IsEncrypted, "isEncrypted"},
           {ReplyTo, "replyTo"},
+          {Reactions, "reactions"},
           {RoomId, "roomId"},
           {RoomName, "roomName"},
           {RoomTopic, "roomTopic"},
@@ -337,6 +338,11 @@ TimelineModel::data(const QString &id, int role) const
         }
         case ReplyTo:
                 return QVariant(QString::fromStdString(in_reply_to_event(event)));
+        case Reactions:
+                if (reactions.count(id))
+                        return QVariant::fromValue((QObject *)&reactions.at(id));
+                else
+                        return {};
         case RoomId:
                 return QVariant(QString::fromStdString(room_id(event)));
         case RoomName:
@@ -574,6 +580,18 @@ TimelineModel::internalAddEvents(
                         QString redacts = QString::fromStdString(redaction->redacts);
                         auto redacted   = std::find(eventOrder.begin(), eventOrder.end(), redacts);
 
+                        auto event = events.value(redacts);
+                        if (auto reaction =
+                              std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
+                                &event)) {
+                                QString reactedTo =
+                                  QString::fromStdString(reaction->content.relates_to.event_id);
+                                reactions[reactedTo].removeReaction(*reaction);
+                                int idx = idToIndex(reactedTo);
+                                if (idx >= 0)
+                                        emit dataChanged(index(idx, 0), index(idx, 0));
+                        }
+
                         if (redacted != eventOrder.end()) {
                                 auto redactedEvent = std::visit(
                                   [](const auto &ev)
@@ -595,6 +613,17 @@ TimelineModel::internalAddEvents(
                         }
 
                         continue; // don't insert redaction into timeline
+                }
+
+                if (auto reaction =
+                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&e)) {
+                        QString reactedTo =
+                          QString::fromStdString(reaction->content.relates_to.event_id);
+                        reactions[reactedTo].addReaction(*reaction);
+                        int idx = idToIndex(reactedTo);
+                        if (idx >= 0)
+                                emit dataChanged(index(idx, 0), index(idx, 0));
+                        continue; // don't insert reaction into timeline
                 }
 
                 if (auto event =

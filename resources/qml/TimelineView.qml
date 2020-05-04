@@ -25,6 +25,7 @@ Page {
 		id: settings
 		category: "user"
 		property bool avatar_circles: true
+		property string emoji_font_family: "default"
 	}
 
 	Settings {

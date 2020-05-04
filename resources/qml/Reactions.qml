@@ -5,18 +5,14 @@ Flow {
 	anchors.left: parent.left
 	anchors.right: parent.right
 	spacing: 4
+
+	property alias reactions: repeater.model
+
 	Repeater {
-		model: ListModel {
-			id: nameModel
-			ListElement { key: "😊"; count: 5; reactedBySelf: true; users: "Nico, RedSky, AAA, BBB, CCC" }
-			ListElement { key: "🤠"; count: 6; reactedBySelf: false; users: "Nico, AAA, BBB, CCC" }
-			ListElement { key: "💘"; count: 1; reactedBySelf: true; users: "Nico" }
-			ListElement { key: "🙈"; count: 7; reactedBySelf: false; users: "Nico, RedSky, AAA, BBB, CCC, DDD" }
-			ListElement { key: "👻"; count: 6; reactedBySelf: false; users: "Nico, RedSky, BBB, CCC" }
-		}
+		id: repeater
+
 		Button {
 			id: reaction
-			//border.width: 1
 			text: model.key
 			hoverEnabled: true
 			implicitWidth: contentItem.childrenRect.width + contentItem.padding*2
@@ -33,7 +29,7 @@ Flow {
 				Text {
 					id: reactionText
 					text: reaction.text
-					font: reaction.font
+					font.family: settings.emoji_font_family
 					opacity: enabled ? 1.0 : 0.3
 					color: reaction.hovered ? colors.highlight : colors.buttonText
 					horizontalAlignment: Text.AlignHCenter
@@ -48,7 +44,7 @@ Flow {
 				}
 
 				Text {
-					text: model.count
+					text: model.counter
 					font: reaction.font
 					opacity: enabled ? 1.0 : 0.3
 					color: reaction.hovered ? colors.highlight : colors.buttonText
@@ -63,7 +59,7 @@ Flow {
 				implicitWidth: reaction.implicitWidth
 				implicitHeight: reaction.implicitHeight
 				opacity: enabled ? 1 : 0.3
-				border.color: (reaction.hovered || model.reactedBySelf )? colors.highlight : colors.buttonText
+				border.color: (reaction.hovered || model.selfReacted )? colors.highlight : colors.buttonText
 				color: colors.dark
 				border.width: 1
 				radius: reaction.height / 2.0

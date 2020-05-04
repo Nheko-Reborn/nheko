@@ -54,6 +54,7 @@ MouseArea {
 			}
 
 			Reactions {
+				reactions: model.reactions
 			}
 		}
 

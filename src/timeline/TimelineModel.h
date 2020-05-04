@@ -9,6 +9,7 @@
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
+#include "ReactionsModel.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -155,6 +156,7 @@ public:
                 State,
                 IsEncrypted,
                 ReplyTo,
+                Reactions,
                 RoomId,
                 RoomName,
                 RoomTopic,
@@ -271,6 +273,7 @@ private:
         QSet<QString> read;
         QList<QString> pending;
         std::vector<QString> eventOrder;
+        std::map<QString, ReactionsModel> reactions;
 
         QString room_id_;
         QString prev_batch_token_;
