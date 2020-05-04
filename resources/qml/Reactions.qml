@@ -27,6 +27,7 @@ Flow {
 				padding: 4
 
 				Text {
+					anchors.baseline: reactionCounter.baseline
 					id: reactionText
 					text: reaction.text
 					font.family: settings.emoji_font_family
@@ -44,6 +45,7 @@ Flow {
 				}
 
 				Text {
+					id: reactionCounter
 					text: model.counter
 					font: reaction.font
 					opacity: enabled ? 1.0 : 0.3
