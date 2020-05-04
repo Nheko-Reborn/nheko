@@ -384,7 +384,7 @@ RoomList::sortRoomsByLastMessage()
 {
         isSortPending_ = false;
 
-        std::sort(begin(rooms_sort_cache_), end(rooms_sort_cache_), room_sort{});
+        std::stable_sort(begin(rooms_sort_cache_), end(rooms_sort_cache_), room_sort{});
 
         int newIndex = 0;
         for (const auto &roomWidget : rooms_sort_cache_) {
