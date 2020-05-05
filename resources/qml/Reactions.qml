@@ -32,7 +32,7 @@ Flow {
 					text: reaction.text
 					font.family: settings.emoji_font_family
 					opacity: enabled ? 1.0 : 0.3
-					color: reaction.hovered ? colors.highlight : colors.buttonText
+					color: reaction.hovered ? colors.highlight : colors.text
 					horizontalAlignment: Text.AlignHCenter
 					verticalAlignment: Text.AlignVCenter
 					elide: Text.ElideRight
@@ -41,7 +41,7 @@ Flow {
 				Rectangle {
 					height: reactionText.implicitHeight
 					width: 1
-					color: reaction.hovered ? colors.highlight : colors.buttonText
+					color: reaction.hovered ? colors.highlight : colors.text
 				}
 
 				Text {
@@ -49,7 +49,7 @@ Flow {
 					text: model.counter
 					font: reaction.font
 					opacity: enabled ? 1.0 : 0.3
-					color: reaction.hovered ? colors.highlight : colors.buttonText
+					color: reaction.hovered ? colors.highlight : colors.text
 					horizontalAlignment: Text.AlignHCenter
 					verticalAlignment: Text.AlignVCenter
 					elide: Text.ElideRight
@@ -61,8 +61,8 @@ Flow {
 				implicitWidth: reaction.implicitWidth
 				implicitHeight: reaction.implicitHeight
 				opacity: enabled ? 1 : 0.3
-				border.color: (reaction.hovered || model.selfReacted )? colors.highlight : colors.buttonText
-				color: colors.dark
+				border.color: (reaction.hovered || model.selfReacted )? colors.highlight : colors.text
+				color: colors.base
 				border.width: 1
 				radius: reaction.height / 2.0
 			}

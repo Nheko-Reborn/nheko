@@ -115,7 +115,7 @@ UserSettings::applyTheme()
                   /*mid*/ QColor(110, 110, 110),
                   /*text*/ QColor("#333"),
                   /*bright_text*/ QColor("#333"),
-                  /*base*/ QColor("white"),
+                  /*base*/ QColor("#eee"),
                   /*window*/ QColor("white"));
                 lightActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
                 lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());

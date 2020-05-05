@@ -211,7 +211,7 @@ Page {
 						anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 						visible: section.includes(" ")
 						text: chat.model.formatDateSeparator(modelData.timestamp)
-						color: colors.brightText
+						color: colors.text
 
                         height: fontMetrics.height * 1.4
                         width: contentWidth * 1.2
@@ -219,7 +219,7 @@ Page {
                         horizontalAlignment: Text.AlignHCenter
 						background: Rectangle {
 							radius: parent.height / 2
-							color: colors.dark
+							color: colors.base
 						}
 					}
 					Row {

@@ -19,7 +19,7 @@ Rectangle {
 		verticalAlignment: Text.AlignVCenter
 		horizontalAlignment: Text.AlignHCenter
 		visible: img.status != Image.Ready
-		color: colors.brightText
+		color: colors.text
 	}
 
 	Image {
@@ -43,5 +43,5 @@ Rectangle {
 			}
 		}
 	}
-	color: colors.dark
+	color: colors.base
 }
