@@ -134,6 +134,21 @@ Page {
 				sequence: StandardKey.MoveToNextPage
 				onActivated: { chat.contentY = chat.contentY + chat.height / 2; chat.returnToBounds(); }
 			}
+			Shortcut {
+				sequence: StandardKey.Cancel
+				onActivated: chat.model.reply = undefined
+			}
+			Shortcut {
+				sequence: "Alt+Up"
+				onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply? chat.model.idToIndex(chat.model.reply) + 1 : 0)
+			}
+			Shortcut {
+				sequence: "Alt+Down"
+				onActivated: {
+					var idx = chat.model.reply? chat.model.idToIndex(chat.model.reply) - 1 : -1
+					chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : undefined
+				}
+			}
 
 			ScrollBar.vertical: ScrollBar {
 				id: scrollbar
