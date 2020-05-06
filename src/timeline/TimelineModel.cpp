@@ -469,7 +469,6 @@ TimelineModel::fetchMore(const QModelIndex &)
                                               mtx::errors::to_string(err->matrix_error.errcode),
                                               err->matrix_error.error,
                                               err->parse_error);
-                          emit oldMessagesRetrieved(std::move(res));
                           setPaginationInProgress(false);
                           return;
                   }
@@ -701,6 +700,11 @@ TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
         }
 
         prev_batch_token_ = QString::fromStdString(msgs.end);
+
+        if (ids.empty() && !msgs.chunk.empty()) {
+                // no visible events fetched, prevent loading from stopping
+                fetchMore(QModelIndex());
+        }
 }
 
 QString
