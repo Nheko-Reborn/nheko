@@ -30,6 +30,8 @@ enum EventType
         Unsupported,
         /// m.room_key_request
         KeyRequest,
+        /// m.reaction,
+        Reaction,
         /// m.room.aliases
         Aliases,
         /// m.room.avatar

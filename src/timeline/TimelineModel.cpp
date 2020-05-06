@@ -42,6 +42,8 @@ struct RoomEventType
                 switch (e.type) {
                 case EventType::RoomKeyRequest:
                         return qml_mtx_events::EventType::KeyRequest;
+                case EventType::Reaction:
+                        return qml_mtx_events::EventType::Reaction;
                 case EventType::RoomAliases:
                         return qml_mtx_events::EventType::Aliases;
                 case EventType::RoomAvatar:
@@ -618,6 +620,7 @@ TimelineModel::internalAddEvents(
                       std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&e)) {
                         QString reactedTo =
                           QString::fromStdString(reaction->content.relates_to.event_id);
+                        events.insert(id, e);
                         reactions[reactedTo].addReaction(room_id_.toStdString(), *reaction);
                         int idx = idToIndex(reactedTo);
                         if (idx >= 0)
