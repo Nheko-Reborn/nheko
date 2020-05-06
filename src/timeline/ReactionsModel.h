@@ -26,7 +26,8 @@ public:
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 public slots:
-        void addReaction(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &reaction);
+        void addReaction(const std::string &room_id,
+                         const mtx::events::RoomEvent<mtx::events::msg::Reaction> &reaction);
         void removeReaction(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &reaction);
 
 private:
@@ -35,5 +36,6 @@ private:
                 std::string key;
                 std::map<std::string, mtx::events::RoomEvent<mtx::events::msg::Reaction>> reactions;
         };
+        std::string room_id_;
         std::vector<KeyReaction> reactions;
 };

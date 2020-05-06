@@ -1,8 +1,7 @@
 #include "ReactionsModel.h"
 
+#include <Cache.h>
 #include <MatrixClient.h>
-
-#include "Logging.h"
 
 QHash<int, QByteArray>
 ReactionsModel::roleNames() const
@@ -41,7 +40,8 @@ ReactionsModel::data(const QModelIndex &index, int role) const
                                 users += ", ";
                         else
                                 first = false;
-                        users += QString::fromStdString(reaction.sender);
+                        users +=
+                          QString::fromStdString(cache::displayName(room_id_, reaction.sender));
                 }
                 return users;
         }
@@ -56,8 +56,11 @@ ReactionsModel::data(const QModelIndex &index, int role) const
 }
 
 void
-ReactionsModel::addReaction(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &reaction)
+ReactionsModel::addReaction(const std::string &room_id,
+                            const mtx::events::RoomEvent<mtx::events::msg::Reaction> &reaction)
 {
+        room_id_ = room_id;
+
         int idx = 0;
         for (auto &storedReactions : reactions) {
                 if (storedReactions.key == reaction.content.relates_to.key) {

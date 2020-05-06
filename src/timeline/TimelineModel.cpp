@@ -619,7 +619,7 @@ TimelineModel::internalAddEvents(
                       std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&e)) {
                         QString reactedTo =
                           QString::fromStdString(reaction->content.relates_to.event_id);
-                        reactions[reactedTo].addReaction(*reaction);
+                        reactions[reactedTo].addReaction(room_id_.toStdString(), *reaction);
                         int idx = idToIndex(reactedTo);
                         if (idx >= 0)
                                 emit dataChanged(index(idx, 0), index(idx, 0));
