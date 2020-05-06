@@ -35,16 +35,19 @@ ReactionsModel::data(const QModelIndex &index, int role) const
                 return static_cast<int>(reactions[i].reactions.size());
         case Users: {
                 QString users;
-                for (size_t r = 0; r < reactions[i].reactions.size(); r++) {
-                        if (r != 0)
+                bool first = true;
+                for (const auto &[event_id, reaction] : reactions[i].reactions) {
+                        if (!first)
                                 users += ", ";
-                        users += QString::fromStdString(reactions[i].reactions[r].sender);
+                        else
+                                first = false;
+                        users += QString::fromStdString(reaction.sender);
                 }
                 return users;
         }
         case SelfReacted:
                 for (const auto &reaction : reactions[i].reactions)
-                        if (reaction.sender == http::client()->user_id().to_string())
+                        if (reaction.second.sender == http::client()->user_id().to_string())
                                 return true;
                 return false;
         default:
@@ -58,7 +61,7 @@ ReactionsModel::addReaction(const mtx::events::RoomEvent<mtx::events::msg::React
         int idx = 0;
         for (auto &storedReactions : reactions) {
                 if (storedReactions.key == reaction.content.relates_to.key) {
-                        storedReactions.reactions.push_back(reaction);
+                        storedReactions.reactions[reaction.event_id] = reaction;
                         emit dataChanged(index(idx, 0), index(idx, 0));
                         return;
                 }
@@ -66,7 +69,8 @@ ReactionsModel::addReaction(const mtx::events::RoomEvent<mtx::events::msg::React
         }
 
         beginInsertRows(QModelIndex(), idx, idx);
-        reactions.push_back(KeyReaction{reaction.content.relates_to.key, {reaction}});
+        reactions.push_back(
+          KeyReaction{reaction.content.relates_to.key, {{reaction.event_id, reaction}}});
         endInsertRows();
 }
 
@@ -76,14 +80,7 @@ ReactionsModel::removeReaction(const mtx::events::RoomEvent<mtx::events::msg::Re
         int idx = 0;
         for (auto &storedReactions : reactions) {
                 if (storedReactions.key == reaction.content.relates_to.key) {
-                        for (auto it = begin(storedReactions.reactions);
-                             it != end(storedReactions.reactions);
-                             ++it) {
-                                if (it->event_id == reaction.event_id) {
-                                        storedReactions.reactions.erase(it);
-                                        break;
-                                }
-                        }
+                        storedReactions.reactions.erase(reaction.event_id);
 
                         if (storedReactions.reactions.size() == 0) {
                                 beginRemoveRows(QModelIndex(), idx, idx);

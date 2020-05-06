@@ -33,7 +33,7 @@ private:
         struct KeyReaction
         {
                 std::string key;
-                std::vector<mtx::events::RoomEvent<mtx::events::msg::Reaction>> reactions;
+                std::map<std::string, mtx::events::RoomEvent<mtx::events::msg::Reaction>> reactions;
         };
         std::vector<KeyReaction> reactions;
 };
