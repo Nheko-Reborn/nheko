@@ -11,48 +11,53 @@ Flow {
 	Repeater {
 		id: repeater
 
-		Button {
+		AbstractButton {
 			id: reaction
 			text: model.key
 			hoverEnabled: true
-			implicitWidth: contentItem.childrenRect.width + contentItem.padding*2
-			implicitHeight: contentItem.childrenRect.height + contentItem.padding*2
+			implicitWidth: contentItem.childrenRect.width + contentItem.leftPadding*2
+			implicitHeight: contentItem.childrenRect.height
 
 			ToolTip.visible: hovered
 			ToolTip.text: model.users
 
+
 			contentItem: Row {
 				anchors.centerIn: parent
-				spacing: 2
-				padding: 4
+				spacing: reactionText.implicitHeight/4
+				leftPadding: reactionText.implicitHeight / 2
+				rightPadding: reactionText.implicitHeight / 2
+
+				TextMetrics {
+					id: textMetrics
+					font.family: settings.emoji_font_family
+					elide: Text.ElideRight
+					elideWidth: 150
+					text: reaction.text
+				}
 
 				Text {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
-					text: reaction.text
+					text: textMetrics.elidedText + (textMetrics.elidedText == textMetrics.text ? "" : "…")
 					font.family: settings.emoji_font_family
-					opacity: enabled ? 1.0 : 0.3
 					color: reaction.hovered ? colors.highlight : colors.text
-					horizontalAlignment: Text.AlignHCenter
-					verticalAlignment: Text.AlignVCenter
-					elide: Text.ElideRight
+					maximumLineCount: 1
 				}
 
 				Rectangle {
-					height: reactionText.implicitHeight
+					id: divider
+					height: reactionCounter.implicitHeight * 1.4
 					width: 1
 					color: reaction.hovered ? colors.highlight : colors.text
 				}
 
 				Text {
+					anchors.verticalCenter: divider.verticalCenter
 					id: reactionCounter
 					text: model.counter
 					font: reaction.font
-					opacity: enabled ? 1.0 : 0.3
 					color: reaction.hovered ? colors.highlight : colors.text
-					horizontalAlignment: Text.AlignHCenter
-					verticalAlignment: Text.AlignVCenter
-					elide: Text.ElideRight
 				}
 			}
 
@@ -60,7 +65,6 @@ Flow {
 				anchors.centerIn: parent
 				implicitWidth: reaction.implicitWidth
 				implicitHeight: reaction.implicitHeight
-				opacity: enabled ? 1 : 0.3
 				border.color: (reaction.hovered || model.selfReacted )? colors.highlight : colors.text
 				color: colors.base
 				border.width: 1
