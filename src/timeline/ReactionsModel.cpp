@@ -35,13 +35,13 @@ ReactionsModel::data(const QModelIndex &index, int role) const
         case Users: {
                 QString users;
                 bool first = true;
-                for (const auto &[event_id, reaction] : reactions[i].reactions) {
+                for (const auto &reaction : reactions[i].reactions) {
                         if (!first)
                                 users += ", ";
                         else
                                 first = false;
-                        users +=
-                          QString::fromStdString(cache::displayName(room_id_, reaction.sender));
+                        users += QString::fromStdString(
+                          cache::displayName(room_id_, reaction.second.sender));
                 }
                 return users;
         }
