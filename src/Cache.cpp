@@ -960,9 +960,15 @@ Cache::saveState(const mtx::responses::Sync &res)
         for (const auto &room : res.rooms.join) {
                 if (!room.second.ephemeral.receipts.empty()) {
                         std::vector<QString> receipts;
-                        for (const auto &receipt : room.second.ephemeral.receipts)
-                                if (receipt.first != user_id)
-                                        receipts.push_back(QString::fromStdString(receipt.first));
+                        for (const auto &receipt : room.second.ephemeral.receipts) {
+                                for (const auto &receiptUsersTs : receipt.second) {
+                                        if (receiptUsersTs.first != user_id) {
+                                                receipts.push_back(
+                                                  QString::fromStdString(receipt.first));
+                                                break;
+                                        }
+                                }
+                        }
                         if (!receipts.empty())
                                 emit newReadReceipts(QString::fromStdString(room.first), receipts);
                 }

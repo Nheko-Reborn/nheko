@@ -321,16 +321,24 @@ TimelineModel::data(const QString &id, int role) const
         }
         case Id:
                 return id;
-        case State:
+        case State: {
+                auto containsOthers = [](const auto &vec) {
+                        for (const auto &e : vec)
+                                if (e.second != http::client()->user_id().to_string())
+                                        return true;
+                        return false;
+                };
+
                 // only show read receipts for messages not from us
                 if (acc::sender(event) != http::client()->user_id().to_string())
                         return qml_mtx_events::Empty;
                 else if (pending.contains(id))
                         return qml_mtx_events::Sent;
-                else if (read.contains(id) || cache::readReceipts(id, room_id_).size() > 1)
+                else if (read.contains(id) || containsOthers(cache::readReceipts(id, room_id_)))
                         return qml_mtx_events::Read;
                 else
                         return qml_mtx_events::Received;
+        }
         case IsEncrypted: {
                 return std::holds_alternative<
                   mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(events[id]);
