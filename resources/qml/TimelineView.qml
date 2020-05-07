@@ -25,6 +25,7 @@ Page {
 		id: settings
 		category: "user"
 		property bool avatar_circles: true
+		property string emoji_font_family: "default"
 	}
 
 	Settings {
@@ -133,6 +134,21 @@ Page {
 				sequence: StandardKey.MoveToNextPage
 				onActivated: { chat.contentY = chat.contentY + chat.height / 2; chat.returnToBounds(); }
 			}
+			Shortcut {
+				sequence: StandardKey.Cancel
+				onActivated: chat.model.reply = undefined
+			}
+			Shortcut {
+				sequence: "Alt+Up"
+				onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply? chat.model.idToIndex(chat.model.reply) + 1 : 0)
+			}
+			Shortcut {
+				sequence: "Alt+Down"
+				onActivated: {
+					var idx = chat.model.reply? chat.model.idToIndex(chat.model.reply) - 1 : -1
+					chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : undefined
+				}
+			}
 
 			ScrollBar.vertical: ScrollBar {
 				id: scrollbar
@@ -210,7 +226,7 @@ Page {
 						anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 						visible: section.includes(" ")
 						text: chat.model.formatDateSeparator(modelData.timestamp)
-						color: colors.brightText
+						color: colors.text
 
                         height: fontMetrics.height * 1.4
                         width: contentWidth * 1.2
@@ -218,7 +234,7 @@ Page {
                         horizontalAlignment: Text.AlignHCenter
 						background: Rectangle {
 							radius: parent.height / 2
-							color: colors.dark
+							color: colors.base
 						}
 					}
 					Row {

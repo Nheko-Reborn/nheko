@@ -1,16 +1,10 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 
-Button {
+AbstractButton {
 	property string image: undefined
 
 	id: button
-
-	flat: true
-
-	// disable background, because we don't want a border on hover
-	background: Item {
-	}
 
 	Image {
 		id: buttonImg

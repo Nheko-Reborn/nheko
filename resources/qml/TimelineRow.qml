@@ -52,6 +52,10 @@ MouseArea {
 
 				modelData: model
 			}
+
+			Reactions {
+				reactions: model.reactions
+			}
 		}
 
 		StatusIndicator {

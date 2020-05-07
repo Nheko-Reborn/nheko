@@ -117,8 +117,9 @@
         <file>qml/MatrixText.qml</file>
         <file>qml/StatusIndicator.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
-        <file>qml/TimelineRow.qml</file>
+        <file>qml/Reactions.qml</file>
         <file>qml/ScrollHelper.qml</file>
+        <file>qml/TimelineRow.qml</file>
         <file>qml/delegates/MessageDelegate.qml</file>
         <file>qml/delegates/TextMessage.qml</file>
         <file>qml/delegates/NoticeMessage.qml</file>
