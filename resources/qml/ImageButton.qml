@@ -3,7 +3,8 @@ import QtQuick.Controls 2.3
 
 AbstractButton {
 	property string image: undefined
-
+	width: 16
+	height: 16
 	id: button
 
 	Image {

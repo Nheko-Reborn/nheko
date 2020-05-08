@@ -48,7 +48,10 @@ Page {
 		property string eventId
 		property int eventType
 		property bool isEncrypted
-
+		MenuItem {
+			text: qsTr("React")
+			onClicked: chat.model.reactAction(messageContextMenu.eventId)
+		}
 		MenuItem {
 			text: qsTr("Reply")
 			onClicked: chat.model.replyAction(messageContextMenu.eventId)

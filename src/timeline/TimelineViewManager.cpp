@@ -283,6 +283,20 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 }
 
 void
+TimelineViewManager::queueReactionMessage(const QString &roomId,
+                                          const QString &reactedEvent,
+                                          const QString &reactionKey)
+{
+        mtx::events::msg::Reaction reaction;
+        reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
+        reaction.relates_to.event_id = reactedEvent.toStdString();
+        reaction.relates_to.key = reactionKey.toStdString();
+
+        auto model = models.value(roomId);
+        model->sendMessage(reaction);
+}
+
+void
 TimelineViewManager::queueImageMessage(const QString &roomid,
                                        const QString &filename,
                                        const std::optional<mtx::crypto::EncryptedFile> &file,

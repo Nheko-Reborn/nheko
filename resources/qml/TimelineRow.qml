@@ -71,7 +71,18 @@ MouseArea {
 			Layout.preferredHeight: 16
 			width: 16
 		}
-
+		ImageButton {
+			visible: timelineSettings.buttons
+			Layout.alignment: Qt.AlignRight | Qt.AlignTop
+			Layout.preferredHeight: 16
+			width: 16
+			id: reactButton
+			hoverEnabled: true
+			image: ":/icons/icons/ui/smile.png"
+			ToolTip.visible: hovered
+			ToolTip.text: qsTr("React")
+			onClicked: chat.model.reactAction(model.id)
+		}
 		ImageButton {
 			visible: timelineSettings.buttons
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop

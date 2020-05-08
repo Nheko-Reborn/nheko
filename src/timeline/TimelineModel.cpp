@@ -915,6 +915,13 @@ TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::
 }
 
 void
+TimelineModel::reactAction(QString id)
+{
+        setReaction(id);
+        ChatPage::instance()->reactMessage(id);
+}
+
+void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);
