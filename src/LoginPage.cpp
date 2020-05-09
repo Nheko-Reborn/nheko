@@ -15,21 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDesktopServices>
 #include <QPainter>
 #include <QStyleOption>
 
 #include <mtx/identifiers.hpp>
+#include <mtx/requests.hpp>
 #include <mtx/responses/login.hpp>
 
 #include "Config.h"
 #include "Logging.h"
 #include "LoginPage.h"
 #include "MatrixClient.h"
+#include "SSOHandler.h"
 #include "ui/FlatButton.h"
 #include "ui/LoadingIndicator.h"
 #include "ui/OverlayModal.h"
 #include "ui/RaisedButton.h"
 #include "ui/TextField.h"
+
+Q_DECLARE_METATYPE(LoginPage::LoginMethod)
 
 using namespace mtx::identifiers;
 
@@ -37,6 +42,8 @@ LoginPage::LoginPage(QWidget *parent)
   : QWidget(parent)
   , inferredServerAddress_()
 {
+        qRegisterMetaType<LoginPage::LoginMethod>("LoginPage::LoginMethod");
+
         top_layout_ = new QVBoxLayout();
 
         top_bar_layout_ = new QHBoxLayout();
@@ -226,7 +233,8 @@ LoginPage::onMatrixIdEntered()
                                 emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
                                                        "requesting .well-known."));
                                 nhlog::net()->error("Autodiscovery failed. Unknown error when "
-                                                    "requesting .well-known.");
+                                                    "requesting .well-known. {}",
+                                                    err->status_code);
                                 return;
                         }
 
@@ -263,7 +271,16 @@ LoginPage::checkHomeserverVersion()
                           return;
                   }
 
-                  emit versionOkCb();
+                  http::client()->get_login(
+                    [this](mtx::responses::LoginFlows flows, mtx::http::RequestErr err) {
+                            if (err || flows.flows.empty())
+                                    emit versionOkCb(LoginMethod::Password);
+
+                            if (flows.flows[0].type == mtx::user_interactive::auth_types::sso)
+                                    emit versionOkCb(LoginMethod::SSO);
+                            else
+                                    emit versionOkCb(LoginMethod::Password);
+                    });
           });
 }
 
@@ -294,11 +311,21 @@ LoginPage::versionError(const QString &error)
 }
 
 void
-LoginPage::versionOk()
+LoginPage::versionOk(LoginMethod loginMethod)
 {
+        this->loginMethod = loginMethod;
+
         serverLayout_->removeWidget(spinner_);
         matrixidLayout_->removeWidget(spinner_);
         spinner_->stop();
+
+        if (loginMethod == LoginMethod::SSO) {
+                password_input_->hide();
+                login_button_->setText(tr("SSO LOGIN"));
+        } else {
+                password_input_->show();
+                login_button_->setText(tr("LOGIN"));
+        }
 
         if (serverInput_->isVisible())
                 serverInput_->hide();
@@ -317,29 +344,68 @@ LoginPage::onLoginButtonClicked()
                 return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
         }
 
-        if (password_input_->text().isEmpty())
-                return loginError(tr("Empty password"));
+        if (loginMethod == LoginMethod::Password) {
+                if (password_input_->text().isEmpty())
+                        return loginError(tr("Empty password"));
 
-        http::client()->login(
-          user.localpart(),
-          password_input_->text().toStdString(),
-          deviceName_->text().trimmed().isEmpty() ? initialDeviceName()
-                                                  : deviceName_->text().toStdString(),
-          [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit loginError(QString::fromStdString(err->matrix_error.error));
-                          emit errorOccurred();
-                          return;
-                  }
+                http::client()->login(
+                  user.localpart(),
+                  password_input_->text().toStdString(),
+                  deviceName_->text().trimmed().isEmpty() ? initialDeviceName()
+                                                          : deviceName_->text().toStdString(),
+                  [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
+                          if (err) {
+                                  emit loginError(QString::fromStdString(err->matrix_error.error));
+                                  emit errorOccurred();
+                                  return;
+                          }
 
-                  if (res.well_known) {
-                          http::client()->set_server(res.well_known->homeserver.base_url);
-                          nhlog::net()->info("Login requested to user server: " +
-                                             res.well_known->homeserver.base_url);
-                  }
+                          if (res.well_known) {
+                                  http::client()->set_server(res.well_known->homeserver.base_url);
+                                  nhlog::net()->info("Login requested to user server: " +
+                                                     res.well_known->homeserver.base_url);
+                          }
 
-                  emit loginOk(res);
-          });
+                          emit loginOk(res);
+                  });
+        } else {
+                auto sso = new SSOHandler();
+                connect(sso, &SSOHandler::ssoSuccess, this, [this, sso](std::string token) {
+                        mtx::requests::Login req{};
+                        req.token = token;
+                        req.type  = mtx::user_interactive::auth_types::token;
+                        req.device_id = deviceName_->text().trimmed().isEmpty()
+                                          ? initialDeviceName()
+                                          : deviceName_->text().toStdString();
+                        http::client()->login(
+                          req, [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
+                                  if (err) {
+                                          emit loginError(
+                                            QString::fromStdString(err->matrix_error.error));
+                                          emit errorOccurred();
+                                          return;
+                                  }
+
+                                  if (res.well_known) {
+                                          http::client()->set_server(
+                                            res.well_known->homeserver.base_url);
+                                          nhlog::net()->info("Login requested to user server: " +
+                                                             res.well_known->homeserver.base_url);
+                                  }
+
+                                  emit loginOk(res);
+                          });
+                        sso->deleteLater();
+                });
+                connect(sso, &SSOHandler::ssoFailed, this, [this, sso]() {
+                        emit loginError(tr("SSO login failed"));
+                        emit errorOccurred();
+                        sso->deleteLater();
+                });
+
+                QDesktopServices::openUrl(
+                  QString::fromStdString(http::client()->login_sso_redirect(sso->url())));
+        }
 
         emit loggingIn();
 }
@@ -349,6 +415,7 @@ LoginPage::reset()
 {
         matrixid_input_->clear();
         password_input_->clear();
+        password_input_->show();
         serverInput_->clear();
 
         spinner_->stop();

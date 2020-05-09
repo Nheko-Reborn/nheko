@@ -988,8 +988,12 @@ ChatPage::trySync()
                           const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
 
-                          if (http::is_logged_in() && err->matrix_error.errcode ==
-                                                        mtx::errors::ErrorCode::M_UNKNOWN_TOKEN) {
+                          if ((http::is_logged_in() &&
+                               (err->matrix_error.errcode ==
+                                  mtx::errors::ErrorCode::M_UNKNOWN_TOKEN ||
+                                err->matrix_error.errcode ==
+                                  mtx::errors::ErrorCode::M_MISSING_TOKEN)) ||
+                              !http::is_logged_in()) {
                                   emit dropToLoginPageCb(msg);
                                   return;
                           }

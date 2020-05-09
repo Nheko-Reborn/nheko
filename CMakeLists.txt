@@ -294,6 +294,7 @@ set(SRC_FILES
 	src/RegisterPage.cpp
 	src/RoomInfoListItem.cpp
 	src/RoomList.cpp
+	src/SSOHandler.cpp
 	src/SideBarActions.cpp
 	src/Splitter.cpp
 	src/TextInputWidget.cpp
@@ -493,6 +494,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/RegisterPage.h
 	src/RoomInfoListItem.h
 	src/RoomList.h
+	src/SSOHandler.h
 	src/SideBarActions.h
 	src/Splitter.h
 	src/TextInputWidget.h
@@ -556,7 +558,7 @@ elseif(WIN32)
 else()
 	target_link_libraries (nheko PRIVATE Qt5::DBus)
 endif()
-target_include_directories(nheko PRIVATE src includes third_party/blurhash)
+target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12)
 
 target_link_libraries(nheko PRIVATE
 	MatrixClient::MatrixClient
