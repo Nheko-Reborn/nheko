@@ -58,7 +58,7 @@ can be found in the [Github releases](https://github.com/Nheko-Reborn/nheko/rele
 pacaur -S nheko # nheko-git
 ```
 
-#### Debian (10 and above)
+#### Debian (10 and above) / Ubuntu (18.04 and above)
 
 ```bash
 sudo apt install nheko
@@ -179,22 +179,14 @@ sudo pacman -S qt5-base \
 sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
 ```
 
-##### Ubuntu 16.04
-
-```bash
-sudo add-apt-repository ppa:beineri/opt-qt592-xenial
-sudo add-apt-repository ppa:george-edison55/cmake-3.x
-sudo add-apt-repository ppa:ubuntu-toolchain-r-test
-sudo apt-get update
-sudo apt-get install -y g++-7 qt59base qt59svg qt59tools qt59multimedia cmake liblmdb-dev libsodium-dev
-```
-
-##### Ubuntu 19.10
+##### Ubuntu 20.04
 
 ```bash
 # Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
-sudo apt install g++-7 cmake liblmdb-dev libsodium-dev libssl-dev qt{base,declarative,tools,multimedia,script,quickcontrols2-}5-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,graphicaleffects,quick-controls2} libqt5svg5-dev
+sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev libsodium-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,graphicaleffects,quick-controls2}
 ```
+This will install all dependencies, except for tweeny (use bundled tweeny)
+and mtxclient (needs to be build separately).
 
 ##### Debian Buster (or higher probably)
 
@@ -283,7 +275,7 @@ Examples for the paths are:
 You should also enable hunter by setting `HUNTER_ENABLED` to `ON` and `BUILD_SHARED_LIBS` to `OFF`.
 
 Now right click into the root nheko source directory and choose `Open in Visual Studio`.
-You can choose the build type Release and Debug in the top toolbar. 
+You can choose the build type Release and Debug in the top toolbar.
 After a successful CMake generation you can select the `nheko.exe` as the run target.
 Now choose `Build all` in the CMake menu or press `F7` to compile the executable.
 
