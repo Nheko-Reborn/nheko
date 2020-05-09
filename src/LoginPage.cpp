@@ -311,9 +311,9 @@ LoginPage::versionError(const QString &error)
 }
 
 void
-LoginPage::versionOk(LoginMethod loginMethod)
+LoginPage::versionOk(LoginMethod loginMethod_)
 {
-        this->loginMethod = loginMethod;
+        this->loginMethod = loginMethod_;
 
         serverLayout_->removeWidget(spinner_);
         matrixidLayout_->removeWidget(spinner_);
@@ -372,8 +372,8 @@ LoginPage::onLoginButtonClicked()
                 auto sso = new SSOHandler();
                 connect(sso, &SSOHandler::ssoSuccess, this, [this, sso](std::string token) {
                         mtx::requests::Login req{};
-                        req.token = token;
-                        req.type  = mtx::user_interactive::auth_types::token;
+                        req.token     = token;
+                        req.type      = mtx::user_interactive::auth_types::token;
                         req.device_id = deviceName_->text().trimmed().isEmpty()
                                           ? initialDeviceName()
                                           : deviceName_->text().toStdString();
