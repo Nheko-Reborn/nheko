@@ -147,7 +147,10 @@ QColor
 TextField::underlineColor() const
 {
         if (!underline_color_.isValid()) {
-                return QPalette().color(QPalette::Highlight);
+                if (hasAcceptableInput() || !isModified())
+                        return QPalette().color(QPalette::Highlight);
+                else
+                        return Qt::red;
         }
 
         return underline_color_;

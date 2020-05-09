@@ -81,6 +81,14 @@ LoginPage::LoginPage(QWidget *parent)
         matrixid_input_ = new TextField(this);
         matrixid_input_->setLabel(tr("Matrix ID"));
         matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
+        matrixid_input_->setToolTip(
+          tr("Your login name. A mxid should start with @ followed by the user id. After the user "
+             "id you need to include your server name after a :.\nYou can also put your homeserver "
+             "address there, if your server doesn't support .well-known lookup.\nExample: "
+             "@user:server.my\nIf Nheko fails to discover your homeserver, it will show you a "
+             "field to enter the server manually."));
+        matrixid_input_->setValidator(
+          new QRegularExpressionValidator(QRegularExpression("@.+?:.{3,}"), this));
 
         spinner_ = new LoadingIndicator(this);
         spinner_->setFixedHeight(40);
@@ -97,13 +105,19 @@ LoginPage::LoginPage(QWidget *parent)
         password_input_ = new TextField(this);
         password_input_->setLabel(tr("Password"));
         password_input_->setEchoMode(QLineEdit::Password);
+        password_input_->setToolTip("Your password.");
 
         deviceName_ = new TextField(this);
         deviceName_->setLabel(tr("Device name"));
+        deviceName_->setToolTip(
+          tr("A name for this device, which will be shown to others, when verifying your devices. "
+             "If none is provided, a random string is used for privacy purposes."));
 
         serverInput_ = new TextField(this);
         serverInput_->setLabel("Homeserver address");
         serverInput_->setPlaceholderText("matrix.org");
+        serverInput_->setToolTip(tr("The address that can be used to contact you homeservers "
+                                    "client API.\nExample: https://server.my:8787"));
         serverInput_->hide();
 
         serverLayout_ = new QHBoxLayout();

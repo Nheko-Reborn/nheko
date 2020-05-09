@@ -85,17 +85,26 @@ RegisterPage::RegisterPage(QWidget *parent)
 
         username_input_ = new TextField();
         username_input_->setLabel(tr("Username"));
+        username_input_->setValidator(
+          new QRegularExpressionValidator(QRegularExpression("[a-z0-9._=/-]+"), this));
+        username_input_->setToolTip(tr("The username must not be empty, and must contain only the "
+                                       "characters a-z, 0-9, ., _, =, -, and /."));
 
         password_input_ = new TextField();
         password_input_->setLabel(tr("Password"));
         password_input_->setEchoMode(QLineEdit::Password);
+        password_input_->setToolTip(tr("Please choose a secure password. The exact requirements "
+                                       "for password strength may depend on your server"));
 
         password_confirmation_ = new TextField();
         password_confirmation_->setLabel(tr("Password confirmation"));
         password_confirmation_->setEchoMode(QLineEdit::Password);
 
         server_input_ = new TextField();
-        server_input_->setLabel(tr("Home Server"));
+        server_input_->setLabel(tr("Homeserver"));
+        server_input_->setToolTip(
+          tr("A server that allows registration. Since matrix is decentralized, you need to first "
+             "find a server you can register on or host your own."));
 
         form_layout_->addWidget(username_input_, Qt::AlignHCenter, nullptr);
         form_layout_->addWidget(password_input_, Qt::AlignHCenter, nullptr);
