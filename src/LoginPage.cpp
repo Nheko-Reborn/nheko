@@ -234,7 +234,7 @@ LoginPage::onMatrixIdEntered()
                                                        "requesting .well-known."));
                                 nhlog::net()->error("Autodiscovery failed. Unknown error when "
                                                     "requesting .well-known. {}",
-                                                    err->status_code);
+                                                    err->error_code.message());
                                 return;
                         }
 
