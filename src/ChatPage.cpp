@@ -660,7 +660,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                                              "This can have different reasons. Please open an "
                                              "issue and try to use an older version in the mean "
                                              "time. Alternatively you can try deleting the cache "
-                                             "manually"));
+                                             "manually."));
                                         QCoreApplication::quit();
                                 }
                                 loadStateFromCache();
@@ -1084,7 +1084,7 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
                   }
 
                   emit showNotification(
-                    tr("Room %1 created").arg(QString::fromStdString(res.room_id.to_string())));
+                    tr("Room %1 created.").arg(QString::fromStdString(res.room_id.to_string())));
           });
 }
 

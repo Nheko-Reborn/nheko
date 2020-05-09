@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl">
 <context>
+    <name>Cache</name>
+    <message>
+        <location filename="../../src/Cache.cpp" line="+1341"/>
+        <source>You joined this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatPage</name>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+226"/>
@@ -10,12 +18,22 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+888"/>
+        <location line="+892"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-463"/>
+        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+428"/>
+        <source>Room %1 created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
         <source>Failed to invite %1 to %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -50,7 +68,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-813"/>
+        <location line="-817"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -60,12 +78,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Incompatible cache version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -91,7 +104,7 @@
     </message>
     <message>
         <location line="+51"/>
-        <location line="+215"/>
+        <location line="+219"/>
         <source>Please try to login again: %1</source>
         <translation>Spróbuj zalogować się ponownie: %1</translation>
     </message>
@@ -116,12 +129,7 @@
         <translation>Tworzenie pokoju nie powiodło się: %1</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Room %1 created</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>Failed to leave room: %1</source>
         <translation>Nie udało się opuścić pokoju: %1</translation>
     </message>
@@ -197,7 +205,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+82"/>
+        <location filename="../../src/LoginPage.cpp" line="+89"/>
         <source>Matrix ID</source>
         <translation>ID Matrixa</translation>
     </message>
@@ -207,22 +215,42 @@
         <translation>np. @joe:matrix.org</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+2"/>
+        <source>Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.
+You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
+Example: @user:server.my
+If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Password</source>
         <translation>Hasło</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Device name</source>
         <translation>Nazwa urządzenia</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+2"/>
+        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided, a random string is used for privacy purposes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>The address that can be used to contact you homeservers client API.
+Example: https://server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <location line="+185"/>
         <source>LOGIN</source>
         <translation>ZALOGUJ</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="-100"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -232,7 +260,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Nie odnaleziono wymaganych punktów końcowych. To może nie być serwer Matriksa.</translation>
     </message>
@@ -247,9 +275,19 @@
         <translation>Wystąpił nieznany błąd. Upewnij się, że domena serwera domowego jest prawidłowa.</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+55"/>
+        <source>SSO LOGIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Empty password</source>
         <translation>Puste hasło</translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>SSO login failed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -328,8 +366,18 @@
     </message>
     <message>
         <location line="+3"/>
+        <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Password</source>
         <translation>Hasło</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -338,11 +386,16 @@
     </message>
     <message>
         <location line="+4"/>
-        <source>Home Server</source>
-        <translation>Serwer domowy</translation>
+        <source>Homeserver</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+2"/>
+        <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>REGISTER</source>
         <translation>ZAREJESTRUJ</translation>
     </message>
@@ -375,7 +428,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2213"/>
+        <location filename="../../src/Cache.cpp" line="+939"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -491,7 +544,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+773"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+844"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation type="unfinished"></translation>
@@ -661,7 +714,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-1238"/>
+        <source>You joined this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1240"/>
         <source>Rejected the knock from %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -685,7 +743,7 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+83"/>
+        <location filename="../qml/TimelineRow.qml" line="+87"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -698,7 +756,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+52"/>
+        <location filename="../qml/TimelineView.qml" line="+53"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -738,7 +796,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+239"/>
+        <location line="+254"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>

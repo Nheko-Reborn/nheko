@@ -566,7 +566,7 @@ TimelineModel::updateLastMessage()
                           room_id_,
                           DescInfo{QString::fromStdString(mtx::accessors::event_id(event)),
                                    QString::fromStdString(http::client()->user_id().to_string()),
-                                   tr("You joined this room"),
+                                   tr("You joined this room."),
                                    utils::descriptiveTime(time),
                                    ts,
                                    time});

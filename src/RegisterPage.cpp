@@ -94,7 +94,7 @@ RegisterPage::RegisterPage(QWidget *parent)
         password_input_->setLabel(tr("Password"));
         password_input_->setEchoMode(QLineEdit::Password);
         password_input_->setToolTip(tr("Please choose a secure password. The exact requirements "
-                                       "for password strength may depend on your server"));
+                                       "for password strength may depend on your server."));
 
         password_confirmation_ = new TextField();
         password_confirmation_->setLabel(tr("Password confirmation"));

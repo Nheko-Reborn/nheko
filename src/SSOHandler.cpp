@@ -30,7 +30,6 @@ SSOHandler::SSOHandler(QObject *)
         std::thread t([this]() {
                 this->port = svr.bind_to_any_port("localhost");
                 svr.listen_after_bind();
-
         });
         t.detach();
 

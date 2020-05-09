@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
+    <name>Cache</name>
+    <message>
+        <location filename="../../src/Cache.cpp" line="+1341"/>
+        <source>You joined this room.</source>
+        <translation>You joined this room.</translation>
+    </message>
+</context>
+<context>
     <name>ChatPage</name>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+226"/>
@@ -10,12 +18,22 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+888"/>
+        <location line="+892"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-463"/>
+        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
+        <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
+    </message>
+    <message>
+        <location line="+428"/>
+        <source>Room %1 created.</source>
+        <translation>Room %1 created.</translation>
+    </message>
+    <message>
+        <location line="+30"/>
         <source>Failed to invite %1 to %2: %3</source>
         <translation>Failed to invite %1 to %2: %3</translation>
     </message>
@@ -50,29 +68,24 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="-813"/>
+        <location line="-817"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Failed to upload media. Please try again.</translation>
     </message>
     <message>
         <location line="+296"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Cache migration failed!</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Incompatible cache version</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</translation>
     </message>
     <message>
         <location line="+111"/>
@@ -91,7 +104,7 @@
     </message>
     <message>
         <location line="+51"/>
-        <location line="+215"/>
+        <location line="+219"/>
         <source>Please try to login again: %1</source>
         <translation>Please try to login again: %1</translation>
     </message>
@@ -116,12 +129,7 @@
         <translation>Room creation failed: %1</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Room %1 created</source>
-        <translation>Room %1 created.</translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>Failed to leave room: %1</source>
         <translation>Failed to leave room: %1</translation>
     </message>
@@ -197,7 +205,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+82"/>
+        <location filename="../../src/LoginPage.cpp" line="+89"/>
         <source>Matrix ID</source>
         <translation>Matrix ID</translation>
     </message>
@@ -207,22 +215,46 @@
         <translation>e.g @joe:matrix.org</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+2"/>
+        <source>Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.
+You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
+Example: @user:server.my
+If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
+        <translation>Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.
+You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
+Example: @user:server.my
+If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Device name</source>
         <translation>Device name</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+2"/>
+        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided, a random string is used for privacy purposes.</source>
+        <translation>A name for this device, which will be shown to others, when verifying your devices. If none is provided, a random string is used for privacy purposes.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>The address that can be used to contact you homeservers client API.
+Example: https://server.my:8787</source>
+        <translation>The address that can be used to contact you homeservers client API.
+Example: https://server.my:8787</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <location line="+185"/>
         <source>LOGIN</source>
         <translation>LOGIN</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="-100"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autodiscovery failed. Received malformed response.</translation>
     </message>
@@ -232,7 +264,7 @@
         <translation>Autodiscovery failed. Unknown error while requesting .well-known.</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>The required endpoints were not found. Possibly not a Matrix server.</translation>
     </message>
@@ -247,9 +279,19 @@
         <translation>An unknown error occured. Make sure the homeserver domain is valid.</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+55"/>
+        <source>SSO LOGIN</source>
+        <translation>SSO LOGIN</translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Empty password</source>
         <translation>Empty password</translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>SSO login failed</source>
+        <translation>SSO login failed</translation>
     </message>
 </context>
 <context>
@@ -328,8 +370,18 @@
     </message>
     <message>
         <location line="+3"/>
+        <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
+        <translation>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Password</source>
         <translation>Password</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
+        <translation>Please choose a secure password. The exact requirements for password strength may depend on your server.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -338,11 +390,16 @@
     </message>
     <message>
         <location line="+4"/>
-        <source>Home Server</source>
-        <translation>Home Server</translation>
+        <source>Homeserver</source>
+        <translation>Homeserver</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+2"/>
+        <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
+        <translation>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>REGISTER</source>
         <translation>REGISTER</translation>
     </message>
@@ -375,7 +432,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2213"/>
+        <location filename="../../src/Cache.cpp" line="+939"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -491,7 +548,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+773"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+844"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation>-- Decryption Error (failed to communicate with DB) --</translation>
@@ -550,8 +607,8 @@
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>%1%2 is typing</numerusform>
-            <numerusform>%1 and %2 are typing</numerusform>
+            <numerusform>%1%2 is typing.</numerusform>
+            <numerusform>%1 and %2 are typing.</numerusform>
         </translation>
     </message>
     <message>
@@ -660,7 +717,12 @@
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-1238"/>
+        <source>You joined this room.</source>
+        <translation>You joined this room.</translation>
+    </message>
+    <message>
+        <location line="+1240"/>
         <source>Rejected the knock from %1.</source>
         <translation>Rejected the knock from %1.</translation>
     </message>
@@ -684,7 +746,7 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+83"/>
+        <location filename="../qml/TimelineRow.qml" line="+87"/>
         <source>Reply</source>
         <translation>Reply</translation>
     </message>
@@ -697,7 +759,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+52"/>
+        <location filename="../qml/TimelineView.qml" line="+53"/>
         <source>Reply</source>
         <translation>Reply</translation>
     </message>
@@ -719,7 +781,7 @@
     <message>
         <location line="+6"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>View decrypted raw message</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -737,7 +799,7 @@
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+239"/>
+        <location line="+254"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -821,7 +883,7 @@
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Decrypt messages in sidebar</translation>
     </message>
     <message>
         <location line="+1"/>
