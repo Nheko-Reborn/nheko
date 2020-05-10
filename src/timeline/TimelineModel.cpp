@@ -1335,10 +1335,11 @@ struct SendMessageVisitor
           , model_(model)
         {}
 
+        // Do-nothing operator for all unhandled events
         template<typename T>
         void operator()(const mtx::events::Event<T> &)
         {}
-
+        // Operator for m.room.message events that contain a msgtype in their content
         template<typename T,
                  std::enable_if_t<std::is_same<decltype(T::msgtype), std::string>::value, int> = 0>
         void operator()(const mtx::events::RoomEvent<T> &msg)
@@ -1375,6 +1376,38 @@ struct SendMessageVisitor
                 }
         }
 
+        // Special operator for reactions, which are a type of m.room.message, but need to be
+        // handled distinctly for their differences from normal room messages.  Specifically,
+        // reactions need to have the relation outside of ciphertext, or synapse / the homeserver
+        // cannot handle it correctly.  See the MSC for more details:
+        // https://github.com/matrix-org/matrix-doc/blob/matthew/msc1849/proposals/1849-aggregations.md#end-to-end-encryption
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &msg)
+
+        {
+
+                QString txn_id_qstr  = txn_id_qstr_;
+                TimelineModel *model = model_;
+                http::client()->send_room_message<mtx::events::msg::Reaction, mtx::events::EventType::Reaction>(
+                        model->room_id_.toStdString(),
+                        txn_id_qstr.toStdString(),
+                        msg.content,
+                        [txn_id_qstr, model](const mtx::responses::EventId &res,
+                                        mtx::http::RequestErr err) {
+                                if (err) {
+                                        const int status_code =
+                                        static_cast<int>(err->status_code);
+                                        nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                                        txn_id_qstr.toStdString(),
+                                                        err->matrix_error.error,
+                                                        status_code);
+                                        emit model->messageFailed(txn_id_qstr);
+                                }
+                                emit model->messageSent(
+                                txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
+                        });
+
+        }
+
         QString txn_id_qstr_;
         TimelineModel *model_;
 };
@@ -1406,10 +1439,12 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
         internalAddEvents({event});
 
         QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
-        beginInsertRows(QModelIndex(), 0, 0);
         pending.push_back(txn_id_qstr);
-        this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
-        endInsertRows();
+        if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event)) {
+                beginInsertRows(QModelIndex(), 0, 0);
+                this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
+                endInsertRows();
+        }
         updateLastMessage();
 
         emit nextPendingMessage();
