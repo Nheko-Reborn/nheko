@@ -51,6 +51,7 @@ Item {
 		MessageDelegate {
 			id: reply
 			width: parent.width
+			isReply: true
 		}
 	}
 

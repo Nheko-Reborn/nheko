@@ -20,8 +20,14 @@ Rectangle {
 		Rectangle {
 			id: videoContainer
 			visible: model.data.type == MtxEvent.VideoMessage
-			width: Math.min(parent.width, model.data.width ? model.data.width : 400) // some media has 0 as size...
-			height: width*model.data.proportionalHeight
+			property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? 400 : model.data.width)
+			property double tempHeight: tempWidth * model.data.proportionalHeight
+
+			property double divisor: model.isReply ? 4 : 2
+			property bool tooHigh: tempHeight > timelineRoot.height / divisor
+
+			height: tooHigh ? timelineRoot.height / divisor : tempHeight
+			width: tooHigh ? (timelineRoot.height / divisor) / model.data.proportionalHeight : tempWidth
 			Image {
 				anchors.fill: parent
 				source: model.data.thumbnailUrl.replace("mxc://", "image://MxcImage/")
