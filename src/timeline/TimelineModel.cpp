@@ -1384,28 +1384,26 @@ struct SendMessageVisitor
         void operator()(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &msg)
 
         {
-
                 QString txn_id_qstr  = txn_id_qstr_;
                 TimelineModel *model = model_;
-                http::client()->send_room_message<mtx::events::msg::Reaction, mtx::events::EventType::Reaction>(
-                        model->room_id_.toStdString(),
-                        txn_id_qstr.toStdString(),
-                        msg.content,
-                        [txn_id_qstr, model](const mtx::responses::EventId &res,
-                                        mtx::http::RequestErr err) {
-                                if (err) {
-                                        const int status_code =
-                                        static_cast<int>(err->status_code);
-                                        nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                                        txn_id_qstr.toStdString(),
-                                                        err->matrix_error.error,
-                                                        status_code);
-                                        emit model->messageFailed(txn_id_qstr);
-                                }
-                                emit model->messageSent(
-                                txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
-                        });
-
+                http::client()
+                  ->send_room_message<mtx::events::msg::Reaction, mtx::events::EventType::Reaction>(
+                    model->room_id_.toStdString(),
+                    txn_id_qstr.toStdString(),
+                    msg.content,
+                    [txn_id_qstr, model](const mtx::responses::EventId &res,
+                                         mtx::http::RequestErr err) {
+                            if (err) {
+                                    const int status_code = static_cast<int>(err->status_code);
+                                    nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                                       txn_id_qstr.toStdString(),
+                                                       err->matrix_error.error,
+                                                       status_code);
+                                    emit model->messageFailed(txn_id_qstr);
+                            }
+                            emit model->messageSent(
+                              txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
+                    });
         }
 
         QString txn_id_qstr_;

@@ -14,8 +14,9 @@ class Emoji(object):
 def generate_code(emojis, category):
     tmpl = Template('''
 const std::vector<Emoji> emoji::Provider::{{ category }} = {
+    // {{ category.capitalize() }}
     {%- for e in emoji %}
-        Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}"},
+        {QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::Emoji::Category::{{ category.capitalize() }}},
     {%- endfor %}
 };
     ''')
@@ -23,6 +24,19 @@ const std::vector<Emoji> emoji::Provider::{{ category }} = {
     d = dict(category=category, emoji=emojis)
     print(tmpl.render(d))
 
+def generate_qml_list(**kwargs):
+    tmpl = Template('''
+const QVector<Emoji> emoji::Provider::emoji = {
+    {%- for c in kwargs.items() %}
+    // {{ c[0].capitalize() }}
+    {%- for e in c[1] %}
+    {QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::Emoji::Category::{{ c[0].capitalize() }}},
+    {%- endfor %}
+    {%- endfor %}
+};
+    ''')
+    d = dict(kwargs=kwargs)
+    print(tmpl.render(d))
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -87,3 +101,4 @@ if __name__ == '__main__':
     generate_code(objects, 'objects')
     generate_code(symbols, 'symbols')
     generate_code(flags, 'flags')
+    generate_qml_list(people=people, nature=nature, food=food, activity=activity, travel=travel, objects=objects, symbols=symbols, flags=flags)

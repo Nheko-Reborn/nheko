@@ -126,7 +126,8 @@ class TimelineModel : public QAbstractListModel
           int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
         Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                      typingUsersChanged)
-        Q_PROPERTY(QString reaction READ reaction WRITE setReaction NOTIFY reactionChanged RESET resetReaction)
+        Q_PROPERTY(QString reaction READ reaction WRITE setReaction NOTIFY reactionChanged RESET
+                     resetReaction)
         Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
         Q_PROPERTY(
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
@@ -230,7 +231,7 @@ public slots:
                 if (!reaction_.isEmpty()) {
                         reaction_ = "";
                         emit reactionChanged(reaction_);
-                }  
+                }
         }
         QString reply() const { return reply_; }
         void setReply(QString newReply)

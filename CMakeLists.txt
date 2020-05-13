@@ -243,6 +243,7 @@ set(SRC_FILES
 
 	# Emoji
 	src/emoji/Category.cpp
+	src/emoji/EmojiModel.cpp
 	src/emoji/ItemDelegate.cpp
 	src/emoji/Panel.cpp
 	src/emoji/PickButton.cpp
@@ -447,9 +448,11 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	# Emoji
 	src/emoji/Category.h
+	src/emoji/EmojiModel.h
 	src/emoji/ItemDelegate.h
 	src/emoji/Panel.h
 	src/emoji/PickButton.h
+	src/emoji/Provider.h
 
 	# Timeline
 	src/timeline/ReactionsModel.h

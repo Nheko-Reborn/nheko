@@ -17,22 +17,61 @@
 
 #pragma once
 
+#include <QObject>
+#include <QSet>
 #include <QString>
+#include <QVector>
 #include <vector>
 
 namespace emoji {
 
-struct Emoji
+class Emoji
 {
-        // Unicode code.
-        QString unicode;
-        // Keyboard shortcut e.g :emoji:
-        QString shortname;
+        Q_GADGET
+
+        Q_PROPERTY(const QString &unicode READ unicode CONSTANT)
+        Q_PROPERTY(const QString &shortName READ shortName CONSTANT)
+        Q_PROPERTY(emoji::Emoji::Category category READ category CONSTANT)
+
+public:
+        enum class Category
+        {
+                People,
+                Nature,
+                Food,
+                Activity,
+                Travel,
+                Objects,
+                Symbols,
+                Flags,
+                Search
+        };
+        Q_ENUM(Category)
+
+        Emoji(const QString &unicode   = {},
+              const QString &shortName = {},
+              Emoji::Category cat      = Emoji::Category::Search)
+          : unicode_(unicode)
+          , shortName_(shortName)
+          , category_(cat)
+        {}
+
+        inline const QString &unicode() const { return unicode_; }
+        inline const QString &shortName() const { return shortName_; }
+        inline Emoji::Category category() const { return category_; }
+        inline void setUnicode(const QString &unicode) { unicode_ = unicode; }
+
+private:
+        QString unicode_;
+        QString shortName_;
+        Emoji::Category category_;
 };
 
 class Provider
 {
 public:
+        // all emoji for QML purposes
+        static const QVector<Emoji> emoji;
         static const std::vector<Emoji> people;
         static const std::vector<Emoji> nature;
         static const std::vector<Emoji> food;
@@ -42,4 +81,6 @@ public:
         static const std::vector<Emoji> symbols;
         static const std::vector<Emoji> flags;
 };
+
 } // namespace emoji
+Q_DECLARE_METATYPE(emoji::Emoji)

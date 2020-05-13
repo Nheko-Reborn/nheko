@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QHash>
 #include <QQuickView>
 #include <QQuickWidget>
 #include <QSharedPointer>
@@ -12,6 +13,8 @@
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
+#include "emoji/EmojiModel.h"
+#include "emoji/Provider.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
@@ -102,7 +105,8 @@ private:
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
         TimelineModel *timeline_ = nullptr;
-        bool isInitialSync_      = true;
+
+        bool isInitialSync_ = true;
 
         QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;

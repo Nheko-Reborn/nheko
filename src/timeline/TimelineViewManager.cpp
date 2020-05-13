@@ -13,6 +13,8 @@
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
 #include "dialogs/ImageOverlay.h"
+#include "emoji/EmojiModel.h"
+#include "emoji/Provider.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 
@@ -72,6 +74,12 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
+        qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
+        qmlRegisterType<emoji::EmojiProxyModel>("im.nheko.EmojiModel", 1, 0, "EmojiProxyModel");
+        qmlRegisterUncreatableType<QAbstractItemModel>(
+          "im.nheko.EmojiModel", 1, 0, "QAbstractItemModel", "Used by proxy models");
+        qmlRegisterUncreatableType<emoji::Emoji>(
+          "im.nheko.EmojiModel", 1, 0, "Emoji", "Used by emoji models");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView();
@@ -290,7 +298,7 @@ TimelineViewManager::queueReactionMessage(const QString &roomId,
         mtx::events::msg::Reaction reaction;
         reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
         reaction.relates_to.event_id = reactedEvent.toStdString();
-        reaction.relates_to.key = reactionKey.toStdString();
+        reaction.relates_to.key      = reactionKey.toStdString();
 
         auto model = models.value(roomId);
         model->sendMessage(reaction);
