@@ -294,6 +294,10 @@ TimelineModel::data(const QString &id, int role) const
                         if (isReply)
                                 formattedBody_ = formattedBody_.remove(replyFallback);
                 }
+
+                formattedBody_.replace("<img src=\"mxc:&#47;&#47;", "<img src=\"image://mxcImage/");
+                formattedBody_.replace("<img src=\"mxc://", "<img src=\"image://mxcImage/");
+
                 return QVariant(utils::replaceEmoji(
                   utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));
         }
