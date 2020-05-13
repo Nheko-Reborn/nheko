@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nl_NL">
 <context>
+    <name>Cache</name>
+    <message>
+        <location filename="../../src/Cache.cpp" line="+1341"/>
+        <source>You joined this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatPage</name>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+226"/>
@@ -10,7 +18,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+888"/>
+        <location line="+894"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -50,12 +58,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-813"/>
+        <location line="-819"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+296"/>
+        <location line="+302"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,6 +184,55 @@
         <location line="+2"/>
         <source>Topic</source>
         <translation>Onderwerp</translation>
+    </message>
+</context>
+<context>
+    <name>EmojiPicker</name>
+    <message>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+33"/>
+        <location line="+133"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-16"/>
+        <source>People</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Nature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Food</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Activity</source>
+        <translation type="unfinished">Activiteit</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Travel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Objects</source>
+        <translation type="unfinished">Objecten</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Symbols</source>
+        <translation type="unfinished">Symbolen</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Flags</source>
+        <translation type="unfinished">Vlaggen</translation>
     </message>
 </context>
 <context>
@@ -375,7 +432,7 @@
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2213"/>
+        <location filename="../../src/Cache.cpp" line="+939"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -491,7 +548,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+773"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+844"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation type="unfinished"></translation>
@@ -509,12 +566,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+99"/>
+        <location line="+106"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+455"/>
+        <location line="+488"/>
         <source>Save image</source>
         <translation type="unfinished">Afbeelding opslaan</translation>
     </message>
@@ -534,19 +591,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-610"/>
+        <location line="-650"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="-258"/>
+        <source>You joined this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+340"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+660"/>
+        <location line="+700"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -685,6 +747,11 @@
     <name>TimelineRow</name>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+83"/>
+        <source>React</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -698,6 +765,11 @@
     <name>TimelineView</name>
     <message>
         <location filename="../qml/TimelineView.qml" line="+52"/>
+        <source>React</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -737,7 +809,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+239"/>
+        <location line="+254"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
