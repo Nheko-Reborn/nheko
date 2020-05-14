@@ -189,13 +189,13 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+33"/>
-        <location line="+133"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+104"/>
+        <location line="+135"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-42"/>
         <source>People</source>
         <translation type="unfinished"></translation>
     </message>
@@ -751,7 +751,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>Reply</source>
         <translation>Reply</translation>
     </message>
@@ -764,7 +764,7 @@
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+52"/>
+        <location filename="../qml/TimelineView.qml" line="+65"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>

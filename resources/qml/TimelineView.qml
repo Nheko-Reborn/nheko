@@ -6,8 +6,10 @@ import QtQuick.Window 2.2
 import Qt.labs.settings 1.0
 
 import im.nheko 1.0
+import im.nheko.EmojiModel 1.0
 
 import "./delegates"
+import "./emoji"
 
 Page {
 	property var colors: currentActivePalette
@@ -33,6 +35,17 @@ Page {
 		category: "user/timeline"
 		property bool buttons: true
 	}
+
+    EmojiPicker {
+        id: emojiPopup
+        width: 7 * 52 + 20
+        height: 6 * 52 
+        colors: palette
+        model: EmojiProxyModel {
+            category: Emoji.Category.People
+            sourceModel: EmojiModel {}
+        }
+    }
 
 	Menu {
 		id: messageContextMenu

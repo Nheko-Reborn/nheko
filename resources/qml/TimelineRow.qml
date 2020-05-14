@@ -81,6 +81,7 @@ MouseArea {
 			hoverEnabled: true
 			ToolTip.visible: hovered
 			ToolTip.text: qsTr("React")
+			emojiPicker: emojiPopup
 //			onClicked: chat.model.reactAction(model.id)
 		}
 		ImageButton {
