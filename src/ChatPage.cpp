@@ -1010,7 +1010,7 @@ ChatPage::trySync()
 
                   // TODO: fine grained error handling
                   try {
-                          cache::saveState(res);        
+                          cache::saveState(res);
                           olm::handle_to_device_messages(res.to_device.events);
 
                           auto updates = cache::roomUpdates(res);

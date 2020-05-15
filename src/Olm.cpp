@@ -32,7 +32,7 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
         nlohmann::json j_msg;
 
         for (const auto &msg : msgs) {
-                j_msg = std::visit([](auto &e){ return json(e); },std::move(msg));
+                j_msg = std::visit([](auto &e) { return json(e); }, std::move(msg));
                 if (j_msg.count("type") == 0) {
                         nhlog::crypto()->warn("received message with no type field: {}",
                                               j_msg.dump(2));
@@ -49,8 +49,9 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                                 nhlog::crypto()->warn(
                                   "parsing error for olm message: {} {}", e.what(), j_msg.dump(2));
                         } catch (const std::invalid_argument &e) {
-                                nhlog::crypto()->warn(
-                                  "validation error for olm message: {} {}", e.what(), j_msg.dump(2));
+                                nhlog::crypto()->warn("validation error for olm message: {} {}",
+                                                      e.what(),
+                                                      j_msg.dump(2));
                         }
 
                 } else if (msg_type == to_string(mtx::events::EventType::RoomKeyRequest)) {
@@ -364,7 +365,8 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
 
         // Check if we have the keys for the requested session.
         if (!cache::outboundMegolmSessionExists(req.content.room_id)) {
-                nhlog::crypto()->warn("requested session not found in room: {}", req.content.room_id);
+                nhlog::crypto()->warn("requested session not found in room: {}",
+                                      req.content.room_id);
                 return;
         }
 
@@ -387,7 +389,8 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         }
 
         if (!utils::respondsToKeyRequests(req.content.room_id)) {
-                nhlog::crypto()->debug("ignoring all key requests for room {}", req.content.room_id);
+                nhlog::crypto()->debug("ignoring all key requests for room {}",
+                                       req.content.room_id);
                 return;
         }
 
