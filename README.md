@@ -229,14 +229,14 @@ Make sure to install the `MSVC 2017 64-bit` toolset for at least Qt 5.10
 We can now build nheko:
 
 ```bash
-cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
 
 To use bundled dependencies you can use hunter, i.e.:
 
 ```bash
-cmake -H. -Bbuild -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=OFF
+cmake -S. -Bbuild -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=OFF
 cmake --build build --config Release
 ```
 
@@ -255,7 +255,7 @@ You might need to pass `-DCMAKE_PREFIX_PATH` to cmake to point it at your qt5 in
 e.g on macOS
 
 ```
-cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
 cmake --build build
 ```
 
