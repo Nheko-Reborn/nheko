@@ -51,11 +51,13 @@ void
 UserSettings::load()
 {
         QSettings settings;
-        isTrayEnabled_                = settings.value("user/window/tray", false).toBool();
-        hasDesktopNotifications_      = settings.value("user/desktop_notifications", true).toBool();
-        isStartInTrayEnabled_         = settings.value("user/window/start_in_tray", false).toBool();
-        isGroupViewEnabled_           = settings.value("user/group_view", true).toBool();
-        isButtonsInTimelineEnabled_   = settings.value("user/timeline/buttons", true).toBool();
+        isTrayEnabled_              = settings.value("user/window/tray", false).toBool();
+        hasDesktopNotifications_    = settings.value("user/desktop_notifications", true).toBool();
+        isStartInTrayEnabled_       = settings.value("user/window/start_in_tray", false).toBool();
+        isGroupViewEnabled_         = settings.value("user/group_view", true).toBool();
+        isButtonsInTimelineEnabled_ = settings.value("user/timeline/buttons", true).toBool();
+        isMessageHoverHighlightEnabled_ =
+          settings.value("user/timeline/message_hover_highlight", false).toBool();
         isMarkdownEnabled_            = settings.value("user/markdown_enabled", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         sortByImportance_             = settings.value("user/sort_by_unread", true).toBool();
@@ -165,6 +167,7 @@ UserSettings::save()
 
         settings.beginGroup("timeline");
         settings.setValue("buttons", isButtonsInTimelineEnabled_);
+        settings.setValue("message_hover_highlight", isMessageHoverHighlightEnabled_);
         settings.endGroup();
 
         settings.setValue("avatar_circles", avatarCircles_);
@@ -235,6 +238,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         groupViewToggle_         = new Toggle{this};
         timelineButtonsToggle_   = new Toggle{this};
         typingNotifications_     = new Toggle{this};
+        messageHoverHighlight_   = new Toggle{this};
         sortByImportance_        = new Toggle{this};
         readReceipts_            = new Toggle{this};
         markdownEnabled_         = new Toggle{this};
@@ -345,6 +349,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Read receipts"), readReceipts_);
         boxWrap(tr("Send messages as Markdown"), markdownEnabled_);
         boxWrap(tr("Desktop notifications"), desktopNotifications_);
+        boxWrap(tr("Highlight message on hover"), messageHoverHighlight_);
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
@@ -463,6 +468,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setDesktopNotifications(!isDisabled);
         });
 
+        connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setMessageHoverHighlight(!isDisabled);
+        });
+
         connect(
           sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
 
@@ -495,6 +504,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         readReceipts_->setState(!settings_->isReadReceiptsEnabled());
         markdownEnabled_->setState(!settings_->isMarkdownEnabled());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
+        messageHoverHighlight_->setState(!settings_->isMessageHoverHighlightEnabled());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
 
         deviceFingerprintValue_->setText(
