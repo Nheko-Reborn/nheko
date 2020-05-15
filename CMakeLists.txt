@@ -35,8 +35,6 @@ option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
 option(USE_BUNDLED_SODIUM "Use the bundled version of libsodium."
 	${HUNTER_ENABLED})
-option(USE_BUNDLED_ZLIB "Use the bundled version of zlib."
-	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
@@ -322,10 +320,7 @@ find_package(Boost 1.70 REQUIRED
 	COMPONENTS iostreams
 	system
 	thread)
-if(USE_BUNDLED_ZLIB)
-	hunter_add_package(ZLIB)
-endif()
-find_package(ZLIB REQUIRED)
+
 if(USE_BUNDLED_OPENSSL)
 	hunter_add_package(OpenSSL)
 endif()
