@@ -14,6 +14,8 @@
         <file>icons/ui/double-tick-indicator@2x.png</file>
         <file>icons/ui/lock.png</file>
         <file>icons/ui/lock@2x.png</file>
+        <file>icons/ui/unlock.png</file>
+        <file>icons/ui/unlock@2x.png</file>
         <file>icons/ui/clock.png</file>
         <file>icons/ui/clock@2x.png</file>
         <file>icons/ui/checkmark.png</file>

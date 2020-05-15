@@ -189,9 +189,14 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+12"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
         <source>Encrypted</source>
         <translation>Verschlüsselt</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This message is not encrypted!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -310,7 +315,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+64"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+66"/>
         <source>redacted</source>
         <translation>gelöscht</translation>
     </message>
@@ -548,7 +553,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+844"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation>-- Entschlüsselungsfehler (Fehler bei Kommunikation mit Datenbank) --</translation>
@@ -746,7 +751,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+87"/>
+        <location filename="../qml/TimelineRow.qml" line="+88"/>
         <source>Reply</source>
         <translation>Antworten</translation>
     </message>
@@ -799,7 +804,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Kein Raum geöffnet</translation>
     </message>
     <message>
-        <location line="+254"/>
+        <location line="+256"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>

@@ -157,6 +157,7 @@ public:
                 Id,
                 State,
                 IsEncrypted,
+                IsRoomEncrypted,
                 ReplyTo,
                 Reactions,
                 RoomId,
