@@ -146,9 +146,9 @@
       "name": "mtxclient",
       "sources": [
         {
-          "sha256": "4f859cdcb42b052ed07d55ac8890e9051fa49a1e8bc43648106ddce351b6868b",
+          "sha256": "537f4e6b280f351ad950cd6598c2407505a55f0d6c856b4ff97a9c59fc6fdb7a",
           "type": "archive",
-          "url": "https://github.com/Nheko-Reborn/mtxclient/archive/dfc39651ac02b48787b9d4e27932ef2feceb162c.tar.gz"
+          "url": "https://github.com/Nheko-Reborn/mtxclient/archive/1018c0822b80cdfc5d6b589fe94d1fd759113ef6.tar.gz"
         }
       ]
     },
