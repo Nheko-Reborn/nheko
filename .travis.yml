@@ -137,7 +137,7 @@ before_install:
     # Use TRAVIS_TAG if defined, or the short commit SHA otherwise
     - export VERSION=${TRAVIS_TAG:-$(git rev-parse --short HEAD)}
 install:
-    - ./.ci/install.sh
+    - travis_wait ./.ci/install.sh
     - export PATH=/usr/local/bin:${PATH}
 
 script:
