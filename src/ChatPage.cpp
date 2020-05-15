@@ -666,7 +666,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                                              "This can have different reasons. Please open an "
                                              "issue and try to use an older version in the mean "
                                              "time. Alternatively you can try deleting the cache "
-                                             "manually"));
+                                             "manually."));
                                         QCoreApplication::quit();
                                 }
                                 loadStateFromCache();
@@ -994,8 +994,12 @@ ChatPage::trySync()
                           const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
 
-                          if (http::is_logged_in() && err->matrix_error.errcode ==
-                                                        mtx::errors::ErrorCode::M_UNKNOWN_TOKEN) {
+                          if ((http::is_logged_in() &&
+                               (err->matrix_error.errcode ==
+                                  mtx::errors::ErrorCode::M_UNKNOWN_TOKEN ||
+                                err->matrix_error.errcode ==
+                                  mtx::errors::ErrorCode::M_MISSING_TOKEN)) ||
+                              !http::is_logged_in()) {
                                   emit dropToLoginPageCb(msg);
                                   return;
                           }
@@ -1086,7 +1090,7 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
                   }
 
                   emit showNotification(
-                    tr("Room %1 created").arg(QString::fromStdString(res.room_id.to_string())));
+                    tr("Room %1 created.").arg(QString::fromStdString(res.room_id.to_string())));
           });
 }
 

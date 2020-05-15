@@ -6,9 +6,11 @@ Item {
 	Item {
 		id: model
 		property var data;
+		property bool isReply: false
 	}
 	
 	property alias modelData: model.data
+	property alias isReply: model.isReply
 
 	height: chooser.childrenRect.height
 	property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width

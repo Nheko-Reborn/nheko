@@ -67,7 +67,8 @@ MouseArea {
 		}
 
 		EncryptionIndicator {
-			visible: model.isEncrypted
+			visible: model.isRoomEncrypted
+			encrypted: model.isEncrypted
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16

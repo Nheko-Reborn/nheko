@@ -38,6 +38,12 @@ class LoginPage : public QWidget
         Q_OBJECT
 
 public:
+        enum class LoginMethod
+        {
+                Password,
+                SSO,
+        };
+
         LoginPage(QWidget *parent = nullptr);
 
         void reset();
@@ -50,7 +56,7 @@ signals:
         //! Used to trigger the corresponding slot outside of the main thread.
         void versionErrorCb(const QString &err);
         void loginErrorCb(const QString &err);
-        void versionOkCb();
+        void versionOkCb(LoginPage::LoginMethod method);
 
         void loginOk(const mtx::responses::Login &res);
 
@@ -77,7 +83,7 @@ private slots:
         // Callback for errors produced during server probing
         void versionError(const QString &error_message);
         // Callback for successful server probing
-        void versionOk();
+        void versionOk(LoginPage::LoginMethod method);
 
 private:
         bool isMatrixIdValid();
@@ -123,4 +129,5 @@ private:
         TextField *password_input_;
         TextField *deviceName_;
         TextField *serverInput_;
+        LoginMethod loginMethod = LoginMethod::Password;
 };

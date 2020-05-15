@@ -5,7 +5,7 @@
     <name>Cache</name>
     <message>
         <location filename="../../src/Cache.cpp" line="+1341"/>
-        <source>You joined this room</source>
+        <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -18,12 +18,22 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+894"/>
+        <location line="+898"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-463"/>
+        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+428"/>
+        <source>Room %1 created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
         <source>Failed to invite %1 to %2: %3</source>
         <translation>%2に%1を招待できませんでした: %3</translation>
     </message>
@@ -58,7 +68,7 @@
         <translation>永久追放を解除されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-819"/>
+        <location line="-823"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>メディアをアップロードできませんでした。やり直して下さい。</translation>
     </message>
@@ -68,12 +78,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Incompatible cache version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -99,7 +104,7 @@
     </message>
     <message>
         <location line="+51"/>
-        <location line="+215"/>
+        <location line="+219"/>
         <source>Please try to login again: %1</source>
         <translation>もう一度ログインしてみて下さい: %1</translation>
     </message>
@@ -124,12 +129,7 @@
         <translation>部屋を作成できませんでした: %1</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Room %1 created</source>
-        <translation>部屋 %1 を作成しました</translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>Failed to leave room: %1</source>
         <translation>部屋から出られませんでした: %1</translation>
     </message>
@@ -238,9 +238,14 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+12"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
         <source>Encrypted</source>
         <translation>暗号化されています</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This message is not encrypted!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -254,7 +259,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+82"/>
+        <location filename="../../src/LoginPage.cpp" line="+89"/>
         <source>Matrix ID</source>
         <translation>Matrix ID</translation>
     </message>
@@ -264,22 +269,42 @@
         <translation>例 @joe:matrix.org</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+2"/>
+        <source>Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.
+You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
+Example: @user:server.my
+If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Password</source>
         <translation>パスワード</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Device name</source>
         <translation>デバイス名</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+2"/>
+        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided, a random string is used for privacy purposes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>The address that can be used to contact you homeservers client API.
+Example: https://server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <location line="+185"/>
         <source>LOGIN</source>
         <translation>ログイン</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="-100"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>自動検出できませんでした。不正な形式の応答を受信しました。</translation>
     </message>
@@ -289,7 +314,7 @@
         <translation>自動検出できませんでした。.well-known要求時の不明なエラー。</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>必要な端点が見つかりません。Matrixサーバーではないかもしれません。</translation>
     </message>
@@ -304,9 +329,19 @@
         <translation>不明なエラーが発生しました。ホームサーバーのドメイン名が有効であるかを確認して下さい。</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+55"/>
+        <source>SSO LOGIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Empty password</source>
         <translation>パスワードが入力されていません</translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>SSO login failed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -325,7 +360,7 @@
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+64"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+66"/>
         <source>redacted</source>
         <translation>編集済み</translation>
     </message>
@@ -385,8 +420,18 @@
     </message>
     <message>
         <location line="+3"/>
+        <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Password</source>
         <translation>パスワード</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -395,11 +440,16 @@
     </message>
     <message>
         <location line="+4"/>
-        <source>Home Server</source>
-        <translation>ホームサーバー</translation>
+        <source>Homeserver</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+2"/>
+        <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>REGISTER</source>
         <translation>登録</translation>
     </message>
@@ -548,7 +598,7 @@
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+844"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation>-- 復号エラー (データベースと通信できませんでした) --</translation>
@@ -597,12 +647,7 @@
         <translation type="unfinished">-- 暗号化イベント (復号鍵が見つかりません) --</translation>
     </message>
     <message>
-        <location line="-258"/>
-        <source>You joined this room</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+340"/>
+        <location line="+82"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
         <translation type="unfinished">-- 暗号化イベント (不明なイベント型です) --</translation>
@@ -721,7 +766,12 @@
         <translation>%1がノックを編集しました。</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-1278"/>
+        <source>You joined this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1280"/>
         <source>Rejected the knock from %1.</source>
         <translation>%1からのノックを拒否しました。</translation>
     </message>
@@ -745,7 +795,7 @@
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+83"/>
+        <location filename="../qml/TimelineRow.qml" line="+84"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -808,7 +858,7 @@
         <translation>部屋が開いていません</translation>
     </message>
     <message>
-        <location line="+254"/>
+        <location line="+256"/>
         <source>Close</source>
         <translation>閉じる</translation>
     </message>

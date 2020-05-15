@@ -1338,7 +1338,7 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                         auto time    = QDateTime::fromMSecsSinceEpoch(ts);
                         fallbackDesc = DescInfo{QString::fromStdString(obj["event"]["event_id"]),
                                                 local_user,
-                                                tr("You joined this room"),
+                                                tr("You joined this room."),
                                                 utils::descriptiveTime(time),
                                                 ts,
                                                 time};

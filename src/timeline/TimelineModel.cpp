@@ -224,6 +224,7 @@ TimelineModel::roleNames() const
           {Id, "id"},
           {State, "state"},
           {IsEncrypted, "isEncrypted"},
+          {IsRoomEncrypted, "isRoomEncrypted"},
           {ReplyTo, "replyTo"},
           {Reactions, "reactions"},
           {RoomId, "roomId"},
@@ -294,6 +295,10 @@ TimelineModel::data(const QString &id, int role) const
                         if (isReply)
                                 formattedBody_ = formattedBody_.remove(replyFallback);
                 }
+
+                formattedBody_.replace("<img src=\"mxc:&#47;&#47;", "<img src=\"image://mxcImage/");
+                formattedBody_.replace("<img src=\"mxc://", "<img src=\"image://mxcImage/");
+
                 return QVariant(utils::replaceEmoji(
                   utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));
         }
@@ -346,6 +351,9 @@ TimelineModel::data(const QString &id, int role) const
                 return std::holds_alternative<
                   mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(events[id]);
         }
+        case IsRoomEncrypted: {
+                return cache::isRoomEncrypted(room_id_.toStdString());
+        }
         case ReplyTo:
                 return QVariant(QString::fromStdString(in_reply_to_event(event)));
         case Reactions:
@@ -383,6 +391,7 @@ TimelineModel::data(const QString &id, int role) const
                 m.insert(names[Id], data(id, static_cast<int>(Id)));
                 m.insert(names[State], data(id, static_cast<int>(State)));
                 m.insert(names[IsEncrypted], data(id, static_cast<int>(IsEncrypted)));
+                m.insert(names[IsRoomEncrypted], data(id, static_cast<int>(IsRoomEncrypted)));
                 m.insert(names[ReplyTo], data(id, static_cast<int>(ReplyTo)));
                 m.insert(names[RoomName], data(id, static_cast<int>(RoomName)));
                 m.insert(names[RoomTopic], data(id, static_cast<int>(RoomTopic)));
@@ -566,7 +575,7 @@ TimelineModel::updateLastMessage()
                           room_id_,
                           DescInfo{QString::fromStdString(mtx::accessors::event_id(event)),
                                    QString::fromStdString(http::client()->user_id().to_string()),
-                                   tr("You joined this room"),
+                                   tr("You joined this room."),
                                    utils::descriptiveTime(time),
                                    ts,
                                    time});
