@@ -23,52 +23,55 @@ client()
 }
 
 void
-handle_to_device_messages(const std::vector<nlohmann::json> &msgs)
+handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEvents> &msgs)
 {
         if (msgs.empty())
                 return;
 
         nhlog::crypto()->info("received {} to_device messages", msgs.size());
+        nlohmann::json j_msg;
 
         for (const auto &msg : msgs) {
-                if (msg.count("type") == 0) {
+                j_msg = std::visit([](auto &e) { return json(e); }, std::move(msg));
+                if (j_msg.count("type") == 0) {
                         nhlog::crypto()->warn("received message with no type field: {}",
-                                              msg.dump(2));
+                                              j_msg.dump(2));
                         continue;
                 }
 
-                std::string msg_type = msg.at("type");
+                std::string msg_type = j_msg.at("type");
 
                 if (msg_type == to_string(mtx::events::EventType::RoomEncrypted)) {
                         try {
-                                OlmMessage olm_msg = msg;
+                                OlmMessage olm_msg = j_msg;
                                 handle_olm_message(std::move(olm_msg));
                         } catch (const nlohmann::json::exception &e) {
                                 nhlog::crypto()->warn(
-                                  "parsing error for olm message: {} {}", e.what(), msg.dump(2));
+                                  "parsing error for olm message: {} {}", e.what(), j_msg.dump(2));
                         } catch (const std::invalid_argument &e) {
-                                nhlog::crypto()->warn(
-                                  "validation error for olm message: {} {}", e.what(), msg.dump(2));
+                                nhlog::crypto()->warn("validation error for olm message: {} {}",
+                                                      e.what(),
+                                                      j_msg.dump(2));
                         }
 
                 } else if (msg_type == to_string(mtx::events::EventType::RoomKeyRequest)) {
-                        nhlog::crypto()->warn("handling key request event: {}", msg.dump(2));
+                        nhlog::crypto()->warn("handling key request event: {}", j_msg.dump(2));
                         try {
-                                mtx::events::msg::KeyRequest req = msg;
-                                if (req.action == mtx::events::msg::RequestAction::Request)
-                                        handle_key_request_message(std::move(req));
+                                mtx::events::DeviceEvent<mtx::events::msg::KeyRequest> req = j_msg;
+                                if (req.content.action == mtx::events::msg::RequestAction::Request)
+                                        handle_key_request_message(req);
                                 else
                                         nhlog::crypto()->warn(
                                           "ignore key request (unhandled action): {}",
-                                          req.request_id);
+                                          req.content.request_id);
                         } catch (const nlohmann::json::exception &e) {
                                 nhlog::crypto()->warn(
                                   "parsing error for key_request message: {} {}",
                                   e.what(),
-                                  msg.dump(2));
+                                  j_msg.dump(2));
                         }
                 } else {
-                        nhlog::crypto()->warn("unhandled event: {}", msg.dump(2));
+                        nhlog::crypto()->warn("unhandled event: {}", j_msg.dump(2));
                 }
         }
 }
@@ -341,51 +344,53 @@ send_key_request_for(const std::string &room_id,
 }
 
 void
-handle_key_request_message(const mtx::events::msg::KeyRequest &req)
+handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyRequest> &req)
 {
-        if (req.algorithm != MEGOLM_ALGO) {
+        if (req.content.algorithm != MEGOLM_ALGO) {
                 nhlog::crypto()->debug("ignoring key request {} with invalid algorithm: {}",
-                                       req.request_id,
-                                       req.algorithm);
+                                       req.content.request_id,
+                                       req.content.algorithm);
                 return;
         }
 
         // Check if we were the sender of the session being requested.
-        if (req.sender_key != olm::client()->identity_keys().curve25519) {
+        if (req.content.sender_key != olm::client()->identity_keys().curve25519) {
                 nhlog::crypto()->debug("ignoring key request {} because we were not the sender: "
                                        "\nrequested({}) ours({})",
-                                       req.request_id,
-                                       req.sender_key,
+                                       req.content.request_id,
+                                       req.content.sender_key,
                                        olm::client()->identity_keys().curve25519);
                 return;
         }
 
         // Check if we have the keys for the requested session.
-        if (!cache::outboundMegolmSessionExists(req.room_id)) {
-                nhlog::crypto()->warn("requested session not found in room: {}", req.room_id);
+        if (!cache::outboundMegolmSessionExists(req.content.room_id)) {
+                nhlog::crypto()->warn("requested session not found in room: {}",
+                                      req.content.room_id);
                 return;
         }
 
         // Check that the requested session_id and the one we have saved match.
-        const auto session = cache::getOutboundMegolmSession(req.room_id);
-        if (req.session_id != session.data.session_id) {
+        const auto session = cache::getOutboundMegolmSession(req.content.room_id);
+        if (req.content.session_id != session.data.session_id) {
                 nhlog::crypto()->warn("session id of retrieved session doesn't match the request: "
                                       "requested({}), ours({})",
-                                      req.session_id,
+                                      req.content.session_id,
                                       session.data.session_id);
                 return;
         }
 
-        if (!cache::isRoomMember(req.sender, req.room_id)) {
+        if (!cache::isRoomMember(req.sender, req.content.room_id)) {
                 nhlog::crypto()->warn(
                   "user {} that requested the session key is not member of the room {}",
                   req.sender,
-                  req.room_id);
+                  req.content.room_id);
                 return;
         }
 
-        if (!utils::respondsToKeyRequests(req.room_id)) {
-                nhlog::crypto()->debug("ignoring all key requests for room {}", req.room_id);
+        if (!utils::respondsToKeyRequests(req.content.room_id)) {
+                nhlog::crypto()->debug("ignoring all key requests for room {}",
+                                       req.content.room_id);
                 return;
         }
 
@@ -393,11 +398,11 @@ handle_key_request_message(const mtx::events::msg::KeyRequest &req)
         // Prepare the m.room_key event.
         //
         auto payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
-                            {"room_id", req.room_id},
-                            {"session_id", req.session_id},
+                            {"room_id", req.content.room_id},
+                            {"session_id", req.content.session_id},
                             {"session_key", session.data.session_key}};
 
-        send_megolm_key_to_device(req.sender, req.requesting_device_id, payload);
+        send_megolm_key_to_device(req.sender, req.content.requesting_device_id, payload);
 }
 
 void
