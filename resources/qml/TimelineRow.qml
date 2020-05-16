@@ -13,6 +13,7 @@ MouseArea {
 	height: row.height
 	propagateComposedEvents: true
 	preventStealing: true
+	hoverEnabled: true
 
 	acceptedButtons: Qt.LeftButton | Qt.RightButton
 	onClicked: {
@@ -23,7 +24,10 @@ MouseArea {
 		if (mouse.source === Qt.MouseEventNotSynthesized)
 		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
 	}
-
+	Rectangle {
+		color: (timelineSettings.message_hover_highlight && parent.containsMouse) ? colors.base : "transparent"
+		anchors.fill: row
+	}
 	RowLayout {
 		id: row
 

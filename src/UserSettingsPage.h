@@ -44,6 +44,11 @@ public:
         void load();
         void applyTheme();
         void setTheme(QString theme);
+        void setMessageHoverHighlight(bool state)
+        {
+                isMessageHoverHighlightEnabled_ = state;
+                save();
+        }
         void setTray(bool state)
         {
                 isTrayEnabled_ = state;
@@ -118,6 +123,7 @@ public:
         }
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
+        bool isMessageHoverHighlightEnabled() const { return isMessageHoverHighlightEnabled_; }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
@@ -144,6 +150,7 @@ private:
             ? "light"
             : "system";
         QString theme_;
+        bool isMessageHoverHighlightEnabled_;
         bool isTrayEnabled_;
         bool isStartInTrayEnabled_;
         bool isGroupViewEnabled_;
@@ -203,6 +210,7 @@ private:
         Toggle *groupViewToggle_;
         Toggle *timelineButtonsToggle_;
         Toggle *typingNotifications_;
+        Toggle *messageHoverHighlight_;
         Toggle *sortByImportance_;
         Toggle *readReceipts_;
         Toggle *markdownEnabled_;
