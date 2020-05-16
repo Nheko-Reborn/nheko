@@ -154,13 +154,25 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(this, &TimelineModel::messageSent, this, [this](QString txn_id, QString event_id) {
                 pending.removeOne(txn_id);
 
+                auto ev = events.value(txn_id);
+
+                if (auto reaction =
+                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&ev)) {
+                        QString reactedTo =
+                          QString::fromStdString(reaction->content.relates_to.event_id);
+                        auto &rModel = reactions[reactedTo];
+                        rModel.removeReaction(*reaction);
+                        auto rCopy     = *reaction;
+                        rCopy.event_id = event_id.toStdString();
+                        rModel.addReaction(room_id_.toStdString(), rCopy);
+                }
+
                 int idx = idToIndex(txn_id);
                 if (idx < 0) {
                         // transaction already received via sync
                         return;
                 }
                 eventOrder[idx] = event_id;
-                auto ev         = events.value(txn_id);
                 ev              = std::visit(
                   [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
                           auto eventCopy     = e;
@@ -665,6 +677,14 @@ TimelineModel::internalAddEvents(
                         QString reactedTo =
                           QString::fromStdString(reaction->content.relates_to.event_id);
                         events.insert(id, e);
+
+                        // remove local echo
+                        if (!txid.isEmpty()) {
+                                auto rCopy     = *reaction;
+                                rCopy.event_id = txid.toStdString();
+                                reactions[reactedTo].removeReaction(rCopy);
+                        }
+
                         reactions[reactedTo].addReaction(room_id_.toStdString(), *reaction);
                         int idx = idToIndex(reactedTo);
                         if (idx >= 0)
