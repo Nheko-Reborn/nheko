@@ -97,13 +97,6 @@ guix install nheko
 
 #### macOS (10.14 and above)
 
-
-with [macports](https://www.macports.org/):
-
-```sh
-sudo port install nheko
-```
-
 with [homebrew](https://brew.sh/):
 
 ```sh
@@ -120,7 +113,7 @@ brew cask install nheko
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - Boost 1.70 or greater.
-- [libolm](https://git.matrix.org/git/olm)
+- [libolm](https://gitlab.matrix.org/matrix-org/olm)
 - [libsodium](https://github.com/jedisct1/libsodium)
 - [spdlog](https://github.com/gabime/spdlog)
 - A compiler that supports C++ 17:
@@ -210,7 +203,7 @@ guix environment nheko
 
 ```bash
 brew update
-brew install qt5 lmdb cmake llvm libsodium spdlog boost cmark
+brew install qt5 lmdb cmake llvm libsodium spdlog boost cmark libolm
 ```
 
 ##### Windows
