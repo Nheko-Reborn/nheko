@@ -10,12 +10,19 @@ import "../"
 
 Popup {
 
-	function show(showAt) {
+	function show(showAt, room_id, event_id) {
+        console.debug("Showing emojiPicker for " + event_id + "in room " + room_id)
         parent = showAt
         x = Math.round((showAt.width - width) / 2)
         y = showAt.height
+        emojiPopup.room_id = room_id
+        emojiPopup.event_id = event_id
         open()
 	}
+    signal picked(string room_id, string event_id, string key)
+
+    property string room_id
+    property string event_id
     property var colors
     property alias model: gridView.model
     property var textArea
@@ -80,7 +87,7 @@ Popup {
                 ToolTip.text: model.shortName
                 ToolTip.visible: hovered
 
-                    // give the emoji a little oomf
+                // give the emoji a little oomf
                 DropShadow {
                     width: parent.width;
                     height: parent.height;
@@ -92,7 +99,10 @@ Popup {
                     source: parent.contentItem
                 }
                 // TODO: emit a signal and maybe add favorites at some point?
-                //onClicked: textArea.insert(textArea.cursorPosition, modelData.unicode)
+                onClicked: {
+                    console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id + " in room " + emojiPopup.room_id)
+                    emojiPopup.picked(emojiPopup.room_id, emojiPopup.event_id, model.unicode)
+                }
             }
 
             // Search field
