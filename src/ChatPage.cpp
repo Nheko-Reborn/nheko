@@ -1017,7 +1017,7 @@ ChatPage::trySync()
                   // TODO: fine grained error handling
                   try {
                           cache::saveState(res);
-                          olm::handle_to_device_messages(res.to_device);
+                          olm::handle_to_device_messages(res.to_device.events);
 
                           auto updates = cache::roomUpdates(res);
 
@@ -1240,7 +1240,7 @@ ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::Request
         try {
                 cache::saveState(res);
 
-                olm::handle_to_device_messages(res.to_device);
+                olm::handle_to_device_messages(res.to_device.events);
 
                 emit initializeViews(std::move(res.rooms));
                 emit initializeRoomList(cache::roomInfo());

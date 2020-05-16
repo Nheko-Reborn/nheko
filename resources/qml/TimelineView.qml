@@ -34,6 +34,7 @@ Page {
 		id: timelineSettings
 		category: "user/timeline"
 		property bool buttons: true
+		property bool message_hover_highlight: false
 	}
 
     EmojiPicker {
@@ -113,6 +114,7 @@ Page {
 		}
 
 		BusyIndicator {
+			visible: running
 			anchors.centerIn: parent
             running: timelineManager.isInitialSync
 			height: 200

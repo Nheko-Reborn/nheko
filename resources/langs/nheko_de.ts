@@ -245,7 +245,7 @@
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Nachricht ist nicht verschlüsselt!</translation>
     </message>
 </context>
 <context>
@@ -673,7 +673,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat eingestellt, dass dieser Raum eine Einladung benötigt um beizutreten.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -1037,7 +1037,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+25"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>OBERFLÄCHE</translation>
     </message>
     <message>
         <location line="+108"/>

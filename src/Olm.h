@@ -40,7 +40,7 @@ mtx::crypto::OlmClient *
 client();
 
 void
-handle_to_device_messages(const std::vector<nlohmann::json> &msgs);
+handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEvents> &msgs);
 
 nlohmann::json
 try_olm_decryption(const std::string &sender_key,
@@ -77,7 +77,7 @@ send_key_request_for(const std::string &room_id,
                      const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &);
 
 void
-handle_key_request_message(const mtx::events::msg::KeyRequest &);
+handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyRequest> &);
 
 void
 send_megolm_key_to_device(const std::string &user_id,
