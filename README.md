@@ -210,7 +210,7 @@ guix environment nheko
 
 ```bash
 brew update
-brew install qt5 lmdb cmake llvm libsodium spdlog boost cmark
+brew install qt5 lmdb cmake llvm libsodium spdlog boost cmark libolm
 ```
 
 ##### Windows
