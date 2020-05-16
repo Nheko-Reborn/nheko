@@ -13,7 +13,6 @@ Flow {
 
 		AbstractButton {
 			id: reaction
-			text: model.key
 			hoverEnabled: true
 			implicitWidth: contentItem.childrenRect.width + contentItem.leftPadding*2
 			implicitHeight: contentItem.childrenRect.height
@@ -33,13 +32,13 @@ Flow {
 					font.family: settings.emoji_font_family
 					elide: Text.ElideRight
 					elideWidth: 150
-					text: reaction.text
+					text: model.key
 				}
 
 				Text {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
-					text: textMetrics.elidedText + (textMetrics.elidedText == textMetrics.text ? "" : "…")
+					text: textMetrics.elidedText + (textMetrics.elidedText == model.key ? "" : "…")
 					font.family: settings.emoji_font_family
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1
