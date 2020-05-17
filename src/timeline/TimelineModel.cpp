@@ -374,7 +374,7 @@ TimelineModel::data(const QString &id, int role) const
                 else
                         return {};
         case RoomId:
-                return QVariant(QString::fromStdString(room_id(event)));
+                return QVariant(room_id_);
         case RoomName:
                 return QVariant(QString::fromStdString(room_name(event)));
         case RoomTopic:
