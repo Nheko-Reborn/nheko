@@ -286,7 +286,10 @@ Page {
 
 							MouseArea {
 								anchors.fill: parent
-								onClicked: chat.model.openUserProfile(modelData.userId)
+                                onClicked: {
+                                    userProfile.user_data = modelData
+                                    userProfile.show()
+                                }
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
 							}
@@ -300,7 +303,10 @@ Page {
 
 							MouseArea {
 								anchors.fill: parent
-								onClicked: chat.model.openUserProfile(section.split(" ")[0])
+                                onClicked: {
+                                    userProfile.user_data = modelData
+                                    userProfile.show()
+                                }
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
 							}
@@ -314,6 +320,9 @@ Page {
 							width: chat.delegateMaxWidth - parent.spacing*2 - userName.implicitWidth - avatarSize
 							font.italic: true
 						}
+                        UserProfile{
+                            id: userProfile
+                        }
 					}
 				}
 			}
