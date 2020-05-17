@@ -277,6 +277,7 @@ set(SRC_FILES
 	src/ui/ToggleButton.cpp
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
+	src/ui/UserProfile.cpp
 
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
@@ -480,6 +481,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/ToggleButton.h
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
+	src/ui/UserProfile.h
 
 	src/notifications/Manager.h
 
