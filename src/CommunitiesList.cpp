@@ -257,6 +257,18 @@ CommunitiesList::roomList(const QString &id) const
         return {};
 }
 
+std::vector<std::string>
+CommunitiesList::currentTags() const
+{
+        std::vector<std::string> tags;
+        for (auto &entry : communities_) {
+                CommunitiesListItem *item = entry.second.data();
+                if (item->is_tag())
+                        tags.push_back(entry.first.mid(4).toStdString());
+        }
+        return tags;
+}
+
 void
 CommunitiesList::sortEntries()
 {

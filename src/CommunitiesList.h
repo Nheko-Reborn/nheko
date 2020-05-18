@@ -28,6 +28,7 @@ public:
 
         void syncTags(const std::map<QString, RoomInfo> &info);
         void setTagsForRoom(const QString &id, const std::vector<std::string> &tags);
+        std::vector<std::string> currentTags() const;
 
 signals:
         void communityChanged(const QString &id);

@@ -77,6 +77,8 @@ public:
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
         void deleteConfigs();
 
+        CommunitiesList *communitiesList() { return communitiesList_; }
+
         //! Calculate the width of the message timeline.
         uint64_t timelineWidth();
         bool isSideBarExpanded();

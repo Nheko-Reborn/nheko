@@ -441,12 +441,58 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+98"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
         <source>Leave room</source>
         <translation>Poistu huoneesta</translation>
     </message>
     <message>
-        <location line="+160"/>
+        <location line="+7"/>
+        <source>Tag room as:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Favourite</source>
+        <comment>Standard matrix tag for favourites</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Low Priority</source>
+        <comment>Standard matrix tag for low priority rooms</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Server Notice</source>
+        <comment>Standard matrix tag for server notices</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Adds or removes the specified tag.</source>
+        <comment>WhatsThis hint for tag menu actions</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>New tag...</source>
+        <comment>Add a new tag to the room</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>New Tag</source>
+        <comment>Tag name prompt title</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Tag:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+173"/>
         <source>Accept</source>
         <translation>Hyväksy</translation>
     </message>
@@ -747,7 +793,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+88"/>
+        <location filename="../qml/TimelineRow.qml" line="+92"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -760,7 +806,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+53"/>
+        <location filename="../qml/TimelineView.qml" line="+54"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -800,7 +846,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+256"/>
+        <location line="+257"/>
         <source>Close</source>
         <translation type="unfinished">Sulje</translation>
     </message>
@@ -862,7 +908,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+335"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+339"/>
         <source>Minimize to tray</source>
         <translation>Pienennä ilmoitusalueelle</translation>
     </message>
@@ -917,6 +963,11 @@ Example: https://server.my:8787</source>
         <translation>Työpöytäilmoitukset</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Highlight message on hover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+5"/>
         <source>Scale factor</source>
         <translation>Mittakerroin</translation>
@@ -947,7 +998,7 @@ Example: https://server.my:8787</source>
         <translation>Laitteen sormenjälki</translation>
     </message>
     <message>
-        <location line="-59"/>
+        <location line="-60"/>
         <source>Session Keys</source>
         <translation>Istunnon avaimet</translation>
     </message>
@@ -967,22 +1018,22 @@ Example: https://server.my:8787</source>
         <translation>SALAUS</translation>
     </message>
     <message>
-        <location line="-63"/>
+        <location line="-64"/>
         <source>GENERAL</source>
         <translation>YLEISET ASETUKSET</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+109"/>
         <source>Emoji Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+158"/>
+        <location line="+163"/>
         <source>Open Sessions File</source>
         <translation>Avaa Istuntoavaintiedosto</translation>
     </message>
