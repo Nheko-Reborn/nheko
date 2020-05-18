@@ -167,6 +167,7 @@ signals:
         void sendKickRoomRequest(const QString &userid, const QString &reason);
         void sendBanRoomRequest(const QString &userid, const QString &reason);
         void sendUnbanRoomRequest(const QString &userid, const QString &reason);
+        void changeRoomNick(const QString &displayname);
 
         void startedTyping();
         void stoppedTyping();

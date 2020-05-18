@@ -576,6 +576,8 @@ TextInputWidget::command(QString command, QString args)
                 sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "unban") {
                 sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (command == "roomnick") {
+                changeRoomNick(args);
         } else if (command == "shrug") {
                 sendTextMessage("¯\\_(ツ)_/¯");
         } else if (command == "fliptable") {
