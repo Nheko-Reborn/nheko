@@ -279,6 +279,7 @@ FilteredTextEdit::canInsertFromMimeData(const QMimeData *source) const
 void
 FilteredTextEdit::insertFromMimeData(const QMimeData *source)
 {
+        qInfo() << "Got mime formats: \n" << source->formats();
         const auto formats = source->formats().filter("/");
         const auto image   = formats.filter("image/", Qt::CaseInsensitive);
         const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
