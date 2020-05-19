@@ -279,6 +279,7 @@ FilteredTextEdit::canInsertFromMimeData(const QMimeData *source) const
 void
 FilteredTextEdit::insertFromMimeData(const QMimeData *source)
 {
+        qInfo() << "Got mime formats: \n" << source->formats();
         const auto formats = source->formats().filter("/");
         const auto image   = formats.filter("image/", Qt::CaseInsensitive);
         const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
@@ -576,6 +577,8 @@ TextInputWidget::command(QString command, QString args)
                 sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "unban") {
                 sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (command == "roomnick") {
+                changeRoomNick(args);
         } else if (command == "shrug") {
                 sendTextMessage("¯\\_(ツ)_/¯");
         } else if (command == "fliptable") {

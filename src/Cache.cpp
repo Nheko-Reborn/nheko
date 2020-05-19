@@ -915,8 +915,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                 bool has_new_tags = false;
                 for (const auto &evt : room.second.account_data.events) {
                         // for now only fetch tag events
-                        if (std::holds_alternative<Event<account_data::Tag>>(evt)) {
-                                auto tags_evt = std::get<Event<account_data::Tag>>(evt);
+                        if (std::holds_alternative<Event<account_data::Tags>>(evt)) {
+                                auto tags_evt = std::get<Event<account_data::Tags>>(evt);
                                 has_new_tags  = true;
                                 for (const auto &tag : tags_evt.content.tags) {
                                         updatedInfo.tags.push_back(tag.first);
@@ -1081,7 +1081,7 @@ Cache::roomsWithTagUpdates(const mtx::responses::Sync &res)
         for (const auto &room : res.rooms.join) {
                 bool hasUpdates = false;
                 for (const auto &evt : room.second.account_data.events) {
-                        if (std::holds_alternative<Event<account_data::Tag>>(evt)) {
+                        if (std::holds_alternative<Event<account_data::Tags>>(evt)) {
                                 hasUpdates = true;
                         }
                 }

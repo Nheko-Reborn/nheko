@@ -136,6 +136,11 @@ PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64
 void
 PreviewUploadOverlay::setPreview(const QImage &src, const QString &mime)
 {
+        nhlog::ui()->info("Pasting image with size: {}x{}, format: {}",
+                          src.height(),
+                          src.width(),
+                          mime.toStdString());
+
         auto const &split = mime.split('/');
         auto const &type  = split[1];
 

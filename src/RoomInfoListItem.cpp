@@ -16,6 +16,7 @@
  */
 
 #include <QDateTime>
+#include <QInputDialog>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSettings>
@@ -23,7 +24,10 @@
 
 #include "AvatarProvider.h"
 #include "Cache.h"
+#include "ChatPage.h"
 #include "Config.h"
+#include "Logging.h"
+#include "MatrixClient.h"
 #include "RoomInfoListItem.h"
 #include "Splitter.h"
 #include "UserSettingsPage.h"
@@ -97,7 +101,106 @@ RoomInfoListItem::init(QWidget *parent)
         menu_      = new Menu(this);
         leaveRoom_ = new QAction(tr("Leave room"), this);
         connect(leaveRoom_, &QAction::triggered, this, [this]() { emit leaveRoom(roomId_); });
-        menu_->addAction(leaveRoom_);
+
+        connect(menu_, &QMenu::aboutToShow, this, [this]() {
+                menu_->clear();
+                menu_->addAction(leaveRoom_);
+
+                menu_->addSection(QIcon(":/icons/icons/ui/tag.png"), tr("Tag room as:"));
+
+                auto roomInfo = cache::singleRoomInfo(roomId_.toStdString());
+
+                auto tags = ChatPage::instance()->communitiesList()->currentTags();
+
+                // add default tag, remove server notice tag
+                if (std::find(tags.begin(), tags.end(), "m.favourite") == tags.end())
+                        tags.push_back("m.favourite");
+                if (std::find(tags.begin(), tags.end(), "m.lowpriority") == tags.end())
+                        tags.push_back("m.lowpriority");
+                if (auto it = std::find(tags.begin(), tags.end(), "m.server_notice");
+                    it != tags.end())
+                        tags.erase(it);
+
+                for (const auto &tag : tags) {
+                        QString tagName;
+                        if (tag == "m.favourite")
+                                tagName = tr("Favourite", "Standard matrix tag for favourites");
+                        else if (tag == "m.lowpriority")
+                                tagName =
+                                  tr("Low Priority", "Standard matrix tag for low priority rooms");
+                        else if (tag == "m.server_notice")
+                                tagName =
+                                  tr("Server Notice", "Standard matrix tag for server notices");
+                        else if ((tag.size() > 2 && tag.substr(0, 2) == "u.") ||
+                                 tag.find(".") !=
+                                   std::string::npos) // tag manager creates tags without u., which
+                                                      // is wrong, but we still want to display them
+                                tagName = QString::fromStdString(tag.substr(2));
+
+                        if (tagName.isEmpty())
+                                continue;
+
+                        auto tagAction = menu_->addAction(tagName);
+                        tagAction->setCheckable(true);
+                        tagAction->setWhatsThis(tr("Adds or removes the specified tag.",
+                                                   "WhatsThis hint for tag menu actions"));
+
+                        for (const auto &riTag : roomInfo.tags)
+                                if (riTag == tag) {
+                                        tagAction->setChecked(true);
+                                        break;
+                                }
+
+                        connect(tagAction, &QAction::triggered, this, [this, tag](bool checked) {
+                                if (checked)
+                                        http::client()->put_tag(
+                                          roomId_.toStdString(),
+                                          tag,
+                                          {},
+                                          [tag](mtx::http::RequestErr err) {
+                                                  if (err) {
+                                                          nhlog::ui()->error(
+                                                            "Failed to add tag: {}, {}",
+                                                            tag,
+                                                            err->matrix_error.error);
+                                                  }
+                                          });
+                                else
+                                        http::client()->delete_tag(
+                                          roomId_.toStdString(),
+                                          tag,
+                                          [tag](mtx::http::RequestErr err) {
+                                                  if (err) {
+                                                          nhlog::ui()->error(
+                                                            "Failed to delete tag: {}, {}",
+                                                            tag,
+                                                            err->matrix_error.error);
+                                                  }
+                                          });
+                        });
+                }
+
+                auto newTagAction = menu_->addAction(tr("New tag...", "Add a new tag to the room"));
+                connect(newTagAction, &QAction::triggered, this, [this]() {
+                        QString tagName =
+                          QInputDialog::getText(this,
+                                                tr("New Tag", "Tag name prompt title"),
+                                                tr("Tag:", "Tag name prompt"));
+                        if (tagName.isEmpty())
+                                return;
+
+                        std::string tag = "u." + tagName.toStdString();
+
+                        http::client()->put_tag(
+                          roomId_.toStdString(), tag, {}, [tag](mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::ui()->error("Failed to add tag: {}, {}",
+                                                             tag,
+                                                             err->matrix_error.error);
+                                  }
+                          });
+                });
+        });
 }
 
 RoomInfoListItem::RoomInfoListItem(QString room_id,

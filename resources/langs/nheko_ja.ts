@@ -18,7 +18,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+898"/>
+        <location line="+921"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
@@ -153,6 +153,12 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Server Notices</source>
+        <comment>Tag translation for m.server_notice</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
         <translation> (タグ)</translation>
@@ -189,7 +195,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+104"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+114"/>
         <location line="+135"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
@@ -490,12 +496,59 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+98"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
         <source>Leave room</source>
         <translation>部屋を出る</translation>
     </message>
     <message>
-        <location line="+160"/>
+        <location line="+7"/>
+        <source>Tag room as:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Favourite</source>
+        <comment>Standard matrix tag for favourites</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Low Priority</source>
+        <comment>Standard matrix tag for low priority rooms</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Server Notice</source>
+        <comment>Standard matrix tag for server notices</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Adds or removes the specified tag.</source>
+        <comment>WhatsThis hint for tag menu actions</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>New tag...</source>
+        <comment>Add a new tag to the room</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>New Tag</source>
+        <comment>Tag name prompt title</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Tag:</source>
+        <comment>Tag name prompt</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+173"/>
         <source>Accept</source>
         <translation>容認</translation>
     </message>
@@ -559,7 +612,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+459"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+460"/>
         <source>Send a file</source>
         <translation>ファイルを送信</translation>
     </message>
@@ -580,7 +633,7 @@ Example: https://server.my:8787</source>
         <translation>絵文字</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <source>Select a file</source>
         <translation>ファイルを選択</translation>
     </message>
@@ -598,7 +651,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+873"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation>-- 復号エラー (データベースと通信できませんでした) --</translation>
@@ -766,12 +819,12 @@ Example: https://server.my:8787</source>
         <translation>%1がノックを編集しました。</translation>
     </message>
     <message>
-        <location line="-1278"/>
+        <location line="-1286"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1280"/>
+        <location line="+1288"/>
         <source>Rejected the knock from %1.</source>
         <translation>%1からのノックを拒否しました。</translation>
     </message>
@@ -795,12 +848,12 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+84"/>
+        <location filename="../qml/TimelineRow.qml" line="+88"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+18"/>
         <source>Reply</source>
         <translation>返信</translation>
     </message>
@@ -813,7 +866,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+65"/>
+        <location filename="../qml/TimelineView.qml" line="+69"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -858,7 +911,7 @@ Example: https://server.my:8787</source>
         <translation>部屋が開いていません</translation>
     </message>
     <message>
-        <location line="+256"/>
+        <location line="+257"/>
         <source>Close</source>
         <translation>閉じる</translation>
     </message>
@@ -920,7 +973,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+335"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+339"/>
         <source>Minimize to tray</source>
         <translation>トレイへ最小化</translation>
     </message>
@@ -975,6 +1028,11 @@ Example: https://server.my:8787</source>
         <translation>デスクトップ通知</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Highlight message on hover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+5"/>
         <source>Scale factor</source>
         <translation>尺度係数</translation>
@@ -1005,7 +1063,7 @@ Example: https://server.my:8787</source>
         <translation>デバイスの指紋</translation>
     </message>
     <message>
-        <location line="-59"/>
+        <location line="-60"/>
         <source>Session Keys</source>
         <translation>セッション鍵</translation>
     </message>
@@ -1025,22 +1083,22 @@ Example: https://server.my:8787</source>
         <translation>暗号化</translation>
     </message>
     <message>
-        <location line="-63"/>
+        <location line="-64"/>
         <source>GENERAL</source>
         <translation>全般</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+109"/>
         <source>Emoji Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+158"/>
+        <location line="+163"/>
         <source>Open Sessions File</source>
         <translation>セッションファイルを開く</translation>
     </message>

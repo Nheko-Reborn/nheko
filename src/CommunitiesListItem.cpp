@@ -137,6 +137,8 @@ CommunitiesListItem::updateTooltip()
                         setToolTip(tr("Favourite rooms"));
                 else if (tag == "m.lowpriority")
                         setToolTip(tr("Low priority rooms"));
+                else if (tag == "m.server_notice")
+                        setToolTip(tr("Server Notices", "Tag translation for m.server_notice"));
                 else if (tag.startsWith("u."))
                         setToolTip(tag.right(tag.size() - 2) + tr(" (tag)"));
                 else

@@ -301,6 +301,29 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(text_input_, &TextInputWidget::sendUnbanRoomRequest, this, &ChatPage::unbanUser);
 
         connect(
+          text_input_, &TextInputWidget::changeRoomNick, this, [this](const QString &displayName) {
+                  mtx::events::state::Member member;
+                  member.display_name = displayName.toStdString();
+                  member.avatar_url =
+                    cache::avatarUrl(currentRoom(),
+                                     QString::fromStdString(http::client()->user_id().to_string()))
+                      .toStdString();
+                  member.membership = mtx::events::state::Membership::Join;
+
+                  http::client()
+                    ->send_state_event<mtx::events::state::Member,
+                                       mtx::events::EventType::RoomMember>(
+                      currentRoom().toStdString(),
+                      http::client()->user_id().to_string(),
+                      member,
+                      [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                              if (err)
+                                      nhlog::net()->error("Failed to set room displayname: {}",
+                                                          err->matrix_error.error);
+                      });
+          });
+
+        connect(
           text_input_,
           &TextInputWidget::uploadMedia,
           this,
