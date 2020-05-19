@@ -26,6 +26,7 @@ Page {
 		category: "user"
 		property bool avatar_circles: true
 		property string emoji_font_family: "default"
+		property double font_size: Qt.application.font.pointSize
 	}
 
 	Settings {
@@ -33,6 +34,7 @@ Page {
 		category: "user/timeline"
 		property bool buttons: true
 		property bool message_hover_highlight: false
+		property bool enlarge_emoji_only_msg: false
 	}
 
 	Menu {

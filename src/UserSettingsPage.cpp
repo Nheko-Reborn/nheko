@@ -58,6 +58,8 @@ UserSettings::load()
         isButtonsInTimelineEnabled_ = settings.value("user/timeline/buttons", true).toBool();
         isMessageHoverHighlightEnabled_ =
           settings.value("user/timeline/message_hover_highlight", false).toBool();
+        isEnlargeEmojiOnlyMessagesEnabled_ =
+          settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
         isMarkdownEnabled_            = settings.value("user/markdown_enabled", true).toBool();
         isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
         sortByImportance_             = settings.value("user/sort_by_unread", true).toBool();
@@ -168,6 +170,7 @@ UserSettings::save()
         settings.beginGroup("timeline");
         settings.setValue("buttons", isButtonsInTimelineEnabled_);
         settings.setValue("message_hover_highlight", isMessageHoverHighlightEnabled_);
+        settings.setValue("enlarge_emoji_only_msg", isEnlargeEmojiOnlyMessagesEnabled_);
         settings.endGroup();
 
         settings.setValue("avatar_circles", avatarCircles_);
@@ -231,22 +234,23 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
         general_->setFont(font);
 
-        trayToggle_              = new Toggle{this};
-        startInTrayToggle_       = new Toggle{this};
-        avatarCircles_           = new Toggle{this};
-        decryptSidebar_          = new Toggle(this);
-        groupViewToggle_         = new Toggle{this};
-        timelineButtonsToggle_   = new Toggle{this};
-        typingNotifications_     = new Toggle{this};
-        messageHoverHighlight_   = new Toggle{this};
-        sortByImportance_        = new Toggle{this};
-        readReceipts_            = new Toggle{this};
-        markdownEnabled_         = new Toggle{this};
-        desktopNotifications_    = new Toggle{this};
-        scaleFactorCombo_        = new QComboBox{this};
-        fontSizeCombo_           = new QComboBox{this};
-        fontSelectionCombo_      = new QComboBox{this};
-        emojiFontSelectionCombo_ = new QComboBox{this};
+        trayToggle_               = new Toggle{this};
+        startInTrayToggle_        = new Toggle{this};
+        avatarCircles_            = new Toggle{this};
+        decryptSidebar_           = new Toggle(this);
+        groupViewToggle_          = new Toggle{this};
+        timelineButtonsToggle_    = new Toggle{this};
+        typingNotifications_      = new Toggle{this};
+        messageHoverHighlight_    = new Toggle{this};
+        enlargeEmojiOnlyMessages_ = new Toggle{this};
+        sortByImportance_         = new Toggle{this};
+        readReceipts_             = new Toggle{this};
+        markdownEnabled_          = new Toggle{this};
+        desktopNotifications_     = new Toggle{this};
+        scaleFactorCombo_         = new QComboBox{this};
+        fontSizeCombo_            = new QComboBox{this};
+        fontSelectionCombo_       = new QComboBox{this};
+        emojiFontSelectionCombo_  = new QComboBox{this};
 
         if (!settings_->isTrayEnabled())
                 startInTrayToggle_->setDisabled(true);
@@ -350,6 +354,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Send messages as Markdown"), markdownEnabled_);
         boxWrap(tr("Desktop notifications"), desktopNotifications_);
         boxWrap(tr("Highlight message on hover"), messageHoverHighlight_);
+        boxWrap(tr("Large Emoji in timeline"), enlargeEmojiOnlyMessages_);
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
@@ -472,6 +477,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setMessageHoverHighlight(!isDisabled);
         });
 
+        connect(enlargeEmojiOnlyMessages_, &Toggle::toggled, this, [this](bool isDisabled) {
+                settings_->setEnlargeEmojiOnlyMessages(!isDisabled);
+        });
+
         connect(
           sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
 
@@ -505,6 +514,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         markdownEnabled_->setState(!settings_->isMarkdownEnabled());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
         messageHoverHighlight_->setState(!settings_->isMessageHoverHighlightEnabled());
+        enlargeEmojiOnlyMessages_->setState(!settings_->isEnlargeEmojiOnlyMessagesEnabled());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
 
         deviceFingerprintValue_->setText(
