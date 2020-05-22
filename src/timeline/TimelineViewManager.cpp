@@ -15,6 +15,7 @@
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
+#include "../ui/UserProfile.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 
@@ -86,6 +87,8 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
         qmlRegisterType<DeviceVerificationFlow>("im.nheko", 1, 0, "DeviceVerificationFlow");
+        qmlRegisterType<UserProfile>("im.nheko",1,0,"UserProfileContent");
+        qRegisterMetaType<DeviceInfo>();
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
         qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterType<emoji::EmojiProxyModel>("im.nheko.EmojiModel", 1, 0, "EmojiProxyModel");
@@ -460,12 +463,6 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         }
 
         model->sendMessage(video);
-}
-
-void
-TimelineViewManager::startDummyVerification()
-{
-        emit deviceVerificationRequest(new DeviceVerificationFlow(this));
 }
 
 void
