@@ -27,6 +27,9 @@ Popup {
     property alias model: gridView.model
     property var textArea
     property string emojiCategory: "people"
+    property real highlightHue: colors.highlight.hslHue
+    property real highlightSat: colors.highlight.hslSaturation
+    property real highlightLight: colors.highlight.hslLightness
 
     id: emojiPopup
 
@@ -38,6 +41,8 @@ Popup {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+    onPicked: emojiPopup.close()
 
     ColumnLayout {
         id: columnView
@@ -98,7 +103,7 @@ Popup {
                     color: "#80000000"
                     source: parent.contentItem
                 }
-                // TODO: emit a signal and maybe add favorites at some point?
+                // TODO: maybe add favorites at some point?
                 onClicked: {
                     console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id + " in room " + emojiPopup.room_id)
                     emojiPopup.picked(emojiPopup.room_id, emojiPopup.event_id, model.unicode)
@@ -191,11 +196,8 @@ Popup {
 
                     background: Rectangle {
                         anchors.fill: parent
-                        property real highlightHue: colors.highlight.hslHue
-                        property real highlightSat: colors.highlight.hslSaturation
-                        property real highlightLight: colors.highlight.hslLightness
 
-                        color: emojiPopup.model.category === model.category ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.25)  : 'transparent'
+                        color: emojiPopup.model.category === model.category ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.20)  : 'transparent'
                         radius: 5
                         border.color: emojiPopup.model.category === model.category ? colors.highlight : 'transparent'
                     }

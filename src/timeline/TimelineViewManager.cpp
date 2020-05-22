@@ -291,6 +291,22 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 }
 
 void
+TimelineViewManager::reactToMessage(const QString &roomId,
+                                    const QString &reactedEvent,
+                                    const QString &reactionKey,
+                                    const QString &selfReactedEvent)
+{
+        // If selfReactedEvent is empty, that means we haven't previously reacted
+        if (selfReactedEvent.isEmpty()) {
+                queueReactionMessage(roomId, reactedEvent, reactionKey);
+                // Otherwise, we have previously reacted and the reaction should be redacted
+        } else {
+                auto model = models.value(roomId);
+                model->redactEvent(selfReactedEvent);
+        }
+}
+
+void
 TimelineViewManager::queueReactionMessage(const QString &roomId,
                                           const QString &reactedEvent,
                                           const QString &reactionKey)

@@ -18,7 +18,7 @@ public:
                 Key,
                 Count,
                 Users,
-                SelfReacted,
+                SelfReactedEvent,
         };
 
         QHash<int, QByteArray> roleNames() const override;

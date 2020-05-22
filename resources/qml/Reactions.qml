@@ -1,7 +1,21 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.2
 
+// This class is for showing Reactions in the timeline row, not for
+// adding new reactions via the emoji picker
 Flow {
+	id: reactionFlow
+	// Signal for when a reaction is picked / unpicked
+	signal picked(string room_id, string event_id, string key, string selfReactedEvent)
+
+	// highlight colors for selfReactedEvent background
+	property real highlightHue: colors.highlight.hslHue
+	property real highlightSat: colors.highlight.hslSaturation
+	property real highlightLight: colors.highlight.hslLightness
+
+	property string eventId
+	property string roomId
+
 	anchors.left: parent.left
 	anchors.right: parent.right
 	spacing: 4
@@ -11,7 +25,7 @@ Flow {
 	Repeater {
 		id: repeater
 
-		AbstractButton {
+		delegate: AbstractButton {
 			id: reaction
 			hoverEnabled: true
 			implicitWidth: contentItem.childrenRect.width + contentItem.leftPadding*2
@@ -19,6 +33,11 @@ Flow {
 
 			ToolTip.visible: hovered
 			ToolTip.text: model.users
+
+			onClicked: {
+				console.debug("Picked " + model.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + model.selfReactedEvent)
+				reactionFlow.picked(reactionFlow.roomId, reactionFlow.eventId, model.key, model.selfReactedEvent)
+			}
 
 
 			contentItem: Row {
@@ -48,7 +67,7 @@ Flow {
 					id: divider
 					height: reactionCounter.implicitHeight * 1.4
 					width: 1
-					color: reaction.hovered ? colors.highlight : colors.text
+					color: (reaction.hovered || model.selfReactedEvent !== '') ? colors.highlight : colors.text
 				}
 
 				Text {
@@ -62,10 +81,11 @@ Flow {
 
 			background: Rectangle {
 				anchors.centerIn: parent
+
 				implicitWidth: reaction.implicitWidth
 				implicitHeight: reaction.implicitHeight
-				border.color: (reaction.hovered || model.selfReacted )? colors.highlight : colors.text
-				color: colors.base
+				border.color: (reaction.hovered  || model.selfReactedEvent !== '') ? colors.highlight : colors.text
+				color: model.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.20) : colors.base
 				border.width: 1
 				radius: reaction.height / 2.0
 			}

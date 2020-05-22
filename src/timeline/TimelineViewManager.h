@@ -61,6 +61,10 @@ public slots:
         void queueReactionMessage(const QString &roomId,
                                   const QString &reactedEvent,
                                   const QString &reaction);
+        void reactToMessage(const QString &roomId,
+                            const QString &reactedEvent,
+                            const QString &reactionKey,
+                            const QString &selfReactedEvent);
         void queueTextMessage(const QString &msg);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
