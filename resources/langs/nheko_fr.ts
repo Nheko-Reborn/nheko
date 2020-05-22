@@ -195,8 +195,8 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+114"/>
-        <location line="+135"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+119"/>
+        <location line="+132"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -849,7 +849,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+88"/>
+        <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -867,7 +867,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+69"/>
+        <location filename="../qml/TimelineView.qml" line="+72"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
