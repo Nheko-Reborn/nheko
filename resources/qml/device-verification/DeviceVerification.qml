@@ -267,11 +267,7 @@ ApplicationWindow {
 						model: 7
 						delegate: Rectangle {
 							color: "transparent"
-<<<<<<< HEAD
-							implicitHeight: Qt.application.font.pixelSize * 3
-=======
 							implicitHeight: Qt.application.font.pixelSize * 8
->>>>>>> Add DeviceVerificationFlow dummy and verification test button
 							implicitWidth: col.width
 							ColumnLayout {
 								id: col
@@ -414,11 +410,7 @@ ApplicationWindow {
 			property string title: "Verification timed out"
 			ColumnLayout {
 				spacing: 16
-<<<<<<< HEAD
-				Label {
-=======
 				Text {
->>>>>>> Add DeviceVerificationFlow dummy and verification test button
 					Layout.maximumWidth: 400
 					Layout.fillHeight: true
 					Layout.fillWidth: true

@@ -3,6 +3,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
 
+import im.nheko 1.0
+
 ApplicationWindow{
     property var user_data
     property var colors: currentActivePalette
@@ -18,7 +20,21 @@ ApplicationWindow{
         userProfileAvatar.url = chat.model.avatarUrl(user_data.userId).replace("mxc://", "image://MxcImage/")
         userProfileName.text = user_data.userName
         matrixUserID.text = user_data.userId
-        console.log("this is happening");
+        userProfile.userId = user_data.userId
+        log_devices()     
+    }
+
+    function log_devices()
+    {
+        console.log(userProfile.deviceList);
+        userProfile.deviceList.forEach((item,index)=>{
+            console.log(item.device_id)
+            console.log(item.display_name)
+        })
+    } 
+
+    UserProfileContent{
+        id: userProfile
     }
 
     background: Item{
