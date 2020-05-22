@@ -1807,6 +1807,8 @@ TimelineModel::formatMemberEvent(QString id)
                                 rendered = tr("%1 changed their display name.").arg(name);
                         else if (avatarChanged)
                                 rendered = tr("%1 changed their avatar.").arg(name);
+                        else
+                                rendered = tr("%1 changed some profile info.").arg(name);
                         // the case of nothing changed but join follows join shouldn't happen, so
                         // just show it as join
                 } else {
