@@ -207,6 +207,7 @@ TimelineModel::roleNames() const
           {Section, "section"},
           {Type, "type"},
           {TypeString, "typeString"},
+          {IsOnlyEmoji, "isOnlyEmoji"},
           {Body, "body"},
           {FormattedBody, "formattedBody"},
           {UserId, "userId"},
@@ -272,6 +273,22 @@ TimelineModel::data(const QString &id, int role) const
                 return QVariant(toRoomEventType(event));
         case TypeString:
                 return QVariant(toRoomEventTypeString(event));
+        case IsOnlyEmoji: {
+                QString qBody = QString::fromStdString(body(event));
+
+                QVector<uint> utf32_string = qBody.toUcs4();
+                int emojiCount             = 0;
+
+                for (auto &code : utf32_string) {
+                        if (utils::codepointIsEmoji(code)) {
+                                emojiCount++;
+                        } else {
+                                return QVariant(0);
+                        }
+                }
+
+                return QVariant(emojiCount);
+        }
         case Body:
                 return QVariant(utils::replaceEmoji(QString::fromStdString(body(event))));
         case FormattedBody: {
@@ -374,6 +391,7 @@ TimelineModel::data(const QString &id, int role) const
                 // m.insert(names[Section], data(id, static_cast<int>(Section)));
                 m.insert(names[Type], data(id, static_cast<int>(Type)));
                 m.insert(names[TypeString], data(id, static_cast<int>(TypeString)));
+                m.insert(names[IsOnlyEmoji], data(id, static_cast<int>(IsOnlyEmoji)));
                 m.insert(names[Body], data(id, static_cast<int>(Body)));
                 m.insert(names[FormattedBody], data(id, static_cast<int>(FormattedBody)));
                 m.insert(names[UserId], data(id, static_cast<int>(UserId)));

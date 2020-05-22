@@ -49,6 +49,11 @@ public:
                 isMessageHoverHighlightEnabled_ = state;
                 save();
         }
+        void setEnlargeEmojiOnlyMessages(bool state)
+        {
+                isEnlargeEmojiOnlyMessagesEnabled_ = state;
+                save();
+        }
         void setTray(bool state)
         {
                 isTrayEnabled_ = state;
@@ -124,6 +129,10 @@ public:
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isMessageHoverHighlightEnabled() const { return isMessageHoverHighlightEnabled_; }
+        bool isEnlargeEmojiOnlyMessagesEnabled() const
+        {
+                return isEnlargeEmojiOnlyMessagesEnabled_;
+        }
         bool isTrayEnabled() const { return isTrayEnabled_; }
         bool isStartInTrayEnabled() const { return isStartInTrayEnabled_; }
         bool isGroupViewEnabled() const { return isGroupViewEnabled_; }
@@ -151,6 +160,7 @@ private:
             : "system";
         QString theme_;
         bool isMessageHoverHighlightEnabled_;
+        bool isEnlargeEmojiOnlyMessagesEnabled_;
         bool isTrayEnabled_;
         bool isStartInTrayEnabled_;
         bool isGroupViewEnabled_;
@@ -211,6 +221,7 @@ private:
         Toggle *timelineButtonsToggle_;
         Toggle *typingNotifications_;
         Toggle *messageHoverHighlight_;
+        Toggle *enlargeEmojiOnlyMessages_;
         Toggle *sortByImportance_;
         Toggle *readReceipts_;
         Toggle *markdownEnabled_;

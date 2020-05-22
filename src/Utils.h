@@ -36,6 +36,9 @@ namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+bool
+codepointIsEmoji(uint code);
+
 QString
 replaceEmoji(const QString &body);
 

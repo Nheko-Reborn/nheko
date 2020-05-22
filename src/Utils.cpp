@@ -51,6 +51,14 @@ utils::localUser()
         return QString::fromStdString(http::client()->user_id().to_string());
 }
 
+bool
+utils::codepointIsEmoji(uint code)
+{
+        // TODO: Be more precise here.
+        return (code >= 0x2600 && code <= 0x27bf) || (code >= 0x1f300 && code <= 0x1f3ff) ||
+               (code >= 0x1f000 && code <= 0x1faff);
+}
+
 QString
 utils::replaceEmoji(const QString &body)
 {
@@ -63,9 +71,7 @@ utils::replaceEmoji(const QString &body)
 
         bool insideFontBlock = false;
         for (auto &code : utf32_string) {
-                // TODO: Be more precise here.
-                if ((code >= 0x2600 && code <= 0x27bf) || (code >= 0x1f300 && code <= 0x1f3ff) ||
-                    (code >= 0x1f000 && code <= 0x1faff)) {
+                if (utils::codepointIsEmoji(code)) {
                         if (!insideFontBlock) {
                                 fmtBody += QString("<font face=\"" + userFontFamily + "\">");
                                 insideFontBlock = true;
