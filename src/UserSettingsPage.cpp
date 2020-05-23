@@ -327,10 +327,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         sessionKeysLayout->addWidget(sessionKeysExportBtn, 0, Qt::AlignRight);
         sessionKeysLayout->addWidget(sessionKeysImportBtn, 0, Qt::AlignRight);
 
-        auto boxWrap = [this, &font](QString labelText, QWidget *field) {
+        auto boxWrap = [this, &font](QString labelText, QWidget *field, QString tooltipText = "") {
                 auto label = new QLabel{labelText, this};
                 label->setFont(font);
                 label->setMargin(OptionMargin);
+
+                if (!tooltipText.isEmpty()) {
+                        label->setToolTip(tooltipText);
+                }
 
                 auto layout = new QHBoxLayout;
                 layout->addWidget(field, 0, Qt::AlignRight);
@@ -340,26 +344,66 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         formLayout_->addRow(general_);
         formLayout_->addRow(new HorizontalLine{this});
-        boxWrap(tr("Minimize to tray"), trayToggle_);
-        boxWrap(tr("Start in tray"), startInTrayToggle_);
+        boxWrap(
+          tr("Minimize to tray"),
+          trayToggle_,
+          tr("Keep the application running in the background after closing the client window."));
+        boxWrap(tr("Start in tray"),
+                startInTrayToggle_,
+                tr("Start the application in the background without showing the client window."));
         formLayout_->addRow(new HorizontalLine{this});
-        boxWrap(tr("Circular Avatars"), avatarCircles_);
-        boxWrap(tr("Group's sidebar"), groupViewToggle_);
-        boxWrap(tr("Decrypt messages in sidebar"), decryptSidebar_);
-        boxWrap(tr("Show buttons in timeline"), timelineButtonsToggle_);
-        boxWrap(tr("Typing notifications"), typingNotifications_);
-        boxWrap(tr("Sort rooms by unreads"), sortByImportance_);
+        boxWrap(tr("Circular Avatars"),
+                avatarCircles_,
+                tr("Change the appearance of user avatars in chats.\nOFF - square, ON - Circle."));
+        boxWrap(tr("Group's sidebar"),
+                groupViewToggle_,
+                tr("Show a column containing groups and tags next to the room list."));
+        boxWrap(tr("Decrypt messages in sidebar"),
+                decryptSidebar_,
+                tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
+                   "encrypted chats."));
+        boxWrap(tr("Show buttons in timeline"),
+                timelineButtonsToggle_,
+                tr("Show buttons to quickly reply, react or access additional options next to each "
+                   "message."));
+        boxWrap(tr("Typing notifications"),
+                typingNotifications_,
+                tr("Show who is typing in a room.\nThis will also enable or disable sending typing "
+                   "notifications to others."));
+        boxWrap(
+          tr("Sort rooms by unreads"),
+          sortByImportance_,
+          tr(
+            "Display rooms with new messages first.\nIf this is off, the list of rooms will only "
+            "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms which "
+            "have active notifications (the small circle with a number in it) will be sorted on "
+            "top. Rooms, that you have muted, will still be sorted by timestamp, since you don't "
+            "seem to consider them as important as the other rooms."));
         formLayout_->addRow(new HorizontalLine{this});
-        boxWrap(tr("Read receipts"), readReceipts_);
-        boxWrap(tr("Send messages as Markdown"), markdownEnabled_);
-        boxWrap(tr("Desktop notifications"), desktopNotifications_);
-        boxWrap(tr("Highlight message on hover"), messageHoverHighlight_);
-        boxWrap(tr("Large Emoji in timeline"), enlargeEmojiOnlyMessages_);
+        boxWrap(tr("Read receipts"),
+                readReceipts_,
+                tr("Show if your message was read.\nStatus is displayed next to timestamps."));
+        boxWrap(
+          tr("Send messages as Markdown"),
+          markdownEnabled_,
+          tr("Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
+             "text."));
+        boxWrap(tr("Desktop notifications"),
+                desktopNotifications_,
+                tr("Notify about received message when the client is not currently focused."));
+        boxWrap(tr("Highlight message on hover"),
+                messageHoverHighlight_,
+                tr("Change the background color of messages when you hover over them."));
+        boxWrap(tr("Large Emoji in timeline"),
+                enlargeEmojiOnlyMessages_,
+                tr("Make font size larger if messages with only a few emojis are displayed."));
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
 #if !defined(Q_OS_MAC)
-        boxWrap(tr("Scale factor"), scaleFactorCombo_);
+        boxWrap(tr("Scale factor"),
+                scaleFactorCombo_,
+                tr("Change the scale factor of the whole user interface."));
 #else
         scaleFactorCombo_->hide();
 #endif
