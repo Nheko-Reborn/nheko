@@ -577,6 +577,13 @@ target_link_libraries(nheko PRIVATE
 	tweeny
 	SingleApplication::SingleApplication)
 
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
+target_precompile_headers(nheko
+	PRIVATE
+	  <string>
+	)
+endif()
+
 if(MSVC)
 	target_link_libraries(nheko PRIVATE ntdll)
 endif()
