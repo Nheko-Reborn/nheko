@@ -21,6 +21,8 @@
 #include <QObject>
 #include <QPainter>
 #include <QScroller>
+#include <QStyle>
+#include <QStyleOption>
 #include <QTimer>
 
 #include "Logging.h"

@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QIcon>
+#include <QLabel>
 #include <QListWidgetItem>
 #include <QPainter>
 #include <QPushButton>
@@ -162,4 +163,11 @@ ReadReceipts::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+ReadReceipts::hideEvent(QHideEvent *event)
+{
+        userList_->clear();
+        QFrame::hideEvent(event);
 }

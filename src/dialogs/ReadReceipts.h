@@ -2,12 +2,12 @@
 
 #include <QDateTime>
 #include <QFrame>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QListWidget>
-#include <QVBoxLayout>
 
 class Avatar;
+class QLabel;
+class QListWidget;
+class QHBoxLayout;
+class QVBoxLayout;
 
 namespace dialogs {
 
@@ -47,11 +47,7 @@ public slots:
 
 protected:
         void paintEvent(QPaintEvent *event) override;
-        void hideEvent(QHideEvent *event) override
-        {
-                userList_->clear();
-                QFrame::hideEvent(event);
-        }
+        void hideEvent(QHideEvent *event) override;
 
 private:
         QLabel *topLabel_;

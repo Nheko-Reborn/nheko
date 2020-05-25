@@ -17,17 +17,18 @@
 
 #pragma once
 
-#include <QComboBox>
 #include <QFontDatabase>
-#include <QFormLayout>
 #include <QFrame>
-#include <QLabel>
-#include <QLayout>
 #include <QProcessEnvironment>
 #include <QSharedPointer>
 #include <QWidget>
 
 class Toggle;
+class QLabel;
+class QFormLayout;
+class QComboBox;
+class QHBoxLayout;
+class QVBoxLayout;
 
 constexpr int OptionMargin       = 6;
 constexpr int LayoutTopMargin    = 50;

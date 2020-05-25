@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QComboBox>
+#include <QEvent>
 #include <QFileDialog>
 #include <QFontDatabase>
 #include <QImageReader>
@@ -40,6 +41,17 @@ constexpr int TOP_WIDGET_MARGIN = 2 * WIDGET_MARGIN;
 constexpr int WIDGET_SPACING    = 15;
 constexpr int TEXT_SPACING      = 4;
 constexpr int BUTTON_SPACING    = 2 * TEXT_SPACING;
+
+bool
+ClickableFilter::eventFilter(QObject *obj, QEvent *event)
+{
+        if (event->type() == QEvent::MouseButtonRelease) {
+                emit clicked();
+                return true;
+        }
+
+        return QObject::eventFilter(obj, event);
+}
 
 EditModal::EditModal(const QString &roomId, QWidget *parent)
   : QWidget(parent)
@@ -91,6 +103,28 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
         auto window = QApplication::activeWindow();
         auto center = window->frameGeometry().center();
         move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
+}
+
+void
+EditModal::topicEventSent()
+{
+        errorField_->hide();
+        close();
+}
+
+void
+EditModal::nameEventSent(const QString &name)
+{
+        errorField_->hide();
+        emit nameChanged(name);
+        close();
+}
+
+void
+EditModal::error(const QString &msg)
+{
+        errorField_->setText(msg);
+        errorField_->show();
 }
 
 void

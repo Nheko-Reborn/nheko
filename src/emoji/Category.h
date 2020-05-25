@@ -18,12 +18,13 @@
 #pragma once
 
 #include <QColor>
-#include <QLabel>
-#include <QLayout>
-#include <QListView>
-#include <QStandardItemModel>
 
 #include "ItemDelegate.h"
+
+class QLabel;
+class QListView;
+class QStandardItemModel;
+class QVBoxLayout;
 
 namespace emoji {
 

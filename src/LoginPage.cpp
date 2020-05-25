@@ -16,6 +16,7 @@
  */
 
 #include <QDesktopServices>
+#include <QLabel>
 #include <QPainter>
 #include <QStyleOption>
 
@@ -118,7 +119,7 @@ LoginPage::LoginPage(QWidget *parent)
         deviceName_->setLabel(tr("Device name"));
         deviceName_->setToolTip(
           tr("A name for this device, which will be shown to others, when verifying your devices. "
-             "If none is provided, a random string is used for privacy purposes."));
+             "If none is provided a default is used."));
 
         serverInput_ = new TextField(this);
         serverInput_->setLabel("Homeserver address");
@@ -177,6 +178,12 @@ LoginPage::LoginPage(QWidget *parent)
         connect(serverInput_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(matrixid_input_, SIGNAL(editingFinished()), this, SLOT(onMatrixIdEntered()));
         connect(serverInput_, SIGNAL(editingFinished()), this, SLOT(onServerAddressEntered()));
+}
+
+void
+LoginPage::loginError(const QString &msg)
+{
+        error_label_->setText(msg);
 }
 
 void

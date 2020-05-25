@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QIcon>
+#include <QLabel>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QPushButton>

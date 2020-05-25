@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QLabel>
 #include <QWidget>
 
 #include <mtx/identifiers.hpp>
 
 class QPushButton;
+class QLabel;
 
 class InviteeItem : public QWidget
 {
