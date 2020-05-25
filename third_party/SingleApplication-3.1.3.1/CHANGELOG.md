@@ -1,6 +1,40 @@
 Changelog
 =========
 
+If by accident I have forgotten to credit someone in the CHANGELOG, email me and I will fix it.
+
+__3.1.3.1__
+---------
+* CMake build system improvements
+* Fixed Clang Tidy warnings
+
+    _Hennadii Chernyshchyk_
+
+__3.1.3__
+---------
+* Improved `CMakeLists.txt`
+
+    _Hennadii Chernyshchyk_
+
+__3.1.2__
+---------
+
+* Fix a crash when exiting an application on Android and iOS
+
+    _Emeric Grange_
+
+__3.1.1a__
+----------
+
+* Added currentUser() method that returns the user the current instance is running as.
+
+    _Leander Schulten_
+
+__3.1.0a__
+----------
+
+* Added primaryUser() method that returns the user the primary instance is running as.
+
 __3.0.19__
 ----------
 
