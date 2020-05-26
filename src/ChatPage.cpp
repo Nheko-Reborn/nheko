@@ -255,7 +255,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           text_input_, &TextInputWidget::startedTyping, this, &ChatPage::sendTypingNotifications);
         connect(typingRefresher_, &QTimer::timeout, this, &ChatPage::sendTypingNotifications);
         connect(text_input_, &TextInputWidget::stoppedTyping, this, [this]() {
-                if (!userSettings_->isTypingNotificationsEnabled())
+                if (!userSettings_->typingNotifications())
                         return;
 
                 typingRefresher_->stop();
@@ -482,7 +482,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         activateWindow();
                 });
 
-        setGroupViewState(userSettings_->isGroupViewEnabled());
+        setGroupViewState(userSettings_->groupView());
 
         connect(userSettings_.data(),
                 &UserSettings::groupViewStateChanged,
@@ -1207,7 +1207,7 @@ ChatPage::unbanUser(QString userid, QString reason)
 void
 ChatPage::sendTypingNotifications()
 {
-        if (!userSettings_->isTypingNotificationsEnabled())
+        if (!userSettings_->typingNotifications())
                 return;
 
         http::client()->start_typing(
@@ -1343,7 +1343,7 @@ ChatPage::hideSideBars()
 void
 ChatPage::showSideBars()
 {
-        if (userSettings_->isGroupViewEnabled())
+        if (userSettings_->groupView())
                 communitiesList_->show();
 
         sideBar_->show();

@@ -25,7 +25,7 @@ MouseArea {
 		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
 	}
 	Rectangle {
-		color: (settings.isMessageHoverHighlightEnabled && parent.containsMouse) ? colors.base : "transparent"
+		color: (settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
 		anchors.fill: row
 	}
 	RowLayout {

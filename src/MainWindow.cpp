@@ -148,7 +148,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         QSettings settings;
 
-        trayIcon_->setVisible(userSettings_->isTrayEnabled());
+        trayIcon_->setVisible(userSettings_->tray());
 
         if (hasActiveUser()) {
                 QString token       = settings.value("auth/access_token").toString();
@@ -286,7 +286,7 @@ void
 MainWindow::closeEvent(QCloseEvent *event)
 {
         if (!qApp->isSavingSession() && isVisible() && pageSupportsTray() &&
-            userSettings_->isTrayEnabled()) {
+            userSettings_->tray()) {
                 event->ignore();
                 hide();
         }
