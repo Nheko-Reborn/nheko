@@ -219,12 +219,11 @@ TimelineViewManager::queueTextMessage(const QString &msg)
 
         if (settings->isMarkdownEnabled()) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
-
                 // Don't send formatted_body, when we don't need to
-                if (text.formatted_body.find("<") == std::string::npos)
-                        text.formatted_body = "";
-                else
+                if (text.body.find_first_of("<>[]()*+-_`#@!.\\") != std::string::npos)
                         text.format = "org.matrix.custom.html";
+                else
+                        text.formatted_body = "";
         }
 
         if (!timeline_->reply().isEmpty()) {
