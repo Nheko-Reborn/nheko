@@ -30,7 +30,7 @@ Flow {
 
 				TextMetrics {
 					id: textMetrics
-					font.family: settings.emoji_font_family
+					font.family: settings.emojiFont
 					elide: Text.ElideRight
 					elideWidth: 150
 					text: reaction.text
@@ -40,14 +40,14 @@ Flow {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
 					text: textMetrics.elidedText + (textMetrics.elidedText == textMetrics.text ? "" : "…")
-					font.family: settings.emoji_font_family
+					font.family: settings.emojiFont
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1
 				}
 
 				Rectangle {
 					id: divider
-					height: reactionCounter.implicitHeight * 1.4
+					height: Math.floor(reactionCounter.implicitHeight * 1.4)
 					width: 1
 					color: reaction.hovered ? colors.highlight : colors.text
 				}
@@ -64,7 +64,7 @@ Flow {
 			background: Rectangle {
 				anchors.centerIn: parent
 				implicitWidth: reaction.implicitWidth
-				implicitHeight: reaction.implicitHeight
+				height: reaction.implicitHeight
 				border.color: (reaction.hovered || model.selfReacted )? colors.highlight : colors.text
 				color: colors.base
 				border.width: 1

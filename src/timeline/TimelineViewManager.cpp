@@ -88,6 +88,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
 #endif
         container->setMinimumSize(200, 200);
         view->rootContext()->setContextProperty("timelineManager", this);
+        view->rootContext()->setContextProperty("settings", settings.data());
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);

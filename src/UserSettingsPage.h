@@ -27,6 +27,7 @@ class Toggle;
 class QLabel;
 class QFormLayout;
 class QComboBox;
+class QSpinBox;
 class QHBoxLayout;
 class QVBoxLayout;
 
@@ -38,6 +39,39 @@ class UserSettings : public QObject
 {
         Q_OBJECT
 
+        Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
+        Q_PROPERTY(bool isMessageHoverHighlightEnabled READ isMessageHoverHighlightEnabled WRITE
+                     setMessageHoverHighlight NOTIFY messageHoverHighlightChanged)
+        Q_PROPERTY(bool enlargeEmojiOnlyMessages READ isEnlargeEmojiOnlyMessagesEnabled WRITE
+                     setEnlargeEmojiOnlyMessages NOTIFY enlargeEmojiOnlyMessagesChanged)
+        Q_PROPERTY(bool trayEnabled READ isTrayEnabled WRITE setTray NOTIFY trayChanged)
+        Q_PROPERTY(bool startInTrayEnabled READ isStartInTrayEnabled WRITE setStartInTray NOTIFY
+                     startInTrayChanged)
+        Q_PROPERTY(bool groupViewEnabled READ isGroupViewEnabled WRITE setGroupView NOTIFY
+                     groupViewStateChanged)
+        Q_PROPERTY(
+          bool markdown READ isMarkdownEnabled WRITE setMarkdownEnabled NOTIFY markdownChanged)
+        Q_PROPERTY(bool typingNotifications READ isTypingNotificationsEnabled WRITE
+                     setTypingNotifications NOTIFY typingNotificationsChanged)
+        Q_PROPERTY(bool sortByImportance READ isSortByImportanceEnabled WRITE setSortByImportance
+                     NOTIFY roomSortingChanged)
+        Q_PROPERTY(bool buttonsInTimeline READ isButtonsInTimelineEnabled WRITE setButtonsInTimeline
+                     NOTIFY buttonInTimelineChanged)
+        Q_PROPERTY(bool readReceipts READ isReadReceiptsEnabled WRITE setReadReceipts NOTIFY
+                     readReceiptsChanged)
+        Q_PROPERTY(bool desktopNotifications READ hasDesktopNotifications WRITE
+                     setDesktopNotifications NOTIFY desktopNotificationsChanged)
+        Q_PROPERTY(bool avatarCircles READ isAvatarCirclesEnabled WRITE setAvatarCircles NOTIFY
+                     avatarCirclesChanged)
+        Q_PROPERTY(bool decryptSidebar READ isDecryptSidebarEnabled WRITE setDecryptSidebar NOTIFY
+                     decryptSidebarChanged)
+        Q_PROPERTY(int timelineMaxWidth READ timelineMaxWidth WRITE setTimelineMaxWidth NOTIFY
+                     timelineMaxWidthChanged)
+        Q_PROPERTY(double fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
+        Q_PROPERTY(QString font READ font WRITE setFontFamily NOTIFY fontChanged)
+        Q_PROPERTY(
+          QString emojiFont READ emojiFont WRITE setEmojiFontFamily NOTIFY emojiFontChanged)
+
 public:
         UserSettings();
 
@@ -45,88 +79,23 @@ public:
         void load();
         void applyTheme();
         void setTheme(QString theme);
-        void setMessageHoverHighlight(bool state)
-        {
-                isMessageHoverHighlightEnabled_ = state;
-                save();
-        }
-        void setEnlargeEmojiOnlyMessages(bool state)
-        {
-                isEnlargeEmojiOnlyMessagesEnabled_ = state;
-                save();
-        }
-        void setTray(bool state)
-        {
-                isTrayEnabled_ = state;
-                save();
-        }
-
-        void setStartInTray(bool state)
-        {
-                isStartInTrayEnabled_ = state;
-                save();
-        }
-
+        void setMessageHoverHighlight(bool state);
+        void setEnlargeEmojiOnlyMessages(bool state);
+        void setTray(bool state);
+        void setStartInTray(bool state);
         void setFontSize(double size);
         void setFontFamily(QString family);
         void setEmojiFontFamily(QString family);
-
-        void setGroupView(bool state)
-        {
-                if (isGroupViewEnabled_ != state)
-                        emit groupViewStateChanged(state);
-
-                isGroupViewEnabled_ = state;
-                save();
-        }
-
-        void setMarkdownEnabled(bool state)
-        {
-                isMarkdownEnabled_ = state;
-                save();
-        }
-
-        void setReadReceipts(bool state)
-        {
-                isReadReceiptsEnabled_ = state;
-                save();
-        }
-
-        void setTypingNotifications(bool state)
-        {
-                isTypingNotificationsEnabled_ = state;
-                save();
-        }
-
-        void setSortByImportance(bool state)
-        {
-                sortByImportance_ = state;
-                emit roomSortingChanged();
-        }
-
-        void setButtonsInTimeline(bool state)
-        {
-                isButtonsInTimelineEnabled_ = state;
-                save();
-        }
-
-        void setDesktopNotifications(bool state)
-        {
-                hasDesktopNotifications_ = state;
-                save();
-        }
-
-        void setAvatarCircles(bool state)
-        {
-                avatarCircles_ = state;
-                save();
-        }
-
-        void setDecryptSidebar(bool state)
-        {
-                decryptSidebar_ = state;
-                save();
-        }
+        void setGroupView(bool state);
+        void setMarkdownEnabled(bool state);
+        void setReadReceipts(bool state);
+        void setTypingNotifications(bool state);
+        void setSortByImportance(bool state);
+        void setButtonsInTimeline(bool state);
+        void setTimelineMaxWidth(int state);
+        void setDesktopNotifications(bool state);
+        void setAvatarCircles(bool state);
+        void setDecryptSidebar(bool state);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool isMessageHoverHighlightEnabled() const { return isMessageHoverHighlightEnabled_; }
@@ -145,13 +114,30 @@ public:
         bool isButtonsInTimelineEnabled() const { return isButtonsInTimelineEnabled_; }
         bool isReadReceiptsEnabled() const { return isReadReceiptsEnabled_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
+        int timelineMaxWidth() const { return timelineMaxWidth_; }
         double fontSize() const { return baseFontSize_; }
         QString font() const { return font_; }
         QString emojiFont() const { return emojiFont_; }
 
 signals:
         void groupViewStateChanged(bool state);
-        void roomSortingChanged();
+        void roomSortingChanged(bool state);
+        void themeChanged(QString state);
+        void messageHoverHighlightChanged(bool state);
+        void enlargeEmojiOnlyMessagesChanged(bool state);
+        void trayChanged(bool state);
+        void startInTrayChanged(bool state);
+        void markdownChanged(bool state);
+        void typingNotificationsChanged(bool state);
+        void buttonInTimelineChanged(bool state);
+        void readReceiptsChanged(bool state);
+        void desktopNotificationsChanged(bool state);
+        void avatarCirclesChanged(bool state);
+        void decryptSidebarChanged(bool state);
+        void timelineMaxWidthChanged(int state);
+        void fontSizeChanged(double state);
+        void fontChanged(QString state);
+        void emojiFontChanged(QString state);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -173,6 +159,7 @@ private:
         bool hasDesktopNotifications_;
         bool avatarCircles_;
         bool decryptSidebar_;
+        int timelineMaxWidth_;
         double baseFontSize_;
         QString font_;
         QString emojiFont_;
@@ -237,6 +224,8 @@ private:
         QComboBox *fontSizeCombo_;
         QComboBox *fontSelectionCombo_;
         QComboBox *emojiFontSelectionCombo_;
+
+        QSpinBox *timelineMaxWidthSpin_;
 
         int sideMargin_ = 0;
 };

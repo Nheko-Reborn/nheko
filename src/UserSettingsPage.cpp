@@ -30,6 +30,7 @@
 #include <QScrollArea>
 #include <QScroller>
 #include <QSettings>
+#include <QSpinBox>
 #include <QStandardPaths>
 #include <QString>
 #include <QTextStream>
@@ -56,6 +57,7 @@ UserSettings::load()
         isStartInTrayEnabled_       = settings.value("user/window/start_in_tray", false).toBool();
         isGroupViewEnabled_         = settings.value("user/group_view", true).toBool();
         isButtonsInTimelineEnabled_ = settings.value("user/timeline/buttons", true).toBool();
+        timelineMaxWidth_           = settings.value("user/timeline/max_width", 0).toInt();
         isMessageHoverHighlightEnabled_ =
           settings.value("user/timeline/message_hover_highlight", false).toBool();
         isEnlargeEmojiOnlyMessagesEnabled_ =
@@ -73,34 +75,183 @@ UserSettings::load()
 
         applyTheme();
 }
+void
+UserSettings::setMessageHoverHighlight(bool state)
+{
+        if (state == isMessageHoverHighlightEnabled_)
+                return;
+        isMessageHoverHighlightEnabled_ = state;
+        emit messageHoverHighlightChanged(state);
+        save();
+}
+void
+UserSettings::setEnlargeEmojiOnlyMessages(bool state)
+{
+        if (state == isEnlargeEmojiOnlyMessagesEnabled_)
+                return;
+        isEnlargeEmojiOnlyMessagesEnabled_ = state;
+        emit enlargeEmojiOnlyMessagesChanged(state);
+        save();
+}
+void
+UserSettings::setTray(bool state)
+{
+        if (state == isTrayEnabled_)
+                return;
+        isTrayEnabled_ = state;
+        emit trayChanged(state);
+        save();
+}
+
+void
+UserSettings::setStartInTray(bool state)
+{
+        if (state == isStartInTrayEnabled_)
+                return;
+        isStartInTrayEnabled_ = state;
+        emit startInTrayChanged(state);
+        save();
+}
+
+void
+UserSettings::setGroupView(bool state)
+{
+        if (isGroupViewEnabled_ != state)
+                emit groupViewStateChanged(state);
+
+        isGroupViewEnabled_ = state;
+        save();
+}
+
+void
+UserSettings::setMarkdownEnabled(bool state)
+{
+        if (state == isMarkdownEnabled_)
+                return;
+        isMarkdownEnabled_ = state;
+        emit markdownChanged(state);
+        save();
+}
+
+void
+UserSettings::setReadReceipts(bool state)
+{
+        if (state == isReadReceiptsEnabled_)
+                return;
+        isReadReceiptsEnabled_ = state;
+        emit readReceiptsChanged(state);
+        save();
+}
+
+void
+UserSettings::setTypingNotifications(bool state)
+{
+        if (state == isTypingNotificationsEnabled_)
+                return;
+        isTypingNotificationsEnabled_ = state;
+        emit typingNotificationsChanged(state);
+        save();
+}
+
+void
+UserSettings::setSortByImportance(bool state)
+{
+        if (state == sortByImportance_)
+                return;
+        sortByImportance_ = state;
+        emit roomSortingChanged(state);
+        save();
+}
+
+void
+UserSettings::setButtonsInTimeline(bool state)
+{
+        if (state == isButtonsInTimelineEnabled_)
+                return;
+        isButtonsInTimelineEnabled_ = state;
+        emit buttonInTimelineChanged(state);
+        save();
+}
+
+void
+UserSettings::setTimelineMaxWidth(int state)
+{
+        if (state == timelineMaxWidth_)
+                return;
+        timelineMaxWidth_ = state;
+        emit timelineMaxWidthChanged(state);
+        save();
+}
+
+void
+UserSettings::setDesktopNotifications(bool state)
+{
+        if (state == hasDesktopNotifications_)
+                return;
+        hasDesktopNotifications_ = state;
+        emit desktopNotificationsChanged(state);
+        save();
+}
+
+void
+UserSettings::setAvatarCircles(bool state)
+{
+        if (state == avatarCircles_)
+                return;
+        avatarCircles_ = state;
+        emit avatarCirclesChanged(state);
+        save();
+}
+
+void
+UserSettings::setDecryptSidebar(bool state)
+{
+        if (state == decryptSidebar_)
+                return;
+        decryptSidebar_ = state;
+        emit decryptSidebarChanged(state);
+        save();
+}
 
 void
 UserSettings::setFontSize(double size)
 {
+        if (size == baseFontSize_)
+                return;
         baseFontSize_ = size;
+        emit fontSizeChanged(size);
         save();
 }
 
 void
 UserSettings::setFontFamily(QString family)
 {
+        if (family == font_)
+                return;
         font_ = family;
+        emit fontChanged(family);
         save();
 }
 
 void
 UserSettings::setEmojiFontFamily(QString family)
 {
+        if (family == emojiFont_)
+                return;
         emojiFont_ = family;
+        emit emojiFontChanged(family);
         save();
 }
 
 void
 UserSettings::setTheme(QString theme)
 {
+        if (theme == theme)
+                return;
         theme_ = theme;
         save();
         applyTheme();
+        emit themeChanged(theme);
 }
 
 void
@@ -171,6 +322,7 @@ UserSettings::save()
         settings.setValue("buttons", isButtonsInTimelineEnabled_);
         settings.setValue("message_hover_highlight", isMessageHoverHighlightEnabled_);
         settings.setValue("enlarge_emoji_only_msg", isEnlargeEmojiOnlyMessagesEnabled_);
+        settings.setValue("max_width", timelineMaxWidth_);
         settings.endGroup();
 
         settings.setValue("avatar_circles", avatarCircles_);
@@ -187,6 +339,8 @@ UserSettings::save()
         settings.setValue("emoji_font_family", emojiFont_);
 
         settings.endGroup();
+
+        settings.sync();
 }
 
 HorizontalLine::HorizontalLine(QWidget *parent)
@@ -251,6 +405,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         fontSizeCombo_            = new QComboBox{this};
         fontSelectionCombo_       = new QComboBox{this};
         emojiFontSelectionCombo_  = new QComboBox{this};
+        timelineMaxWidthSpin_     = new QSpinBox{this};
 
         if (!settings_->isTrayEnabled())
                 startInTrayToggle_->setDisabled(true);
@@ -294,6 +449,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         themeStr.replace(0, 1, themeStr[0].toUpper());
         int themeIndex = themeCombo_->findText(themeStr);
         themeCombo_->setCurrentIndex(themeIndex);
+
+        timelineMaxWidthSpin_->setMinimum(0);
+        timelineMaxWidthSpin_->setMaximum(100'000'000);
+        timelineMaxWidthSpin_->setSingleStep(10);
 
         auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
         encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
@@ -366,6 +525,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 timelineButtonsToggle_,
                 tr("Show buttons to quickly reply, react or access additional options next to each "
                    "message."));
+        boxWrap(tr("Limit width of timeline"),
+                timelineMaxWidthSpin_,
+                tr("Set the max width of messages in the timeline (in pixels). This can help "
+                   "readability on wide screen, when Nheko is maximised"));
         boxWrap(tr("Typing notifications"),
                 typingNotifications_,
                 tr("Show who is typing in a room.\nThis will also enable or disable sending typing "
@@ -525,6 +688,11 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setEnlargeEmojiOnlyMessages(!isDisabled);
         });
 
+        connect(timelineMaxWidthSpin_,
+                qOverload<int>(&QSpinBox::valueChanged),
+                this,
+                [this](int newValue) { settings_->setTimelineMaxWidth(newValue); });
+
         connect(
           sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
 
@@ -560,6 +728,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         messageHoverHighlight_->setState(!settings_->isMessageHoverHighlightEnabled());
         enlargeEmojiOnlyMessages_->setState(!settings_->isEnlargeEmojiOnlyMessagesEnabled());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
+        timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));
