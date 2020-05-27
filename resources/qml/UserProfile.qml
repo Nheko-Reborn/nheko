@@ -16,25 +16,16 @@ ApplicationWindow{
     Layout.alignment: Qt.AlignHCenter
     palette: colors
 
-    onAfterRendering: {
-        userProfileAvatar.url = chat.model.avatarUrl(user_data.userId).replace("mxc://", "image://MxcImage/")
-        userProfileName.text = user_data.userName
-        matrixUserID.text = user_data.userId
-        userProfile.userId = user_data.userId
-        log_devices()     
-    }
-
-    function log_devices()
-    {
-        console.log(userProfile.deviceList);
-        userProfile.deviceList.forEach((item,index)=>{
-            console.log(item.device_id)
-            console.log(item.display_name)
-        })
-    } 
-
-    UserProfileContent{
-        id: userProfile
+    UserProfileList{
+        id: userProfileList
+        userId: user_data.userId
+        onUserIdChanged : {
+            console.log(userId)
+            userProfileList.updateDeviceList()
+        }
+        onDeviceListUpdated : {
+            modelDeviceList.deviceList = userProfileList
+        }
     }
 
     background: Item{
@@ -52,6 +43,7 @@ ApplicationWindow{
 
             Avatar{
                 id: userProfileAvatar
+                url:chat.model.avatarUrl(user_data.userId).replace("mxc://", "image://MxcImage/")
                 height: 130
                 width: 130
                 displayName: modelData.userName
@@ -60,12 +52,14 @@ ApplicationWindow{
 
             Label{
                 id: userProfileName
+                text: user_data.userName
                 fontSizeMode: Text.HorizontalFit
                 Layout.alignment: Qt.AlignHCenter
             }
 
             Label{
                 id: matrixUserID
+                text: user_data.userId
                 fontSizeMode: Text.HorizontalFit
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -78,9 +72,29 @@ ApplicationWindow{
                 ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-                Label {
-                    text: "ABC"
-                    font.pixelSize: 700
+                ListView{
+                    id: deviceList
+                    anchors.fill: parent
+                    clip: true
+                    spacing: 10
+
+                    model: UserProfileModel{
+                        id: modelDeviceList
+                    } 
+
+                    delegate: RowLayout{
+                        width: parent.width
+                        Text{
+                            Layout.fillWidth: true
+                            color: colors.text
+                            text: deviceID
+                        }
+                        Text{
+                            Layout.fillWidth: true
+                            color:colors.text
+                            text: displayName
+                        }
+                    }
                 }
             }
 

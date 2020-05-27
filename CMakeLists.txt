@@ -278,6 +278,7 @@ set(SRC_FILES
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
 	src/ui/UserProfile.cpp
+	src/ui/UserProfileModel.cpp
 
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
@@ -482,6 +483,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
 	src/ui/UserProfile.h
+	src/ui/UserProfileModel.h
 
 	src/notifications/Manager.h
 

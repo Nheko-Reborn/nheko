@@ -2,33 +2,29 @@
 
 #include <QObject>
 #include <QString>
+#include <QVector>
 
 #include "MatrixClient.h"
 
 class DeviceInfo
 {
 public:
-        explicit DeviceInfo(QString device_id,QString display_name){
-                this->device_id = device_id;
-                this->display_name = display_name;
-        }
-        ~DeviceInfo() = default;
-        DeviceInfo(const DeviceInfo &device){
-                this->device_id = device.device_id;
-                this->display_name = device.display_name;
-        }
+        DeviceInfo(const QString deviceID, const QString displayName)
+          : device_id(deviceID)
+          , display_name(displayName)
+        {}
+
+        DeviceInfo() {}
 
         QString device_id;
         QString display_name;
 };
-Q_DECLARE_METATYPE(DeviceInfo);
 
 class UserProfile : public QObject
 {
         Q_OBJECT
+        Q_PROPERTY(QString userId READ getUserId WRITE setUserId NOTIFY userIdChanged)
         Q_PROPERTY(QVector<DeviceInfo> deviceList READ getDeviceList NOTIFY deviceListUpdated)
-        Q_PROPERTY(QString userId READ getUserId WRITE setUserId)
-
 public:
         // constructor
         explicit UserProfile(QObject *parent = 0);
@@ -39,8 +35,10 @@ public:
         void setUserId(const QString &userId);
 
         Q_INVOKABLE void fetchDeviceList(const QString &userID);
+        Q_INVOKABLE void updateDeviceList();
 
 signals:
+        void userIdChanged();
         void deviceListUpdated();
 
 private:
