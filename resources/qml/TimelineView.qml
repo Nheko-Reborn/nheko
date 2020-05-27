@@ -273,6 +273,9 @@ Page {
 							color: colors.base
 						}
 					}
+
+					property variant userProfile
+
 					Row {
 						height: userName.height
 						spacing: 8
@@ -287,8 +290,10 @@ Page {
 							MouseArea {
 								anchors.fill: parent
                                 onClicked: {
-                                    userProfile.user_data = modelData
-                                    userProfile.show()
+									if(userProfile) userProfile.destroy()
+									var component = Qt.createComponent("UserProfile.qml");
+									userProfile = component.createObject(timelineRoot,{user_data : modelData});
+									userProfile.show();
                                 }
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
@@ -303,26 +308,17 @@ Page {
 
 							MouseArea {
 								anchors.fill: parent
+								Layout.alignment: Qt.AlignHCenter
                                 onClicked: {
-                                    userProfile.user_data = modelData
-                                    userProfile.show()
+									if(userProfile) userProfile.destroy()
+									var component = Qt.createComponent("UserProfile.qml")
+									userProfile = component.createObject(timelineRoot,{user_data : modelData})
+									userProfile.show()
                                 }
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
 							}
 						}
-
-						Label {
-							color: colors.buttonText
-							text: timelineManager.userStatus(modelData.userId)
-							textFormat: Text.PlainText
-							elide: Text.ElideRight
-							width: chat.delegateMaxWidth - parent.spacing*2 - userName.implicitWidth - avatarSize
-							font.italic: true
-						}
-                        UserProfile{
-                            id: userProfile
-                        }
 					}
 				}
 			}

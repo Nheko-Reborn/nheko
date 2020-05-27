@@ -2,29 +2,32 @@
 #include "Logging.h"
 #include "Utils.h"
 #include "mtx/responses/crypto.hpp"
-#include <iostream>
 
 UserProfile::UserProfile(QObject *parent)
   : QObject(parent)
 {}
 
 QVector<DeviceInfo>
-UserProfile::getDeviceList(){
-        UserProfile::fetchDeviceList(this->userId);
+UserProfile::getDeviceList()
+{
         return this->deviceList;
 }
 
 QString
-UserProfile::getUserId (){
+UserProfile::getUserId()
+{
         return this->userId;
 }
 
 void
-UserProfile::setUserId (const QString &user_id){
-        if(this->userId != userId)
+UserProfile::setUserId(const QString &user_id)
+{
+        if (this->userId != userId)
                 return;
-        else
+        else {
                 this->userId = user_id;
+                emit UserProfile::userIdChanged();
+        }
 }
 
 void
@@ -37,11 +40,11 @@ UserProfile::fetchDeviceList(const QString &userID)
 
         http::client()->query_keys(
           req,
-          [user_id = userID.toStdString(),this](const mtx::responses::QueryKeys &res,
-                                           mtx::http::RequestErr err) {
+          [user_id = userID.toStdString(), this](const mtx::responses::QueryKeys &res,
+                                                 mtx::http::RequestErr err) {
                   if (err) {
-                          nhlog::net()->warn("failed to query device keys: {} {}",
-                                             err->matrix_error.error,
+                          nhlog::net()->warn("failed to query device keys: {},{}",
+                                             err->matrix_error.errcode,
                                              static_cast<int>(err->status_code));
                           return;
                   }
@@ -53,17 +56,16 @@ UserProfile::fetchDeviceList(const QString &userID)
                   }
 
                   auto devices = res.device_keys.at(user_id);
-
                   QVector<DeviceInfo> deviceInfo;
+
                   for (const auto &d : devices) {
                           auto device = d.second;
 
                           // TODO: Verify signatures and ignore those that don't pass.
-                        //   std::cout<<d.first<<std::endl;
-                        //   std::cout<<device.unsigned_info.device_display_name<<std::endl;
-                          DeviceInfo newdevice(QString::fromStdString(d.first),QString::fromStdString(device.unsigned_info.device_display_name))
-                          newdevice->device_id = QString::fromStdString(d.first);
-                          newdevice->display_name = QString::fromStdString(device.unsigned_info.device_display_name)
+                          DeviceInfo newdevice(
+                            QString::fromStdString(d.first),
+                            QString::fromStdString(device.unsigned_info.device_display_name));
+                          QString::fromStdString(device.unsigned_info.device_display_name);
 
                           deviceInfo.append(std::move(newdevice));
                   }
@@ -74,7 +76,13 @@ UserProfile::fetchDeviceList(const QString &userID)
                                     return a.device_id > b.device_id;
                             });
 
-                this->deviceList = deviceInfo;
-                emit UserProfile::deviceListUpdated();
+                  this->deviceList = std::move(deviceInfo);
+                  emit UserProfile::deviceListUpdated();
           });
+}
+
+void
+UserProfile::updateDeviceList()
+{
+        fetchDeviceList(this->userId);
 }

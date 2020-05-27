@@ -3,6 +3,7 @@
 #include <QMetaType>
 #include <QPalette>
 #include <QQmlContext>
+#include <QQmlEngine>
 
 #include "BlurhashProvider.h"
 #include "ChatPage.h"
@@ -16,6 +17,8 @@
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 #include "../ui/UserProfile.h"
+#include "src/ui/UserProfile.h"
+#include "src/ui/UserProfileModel.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 
@@ -87,8 +90,9 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
         qmlRegisterType<DeviceVerificationFlow>("im.nheko", 1, 0, "DeviceVerificationFlow");
-        qmlRegisterType<UserProfile>("im.nheko",1,0,"UserProfileContent");
-        qRegisterMetaType<DeviceInfo>();
+        qmlRegisterType<UserProfileModel>("im.nheko", 1, 0, "UserProfileModel");
+        qmlRegisterType<UserProfile>("im.nheko", 1, 0, "UserProfileList");
+
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
         qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterType<emoji::EmojiProxyModel>("im.nheko.EmojiModel", 1, 0, "EmojiProxyModel");
