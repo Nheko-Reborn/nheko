@@ -94,7 +94,7 @@ private:
 #if defined(Q_OS_MAC)
                 return "Nheko on macOS";
 #elif defined(Q_OS_LINUX)
-                return "Nheko on Linux";
+                return "Nheko on GNU/Linux";
 #elif defined(Q_OS_WIN)
                 return "Nheko on Windows";
 #elif defined(Q_OS_FREEBSD)
