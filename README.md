@@ -46,7 +46,7 @@ Specifically there is support for:
 
 ### Releases
 
-Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer)
+Releases for GNU/Linux (AppImage), macOS (disk image) & Windows (x64 installer)
 can be found in the [Github releases](https://github.com/Nheko-Reborn/nheko/releases).
 
 ### Repositories
@@ -58,7 +58,7 @@ can be found in the [Github releases](https://github.com/Nheko-Reborn/nheko/rele
 pacaur -S nheko # nheko-git
 ```
 
-#### Debian (10 and above) / Ubuntu (18.04 and above)
+#### Debian GNU/Linux (10 and above) and Ubuntu GNU/Linux (18.04 and above)
 
 ```bash
 sudo apt install nheko
@@ -69,7 +69,7 @@ sudo apt install nheko
 sudo dnf install nheko
 ```
 
-#### Gentoo Linux
+#### Gentoo GNU/Linux
 ```bash
 sudo eselect repository enable matrix
 sudo emerge -a nheko
@@ -142,7 +142,7 @@ The bundle flags are currently:
 - USE_BUNDLED_LMDBXX
 - USE_BUNDLED_TWEENY
 
-#### Linux
+#### GNU/Linux
 
 If you don't want to install any external dependencies, you can generate an AppImage locally using docker. It is not that well maintained though...
 
@@ -166,13 +166,13 @@ sudo pacman -S qt5-base \
     libsodium
 ```
 
-##### Gentoo Linux
+##### Gentoo GNU/Linux
 
 ```bash
 sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
 ```
 
-##### Ubuntu 20.04
+##### Ubuntu GNU/Linux 20.04
 
 ```bash
 # Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
@@ -181,7 +181,7 @@ sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multi
 This will install all dependencies, except for tweeny (use bundled tweeny)
 and mtxclient (needs to be build separately).
 
-##### Debian Buster (or higher probably)
+##### Debian GNU/Linux Buster (or higher probably)
 
 (User report, not sure if all of those are needed)
 
