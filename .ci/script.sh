@@ -6,7 +6,21 @@ if [ "$FLATPAK" ]; then
 	mkdir -p build-flatpak
 	cd build-flatpak
 
-	flatpak-builder --ccache --repo=repo --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
+	flatpak-builder --ccache --repo=repo --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json &
+
+	# to prevent flatpak builder from timing out on arm, run it in the background and print something every minute for up to 30 minutes.
+	minutes=0
+	limit=30
+	while kill -0 $! >/dev/null 2>&1; do
+		if [ $minutes == $limit ]; then
+			break;
+		fi
+
+		minutes=$((minutes+1))
+
+		sleep 60
+	done
+
 	flatpak build-bundle repo nheko-${VERSION}-${ARCH}.flatpak io.github.NhekoReborn.Nheko master
 
 	mkdir ../artifacts
