@@ -808,7 +808,7 @@ TimelineModel::escapeEmoji(QString str) const
 void
 TimelineModel::viewRawMessage(QString id) const
 {
-        std::string ev = utils::serialize_event(events.value(id)).dump(4);
+        std::string ev = mtx::accessors::serialize_event(events.value(id)).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
 }
@@ -822,7 +822,7 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
                 event = decryptEvent(*e).event;
         }
 
-        std::string ev = utils::serialize_event(event).dump(4);
+        std::string ev = mtx::accessors::serialize_event(event).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
 }

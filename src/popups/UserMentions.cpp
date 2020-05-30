@@ -8,9 +8,9 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "UserMentions.h"
-//#include "timeline/TimelineItem.h"
 
 using namespace popups;
 
@@ -75,12 +75,15 @@ UserMentions::initializeMentions(const QMap<QString, mtx::responses::Notificatio
 
         for (const auto &item : notifs) {
                 for (const auto &notif : item.notifications) {
-                        const auto event_id = QString::fromStdString(utils::event_id(notif.event));
+                        const auto event_id =
+                          QString::fromStdString(mtx::accessors::event_id(notif.event));
 
                         try {
                                 const auto room_id = QString::fromStdString(notif.room_id);
-                                const auto user_id = utils::event_sender(notif.event);
-                                const auto body    = utils::event_body(notif.event);
+                                const auto user_id =
+                                  QString::fromStdString(mtx::accessors::sender(notif.event));
+                                const auto body =
+                                  QString::fromStdString(mtx::accessors::body(notif.event));
 
                                 pushItem(event_id,
                                          user_id,

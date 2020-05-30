@@ -31,6 +31,7 @@
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "Utils.h"
 
@@ -1947,13 +1948,14 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
 
                 json obj = json::object();
 
-                obj["event"] = utils::serialize_event(e);
+                obj["event"] = mtx::accessors::serialize_event(e);
                 obj["token"] = res.prev_batch;
 
-                lmdb::dbi_put(txn,
-                              db,
-                              lmdb::val(std::to_string(utils::event_timestamp(e))),
-                              lmdb::val(obj.dump()));
+                lmdb::dbi_put(
+                  txn,
+                  db,
+                  lmdb::val(std::to_string(obj["event"]["origin_server_ts"].get<uint64_t>())),
+                  lmdb::val(obj.dump()));
         }
 }
 
@@ -2026,7 +2028,7 @@ Cache::saveTimelineMentions(lmdb::txn &txn,
         using namespace mtx::events::state;
 
         for (const auto &notif : res) {
-                const auto event_id = utils::event_id(notif.event);
+                const auto event_id = mtx::accessors::event_id(notif.event);
 
                 // double check that we have the correct room_id...
                 if (room_id.compare(notif.room_id) != 0) {

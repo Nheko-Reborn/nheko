@@ -26,6 +26,7 @@
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -885,7 +886,7 @@ void
 ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 {
         for (const auto &item : res.notifications) {
-                const auto event_id = utils::event_id(item.event);
+                const auto event_id = mtx::accessors::event_id(item.event);
 
                 try {
                         if (item.read) {
@@ -895,7 +896,8 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 
                         if (!cache::isNotificationSent(event_id)) {
                                 const auto room_id = QString::fromStdString(item.room_id);
-                                const auto user_id = utils::event_sender(item.event);
+                                const auto user_id =
+                                  QString::fromStdString(mtx::accessors::sender(item.event));
 
                                 // We should only sent one notification per event.
                                 cache::markSentNotification(event_id);
