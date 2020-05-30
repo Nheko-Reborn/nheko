@@ -113,10 +113,6 @@ matrix:
               apt:
                   sources: 
                     - sourceline: 'ppa:alexlarsson/flatpak'
-                  packages: 
-                    - flatpak
-                    - flatpak-builder
-                    - elfutils
         - os: linux
           arch: arm64
           env:
@@ -128,20 +124,17 @@ matrix:
                   sources: 
                     - sourceline: 'ppa:alexlarsson/flatpak'
                   packages: 
-                    - flatpak
-                    - flatpak-builder
-                    - elfutils
                     - librsvg2-bin
 
 before_install:
     # Use TRAVIS_TAG if defined, or the short commit SHA otherwise
     - export VERSION=${TRAVIS_TAG:-$(git rev-parse --short HEAD)}
 install:
-    - travis_wait ./.ci/install.sh
+    - ./.ci/install.sh
     - export PATH=/usr/local/bin:${PATH}
 
 script:
-    - travis_wait ./.ci/script.sh
+    - ./.ci/script.sh
     - sed -i -e "s/VERSION_NAME_VALUE/${VERSION}/g" ./.ci/bintray-release.json || true
     - cp ./.ci/bintray-release.json .
 deploy:
