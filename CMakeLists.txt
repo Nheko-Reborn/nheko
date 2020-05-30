@@ -514,6 +514,9 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa")
 	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/emoji/MacHelper.mm)
+	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
+		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+	endif()
 elseif (WIN32)
 	file(DOWNLOAD
 		"https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.cpp"
