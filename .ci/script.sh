@@ -6,7 +6,7 @@ if [ "$FLATPAK" ]; then
 	mkdir -p build-flatpak
 	cd build-flatpak
 
-	travis_wait flatpak-builder --ccache --repo=repo --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
+	flatpak-builder --ccache --repo=repo --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
 	flatpak build-bundle repo nheko-${VERSION}-${ARCH}.flatpak io.github.NhekoReborn.Nheko master
 
 	mkdir ../artifacts
