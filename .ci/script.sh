@@ -10,7 +10,7 @@ if [ "$FLATPAK" ]; then
 
 	# to prevent flatpak builder from timing out on arm, run it in the background and print something every minute for up to 30 minutes.
 	minutes=0
-	limit=30
+	limit=40
 	while kill -0 $! >/dev/null 2>&1; do
 		if [ $minutes == $limit ]; then
 			break;
