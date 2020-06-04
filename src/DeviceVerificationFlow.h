@@ -20,8 +20,12 @@ public:
         DeviceVerificationFlow(QObject *parent = nullptr);
 
 public slots:
-        //! accepts a verification and starts the verification flow
+        //! sends a verification request
+        void sendVerificationRequest();
+        //! accepts a verification
         void acceptVerificationRequest();
+        //! starts the verification flow
+        void startVerificationRequest();
         //! cancels a verification flow
         void cancelVerification();
         //! Completes the verification flow
@@ -34,5 +38,9 @@ signals:
         void verificationCanceled();
 
 private:
+        //! generates a unique transaction id
+        std::string generate_txn_id();
+
         QTimer *timeout = nullptr;
+        std::string transaction_id;
 };

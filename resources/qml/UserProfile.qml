@@ -5,6 +5,8 @@ import QtQuick.Window 2.3
 
 import im.nheko 1.0
 
+import "./device-verification"
+
 ApplicationWindow{
     property var user_data
     property var colors: currentActivePalette
@@ -20,7 +22,6 @@ ApplicationWindow{
         id: userProfileList
         userId: user_data.userId
         onUserIdChanged : {
-            console.log(userId)
             userProfileList.updateDeviceList()
         }
         onDeviceListUpdated : {
@@ -84,15 +85,34 @@ ApplicationWindow{
 
                     delegate: RowLayout{
                         width: parent.width
-                        Text{
-                            Layout.fillWidth: true
-                            color: colors.text
-                            text: deviceID
+                        ColumnLayout{
+                            Text{
+                                Layout.fillWidth: true
+                                color: colors.text
+                                Layout.alignment: Qt.AlignRight
+                                text: deviceID
+                            }
+                            Text{
+                                Layout.fillWidth: true
+                                color:colors.text
+                                Layout.alignment: Qt.AlignRight
+                                text: displayName
+                            }
+                            Component {
+			                    id: deviceVerificationDialog
+			                    DeviceVerification {}
+		                    }
+                            DeviceVerificationFlow {
+                                id: deviceVerificationFlow
+                            }
                         }
-                        Text{
-                            Layout.fillWidth: true
-                            color:colors.text
-                            text: displayName
+                        Button{
+                            text:"Verify"
+                            onClicked: {
+								var dialog = deviceVerificationDialog.createObject(userProfileDialog, 
+                                    {flow: deviceVerificationFlow,sender: true});
+				                dialog.show();
+                            }
                         }
                     }
                 }
