@@ -7,6 +7,7 @@ import Qt.labs.settings 1.0
 import im.nheko 1.0
 
 ApplicationWindow {
+    property bool sender: true
 	title: stack.currentItem.title
 	id: dialog
 
@@ -24,7 +25,7 @@ ApplicationWindow {
 	width: stack.implicitWidth
 	StackView {
 		id: stack
-		initialItem: newVerificationRequest
+		initialItem: sender == true?newVerificationRequest:acceptNewVerificationRequest
 		implicitWidth: currentItem.implicitWidth
 		implicitHeight: currentItem.implicitHeight
 	}
@@ -47,7 +48,7 @@ ApplicationWindow {
 	Component {
 		id: newVerificationRequest
 		Pane {
-			property string title: "Device Verification Request"
+			property string title: "Sending Device Verification Request"
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -82,6 +83,42 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "Start verification"
+						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.sendVerificationRequest(); }
+					}
+				}
+			}
+		}
+	}
+
+	Component {
+		id: acceptNewVerificationRequest
+		Pane {
+			property string title: "Recieving Device Verification Request"
+			ColumnLayout {
+				spacing: 16
+
+				Label {
+					Layout.maximumWidth: 400
+					Layout.fillHeight: true
+					Layout.fillWidth: true
+					wrapMode: Text.Wrap
+					text: "The device was requested to be verified"
+
+					verticalAlignment: Text.AlignVCenter
+				}
+
+				RowLayout {
+					Button {
+						Layout.alignment: Qt.AlignLeft
+						text: "Deny"
+						onClicked: { dialog.close(); flow.cancelVerification(); }
+					}
+					Item {
+						Layout.fillWidth: true
+					}
+					Button {
+						Layout.alignment: Qt.AlignRight
+						text: "Accept"
 						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.acceptVerificationRequest(); }
 					}
 				}
