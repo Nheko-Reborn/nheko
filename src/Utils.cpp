@@ -142,13 +142,13 @@ utils::descriptiveTime(const QDateTime &then)
         const auto days = then.daysTo(now);
 
         if (days == 0)
-                return then.time().toString(Qt::DefaultLocaleShortDate);
+                return QLocale::system().toString(then.time(), QLocale::ShortFormat);
         else if (days < 2)
                 return QString(QCoreApplication::translate("descriptiveTime", "Yesterday"));
         else if (days < 7)
                 return then.toString("dddd");
 
-        return then.date().toString(Qt::DefaultLocaleShortDate);
+        return QLocale::system().toString(then.date(), QLocale::ShortFormat);
 }
 
 DescInfo

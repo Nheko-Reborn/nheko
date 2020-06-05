@@ -612,22 +612,22 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         topLayout_->addWidget(versionInfo);
 
         connect(themeCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &text) {
                         settings_->setTheme(text.toLower());
                         emit themeChanged();
                 });
         connect(scaleFactorCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
         connect(fontSizeCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &size) { settings_->setFontSize(size.trimmed().toDouble()); });
         connect(fontSelectionCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &family) { settings_->setFontFamily(family.trimmed()); });
         connect(emojiFontSelectionCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
         connect(trayToggle_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setTray(!disabled);

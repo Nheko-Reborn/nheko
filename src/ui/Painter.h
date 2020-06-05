@@ -3,6 +3,7 @@
 #include <QFontMetrics>
 #include <QPaintDevice>
 #include <QPainter>
+#include <QPainterPath>
 #include <QtGlobal>
 
 class Painter : public QPainter
@@ -163,5 +164,5 @@ public:
 
 private:
         Painter &_painter;
-        QPainter::RenderHints hints_ = 0;
+        QPainter::RenderHints hints_ = {};
 };

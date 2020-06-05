@@ -107,10 +107,10 @@ RegisterPage::RegisterPage(QWidget *parent)
           tr("A server that allows registration. Since matrix is decentralized, you need to first "
              "find a server you can register on or host your own."));
 
-        form_layout_->addWidget(username_input_, Qt::AlignHCenter, nullptr);
-        form_layout_->addWidget(password_input_, Qt::AlignHCenter, nullptr);
-        form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter, nullptr);
-        form_layout_->addWidget(server_input_, Qt::AlignHCenter, nullptr);
+        form_layout_->addWidget(username_input_, Qt::AlignHCenter);
+        form_layout_->addWidget(password_input_, Qt::AlignHCenter);
+        form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter);
+        form_layout_->addWidget(server_input_, Qt::AlignHCenter);
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);

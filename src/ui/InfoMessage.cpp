@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QLocale>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPen>
 #include <QtGlobal>
 
