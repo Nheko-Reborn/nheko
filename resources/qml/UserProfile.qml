@@ -107,11 +107,20 @@ ApplicationWindow{
                             }
                         }
                         Button{
+                            id: verifyButton
                             text:"Verify"
                             onClicked: {
 								var dialog = deviceVerificationDialog.createObject(userProfileDialog, 
-                                    {flow: deviceVerificationFlow,sender: true});
+                                    {flow: deviceVerificationFlow,sender: false});
+                                deviceVerificationFlow.userId = user_data.userId
+                                deviceVerificationFlow.deviceId = model.deviceID
 				                dialog.show();
+                            }
+                            contentItem: Text {
+                                text: verifyButton.text
+                                color: colors.background
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
                             }
                         }
                     }
@@ -119,11 +128,19 @@ ApplicationWindow{
             }
 
             Button{
+                id: okbutton
                 text:"OK"
                 onClicked: userProfileDialog.close()
                 anchors.margins: {
                     right:10
                     bottom:10
+                }
+
+                contentItem: Text {
+                    text: okbutton.text
+                    color: colors.background
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                 }
 
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
