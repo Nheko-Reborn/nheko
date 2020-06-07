@@ -152,6 +152,8 @@ Page {
 
 			onCountChanged: if (atYEnd) model.currentIndex = 0 // Mark last event as read, since we are at the bottom
 
+			property int delegateMaxWidth: (settings.timelineMaxWidth > 100 && (parent.width - settings.timelineMaxWidth) > 32) ? settings.timelineMaxWidth : (parent.width - 32)
+
 			delegate: Rectangle {
 				// This would normally be previousSection, but our model's order is inverted.
 				property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
@@ -159,7 +161,7 @@ Page {
 				id: wrapper
 				property Item section
 				anchors.horizontalCenter: parent.horizontalCenter
-				width: (settings.timelineMaxWidth > 100 && (parent.width - settings.timelineMaxWidth) > 32) ? settings.timelineMaxWidth : (parent.width - 32)
+				width: chat.delegateMaxWidth
 				height: section ? section.height + timelinerow.height : timelinerow.height
 				color: "transparent"
 
@@ -236,6 +238,7 @@ Page {
 							height: avatarSize
 							url: chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/")
 							displayName: modelData.userName
+							userid: modelData.userId
 
 							MouseArea {
 								anchors.fill: parent
@@ -257,6 +260,15 @@ Page {
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
 							}
+						}
+
+						Label {
+							color: colors.buttonText
+							text: timelineManager.userStatus(modelData.userId)
+							textFormat: Text.PlainText
+							elide: Text.ElideRight
+							width: chat.delegateMaxWidth - parent.spacing*2 - userName.implicitWidth - avatarSize
+							font.italic: true
 						}
 					}
 				}
