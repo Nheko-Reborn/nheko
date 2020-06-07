@@ -108,6 +108,22 @@ ApplicationWindow {
 				}
 
 				RowLayout {
+					RadioButton {
+						Layout.alignment: Qt.AlignLeft
+						text: "Decimal"
+						onClicked: { flow.method = DeviceVerificationFlow.Decimal }
+					}
+					Item {
+						Layout.fillWidth: true
+					}
+					RadioButton {
+						Layout.alignment: Qt.AlignRight
+						text: "Emoji"
+						onClicked: { flow.method = DeviceVerificationFlow.Emoji }
+					}
+				}
+
+				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Deny"
