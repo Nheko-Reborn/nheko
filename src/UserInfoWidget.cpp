@@ -151,7 +151,11 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
 void
 UserInfoWidget::contextMenuEvent(QContextMenuEvent *event)
 {
+#if 0 // disable presence menu until issues in synapse are resolved
         menu->popup(event->globalPos());
+#else
+        Q_UNUSED(event);
+#endif
 }
 
 void
