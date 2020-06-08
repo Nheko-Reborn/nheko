@@ -125,24 +125,24 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
                         ChatPage::instance()->setStatus(text);
         });
         auto setAutoPresence = menu->addAction(tr("Set presence automatically"));
-        connect(setAutoPresence, &QAction::triggered, this, [this]() {
+        connect(setAutoPresence, &QAction::triggered, this, []() {
                 ChatPage::instance()->userSettings()->setPresence(
                   UserSettings::Presence::AutomaticPresence);
                 ChatPage::instance()->setStatus(ChatPage::instance()->status());
         });
         auto setOnline = menu->addAction(tr("Online"));
-        connect(setOnline, &QAction::triggered, this, [this]() {
+        connect(setOnline, &QAction::triggered, this, []() {
                 ChatPage::instance()->userSettings()->setPresence(UserSettings::Presence::Online);
                 ChatPage::instance()->setStatus(ChatPage::instance()->status());
         });
         auto setUnavailable = menu->addAction(tr("Unavailable"));
-        connect(setUnavailable, &QAction::triggered, this, [this]() {
+        connect(setUnavailable, &QAction::triggered, this, []() {
                 ChatPage::instance()->userSettings()->setPresence(
                   UserSettings::Presence::Unavailable);
                 ChatPage::instance()->setStatus(ChatPage::instance()->status());
         });
         auto setOffline = menu->addAction(tr("Offline"));
-        connect(setOffline, &QAction::triggered, this, [this]() {
+        connect(setOffline, &QAction::triggered, this, []() {
                 ChatPage::instance()->userSettings()->setPresence(UserSettings::Presence::Offline);
                 ChatPage::instance()->setStatus(ChatPage::instance()->status());
         });
