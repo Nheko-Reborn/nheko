@@ -34,6 +34,7 @@
 #include <QStandardPaths>
 #include <QString>
 #include <QTextStream>
+#include <QtQml>
 
 #include "Cache.h"
 #include "Config.h"
@@ -46,7 +47,11 @@
 
 #include "config/nheko.h"
 
-UserSettings::UserSettings() { load(); }
+UserSettings::UserSettings()
+{
+        qRegisterMetaType<UserSettings::Presence>();
+        load();
+}
 
 void
 UserSettings::load()
@@ -72,6 +77,9 @@ UserSettings::load()
         decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
         emojiFont_           = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_        = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+        presence_ =
+          settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
+            .value<Presence>();
 
         applyTheme();
 }
@@ -244,6 +252,16 @@ UserSettings::setEmojiFontFamily(QString family)
 }
 
 void
+UserSettings::setPresence(Presence state)
+{
+        if (state == presence_)
+                return;
+        presence_ = state;
+        emit presenceChanged(state);
+        save();
+}
+
+void
 UserSettings::setTheme(QString theme)
 {
         if (theme == theme)
@@ -337,6 +355,7 @@ UserSettings::save()
         settings.setValue("theme", theme());
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
+        settings.setValue("presence", QVariant::fromValue(presence_));
 
         settings.endGroup();
 

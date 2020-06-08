@@ -68,9 +68,19 @@ class UserSettings : public QObject
         Q_PROPERTY(QString font READ font WRITE setFontFamily NOTIFY fontChanged)
         Q_PROPERTY(
           QString emojiFont READ emojiFont WRITE setEmojiFontFamily NOTIFY emojiFontChanged)
+        Q_PROPERTY(Presence presence READ presence WRITE setPresence NOTIFY presenceChanged)
 
 public:
         UserSettings();
+
+        enum class Presence
+        {
+                AutomaticPresence,
+                Online,
+                Unavailable,
+                Offline,
+        };
+        Q_ENUM(Presence);
 
         void save();
         void load();
@@ -93,6 +103,7 @@ public:
         void setDesktopNotifications(bool state);
         void setAvatarCircles(bool state);
         void setDecryptSidebar(bool state);
+        void setPresence(Presence state);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -112,6 +123,7 @@ public:
         double fontSize() const { return baseFontSize_; }
         QString font() const { return font_; }
         QString emojiFont() const { return emojiFont_; }
+        Presence presence() const { return presence_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -132,6 +144,7 @@ signals:
         void fontSizeChanged(double state);
         void fontChanged(QString state);
         void emojiFontChanged(QString state);
+        void presenceChanged(Presence state);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -157,6 +170,7 @@ private:
         double baseFontSize_;
         QString font_;
         QString emojiFont_;
+        Presence presence_;
 };
 
 class HorizontalLine : public QFrame

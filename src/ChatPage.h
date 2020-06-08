@@ -92,7 +92,7 @@ public:
         QString status() const;
         void setStatus(const QString &status);
 
-        mtx::presence::PresenceState currentPresence() const { return mtx::presence::online; }
+        mtx::presence::PresenceState currentPresence() const;
 
 public slots:
         void leaveRoom(const QString &room_id);

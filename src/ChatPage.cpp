@@ -986,6 +986,8 @@ ChatPage::startInitialSync()
 
         mtx::http::SyncOpts opts;
         opts.timeout = 0;
+        opts.set_presence = currentPresence();
+
         http::client()->sync(
           opts,
           std::bind(
@@ -996,6 +998,7 @@ void
 ChatPage::trySync()
 {
         mtx::http::SyncOpts opts;
+        opts.set_presence = currentPresence();
 
         if (!connectivityTimer_.isActive())
                 connectivityTimer_.start();
@@ -1239,6 +1242,21 @@ ChatPage::setStatus(const QString &status)
                                              err->matrix_error.error);
                   }
           });
+}
+
+mtx::presence::PresenceState
+ChatPage::currentPresence() const
+{
+        switch (userSettings_->presence()) {
+        case UserSettings::Presence::Online:
+                return mtx::presence::online;
+        case UserSettings::Presence::Unavailable:
+                return mtx::presence::unavailable;
+        case UserSettings::Presence::Offline:
+                return mtx::presence::offline;
+        default:
+                return mtx::presence::online;
+        }
 }
 
 void
