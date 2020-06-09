@@ -985,7 +985,7 @@ ChatPage::startInitialSync()
         nhlog::net()->info("trying initial sync");
 
         mtx::http::SyncOpts opts;
-        opts.timeout = 0;
+        opts.timeout      = 0;
         opts.set_presence = currentPresence();
 
         http::client()->sync(
