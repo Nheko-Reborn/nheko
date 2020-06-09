@@ -124,6 +124,8 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
                 if (ok && !text.isEmpty())
                         ChatPage::instance()->setStatus(text);
         });
+
+#if 0 // disable presence menu until issues in synapse are resolved
         auto setAutoPresence = menu->addAction(tr("Set presence automatically"));
         connect(setAutoPresence, &QAction::triggered, this, []() {
                 ChatPage::instance()->userSettings()->setPresence(
@@ -146,16 +148,13 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
                 ChatPage::instance()->userSettings()->setPresence(UserSettings::Presence::Offline);
                 ChatPage::instance()->setStatus(ChatPage::instance()->status());
         });
+#endif
 }
 
 void
 UserInfoWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-#if 0 // disable presence menu until issues in synapse are resolved
         menu->popup(event->globalPos());
-#else
-        Q_UNUSED(event);
-#endif
 }
 
 void
