@@ -38,6 +38,10 @@ public slots:
         void startVerificationRequest();
         //! cancels a verification flow
         void cancelVerification();
+        //! sends the verification key
+        void sendVerificationKey();
+        //! sends the mac of the keys
+        void sendVerificationMac();
         //! Completes the verification flow
         void acceptDevice();
 
@@ -56,3 +60,4 @@ private:
         std::string transaction_id;
         mtx::identifiers::User toClient;
 };
+Q_DECLARE_METATYPE(mtx::events::collections::DeviceEvents)

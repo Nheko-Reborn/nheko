@@ -27,6 +27,7 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "EventAccessors.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"

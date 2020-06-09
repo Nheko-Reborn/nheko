@@ -19,6 +19,7 @@
 
 #include <atomic>
 #include <optional>
+#include <stack>
 #include <variant>
 
 #include <mtx/common.hpp>
@@ -162,6 +163,17 @@ signals:
         void retrievedPresence(const QString &statusMsg, mtx::presence::PresenceState state);
         void themeChanged();
         void decryptSidebarChanged();
+
+        //! Signals for device verificaiton
+        void recievedDeviceVerificationAccept(
+          const mtx::events::collections::DeviceEvents &message);
+        void recievedDeviceVerificationRequest(
+          const mtx::events::collections::DeviceEvents &message);
+        void recievedDeviceVerificationCancel(
+          const mtx::events::collections::DeviceEvents &message);
+        void recievedDeviceVerificationKey(const mtx::events::collections::DeviceEvents &message);
+        void recievedDeviceVerificationMac(const mtx::events::collections::DeviceEvents &message);
+        void recievedDeviceVerificationStart(const mtx::events::collections::DeviceEvents &message);
 
 private slots:
         void showUnreadMessageNotification(int count);
