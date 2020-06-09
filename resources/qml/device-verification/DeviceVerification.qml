@@ -83,7 +83,7 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "Start verification"
-						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.sendVerificationRequest(); }
+						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.startVerificationRequest(); }
 					}
 				}
 			}

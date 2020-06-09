@@ -29,6 +29,14 @@ ApplicationWindow{
         }
     }
 
+    Component {
+		id: deviceVerificationDialog
+		DeviceVerification {}
+	}
+    DeviceVerificationFlow {
+        id: deviceVerificationFlow
+    }
+
     background: Item{
         id: userProfileItem
         width: userProfileDialog.width
@@ -98,22 +106,15 @@ ApplicationWindow{
                                 Layout.alignment: Qt.AlignRight
                                 text: displayName
                             }
-                            Component {
-			                    id: deviceVerificationDialog
-			                    DeviceVerification {}
-		                    }
-                            DeviceVerificationFlow {
-                                id: deviceVerificationFlow
-                            }
                         }
                         Button{
                             id: verifyButton
                             text:"Verify"
                             onClicked: {
-								var dialog = deviceVerificationDialog.createObject(userProfileDialog, 
-                                    {flow: deviceVerificationFlow,sender: false});
                                 deviceVerificationFlow.userId = user_data.userId
                                 deviceVerificationFlow.deviceId = model.deviceID
+								var dialog = deviceVerificationDialog.createObject(userProfileDialog, 
+                                    {flow: deviceVerificationFlow,sender: true});
 				                dialog.show();
                             }
                             contentItem: Text {

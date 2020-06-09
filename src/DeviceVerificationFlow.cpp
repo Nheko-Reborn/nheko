@@ -1,4 +1,5 @@
 #include "DeviceVerificationFlow.h"
+#include "ChatPage.h"
 
 #include "Logging.h"
 #include <QDateTime>
@@ -8,22 +9,73 @@
 
 static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
+namespace msgs = mtx::events::msg;
+
 DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
 {
+        qRegisterMetaType<mtx::events::collections::DeviceEvents>();
         timeout = new QTimer(this);
         timeout->setSingleShot(true);
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
                 this->deleteLater();
         });
+        connect(ChatPage::instance(),
+                &ChatPage::recievedDeviceVerificationAccept,
+                this,
+                [this](const mtx::events::collections::DeviceEvents &message) {
+                        auto msg =
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationAccept>>(message);
+                        if (msg.content.transaction_id == this->transaction_id) {
+                                std::cout << "Recieved Event Accept" << std::endl;
+                        }
+                });
+        connect(ChatPage::instance(),
+                &ChatPage::recievedDeviceVerificationRequest,
+                this,
+                [this](const mtx::events::collections::DeviceEvents &message) {
+                        auto msg =
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationRequest>>(message);
+                        if (msg.content.transaction_id == this->transaction_id) {
+                                std::cout << "Recieved Event Request" << std::endl;
+                        }
+                });
+        connect(ChatPage::instance(),
+                &ChatPage::recievedDeviceVerificationCancel,
+                this,
+                [this](const mtx::events::collections::DeviceEvents &message) {
+                        auto msg =
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationCancel>>(message);
+                        if (msg.content.transaction_id == this->transaction_id) {
+                                std::cout << "Recieved Event Cancel" << std::endl;
+                        }
+                });
+        connect(ChatPage::instance(),
+                &ChatPage::recievedDeviceVerificationKey,
+                this,
+                [this](const mtx::events::collections::DeviceEvents &message) {
+                        auto msg =
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationKey>>(message);
+                        if (msg.content.transaction_id == this->transaction_id) {
+                                std::cout << "Recieved Event Key" << std::endl;
+                        }
+                });
+        connect(ChatPage::instance(),
+                &ChatPage::recievedDeviceVerificationMac,
+                this,
+                [this](const mtx::events::collections::DeviceEvents &message) {
+                        auto msg =
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationMac>>(message);
+                        if (msg.content.transaction_id == this->transaction_id) {
+                                std::cout << "Recieved Event Mac" << std::endl;
+                        }
+                });
         timeout->start(TIMEOUT);
 }
 
 QString
 DeviceVerificationFlow::getUserId()
 {
-        toClient = mtx::identifiers::parse<mtx::identifiers::User>((this->userId).toStdString());
-        std::cout << http::client()->device_id() << std::endl;
         return this->userId;
 }
 
@@ -43,6 +95,7 @@ void
 DeviceVerificationFlow::setUserId(QString userID)
 {
         this->userId = userID;
+        this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(userID.toStdString());
 }
 
 void
@@ -101,7 +154,8 @@ DeviceVerificationFlow::startVerificationRequest()
         req.hashes                       = {};
         req.message_authentication_codes = {};
         // req.short_authentication_string = "";
-
+        qDebug()<<"Inside Start Verification";
+        qDebug()<<this->userId;
         body[this->toClient][this->deviceId.toStdString()] = req;
 
         http::client()
@@ -166,6 +220,51 @@ DeviceVerificationFlow::cancelVerification()
                                                err->matrix_error.error,
                                                static_cast<int>(err->status_code));
                     this->deleteLater();
+            });
+}
+//! sends the verification key
+void
+DeviceVerificationFlow::sendVerificationKey()
+{
+        mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationKey> body;
+        mtx::events::msg::KeyVerificationKey req;
+
+        req.key            = "";
+        req.transaction_id = this->transaction_id;
+
+        body[this->toClient][deviceId.toStdString()] = req;
+
+        http::client()
+          ->send_to_device<mtx::events::msg::KeyVerificationKey,
+                           mtx::events::EventType::KeyVerificationKey>(
+            "m.key.verification.cancel", body, [](mtx::http::RequestErr err) {
+                    if (err)
+                            nhlog::net()->warn("failed to send verification key: {} {}",
+                                               err->matrix_error.error,
+                                               static_cast<int>(err->status_code));
+            });
+}
+//! sends the mac of the keys
+void
+DeviceVerificationFlow::sendVerificationMac()
+{
+        mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationMac> body;
+        mtx::events::msg::KeyVerificationMac req;
+
+        req.transaction_id = this->transaction_id;
+        // req.mac = "";
+        req.keys = "";
+
+        body[this->toClient][deviceId.toStdString()] = req;
+
+        http::client()
+          ->send_to_device<mtx::events::msg::KeyVerificationMac,
+                           mtx::events::EventType::KeyVerificationMac>(
+            "m.key.verification.cancel", body, [](mtx::http::RequestErr err) {
+                    if (err)
+                            nhlog::net()->warn("failed to send verification MAC: {} {}",
+                                               err->matrix_error.error,
+                                               static_cast<int>(err->status_code));
             });
 }
 //! Completes the verification flow
