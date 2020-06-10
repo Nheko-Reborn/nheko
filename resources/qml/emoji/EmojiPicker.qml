@@ -76,7 +76,7 @@ Popup {
                 contentItem: Text {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    font.family: settings.emoji_font_family
+                    font.family: settings.emojiFont
                     
                     font.pixelSize: 36
                     text: model.unicode
@@ -276,7 +276,7 @@ Popup {
                     sourceSize.height: 32
                     fillMode: Image.Pad
                     smooth: true
-                    source: "image://colorimage/:/icons/icons/ui/search.png?" + (parent.hovered ? colors.highlight : colors.buttonText)
+                    source: "image://colorimage/:/icons/icons/emoji-categories/search.png?" + (parent.hovered ? colors.highlight : colors.buttonText)
                 }
 
                 MouseArea

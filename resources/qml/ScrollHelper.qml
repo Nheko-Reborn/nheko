@@ -71,7 +71,7 @@ MouseArea {
             pixelDelta = wheel.pixelDelta.y
         }
 
-	    pixelDelta = Math.round(pixelDelta)
+        pixelDelta = Math.round(pixelDelta)
 
         if (!pixelDelta) {
             return flickableItem.contentY;

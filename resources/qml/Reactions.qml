@@ -48,7 +48,7 @@ Flow {
 
 				TextMetrics {
 					id: textMetrics
-					font.family: settings.emoji_font_family
+					font.family: settings.emojiFont
 					elide: Text.ElideRight
 					elideWidth: 150
 					text: model.key
@@ -58,7 +58,7 @@ Flow {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
 					text: textMetrics.elidedText + (textMetrics.elidedText == textMetrics.text ? "" : "…")
-					font.family: settings.emoji_font_family
+					font.family: settings.emojiFont
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1
 				}

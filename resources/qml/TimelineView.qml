@@ -25,20 +25,6 @@ Page {
 		id: fontMetrics
 	}
 
-	Settings {
-		id: settings
-		category: "user"
-		property bool avatar_circles: true
-		property string emoji_font_family: "default"
-	}
-
-	Settings {
-		id: timelineSettings
-		category: "user/timeline"
-		property bool buttons: true
-		property bool message_hover_highlight: false
-	}
-
     EmojiPicker {
         id: emojiPopup
         width: 7 * 52 + 20
