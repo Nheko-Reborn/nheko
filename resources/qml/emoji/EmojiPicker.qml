@@ -65,7 +65,7 @@ Popup {
             cellWidth: 52
             cellHeight: 52
 
-            boundsBehavior: Flickable.DragOverBounds
+            boundsBehavior: Flickable.StopAtBounds
 
             clip: true
 
@@ -147,9 +147,9 @@ Popup {
                 onVisibleChanged: if (visible) forceActiveFocus()
             }
 
-            ScrollBar.vertical: ScrollBar {
-                id: emojiScroll
-            }
+			ScrollBar.vertical: ScrollBar {
+				id: emojiScroll
+			}
         }
 
         // Separator
@@ -188,10 +188,17 @@ Popup {
                         horizontalAlignment: Image.AlignHCenter
                         verticalAlignment: Image.AlignVCenter
                         fillMode: Image.Pad
-                        smooth: true
                         sourceSize.width: 32
                         sourceSize.height: 32
                         source: "image://colorimage/" + model.image + "?" + (hovered ? colors.highlight : colors.buttonText)
+                    }
+
+                    MouseArea
+                    {
+                        id: mouseArea
+                        anchors.fill: parent
+                        onPressed:  mouse.accepted = false
+                        cursorShape: Qt.PointingHandCursor
                     }
 
                     background: Rectangle {
@@ -265,11 +272,19 @@ Popup {
                     anchors.right: parent.right
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    fillMode: Image.Pad
-                    smooth: true
                     sourceSize.width: 32
                     sourceSize.height: 32
+                    fillMode: Image.Pad
+                    smooth: true
                     source: "image://colorimage/:/icons/icons/ui/search.png?" + (parent.hovered ? colors.highlight : colors.buttonText)
+                }
+
+                MouseArea
+                {
+                    id: mouseArea
+                    anchors.fill: parent
+                    onPressed:  mouse.accepted = false
+                    cursorShape: Qt.PointingHandCursor
                 }
             }
         }

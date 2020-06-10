@@ -95,7 +95,6 @@ MouseArea {
 			emojiPicker: emojiPopup
 			room_id: model.roomId
 			event_id: model.id
-//			onClicked: chat.model.reactAction(model.id)
 		}
 		ImageButton {
 			visible: timelineSettings.buttons
