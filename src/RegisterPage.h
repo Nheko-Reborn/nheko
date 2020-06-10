@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include <QLabel>
-#include <QLayout>
+#include <QWidget>
+
 #include <memory>
 
 #include <mtx/user_interactive.hpp>
@@ -26,6 +26,9 @@
 class FlatButton;
 class RaisedButton;
 class TextField;
+class QLabel;
+class QVBoxLayout;
+class QHBoxLayout;
 
 class RegisterPage : public QWidget
 {

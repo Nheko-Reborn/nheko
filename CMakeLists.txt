@@ -10,7 +10,9 @@ set(
 	CACHE
 	FILEPATH "Default toolchain"
 	)
-
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard")
+set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "Require C++ standard to be supported")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
 
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
@@ -333,7 +335,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        f5c78f4331b62a1e25a2d839cb38b07bb9bd7829
+		GIT_TAG        795b6a82d4f10c629ce0eb99803cc677c413f940
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -421,7 +423,7 @@ endif()
 
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
-add_subdirectory(third_party/SingleApplication-3.0.19/)
+add_subdirectory(third_party/SingleApplication-3.1.3.1/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -515,6 +517,9 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa")
 	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/emoji/MacHelper.mm)
+	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
+		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+	endif()
 elseif (WIN32)
 	file(DOWNLOAD
 		"https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.cpp"
@@ -577,6 +582,13 @@ target_link_libraries(nheko PRIVATE
 	liblmdb::lmdb
 	tweeny
 	SingleApplication::SingleApplication)
+
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
+target_precompile_headers(nheko
+	PRIVATE
+	  <string>
+	)
+endif()
 
 if(MSVC)
 	target_link_libraries(nheko PRIVATE ntdll)

@@ -26,13 +26,13 @@ MouseArea {
 		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
 	}
 	Rectangle {
-		color: (timelineSettings.message_hover_highlight && parent.containsMouse) ? colors.base : "transparent"
+		color: (settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
 		anchors.fill: row
 	}
 	RowLayout {
 		id: row
 
-		anchors.leftMargin: avatarSize + 4
+		anchors.leftMargin: avatarSize + 16
 		anchors.left: parent.left
 		anchors.right: parent.right
 
@@ -97,7 +97,7 @@ MouseArea {
 			event_id: model.id
 		}
 		ImageButton {
-			visible: timelineSettings.buttons
+			visible: settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
@@ -113,7 +113,7 @@ MouseArea {
 			onClicked: chat.model.replyAction(model.id)
 		}
 		ImageButton {
-			visible: timelineSettings.buttons
+			visible: settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16

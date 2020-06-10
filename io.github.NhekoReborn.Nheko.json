@@ -131,7 +131,7 @@
         {
           "sha256": "59c9b274bc451cf91a9ba1dd2c7fdcaf5d60b1b3aa83f2c9fa143417cc660722",
           "type": "archive",
-          "url": "https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.bz2"
+          "url": "https://sourceforge.net/projects/boost/files/boost/1.72.0/boost_1_72_0.tar.bz2"
         }
       ]
     },
@@ -146,9 +146,9 @@
       "name": "mtxclient",
       "sources": [
         {
-          "sha256": "16203a92b03c488178b31bedca9d9015b1d406443f7e5363a2e09171e50f8dfc",
+          "sha256": "7ba85bb477c9e17e2389faf2333034aa9ceae4b1c65d6bf5f7067f2799e9b770",
           "type": "archive",
-          "url": "https://github.com/Nheko-Reborn/mtxclient/archive/f5c78f4331b62a1e25a2d839cb38b07bb9bd7829.tar.gz"
+          "url": "https://github.com/Nheko-Reborn/mtxclient/archive/795b6a82d4f10c629ce0eb99803cc677c413f940.tar.gz"
         }
       ]
     },

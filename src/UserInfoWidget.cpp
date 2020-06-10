@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QLabel>
 #include <QPainter>
+#include <QStyle>
+#include <QStyleOption>
 #include <QTimer>
 
 #include <iostream>

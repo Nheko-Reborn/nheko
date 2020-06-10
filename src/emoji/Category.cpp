@@ -15,9 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QLabel>
+#include <QListView>
 #include <QPainter>
 #include <QScrollBar>
 #include <QStyleOption>
+#include <QVBoxLayout>
 
 #include "Config.h"
 

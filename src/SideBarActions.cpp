@@ -1,6 +1,8 @@
 #include <QIcon>
 #include <QPainter>
 #include <QResizeEvent>
+#include <QStyle>
+#include <QStyleOption>
 
 #include <mtx/requests.hpp>
 

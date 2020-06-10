@@ -26,6 +26,7 @@
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -255,7 +256,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           text_input_, &TextInputWidget::startedTyping, this, &ChatPage::sendTypingNotifications);
         connect(typingRefresher_, &QTimer::timeout, this, &ChatPage::sendTypingNotifications);
         connect(text_input_, &TextInputWidget::stoppedTyping, this, [this]() {
-                if (!userSettings_->isTypingNotificationsEnabled())
+                if (!userSettings_->typingNotifications())
                         return;
 
                 typingRefresher_->stop();
@@ -482,7 +483,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         activateWindow();
                 });
 
-        setGroupViewState(userSettings_->isGroupViewEnabled());
+        setGroupViewState(userSettings_->groupView());
 
         connect(userSettings_.data(),
                 &UserSettings::groupViewStateChanged,
@@ -891,7 +892,7 @@ void
 ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 {
         for (const auto &item : res.notifications) {
-                const auto event_id = utils::event_id(item.event);
+                const auto event_id = mtx::accessors::event_id(item.event);
 
                 try {
                         if (item.read) {
@@ -901,7 +902,8 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
 
                         if (!cache::isNotificationSent(event_id)) {
                                 const auto room_id = QString::fromStdString(item.room_id);
-                                const auto user_id = utils::event_sender(item.event);
+                                const auto user_id =
+                                  QString::fromStdString(mtx::accessors::sender(item.event));
 
                                 // We should only sent one notification per event.
                                 cache::markSentNotification(event_id);
@@ -1213,7 +1215,7 @@ ChatPage::unbanUser(QString userid, QString reason)
 void
 ChatPage::sendTypingNotifications()
 {
-        if (!userSettings_->isTypingNotificationsEnabled())
+        if (!userSettings_->typingNotifications())
                 return;
 
         http::client()->start_typing(
@@ -1349,7 +1351,7 @@ ChatPage::hideSideBars()
 void
 ChatPage::showSideBars()
 {
-        if (userSettings_->isGroupViewEnabled())
+        if (userSettings_->groupView())
                 communitiesList_->show();
 
         sideBar_->show();

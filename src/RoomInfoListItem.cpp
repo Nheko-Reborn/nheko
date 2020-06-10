@@ -451,7 +451,7 @@ RoomInfoListItem::calculateImportance() const
         // returns ImportanceDisabled or Invite
         if (isInvite()) {
                 return Invite;
-        } else if (!settings->isSortByImportanceEnabled()) {
+        } else if (!settings->sortByImportance()) {
                 return ImportanceDisabled;
         } else if (unreadHighlightedMsgCount_) {
                 return NewMentions;

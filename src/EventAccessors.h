@@ -63,4 +63,7 @@ media_height(const mtx::events::collections::TimelineEvents &event);
 
 uint64_t
 media_width(const mtx::events::collections::TimelineEvents &event);
+
+nlohmann::json
+serialize_event(const mtx::events::collections::TimelineEvents &event);
 }

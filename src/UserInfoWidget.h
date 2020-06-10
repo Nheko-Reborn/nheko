@@ -17,12 +17,15 @@
 
 #pragma once
 
-#include <QLabel>
-#include <QLayout>
+#include <QWidget>
 
 class Avatar;
 class FlatButton;
 class OverlayModal;
+
+class QLabel;
+class QHBoxLayout;
+class QVBoxLayout;
 
 class UserInfoWidget : public QWidget
 {

@@ -1,4 +1,5 @@
 #include <QPainter>
+#include <QPainterPath>
 #include <QSettings>
 
 #include "AvatarProvider.h"

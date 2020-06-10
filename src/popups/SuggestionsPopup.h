@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPoint>
 #include <QWidget>
 
 #include "CacheStructs.h"

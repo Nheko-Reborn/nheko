@@ -1,13 +1,13 @@
 #pragma once
 
 #include <QFrame>
-#include <QLabel>
-#include <QListWidgetItem>
 #include <QStringList>
 
 class QPushButton;
+class QLabel;
 class TextField;
 class QListWidget;
+class QListWidgetItem;
 
 namespace dialogs {
 

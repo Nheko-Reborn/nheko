@@ -21,7 +21,7 @@ Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 void
 TimelineViewManager::updateEncryptedDescriptions()
 {
-        auto decrypt = settings->isDecryptSidebarEnabled();
+        auto decrypt = settings->decryptSidebar();
         QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
         for (i = models.begin(); i != models.end(); ++i) {
                 auto ptr = i.value();
@@ -96,6 +96,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
 #endif
         container->setMinimumSize(200, 200);
         view->rootContext()->setContextProperty("timelineManager", this);
+        view->rootContext()->setContextProperty("settings", settings.data());
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
@@ -121,7 +122,7 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
                 const auto &room_model = models.value(QString::fromStdString(room_id));
                 room_model->addEvents(room.timeline);
 
-                if (ChatPage::instance()->userSettings()->isTypingNotificationsEnabled()) {
+                if (ChatPage::instance()->userSettings()->typingNotifications()) {
                         std::vector<QString> typing;
                         typing.reserve(room.ephemeral.typing.size());
                         for (const auto &user : room.ephemeral.typing) {
@@ -141,7 +142,7 @@ TimelineViewManager::addRoom(const QString &room_id)
 {
         if (!models.contains(room_id)) {
                 QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
-                newRoom->setDecryptDescription(settings->isDecryptSidebarEnabled());
+                newRoom->setDecryptDescription(settings->decryptSidebar());
 
                 connect(newRoom.data(),
                         &TimelineModel::newEncryptedImage,
@@ -225,7 +226,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
 
-        if (settings->isMarkdownEnabled()) {
+        if (settings->markdown()) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
 
                 // Don't send formatted_body, when we don't need to
@@ -253,7 +254,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
 
                 // NOTE(Nico): rich replies always need a formatted_body!
                 text.format = "org.matrix.custom.html";
-                if (settings->isMarkdownEnabled())
+                if (settings->markdown())
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
                             .toStdString();
@@ -276,7 +277,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
         mtx::events::msg::Emote emote;
         emote.body = msg.trimmed().toStdString();
 
-        if (html != msg.trimmed().toHtmlEscaped() && settings->isMarkdownEnabled()) {
+        if (html != msg.trimmed().toHtmlEscaped() && settings->markdown()) {
                 emote.formatted_body = html.toStdString();
                 emote.format         = "org.matrix.custom.html";
         }

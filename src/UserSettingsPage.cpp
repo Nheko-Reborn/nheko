@@ -30,6 +30,7 @@
 #include <QScrollArea>
 #include <QScroller>
 #include <QSettings>
+#include <QSpinBox>
 #include <QStandardPaths>
 #include <QString>
 #include <QTextStream>
@@ -51,54 +52,206 @@ void
 UserSettings::load()
 {
         QSettings settings;
-        isTrayEnabled_              = settings.value("user/window/tray", false).toBool();
-        hasDesktopNotifications_    = settings.value("user/desktop_notifications", true).toBool();
-        isStartInTrayEnabled_       = settings.value("user/window/start_in_tray", false).toBool();
-        isGroupViewEnabled_         = settings.value("user/group_view", true).toBool();
-        isButtonsInTimelineEnabled_ = settings.value("user/timeline/buttons", true).toBool();
-        isMessageHoverHighlightEnabled_ =
+        tray_                    = settings.value("user/window/tray", false).toBool();
+        hasDesktopNotifications_ = settings.value("user/desktop_notifications", true).toBool();
+        startInTray_             = settings.value("user/window/start_in_tray", false).toBool();
+        groupView_               = settings.value("user/group_view", true).toBool();
+        buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
+        timelineMaxWidth_        = settings.value("user/timeline/max_width", 0).toInt();
+        messageHoverHighlight_ =
           settings.value("user/timeline/message_hover_highlight", false).toBool();
-        isMarkdownEnabled_            = settings.value("user/markdown_enabled", true).toBool();
-        isTypingNotificationsEnabled_ = settings.value("user/typing_notifications", true).toBool();
-        sortByImportance_             = settings.value("user/sort_by_unread", true).toBool();
-        isReadReceiptsEnabled_        = settings.value("user/read_receipts", true).toBool();
-        theme_                        = settings.value("user/theme", defaultTheme_).toString();
-        font_                         = settings.value("user/font_family", "default").toString();
-        avatarCircles_                = settings.value("user/avatar_circles", true).toBool();
-        decryptSidebar_               = settings.value("user/decrypt_sidebar", true).toBool();
-        emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
-        baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+        enlargeEmojiOnlyMessages_ =
+          settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
+        markdown_            = settings.value("user/markdown_enabled", true).toBool();
+        typingNotifications_ = settings.value("user/typing_notifications", true).toBool();
+        sortByImportance_    = settings.value("user/sort_by_unread", true).toBool();
+        readReceipts_        = settings.value("user/read_receipts", true).toBool();
+        theme_               = settings.value("user/theme", defaultTheme_).toString();
+        font_                = settings.value("user/font_family", "default").toString();
+        avatarCircles_       = settings.value("user/avatar_circles", true).toBool();
+        decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
+        emojiFont_           = settings.value("user/emoji_font_family", "default").toString();
+        baseFontSize_        = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
 
         applyTheme();
+}
+void
+UserSettings::setMessageHoverHighlight(bool state)
+{
+        if (state == messageHoverHighlight_)
+                return;
+        messageHoverHighlight_ = state;
+        emit messageHoverHighlightChanged(state);
+        save();
+}
+void
+UserSettings::setEnlargeEmojiOnlyMessages(bool state)
+{
+        if (state == enlargeEmojiOnlyMessages_)
+                return;
+        enlargeEmojiOnlyMessages_ = state;
+        emit enlargeEmojiOnlyMessagesChanged(state);
+        save();
+}
+void
+UserSettings::setTray(bool state)
+{
+        if (state == tray_)
+                return;
+        tray_ = state;
+        emit trayChanged(state);
+        save();
+}
+
+void
+UserSettings::setStartInTray(bool state)
+{
+        if (state == startInTray_)
+                return;
+        startInTray_ = state;
+        emit startInTrayChanged(state);
+        save();
+}
+
+void
+UserSettings::setGroupView(bool state)
+{
+        if (groupView_ != state)
+                emit groupViewStateChanged(state);
+
+        groupView_ = state;
+        save();
+}
+
+void
+UserSettings::setMarkdown(bool state)
+{
+        if (state == markdown_)
+                return;
+        markdown_ = state;
+        emit markdownChanged(state);
+        save();
+}
+
+void
+UserSettings::setReadReceipts(bool state)
+{
+        if (state == readReceipts_)
+                return;
+        readReceipts_ = state;
+        emit readReceiptsChanged(state);
+        save();
+}
+
+void
+UserSettings::setTypingNotifications(bool state)
+{
+        if (state == typingNotifications_)
+                return;
+        typingNotifications_ = state;
+        emit typingNotificationsChanged(state);
+        save();
+}
+
+void
+UserSettings::setSortByImportance(bool state)
+{
+        if (state == sortByImportance_)
+                return;
+        sortByImportance_ = state;
+        emit roomSortingChanged(state);
+        save();
+}
+
+void
+UserSettings::setButtonsInTimeline(bool state)
+{
+        if (state == buttonsInTimeline_)
+                return;
+        buttonsInTimeline_ = state;
+        emit buttonInTimelineChanged(state);
+        save();
+}
+
+void
+UserSettings::setTimelineMaxWidth(int state)
+{
+        if (state == timelineMaxWidth_)
+                return;
+        timelineMaxWidth_ = state;
+        emit timelineMaxWidthChanged(state);
+        save();
+}
+
+void
+UserSettings::setDesktopNotifications(bool state)
+{
+        if (state == hasDesktopNotifications_)
+                return;
+        hasDesktopNotifications_ = state;
+        emit desktopNotificationsChanged(state);
+        save();
+}
+
+void
+UserSettings::setAvatarCircles(bool state)
+{
+        if (state == avatarCircles_)
+                return;
+        avatarCircles_ = state;
+        emit avatarCirclesChanged(state);
+        save();
+}
+
+void
+UserSettings::setDecryptSidebar(bool state)
+{
+        if (state == decryptSidebar_)
+                return;
+        decryptSidebar_ = state;
+        emit decryptSidebarChanged(state);
+        save();
 }
 
 void
 UserSettings::setFontSize(double size)
 {
+        if (size == baseFontSize_)
+                return;
         baseFontSize_ = size;
+        emit fontSizeChanged(size);
         save();
 }
 
 void
 UserSettings::setFontFamily(QString family)
 {
+        if (family == font_)
+                return;
         font_ = family;
+        emit fontChanged(family);
         save();
 }
 
 void
 UserSettings::setEmojiFontFamily(QString family)
 {
+        if (family == emojiFont_)
+                return;
         emojiFont_ = family;
+        emit emojiFontChanged(family);
         save();
 }
 
 void
 UserSettings::setTheme(QString theme)
 {
+        if (theme == theme)
+                return;
         theme_ = theme;
         save();
         applyTheme();
+        emit themeChanged(theme);
 }
 
 void
@@ -161,29 +314,33 @@ UserSettings::save()
         settings.beginGroup("user");
 
         settings.beginGroup("window");
-        settings.setValue("tray", isTrayEnabled_);
-        settings.setValue("start_in_tray", isStartInTrayEnabled_);
+        settings.setValue("tray", tray_);
+        settings.setValue("start_in_tray", startInTray_);
         settings.endGroup();
 
         settings.beginGroup("timeline");
-        settings.setValue("buttons", isButtonsInTimelineEnabled_);
-        settings.setValue("message_hover_highlight", isMessageHoverHighlightEnabled_);
+        settings.setValue("buttons", buttonsInTimeline_);
+        settings.setValue("message_hover_highlight", messageHoverHighlight_);
+        settings.setValue("enlarge_emoji_only_msg", enlargeEmojiOnlyMessages_);
+        settings.setValue("max_width", timelineMaxWidth_);
         settings.endGroup();
 
         settings.setValue("avatar_circles", avatarCircles_);
         settings.setValue("decrypt_sidebar", decryptSidebar_);
         settings.setValue("font_size", baseFontSize_);
-        settings.setValue("typing_notifications", isTypingNotificationsEnabled_);
+        settings.setValue("typing_notifications", typingNotifications_);
         settings.setValue("minor_events", sortByImportance_);
-        settings.setValue("read_receipts", isReadReceiptsEnabled_);
-        settings.setValue("group_view", isGroupViewEnabled_);
-        settings.setValue("markdown_enabled", isMarkdownEnabled_);
+        settings.setValue("read_receipts", readReceipts_);
+        settings.setValue("group_view", groupView_);
+        settings.setValue("markdown_enabled", markdown_);
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("theme", theme());
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
 
         settings.endGroup();
+
+        settings.sync();
 }
 
 HorizontalLine::HorizontalLine(QWidget *parent)
@@ -231,24 +388,26 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
         general_->setFont(font);
 
-        trayToggle_              = new Toggle{this};
-        startInTrayToggle_       = new Toggle{this};
-        avatarCircles_           = new Toggle{this};
-        decryptSidebar_          = new Toggle(this);
-        groupViewToggle_         = new Toggle{this};
-        timelineButtonsToggle_   = new Toggle{this};
-        typingNotifications_     = new Toggle{this};
-        messageHoverHighlight_   = new Toggle{this};
-        sortByImportance_        = new Toggle{this};
-        readReceipts_            = new Toggle{this};
-        markdownEnabled_         = new Toggle{this};
-        desktopNotifications_    = new Toggle{this};
-        scaleFactorCombo_        = new QComboBox{this};
-        fontSizeCombo_           = new QComboBox{this};
-        fontSelectionCombo_      = new QComboBox{this};
-        emojiFontSelectionCombo_ = new QComboBox{this};
+        trayToggle_               = new Toggle{this};
+        startInTrayToggle_        = new Toggle{this};
+        avatarCircles_            = new Toggle{this};
+        decryptSidebar_           = new Toggle(this);
+        groupViewToggle_          = new Toggle{this};
+        timelineButtonsToggle_    = new Toggle{this};
+        typingNotifications_      = new Toggle{this};
+        messageHoverHighlight_    = new Toggle{this};
+        enlargeEmojiOnlyMessages_ = new Toggle{this};
+        sortByImportance_         = new Toggle{this};
+        readReceipts_             = new Toggle{this};
+        markdown_                 = new Toggle{this};
+        desktopNotifications_     = new Toggle{this};
+        scaleFactorCombo_         = new QComboBox{this};
+        fontSizeCombo_            = new QComboBox{this};
+        fontSelectionCombo_       = new QComboBox{this};
+        emojiFontSelectionCombo_  = new QComboBox{this};
+        timelineMaxWidthSpin_     = new QSpinBox{this};
 
-        if (!settings_->isTrayEnabled())
+        if (!settings_->tray())
                 startInTrayToggle_->setDisabled(true);
 
         avatarCircles_->setFixedSize(64, 48);
@@ -291,6 +450,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         int themeIndex = themeCombo_->findText(themeStr);
         themeCombo_->setCurrentIndex(themeIndex);
 
+        timelineMaxWidthSpin_->setMinimum(0);
+        timelineMaxWidthSpin_->setMaximum(100'000'000);
+        timelineMaxWidthSpin_->setSingleStep(10);
+
         auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
         encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
         encryptionLabel_->setAlignment(Qt::AlignBottom);
@@ -323,10 +486,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         sessionKeysLayout->addWidget(sessionKeysExportBtn, 0, Qt::AlignRight);
         sessionKeysLayout->addWidget(sessionKeysImportBtn, 0, Qt::AlignRight);
 
-        auto boxWrap = [this, &font](QString labelText, QWidget *field) {
+        auto boxWrap = [this, &font](QString labelText, QWidget *field, QString tooltipText = "") {
                 auto label = new QLabel{labelText, this};
                 label->setFont(font);
                 label->setMargin(OptionMargin);
+
+                if (!tooltipText.isEmpty()) {
+                        label->setToolTip(tooltipText);
+                }
 
                 auto layout = new QHBoxLayout;
                 layout->addWidget(field, 0, Qt::AlignRight);
@@ -336,25 +503,70 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         formLayout_->addRow(general_);
         formLayout_->addRow(new HorizontalLine{this});
-        boxWrap(tr("Minimize to tray"), trayToggle_);
-        boxWrap(tr("Start in tray"), startInTrayToggle_);
+        boxWrap(
+          tr("Minimize to tray"),
+          trayToggle_,
+          tr("Keep the application running in the background after closing the client window."));
+        boxWrap(tr("Start in tray"),
+                startInTrayToggle_,
+                tr("Start the application in the background without showing the client window."));
         formLayout_->addRow(new HorizontalLine{this});
-        boxWrap(tr("Circular Avatars"), avatarCircles_);
-        boxWrap(tr("Group's sidebar"), groupViewToggle_);
-        boxWrap(tr("Decrypt messages in sidebar"), decryptSidebar_);
-        boxWrap(tr("Show buttons in timeline"), timelineButtonsToggle_);
-        boxWrap(tr("Typing notifications"), typingNotifications_);
-        boxWrap(tr("Sort rooms by unreads"), sortByImportance_);
+        boxWrap(tr("Circular Avatars"),
+                avatarCircles_,
+                tr("Change the appearance of user avatars in chats.\nOFF - square, ON - Circle."));
+        boxWrap(tr("Group's sidebar"),
+                groupViewToggle_,
+                tr("Show a column containing groups and tags next to the room list."));
+        boxWrap(tr("Decrypt messages in sidebar"),
+                decryptSidebar_,
+                tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
+                   "encrypted chats."));
+        boxWrap(tr("Show buttons in timeline"),
+                timelineButtonsToggle_,
+                tr("Show buttons to quickly reply, react or access additional options next to each "
+                   "message."));
+        boxWrap(tr("Limit width of timeline"),
+                timelineMaxWidthSpin_,
+                tr("Set the max width of messages in the timeline (in pixels). This can help "
+                   "readability on wide screen, when Nheko is maximised"));
+        boxWrap(tr("Typing notifications"),
+                typingNotifications_,
+                tr("Show who is typing in a room.\nThis will also enable or disable sending typing "
+                   "notifications to others."));
+        boxWrap(
+          tr("Sort rooms by unreads"),
+          sortByImportance_,
+          tr(
+            "Display rooms with new messages first.\nIf this is off, the list of rooms will only "
+            "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms which "
+            "have active notifications (the small circle with a number in it) will be sorted on "
+            "top. Rooms, that you have muted, will still be sorted by timestamp, since you don't "
+            "seem to consider them as important as the other rooms."));
         formLayout_->addRow(new HorizontalLine{this});
-        boxWrap(tr("Read receipts"), readReceipts_);
-        boxWrap(tr("Send messages as Markdown"), markdownEnabled_);
-        boxWrap(tr("Desktop notifications"), desktopNotifications_);
-        boxWrap(tr("Highlight message on hover"), messageHoverHighlight_);
+        boxWrap(tr("Read receipts"),
+                readReceipts_,
+                tr("Show if your message was read.\nStatus is displayed next to timestamps."));
+        boxWrap(
+          tr("Send messages as Markdown"),
+          markdown_,
+          tr("Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
+             "text."));
+        boxWrap(tr("Desktop notifications"),
+                desktopNotifications_,
+                tr("Notify about received message when the client is not currently focused."));
+        boxWrap(tr("Highlight message on hover"),
+                messageHoverHighlight_,
+                tr("Change the background color of messages when you hover over them."));
+        boxWrap(tr("Large Emoji in timeline"),
+                enlargeEmojiOnlyMessages_,
+                tr("Make font size larger if messages with only a few emojis are displayed."));
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
 #if !defined(Q_OS_MAC)
-        boxWrap(tr("Scale factor"), scaleFactorCombo_);
+        boxWrap(tr("Scale factor"),
+                scaleFactorCombo_,
+                tr("Change the scale factor of the whole user interface."));
 #else
         scaleFactorCombo_->hide();
 #endif
@@ -400,77 +612,86 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         topLayout_->addWidget(versionInfo);
 
         connect(themeCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &text) {
                         settings_->setTheme(text.toLower());
                         emit themeChanged();
                 });
         connect(scaleFactorCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
         connect(fontSizeCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &size) { settings_->setFontSize(size.trimmed().toDouble()); });
         connect(fontSelectionCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &family) { settings_->setFontFamily(family.trimmed()); });
         connect(emojiFontSelectionCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
-        connect(trayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setTray(!isDisabled);
-                if (isDisabled) {
+        connect(trayToggle_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setTray(!disabled);
+                if (disabled) {
                         startInTrayToggle_->setDisabled(true);
                 } else {
                         startInTrayToggle_->setEnabled(true);
                 }
-                emit trayOptionChanged(!isDisabled);
+                emit trayOptionChanged(!disabled);
         });
 
-        connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setStartInTray(!isDisabled);
+        connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setStartInTray(!disabled);
         });
 
-        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setGroupView(!isDisabled);
+        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setGroupView(!disabled);
         });
 
-        connect(decryptSidebar_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setDecryptSidebar(!isDisabled);
+        connect(decryptSidebar_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setDecryptSidebar(!disabled);
                 emit decryptSidebarChanged();
         });
 
-        connect(avatarCircles_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setAvatarCircles(!isDisabled);
+        connect(avatarCircles_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setAvatarCircles(!disabled);
         });
 
-        connect(markdownEnabled_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setMarkdownEnabled(!isDisabled);
+        connect(markdown_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setMarkdown(!disabled);
         });
 
-        connect(typingNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setTypingNotifications(!isDisabled);
+        connect(typingNotifications_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setTypingNotifications(!disabled);
         });
 
-        connect(sortByImportance_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setSortByImportance(!isDisabled);
+        connect(sortByImportance_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setSortByImportance(!disabled);
         });
 
-        connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setButtonsInTimeline(!isDisabled);
+        connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setButtonsInTimeline(!disabled);
         });
 
-        connect(readReceipts_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setReadReceipts(!isDisabled);
+        connect(readReceipts_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setReadReceipts(!disabled);
         });
 
-        connect(desktopNotifications_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setDesktopNotifications(!isDisabled);
+        connect(desktopNotifications_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setDesktopNotifications(!disabled);
         });
 
-        connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool isDisabled) {
-                settings_->setMessageHoverHighlight(!isDisabled);
+        connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setMessageHoverHighlight(!disabled);
         });
+
+        connect(enlargeEmojiOnlyMessages_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setEnlargeEmojiOnlyMessages(!disabled);
+        });
+
+        connect(timelineMaxWidthSpin_,
+                qOverload<int>(&QSpinBox::valueChanged),
+                this,
+                [this](int newValue) { settings_->setTimelineMaxWidth(newValue); });
 
         connect(
           sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
@@ -493,19 +714,21 @@ UserSettingsPage::showEvent(QShowEvent *)
         utils::restoreCombobox(themeCombo_, settings_->theme());
 
         // FIXME: Toggle treats true as "off"
-        trayToggle_->setState(!settings_->isTrayEnabled());
-        startInTrayToggle_->setState(!settings_->isStartInTrayEnabled());
-        groupViewToggle_->setState(!settings_->isGroupViewEnabled());
-        decryptSidebar_->setState(!settings_->isDecryptSidebarEnabled());
-        avatarCircles_->setState(!settings_->isAvatarCirclesEnabled());
-        typingNotifications_->setState(!settings_->isTypingNotificationsEnabled());
-        sortByImportance_->setState(!settings_->isSortByImportanceEnabled());
-        timelineButtonsToggle_->setState(!settings_->isButtonsInTimelineEnabled());
-        readReceipts_->setState(!settings_->isReadReceiptsEnabled());
-        markdownEnabled_->setState(!settings_->isMarkdownEnabled());
+        trayToggle_->setState(!settings_->tray());
+        startInTrayToggle_->setState(!settings_->startInTray());
+        groupViewToggle_->setState(!settings_->groupView());
+        decryptSidebar_->setState(!settings_->decryptSidebar());
+        avatarCircles_->setState(!settings_->avatarCircles());
+        typingNotifications_->setState(!settings_->typingNotifications());
+        sortByImportance_->setState(!settings_->sortByImportance());
+        timelineButtonsToggle_->setState(!settings_->buttonsInTimeline());
+        readReceipts_->setState(!settings_->readReceipts());
+        markdown_->setState(!settings_->markdown());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
-        messageHoverHighlight_->setState(!settings_->isMessageHoverHighlightEnabled());
+        messageHoverHighlight_->setState(!settings_->messageHoverHighlight());
+        enlargeEmojiOnlyMessages_->setState(!settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
+        timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));

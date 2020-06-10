@@ -3,7 +3,6 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
-import Qt.labs.settings 1.0
 
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
@@ -122,7 +121,7 @@ Page {
 		BusyIndicator {
 			visible: running
 			anchors.centerIn: parent
-            running: timelineManager.isInitialSync
+			running: timelineManager.isInitialSync
 			height: 200
 			width: 200
 			z: 3
@@ -133,12 +132,12 @@ Page {
 
 			visible: timelineManager.timeline != null
 
-			cacheBuffer: 500
+			cacheBuffer: 400
 
-			anchors.left: parent.left
-			anchors.right: parent.right
+			anchors.horizontalCenter: parent.horizontalCenter
 			anchors.top: parent.top
 			anchors.bottom: chatFooter.top
+			width: parent.width
 
 			anchors.leftMargin: 4
 			anchors.rightMargin: scrollbar.width
@@ -180,7 +179,7 @@ Page {
 				id: scrollbar
 				parent: chat.parent
 				anchors.top: chat.top
-				anchors.left: chat.right
+				anchors.right: chat.right
 				anchors.bottom: chat.bottom
 			}
 
@@ -195,7 +194,8 @@ Page {
 
 				id: wrapper
 				property Item section
-				width: chat.width
+				anchors.horizontalCenter: parent.horizontalCenter
+				width: (settings.timelineMaxWidth > 100 && (parent.width - settings.timelineMaxWidth) > 32) ? settings.timelineMaxWidth : (parent.width - 32)
 				height: section ? section.height + timelinerow.height : timelinerow.height
 				color: "transparent"
 
@@ -265,7 +265,8 @@ Page {
 					}
 					Row {
 						height: userName.height
-                        spacing: 4
+						spacing: 8
+
 						Avatar {
 							width: avatarSize
 							height: avatarSize

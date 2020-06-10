@@ -1,4 +1,5 @@
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QPushButton>
 
 #include "InviteeItem.h"

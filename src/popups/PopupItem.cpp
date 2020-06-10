@@ -1,3 +1,4 @@
+#include <QLabel>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QStyleOption>

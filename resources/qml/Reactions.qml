@@ -57,7 +57,7 @@ Flow {
 				Text {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
-					text: textMetrics.elidedText + (textMetrics.elidedText == model.key ? "" : "…")
+					text: textMetrics.elidedText + (textMetrics.elidedText == textMetrics.text ? "" : "…")
 					font.family: settings.emoji_font_family
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1
@@ -65,7 +65,7 @@ Flow {
 
 				Rectangle {
 					id: divider
-					height: reactionCounter.implicitHeight * 1.4
+					height: Math.floor(reactionCounter.implicitHeight * 1.4)
 					width: 1
 					color: (reaction.hovered || model.selfReactedEvent !== '') ? colors.highlight : colors.text
 				}

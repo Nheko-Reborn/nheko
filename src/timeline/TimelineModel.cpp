@@ -219,6 +219,7 @@ TimelineModel::roleNames() const
           {Section, "section"},
           {Type, "type"},
           {TypeString, "typeString"},
+          {IsOnlyEmoji, "isOnlyEmoji"},
           {Body, "body"},
           {FormattedBody, "formattedBody"},
           {UserId, "userId"},
@@ -284,6 +285,22 @@ TimelineModel::data(const QString &id, int role) const
                 return QVariant(toRoomEventType(event));
         case TypeString:
                 return QVariant(toRoomEventTypeString(event));
+        case IsOnlyEmoji: {
+                QString qBody = QString::fromStdString(body(event));
+
+                QVector<uint> utf32_string = qBody.toUcs4();
+                int emojiCount             = 0;
+
+                for (auto &code : utf32_string) {
+                        if (utils::codepointIsEmoji(code)) {
+                                emojiCount++;
+                        } else {
+                                return QVariant(0);
+                        }
+                }
+
+                return QVariant(emojiCount);
+        }
         case Body:
                 return QVariant(utils::replaceEmoji(QString::fromStdString(body(event))));
         case FormattedBody: {
@@ -386,6 +403,7 @@ TimelineModel::data(const QString &id, int role) const
                 // m.insert(names[Section], data(id, static_cast<int>(Section)));
                 m.insert(names[Type], data(id, static_cast<int>(Type)));
                 m.insert(names[TypeString], data(id, static_cast<int>(TypeString)));
+                m.insert(names[IsOnlyEmoji], data(id, static_cast<int>(IsOnlyEmoji)));
                 m.insert(names[Body], data(id, static_cast<int>(Body)));
                 m.insert(names[FormattedBody], data(id, static_cast<int>(FormattedBody)));
                 m.insert(names[UserId], data(id, static_cast<int>(UserId)));
@@ -810,7 +828,7 @@ TimelineModel::escapeEmoji(QString str) const
 void
 TimelineModel::viewRawMessage(QString id) const
 {
-        std::string ev = utils::serialize_event(events.value(id)).dump(4);
+        std::string ev = mtx::accessors::serialize_event(events.value(id)).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
 }
@@ -824,7 +842,7 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
                 event = decryptEvent(*e).event;
         }
 
-        std::string ev = utils::serialize_event(event).dump(4);
+        std::string ev = mtx::accessors::serialize_event(event).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
 }
@@ -1849,6 +1867,8 @@ TimelineModel::formatMemberEvent(QString id)
                                 rendered = tr("%1 changed their display name.").arg(name);
                         else if (avatarChanged)
                                 rendered = tr("%1 changed their avatar.").arg(name);
+                        else
+                                rendered = tr("%1 changed some profile info.").arg(name);
                         // the case of nothing changed but join follows join shouldn't happen, so
                         // just show it as join
                 } else {

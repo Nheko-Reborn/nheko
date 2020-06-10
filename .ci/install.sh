@@ -3,6 +3,7 @@
 set -ex
 
 if [ "$FLATPAK" ]; then
+	sudo apt-get -y install flatpak flatpak-builder elfutils
 	flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	flatpak --noninteractive install --user flathub org.kde.Platform//5.14
 	flatpak --noninteractive install --user flathub org.kde.Sdk//5.14

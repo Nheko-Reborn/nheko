@@ -27,7 +27,6 @@ class Menu;
 class TextLabel;
 class OverlayModal;
 
-class QPainter;
 class QLabel;
 class QHBoxLayout;
 class QVBoxLayout;

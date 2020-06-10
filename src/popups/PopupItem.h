@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPoint>
 #include <QWidget>
 
 #include "../AvatarProvider.h"
@@ -10,6 +7,8 @@
 
 class Avatar;
 struct SearchResult;
+class QLabel;
+class QHBoxLayout;
 
 class PopupItem : public QWidget
 {

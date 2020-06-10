@@ -36,6 +36,9 @@ namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+bool
+codepointIsEmoji(uint code);
+
 QString
 replaceEmoji(const QString &body);
 
@@ -181,42 +184,6 @@ erase_if(ContainerT &items, const PredicateT &predicate)
                 else
                         ++it;
         }
-}
-
-inline uint64_t
-event_timestamp(const mtx::events::collections::TimelineEvents &event)
-{
-        return std::visit([](auto msg) { return msg.origin_server_ts; }, event);
-}
-
-inline nlohmann::json
-serialize_event(const mtx::events::collections::TimelineEvents &event)
-{
-        return std::visit([](auto msg) { return json(msg); }, event);
-}
-
-inline mtx::events::EventType
-event_type(const mtx::events::collections::TimelineEvents &event)
-{
-        return std::visit([](auto msg) { return msg.type; }, event);
-}
-
-inline std::string
-event_id(const mtx::events::collections::TimelineEvents &event)
-{
-        return std::visit([](auto msg) { return msg.event_id; }, event);
-}
-
-inline QString
-eventId(const mtx::events::collections::TimelineEvents &event)
-{
-        return QString::fromStdString(event_id(event));
-}
-
-inline QString
-event_sender(const mtx::events::collections::TimelineEvents &event)
-{
-        return std::visit([](auto msg) { return QString::fromStdString(msg.sender); }, event);
 }
 
 template<class T>

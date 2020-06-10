@@ -142,6 +142,7 @@ public:
                 Section,
                 Type,
                 TypeString,
+                IsOnlyEmoji,
                 Body,
                 FormattedBody,
                 UserId,

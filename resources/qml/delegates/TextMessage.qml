@@ -6,4 +6,5 @@ MatrixText {
 	width: parent ? parent.width : undefined
 	height: isReply ? Math.min(chat.height / 8, implicitHeight) : undefined
 	clip: true
+	font.pointSize: (settings.enlargeEmojiOnlyMessages && model.data.isOnlyEmoji > 0 && model.data.isOnlyEmoji < 4) ? settings.fontSize * 3 : settings.fontSize
 }

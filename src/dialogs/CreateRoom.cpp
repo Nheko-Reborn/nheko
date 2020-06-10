@@ -112,7 +112,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         });
 
         connect(visibilityCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &text) {
                         if (text == "Private") {
                                 request_.visibility = mtx::requests::Visibility::Private;
@@ -122,7 +122,7 @@ CreateRoom::CreateRoom(QWidget *parent)
                 });
 
         connect(presetCombo_,
-                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &text) {
                         if (text == "Private Chat") {
                                 request_.preset = mtx::requests::Preset::PrivateChat;

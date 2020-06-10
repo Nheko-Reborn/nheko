@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include <QLabel>
-#include <QLayout>
 #include <QWidget>
 
 class FlatButton;
@@ -26,6 +24,9 @@ class LoadingIndicator;
 class OverlayModal;
 class RaisedButton;
 class TextField;
+class QLabel;
+class QVBoxLayout;
+class QHBoxLayout;
 
 namespace mtx {
 namespace responses {
@@ -65,7 +66,7 @@ protected:
 
 public slots:
         // Displays errors produced during the login.
-        void loginError(const QString &msg) { error_label_->setText(msg); }
+        void loginError(const QString &msg);
 
 private slots:
         // Callback for the back button.

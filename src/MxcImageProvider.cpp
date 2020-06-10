@@ -17,7 +17,8 @@ MxcImageResponse::run()
                 auto data = cache::image(fileName);
                 if (!data.isNull()) {
                         m_image = utils::readImage(&data);
-                        m_image = m_image.scaled(m_requestedSize, Qt::KeepAspectRatio);
+                        m_image = m_image.scaled(
+                          m_requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                         m_image.setText("mxc url", "mxc://" + m_id);
 
                         if (!m_image.isNull()) {

@@ -1,9 +1,7 @@
 #pragma once
 
-#include <QEvent>
 #include <QFrame>
 #include <QImage>
-#include <QLabel>
 
 #include <mtx/events/guest_access.hpp>
 
@@ -21,6 +19,8 @@ class QPixmap;
 class TextField;
 class TextField;
 class Toggle;
+class QLabel;
+class QEvent;
 
 class ClickableFilter : public QObject
 {
@@ -35,15 +35,7 @@ signals:
         void clicked();
 
 protected:
-        bool eventFilter(QObject *obj, QEvent *event) override
-        {
-                if (event->type() == QEvent::MouseButtonRelease) {
-                        emit clicked();
-                        return true;
-                }
-
-                return QObject::eventFilter(obj, event);
-        }
+        bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 /// Convenience class which connects events emmited from threads
@@ -72,24 +64,9 @@ signals:
         void nameChanged(const QString &roomName);
 
 private slots:
-        void topicEventSent()
-        {
-                errorField_->hide();
-                close();
-        }
-
-        void nameEventSent(const QString &name)
-        {
-                errorField_->hide();
-                emit nameChanged(name);
-                close();
-        }
-
-        void error(const QString &msg)
-        {
-                errorField_->setText(msg);
-                errorField_->show();
-        }
+        void topicEventSent();
+        void nameEventSent(const QString &name);
+        void error(const QString &msg);
 
         void applyClicked();
 

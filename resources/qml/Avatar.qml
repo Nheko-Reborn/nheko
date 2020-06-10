@@ -6,7 +6,7 @@ Rectangle {
 	id: avatar
 	width: 48
 	height: 48
-	radius: settings.avatar_circles ? height/2 : 3
+	radius: settings.avatarCircles ? height/2 : 3
 
 	property alias url: img.source
 	property string displayName
@@ -39,7 +39,7 @@ Rectangle {
 				anchors.fill: parent
 				width: avatar.width
 				height: avatar.height
-				radius: settings.avatar_circles ? height/2 : 3
+				radius: settings.avatarCircles ? height/2 : 3
 			}
 		}
 	}

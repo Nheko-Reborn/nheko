@@ -7,7 +7,6 @@
 #include "ui/Theme.h"
 
 class RippleOverlay;
-class QPainter;
 class QMouseEvent;
 
 class CommunitiesListItem : public QWidget
