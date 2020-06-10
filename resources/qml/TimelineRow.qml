@@ -63,9 +63,6 @@ MouseArea {
 				reactions: model.reactions
 				roomId: model.roomId
 				eventId: model.id
-				Component.onCompleted: {
-        			reactionRow.picked.connect(timelineManager.reactToMessage)
-    			}
 			}
 		}
 

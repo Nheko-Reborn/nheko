@@ -10,7 +10,7 @@ import "../"
 
 Popup {
 
-	function show(showAt, room_id, event_id) {
+    function show(showAt, room_id, event_id) {
         console.debug("Showing emojiPicker for " + event_id + "in room " + room_id)
         parent = showAt
         x = Math.round((showAt.width - width) / 2)
@@ -18,8 +18,7 @@ Popup {
         emojiPopup.room_id = room_id
         emojiPopup.event_id = event_id
         open()
-	}
-    signal picked(string room_id, string event_id, string key)
+    }
 
     property string room_id
     property string event_id
@@ -41,8 +40,6 @@ Popup {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
-    onPicked: emojiPopup.close()
 
     ColumnLayout {
         id: columnView
@@ -106,7 +103,8 @@ Popup {
                 // TODO: maybe add favorites at some point?
                 onClicked: {
                     console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id + " in room " + emojiPopup.room_id)
-                    emojiPopup.picked(emojiPopup.room_id, emojiPopup.event_id, model.unicode)
+                    emojiPopup.close()
+                    timelineManager.queueReactionMessage(emojiPopup.room_id, emojiPopup.event_id, model.unicode)
                 }
             }
 

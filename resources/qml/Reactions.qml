@@ -5,8 +5,6 @@ import QtQuick.Controls 2.2
 // adding new reactions via the emoji picker
 Flow {
 	id: reactionFlow
-	// Signal for when a reaction is picked / unpicked
-	signal picked(string room_id, string event_id, string key, string selfReactedEvent)
 
 	// highlight colors for selfReactedEvent background
 	property real highlightHue: colors.highlight.hslHue
@@ -36,7 +34,7 @@ Flow {
 
 			onClicked: {
 				console.debug("Picked " + model.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + model.selfReactedEvent)
-				reactionFlow.picked(reactionFlow.roomId, reactionFlow.eventId, model.key, model.selfReactedEvent)
+				timelineManager.reactToMessage(reactionFlow.roomId, reactionFlow.eventId, model.key, model.selfReactedEvent)
 			}
 
 
@@ -57,7 +55,7 @@ Flow {
 				Text {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
-					text: textMetrics.elidedText + (textMetrics.elidedText == textMetrics.text ? "" : "…")
+					text: textMetrics.elidedText + (textMetrics.elidedText == model.key ? "" : "…")
 					font.family: settings.emojiFont
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1

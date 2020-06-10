@@ -34,9 +34,6 @@ Page {
             category: Emoji.Category.People
             sourceModel: EmojiModel {}
         }
-		Component.onCompleted: {
-        	emojiPopup.picked.connect(timelineManager.queueReactionMessage)
-    	}
     }
 
 	Menu {
