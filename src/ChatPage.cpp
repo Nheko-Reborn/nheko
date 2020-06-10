@@ -450,7 +450,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
-        connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendDesktopNotifications);
+        connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
         connect(this,
                 &ChatPage::highlightedNotifsRetrieved,
                 this,
@@ -525,7 +525,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                 hasNotifications = true;
                 }
 
-                if (hasNotifications && userSettings_->hasDesktopNotifications())
+                if (hasNotifications && userSettings_->hasNotifications())
                         http::client()->notifications(
                           5,
                           "",
@@ -883,7 +883,7 @@ ChatPage::updateRoomNotificationCount(const QString &room_id,
 }
 
 void
-ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
+ChatPage::sendNotifications(const mtx::responses::Notifications &res)
 {
         for (const auto &item : res.notifications) {
                 const auto event_id = mtx::accessors::event_id(item.event);
@@ -906,16 +906,23 @@ ChatPage::sendDesktopNotifications(const mtx::responses::Notifications &res)
                                 if (isRoomActive(room_id))
                                         continue;
 
-                                notificationsManager.postNotification(
-                                  room_id,
-                                  QString::fromStdString(event_id),
-                                  QString::fromStdString(cache::singleRoomInfo(item.room_id).name),
-                                  cache::displayName(room_id, user_id),
-                                  utils::event_body(item.event),
-                                  cache::getRoomAvatar(room_id));
+                                if (userSettings_->hasAlertOnNotification()) {
+                                        QApplication::alert(this);
+                                }
+
+                                if (userSettings_->hasDesktopNotifications()) {
+                                        notificationsManager.postNotification(
+                                          room_id,
+                                          QString::fromStdString(event_id),
+                                          QString::fromStdString(
+                                            cache::singleRoomInfo(item.room_id).name),
+                                          cache::displayName(room_id, user_id),
+                                          utils::event_body(item.event),
+                                          cache::getRoomAvatar(room_id));
+                                }
                         }
                 } catch (const lmdb::error &e) {
-                        nhlog::db()->warn("error while sending desktop notification: {}", e.what());
+                        nhlog::db()->warn("error while sending notification: {}", e.what());
                 }
         }
 }
