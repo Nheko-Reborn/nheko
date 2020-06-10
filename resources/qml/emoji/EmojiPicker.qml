@@ -276,7 +276,7 @@ Popup {
                     sourceSize.height: 32
                     fillMode: Image.Pad
                     smooth: true
-                    source: "image://colorimage/:/icons/icons/emoji-categories/search.png?" + (parent.hovered ? colors.highlight : colors.buttonText)
+                    source: "image://colorimage/:/icons/icons/ui/search.png?" + (parent.hovered ? colors.highlight : colors.buttonText)
                 }
 
                 MouseArea

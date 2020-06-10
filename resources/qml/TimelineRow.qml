@@ -84,7 +84,7 @@ MouseArea {
 			width: 16
 		}
 		EmojiButton {
-			visible: timelineSettings.buttons
+			visible: settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
