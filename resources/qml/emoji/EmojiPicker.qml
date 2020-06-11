@@ -123,7 +123,7 @@ Popup {
                     interval: 350 // tweak as needed?
                     onTriggered: {
                         emojiPopup.model.filter = emojiSearch.text
-                        emojiPopup.model.category = Emoji.Category.Search
+                        emojiPopup.model.category = EmojiCategory.Search
                     }
                 }
 
@@ -168,14 +168,14 @@ Popup {
             Repeater {
                 model: ListModel {
                     // TODO: Would like to get 'simple' icons for the categories
-                    ListElement { image: ":/icons/icons/emoji-categories/people.png"; category: Emoji.Category.People }
-                    ListElement { image: ":/icons/icons/emoji-categories/nature.png"; category: Emoji.Category.Nature }
-                    ListElement { image: ":/icons/icons/emoji-categories/foods.png"; category: Emoji.Category.Food }
-                    ListElement { image: ":/icons/icons/emoji-categories/activity.png"; category: Emoji.Category.Activity }
-                    ListElement { image: ":/icons/icons/emoji-categories/travel.png"; category: Emoji.Category.Travel }
-                    ListElement { image: ":/icons/icons/emoji-categories/objects.png"; category: Emoji.Category.Objects }
-                    ListElement { image: ":/icons/icons/emoji-categories/symbols.png"; category: Emoji.Category.Symbols }
-                    ListElement { image: ":/icons/icons/emoji-categories/flags.png"; category: Emoji.Category.Flags }
+                    ListElement { image: ":/icons/icons/emoji-categories/people.png"; category: EmojiCategory.People }
+                    ListElement { image: ":/icons/icons/emoji-categories/nature.png"; category: EmojiCategory.Nature }
+                    ListElement { image: ":/icons/icons/emoji-categories/foods.png"; category: EmojiCategory.Food }
+                    ListElement { image: ":/icons/icons/emoji-categories/activity.png"; category: EmojiCategory.Activity }
+                    ListElement { image: ":/icons/icons/emoji-categories/travel.png"; category: EmojiCategory.Travel }
+                    ListElement { image: ":/icons/icons/emoji-categories/objects.png"; category: EmojiCategory.Objects }
+                    ListElement { image: ":/icons/icons/emoji-categories/symbols.png"; category: EmojiCategory.Symbols }
+                    ListElement { image: ":/icons/icons/emoji-categories/flags.png"; category: EmojiCategory.Flags }
                 }
 
                 delegate: AbstractButton {
@@ -210,21 +210,21 @@ Popup {
                     hoverEnabled: true
 					ToolTip.text: {
 						switch (model.category) {
-						case Emoji.Category.People:
+						case EmojiCategory.People:
 							return qsTr('People');
-						case Emoji.Category.Nature:
+						case EmojiCategory.Nature:
 							return qsTr('Nature');
-						case Emoji.Category.Food:
+						case EmojiCategory.Food:
 							return qsTr('Food');
-						case Emoji.Category.Activity:
+						case EmojiCategory.Activity:
 							return qsTr('Activity');
-						case Emoji.Category.Travel:
+						case EmojiCategory.Travel:
 							return qsTr('Travel');
-						case Emoji.Category.Objects:
+						case EmojiCategory.Objects:
 							return qsTr('Objects');
-						case Emoji.Category.Symbols:
+						case EmojiCategory.Symbols:
 							return qsTr('Symbols');
-						case Emoji.Category.Flags:
+						case EmojiCategory.Flags:
 							return qsTr('Flags');
 						}
 					}
@@ -257,7 +257,7 @@ Popup {
                 ToolTip.visible: hovered
                 onClicked: {
                     // clear any filters
-                    emojiPopup.model.category = Emoji.Category.Search
+                    emojiPopup.model.category = EmojiCategory.Search
                     gridView.positionViewAtBeginning()
                     emojiSearch.forceActiveFocus()
                 }

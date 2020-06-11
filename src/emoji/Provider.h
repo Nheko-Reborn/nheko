@@ -24,47 +24,34 @@
 #include <vector>
 
 namespace emoji {
+Q_NAMESPACE
 
-class Emoji
+enum class EmojiCategory
+{
+        People,
+        Nature,
+        Food,
+        Activity,
+        Travel,
+        Objects,
+        Symbols,
+        Flags,
+        Search
+};
+Q_ENUM_NS(EmojiCategory)
+
+struct Emoji
 {
         Q_GADGET
 
-        Q_PROPERTY(const QString &unicode READ unicode CONSTANT)
-        Q_PROPERTY(const QString &shortName READ shortName CONSTANT)
-        Q_PROPERTY(emoji::Emoji::Category category READ category CONSTANT)
+        Q_PROPERTY(const QString &unicode MEMBER unicode)
+        Q_PROPERTY(const QString &shortName MEMBER shortName)
+        Q_PROPERTY(emoji::EmojiCategory category MEMBER category)
 
 public:
-        enum class Category
-        {
-                People,
-                Nature,
-                Food,
-                Activity,
-                Travel,
-                Objects,
-                Symbols,
-                Flags,
-                Search
-        };
-        Q_ENUM(Category)
-
-        Emoji(const QString &unicode   = {},
-              const QString &shortName = {},
-              Emoji::Category cat      = Emoji::Category::Search)
-          : unicode_(unicode)
-          , shortName_(shortName)
-          , category_(cat)
-        {}
-
-        inline const QString &unicode() const { return unicode_; }
-        inline const QString &shortName() const { return shortName_; }
-        inline Emoji::Category category() const { return category_; }
-        inline void setUnicode(const QString &unicode) { unicode_ = unicode; }
-
-private:
-        QString unicode_;
-        QString shortName_;
-        Emoji::Category category_;
+        QString unicode;
+        QString shortName;
+        EmojiCategory category;
 };
 
 class Provider

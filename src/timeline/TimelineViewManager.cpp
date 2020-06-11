@@ -80,6 +80,8 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           "im.nheko.EmojiModel", 1, 0, "QAbstractItemModel", "Used by proxy models");
         qmlRegisterUncreatableType<emoji::Emoji>(
           "im.nheko.EmojiModel", 1, 0, "Emoji", "Used by emoji models");
+        qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
+          "im.nheko.EmojiModel", 1, 0, "EmojiCategory", "Error: Only enums");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView();

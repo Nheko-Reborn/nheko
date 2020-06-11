@@ -36,14 +36,14 @@ EmojiModel::data(const QModelIndex &index, int role) const
                 switch (role) {
                 case Qt::DisplayRole:
                 case static_cast<int>(EmojiModel::Roles::Unicode):
-                        return Provider::emoji[index.row()].unicode();
+                        return Provider::emoji[index.row()].unicode;
 
                 case Qt::ToolTipRole:
                 case static_cast<int>(EmojiModel::Roles::ShortName):
-                        return Provider::emoji[index.row()].shortName();
+                        return Provider::emoji[index.row()].shortName;
 
                 case static_cast<int>(EmojiModel::Roles::Category):
-                        return QVariant::fromValue(Provider::emoji[index.row()].category());
+                        return QVariant::fromValue(Provider::emoji[index.row()].category);
 
                 case static_cast<int>(EmojiModel::Roles::Emoji):
                         return QVariant::fromValue(Provider::emoji[index.row()]);
@@ -59,14 +59,14 @@ EmojiProxyModel::EmojiProxyModel(QObject *parent)
 
 EmojiProxyModel::~EmojiProxyModel() {}
 
-Emoji::Category
+EmojiCategory
 EmojiProxyModel::category() const
 {
         return category_;
 }
 
 void
-EmojiProxyModel::setCategory(Emoji::Category cat)
+EmojiProxyModel::setCategory(EmojiCategory cat)
 {
         if (category_ == cat) {
                 return;
@@ -102,9 +102,9 @@ EmojiProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent
         const Emoji emoji = index.data(static_cast<int>(EmojiModel::Roles::Emoji)).value<Emoji>();
 
         // TODO: Add favorites / recently used
-        if (category_ != Emoji::Category::Search) {
-                return emoji.category() == category_;
+        if (category_ != EmojiCategory::Search) {
+                return emoji.category == category_;
         }
 
-        return filterRegExp().isEmpty() ? true : filterRegExp().indexIn(emoji.shortName()) != -1;
+        return filterRegExp().isEmpty() ? true : filterRegExp().indexIn(emoji.shortName) != -1;
 }

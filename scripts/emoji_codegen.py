@@ -16,7 +16,7 @@ def generate_code(emojis, category):
 const std::vector<Emoji> emoji::Provider::{{ category }} = {
     // {{ category.capitalize() }}
     {%- for e in emoji %}
-        {QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::Emoji::Category::{{ category.capitalize() }}},
+        Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::EmojiCategory::{{ category.capitalize() }}},
     {%- endfor %}
 };
     ''')
@@ -30,7 +30,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
-    {QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::Emoji::Category::{{ c[0].capitalize() }}},
+    Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::EmojiCategory::{{ c[0].capitalize() }}},
     {%- endfor %}
     {%- endfor %}
 };

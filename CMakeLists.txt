@@ -248,6 +248,8 @@ set(SRC_FILES
 	src/emoji/Panel.cpp
 	src/emoji/PickButton.cpp
 	src/emoji/Provider.cpp
+	src/emoji/Provider_new.cpp
+
 
 	# Timeline
 	src/timeline/ReactionsModel.cpp

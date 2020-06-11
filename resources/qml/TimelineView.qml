@@ -31,7 +31,7 @@ Page {
         height: 6 * 52 
         colors: palette
         model: EmojiProxyModel {
-            category: Emoji.Category.People
+            category: EmojiCategory.People
             sourceModel: EmojiModel {}
         }
     }

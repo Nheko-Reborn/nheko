@@ -62,12 +62,12 @@ Category::Category(QString category, std::vector<Emoji> emoji, QWidget *parent)
         emojiListView_->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         for (const auto &e : emoji) {
-                data_->setUnicode(e.unicode());
+                data_->unicode = e.unicode;
 
                 auto item = new QStandardItem;
                 item->setSizeHint(QSize(emojiSize, emojiSize));
 
-                QVariant unicode(data_->unicode());
+                QVariant unicode(data_->unicode);
                 item->setData(unicode.toString(), Qt::UserRole);
 
                 itemModel_->appendRow(item);
