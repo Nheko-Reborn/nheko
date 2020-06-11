@@ -107,6 +107,15 @@ main(int argc, char *argv[])
         // needed for settings so need to register before any settings are read to prevent warings
         qRegisterMetaType<UserSettings::Presence>();
 
+        QCoreApplication::setApplicationName("nheko");
+        QCoreApplication::setApplicationVersion(nheko::version);
+        QCoreApplication::setOrganizationName("nheko");
+        QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+        // this needs to be after setting the application name. Or how would we find our settings
+        // file then?
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN) || defined(Q_OS_FREEBSD)
         if (qgetenv("QT_SCALE_FACTOR").size() == 0) {
                 float factor = utils::scaleFactor();
@@ -116,12 +125,6 @@ main(int argc, char *argv[])
         }
 #endif
 
-        QCoreApplication::setApplicationName("nheko");
-        QCoreApplication::setApplicationVersion(nheko::version);
-        QCoreApplication::setOrganizationName("nheko");
-        QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
-        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
         SingleApplication app(argc,
                               argv,
                               false,
