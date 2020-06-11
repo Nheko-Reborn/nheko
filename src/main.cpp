@@ -104,6 +104,9 @@ createCacheDirectory()
 int
 main(int argc, char *argv[])
 {
+        // needed for settings so need to register before any settings are read to prevent warings
+        qRegisterMetaType<UserSettings::Presence>();
+
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN) || defined(Q_OS_FREEBSD)
         if (qgetenv("QT_SCALE_FACTOR").size() == 0) {
                 float factor = utils::scaleFactor();

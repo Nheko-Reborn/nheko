@@ -49,7 +49,6 @@
 
 UserSettings::UserSettings()
 {
-        qRegisterMetaType<UserSettings::Presence>();
         load();
 }
 
