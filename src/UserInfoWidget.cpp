@@ -121,7 +121,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
                                                      QLineEdit::Normal,
                                                      ChatPage::instance()->status(),
                                                      &ok);
-                if (ok && !text.isEmpty())
+                if (ok)
                         ChatPage::instance()->setStatus(text);
         });
 
