@@ -47,10 +47,7 @@
 
 #include "config/nheko.h"
 
-UserSettings::UserSettings()
-{
-        load();
-}
+UserSettings::UserSettings() { load(); }
 
 void
 UserSettings::load()
