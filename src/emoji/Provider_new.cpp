@@ -1,25 +1,13 @@
 /*
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+    This file contains a single definition of all of the emoji from Provider.cpp.
+    It is being split out into a separate code file to alleviate compilation issues
+    in some versions of clang.
+*/
 
 #include "emoji/Provider.h"
 
 using namespace emoji;
-
-const std::vector<Emoji> emoji::Provider::people = {
+const QVector<Emoji> emoji::Provider::emoji = {
   // People
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x80"), "grinning face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x83"),
@@ -5663,9 +5651,6 @@ const std::vector<Emoji> emoji::Provider::people = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa5"), "busts in silhouette", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xab\x82"), "people hugging", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa3"), "footprints", emoji::EmojiCategory::People},
-};
-
-const std::vector<Emoji> emoji::Provider::nature = {
   // Nature
   Emoji{QString::fromUtf8("\xf0\x9f\x90\xb5"), "monkey face", emoji::EmojiCategory::Nature},
   Emoji{QString::fromUtf8("\xf0\x9f\x90\x92"), "monkey", emoji::EmojiCategory::Nature},
@@ -5817,9 +5802,6 @@ const std::vector<Emoji> emoji::Provider::nature = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x83"),
         "leaf fluttering in wind",
         emoji::EmojiCategory::Nature},
-};
-
-const std::vector<Emoji> emoji::Provider::food = {
   // Food
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x87"), "grapes", emoji::EmojiCategory::Food},
   Emoji{QString::fromUtf8("\xf0\x9f\x8d\x88"), "melon", emoji::EmojiCategory::Food},
@@ -5954,9 +5936,6 @@ const std::vector<Emoji> emoji::Provider::food = {
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\x84"), "spoon", emoji::EmojiCategory::Food},
   Emoji{QString::fromUtf8("\xf0\x9f\x94\xaa"), "kitchen knife", emoji::EmojiCategory::Food},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\xba"), "amphora", emoji::EmojiCategory::Food},
-};
-
-const std::vector<Emoji> emoji::Provider::activity = {
   // Activity
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\x83"), "jack-o-lantern", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\x84"), "Christmas tree", emoji::EmojiCategory::Activity},
@@ -6050,9 +6029,6 @@ const std::vector<Emoji> emoji::Provider::activity = {
   Emoji{QString::fromUtf8("\xf0\x9f\xaa\xa1"), "sewing needle", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\xb6"), "yarn", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\xaa\xa2"), "knot", emoji::EmojiCategory::Activity},
-};
-
-const std::vector<Emoji> emoji::Provider::travel = {
   // Travel
   Emoji{QString::fromUtf8("\xf0\x9f\x8c\x8d"),
         "globe showing Europe-Africa",
@@ -6313,9 +6289,6 @@ const std::vector<Emoji> emoji::Provider::travel = {
   Emoji{QString::fromUtf8("\xf0\x9f\x94\xa5"), "fire", emoji::EmojiCategory::Travel},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\xa7"), "droplet", emoji::EmojiCategory::Travel},
   Emoji{QString::fromUtf8("\xf0\x9f\x8c\x8a"), "water wave", emoji::EmojiCategory::Travel},
-};
-
-const std::vector<Emoji> emoji::Provider::objects = {
   // Objects
   Emoji{QString::fromUtf8("\xf0\x9f\x91\x93"), "glasses", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb6"), "sunglasses", emoji::EmojiCategory::Objects},
@@ -6599,9 +6572,6 @@ const std::vector<Emoji> emoji::Provider::objects = {
   Emoji{QString::fromUtf8("\xe2\x9a\xb1"), "funeral urn", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x97\xbf"), "moai", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\xaa\xa7"), "placard", emoji::EmojiCategory::Objects},
-};
-
-const std::vector<Emoji> emoji::Provider::symbols = {
   // Symbols
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\xa7"), "ATM sign", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xf0\x9f\x9a\xae"), "litter in bin sign", emoji::EmojiCategory::Symbols},
@@ -6921,9 +6891,6 @@ const std::vector<Emoji> emoji::Provider::symbols = {
   Emoji{QString::fromUtf8("\xf0\x9f\x94\xb2"),
         "black square button",
         emoji::EmojiCategory::Symbols},
-};
-
-const std::vector<Emoji> emoji::Provider::flags = {
   // Flags
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x81"), "chequered flag", emoji::EmojiCategory::Flags},
   Emoji{QString::fromUtf8("\xf0\x9f\x9a\xa9"), "triangular flag", emoji::EmojiCategory::Flags},

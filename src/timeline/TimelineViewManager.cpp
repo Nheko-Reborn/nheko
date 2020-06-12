@@ -13,6 +13,8 @@
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
 #include "dialogs/ImageOverlay.h"
+#include "emoji/EmojiModel.h"
+#include "emoji/Provider.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 
@@ -72,6 +74,18 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
+        qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
+        qmlRegisterType<emoji::EmojiProxyModel>("im.nheko.EmojiModel", 1, 0, "EmojiProxyModel");
+        qmlRegisterUncreatableType<QAbstractItemModel>(
+          "im.nheko.EmojiModel", 1, 0, "QAbstractItemModel", "Used by proxy models");
+        qmlRegisterUncreatableType<emoji::Emoji>(
+          "im.nheko.EmojiModel", 1, 0, "Emoji", "Used by emoji models");
+        qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
+                                         "im.nheko.EmojiModel",
+                                         1,
+                                         0,
+                                         "EmojiCategory",
+                                         "Error: Only enums");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView();
@@ -281,6 +295,36 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 
         if (timeline_)
                 timeline_->sendMessage(emote);
+}
+
+void
+TimelineViewManager::reactToMessage(const QString &roomId,
+                                    const QString &reactedEvent,
+                                    const QString &reactionKey,
+                                    const QString &selfReactedEvent)
+{
+        // If selfReactedEvent is empty, that means we haven't previously reacted
+        if (selfReactedEvent.isEmpty()) {
+                queueReactionMessage(roomId, reactedEvent, reactionKey);
+                // Otherwise, we have previously reacted and the reaction should be redacted
+        } else {
+                auto model = models.value(roomId);
+                model->redactEvent(selfReactedEvent);
+        }
+}
+
+void
+TimelineViewManager::queueReactionMessage(const QString &roomId,
+                                          const QString &reactedEvent,
+                                          const QString &reactionKey)
+{
+        mtx::events::msg::Reaction reaction;
+        reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
+        reaction.relates_to.event_id = reactedEvent.toStdString();
+        reaction.relates_to.key      = reactionKey.toStdString();
+
+        auto model = models.value(roomId);
+        model->sendMessage(reaction);
 }
 
 void

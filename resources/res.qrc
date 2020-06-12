@@ -22,6 +22,8 @@
         <file>icons/ui/checkmark@2x.png</file>
         <file>icons/ui/cursor.png</file>
         <file>icons/ui/cursor@2x.png</file>
+        <file>icons/ui/search.png</file>
+        <file>icons/ui/search@2x.png</file>
         <file>icons/ui/settings.png</file>
         <file>icons/ui/settings@2x.png</file>
         <file>icons/ui/smile.png</file>
@@ -122,6 +124,8 @@
         <file>qml/Reactions.qml</file>
         <file>qml/ScrollHelper.qml</file>
         <file>qml/TimelineRow.qml</file>
+        <file>qml/emoji/EmojiButton.qml</file>
+        <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/delegates/MessageDelegate.qml</file>
         <file>qml/delegates/TextMessage.qml</file>
         <file>qml/delegates/NoticeMessage.qml</file>

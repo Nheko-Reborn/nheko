@@ -6,6 +6,7 @@ import QtQuick.Window 2.2
 import im.nheko 1.0
 
 import "./delegates"
+import "./emoji"
 
 MouseArea {
 	anchors.left: parent.left
@@ -58,7 +59,10 @@ MouseArea {
 			}
 
 			Reactions {
+				id: reactionRow
 				reactions: model.reactions
+				roomId: model.roomId
+				eventId: model.id
 			}
 		}
 
@@ -76,7 +80,19 @@ MouseArea {
 			Layout.preferredHeight: 16
 			width: 16
 		}
-
+		EmojiButton {
+			visible: settings.buttonsInTimeline
+			Layout.alignment: Qt.AlignRight | Qt.AlignTop
+			Layout.preferredHeight: 16
+			width: 16
+			id: reactButton
+			hoverEnabled: true
+			ToolTip.visible: hovered
+			ToolTip.text: qsTr("React")
+			emojiPicker: emojiPopup
+			room_id: model.roomId
+			event_id: model.id
+		}
 		ImageButton {
 			visible: settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
