@@ -89,6 +89,11 @@ public:
         void initiateLogout();
         void focusMessageInput();
 
+        QString status() const;
+        void setStatus(const QString &status);
+
+        mtx::presence::PresenceState currentPresence() const;
+
 public slots:
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
@@ -154,6 +159,7 @@ signals:
                            const QImage &icon);
 
         void updateGroupsInfo(const mtx::responses::JoinedGroups &groups);
+        void retrievedPresence(const QString &statusMsg, mtx::presence::PresenceState state);
         void themeChanged();
         void decryptSidebarChanged();
 

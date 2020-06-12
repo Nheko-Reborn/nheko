@@ -9,6 +9,7 @@ Rectangle {
 	radius: settings.avatarCircles ? height/2 : 3
 
 	property alias url: img.source
+	property string userid
 	property string displayName
 
 	Label {
@@ -42,6 +43,23 @@ Rectangle {
 				radius: settings.avatarCircles ? height/2 : 3
 			}
 		}
+
 	}
+
+	Rectangle {
+		anchors.bottom: avatar.bottom
+		anchors.right: avatar.right
+
+		height: avatar.height / 6
+		width: height
+		radius: settings.avatarCircles ? height / 2 : height / 4
+		color: switch (timelineManager.userPresence(userid)) {
+			case "online": return "#00cc66"
+			case "unavailable": return "#ff9933"
+			case "offline": return "#a82353"
+			default: "transparent"
+		}
+	}
+
 	color: colors.base
 }

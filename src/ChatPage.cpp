@@ -61,6 +61,7 @@ constexpr size_t MAX_ONETIME_KEYS         = 50;
 
 Q_DECLARE_METATYPE(std::optional<mtx::crypto::EncryptedFile>)
 Q_DECLARE_METATYPE(std::optional<RelatedInfo>)
+Q_DECLARE_METATYPE(mtx::presence::PresenceState)
 
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
@@ -72,6 +73,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
         qRegisterMetaType<std::optional<RelatedInfo>>();
+        qRegisterMetaType<mtx::presence::PresenceState>();
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -990,7 +992,9 @@ ChatPage::startInitialSync()
         nhlog::net()->info("trying initial sync");
 
         mtx::http::SyncOpts opts;
-        opts.timeout = 0;
+        opts.timeout      = 0;
+        opts.set_presence = currentPresence();
+
         http::client()->sync(
           opts,
           std::bind(
@@ -1001,6 +1005,7 @@ void
 ChatPage::trySync()
 {
         mtx::http::SyncOpts opts;
+        opts.set_presence = currentPresence();
 
         if (!connectivityTimer_.isActive())
                 connectivityTimer_.start();
@@ -1226,6 +1231,39 @@ ChatPage::sendTypingNotifications()
                                              err->matrix_error.error);
                   }
           });
+}
+
+QString
+ChatPage::status() const
+{
+        return QString::fromStdString(cache::statusMessage(utils::localUser().toStdString()));
+}
+
+void
+ChatPage::setStatus(const QString &status)
+{
+        http::client()->put_presence_status(
+          currentPresence(), status.toStdString(), [](mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to set presence status_msg: {}",
+                                             err->matrix_error.error);
+                  }
+          });
+}
+
+mtx::presence::PresenceState
+ChatPage::currentPresence() const
+{
+        switch (userSettings_->presence()) {
+        case UserSettings::Presence::Online:
+                return mtx::presence::online;
+        case UserSettings::Presence::Unavailable:
+                return mtx::presence::unavailable;
+        case UserSettings::Presence::Offline:
+                return mtx::presence::offline;
+        default:
+                return mtx::presence::online;
+        }
 }
 
 void

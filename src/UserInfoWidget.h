@@ -26,6 +26,7 @@ class OverlayModal;
 class QLabel;
 class QHBoxLayout;
 class QVBoxLayout;
+class QMenu;
 
 class UserInfoWidget : public QWidget
 {
@@ -48,6 +49,7 @@ public:
 protected:
         void resizeEvent(QResizeEvent *event) override;
         void paintEvent(QPaintEvent *event) override;
+        void contextMenuEvent(QContextMenuEvent *) override;
 
 private:
         Avatar *userAvatar_;
@@ -70,4 +72,6 @@ private:
         int logoutButtonSize_;
 
         QColor borderColor_;
+
+        QMenu *menu = nullptr;
 };

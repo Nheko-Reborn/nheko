@@ -952,6 +952,8 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         saveInvites(txn, res.rooms.invite);
 
+        savePresence(txn, res.presence);
+
         removeLeftRooms(txn, res.rooms.leave);
 
         txn.commit();
@@ -1034,6 +1036,21 @@ Cache::saveInvite(lmdb::txn &txn,
                           },
                           e);
                 }
+        }
+}
+
+void
+Cache::savePresence(
+  lmdb::txn &txn,
+  const std::vector<mtx::events::Event<mtx::events::presence::Presence>> &presenceUpdates)
+{
+        for (const auto &update : presenceUpdates) {
+                auto presenceDb = getPresenceDb(txn);
+
+                lmdb::dbi_put(txn,
+                              presenceDb,
+                              lmdb::val(update.sender),
+                              lmdb::val(json(update.content).dump()));
         }
 }
 
@@ -2254,6 +2271,50 @@ Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
         AvatarUrls.remove(fmt);
 }
 
+mtx::presence::PresenceState
+Cache::presenceState(const std::string &user_id)
+{
+        lmdb::val presenceVal;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getPresenceDb(txn);
+        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), presenceVal);
+
+        mtx::presence::PresenceState state = mtx::presence::offline;
+
+        if (res) {
+                mtx::events::presence::Presence presence =
+                  json::parse(std::string(presenceVal.data(), presenceVal.size()));
+                state = presence.presence;
+        }
+
+        txn.commit();
+
+        return state;
+}
+
+std::string
+Cache::statusMessage(const std::string &user_id)
+{
+        lmdb::val presenceVal;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getPresenceDb(txn);
+        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), presenceVal);
+
+        std::string status_msg;
+
+        if (res) {
+                mtx::events::presence::Presence presence =
+                  json::parse(std::string(presenceVal.data(), presenceVal.size()));
+                status_msg = presence.status_msg;
+        }
+
+        txn.commit();
+
+        return status_msg;
+}
+
 void
 to_json(json &j, const RoomInfo &info)
 {
@@ -2423,6 +2484,17 @@ void
 insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
 {
         instance_->insertAvatarUrl(room_id, user_id, avatar_url);
+}
+
+mtx::presence::PresenceState
+presenceState(const std::string &user_id)
+{
+        return instance_->presenceState(user_id);
+}
+std::string
+statusMessage(const std::string &user_id)
+{
+        return instance_->statusMessage(user_id);
 }
 
 //! Load saved data for the display names & avatars.

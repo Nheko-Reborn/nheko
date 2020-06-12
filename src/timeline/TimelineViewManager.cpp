@@ -59,6 +59,18 @@ TimelineViewManager::userColor(QString id, QColor background)
         return userColors.value(id);
 }
 
+QString
+TimelineViewManager::userPresence(QString id) const
+{
+        return QString::fromStdString(
+          mtx::presence::to_string(cache::presenceState(id.toStdString())));
+}
+QString
+TimelineViewManager::userStatus(QString id) const
+{
+        return QString::fromStdString(cache::statusMessage(id.toStdString()));
+}
+
 TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())

@@ -54,6 +54,12 @@ insertDisplayName(const QString &room_id, const QString &user_id, const QString 
 void
 insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url);
 
+// presence
+mtx::presence::PresenceState
+presenceState(const std::string &user_id);
+std::string
+statusMessage(const std::string &user_id);
+
 //! Load saved data for the display names & avatars.
 void
 populateMembers();

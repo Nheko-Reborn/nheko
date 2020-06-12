@@ -52,6 +52,10 @@ public:
         static QString displayName(const QString &room_id, const QString &user_id);
         static QString avatarUrl(const QString &room_id, const QString &user_id);
 
+        // presence
+        mtx::presence::PresenceState presenceState(const std::string &user_id);
+        std::string statusMessage(const std::string &user_id);
+
         static void removeDisplayName(const QString &room_id, const QString &user_id);
         static void removeAvatarUrl(const QString &room_id, const QString &user_id);
 
@@ -377,6 +381,10 @@ private:
         void saveInvites(lmdb::txn &txn,
                          const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 
+        void savePresence(
+          lmdb::txn &txn,
+          const std::vector<mtx::events::Event<mtx::events::presence::Presence>> &presenceUpdates);
+
         //! Sends signals for the rooms that are removed.
         void removeLeftRooms(lmdb::txn &txn,
                              const std::map<std::string, mtx::responses::LeftRoom> &rooms)
@@ -428,6 +436,11 @@ private:
         lmdb::dbi getMentionsDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(txn, std::string(room_id + "/mentions").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getPresenceDb(lmdb::txn &txn)
+        {
+                return lmdb::dbi::open(txn, "presence", MDB_CREATE);
         }
 
         //! Retrieves or creates the database that stores the open OLM sessions between our device
