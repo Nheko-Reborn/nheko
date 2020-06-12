@@ -87,7 +87,6 @@ public:
         //! Show the room/group list (if it was visible).
         void showSideBars();
         void initiateLogout();
-        void reactMessage(const QString &eventId);
         void focusMessageInput();
 
 public slots:

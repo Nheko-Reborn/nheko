@@ -126,8 +126,6 @@ class TimelineModel : public QAbstractListModel
           int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
         Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                      typingUsersChanged)
-        Q_PROPERTY(QString reaction READ reaction WRITE setReaction NOTIFY reactionChanged RESET
-                     resetReaction)
         Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
         Q_PROPERTY(
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
@@ -191,7 +189,6 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid) const;
-        Q_INVOKABLE void reactAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);
@@ -220,21 +217,6 @@ public slots:
         }
         std::vector<QString> typingUsers() const { return typingUsers_; }
         bool paginationInProgress() const { return m_paginationInProgress; }
-        QString reaction() const { return reaction_; }
-        void setReaction(QString reaction)
-        {
-                if (reaction_ != reaction) {
-                        reaction_ = reaction;
-                        emit reactionChanged(reaction_);
-                }
-        }
-        void resetReaction()
-        {
-                if (!reaction_.isEmpty()) {
-                        reaction_ = "";
-                        emit reactionChanged(reaction_);
-                }
-        }
         QString reply() const { return reply_; }
         void setReply(QString newReply)
         {
@@ -271,7 +253,6 @@ signals:
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
         void eventFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
         void typingUsersChanged(std::vector<QString> users);
-        void reactionChanged(QString reaction);
         void replyChanged(QString reply);
         void paginationInProgressChanged(const bool);
 
@@ -305,7 +286,6 @@ private:
         bool m_paginationInProgress = false;
 
         QString currentId;
-        QString reaction_;
         QString reply_;
         std::vector<QString> typingUsers_;
 

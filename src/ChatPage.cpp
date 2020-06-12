@@ -607,12 +607,6 @@ ChatPage::resetUI()
 }
 
 void
-ChatPage::reactMessage(const QString &id)
-{
-        view_manager_->queueReactionMessage(current_room_, id, "👀");
-}
-
-void
 ChatPage::focusMessageInput()
 {
         this->text_input_->focusLineEdit();
