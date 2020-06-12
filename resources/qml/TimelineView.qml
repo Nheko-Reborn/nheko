@@ -5,20 +5,36 @@ import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
 
 import im.nheko 1.0
+import im.nheko.EmojiModel 1.0
 
 import "./delegates"
+import "./emoji"
 
 Page {
 	property var colors: currentActivePalette
 	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
 	property int avatarSize: 40
+	property real highlightHue: colors.highlight.hslHue
+	property real highlightSat: colors.highlight.hslSaturation
+	property real highlightLight: colors.highlight.hslLightness
 
 	palette: colors
 
 	FontMetrics {
 		id: fontMetrics
 	}
+
+    EmojiPicker {
+        id: emojiPopup
+        width: 7 * 52 + 20
+        height: 6 * 52 
+        colors: palette
+        model: EmojiProxyModel {
+            category: EmojiCategory.People
+            sourceModel: EmojiModel {}
+        }
+    }
 
 	Menu {
 		id: messageContextMenu
@@ -34,7 +50,10 @@ Page {
 		property string eventId
 		property int eventType
 		property bool isEncrypted
-
+		MenuItem {
+			text: qsTr("React")
+			onClicked: chat.model.reactAction(messageContextMenu.eventId)
+		}
 		MenuItem {
 			text: qsTr("Reply")
 			onClicked: chat.model.replyAction(messageContextMenu.eventId)

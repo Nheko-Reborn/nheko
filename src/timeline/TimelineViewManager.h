@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QHash>
 #include <QQuickView>
 #include <QQuickWidget>
 #include <QSharedPointer>
@@ -12,6 +13,8 @@
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
+#include "emoji/EmojiModel.h"
+#include "emoji/Provider.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
@@ -58,7 +61,13 @@ public slots:
 
         void setHistoryView(const QString &room_id);
         void updateColorPalette();
-
+        void queueReactionMessage(const QString &roomId,
+                                  const QString &reactedEvent,
+                                  const QString &reaction);
+        void reactToMessage(const QString &roomId,
+                            const QString &reactedEvent,
+                            const QString &reactionKey,
+                            const QString &selfReactedEvent);
         void queueTextMessage(const QString &msg);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
@@ -103,7 +112,8 @@ private:
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
         TimelineModel *timeline_ = nullptr;
-        bool isInitialSync_      = true;
+
+        bool isInitialSync_ = true;
 
         QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;

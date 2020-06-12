@@ -4,7 +4,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1341"/>
+        <location filename="../../src/Cache.cpp" line="+1342"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
@@ -12,23 +12,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+226"/>
+        <location filename="../../src/ChatPage.cpp" line="+227"/>
         <source>Failed to invite user: %1</source>
         <translation>Failed to invite user: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+892"/>
+        <location line="+923"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-463"/>
+        <location line="-471"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
     </message>
     <message>
-        <location line="+428"/>
+        <location line="+436"/>
         <source>Room %1 created.</source>
         <translation>Room %1 created.</translation>
     </message>
@@ -68,7 +68,7 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="-817"/>
+        <location line="-825"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Failed to upload media. Please try again.</translation>
     </message>
@@ -98,7 +98,7 @@
         <translation>Failed to restore save data. Please login again.</translation>
     </message>
     <message>
-        <location line="+148"/>
+        <location line="+156"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
@@ -153,6 +153,12 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Server Notices</source>
+        <comment>Tag translation for m.server_notice</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
         <translation> (tag)</translation>
@@ -166,7 +172,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+60"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+72"/>
         <source>Apply</source>
         <translation>Apply</translation>
     </message>
@@ -187,6 +193,55 @@
     </message>
 </context>
 <context>
+    <name>EmojiPicker</name>
+    <message>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
+        <location line="+139"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-42"/>
+        <source>People</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Nature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Food</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Activity</source>
+        <translation type="unfinished">Activity</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Travel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Objects</source>
+        <translation type="unfinished">Objects</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Symbols</source>
+        <translation type="unfinished">Symbols</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Flags</source>
+        <translation type="unfinished">Flags</translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
@@ -202,7 +257,7 @@
 <context>
     <name>InviteeItem</name>
     <message>
-        <location filename="../../src/InviteeItem.cpp" line="+17"/>
+        <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
@@ -210,7 +265,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+89"/>
+        <location filename="../../src/LoginPage.cpp" line="+90"/>
         <source>Matrix ID</source>
         <translation>Matrix ID</translation>
     </message>
@@ -242,8 +297,8 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     </message>
     <message>
         <location line="+2"/>
-        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided, a random string is used for privacy purposes.</source>
-        <translation>A name for this device, which will be shown to others, when verifying your devices. If none is provided, a random string is used for privacy purposes.</translation>
+        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -254,7 +309,7 @@ Example: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+16"/>
-        <location line="+185"/>
+        <location line="+191"/>
         <source>LOGIN</source>
         <translation>LOGIN</translation>
     </message>
@@ -369,7 +424,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+87"/>
+        <location filename="../../src/RegisterPage.cpp" line="+88"/>
         <source>Username</source>
         <translation>Username</translation>
     </message>
@@ -437,7 +492,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+939"/>
+        <location filename="../../src/Cache.cpp" line="+940"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -455,7 +510,7 @@ Example: https://server.my:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
         <translation type="unfinished"></translation>
@@ -473,7 +528,7 @@ Example: https://server.my:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
         <translation type="unfinished"></translation>
@@ -485,14 +540,15 @@ Example: https://server.my:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="+1"/>
         <source>Tag:</source>
+        <comment>Tag name prompt</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -509,7 +565,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>SideBarActions</name>
     <message>
-        <location filename="../../src/SideBarActions.cpp" line="+38"/>
+        <location filename="../../src/SideBarActions.cpp" line="+40"/>
         <source>User settings</source>
         <translation>User settings</translation>
     </message>
@@ -560,7 +616,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+459"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+460"/>
         <source>Send a file</source>
         <translation>Send a file</translation>
     </message>
@@ -581,7 +637,7 @@ Example: https://server.my:8787</translation>
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -599,7 +655,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+891"/>
         <source>-- Decryption Error (failed to communicate with DB) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
         <translation>-- Decryption Error (failed to communicate with DB) --</translation>
@@ -622,7 +678,7 @@ Example: https://server.my:8787</translation>
         <translation>Message redaction failed: %1</translation>
     </message>
     <message>
-        <location line="+455"/>
+        <location line="+488"/>
         <source>Save image</source>
         <translation>Save image</translation>
     </message>
@@ -642,7 +698,7 @@ Example: https://server.my:8787</translation>
         <translation>Save file</translation>
     </message>
     <message>
-        <location line="-610"/>
+        <location line="-643"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Encrypted Event (No keys found for decryption) --</translation>
@@ -654,7 +710,7 @@ Example: https://server.my:8787</translation>
         <translation>-- Encrypted Event (Unknown event type) --</translation>
     </message>
     <message numerus="yes">
-        <location line="+660"/>
+        <location line="+693"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -728,6 +784,11 @@ Example: https://server.my:8787</translation>
         <translation>%1 changed their avatar.</translation>
     </message>
     <message>
+        <location line="+2"/>
+        <source>%1 changed some profile info.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+4"/>
         <source>%1 joined.</source>
         <translation>%1 joined.</translation>
@@ -768,12 +829,12 @@ Example: https://server.my:8787</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-1238"/>
+        <location line="-1281"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+1240"/>
+        <location line="+1283"/>
         <source>Rejected the knock from %1.</source>
         <translation>Rejected the knock from %1.</translation>
     </message>
@@ -797,7 +858,12 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+92"/>
+        <location filename="../qml/TimelineRow.qml" line="+91"/>
+        <source>React</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Reply</source>
         <translation>Reply</translation>
     </message>
@@ -811,6 +877,11 @@ Example: https://server.my:8787</translation>
     <name>TimelineView</name>
     <message>
         <location filename="../qml/TimelineView.qml" line="+54"/>
+        <source>React</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Reply</source>
         <translation>Reply</translation>
     </message>
@@ -850,7 +921,7 @@ Example: https://server.my:8787</translation>
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+259"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -904,7 +975,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserInfoWidget</name>
     <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+88"/>
+        <location filename="../../src/UserInfoWidget.cpp" line="+91"/>
         <source>Logout</source>
         <translation>Logout</translation>
     </message>
@@ -912,69 +983,172 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+339"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+520"/>
         <source>Minimize to tray</source>
         <translation>Minimize to tray</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Start in tray</source>
         <translation>Start in tray</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+7"/>
         <source>Group&apos;s sidebar</source>
         <translation>Group&apos;s sidebar</translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="-3"/>
         <source>Circular Avatars</source>
         <translation>Circular Avatars</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-5"/>
+        <source>Keep the application running in the background after closing the client window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Start the application in the background without showing the client window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Change the appearance of user avatars in chats.
+OFF - square, ON - Circle.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Show a column containing groups and tags next to the room list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
         <translation>Decrypt messages in sidebar</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
+        <source>Decrypt the messages shown in the sidebar.
+Only affects messages in encrypted chats.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Show buttons in timeline</source>
         <translation>Show buttons in timeline</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
+        <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Limit width of timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Typing notifications</source>
         <translation>Typing notifications</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
+        <source>Show who is typing in a room.
+This will also enable or disable sending typing notifications to others.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sort rooms by unreads</source>
         <translation>Sort rooms by unreads</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Display rooms with new messages first.
+If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
+If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Read receipts</source>
         <translation>Read receipts</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
+        <source>Show if your message was read.
+Status is displayed next to timestamps.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Send messages as Markdown</source>
         <translation>Send messages as Markdown</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
+        <source>Allow using markdown in messages.
+When disabled, all messages are sent as a plain text.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Desktop notifications</source>
         <translation>Desktop notifications</translation>
     </message>
     <message>
+        <location line="+2"/>
+        <source>Notify about received message when the client is not currently focused.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+1"/>
+        <source>Alert on notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show an alert when a message is received.
+This usually causes the application icon in the task bar to animate in some fashion.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Highlight message on hover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the background color of messages when you hover over them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Large Emoji in timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Make font size larger if messages with only a few emojis are displayed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Scale factor</source>
         <translation>Scale factor</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the scale factor of the whole user interface.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1002,7 +1176,7 @@ Example: https://server.my:8787</translation>
         <translation>Device Fingerprint</translation>
     </message>
     <message>
-        <location line="-60"/>
+        <location line="-113"/>
         <source>Session Keys</source>
         <translation>Session Keys</translation>
     </message>
@@ -1022,22 +1196,22 @@ Example: https://server.my:8787</translation>
         <translation>ENCRYPTION</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-71"/>
         <source>GENERAL</source>
         <translation>GENERAL</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+29"/>
         <source>INTERFACE</source>
         <translation>INTERFACE</translation>
     </message>
     <message>
-        <location line="+109"/>
+        <location line="+166"/>
         <source>Emoji Font Family</source>
         <translation>Emoji Font Family</translation>
     </message>
     <message>
-        <location line="+163"/>
+        <location line="+179"/>
         <source>Open Sessions File</source>
         <translation>Open Sessions File</translation>
     </message>
@@ -1109,7 +1283,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+141"/>
+        <location filename="../../src/Utils.cpp" line="+147"/>
         <source>Yesterday</source>
         <translation>Yesterday</translation>
     </message>
@@ -1183,7 +1357,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>dialogs::InviteUsers</name>
     <message>
-        <location filename="../../src/dialogs/InviteUsers.cpp" line="+41"/>
+        <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -1280,7 +1454,7 @@ Media size: %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+117"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
         <source>Read receipts</source>
         <translation>Read receipts</translation>
     </message>
@@ -1293,12 +1467,12 @@ Media size: %2
 <context>
     <name>dialogs::ReceiptItem</name>
     <message>
-        <location line="-44"/>
+        <location line="-46"/>
         <source>Today %1</source>
         <translation>Today %1</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Yesterday %1</source>
         <translation>Yesterday %1</translation>
     </message>
@@ -1306,7 +1480,7 @@ Media size: %2
 <context>
     <name>dialogs::RoomSettings</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+113"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -1508,7 +1682,7 @@ Media size: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+100"/>
+        <location filename="../../src/Utils.h" line="+103"/>
         <source>You sent an audio clip</source>
         <translation>You sent an audio clip</translation>
     </message>

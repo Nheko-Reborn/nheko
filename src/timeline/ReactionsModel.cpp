@@ -10,7 +10,7 @@ ReactionsModel::roleNames() const
           {Key, "key"},
           {Count, "counter"},
           {Users, "users"},
-          {SelfReacted, "selfReacted"},
+          {SelfReactedEvent, "selfReactedEvent"},
         };
 }
 
@@ -45,11 +45,11 @@ ReactionsModel::data(const QModelIndex &index, int role) const
                 }
                 return users;
         }
-        case SelfReacted:
+        case SelfReactedEvent:
                 for (const auto &reaction : reactions[i].reactions)
                         if (reaction.second.sender == http::client()->user_id().to_string())
-                                return true;
-                return false;
+                                return QString::fromStdString(reaction.second.event_id);
+                return QStringLiteral("");
         default:
                 return {};
         }

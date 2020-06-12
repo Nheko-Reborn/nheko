@@ -17,22 +17,48 @@
 
 #pragma once
 
+#include <QObject>
+#include <QSet>
 #include <QString>
+#include <QVector>
 #include <vector>
 
 namespace emoji {
+Q_NAMESPACE
+
+enum class EmojiCategory
+{
+        People,
+        Nature,
+        Food,
+        Activity,
+        Travel,
+        Objects,
+        Symbols,
+        Flags,
+        Search
+};
+Q_ENUM_NS(EmojiCategory)
 
 struct Emoji
 {
-        // Unicode code.
+        Q_GADGET
+
+        Q_PROPERTY(const QString &unicode MEMBER unicode)
+        Q_PROPERTY(const QString &shortName MEMBER shortName)
+        Q_PROPERTY(emoji::EmojiCategory category MEMBER category)
+
+public:
         QString unicode;
-        // Keyboard shortcut e.g :emoji:
-        QString shortname;
+        QString shortName;
+        EmojiCategory category;
 };
 
 class Provider
 {
 public:
+        // all emoji for QML purposes
+        static const QVector<Emoji> emoji;
         static const std::vector<Emoji> people;
         static const std::vector<Emoji> nature;
         static const std::vector<Emoji> food;
@@ -42,4 +68,6 @@ public:
         static const std::vector<Emoji> symbols;
         static const std::vector<Emoji> flags;
 };
+
 } // namespace emoji
+Q_DECLARE_METATYPE(emoji::Emoji)

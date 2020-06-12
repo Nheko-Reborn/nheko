@@ -58,6 +58,8 @@ class UserSettings : public QObject
           bool readReceipts READ readReceipts WRITE setReadReceipts NOTIFY readReceiptsChanged)
         Q_PROPERTY(bool desktopNotifications READ hasDesktopNotifications WRITE
                      setDesktopNotifications NOTIFY desktopNotificationsChanged)
+        Q_PROPERTY(bool alertOnNotification READ hasAlertOnNotification WRITE setAlertOnNotification
+                     NOTIFY alertOnNotificationChanged)
         Q_PROPERTY(
           bool avatarCircles READ avatarCircles WRITE setAvatarCircles NOTIFY avatarCirclesChanged)
         Q_PROPERTY(bool decryptSidebar READ decryptSidebar WRITE setDecryptSidebar NOTIFY
@@ -101,6 +103,7 @@ public:
         void setButtonsInTimeline(bool state);
         void setTimelineMaxWidth(int state);
         void setDesktopNotifications(bool state);
+        void setAlertOnNotification(bool state);
         void setAvatarCircles(bool state);
         void setDecryptSidebar(bool state);
         void setPresence(Presence state);
@@ -119,6 +122,11 @@ public:
         bool buttonsInTimeline() const { return buttonsInTimeline_; }
         bool readReceipts() const { return readReceipts_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
+        bool hasAlertOnNotification() const { return hasAlertOnNotification_; }
+        bool hasNotifications() const
+        {
+                return hasDesktopNotifications() || hasAlertOnNotification();
+        }
         int timelineMaxWidth() const { return timelineMaxWidth_; }
         double fontSize() const { return baseFontSize_; }
         QString font() const { return font_; }
@@ -138,6 +146,7 @@ signals:
         void buttonInTimelineChanged(bool state);
         void readReceiptsChanged(bool state);
         void desktopNotificationsChanged(bool state);
+        void alertOnNotificationChanged(bool state);
         void avatarCirclesChanged(bool state);
         void decryptSidebarChanged(bool state);
         void timelineMaxWidthChanged(int state);
@@ -164,6 +173,7 @@ private:
         bool buttonsInTimeline_;
         bool readReceipts_;
         bool hasDesktopNotifications_;
+        bool hasAlertOnNotification_;
         bool avatarCircles_;
         bool decryptSidebar_;
         int timelineMaxWidth_;
@@ -222,6 +232,7 @@ private:
         Toggle *readReceipts_;
         Toggle *markdown_;
         Toggle *desktopNotifications_;
+        Toggle *alertOnNotification_;
         Toggle *avatarCircles_;
         Toggle *decryptSidebar_;
         QLabel *deviceFingerprintValue_;

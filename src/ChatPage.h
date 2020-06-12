@@ -212,7 +212,7 @@ private:
                                          uint16_t notification_count,
                                          uint16_t highlight_count);
         //! Send desktop notification for the received messages.
-        void sendDesktopNotifications(const mtx::responses::Notifications &);
+        void sendNotifications(const mtx::responses::Notifications &);
 
         void showNotificationsDialog(const QPoint &point);
 

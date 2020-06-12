@@ -217,7 +217,6 @@ public slots:
         }
         std::vector<QString> typingUsers() const { return typingUsers_; }
         bool paginationInProgress() const { return m_paginationInProgress; }
-
         QString reply() const { return reply_; }
         void setReply(QString newReply)
         {
