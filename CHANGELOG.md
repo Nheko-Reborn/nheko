@@ -2,14 +2,52 @@
 
 ## [0.7.2] -- unreleased
 
+### Highlights
+
+- Reactions
+  - React to a message with an emoji! 🎉
+  - Reactions are shown below a message in a small bubble with a counter.
+  - By clicking on that, others can add to the reaction count.
+  - It may help you celebrating a new Nheko Release or react with a 👎 to a failed build to express your frustration.
+  - This uses a new emoji picker. The picker will be improved in the near future (better scrolling, sections, favorites, recently used or similar) and then probably replace the current picker.
+- Support for tagging rooms `[tag]`
+  - Assign custom tags to rooms from the context menu in the room list.
+  - This allows filtering rooms via the group list. This puts you in a focus mode showing only the selected tags.
+  - You can assign multiple tags to group rooms however you like.
+- SSO Login
+  - With this you can now login on servers, that only provide SSO.
+  - Just enter any mxid on the server. Nheko will figure out that you need to use SSO and redirect your browser to the login page.
+  - Complete the login in your browser and Nheko should automatically log you in.
+
 ### Features
 
 - Respect exif rotation of images
+- An italian translation (contributed by Lorenzo Ancora)
+- Optional alerts in your taskbar (contributed by z33ky)
+- Optional bigger emoji only messages in the timeline (contributed by lkito)
+- Optional hover feedback on messages (contributed by lkito)
+- `/roomnick` to change your displayname in a single room.
+- Preliminary support for showing inline images.
+- Warn about unencrypted messages in encrypted rooms.
+
+### Improvements
+
+- perf: Use less CPU to sort the room list.
+- Limit size of replies. This currently looks a bit rough, but should improve in the future with a gradient or at some other transition.
 - perf: Only clean out old messages from the database every 500 syncs. (There is usually more than one sync every second)
+- Improve the login and register masks a bit with hints and validation.
+- Descriptions for settings (contributed by lkito)
+- A visual indicator, that nheko is fetching messages and improved scrolling (contributed by Lasath Fernando)
 
 ### Bugfixes
 
 - Fix not being able to join rooms
+- Fix scale factor setting
+- Buildfixes against gcc10 and Qt5.15 (missing includes)
+- Settings now apply immediately again after changing them (only exception should be the scale factor)
+- Join messages should never have empty texts now
+- Timeline should now fail to render less often on platforms with native sibling windows.
+- Don't rescale images on every frame on highdpi screens.
 
 ## [0.7.1] -- 2020-04-24
 
