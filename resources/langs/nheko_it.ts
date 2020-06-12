@@ -18,17 +18,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+922"/>
+        <location line="+923"/>
         <source>Invited user: %1</source>
         <translation>Invitato utente: %1</translation>
     </message>
     <message>
-        <location line="-464"/>
+        <location line="-471"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrazione della cache alla versione corrente fallita. Questo può avere diverse cause. Per favore apri una issue e nel frattempo prova ad usare una versione più vecchia. In alternativa puoi provare a cancellare la cache manualmente.</translation>
     </message>
     <message>
-        <location line="+429"/>
+        <location line="+436"/>
         <source>Room %1 created.</source>
         <translation>Stanza %1 creata.</translation>
     </message>
@@ -68,12 +68,12 @@
         <translation>Rimosso il ban dall&apos;utente: %1</translation>
     </message>
     <message>
-        <location line="-824"/>
+        <location line="-825"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Impossibile inviare il file multimediale. Per favore riprova.</translation>
     </message>
     <message>
-        <location line="+302"/>
+        <location line="+296"/>
         <source>Cache migration failed!</source>
         <translation>Migrazione della cache fallita!</translation>
     </message>
@@ -98,7 +98,7 @@
         <translation>Impossibile ripristinare i dati salvati. Per favore accedi nuovamente.</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+156"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Impossibile configurare le chiavi crittografiche. Risposta del server: %1 %2. Per favore riprova in seguito.</translation>
     </message>
@@ -673,7 +673,7 @@ Esempio: https://server.mio:8787</translation>
         <translation>-- Errore di Decrittazione (%1) --</translation>
     </message>
     <message>
-        <location line="+106"/>
+        <location line="+99"/>
         <source>Message redaction failed: %1</source>
         <translation>Oscuramento del messaggio fallito: %1</translation>
     </message>
@@ -698,7 +698,7 @@ Esempio: https://server.mio:8787</translation>
         <translation>Salva file</translation>
     </message>
     <message>
-        <location line="-650"/>
+        <location line="-643"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Evento Criptato (Chiavi per la decriptazione non trovate) --</translation>
@@ -710,7 +710,7 @@ Esempio: https://server.mio:8787</translation>
         <translation>-- Evento Criptato (Tipo di evento ignoto) --</translation>
     </message>
     <message numerus="yes">
-        <location line="+700"/>
+        <location line="+693"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -829,12 +829,12 @@ Esempio: https://server.mio:8787</translation>
         <translation>%1 ha oscurato la sua bussata.</translation>
     </message>
     <message>
-        <location line="-1288"/>
+        <location line="-1281"/>
         <source>You joined this room.</source>
         <translation>Sei entrato in questa stanza.</translation>
     </message>
     <message>
-        <location line="+1290"/>
+        <location line="+1283"/>
         <source>Rejected the knock from %1.</source>
         <translation>Rifiutata la bussata di %1.</translation>
     </message>
@@ -983,7 +983,7 @@ Esempio: https://server.mio:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+507"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+520"/>
         <source>Minimize to tray</source>
         <translation>Minimizza nella tray</translation>
     </message>
@@ -1111,6 +1111,17 @@ When disabled, all messages are sent as a plain text.</source>
     </message>
     <message>
         <location line="+1"/>
+        <source>Alert on notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show an alert when a message is received.
+This usually causes the application icon in the task bar to animate in some fashion.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Highlight message on hover</source>
         <translation type="unfinished">Evidenzia il messaggio al passaggio del mouse</translation>
     </message>
@@ -1165,7 +1176,7 @@ When disabled, all messages are sent as a plain text.</source>
         <translation>Impronta digitale del dispositivo</translation>
     </message>
     <message>
-        <location line="-109"/>
+        <location line="-113"/>
         <source>Session Keys</source>
         <translation>Chiavi di Sessione</translation>
     </message>
@@ -1185,22 +1196,22 @@ When disabled, all messages are sent as a plain text.</source>
         <translation>CRITTOGRAFIA</translation>
     </message>
     <message>
-        <location line="-70"/>
+        <location line="-71"/>
         <source>GENERAL</source>
         <translation>GENERALE</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+29"/>
         <source>INTERFACE</source>
         <translation>INTERFACCIA</translation>
     </message>
     <message>
-        <location line="+162"/>
+        <location line="+166"/>
         <source>Emoji Font Family</source>
         <translation>Famiglia dei caratteri delle Emoji</translation>
     </message>
     <message>
-        <location line="+174"/>
+        <location line="+179"/>
         <source>Open Sessions File</source>
         <translation>Apri File delle Sessioni</translation>
     </message>
