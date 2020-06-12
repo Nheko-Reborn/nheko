@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.7.2] -- unreleased
+## [0.7.2] -- 2020-06-12
 
 ### Highlights
 
@@ -56,7 +56,7 @@
 
 ### Upgrade Notes
 
-This updates includes some changes to the database. Older versions don't handle that gracefully and will delete your database. It is therefore recommended to not downgrade below this version!
+<span style="color: red;">This updates includes some changes to the database. Older versions don't handle that gracefully and will delete your database. It is therefore recommended to not downgrade below this version!</span>
 
 ## [0.7.1] -- 2020-04-24
 

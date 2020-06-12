@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=nheko
-Version=1.0
+Version=0.7.2
 Comment=Desktop client for Matrix
 Exec=nheko
 Icon=nheko
