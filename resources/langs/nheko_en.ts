@@ -4,7 +4,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1342"/>
+        <location filename="../../src/Cache.cpp" line="+1359"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
@@ -12,23 +12,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+227"/>
+        <location filename="../../src/ChatPage.cpp" line="+229"/>
         <source>Failed to invite user: %1</source>
         <translation>Failed to invite user: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+923"/>
+        <location line="+926"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-471"/>
+        <location line="-474"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
     </message>
     <message>
-        <location line="+436"/>
+        <location line="+439"/>
         <source>Room %1 created.</source>
         <translation>Room %1 created.</translation>
     </message>
@@ -68,7 +68,7 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="-825"/>
+        <location line="-828"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Failed to upload media. Please try again.</translation>
     </message>
@@ -103,13 +103,13 @@
         <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
     <message>
-        <location line="+51"/>
-        <location line="+219"/>
+        <location line="+54"/>
+        <location line="+252"/>
         <source>Please try to login again: %1</source>
         <translation>Please try to login again: %1</translation>
     </message>
     <message>
-        <location line="-154"/>
+        <location line="-187"/>
         <source>Failed to join room: %1</source>
         <translation>Failed to join room: %1</translation>
     </message>
@@ -492,7 +492,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+940"/>
+        <location filename="../../src/Cache.cpp" line="+984"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -921,7 +921,7 @@ Example: https://server.my:8787</translation>
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+259"/>
+        <location line="+271"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -975,15 +975,50 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserInfoWidget</name>
     <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+91"/>
+        <location filename="../../src/UserInfoWidget.cpp" line="+95"/>
         <source>Logout</source>
         <translation>Logout</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Set custom status message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Custom status message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Status:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Set presence automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+520"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+535"/>
         <source>Minimize to tray</source>
         <translation>Minimize to tray</translation>
     </message>
