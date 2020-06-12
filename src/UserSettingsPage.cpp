@@ -54,6 +54,7 @@ UserSettings::load()
         QSettings settings;
         tray_                    = settings.value("user/window/tray", false).toBool();
         hasDesktopNotifications_ = settings.value("user/desktop_notifications", true).toBool();
+        hasAlertOnNotification_  = settings.value("user/alert_on_notification", false).toBool();
         startInTray_             = settings.value("user/window/start_in_tray", false).toBool();
         groupView_               = settings.value("user/group_view", true).toBool();
         buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
@@ -190,6 +191,16 @@ UserSettings::setDesktopNotifications(bool state)
                 return;
         hasDesktopNotifications_ = state;
         emit desktopNotificationsChanged(state);
+        save();
+}
+
+void
+UserSettings::setAlertOnNotification(bool state)
+{
+        if (state == hasAlertOnNotification_)
+                return;
+        hasAlertOnNotification_ = state;
+        emit alertOnNotificationChanged(state);
         save();
 }
 
@@ -334,6 +345,7 @@ UserSettings::save()
         settings.setValue("group_view", groupView_);
         settings.setValue("markdown_enabled", markdown_);
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
+        settings.setValue("alert_on_notification", hasAlertOnNotification_);
         settings.setValue("theme", theme());
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
@@ -401,6 +413,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         readReceipts_             = new Toggle{this};
         markdown_                 = new Toggle{this};
         desktopNotifications_     = new Toggle{this};
+        alertOnNotification_      = new Toggle{this};
         scaleFactorCombo_         = new QComboBox{this};
         fontSizeCombo_            = new QComboBox{this};
         fontSelectionCombo_       = new QComboBox{this};
@@ -554,6 +567,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Desktop notifications"),
                 desktopNotifications_,
                 tr("Notify about received message when the client is not currently focused."));
+        boxWrap(tr("Alert on notification"),
+                alertOnNotification_,
+                tr("Show an alert when a message is received.\nThis usually causes the application "
+                   "icon in the task bar to animate in some fashion."));
         boxWrap(tr("Highlight message on hover"),
                 messageHoverHighlight_,
                 tr("Change the background color of messages when you hover over them."));
@@ -680,6 +697,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setDesktopNotifications(!disabled);
         });
 
+        connect(alertOnNotification_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setAlertOnNotification(!disabled);
+        });
+
         connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setMessageHoverHighlight(!disabled);
         });
@@ -725,6 +746,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         readReceipts_->setState(!settings_->readReceipts());
         markdown_->setState(!settings_->markdown());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
+        alertOnNotification_->setState(!settings_->hasAlertOnNotification());
         messageHoverHighlight_->setState(!settings_->messageHoverHighlight());
         enlargeEmojiOnlyMessages_->setState(!settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
