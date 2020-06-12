@@ -18,6 +18,11 @@
   - With this you can now login on servers, that only provide SSO.
   - Just enter any mxid on the server. Nheko will figure out that you need to use SSO and redirect your browser to the login page.
   - Complete the login in your browser and Nheko should automatically log you in.
+- Presence
+  - Shows online status of the people you are talking to.
+  - You can define a custom status message to tell others what you are currently up to.
+  - The status message appears next to the usernames in the timeline.
+  - Your server needs to have presence enabled for this to work.
 
 ### Features
 
@@ -48,6 +53,10 @@
 - Join messages should never have empty texts now
 - Timeline should now fail to render less often on platforms with native sibling windows.
 - Don't rescale images on every frame on highdpi screens.
+
+### Upgrade Notes
+
+This updates includes some changes to the database. Older versions don't handle that gracefully and will delete your database. It is therefore recommended to not downgrade below this version!
 
 ## [0.7.1] -- 2020-04-24
 
