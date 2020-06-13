@@ -66,6 +66,7 @@ if __name__ == '__main__':
         'Flags': flags
     }
 
+    previous_name = ''
     current_category = ''
     for line in open(filename, 'r'):
         if line.startswith('# group:'):
@@ -80,16 +81,17 @@ if __name__ == '__main__':
 
         code, qualification, charAndName = segments
 
-        # skip fully qualified versions of same unicode
-        if code.endswith('FE0F'):
-            continue
-
         if qualification == 'component':
             continue
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
 
+        # skip less fully qualified versions of same unicode
+        if name == previous_name:
+            continue
+
         categories[current_category].append(Emoji(char, name))
+        previous_name = name
 
     # Use xclip to pipe the output to clipboard.
     # e.g ./codegen.py emoji.json | xclip -sel clip
