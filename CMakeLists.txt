@@ -337,11 +337,11 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        a897142a3fa6ece92daa1040551fb8ac09be1766
+		GIT_TAG        v0.3.1
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.3.0 REQUIRED)
+	find_package(MatrixClient 0.3.1 REQUIRED)
 endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)
