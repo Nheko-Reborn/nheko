@@ -271,7 +271,7 @@ UserSettings::setPresence(Presence state)
 void
 UserSettings::setTheme(QString theme)
 {
-        if (theme == theme)
+        if (theme == theme_)
                 return;
         theme_ = theme;
         save();
