@@ -60,5 +60,4 @@ private:
         EmojiCategory category_ = EmojiCategory::Search;
         emoji::Provider emoji_provider_;
 };
-
 }
