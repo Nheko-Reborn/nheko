@@ -56,7 +56,7 @@ Rectangle {
 		color: switch (timelineManager.userPresence(userid)) {
 			case "online": return "#00cc66"
 			case "unavailable": return "#ff9933"
-			case "offline": return "#a82353"
+			case "offline": // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
 			default: "transparent"
 		}
 	}
