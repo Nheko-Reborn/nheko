@@ -16,11 +16,37 @@
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
-#include "../ui/UserProfile.h"
 #include "src/ui/UserProfile.h"
 #include "src/ui/UserProfileModel.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
+
+namespace msgs = mtx::events::msg;
+
+void
+DeviceVerificationList::add(QString tran_id)
+{
+        this->dv_list.push_back(tran_id);
+}
+void
+DeviceVerificationList::remove(QString tran_id)
+{
+        for (QVector<QString>::iterator it = 0; it != (this->dv_list).end(); ++it) {
+                if (*it == tran_id) {
+                        this->dv_list.erase(it);
+                        break;
+                }
+        }
+}
+bool
+DeviceVerificationList::exist(QString tran_id)
+{
+        for (int i = 0; i < (this->dv_list).size(); ++i) {
+                if (dv_list[i] == tran_id)
+                        return true;
+        }
+        return false;
+}
 
 void
 TimelineViewManager::updateEncryptedDescriptions()
@@ -63,12 +89,12 @@ TimelineViewManager::userColor(QString id, QColor background)
         return userColors.value(id);
 }
 
-QString
-TimelineViewManager::userPresence(QString id) const
-{
-        return QString::fromStdString(
-          mtx::presence::to_string(cache::presenceState(id.toStdString())));
-}
+// QString
+// TimelineViewManager::userPresence(QString id) const
+// {
+//         return QString::fromStdString(
+//           mtx::presence::to_string(cache::presenceState(id.toStdString())));
+// }
 QString
 TimelineViewManager::userStatus(QString id) const
 {
@@ -81,6 +107,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
   , blurhashProvider(new BlurhashProvider())
   , settings(userSettings)
 {
+        qRegisterMetaType<mtx::events::collections::DeviceEvents>();
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
                                          1,
@@ -106,6 +133,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                          0,
                                          "EmojiCategory",
                                          "Error: Only enums");
+        this->dvList = new DeviceVerificationList;
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView();
@@ -123,6 +151,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         container->setMinimumSize(200, 200);
         view->rootContext()->setContextProperty("timelineManager", this);
         view->rootContext()->setContextProperty("settings", settings.data());
+        view->rootContext()->setContextProperty("deviceVerificationList", this->dvList);
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
@@ -137,6 +166,32 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &ChatPage::decryptSidebarChanged,
                 this,
                 &TimelineViewManager::updateEncryptedDescriptions);
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::recievedDeviceVerificationRequest,
+                this,
+                [this](const mtx::events::collections::DeviceEvents &message) {
+                        auto msg =
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationRequest>>(message);
+                        QString tranID   = QString::fromStdString(msg.content.transaction_id);
+                        QString deviceId = QString::fromStdString(msg.content.from_device);
+                        QString userId   = QString::fromStdString(msg.sender);
+                        if (!(this->dvList->exist(tranID))) {
+                                emit newDeviceVerificationRequest(tranID, userId, deviceId);
+                        }
+                });
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::recievedDeviceVerificationStart,
+                this,
+                [this](const mtx::events::collections::DeviceEvents &message) {
+                        auto msg =
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationStart>>(message);
+                        QString tranID   = QString::fromStdString(msg.content.transaction_id);
+                        QString deviceId = QString::fromStdString(msg.content.from_device);
+                        QString userId   = QString::fromStdString(msg.sender);
+                        if (!(this->dvList->exist(tranID))) {
+                                emit newDeviceVerificationRequest(tranID, userId, deviceId);
+                        }
+                });
 }
 
 void
@@ -447,10 +502,4 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         }
 
         model->sendMessage(video);
-}
-
-void
-TimelineViewManager::startDummyVerification()
-{
-        emit deviceVerificationRequest(new DeviceVerificationFlow(this));
 }

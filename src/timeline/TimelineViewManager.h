@@ -22,6 +22,18 @@ class BlurhashProvider;
 class ColorImageProvider;
 class UserSettings;
 
+class DeviceVerificationList : public QObject
+{
+        Q_OBJECT
+public:
+        Q_INVOKABLE void add(QString tran_id);
+        Q_INVOKABLE void remove(QString tran_id);
+        Q_INVOKABLE bool exist(QString tran_id);
+
+private:
+        QVector<QString> dv_list;
+};
+
 class TimelineViewManager : public QObject
 {
         Q_OBJECT
@@ -44,9 +56,8 @@ public:
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
-        Q_INVOKABLE void startDummyVerification();
 
-        Q_INVOKABLE QString userPresence(QString id) const;
+        // Q_INVOKABLE QString userPresence(QString id) const;
         Q_INVOKABLE QString userStatus(QString id) const;
 
 signals:
@@ -56,7 +67,7 @@ signals:
         void initialSyncChanged(bool isInitialSync);
         void replyingEventChanged(QString replyingEvent);
         void replyClosed();
-        void deviceVerificationRequest(DeviceVerificationFlow *deviceVerificationFlow);
+        void newDeviceVerificationRequest(QString transactionId, QString userId, QString deviceId);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -120,4 +131,7 @@ private:
 
         QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;
+
+        DeviceVerificationList *dvList;
 };
+Q_DECLARE_METATYPE(mtx::events::collections::DeviceEvents)

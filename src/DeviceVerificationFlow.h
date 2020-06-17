@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Olm.h"
+
 #include <MatrixClient.h>
 #include <QObject>
 
@@ -9,6 +11,8 @@ class DeviceVerificationFlow : public QObject
 {
         Q_OBJECT
         // Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+        Q_PROPERTY(QString tranId READ getTransactionId WRITE setTransactionId)
+        Q_PROPERTY(bool sender READ getSender WRITE setSender)
         Q_PROPERTY(QString userId READ getUserId WRITE setUserId)
         Q_PROPERTY(QString deviceId READ getDeviceId WRITE setDeviceId)
         Q_PROPERTY(Method method READ getMethod WRITE setMethod)
@@ -22,12 +26,16 @@ public:
         Q_ENUM(Method)
 
         DeviceVerificationFlow(QObject *parent = nullptr);
+        QString getTransactionId();
         QString getUserId();
         QString getDeviceId();
         Method getMethod();
+        void setTransactionId(QString transaction_id_);
+        bool getSender();
         void setUserId(QString userID);
         void setDeviceId(QString deviceID);
         void setMethod(Method method_);
+        void setSender(bool sender_);
 
 public slots:
         //! sends a verification request
@@ -55,9 +63,9 @@ private:
         QString userId;
         QString deviceId;
         Method method;
+        bool sender;
 
         QTimer *timeout = nullptr;
         std::string transaction_id;
         mtx::identifiers::User toClient;
 };
-Q_DECLARE_METATYPE(mtx::events::collections::DeviceEvents)

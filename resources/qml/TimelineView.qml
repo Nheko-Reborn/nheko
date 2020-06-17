@@ -98,18 +98,20 @@ Page {
 			id: deviceVerificationDialog
 			DeviceVerification {}
 		}
+		Component{
+        	id: deviceVerificationFlow
+        	DeviceVerificationFlow {}
+    	}
 		Connections {
 			target: timelineManager
-			onDeviceVerificationRequest: {
-				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: deviceVerificationFlow});
+			onNewDeviceVerificationRequest: {
+				var newFlow = deviceVerificationFlow.createObject(timelineRoot,
+                {userId : userId,sender: false,deviceId : deviceId,tranId:transactionId});
+                deviceVerificationList.add(newFlow.tranId);
+				var dialog = deviceVerificationDialog.createObject(timelineRoot, 
+                    {flow: newFlow,sender: false});
 				dialog.show();
 			}
-		}
-
-		Button {
-			text: "test device verification"
-			onClicked: timelineManager.startDummyVerification()
-			z: 5
 		}
 
 		Label {

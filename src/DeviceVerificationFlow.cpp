@@ -1,7 +1,7 @@
 #include "DeviceVerificationFlow.h"
 #include "ChatPage.h"
-
 #include "Logging.h"
+
 #include <QDateTime>
 #include <QDebug> // only for debugging
 #include <QTimer>
@@ -13,9 +13,10 @@ namespace msgs = mtx::events::msg;
 
 DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
 {
-        qRegisterMetaType<mtx::events::collections::DeviceEvents>();
         timeout = new QTimer(this);
         timeout->setSingleShot(true);
+        if (this->sender == true)
+                this->transaction_id = http::client()->generate_txn_id();
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
                 this->deleteLater();
@@ -74,6 +75,12 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
 }
 
 QString
+DeviceVerificationFlow::getTransactionId()
+{
+        return QString::fromStdString(this->transaction_id);
+}
+
+QString
 DeviceVerificationFlow::getUserId()
 {
         return this->userId;
@@ -91,10 +98,22 @@ DeviceVerificationFlow::getMethod()
         return this->method;
 }
 
+bool
+DeviceVerificationFlow::getSender()
+{
+        return this->sender;
+}
+
+void
+DeviceVerificationFlow::setTransactionId(QString transaction_id_)
+{
+        this->transaction_id = transaction_id_.toStdString();
+}
+
 void
 DeviceVerificationFlow::setUserId(QString userID)
 {
-        this->userId = userID;
+        this->userId   = userID;
         this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(userID.toStdString());
 }
 
@@ -110,6 +129,12 @@ DeviceVerificationFlow::setMethod(DeviceVerificationFlow::Method method_)
         this->method = method_;
 }
 
+void
+DeviceVerificationFlow::setSender(bool sender_)
+{
+        this->sender = sender_;
+}
+
 //! accepts a verification
 void
 DeviceVerificationFlow::acceptVerificationRequest()
@@ -119,11 +144,12 @@ DeviceVerificationFlow::acceptVerificationRequest()
 
         req.transaction_id              = this->transaction_id;
         req.method                      = mtx::events::msg::VerificationMethods::SASv1;
-        req.key_agreement_protocol      = "curve25519";
+        req.key_agreement_protocol      = "curve25519-hkdf-sha256";
         req.hash                        = "sha256";
-        req.message_authentication_code = "";
-        // req.short_authentication_string = "";
-        req.commitment = "";
+        req.message_authentication_code = "hkdf-hmac-sha256";
+        req.short_authentication_string = {mtx::events::msg::SASMethods::Decimal,
+                                           mtx::events::msg::SASMethods::Emoji};
+        req.commitment                  = "";
 
         emit this->verificationRequestAccepted(this->method);
 
@@ -132,12 +158,12 @@ DeviceVerificationFlow::acceptVerificationRequest()
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationAccept,
                            mtx::events::EventType::KeyVerificationAccept>(
-            "m.key.verification.accept", body, [](mtx::http::RequestErr err) {
+            this->transaction_id, body, [this](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to accept verification request: {} {}",
                                                err->matrix_error.error,
                                                static_cast<int>(err->status_code));
-                    //     emit this->verificationRequestAccepted(rand() % 2 ? Emoji : Decimal);
+                    emit this->verificationRequestAccepted(rand() % 2 ? Emoji : Decimal);
             });
 }
 //! starts the verification flow
@@ -150,22 +176,23 @@ DeviceVerificationFlow::startVerificationRequest()
         req.from_device                  = http::client()->device_id();
         req.transaction_id               = this->transaction_id;
         req.method                       = mtx::events::msg::VerificationMethods::SASv1;
-        req.key_agreement_protocols      = {};
-        req.hashes                       = {};
-        req.message_authentication_codes = {};
-        // req.short_authentication_string = "";
-        qDebug()<<"Inside Start Verification";
-        qDebug()<<this->userId;
+        req.key_agreement_protocols      = {"curve25519-hkdf-sha256"};
+        req.hashes                       = {"sha256"};
+        req.message_authentication_codes = {"hkdf-hmac-sha256", "hmac-sha256"};
+        req.short_authentication_string  = {mtx::events::msg::SASMethods::Decimal,
+                                           mtx::events::msg::SASMethods::Emoji};
+
         body[this->toClient][this->deviceId.toStdString()] = req;
 
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationStart,
                            mtx::events::EventType::KeyVerificationStart>(
-            "m.key.verification.start", body, [](mtx::http::RequestErr err) {
+            this->transaction_id, body, [body](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to start verification request: {} {}",
                                                err->matrix_error.error,
                                                static_cast<int>(err->status_code));
+                    std::cout << nlohmann::json(body).dump(2) << std::endl;
             });
 }
 //! sends a verification request
@@ -176,8 +203,6 @@ DeviceVerificationFlow::sendVerificationRequest()
 
         mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationRequest> body;
         mtx::events::msg::KeyVerificationRequest req;
-
-        this->transaction_id = http::client()->generate_txn_id();
 
         req.from_device    = http::client()->device_id();
         req.transaction_id = this->transaction_id;
@@ -190,7 +215,7 @@ DeviceVerificationFlow::sendVerificationRequest()
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationRequest,
                            mtx::events::EventType::KeyVerificationRequest>(
-            "m.key.verification.request", body, [](mtx::http::RequestErr err) {
+            this->transaction_id, body, [](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to send verification request: {} {}",
                                                err->matrix_error.error,
@@ -214,7 +239,7 @@ DeviceVerificationFlow::cancelVerification()
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationCancel,
                            mtx::events::EventType::KeyVerificationCancel>(
-            "m.key.verification.cancel", body, [this](mtx::http::RequestErr err) {
+            this->transaction_id, body, [this](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to cancel verification request: {} {}",
                                                err->matrix_error.error,
@@ -237,7 +262,7 @@ DeviceVerificationFlow::sendVerificationKey()
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationKey,
                            mtx::events::EventType::KeyVerificationKey>(
-            "m.key.verification.cancel", body, [](mtx::http::RequestErr err) {
+            this->transaction_id, body, [](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to send verification key: {} {}",
                                                err->matrix_error.error,
@@ -260,7 +285,7 @@ DeviceVerificationFlow::sendVerificationMac()
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationMac,
                            mtx::events::EventType::KeyVerificationMac>(
-            "m.key.verification.cancel", body, [](mtx::http::RequestErr err) {
+            this->transaction_id, body, [](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to send verification MAC: {} {}",
                                                err->matrix_error.error,

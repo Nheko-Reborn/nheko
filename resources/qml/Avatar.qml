@@ -53,12 +53,12 @@ Rectangle {
 		height: avatar.height / 6
 		width: height
 		radius: settings.avatarCircles ? height / 2 : height / 4
-		color: switch (timelineManager.userPresence(userid)) {
-			case "online": return "#00cc66"
-			case "unavailable": return "#ff9933"
-			case "offline": return "#a82353"
-			default: "transparent"
-		}
+		// color: switch (timelineManager.userPresence(userid)) {
+		// 	case "online": return "#00cc66"
+		// 	case "unavailable": return "#ff9933"
+		// 	case "offline": return "#a82353"
+		// 	default: "transparent"
+		// }
 	}
 
 	color: colors.base

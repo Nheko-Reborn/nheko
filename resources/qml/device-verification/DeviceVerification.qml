@@ -75,7 +75,12 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Cancel"
-						onClicked: { dialog.close(); flow.cancelVerification(); }
+						onClicked: { 
+							dialog.close(); 
+							flow.cancelVerification();
+							deviceVerificationList.remove(flow.tranId);
+							delete flow; 
+						}
 					}
 					Item {
 						Layout.fillWidth: true
@@ -127,7 +132,12 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Deny"
-						onClicked: { dialog.close(); flow.cancelVerification(); }
+						onClicked: { 
+							dialog.close(); 
+							flow.cancelVerification();
+							deviceVerificationList.remove(flow.tranId);
+							delete flow; 
+						}
 					}
 					Item {
 						Layout.fillWidth: true
@@ -166,7 +176,12 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Cancel"
-						onClicked: { dialog.close(); flow.cancelVerification(); }
+						onClicked: { 
+							dialog.close(); 
+							flow.cancelVerification();
+							deviceVerificationList.remove(flow.tranId);
+							delete flow; 
+						}
 					}
 					Item {
 						Layout.fillWidth: true
@@ -212,7 +227,12 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "They do not match!"
-						onClicked: { dialog.close(); flow.cancelVerification(); }
+						onClicked: { 
+							dialog.close(); 
+							flow.cancelVerification();
+							deviceVerificationList.remove(flow.tranId);
+							delete flow; 
+						}
 					}
 					Item {
 						Layout.fillWidth: true
@@ -346,7 +366,12 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "They do not match!"
-						onClicked: { dialog.close(); flow.cancelVerification(); }
+						onClicked: { 
+							dialog.close(); 
+							flow.cancelVerification();
+							deviceVerificationList.remove(flow.tranId);
+							delete flow; 
+						}
 					}
 					Item {
 						Layout.fillWidth: true
@@ -385,7 +410,12 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignLeft
 						text: "Cancel"
-						onClicked: { dialog.close(); flow.cancelVerification(); }
+						onClicked: { 
+							dialog.close(); 
+							flow.cancelVerification(); 
+							deviceVerificationList.remove(flow.tranId);
+							delete flow;
+						}
 					}
 					Item {
 						Layout.fillWidth: true
@@ -419,7 +449,11 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "Close"
-						onClicked: dialog.close()
+						onClicked: {
+							dialog.close()
+							deviceVerificationList.remove(flow.tranId);
+							delete flow;
+						}
 					}
 				}
 			}
@@ -450,7 +484,11 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "Close"
-						onClicked: dialog.close()
+						onClicked: {
+							dialog.close()
+							deviceVerificationList.remove(flow.tranId);
+							delete flow;
+						}
 					}
 				}
 			}
@@ -481,7 +519,11 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "Close"
-						onClicked: dialog.close()
+						onClicked: {
+							dialog.close()
+							deviceVerificationList.remove(flow.tranId);
+							delete flow;
+						}
 					}
 				}
 			}

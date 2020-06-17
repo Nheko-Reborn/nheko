@@ -33,8 +33,9 @@ ApplicationWindow{
 		id: deviceVerificationDialog
 		DeviceVerification {}
 	}
-    DeviceVerificationFlow {
+    Component{
         id: deviceVerificationFlow
+        DeviceVerificationFlow {}
     }
 
     background: Item{
@@ -111,10 +112,11 @@ ApplicationWindow{
                             id: verifyButton
                             text:"Verify"
                             onClicked: {
-                                deviceVerificationFlow.userId = user_data.userId
-                                deviceVerificationFlow.deviceId = model.deviceID
+                                var newFlow = deviceVerificationFlow.createObject(userProfileDialog,
+                                {userId : user_data.userId,sender: true,deviceId : model.deviceID});
+                                deviceVerificationList.add(newFlow.tranId);
 								var dialog = deviceVerificationDialog.createObject(userProfileDialog, 
-                                    {flow: deviceVerificationFlow,sender: true});
+                                    {flow: newFlow,sender: true});
 				                dialog.show();
                             }
                             contentItem: Text {
