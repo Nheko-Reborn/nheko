@@ -134,6 +134,8 @@ Page {
 				anchors.fill: parent
 			}
 
+			pixelAligned: true
+
 			Shortcut {
 				sequence: StandardKey.MoveToPreviousPage
 				onActivated: { chat.contentY = chat.contentY - chat.height / 2; chat.returnToBounds(); }
