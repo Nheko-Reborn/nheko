@@ -78,7 +78,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -135,7 +135,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -179,7 +179,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -211,15 +211,15 @@ ApplicationWindow {
 					Layout.alignment: Qt.AlignHCenter
 					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
-						text: "1234"
+						text: flow.sasList[0]
 					}
 					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
-						text: "1234"
+						text: flow.sasList[1]
 					}
 					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
-						text: "1234"
+						text: flow.sasList[2]
 					}
 				}
 
@@ -230,7 +230,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -345,7 +345,7 @@ ApplicationWindow {
 							ColumnLayout {
 								id: col
 								anchors.bottom: parent.bottom
-								property var emoji: emojis.mapping[Math.floor(Math.random()*64)]
+								property var emoji: emojis.mapping[flow.sasList[index]]
 								Label {
 									//height: font.pixelSize * 2
 									Layout.alignment: Qt.AlignHCenter
@@ -369,7 +369,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -413,7 +413,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification(); 
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}
@@ -451,7 +451,7 @@ ApplicationWindow {
 						text: "Close"
 						onClicked: {
 							dialog.close()
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}
@@ -486,7 +486,7 @@ ApplicationWindow {
 						text: "Close"
 						onClicked: {
 							dialog.close()
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}
@@ -521,7 +521,7 @@ ApplicationWindow {
 						text: "Close"
 						onClicked: {
 							dialog.close()
-							deviceVerificationList.remove(flow.tranId);
+							// deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}

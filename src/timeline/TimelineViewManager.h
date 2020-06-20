@@ -67,7 +67,10 @@ signals:
         void initialSyncChanged(bool isInitialSync);
         void replyingEventChanged(QString replyingEvent);
         void replyClosed();
-        void newDeviceVerificationRequest(QString transactionId, QString userId, QString deviceId);
+        void newDeviceVerificationRequest(DeviceVerificationFlow *flow,
+                                          QString transactionId,
+                                          QString userId,
+                                          QString deviceId);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

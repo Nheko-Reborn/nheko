@@ -15,32 +15,80 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
 {
         timeout = new QTimer(this);
         timeout->setSingleShot(true);
-        if (this->sender == true)
-                this->transaction_id = http::client()->generate_txn_id();
+        this->sas = olm::client()->sas_init();
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
                 this->deleteLater();
         });
+
         connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationAccept,
+                &ChatPage::recievedDeviceVerificationStart,
                 this,
                 [this](const mtx::events::collections::DeviceEvents &message) {
                         auto msg =
-                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationAccept>>(message);
+                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationStart>>(message);
                         if (msg.content.transaction_id == this->transaction_id) {
-                                std::cout << "Recieved Event Accept" << std::endl;
+                                if (std::find(msg.content.key_agreement_protocols.begin(),
+                                              msg.content.key_agreement_protocols.end(),
+                                              "curve25519-hkdf-sha256") !=
+                                      msg.content.key_agreement_protocols.end() &&
+                                    std::find(msg.content.hashes.begin(),
+                                              msg.content.hashes.end(),
+                                              "sha256") != msg.content.hashes.end() &&
+                                    (std::find(msg.content.message_authentication_codes.begin(),
+                                               msg.content.message_authentication_codes.end(),
+                                               "hmac-sha256") !=
+                                       msg.content.message_authentication_codes.end() ||
+                                     std::find(msg.content.message_authentication_codes.begin(),
+                                               msg.content.message_authentication_codes.end(),
+                                               "hkdf-hmac-sha256") !=
+                                       msg.content.message_authentication_codes.end()) &&
+                                    (std::find(msg.content.short_authentication_string.begin(),
+                                               msg.content.short_authentication_string.end(),
+                                               mtx::events::msg::SASMethods::Decimal) !=
+                                       msg.content.short_authentication_string.end() ||
+                                     std::find(msg.content.short_authentication_string.begin(),
+                                               msg.content.short_authentication_string.end(),
+                                               mtx::events::msg::SASMethods::Emoji) !=
+                                       msg.content.short_authentication_string.end())) {
+                                        this->sendVerificationKey(); // Not sure about this maybe
+                                                                     // those optional methods
+                                        this->canonical_json = nlohmann::json(msg);
+                                } else {
+                                        this->cancelVerification();
+                                }
                         }
                 });
-        connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationRequest,
-                this,
-                [this](const mtx::events::collections::DeviceEvents &message) {
-                        auto msg =
-                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationRequest>>(message);
-                        if (msg.content.transaction_id == this->transaction_id) {
-                                std::cout << "Recieved Event Request" << std::endl;
-                        }
-                });
+        connect(
+          ChatPage::instance(),
+          &ChatPage::recievedDeviceVerificationAccept,
+          this,
+          [this](const mtx::events::collections::DeviceEvents &message) {
+                  auto msg =
+                    std::get<mtx::events::DeviceEvent<msgs::KeyVerificationAccept>>(message);
+                  if (msg.content.transaction_id == this->transaction_id) {
+                          if ((msg.content.method ==
+                               mtx::events::msg::VerificationMethods::SASv1) &&
+                              (msg.content.key_agreement_protocol == "curve25519-hkdf-sha256") &&
+                              (msg.content.hash == "sha256") &&
+                              ((msg.content.message_authentication_code == "hkdf-hmac-sha256") ||
+                               (msg.content.message_authentication_code == "hmac-sha256"))) {
+                                  this->commitment = msg.content.commitment;
+                                  if (std::find(msg.content.short_authentication_string.begin(),
+                                                msg.content.short_authentication_string.end(),
+                                                mtx::events::msg::SASMethods::Emoji) !=
+                                      msg.content.short_authentication_string.end()) {
+                                          this->method = DeviceVerificationFlow::Method::Emoji;
+                                  } else {
+                                          this->method = DeviceVerificationFlow::Method::Decimal;
+                                  }
+                                  this->mac_method = msg.content.message_authentication_code;
+                                  this->sendVerificationKey();
+                          } else {
+                                  this->cancelVerification();
+                          }
+                  }
+          });
         connect(ChatPage::instance(),
                 &ChatPage::recievedDeviceVerificationCancel,
                 this,
@@ -48,19 +96,55 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                         auto msg =
                           std::get<mtx::events::DeviceEvent<msgs::KeyVerificationCancel>>(message);
                         if (msg.content.transaction_id == this->transaction_id) {
-                                std::cout << "Recieved Event Cancel" << std::endl;
+                                emit verificationCanceled();
                         }
                 });
-        connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationKey,
-                this,
-                [this](const mtx::events::collections::DeviceEvents &message) {
-                        auto msg =
-                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationKey>>(message);
-                        if (msg.content.transaction_id == this->transaction_id) {
-                                std::cout << "Recieved Event Key" << std::endl;
-                        }
-                });
+        connect(
+          ChatPage::instance(),
+          &ChatPage::recievedDeviceVerificationKey,
+          this,
+          [this](const mtx::events::collections::DeviceEvents &message) {
+                  auto msg = std::get<mtx::events::DeviceEvent<msgs::KeyVerificationKey>>(message);
+                  if (msg.content.transaction_id == this->transaction_id) {
+                          this->sas->set_their_key(msg.content.key);
+                          std::string info;
+                          if (this->sender == true) {
+                                  info = "MATRIX_KEY_VERIFICATION_SAS|" +
+                                         http::client()->user_id().to_string() + "|" +
+                                         http::client()->device_id() + "|" +
+                                         this->sas->public_key() + "|" +
+                                         this->toClient.to_string() + "|" +
+                                         this->deviceId.toStdString() + "|" + msg.content.key +
+                                         "|" + this->transaction_id;
+                          } else {
+                                  info = "MATRIX_KEY_VERIFICATION_SAS|" +
+                                         this->toClient.to_string() + "|" +
+                                         this->deviceId.toStdString() + "|" + msg.content.key +
+                                         "|" + http::client()->user_id().to_string() + "|" +
+                                         http::client()->device_id() + "|" +
+                                         this->sas->public_key() + "|" + this->transaction_id;
+                          }
+
+                          if (this->method == DeviceVerificationFlow::Method::Emoji) {
+                                  this->sasList = this->sas->generate_bytes_emoji(info);
+                          } else if (this->method == DeviceVerificationFlow::Method::Decimal) {
+                                  this->sasList = this->sas->generate_bytes_decimal(info);
+                          }
+                          if (this->sender == false) {
+                                  emit this->verificationRequestAccepted(this->method);
+                                  this->sendVerificationKey();
+                          } else {
+                                  if (this->commitment ==
+                                      mtx::crypto::bin2base64_unpadded(mtx::crypto::sha256(
+                                        msg.content.key +
+                                        this->canonical_json["content"].dump()))) {
+                                          emit this->verificationRequestAccepted(this->method);
+                                  } else {
+                                          this->cancelVerification();
+                                  }
+                          }
+                  }
+          });
         connect(ChatPage::instance(),
                 &ChatPage::recievedDeviceVerificationMac,
                 this,
@@ -104,6 +188,12 @@ DeviceVerificationFlow::getSender()
         return this->sender;
 }
 
+std::vector<int>
+DeviceVerificationFlow::getSasList()
+{
+        return this->sasList;
+}
+
 void
 DeviceVerificationFlow::setTransactionId(QString transaction_id_)
 {
@@ -133,6 +223,8 @@ void
 DeviceVerificationFlow::setSender(bool sender_)
 {
         this->sender = sender_;
+        if (this->sender == true)
+                this->transaction_id = http::client()->generate_txn_id();
 }
 
 //! accepts a verification
@@ -147,23 +239,26 @@ DeviceVerificationFlow::acceptVerificationRequest()
         req.key_agreement_protocol      = "curve25519-hkdf-sha256";
         req.hash                        = "sha256";
         req.message_authentication_code = "hkdf-hmac-sha256";
-        req.short_authentication_string = {mtx::events::msg::SASMethods::Decimal,
-                                           mtx::events::msg::SASMethods::Emoji};
-        req.commitment                  = "";
-
-        emit this->verificationRequestAccepted(this->method);
+        if (this->method == DeviceVerificationFlow::Method::Emoji)
+                req.short_authentication_string = {mtx::events::msg::SASMethods::Emoji};
+        else if (this->method == DeviceVerificationFlow::Method::Decimal)
+                req.short_authentication_string = {mtx::events::msg::SASMethods::Decimal};
+        req.commitment = mtx::crypto::bin2base64_unpadded(
+          mtx::crypto::sha256(this->sas->public_key() + this->canonical_json.dump()));
 
         body[this->toClient][this->deviceId.toStdString()] = req;
+
+        std::cout << "Accepting the Verification" << std::endl;
+        std::cout << json(body) << std::endl;
 
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationAccept,
                            mtx::events::EventType::KeyVerificationAccept>(
-            this->transaction_id, body, [this](mtx::http::RequestErr err) {
+            this->transaction_id, body, [](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to accept verification request: {} {}",
                                                err->matrix_error.error,
                                                static_cast<int>(err->status_code));
-                    emit this->verificationRequestAccepted(rand() % 2 ? Emoji : Decimal);
             });
 }
 //! starts the verification flow
@@ -183,6 +278,7 @@ DeviceVerificationFlow::startVerificationRequest()
                                            mtx::events::msg::SASMethods::Emoji};
 
         body[this->toClient][this->deviceId.toStdString()] = req;
+        this->canonical_json                               = nlohmann::json(req);
 
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationStart,
@@ -192,7 +288,6 @@ DeviceVerificationFlow::startVerificationRequest()
                             nhlog::net()->warn("failed to start verification request: {} {}",
                                                err->matrix_error.error,
                                                static_cast<int>(err->status_code));
-                    std::cout << nlohmann::json(body).dump(2) << std::endl;
             });
 }
 //! sends a verification request
@@ -236,6 +331,8 @@ DeviceVerificationFlow::cancelVerification()
 
         body[this->toClient][deviceId.toStdString()] = req;
 
+        emit this->verificationCanceled();
+
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationCancel,
                            mtx::events::EventType::KeyVerificationCancel>(
@@ -254,7 +351,7 @@ DeviceVerificationFlow::sendVerificationKey()
         mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationKey> body;
         mtx::events::msg::KeyVerificationKey req;
 
-        req.key            = "";
+        req.key            = this->sas->public_key();
         req.transaction_id = this->transaction_id;
 
         body[this->toClient][deviceId.toStdString()] = req;

@@ -98,18 +98,15 @@ Page {
 			id: deviceVerificationDialog
 			DeviceVerification {}
 		}
-		Component{
-        	id: deviceVerificationFlow
-        	DeviceVerificationFlow {}
-    	}
 		Connections {
 			target: timelineManager
 			onNewDeviceVerificationRequest: {
-				var newFlow = deviceVerificationFlow.createObject(timelineRoot,
-                {userId : userId,sender: false,deviceId : deviceId,tranId:transactionId});
-                deviceVerificationList.add(newFlow.tranId);
+				flow.userId = userId;
+				flow.sender = false;
+				flow.deviceId = deviceId;
+				flow.tranId = transactionId;
 				var dialog = deviceVerificationDialog.createObject(timelineRoot, 
-                    {flow: newFlow,sender: false});
+                    {flow: flow,sender: false});
 				dialog.show();
 			}
 		}
