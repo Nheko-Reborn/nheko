@@ -85,8 +85,10 @@ struct EventFormattedBody
         template<class T>
         std::string operator()(const mtx::events::RoomEvent<T> &e)
         {
-                if constexpr (is_detected<formatted_body_t, T>::value)
-                        return e.content.formatted_body;
+                if constexpr (is_detected<formatted_body_t, T>::value) {
+                        if (e.content.format == "org.matrix.custom.html")
+                                return e.content.formatted_body;
+                }
                 return "";
         }
 };
