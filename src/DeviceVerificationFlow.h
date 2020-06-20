@@ -7,6 +7,8 @@
 
 class QTimer;
 
+using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
+
 class DeviceVerificationFlow : public QObject
 {
         Q_OBJECT
@@ -16,6 +18,7 @@ class DeviceVerificationFlow : public QObject
         Q_PROPERTY(QString userId READ getUserId WRITE setUserId)
         Q_PROPERTY(QString deviceId READ getDeviceId WRITE setDeviceId)
         Q_PROPERTY(Method method READ getMethod WRITE setMethod)
+        Q_PROPERTY(std::vector<int> sasList READ getSasList)
 
 public:
         enum Method
@@ -30,12 +33,15 @@ public:
         QString getUserId();
         QString getDeviceId();
         Method getMethod();
+        std::vector<int> getSasList();
         void setTransactionId(QString transaction_id_);
         bool getSender();
         void setUserId(QString userID);
         void setDeviceId(QString deviceID);
         void setMethod(Method method_);
         void setSender(bool sender_);
+
+        nlohmann::json canonical_json;
 
 public slots:
         //! sends a verification request
@@ -66,6 +72,10 @@ private:
         bool sender;
 
         QTimer *timeout = nullptr;
+        sas_ptr sas;
+        std::string mac_method;
         std::string transaction_id;
+        std::string commitment;
         mtx::identifiers::User toClient;
+        std::vector<int> sasList;
 };

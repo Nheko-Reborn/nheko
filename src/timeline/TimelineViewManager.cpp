@@ -170,32 +170,44 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &ChatPage::decryptSidebarChanged,
                 this,
                 &TimelineViewManager::updateEncryptedDescriptions);
-        connect(dynamic_cast<ChatPage *>(parent),
-                &ChatPage::recievedDeviceVerificationRequest,
-                this,
-                [this](const mtx::events::collections::DeviceEvents &message) {
-                        auto msg =
-                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationRequest>>(message);
-                        QString tranID   = QString::fromStdString(msg.content.transaction_id);
-                        QString deviceId = QString::fromStdString(msg.content.from_device);
-                        QString userId   = QString::fromStdString(msg.sender);
-                        if (!(this->dvList->exist(tranID))) {
-                                emit newDeviceVerificationRequest(tranID, userId, deviceId);
-                        }
-                });
-        connect(dynamic_cast<ChatPage *>(parent),
-                &ChatPage::recievedDeviceVerificationStart,
-                this,
-                [this](const mtx::events::collections::DeviceEvents &message) {
-                        auto msg =
-                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationStart>>(message);
-                        QString tranID   = QString::fromStdString(msg.content.transaction_id);
-                        QString deviceId = QString::fromStdString(msg.content.from_device);
-                        QString userId   = QString::fromStdString(msg.sender);
-                        if (!(this->dvList->exist(tranID))) {
-                                emit newDeviceVerificationRequest(tranID, userId, deviceId);
-                        }
-                });
+        connect(
+          dynamic_cast<ChatPage *>(parent),
+          &ChatPage::recievedDeviceVerificationRequest,
+          this,
+          [this](const mtx::events::collections::DeviceEvents &message) {
+                  auto msg =
+                    std::get<mtx::events::DeviceEvent<msgs::KeyVerificationRequest>>(message);
+                  auto flow = new DeviceVerificationFlow(this);
+                  if (!(this->dvList->exist(QString::fromStdString(msg.content.transaction_id)))) {
+                          if (std::find(msg.content.methods.begin(),
+                                        msg.content.methods.end(),
+                                        mtx::events::msg::VerificationMethods::SASv1) !=
+                              msg.content.methods.end()) {
+                                  emit newDeviceVerificationRequest(
+                                    std::move(flow),
+                                    QString::fromStdString(msg.content.transaction_id),
+                                    QString::fromStdString(msg.sender),
+                                    QString::fromStdString(msg.content.from_device));
+                          }
+                  }
+          });
+        connect(
+          dynamic_cast<ChatPage *>(parent),
+          &ChatPage::recievedDeviceVerificationStart,
+          this,
+          [this](const mtx::events::collections::DeviceEvents &message) {
+                  auto msg =
+                    std::get<mtx::events::DeviceEvent<msgs::KeyVerificationStart>>(message);
+                  auto flow            = new DeviceVerificationFlow(this);
+                  flow->canonical_json = nlohmann::json(msg.content);
+                  if (!(this->dvList->exist(QString::fromStdString(msg.content.transaction_id)))) {
+                          emit newDeviceVerificationRequest(
+                            std::move(flow),
+                            QString::fromStdString(msg.content.transaction_id),
+                            QString::fromStdString(msg.sender),
+                            QString::fromStdString(msg.content.from_device));
+                  }
+          });
 }
 
 void
