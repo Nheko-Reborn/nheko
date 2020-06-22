@@ -183,6 +183,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                         msg.content.methods.end(),
                                         mtx::events::msg::VerificationMethods::SASv1) !=
                               msg.content.methods.end()) {
+                                  flow->sendVerificationReady();
                                   emit newDeviceVerificationRequest(
                                     std::move(flow),
                                     QString::fromStdString(msg.content.transaction_id),

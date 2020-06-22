@@ -240,7 +240,7 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "They match."
-						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.acceptDevice(); }
+						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.sendVerificationMac(); }
 					}
 				}
 			}
@@ -379,7 +379,7 @@ ApplicationWindow {
 					Button {
 						Layout.alignment: Qt.AlignRight
 						text: "They match."
-						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.acceptDevice(); }
+						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.sendVerificationMac(); }
 					}
 				}
 			}

@@ -9,7 +9,6 @@
 #include "MatrixClient.h"
 #include "Utils.h"
 #include <DeviceVerificationFlow.h>
-#include <iostream> // only for debugging
 
 static const std::string STORAGE_SECRET_KEY("secret");
 constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
@@ -79,22 +78,20 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                         }
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
                         ChatPage::instance()->recievedDeviceVerificationAccept(msg);
-                        std::cout << j_msg.dump(2) << std::endl;
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationRequest)) {
                         ChatPage::instance()->recievedDeviceVerificationRequest(msg);
-                        std::cout << j_msg.dump(2) << std::endl;
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationCancel)) {
                         ChatPage::instance()->recievedDeviceVerificationCancel(msg);
-                        std::cout << j_msg.dump(2) << std::endl;
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationKey)) {
                         ChatPage::instance()->recievedDeviceVerificationKey(msg);
-                        std::cout << j_msg.dump(2) << std::endl;
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationMac)) {
                         ChatPage::instance()->recievedDeviceVerificationMac(msg);
-                        std::cout << j_msg.dump(2) << std::endl;
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationStart)) {
                         ChatPage::instance()->recievedDeviceVerificationStart(msg);
-                        std::cout << j_msg.dump(2) << std::endl;
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationReady)) {
+                        ChatPage::instance()->recievedDeviceVerificationReady(msg);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationDone)) {
+                        ChatPage::instance()->recievedDeviceVerificationDone(msg);
                 } else {
                         nhlog::crypto()->warn("unhandled event: {}", j_msg.dump(2));
                 }
