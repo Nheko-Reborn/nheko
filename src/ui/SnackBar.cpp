@@ -63,7 +63,7 @@ SnackBar::hideMessage()
                 // Moving on to the next message.
                 messages_.pop_front();
 
-        // Reseting the starting position of the widget.
+        // Resetting the starting position of the widget.
         offset_ = STARTING_OFFSET;
 
         if (!messages_.empty())
