@@ -2,6 +2,7 @@
 
 #include "Olm.h"
 
+#include "mtx/responses/crypto.hpp"
 #include <MatrixClient.h>
 #include <QObject>
 
@@ -46,6 +47,10 @@ public:
 public slots:
         //! sends a verification request
         void sendVerificationRequest();
+        //! accepts a verification request
+        void sendVerificationReady();
+        //! completes the verification flow();
+        void sendVerificationDone();
         //! accepts a verification
         void acceptVerificationRequest();
         //! starts the verification flow
@@ -78,4 +83,5 @@ private:
         std::string commitment;
         mtx::identifiers::User toClient;
         std::vector<int> sasList;
+        std::map<std::string, std::string> device_keys;
 };

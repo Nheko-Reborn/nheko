@@ -174,6 +174,8 @@ signals:
         void recievedDeviceVerificationKey(const mtx::events::collections::DeviceEvents &message);
         void recievedDeviceVerificationMac(const mtx::events::collections::DeviceEvents &message);
         void recievedDeviceVerificationStart(const mtx::events::collections::DeviceEvents &message);
+        void recievedDeviceVerificationReady(const mtx::events::collections::DeviceEvents &message);
+        void recievedDeviceVerificationDone(const mtx::events::collections::DeviceEvents &message);
 
 private slots:
         void showUnreadMessageNotification(int count);
