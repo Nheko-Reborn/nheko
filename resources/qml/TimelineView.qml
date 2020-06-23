@@ -105,6 +105,7 @@ Page {
 				flow.sender = false;
 				flow.deviceId = deviceId;
 				flow.tranId = transactionId;
+				deviceVerificationList.add(flow.tranId);
 				var dialog = deviceVerificationDialog.createObject(timelineRoot, 
                     {flow: flow,sender: false});
 				dialog.show();
