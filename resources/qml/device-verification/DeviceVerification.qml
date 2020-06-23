@@ -30,7 +30,11 @@ ApplicationWindow {
 		implicitHeight: currentItem.implicitHeight
 	}
 
-	onClosing: stack.replace(newVerificationRequest)
+	onClosing: {
+		flow.cancelVerification();
+		deviceVerificationList.remove(flow.tranId);
+		delete flow; 
+	}
 
 	property var flow
 	Connections {
@@ -78,7 +82,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -135,7 +139,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -179,7 +183,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -230,7 +234,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -369,7 +373,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -413,7 +417,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification(); 
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}
@@ -451,7 +455,7 @@ ApplicationWindow {
 						text: "Close"
 						onClicked: {
 							dialog.close()
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}
@@ -485,8 +489,8 @@ ApplicationWindow {
 						Layout.alignment: Qt.AlignRight
 						text: "Close"
 						onClicked: {
-							dialog.close()
-							// deviceVerificationList.remove(flow.tranId);
+							dialog.close();
+							deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}
@@ -521,7 +525,7 @@ ApplicationWindow {
 						text: "Close"
 						onClicked: {
 							dialog.close()
-							// deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}
 					}

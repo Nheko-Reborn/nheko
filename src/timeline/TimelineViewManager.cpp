@@ -26,26 +26,17 @@ namespace msgs = mtx::events::msg;
 void
 DeviceVerificationList::add(QString tran_id)
 {
-        this->dv_list.push_back(tran_id);
+        this->dv_list.append(tran_id);
 }
 void
 DeviceVerificationList::remove(QString tran_id)
 {
-        for (QVector<QString>::iterator it = 0; it != (this->dv_list).end(); ++it) {
-                if (*it == tran_id) {
-                        this->dv_list.erase(it);
-                        break;
-                }
-        }
+        this->dv_list.removeOne(tran_id);
 }
 bool
 DeviceVerificationList::exist(QString tran_id)
 {
-        for (int i = 0; i < (this->dv_list).size(); ++i) {
-                if (dv_list[i] == tran_id)
-                        return true;
-        }
-        return false;
+        return this->dv_list.contains(tran_id);
 }
 
 void
@@ -183,7 +174,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                         msg.content.methods.end(),
                                         mtx::events::msg::VerificationMethods::SASv1) !=
                               msg.content.methods.end()) {
-                                  flow->sendVerificationReady();
+                                  //   flow->sendVerificationReady();
                                   emit newDeviceVerificationRequest(
                                     std::move(flow),
                                     QString::fromStdString(msg.content.transaction_id),

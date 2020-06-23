@@ -1,7 +1,6 @@
 #include "DeviceVerificationFlow.h"
 #include "ChatPage.h"
 #include "Logging.h"
-#include "Utils.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -162,7 +161,10 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                                 }
                                 if (msg.content.keys ==
                                     this->sas->calculate_mac(key_string, info + "KEY_IDS")) {
-                                        this->sendVerificationDone();
+                                        // uncomment this in future to be compatible with the
+                                        // MSC2366 this->sendVerificationDone(); and remoeve the
+                                        // below line
+                                        emit this->deviceVerified();
                                 } else {
                                         this->cancelVerification();
                                 }
