@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QHash>
-#include <QLinkedList>
 #include <QQuickView>
 #include <QQuickWidget>
 #include <QSharedPointer>
@@ -32,7 +31,7 @@ public:
         Q_INVOKABLE bool exist(QString tran_id);
 
 private:
-        QLinkedList<QString> dv_list;
+        QVector<QString> deviceVerificationList;
 };
 
 class TimelineViewManager : public QObject

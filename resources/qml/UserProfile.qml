@@ -13,7 +13,7 @@ ApplicationWindow{
 
     id:userProfileDialog
     height: 500
-    width: 500
+    width: 400
     modality:Qt.WindowModal
     Layout.alignment: Qt.AlignHCenter
     palette: colors
@@ -64,6 +64,9 @@ ApplicationWindow{
                 id: userProfileName
                 text: user_data.userName
                 fontSizeMode: Text.HorizontalFit
+                font.pixelSize: 16
+                color:timelineManager.userColor(modelData.userId, colors.window)
+                font.bold: true
                 Layout.alignment: Qt.AlignHCenter
             }
 
@@ -71,6 +74,8 @@ ApplicationWindow{
                 id: matrixUserID
                 text: user_data.userId
                 fontSizeMode: Text.HorizontalFit
+                font.pixelSize: 16
+                color:colors.text
                 Layout.alignment: Qt.AlignHCenter
             }
 
@@ -79,8 +84,6 @@ ApplicationWindow{
                 implicitWidth: userProfileDialog.width-20
                 clip: true
                 Layout.alignment: Qt.AlignHCenter
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
                 ListView{
                     id: deviceList
@@ -98,6 +101,7 @@ ApplicationWindow{
                             Text{
                                 Layout.fillWidth: true
                                 color: colors.text
+                                font.bold: true
                                 Layout.alignment: Qt.AlignRight
                                 text: deviceID
                             }
@@ -116,12 +120,15 @@ ApplicationWindow{
                                 {userId : user_data.userId,sender: true,deviceId : model.deviceID});
                                 deviceVerificationList.add(newFlow.tranId);
 								var dialog = deviceVerificationDialog.createObject(userProfileDialog, 
-                                    {flow: newFlow,sender: true});
+                                    {flow: newFlow});
 				                dialog.show();
+                            }
+                            palette {
+                                button: "white"
                             }
                             contentItem: Text {
                                 text: verifyButton.text
-                                color: colors.background
+                                color: "black"
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                             }
@@ -134,19 +141,26 @@ ApplicationWindow{
                 id: okbutton
                 text:"OK"
                 onClicked: userProfileDialog.close()
-                anchors.margins: {
-                    right:10
-                    bottom:10
+                anchors {
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+
+                anchors.margins : {
+                    right : 10
+                    bottom : 10
+                }
+
+                palette {
+                    button: "white"
                 }
 
                 contentItem: Text {
                     text: okbutton.text
-                    color: colors.background
+                    color: "black"
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
-
-                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             }
         }
 
