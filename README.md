@@ -114,7 +114,6 @@ brew cask install nheko
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - Boost 1.70 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
-- [libsodium](https://github.com/jedisct1/libsodium)
 - [spdlog](https://github.com/gabime/spdlog)
 - A compiler that supports C++ 17:
     - Clang 6 (tested on Travis CI)
@@ -136,8 +135,6 @@ The bundle flags are currently:
 - USE_BUNDLED_JSON
 - USE_BUNDLED_OPENSSL
 - USE_BUNDLED_MTXCLIENT
-- USE_BUNDLED_SODIUM
-- USE_BUNDLED_ZLIB
 - USE_BUNDLED_LMDB
 - USE_BUNDLED_LMDBXX
 - USE_BUNDLED_TWEENY
@@ -162,8 +159,7 @@ sudo pacman -S qt5-base \
     fontconfig \
     lmdb \
     cmark \
-    boost \
-    libsodium
+    boost
 ```
 
 ##### Gentoo Linux
@@ -176,7 +172,7 @@ sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
 
 ```bash
 # Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
-sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev libsodium-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,graphicaleffects,quick-controls2}
+sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,graphicaleffects,quick-controls2}
 ```
 This will install all dependencies, except for tweeny (use bundled tweeny)
 and mtxclient (needs to be build separately).
@@ -186,7 +182,7 @@ and mtxclient (needs to be build separately).
 (User report, not sure if all of those are needed)
 
 ```bash
-sudo apt install cmake gcc make automake liblmdb-dev libsodium-dev \
+sudo apt install cmake gcc make automake liblmdb-dev \
     qt5-default libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev \
     qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools \
     qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts
@@ -203,7 +199,7 @@ guix environment nheko
 
 ```bash
 brew update
-brew install qt5 lmdb cmake llvm libsodium spdlog boost cmark libolm
+brew install qt5 lmdb cmake llvm spdlog boost cmark libolm
 ```
 
 ##### Windows

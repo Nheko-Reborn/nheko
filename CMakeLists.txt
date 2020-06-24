@@ -35,8 +35,6 @@ option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json."
 option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
-option(USE_BUNDLED_SODIUM "Use the bundled version of libsodium."
-	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
@@ -337,7 +335,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        v0.3.1
+		GIT_TAG        68e043e1bf515e9072235151f74f7aac0838a9d3
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
