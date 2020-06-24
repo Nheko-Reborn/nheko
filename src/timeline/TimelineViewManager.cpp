@@ -26,17 +26,17 @@ namespace msgs = mtx::events::msg;
 void
 DeviceVerificationList::add(QString tran_id)
 {
-        this->dv_list.append(tran_id);
+        this->deviceVerificationList.push_back(tran_id);
 }
 void
 DeviceVerificationList::remove(QString tran_id)
 {
-        this->dv_list.removeOne(tran_id);
+        this->deviceVerificationList.removeOne(tran_id);
 }
 bool
 DeviceVerificationList::exist(QString tran_id)
 {
-        return this->dv_list.contains(tran_id);
+        return this->deviceVerificationList.contains(tran_id);
 }
 
 void

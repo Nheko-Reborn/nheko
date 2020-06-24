@@ -112,7 +112,7 @@ Page {
 				flow.tranId = transactionId;
 				deviceVerificationList.add(flow.tranId);
 				var dialog = deviceVerificationDialog.createObject(timelineRoot, 
-                    {flow: flow,sender: false});
+                    {flow: flow});
 				dialog.show();
 			}
 		}

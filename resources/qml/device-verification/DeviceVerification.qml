@@ -7,7 +7,6 @@ import Qt.labs.settings 1.0
 import im.nheko 1.0
 
 ApplicationWindow {
-    property bool sender: true
 	title: stack.currentItem.title
 	id: dialog
 
@@ -25,7 +24,7 @@ ApplicationWindow {
 	width: stack.implicitWidth
 	StackView {
 		id: stack
-		initialItem: sender == true?newVerificationRequest:acceptNewVerificationRequest
+		initialItem: flow.sender == true?newVerificationRequest:acceptNewVerificationRequest
 		implicitWidth: currentItem.implicitWidth
 		implicitHeight: currentItem.implicitHeight
 	}
@@ -52,7 +51,7 @@ ApplicationWindow {
 	Component {
 		id: newVerificationRequest
 		Pane {
-			property string title: "Sending Device Verification Request"
+			property string title: qsTr("Sending Device Verification Request")
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -60,8 +59,8 @@ ApplicationWindow {
 					Layout.fillHeight: true
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
-					text: "A new device was added."
-
+					text: qsTr("A new device was added.")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -70,15 +69,24 @@ ApplicationWindow {
 					Layout.fillHeight: true
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
-					text: "The device may have been added by you signing in from another client or physical device. To ensure that no malicious user can eavesdrop on your encrypted communications, you should verify the new device."
-
+					text: qsTr("The device may have been added by you signing in from another client or physical device. To ensure that no malicious user can eavesdrop on your encrypted communications, you should verify the new device.")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
 				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
-						text: "Cancel"
+						text: qsTr("Cancel")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
@@ -91,7 +99,16 @@ ApplicationWindow {
 					}
 					Button {
 						Layout.alignment: Qt.AlignRight
-						text: "Start verification"
+						text: qsTr("Start verification")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.startVerificationRequest(); }
 					}
 				}
@@ -102,7 +119,7 @@ ApplicationWindow {
 	Component {
 		id: acceptNewVerificationRequest
 		Pane {
-			property string title: "Recieving Device Verification Request"
+			property string title: qsTr("Recieving Device Verification Request")
 			ColumnLayout {
 				spacing: 16
 
@@ -111,15 +128,15 @@ ApplicationWindow {
 					Layout.fillHeight: true
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
-					text: "The device was requested to be verified"
-
+					text: qsTr("The device was requested to be verified")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
 				RowLayout {
 					RadioButton {
 						Layout.alignment: Qt.AlignLeft
-						text: "Decimal"
+						text: qsTr("Decimal")
 						onClicked: { flow.method = DeviceVerificationFlow.Decimal }
 					}
 					Item {
@@ -127,7 +144,7 @@ ApplicationWindow {
 					}
 					RadioButton {
 						Layout.alignment: Qt.AlignRight
-						text: "Emoji"
+						text: qsTr("Emoji")
 						onClicked: { flow.method = DeviceVerificationFlow.Emoji }
 					}
 				}
@@ -135,7 +152,16 @@ ApplicationWindow {
 				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
-						text: "Deny"
+						text: qsTr("Deny")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
@@ -148,7 +174,16 @@ ApplicationWindow {
 					}
 					Button {
 						Layout.alignment: Qt.AlignRight
-						text: "Accept"
+						text: qsTr("Accept")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.acceptVerificationRequest(); }
 					}
 				}
@@ -159,7 +194,7 @@ ApplicationWindow {
 	Component {
 		id: awaitingVerificationRequestAccept
 		Pane {
-			property string title: "Waiting for other party"
+			property string title: qsTr("Waiting for other party")
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -168,8 +203,8 @@ ApplicationWindow {
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
 					id: content
-					text: "Waiting for other side to accept the verification request."
-
+					text: qsTr("Waiting for other side to accept the verification request.")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -179,7 +214,16 @@ ApplicationWindow {
 				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
-						text: "Cancel"
+						text: qsTr("Cancel")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
@@ -198,7 +242,7 @@ ApplicationWindow {
 	Component {
 		id: digitVerification
 		Pane {
-			property string title: "Verification Code"
+			property string title: qsTr("Verification Code")
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -206,8 +250,8 @@ ApplicationWindow {
 					Layout.fillHeight: true
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
-					text: "Please verify the following digits. You should see the same numbers on both sides. If they differ, please press 'They do not match!' to abort verification!"
-
+					text: qsTr("Please verify the following digits. You should see the same numbers on both sides. If they differ, please press 'They do not match!' to abort verification!")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -230,7 +274,16 @@ ApplicationWindow {
 				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
-						text: "They do not match!"
+						text: qsTr("They do not match!")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
@@ -243,7 +296,16 @@ ApplicationWindow {
 					}
 					Button {
 						Layout.alignment: Qt.AlignRight
-						text: "They match."
+						text: qsTr("They match!")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.sendVerificationMac(); }
 					}
 				}
@@ -254,7 +316,7 @@ ApplicationWindow {
 	Component {
 		id: emojiVerification
 		Pane {
-			property string title: "Verification Code"
+			property string title: qsTr("Verification Code")
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -262,8 +324,8 @@ ApplicationWindow {
 					Layout.fillHeight: true
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
-					text: "Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!"
-
+					text: qsTr("Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -369,7 +431,16 @@ ApplicationWindow {
 				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
-						text: "They do not match!"
+						text: qsTr("They do not match!")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification();
@@ -382,7 +453,16 @@ ApplicationWindow {
 					}
 					Button {
 						Layout.alignment: Qt.AlignRight
-						text: "They match."
+						text: qsTr("They match!")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { stack.replace(awaitingVerificationConfirmation); flow.sendVerificationMac(); }
 					}
 				}
@@ -393,7 +473,7 @@ ApplicationWindow {
 	Component {
 		id: awaitingVerificationConfirmation
 		Pane {
-			property string title: "Awaiting Confirmation"
+			property string title: qsTr("Awaiting Confirmation")
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -402,8 +482,8 @@ ApplicationWindow {
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
 					id: content
-					text: "Waiting for other side to complete verification."
-
+					text: qsTr("Waiting for other side to complete verification.")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -413,7 +493,16 @@ ApplicationWindow {
 				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
-						text: "Cancel"
+						text: qsTr("Cancel")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification(); 
@@ -432,7 +521,7 @@ ApplicationWindow {
 	Component {
 		id: verificationSuccess
 		Pane {
-			property string title: "Successful Verification"
+			property string title: qsTr("Successful Verification")
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -441,8 +530,8 @@ ApplicationWindow {
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
 					id: content
-					text: "Verification successful! Both sides verified their devices!"
-
+					text: qsTr("Verification successful! Both sides verified their devices!")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -452,7 +541,16 @@ ApplicationWindow {
 					}
 					Button {
 						Layout.alignment: Qt.AlignRight
-						text: "Close"
+						text: qsTr("Close")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: {
 							dialog.close()
 							deviceVerificationList.remove(flow.tranId);
@@ -467,7 +565,7 @@ ApplicationWindow {
 	Component {
 		id: partnerAborted
 		Pane {
-			property string title: "Verification aborted!"
+			property string title: qsTr("Verification aborted!")
 			ColumnLayout {
 				spacing: 16
 				Label {
@@ -476,8 +574,8 @@ ApplicationWindow {
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
 					id: content
-					text: "Verification canceled by the other party!"
-
+					text: qsTr("Verification canceled by the other party!")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -487,7 +585,16 @@ ApplicationWindow {
 					}
 					Button {
 						Layout.alignment: Qt.AlignRight
-						text: "Close"
+						text: qsTr("Close")
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 						onClicked: {
 							dialog.close();
 							deviceVerificationList.remove(flow.tranId);
@@ -502,7 +609,7 @@ ApplicationWindow {
 	Component {
 		id: timedout
 		Pane {
-			property string title: "Verification timed out"
+			property string title: qsTr("Verification timed out")
 			ColumnLayout {
 				spacing: 16
 				Text {
@@ -511,8 +618,8 @@ ApplicationWindow {
 					Layout.fillWidth: true
 					wrapMode: Text.Wrap
 					id: content
-					text: "Device verification timed out."
-
+					text: qsTr("Device verification timed out.")
+					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
 
@@ -521,8 +628,18 @@ ApplicationWindow {
 						Layout.fillWidth: true
 					}
 					Button {
+						id: timedOutCancel
 						Layout.alignment: Qt.AlignRight
-						text: "Close"
+						palette {
+                            button: "white"
+                        }
+						contentItem: Text {
+                            text: parent.text
+                            color: "black"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+						text: qsTr("Close")
 						onClicked: {
 							dialog.close()
 							deviceVerificationList.remove(flow.tranId);
