@@ -1,6 +1,8 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.2
 
+import im.nheko 1.0
+
 Item {
 	height: row.height + 24
 	width: parent ? parent.width : undefined
@@ -29,7 +31,7 @@ Item {
 			}
 			MouseArea {
 				anchors.fill: parent
-				onClicked: timelineManager.timeline.saveMedia(model.data.id)
+				onClicked: TimelineManager.timeline.saveMedia(model.data.id)
 				cursorShape: Qt.PointingHandCursor
 			}
 		}

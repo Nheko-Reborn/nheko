@@ -29,7 +29,7 @@ Item {
 		}
 	}
 	Rectangle {
-		color: (settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
+		color: (Settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
 		anchors.fill: row
 	}
 	RowLayout {
@@ -48,8 +48,8 @@ Item {
 			// fancy reply, if this is a reply
 			Reply {
 				visible: model.replyTo
-				modelData: chat.model.getDump(model.replyTo, model.id)
-				userColor: timelineManager.userColor(modelData.userId, colors.window)
+				modelData: chat.model.getDump(model.replyTo)
+				userColor: TimelineManager.userColor(modelData.userId, colors.window)
 			}
 
 			// actual message content
@@ -84,7 +84,7 @@ Item {
 			width: 16
 		}
 		EmojiButton {
-			visible: settings.buttonsInTimeline
+			visible: Settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
@@ -96,7 +96,7 @@ Item {
 			event_id: model.id
 		}
 		ImageButton {
-			visible: settings.buttonsInTimeline
+			visible: Settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
@@ -112,7 +112,7 @@ Item {
 			onClicked: chat.model.replyAction(model.id)
 		}
 		ImageButton {
-			visible: settings.buttonsInTimeline
+			visible: Settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16

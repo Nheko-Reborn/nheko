@@ -80,12 +80,16 @@ TimelineViewManager::userColor(QString id, QColor background)
         return userColors.value(id);
 }
 
-// QString
-// TimelineViewManager::userPresence(QString id) const
-// {
-//         return QString::fromStdString(
-//           mtx::presence::to_string(cache::presenceState(id.toStdString())));
-// }
+QString
+TimelineViewManager::userPresence(QString id) const
+{
+        if (id.isEmpty())
+                return "";
+        else
+                return QString::fromStdString(
+                  mtx::presence::to_string(cache::presenceState(id.toStdString())));
+}
+
 QString
 TimelineViewManager::userStatus(QString id) const
 {
@@ -110,6 +114,8 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         qmlRegisterType<DeviceVerificationFlow>("im.nheko", 1, 0, "DeviceVerificationFlow");
         qmlRegisterType<UserProfileModel>("im.nheko", 1, 0, "UserProfileModel");
         qmlRegisterType<UserProfile>("im.nheko", 1, 0, "UserProfileList");
+        qmlRegisterSingletonInstance("im.nheko", 1, 0, "TimelineManager", this);
+        qmlRegisterSingletonInstance("im.nheko", 1, 0, "Settings", settings.data());
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
         qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
@@ -144,8 +150,6 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         });
 #endif
         container->setMinimumSize(200, 200);
-        view->rootContext()->setContextProperty("timelineManager", this);
-        view->rootContext()->setContextProperty("settings", settings.data());
         view->rootContext()->setContextProperty("deviceVerificationList", this->dvList);
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);

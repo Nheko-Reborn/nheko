@@ -3,6 +3,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 
+import im.nheko 1.0
+
 Item {
 	id: replyComponent
 
@@ -26,7 +28,7 @@ Item {
 		anchors.bottom: replyContainer.bottom
 		width: 4
 
-		color: timelineManager.userColor(reply.modelData.userId, colors.window)
+		color: TimelineManager.userColor(reply.modelData.userId, colors.window)
 	}
 
 	Column {

@@ -91,7 +91,7 @@ Page {
 			visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
 			height: visible ? implicitHeight : 0
 			text: qsTr("Save as")
-			onTriggered: timelineManager.timeline.saveMedia(messageContextMenu.eventId)
+			onTriggered: TimelineManager.timeline.saveMedia(messageContextMenu.eventId)
 		}
 	}
 
@@ -104,7 +104,7 @@ Page {
 			DeviceVerification {}
 		}
 		Connections {
-			target: timelineManager
+			target: TimelineManager
 			onNewDeviceVerificationRequest: {
 				flow.userId = userId;
 				flow.sender = false;
@@ -118,7 +118,7 @@ Page {
 		}
 
 		Label {
-			visible: !timelineManager.timeline && !timelineManager.isInitialSync
+			visible: !TimelineManager.timeline && !TimelineManager.isInitialSync
 			anchors.centerIn: parent
 			text: qsTr("No room open")
 			font.pointSize: 24
@@ -128,7 +128,7 @@ Page {
 		BusyIndicator {
 			visible: running
 			anchors.centerIn: parent
-			running: timelineManager.isInitialSync
+			running: TimelineManager.isInitialSync
 			height: 200
 			width: 200
 			z: 3
@@ -137,7 +137,7 @@ Page {
 		ListView {
 			id: chat
 
-			visible: !!timelineManager.timeline
+			visible: TimelineManager.timeline != null
 
 			cacheBuffer: 400
 
@@ -149,7 +149,7 @@ Page {
 			anchors.leftMargin: 4
 			anchors.rightMargin: scrollbar.width
 
-			model: timelineManager.timeline
+			model: TimelineManager.timeline
 
 			boundsBehavior: Flickable.StopAtBounds
 
@@ -197,7 +197,7 @@ Page {
 
 			onCountChanged: if (atYEnd) model.currentIndex = 0 // Mark last event as read, since we are at the bottom
 
-			property int delegateMaxWidth: (settings.timelineMaxWidth > 100 && (parent.width - settings.timelineMaxWidth) > 32) ? settings.timelineMaxWidth : (parent.width - 32)
+			property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > 32) ? Settings.timelineMaxWidth : (parent.width - 32)
 
 			delegate: Rectangle {
 				// This would normally be previousSection, but our model's order is inverted.
@@ -303,7 +303,7 @@ Page {
 						Label { 
 							id: userName
 							text: chat.model.escapeEmoji(modelData.userName)
-							color: timelineManager.userColor(modelData.userId, colors.window)
+							color: TimelineManager.userColor(modelData.userId, colors.window)
 							textFormat: Text.RichText
 
 							MouseArea {
@@ -381,8 +381,13 @@ Page {
 						anchors.rightMargin: 20
 						anchors.bottom: parent.bottom
 
+<<<<<<< HEAD
 						modelData: chat.model ? chat.model.getDump(chat.model.reply, chat.model.id) : {}
 						userColor: timelineManager.userColor(modelData.userId, colors.window)
+=======
+						modelData: chat.model ? chat.model.getDump(chat.model.reply) : {}
+						userColor: TimelineManager.userColor(modelData.userId, colors.window)
+>>>>>>> Fix presence indicator
 					}
 
 					ImageButton {

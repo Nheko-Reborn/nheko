@@ -1,6 +1,8 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.2
 
+import im.nheko 1.0
+
 // This class is for showing Reactions in the timeline row, not for
 // adding new reactions via the emoji picker
 Flow {
@@ -33,8 +35,13 @@ Flow {
 			ToolTip.text: modelData.users
 
 			onClicked: {
+<<<<<<< HEAD
 				console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + modelData.selfReactedEvent)
 				timelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key)
+=======
+				console.debug("Picked " + model.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + model.selfReactedEvent)
+				TimelineManager.reactToMessage(reactionFlow.roomId, reactionFlow.eventId, model.key, model.selfReactedEvent)
+>>>>>>> Fix presence indicator
 			}
 
 
@@ -46,7 +53,7 @@ Flow {
 
 				TextMetrics {
 					id: textMetrics
-					font.family: settings.emojiFont
+					font.family: Settings.emojiFont
 					elide: Text.ElideRight
 					elideWidth: 150
 					text: modelData.key
@@ -55,8 +62,8 @@ Flow {
 				Text {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
-					text: textMetrics.elidedText + (textMetrics.elidedText == modelData.key ? "" : "…")
-					font.family: settings.emojiFont
+					text: textMetrics.elidedText + (textMetrics.elidedText == model.key ? "" : "…")
+					font.family: Settings.emojiFont
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1
 				}
