@@ -57,7 +57,7 @@ public:
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
 
-        // Q_INVOKABLE QString userPresence(QString id) const;
+        Q_INVOKABLE QString userPresence(QString id) const;
         Q_INVOKABLE QString userStatus(QString id) const;
 
 signals:

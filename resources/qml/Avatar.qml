@@ -2,11 +2,13 @@ import QtQuick 2.6
 import QtQuick.Controls 2.3
 import QtGraphicalEffects 1.0
 
+import im.nheko 1.0
+
 Rectangle {
 	id: avatar
 	width: 48
 	height: 48
-	radius: settings.avatarCircles ? height/2 : 3
+	radius: Settings.avatarCircles ? height/2 : 3
 
 	property alias url: img.source
 	property string userid
@@ -40,7 +42,7 @@ Rectangle {
 				anchors.fill: parent
 				width: avatar.width
 				height: avatar.height
-				radius: settings.avatarCircles ? height/2 : 3
+				radius: Settings.avatarCircles ? height/2 : 3
 			}
 		}
 
@@ -52,13 +54,13 @@ Rectangle {
 
 		height: avatar.height / 6
 		width: height
-		radius: settings.avatarCircles ? height / 2 : height / 4
-		// color: switch (timelineManager.userPresence(userid)) {
-		// 	case "online": return "#00cc66"
-		// 	case "unavailable": return "#ff9933"
-		// 	case "offline": return "#a82353"
-		// 	default: "transparent"
-		// }
+		radius: Settings.avatarCircles ? height / 2 : height / 4
+		color: switch (TimelineManager.userPresence(userid)) {
+			case "online": return "#00cc66"
+			case "unavailable": return "#ff9933"
+			case "offline": // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
+			default: "transparent"
+		}
 	}
 
 	color: colors.base

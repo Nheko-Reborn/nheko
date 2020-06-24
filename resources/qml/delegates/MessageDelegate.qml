@@ -37,7 +37,7 @@ Item {
 			roleValue: MtxEvent.EmoteMessage
 			NoticeMessage {
 				formatted: chat.model.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
-				color: timelineManager.userColor(modelData.userId, colors.window)
+				color: TimelineManager.userColor(modelData.userId, colors.window)
 			}
 		}
 		DelegateChoice {
@@ -94,31 +94,31 @@ Item {
 			// TODO: make a more complex formatter for the power levels.
 			roleValue: MtxEvent.PowerLevels
 			NoticeMessage {
-				text: timelineManager.timeline.formatPowerLevelEvent(model.data.id)
+				text: TimelineManager.timeline.formatPowerLevelEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.RoomJoinRules
 			NoticeMessage {
-				text: timelineManager.timeline.formatJoinRuleEvent(model.data.id)
+				text: TimelineManager.timeline.formatJoinRuleEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.RoomHistoryVisibility
 			NoticeMessage {
-				text: timelineManager.timeline.formatHistoryVisibilityEvent(model.data.id)
+				text: TimelineManager.timeline.formatHistoryVisibilityEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.RoomGuestAccess
 			NoticeMessage {
-				text: timelineManager.timeline.formatGuestAccessEvent(model.data.id)
+				text: TimelineManager.timeline.formatGuestAccessEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.Member
 			NoticeMessage {
-				text: timelineManager.timeline.formatMemberEvent(model.data.id);
+				text: TimelineManager.timeline.formatMemberEvent(model.data.id);
 			}
 		}
 		DelegateChoice {

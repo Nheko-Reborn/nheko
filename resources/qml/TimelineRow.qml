@@ -26,7 +26,7 @@ MouseArea {
 		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
 	}
 	Rectangle {
-		color: (settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
+		color: (Settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
 		anchors.fill: row
 	}
 	RowLayout {
@@ -46,7 +46,7 @@ MouseArea {
 			Reply {
 				visible: model.replyTo
 				modelData: chat.model.getDump(model.replyTo)
-				userColor: timelineManager.userColor(modelData.userId, colors.window)
+				userColor: TimelineManager.userColor(modelData.userId, colors.window)
 			}
 
 			// actual message content
@@ -81,7 +81,7 @@ MouseArea {
 			width: 16
 		}
 		EmojiButton {
-			visible: settings.buttonsInTimeline
+			visible: Settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
@@ -94,7 +94,7 @@ MouseArea {
 			event_id: model.id
 		}
 		ImageButton {
-			visible: settings.buttonsInTimeline
+			visible: Settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16
@@ -110,7 +110,7 @@ MouseArea {
 			onClicked: chat.model.replyAction(model.id)
 		}
 		ImageButton {
-			visible: settings.buttonsInTimeline
+			visible: Settings.buttonsInTimeline
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			Layout.preferredHeight: 16
 			width: 16

@@ -57,6 +57,7 @@ ApplicationWindow{
                 height: 130
                 width: 130
                 displayName: modelData.userName
+		userid: modelData.userId
                 Layout.alignment: Qt.AlignHCenter
             }
 
@@ -65,7 +66,7 @@ ApplicationWindow{
                 text: user_data.userName
                 fontSizeMode: Text.HorizontalFit
                 font.pixelSize: 16
-                color:timelineManager.userColor(modelData.userId, colors.window)
+                color:TimelineManager.userColor(modelData.userId, colors.window)
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
             }
