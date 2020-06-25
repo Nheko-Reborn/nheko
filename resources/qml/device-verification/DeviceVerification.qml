@@ -82,8 +82,6 @@ ApplicationWindow {
                         }
 						onClicked: { 
 							dialog.close(); 
-							flow.cancelVerification();
-							deviceVerificationList.remove(flow.tranId);
 							delete flow; 
 						}
 					}
@@ -128,16 +126,26 @@ ApplicationWindow {
 
 				RowLayout {
 					RadioButton {
+						id: decimalRadio
 						Layout.alignment: Qt.AlignLeft
 						text: qsTr("Decimal")
+						contentItem: Text {
+    					    text: decimalRadio.text
+    					    color: colors.text
+    					}
 						onClicked: { flow.method = DeviceVerificationFlow.Decimal }
 					}
 					Item {
 						Layout.fillWidth: true
 					}
 					RadioButton {
+						id: emojiRadio
 						Layout.alignment: Qt.AlignRight
 						text: qsTr("Emoji")
+						contentItem: Text {
+    					    text: emojiRadio.text
+    					    color: colors.text
+    					}
 						onClicked: { flow.method = DeviceVerificationFlow.Emoji }
 					}
 				}
@@ -156,7 +164,7 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
 						onClicked: { 
-							dialog.close(); 
+							dialog.close();
 							flow.cancelVerification();
 							deviceVerificationList.remove(flow.tranId);
 							delete flow; 
@@ -411,6 +419,7 @@ ApplicationWindow {
 									text: col.emoji.emoji
 									font.pixelSize: Qt.application.font.pixelSize * 2
 									font.family: Settings.emojiFont
+									color:colors.text
 								}
 								Label {
 									Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom

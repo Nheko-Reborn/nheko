@@ -12,7 +12,7 @@ ApplicationWindow{
     property var colors: currentActivePalette
 
     id:userProfileDialog
-    height: 500
+    height: 650
     width: 420
     modality:Qt.WindowModal
     Layout.alignment: Qt.AlignHCenter
@@ -43,7 +43,7 @@ ApplicationWindow{
         width: userProfileDialog.width
         height: userProfileDialog.height
 
-        Layout.fillHeight : true
+        // Layout.fillHeight : true
 
         ColumnLayout{
             anchors.fill: userProfileItem
@@ -82,8 +82,62 @@ ApplicationWindow{
                 Layout.alignment: Qt.AlignHCenter
             }
 
+            RowLayout{
+                Layout.alignment: Qt.AlignHCenter
+                ImageButton{
+                    image:":/icons/icons/ui/do-not-disturb-rounded-sign.png"
+                    Layout.margins: {
+                        left: 5
+                        right: 5
+                    }
+                    ToolTip.visible: hovered
+			        ToolTip.text: qsTr("Ban the user")
+                    onClicked : {
+                        userProfileList.banUser()
+                    }
+                }
+                // ImageButton{
+                //     image:":/icons/icons/ui/volume-off-indicator.png"
+                //     Layout.margins: {
+                //         left: 5
+                //         right: 5
+                //     }
+                //     ToolTip.visible: hovered
+			    //     ToolTip.text: qsTr("Ignore messages from this user")
+                //     onClicked : {
+                //         userProfileList.ignoreUser()
+                //     }
+                // }
+
+                ImageButton{
+                    image:":/icons/icons/ui/round-remove-button.png"
+                    Layout.margins: {
+                        left: 5
+                        right: 5
+                    }
+                    ToolTip.visible: hovered
+			        ToolTip.text: qsTr("Kick the user")
+                    onClicked : {
+                        userProfileList.kickUser()
+                    }
+                }
+
+                ImageButton{
+                    image:":/icons/icons/ui/black-bubble-speech.png"
+                    Layout.margins: {
+                        left: 5
+                        right: 5
+                    }
+                    ToolTip.visible: hovered
+			        ToolTip.text: qsTr("Start a conversation")
+                    onClicked : {
+                        userProfileList.startChat()
+                    }
+                }
+            }
+
             ScrollView {
-                implicitHeight: userProfileDialog.height/2+20
+                implicitHeight: userProfileDialog.height/2 + 20
                 implicitWidth: userProfileDialog.width-20
                 clip: true
                 Layout.alignment: Qt.AlignHCenter
@@ -150,6 +204,8 @@ ApplicationWindow{
                 id: okbutton
                 text:"OK"
                 onClicked: userProfileDialog.close()
+                
+                Layout.alignment: Qt.AlignRight
 
                 Layout.margins : {
                     right : 10

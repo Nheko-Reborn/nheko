@@ -13,7 +13,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
 {
         timeout = new QTimer(this);
         timeout->setSingleShot(true);
-        this->sas = olm::client()->sas_init();
+        this->sas           = olm::client()->sas_init();
+        this->isMacVerified = false;
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
                 this->deleteLater();
@@ -134,45 +135,47 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                           }
                   }
           });
-        connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationMac,
-                this,
-                [this](const mtx::events::collections::DeviceEvents &message) {
-                        auto msg =
-                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationMac>>(message);
-                        if (msg.content.transaction_id == this->transaction_id) {
-                                std::string info =
-                                  "MATRIX_KEY_VERIFICATION_MAC" + this->toClient.to_string() +
-                                  this->deviceId.toStdString() +
-                                  http::client()->user_id().to_string() +
-                                  http::client()->device_id() + this->transaction_id;
+        connect(
+          ChatPage::instance(),
+          &ChatPage::recievedDeviceVerificationMac,
+          this,
+          [this](const mtx::events::collections::DeviceEvents &message) {
+                  auto msg = std::get<mtx::events::DeviceEvent<msgs::KeyVerificationMac>>(message);
+                  if (msg.content.transaction_id == this->transaction_id) {
+                          std::string info =
+                            "MATRIX_KEY_VERIFICATION_MAC" + this->toClient.to_string() +
+                            this->deviceId.toStdString() + http::client()->user_id().to_string() +
+                            http::client()->device_id() + this->transaction_id;
 
-                                std::vector<std::string> key_list;
-                                std::string key_string;
-                                for (auto mac : msg.content.mac) {
-                                        if (mac.second ==
-                                            this->sas->calculate_mac(this->device_keys[mac.first],
-                                                                     info + mac.first)) {
-                                                key_string += mac.first;
-                                        } else {
-                                                this->cancelVerification();
-                                                return;
-                                        }
-                                }
-                                if (msg.content.keys ==
-                                    this->sas->calculate_mac(key_string, info + "KEY_IDS")) {
-                                        // uncomment this in future to be compatible with the
-                                        // MSC2366 this->sendVerificationDone(); and remoeve the
-                                        // below line
-                                        if (this->isMacVerified == true)
-                                                emit this->deviceVerified();
-                                        else
-                                                this->isMacVerified = true;
-                                } else {
-                                        this->cancelVerification();
-                                }
-                        }
-                });
+                          std::vector<std::string> key_list;
+                          std::string key_string;
+                          for (auto mac : msg.content.mac) {
+                                  key_string += mac.first + ",";
+                                  if (device_keys[mac.first] != "") {
+                                          if (mac.second ==
+                                              this->sas->calculate_mac(this->device_keys[mac.first],
+                                                                       info + mac.first)) {
+                                          } else {
+                                                  this->cancelVerification();
+                                                  return;
+                                          }
+                                  }
+                          }
+                          key_string = key_string.substr(0, key_string.length() - 1);
+                          if (msg.content.keys ==
+                              this->sas->calculate_mac(key_string, info + "KEY_IDS")) {
+                                  // uncomment this in future to be compatible with the
+                                  // MSC2366 this->sendVerificationDone(); and remove the
+                                  // below line
+                                  if (this->isMacVerified == true)
+                                          emit this->deviceVerified();
+                                  else
+                                          this->isMacVerified = true;
+                          } else {
+                                  this->cancelVerification();
+                          }
+                  }
+          });
         connect(ChatPage::instance(),
                 &ChatPage::recievedDeviceVerificationReady,
                 this,
