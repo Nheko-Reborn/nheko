@@ -5,7 +5,6 @@
 #include <QVector>
 
 #include "MatrixClient.h"
-
 class DeviceInfo
 {
 public:
@@ -36,6 +35,10 @@ public:
 
         Q_INVOKABLE void fetchDeviceList(const QString &userID);
         Q_INVOKABLE void updateDeviceList();
+        Q_INVOKABLE void banUser();
+        // Q_INVOKABLE void ignoreUser();
+        Q_INVOKABLE void kickUser();
+        Q_INVOKABLE void startChat();
 
 signals:
         void userIdChanged();

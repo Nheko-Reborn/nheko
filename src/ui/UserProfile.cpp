@@ -1,4 +1,5 @@
 #include "UserProfile.h"
+#include "ChatPage.h"
 #include "Logging.h"
 #include "Utils.h"
 #include "mtx/responses/crypto.hpp"
@@ -85,4 +86,31 @@ void
 UserProfile::updateDeviceList()
 {
         fetchDeviceList(this->userId);
+}
+
+void
+UserProfile::banUser()
+{
+        ChatPage::instance()->banUser(this->userId, "");
+}
+
+// void ignoreUser(){
+
+// }
+
+void
+UserProfile::kickUser()
+{
+        ChatPage::instance()->kickUser(this->userId, "");
+}
+
+void
+UserProfile::startChat()
+{
+        mtx::requests::CreateRoom req;
+        req.preset     = mtx::requests::Preset::PrivateChat;
+        req.visibility = mtx::requests::Visibility::Private;
+        if (utils::localUser() != this->userId)
+                req.invite = {this->userId.toStdString()};
+        emit ChatPage::instance()->createRoom(req);
 }
