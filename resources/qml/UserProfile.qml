@@ -13,7 +13,7 @@ ApplicationWindow{
 
     id:userProfileDialog
     height: 500
-    width: 400
+    width: 420
     modality:Qt.WindowModal
     Layout.alignment: Qt.AlignHCenter
     palette: colors
@@ -42,9 +42,8 @@ ApplicationWindow{
         id: userProfileItem
         width: userProfileDialog.width
         height: userProfileDialog.height
-        anchors.margins: {
-            top:20
-        }
+
+        Layout.fillHeight : true
 
         ColumnLayout{
             anchors.fill: userProfileItem
@@ -57,15 +56,18 @@ ApplicationWindow{
                 height: 130
                 width: 130
                 displayName: modelData.userName
-		userid: modelData.userId
+		        userid: modelData.userId
                 Layout.alignment: Qt.AlignHCenter
+                Layout.margins : {
+                    top: 10
+                }
             }
 
             Label{
                 id: userProfileName
                 text: user_data.userName
                 fontSizeMode: Text.HorizontalFit
-                font.pixelSize: 16
+                font.pixelSize: 20
                 color:TimelineManager.userColor(modelData.userId, colors.window)
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
@@ -75,7 +77,7 @@ ApplicationWindow{
                 id: matrixUserID
                 text: user_data.userId
                 fontSizeMode: Text.HorizontalFit
-                font.pixelSize: 16
+                font.pixelSize: 15
                 color:colors.text
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -90,7 +92,7 @@ ApplicationWindow{
                     id: deviceList
                     anchors.fill: parent
                     clip: true
-                    spacing: 10
+                    spacing: 4
 
                     model: UserProfileModel{
                         id: modelDeviceList
@@ -98,6 +100,9 @@ ApplicationWindow{
 
                     delegate: RowLayout{
                         width: parent.width
+                        Layout.margins : {
+                            top : 50
+                        }
                         ColumnLayout{
                             Text{
                                 Layout.fillWidth: true
@@ -124,6 +129,9 @@ ApplicationWindow{
                                     {flow: newFlow});
 				                dialog.show();
                             }
+                            Layout.margins:{
+                                right: 10
+                            }
                             palette {
                                 button: "white"
                             }
@@ -142,12 +150,8 @@ ApplicationWindow{
                 id: okbutton
                 text:"OK"
                 onClicked: userProfileDialog.close()
-                anchors {
-                    right: parent.right
-                    bottom: parent.bottom
-                }
 
-                anchors.margins : {
+                Layout.margins : {
                     right : 10
                     bottom : 10
                 }

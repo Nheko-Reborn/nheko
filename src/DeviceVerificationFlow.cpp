@@ -164,7 +164,10 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                                         // uncomment this in future to be compatible with the
                                         // MSC2366 this->sendVerificationDone(); and remoeve the
                                         // below line
-                                        emit this->deviceVerified();
+                                        if (this->isMacVerified == true)
+                                                emit this->deviceVerified();
+                                        else
+                                                this->isMacVerified = true;
                                 } else {
                                         this->cancelVerification();
                                 }
@@ -503,11 +506,16 @@ DeviceVerificationFlow::sendVerificationMac()
         http::client()
           ->send_to_device<mtx::events::msg::KeyVerificationMac,
                            mtx::events::EventType::KeyVerificationMac>(
-            this->transaction_id, body, [](mtx::http::RequestErr err) {
+            this->transaction_id, body, [this](mtx::http::RequestErr err) {
                     if (err)
                             nhlog::net()->warn("failed to send verification MAC: {} {}",
                                                err->matrix_error.error,
                                                static_cast<int>(err->status_code));
+
+                    if (this->isMacVerified == true)
+                            emit this->deviceVerified();
+                    else
+                            this->isMacVerified = true;
             });
 }
 //! Completes the verification flow
