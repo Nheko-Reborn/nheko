@@ -78,6 +78,7 @@ private:
 
         QTimer *timeout = nullptr;
         sas_ptr sas;
+        bool isMacVerified;
         std::string mac_method;
         std::string transaction_id;
         std::string commitment;
