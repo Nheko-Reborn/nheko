@@ -190,7 +190,6 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                         auto msg =
                           std::get<mtx::events::DeviceEvent<msgs::KeyVerificationDone>>(message);
                         if (msg.content.transaction_id == this->transaction_id) {
-                                this->startVerificationRequest();
                                 emit this->deviceVerified();
                         }
                 });
