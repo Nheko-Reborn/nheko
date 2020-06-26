@@ -22,12 +22,6 @@ ApplicationWindow {
 		implicitHeight: currentItem.implicitHeight
 	}
 
-	onClosing: {
-		flow.cancelVerification();
-		deviceVerificationList.remove(flow.tranId);
-		delete flow; 
-	}
-
 	property var flow
 	Connections {
 		target: flow
@@ -123,33 +117,6 @@ ApplicationWindow {
 					color:colors.text
 					verticalAlignment: Text.AlignVCenter
 				}
-
-				RowLayout {
-					RadioButton {
-						id: decimalRadio
-						Layout.alignment: Qt.AlignLeft
-						text: qsTr("Decimal")
-						contentItem: Text {
-    					    text: decimalRadio.text
-    					    color: colors.text
-    					}
-						onClicked: { flow.method = DeviceVerificationFlow.Decimal }
-					}
-					Item {
-						Layout.fillWidth: true
-					}
-					RadioButton {
-						id: emojiRadio
-						Layout.alignment: Qt.AlignRight
-						text: qsTr("Emoji")
-						contentItem: Text {
-    					    text: emojiRadio.text
-    					    color: colors.text
-    					}
-						onClicked: { flow.method = DeviceVerificationFlow.Emoji }
-					}
-				}
-
 				RowLayout {
 					Button {
 						Layout.alignment: Qt.AlignLeft
@@ -165,9 +132,8 @@ ApplicationWindow {
                         }
 						onClicked: { 
 							dialog.close();
-							flow.cancelVerification();
+							flow.cancelVerification(DeviceVerificationFlow.User);
 							deviceVerificationList.remove(flow.tranId);
-							delete flow; 
 						}
 					}
 					Item {
@@ -227,9 +193,8 @@ ApplicationWindow {
                         }
 						onClicked: { 
 							dialog.close(); 
-							flow.cancelVerification();
+							flow.cancelVerification(DeviceVerificationFlow.User);
 							deviceVerificationList.remove(flow.tranId);
-							delete flow; 
 						}
 					}
 					Item {
@@ -261,14 +226,17 @@ ApplicationWindow {
 					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
 						text: flow.sasList[0]
+						color:colors.text
 					}
 					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
 						text: flow.sasList[1]
+						color:colors.text
 					}
 					Label {
 						font.pixelSize: Qt.application.font.pixelSize * 2
 						text: flow.sasList[2]
+						color:colors.text
 					}
 				}
 
@@ -287,9 +255,8 @@ ApplicationWindow {
                         }
 						onClicked: { 
 							dialog.close(); 
-							flow.cancelVerification();
+							flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
 							deviceVerificationList.remove(flow.tranId);
-							delete flow; 
 						}
 					}
 					Item {
@@ -411,6 +378,7 @@ ApplicationWindow {
 							implicitWidth: col.width
 							ColumnLayout {
 								id: col
+								Layout.fillWidth: true
 								anchors.bottom: parent.bottom
 								property var emoji: emojis.mapping[flow.sasList[index]]
 								Label {
@@ -424,6 +392,7 @@ ApplicationWindow {
 								Label {
 									Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
 									text: col.emoji.description
+									color:colors.text
 								}
 							}
 						}
@@ -445,9 +414,8 @@ ApplicationWindow {
                         }
 						onClicked: { 
 							dialog.close(); 
-							flow.cancelVerification();
+							flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
 							deviceVerificationList.remove(flow.tranId);
-							delete flow; 
 						}
 					}
 					Item {
@@ -507,7 +475,7 @@ ApplicationWindow {
                         }
 						onClicked: { 
 							dialog.close(); 
-							flow.cancelVerification(); 
+							flow.cancelVerification(DeviceVerificationFlow.User); 
 							deviceVerificationList.remove(flow.tranId);
 							delete flow;
 						}

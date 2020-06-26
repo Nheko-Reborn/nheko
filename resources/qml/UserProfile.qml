@@ -108,7 +108,18 @@ ApplicationWindow{
                 //         userProfileList.ignoreUser()
                 //     }
                 // }
-
+                ImageButton{
+                    image:":/icons/icons/ui/black-bubble-speech.png"
+                    Layout.margins: {
+                        left: 5
+                        right: 5
+                    }
+                    ToolTip.visible: hovered
+			        ToolTip.text: qsTr("Start a private chat")
+                    onClicked : {
+                        userProfileList.startChat()
+                    }
+                }
                 ImageButton{
                     image:":/icons/icons/ui/round-remove-button.png"
                     Layout.margins: {
@@ -119,19 +130,6 @@ ApplicationWindow{
 			        ToolTip.text: qsTr("Kick the user")
                     onClicked : {
                         userProfileList.kickUser()
-                    }
-                }
-
-                ImageButton{
-                    image:":/icons/icons/ui/black-bubble-speech.png"
-                    Layout.margins: {
-                        left: 5
-                        right: 5
-                    }
-                    ToolTip.visible: hovered
-			        ToolTip.text: qsTr("Start a conversation")
-                    onClicked : {
-                        userProfileList.startChat()
                     }
                 }
             }
@@ -205,7 +203,7 @@ ApplicationWindow{
                 text:"OK"
                 onClicked: userProfileDialog.close()
                 
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
 
                 Layout.margins : {
                     right : 10
