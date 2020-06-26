@@ -17,42 +17,53 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
         this->isMacVerified = false;
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
+                this->cancelVerification(DeviceVerificationFlow::Error::Timeout);
                 this->deleteLater();
         });
 
-        connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationStart,
-                this,
-                [this](const mtx::events::collections::DeviceEvents &message) {
-                        auto msg =
-                          std::get<mtx::events::DeviceEvent<msgs::KeyVerificationStart>>(message);
-                        if (msg.content.transaction_id == this->transaction_id) {
-                                if ((std::find(msg.content.key_agreement_protocols.begin(),
-                                               msg.content.key_agreement_protocols.end(),
-                                               "curve25519-hkdf-sha256") !=
-                                     msg.content.key_agreement_protocols.end()) &&
-                                    (std::find(msg.content.hashes.begin(),
-                                               msg.content.hashes.end(),
-                                               "sha256") != msg.content.hashes.end()) &&
-                                    (std::find(msg.content.message_authentication_codes.begin(),
-                                               msg.content.message_authentication_codes.end(),
-                                               "hmac-sha256") !=
-                                     msg.content.message_authentication_codes.end()) &&
-                                    ((std::find(msg.content.short_authentication_string.begin(),
+        connect(
+          ChatPage::instance(),
+          &ChatPage::recievedDeviceVerificationStart,
+          this,
+          [this](const mtx::events::collections::DeviceEvents &message) {
+                  auto msg =
+                    std::get<mtx::events::DeviceEvent<msgs::KeyVerificationStart>>(message);
+                  if (msg.content.transaction_id == this->transaction_id) {
+                          if ((std::find(msg.content.key_agreement_protocols.begin(),
+                                         msg.content.key_agreement_protocols.end(),
+                                         "curve25519-hkdf-sha256") !=
+                               msg.content.key_agreement_protocols.end()) &&
+                              (std::find(msg.content.hashes.begin(),
+                                         msg.content.hashes.end(),
+                                         "sha256") != msg.content.hashes.end()) &&
+                              (std::find(msg.content.message_authentication_codes.begin(),
+                                         msg.content.message_authentication_codes.end(),
+                                         "hmac-sha256") !=
+                               msg.content.message_authentication_codes.end())) {
+                                  if (std::find(msg.content.short_authentication_string.begin(),
                                                 msg.content.short_authentication_string.end(),
                                                 mtx::events::msg::SASMethods::Decimal) !=
-                                      msg.content.short_authentication_string.end()) ||
-                                     (std::find(msg.content.short_authentication_string.begin(),
-                                                msg.content.short_authentication_string.end(),
-                                                mtx::events::msg::SASMethods::Emoji) !=
-                                      msg.content.short_authentication_string.end()))) {
-                                        this->acceptVerificationRequest();
-                                        this->canonical_json = nlohmann::json(msg.content);
-                                } else {
-                                        this->cancelVerification();
-                                }
-                        }
-                });
+                                      msg.content.short_authentication_string.end()) {
+                                          this->method = DeviceVerificationFlow::Method::Emoji;
+                                  } else if (std::find(
+                                               msg.content.short_authentication_string.begin(),
+                                               msg.content.short_authentication_string.end(),
+                                               mtx::events::msg::SASMethods::Emoji) !=
+                                             msg.content.short_authentication_string.end()) {
+                                          this->method = DeviceVerificationFlow::Method::Decimal;
+                                  } else {
+                                          this->cancelVerification(
+                                            DeviceVerificationFlow::Error::UnknownMethod);
+                                          return;
+                                  }
+                                  this->acceptVerificationRequest();
+                                  this->canonical_json = nlohmann::json(msg.content);
+                          } else {
+                                  this->cancelVerification(
+                                    DeviceVerificationFlow::Error::UnknownMethod);
+                          }
+                  }
+          });
         connect(
           ChatPage::instance(),
           &ChatPage::recievedDeviceVerificationAccept,
@@ -76,7 +87,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                                   this->mac_method = msg.content.message_authentication_code;
                                   this->sendVerificationKey();
                           } else {
-                                  this->cancelVerification();
+                                  this->cancelVerification(
+                                    DeviceVerificationFlow::Error::UnknownMethod);
                           }
                   }
           });
@@ -130,7 +142,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                                         msg.content.key + this->canonical_json.dump()))) {
                                           emit this->verificationRequestAccepted(this->method);
                                   } else {
-                                          this->cancelVerification();
+                                          this->cancelVerification(
+                                            DeviceVerificationFlow::Error::MismatchedCommitment);
                                   }
                           }
                   }
@@ -156,7 +169,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                                               this->sas->calculate_mac(this->device_keys[mac.first],
                                                                        info + mac.first)) {
                                           } else {
-                                                  this->cancelVerification();
+                                                  this->cancelVerification(
+                                                    DeviceVerificationFlow::Error::KeyMismatch);
                                                   return;
                                           }
                                   }
@@ -172,7 +186,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                                   else
                                           this->isMacVerified = true;
                           } else {
-                                  this->cancelVerification();
+                                  this->cancelVerification(
+                                    DeviceVerificationFlow::Error::KeyMismatch);
                           }
                   }
           });
@@ -429,15 +444,31 @@ DeviceVerificationFlow::sendVerificationRequest()
 }
 //! cancels a verification flow
 void
-DeviceVerificationFlow::cancelVerification()
+DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_code)
 {
         mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationCancel> body;
         mtx::events::msg::KeyVerificationCancel req;
 
         req.transaction_id = this->transaction_id;
-        // TODO: Add Proper Error Messages and Code
-        req.reason = "Device Verification Cancelled";
-        req.code   = "400";
+        if (error_code == DeviceVerificationFlow::Error::UnknownMethod) {
+                req.code   = "m.unknown_method";
+                req.reason = "unknown method recieved";
+        } else if (error_code == DeviceVerificationFlow::Error::MismatchedCommitment) {
+                req.code   = "m.mismatched_commitment";
+                req.reason = "commitment didn't match";
+        } else if (error_code == DeviceVerificationFlow::Error::MismatchedSAS) {
+                req.code   = "m.mismatched_sas";
+                req.reason = "sas didn't match";
+        } else if (error_code == DeviceVerificationFlow::Error::KeyMismatch) {
+                req.code   = "m.key_match";
+                req.reason = "keys did not match";
+        } else if (error_code == DeviceVerificationFlow::Error::Timeout) {
+                req.code   = "m.timeout";
+                req.reason = "timed out";
+        } else if (error_code == DeviceVerificationFlow::Error::User) {
+                req.code   = "m.user";
+                req.reason = "user cancelled the verification";
+        }
 
         body[this->toClient][deviceId.toStdString()] = req;
 

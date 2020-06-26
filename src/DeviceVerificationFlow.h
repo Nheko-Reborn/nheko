@@ -28,6 +28,16 @@ public:
                 Emoji
         };
         Q_ENUM(Method)
+        enum Error
+        {
+                UnknownMethod,
+                MismatchedCommitment,
+                MismatchedSAS,
+                KeyMismatch,
+                Timeout,
+                User
+        };
+        Q_ENUM(Error)
 
         DeviceVerificationFlow(QObject *parent = nullptr);
         QString getTransactionId();
@@ -56,7 +66,7 @@ public slots:
         //! starts the verification flow
         void startVerificationRequest();
         //! cancels a verification flow
-        void cancelVerification();
+        void cancelVerification(DeviceVerificationFlow::Error error_code);
         //! sends the verification key
         void sendVerificationKey();
         //! sends the mac of the keys

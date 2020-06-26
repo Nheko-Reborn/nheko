@@ -184,6 +184,9 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                     QString::fromStdString(msg.content.transaction_id),
                                     QString::fromStdString(msg.sender),
                                     QString::fromStdString(msg.content.from_device));
+                          } else {
+                                  flow->cancelVerification(
+                                    DeviceVerificationFlow::Error::UnknownMethod);
                           }
                   }
           });
@@ -197,11 +200,43 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                   auto flow            = new DeviceVerificationFlow(this);
                   flow->canonical_json = nlohmann::json(msg.content);
                   if (!(this->dvList->exist(QString::fromStdString(msg.content.transaction_id)))) {
-                          emit newDeviceVerificationRequest(
-                            std::move(flow),
-                            QString::fromStdString(msg.content.transaction_id),
-                            QString::fromStdString(msg.sender),
-                            QString::fromStdString(msg.content.from_device));
+                          if ((std::find(msg.content.key_agreement_protocols.begin(),
+                                         msg.content.key_agreement_protocols.end(),
+                                         "curve25519-hkdf-sha256") !=
+                               msg.content.key_agreement_protocols.end()) &&
+                              (std::find(msg.content.hashes.begin(),
+                                         msg.content.hashes.end(),
+                                         "sha256") != msg.content.hashes.end()) &&
+                              (std::find(msg.content.message_authentication_codes.begin(),
+                                         msg.content.message_authentication_codes.end(),
+                                         "hmac-sha256") !=
+                               msg.content.message_authentication_codes.end())) {
+                                  if (std::find(msg.content.short_authentication_string.begin(),
+                                                msg.content.short_authentication_string.end(),
+                                                mtx::events::msg::SASMethods::Emoji) !=
+                                      msg.content.short_authentication_string.end()) {
+                                          flow->setMethod(DeviceVerificationFlow::Method::Emoji);
+                                  } else if (std::find(
+                                               msg.content.short_authentication_string.begin(),
+                                               msg.content.short_authentication_string.end(),
+                                               mtx::events::msg::SASMethods::Decimal) !=
+                                             msg.content.short_authentication_string.end()) {
+                                          flow->setMethod(DeviceVerificationFlow::Method::Decimal);
+                                  } else {
+                                          flow->cancelVerification(
+                                            DeviceVerificationFlow::Error::UnknownMethod);
+                                          return;
+                                  }
+                                  emit newDeviceVerificationRequest(
+                                    std::move(flow),
+                                    QString::fromStdString(msg.content.transaction_id),
+                                    QString::fromStdString(msg.sender),
+                                    QString::fromStdString(msg.content.from_device));
+                                  flow->canonical_json = nlohmann::json(msg.content);
+                          } else {
+                                  flow->cancelVerification(
+                                    DeviceVerificationFlow::Error::UnknownMethod);
+                          }
                   }
           });
 }
