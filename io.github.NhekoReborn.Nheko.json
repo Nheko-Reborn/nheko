@@ -171,7 +171,8 @@
     {
       "config-opts": [
         "-DCMAKE_BUILD_TYPE=Release",
-        "-DLMDBXX_INCLUDE_DIR=.deps/lmdbxx"
+        "-DLMDBXX_INCLUDE_DIR=.deps/lmdbxx",
+        "-DCOMPILE_QML=ON"
       ],
       "buildsystem": "cmake-ninja",
       "name": "nheko",

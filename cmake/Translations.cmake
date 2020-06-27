@@ -21,7 +21,7 @@ if(NOT EXISTS ${_qrc})
 endif()
 
 qt5_add_resources(LANG_QRC ${_qrc})
-if(Qt5QuickCompiler_FOUND)
+if(Qt5QuickCompiler_FOUND AND COMPILE_QML)
 	qtquick_compiler_add_resources(QRC resources/res.qrc)
 else()
 	qt5_add_resources(QRC resources/res.qrc)
