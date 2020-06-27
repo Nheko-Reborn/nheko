@@ -107,7 +107,10 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         container = view;
         view->setResizeMode(QQuickWidget::SizeRootObjectToView);
         container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
         view->quickWindow()->setTextRenderType(QQuickWindow::NativeTextRendering);
+#endif
 
         connect(view, &QQuickWidget::statusChanged, this, [](QQuickWidget::Status status) {
                 nhlog::ui()->debug("Status changed to {}", status);
