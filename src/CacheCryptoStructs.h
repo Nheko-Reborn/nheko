@@ -65,3 +65,33 @@ struct OlmSessionStorage
         std::mutex group_outbound_mtx;
         std::mutex group_inbound_mtx;
 };
+
+struct UserCache
+{
+        //! user_id of the user
+        std::string user_id;
+        //! this stores if the user is verified (with cross-signing)
+        bool is_user_verified = false;
+        //! list of verified device_ids with cross-signing
+        std::vector<std::string> cross_verified;
+        //! map of public key key_ids and their public_key
+        mtx::responses::QueryKeys keys;
+};
+
+void
+to_json(nlohmann::json &j, const UserCache &info);
+void
+from_json(const nlohmann::json &j, UserCache &info);
+
+struct DeviceVerifiedCache
+{
+        //! user_id of the user
+        std::string user_id;
+        //! list of verified device_ids with device-verification
+        std::vector<std::string> device_verified;
+};
+
+void
+to_json(nlohmann::json &j, const DeviceVerifiedCache &info);
+void
+from_json(const nlohmann::json &j, DeviceVerifiedCache &info);

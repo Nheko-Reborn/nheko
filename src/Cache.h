@@ -60,6 +60,23 @@ presenceState(const std::string &user_id);
 std::string
 statusMessage(const std::string &user_id);
 
+//! user Cache
+UserCache
+getUserCache(const std::string &user_id);
+
+int
+setUserCache(const std::string &user_id, const UserCache &body);
+
+int
+deleteUserCache(const std::string &user_id);
+
+//! verified Cache
+DeviceVerifiedCache
+getVerifiedCache(const std::string &user_id);
+
+int
+setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body);
+
 //! Load saved data for the display names & avatars.
 void
 populateMembers();

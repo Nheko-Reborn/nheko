@@ -9,6 +9,7 @@ import "./device-verification"
 
 ApplicationWindow{
     property var user_data
+    property var avatarUrl
     property var colors: currentActivePalette
 
     id:userProfileDialog
@@ -52,11 +53,11 @@ ApplicationWindow{
 
             Avatar{
                 id: userProfileAvatar
-                url:chat.model.avatarUrl(user_data.userId).replace("mxc://", "image://MxcImage/")
+                url: avatarUrl.replace("mxc://", "image://MxcImage/")
                 height: 130
                 width: 130
-                displayName: modelData.userName
-		        userid: modelData.userId
+                displayName: user_data.userName
+		        userid: user_data.userId
                 Layout.alignment: Qt.AlignHCenter
                 Layout.margins : {
                     top: 10
@@ -68,7 +69,7 @@ ApplicationWindow{
                 text: user_data.userName
                 fontSizeMode: Text.HorizontalFit
                 font.pixelSize: 20
-                color:TimelineManager.userColor(modelData.userId, colors.window)
+                color:TimelineManager.userColor(user_data.userId, colors.window)
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -207,7 +208,7 @@ ApplicationWindow{
 
                 Layout.margins : {
                     right : 10
-                    bottom : 10
+                    bottom: 5
                 }
 
                 palette {

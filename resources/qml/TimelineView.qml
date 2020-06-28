@@ -21,6 +21,7 @@ Page {
 	property real highlightHue: colors.highlight.hslHue
 	property real highlightSat: colors.highlight.hslSaturation
 	property real highlightLight: colors.highlight.hslLightness
+	property variant userProfile
 
 	palette: colors
 
@@ -238,6 +239,11 @@ Page {
 				}
 			}
 
+			Component{
+				id: userProfileComponent
+				UserProfile{}
+			}
+
 			section {
 				property: "section"
 			}
@@ -274,8 +280,6 @@ Page {
 						}
 					}
 
-					property variant userProfile
-
 					Row {
 						height: userName.height
 						spacing: 8
@@ -290,9 +294,7 @@ Page {
 							MouseArea {
 								anchors.fill: parent
                                 onClicked: {
-									if(userProfile) userProfile.destroy()
-									var component = Qt.createComponent("UserProfile.qml");
-									userProfile = component.createObject(timelineRoot,{user_data : modelData});
+									userProfile = userProfileComponent.createObject(timelineRoot,{user_data: modelData,avatarUrl:chat.model.avatarUrl(modelData.userId)});
 									userProfile.show();
                                 }
 								cursorShape: Qt.PointingHandCursor
@@ -310,10 +312,8 @@ Page {
 								anchors.fill: parent
 								Layout.alignment: Qt.AlignHCenter
                                 onClicked: {
-									if(userProfile) userProfile.destroy()
-									var component = Qt.createComponent("UserProfile.qml")
-									userProfile = component.createObject(timelineRoot,{user_data : modelData})
-									userProfile.show()
+									userProfile = userProfileComponent.createObject(timelineRoot,{user_data: modelData,avatarUrl:chat.model.avatarUrl(modelData.userId)});
+									userProfile.show();
                                 }
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
