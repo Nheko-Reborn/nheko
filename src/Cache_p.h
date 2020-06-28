@@ -56,6 +56,15 @@ public:
         mtx::presence::PresenceState presenceState(const std::string &user_id);
         std::string statusMessage(const std::string &user_id);
 
+        // user cache stores user keys
+        UserCache getUserCache(const std::string &user_id);
+        int setUserCache(const std::string &user_id, const UserCache &body);
+        int deleteUserCache(const std::string &user_id);
+
+        // device verified cache
+        DeviceVerifiedCache getVerifiedCache(const std::string &user_id);
+        int setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body);
+
         static void removeDisplayName(const QString &room_id, const QString &user_id);
         static void removeAvatarUrl(const QString &room_id, const QString &user_id);
 
@@ -441,6 +450,16 @@ private:
         lmdb::dbi getPresenceDb(lmdb::txn &txn)
         {
                 return lmdb::dbi::open(txn, "presence", MDB_CREATE);
+        }
+
+        lmdb::dbi getUserCacheDb(lmdb::txn &txn)
+        {
+                return lmdb::dbi::open(txn, std::string("user_cache").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getDeviceVerifiedDb(lmdb::txn &txn)
+        {
+                return lmdb::dbi::open(txn, std::string("verified").c_str(), MDB_CREATE);
         }
 
         //! Retrieves or creates the database that stores the open OLM sessions between our device

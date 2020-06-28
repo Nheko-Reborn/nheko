@@ -47,4 +47,8 @@ signals:
 private:
         QVector<DeviceInfo> deviceList;
         QString userId;
+
+        void callback_fn(const mtx::responses::QueryKeys &res,
+                         mtx::http::RequestErr err,
+                         std::string user_id);
 };

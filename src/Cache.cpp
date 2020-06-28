@@ -2316,6 +2316,115 @@ Cache::statusMessage(const std::string &user_id)
 }
 
 void
+to_json(json &j, const UserCache &info)
+{
+        j["user_id"]          = info.user_id;
+        j["is_user_verified"] = info.is_user_verified;
+        j["cross_verified"]   = info.cross_verified;
+        j["keys"]             = info.keys;
+}
+
+void
+from_json(const json &j, UserCache &info)
+{
+        info.user_id          = j.at("user_id");
+        info.is_user_verified = j.at("is_user_verified");
+        info.cross_verified   = j.at("cross_verified").get<std::vector<std::string>>();
+        info.keys             = j.at("keys").get<mtx::responses::QueryKeys>();
+}
+
+UserCache
+Cache::getUserCache(const std::string &user_id)
+{
+        lmdb::val verifiedVal;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getUserCacheDb(txn);
+        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
+
+        UserCache verified_state;
+        if (res) {
+                verified_state = json::parse(std::string(verifiedVal.data(), verifiedVal.size()));
+        }
+
+        txn.commit();
+
+        return verified_state;
+}
+
+//! be careful when using make sure is_user_verified is not changed
+int
+Cache::setUserCache(const std::string &user_id, const UserCache &body)
+{
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getUserCacheDb(txn);
+
+        auto res = lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(body).dump()));
+
+        txn.commit();
+
+        return res;
+}
+
+int
+Cache::deleteUserCache(const std::string &user_id)
+{
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getUserCacheDb(txn);
+        auto res = lmdb::dbi_del(txn, db, lmdb::val(user_id), nullptr);
+
+        txn.commit();
+
+        return res;
+}
+
+void
+to_json(json &j, const DeviceVerifiedCache &info)
+{
+        j["user_id"]         = info.user_id;
+        j["device_verified"] = info.device_verified;
+}
+
+void
+from_json(const json &j, DeviceVerifiedCache &info)
+{
+        info.user_id         = j.at("user_id");
+        info.device_verified = j.at("device_verified").get<std::vector<std::string>>();
+}
+
+DeviceVerifiedCache
+Cache::getVerifiedCache(const std::string &user_id)
+{
+        lmdb::val verifiedVal;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getDeviceVerifiedDb(txn);
+        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
+
+        DeviceVerifiedCache verified_state;
+        if (res) {
+                verified_state = json::parse(std::string(verifiedVal.data(), verifiedVal.size()));
+        }
+
+        txn.commit();
+
+        return verified_state;
+}
+
+int
+Cache::setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body)
+{
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getDeviceVerifiedDb(txn);
+
+        auto res = lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(body).dump()));
+
+        txn.commit();
+
+        return res;
+}
+
+void
 to_json(json &j, const RoomInfo &info)
 {
         j["name"]         = info.name;
@@ -2495,6 +2604,35 @@ std::string
 statusMessage(const std::string &user_id)
 {
         return instance_->statusMessage(user_id);
+}
+UserCache
+getUserCache(const std::string &user_id)
+{
+        return instance_->getUserCache(user_id);
+}
+
+int
+setUserCache(const std::string &user_id, const UserCache &body)
+{
+        return instance_->setUserCache(user_id, body);
+}
+
+int
+deleteUserCache(const std::string &user_id)
+{
+        return instance_->deleteUserCache(user_id);
+}
+
+DeviceVerifiedCache
+getVerifiedCache(const std::string &user_id)
+{
+        return instance_->getVerifiedCache(user_id);
+}
+
+int
+setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body)
+{
+        return instance_->setVerifiedCache(user_id, body);
 }
 
 //! Load saved data for the display names & avatars.
