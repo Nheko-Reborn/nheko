@@ -18,10 +18,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-	URL "https://github.com/cpp-pm/hunter/archive/v0.23.244.tar.gz"
-	SHA1 "2c0f491fd0b80f7b09e3d21adb97237161ef9835"
-	LOCAL
-	)
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.260.tar.gz"
+    SHA1 "13775235910a3fa85644568d1c5be8271de72e1c"
+)
 
 option(USE_BUNDLED_BOOST "Use the bundled version of Boost." ${HUNTER_ENABLED})
 option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog."
@@ -328,7 +327,7 @@ find_package(Boost 1.70 REQUIRED
 if(USE_BUNDLED_OPENSSL)
 	hunter_add_package(OpenSSL)
 endif()
-find_package(OpenSSL REQUIRED)
+find_package(OpenSSL 1.1.0 REQUIRED)
 if(USE_BUNDLED_MTXCLIENT)
 	include(FetchContent)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
@@ -336,7 +335,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        68e043e1bf515e9072235151f74f7aac0838a9d3
+		GIT_TAG        eddd95a896fad0c51fc800741d82bbc43fc6d41e
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
