@@ -19,17 +19,6 @@ ApplicationWindow{
     Layout.alignment: Qt.AlignHCenter
     palette: colors
 
-    UserProfileList{
-        id: userProfileList
-        userId: user_data.userId
-        onUserIdChanged : {
-            userProfileList.updateDeviceList()
-        }
-        onDeviceListUpdated : {
-            modelDeviceList.deviceList = userProfileList
-        }
-    }
-
     Component {
 		id: deviceVerificationDialog
 		DeviceVerification {}
@@ -94,7 +83,7 @@ ApplicationWindow{
                     ToolTip.visible: hovered
 			        ToolTip.text: qsTr("Ban the user")
                     onClicked : {
-                        userProfileList.banUser()
+                        modelDeviceList.deviceList.banUser()
                     }
                 }
                 // ImageButton{
@@ -106,7 +95,7 @@ ApplicationWindow{
                 //     ToolTip.visible: hovered
 			    //     ToolTip.text: qsTr("Ignore messages from this user")
                 //     onClicked : {
-                //         userProfileList.ignoreUser()
+                //         modelDeviceList.deviceList.ignoreUser()
                 //     }
                 // }
                 ImageButton{
@@ -118,7 +107,7 @@ ApplicationWindow{
                     ToolTip.visible: hovered
 			        ToolTip.text: qsTr("Start a private chat")
                     onClicked : {
-                        userProfileList.startChat()
+                        modelDeviceList.deviceList.startChat()
                     }
                 }
                 ImageButton{
@@ -130,7 +119,7 @@ ApplicationWindow{
                     ToolTip.visible: hovered
 			        ToolTip.text: qsTr("Kick the user")
                     onClicked : {
-                        userProfileList.kickUser()
+                        modelDeviceList.deviceList.kickUser()
                     }
                 }
             }
@@ -142,14 +131,15 @@ ApplicationWindow{
                 Layout.alignment: Qt.AlignHCenter
 
                 ListView{
-                    id: deviceList
+                    id: devicelist
                     anchors.fill: parent
                     clip: true
                     spacing: 4
 
                     model: UserProfileModel{
                         id: modelDeviceList
-                    } 
+                        deviceList.userId : user_data.userId
+                    }
 
                     delegate: RowLayout{
                         width: parent.width
@@ -157,12 +147,20 @@ ApplicationWindow{
                             top : 50
                         }
                         ColumnLayout{
-                            Text{
-                                Layout.fillWidth: true
-                                color: colors.text
-                                font.bold: true
-                                Layout.alignment: Qt.AlignRight
-                                text: deviceID
+                            RowLayout{
+                                Text{
+                                    Layout.fillWidth: true
+                                    color: colors.text
+                                    font.bold: true
+                                    Layout.alignment: Qt.AlignLeft
+                                    text: deviceID
+                                }
+                                Text{
+                                    Layout.fillWidth: true
+                                    color:colors.text
+                                    Layout.alignment: Qt.AlignLeft
+                                    text: (verified_status ==  UserProfileList.VERIFIED?"V":(verified_status ==  UserProfileList.UNVERIFIED?"NV":"B"))
+                                }
                             }
                             Text{
                                 Layout.fillWidth: true
