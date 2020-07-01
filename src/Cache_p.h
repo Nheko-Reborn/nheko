@@ -57,12 +57,12 @@ public:
         std::string statusMessage(const std::string &user_id);
 
         // user cache stores user keys
-        UserCache getUserCache(const std::string &user_id);
+        std::optional<UserCache> getUserCache(const std::string &user_id);
         int setUserCache(const std::string &user_id, const UserCache &body);
         int deleteUserCache(const std::string &user_id);
 
         // device verified cache
-        DeviceVerifiedCache getVerifiedCache(const std::string &user_id);
+        std::optional<DeviceVerifiedCache> getVerifiedCache(const std::string &user_id);
         int setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body);
 
         static void removeDisplayName(const QString &room_id, const QString &user_id);

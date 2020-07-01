@@ -61,7 +61,7 @@ std::string
 statusMessage(const std::string &user_id);
 
 //! user Cache
-UserCache
+std::optional<UserCache>
 getUserCache(const std::string &user_id);
 
 int
@@ -71,7 +71,7 @@ int
 deleteUserCache(const std::string &user_id);
 
 //! verified Cache
-DeviceVerifiedCache
+std::optional<DeviceVerifiedCache>
 getVerifiedCache(const std::string &user_id);
 
 int

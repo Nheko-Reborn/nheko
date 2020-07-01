@@ -68,8 +68,6 @@ struct OlmSessionStorage
 
 struct UserCache
 {
-        //! user_id of the user
-        std::string user_id;
         //! this stores if the user is verified (with cross-signing)
         bool is_user_verified = false;
         //! list of verified device_ids with cross-signing
@@ -85,10 +83,9 @@ from_json(const nlohmann::json &j, UserCache &info);
 
 struct DeviceVerifiedCache
 {
-        //! user_id of the user
-        std::string user_id;
         //! list of verified device_ids with device-verification
         std::vector<std::string> device_verified;
+        std::vector<std::string> device_blocked;
 };
 
 void

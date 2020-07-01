@@ -2318,7 +2318,6 @@ Cache::statusMessage(const std::string &user_id)
 void
 to_json(json &j, const UserCache &info)
 {
-        j["user_id"]          = info.user_id;
         j["is_user_verified"] = info.is_user_verified;
         j["cross_verified"]   = info.cross_verified;
         j["keys"]             = info.keys;
@@ -2327,13 +2326,12 @@ to_json(json &j, const UserCache &info)
 void
 from_json(const json &j, UserCache &info)
 {
-        info.user_id          = j.at("user_id");
         info.is_user_verified = j.at("is_user_verified");
         info.cross_verified   = j.at("cross_verified").get<std::vector<std::string>>();
         info.keys             = j.at("keys").get<mtx::responses::QueryKeys>();
 }
 
-UserCache
+std::optional<UserCache>
 Cache::getUserCache(const std::string &user_id)
 {
         lmdb::val verifiedVal;
@@ -2342,14 +2340,15 @@ Cache::getUserCache(const std::string &user_id)
         auto db  = getUserCacheDb(txn);
         auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
 
+        txn.commit();
+
         UserCache verified_state;
         if (res) {
                 verified_state = json::parse(std::string(verifiedVal.data(), verifiedVal.size()));
+                return verified_state;
+        } else {
+                return {};
         }
-
-        txn.commit();
-
-        return verified_state;
 }
 
 //! be careful when using make sure is_user_verified is not changed
@@ -2381,18 +2380,18 @@ Cache::deleteUserCache(const std::string &user_id)
 void
 to_json(json &j, const DeviceVerifiedCache &info)
 {
-        j["user_id"]         = info.user_id;
         j["device_verified"] = info.device_verified;
+        j["device_blocked"]  = info.device_blocked;
 }
 
 void
 from_json(const json &j, DeviceVerifiedCache &info)
 {
-        info.user_id         = j.at("user_id");
         info.device_verified = j.at("device_verified").get<std::vector<std::string>>();
+        info.device_blocked  = j.at("device_blocked").get<std::vector<std::string>>();
 }
 
-DeviceVerifiedCache
+std::optional<DeviceVerifiedCache>
 Cache::getVerifiedCache(const std::string &user_id)
 {
         lmdb::val verifiedVal;
@@ -2401,14 +2400,15 @@ Cache::getVerifiedCache(const std::string &user_id)
         auto db  = getDeviceVerifiedDb(txn);
         auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
 
+        txn.commit();
+
         DeviceVerifiedCache verified_state;
         if (res) {
                 verified_state = json::parse(std::string(verifiedVal.data(), verifiedVal.size()));
+                return verified_state;
+        } else {
+                return {};
         }
-
-        txn.commit();
-
-        return verified_state;
 }
 
 int
@@ -2605,7 +2605,7 @@ statusMessage(const std::string &user_id)
 {
         return instance_->statusMessage(user_id);
 }
-UserCache
+std::optional<UserCache>
 getUserCache(const std::string &user_id)
 {
         return instance_->getUserCache(user_id);
@@ -2623,7 +2623,7 @@ deleteUserCache(const std::string &user_id)
         return instance_->deleteUserCache(user_id);
 }
 
-DeviceVerifiedCache
+std::optional<DeviceVerifiedCache>
 getVerifiedCache(const std::string &user_id)
 {
         return instance_->getVerifiedCache(user_id);
