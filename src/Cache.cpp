@@ -1955,24 +1955,34 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                             const mtx::responses::Timeline &res)
 {
         auto db = getMessagesDb(txn, room_id);
+        auto eventsDb = getEventsDb(txn, room_id);
 
         using namespace mtx::events;
         using namespace mtx::events::state;
 
         for (const auto &e : res.events) {
-                if (std::holds_alternative<RedactionEvent<msg::Redaction>>(e))
-                        continue;
+                auto event = mtx::accessors::serialize_event(e);
+                if (auto redaction =
+                      std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
+                        lmdb::dbi_put(
+                          txn, eventsDb, lmdb::val(redaction->redacts), lmdb::val(event.dump()));
+                } else {
+                        json obj = json::object();
 
-                json obj = json::object();
+                        obj["event"] = event;
+                        obj["token"] = res.prev_batch;
 
-                obj["event"] = mtx::accessors::serialize_event(e);
-                obj["token"] = res.prev_batch;
+                        lmdb::dbi_put(
+                          txn,
+                          db,
+                          lmdb::val(std::to_string(event["origin_server_ts"].get<uint64_t>())),
+                          lmdb::val(obj.dump()));
 
-                lmdb::dbi_put(
-                  txn,
-                  db,
-                  lmdb::val(std::to_string(obj["event"]["origin_server_ts"].get<uint64_t>())),
-                  lmdb::val(obj.dump()));
+                        lmdb::dbi_put(txn,
+                                      eventsDb,
+                                      lmdb::val(event["event_id"].get<std::string>()),
+                                      lmdb::val(event.dump()));
+                }
         }
 }
 
