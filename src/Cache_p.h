@@ -416,6 +416,12 @@ private:
                 return lmdb::dbi::open(txn, std::string(room_id + "/events").c_str(), MDB_CREATE);
         }
 
+        lmdb::dbi getEventOrderDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/event_order").c_str(), MDB_CREATE | MDB_INTEGERKEY);
+        }
+
         lmdb::dbi getInviteStatesDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(

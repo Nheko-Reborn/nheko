@@ -1957,9 +1957,21 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
         auto db = getMessagesDb(txn, room_id);
         auto eventsDb = getEventsDb(txn, room_id);
 
+        auto orderDb = getEventOrderDb(txn, room_id);
+        if (res.limited)
+                lmdb::dbi_drop(txn, orderDb, false);
+
         using namespace mtx::events;
         using namespace mtx::events::state;
 
+        lmdb::val indexVal, val;
+        int64_t index = 0;
+        auto cursor = lmdb::cursor::open(txn, orderDb);
+        if (cursor.get(indexVal, val, MDB_LAST)) {
+                index = *indexVal.data<int64_t>();
+        }
+
+        bool first = true;
         for (const auto &e : res.events) {
                 auto event = mtx::accessors::serialize_event(e);
                 if (auto redaction =
@@ -1982,6 +1994,14 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                                       eventsDb,
                                       lmdb::val(event["event_id"].get<std::string>()),
                                       lmdb::val(event.dump()));
+
+                        ++index;
+
+                        lmdb::cursor_put(cursor.handle(),
+                                         lmdb::val(&index, sizeof(index)),
+                                         lmdb::val(first ? res.prev_batch : ""),
+                                         MDB_APPEND);
+                        first = false;
                 }
         }
 }
