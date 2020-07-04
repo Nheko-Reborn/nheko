@@ -25,7 +25,6 @@
 #include <QSystemTrayIcon>
 
 #include "UserSettingsPage.h"
-#include "dialogs/UserProfile.h"
 #include "ui/OverlayModal.h"
 
 #include "jdenticoninterface.h"
@@ -76,7 +75,6 @@ public:
         void openLogoutDialog();
         void openRoomSettings(const QString &room_id = "");
         void openMemberListDialog(const QString &room_id = "");
-        void openUserProfile(const QString &user_id, const QString &room_id);
         void openReadReceiptsDialog(const QString &event_id);
 
         void hideOverlay();

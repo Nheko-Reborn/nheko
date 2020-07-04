@@ -5,47 +5,72 @@
 #include "Utils.h"
 #include "mtx/responses/crypto.hpp"
 
-#include <iostream> // only for debugging
-
-Q_DECLARE_METATYPE(UserProfile::Status)
-
-UserProfile::UserProfile(QObject *parent)
+UserProfile::UserProfile(QString roomid, QString userid, QObject *parent)
   : QObject(parent)
+  , roomid_(roomid)
+  , userid_(userid)
 {
-        qRegisterMetaType<UserProfile::Status>();
-        connect(
-          this, &UserProfile::updateDeviceList, this, [this]() { fetchDeviceList(this->userId); });
-        connect(
-          this,
-          &UserProfile::appendDeviceList,
-          this,
-          [this](QString device_id, QString device_name, UserProfile::Status verification_status) {
-                  this->deviceList.push_back(
-                    DeviceInfo{device_id, device_name, verification_status});
-          });
+        fetchDeviceList(this->userid_);
 }
 
-std::vector<DeviceInfo>
-UserProfile::getDeviceList()
+QHash<int, QByteArray>
+DeviceInfoModel::roleNames() const
 {
-        return this->deviceList;
+        return {
+          {DeviceId, "deviceId"},
+          {DeviceName, "deviceName"},
+          {VerificationStatus, "verificationStatus"},
+        };
 }
 
-QString
-UserProfile::getUserId()
+QVariant
+DeviceInfoModel::data(const QModelIndex &index, int role) const
 {
-        return this->userId;
+        if (!index.isValid() || index.row() >= (int)deviceList_.size() || index.row() < 0)
+                return {};
+
+        switch (role) {
+        case DeviceId:
+                return deviceList_[index.row()].device_id;
+        case DeviceName:
+                return deviceList_[index.row()].display_name;
+        case VerificationStatus:
+                return QVariant::fromValue(deviceList_[index.row()].verification_status);
+        default:
+                return {};
+        }
 }
 
 void
-UserProfile::setUserId(const QString &user_id)
+DeviceInfoModel::reset(const std::vector<DeviceInfo> &deviceList)
 {
-        if (this->userId != userId)
-                return;
-        else {
-                this->userId = user_id;
-                emit UserProfile::userIdChanged();
-        }
+        beginResetModel();
+        this->deviceList_ = std::move(deviceList);
+        endResetModel();
+}
+
+DeviceInfoModel *
+UserProfile::deviceList()
+{
+        return &this->deviceList_;
+}
+
+QString
+UserProfile::userid()
+{
+        return this->userid_;
+}
+
+QString
+UserProfile::displayName()
+{
+        return cache::displayName(roomid_, userid_);
+}
+
+QString
+UserProfile::avatarUrl()
+{
+        return cache::avatarUrl(roomid_, userid_);
 }
 
 void
@@ -74,27 +99,27 @@ UserProfile::callback_fn(const mtx::responses::QueryKeys &res,
                 auto device = d.second;
 
                 // TODO: Verify signatures and ignore those that don't pass.
-                UserProfile::Status verified = UserProfile::Status::UNVERIFIED;
+                verification::Status verified = verification::Status::UNVERIFIED;
                 if (cross_verified.has_value()) {
                         if (std::find(cross_verified->begin(), cross_verified->end(), d.first) !=
                             cross_verified->end())
-                                verified = UserProfile::Status::VERIFIED;
+                                verified = verification::Status::VERIFIED;
                 } else if (device_verified.has_value()) {
                         if (std::find(device_verified->device_verified.begin(),
                                       device_verified->device_verified.end(),
                                       d.first) != device_verified->device_verified.end())
-                                verified = UserProfile::Status::VERIFIED;
+                                verified = verification::Status::VERIFIED;
                 } else if (device_verified.has_value()) {
                         if (std::find(device_verified->device_blocked.begin(),
                                       device_verified->device_blocked.end(),
                                       d.first) != device_verified->device_blocked.end())
-                                verified = UserProfile::Status::BLOCKED;
+                                verified = verification::Status::BLOCKED;
                 }
 
-                emit UserProfile::appendDeviceList(
-                  QString::fromStdString(d.first),
-                  QString::fromStdString(device.unsigned_info.device_display_name),
-                  verified);
+                deviceInfo.push_back(
+                  {QString::fromStdString(d.first),
+                   QString::fromStdString(device.unsigned_info.device_display_name),
+                   verified});
         }
 
         // std::sort(
@@ -102,8 +127,7 @@ UserProfile::callback_fn(const mtx::responses::QueryKeys &res,
         //           return a.device_id > b.device_id;
         //   });
 
-        this->deviceList = std::move(deviceInfo);
-        emit UserProfile::deviceListUpdated();
+        this->deviceList_.queueReset(std::move(deviceInfo));
 }
 
 void
@@ -130,7 +154,7 @@ UserProfile::fetchDeviceList(const QString &userID)
 void
 UserProfile::banUser()
 {
-        ChatPage::instance()->banUser(this->userId, "");
+        ChatPage::instance()->banUser(this->userid_, "");
 }
 
 // void ignoreUser(){
@@ -140,7 +164,7 @@ UserProfile::banUser()
 void
 UserProfile::kickUser()
 {
-        ChatPage::instance()->kickUser(this->userId, "");
+        ChatPage::instance()->kickUser(this->userid_, "");
 }
 
 void
@@ -149,7 +173,7 @@ UserProfile::startChat()
         mtx::requests::CreateRoom req;
         req.preset     = mtx::requests::Preset::PrivateChat;
         req.visibility = mtx::requests::Visibility::Private;
-        if (utils::localUser() != this->userId)
-                req.invite = {this->userId.toStdString()};
+        if (utils::localUser() != this->userid_)
+                req.invite = {this->userid_.toStdString()};
         emit ChatPage::instance()->createRoom(req);
 }

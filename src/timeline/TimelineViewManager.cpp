@@ -16,10 +16,9 @@
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
-#include "src/ui/UserProfile.h"
-#include "src/ui/UserProfileModel.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
+Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 
 namespace msgs = mtx::events::msg;
 
@@ -109,15 +108,28 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                          0,
                                          "MtxEvent",
                                          "Can't instantiate enum!");
+        qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
+                                         "im.nheko",
+                                         1,
+                                         0,
+                                         "VerificationStatus",
+                                         "Can't instantiate enum!");
+
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
         qmlRegisterType<DeviceVerificationFlow>("im.nheko", 1, 0, "DeviceVerificationFlow");
-        qmlRegisterType<UserProfileModel>("im.nheko", 1, 0, "UserProfileModel");
-        qmlRegisterType<UserProfile>("im.nheko", 1, 0, "UserProfileList");
+        qmlRegisterUncreatableType<UserProfile>(
+          "im.nheko",
+          1,
+          0,
+          "UserProfileModel",
+          "UserProfile needs to be instantiated on the C++ side");
         qmlRegisterSingletonInstance("im.nheko", 1, 0, "TimelineManager", this);
         qmlRegisterSingletonInstance("im.nheko", 1, 0, "Settings", settings.data());
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
+        qRegisterMetaType<std::vector<DeviceInfo>>();
+
         qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterType<emoji::EmojiProxyModel>("im.nheko.EmojiModel", 1, 0, "EmojiProxyModel");
         qmlRegisterUncreatableType<QAbstractItemModel>(

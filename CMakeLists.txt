@@ -240,7 +240,6 @@ set(SRC_FILES
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
 	src/dialogs/RoomSettings.cpp
-	src/dialogs/UserProfile.cpp
 
 	# Emoji
 	src/emoji/Category.cpp
@@ -280,7 +279,6 @@ set(SRC_FILES
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
 	src/ui/UserProfile.cpp
-	src/ui/UserProfileModel.cpp
 
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
@@ -449,7 +447,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/ReCaptcha.h
 	src/dialogs/ReadReceipts.h
 	src/dialogs/RoomSettings.h
-	src/dialogs/UserProfile.h
 
 	# Emoji
 	src/emoji/Category.h
@@ -486,7 +483,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
 	src/ui/UserProfile.h
-	src/ui/UserProfileModel.h
 
 	src/notifications/Manager.h
 

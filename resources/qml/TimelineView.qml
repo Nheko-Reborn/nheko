@@ -106,15 +106,21 @@ Page {
 		}
 		Connections {
 			target: TimelineManager
-			onNewDeviceVerificationRequest: {
+			function onNewDeviceVerificationRequest(flow) {
 				flow.userId = userId;
 				flow.sender = false;
 				flow.deviceId = deviceId;
 				flow.tranId = transactionId;
 				deviceVerificationList.add(flow.tranId);
-				var dialog = deviceVerificationDialog.createObject(timelineRoot, 
-                    {flow: flow});
+				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: flow});
 				dialog.show();
+			}
+		}
+		Connections {
+			target: TimelineManager.timeline
+			function onOpenProfile(profile) {
+				var userProfile = userProfileComponent.createObject(timelineRoot,{profile: profile});
+				userProfile.show();
 			}
 		}
 
@@ -293,10 +299,7 @@ Page {
 
 							MouseArea {
 								anchors.fill: parent
-                                onClicked: {
-									userProfile = userProfileComponent.createObject(timelineRoot,{user_data: modelData,avatarUrl:chat.model.avatarUrl(modelData.userId)});
-									userProfile.show();
-                                }
+								onClicked: chat.model.openUserProfile(modelData.userId)
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
 							}
@@ -311,10 +314,7 @@ Page {
 							MouseArea {
 								anchors.fill: parent
 								Layout.alignment: Qt.AlignHCenter
-                                onClicked: {
-									userProfile = userProfileComponent.createObject(timelineRoot,{user_data: modelData,avatarUrl:chat.model.avatarUrl(modelData.userId)});
-									userProfile.show();
-                                }
+								onClicked: chat.model.openUserProfile(modelData.userId)
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
 							}

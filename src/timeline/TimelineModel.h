@@ -9,7 +9,12 @@
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
+<<<<<<< HEAD
 #include "EventStore.h"
+=======
+#include "ReactionsModel.h"
+#include "ui/UserProfile.h"
+>>>>>>> Refactor UserProfile
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -188,7 +193,7 @@ public:
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
-        Q_INVOKABLE void openUserProfile(QString userid) const;
+        Q_INVOKABLE void openUserProfile(QString userid);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);
@@ -256,8 +261,7 @@ signals:
         void replyChanged(QString reply);
         void paginationInProgressChanged(const bool);
 
-        void newMessageToSend(mtx::events::collections::TimelineEvents event);
-        void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
+        void openProfile(UserProfile *profile);
 
 private:
         void sendEncryptedMessage(const std::string txn_id, nlohmann::json content);
