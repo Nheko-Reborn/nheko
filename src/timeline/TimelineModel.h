@@ -10,6 +10,7 @@
 
 #include "CacheCryptoStructs.h"
 #include "ReactionsModel.h"
+#include "ui/UserProfile.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -188,7 +189,7 @@ public:
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
-        Q_INVOKABLE void openUserProfile(QString userid) const;
+        Q_INVOKABLE void openUserProfile(QString userid);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);
@@ -255,6 +256,8 @@ signals:
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
         void paginationInProgressChanged(const bool);
+
+        void openProfile(UserProfile *profile);
 
 private:
         DecryptionResult decryptEvent(

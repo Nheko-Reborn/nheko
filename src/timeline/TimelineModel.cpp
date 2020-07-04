@@ -848,9 +848,9 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
 }
 
 void
-TimelineModel::openUserProfile(QString userid) const
+TimelineModel::openUserProfile(QString userid)
 {
-        MainWindow::instance()->openUserProfile(userid, room_id_);
+        emit openProfile(new UserProfile(room_id_, userid, this));
 }
 
 DecryptionResult
