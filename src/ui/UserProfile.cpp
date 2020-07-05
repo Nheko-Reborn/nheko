@@ -1,6 +1,7 @@
 #include "UserProfile.h"
 #include "Cache.h"
 #include "ChatPage.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "Utils.h"
 #include "mtx/responses/crypto.hpp"
@@ -122,10 +123,10 @@ UserProfile::callback_fn(const mtx::responses::QueryKeys &res,
                    verified});
         }
 
-        // std::sort(
-        //   deviceInfo.begin(), deviceInfo.end(), [](const DeviceInfo &a, const DeviceInfo &b) {
-        //           return a.device_id > b.device_id;
-        //   });
+        std::sort(
+          deviceInfo.begin(), deviceInfo.end(), [](const DeviceInfo &a, const DeviceInfo &b) {
+                  return a.device_id > b.device_id;
+          });
 
         this->deviceList_.queueReset(std::move(deviceInfo));
 }

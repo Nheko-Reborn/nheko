@@ -33,6 +33,10 @@ ApplicationWindow {
 			case DeviceVerificationFlow.Decimal: stack.replace(digitVerification); break;
 			case DeviceVerificationFlow.Emoji: stack.replace(emojiVerification); break;
 		}
+
+		onRefreshProfile: {
+			deviceVerificationList.updateProfile(flow.userId);
+		}
 	}
 
 	Component {

@@ -106,7 +106,7 @@ Page {
 		}
 		Connections {
 			target: TimelineManager
-			function onNewDeviceVerificationRequest(flow) {
+			function onNewDeviceVerificationRequest(flow,transactionId,userId,deviceId) {
 				flow.userId = userId;
 				flow.sender = false;
 				flow.deviceId = deviceId;
