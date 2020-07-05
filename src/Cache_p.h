@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <limits>
 #include <optional>
 
 #include <QDateTime>
@@ -37,9 +38,6 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
-
-int
-numeric_key_comparison(const MDB_val *a, const MDB_val *b);
 
 class Cache : public QObject
 {
@@ -250,7 +248,16 @@ private:
                                   const std::string &room_id,
                                   const mtx::responses::Timeline &res);
 
-        mtx::responses::Timeline getTimelineMessages(lmdb::txn &txn, const std::string &room_id);
+        struct Messages
+        {
+                mtx::responses::Timeline timeline;
+                uint64_t next_index;
+                bool end_of_cache = false;
+        };
+        Messages getTimelineMessages(lmdb::txn &txn,
+                                     const std::string &room_id,
+                                     int64_t index = std::numeric_limits<int64_t>::max(),
+                                     bool forward  = false);
 
         //! Remove a room from the cache.
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);
@@ -400,15 +407,6 @@ private:
         lmdb::dbi getPendingReceiptsDb(lmdb::txn &txn)
         {
                 return lmdb::dbi::open(txn, "pending_receipts", MDB_CREATE);
-        }
-
-        lmdb::dbi getMessagesDb(lmdb::txn &txn, const std::string &room_id)
-        {
-                auto db =
-                  lmdb::dbi::open(txn, std::string(room_id + "/messages").c_str(), MDB_CREATE);
-                lmdb::dbi_set_compare(txn, db, numeric_key_comparison);
-
-                return db;
         }
 
         lmdb::dbi getEventsDb(lmdb::txn &txn, const std::string &room_id)
