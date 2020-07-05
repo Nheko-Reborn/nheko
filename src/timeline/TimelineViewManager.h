@@ -29,6 +29,8 @@ public:
         Q_INVOKABLE void add(QString tran_id);
         Q_INVOKABLE void remove(QString tran_id);
         Q_INVOKABLE bool exist(QString tran_id);
+signals:
+        void updateProfile(QString userId);
 
 private:
         QVector<QString> deviceVerificationList;

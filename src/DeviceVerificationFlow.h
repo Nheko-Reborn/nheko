@@ -51,6 +51,9 @@ public:
         void setDeviceId(QString deviceID);
         void setMethod(Method method_);
         void setSender(bool sender_);
+        void callback_fn(const mtx::responses::QueryKeys &res,
+                         mtx::http::RequestErr err,
+                         std::string user_id);
 
         nlohmann::json canonical_json;
 
@@ -73,12 +76,15 @@ public slots:
         void sendVerificationMac();
         //! Completes the verification flow
         void acceptDevice();
+        //! unverifies a device
+        void unverify();
 
 signals:
         void verificationRequestAccepted(Method method);
         void deviceVerified();
         void timedout();
         void verificationCanceled();
+        void refreshProfile();
 
 private:
         QString userId;

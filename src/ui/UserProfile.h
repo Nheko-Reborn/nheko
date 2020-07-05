@@ -19,6 +19,8 @@ enum Status
 Q_ENUM_NS(Status)
 }
 
+class DeviceVerificationFlow;
+
 class DeviceInfo
 {
 public:
@@ -88,7 +90,7 @@ public:
         QString displayName();
         QString avatarUrl();
 
-        void fetchDeviceList(const QString &userID);
+        Q_INVOKABLE void fetchDeviceList(const QString &userID);
         Q_INVOKABLE void banUser();
         // Q_INVOKABLE void ignoreUser();
         Q_INVOKABLE void kickUser();

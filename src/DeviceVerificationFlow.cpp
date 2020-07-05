@@ -1,4 +1,5 @@
 #include "DeviceVerificationFlow.h"
+#include "Cache.h"
 #include "ChatPage.h"
 #include "Logging.h"
 
@@ -181,9 +182,9 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                                   // uncomment this in future to be compatible with the
                                   // MSC2366 this->sendVerificationDone(); and remove the
                                   // below line
-                                  if (this->isMacVerified == true)
-                                          emit this->deviceVerified();
-                                  else
+                                  if (this->isMacVerified == true) {
+                                          this->acceptDevice();
+                                  } else
                                           this->isMacVerified = true;
                           } else {
                                   this->cancelVerification(
@@ -208,7 +209,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *)
                         auto msg =
                           std::get<mtx::events::DeviceEvent<msgs::KeyVerificationDone>>(message);
                         if (msg.content.transaction_id == this->transaction_id) {
-                                emit this->deviceVerified();
+                                this->acceptDevice();
                         }
                 });
         timeout->start(TIMEOUT);
@@ -259,36 +260,22 @@ DeviceVerificationFlow::setTransactionId(QString transaction_id_)
 void
 DeviceVerificationFlow::setUserId(QString userID)
 {
-        this->userId   = userID;
-        this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(userID.toStdString());
+        this->userId    = userID;
+        this->toClient  = mtx::identifiers::parse<mtx::identifiers::User>(userID.toStdString());
+        auto user_cache = cache::getUserCache(userID.toStdString());
 
-        mtx::responses::QueryKeys res;
-        mtx::requests::QueryKeys req;
-        req.device_keys[userID.toStdString()] = {};
-        http::client()->query_keys(
-          req,
-          [user_id = userID.toStdString(), this](const mtx::responses::QueryKeys &res,
-                                                 mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to query device keys: {},{}",
-                                             err->matrix_error.errcode,
-                                             static_cast<int>(err->status_code));
-                          return;
-                  }
-
-                  for (auto x : res.device_keys) {
-                          for (auto y : x.second) {
-                                  auto z = y.second;
-                                  if (z.user_id == user_id &&
-                                      z.device_id == this->deviceId.toStdString()) {
-                                          for (auto a : z.keys) {
-                                                  // TODO: Verify Signatures
-                                                  this->device_keys[a.first] = a.second;
-                                          }
-                                  }
-                          }
-                  }
-          });
+        if (user_cache.has_value()) {
+                this->callback_fn(user_cache->keys, {}, userID.toStdString());
+        } else {
+                mtx::requests::QueryKeys req;
+                req.device_keys[userID.toStdString()] = {};
+                http::client()->query_keys(
+                  req,
+                  [user_id = userID.toStdString(), this](const mtx::responses::QueryKeys &res,
+                                                         mtx::http::RequestErr err) {
+                          this->callback_fn(res, err, user_id);
+                  });
+        }
 }
 
 void
@@ -482,6 +469,16 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
                             nhlog::net()->warn("failed to cancel verification request: {} {}",
                                                err->matrix_error.error,
                                                static_cast<int>(err->status_code));
+                    auto verified_cache = cache::getVerifiedCache(this->userId.toStdString());
+                    if (verified_cache.has_value()) {
+                            verified_cache->device_blocked.push_back(this->deviceId.toStdString());
+                            cache::setVerifiedCache(this->userId.toStdString(),
+                                                    verified_cache.value());
+                    } else {
+                            cache::setVerifiedCache(
+                              this->userId.toStdString(),
+                              DeviceVerifiedCache{{}, {this->deviceId.toStdString()}});
+                    }
                     this->deleteLater();
             });
 }
@@ -546,7 +543,7 @@ DeviceVerificationFlow::sendVerificationMac()
                                                static_cast<int>(err->status_code));
 
                     if (this->isMacVerified == true)
-                            emit this->deviceVerified();
+                            this->acceptDevice();
                     else
                             this->isMacVerified = true;
             });
@@ -555,8 +552,69 @@ DeviceVerificationFlow::sendVerificationMac()
 void
 DeviceVerificationFlow::acceptDevice()
 {
-        emit deviceVerified();
-        this->deleteLater();
+        auto verified_cache = cache::getVerifiedCache(this->userId.toStdString());
+        if (verified_cache.has_value()) {
+                verified_cache->device_verified.push_back(this->deviceId.toStdString());
+                for (auto it = verified_cache->device_blocked.begin();
+                     it != verified_cache->device_blocked.end();
+                     it++) {
+                        if (*it == this->deviceId.toStdString()) {
+                                verified_cache->device_blocked.erase(it);
+                        }
+                }
+                cache::setVerifiedCache(this->userId.toStdString(), verified_cache.value());
+        } else {
+                cache::setVerifiedCache(this->userId.toStdString(),
+                                        DeviceVerifiedCache{{this->deviceId.toStdString()}, {}});
+        }
 
-        // Yet to add send to_device message
+        emit deviceVerified();
+        emit refreshProfile();
+        this->deleteLater();
+}
+//! callback function to keep track of devices
+void
+DeviceVerificationFlow::callback_fn(const mtx::responses::QueryKeys &res,
+                                    mtx::http::RequestErr err,
+                                    std::string user_id)
+{
+        if (err) {
+                nhlog::net()->warn("failed to query device keys: {},{}",
+                                   err->matrix_error.errcode,
+                                   static_cast<int>(err->status_code));
+                return;
+        }
+
+        if (res.device_keys.empty() || (res.device_keys.find(user_id) == res.device_keys.end())) {
+                nhlog::net()->warn("no devices retrieved {}", user_id);
+                return;
+        }
+
+        for (auto x : res.device_keys) {
+                for (auto y : x.second) {
+                        auto z = y.second;
+                        if (z.user_id == user_id && z.device_id == this->deviceId.toStdString()) {
+                                for (auto a : z.keys) {
+                                        // TODO: Verify Signatures
+                                        this->device_keys[a.first] = a.second;
+                                }
+                        }
+                }
+        }
+}
+
+void
+DeviceVerificationFlow::unverify()
+{
+        auto verified_cache = cache::getVerifiedCache(this->userId.toStdString());
+        if (verified_cache.has_value()) {
+                auto it = std::remove(verified_cache->device_verified.begin(),
+                                      verified_cache->device_verified.end(),
+                                      this->deviceId.toStdString());
+                verified_cache->device_verified.erase(it);
+                cache::setVerifiedCache(this->userId.toStdString(), verified_cache.value());
+        }
+
+        emit refreshProfile();
+        this->deleteLater();
 }

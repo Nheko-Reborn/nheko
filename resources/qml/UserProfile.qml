@@ -17,6 +17,13 @@ ApplicationWindow{
 	Layout.alignment: Qt.AlignHCenter
 	palette: colors
 
+	Connections{
+		target: deviceVerificationList
+		onUpdateProfile: {
+			profile.fetchDeviceList(profile.userid)
+		}
+	}
+
 	Component {
 		id: deviceVerificationDialog
 		DeviceVerification {}
@@ -139,20 +146,12 @@ ApplicationWindow{
 							top : 50
 						}
 						ColumnLayout{
-							RowLayout{
-								Text{
-									Layout.fillWidth: true
-									color: colors.text
-									font.bold: true
-									Layout.alignment: Qt.AlignLeft
-									text: model.deviceId
-								}
-								Text{
-									Layout.fillWidth: true
-									color:colors.text
-									Layout.alignment: Qt.AlignLeft
-									text: (model.verificationStatus ==  VerificationStatus.VERIFIED?"V":(model.verificationStatus ==  VerificationStatus.UNVERIFIED?"NV":"B"))
-								}
+							Text{
+								Layout.fillWidth: true
+								color: colors.text
+								font.bold: true
+								Layout.alignment: Qt.AlignLeft
+								text: model.deviceId
 							}
 							Text{
 								Layout.fillWidth: true
@@ -161,27 +160,41 @@ ApplicationWindow{
 								text: model.deviceName
 							}
 						}
-						Button{
-							id: verifyButton
-							text:"Verify"
-							onClicked: {
-								var newFlow = deviceVerificationFlow.createObject(userProfileDialog,
-								{userId : profile.userid, sender: true, deviceId : model.deviceID});
-								deviceVerificationList.add(newFlow.tranId);
-								var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow});
-								dialog.show();
+						RowLayout{
+							Image{
+								Layout.preferredWidth: 20
+								Layout.preferredHeight: 20
+								source: ((model.verificationStatus == VerificationStatus.VERIFIED)?"image://colorimage/:/icons/icons/ui/lock.png?green":
+								((model.verificationStatus == VerificationStatus.UNVERIFIED)?"image://colorimage/:/icons/icons/ui/unlock.png?yellow":
+								"image://colorimage/:/icons/icons/ui/unlock.png?red"))
 							}
-							Layout.margins:{
-								right: 10
-							}
-							palette {
-								button: "white"
-							}
-							contentItem: Text {
-								text: verifyButton.text
-								color: "black"
-								horizontalAlignment: Text.AlignHCenter
-								verticalAlignment: Text.AlignVCenter
+							Button{
+								id: verifyButton
+								text:(model.verificationStatus != VerificationStatus.VERIFIED)?"Verify":"Unverify"
+								onClicked: {
+									var newFlow = deviceVerificationFlow.createObject(userProfileDialog,
+									{userId : profile.userid, sender: true, deviceId : model.deviceId});
+									if(model.verificationStatus == VerificationStatus.VERIFIED){
+										newFlow.unverify();
+										deviceVerificationList.updateProfile(newFlow.userId);
+									}else{
+										deviceVerificationList.add(newFlow.tranId);
+										var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow});
+										dialog.show();
+									}
+								}
+								Layout.margins:{
+									right: 10
+								}
+								palette {
+									button: "white"
+								}
+								contentItem: Text {
+									text: verifyButton.text
+									color: "black"
+									horizontalAlignment: Text.AlignHCenter
+									verticalAlignment: Text.AlignVCenter
+								}
 							}
 						}
 					}
