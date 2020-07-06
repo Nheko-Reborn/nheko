@@ -259,6 +259,10 @@ private:
                                      int64_t index = std::numeric_limits<int64_t>::max(),
                                      bool forward  = false);
 
+        std::optional<mtx::events::collections::TimelineEvent> getEvent(
+          const std::string &room_id,
+          const std::string &event_id);
+
         //! Remove a room from the cache.
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);
         template<class T>
