@@ -31,8 +31,10 @@
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "ChatPage.h"
 #include "EventAccessors.h"
 #include "Logging.h"
+#include "MatrixClient.h"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
@@ -953,6 +955,8 @@ Cache::saveState(const mtx::responses::Sync &res)
         saveInvites(txn, res.rooms.invite);
 
         savePresence(txn, res.presence);
+
+        updateUserCache(res.device_lists);
 
         removeLeftRooms(txn, res.rooms.leave);
 
@@ -2318,17 +2322,13 @@ Cache::statusMessage(const std::string &user_id)
 void
 to_json(json &j, const UserCache &info)
 {
-        j["is_user_verified"] = info.is_user_verified;
-        j["cross_verified"]   = info.cross_verified;
-        j["keys"]             = info.keys;
+        j["keys"] = info.keys;
 }
 
 void
 from_json(const json &j, UserCache &info)
 {
-        info.is_user_verified = j.at("is_user_verified");
-        info.cross_verified   = j.at("cross_verified").get<std::vector<std::string>>();
-        info.keys             = j.at("keys").get<mtx::responses::QueryKeys>();
+        info.keys = j.at("keys").get<mtx::responses::QueryKeys>();
 }
 
 std::optional<UserCache>
@@ -2365,6 +2365,32 @@ Cache::setUserCache(const std::string &user_id, const UserCache &body)
         return res;
 }
 
+void
+Cache::updateUserCache(const mtx::responses::DeviceLists body)
+{
+        for (auto user_id : body.changed) {
+                mtx::requests::QueryKeys req;
+                req.device_keys[user_id] = {};
+
+                http::client()->query_keys(
+                  req,
+                  [user_id, this](const mtx::responses::QueryKeys res, mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->warn("failed to query device keys: {},{}",
+                                                     err->matrix_error.errcode,
+                                                     static_cast<int>(err->status_code));
+                                  return;
+                          }
+
+                          setUserCache(user_id, UserCache{std::move(res)});
+                  });
+        }
+
+        for (std::string user_id : body.left) {
+                deleteUserCache(user_id);
+        }
+}
+
 int
 Cache::deleteUserCache(const std::string &user_id)
 {
@@ -2380,15 +2406,19 @@ Cache::deleteUserCache(const std::string &user_id)
 void
 to_json(json &j, const DeviceVerifiedCache &info)
 {
-        j["device_verified"] = info.device_verified;
-        j["device_blocked"]  = info.device_blocked;
+        j["is_user_verified"] = info.is_user_verified;
+        j["cross_verified"]   = info.cross_verified;
+        j["device_verified"]  = info.device_verified;
+        j["device_blocked"]   = info.device_blocked;
 }
 
 void
 from_json(const json &j, DeviceVerifiedCache &info)
 {
-        info.device_verified = j.at("device_verified").get<std::vector<std::string>>();
-        info.device_blocked  = j.at("device_blocked").get<std::vector<std::string>>();
+        info.is_user_verified = j.at("is_user_verified");
+        info.cross_verified   = j.at("cross_verified").get<std::vector<std::string>>();
+        info.device_verified  = j.at("device_verified").get<std::vector<std::string>>();
+        info.device_blocked   = j.at("device_blocked").get<std::vector<std::string>>();
 }
 
 std::optional<DeviceVerifiedCache>
@@ -2609,6 +2639,12 @@ std::optional<UserCache>
 getUserCache(const std::string &user_id)
 {
         return instance_->getUserCache(user_id);
+}
+
+void
+updateUserCache(const mtx::responses::DeviceLists body)
+{
+        instance_->updateUserCache(body);
 }
 
 int

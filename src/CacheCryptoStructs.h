@@ -66,14 +66,16 @@ struct OlmSessionStorage
         std::mutex group_inbound_mtx;
 };
 
+// this will store the keys of the user with whom a encrypted room is shared with
 struct UserCache
 {
-        //! this stores if the user is verified (with cross-signing)
-        bool is_user_verified = false;
-        //! list of verified device_ids with cross-signing
-        std::vector<std::string> cross_verified;
         //! map of public key key_ids and their public_key
         mtx::responses::QueryKeys keys;
+
+        UserCache(mtx::responses::QueryKeys res)
+          : keys(res)
+        {}
+        UserCache() {}
 };
 
 void
@@ -81,11 +83,30 @@ to_json(nlohmann::json &j, const UserCache &info);
 void
 from_json(const nlohmann::json &j, UserCache &info);
 
+// the reason these are stored in a seperate cache rather than storing it in the user cache is
+// UserCache stores only keys of users with which encrypted room is shared
 struct DeviceVerifiedCache
 {
         //! list of verified device_ids with device-verification
         std::vector<std::string> device_verified;
+        //! list of verified device_ids with cross-signing
+        std::vector<std::string> cross_verified;
+        //! list of devices the user blocks
         std::vector<std::string> device_blocked;
+        //! this stores if the user is verified (with cross-signing)
+        bool is_user_verified = false;
+
+        DeviceVerifiedCache(std::vector<std::string> device_verified_,
+                            std::vector<std::string> cross_verified_,
+                            std::vector<std::string> device_blocked_,
+                            bool is_user_verified_ = false)
+          : device_verified(device_verified_)
+          , cross_verified(cross_verified_)
+          , device_blocked(device_blocked_)
+          , is_user_verified(is_user_verified_)
+        {}
+
+        DeviceVerifiedCache() {}
 };
 
 void

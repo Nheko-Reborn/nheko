@@ -77,8 +77,7 @@ UserProfile::avatarUrl()
 void
 UserProfile::callback_fn(const mtx::responses::QueryKeys &res,
                          mtx::http::RequestErr err,
-                         std::string user_id,
-                         std::optional<std::vector<std::string>> cross_verified)
+                         std::string user_id)
 {
         if (err) {
                 nhlog::net()->warn("failed to query device keys: {},{}",
@@ -101,16 +100,15 @@ UserProfile::callback_fn(const mtx::responses::QueryKeys &res,
 
                 // TODO: Verify signatures and ignore those that don't pass.
                 verification::Status verified = verification::Status::UNVERIFIED;
-                if (cross_verified.has_value()) {
-                        if (std::find(cross_verified->begin(), cross_verified->end(), d.first) !=
-                            cross_verified->end())
+                if (device_verified.has_value()) {
+                        if (std::find(device_verified->cross_verified.begin(),
+                                      device_verified->cross_verified.end(),
+                                      d.first) != device_verified->cross_verified.end())
                                 verified = verification::Status::VERIFIED;
-                } else if (device_verified.has_value()) {
                         if (std::find(device_verified->device_verified.begin(),
                                       device_verified->device_verified.end(),
                                       d.first) != device_verified->device_verified.end())
                                 verified = verification::Status::VERIFIED;
-                } else if (device_verified.has_value()) {
                         if (std::find(device_verified->device_blocked.begin(),
                                       device_verified->device_blocked.end(),
                                       d.first) != device_verified->device_blocked.end())
@@ -138,8 +136,7 @@ UserProfile::fetchDeviceList(const QString &userID)
         auto user_cache = cache::getUserCache(userID.toStdString());
 
         if (user_cache.has_value()) {
-                this->callback_fn(
-                  user_cache->keys, {}, userID.toStdString(), user_cache->cross_verified);
+                this->callback_fn(user_cache->keys, {}, userID.toStdString());
         } else {
                 mtx::requests::QueryKeys req;
                 req.device_keys[userID.toStdString()] = {};
@@ -147,7 +144,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                   req,
                   [user_id = userID.toStdString(), this](const mtx::responses::QueryKeys &res,
                                                          mtx::http::RequestErr err) {
-                          this->callback_fn(res, err, user_id, {});
+                          this->callback_fn(res, err, user_id);
                   });
         }
 }
