@@ -64,6 +64,9 @@ statusMessage(const std::string &user_id);
 std::optional<UserCache>
 getUserCache(const std::string &user_id);
 
+void
+updateUserCache(const mtx::responses::DeviceLists body);
+
 int
 setUserCache(const std::string &user_id, const UserCache &body);
 

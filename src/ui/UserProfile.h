@@ -103,6 +103,5 @@ private:
 
         void callback_fn(const mtx::responses::QueryKeys &res,
                          mtx::http::RequestErr err,
-                         std::string user_id,
-                         std::optional<std::vector<std::string>> cross_verified);
+                         std::string user_id);
 };

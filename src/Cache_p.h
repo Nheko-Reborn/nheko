@@ -56,6 +56,7 @@ public:
 
         // user cache stores user keys
         std::optional<UserCache> getUserCache(const std::string &user_id);
+        void updateUserCache(const mtx::responses::DeviceLists body);
         int setUserCache(const std::string &user_id, const UserCache &body);
         int deleteUserCache(const std::string &user_id);
 
@@ -521,12 +522,12 @@ private:
 
         lmdb::dbi getUserCacheDb(lmdb::txn &txn)
         {
-                return lmdb::dbi::open(txn, std::string("user_cache").c_str(), MDB_CREATE);
+                return lmdb::dbi::open(txn, "user_cache", MDB_CREATE);
         }
 
         lmdb::dbi getDeviceVerifiedDb(lmdb::txn &txn)
         {
-                return lmdb::dbi::open(txn, std::string("verified").c_str(), MDB_CREATE);
+                return lmdb::dbi::open(txn, "verified", MDB_CREATE);
         }
 
         //! Retrieves or creates the database that stores the open OLM sessions between our device

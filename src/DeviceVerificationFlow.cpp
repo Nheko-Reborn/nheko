@@ -477,7 +477,7 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
                     } else {
                             cache::setVerifiedCache(
                               this->userId.toStdString(),
-                              DeviceVerifiedCache{{}, {this->deviceId.toStdString()}});
+                              DeviceVerifiedCache{{}, {}, {this->deviceId.toStdString()}});
                     }
                     this->deleteLater();
             });
@@ -564,8 +564,9 @@ DeviceVerificationFlow::acceptDevice()
                 }
                 cache::setVerifiedCache(this->userId.toStdString(), verified_cache.value());
         } else {
-                cache::setVerifiedCache(this->userId.toStdString(),
-                                        DeviceVerifiedCache{{this->deviceId.toStdString()}, {}});
+                cache::setVerifiedCache(
+                  this->userId.toStdString(),
+                  DeviceVerifiedCache{{this->deviceId.toStdString()}, {}, {}});
         }
 
         emit deviceVerified();
@@ -616,5 +617,4 @@ DeviceVerificationFlow::unverify()
         }
 
         emit refreshProfile();
-        this->deleteLater();
 }
