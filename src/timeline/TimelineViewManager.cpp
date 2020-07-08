@@ -1,5 +1,6 @@
 #include "TimelineViewManager.h"
 
+#include <QDesktopServices>
 #include <QMetaType>
 #include <QPalette>
 #include <QQmlContext>
@@ -217,6 +218,12 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
                                 }
                         });
         });
+}
+
+void
+TimelineViewManager::openLink(QString link) const
+{
+        QDesktopServices::openUrl(link);
 }
 
 void
