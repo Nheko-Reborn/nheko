@@ -181,7 +181,7 @@ Page {
 
 				id: wrapper
 				property Item section
-				anchors.horizontalCenter: parent.horizontalCenter
+				anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 				width: chat.delegateMaxWidth
 				height: section ? section.height + timelinerow.height : timelinerow.height
 				color: "transparent"
