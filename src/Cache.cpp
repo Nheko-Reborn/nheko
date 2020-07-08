@@ -1245,23 +1245,23 @@ Cache::Messages
 Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, int64_t index, bool forward)
 {
         // TODO(nico): Limit the messages returned by this maybe?
-        auto orderDb  = getEventOrderDb(txn, room_id);
+        auto orderDb  = getOrderToMessageDb(txn, room_id);
         auto eventsDb = getEventsDb(txn, room_id);
 
         Messages messages{};
 
-        lmdb::val indexVal, val;
+        lmdb::val indexVal, event_id;
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
         if (index == std::numeric_limits<int64_t>::max()) {
-                if (cursor.get(indexVal, val, forward ? MDB_FIRST : MDB_LAST)) {
+                if (cursor.get(indexVal, event_id, forward ? MDB_FIRST : MDB_LAST)) {
                         index = *indexVal.data<int64_t>();
                 } else {
                         messages.end_of_cache = true;
                         return messages;
                 }
         } else {
-                if (cursor.get(indexVal, val, MDB_SET)) {
+                if (cursor.get(indexVal, event_id, MDB_SET)) {
                         index = *indexVal.data<int64_t>();
                 } else {
                         messages.end_of_cache = true;
@@ -1272,16 +1272,10 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, int64_t i
         int counter = 0;
 
         bool ret;
-        while ((ret = cursor.get(indexVal, val, forward ? MDB_NEXT : MDB_LAST)) &&
+        while ((ret = cursor.get(indexVal, event_id, forward ? MDB_NEXT : MDB_LAST)) &&
                counter++ < BATCH_SIZE) {
-                auto obj = json::parse(std::string_view(val.data(), val.size()));
-
-                if (obj.count("event_id") == 0)
-                        break;
-
                 lmdb::val event;
-                bool success = lmdb::dbi_get(
-                  txn, eventsDb, lmdb::val(obj["event_id"].get<std::string>()), event);
+                bool success = lmdb::dbi_get(txn, eventsDb, event_id, event);
                 if (!success)
                         continue;
 
@@ -1290,11 +1284,6 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, int64_t i
                   json::parse(std::string_view(event.data(), event.size())), te);
 
                 messages.timeline.events.push_back(std::move(te.data));
-
-                if (forward && messages.timeline.prev_batch.empty() && obj.contains("prev_batch"))
-                        messages.timeline.prev_batch = obj["prev_batch"];
-                else if (!forward && obj.contains("prev_batch"))
-                        messages.timeline.prev_batch = obj["prev_batch"];
         }
         cursor.close();
 
@@ -1363,7 +1352,7 @@ Cache::roomInfo(bool withInvites)
 std::string
 Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
 {
-        auto orderDb = getEventOrderDb(txn, room_id);
+        auto orderDb = getOrderToMessageDb(txn, room_id);
 
         lmdb::val indexVal, val;
 
@@ -1372,18 +1361,13 @@ Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
                 return {};
         }
 
-        auto obj = json::parse(std::string_view(val.data(), val.size()));
-
-        if (obj.count("event_id") == 0)
-                return {};
-        else
-                return obj["event_id"];
+        return std::string(val.data(), val.size());
 }
 
 DescInfo
 Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 {
-        auto orderDb  = getEventOrderDb(txn, room_id);
+        auto orderDb  = getOrderToMessageDb(txn, room_id);
         auto eventsDb = getEventsDb(txn, room_id);
         if (orderDb.size(txn) == 0)
                 return DescInfo{};
@@ -1392,19 +1376,13 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 
         DescInfo fallbackDesc{};
 
-        lmdb::val indexVal, val;
+        lmdb::val indexVal, event_id;
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
-        cursor.get(indexVal, val, MDB_LAST);
-        while (cursor.get(indexVal, val, MDB_PREV)) {
-                auto temp = json::parse(std::string_view(val.data(), val.size()));
-
-                if (temp.count("event_id") == 0)
-                        break;
-
+        cursor.get(indexVal, event_id, MDB_LAST);
+        while (cursor.get(indexVal, event_id, MDB_PREV)) {
                 lmdb::val event;
-                bool success = lmdb::dbi_get(
-                  txn, eventsDb, lmdb::val(temp["event_id"].get<std::string>()), event);
+                bool success = lmdb::dbi_get(txn, eventsDb, event_id, event);
                 if (!success)
                         continue;
 
@@ -2015,11 +1993,17 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                             const std::string &room_id,
                             const mtx::responses::Timeline &res)
 {
-        auto eventsDb = getEventsDb(txn, room_id);
+        auto eventsDb    = getEventsDb(txn, room_id);
+        auto relationsDb = getRelationsDb(txn, room_id);
 
-        auto orderDb = getEventOrderDb(txn, room_id);
-        if (res.limited)
+        auto orderDb     = getEventOrderDb(txn, room_id);
+        auto msg2orderDb = getMessageToOrderDb(txn, room_id);
+        auto order2msgDb = getOrderToMessageDb(txn, room_id);
+        if (res.limited) {
                 lmdb::dbi_drop(txn, orderDb, false);
+                lmdb::dbi_drop(txn, msg2orderDb, false);
+                lmdb::dbi_drop(txn, order2msgDb, false);
+        }
 
         using namespace mtx::events;
         using namespace mtx::events::state;
@@ -2031,6 +2015,12 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                 index = *indexVal.data<int64_t>();
         }
 
+        int64_t msgIndex = 0;
+        auto msgCursor   = lmdb::cursor::open(txn, order2msgDb);
+        if (msgCursor.get(indexVal, val, MDB_LAST)) {
+                msgIndex = *indexVal.data<int64_t>();
+        }
+
         bool first = true;
         for (const auto &e : res.events) {
                 auto event = mtx::accessors::serialize_event(e);
@@ -2039,17 +2029,17 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         lmdb::dbi_put(
                           txn, eventsDb, lmdb::val(redaction->redacts), lmdb::val(event.dump()));
                 } else {
-                        lmdb::dbi_put(txn,
-                                      eventsDb,
-                                      lmdb::val(event["event_id"].get<std::string>()),
-                                      lmdb::val(event.dump()));
+                        std::string event_id_val = event["event_id"].get<std::string>();
+                        lmdb::val event_id       = event_id_val;
+                        lmdb::dbi_put(txn, eventsDb, event_id, lmdb::val(event.dump()));
 
                         ++index;
 
                         json orderEntry        = json::object();
-                        orderEntry["event_id"] = event["event_id"];
+                        orderEntry["event_id"] = event_id_val;
                         if (first)
                                 orderEntry["prev_batch"] = res.prev_batch;
+                        first = false;
 
                         nhlog::db()->debug("saving '{}'", orderEntry.dump());
 
@@ -2057,7 +2047,32 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                                          lmdb::val(&index, sizeof(index)),
                                          lmdb::val(orderEntry.dump()),
                                          MDB_APPEND);
-                        first = false;
+
+                        // TODO(Nico): Allow blacklisting more event types in UI
+                        if (event["type"] != "m.reaction" && event["type"] != "m.dummy") {
+                                ++msgIndex;
+                                lmdb::cursor_put(msgCursor.handle(),
+                                                 lmdb::val(&msgIndex, sizeof(msgIndex)),
+                                                 event_id,
+                                                 MDB_APPEND);
+
+                                lmdb::dbi_put(txn,
+                                              msg2orderDb,
+                                              event_id,
+                                              lmdb::val(&msgIndex, sizeof(msgIndex)));
+                        }
+
+                        if (event.contains("content") &&
+                            event["content"].contains("m.relates_to")) {
+                                auto temp              = event["content"]["m.relates_to"];
+                                std::string relates_to = temp.contains("m.in_reply_to")
+                                                           ? temp["m.in_reply_to"]["event_id"]
+                                                           : temp["event_id"];
+
+                                if (!relates_to.empty())
+                                        lmdb::dbi_put(
+                                          txn, relationsDb, lmdb::val(relates_to), event_id);
+                        }
                 }
         }
 }
@@ -2201,6 +2216,8 @@ Cache::deleteOldMessages()
 
         for (const auto &room_id : room_ids) {
                 auto orderDb  = getEventOrderDb(txn, room_id);
+                auto o2m      = getOrderToMessageDb(txn, room_id);
+                auto m2o      = getMessageToOrderDb(txn, room_id);
                 auto eventsDb = getEventsDb(txn, room_id);
                 auto cursor   = lmdb::cursor::open(txn, orderDb);
 
@@ -2224,9 +2241,17 @@ Cache::deleteOldMessages()
                        message_count-- < MAX_RESTORED_MESSAGES) {
                         auto obj = json::parse(std::string_view(val.data(), val.size()));
 
-                        if (obj.count("event_id") != 0)
-                                lmdb::dbi_del(
-                                  txn, eventsDb, lmdb::val(obj["event_id"].get<std::string>()));
+                        if (obj.count("event_id") != 0) {
+                                lmdb::val event_id = obj["event_id"].get<std::string>();
+                                lmdb::dbi_del(txn, eventsDb, event_id);
+
+                                lmdb::val order{};
+                                bool exists = lmdb::dbi_get(txn, m2o, event_id, order);
+                                if (exists) {
+                                        lmdb::dbi_del(txn, o2m, order);
+                                        lmdb::dbi_del(txn, m2o, event_id);
+                                }
+                        }
                         lmdb::cursor_del(cursor);
                 }
                 cursor.close();

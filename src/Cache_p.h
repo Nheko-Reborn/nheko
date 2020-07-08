@@ -424,6 +424,24 @@ private:
                   txn, std::string(room_id + "/event_order").c_str(), MDB_CREATE | MDB_INTEGERKEY);
         }
 
+        lmdb::dbi getMessageToOrderDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/msg2order").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getOrderToMessageDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/order2msg").c_str(), MDB_CREATE | MDB_INTEGERKEY);
+        }
+
+        lmdb::dbi getRelationsDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/related").c_str(), MDB_CREATE | MDB_DUPSORT);
+        }
+
         lmdb::dbi getInviteStatesDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(
