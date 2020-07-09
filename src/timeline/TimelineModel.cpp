@@ -141,6 +141,7 @@ toRoomEventTypeString(const mtx::events::collections::TimelineEvents &event)
 
 TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent)
   : QAbstractListModel(parent)
+  , events(room_id.toStdString(), this)
   , room_id_(room_id)
   , manager_(manager)
 {
@@ -165,41 +166,41 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
           this,
           [this](QString txn_id, QString event_id) {
                   pending.removeOne(txn_id);
+                  (void)event_id;
+                  // auto ev = events.value(txn_id);
 
-                  auto ev = events.value(txn_id);
+                  // if (auto reaction =
+                  //      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&ev)) {
+                  //        QString reactedTo =
+                  //          QString::fromStdString(reaction->content.relates_to.event_id);
+                  //        auto &rModel = reactions[reactedTo];
+                  //        rModel.removeReaction(*reaction);
+                  //        auto rCopy     = *reaction;
+                  //        rCopy.event_id = event_id.toStdString();
+                  //        rModel.addReaction(room_id_.toStdString(), rCopy);
+                  //}
 
-                  if (auto reaction =
-                        std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&ev)) {
-                          QString reactedTo =
-                            QString::fromStdString(reaction->content.relates_to.event_id);
-                          auto &rModel = reactions[reactedTo];
-                          rModel.removeReaction(*reaction);
-                          auto rCopy     = *reaction;
-                          rCopy.event_id = event_id.toStdString();
-                          rModel.addReaction(room_id_.toStdString(), rCopy);
-                  }
+                  // int idx = idToIndex(txn_id);
+                  // if (idx < 0) {
+                  //        // transaction already received via sync
+                  //        return;
+                  //}
+                  // eventOrder[idx] = event_id;
+                  // ev              = std::visit(
+                  //  [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
+                  //          auto eventCopy     = e;
+                  //          eventCopy.event_id = event_id.toStdString();
+                  //          return eventCopy;
+                  //  },
+                  //  ev);
 
-                  int idx = idToIndex(txn_id);
-                  if (idx < 0) {
-                          // transaction already received via sync
-                          return;
-                  }
-                  eventOrder[idx] = event_id;
-                  ev              = std::visit(
-                    [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
-                            auto eventCopy     = e;
-                            eventCopy.event_id = event_id.toStdString();
-                            return eventCopy;
-                    },
-                    ev);
+                  // events.remove(txn_id);
+                  // events.insert(event_id, ev);
 
-                  events.remove(txn_id);
-                  events.insert(event_id, ev);
+                  //// mark our messages as read
+                  // readEvent(event_id.toStdString());
 
-                  // mark our messages as read
-                  readEvent(event_id.toStdString());
-
-                  emit dataChanged(index(idx, 0), index(idx, 0));
+                  // emit dataChanged(index(idx, 0), index(idx, 0));
 
                   if (pending.size() > 0)
                           emit nextPendingMessage();
@@ -224,16 +225,24 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 Qt::QueuedConnection);
 
         connect(
+          &events,
+          &EventStore::dataChanged,
           this,
-          &TimelineModel::eventFetched,
-          this,
-          [this](QString requestingEvent, mtx::events::collections::TimelineEvents event) {
-                  events.insert(QString::fromStdString(mtx::accessors::event_id(event)), event);
-                  auto idx = idToIndex(requestingEvent);
-                  if (idx >= 0)
-                          emit dataChanged(index(idx, 0), index(idx, 0));
+          [this](int from, int to) {
+                  emit dataChanged(index(events.size() - to, 0), index(events.size() - from, 0));
           },
           Qt::QueuedConnection);
+
+        connect(&events, &EventStore::beginInsertRows, this, [this](int from, int to) {
+                nhlog::ui()->info("begin insert from {} to {}",
+                                  events.size() - to + (to - from),
+                                  events.size() - from + (to - from));
+                beginInsertRows(QModelIndex(),
+                                events.size() - to + (to - from),
+                                events.size() - from + (to - from));
+        });
+        connect(&events, &EventStore::endInsertRows, this, [this]() { endInsertRows(); });
+        connect(&events, &EventStore::newEncryptedImage, this, &TimelineModel::newEncryptedImage);
 }
 
 QHash<int, QByteArray>
@@ -274,28 +283,22 @@ int
 TimelineModel::rowCount(const QModelIndex &parent) const
 {
         Q_UNUSED(parent);
-        return (int)this->eventOrder.size();
+        return this->events.size() + static_cast<int>(pending.size());
 }
 
 QVariantMap
-TimelineModel::getDump(QString eventId) const
+TimelineModel::getDump(QString eventId, QString relatedTo) const
 {
-        if (events.contains(eventId))
-                return data(eventId, Dump).toMap();
+        if (auto event = events.event(eventId.toStdString(), relatedTo.toStdString()))
+                return data(*event, Dump).toMap();
         return {};
 }
 
 QVariant
-TimelineModel::data(const QString &id, int role) const
+TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int role) const
 {
         using namespace mtx::accessors;
-        namespace acc                                  = mtx::accessors;
-        mtx::events::collections::TimelineEvents event = events.value(id);
-
-        if (auto e =
-              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
-                event = decryptEvent(*e).event;
-        }
+        namespace acc = mtx::accessors;
 
         switch (role) {
         case UserId:
@@ -381,8 +384,9 @@ TimelineModel::data(const QString &id, int role) const
                 return QVariant(prop > 0 ? prop : 1.);
         }
         case Id:
-                return id;
+                return QVariant(QString::fromStdString(event_id(event)));
         case State: {
+                auto id             = QString::fromStdString(event_id(event));
                 auto containsOthers = [](const auto &vec) {
                         for (const auto &e : vec)
                                 if (e.second != http::client()->user_id().to_string())
@@ -401,19 +405,22 @@ TimelineModel::data(const QString &id, int role) const
                         return qml_mtx_events::Received;
         }
         case IsEncrypted: {
-                return std::holds_alternative<
-                  mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(events[id]);
+                //        return std::holds_alternative<
+                //          mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(events[id]);
+                return false;
         }
         case IsRoomEncrypted: {
                 return cache::isRoomEncrypted(room_id_.toStdString());
         }
         case ReplyTo:
                 return QVariant(QString::fromStdString(in_reply_to_event(event)));
-        case Reactions:
+        case Reactions: {
+                auto id = QString::fromStdString(event_id(event));
                 if (reactions.count(id))
                         return QVariant::fromValue((QObject *)&reactions.at(id));
                 else
                         return {};
+        }
         case RoomId:
                 return QVariant(room_id_);
         case RoomName:
@@ -425,30 +432,31 @@ TimelineModel::data(const QString &id, int role) const
                 auto names = roleNames();
 
                 // m.insert(names[Section], data(id, static_cast<int>(Section)));
-                m.insert(names[Type], data(id, static_cast<int>(Type)));
-                m.insert(names[TypeString], data(id, static_cast<int>(TypeString)));
-                m.insert(names[IsOnlyEmoji], data(id, static_cast<int>(IsOnlyEmoji)));
-                m.insert(names[Body], data(id, static_cast<int>(Body)));
-                m.insert(names[FormattedBody], data(id, static_cast<int>(FormattedBody)));
-                m.insert(names[UserId], data(id, static_cast<int>(UserId)));
-                m.insert(names[UserName], data(id, static_cast<int>(UserName)));
-                m.insert(names[Timestamp], data(id, static_cast<int>(Timestamp)));
-                m.insert(names[Url], data(id, static_cast<int>(Url)));
-                m.insert(names[ThumbnailUrl], data(id, static_cast<int>(ThumbnailUrl)));
-                m.insert(names[Blurhash], data(id, static_cast<int>(Blurhash)));
-                m.insert(names[Filename], data(id, static_cast<int>(Filename)));
-                m.insert(names[Filesize], data(id, static_cast<int>(Filesize)));
-                m.insert(names[MimeType], data(id, static_cast<int>(MimeType)));
-                m.insert(names[Height], data(id, static_cast<int>(Height)));
-                m.insert(names[Width], data(id, static_cast<int>(Width)));
-                m.insert(names[ProportionalHeight], data(id, static_cast<int>(ProportionalHeight)));
-                m.insert(names[Id], data(id, static_cast<int>(Id)));
-                m.insert(names[State], data(id, static_cast<int>(State)));
-                m.insert(names[IsEncrypted], data(id, static_cast<int>(IsEncrypted)));
-                m.insert(names[IsRoomEncrypted], data(id, static_cast<int>(IsRoomEncrypted)));
-                m.insert(names[ReplyTo], data(id, static_cast<int>(ReplyTo)));
-                m.insert(names[RoomName], data(id, static_cast<int>(RoomName)));
-                m.insert(names[RoomTopic], data(id, static_cast<int>(RoomTopic)));
+                m.insert(names[Type], data(event, static_cast<int>(Type)));
+                m.insert(names[TypeString], data(event, static_cast<int>(TypeString)));
+                m.insert(names[IsOnlyEmoji], data(event, static_cast<int>(IsOnlyEmoji)));
+                m.insert(names[Body], data(event, static_cast<int>(Body)));
+                m.insert(names[FormattedBody], data(event, static_cast<int>(FormattedBody)));
+                m.insert(names[UserId], data(event, static_cast<int>(UserId)));
+                m.insert(names[UserName], data(event, static_cast<int>(UserName)));
+                m.insert(names[Timestamp], data(event, static_cast<int>(Timestamp)));
+                m.insert(names[Url], data(event, static_cast<int>(Url)));
+                m.insert(names[ThumbnailUrl], data(event, static_cast<int>(ThumbnailUrl)));
+                m.insert(names[Blurhash], data(event, static_cast<int>(Blurhash)));
+                m.insert(names[Filename], data(event, static_cast<int>(Filename)));
+                m.insert(names[Filesize], data(event, static_cast<int>(Filesize)));
+                m.insert(names[MimeType], data(event, static_cast<int>(MimeType)));
+                m.insert(names[Height], data(event, static_cast<int>(Height)));
+                m.insert(names[Width], data(event, static_cast<int>(Width)));
+                m.insert(names[ProportionalHeight],
+                         data(event, static_cast<int>(ProportionalHeight)));
+                m.insert(names[Id], data(event, static_cast<int>(Id)));
+                m.insert(names[State], data(event, static_cast<int>(State)));
+                m.insert(names[IsEncrypted], data(event, static_cast<int>(IsEncrypted)));
+                m.insert(names[IsRoomEncrypted], data(event, static_cast<int>(IsRoomEncrypted)));
+                m.insert(names[ReplyTo], data(event, static_cast<int>(ReplyTo)));
+                m.insert(names[RoomName], data(event, static_cast<int>(RoomName)));
+                m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
 
                 return QVariant(m);
         }
@@ -462,29 +470,33 @@ TimelineModel::data(const QModelIndex &index, int role) const
 {
         using namespace mtx::accessors;
         namespace acc = mtx::accessors;
-        if (index.row() < 0 && index.row() >= (int)eventOrder.size())
+        if (index.row() < 0 && index.row() >= rowCount())
                 return QVariant();
 
-        QString id = eventOrder[index.row()];
+        auto event = events.event(rowCount() - index.row() - 1);
 
-        mtx::events::collections::TimelineEvents event = events.value(id);
+        if (!event)
+                return "";
 
         if (role == Section) {
-                QDateTime date = origin_server_ts(event);
+                QDateTime date = origin_server_ts(*event);
                 date.setTime(QTime());
 
-                std::string userId = acc::sender(event);
+                std::string userId = acc::sender(*event);
 
-                for (size_t r = index.row() + 1; r < eventOrder.size(); r++) {
-                        auto tempEv        = events.value(eventOrder[r]);
-                        QDateTime prevDate = origin_server_ts(tempEv);
+                for (int r = rowCount() - index.row(); r < events.size(); r++) {
+                        auto tempEv = events.event(r);
+                        if (!tempEv)
+                                break;
+
+                        QDateTime prevDate = origin_server_ts(*tempEv);
                         prevDate.setTime(QTime());
                         if (prevDate != date)
                                 return QString("%2 %1")
                                   .arg(date.toMSecsSinceEpoch())
                                   .arg(QString::fromStdString(userId));
 
-                        std::string prevUserId = acc::sender(tempEv);
+                        std::string prevUserId = acc::sender(*tempEv);
                         if (userId != prevUserId)
                                 break;
                 }
@@ -492,16 +504,16 @@ TimelineModel::data(const QModelIndex &index, int role) const
                 return QString("%1").arg(QString::fromStdString(userId));
         }
 
-        return data(id, role);
+        return data(*event, role);
 }
 
 bool
 TimelineModel::canFetchMore(const QModelIndex &) const
 {
-        if (eventOrder.empty())
+        if (!events.size())
                 return true;
         if (!std::holds_alternative<mtx::events::StateEvent<mtx::events::state::Create>>(
-              events[eventOrder.back()]))
+              *events.event(0)))
                 return true;
         else
 
@@ -562,13 +574,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         if (timeline.events.empty())
                 return;
 
-        std::vector<QString> ids = internalAddEvents(timeline.events);
+        internalAddEvents(timeline.events);
 
-        if (!ids.empty()) {
-                beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
-                this->eventOrder.insert(this->eventOrder.begin(), ids.rbegin(), ids.rend());
-                endInsertRows();
-        }
+        events.handleSync(timeline);
 
         if (!timeline.events.empty())
                 updateLastMessage();
@@ -613,21 +621,17 @@ isYourJoin(const mtx::events::Event<T> &)
 void
 TimelineModel::updateLastMessage()
 {
-        for (auto it = eventOrder.begin(); it != eventOrder.end(); ++it) {
-                auto event = events.value(*it);
-                if (auto e = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                      &event)) {
-                        if (decryptDescription) {
-                                event = decryptEvent(*e).event;
-                        }
-                }
+        for (auto it = events.size() - 1; it >= 0; --it) {
+                auto event = events.event(it, decryptDescription);
+                if (!event)
+                        continue;
 
-                if (std::visit([](const auto &e) -> bool { return isYourJoin(e); }, event)) {
-                        auto time   = mtx::accessors::origin_server_ts(event);
+                if (std::visit([](const auto &e) -> bool { return isYourJoin(e); }, *event)) {
+                        auto time   = mtx::accessors::origin_server_ts(*event);
                         uint64_t ts = time.toMSecsSinceEpoch();
                         emit manager_->updateRoomsLastMessage(
                           room_id_,
-                          DescInfo{QString::fromStdString(mtx::accessors::event_id(event)),
+                          DescInfo{QString::fromStdString(mtx::accessors::event_id(*event)),
                                    QString::fromStdString(http::client()->user_id().to_string()),
                                    tr("You joined this room."),
                                    utils::descriptiveTime(time),
@@ -635,80 +639,40 @@ TimelineModel::updateLastMessage()
                                    time});
                         return;
                 }
-                if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, event))
+                if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, *event))
                         continue;
 
                 auto description = utils::getMessageDescription(
-                  event, QString::fromStdString(http::client()->user_id().to_string()), room_id_);
+                  *event, QString::fromStdString(http::client()->user_id().to_string()), room_id_);
                 emit manager_->updateRoomsLastMessage(room_id_, description);
                 return;
         }
 }
 
-std::vector<QString>
+void
 TimelineModel::internalAddEvents(
   const std::vector<mtx::events::collections::TimelineEvents> &timeline)
 {
-        std::vector<QString> ids;
         for (auto e : timeline) {
                 QString id = QString::fromStdString(mtx::accessors::event_id(e));
-
-                if (this->events.contains(id)) {
-                        this->events.insert(id, e);
-                        int idx = idToIndex(id);
-                        emit dataChanged(index(idx, 0), index(idx, 0));
-                        continue;
-                }
-
-                QString txid = QString::fromStdString(mtx::accessors::transaction_id(e));
-                if (this->pending.removeOne(txid)) {
-                        this->events.insert(id, e);
-                        this->events.remove(txid);
-                        int idx = idToIndex(txid);
-                        if (idx < 0) {
-                                nhlog::ui()->warn("Received index out of range");
-                                continue;
-                        }
-                        eventOrder[idx] = id;
-                        emit dataChanged(index(idx, 0), index(idx, 0));
-                        continue;
-                }
 
                 if (auto redaction =
                       std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
                         QString redacts = QString::fromStdString(redaction->redacts);
-                        auto redacted   = std::find(eventOrder.begin(), eventOrder.end(), redacts);
 
-                        auto event = events.value(redacts);
+                        auto event = events.event(redaction->redacts, redaction->event_id);
+                        if (!event)
+                                continue;
+
                         if (auto reaction =
                               std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
-                                &event)) {
+                                event)) {
                                 QString reactedTo =
                                   QString::fromStdString(reaction->content.relates_to.event_id);
                                 reactions[reactedTo].removeReaction(*reaction);
                                 int idx = idToIndex(reactedTo);
                                 if (idx >= 0)
                                         emit dataChanged(index(idx, 0), index(idx, 0));
-                        }
-
-                        if (redacted != eventOrder.end()) {
-                                auto redactedEvent = std::visit(
-                                  [](const auto &ev)
-                                    -> mtx::events::RoomEvent<mtx::events::msg::Redacted> {
-                                          mtx::events::RoomEvent<mtx::events::msg::Redacted>
-                                            replacement                = {};
-                                          replacement.event_id         = ev.event_id;
-                                          replacement.room_id          = ev.room_id;
-                                          replacement.sender           = ev.sender;
-                                          replacement.origin_server_ts = ev.origin_server_ts;
-                                          replacement.type             = ev.type;
-                                          return replacement;
-                                  },
-                                  e);
-                                events.insert(redacts, redactedEvent);
-
-                                int row = (int)std::distance(eventOrder.begin(), redacted);
-                                emit dataChanged(index(row, 0), index(row, 0));
                         }
 
                         continue; // don't insert redaction into timeline
@@ -718,14 +682,13 @@ TimelineModel::internalAddEvents(
                       std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&e)) {
                         QString reactedTo =
                           QString::fromStdString(reaction->content.relates_to.event_id);
-                        events.insert(id, e);
 
-                        // remove local echo
-                        if (!txid.isEmpty()) {
-                                auto rCopy     = *reaction;
-                                rCopy.event_id = txid.toStdString();
-                                reactions[reactedTo].removeReaction(rCopy);
-                        }
+                        // // remove local echo
+                        // if (!txid.isEmpty()) {
+                        //         auto rCopy     = *reaction;
+                        //         rCopy.event_id = txid.toStdString();
+                        //         reactions[reactedTo].removeReaction(rCopy);
+                        // }
 
                         reactions[reactedTo].addReaction(room_id_.toStdString(), *reaction);
                         int idx = idToIndex(reactedTo);
@@ -734,40 +697,27 @@ TimelineModel::internalAddEvents(
                         continue; // don't insert reaction into timeline
                 }
 
-                if (auto event =
-                      std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
-                        auto e_      = decryptEvent(*event).event;
-                        auto encInfo = mtx::accessors::file(e_);
-
-                        if (encInfo)
-                                emit newEncryptedImage(encInfo.value());
-                }
-
-                this->events.insert(id, e);
-                ids.push_back(id);
-
-                auto replyTo  = mtx::accessors::in_reply_to_event(e);
-                auto qReplyTo = QString::fromStdString(replyTo);
-                if (!replyTo.empty() && !events.contains(qReplyTo)) {
-                        http::client()->get_event(
-                          this->room_id_.toStdString(),
-                          replyTo,
-                          [this, id, replyTo](
-                            const mtx::events::collections::TimelineEvents &timeline,
-                            mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::net()->error(
-                                            "Failed to retrieve event with id {}, which was "
-                                            "requested to show the replyTo for event {}",
-                                            replyTo,
-                                            id.toStdString());
-                                          return;
-                                  }
-                                  emit eventFetched(id, timeline);
-                          });
-                }
+                // auto replyTo  = mtx::accessors::in_reply_to_event(e);
+                // auto qReplyTo = QString::fromStdString(replyTo);
+                // if (!replyTo.empty() && !events.contains(qReplyTo)) {
+                //        http::client()->get_event(
+                //          this->room_id_.toStdString(),
+                //          replyTo,
+                //          [this, id, replyTo](
+                //            const mtx::events::collections::TimelineEvents &timeline,
+                //            mtx::http::RequestErr err) {
+                //                  if (err) {
+                //                          nhlog::net()->error(
+                //                            "Failed to retrieve event with id {}, which was "
+                //                            "requested to show the replyTo for event {}",
+                //                            replyTo,
+                //                            id.toStdString());
+                //                          return;
+                //                  }
+                //                  emit eventFetched(id, timeline);
+                //          });
+                //}
         }
-        return ids;
 }
 
 void
@@ -798,22 +748,23 @@ TimelineModel::readEvent(const std::string &id)
 void
 TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
-        std::vector<QString> ids = internalAddEvents(msgs.chunk);
+        (void)msgs;
+        // std::vector<QString> ids = internalAddEvents(msgs.chunk);
 
-        if (!ids.empty()) {
-                beginInsertRows(QModelIndex(),
-                                static_cast<int>(this->eventOrder.size()),
-                                static_cast<int>(this->eventOrder.size() + ids.size() - 1));
-                this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
-                endInsertRows();
-        }
+        // if (!ids.empty()) {
+        //        beginInsertRows(QModelIndex(),
+        //                        static_cast<int>(this->eventOrder.size()),
+        //                        static_cast<int>(this->eventOrder.size() + ids.size() - 1));
+        //        this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
+        //        endInsertRows();
+        //}
 
-        prev_batch_token_ = QString::fromStdString(msgs.end);
+        // prev_batch_token_ = QString::fromStdString(msgs.end);
 
-        if (ids.empty() && !msgs.chunk.empty()) {
-                // no visible events fetched, prevent loading from stopping
-                fetchMore(QModelIndex());
-        }
+        // if (ids.empty() && !msgs.chunk.empty()) {
+        //        // no visible events fetched, prevent loading from stopping
+        //        fetchMore(QModelIndex());
+        //}
 }
 
 QString
@@ -852,7 +803,10 @@ TimelineModel::escapeEmoji(QString str) const
 void
 TimelineModel::viewRawMessage(QString id) const
 {
-        std::string ev = mtx::accessors::serialize_event(events.value(id)).dump(4);
+        auto e = events.event(id.toStdString(), "", false);
+        if (!e)
+                return;
+        std::string ev = mtx::accessors::serialize_event(*e).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
 }
@@ -860,13 +814,11 @@ TimelineModel::viewRawMessage(QString id) const
 void
 TimelineModel::viewDecryptedRawMessage(QString id) const
 {
-        auto event = events.value(id);
-        if (auto e =
-              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
-                event = decryptEvent(*e).event;
-        }
+        auto e = events.event(id.toStdString(), "");
+        if (!e)
+                return;
 
-        std::string ev = mtx::accessors::serialize_event(event).dump(4);
+        std::string ev = mtx::accessors::serialize_event(*e).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
 }
@@ -875,114 +827,6 @@ void
 TimelineModel::openUserProfile(QString userid) const
 {
         MainWindow::instance()->openUserProfile(userid, room_id_);
-}
-
-DecryptionResult
-TimelineModel::decryptEvent(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const
-{
-        static QCache<std::string, DecryptionResult> decryptedEvents{300};
-
-        if (auto cachedEvent = decryptedEvents.object(e.event_id))
-                return *cachedEvent;
-
-        MegolmSessionIndex index;
-        index.room_id    = room_id_.toStdString();
-        index.session_id = e.content.session_id;
-        index.sender_key = e.content.sender_key;
-
-        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
-        dummy.origin_server_ts = e.origin_server_ts;
-        dummy.event_id         = e.event_id;
-        dummy.sender           = e.sender;
-        dummy.content.body =
-          tr("-- Encrypted Event (No keys found for decryption) --",
-             "Placeholder, when the message was not decrypted yet or can't be decrypted.")
-            .toStdString();
-
-        try {
-                if (!cache::inboundMegolmSessionExists(index)) {
-                        nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
-                                              index.room_id,
-                                              index.session_id,
-                                              e.sender);
-                        // TODO: request megolm session_id & session_key from the sender.
-                        decryptedEvents.insert(
-                          dummy.event_id, new DecryptionResult{dummy, false}, 1);
-                        return {dummy, false};
-                }
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failed to check megolm session's existence: {}", e.what());
-                dummy.content.body = tr("-- Decryption Error (failed to communicate with DB) --",
-                                        "Placeholder, when the message can't be decrypted, because "
-                                        "the DB access failed when trying to lookup the session.")
-                                       .toStdString();
-                decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
-                return {dummy, false};
-        }
-
-        std::string msg_str;
-        try {
-                auto session = cache::getInboundMegolmSession(index);
-                auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
-                msg_str      = std::string((char *)res.data.data(), res.data.size());
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
-                                      index.room_id,
-                                      index.session_id,
-                                      index.sender_key,
-                                      e.what());
-                dummy.content.body =
-                  tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
-                     "Placeholder, when the message can't be decrypted, because the DB access "
-                     "failed.")
-                    .toStdString();
-                decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
-                return {dummy, false};
-        } catch (const mtx::crypto::olm_exception &e) {
-                nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
-                                          index.room_id,
-                                          index.session_id,
-                                          index.sender_key,
-                                          e.what());
-                dummy.content.body =
-                  tr("-- Decryption Error (%1) --",
-                     "Placeholder, when the message can't be decrypted. In this case, the Olm "
-                     "decrytion returned an error, which is passed ad %1.")
-                    .arg(e.what())
-                    .toStdString();
-                decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
-                return {dummy, false};
-        }
-
-        // Add missing fields for the event.
-        json body                = json::parse(msg_str);
-        body["event_id"]         = e.event_id;
-        body["sender"]           = e.sender;
-        body["origin_server_ts"] = e.origin_server_ts;
-        body["unsigned"]         = e.unsigned_data;
-
-        // relations are unencrypted in content...
-        if (json old_ev = e; old_ev["content"].count("m.relates_to") != 0)
-                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
-
-        json event_array = json::array();
-        event_array.push_back(body);
-
-        std::vector<mtx::events::collections::TimelineEvents> temp_events;
-        mtx::responses::utils::parse_timeline_events(event_array, temp_events);
-
-        if (temp_events.size() == 1) {
-                decryptedEvents.insert(e.event_id, new DecryptionResult{temp_events[0], true}, 1);
-                return {temp_events[0], true};
-        }
-
-        dummy.content.body =
-          tr("-- Encrypted Event (Unknown event type) --",
-             "Placeholder, when the message was decrypted, but we couldn't parse it, because "
-             "Nheko/mtxclient don't support that event type yet.")
-            .toStdString();
-        decryptedEvents.insert(dummy.event_id, new DecryptionResult{dummy, false}, 1);
-        return {dummy, false};
 }
 
 void
@@ -995,23 +839,18 @@ TimelineModel::replyAction(QString id)
 RelatedInfo
 TimelineModel::relatedInfo(QString id)
 {
-        if (!events.contains(id))
+        auto event = events.event(id.toStdString(), "");
+        if (!event)
                 return {};
 
-        auto event = events.value(id);
-        if (auto e =
-              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
-                event = decryptEvent(*e).event;
-        }
-
         RelatedInfo related   = {};
-        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
-        related.related_event = mtx::accessors::event_id(event);
-        related.type          = mtx::accessors::msg_type(event);
+        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(*event));
+        related.related_event = mtx::accessors::event_id(*event);
+        related.type          = mtx::accessors::msg_type(*event);
 
         // get body, strip reply fallback, then transform the event to text, if it is a media event
         // etc
-        related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
+        related.quoted_body = QString::fromStdString(mtx::accessors::body(*event));
         QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
         while (related.quoted_body.startsWith(">"))
                 related.quoted_body.remove(plainQuote);
@@ -1020,7 +859,7 @@ TimelineModel::relatedInfo(QString id)
         related.quoted_body = utils::getQuoteBody(related);
 
         // get quoted body and strip reply fallback
-        related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
+        related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(*event);
         related.quoted_formatted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
         related.room = room_id_;
@@ -1058,18 +897,19 @@ TimelineModel::idToIndex(QString id) const
 {
         if (id.isEmpty())
                 return -1;
-        for (int i = 0; i < (int)eventOrder.size(); i++)
-                if (id == eventOrder[i])
-                        return i;
-        return -1;
+
+        auto idx = events.idToIndex(id.toStdString());
+        if (idx)
+                return events.size() - *idx;
+        else
+                return -1;
 }
 
 QString
 TimelineModel::indexToId(int index) const
 {
-        if (index < 0 || index >= (int)eventOrder.size())
-                return "";
-        return eventOrder[index];
+        auto id = events.indexToId(events.size() - index);
+        return id ? QString::fromStdString(*id) : "";
 }
 
 // Note: this will only be called for our messages
@@ -1477,58 +1317,56 @@ struct SendMessageVisitor
 void
 TimelineModel::processOnePendingMessage()
 {
-        if (pending.isEmpty())
-                return;
+        // if (pending.isEmpty())
+        //        return;
 
-        QString txn_id_qstr = pending.first();
+        // QString txn_id_qstr = pending.first();
 
-        auto event = events.value(txn_id_qstr);
-        std::visit(SendMessageVisitor{txn_id_qstr, this}, event);
+        // auto event = events.value(txn_id_qstr);
+        // std::visit(SendMessageVisitor{txn_id_qstr, this}, event);
 }
 
 void
 TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 {
-        std::visit(
-          [](auto &msg) {
-                  msg.type             = mtx::events::EventType::RoomMessage;
-                  msg.event_id         = http::client()->generate_txn_id();
-                  msg.sender           = http::client()->user_id().to_string();
-                  msg.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
-          },
-          event);
+        (void)event;
+        // std::visit(
+        //  [](auto &msg) {
+        //          msg.type             = mtx::events::EventType::RoomMessage;
+        //          msg.event_id         = http::client()->generate_txn_id();
+        //          msg.sender           = http::client()->user_id().to_string();
+        //          msg.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
+        //  },
+        //  event);
 
-        internalAddEvents({event});
+        // internalAddEvents({event});
 
-        QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
-        pending.push_back(txn_id_qstr);
-        if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event)) {
-                beginInsertRows(QModelIndex(), 0, 0);
-                this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
-                endInsertRows();
-        }
-        updateLastMessage();
+        // QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
+        // pending.push_back(txn_id_qstr);
+        // if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event)) {
+        //        beginInsertRows(QModelIndex(), 0, 0);
+        //        this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
+        //        endInsertRows();
+        //}
+        // updateLastMessage();
 
-        emit nextPendingMessage();
+        // emit nextPendingMessage();
 }
 
 bool
 TimelineModel::saveMedia(QString eventId) const
 {
-        mtx::events::collections::TimelineEvents event = events.value(eventId);
+        mtx::events::collections::TimelineEvents *event = events.event(eventId.toStdString(), "");
+        if (!event)
+                return false;
 
-        if (auto e =
-              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
-                event = decryptEvent(*e).event;
-        }
+        QString mxcUrl           = QString::fromStdString(mtx::accessors::url(*event));
+        QString originalFilename = QString::fromStdString(mtx::accessors::filename(*event));
+        QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(*event));
 
-        QString mxcUrl           = QString::fromStdString(mtx::accessors::url(event));
-        QString originalFilename = QString::fromStdString(mtx::accessors::filename(event));
-        QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(event));
+        auto encryptionInfo = mtx::accessors::file(*event);
 
-        auto encryptionInfo = mtx::accessors::file(event);
-
-        qml_mtx_events::EventType eventType = toRoomEventType(event);
+        qml_mtx_events::EventType eventType = toRoomEventType(*event);
 
         QString dialogTitle;
         if (eventType == qml_mtx_events::EventType::ImageMessage) {
@@ -1593,18 +1431,15 @@ TimelineModel::saveMedia(QString eventId) const
 void
 TimelineModel::cacheMedia(QString eventId)
 {
-        mtx::events::collections::TimelineEvents event = events.value(eventId);
+        mtx::events::collections::TimelineEvents *event = events.event(eventId.toStdString(), "");
+        if (!event)
+                return;
 
-        if (auto e =
-              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
-                event = decryptEvent(*e).event;
-        }
+        QString mxcUrl           = QString::fromStdString(mtx::accessors::url(*event));
+        QString originalFilename = QString::fromStdString(mtx::accessors::filename(*event));
+        QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(*event));
 
-        QString mxcUrl           = QString::fromStdString(mtx::accessors::url(event));
-        QString originalFilename = QString::fromStdString(mtx::accessors::filename(event));
-        QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(event));
-
-        auto encryptionInfo = mtx::accessors::file(event);
+        auto encryptionInfo = mtx::accessors::file(*event);
 
         // If the message is a link to a non mxcUrl, don't download it
         if (!mxcUrl.startsWith("mxc://")) {
@@ -1725,11 +1560,11 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
 QString
 TimelineModel::formatJoinRuleEvent(QString id)
 {
-        if (!events.contains(id))
+        mtx::events::collections::TimelineEvents *e = events.event(id.toStdString(), "");
+        if (!e)
                 return "";
 
-        auto event =
-          std::get_if<mtx::events::StateEvent<mtx::events::state::JoinRules>>(&events[id]);
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::JoinRules>>(e);
         if (!event)
                 return "";
 
@@ -1750,11 +1585,11 @@ TimelineModel::formatJoinRuleEvent(QString id)
 QString
 TimelineModel::formatGuestAccessEvent(QString id)
 {
-        if (!events.contains(id))
+        mtx::events::collections::TimelineEvents *e = events.event(id.toStdString(), "");
+        if (!e)
                 return "";
 
-        auto event =
-          std::get_if<mtx::events::StateEvent<mtx::events::state::GuestAccess>>(&events[id]);
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::GuestAccess>>(e);
         if (!event)
                 return "";
 
@@ -1774,11 +1609,11 @@ TimelineModel::formatGuestAccessEvent(QString id)
 QString
 TimelineModel::formatHistoryVisibilityEvent(QString id)
 {
-        if (!events.contains(id))
+        mtx::events::collections::TimelineEvents *e = events.event(id.toStdString(), "");
+        if (!e)
                 return "";
 
-        auto event =
-          std::get_if<mtx::events::StateEvent<mtx::events::state::HistoryVisibility>>(&events[id]);
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::HistoryVisibility>>(e);
 
         if (!event)
                 return "";
@@ -1808,11 +1643,11 @@ TimelineModel::formatHistoryVisibilityEvent(QString id)
 QString
 TimelineModel::formatPowerLevelEvent(QString id)
 {
-        if (!events.contains(id))
+        mtx::events::collections::TimelineEvents *e = events.event(id.toStdString(), "");
+        if (!e)
                 return "";
 
-        auto event =
-          std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(&events[id]);
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(e);
         if (!event)
                 return "";
 
@@ -1826,28 +1661,30 @@ TimelineModel::formatPowerLevelEvent(QString id)
 QString
 TimelineModel::formatMemberEvent(QString id)
 {
-        if (!events.contains(id))
+        mtx::events::collections::TimelineEvents *e = events.event(id.toStdString(), "");
+        if (!e)
                 return "";
 
-        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(&events[id]);
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(e);
         if (!event)
                 return "";
 
         mtx::events::StateEvent<mtx::events::state::Member> *prevEvent = nullptr;
-        QString prevEventId = QString::fromStdString(event->unsigned_data.replaces_state);
-        if (!prevEventId.isEmpty()) {
-                if (!events.contains(prevEventId)) {
+        if (!event->unsigned_data.replaces_state.empty()) {
+                auto tempPrevEvent =
+                  events.event(event->unsigned_data.replaces_state, event->event_id);
+                if (!tempPrevEvent) {
                         http::client()->get_event(
                           this->room_id_.toStdString(),
                           event->unsigned_data.replaces_state,
-                          [this, id, prevEventId](
+                          [this, id, prevEventId = event->unsigned_data.replaces_state](
                             const mtx::events::collections::TimelineEvents &timeline,
                             mtx::http::RequestErr err) {
                                   if (err) {
                                           nhlog::net()->error(
                                             "Failed to retrieve event with id {}, which was "
                                             "requested to show the membership for event {}",
-                                            prevEventId.toStdString(),
+                                            prevEventId,
                                             id.toStdString());
                                           return;
                                   }
@@ -1856,7 +1693,7 @@ TimelineModel::formatMemberEvent(QString id)
                 } else {
                         prevEvent =
                           std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(
-                            &events[prevEventId]);
+                            tempPrevEvent);
                 }
         }
 

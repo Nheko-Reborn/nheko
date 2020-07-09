@@ -353,7 +353,7 @@ Page {
 						anchors.rightMargin: 20
 						anchors.bottom: parent.bottom
 
-						modelData: chat.model ? chat.model.getDump(chat.model.reply) : {}
+						modelData: chat.model ? chat.model.getDump(chat.model.reply, chat.model.id) : {}
 						userColor: timelineManager.userColor(modelData.userId, colors.window)
 					}
 

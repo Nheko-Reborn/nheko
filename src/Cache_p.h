@@ -170,6 +170,30 @@ public:
         //! Add all notifications containing a user mention to the db.
         void saveTimelineMentions(const mtx::responses::Notifications &res);
 
+        //! retrieve events in timeline and related functions
+        struct Messages
+        {
+                mtx::responses::Timeline timeline;
+                uint64_t next_index;
+                bool end_of_cache = false;
+        };
+        Messages getTimelineMessages(lmdb::txn &txn,
+                                     const std::string &room_id,
+                                     int64_t index = std::numeric_limits<int64_t>::max(),
+                                     bool forward  = false);
+
+        std::optional<mtx::events::collections::TimelineEvent> getEvent(
+          const std::string &room_id,
+          const std::string &event_id);
+        struct TimelineRange
+        {
+                int64_t first, last;
+        };
+        std::optional<TimelineRange> getTimelineRange(const std::string &room_id);
+        std::optional<int64_t> getTimelineIndex(const std::string &room_id,
+                                                std::string_view event_id);
+        std::optional<std::string> getTimelineEventId(const std::string &room_id, int64_t index);
+
         //! Remove old unused data.
         void deleteOldMessages();
         void deleteOldData() noexcept;
@@ -247,21 +271,6 @@ private:
         void saveTimelineMessages(lmdb::txn &txn,
                                   const std::string &room_id,
                                   const mtx::responses::Timeline &res);
-
-        struct Messages
-        {
-                mtx::responses::Timeline timeline;
-                uint64_t next_index;
-                bool end_of_cache = false;
-        };
-        Messages getTimelineMessages(lmdb::txn &txn,
-                                     const std::string &room_id,
-                                     int64_t index = std::numeric_limits<int64_t>::max(),
-                                     bool forward  = false);
-
-        std::optional<mtx::events::collections::TimelineEvent> getEvent(
-          const std::string &room_id,
-          const std::string &event_id);
 
         //! Remove a room from the cache.
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);

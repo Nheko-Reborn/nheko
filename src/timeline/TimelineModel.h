@@ -9,6 +9,7 @@
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
+#include "EventStore.h"
 #include "ReactionsModel.h"
 
 namespace mtx::http {
@@ -170,7 +171,7 @@ public:
         QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-        QVariant data(const QString &id, int role) const;
+        QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
 
         bool canFetchMore(const QModelIndex &) const override;
         void fetchMore(const QModelIndex &) override;
@@ -207,7 +208,7 @@ public slots:
         void setCurrentIndex(int index);
         int currentIndex() const { return idToIndex(currentId); }
         void markEventsAsRead(const std::vector<QString> &event_ids);
-        QVariantMap getDump(QString eventId) const;
+        QVariantMap getDump(QString eventId, QString relatedTo) const;
         void updateTypingUsers(const std::vector<QString> &users)
         {
                 if (this->typingUsers_ != users) {
@@ -257,9 +258,7 @@ signals:
         void paginationInProgressChanged(const bool);
 
 private:
-        DecryptionResult decryptEvent(
-          const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const;
-        std::vector<QString> internalAddEvents(
+        void internalAddEvents(
           const std::vector<mtx::events::collections::TimelineEvents> &timeline);
         void sendEncryptedMessage(const std::string &txn_id, nlohmann::json content);
         void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
@@ -272,11 +271,11 @@ private:
 
         void setPaginationInProgress(const bool paginationInProgress);
 
-        QHash<QString, mtx::events::collections::TimelineEvents> events;
         QSet<QString> read;
         QList<QString> pending;
-        std::vector<QString> eventOrder;
         std::map<QString, ReactionsModel> reactions;
+
+        mutable EventStore events;
 
         QString room_id_;
         QString prev_batch_token_;

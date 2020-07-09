@@ -1272,7 +1272,10 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, int64_t i
         int counter = 0;
 
         bool ret;
-        while ((ret = cursor.get(indexVal, event_id, forward ? MDB_NEXT : MDB_LAST)) &&
+        while ((ret = cursor.get(indexVal,
+                                 event_id,
+                                 counter == 0 ? (forward ? MDB_FIRST : MDB_LAST)
+                                              : (forward ? MDB_NEXT : MDB_PREV))) &&
                counter++ < BATCH_SIZE) {
                 lmdb::val event;
                 bool success = lmdb::dbi_get(txn, eventsDb, event_id, event);
@@ -1280,8 +1283,13 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, int64_t i
                         continue;
 
                 mtx::events::collections::TimelineEvent te;
-                mtx::events::collections::from_json(
-                  json::parse(std::string_view(event.data(), event.size())), te);
+                try {
+                        mtx::events::collections::from_json(
+                          json::parse(std::string_view(event.data(), event.size())), te);
+                } catch (std::exception &e) {
+                        nhlog::db()->error("Failed to parse message from cache {}", e.what());
+                        continue;
+                }
 
                 messages.timeline.events.push_back(std::move(te.data));
         }
@@ -1306,8 +1314,13 @@ Cache::getEvent(const std::string &room_id, const std::string &event_id)
                 return {};
 
         mtx::events::collections::TimelineEvent te;
-        mtx::events::collections::from_json(
-          json::parse(std::string_view(event.data(), event.size())), te);
+        try {
+                mtx::events::collections::from_json(
+                  json::parse(std::string_view(event.data(), event.size())), te);
+        } catch (std::exception &e) {
+                nhlog::db()->error("Failed to parse message from cache {}", e.what());
+                return std::nullopt;
+        }
 
         return te;
 }
@@ -1364,6 +1377,61 @@ Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
         return std::string(val.data(), val.size());
 }
 
+std::optional<Cache::TimelineRange>
+Cache::getTimelineRange(const std::string &room_id)
+{
+        auto txn     = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto orderDb = getOrderToMessageDb(txn, room_id);
+
+        lmdb::val indexVal, val;
+
+        auto cursor = lmdb::cursor::open(txn, orderDb);
+        if (!cursor.get(indexVal, val, MDB_LAST)) {
+                return {};
+        }
+
+        TimelineRange range{};
+        range.last = *indexVal.data<int64_t>();
+
+        if (!cursor.get(indexVal, val, MDB_FIRST)) {
+                return {};
+        }
+        range.first = *indexVal.data<int64_t>();
+
+        return range;
+}
+std::optional<int64_t>
+Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
+{
+        auto txn     = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto orderDb = getMessageToOrderDb(txn, room_id);
+
+        lmdb::val indexVal{event_id.data(), event_id.size()}, val;
+
+        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        if (!success) {
+                return {};
+        }
+
+        return *val.data<int64_t>();
+}
+
+std::optional<std::string>
+Cache::getTimelineEventId(const std::string &room_id, int64_t index)
+{
+        auto txn     = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto orderDb = getOrderToMessageDb(txn, room_id);
+
+        lmdb::val indexVal{&index, sizeof(index)}, val;
+
+        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        if (!success) {
+                return {};
+        }
+
+        return std::string(val.data(), val.size());
+}
+
 DescInfo
 Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 {
@@ -1379,8 +1447,10 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
         lmdb::val indexVal, event_id;
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
-        cursor.get(indexVal, event_id, MDB_LAST);
-        while (cursor.get(indexVal, event_id, MDB_PREV)) {
+        bool first  = true;
+        while (cursor.get(indexVal, event_id, first ? MDB_LAST : MDB_PREV)) {
+                first = false;
+
                 lmdb::val event;
                 bool success = lmdb::dbi_get(txn, eventsDb, event_id, event);
                 if (!success)
@@ -2026,8 +2096,43 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                 auto event = mtx::accessors::serialize_event(e);
                 if (auto redaction =
                       std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
-                        lmdb::dbi_put(
-                          txn, eventsDb, lmdb::val(redaction->redacts), lmdb::val(event.dump()));
+                        if (redaction->redacts.empty())
+                                continue;
+
+                        lmdb::val ev{};
+                        bool success =
+                          lmdb::dbi_get(txn, eventsDb, lmdb::val(redaction->redacts), ev);
+                        if (!success)
+                                continue;
+
+                        mtx::events::collections::TimelineEvent te;
+
+                        try {
+                                mtx::events::collections::from_json(
+                                  json::parse(std::string_view(ev.data(), ev.size())), te);
+                        } catch (std::exception &e) {
+                                nhlog::db()->error("Failed to parse message from cache {}",
+                                                   e.what());
+                                continue;
+                        }
+
+                        auto redactedEvent = std::visit(
+                          [](const auto &ev) -> mtx::events::RoomEvent<mtx::events::msg::Redacted> {
+                                  mtx::events::RoomEvent<mtx::events::msg::Redacted> replacement =
+                                    {};
+                                  replacement.event_id         = ev.event_id;
+                                  replacement.room_id          = ev.room_id;
+                                  replacement.sender           = ev.sender;
+                                  replacement.origin_server_ts = ev.origin_server_ts;
+                                  replacement.type             = ev.type;
+                                  return replacement;
+                          },
+                          te.data);
+
+                        lmdb::dbi_put(txn,
+                                      eventsDb,
+                                      lmdb::val(redaction->redacts),
+                                      lmdb::val(json(redactedEvent).dump()));
                 } else {
                         std::string event_id_val = event["event_id"].get<std::string>();
                         lmdb::val event_id       = event_id_val;
@@ -2237,8 +2342,10 @@ Cache::deleteOldMessages()
                 if (message_count < MAX_RESTORED_MESSAGES)
                         continue;
 
-                while (cursor.get(indexVal, val, MDB_NEXT) &&
+                bool start = true;
+                while (cursor.get(indexVal, val, start ? MDB_FIRST : MDB_NEXT) &&
                        message_count-- < MAX_RESTORED_MESSAGES) {
+                        start    = false;
                         auto obj = json::parse(std::string_view(val.data(), val.size()));
 
                         if (obj.count("event_id") != 0) {
@@ -2394,6 +2501,9 @@ Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
 mtx::presence::PresenceState
 Cache::presenceState(const std::string &user_id)
 {
+        if (user_id.empty())
+                return {};
+
         lmdb::val presenceVal;
 
         auto txn = lmdb::txn::begin(env_);
@@ -2416,6 +2526,9 @@ Cache::presenceState(const std::string &user_id)
 std::string
 Cache::statusMessage(const std::string &user_id)
 {
+        if (user_id.empty())
+                return {};
+
         lmdb::val presenceVal;
 
         auto txn = lmdb::txn::begin(env_);
