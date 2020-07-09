@@ -81,6 +81,9 @@ signals:
         void endInsertRows();
         void dataChanged(int from, int to);
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
+        void eventFetched(std::string id,
+                          std::string relatedTo,
+                          mtx::events::collections::TimelineEvents timeline);
 
 private:
         mtx::events::collections::TimelineEvents *decryptEvent(

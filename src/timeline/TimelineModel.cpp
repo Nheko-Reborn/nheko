@@ -696,27 +696,6 @@ TimelineModel::internalAddEvents(
                                 emit dataChanged(index(idx, 0), index(idx, 0));
                         continue; // don't insert reaction into timeline
                 }
-
-                // auto replyTo  = mtx::accessors::in_reply_to_event(e);
-                // auto qReplyTo = QString::fromStdString(replyTo);
-                // if (!replyTo.empty() && !events.contains(qReplyTo)) {
-                //        http::client()->get_event(
-                //          this->room_id_.toStdString(),
-                //          replyTo,
-                //          [this, id, replyTo](
-                //            const mtx::events::collections::TimelineEvents &timeline,
-                //            mtx::http::RequestErr err) {
-                //                  if (err) {
-                //                          nhlog::net()->error(
-                //                            "Failed to retrieve event with id {}, which was "
-                //                            "requested to show the replyTo for event {}",
-                //                            replyTo,
-                //                            id.toStdString());
-                //                          return;
-                //                  }
-                //                  emit eventFetched(id, timeline);
-                //          });
-                //}
         }
 }
 

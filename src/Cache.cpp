@@ -1324,6 +1324,17 @@ Cache::getEvent(const std::string &room_id, const std::string &event_id)
 
         return te;
 }
+void
+Cache::storeEvent(const std::string &room_id,
+                  const std::string &event_id,
+                  const mtx::events::collections::TimelineEvent &event)
+{
+        auto txn        = lmdb::txn::begin(env_);
+        auto eventsDb   = getEventsDb(txn, room_id);
+        auto event_json = mtx::accessors::serialize_event(event.data);
+        lmdb::dbi_put(txn, eventsDb, lmdb::val(event_id), lmdb::val(event_json.dump()));
+        txn.commit();
+}
 
 QMap<QString, RoomInfo>
 Cache::roomInfo(bool withInvites)

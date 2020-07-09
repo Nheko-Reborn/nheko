@@ -5,6 +5,7 @@
 #include "Cache_p.h"
 #include "EventAccessors.h"
 #include "Logging.h"
+#include "MatrixClient.h"
 #include "Olm.h"
 
 QCache<EventStore::IdIndex, mtx::events::collections::TimelineEvents> EventStore::decryptedEvents_{
@@ -22,6 +23,23 @@ EventStore::EventStore(std::string room_id, QObject *)
                 this->first = range->first;
                 this->last  = range->last;
         }
+
+        connect(
+          this,
+          &EventStore::eventFetched,
+          this,
+          [this](std::string id,
+                 std::string relatedTo,
+                 mtx::events::collections::TimelineEvents timeline) {
+                  cache::client()->storeEvent(room_id_, id, {timeline});
+
+                  if (!relatedTo.empty()) {
+                          auto idx = idToIndex(id);
+                          if (idx)
+                                  emit dataChanged(*idx, *idx);
+                  }
+          },
+          Qt::QueuedConnection);
 }
 
 void
@@ -241,8 +259,23 @@ EventStore::event(std::string_view id, std::string_view related_to, bool decrypt
         if (!event_ptr) {
                 auto event = cache::client()->getEvent(room_id_, index.id);
                 if (!event) {
-                        // fetch
-                        (void)related_to;
+                        http::client()->get_event(
+                          room_id_,
+                          index.id,
+                          [this,
+                           relatedTo = std::string(related_to.data(), related_to.size()),
+                           id = index.id](const mtx::events::collections::TimelineEvents &timeline,
+                                          mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->error(
+                                            "Failed to retrieve event with id {}, which was "
+                                            "requested to show the replyTo for event {}",
+                                            relatedTo,
+                                            id);
+                                          return;
+                                  }
+                                  emit eventFetched(id, relatedTo, timeline);
+                          });
                         return nullptr;
                 }
                 event_ptr = new mtx::events::collections::TimelineEvents(std::move(event->data));

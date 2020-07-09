@@ -185,6 +185,9 @@ public:
         std::optional<mtx::events::collections::TimelineEvent> getEvent(
           const std::string &room_id,
           const std::string &event_id);
+        void storeEvent(const std::string &room_id,
+                        const std::string &event_id,
+                        const mtx::events::collections::TimelineEvent &event);
         struct TimelineRange
         {
                 int64_t first, last;
