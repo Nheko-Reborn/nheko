@@ -136,4 +136,9 @@
         <file>qml/delegates/Placeholder.qml</file>
         <file>qml/delegates/Reply.qml</file>
     </qresource>
+    <qresource prefix="/media">
+        <file>media/ring.ogg</file>
+        <file>media/ringback.ogg</file>
+        <file>media/callend.ogg</file>
+    </qresource>
 </RCC>

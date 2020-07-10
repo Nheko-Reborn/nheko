@@ -31,6 +31,7 @@
 #include "Logging.h"
 #include "TextInputWidget.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "ui/FlatButton.h"
 #include "ui/LoadingIndicator.h"
 
@@ -453,6 +454,13 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         topLayout_->setSpacing(0);
         topLayout_->setContentsMargins(13, 1, 13, 0);
 
+        callBtn_ = new FlatButton(this);
+        changeCallButtonState(false);
+        connect(&WebRTCSession::instance(),
+                &WebRTCSession::pipelineChanged,
+                this,
+                &TextInputWidget::changeCallButtonState);
+
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");
 
@@ -521,6 +529,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         emojiBtn_->setIcon(emoji_icon);
         emojiBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
+        topLayout_->addWidget(callBtn_);
         topLayout_->addWidget(sendFileBtn_);
         topLayout_->addWidget(input_);
         topLayout_->addWidget(emojiBtn_);
@@ -528,6 +537,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         setLayout(topLayout_);
 
+        connect(callBtn_, &FlatButton::clicked, this, &TextInputWidget::callButtonPress);
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
         connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
@@ -651,4 +661,20 @@ TextInputWidget::paintEvent(QPaintEvent *)
         QPainter p(this);
 
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+TextInputWidget::changeCallButtonState(bool callStarted)
+{
+        // TODO Telephone and HangUp icons - co-opt the ones below for now
+        QIcon icon;
+        if (callStarted) {
+                callBtn_->setToolTip(tr("Hang up"));
+                icon.addFile(":/icons/icons/ui/remove-symbol.png");
+        } else {
+                callBtn_->setToolTip(tr("Place a call"));
+                icon.addFile(":/icons/icons/ui/speech-bubbles-comment-option.png");
+        }
+        callBtn_->setIcon(icon);
+        callBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 }

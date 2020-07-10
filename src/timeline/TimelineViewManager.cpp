@@ -3,8 +3,10 @@
 #include <QMetaType>
 #include <QPalette>
 #include <QQmlContext>
+#include <QString>
 
 #include "BlurhashProvider.h"
+#include "CallManager.h"
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
@@ -71,10 +73,13 @@ TimelineViewManager::userStatus(QString id) const
         return QString::fromStdString(cache::statusMessage(id.toStdString()));
 }
 
-TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent)
+TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings,
+                                         CallManager *callManager,
+                                         QWidget *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
   , blurhashProvider(new BlurhashProvider())
+  , callManager_(callManager)
   , settings(userSettings)
 {
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
@@ -139,7 +144,17 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
                 // addRoom will only add the room, if it doesn't exist
                 addRoom(QString::fromStdString(room_id));
                 const auto &room_model = models.value(QString::fromStdString(room_id));
+                if (!isInitialSync_)
+                        connect(room_model.data(),
+                                &TimelineModel::newCallEvent,
+                                callManager_,
+                                &CallManager::syncEvent);
                 room_model->addEvents(room.timeline);
+                if (!isInitialSync_)
+                        disconnect(room_model.data(),
+                                   &TimelineModel::newCallEvent,
+                                   callManager_,
+                                   &CallManager::syncEvent);
 
                 if (ChatPage::instance()->userSettings()->typingNotifications()) {
                         std::vector<QString> typing;
@@ -285,7 +300,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
                 timeline_->resetReply();
         }
 
-        timeline_->sendMessage(text);
+        timeline_->sendMessageEvent(text, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -307,7 +322,7 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
         }
 
         if (timeline_)
-                timeline_->sendMessage(emote);
+                timeline_->sendMessageEvent(emote, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -337,7 +352,7 @@ TimelineViewManager::queueReactionMessage(const QString &roomId,
         reaction.relates_to.key      = reactionKey.toStdString();
 
         auto model = models.value(roomId);
-        model->sendMessage(reaction);
+        model->sendMessageEvent(reaction, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -366,7 +381,7 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
                 model->resetReply();
         }
 
-        model->sendMessage(image);
+        model->sendMessageEvent(image, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -391,7 +406,7 @@ TimelineViewManager::queueFileMessage(
                 model->resetReply();
         }
 
-        model->sendMessage(file);
+        model->sendMessageEvent(file, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -415,7 +430,7 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
                 model->resetReply();
         }
 
-        model->sendMessage(audio);
+        model->sendMessageEvent(audio, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -439,5 +454,34 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
                 model->resetReply();
         }
 
-        model->sendMessage(video);
+        model->sendMessageEvent(video, mtx::events::EventType::RoomMessage);
+}
+
+void
+TimelineViewManager::queueCallMessage(const QString &roomid,
+                                      const mtx::events::msg::CallInvite &callInvite)
+{
+        models.value(roomid)->sendMessageEvent(callInvite, mtx::events::EventType::CallInvite);
+}
+
+void
+TimelineViewManager::queueCallMessage(const QString &roomid,
+                                      const mtx::events::msg::CallCandidates &callCandidates)
+{
+        models.value(roomid)->sendMessageEvent(callCandidates,
+                                               mtx::events::EventType::CallCandidates);
+}
+
+void
+TimelineViewManager::queueCallMessage(const QString &roomid,
+                                      const mtx::events::msg::CallAnswer &callAnswer)
+{
+        models.value(roomid)->sendMessageEvent(callAnswer, mtx::events::EventType::CallAnswer);
+}
+
+void
+TimelineViewManager::queueCallMessage(const QString &roomid,
+                                      const mtx::events::msg::CallHangUp &callHangUp)
+{
+        models.value(roomid)->sendMessageEvent(callHangUp, mtx::events::EventType::CallHangUp);
 }

@@ -36,6 +36,12 @@ enum EventType
         Aliases,
         /// m.room.avatar
         Avatar,
+        /// m.call.invite
+        CallInvite,
+        /// m.call.answer
+        CallAnswer,
+        /// m.call.hangup
+        CallHangUp,
         /// m.room.canonical_alias
         CanonicalAlias,
         /// m.room.create
@@ -200,7 +206,7 @@ public:
         void updateLastMessage();
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>
-        void sendMessage(const T &msg);
+        void sendMessageEvent(const T &content, mtx::events::EventType eventType);
         RelatedInfo relatedInfo(QString id);
 
 public slots:
@@ -255,13 +261,17 @@ signals:
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
         void paginationInProgressChanged(const bool);
+        void newCallEvent(const mtx::events::collections::TimelineEvents &event);
 
 private:
         DecryptionResult decryptEvent(
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const;
         std::vector<QString> internalAddEvents(
-          const std::vector<mtx::events::collections::TimelineEvents> &timeline);
-        void sendEncryptedMessage(const std::string &txn_id, nlohmann::json content);
+          const std::vector<mtx::events::collections::TimelineEvents> &timeline,
+          bool emitCallEvents);
+        void sendEncryptedMessageEvent(const std::string &txn_id,
+                                       nlohmann::json content,
+                                       mtx::events::EventType);
         void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
                                const std::map<std::string, std::string> &room_key,
                                const std::map<std::string, DevicePublicKeys> &pks,
@@ -296,9 +306,10 @@ private:
 
 template<class T>
 void
-TimelineModel::sendMessage(const T &msg)
+TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventType)
 {
         mtx::events::RoomEvent<T> msgCopy = {};
-        msgCopy.content                   = msg;
+        msgCopy.content                   = content;
+        msgCopy.type                      = eventType;
         emit newMessageToSend(msgCopy);
 }

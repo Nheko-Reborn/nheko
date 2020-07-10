@@ -121,6 +121,21 @@ struct RoomEventType
         {
                 return qml_mtx_events::EventType::Redacted;
         }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::CallInvite> &)
+        {
+                return qml_mtx_events::EventType::CallInvite;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::CallAnswer> &)
+        {
+                return qml_mtx_events::EventType::CallAnswer;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::CallHangUp> &)
+        {
+                return qml_mtx_events::EventType::CallHangUp;
+        }
         // ::EventType::Type operator()(const Event<mtx::events::msg::Location> &e) { return
         // ::EventType::LocationMessage; }
 };
@@ -538,7 +553,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         if (timeline.events.empty())
                 return;
 
-        std::vector<QString> ids = internalAddEvents(timeline.events);
+        std::vector<QString> ids = internalAddEvents(timeline.events, true);
 
         if (!ids.empty()) {
                 beginInsertRows(QModelIndex(), 0, static_cast<int>(ids.size() - 1));
@@ -568,6 +583,23 @@ isMessage(const mtx::events::Event<T> &)
 template<typename T>
 auto
 isMessage(const mtx::events::EncryptedEvent<T> &)
+{
+        return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &)
+{
+        return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &)
+{
+        return true;
+}
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &)
 {
         return true;
 }
@@ -623,7 +655,8 @@ TimelineModel::updateLastMessage()
 
 std::vector<QString>
 TimelineModel::internalAddEvents(
-  const std::vector<mtx::events::collections::TimelineEvents> &timeline)
+  const std::vector<mtx::events::collections::TimelineEvents> &timeline,
+  bool emitCallEvents)
 {
         std::vector<QString> ids;
         for (auto e : timeline) {
@@ -717,6 +750,46 @@ TimelineModel::internalAddEvents(
 
                         if (encInfo)
                                 emit newEncryptedImage(encInfo.value());
+
+                        if (emitCallEvents) {
+                                // event room_id is not set, apparently due to spec bug
+                                if (auto callInvite = std::get_if<
+                                      mtx::events::RoomEvent<mtx::events::msg::CallInvite>>(&e_)) {
+                                        callInvite->room_id = room_id_.toStdString();
+                                        emit newCallEvent(e_);
+                                } else if (std::holds_alternative<mtx::events::RoomEvent<
+                                             mtx::events::msg::CallCandidates>>(e_) ||
+                                           std::holds_alternative<
+                                             mtx::events::RoomEvent<mtx::events::msg::CallAnswer>>( e_) ||
+                                           std::holds_alternative<
+                                             mtx::events::RoomEvent<mtx::events::msg::CallHangUp>>( e_)) {
+                                        emit newCallEvent(e_);
+                                }
+                        }
+                }
+
+                if (std::holds_alternative<
+                      mtx::events::RoomEvent<mtx::events::msg::CallCandidates>>(e)) {
+                        // don't display CallCandidate events to user
+                        events.insert(id, e);
+                        if (emitCallEvents)
+                                emit newCallEvent(e);
+                        continue;
+                }
+
+                if (emitCallEvents) {
+                        // event room_id is not set, apparently due to spec bug
+                        if (auto callInvite =
+                              std::get_if<mtx::events::RoomEvent<mtx::events::msg::CallInvite>>(
+                                &e)) {
+                                callInvite->room_id = room_id_.toStdString();
+                                emit newCallEvent(e);
+                        } else if (std::holds_alternative<
+                                     mtx::events::RoomEvent<mtx::events::msg::CallAnswer>>(e) ||
+                                   std::holds_alternative<
+                                     mtx::events::RoomEvent<mtx::events::msg::CallHangUp>>(e)) {
+                                emit newCallEvent(e);
+                        }
                 }
 
                 this->events.insert(id, e);
@@ -774,7 +847,7 @@ TimelineModel::readEvent(const std::string &id)
 void
 TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
 {
-        std::vector<QString> ids = internalAddEvents(msgs.chunk);
+        std::vector<QString> ids = internalAddEvents(msgs.chunk, false);
 
         if (!ids.empty()) {
                 beginInsertRows(QModelIndex(),
@@ -1064,14 +1137,17 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
 }
 
 void
-TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json content)
+TimelineModel::sendEncryptedMessageEvent(const std::string &txn_id,
+                                         nlohmann::json content,
+                                         mtx::events::EventType eventType)
 {
         const auto room_id = room_id_.toStdString();
 
         using namespace mtx::events;
         using namespace mtx::identifiers;
 
-        json doc = {{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
+        json doc = {
+          {"type", mtx::events::to_string(eventType)}, {"content", content}, {"room_id", room_id}};
 
         try {
                 // Check if we have already an outbound megolm session then we can use.
@@ -1375,45 +1451,56 @@ struct SendMessageVisitor
           , model_(model)
         {}
 
-        // Do-nothing operator for all unhandled events
-        template<typename T>
-        void operator()(const mtx::events::Event<T> &)
-        {}
-        // Operator for m.room.message events that contain a msgtype in their content
-        template<typename T,
-                 std::enable_if_t<std::is_same<decltype(T::msgtype), std::string>::value, int> = 0>
-        void operator()(const mtx::events::RoomEvent<T> &msg)
-
+        template<typename T, mtx::events::EventType Event>
+        void sendRoomEvent(const mtx::events::RoomEvent<T> &msg)
         {
                 if (cache::isRoomEncrypted(model_->room_id_.toStdString())) {
                         auto encInfo = mtx::accessors::file(msg);
                         if (encInfo)
                                 emit model_->newEncryptedImage(encInfo.value());
 
-                        model_->sendEncryptedMessage(txn_id_qstr_.toStdString(),
-                                                     nlohmann::json(msg.content));
+                        model_->sendEncryptedMessageEvent(
+                          txn_id_qstr_.toStdString(), nlohmann::json(msg.content), Event);
                 } else {
-                        QString txn_id_qstr  = txn_id_qstr_;
-                        TimelineModel *model = model_;
-                        http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
-                          model->room_id_.toStdString(),
-                          txn_id_qstr.toStdString(),
-                          msg.content,
-                          [txn_id_qstr, model](const mtx::responses::EventId &res,
-                                               mtx::http::RequestErr err) {
-                                  if (err) {
-                                          const int status_code =
-                                            static_cast<int>(err->status_code);
-                                          nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                                             txn_id_qstr.toStdString(),
-                                                             err->matrix_error.error,
-                                                             status_code);
-                                          emit model->messageFailed(txn_id_qstr);
-                                  }
-                                  emit model->messageSent(
-                                    txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
-                          });
+                        sendUnencryptedRoomEvent<T, Event>(msg);
                 }
+        }
+
+        template<typename T, mtx::events::EventType Event>
+        void sendUnencryptedRoomEvent(const mtx::events::RoomEvent<T> &msg)
+        {
+                QString txn_id_qstr  = txn_id_qstr_;
+                TimelineModel *model = model_;
+                http::client()->send_room_message<T, Event>(
+                  model->room_id_.toStdString(),
+                  txn_id_qstr.toStdString(),
+                  msg.content,
+                  [txn_id_qstr, model](const mtx::responses::EventId &res,
+                                       mtx::http::RequestErr err) {
+                          if (err) {
+                                  const int status_code = static_cast<int>(err->status_code);
+                                  nhlog::net()->warn("[{}] failed to send message: {} {}",
+                                                     txn_id_qstr.toStdString(),
+                                                     err->matrix_error.error,
+                                                     status_code);
+                                  emit model->messageFailed(txn_id_qstr);
+                          }
+                          emit model->messageSent(txn_id_qstr,
+                                                  QString::fromStdString(res.event_id.to_string()));
+                  });
+        }
+
+        // Do-nothing operator for all unhandled events
+        template<typename T>
+        void operator()(const mtx::events::Event<T> &)
+        {}
+
+        // Operator for m.room.message events that contain a msgtype in their content
+        template<typename T,
+                 std::enable_if_t<std::is_same<decltype(T::msgtype), std::string>::value, int> = 0>
+        void operator()(const mtx::events::RoomEvent<T> &msg)
+        {
+                sendRoomEvent<T, mtx::events::EventType::RoomMessage>(msg);
         }
 
         // Special operator for reactions, which are a type of m.room.message, but need to be
@@ -1422,28 +1509,33 @@ struct SendMessageVisitor
         // cannot handle it correctly.  See the MSC for more details:
         // https://github.com/matrix-org/matrix-doc/blob/matthew/msc1849/proposals/1849-aggregations.md#end-to-end-encryption
         void operator()(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &msg)
-
         {
-                QString txn_id_qstr  = txn_id_qstr_;
-                TimelineModel *model = model_;
-                http::client()
-                  ->send_room_message<mtx::events::msg::Reaction, mtx::events::EventType::Reaction>(
-                    model->room_id_.toStdString(),
-                    txn_id_qstr.toStdString(),
-                    msg.content,
-                    [txn_id_qstr, model](const mtx::responses::EventId &res,
-                                         mtx::http::RequestErr err) {
-                            if (err) {
-                                    const int status_code = static_cast<int>(err->status_code);
-                                    nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                                       txn_id_qstr.toStdString(),
-                                                       err->matrix_error.error,
-                                                       status_code);
-                                    emit model->messageFailed(txn_id_qstr);
-                            }
-                            emit model->messageSent(
-                              txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
-                    });
+                sendUnencryptedRoomEvent<mtx::events::msg::Reaction,
+                                         mtx::events::EventType::Reaction>(msg);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallInvite, mtx::events::EventType::CallInvite>(
+                  event);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallCandidates> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallCandidates,
+                              mtx::events::EventType::CallCandidates>(event);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallAnswer, mtx::events::EventType::CallAnswer>(
+                  event);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallHangUp, mtx::events::EventType::CallHangUp>(
+                  event);
         }
 
         QString txn_id_qstr_;
@@ -1467,14 +1559,13 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 {
         std::visit(
           [](auto &msg) {
-                  msg.type             = mtx::events::EventType::RoomMessage;
                   msg.event_id         = http::client()->generate_txn_id();
                   msg.sender           = http::client()->user_id().to_string();
                   msg.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
           },
           event);
 
-        internalAddEvents({event});
+        internalAddEvents({event}, false);
 
         QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
         pending.push_back(txn_id_qstr);

@@ -71,6 +71,8 @@ class UserSettings : public QObject
         Q_PROPERTY(
           QString emojiFont READ emojiFont WRITE setEmojiFontFamily NOTIFY emojiFontChanged)
         Q_PROPERTY(Presence presence READ presence WRITE setPresence NOTIFY presenceChanged)
+        Q_PROPERTY(
+          bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
 
 public:
         UserSettings();
@@ -107,6 +109,7 @@ public:
         void setAvatarCircles(bool state);
         void setDecryptSidebar(bool state);
         void setPresence(Presence state);
+        void setUseStunServer(bool state);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -132,6 +135,7 @@ public:
         QString font() const { return font_; }
         QString emojiFont() const { return emojiFont_; }
         Presence presence() const { return presence_; }
+        bool useStunServer() const { return useStunServer_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -154,6 +158,7 @@ signals:
         void fontChanged(QString state);
         void emojiFontChanged(QString state);
         void presenceChanged(Presence state);
+        void useStunServerChanged(bool state);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -181,6 +186,7 @@ private:
         QString font_;
         QString emojiFont_;
         Presence presence_;
+        bool useStunServer_;
 };
 
 class HorizontalLine : public QFrame
@@ -234,6 +240,7 @@ private:
         Toggle *desktopNotifications_;
         Toggle *alertOnNotification_;
         Toggle *avatarCircles_;
+        Toggle *useStunServer_;
         Toggle *decryptSidebar_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
