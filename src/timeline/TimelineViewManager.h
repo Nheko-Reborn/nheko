@@ -50,6 +50,8 @@ public:
         Q_INVOKABLE QString userPresence(QString id) const;
         Q_INVOKABLE QString userStatus(QString id) const;
 
+        Q_INVOKABLE void openLink(QString link) const;
+
 signals:
         void clearRoomMessageCount(QString roomid);
         void updateRoomsLastMessage(QString roomid, const DescInfo &info);

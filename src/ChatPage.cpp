@@ -589,8 +589,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   emit notificationsRetrieved(std::move(res));
                           });
         });
-        connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
-        connect(this, &ChatPage::syncTags, communitiesList_, &CommunitiesList::syncTags);
+        connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync, Qt::QueuedConnection);
+        connect(this,
+                &ChatPage::syncTags,
+                communitiesList_,
+                &CommunitiesList::syncTags,
+                Qt::QueuedConnection);
         connect(
           this, &ChatPage::syncTopBar, this, [this](const std::map<QString, RoomInfo> &updates) {
                   if (updates.find(currentRoom()) != updates.end())
@@ -605,11 +609,15 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 user_info_widget_->setDisplayName(name);
         });
 
-        connect(this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync);
-        connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync);
-        connect(this, &ChatPage::tryDelayedSyncCb, this, [this]() {
-                QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync);
-        });
+        connect(
+          this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync, Qt::QueuedConnection);
+        connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync, Qt::QueuedConnection);
+        connect(
+          this,
+          &ChatPage::tryDelayedSyncCb,
+          this,
+          [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
+          Qt::QueuedConnection);
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
 

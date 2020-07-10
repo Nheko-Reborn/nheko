@@ -146,9 +146,9 @@
       "name": "mtxclient",
       "sources": [
         {
-          "sha256": "e4899cc4ce87397de2aef865e94ea2cdb8d9cb86253727e7d90532b925ecc770",
+          "sha256": "6334bb71821a0fde54fe24f02ad393cdb6836633557ffdd239b29c5d5108daaf",
           "type": "archive",
-          "url": "https://github.com/Nheko-Reborn/mtxclient/archive/v0.3.1.tar.gz"
+          "url": "https://github.com/Nheko-Reborn/mtxclient/archive/eddd95a896fad0c51fc800741d82bbc43fc6d41e.tar.gz"
         }
       ]
     },
@@ -171,7 +171,8 @@
     {
       "config-opts": [
         "-DCMAKE_BUILD_TYPE=Release",
-        "-DLMDBXX_INCLUDE_DIR=.deps/lmdbxx"
+        "-DLMDBXX_INCLUDE_DIR=.deps/lmdbxx",
+        "-DCOMPILE_QML=ON"
       ],
       "buildsystem": "cmake-ninja",
       "name": "nheko",

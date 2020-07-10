@@ -71,7 +71,6 @@ cmake -GNinja -H. -Bbuild \
     -DHUNTER_ROOT=".hunter" \
     -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
-    -DUSE_BUNDLED_OPENSSL=OFF \
     -DCI_BUILD=ON
 fi
 cmake --build build

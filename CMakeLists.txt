@@ -4,6 +4,7 @@ option(APPVEYOR_BUILD "Build on appveyor" OFF)
 option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(QML_DEBUGGING "Enable qml debugging" OFF)
+option(COMPILE_QML "Compile Qml. It will make Nheko faster, but you will need to recompile it, when you update Qt." OFF)
 
 set(
 	CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchain.cmake"
@@ -17,10 +18,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-	URL "https://github.com/cpp-pm/hunter/archive/v0.23.244.tar.gz"
-	SHA1 "2c0f491fd0b80f7b09e3d21adb97237161ef9835"
-	LOCAL
-	)
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.260.tar.gz"
+    SHA1 "13775235910a3fa85644568d1c5be8271de72e1c"
+)
 
 option(USE_BUNDLED_BOOST "Use the bundled version of Boost." ${HUNTER_ENABLED})
 option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog."
@@ -35,8 +35,6 @@ option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json."
 option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
-option(USE_BUNDLED_SODIUM "Use the bundled version of libsodium."
-	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
@@ -334,7 +332,7 @@ find_package(Boost 1.70 REQUIRED
 if(USE_BUNDLED_OPENSSL)
 	hunter_add_package(OpenSSL)
 endif()
-find_package(OpenSSL REQUIRED)
+find_package(OpenSSL 1.1.0 REQUIRED)
 if(USE_BUNDLED_MTXCLIENT)
 	include(FetchContent)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
@@ -342,7 +340,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        v0.3.1
+		GIT_TAG        eddd95a896fad0c51fc800741d82bbc43fc6d41e
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()

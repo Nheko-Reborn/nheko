@@ -159,72 +159,96 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , room_id_(room_id)
   , manager_(manager)
 {
+        connect(this,
+                &TimelineModel::oldMessagesRetrieved,
+                this,
+                &TimelineModel::addBackwardsEvents,
+                Qt::QueuedConnection);
         connect(
-          this, &TimelineModel::oldMessagesRetrieved, this, &TimelineModel::addBackwardsEvents);
-        connect(this, &TimelineModel::messageFailed, this, [this](QString txn_id) {
-                nhlog::ui()->error("Failed to send {}, retrying", txn_id.toStdString());
+          this,
+          &TimelineModel::messageFailed,
+          this,
+          [this](QString txn_id) {
+                  nhlog::ui()->error("Failed to send {}, retrying", txn_id.toStdString());
 
-                QTimer::singleShot(5000, this, [this]() { emit nextPendingMessage(); });
-        });
-        connect(this, &TimelineModel::messageSent, this, [this](QString txn_id, QString event_id) {
-                pending.removeOne(txn_id);
-
-                auto ev = events.value(txn_id);
-
-                if (auto reaction =
-                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&ev)) {
-                        QString reactedTo =
-                          QString::fromStdString(reaction->content.relates_to.event_id);
-                        auto &rModel = reactions[reactedTo];
-                        rModel.removeReaction(*reaction);
-                        auto rCopy     = *reaction;
-                        rCopy.event_id = event_id.toStdString();
-                        rModel.addReaction(room_id_.toStdString(), rCopy);
-                }
-
-                int idx = idToIndex(txn_id);
-                if (idx < 0) {
-                        // transaction already received via sync
-                        return;
-                }
-                eventOrder[idx] = event_id;
-                ev              = std::visit(
-                  [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
-                          auto eventCopy     = e;
-                          eventCopy.event_id = event_id.toStdString();
-                          return eventCopy;
-                  },
-                  ev);
-
-                events.remove(txn_id);
-                events.insert(event_id, ev);
-
-                // mark our messages as read
-                readEvent(event_id.toStdString());
-
-                emit dataChanged(index(idx, 0), index(idx, 0));
-
-                if (pending.size() > 0)
-                        emit nextPendingMessage();
-        });
-        connect(this, &TimelineModel::redactionFailed, this, [](const QString &msg) {
-                emit ChatPage::instance()->showNotification(msg);
-        });
-
+                  QTimer::singleShot(5000, this, [this]() { emit nextPendingMessage(); });
+          },
+          Qt::QueuedConnection);
         connect(
-          this, &TimelineModel::nextPendingMessage, this, &TimelineModel::processOnePendingMessage);
-        connect(this, &TimelineModel::newMessageToSend, this, &TimelineModel::addPendingMessage);
+          this,
+          &TimelineModel::messageSent,
+          this,
+          [this](QString txn_id, QString event_id) {
+                  pending.removeOne(txn_id);
+
+                  auto ev = events.value(txn_id);
+
+                  if (auto reaction =
+                        std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&ev)) {
+                          QString reactedTo =
+                            QString::fromStdString(reaction->content.relates_to.event_id);
+                          auto &rModel = reactions[reactedTo];
+                          rModel.removeReaction(*reaction);
+                          auto rCopy     = *reaction;
+                          rCopy.event_id = event_id.toStdString();
+                          rModel.addReaction(room_id_.toStdString(), rCopy);
+                  }
+
+                  int idx = idToIndex(txn_id);
+                  if (idx < 0) {
+                          // transaction already received via sync
+                          return;
+                  }
+                  eventOrder[idx] = event_id;
+                  ev              = std::visit(
+                    [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
+                            auto eventCopy     = e;
+                            eventCopy.event_id = event_id.toStdString();
+                            return eventCopy;
+                    },
+                    ev);
+
+                  events.remove(txn_id);
+                  events.insert(event_id, ev);
+
+                  // mark our messages as read
+                  readEvent(event_id.toStdString());
+
+                  emit dataChanged(index(idx, 0), index(idx, 0));
+
+                  if (pending.size() > 0)
+                          emit nextPendingMessage();
+          },
+          Qt::QueuedConnection);
+        connect(
+          this,
+          &TimelineModel::redactionFailed,
+          this,
+          [](const QString &msg) { emit ChatPage::instance()->showNotification(msg); },
+          Qt::QueuedConnection);
 
         connect(this,
-                &TimelineModel::eventFetched,
+                &TimelineModel::nextPendingMessage,
                 this,
-                [this](QString requestingEvent, mtx::events::collections::TimelineEvents event) {
-                        events.insert(QString::fromStdString(mtx::accessors::event_id(event)),
-                                      event);
-                        auto idx = idToIndex(requestingEvent);
-                        if (idx >= 0)
-                                emit dataChanged(index(idx, 0), index(idx, 0));
-                });
+                &TimelineModel::processOnePendingMessage,
+                Qt::QueuedConnection);
+        connect(this,
+                &TimelineModel::newMessageToSend,
+                this,
+                &TimelineModel::addPendingMessage,
+                Qt::QueuedConnection);
+
+        connect(
+          this,
+          &TimelineModel::eventFetched,
+          this,
+          [this](QString requestingEvent, mtx::events::collections::TimelineEvents event) {
+                  events.insert(QString::fromStdString(mtx::accessors::event_id(event)), event);
+                  auto idx = idToIndex(requestingEvent);
+                  if (idx >= 0)
+                          emit dataChanged(index(idx, 0), index(idx, 0));
+          },
+          Qt::QueuedConnection);
 }
 
 QHash<int, QByteArray>

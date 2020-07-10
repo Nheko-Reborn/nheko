@@ -133,10 +133,14 @@ function(hunter_gate_self root version sha1 result)
 
   string(SUBSTRING "${sha1}" 0 7 archive_id)
 
-  set(
-      hunter_self
-      "${root}/_Base/Download/Hunter/${version}/${archive_id}/Unpacked"
-  )
+  if(EXISTS "${root}/cmake/Hunter")
+    set(hunter_self "${root}")
+  else()
+    set(
+        hunter_self
+        "${root}/_Base/Download/Hunter/${version}/${archive_id}/Unpacked"
+    )
+  endif()
 
   set("${result}" "${hunter_self}" PARENT_SCOPE)
 endfunction()
@@ -490,37 +494,44 @@ macro(HunterGate)
     )
 
     set(_master_location "${_hunter_self}/cmake/Hunter")
-    get_filename_component(_archive_id_location "${_hunter_self}/.." ABSOLUTE)
-    set(_done_location "${_archive_id_location}/DONE")
-    set(_sha1_location "${_archive_id_location}/SHA1")
+    if(EXISTS "${HUNTER_GATE_ROOT}/cmake/Hunter")
+      # Hunter downloaded manually (e.g. by 'git clone')
+      set(_unused "xxxxxxxxxx")
+      set(HUNTER_GATE_SHA1 "${_unused}")
+      set(HUNTER_GATE_VERSION "${_unused}")
+    else()
+      get_filename_component(_archive_id_location "${_hunter_self}/.." ABSOLUTE)
+      set(_done_location "${_archive_id_location}/DONE")
+      set(_sha1_location "${_archive_id_location}/SHA1")
 
-    # Check Hunter already downloaded by HunterGate
-    if(NOT EXISTS "${_done_location}")
-      hunter_gate_download("${_archive_id_location}")
-    endif()
+      # Check Hunter already downloaded by HunterGate
+      if(NOT EXISTS "${_done_location}")
+        hunter_gate_download("${_archive_id_location}")
+      endif()
 
-    if(NOT EXISTS "${_done_location}")
-      hunter_gate_internal_error("hunter_gate_download failed")
-    endif()
+      if(NOT EXISTS "${_done_location}")
+        hunter_gate_internal_error("hunter_gate_download failed")
+      endif()
 
-    if(NOT EXISTS "${_sha1_location}")
-      hunter_gate_internal_error("${_sha1_location} not found")
-    endif()
-    file(READ "${_sha1_location}" _sha1_value)
-    string(COMPARE EQUAL "${_sha1_value}" "${HUNTER_GATE_SHA1}" _is_equal)
-    if(NOT _is_equal)
-      hunter_gate_internal_error(
-          "Short SHA1 collision:"
-          "  ${_sha1_value} (from ${_sha1_location})"
-          "  ${HUNTER_GATE_SHA1} (HunterGate)"
-      )
-    endif()
-    if(NOT EXISTS "${_master_location}")
-      hunter_gate_user_error(
-          "Master file not found:"
-          "  ${_master_location}"
-          "try to update Hunter/HunterGate"
-      )
+      if(NOT EXISTS "${_sha1_location}")
+        hunter_gate_internal_error("${_sha1_location} not found")
+      endif()
+      file(READ "${_sha1_location}" _sha1_value)
+      string(COMPARE EQUAL "${_sha1_value}" "${HUNTER_GATE_SHA1}" _is_equal)
+      if(NOT _is_equal)
+        hunter_gate_internal_error(
+            "Short SHA1 collision:"
+            "  ${_sha1_value} (from ${_sha1_location})"
+            "  ${HUNTER_GATE_SHA1} (HunterGate)"
+        )
+      endif()
+      if(NOT EXISTS "${_master_location}")
+        hunter_gate_user_error(
+            "Master file not found:"
+            "  ${_master_location}"
+            "try to update Hunter/HunterGate"
+        )
+      endif()
     endif()
     include("${_master_location}")
     set_property(GLOBAL PROPERTY HUNTER_GATE_DONE YES)
