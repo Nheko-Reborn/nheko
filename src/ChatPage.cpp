@@ -795,8 +795,6 @@ ChatPage::loadStateFromCache()
 
         nhlog::db()->info("restoring state from cache");
 
-        getProfileInfo();
-
         QtConcurrent::run([this]() {
                 try {
                         cache::restoreSessions();
@@ -828,6 +826,8 @@ ChatPage::loadStateFromCache()
 
                 nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
                 nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
+
+                getProfileInfo();
 
                 // Start receiving events.
                 emit trySyncCb();
