@@ -67,6 +67,12 @@ Item {
 			}
 		}
 		DelegateChoice {
+			roleValue: MtxEvent.Redaction
+			Pill {
+				text: qsTr("redacted")
+			}
+		}
+		DelegateChoice {
 			roleValue: MtxEvent.Encryption
 			Pill {
 				text: qsTr("Encryption enabled")

@@ -795,43 +795,39 @@ ChatPage::loadStateFromCache()
 
         nhlog::db()->info("restoring state from cache");
 
-        QtConcurrent::run([this]() {
-                try {
-                        cache::restoreSessions();
-                        olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
+        try {
+                cache::restoreSessions();
+                olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
-                        cache::populateMembers();
+                cache::populateMembers();
 
-                        emit initializeEmptyViews(cache::roomMessages());
-                        emit initializeRoomList(cache::roomInfo());
-                        emit initializeMentions(cache::getTimelineMentions());
-                        emit syncTags(cache::roomInfo().toStdMap());
+                emit initializeEmptyViews(cache::roomMessages());
+                emit initializeRoomList(cache::roomInfo());
+                emit initializeMentions(cache::getTimelineMentions());
+                emit syncTags(cache::roomInfo().toStdMap());
 
-                        cache::calculateRoomReadStatus();
+                cache::calculateRoomReadStatus();
 
-                } catch (const mtx::crypto::olm_exception &e) {
-                        nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
-                        emit dropToLoginPageCb(
-                          tr("Failed to restore OLM account. Please login again."));
-                        return;
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->critical("failed to restore cache: {}", e.what());
-                        emit dropToLoginPageCb(
-                          tr("Failed to restore save data. Please login again."));
-                        return;
-                } catch (const json::exception &e) {
-                        nhlog::db()->critical("failed to parse cache data: {}", e.what());
-                        return;
-                }
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
+                emit dropToLoginPageCb(tr("Failed to restore OLM account. Please login again."));
+                return;
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to restore cache: {}", e.what());
+                emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
+                return;
+        } catch (const json::exception &e) {
+                nhlog::db()->critical("failed to parse cache data: {}", e.what());
+                return;
+        }
 
-                nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
-                nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
+        nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+        nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
-                getProfileInfo();
+        getProfileInfo();
 
-                // Start receiving events.
-                emit trySyncCb();
-        });
+        // Start receiving events.
+        emit trySyncCb();
 }
 
 void

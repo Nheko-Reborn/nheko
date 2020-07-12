@@ -179,8 +179,8 @@ public:
         };
         Messages getTimelineMessages(lmdb::txn &txn,
                                      const std::string &room_id,
-                                     int64_t index = std::numeric_limits<int64_t>::max(),
-                                     bool forward  = false);
+                                     uint64_t index = std::numeric_limits<uint64_t>::max(),
+                                     bool forward   = false);
 
         std::optional<mtx::events::collections::TimelineEvent> getEvent(
           const std::string &room_id,
@@ -190,12 +190,15 @@ public:
                         const mtx::events::collections::TimelineEvent &event);
         struct TimelineRange
         {
-                int64_t first, last;
+                uint64_t first, last;
         };
         std::optional<TimelineRange> getTimelineRange(const std::string &room_id);
-        std::optional<int64_t> getTimelineIndex(const std::string &room_id,
-                                                std::string_view event_id);
-        std::optional<std::string> getTimelineEventId(const std::string &room_id, int64_t index);
+        std::optional<uint64_t> getTimelineIndex(const std::string &room_id,
+                                                 std::string_view event_id);
+        std::optional<std::string> getTimelineEventId(const std::string &room_id, uint64_t index);
+
+        std::string previousBatchToken(const std::string &room_id);
+        uint64_t saveOldMessages(const std::string &room_id, const mtx::responses::Messages &res);
 
         //! Remove old unused data.
         void deleteOldMessages();

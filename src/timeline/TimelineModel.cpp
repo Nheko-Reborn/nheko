@@ -229,20 +229,33 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
           &EventStore::dataChanged,
           this,
           [this](int from, int to) {
-                  emit dataChanged(index(events.size() - to, 0), index(events.size() - from, 0));
+                  nhlog::ui()->debug(
+                    "data changed {} to {}", events.size() - to - 1, events.size() - from - 1);
+                  emit dataChanged(index(events.size() - to - 1, 0),
+                                   index(events.size() - from - 1, 0));
           },
           Qt::QueuedConnection);
 
         connect(&events, &EventStore::beginInsertRows, this, [this](int from, int to) {
-                nhlog::ui()->info("begin insert from {} to {}",
-                                  events.size() - to + (to - from),
-                                  events.size() - from + (to - from));
-                beginInsertRows(QModelIndex(),
-                                events.size() - to + (to - from),
-                                events.size() - from + (to - from));
+                int first = events.size() - to;
+                int last  = events.size() - from;
+                if (from >= events.size()) {
+                        int batch_size = to - from;
+                        first += batch_size;
+                        last += batch_size;
+                } else {
+                        first -= 1;
+                        last -= 1;
+                }
+                nhlog::ui()->debug("begin insert from {} to {}", first, last);
+                beginInsertRows(QModelIndex(), first, last);
         });
         connect(&events, &EventStore::endInsertRows, this, [this]() { endInsertRows(); });
+        connect(&events, &EventStore::beginResetModel, this, [this]() { beginResetModel(); });
+        connect(&events, &EventStore::endResetModel, this, [this]() { endResetModel(); });
         connect(&events, &EventStore::newEncryptedImage, this, &TimelineModel::newEncryptedImage);
+        connect(
+          &events, &EventStore::fetchedMore, this, [this]() { setPaginationInProgress(false); });
 }
 
 QHash<int, QByteArray>
@@ -512,8 +525,9 @@ TimelineModel::canFetchMore(const QModelIndex &) const
 {
         if (!events.size())
                 return true;
-        if (!std::holds_alternative<mtx::events::StateEvent<mtx::events::state::Create>>(
-              *events.event(0)))
+        if (auto first = events.event(0);
+            first &&
+            !std::holds_alternative<mtx::events::StateEvent<mtx::events::state::Create>>(*first))
                 return true;
         else
 
@@ -540,27 +554,8 @@ TimelineModel::fetchMore(const QModelIndex &)
         }
 
         setPaginationInProgress(true);
-        mtx::http::MessagesOpts opts;
-        opts.room_id = room_id_.toStdString();
-        opts.from    = prev_batch_token_.toStdString();
 
-        nhlog::ui()->debug("Paginating room {}", opts.room_id);
-
-        http::client()->messages(
-          opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->error("failed to call /messages ({}): {} - {} - {}",
-                                              opts.room_id,
-                                              mtx::errors::to_string(err->matrix_error.errcode),
-                                              err->matrix_error.error,
-                                              err->parse_error);
-                          setPaginationInProgress(false);
-                          return;
-                  }
-
-                  emit oldMessagesRetrieved(std::move(res));
-                  setPaginationInProgress(false);
-          });
+        events.fetchMore();
 }
 
 void

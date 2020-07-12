@@ -8,6 +8,7 @@
 #include <qhashfunctions.h>
 
 #include <mtx/events/collections.hpp>
+#include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
 
 class EventStore : public QObject
@@ -20,7 +21,7 @@ public:
         struct Index
         {
                 std::string room;
-                int64_t idx;
+                uint64_t idx;
 
                 friend uint qHash(const Index &i, uint seed = 0) noexcept
                 {
@@ -66,12 +67,12 @@ public:
 
         int size() const
         {
-                return last != std::numeric_limits<int64_t>::max()
+                return last != std::numeric_limits<uint64_t>::max()
                          ? static_cast<int>(last - first) + 1
                          : 0;
         }
-        int toExternalIdx(int64_t idx) const { return static_cast<int>(idx - first); }
-        int64_t toInternalIdx(int idx) const { return first + idx; }
+        int toExternalIdx(uint64_t idx) const { return static_cast<int>(idx - first); }
+        uint64_t toInternalIdx(int idx) const { return first + idx; }
 
         std::optional<int> idToIndex(std::string_view id) const;
         std::optional<std::string> indexToId(int idx) const;
@@ -79,11 +80,15 @@ public:
 signals:
         void beginInsertRows(int from, int to);
         void endInsertRows();
+        void beginResetModel();
+        void endResetModel();
         void dataChanged(int from, int to);
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
         void eventFetched(std::string id,
                           std::string relatedTo,
                           mtx::events::collections::TimelineEvents timeline);
+        void oldMessagesRetrieved(const mtx::responses::Messages &);
+        void fetchedMore();
 
 private:
         mtx::events::collections::TimelineEvents *decryptEvent(
@@ -92,8 +97,8 @@ private:
 
         std::string room_id_;
 
-        int64_t first = std::numeric_limits<int64_t>::max(),
-                last  = std::numeric_limits<int64_t>::max();
+        uint64_t first = std::numeric_limits<uint64_t>::max(),
+                 last  = std::numeric_limits<uint64_t>::max();
 
         static QCache<IdIndex, mtx::events::collections::TimelineEvents> decryptedEvents_;
         static QCache<Index, mtx::events::collections::TimelineEvents> events_;

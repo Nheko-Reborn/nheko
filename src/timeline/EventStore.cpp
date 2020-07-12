@@ -34,9 +34,28 @@ EventStore::EventStore(std::string room_id, QObject *)
                   cache::client()->storeEvent(room_id_, id, {timeline});
 
                   if (!relatedTo.empty()) {
-                          auto idx = idToIndex(id);
+                          auto idx = idToIndex(relatedTo);
                           if (idx)
                                   emit dataChanged(*idx, *idx);
+                  }
+          },
+          Qt::QueuedConnection);
+
+        connect(
+          this,
+          &EventStore::oldMessagesRetrieved,
+          this,
+          [this](const mtx::responses::Messages &res) {
+                  //
+                  uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
+                  if (newFirst == first)
+                          fetchMore();
+                  else {
+                          emit beginInsertRows(toExternalIdx(newFirst),
+                                               toExternalIdx(this->first - 1));
+                          this->first = newFirst;
+                          emit endInsertRows();
+                          emit fetchedMore();
                   }
           },
           Qt::QueuedConnection);
@@ -49,8 +68,16 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 nhlog::db()->warn("{} called from a different thread!", __func__);
 
         auto range = cache::client()->getTimelineRange(room_id_);
+        if (!range)
+                return;
 
-        if (range && range->last > this->last) {
+        if (events.limited) {
+                emit beginResetModel();
+                this->last  = range->last;
+                this->first = range->first;
+                emit endResetModel();
+
+        } else if (range->last > this->last) {
                 emit beginInsertRows(toExternalIdx(this->last + 1), toExternalIdx(range->last));
                 this->last = range->last;
                 emit endInsertRows();
@@ -289,4 +316,28 @@ EventStore::event(std::string_view id, std::string_view related_to, bool decrypt
                         return decryptEvent(index, *encrypted);
 
         return event_ptr;
+}
+
+void
+EventStore::fetchMore()
+{
+        mtx::http::MessagesOpts opts;
+        opts.room_id = room_id_;
+        opts.from    = cache::client()->previousBatchToken(room_id_);
+
+        nhlog::ui()->debug("Paginating room {}, token {}", opts.room_id, opts.from);
+
+        http::client()->messages(
+          opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->error("failed to call /messages ({}): {} - {} - {}",
+                                              opts.room_id,
+                                              mtx::errors::to_string(err->matrix_error.errcode),
+                                              err->matrix_error.error,
+                                              err->parse_error);
+                          return;
+                  }
+
+                  emit oldMessagesRetrieved(std::move(res));
+          });
 }
