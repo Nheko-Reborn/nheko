@@ -143,7 +143,7 @@ WebRTCSession::startPipeline(int opusPayloadType)
   webrtc_ = gst_bin_get_by_name(GST_BIN(pipe_), "webrtcbin");
 
   if (!stunServer_.empty()) {
-    nhlog::ui()->info("WebRTC: Setting stun server: {}", stunServer_);
+    nhlog::ui()->info("WebRTC: Setting STUN server: {}", stunServer_);
     g_object_set(webrtc_, "stun-server", stunServer_.c_str(), nullptr);
   }
   addTurnServers();
@@ -265,12 +265,9 @@ WebRTCSession::addTurnServers()
     return;
 
   for (const auto &uri : turnServers_) {
-    gboolean res;
-    g_signal_emit_by_name(webrtc_, "add-turn-server", uri.c_str(), (gpointer)(&res));
-    if (res)
-      nhlog::ui()->info("WebRTC: Set TURN server: {}", uri);
-    else
-      nhlog::ui()->error("WebRTC: Failed to set TURN server: {}", uri);
+    nhlog::ui()->info("WebRTC: Setting TURN server: {}", uri);
+    gboolean udata;
+    g_signal_emit_by_name(webrtc_, "add-turn-server", uri.c_str(), (gpointer)(&udata));
   }
 }
 

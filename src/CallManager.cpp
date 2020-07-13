@@ -274,7 +274,8 @@ CallManager::retrieveTurnServer()
 void
 CallManager::setTurnServers()
 {
-  // gstreamer expects (percent-encoded): turn(s)://username:password@host:port?transport=udp(tcp)
+  // gstreamer expects: turn(s)://username:password@host:port?transport=udp(tcp)
+  // where username and password are percent-encoded
   std::vector<std::string> uris;
   for (const auto &uri : turnServer_.uris) {
     if (auto c = uri.find(':'); c == std::string::npos) {
@@ -287,9 +288,11 @@ CallManager::setTurnServers()
         nhlog::ui()->error("Invalid TURN server uri: {}", uri);
         continue;
       }
-      std::string res = scheme + "://" + turnServer_.username + ":" + turnServer_.password
-        + "@" + std::string(uri, ++c);
-      QString encodedUri = QUrl::toPercentEncoding(QString::fromStdString(res));
+
+      QString encodedUri = QString::fromStdString(scheme) + "://" + 
+                           QUrl::toPercentEncoding(QString::fromStdString(turnServer_.username)) + ":" +
+                           QUrl::toPercentEncoding(QString::fromStdString(turnServer_.password)) + "@" +
+                           QString::fromStdString(std::string(uri, ++c));
       uris.push_back(encodedUri.toStdString());
     }
   }
