@@ -1593,7 +1593,8 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 
         QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
         pending.push_back(txn_id_qstr);
-        if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event)) {
+        if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event) &&
+            !std::get_if<mtx::events::RoomEvent<mtx::events::msg::CallCandidates>>(&event)) {
                 beginInsertRows(QModelIndex(), 0, 0);
                 this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
                 endInsertRows();
