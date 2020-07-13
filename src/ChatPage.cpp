@@ -478,13 +478,14 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   members.front().user_id == utils::localUser() ? members.back()
                                                                                 : members.front();
                                 auto dialog =
-                                  new dialogs::PlaceCall(callee.user_id, callee.display_name, this);
+                                  new dialogs::PlaceCall(callee.user_id, callee.display_name, MainWindow::instance());
                                 connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
                                         callManager_.sendInvite(current_room_);
                                 });
                                 connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
                                         showNotification("Video calls not yet implemented");
                                 });
+                                utils::centerWidget(dialog, MainWindow::instance());
                                 dialog->show();
                         }
                 }
