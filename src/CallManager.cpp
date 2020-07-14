@@ -236,8 +236,10 @@ void
 CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
 {
   nhlog::ui()->debug("CallManager::incoming CallHangUp from {} with id {}", callHangUpEvent.sender, callHangUpEvent.content.call_id);
-  if (onActiveCall() && callid_ == callHangUpEvent.content.call_id)
+  if (callid_ == callHangUpEvent.content.call_id) {
+    MainWindow::instance()->hideOverlay();
     endCall();
+  }
 }
 
 void
