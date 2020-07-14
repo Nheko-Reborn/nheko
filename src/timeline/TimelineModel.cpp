@@ -776,7 +776,6 @@ TimelineModel::internalAddEvents(
                                 emit newEncryptedImage(encInfo.value());
 
                         if (emitCallEvents) {
-                                // event room_id is not set, apparently due to spec bug
                                 if (auto callInvite = std::get_if<
                                       mtx::events::RoomEvent<mtx::events::msg::CallInvite>>(&e_)) {
                                         callInvite->room_id = room_id_.toStdString();
@@ -802,7 +801,6 @@ TimelineModel::internalAddEvents(
                 }
 
                 if (emitCallEvents) {
-                        // event room_id is not set, apparently due to spec bug
                         if (auto callInvite =
                               std::get_if<mtx::events::RoomEvent<mtx::events::msg::CallInvite>>(
                                 &e)) {
