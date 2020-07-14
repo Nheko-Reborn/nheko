@@ -775,6 +775,15 @@ TimelineModel::internalAddEvents(
                         if (encInfo)
                                 emit newEncryptedImage(encInfo.value());
 
+                        if (std::holds_alternative<
+                              mtx::events::RoomEvent<mtx::events::msg::CallCandidates>>(e_)) {
+                                // don't display CallCandidate events to user
+                                events.insert(id, e);
+                                if (emitCallEvents)
+                                        emit newCallEvent(e_);
+                                continue;
+                        }
+
                         if (emitCallEvents) {
                                 if (auto callInvite = std::get_if<
                                       mtx::events::RoomEvent<mtx::events::msg::CallInvite>>(&e_)) {
