@@ -20,7 +20,7 @@ Q_DECLARE_METATYPE(mtx::responses::TurnServer)
 using namespace mtx::events;
 using namespace mtx::events::msg;
 
-// TODO Allow altenative in settings
+// TODO Allow alterative in settings
 #define STUN_SERVER "stun://turn.matrix.org:3478"
 
 CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
@@ -62,6 +62,8 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
               for (const auto &u : res.uris)
                 nhlog::net()->info("uri: {}", u);
 
+              // Request new credentials close to expiry
+              // See https://tools.ietf.org/html/draft-uberti-behave-turn-rest-00
               turnServer_ = res;
               turnServerTimer_.setInterval(res.ttl * 1000 * 0.9);
       });
