@@ -1,3 +1,5 @@
+#include <cctype>
+
 #include "WebRTCSession.h"
 #include "Logging.h"
 
@@ -23,6 +25,8 @@ gboolean onICEGatheringCompletion(gpointer timerid);
 void createAnswer(GstPromise *promise, gpointer webrtc);
 void addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe);
 void linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe);
+std::string::const_iterator  findName(const std::string &sdp, const std::string &name);
+int getPayloadType(const std::string &sdp, const std::string &name);
 }
 
 bool
@@ -94,27 +98,9 @@ WebRTCSession::acceptOffer(const std::string& sdp)
   glocalsdp.clear();
   gcandidates.clear();
 
-  // eg a=rtpmap:111 opus/48000/2
-  int opusPayloadType = 0;
-  if (auto e = sdp.find("opus"); e == std::string::npos) {
-    nhlog::ui()->error("WebRTC: remote offer - opus media attribute missing");
+  int opusPayloadType = getPayloadType(sdp, "opus"); 
+  if (opusPayloadType == -1) {
     return false;
-  }
-  else {
-    if (auto s = sdp.rfind(':', e); s == std::string::npos) {
-      nhlog::ui()->error("WebRTC: remote offer - unable to determine opus payload type");
-      return false;
-    }
-    else {
-      ++s;
-      try {
-        opusPayloadType = std::stoi(std::string(sdp, s, e - s));
-      }
-      catch(...) {
-        nhlog::ui()->error("WebRTC: remote offer - unable to determine opus payload type");
-        return false;
-      }
-    }
   }
 
   GstWebRTCSessionDescription *offer = parseSDP(sdp, GST_WEBRTC_SDP_TYPE_OFFER);
@@ -272,6 +258,37 @@ WebRTCSession::addTurnServers()
 }
 
 namespace {
+
+std::string::const_iterator findName(const std::string &sdp, const std::string &name)
+{
+  return std::search(sdp.cbegin(), sdp.cend(), name.cbegin(), name.cend(),
+    [](unsigned char c1, unsigned char c2) {return std::tolower(c1) == std::tolower(c2);});
+}
+
+int getPayloadType(const std::string &sdp, const std::string &name)
+{
+  // eg a=rtpmap:111 opus/48000/2
+  auto e = findName(sdp, name);
+  if (e == sdp.cend()) {
+    nhlog::ui()->error("WebRTC: remote offer - " + name + " attribute missing");
+    return -1;
+  }
+
+  if (auto s = sdp.rfind(':', e - sdp.cbegin()); s == std::string::npos) {
+    nhlog::ui()->error("WebRTC: remote offer - unable to determine " + name + " payload type");
+    return -1;
+  }
+  else {
+    ++s;
+    try {
+      return std::stoi(std::string(sdp, s, e - sdp.cbegin() - s));
+    }
+    catch(...) {
+      nhlog::ui()->error("WebRTC: remote offer - unable to determine " + name + " payload type");
+    }
+  }
+  return -1;
+}
 
 gboolean
 newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data)
