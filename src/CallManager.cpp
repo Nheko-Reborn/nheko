@@ -207,7 +207,11 @@ CallManager::answerInvite(const CallInvite &invite)
 void
 CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
 {
+  if (callCandidatesEvent.sender == utils::localUser().toStdString())
+    return;
+
   nhlog::ui()->debug("CallManager::incoming CallCandidates from {} with id {}", callCandidatesEvent.sender, callCandidatesEvent.content.call_id);
+
   if (callid_ == callCandidatesEvent.content.call_id) {
     if (onActiveCall())
       session_.acceptICECandidates(callCandidatesEvent.content.candidates);
@@ -223,6 +227,14 @@ void
 CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 {
   nhlog::ui()->debug("CallManager::incoming CallAnswer from {} with id {}", callAnswerEvent.sender, callAnswerEvent.content.call_id);
+
+  if (!onActiveCall() && callAnswerEvent.sender == utils::localUser().toStdString() &&
+      callid_ == callAnswerEvent.content.call_id) {
+    stopRingtone();
+    MainWindow::instance()->hideOverlay();
+    return;
+  }
+
   if (onActiveCall() && callid_ == callAnswerEvent.content.call_id) {
     stopRingtone();
     if (!session_.acceptAnswer(callAnswerEvent.content.sdp)) {
