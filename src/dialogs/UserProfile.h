@@ -53,6 +53,7 @@ private:
         void resetToDefaults();
 
         Avatar *avatar_;
+        QString roomId_;
 
         QLabel *userIdLabel_;
         QLabel *displayNameLabel_;

@@ -1152,11 +1152,19 @@ ChatPage::leaveRoom(const QString &room_id)
 void
 ChatPage::inviteUser(QString userid, QString reason)
 {
+        auto room = current_room_;
+
+        if (QMessageBox::question(this,
+                                  tr("Confirm invite"),
+                                  tr("Do you really want to invite %1 (%2)?")
+                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(userid)) != QMessageBox::Yes)
+                return;
+
         http::client()->invite_user(
-          current_room_.toStdString(),
+          room.toStdString(),
           userid.toStdString(),
-          [this, userid, room = current_room_](const mtx::responses::Empty &,
-                                               mtx::http::RequestErr err) {
+          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to invite %1 to %2: %3")
@@ -1171,11 +1179,19 @@ ChatPage::inviteUser(QString userid, QString reason)
 void
 ChatPage::kickUser(QString userid, QString reason)
 {
+        auto room = current_room_;
+
+        if (QMessageBox::question(this,
+                                  tr("Confirm kick"),
+                                  tr("Do you really want to kick %1 (%2)?")
+                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(userid)) != QMessageBox::Yes)
+                return;
+
         http::client()->kick_user(
-          current_room_.toStdString(),
+          room.toStdString(),
           userid.toStdString(),
-          [this, userid, room = current_room_](const mtx::responses::Empty &,
-                                               mtx::http::RequestErr err) {
+          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to kick %1 to %2: %3")
@@ -1190,11 +1206,19 @@ ChatPage::kickUser(QString userid, QString reason)
 void
 ChatPage::banUser(QString userid, QString reason)
 {
+        auto room = current_room_;
+
+        if (QMessageBox::question(this,
+                                  tr("Confirm ban"),
+                                  tr("Do you really want to ban %1 (%2)?")
+                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(userid)) != QMessageBox::Yes)
+                return;
+
         http::client()->ban_user(
-          current_room_.toStdString(),
+          room.toStdString(),
           userid.toStdString(),
-          [this, userid, room = current_room_](const mtx::responses::Empty &,
-                                               mtx::http::RequestErr err) {
+          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to ban %1 in %2: %3")
@@ -1209,11 +1233,19 @@ ChatPage::banUser(QString userid, QString reason)
 void
 ChatPage::unbanUser(QString userid, QString reason)
 {
+        auto room = current_room_;
+
+        if (QMessageBox::question(this,
+                                  tr("Confirm unban"),
+                                  tr("Do you really want to unban %1 (%2)?")
+                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(userid)) != QMessageBox::Yes)
+                return;
+
         http::client()->unban_user(
-          current_room_.toStdString(),
+          room.toStdString(),
           userid.toStdString(),
-          [this, userid, room = current_room_](const mtx::responses::Empty &,
-                                               mtx::http::RequestErr err) {
+          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to unban %1 in %2: %3")
