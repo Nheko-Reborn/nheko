@@ -128,6 +128,60 @@ Item {
 			}
 		}
 		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationRequest
+			NoticeMessage {
+				text: "KeyVerificationRequest";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationStart
+			NoticeMessage {
+				text: "KeyVerificationStart";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationReady
+			NoticeMessage {
+				text: "KeyVerificationReady";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationCancel
+			NoticeMessage {
+				text: "KeyVerificationCancel";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationKey
+			NoticeMessage {
+				text: "KeyVerificationKey";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationMac
+			NoticeMessage {
+				text: "KeyVerificationMac";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationDone
+			NoticeMessage {
+				text: "KeyVerificationDone";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationDone
+			NoticeMessage {
+				text: "KeyVerificationDone";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationAccept
+			NoticeMessage {
+				text: "KeyVerificationAccept";
+			}
+		}
+		DelegateChoice {
 			Placeholder {}
 		}
 	}

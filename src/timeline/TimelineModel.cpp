@@ -22,6 +22,8 @@
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
 
+#include <iostream>
+
 Q_DECLARE_METATYPE(QModelIndex)
 
 namespace std {
@@ -116,7 +118,41 @@ struct RoomEventType
         {
                 return qml_mtx_events::EventType::VideoMessage;
         }
-
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationRequest> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationRequest;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationStart> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationStart;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationMac> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationMac;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationAccept> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationAccept;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationCancel> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationCancel;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationKey> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationKey;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationDone> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationDone;
+        }
         qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Redacted> &)
         {
                 return qml_mtx_events::EventType::Redacted;
@@ -570,6 +606,155 @@ TimelineModel::updateLastMessage()
                 emit manager_->updateRoomsLastMessage(room_id_, description);
                 return;
         }
+}
+
+std::vector<QString>
+TimelineModel::internalAddEvents(
+  const std::vector<mtx::events::collections::TimelineEvents> &timeline)
+{
+        std::vector<QString> ids;
+        for (auto e : timeline) {
+                QString id = QString::fromStdString(mtx::accessors::event_id(e));
+
+                if (this->events.contains(id)) {
+                        this->events.insert(id, e);
+                        int idx = idToIndex(id);
+                        emit dataChanged(index(idx, 0), index(idx, 0));
+                        continue;
+                }
+
+                QString txid = QString::fromStdString(mtx::accessors::transaction_id(e));
+                if (this->pending.removeOne(txid)) {
+                        this->events.insert(id, e);
+                        this->events.remove(txid);
+                        int idx = idToIndex(txid);
+                        if (idx < 0) {
+                                nhlog::ui()->warn("Received index out of range");
+                                continue;
+                        }
+                        eventOrder[idx] = id;
+                        emit dataChanged(index(idx, 0), index(idx, 0));
+                        continue;
+                }
+
+                if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>(
+                      &e)) {
+                        std::cout << "got a request" << std::endl;
+                }
+
+                if (auto cancelVerification =
+                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(
+                        &e)) {
+                        std::cout<<"it is happening"<<std::endl;
+                        if (cancelVerification->content.relates_to.has_value()) {
+                                QString event_id = QString::fromStdString(
+                                  cancelVerification->content.relates_to.value()
+                                    .in_reply_to.event_id);
+                                auto request =
+                                  std::find(eventOrder.begin(), eventOrder.end(), event_id);
+                                if (request != eventOrder.end()) {
+                                        auto event = events.value(event_id);
+                                        auto e     = std::get_if<mtx::events::RoomEvent<
+                                          mtx::events::msg::KeyVerificationRequest>>(&event);
+                                        std::cout<<json(*e)<<std::endl;
+                                }
+                        }
+                }
+
+                if (auto redaction =
+                      std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
+                        QString redacts = QString::fromStdString(redaction->redacts);
+                        auto redacted   = std::find(eventOrder.begin(), eventOrder.end(), redacts);
+
+                        auto event = events.value(redacts);
+                        if (auto reaction =
+                              std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
+                                &event)) {
+                                QString reactedTo =
+                                  QString::fromStdString(reaction->content.relates_to.event_id);
+                                reactions[reactedTo].removeReaction(*reaction);
+                                int idx = idToIndex(reactedTo);
+                                if (idx >= 0)
+                                        emit dataChanged(index(idx, 0), index(idx, 0));
+                        }
+
+                        if (redacted != eventOrder.end()) {
+                                auto redactedEvent = std::visit(
+                                  [](const auto &ev)
+                                    -> mtx::events::RoomEvent<mtx::events::msg::Redacted> {
+                                          mtx::events::RoomEvent<mtx::events::msg::Redacted>
+                                            replacement                = {};
+                                          replacement.event_id         = ev.event_id;
+                                          replacement.room_id          = ev.room_id;
+                                          replacement.sender           = ev.sender;
+                                          replacement.origin_server_ts = ev.origin_server_ts;
+                                          replacement.type             = ev.type;
+                                          return replacement;
+                                  },
+                                  e);
+                                events.insert(redacts, redactedEvent);
+
+                                int row = (int)std::distance(eventOrder.begin(), redacted);
+                                emit dataChanged(index(row, 0), index(row, 0));
+                        }
+
+                        continue; // don't insert redaction into timeline
+                }
+
+                if (auto reaction =
+                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&e)) {
+                        QString reactedTo =
+                          QString::fromStdString(reaction->content.relates_to.event_id);
+                        events.insert(id, e);
+
+                        // remove local echo
+                        if (!txid.isEmpty()) {
+                                auto rCopy     = *reaction;
+                                rCopy.event_id = txid.toStdString();
+                                reactions[reactedTo].removeReaction(rCopy);
+                        }
+
+                        reactions[reactedTo].addReaction(room_id_.toStdString(), *reaction);
+                        int idx = idToIndex(reactedTo);
+                        if (idx >= 0)
+                                emit dataChanged(index(idx, 0), index(idx, 0));
+                        continue; // don't insert reaction into timeline
+                }
+
+                if (auto event =
+                      std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
+                        auto e_      = decryptEvent(*event).event;
+                        auto encInfo = mtx::accessors::file(e_);
+
+                        if (encInfo)
+                                emit newEncryptedImage(encInfo.value());
+                }
+
+                this->events.insert(id, e);
+                ids.push_back(id);
+
+                auto replyTo  = mtx::accessors::in_reply_to_event(e);
+                auto qReplyTo = QString::fromStdString(replyTo);
+                if (!replyTo.empty() && !events.contains(qReplyTo)) {
+                        http::client()->get_event(
+                          this->room_id_.toStdString(),
+                          replyTo,
+                          [this, id, replyTo](
+                            const mtx::events::collections::TimelineEvents &timeline,
+                            mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->error(
+                                            "Failed to retrieve event with id {}, which was "
+                                            "requested to show the replyTo for event {}",
+                                            replyTo,
+                                            id.toStdString());
+                                          return;
+                                  }
+                                  emit eventFetched(id, timeline);
+                          });
+                }
+        }
+        return ids;
 }
 
 void

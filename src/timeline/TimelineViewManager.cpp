@@ -101,7 +101,15 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
   , blurhashProvider(new BlurhashProvider())
   , settings(userSettings)
 {
-        qRegisterMetaType<mtx::events::collections::DeviceEvents>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationDone>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationKey>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationMac>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
+
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
                                          1,
@@ -181,21 +189,19 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           dynamic_cast<ChatPage *>(parent),
           &ChatPage::recievedDeviceVerificationRequest,
           this,
-          [this](const mtx::events::collections::DeviceEvents &message) {
-                  auto msg =
-                    std::get<mtx::events::DeviceEvent<msgs::KeyVerificationRequest>>(message);
+          [this](const mtx::events::msg::KeyVerificationRequest &msg, std::string sender) {
                   auto flow = new DeviceVerificationFlow(this);
-                  if (!(this->dvList->exist(QString::fromStdString(msg.content.transaction_id)))) {
-                          if (std::find(msg.content.methods.begin(),
-                                        msg.content.methods.end(),
+                  if (!(this->dvList->exist(QString::fromStdString(msg.transaction_id.value())))) {
+                          if (std::find(msg.methods.begin(),
+                                        msg.methods.end(),
                                         mtx::events::msg::VerificationMethods::SASv1) !=
-                              msg.content.methods.end()) {
+                              msg.methods.end()) {
                                   //   flow->sendVerificationReady();
                                   emit newDeviceVerificationRequest(
                                     std::move(flow),
-                                    QString::fromStdString(msg.content.transaction_id),
-                                    QString::fromStdString(msg.sender),
-                                    QString::fromStdString(msg.content.from_device));
+                                    QString::fromStdString(msg.transaction_id.value()),
+                                    QString::fromStdString(sender),
+                                    QString::fromStdString(msg.from_device));
                           } else {
                                   flow->cancelVerification(
                                     DeviceVerificationFlow::Error::UnknownMethod);
@@ -206,33 +212,29 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           dynamic_cast<ChatPage *>(parent),
           &ChatPage::recievedDeviceVerificationStart,
           this,
-          [this](const mtx::events::collections::DeviceEvents &message) {
-                  auto msg =
-                    std::get<mtx::events::DeviceEvent<msgs::KeyVerificationStart>>(message);
+          [this](const mtx::events::msg::KeyVerificationStart &msg, std::string sender) {
                   auto flow            = new DeviceVerificationFlow(this);
-                  flow->canonical_json = nlohmann::json(msg.content);
-                  if (!(this->dvList->exist(QString::fromStdString(msg.content.transaction_id)))) {
-                          if ((std::find(msg.content.key_agreement_protocols.begin(),
-                                         msg.content.key_agreement_protocols.end(),
+                  flow->canonical_json = nlohmann::json(msg);
+                  if (!(this->dvList->exist(QString::fromStdString(msg.transaction_id.value())))) {
+                          if ((std::find(msg.key_agreement_protocols.begin(),
+                                         msg.key_agreement_protocols.end(),
                                          "curve25519-hkdf-sha256") !=
-                               msg.content.key_agreement_protocols.end()) &&
-                              (std::find(msg.content.hashes.begin(),
-                                         msg.content.hashes.end(),
-                                         "sha256") != msg.content.hashes.end()) &&
-                              (std::find(msg.content.message_authentication_codes.begin(),
-                                         msg.content.message_authentication_codes.end(),
+                               msg.key_agreement_protocols.end()) &&
+                              (std::find(msg.hashes.begin(), msg.hashes.end(), "sha256") !=
+                               msg.hashes.end()) &&
+                              (std::find(msg.message_authentication_codes.begin(),
+                                         msg.message_authentication_codes.end(),
                                          "hmac-sha256") !=
-                               msg.content.message_authentication_codes.end())) {
-                                  if (std::find(msg.content.short_authentication_string.begin(),
-                                                msg.content.short_authentication_string.end(),
+                               msg.message_authentication_codes.end())) {
+                                  if (std::find(msg.short_authentication_string.begin(),
+                                                msg.short_authentication_string.end(),
                                                 mtx::events::msg::SASMethods::Emoji) !=
-                                      msg.content.short_authentication_string.end()) {
+                                      msg.short_authentication_string.end()) {
                                           flow->setMethod(DeviceVerificationFlow::Method::Emoji);
-                                  } else if (std::find(
-                                               msg.content.short_authentication_string.begin(),
-                                               msg.content.short_authentication_string.end(),
-                                               mtx::events::msg::SASMethods::Decimal) !=
-                                             msg.content.short_authentication_string.end()) {
+                                  } else if (std::find(msg.short_authentication_string.begin(),
+                                                       msg.short_authentication_string.end(),
+                                                       mtx::events::msg::SASMethods::Decimal) !=
+                                             msg.short_authentication_string.end()) {
                                           flow->setMethod(DeviceVerificationFlow::Method::Decimal);
                                   } else {
                                           flow->cancelVerification(
@@ -241,10 +243,10 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                   }
                                   emit newDeviceVerificationRequest(
                                     std::move(flow),
-                                    QString::fromStdString(msg.content.transaction_id),
-                                    QString::fromStdString(msg.sender),
-                                    QString::fromStdString(msg.content.from_device));
-                                  flow->canonical_json = nlohmann::json(msg.content);
+                                    QString::fromStdString(msg.transaction_id.value()),
+                                    QString::fromStdString(sender),
+                                    QString::fromStdString(msg.from_device));
+                                  flow->canonical_json = nlohmann::json(msg);
                           } else {
                                   flow->cancelVerification(
                                     DeviceVerificationFlow::Error::UnknownMethod);

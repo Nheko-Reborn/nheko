@@ -6,6 +6,8 @@
 #include "Utils.h"
 #include "mtx/responses/crypto.hpp"
 
+#include <iostream> // only for debugging
+
 UserProfile::UserProfile(QString roomid, QString userid, QObject *parent)
   : QObject(parent)
   , roomid_(roomid)
@@ -74,6 +76,12 @@ UserProfile::avatarUrl()
         return cache::avatarUrl(roomid_, userid_);
 }
 
+bool
+UserProfile::getUserStatus()
+{
+        return isUserVerified;
+}
+
 void
 UserProfile::callback_fn(const mtx::responses::QueryKeys &res,
                          mtx::http::RequestErr err,
@@ -100,6 +108,7 @@ UserProfile::callback_fn(const mtx::responses::QueryKeys &res,
 
                 // TODO: Verify signatures and ignore those that don't pass.
                 verification::Status verified = verification::Status::UNVERIFIED;
+                isUserVerified                = device_verified->is_user_verified;
                 if (device_verified.has_value()) {
                         if (std::find(device_verified->cross_verified.begin(),
                                       device_verified->cross_verified.end(),
@@ -174,4 +183,29 @@ UserProfile::startChat()
         if (utils::localUser() != this->userid_)
                 req.invite = {this->userid_.toStdString()};
         emit ChatPage::instance()->createRoom(req);
+}
+
+void
+UserProfile::verifyUser()
+{
+        std::cout << "Checking if to start to device verification or room message verification"
+                  << std::endl;
+        auto joined_rooms = cache::joinedRooms();
+        auto room_infos   = cache::getRoomInfo(joined_rooms);
+
+        for (std::string room_id : joined_rooms) {
+                if ((room_infos[QString::fromStdString(room_id)].member_count == 2) &&
+                    cache::isRoomEncrypted(room_id)) {
+                        auto room_members = cache::roomMembers(room_id);
+                        if (std::find(room_members.begin(),
+                                      room_members.end(),
+                                      (this->userid()).toStdString()) != room_members.end()) {
+                                std::cout << "FOUND A ENCRYPTED ROOM WITH THIS USER : " << room_id
+                                          << std::endl;
+                                return;
+                        }
+                }
+        }
+
+        std::cout << "DIDN'T FIND A ENCRYPTED ROOM WITH THIS USER" << std::endl;
 }

@@ -74,6 +74,26 @@ ApplicationWindow{
 				Layout.alignment: Qt.AlignHCenter
 			}
 
+			Button {
+				id: verifyUserButton
+				text: "Verify"
+				Layout.alignment: Qt.AlignHCenter
+				enabled: profile.isUserVerified?false:true
+				visible: profile.isUserVerified?false:true
+				palette {
+					button: "white"
+				}
+				contentItem: Text {
+					text: verifyUserButton.text
+					color: "black"
+					horizontalAlignment: Text.AlignHCenter
+					verticalAlignment: Text.AlignVCenter
+				}
+				onClicked: {
+					profile.verifyUser();
+				}
+			}
+
 			RowLayout {
 				Layout.alignment: Qt.AlignHCenter
 				ImageButton {
@@ -127,7 +147,7 @@ ApplicationWindow{
 			}
 
 			ScrollView {
-				implicitHeight: userProfileDialog.height/2 + 20
+				implicitHeight: userProfileDialog.height/2-13
 				implicitWidth: userProfileDialog.width-20
 				clip: true
 				Layout.alignment: Qt.AlignHCenter

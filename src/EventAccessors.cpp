@@ -72,8 +72,15 @@ struct EventBody
         template<class T>
         std::string operator()(const mtx::events::Event<T> &e)
         {
-                if constexpr (is_detected<body_t, T>::value)
-                        return e.content.body;
+                if constexpr (is_detected<body_t, T>::value) {
+                        if constexpr (std::is_same_v<std::optional<std::string>,
+                                                     std::remove_cv_t<decltype(e.content.body)>>)
+                                return e.content.body ? e.content.body.value() : "";
+                        else if constexpr (std::is_same_v<
+                                             std::string,
+                                             std::remove_cv_t<decltype(e.content.body)>>)
+                                return e.content.body;
+                }
                 return "";
         }
 };

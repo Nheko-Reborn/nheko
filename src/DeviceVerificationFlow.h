@@ -2,8 +2,8 @@
 
 #include "Olm.h"
 
+#include "MatrixClient.h"
 #include "mtx/responses/crypto.hpp"
-#include <MatrixClient.h>
 #include <QObject>
 
 class QTimer;
@@ -19,15 +19,22 @@ class DeviceVerificationFlow : public QObject
         Q_PROPERTY(QString userId READ getUserId WRITE setUserId)
         Q_PROPERTY(QString deviceId READ getDeviceId WRITE setDeviceId)
         Q_PROPERTY(Method method READ getMethod WRITE setMethod)
-        Q_PROPERTY(std::vector<int> sasList READ getSasList)
+        Q_PROPERTY(std::vector<int> sasList READ getSasList CONSTANT)
 
 public:
+        enum Type
+        {
+                ToDevice,
+                RoomMsg
+        };
+
         enum Method
         {
                 Decimal,
                 Emoji
         };
         Q_ENUM(Method)
+
         enum Error
         {
                 UnknownMethod,
@@ -39,7 +46,9 @@ public:
         };
         Q_ENUM(Error)
 
-        DeviceVerificationFlow(QObject *parent = nullptr);
+        DeviceVerificationFlow(
+          QObject *parent              = nullptr,
+          DeviceVerificationFlow::Type = DeviceVerificationFlow::Type::ToDevice);
         QString getTransactionId();
         QString getUserId();
         QString getDeviceId();
@@ -90,6 +99,7 @@ private:
         QString userId;
         QString deviceId;
         Method method;
+        Type type;
         bool sender;
 
         QTimer *timeout = nullptr;
@@ -101,4 +111,5 @@ private:
         mtx::identifiers::User toClient;
         std::vector<int> sasList;
         std::map<std::string, std::string> device_keys;
+        mtx::common::ReplyRelatesTo relation;
 };

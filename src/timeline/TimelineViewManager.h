@@ -133,4 +133,11 @@ private:
 
         DeviceVerificationList *dvList;
 };
-Q_DECLARE_METATYPE(mtx::events::collections::DeviceEvents)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationAccept)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationCancel)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationDone)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationKey)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationMac)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationReady)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationRequest)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationStart)
