@@ -22,6 +22,8 @@
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
 
+#include <iostream>
+
 Q_DECLARE_METATYPE(QModelIndex)
 
 namespace std {
@@ -116,7 +118,41 @@ struct RoomEventType
         {
                 return qml_mtx_events::EventType::VideoMessage;
         }
-
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationRequest> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationRequest;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationStart> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationStart;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationMac> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationMac;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationAccept> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationAccept;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationCancel> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationCancel;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationKey> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationKey;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationDone> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationDone;
+        }
         qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Redacted> &)
         {
                 return qml_mtx_events::EventType::Redacted;
@@ -648,6 +684,30 @@ TimelineModel::internalAddEvents(
                         eventOrder[idx] = id;
                         emit dataChanged(index(idx, 0), index(idx, 0));
                         continue;
+                }
+
+                if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>(
+                      &e)) {
+                        std::cout << "got a request" << std::endl;
+                }
+
+                if (auto cancelVerification =
+                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(
+                        &e)) {
+                        std::cout<<"it is happening"<<std::endl;
+                        if (cancelVerification->content.relates_to.has_value()) {
+                                QString event_id = QString::fromStdString(
+                                  cancelVerification->content.relates_to.value()
+                                    .in_reply_to.event_id);
+                                auto request =
+                                  std::find(eventOrder.begin(), eventOrder.end(), event_id);
+                                if (request != eventOrder.end()) {
+                                        auto event = events.value(event_id);
+                                        auto e     = std::get_if<mtx::events::RoomEvent<
+                                          mtx::events::msg::KeyVerificationRequest>>(&event);
+                                        std::cout<<json(*e)<<std::endl;
+                                }
+                        }
                 }
 
                 if (auto redaction =

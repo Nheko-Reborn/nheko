@@ -166,16 +166,18 @@ signals:
 
         //! Signals for device verificaiton
         void recievedDeviceVerificationAccept(
-          const mtx::events::collections::DeviceEvents &message);
+          const mtx::events::msg::KeyVerificationAccept &message);
         void recievedDeviceVerificationRequest(
-          const mtx::events::collections::DeviceEvents &message);
+          const mtx::events::msg::KeyVerificationRequest &message,
+          std::string sender);
         void recievedDeviceVerificationCancel(
-          const mtx::events::collections::DeviceEvents &message);
-        void recievedDeviceVerificationKey(const mtx::events::collections::DeviceEvents &message);
-        void recievedDeviceVerificationMac(const mtx::events::collections::DeviceEvents &message);
-        void recievedDeviceVerificationStart(const mtx::events::collections::DeviceEvents &message);
-        void recievedDeviceVerificationReady(const mtx::events::collections::DeviceEvents &message);
-        void recievedDeviceVerificationDone(const mtx::events::collections::DeviceEvents &message);
+          const mtx::events::msg::KeyVerificationCancel &message);
+        void recievedDeviceVerificationKey(const mtx::events::msg::KeyVerificationKey &message);
+        void recievedDeviceVerificationMac(const mtx::events::msg::KeyVerificationMac &message);
+        void recievedDeviceVerificationStart(const mtx::events::msg::KeyVerificationStart &message,
+                                             std::string sender);
+        void recievedDeviceVerificationReady(const mtx::events::msg::KeyVerificationReady &message);
+        void recievedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
 
 private slots:
         void showUnreadMessageNotification(int count);

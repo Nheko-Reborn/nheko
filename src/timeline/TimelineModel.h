@@ -80,6 +80,14 @@ enum EventType
         VideoMessage,
         Redacted,
         UnknownMessage,
+        KeyVerificationRequest,
+        KeyVerificationStart,
+        KeyVerificationMac,
+        KeyVerificationAccept,
+        KeyVerificationCancel,
+        KeyVerificationKey,
+        KeyVerificationDone,
+        KeyVerificationReady
 };
 Q_ENUM_NS(EventType)
 

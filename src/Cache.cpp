@@ -956,7 +956,7 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         savePresence(txn, res.presence);
 
-        updateUserCache(res.device_lists);
+        // updateUserCache(res.device_lists);
 
         removeLeftRooms(txn, res.rooms.leave);
 
