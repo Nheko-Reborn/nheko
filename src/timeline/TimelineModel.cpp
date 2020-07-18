@@ -353,9 +353,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                         return qml_mtx_events::Received;
         }
         case IsEncrypted: {
-                //        return std::holds_alternative<
-                //          mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(events[id]);
-                return false;
+                auto id              = event_id(event);
+                auto encrypted_event = events.event(id, id, false);
+                return encrypted_event &&
+                       std::holds_alternative<
+                         mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                         *encrypted_event);
         }
         case IsRoomEncrypted: {
                 return cache::isRoomEncrypted(room_id_.toStdString());
