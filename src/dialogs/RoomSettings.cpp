@@ -151,7 +151,7 @@ EditModal::applyClicked()
                 state::Name body;
                 body.name = newName.toStdString();
 
-                http::client()->send_state_event<state::Name, EventType::RoomName>(
+                http::client()->send_state_event(
                   roomId_.toStdString(),
                   body,
                   [proxy, newName](const mtx::responses::EventId &, mtx::http::RequestErr err) {
@@ -169,7 +169,7 @@ EditModal::applyClicked()
                 state::Topic body;
                 body.topic = newTopic.toStdString();
 
-                http::client()->send_state_event<state::Topic, EventType::RoomTopic>(
+                http::client()->send_state_event(
                   roomId_.toStdString(),
                   body,
                   [proxy](const mtx::responses::EventId &, mtx::http::RequestErr err) {
@@ -694,7 +694,7 @@ RoomSettings::updateAccessRules(const std::string &room_id,
         startLoadingSpinner();
         resetErrorLabel();
 
-        http::client()->send_state_event<state::JoinRules, EventType::RoomJoinRules>(
+        http::client()->send_state_event(
           room_id,
           join_rule,
           [this, room_id, guest_access](const mtx::responses::EventId &,
@@ -708,7 +708,7 @@ RoomSettings::updateAccessRules(const std::string &room_id,
                           return;
                   }
 
-                  http::client()->send_state_event<state::GuestAccess, EventType::RoomGuestAccess>(
+                  http::client()->send_state_event(
                     room_id,
                     guest_access,
                     [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
@@ -843,7 +843,7 @@ RoomSettings::updateAvatar()
                   avatar_event.image_info.size     = size;
                   avatar_event.url                 = res.content_uri;
 
-                  http::client()->send_state_event<state::Avatar, EventType::RoomAvatar>(
+                  http::client()->send_state_event(
                     room_id,
                     avatar_event,
                     [content = std::move(content), proxy = std::move(proxy)](

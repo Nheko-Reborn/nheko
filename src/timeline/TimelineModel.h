@@ -236,31 +236,23 @@ public slots:
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
 
 private slots:
-        // Add old events at the top of the timeline.
-        void addBackwardsEvents(const mtx::responses::Messages &msgs);
-        void processOnePendingMessage();
         void addPendingMessage(mtx::events::collections::TimelineEvents event);
 
 signals:
-        void oldMessagesRetrieved(const mtx::responses::Messages &res);
-        void messageFailed(QString txn_id);
-        void messageSent(QString txn_id, QString event_id);
         void currentIndexChanged(int index);
         void redactionFailed(QString id);
         void eventRedacted(QString id);
-        void nextPendingMessage();
-        void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void mediaCached(QString mxcUrl, QString cacheUrl);
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
-        void eventFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
         void paginationInProgressChanged(const bool);
 
+        void newMessageToSend(mtx::events::collections::TimelineEvents event);
+        void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
+
 private:
-        void internalAddEvents(
-          const std::vector<mtx::events::collections::TimelineEvents> &timeline);
-        void sendEncryptedMessage(const std::string &txn_id, nlohmann::json content);
+        void sendEncryptedMessage(const std::string txn_id, nlohmann::json content);
         void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
                                const std::map<std::string, std::string> &room_key,
                                const std::map<std::string, DevicePublicKeys> &pks,
@@ -272,15 +264,11 @@ private:
         void setPaginationInProgress(const bool paginationInProgress);
 
         QSet<QString> read;
-        QList<QString> pending;
-        std::map<QString, ReactionsModel> reactions;
 
         mutable EventStore events;
 
         QString room_id_;
-        QString prev_batch_token_;
 
-        bool isInitialSync          = true;
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;
 

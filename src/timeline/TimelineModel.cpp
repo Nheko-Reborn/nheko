@@ -145,67 +145,6 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , room_id_(room_id)
   , manager_(manager)
 {
-        connect(this,
-                &TimelineModel::oldMessagesRetrieved,
-                this,
-                &TimelineModel::addBackwardsEvents,
-                Qt::QueuedConnection);
-        connect(
-          this,
-          &TimelineModel::messageFailed,
-          this,
-          [this](QString txn_id) {
-                  nhlog::ui()->error("Failed to send {}, retrying", txn_id.toStdString());
-
-                  QTimer::singleShot(5000, this, [this]() { emit nextPendingMessage(); });
-          },
-          Qt::QueuedConnection);
-        connect(
-          this,
-          &TimelineModel::messageSent,
-          this,
-          [this](QString txn_id, QString event_id) {
-                  pending.removeOne(txn_id);
-                  (void)event_id;
-                  // auto ev = events.value(txn_id);
-
-                  // if (auto reaction =
-                  //      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&ev)) {
-                  //        QString reactedTo =
-                  //          QString::fromStdString(reaction->content.relates_to.event_id);
-                  //        auto &rModel = reactions[reactedTo];
-                  //        rModel.removeReaction(*reaction);
-                  //        auto rCopy     = *reaction;
-                  //        rCopy.event_id = event_id.toStdString();
-                  //        rModel.addReaction(room_id_.toStdString(), rCopy);
-                  //}
-
-                  // int idx = idToIndex(txn_id);
-                  // if (idx < 0) {
-                  //        // transaction already received via sync
-                  //        return;
-                  //}
-                  // eventOrder[idx] = event_id;
-                  // ev              = std::visit(
-                  //  [event_id](const auto &e) -> mtx::events::collections::TimelineEvents {
-                  //          auto eventCopy     = e;
-                  //          eventCopy.event_id = event_id.toStdString();
-                  //          return eventCopy;
-                  //  },
-                  //  ev);
-
-                  // events.remove(txn_id);
-                  // events.insert(event_id, ev);
-
-                  //// mark our messages as read
-                  // readEvent(event_id.toStdString());
-
-                  // emit dataChanged(index(idx, 0), index(idx, 0));
-
-                  if (pending.size() > 0)
-                          emit nextPendingMessage();
-          },
-          Qt::QueuedConnection);
         connect(
           this,
           &TimelineModel::redactionFailed,
@@ -214,15 +153,11 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
           Qt::QueuedConnection);
 
         connect(this,
-                &TimelineModel::nextPendingMessage,
-                this,
-                &TimelineModel::processOnePendingMessage,
-                Qt::QueuedConnection);
-        connect(this,
                 &TimelineModel::newMessageToSend,
                 this,
                 &TimelineModel::addPendingMessage,
                 Qt::QueuedConnection);
+        connect(this, &TimelineModel::addPendingMessageToStore, &events, &EventStore::addPending);
 
         connect(
           &events,
@@ -296,7 +231,7 @@ int
 TimelineModel::rowCount(const QModelIndex &parent) const
 {
         Q_UNUSED(parent);
-        return this->events.size() + static_cast<int>(pending.size());
+        return this->events.size();
 }
 
 QVariantMap
@@ -410,7 +345,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 // only show read receipts for messages not from us
                 if (acc::sender(event) != http::client()->user_id().to_string())
                         return qml_mtx_events::Empty;
-                else if (pending.contains(id))
+                else if (!id.isEmpty() && id[0] == "m")
                         return qml_mtx_events::Sent;
                 else if (read.contains(id) || containsOthers(cache::readReceipts(id, room_id_)))
                         return qml_mtx_events::Read;
@@ -428,11 +363,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case ReplyTo:
                 return QVariant(QString::fromStdString(in_reply_to_event(event)));
         case Reactions: {
-                auto id = QString::fromStdString(event_id(event));
-                if (reactions.count(id))
-                        return QVariant::fromValue((QObject *)&reactions.at(id));
-                else
-                        return {};
+                return {};
         }
         case RoomId:
                 return QVariant(room_id_);
@@ -561,15 +492,8 @@ TimelineModel::fetchMore(const QModelIndex &)
 void
 TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
-        if (isInitialSync) {
-                prev_batch_token_ = QString::fromStdString(timeline.prev_batch);
-                isInitialSync     = false;
-        }
-
         if (timeline.events.empty())
                 return;
-
-        internalAddEvents(timeline.events);
 
         events.handleSync(timeline);
 
@@ -645,63 +569,13 @@ TimelineModel::updateLastMessage()
 }
 
 void
-TimelineModel::internalAddEvents(
-  const std::vector<mtx::events::collections::TimelineEvents> &timeline)
-{
-        for (auto e : timeline) {
-                QString id = QString::fromStdString(mtx::accessors::event_id(e));
-
-                if (auto redaction =
-                      std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
-                        QString redacts = QString::fromStdString(redaction->redacts);
-
-                        auto event = events.event(redaction->redacts, redaction->event_id);
-                        if (!event)
-                                continue;
-
-                        if (auto reaction =
-                              std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
-                                event)) {
-                                QString reactedTo =
-                                  QString::fromStdString(reaction->content.relates_to.event_id);
-                                reactions[reactedTo].removeReaction(*reaction);
-                                int idx = idToIndex(reactedTo);
-                                if (idx >= 0)
-                                        emit dataChanged(index(idx, 0), index(idx, 0));
-                        }
-
-                        continue; // don't insert redaction into timeline
-                }
-
-                if (auto reaction =
-                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&e)) {
-                        QString reactedTo =
-                          QString::fromStdString(reaction->content.relates_to.event_id);
-
-                        // // remove local echo
-                        // if (!txid.isEmpty()) {
-                        //         auto rCopy     = *reaction;
-                        //         rCopy.event_id = txid.toStdString();
-                        //         reactions[reactedTo].removeReaction(rCopy);
-                        // }
-
-                        reactions[reactedTo].addReaction(room_id_.toStdString(), *reaction);
-                        int idx = idToIndex(reactedTo);
-                        if (idx >= 0)
-                                emit dataChanged(index(idx, 0), index(idx, 0));
-                        continue; // don't insert reaction into timeline
-                }
-        }
-}
-
-void
 TimelineModel::setCurrentIndex(int index)
 {
         auto oldIndex = idToIndex(currentId);
         currentId     = indexToId(index);
         emit currentIndexChanged(index);
 
-        if ((oldIndex > index || oldIndex == -1) && !pending.contains(currentId) &&
+        if ((oldIndex > index || oldIndex == -1) && !currentId.startsWith("m") &&
             ChatPage::instance()->isActiveWindow()) {
                 readEvent(currentId.toStdString());
         }
@@ -717,28 +591,6 @@ TimelineModel::readEvent(const std::string &id)
                                            currentId.toStdString());
                 }
         });
-}
-
-void
-TimelineModel::addBackwardsEvents(const mtx::responses::Messages &msgs)
-{
-        (void)msgs;
-        // std::vector<QString> ids = internalAddEvents(msgs.chunk);
-
-        // if (!ids.empty()) {
-        //        beginInsertRows(QModelIndex(),
-        //                        static_cast<int>(this->eventOrder.size()),
-        //                        static_cast<int>(this->eventOrder.size() + ids.size() - 1));
-        //        this->eventOrder.insert(this->eventOrder.end(), ids.begin(), ids.end());
-        //        endInsertRows();
-        //}
-
-        // prev_batch_token_ = QString::fromStdString(msgs.end);
-
-        // if (ids.empty() && !msgs.chunk.empty()) {
-        //        // no visible events fetched, prevent loading from stopping
-        //        fetchMore(QModelIndex());
-        //}
 }
 
 QString
@@ -902,7 +754,7 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
 }
 
 void
-TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json content)
+TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json content)
 {
         const auto room_id = room_id_.toStdString();
 
@@ -914,28 +766,15 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
         try {
                 // Check if we have already an outbound megolm session then we can use.
                 if (cache::outboundMegolmSessionExists(room_id)) {
-                        auto data =
+                        mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
+                        event.content =
                           olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
+                        event.event_id = txn_id;
+                        event.room_id  = room_id;
+                        event.sender   = http::client()->user_id().to_string();
+                        event.type     = mtx::events::EventType::RoomEncrypted;
 
-                        http::client()->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
-                          room_id,
-                          txn_id,
-                          data,
-                          [this, txn_id](const mtx::responses::EventId &res,
-                                         mtx::http::RequestErr err) {
-                                  if (err) {
-                                          const int status_code =
-                                            static_cast<int>(err->status_code);
-                                          nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                                             txn_id,
-                                                             err->matrix_error.error,
-                                                             status_code);
-                                          emit messageFailed(QString::fromStdString(txn_id));
-                                  }
-                                  emit messageSent(
-                                    QString::fromStdString(txn_id),
-                                    QString::fromStdString(res.event_id.to_string()));
-                          });
+                        emit this->addPendingMessageToStore(event);
                         return;
                 }
 
@@ -964,40 +803,24 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
                 const auto members = cache::roomMembers(room_id);
                 nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
 
-                auto keeper =
-                  std::make_shared<StateKeeper>([megolm_payload, room_id, doc, txn_id, this]() {
-                          try {
-                                  auto data = olm::encrypt_group_message(
-                                    room_id, http::client()->device_id(), doc);
+                auto keeper = std::make_shared<StateKeeper>([room_id, doc, txn_id, this]() {
+                        try {
+                                mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
+                                event.content = olm::encrypt_group_message(
+                                  room_id, http::client()->device_id(), doc);
+                                event.event_id = txn_id;
+                                event.room_id  = room_id;
+                                event.sender   = http::client()->user_id().to_string();
+                                event.type     = mtx::events::EventType::RoomEncrypted;
 
-                                  http::client()
-                                    ->send_room_message<msg::Encrypted, EventType::RoomEncrypted>(
-                                      room_id,
-                                      txn_id,
-                                      data,
-                                      [this, txn_id](const mtx::responses::EventId &res,
-                                                     mtx::http::RequestErr err) {
-                                              if (err) {
-                                                      const int status_code =
-                                                        static_cast<int>(err->status_code);
-                                                      nhlog::net()->warn(
-                                                        "[{}] failed to send message: {} {}",
-                                                        txn_id,
-                                                        err->matrix_error.error,
-                                                        status_code);
-                                                      emit messageFailed(
-                                                        QString::fromStdString(txn_id));
-                                              }
-                                              emit messageSent(
-                                                QString::fromStdString(txn_id),
-                                                QString::fromStdString(res.event_id.to_string()));
-                                      });
-                          } catch (const lmdb::error &e) {
-                                  nhlog::db()->critical(
-                                    "failed to save megolm outbound session: {}", e.what());
-                                  emit messageFailed(QString::fromStdString(txn_id));
-                          }
-                  });
+                                emit this->addPendingMessageToStore(event);
+                        } catch (const lmdb::error &e) {
+                                nhlog::db()->critical("failed to save megolm outbound session: {}",
+                                                      e.what());
+                                emit ChatPage::instance()->showNotification(
+                                  tr("Failed to encrypt event, sending aborted!"));
+                        }
+                });
 
                 mtx::requests::QueryKeys req;
                 for (const auto &member : members)
@@ -1011,8 +834,8 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
                                   nhlog::net()->warn("failed to query device keys: {} {}",
                                                      err->matrix_error.error,
                                                      static_cast<int>(err->status_code));
-                                  // TODO: Mark the event as failed. Communicate with the UI.
-                                  emit messageFailed(QString::fromStdString(txn_id));
+                                  emit ChatPage::instance()->showNotification(
+                                    tr("Failed to encrypt event, sending aborted!"));
                                   return;
                           }
 
@@ -1112,11 +935,13 @@ TimelineModel::sendEncryptedMessage(const std::string &txn_id, nlohmann::json co
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical(
                   "failed to open outbound megolm session ({}): {}", room_id, e.what());
-                emit messageFailed(QString::fromStdString(txn_id));
+                emit ChatPage::instance()->showNotification(
+                  tr("Failed to encrypt event, sending aborted!"));
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to open outbound megolm session ({}): {}", room_id, e.what());
-                emit messageFailed(QString::fromStdString(txn_id));
+                emit ChatPage::instance()->showNotification(
+                  tr("Failed to encrypt event, sending aborted!"));
         }
 }
 
@@ -1208,9 +1033,8 @@ TimelineModel::handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
 
 struct SendMessageVisitor
 {
-        SendMessageVisitor(const QString &txn_id, TimelineModel *model)
-          : txn_id_qstr_(txn_id)
-          , model_(model)
+        explicit SendMessageVisitor(TimelineModel *model)
+          : model_(model)
         {}
 
         // Do-nothing operator for all unhandled events
@@ -1228,29 +1052,9 @@ struct SendMessageVisitor
                         if (encInfo)
                                 emit model_->newEncryptedImage(encInfo.value());
 
-                        model_->sendEncryptedMessage(txn_id_qstr_.toStdString(),
-                                                     nlohmann::json(msg.content));
+                        model_->sendEncryptedMessage(msg.event_id, nlohmann::json(msg.content));
                 } else {
-                        QString txn_id_qstr  = txn_id_qstr_;
-                        TimelineModel *model = model_;
-                        http::client()->send_room_message<T, mtx::events::EventType::RoomMessage>(
-                          model->room_id_.toStdString(),
-                          txn_id_qstr.toStdString(),
-                          msg.content,
-                          [txn_id_qstr, model](const mtx::responses::EventId &res,
-                                               mtx::http::RequestErr err) {
-                                  if (err) {
-                                          const int status_code =
-                                            static_cast<int>(err->status_code);
-                                          nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                                             txn_id_qstr.toStdString(),
-                                                             err->matrix_error.error,
-                                                             status_code);
-                                          emit model->messageFailed(txn_id_qstr);
-                                  }
-                                  emit model->messageSent(
-                                    txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
-                          });
+                        emit model_->addPendingMessageToStore(msg);
                 }
         }
 
@@ -1260,71 +1064,26 @@ struct SendMessageVisitor
         // cannot handle it correctly.  See the MSC for more details:
         // https://github.com/matrix-org/matrix-doc/blob/matthew/msc1849/proposals/1849-aggregations.md#end-to-end-encryption
         void operator()(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &msg)
-
         {
-                QString txn_id_qstr  = txn_id_qstr_;
-                TimelineModel *model = model_;
-                http::client()
-                  ->send_room_message<mtx::events::msg::Reaction, mtx::events::EventType::Reaction>(
-                    model->room_id_.toStdString(),
-                    txn_id_qstr.toStdString(),
-                    msg.content,
-                    [txn_id_qstr, model](const mtx::responses::EventId &res,
-                                         mtx::http::RequestErr err) {
-                            if (err) {
-                                    const int status_code = static_cast<int>(err->status_code);
-                                    nhlog::net()->warn("[{}] failed to send message: {} {}",
-                                                       txn_id_qstr.toStdString(),
-                                                       err->matrix_error.error,
-                                                       status_code);
-                                    emit model->messageFailed(txn_id_qstr);
-                            }
-                            emit model->messageSent(
-                              txn_id_qstr, QString::fromStdString(res.event_id.to_string()));
-                    });
+                emit model_->addPendingMessageToStore(msg);
         }
 
-        QString txn_id_qstr_;
         TimelineModel *model_;
 };
 
 void
-TimelineModel::processOnePendingMessage()
-{
-        // if (pending.isEmpty())
-        //        return;
-
-        // QString txn_id_qstr = pending.first();
-
-        // auto event = events.value(txn_id_qstr);
-        // std::visit(SendMessageVisitor{txn_id_qstr, this}, event);
-}
-
-void
 TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 {
-        (void)event;
-        // std::visit(
-        //  [](auto &msg) {
-        //          msg.type             = mtx::events::EventType::RoomMessage;
-        //          msg.event_id         = http::client()->generate_txn_id();
-        //          msg.sender           = http::client()->user_id().to_string();
-        //          msg.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
-        //  },
-        //  event);
+        std::visit(
+          [](auto &msg) {
+                  msg.type             = mtx::events::EventType::RoomMessage;
+                  msg.event_id         = "m" + http::client()->generate_txn_id();
+                  msg.sender           = http::client()->user_id().to_string();
+                  msg.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
+          },
+          event);
 
-        // internalAddEvents({event});
-
-        // QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
-        // pending.push_back(txn_id_qstr);
-        // if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event)) {
-        //        beginInsertRows(QModelIndex(), 0, 0);
-        //        this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
-        //        endInsertRows();
-        //}
-        // updateLastMessage();
-
-        // emit nextPendingMessage();
+        std::visit(SendMessageVisitor{this}, event);
 }
 
 bool
@@ -1647,24 +1406,7 @@ TimelineModel::formatMemberEvent(QString id)
         if (!event->unsigned_data.replaces_state.empty()) {
                 auto tempPrevEvent =
                   events.event(event->unsigned_data.replaces_state, event->event_id);
-                if (!tempPrevEvent) {
-                        http::client()->get_event(
-                          this->room_id_.toStdString(),
-                          event->unsigned_data.replaces_state,
-                          [this, id, prevEventId = event->unsigned_data.replaces_state](
-                            const mtx::events::collections::TimelineEvents &timeline,
-                            mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::net()->error(
-                                            "Failed to retrieve event with id {}, which was "
-                                            "requested to show the membership for event {}",
-                                            prevEventId,
-                                            id.toStdString());
-                                          return;
-                                  }
-                                  emit eventFetched(id, timeline);
-                          });
-                } else {
+                if (tempPrevEvent) {
                         prevEvent =
                           std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(
                             tempPrevEvent);

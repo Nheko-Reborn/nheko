@@ -90,6 +90,13 @@ signals:
         void oldMessagesRetrieved(const mtx::responses::Messages &);
         void fetchedMore();
 
+        void processPending();
+        void messageSent(std::string txn_id);
+        void messageFailed(std::string txn_id);
+
+public slots:
+        void addPending(mtx::events::collections::TimelineEvents event);
+
 private:
         mtx::events::collections::TimelineEvents *decryptEvent(
           const IdIndex &idx,
@@ -103,4 +110,7 @@ private:
         static QCache<IdIndex, mtx::events::collections::TimelineEvents> decryptedEvents_;
         static QCache<Index, mtx::events::collections::TimelineEvents> events_;
         static QCache<IdIndex, mtx::events::collections::TimelineEvents> events_by_id_;
+
+        std::string current_txn;
+        int current_txn_error_count = 0;
 };

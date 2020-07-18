@@ -199,6 +199,11 @@ public:
 
         std::string previousBatchToken(const std::string &room_id);
         uint64_t saveOldMessages(const std::string &room_id, const mtx::responses::Messages &res);
+        void savePendingMessage(const std::string &room_id,
+                                const mtx::events::collections::TimelineEvent &message);
+        std::optional<mtx::events::collections::TimelineEvent> firstPendingMessage(
+          const std::string &room_id);
+        void removePendingStatus(const std::string &room_id, const std::string &txn_id);
 
         //! Remove old unused data.
         void deleteOldMessages();
@@ -439,6 +444,13 @@ private:
                   txn, std::string(room_id + "/event_order").c_str(), MDB_CREATE | MDB_INTEGERKEY);
         }
 
+        // inverse of EventOrderDb
+        lmdb::dbi getEventToOrderDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/event2order").c_str(), MDB_CREATE);
+        }
+
         lmdb::dbi getMessageToOrderDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(
@@ -449,6 +461,12 @@ private:
         {
                 return lmdb::dbi::open(
                   txn, std::string(room_id + "/order2msg").c_str(), MDB_CREATE | MDB_INTEGERKEY);
+        }
+
+        lmdb::dbi getPendingMessagesDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/pending").c_str(), MDB_CREATE | MDB_INTEGERKEY);
         }
 
         lmdb::dbi getRelationsDb(lmdb::txn &txn, const std::string &room_id)

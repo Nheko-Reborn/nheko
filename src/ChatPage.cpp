@@ -313,17 +313,15 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                       .toStdString();
                   member.membership = mtx::events::state::Membership::Join;
 
-                  http::client()
-                    ->send_state_event<mtx::events::state::Member,
-                                       mtx::events::EventType::RoomMember>(
-                      currentRoom().toStdString(),
-                      http::client()->user_id().to_string(),
-                      member,
-                      [](mtx::responses::EventId, mtx::http::RequestErr err) {
-                              if (err)
-                                      nhlog::net()->error("Failed to set room displayname: {}",
-                                                          err->matrix_error.error);
-                      });
+                  http::client()->send_state_event(
+                    currentRoom().toStdString(),
+                    http::client()->user_id().to_string(),
+                    member,
+                    [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                            if (err)
+                                    nhlog::net()->error("Failed to set room displayname: {}",
+                                                        err->matrix_error.error);
+                    });
           });
 
         connect(
