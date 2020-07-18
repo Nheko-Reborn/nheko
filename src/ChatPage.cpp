@@ -573,6 +573,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
           Qt::QueuedConnection);
 
+        connect(this,
+                &ChatPage::newSyncResponse,
+                this,
+                &ChatPage::handleSyncResponse,
+                Qt::QueuedConnection);
+
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
 
         instance_ = this;
@@ -1004,6 +1010,45 @@ ChatPage::startInitialSync()
 }
 
 void
+ChatPage::handleSyncResponse(mtx::responses::Sync res)
+{
+        nhlog::net()->debug("sync completed: {}", res.next_batch);
+
+        // Ensure that we have enough one-time keys available.
+        ensureOneTimeKeyCount(res.device_one_time_keys_count);
+
+        // TODO: fine grained error handling
+        try {
+                cache::saveState(res);
+                olm::handle_to_device_messages(res.to_device.events);
+
+                auto updates = cache::roomUpdates(res);
+
+                emit syncTopBar(updates);
+                emit syncRoomlist(updates);
+
+                emit syncUI(res.rooms);
+
+                emit syncTags(cache::roomTagUpdates(res));
+
+                // if we process a lot of syncs (1 every 200ms), this means we clean the
+                // db every 100s
+                static int syncCounter = 0;
+                if (syncCounter++ >= 500) {
+                        cache::deleteOldData();
+                        syncCounter = 0;
+                }
+        } catch (const lmdb::map_full_error &e) {
+                nhlog::db()->error("lmdb is full: {}", e.what());
+                cache::deleteOldData();
+        } catch (const lmdb::error &e) {
+                nhlog::db()->error("saving sync response: {}", e.what());
+        }
+
+        emit trySyncCb();
+}
+
+void
 ChatPage::trySync()
 {
         mtx::http::SyncOpts opts;
@@ -1042,40 +1087,7 @@ ChatPage::trySync()
                           return;
                   }
 
-                  nhlog::net()->debug("sync completed: {}", res.next_batch);
-
-                  // Ensure that we have enough one-time keys available.
-                  ensureOneTimeKeyCount(res.device_one_time_keys_count);
-
-                  // TODO: fine grained error handling
-                  try {
-                          cache::saveState(res);
-                          olm::handle_to_device_messages(res.to_device.events);
-
-                          auto updates = cache::roomUpdates(res);
-
-                          emit syncTopBar(updates);
-                          emit syncRoomlist(updates);
-
-                          emit syncUI(res.rooms);
-
-                          emit syncTags(cache::roomTagUpdates(res));
-
-                          // if we process a lot of syncs (1 every 200ms), this means we clean the
-                          // db every 100s
-                          static int syncCounter = 0;
-                          if (syncCounter++ >= 500) {
-                                  cache::deleteOldData();
-                                  syncCounter = 0;
-                          }
-                  } catch (const lmdb::map_full_error &e) {
-                          nhlog::db()->error("lmdb is full: {}", e.what());
-                          cache::deleteOldData();
-                  } catch (const lmdb::error &e) {
-                          nhlog::db()->error("saving sync response: {}", e.what());
-                  }
-
-                  emit trySyncCb();
+                  emit newSyncResponse(res);
           });
 }
 

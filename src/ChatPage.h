@@ -139,6 +139,7 @@ signals:
         void trySyncCb();
         void tryDelayedSyncCb();
         void tryInitialSyncCb();
+        void newSyncResponse(mtx::responses::Sync res);
         void leftRoom(const QString &room_id);
 
         void initializeRoomList(QMap<QString, RoomInfo>);
@@ -173,6 +174,7 @@ private slots:
 
         void joinRoom(const QString &room);
         void sendTypingNotifications();
+        void handleSyncResponse(mtx::responses::Sync res);
 
 private:
         static ChatPage *instance_;
