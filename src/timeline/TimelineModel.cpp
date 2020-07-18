@@ -772,10 +772,11 @@ TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json con
                         mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
                         event.content =
                           olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
-                        event.event_id = txn_id;
-                        event.room_id  = room_id;
-                        event.sender   = http::client()->user_id().to_string();
-                        event.type     = mtx::events::EventType::RoomEncrypted;
+                        event.event_id         = txn_id;
+                        event.room_id          = room_id;
+                        event.sender           = http::client()->user_id().to_string();
+                        event.type             = mtx::events::EventType::RoomEncrypted;
+                        event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
 
                         emit this->addPendingMessageToStore(event);
                         return;
@@ -811,10 +812,11 @@ TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json con
                                 mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
                                 event.content = olm::encrypt_group_message(
                                   room_id, http::client()->device_id(), doc);
-                                event.event_id = txn_id;
-                                event.room_id  = room_id;
-                                event.sender   = http::client()->user_id().to_string();
-                                event.type     = mtx::events::EventType::RoomEncrypted;
+                                event.event_id         = txn_id;
+                                event.room_id          = room_id;
+                                event.sender           = http::client()->user_id().to_string();
+                                event.type             = mtx::events::EventType::RoomEncrypted;
+                                event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
 
                                 emit this->addPendingMessageToStore(event);
                         } catch (const lmdb::error &e) {
