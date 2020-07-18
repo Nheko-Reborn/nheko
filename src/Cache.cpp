@@ -2334,15 +2334,19 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
 
         lmdb::val indexVal, val;
         uint64_t index = std::numeric_limits<uint64_t>::max() / 2;
-        auto cursor    = lmdb::cursor::open(txn, orderDb);
-        if (cursor.get(indexVal, val, MDB_FIRST)) {
-                index = *indexVal.data<uint64_t>();
+        {
+                auto cursor = lmdb::cursor::open(txn, orderDb);
+                if (cursor.get(indexVal, val, MDB_FIRST)) {
+                        index = *indexVal.data<uint64_t>();
+                }
         }
 
         uint64_t msgIndex = std::numeric_limits<uint64_t>::max() / 2;
-        auto msgCursor    = lmdb::cursor::open(txn, order2msgDb);
-        if (msgCursor.get(indexVal, val, MDB_FIRST)) {
-                msgIndex = *indexVal.data<uint64_t>();
+        {
+                auto msgCursor = lmdb::cursor::open(txn, order2msgDb);
+                if (msgCursor.get(indexVal, val, MDB_FIRST)) {
+                        msgIndex = *indexVal.data<uint64_t>();
+                }
         }
 
         if (res.chunk.empty())
@@ -2389,8 +2393,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         json orderEntry          = json::object();
         orderEntry["event_id"]   = event_id_val;
         orderEntry["prev_batch"] = res.end;
-        lmdb::cursor_put(
-          cursor.handle(), lmdb::val(&index, sizeof(index)), lmdb::val(orderEntry.dump()));
+        lmdb::dbi_put(txn, orderDb, lmdb::val(&index, sizeof(index)), lmdb::val(orderEntry.dump()));
         nhlog::db()->debug("saving '{}'", orderEntry.dump());
 
         txn.commit();
