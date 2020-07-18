@@ -729,7 +729,7 @@ TimelineModel::idToIndex(QString id) const
 
         auto idx = events.idToIndex(id.toStdString());
         if (idx)
-                return events.size() - *idx;
+                return events.size() - *idx - 1;
         else
                 return -1;
 }
@@ -737,7 +737,7 @@ TimelineModel::idToIndex(QString id) const
 QString
 TimelineModel::indexToId(int index) const
 {
-        auto id = events.indexToId(events.size() - index);
+        auto id = events.indexToId(events.size() - index - 1);
         return id ? QString::fromStdString(*id) : "";
 }
 
