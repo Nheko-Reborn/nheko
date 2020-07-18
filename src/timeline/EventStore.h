@@ -91,7 +91,7 @@ signals:
         void fetchedMore();
 
         void processPending();
-        void messageSent(std::string txn_id);
+        void messageSent(std::string txn_id, std::string event_id);
         void messageFailed(std::string txn_id);
 
 public slots:

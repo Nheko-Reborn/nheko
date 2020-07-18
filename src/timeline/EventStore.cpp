@@ -91,7 +91,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                                     room_id_,
                                     txn_id,
                                     e.content,
-                                    [this, txn_id](const mtx::responses::EventId &,
+                                    [this, txn_id](const mtx::responses::EventId &event_id,
                                                    mtx::http::RequestErr err) {
                                             if (err) {
                                                     const int status_code =
@@ -104,7 +104,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                                                     emit messageFailed(txn_id);
                                                     return;
                                             }
-                                            emit messageSent(txn_id);
+                                            emit messageSent(txn_id, event_id.event_id.to_string());
                                     });
                   },
                   event->data);
@@ -135,8 +135,17 @@ EventStore::EventStore(std::string room_id, QObject *)
           this,
           &EventStore::messageSent,
           this,
-          [this](std::string txn_id) {
+          [this](std::string txn_id, std::string event_id) {
                   nhlog::ui()->debug("sent {}", txn_id);
+
+                  http::client()->read_event(
+                    room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
+                            if (err) {
+                                    nhlog::net()->warn(
+                                      "failed to read_event ({}, {})", room_id_, event_id);
+                            }
+                    });
+
                   cache::client()->removePendingStatus(room_id_, txn_id);
                   this->current_txn             = "";
                   this->current_txn_error_count = 0;
