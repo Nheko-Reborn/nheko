@@ -314,33 +314,36 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 }
 
 void
-TimelineViewManager::reactToMessage(const QString &roomId,
-                                    const QString &reactedEvent,
-                                    const QString &reactionKey,
-                                    const QString &selfReactedEvent)
+TimelineViewManager::queueReactionMessage(const QString &reactedEvent, const QString &reactionKey)
 {
+        if (!timeline_)
+                return;
+
+        auto reactions = timeline_->reactions(reactedEvent.toStdString());
+
+        QString selfReactedEvent;
+        for (const auto &reaction : reactions) {
+                if (reactionKey == reaction.key_) {
+                        selfReactedEvent = reaction.selfReactedEvent_;
+                        break;
+                }
+        }
+
+        if (selfReactedEvent.startsWith("m"))
+                return;
+
         // If selfReactedEvent is empty, that means we haven't previously reacted
         if (selfReactedEvent.isEmpty()) {
-                queueReactionMessage(roomId, reactedEvent, reactionKey);
+                mtx::events::msg::Reaction reaction;
+                reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
+                reaction.relates_to.event_id = reactedEvent.toStdString();
+                reaction.relates_to.key      = reactionKey.toStdString();
+
+                timeline_->sendMessage(reaction);
                 // Otherwise, we have previously reacted and the reaction should be redacted
         } else {
-                auto model = models.value(roomId);
-                model->redactEvent(selfReactedEvent);
+                timeline_->redactEvent(selfReactedEvent);
         }
-}
-
-void
-TimelineViewManager::queueReactionMessage(const QString &roomId,
-                                          const QString &reactedEvent,
-                                          const QString &reactionKey)
-{
-        mtx::events::msg::Reaction reaction;
-        reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
-        reaction.relates_to.event_id = reactedEvent.toStdString();
-        reaction.relates_to.key      = reactionKey.toStdString();
-
-        auto model = models.value(roomId);
-        model->sendMessage(reaction);
 }
 
 void

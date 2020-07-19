@@ -40,19 +40,20 @@ Page {
 		id: messageContextMenu
 		modal: true
 
-		function show(eventId_, eventType_, isEncrypted_, showAt) {
+		function show(eventId_, eventType_, isEncrypted_, showAt_) {
 			eventId = eventId_
 			eventType = eventType_
 			isEncrypted = isEncrypted_
-			popup(showAt)
+			popup(showAt_)
 		}
 
 		property string eventId
 		property int eventType
 		property bool isEncrypted
+
 		MenuItem {
 			text: qsTr("React")
-			onClicked: chat.model.reactAction(messageContextMenu.eventId)
+			onClicked: emojiPopup.show(messageContextMenu.parent, messageContextMenu.eventId)
 		}
 		MenuItem {
 			text: qsTr("Reply")

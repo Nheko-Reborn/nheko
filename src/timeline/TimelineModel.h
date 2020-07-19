@@ -197,6 +197,15 @@ public:
         Q_INVOKABLE void cacheMedia(QString eventId);
         Q_INVOKABLE bool saveMedia(QString eventId) const;
 
+        std::vector<::Reaction> reactions(const std::string &event_id)
+        {
+                auto list = events.reactions(event_id);
+                std::vector<::Reaction> vec;
+                for (const auto &r : list)
+                        vec.push_back(r.value<Reaction>());
+                return vec;
+        }
+
         void updateLastMessage();
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>

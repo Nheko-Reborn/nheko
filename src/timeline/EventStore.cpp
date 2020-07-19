@@ -202,6 +202,20 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 if (auto redaction =
                       std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(
                         &event)) {
+                        // fixup reactions
+                        auto redacted = events_by_id_.object({room_id_, redaction->redacts});
+                        if (redacted) {
+                                auto id = mtx::accessors::relates_to_event_id(*redacted);
+                                if (!id.empty()) {
+                                        auto idx = idToIndex(id);
+                                        if (idx) {
+                                                events_by_id_.remove(
+                                                  {room_id_, redaction->redacts});
+                                                emit dataChanged(*idx, *idx);
+                                        }
+                                }
+                        }
+
                         relates_to = redaction->redacts;
                 } else if (auto reaction =
                              std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(

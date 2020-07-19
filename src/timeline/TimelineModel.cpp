@@ -1069,8 +1069,9 @@ struct SendMessageVisitor
         // reactions need to have the relation outside of ciphertext, or synapse / the homeserver
         // cannot handle it correctly.  See the MSC for more details:
         // https://github.com/matrix-org/matrix-doc/blob/matthew/msc1849/proposals/1849-aggregations.md#end-to-end-encryption
-        void operator()(const mtx::events::RoomEvent<mtx::events::msg::Reaction> &msg)
+        void operator()(mtx::events::RoomEvent<mtx::events::msg::Reaction> msg)
         {
+                msg.type = mtx::events::EventType::Reaction;
                 emit model_->addPendingMessageToStore(msg);
         }
 

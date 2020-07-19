@@ -34,7 +34,7 @@ Flow {
 
 			onClicked: {
 				console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + modelData.selfReactedEvent)
-				timelineManager.reactToMessage(reactionFlow.roomId, reactionFlow.eventId, modelData.key, modelData.selfReactedEvent)
+				timelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key)
 			}
 
 

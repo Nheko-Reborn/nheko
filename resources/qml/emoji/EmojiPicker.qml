@@ -10,17 +10,17 @@ import "../"
 
 Popup {
 
-    function show(showAt, room_id, event_id) {
-        console.debug("Showing emojiPicker for " + event_id + "in room " + room_id)
-        parent = showAt
-        x = Math.round((showAt.width - width) / 2)
-        y = showAt.height
-        emojiPopup.room_id = room_id
-        emojiPopup.event_id = event_id
-        open()
-    }
+	function show(showAt, event_id) {
+		console.debug("Showing emojiPicker for " + event_id)
+		if (showAt){
+			parent = showAt
+			x = Math.round((showAt.width - width) / 2)
+			y = showAt.height
+		}
+		emojiPopup.event_id = event_id
+		open()
+	}
 
-    property string room_id
     property string event_id
     property var colors
     property alias model: gridView.model
@@ -102,9 +102,9 @@ Popup {
                 }
                 // TODO: maybe add favorites at some point?
                 onClicked: {
-                    console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id + " in room " + emojiPopup.room_id)
+                    console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id)
                     emojiPopup.close()
-                    timelineManager.queueReactionMessage(emojiPopup.room_id, emojiPopup.event_id, model.unicode)
+                    timelineManager.queueReactionMessage(emojiPopup.event_id, model.unicode)
                 }
             }
 
