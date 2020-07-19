@@ -5,11 +5,14 @@
 
 #include <QCache>
 #include <QObject>
+#include <QVariant>
 #include <qhashfunctions.h>
 
 #include <mtx/events/collections.hpp>
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
+
+#include "Reaction.h"
 
 class EventStore : public QObject
 {
@@ -64,6 +67,8 @@ public:
                                                         bool decrypt = true);
         // always returns a proper event as long as the idx is valid
         mtx::events::collections::TimelineEvents *event(int idx, bool decrypt = true);
+
+        QVariantList reactions(const std::string &event_id);
 
         int size() const
         {

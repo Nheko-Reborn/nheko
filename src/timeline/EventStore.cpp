@@ -3,11 +3,14 @@
 #include <QThread>
 #include <QTimer>
 
+#include "Cache.h"
 #include "Cache_p.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Olm.h"
+
+Q_DECLARE_METATYPE(Reaction)
 
 QCache<EventStore::IdIndex, mtx::events::collections::TimelineEvents> EventStore::decryptedEvents_{
   1000};
@@ -18,6 +21,9 @@ QCache<EventStore::Index, mtx::events::collections::TimelineEvents> EventStore::
 EventStore::EventStore(std::string room_id, QObject *)
   : room_id_(std::move(room_id))
 {
+        static auto reactionType = qRegisterMetaType<Reaction>();
+        (void)reactionType;
+
         auto range = cache::client()->getTimelineRange(room_id_);
 
         if (range) {
@@ -221,6 +227,70 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                         }
                 }
         }
+}
+
+QVariantList
+EventStore::reactions(const std::string &event_id)
+{
+        auto event_ids = cache::client()->relatedEvents(room_id_, event_id);
+
+        struct TempReaction
+        {
+                int count = 0;
+                std::vector<std::string> users;
+                std::string reactedBySelf;
+        };
+        std::map<std::string, TempReaction> aggregation;
+        std::vector<Reaction> reactions;
+
+        auto self = http::client()->user_id().to_string();
+        for (const auto &id : event_ids) {
+                auto related_event = event(id, event_id);
+                if (!related_event)
+                        continue;
+
+                if (auto reaction = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
+                      related_event)) {
+                        auto &agg = aggregation[reaction->content.relates_to.key];
+
+                        if (agg.count == 0) {
+                                Reaction temp{};
+                                temp.key_ =
+                                  QString::fromStdString(reaction->content.relates_to.key);
+                                reactions.push_back(temp);
+                        }
+
+                        agg.count++;
+                        agg.users.push_back(cache::displayName(room_id_, reaction->sender));
+                        if (reaction->sender == self)
+                                agg.reactedBySelf = reaction->event_id;
+                }
+        }
+
+        QVariantList temp;
+        for (auto &reaction : reactions) {
+                const auto &agg            = aggregation[reaction.key_.toStdString()];
+                reaction.count_            = agg.count;
+                reaction.selfReactedEvent_ = QString::fromStdString(agg.reactedBySelf);
+
+                bool first = true;
+                for (const auto &user : agg.users) {
+                        if (first)
+                                first = false;
+                        else
+                                reaction.users_ += ", ";
+
+                        reaction.users_ += QString::fromStdString(user);
+                }
+
+                nhlog::db()->debug("key: {}, count: {}, users: {}",
+                                   reaction.key_.toStdString(),
+                                   reaction.count_,
+                                   reaction.users_.toStdString());
+                temp.append(QVariant::fromValue(reaction));
+        }
+
+        return temp;
 }
 
 mtx::events::collections::TimelineEvents *

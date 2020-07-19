@@ -1353,6 +1353,37 @@ Cache::storeEvent(const std::string &room_id,
         txn.commit();
 }
 
+std::vector<std::string>
+Cache::relatedEvents(const std::string &room_id, const std::string &event_id)
+{
+        auto txn         = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto relationsDb = getRelationsDb(txn, room_id);
+
+        std::vector<std::string> related_ids;
+
+        auto related_cursor  = lmdb::cursor::open(txn, relationsDb);
+        lmdb::val related_to = event_id, related_event;
+        bool first           = true;
+
+        try {
+                if (!related_cursor.get(related_to, related_event, MDB_SET))
+                        return {};
+
+                while (related_cursor.get(
+                  related_to, related_event, first ? MDB_FIRST_DUP : MDB_NEXT_DUP)) {
+                        first = false;
+                        if (event_id != std::string_view(related_to.data(), related_to.size()))
+                                break;
+
+                        related_ids.emplace_back(related_event.data(), related_event.size());
+                }
+        } catch (const lmdb::error &e) {
+                nhlog::db()->error("related events error: {}", e.what());
+        }
+
+        return related_ids;
+}
+
 QMap<QString, RoomInfo>
 Cache::roomInfo(bool withInvites)
 {
@@ -2354,6 +2385,10 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
 
         std::string event_id_val;
         for (const auto &e : res.chunk) {
+                if (std::holds_alternative<
+                      mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(e))
+                        continue;
+
                 auto event         = mtx::accessors::serialize_event(e);
                 event_id_val       = event["event_id"].get<std::string>();
                 lmdb::val event_id = event_id_val;

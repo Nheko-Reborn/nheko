@@ -251,7 +251,7 @@ set(SRC_FILES
 
 	# Timeline
 	src/timeline/EventStore.cpp
-	src/timeline/ReactionsModel.cpp
+	src/timeline/Reaction.cpp
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
 	src/timeline/DelegateChooser.cpp
@@ -455,7 +455,7 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	# Timeline
 	src/timeline/EventStore.h
-	src/timeline/ReactionsModel.h
+	src/timeline/Reaction.h
 	src/timeline/TimelineViewManager.h
 	src/timeline/TimelineModel.h
 	src/timeline/DelegateChooser.h

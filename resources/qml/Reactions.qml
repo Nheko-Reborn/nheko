@@ -30,11 +30,11 @@ Flow {
 			implicitHeight: contentItem.childrenRect.height
 
 			ToolTip.visible: hovered
-			ToolTip.text: model.users
+			ToolTip.text: modelData.users
 
 			onClicked: {
-				console.debug("Picked " + model.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + model.selfReactedEvent)
-				timelineManager.reactToMessage(reactionFlow.roomId, reactionFlow.eventId, model.key, model.selfReactedEvent)
+				console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + modelData.selfReactedEvent)
+				timelineManager.reactToMessage(reactionFlow.roomId, reactionFlow.eventId, modelData.key, modelData.selfReactedEvent)
 			}
 
 
@@ -49,13 +49,13 @@ Flow {
 					font.family: settings.emojiFont
 					elide: Text.ElideRight
 					elideWidth: 150
-					text: model.key
+					text: modelData.key
 				}
 
 				Text {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
-					text: textMetrics.elidedText + (textMetrics.elidedText == model.key ? "" : "…")
+					text: textMetrics.elidedText + (textMetrics.elidedText == modelData.key ? "" : "…")
 					font.family: settings.emojiFont
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1
@@ -65,13 +65,13 @@ Flow {
 					id: divider
 					height: Math.floor(reactionCounter.implicitHeight * 1.4)
 					width: 1
-					color: (reaction.hovered || model.selfReactedEvent !== '') ? colors.highlight : colors.text
+					color: (reaction.hovered || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
 				}
 
 				Text {
 					anchors.verticalCenter: divider.verticalCenter
 					id: reactionCounter
-					text: model.counter
+					text: modelData.count
 					font: reaction.font
 					color: reaction.hovered ? colors.highlight : colors.text
 				}
@@ -82,8 +82,8 @@ Flow {
 
 				implicitWidth: reaction.implicitWidth
 				implicitHeight: reaction.implicitHeight
-				border.color: (reaction.hovered  || model.selfReactedEvent !== '') ? colors.highlight : colors.text
-				color: model.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.20) : colors.base
+				border.color: (reaction.hovered  || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
+				color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.20) : colors.base
 				border.width: 1
 				radius: reaction.height / 2.0
 			}

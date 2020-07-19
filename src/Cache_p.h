@@ -188,6 +188,9 @@ public:
         void storeEvent(const std::string &room_id,
                         const std::string &event_id,
                         const mtx::events::collections::TimelineEvent &event);
+        std::vector<std::string> relatedEvents(const std::string &room_id,
+                                               const std::string &event_id);
+
         struct TimelineRange
         {
                 uint64_t first, last;

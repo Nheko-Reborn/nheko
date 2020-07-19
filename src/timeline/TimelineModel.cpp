@@ -366,7 +366,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case ReplyTo:
                 return QVariant(QString::fromStdString(in_reply_to_event(event)));
         case Reactions: {
-                return {};
+                auto id = event_id(event);
+                return QVariant::fromValue(events.reactions(id));
         }
         case RoomId:
                 return QVariant(room_id_);

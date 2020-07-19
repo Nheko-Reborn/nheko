@@ -10,7 +10,6 @@
 
 #include "CacheCryptoStructs.h"
 #include "EventStore.h"
-#include "ReactionsModel.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
