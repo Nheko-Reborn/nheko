@@ -244,7 +244,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
         connect(room_list_, &RoomList::acceptInvite, this, [this](const QString &room_id) {
-                view_manager_->addRoom(room_id);
                 joinRoom(room_id);
                 room_list_->removeRoom(room_id, currentRoom() == room_id);
         });
@@ -543,12 +542,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   emit notificationsRetrieved(std::move(res));
                           });
         });
-        connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync, Qt::QueuedConnection);
-        connect(this,
-                &ChatPage::syncTags,
-                communitiesList_,
-                &CommunitiesList::syncTags,
-                Qt::QueuedConnection);
+        connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
+        connect(this, &ChatPage::syncTags, communitiesList_, &CommunitiesList::syncTags);
         connect(
           this, &ChatPage::syncTopBar, this, [this](const std::map<QString, RoomInfo> &updates) {
                   if (updates.find(currentRoom()) != updates.end())

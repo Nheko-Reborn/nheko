@@ -1439,8 +1439,16 @@ Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
 std::optional<Cache::TimelineRange>
 Cache::getTimelineRange(const std::string &room_id)
 {
-        auto txn     = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto orderDb = getOrderToMessageDb(txn, room_id);
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getOrderToMessageDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
 
         lmdb::val indexVal, val;
 
