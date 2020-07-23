@@ -109,7 +109,7 @@ ActiveCallBar::setCallParty(
     const QString &roomName,
     const QString &avatarUrl)
 {
-        callPartyLabel_->setText(
+        callPartyLabel_->setText("  " +
             (displayName.isEmpty() ? userid : displayName) + " -");
 
         if (!avatarUrl.isEmpty())
@@ -137,10 +137,9 @@ ActiveCallBar::update(WebRTCSession::State state)
           case WebRTCSession::State::CONNECTED:
             callStartTime_ = QDateTime::currentSecsSinceEpoch();
             timer_->start(1000);
-            stateLabel_->setText("Active call:");
+            stateLabel_->setText("Voice call:");
             durationLabel_->setText("00:00");
             durationLabel_->show();
-            muteBtn_->show();
             break;
           case WebRTCSession::State::DISCONNECTED:
             timer_->stop();
