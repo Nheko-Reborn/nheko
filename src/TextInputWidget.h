@@ -26,6 +26,7 @@
 #include <QTextEdit>
 #include <QWidget>
 
+#include "WebRTCSession.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
 #include "popups/SuggestionsPopup.h"
@@ -149,7 +150,7 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void changeCallButtonState(bool callStarted);
+        void changeCallButtonState(WebRTCSession::State);
 
 private slots:
         void addSelectedEmoji(const QString &emoji);

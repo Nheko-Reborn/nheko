@@ -138,13 +138,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(
           &callManager_, &CallManager::newCallParty, activeCallBar_, &ActiveCallBar::setCallParty);
         connect(&WebRTCSession::instance(),
-                &WebRTCSession::pipelineChanged,
+                &WebRTCSession::stateChanged,
                 this,
-                [this](bool callStarted) {
-                        if (callStarted)
-                                activeCallBar_->show();
-                        else
+                [this](WebRTCSession::State state) {
+                        if (state == WebRTCSession::State::DISCONNECTED)
                                 activeCallBar_->hide();
+                        else
+                                activeCallBar_->show();
                 });
 
         // Splitter
@@ -469,22 +469,28 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 if (callManager_.onActiveCall()) {
                         callManager_.hangUp();
                 } else {
-                        if (cache::singleRoomInfo(current_room_.toStdString()).member_count != 2) {
-                                showNotification("Voice/Video calls are limited to 1:1 rooms");
+                        if (auto roomInfo =
+                            cache::singleRoomInfo(current_room_.toStdString());
+                              roomInfo.member_count != 2) {
+                                showNotification("Voice calls are limited to 1:1 rooms.");
                         } else {
                                 std::vector<RoomMember> members(
                                   cache::getMembers(current_room_.toStdString()));
                                 const RoomMember &callee =
                                   members.front().user_id == utils::localUser() ? members.back()
                                                                                 : members.front();
-                                auto dialog =
-                                  new dialogs::PlaceCall(callee.user_id, callee.display_name, MainWindow::instance());
+                                auto dialog = new dialogs::PlaceCall(
+                                    callee.user_id,
+                                    callee.display_name,
+                                    QString::fromStdString(roomInfo.name),
+                                    QString::fromStdString(roomInfo.avatar_url),
+                                    MainWindow::instance());
                                 connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
                                         callManager_.sendInvite(current_room_);
                                 });
-                                connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
-                                        showNotification("Video calls not yet implemented");
-                                });
+                                /*connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
+                                        showNotification("Video calls not yet implemented.");
+                                });*/
                                 utils::centerWidget(dialog, MainWindow::instance());
                                 dialog->show();
                         }

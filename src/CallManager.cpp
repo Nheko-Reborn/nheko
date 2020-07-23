@@ -68,9 +68,9 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
               turnServerTimer_.setInterval(res.ttl * 1000 * 0.9);
       });
 
-  connect(&session_, &WebRTCSession::pipelineChanged, this,
-      [this](bool started) {
-        if (!started)
+  connect(&session_, &WebRTCSession::stateChanged, this,
+      [this](WebRTCSession::State state) {
+        if (state == WebRTCSession::State::DISCONNECTED)
           playRingtone("qrc:/media/media/callend.ogg", false);
         });
 
@@ -87,9 +87,9 @@ CallManager::sendInvite(const QString &roomid)
     if (onActiveCall())
       return;
 
-    std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
-    if (members.size() != 2) {
-      emit ChatPage::instance()->showNotification("Voice/Video calls are limited to 1:1 rooms");
+    auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
+    if (roomInfo.member_count != 2) {
+      emit ChatPage::instance()->showNotification("Voice calls are limited to 1:1 rooms.");
       return;
     }
 
@@ -105,11 +105,13 @@ CallManager::sendInvite(const QString &roomid)
 
     // TODO Add invite timeout
     generateCallID();
+    std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
     const RoomMember &callee = members.front().user_id == utils::localUser() ? members.back() : members.front();
-    emit newCallParty(callee.user_id, callee.display_name);
+    emit newCallParty(callee.user_id, callee.display_name,
+            QString::fromStdString(roomInfo.name), QString::fromStdString(roomInfo.avatar_url));
     playRingtone("qrc:/media/media/ringback.ogg", true);
     if (!session_.createOffer()) {
-      emit ChatPage::instance()->showNotification("Problem setting up call");
+      emit ChatPage::instance()->showNotification("Problem setting up call.");
       endCall();
     }
 }
@@ -127,7 +129,7 @@ CallManager::hangUp()
 bool
 CallManager::onActiveCall()
 {
-  return session_.isActive();
+  return session_.state() != WebRTCSession::State::DISCONNECTED;
 }
 
 void CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
@@ -156,8 +158,8 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
   if (callInviteEvent.content.call_id.empty())
     return;
 
-  std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
-  if (onActiveCall() || members.size() != 2) {
+  auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
+  if (onActiveCall() || roomInfo.member_count != 2) {
     emit newMessage(QString::fromStdString(callInviteEvent.room_id),
         CallHangUp{callInviteEvent.content.call_id, 0, CallHangUp::Reason::InviteTimeOut});
     return;
@@ -168,10 +170,18 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
   callid_ = callInviteEvent.content.call_id;
   remoteICECandidates_.clear();
 
-  const RoomMember &caller = members.front().user_id == utils::localUser() ? members.back() : members.front();
-  emit newCallParty(caller.user_id, caller.display_name);
+  std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
+  const RoomMember &caller =
+    members.front().user_id == utils::localUser() ? members.back() : members.front();
+  emit newCallParty(caller.user_id, caller.display_name,
+          QString::fromStdString(roomInfo.name), QString::fromStdString(roomInfo.avatar_url));
 
-  auto dialog = new dialogs::AcceptCall(caller.user_id, caller.display_name, MainWindow::instance());
+  auto dialog = new dialogs::AcceptCall(
+      caller.user_id,
+      caller.display_name,
+      QString::fromStdString(roomInfo.name),
+      QString::fromStdString(roomInfo.avatar_url),
+      MainWindow::instance());
   connect(dialog, &dialogs::AcceptCall::accept, this,
       [this, callInviteEvent](){
         MainWindow::instance()->hideOverlay();
@@ -198,7 +208,7 @@ CallManager::answerInvite(const CallInvite &invite)
   session_.setStunServer(settings_->useStunServer() ? STUN_SERVER : "");
 
   if (!session_.acceptOffer(invite.sdp)) {
-    emit ChatPage::instance()->showNotification("Problem setting up call");
+    emit ChatPage::instance()->showNotification("Problem setting up call.");
     hangUp();
     return;
   }
@@ -232,6 +242,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 
   if (!onActiveCall() && callAnswerEvent.sender == utils::localUser().toStdString() &&
       callid_ == callAnswerEvent.content.call_id) {
+    emit ChatPage::instance()->showNotification("Call answered on another device.");
     stopRingtone();
     MainWindow::instance()->hideOverlay();
     return;
@@ -240,7 +251,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
   if (onActiveCall() && callid_ == callAnswerEvent.content.call_id) {
     stopRingtone();
     if (!session_.acceptAnswer(callAnswerEvent.content.sdp)) {
-      emit ChatPage::instance()->showNotification("Problem setting up call");
+      emit ChatPage::instance()->showNotification("Problem setting up call.");
       hangUp();
     }
   }

@@ -14,6 +14,15 @@ class WebRTCSession : public QObject
         Q_OBJECT
 
 public:
+        enum class State {
+          DISCONNECTED,
+          INITIATING,
+          INITIATED,
+          OFFERSENT,
+          CONNECTING,
+          CONNECTED
+        };
+
         static WebRTCSession& instance()
         {
           static WebRTCSession instance;
@@ -27,7 +36,7 @@ public:
         bool acceptAnswer(const std::string &sdp);
         void acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate>&);
 
-        bool isActive() { return pipe_ != nullptr; }
+        State state() const {return state_;} 
         bool toggleMuteAudioSrc(bool &isMuted);
         void end();
 
@@ -37,12 +46,16 @@ public:
 signals:
         void offerCreated(const std::string &sdp, const std::vector<mtx::events::msg::CallCandidates::Candidate>&);
         void answerCreated(const std::string &sdp, const std::vector<mtx::events::msg::CallCandidates::Candidate>&);
-        void pipelineChanged(bool started);
+        void stateChanged(WebRTCSession::State); // explicit qualifier necessary for Qt
+
+private slots:
+        void setState(State state) {state_ = state;}
 
 private:
-        WebRTCSession() : QObject() {}
+        WebRTCSession();
 
         bool initialised_ = false;
+        State state_ = State::DISCONNECTED;
         GstElement *pipe_ = nullptr;
         GstElement *webrtc_ = nullptr;
         std::string stunServer_;
@@ -50,7 +63,6 @@ private:
 
         bool startPipeline(int opusPayloadType);
         bool createPipeline(int opusPayloadType);
-        void addTurnServers();
 
 public:
         WebRTCSession(WebRTCSession const&) = delete;

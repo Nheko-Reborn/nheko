@@ -12,16 +12,21 @@ class PlaceCall : public QWidget
         Q_OBJECT
 
 public:
-        PlaceCall(const QString &callee, const QString &displayName, QWidget *parent = nullptr);
+        PlaceCall(
+            const QString &callee,
+            const QString &displayName,
+            const QString &roomName,
+            const QString &avatarUrl,
+            QWidget *parent = nullptr);
 
 signals:
         void voice();
-        void video();
+//        void video();
         void cancel();
 
 private:
         QPushButton *voiceBtn_;
-        QPushButton *videoBtn_;
+//        QPushButton *videoBtn_;
         QPushButton *cancelBtn_;
 };
 

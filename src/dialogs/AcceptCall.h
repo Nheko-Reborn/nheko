@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QString>
 #include <QWidget>
 
 class QPushButton;
+class QString;
 
 namespace dialogs {
 
@@ -12,7 +12,12 @@ class AcceptCall : public QWidget
         Q_OBJECT
 
 public:
-        AcceptCall(const QString &caller, const QString &displayName, QWidget *parent = nullptr);
+        AcceptCall(
+            const QString &caller,
+            const QString &displayName,
+            const QString &roomName,
+            const QString &avatarUrl,
+            QWidget *parent = nullptr);
 
 signals:
         void accept();

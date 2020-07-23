@@ -70,6 +70,11 @@
     
         <file>icons/ui/mail-reply.png</file>
 
+        <file>icons/ui/place-call.png</file>
+        <file>icons/ui/end-call.png</file>
+        <file>icons/ui/microphone-mute.png</file>
+        <file>icons/ui/microphone-unmute.png</file>
+
         <file>icons/emoji-categories/people.png</file>
         <file>icons/emoji-categories/people@2x.png</file>
         <file>icons/emoji-categories/nature.png</file>

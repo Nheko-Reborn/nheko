@@ -11,6 +11,8 @@ extern "C" {
 #include "gst/webrtc/webrtc.h"
 }
 
+Q_DECLARE_METATYPE(WebRTCSession::State)
+
 namespace {
 bool gisoffer;
 std::string glocalsdp;
@@ -27,6 +29,12 @@ void addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *
 void linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe);
 std::string::const_iterator  findName(const std::string &sdp, const std::string &name);
 int getPayloadType(const std::string &sdp, const std::string &name);
+}
+
+WebRTCSession::WebRTCSession() : QObject()
+{
+  qRegisterMetaType<WebRTCSession::State>();
+  connect(this, &WebRTCSession::stateChanged, this, &WebRTCSession::setState);
 }
 
 bool
@@ -54,14 +62,14 @@ WebRTCSession::init(std::string *errorMessage)
   nhlog::ui()->info("Initialised " + gstVersion);
 
   // GStreamer Plugins:
-  // Base:            audioconvert, audioresample, opus, playback, videoconvert, volume
+  // Base:            audioconvert, audioresample, opus, playback, volume
   // Good:            autodetect, rtpmanager, vpx
   // Bad:             dtls, srtp, webrtc
   // libnice [GLib]:  nice
   initialised_ = true;
   std::string strError = gstVersion + ": Missing plugins: ";
   const gchar *needed[] = {"audioconvert", "audioresample", "autodetect", "dtls", "nice",
-    "opus", "playback", "rtpmanager", "srtp", "videoconvert", "vpx", "volume", "webrtc", nullptr};
+    "opus", "playback", "rtpmanager", "srtp", "vpx", "volume", "webrtc", nullptr};
   GstRegistry *registry = gst_registry_get();
   for (guint i = 0; i < g_strv_length((gchar**)needed); i++) {
     GstPlugin *plugin = gst_registry_find_plugin(registry, needed[i]);
@@ -91,17 +99,19 @@ WebRTCSession::createOffer()
 }
 
 bool
-WebRTCSession::acceptOffer(const std::string& sdp)
+WebRTCSession::acceptOffer(const std::string &sdp)
 {
   nhlog::ui()->debug("Received offer:\n{}", sdp);
+  if (state_ != State::DISCONNECTED)
+    return false;
+
   gisoffer = false;
   glocalsdp.clear();
   gcandidates.clear();
 
   int opusPayloadType = getPayloadType(sdp, "opus"); 
-  if (opusPayloadType == -1) {
+  if (opusPayloadType == -1)
     return false;
-  }
 
   GstWebRTCSessionDescription *offer = parseSDP(sdp, GST_WEBRTC_SDP_TYPE_OFFER);
   if (!offer)
@@ -120,8 +130,10 @@ WebRTCSession::acceptOffer(const std::string& sdp)
 bool
 WebRTCSession::startPipeline(int opusPayloadType)
 {
-  if (isActive())
+  if (state_ != State::DISCONNECTED)
     return false;
+
+  emit stateChanged(State::INITIATING);
 
   if (!createPipeline(opusPayloadType))
     return false;
@@ -132,7 +144,12 @@ WebRTCSession::startPipeline(int opusPayloadType)
     nhlog::ui()->info("WebRTC: Setting STUN server: {}", stunServer_);
     g_object_set(webrtc_, "stun-server", stunServer_.c_str(), nullptr);
   }
-  addTurnServers();
+
+  for (const auto &uri : turnServers_) {
+    nhlog::ui()->info("WebRTC: Setting TURN server: {}", uri);
+    gboolean udata;
+    g_signal_emit_by_name(webrtc_, "add-turn-server", uri.c_str(), (gpointer)(&udata));
+  }
 
   // generate the offer when the pipeline goes to PLAYING
   if (gisoffer)
@@ -152,16 +169,14 @@ WebRTCSession::startPipeline(int opusPayloadType)
   GstStateChangeReturn ret = gst_element_set_state(pipe_, GST_STATE_PLAYING);
   if (ret == GST_STATE_CHANGE_FAILURE) {
     nhlog::ui()->error("WebRTC: unable to start pipeline");
-    gst_object_unref(pipe_);
-    pipe_ = nullptr;
-    webrtc_ = nullptr;
+    end();
     return false;
   }
 
   GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipe_));
   gst_bus_add_watch(bus, newBusMessage, this);
   gst_object_unref(bus);
-  emit pipelineChanged(true);
+  emit stateChanged(State::INITIATED);
   return true;
 }
 
@@ -180,10 +195,7 @@ WebRTCSession::createPipeline(int opusPayloadType)
   if (error) {
     nhlog::ui()->error("WebRTC: Failed to parse pipeline: {}", error->message);
     g_error_free(error);
-    if (pipe_) {
-      gst_object_unref(pipe_);
-      pipe_ = nullptr;
-    }
+    end();
     return false;
   }
   return true;
@@ -193,7 +205,7 @@ bool
 WebRTCSession::acceptAnswer(const std::string &sdp)
 {
   nhlog::ui()->debug("WebRTC: Received sdp:\n{}", sdp);
-  if (!isActive())
+  if (state_ != State::OFFERSENT)
     return false;
 
   GstWebRTCSessionDescription *answer = parseSDP(sdp, GST_WEBRTC_SDP_TYPE_ANSWER);
@@ -206,18 +218,20 @@ WebRTCSession::acceptAnswer(const std::string &sdp)
 }
 
 void
-WebRTCSession::acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate>& candidates)
+WebRTCSession::acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &candidates)
 {
-  if (isActive()) {
-    for (const auto& c : candidates)
+  if (state_ >= State::INITIATED) {
+    for (const auto &c : candidates)
       g_signal_emit_by_name(webrtc_, "add-ice-candidate", c.sdpMLineIndex, c.candidate.c_str());
   }
+  if (state_ < State::CONNECTED)
+    emit stateChanged(State::CONNECTING);
 }
 
 bool
 WebRTCSession::toggleMuteAudioSrc(bool &isMuted)
 {
-  if (!isActive())
+  if (state_ < State::INITIATED)
     return false;
 
   GstElement *srclevel = gst_bin_get_by_name(GST_BIN(pipe_), "srclevel");
@@ -241,20 +255,7 @@ WebRTCSession::end()
     pipe_ = nullptr;
   }
   webrtc_ = nullptr;
-  emit pipelineChanged(false);
-}
-
-void
-WebRTCSession::addTurnServers()
-{
-  if (!webrtc_)
-    return;
-
-  for (const auto &uri : turnServers_) {
-    nhlog::ui()->info("WebRTC: Setting TURN server: {}", uri);
-    gboolean udata;
-    g_signal_emit_by_name(webrtc_, "add-turn-server", uri.c_str(), (gpointer)(&udata));
-  }
+  emit stateChanged(State::DISCONNECTED);
 }
 
 namespace {
@@ -373,8 +374,10 @@ gboolean
 onICEGatheringCompletion(gpointer timerid)
 {
   *(guint*)(timerid) = 0;
-  if (gisoffer)
+  if (gisoffer) {
     emit WebRTCSession::instance().offerCreated(glocalsdp, gcandidates);
+    emit WebRTCSession::instance().stateChanged(WebRTCSession::State::OFFERSENT);
+  }
   else
     emit WebRTCSession::instance().answerCreated(glocalsdp, gcandidates);
 
@@ -445,6 +448,9 @@ linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe
   if (queuepad) {
     if (GST_PAD_LINK_FAILED(gst_pad_link(newpad, queuepad)))
       nhlog::ui()->error("WebRTC: Unable to link new pad");
+    else {
+      emit WebRTCSession::instance().stateChanged(WebRTCSession::State::CONNECTED);
+    }
     gst_object_unref(queuepad);
   }
 }

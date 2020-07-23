@@ -1,10 +1,17 @@
+#include <cstdio>
+
+#include <QDateTime>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QLabel>
 #include <QString>
+#include <QTimer>
 
 #include "ActiveCallBar.h"
+#include "ChatPage.h"
+#include "Utils.h"
 #include "WebRTCSession.h"
+#include "ui/Avatar.h"
 #include "ui/FlatButton.h"
 
 ActiveCallBar::ActiveCallBar(QWidget *parent)
@@ -12,7 +19,7 @@ ActiveCallBar::ActiveCallBar(QWidget *parent)
 {
         setAutoFillBackground(true);
         auto p = palette();
-        p.setColor(backgroundRole(), Qt::green);
+        p.setColor(backgroundRole(), QColorConstants::Svg::limegreen);
         setPalette(p);
 
         QFont f;
@@ -24,51 +31,126 @@ ActiveCallBar::ActiveCallBar(QWidget *parent)
 
         setFixedHeight(contentHeight + widgetMargin);
 
-        topLayout_ = new QHBoxLayout(this);
-        topLayout_->setSpacing(widgetMargin);
-        topLayout_->setContentsMargins(
+        layout_ = new QHBoxLayout(this);
+        layout_->setSpacing(widgetMargin);
+        layout_->setContentsMargins(
           2 * widgetMargin, widgetMargin, 2 * widgetMargin, widgetMargin);
-        topLayout_->setSizeConstraint(QLayout::SetMinimumSize);
 
         QFont labelFont;
-        labelFont.setPointSizeF(labelFont.pointSizeF() * 1.2);
+        labelFont.setPointSizeF(labelFont.pointSizeF() * 1.1);
         labelFont.setWeight(QFont::Medium);
+
+        avatar_ = new Avatar(this, QFontMetrics(f).height() * 2.5);
 
         callPartyLabel_ = new QLabel(this);
         callPartyLabel_->setFont(labelFont);
 
-        // TODO microphone mute/unmute icons
+        stateLabel_ = new QLabel(this);
+        stateLabel_->setFont(labelFont);
+
+        durationLabel_ = new QLabel(this);
+        durationLabel_->setFont(labelFont);
+        durationLabel_->hide();
+
         muteBtn_ = new FlatButton(this);
-        QIcon muteIcon;
-        muteIcon.addFile(":/icons/icons/ui/do-not-disturb-rounded-sign.png");
-        muteBtn_->setIcon(muteIcon);
-        muteBtn_->setIconSize(QSize(buttonSize_ / 2, buttonSize_ / 2));
-        muteBtn_->setToolTip(tr("Mute Mic"));
+        setMuteIcon(false);
         muteBtn_->setFixedSize(buttonSize_, buttonSize_);
         muteBtn_->setCornerRadius(buttonSize_ / 2);
-        connect(muteBtn_, &FlatButton::clicked, this, [this]() {
-                if (WebRTCSession::instance().toggleMuteAudioSrc(muted_)) {
-                        QIcon icon;
-                        if (muted_) {
-                                muteBtn_->setToolTip("Unmute Mic");
-                                icon.addFile(":/icons/icons/ui/round-remove-button.png");
-                        } else {
-                                muteBtn_->setToolTip("Mute Mic");
-                                icon.addFile(":/icons/icons/ui/do-not-disturb-rounded-sign.png");
-                        }
-                        muteBtn_->setIcon(icon);
-                }
+        connect(muteBtn_, &FlatButton::clicked, this, [this](){
+                if (WebRTCSession::instance().toggleMuteAudioSrc(muted_))
+                    setMuteIcon(muted_);
         });
 
-        topLayout_->addWidget(callPartyLabel_, 0, Qt::AlignLeft);
-        topLayout_->addWidget(muteBtn_, 0, Qt::AlignRight);
+        layout_->addWidget(avatar_, 0, Qt::AlignLeft);
+        layout_->addWidget(callPartyLabel_, 0, Qt::AlignLeft);
+        layout_->addWidget(stateLabel_, 0, Qt::AlignLeft);
+        layout_->addWidget(durationLabel_, 0, Qt::AlignLeft);
+        layout_->addStretch();
+        layout_->addWidget(muteBtn_, 0, Qt::AlignCenter);
+        layout_->addSpacing(18);
+
+        timer_ = new QTimer(this);
+        connect(timer_, &QTimer::timeout, this,
+            [this](){
+              auto seconds = QDateTime::currentSecsSinceEpoch() - callStartTime_;
+              int s = seconds % 60;
+              int m = (seconds / 60) % 60;
+              int h = seconds / 3600;
+              char buf[12];
+              if (h)
+                snprintf(buf, sizeof(buf), "%.2d:%.2d:%.2d", h, m, s);
+              else
+                snprintf(buf, sizeof(buf), "%.2d:%.2d", m, s);
+              durationLabel_->setText(buf);
+        });
+
+        connect(&WebRTCSession::instance(), &WebRTCSession::stateChanged, this, &ActiveCallBar::update);
 }
 
 void
-ActiveCallBar::setCallParty(const QString &userid, const QString &displayName)
+ActiveCallBar::setMuteIcon(bool muted)
 {
-        if (!displayName.isEmpty() && displayName != userid)
-                callPartyLabel_->setText("Active Call: " + displayName + " (" + userid + ")");
+        QIcon icon;
+        if (muted) {
+                muteBtn_->setToolTip("Unmute Mic");
+                icon.addFile(":/icons/icons/ui/microphone-unmute.png");
+        } else {
+                muteBtn_->setToolTip("Mute Mic");
+                icon.addFile(":/icons/icons/ui/microphone-mute.png");
+        }
+        muteBtn_->setIcon(icon);
+        muteBtn_->setIconSize(QSize(buttonSize_, buttonSize_));
+}
+
+void
+ActiveCallBar::setCallParty(
+    const QString &userid,
+    const QString &displayName,
+    const QString &roomName,
+    const QString &avatarUrl)
+{
+        callPartyLabel_->setText(
+            (displayName.isEmpty() ? userid : displayName) + " -");
+
+        if (!avatarUrl.isEmpty())
+          avatar_->setImage(avatarUrl);
         else
-                callPartyLabel_->setText("Active Call: " + userid);
+          avatar_->setLetter(utils::firstChar(roomName));
+}
+
+void
+ActiveCallBar::update(WebRTCSession::State state)
+{
+        switch (state) {
+          case WebRTCSession::State::INITIATING:
+            stateLabel_->setText("Initiating call...");
+            break;
+          case WebRTCSession::State::INITIATED:
+            stateLabel_->setText("Call initiated...");
+            break;
+          case WebRTCSession::State::OFFERSENT:
+            stateLabel_->setText("Calling...");
+            break;
+          case WebRTCSession::State::CONNECTING:
+            stateLabel_->setText("Connecting...");
+            break;
+          case WebRTCSession::State::CONNECTED:
+            callStartTime_ = QDateTime::currentSecsSinceEpoch();
+            timer_->start(1000);
+            stateLabel_->setText("Active call:");
+            durationLabel_->setText("00:00");
+            durationLabel_->show();
+            muteBtn_->show();
+            break;
+          case WebRTCSession::State::DISCONNECTED:
+            timer_->stop();
+            callPartyLabel_->setText(QString());
+            stateLabel_->setText(QString());
+            durationLabel_->setText(QString());
+            durationLabel_->hide();
+            setMuteIcon(false);
+            break;
+          default:
+            break;
+        }
 }

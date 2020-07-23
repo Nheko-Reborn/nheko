@@ -31,7 +31,6 @@
 #include "Logging.h"
 #include "TextInputWidget.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
 #include "ui/FlatButton.h"
 #include "ui/LoadingIndicator.h"
 
@@ -455,9 +454,9 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         topLayout_->setContentsMargins(13, 1, 13, 0);
 
         callBtn_ = new FlatButton(this);
-        changeCallButtonState(false);
+        changeCallButtonState(WebRTCSession::State::DISCONNECTED);
         connect(&WebRTCSession::instance(),
-                &WebRTCSession::pipelineChanged,
+                &WebRTCSession::stateChanged,
                 this,
                 &TextInputWidget::changeCallButtonState);
 
@@ -664,17 +663,16 @@ TextInputWidget::paintEvent(QPaintEvent *)
 }
 
 void
-TextInputWidget::changeCallButtonState(bool callStarted)
+TextInputWidget::changeCallButtonState(WebRTCSession::State state)
 {
-        // TODO Telephone and HangUp icons - co-opt the ones below for now
         QIcon icon;
-        if (callStarted) {
-                callBtn_->setToolTip(tr("Hang up"));
-                icon.addFile(":/icons/icons/ui/remove-symbol.png");
-        } else {
+        if (state == WebRTCSession::State::DISCONNECTED) {
                 callBtn_->setToolTip(tr("Place a call"));
-                icon.addFile(":/icons/icons/ui/speech-bubbles-comment-option.png");
+                icon.addFile(":/icons/icons/ui/place-call.png");
+        } else {
+                callBtn_->setToolTip(tr("Hang up"));
+                icon.addFile(":/icons/icons/ui/end-call.png");
         }
         callBtn_->setIcon(icon);
-        callBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
+        callBtn_->setIconSize(QSize(ButtonHeight * 1.1, ButtonHeight * 1.1));
 }
