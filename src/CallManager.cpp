@@ -41,6 +41,14 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
               nhlog::ui()->debug("Offer created with callid_ and roomid_: {} {}", callid_, roomid_.toStdString());
               emit newMessage(roomid_, CallInvite{callid_, sdp, 0, timeoutms_});
               emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
+
+              QTimer::singleShot(timeoutms_, this, [this](){
+                  if (session_.state() == WebRTCSession::State::OFFERSENT) {
+                      emit newMessage(roomid_, CallHangUp{callid_, 0, CallHangUp::Reason::InviteTimeOut});
+                      endCall();
+                      emit ChatPage::instance()->showNotification("The remote side failed to pick up.");
+                  }
+              });
             });
 
   connect(&session_, &WebRTCSession::answerCreated, this,
@@ -112,7 +120,6 @@ CallManager::sendInvite(const QString &roomid)
     setTurnServers();
     session_.setStunServer(settings_->useStunServer() ? STUN_SERVER : "");
 
-    // TODO Add invite timeout
     generateCallID();
     std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
     const RoomMember &callee = members.front().user_id == utils::localUser() ? members.back() : members.front();
