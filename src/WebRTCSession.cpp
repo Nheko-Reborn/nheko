@@ -358,6 +358,11 @@ setLocalDescription(GstPromise *promise, gpointer webrtc)
 void
 addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED, guint mlineIndex, gchar *candidate, gpointer G_GNUC_UNUSED)
 {
+  if (WebRTCSession::instance().state() == WebRTCSession::State::CONNECTED) {
+    emit WebRTCSession::instance().newICECandidate({"audio", (uint16_t)mlineIndex, candidate});
+    return;
+  }
+
   gcandidates.push_back({"audio", (uint16_t)mlineIndex, candidate});
 
   // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early

@@ -46,6 +46,7 @@ public:
 signals:
         void offerCreated(const std::string &sdp, const std::vector<mtx::events::msg::CallCandidates::Candidate>&);
         void answerCreated(const std::string &sdp, const std::vector<mtx::events::msg::CallCandidates::Candidate>&);
+        void newICECandidate(const mtx::events::msg::CallCandidates::Candidate&);
         void stateChanged(WebRTCSession::State); // explicit qualifier necessary for Qt
 
 private slots:

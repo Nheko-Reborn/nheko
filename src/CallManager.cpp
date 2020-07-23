@@ -15,6 +15,7 @@
 #include "dialogs/AcceptCall.h"
 
 Q_DECLARE_METATYPE(std::vector<mtx::events::msg::CallCandidates::Candidate>)
+Q_DECLARE_METATYPE(mtx::events::msg::CallCandidates::Candidate)
 Q_DECLARE_METATYPE(mtx::responses::TurnServer)
 
 using namespace mtx::events;
@@ -30,11 +31,12 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
     settings_(userSettings)
 {
   qRegisterMetaType<std::vector<mtx::events::msg::CallCandidates::Candidate>>();
+  qRegisterMetaType<mtx::events::msg::CallCandidates::Candidate>();
   qRegisterMetaType<mtx::responses::TurnServer>();
 
   connect(&session_, &WebRTCSession::offerCreated, this,
       [this](const std::string &sdp,
-             const std::vector<mtx::events::msg::CallCandidates::Candidate>& candidates)
+             const std::vector<CallCandidates::Candidate> &candidates)
             {
               nhlog::ui()->debug("Offer created with callid_ and roomid_: {} {}", callid_, roomid_.toStdString());
               emit newMessage(roomid_, CallInvite{callid_, sdp, 0, timeoutms_});
@@ -43,11 +45,18 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
 
   connect(&session_, &WebRTCSession::answerCreated, this,
       [this](const std::string &sdp,
-             const std::vector<mtx::events::msg::CallCandidates::Candidate>& candidates)
+             const std::vector<CallCandidates::Candidate> &candidates)
             {
               nhlog::ui()->debug("Answer created with callid_ and roomid_: {} {}", callid_, roomid_.toStdString());
               emit newMessage(roomid_, CallAnswer{callid_, sdp, 0});
               emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
+            });
+
+  connect(&session_, &WebRTCSession::newICECandidate, this,
+      [this](const CallCandidates::Candidate &candidate)
+            {
+              nhlog::ui()->debug("New ICE candidate created with callid_ and roomid_: {} {}", callid_, roomid_.toStdString());
+              emit newMessage(roomid_, CallCandidates{callid_, {candidate}, 0});
             });
 
   connect(&turnServerTimer_, &QTimer::timeout, this, &CallManager::retrieveTurnServer);
