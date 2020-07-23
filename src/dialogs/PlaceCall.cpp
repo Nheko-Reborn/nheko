@@ -26,7 +26,7 @@ PlaceCall::PlaceCall(
         layout->setSpacing(conf::modals::WIDGET_SPACING);
         layout->setMargin(conf::modals::WIDGET_MARGIN);
 
-        auto buttonLayout = new QHBoxLayout(this);
+        auto buttonLayout = new QHBoxLayout;
         buttonLayout->setSpacing(15);
         buttonLayout->setMargin(0);
 
