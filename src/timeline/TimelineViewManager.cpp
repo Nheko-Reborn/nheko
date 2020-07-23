@@ -361,10 +361,13 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
         image.info.size     = dsize;
         image.info.blurhash = blurhash.toStdString();
         image.body          = filename.toStdString();
-        image.url           = url.toStdString();
         image.info.h        = dimensions.height();
         image.info.w        = dimensions.width();
-        image.file          = file;
+
+        if (file)
+                image.file = file;
+        else
+                image.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {
@@ -388,8 +391,11 @@ TimelineViewManager::queueFileMessage(
         file.info.mimetype = mime.toStdString();
         file.info.size     = dsize;
         file.body          = filename.toStdString();
-        file.url           = url.toStdString();
-        file.file          = encryptedFile;
+
+        if (encryptedFile)
+                file.file = encryptedFile;
+        else
+                file.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {
@@ -413,7 +419,11 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
         audio.info.size     = dsize;
         audio.body          = filename.toStdString();
         audio.url           = url.toStdString();
-        audio.file          = file;
+
+        if (file)
+                audio.file = file;
+        else
+                audio.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {
@@ -436,8 +446,11 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         video.info.mimetype = mime.toStdString();
         video.info.size     = dsize;
         video.body          = filename.toStdString();
-        video.url           = url.toStdString();
-        video.file          = file;
+
+        if (file)
+                video.file = file;
+        else
+                video.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {
