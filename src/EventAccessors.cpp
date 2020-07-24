@@ -1,5 +1,7 @@
 #include "EventAccessors.h"
 
+#include <algorithm>
+#include <cctype>
 #include <type_traits>
 
 namespace {
@@ -62,6 +64,22 @@ struct EventRoomTopic
                 if constexpr (std::is_same_v<mtx::events::StateEvent<mtx::events::state::Topic>, T>)
                         return e.content.topic;
                 return "";
+        }
+};
+
+struct CallType
+{
+        template<class T>
+        std::string operator()(const T &e)
+        {
+                if constexpr (std::is_same_v<mtx::events::RoomEvent<mtx::events::msg::CallInvite>, T>) {
+                  const char video[] = "m=video";
+                  const std::string &sdp = e.content.sdp;
+                  return std::search(sdp.cbegin(), sdp.cend(), std::cbegin(video), std::cend(video) - 1,
+                    [](unsigned char c1, unsigned char c2) {return std::tolower(c1) == std::tolower(c2);})
+                      != sdp.cend() ? "video" : "voice";
+                }
+                return std::string();
         }
 };
 
@@ -323,6 +341,12 @@ std::string
 mtx::accessors::room_topic(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit(EventRoomTopic{}, event);
+}
+
+std::string
+mtx::accessors::call_type(const mtx::events::collections::TimelineEvents &event)
+{
+        return std::visit(CallType{}, event);
 }
 
 std::string

@@ -406,8 +406,8 @@ Example: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>%1 placed a voice call.</source>
-        <translation>%1 placed a voice call.</translation>
+        <source>%1 placed a %2 call.</source>
+        <translation>%1 placed a %2 call.</translation>
     </message>
     <message>
         <location line="+6"/>

@@ -170,6 +170,7 @@ public:
                 RoomId,
                 RoomName,
                 RoomTopic,
+                CallType,
                 Dump,
         };
 

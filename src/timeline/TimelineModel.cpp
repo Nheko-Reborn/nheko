@@ -282,6 +282,7 @@ TimelineModel::roleNames() const
           {RoomId, "roomId"},
           {RoomName, "roomName"},
           {RoomTopic, "roomTopic"},
+          {CallType, "callType"},
           {Dump, "dump"},
         };
 }
@@ -435,6 +436,8 @@ TimelineModel::data(const QString &id, int role) const
                 return QVariant(QString::fromStdString(room_name(event)));
         case RoomTopic:
                 return QVariant(QString::fromStdString(room_topic(event)));
+        case CallType:
+                return QVariant(QString::fromStdString(call_type(event)));
         case Dump: {
                 QVariantMap m;
                 auto names = roleNames();
@@ -464,6 +467,7 @@ TimelineModel::data(const QString &id, int role) const
                 m.insert(names[ReplyTo], data(id, static_cast<int>(ReplyTo)));
                 m.insert(names[RoomName], data(id, static_cast<int>(RoomName)));
                 m.insert(names[RoomTopic], data(id, static_cast<int>(RoomTopic)));
+                m.insert(names[CallType], data(id, static_cast<int>(CallType)));
 
                 return QVariant(m);
         }

@@ -93,7 +93,7 @@ Item {
 		DelegateChoice {
 			roleValue: MtxEvent.CallInvite
 			NoticeMessage {
-				text: qsTr("%1 placed a voice call.").arg(model.data.userName)
+				text: qsTr("%1 placed a %2 call.").arg(model.data.userName).arg(model.data.callType)
 			}
 		}
 		DelegateChoice {
