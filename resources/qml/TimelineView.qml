@@ -27,16 +27,16 @@ Page {
 		id: fontMetrics
 	}
 
-    EmojiPicker {
-        id: emojiPopup
-        width: 7 * 52 + 20
-        height: 6 * 52 
-        colors: palette
-        model: EmojiProxyModel {
-            category: EmojiCategory.People
-            sourceModel: EmojiModel {}
-        }
-    }
+	EmojiPicker {
+		id: emojiPopup
+		width: 7 * 52 + 20
+		height: 6 * 52 
+		colors: palette
+		model: EmojiProxyModel {
+			category: EmojiCategory.People
+			sourceModel: EmojiModel {}
+		}
+	}
 
 	Menu {
 		id: messageContextMenu
@@ -114,7 +114,7 @@ Page {
 		ListView {
 			id: chat
 
-            visible: !!timelineManager.timeline
+			visible: !!timelineManager.timeline
 
 			cacheBuffer: 400
 
@@ -206,14 +206,13 @@ Page {
 					}
 				}
 
-				Binding {
-					target: chat.model
-					property: "currentIndex"
-					when: y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height
-					value: index
-					delayed: true
+				Connections {
+					target: chat
+					function onMovementEnded() {
+						if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
+							chat.model.currentIndex = index;
+					}
 				}
-
 			}
 
 			section {
@@ -296,13 +295,13 @@ Page {
 				}
 			}
 
-            footer:  BusyIndicator {
-                anchors.horizontalCenter: parent.horizontalCenter
-                running: chat.model && chat.model.paginationInProgress
-                height: 50
-                width: 50
-                z: 3
-            }
+			footer:  BusyIndicator {
+				anchors.horizontalCenter: parent.horizontalCenter
+				running: chat.model && chat.model.paginationInProgress
+				height: 50
+				width: 50
+				z: 3
+			}
 		}
 
 		Rectangle {

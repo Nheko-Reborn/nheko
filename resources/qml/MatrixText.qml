@@ -8,9 +8,6 @@ TextEdit {
 	selectByMouse: true
 	color: colors.text
 
-	font.hintingPreference: Font.PreferFullHinting
-	renderType: Text.NativeRendering
-
 	onLinkActivated: {
 		if (/^https:\/\/matrix.to\/#\/(@.*)$/.test(link)) chat.model.openUserProfile(/^https:\/\/matrix.to\/#\/(@.*)$/.exec(link)[1])
 		else if (/^https:\/\/matrix.to\/#\/(![^\/]*)$/.test(link)) timelineManager.setHistoryView(/^https:\/\/matrix.to\/#\/(!.*)$/.exec(link)[1])
