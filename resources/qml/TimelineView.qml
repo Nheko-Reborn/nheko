@@ -11,6 +11,8 @@ import "./delegates"
 import "./emoji"
 
 Page {
+	id: timelineRoot
+
 	property var colors: currentActivePalette
 	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
@@ -88,8 +90,6 @@ Page {
 		}
 	}
 
-	id: timelineRoot
-
 	Rectangle {
 		anchors.fill: parent
 		color: colors.window
@@ -114,7 +114,7 @@ Page {
 		ListView {
 			id: chat
 
-			visible: timelineManager.timeline != null
+            visible: !!timelineManager.timeline
 
 			cacheBuffer: 400
 
