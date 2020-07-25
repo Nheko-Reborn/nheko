@@ -542,6 +542,7 @@ EventStore::fetchMore()
                                               mtx::errors::to_string(err->matrix_error.errcode),
                                               err->matrix_error.error,
                                               err->parse_error);
+                          emit fetchedMore();
                           return;
                   }
 
