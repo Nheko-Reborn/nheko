@@ -211,6 +211,7 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                                         if (idx) {
                                                 events_by_id_.remove(
                                                   {room_id_, redaction->redacts});
+                                                events_.remove({room_id_, toInternalIdx(*idx)});
                                                 emit dataChanged(*idx, *idx);
                                         }
                                 }
@@ -227,8 +228,12 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
 
                 if (!relates_to.empty()) {
                         auto idx = cache::client()->getTimelineIndex(room_id_, relates_to);
-                        if (idx)
+                        if (idx) {
+                                events_by_id_.remove({room_id_, relates_to});
+                                decryptedEvents_.remove({room_id_, relates_to});
+                                events_.remove({room_id_, *idx});
                                 emit dataChanged(toExternalIdx(*idx), toExternalIdx(*idx));
+                        }
                 }
 
                 if (auto txn_id = mtx::accessors::transaction_id(event); !txn_id.empty()) {

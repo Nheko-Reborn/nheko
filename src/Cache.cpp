@@ -2242,11 +2242,17 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                 auto event  = mtx::accessors::serialize_event(e);
                 auto txn_id = mtx::accessors::transaction_id(e);
 
+                std::string event_id_val = event.value("event_id", "");
+                if (event_id_val.empty()) {
+                        nhlog::db()->error("Event without id!");
+                        continue;
+                }
+
+                lmdb::val event_id = event_id_val;
+
                 lmdb::val txn_order;
                 if (!txn_id.empty() &&
                     lmdb::dbi_get(txn, evToOrderDb, lmdb::val(txn_id), txn_order)) {
-                        std::string event_id_val = event["event_id"].get<std::string>();
-                        lmdb::val event_id       = event_id_val;
                         lmdb::dbi_put(txn, eventsDb, event_id, lmdb::val(event.dump()));
                         lmdb::dbi_del(txn, eventsDb, lmdb::val(txn_id));
 
@@ -2291,28 +2297,40 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         if (redaction->redacts.empty())
                                 continue;
 
-                        lmdb::val ev{};
-                        lmdb::dbi_put(
-                          txn, eventsDb, lmdb::val(redaction->redacts), lmdb::val(event.dump()));
-                        lmdb::dbi_put(
-                          txn, eventsDb, lmdb::val(redaction->event_id), lmdb::val(event.dump()));
+                        lmdb::val oldEvent;
+                        bool success =
+                          lmdb::dbi_get(txn, eventsDb, lmdb::val(redaction->redacts), oldEvent);
+                        if (!success)
+                                continue;
 
-                        lmdb::val oldIndex{};
-                        if (lmdb::dbi_get(
-                              txn, msg2orderDb, lmdb::val(redaction->redacts), oldIndex)) {
-                                lmdb::dbi_put(
-                                  txn, order2msgDb, oldIndex, lmdb::val(redaction->event_id));
-                                lmdb::dbi_put(
-                                  txn, msg2orderDb, lmdb::val(redaction->event_id), oldIndex);
-                        }
-                } else {
-                        std::string event_id_val = event.value("event_id", "");
-                        if (event_id_val.empty()) {
-                                nhlog::db()->error("Event without id!");
+                        mtx::events::collections::TimelineEvent te;
+                        try {
+                                mtx::events::collections::from_json(
+                                  json::parse(std::string_view(oldEvent.data(), oldEvent.size())),
+                                  te);
+                                // overwrite the content and add redation data
+                                std::visit(
+                                  [redaction](auto &ev) {
+                                          ev.unsigned_data.redacted_because = *redaction;
+                                          ev.unsigned_data.redacted_by      = redaction->event_id;
+                                  },
+                                  te.data);
+                                event = mtx::accessors::serialize_event(te.data);
+                                event["content"].clear();
+
+                        } catch (std::exception &e) {
+                                nhlog::db()->error("Failed to parse message from cache {}",
+                                                   e.what());
                                 continue;
                         }
 
-                        lmdb::val event_id = event_id_val;
+                        lmdb::dbi_put(
+                          txn, eventsDb, lmdb::val(redaction->redacts), lmdb::val(event.dump()));
+                        lmdb::dbi_put(txn,
+                                      eventsDb,
+                                      lmdb::val(redaction->event_id),
+                                      lmdb::val(json(*redaction).dump()));
+                } else {
                         lmdb::dbi_put(txn, eventsDb, event_id, lmdb::val(event.dump()));
 
                         ++index;
