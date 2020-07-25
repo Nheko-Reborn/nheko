@@ -21,7 +21,7 @@ Q_DECLARE_METATYPE(mtx::responses::TurnServer)
 using namespace mtx::events;
 using namespace mtx::events::msg;
 
-// TODO Allow alterative in settings
+// https://github.com/vector-im/riot-web/issues/10173
 #define STUN_SERVER "stun://turn.matrix.org:3478"
 
 CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
@@ -38,14 +38,13 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
       [this](const std::string &sdp,
              const std::vector<CallCandidates::Candidate> &candidates)
             {
-              nhlog::ui()->debug("Offer created with callid_ and roomid_: {} {}", callid_, roomid_.toStdString());
+              nhlog::ui()->debug("WebRTC: call id: {} - sending offer", callid_);
               emit newMessage(roomid_, CallInvite{callid_, sdp, 0, timeoutms_});
               emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
 
               QTimer::singleShot(timeoutms_, this, [this](){
                   if (session_.state() == WebRTCSession::State::OFFERSENT) {
-                      emit newMessage(roomid_, CallHangUp{callid_, 0, CallHangUp::Reason::InviteTimeOut});
-                      endCall();
+                      hangUp(CallHangUp::Reason::InviteTimeOut);
                       emit ChatPage::instance()->showNotification("The remote side failed to pick up.");
                   }
               });
@@ -55,7 +54,7 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
       [this](const std::string &sdp,
              const std::vector<CallCandidates::Candidate> &candidates)
             {
-              nhlog::ui()->debug("Answer created with callid_ and roomid_: {} {}", callid_, roomid_.toStdString());
+              nhlog::ui()->debug("WebRTC: call id: {} - sending answer", callid_);
               emit newMessage(roomid_, CallAnswer{callid_, sdp, 0});
               emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
             });
@@ -63,7 +62,7 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
   connect(&session_, &WebRTCSession::newICECandidate, this,
       [this](const CallCandidates::Candidate &candidate)
             {
-              nhlog::ui()->debug("New ICE candidate created with callid_ and roomid_: {} {}", callid_, roomid_.toStdString());
+              nhlog::ui()->debug("WebRTC: call id: {} - sending ice candidate", callid_);
               emit newMessage(roomid_, CallCandidates{callid_, {candidate}, 0});
             });
 
@@ -121,6 +120,7 @@ CallManager::sendInvite(const QString &roomid)
     session_.setStunServer(settings_->useStunServer() ? STUN_SERVER : "");
 
     generateCallID();
+    nhlog::ui()->debug("WebRTC: call id: {} - creating invite", callid_);
     std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
     const RoomMember &callee = members.front().user_id == utils::localUser() ? members.back() : members.front();
     emit newCallParty(callee.user_id, callee.display_name,
@@ -133,11 +133,11 @@ CallManager::sendInvite(const QString &roomid)
 }
 
 void
-CallManager::hangUp()
+CallManager::hangUp(CallHangUp::Reason reason)
 {
-  nhlog::ui()->debug("CallManager::hangUp: roomid_: {}", roomid_.toStdString());
   if (!callid_.empty()) {
-    emit newMessage(roomid_, CallHangUp{callid_, 0, CallHangUp::Reason::User});
+    nhlog::ui()->debug("WebRTC: call id: {} - hanging up", callid_);
+    emit newMessage(roomid_, CallHangUp{callid_, 0, reason});
     endCall();
   }
 }
@@ -169,7 +169,8 @@ CallManager::handleEvent_(const mtx::events::collections::TimelineEvents &event)
 void
 CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 {
-  nhlog::ui()->debug("CallManager::incoming CallInvite from {} with id {}", callInviteEvent.sender, callInviteEvent.content.call_id);
+  nhlog::ui()->debug("WebRTC: call id: {} - incoming CallInvite from {}",
+      callInviteEvent.content.call_id, callInviteEvent.sender);
 
   if (callInviteEvent.content.call_id.empty())
     return;
@@ -238,7 +239,8 @@ CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
   if (callCandidatesEvent.sender == utils::localUser().toStdString())
     return;
 
-  nhlog::ui()->debug("CallManager::incoming CallCandidates from {} with id {}", callCandidatesEvent.sender, callCandidatesEvent.content.call_id);
+  nhlog::ui()->debug("WebRTC: call id: {} - incoming CallCandidates from {}",
+      callCandidatesEvent.content.call_id, callCandidatesEvent.sender);
 
   if (callid_ == callCandidatesEvent.content.call_id) {
     if (onActiveCall())
@@ -254,7 +256,8 @@ CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
 void
 CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 {
-  nhlog::ui()->debug("CallManager::incoming CallAnswer from {} with id {}", callAnswerEvent.sender, callAnswerEvent.content.call_id);
+  nhlog::ui()->debug("WebRTC: call id: {} - incoming CallAnswer from {}",
+      callAnswerEvent.content.call_id, callAnswerEvent.sender);
 
   if (!onActiveCall() && callAnswerEvent.sender == utils::localUser().toStdString() &&
       callid_ == callAnswerEvent.content.call_id) {
@@ -276,7 +279,9 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 void
 CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
 {
-  nhlog::ui()->debug("CallManager::incoming CallHangUp from {} with id {}", callHangUpEvent.sender, callHangUpEvent.content.call_id);
+  nhlog::ui()->debug("WebRTC: call id: {} - incoming CallHangUp from {}",
+      callHangUpEvent.content.call_id, callHangUpEvent.sender);
+
   if (callid_ == callHangUpEvent.content.call_id) {
     MainWindow::instance()->hideOverlay();
     endCall();

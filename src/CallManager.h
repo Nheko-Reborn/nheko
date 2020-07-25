@@ -24,7 +24,7 @@ public:
         CallManager(QSharedPointer<UserSettings>);
 
         void sendInvite(const QString &roomid);
-        void hangUp();
+        void hangUp(mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
         bool onActiveCall();
 
 public slots:
