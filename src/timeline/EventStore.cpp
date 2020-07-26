@@ -292,10 +292,10 @@ EventStore::reactions(const std::string &event_id)
                 reaction.count_            = agg.count;
                 reaction.selfReactedEvent_ = QString::fromStdString(agg.reactedBySelf);
 
-                bool first = true;
+                bool firstReaction = true;
                 for (const auto &user : agg.users) {
-                        if (first)
-                                first = false;
+                        if (firstReaction)
+                                firstReaction = false;
                         else
                                 reaction.users_ += ", ";
 
