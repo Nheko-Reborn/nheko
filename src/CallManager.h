@@ -11,7 +11,10 @@
 
 #include "mtx/events/collections.hpp"
 #include "mtx/events/voip.hpp"
-#include "mtx/responses/turn_server.hpp"
+
+namespace mtx::responses {
+struct TurnServer;
+}
 
 class UserSettings;
 class WebRTCSession;
@@ -51,7 +54,7 @@ private:
         std::string callid_;
         const uint32_t timeoutms_ = 120000;
         std::vector<mtx::events::msg::CallCandidates::Candidate> remoteICECandidates_;
-        mtx::responses::TurnServer turnServer_;
+        std::vector<std::string> turnURIs_;
         QTimer turnServerTimer_;
         QSharedPointer<UserSettings> settings_;
         QMediaPlayer player_;
@@ -65,7 +68,6 @@ private:
         void answerInvite(const mtx::events::msg::CallInvite&);
         void generateCallID();
         void endCall();
-        void setTurnServers();
         void playRingtone(const QString &ringtone, bool repeat);
         void stopRingtone();
 };

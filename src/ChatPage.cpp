@@ -137,15 +137,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         activeCallBar_->hide();
         connect(
           &callManager_, &CallManager::newCallParty, activeCallBar_, &ActiveCallBar::setCallParty);
-        connect(&WebRTCSession::instance(),
-                &WebRTCSession::stateChanged,
-                this,
-                [this](WebRTCSession::State state) {
-                        if (state == WebRTCSession::State::DISCONNECTED)
-                                activeCallBar_->hide();
-                        else
-                                activeCallBar_->show();
-                });
 
         // Splitter
         splitter->addWidget(sideBar_);

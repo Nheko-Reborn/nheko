@@ -123,25 +123,32 @@ ActiveCallBar::update(WebRTCSession::State state)
 {
         switch (state) {
           case WebRTCSession::State::INITIATING:
+            show();
             stateLabel_->setText("Initiating call...");
             break;
           case WebRTCSession::State::INITIATED:
+            show();
             stateLabel_->setText("Call initiated...");
             break;
           case WebRTCSession::State::OFFERSENT:
+            show();
             stateLabel_->setText("Calling...");
             break;
           case WebRTCSession::State::CONNECTING:
+            show();
             stateLabel_->setText("Connecting...");
             break;
           case WebRTCSession::State::CONNECTED:
+            show();
             callStartTime_ = QDateTime::currentSecsSinceEpoch();
             timer_->start(1000);
             stateLabel_->setText("Voice call:");
             durationLabel_->setText("00:00");
             durationLabel_->show();
             break;
+          case WebRTCSession::State::ICEFAILED:
           case WebRTCSession::State::DISCONNECTED:
+            hide();
             timer_->stop();
             callPartyLabel_->setText(QString());
             stateLabel_->setText(QString());

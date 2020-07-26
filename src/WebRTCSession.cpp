@@ -14,9 +14,9 @@ extern "C" {
 Q_DECLARE_METATYPE(WebRTCSession::State)
 
 namespace {
-bool gisoffer;
-std::string glocalsdp;
-std::vector<mtx::events::msg::CallCandidates::Candidate> gcandidates;
+bool isoffering_;
+std::string localsdp_;
+std::vector<mtx::events::msg::CallCandidates::Candidate> localcandidates_;
 
 gboolean newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data);
 GstWebRTCSessionDescription* parseSDP(const std::string &sdp, GstWebRTCSDPType type);
@@ -24,6 +24,7 @@ void generateOffer(GstElement *webrtc);
 void setLocalDescription(GstPromise *promise, gpointer webrtc);
 void addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED, guint mlineIndex, gchar *candidate, gpointer G_GNUC_UNUSED);
 gboolean onICEGatheringCompletion(gpointer timerid);
+void iceConnectionStateChanged(GstElement *webrtcbin, GParamSpec *pspec G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED);
 void createAnswer(GstPromise *promise, gpointer webrtc);
 void addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe);
 void linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe);
@@ -92,9 +93,9 @@ WebRTCSession::init(std::string *errorMessage)
 bool
 WebRTCSession::createOffer()
 {
-  gisoffer = true;
-  glocalsdp.clear();
-  gcandidates.clear();
+  isoffering_ = true;
+  localsdp_.clear();
+  localcandidates_.clear();
   return startPipeline(111); // a dynamic opus payload type
 }
 
@@ -105,9 +106,9 @@ WebRTCSession::acceptOffer(const std::string &sdp)
   if (state_ != State::DISCONNECTED)
     return false;
 
-  gisoffer = false;
-  glocalsdp.clear();
-  gcandidates.clear();
+  isoffering_ = false;
+  localsdp_.clear();
+  localcandidates_.clear();
 
   int opusPayloadType = getPayloadType(sdp, "opus"); 
   if (opusPayloadType == -1)
@@ -152,13 +153,19 @@ WebRTCSession::startPipeline(int opusPayloadType)
     gboolean udata;
     g_signal_emit_by_name(webrtc_, "add-turn-server", uri.c_str(), (gpointer)(&udata));
   }
+  if (turnServers_.empty())
+    nhlog::ui()->warn("WebRTC: no TURN server provided");
 
   // generate the offer when the pipeline goes to PLAYING
-  if (gisoffer)
+  if (isoffering_)
     g_signal_connect(webrtc_, "on-negotiation-needed", G_CALLBACK(generateOffer), nullptr);
 
   // on-ice-candidate is emitted when a local ICE candidate has been gathered
   g_signal_connect(webrtc_, "on-ice-candidate", G_CALLBACK(addLocalICECandidate), nullptr);
+
+  // capture ICE failure
+  g_signal_connect(webrtc_, "notify::ice-connection-state",
+    G_CALLBACK(iceConnectionStateChanged), nullptr);
 
   // incoming streams trigger pad-added
   gst_element_set_state(pipe_, GST_STATE_READY);
@@ -229,8 +236,6 @@ WebRTCSession::acceptICECandidates(const std::vector<mtx::events::msg::CallCandi
       nhlog::ui()->debug("WebRTC: remote candidate: (m-line:{}):{}", c.sdpMLineIndex, c.candidate);
       g_signal_emit_by_name(webrtc_, "add-ice-candidate", c.sdpMLineIndex, c.candidate.c_str());
     }
-    if (state_ == State::OFFERSENT)
-      emit stateChanged(State::CONNECTING);
   }
 }
 
@@ -357,11 +362,11 @@ setLocalDescription(GstPromise *promise, gpointer webrtc)
   g_signal_emit_by_name(webrtc, "set-local-description", gstsdp, nullptr);
 
   gchar *sdp = gst_sdp_message_as_text(gstsdp->sdp);
-  glocalsdp = std::string(sdp);
+  localsdp_ = std::string(sdp);
   g_free(sdp);
   gst_webrtc_session_description_free(gstsdp);
 
-  nhlog::ui()->debug("WebRTC: local description set ({}):\n{}", isAnswer ? "answer" : "offer", glocalsdp);
+  nhlog::ui()->debug("WebRTC: local description set ({}):\n{}", isAnswer ? "answer" : "offer", localsdp_);
 }
 
 void
@@ -369,12 +374,12 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED, guint mlineIndex, gchar *
 {
   nhlog::ui()->debug("WebRTC: local candidate: (m-line:{}):{}", mlineIndex, candidate);
 
-  if (WebRTCSession::instance().state() == WebRTCSession::State::CONNECTED) {
+  if (WebRTCSession::instance().state() >= WebRTCSession::State::OFFERSENT) {
     emit WebRTCSession::instance().newICECandidate({"audio", (uint16_t)mlineIndex, candidate});
     return;
   }
 
-  gcandidates.push_back({"audio", (uint16_t)mlineIndex, candidate});
+  localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
 
   // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early
   // fixed in v1.18
@@ -390,16 +395,34 @@ gboolean
 onICEGatheringCompletion(gpointer timerid)
 {
   *(guint*)(timerid) = 0;
-  if (gisoffer) {
-    emit WebRTCSession::instance().offerCreated(glocalsdp, gcandidates);
+  if (isoffering_) {
+    emit WebRTCSession::instance().offerCreated(localsdp_, localcandidates_);
     emit WebRTCSession::instance().stateChanged(WebRTCSession::State::OFFERSENT);
   }
   else {
-    emit WebRTCSession::instance().answerCreated(glocalsdp, gcandidates);
-    emit WebRTCSession::instance().stateChanged(WebRTCSession::State::CONNECTING);
+    emit WebRTCSession::instance().answerCreated(localsdp_, localcandidates_);
+    emit WebRTCSession::instance().stateChanged(WebRTCSession::State::ANSWERSENT);
   }
-
   return FALSE;
+}
+
+void
+iceConnectionStateChanged(GstElement *webrtc, GParamSpec *pspec G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
+{
+  GstWebRTCICEConnectionState newState;
+  g_object_get(webrtc, "ice-connection-state", &newState, nullptr);
+  switch (newState) {
+    case GST_WEBRTC_ICE_CONNECTION_STATE_CHECKING:
+      nhlog::ui()->debug("WebRTC: GstWebRTCICEConnectionState -> Checking");
+      emit WebRTCSession::instance().stateChanged(WebRTCSession::State::CONNECTING);
+      break;
+    case GST_WEBRTC_ICE_CONNECTION_STATE_FAILED:
+      nhlog::ui()->error("WebRTC: GstWebRTCICEConnectionState -> Failed");
+      emit WebRTCSession::instance().stateChanged(WebRTCSession::State::ICEFAILED);
+      break;
+    default:
+      break;
+  }
 }
 
 void

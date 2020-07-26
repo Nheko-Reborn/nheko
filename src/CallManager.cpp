@@ -11,8 +11,9 @@
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 #include "WebRTCSession.h"
-
 #include "dialogs/AcceptCall.h"
+
+#include "mtx/responses/turn_server.hpp"
 
 Q_DECLARE_METATYPE(std::vector<mtx::events::msg::CallCandidates::Candidate>)
 Q_DECLARE_METATYPE(mtx::events::msg::CallCandidates::Candidate)
@@ -23,6 +24,11 @@ using namespace mtx::events::msg;
 
 // https://github.com/vector-im/riot-web/issues/10173
 #define STUN_SERVER "stun://turn.matrix.org:3478"
+
+namespace {
+std::vector<std::string>
+getTurnURIs(const mtx::responses::TurnServer &turnServer);
+}
 
 CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
   : QObject(),
@@ -80,15 +86,23 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
 
               // Request new credentials close to expiry
               // See https://tools.ietf.org/html/draft-uberti-behave-turn-rest-00
-              turnServer_ = res;
+              turnURIs_ = getTurnURIs(res);
               turnServerTimer_.setInterval(res.ttl * 1000 * 0.9);
       });
 
   connect(&session_, &WebRTCSession::stateChanged, this,
       [this](WebRTCSession::State state) {
-        if (state == WebRTCSession::State::DISCONNECTED)
+        if (state == WebRTCSession::State::DISCONNECTED) {
           playRingtone("qrc:/media/media/callend.ogg", false);
-        });
+        }
+        else if (state == WebRTCSession::State::ICEFAILED) {
+          QString error("Call connection failed.");
+          if (turnURIs_.empty())
+            error += " Your homeserver has no configured TURN server.";
+          emit ChatPage::instance()->showNotification(error);
+          hangUp(CallHangUp::Reason::ICEFailed);
+        }
+      });
 
   connect(&player_, &QMediaPlayer::mediaStatusChanged, this,
       [this](QMediaPlayer::MediaStatus status) {
@@ -116,8 +130,8 @@ CallManager::sendInvite(const QString &roomid)
     }
 
     roomid_ = roomid;
-    setTurnServers();
     session_.setStunServer(settings_->useStunServer() ? STUN_SERVER : "");
+    session_.setTurnServers(turnURIs_);
 
     generateCallID();
     nhlog::ui()->debug("WebRTC: call id: {} - creating invite", callid_);
@@ -132,11 +146,26 @@ CallManager::sendInvite(const QString &roomid)
     }
 }
 
+namespace {
+std::string callHangUpReasonString(CallHangUp::Reason reason)
+{
+  switch (reason) {
+    case CallHangUp::Reason::ICEFailed:
+      return "ICE failed";
+    case CallHangUp::Reason::InviteTimeOut:
+      return "Invite time out";
+    default:
+      return "User";
+  }
+}
+}
+
 void
 CallManager::hangUp(CallHangUp::Reason reason)
 {
   if (!callid_.empty()) {
-    nhlog::ui()->debug("WebRTC: call id: {} - hanging up", callid_);
+    nhlog::ui()->debug("WebRTC: call id: {} - hanging up ({})", callid_,
+        callHangUpReasonString(reason));
     emit newMessage(roomid_, CallHangUp{callid_, 0, reason});
     endCall();
   }
@@ -221,8 +250,8 @@ CallManager::answerInvite(const CallInvite &invite)
     return;
   }
 
-  setTurnServers();
   session_.setStunServer(settings_->useStunServer() ? STUN_SERVER : "");
+  session_.setTurnServers(turnURIs_);
 
   if (!session_.acceptOffer(invite.sdp)) {
     emit ChatPage::instance()->showNotification("Problem setting up call.");
@@ -279,8 +308,9 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 void
 CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
 {
-  nhlog::ui()->debug("WebRTC: call id: {} - incoming CallHangUp from {}",
-      callHangUpEvent.content.call_id, callHangUpEvent.sender);
+  nhlog::ui()->debug("WebRTC: call id: {} - incoming CallHangUp ({}) from {}",
+      callHangUpEvent.content.call_id, callHangUpReasonString(callHangUpEvent.content.reason),
+         callHangUpEvent.sender);
 
   if (callid_ == callHangUpEvent.content.call_id) {
     MainWindow::instance()->hideOverlay();
@@ -320,35 +350,6 @@ CallManager::retrieveTurnServer()
 }
 
 void
-CallManager::setTurnServers()
-{
-  // gstreamer expects: turn(s)://username:password@host:port?transport=udp(tcp)
-  // where username and password are percent-encoded
-  std::vector<std::string> uris;
-  for (const auto &uri : turnServer_.uris) {
-    if (auto c = uri.find(':'); c == std::string::npos) {
-      nhlog::ui()->error("Invalid TURN server uri: {}", uri);
-      continue;
-    }
-    else {
-      std::string scheme = std::string(uri, 0, c);
-      if (scheme != "turn" && scheme != "turns") {
-        nhlog::ui()->error("Invalid TURN server uri: {}", uri);
-        continue;
-      }
-
-      QString encodedUri = QString::fromStdString(scheme) + "://" + 
-                           QUrl::toPercentEncoding(QString::fromStdString(turnServer_.username)) + ":" +
-                           QUrl::toPercentEncoding(QString::fromStdString(turnServer_.password)) + "@" +
-                           QString::fromStdString(std::string(uri, ++c));
-      uris.push_back(encodedUri.toStdString());
-    }
-  }
-  if (!uris.empty())
-    session_.setTurnServers(uris);
-}
-
-void
 CallManager::playRingtone(const QString &ringtone, bool repeat)
 {
   static QMediaPlaylist playlist;
@@ -364,3 +365,34 @@ CallManager::stopRingtone()
 {
   player_.setPlaylist(nullptr);
 }
+
+namespace {
+std::vector<std::string>
+getTurnURIs(const mtx::responses::TurnServer &turnServer)
+{
+  // gstreamer expects: turn(s)://username:password@host:port?transport=udp(tcp)
+  // where username and password are percent-encoded
+  std::vector<std::string> ret;
+  for (const auto &uri : turnServer.uris) {
+    if (auto c = uri.find(':'); c == std::string::npos) {
+      nhlog::ui()->error("Invalid TURN server uri: {}", uri);
+      continue;
+    }
+    else {
+      std::string scheme = std::string(uri, 0, c);
+      if (scheme != "turn" && scheme != "turns") {
+        nhlog::ui()->error("Invalid TURN server uri: {}", uri);
+        continue;
+      }
+
+      QString encodedUri = QString::fromStdString(scheme) + "://" + 
+                           QUrl::toPercentEncoding(QString::fromStdString(turnServer.username)) + ":" +
+                           QUrl::toPercentEncoding(QString::fromStdString(turnServer.password)) + "@" +
+                           QString::fromStdString(std::string(uri, ++c));
+      ret.push_back(encodedUri.toStdString());
+    }
+  }
+  return ret;
+}
+}
+

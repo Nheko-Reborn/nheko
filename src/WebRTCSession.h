@@ -15,10 +15,12 @@ class WebRTCSession : public QObject
 
 public:
         enum class State {
+          ICEFAILED,
           DISCONNECTED,
           INITIATING,
           INITIATED,
           OFFERSENT,
+          ANSWERSENT,
           CONNECTING,
           CONNECTED
         };
@@ -30,13 +32,13 @@ public:
         }
 
         bool init(std::string *errorMessage = nullptr);
+        State state() const {return state_;} 
 
         bool createOffer();
         bool acceptOffer(const std::string &sdp);
         bool acceptAnswer(const std::string &sdp);
         void acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate>&);
 
-        State state() const {return state_;} 
         bool toggleMuteAudioSrc(bool &isMuted);
         void end();
 
