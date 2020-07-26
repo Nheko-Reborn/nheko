@@ -42,10 +42,14 @@ Page {
 		id: messageContextMenu
 		modal: true
 
-		function show(eventId_, eventType_, isEncrypted_, showAt_) {
+		function show(eventId_, eventType_, isEncrypted_, showAt_, position) {
 			eventId = eventId_
 			eventType = eventType_
 			isEncrypted = isEncrypted_
+
+			if (position)
+			popup(position, showAt_)
+			else
 			popup(showAt_)
 		}
 
