@@ -693,9 +693,56 @@ Cache::runMigrations()
                            auto room_ids = getRoomIds(txn);
 
                            for (const auto &room_id : room_ids) {
-                                   auto messagesDb = lmdb::dbi::open(
-                                     txn, std::string(room_id + "/messages").c_str(), MDB_CREATE);
-                                   lmdb::dbi_drop(txn, messagesDb, true);
+                                   try {
+                                           auto messagesDb = lmdb::dbi::open(
+                                             txn, std::string(room_id + "/messages").c_str());
+
+                                           // keep some old messages and batch token
+                                           {
+                                                   auto roomsCursor =
+                                                     lmdb::cursor::open(txn, messagesDb);
+                                                   lmdb::val ts, stored_message;
+                                                   bool start = true;
+                                                   mtx::responses::Timeline oldMessages;
+                                                   while (roomsCursor.get(ts,
+                                                                          stored_message,
+                                                                          start ? MDB_FIRST
+                                                                                : MDB_NEXT)) {
+                                                           start = false;
+
+                                                           auto j = json::parse(std::string_view(
+                                                             stored_message.data(),
+                                                             stored_message.size()));
+
+                                                           if (oldMessages.prev_batch.empty())
+                                                                   oldMessages.prev_batch =
+                                                                     j["token"].get<std::string>();
+                                                           else if (j["token"] !=
+                                                                    oldMessages.prev_batch)
+                                                                   break;
+
+                                                           mtx::events::collections::TimelineEvent
+                                                             te;
+                                                           mtx::events::collections::from_json(
+                                                             j["event"], te);
+                                                           oldMessages.events.push_back(te.data);
+                                                   }
+                                                   // messages were stored in reverse order, so we
+                                                   // need to reverse them
+                                                   std::reverse(oldMessages.events.begin(),
+                                                                oldMessages.events.end());
+                                                   // save messages using the new method
+                                                   saveTimelineMessages(txn, room_id, oldMessages);
+                                           }
+
+                                           // delete old messages db
+                                           lmdb::dbi_drop(txn, messagesDb, true);
+                                   } catch (std::exception &e) {
+                                           nhlog::db()->error(
+                                             "While migrating messages from {}, ignoring error {}",
+                                             room_id,
+                                             e.what());
+                                   }
                            }
                            txn.commit();
                    } catch (const lmdb::error &) {
