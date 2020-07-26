@@ -62,11 +62,11 @@ public:
 
         // optionally returns the event or nullptr and fetches it, after which it emits a
         // relatedFetched event
-        mtx::events::collections::TimelineEvents *event(std::string_view id,
-                                                        std::string_view related_to,
-                                                        bool decrypt = true);
+        mtx::events::collections::TimelineEvents *get(std::string_view id,
+                                                      std::string_view related_to,
+                                                      bool decrypt = true);
         // always returns a proper event as long as the idx is valid
-        mtx::events::collections::TimelineEvents *event(int idx, bool decrypt = true);
+        mtx::events::collections::TimelineEvents *get(int idx, bool decrypt = true);
 
         QVariantList reactions(const std::string &event_id);
 

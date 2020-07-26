@@ -264,7 +264,7 @@ EventStore::reactions(const std::string &event_id)
 
         auto self = http::client()->user_id().to_string();
         for (const auto &id : event_ids) {
-                auto related_event = event(id, event_id);
+                auto related_event = get(id, event_id);
                 if (!related_event)
                         continue;
 
@@ -313,7 +313,7 @@ EventStore::reactions(const std::string &event_id)
 }
 
 mtx::events::collections::TimelineEvents *
-EventStore::event(int idx, bool decrypt)
+EventStore::get(int idx, bool decrypt)
 {
         if (this->thread() != QThread::currentThread())
                 nhlog::db()->warn("{} called from a different thread!", __func__);
@@ -479,7 +479,7 @@ EventStore::decryptEvent(const IdIndex &idx,
 }
 
 mtx::events::collections::TimelineEvents *
-EventStore::event(std::string_view id, std::string_view related_to, bool decrypt)
+EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
 {
         if (this->thread() != QThread::currentThread())
                 nhlog::db()->warn("{} called from a different thread!", __func__);
