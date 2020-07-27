@@ -1060,7 +1060,14 @@ ChatPage::trySync()
         }
 
         http::client()->sync(
-          opts, [this](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+          opts,
+          [this, since = cache::nextBatchToken()](const mtx::responses::Sync &res,
+                                                  mtx::http::RequestErr err) {
+                  if (since != cache::nextBatchToken()) {
+                          nhlog::net()->warn("Duplicate sync, dropping");
+                          return;
+                  }
+
                   if (err) {
                           const auto error      = QString::fromStdString(err->matrix_error.error);
                           const auto msg        = tr("Please try to login again: %1").arg(error);
