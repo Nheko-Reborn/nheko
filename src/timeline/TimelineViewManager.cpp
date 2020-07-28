@@ -17,6 +17,8 @@
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 
+#include <iostream> //only for debugging
+
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 
@@ -187,16 +189,42 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &TimelineViewManager::updateEncryptedDescriptions);
         connect(
           dynamic_cast<ChatPage *>(parent),
+          &ChatPage::recievedRoomDeviceVerificationRequest,
+          this,
+          [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
+                 TimelineModel *model) {
+                  if (!(this->dvList->exist(QString::fromStdString(message.event_id)))) {
+                          auto flow =
+                            new DeviceVerificationFlow(this, DeviceVerificationFlow::Type::RoomMsg);
+                          if (std::find(message.content.methods.begin(),
+                                        message.content.methods.end(),
+                                        mtx::events::msg::VerificationMethods::SASv1) !=
+                              message.content.methods.end()) {
+                                  flow->setModel(model);
+                                  flow->setEventId(message.event_id);
+                                  emit newDeviceVerificationRequest(
+                                    std::move(flow),
+                                    QString::fromStdString(message.event_id),
+                                    QString::fromStdString(message.sender),
+                                    QString::fromStdString(message.content.from_device),
+                                    true);
+                          } else {
+                                  flow->cancelVerification(
+                                    DeviceVerificationFlow::Error::UnknownMethod);
+                          }
+                  }
+          });
+        connect(
+          dynamic_cast<ChatPage *>(parent),
           &ChatPage::recievedDeviceVerificationRequest,
           this,
           [this](const mtx::events::msg::KeyVerificationRequest &msg, std::string sender) {
-                  auto flow = new DeviceVerificationFlow(this);
                   if (!(this->dvList->exist(QString::fromStdString(msg.transaction_id.value())))) {
+                          auto flow = new DeviceVerificationFlow(this);
                           if (std::find(msg.methods.begin(),
                                         msg.methods.end(),
                                         mtx::events::msg::VerificationMethods::SASv1) !=
                               msg.methods.end()) {
-                                  //   flow->sendVerificationReady();
                                   emit newDeviceVerificationRequest(
                                     std::move(flow),
                                     QString::fromStdString(msg.transaction_id.value()),
@@ -213,9 +241,9 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           &ChatPage::recievedDeviceVerificationStart,
           this,
           [this](const mtx::events::msg::KeyVerificationStart &msg, std::string sender) {
-                  auto flow            = new DeviceVerificationFlow(this);
-                  flow->canonical_json = nlohmann::json(msg);
                   if (!(this->dvList->exist(QString::fromStdString(msg.transaction_id.value())))) {
+                          auto flow            = new DeviceVerificationFlow(this);
+                          flow->canonical_json = nlohmann::json(msg);
                           if ((std::find(msg.key_agreement_protocols.begin(),
                                          msg.key_agreement_protocols.end(),
                                          "curve25519-hkdf-sha256") !=
@@ -246,7 +274,6 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                     QString::fromStdString(msg.transaction_id.value()),
                                     QString::fromStdString(sender),
                                     QString::fromStdString(msg.from_device));
-                                  flow->canonical_json = nlohmann::json(msg);
                           } else {
                                   flow->cancelVerification(
                                     DeviceVerificationFlow::Error::UnknownMethod);

@@ -297,6 +297,11 @@ private:
         std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;
+        // probably not the best way to do
+        mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>
+          last_verification_request_event;
+        mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>
+          last_verification_cancel_event;
 
         friend struct SendMessageVisitor;
 };

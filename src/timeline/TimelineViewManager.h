@@ -72,7 +72,8 @@ signals:
         void newDeviceVerificationRequest(DeviceVerificationFlow *flow,
                                           QString transactionId,
                                           QString userId,
-                                          QString deviceId);
+                                          QString deviceId,
+                                          bool isRequest = false);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

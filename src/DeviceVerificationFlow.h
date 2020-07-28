@@ -10,6 +10,8 @@ class QTimer;
 
 using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
 
+struct TimelineModel;
+
 class DeviceVerificationFlow : public QObject
 {
         Q_OBJECT
@@ -19,6 +21,7 @@ class DeviceVerificationFlow : public QObject
         Q_PROPERTY(QString userId READ getUserId WRITE setUserId)
         Q_PROPERTY(QString deviceId READ getDeviceId WRITE setDeviceId)
         Q_PROPERTY(Method method READ getMethod WRITE setMethod)
+        Q_PROPERTY(Type type READ getType WRITE setType)
         Q_PROPERTY(std::vector<int> sasList READ getSasList CONSTANT)
 
 public:
@@ -27,6 +30,7 @@ public:
                 ToDevice,
                 RoomMsg
         };
+        Q_ENUM(Type)
 
         enum Method
         {
@@ -49,17 +53,24 @@ public:
         DeviceVerificationFlow(
           QObject *parent              = nullptr,
           DeviceVerificationFlow::Type = DeviceVerificationFlow::Type::ToDevice);
+        // getters
         QString getTransactionId();
         QString getUserId();
         QString getDeviceId();
         Method getMethod();
+        Type getType();
         std::vector<int> getSasList();
-        void setTransactionId(QString transaction_id_);
         bool getSender();
+        // setters
+        void setModel(TimelineModel *&model);
+        void setTransactionId(QString transaction_id_);
         void setUserId(QString userID);
         void setDeviceId(QString deviceID);
         void setMethod(Method method_);
+        void setType(Type type_);
         void setSender(bool sender_);
+        void setEventId(std::string event_id);
+
         void callback_fn(const mtx::responses::QueryKeys &res,
                          mtx::http::RequestErr err,
                          std::string user_id);
@@ -96,20 +107,25 @@ signals:
         void refreshProfile();
 
 private:
+        // general
         QString userId;
         QString deviceId;
         Method method;
         Type type;
         bool sender;
-
         QTimer *timeout = nullptr;
         sas_ptr sas;
         bool isMacVerified = false;
         std::string mac_method;
-        std::string transaction_id;
         std::string commitment;
         mtx::identifiers::User toClient;
         std::vector<int> sasList;
         std::map<std::string, std::string> device_keys;
+        // for to_device messages
+        std::string transaction_id;
+        // for room messages
+        std::optional<std::string> room_id;
+        std::optional<std::string> event_id;
+        std::optional<TimelineModel *> model_;
         mtx::common::ReplyRelatesTo relation;
 };

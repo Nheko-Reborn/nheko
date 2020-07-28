@@ -23,6 +23,8 @@ ApplicationWindow {
 	}
 
 	property var flow
+	property bool isRequest
+
 	Connections {
 		target: flow
 		onVerificationCanceled: stack.replace(partnerAborted)
@@ -155,7 +157,10 @@ ApplicationWindow {
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
-						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.acceptVerificationRequest(); }
+						onClicked: { 
+							stack.replace(awaitingVerificationRequestAccept); 
+							isRequest?flow.sendVerificationReady():flow.acceptVerificationRequest(); 
+						}
 					}
 				}
 			}

@@ -1,7 +1,9 @@
 #include "DeviceVerificationFlow.h"
+
 #include "Cache.h"
 #include "ChatPage.h"
 #include "Logging.h"
+#include "timeline/TimelineModel.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -12,12 +14,14 @@ static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
 namespace msgs = mtx::events::msg;
 
-DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow::Type)
+DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow::Type flow_type)
+  : type(flow_type)
 {
         timeout = new QTimer(this);
         timeout->setSingleShot(true);
         this->sas           = olm::client()->sas_init();
         this->isMacVerified = false;
+
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
                 this->cancelVerification(DeviceVerificationFlow::Error::Timeout);
@@ -267,6 +271,12 @@ DeviceVerificationFlow::getMethod()
         return this->method;
 }
 
+DeviceVerificationFlow::Type
+DeviceVerificationFlow::getType()
+{
+        return this->type;
+}
+
 bool
 DeviceVerificationFlow::getSender()
 {
@@ -277,6 +287,12 @@ std::vector<int>
 DeviceVerificationFlow::getSasList()
 {
         return this->sasList;
+}
+
+void
+DeviceVerificationFlow::setModel(TimelineModel *&model)
+{
+        this->model_ = model;
 }
 
 void
@@ -319,6 +335,12 @@ DeviceVerificationFlow::setMethod(DeviceVerificationFlow::Method method_)
 }
 
 void
+DeviceVerificationFlow::setType(Type type)
+{
+        this->type = type;
+}
+
+void
 DeviceVerificationFlow::setSender(bool sender_)
 {
         this->sender = sender_;
@@ -326,6 +348,13 @@ DeviceVerificationFlow::setSender(bool sender_)
                 this->transaction_id = http::client()->generate_txn_id();
         else if (this->sender == true && this->type == DeviceVerificationFlow::Type::RoomMsg)
                 this->relation.in_reply_to.event_id = http::client()->generate_txn_id();
+}
+
+void
+DeviceVerificationFlow::setEventId(std::string event_id)
+{
+        this->relation.in_reply_to.event_id = event_id;
+        this->transaction_id                = event_id;
 }
 
 //! accepts a verification
@@ -361,8 +390,9 @@ DeviceVerificationFlow::acceptVerificationRequest()
                                       err->matrix_error.error,
                                       static_cast<int>(err->status_code));
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
                 req.relates_to = this->relation;
+                (model_.value())->sendMessage(req);
         }
 }
 //! responds verification request
@@ -389,8 +419,9 @@ DeviceVerificationFlow::sendVerificationReady()
                                                        err->matrix_error.error,
                                                        static_cast<int>(err->status_code));
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
                 req.relates_to = this->relation;
+                (model_.value())->sendMessage(req);
         }
 }
 //! accepts a verification
@@ -414,8 +445,9 @@ DeviceVerificationFlow::sendVerificationDone()
                                                        err->matrix_error.error,
                                                        static_cast<int>(err->status_code));
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
                 req.relates_to = this->relation;
+                (model_.value())->sendMessage(req);
         }
 }
 //! starts the verification flow
@@ -448,8 +480,9 @@ DeviceVerificationFlow::startVerificationRequest()
                                       err->matrix_error.error,
                                       static_cast<int>(err->status_code));
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
                 req.relates_to = this->relation;
+                (model_.value())->sendMessage(req);
         }
 }
 //! sends a verification request
@@ -481,8 +514,8 @@ DeviceVerificationFlow::sendVerificationRequest()
                                                        err->matrix_error.error,
                                                        static_cast<int>(err->status_code));
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
-                std::cout << "lulz" << std::endl;
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                (model_.value())->sendMessage(req);
         }
 }
 //! cancels a verification flow
@@ -531,8 +564,9 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
 
                             this->deleteLater();
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
                 req.relates_to = this->relation;
+                (model_.value())->sendMessage(req);
         }
 
         // TODO : Handle Blocking user better
@@ -570,8 +604,9 @@ DeviceVerificationFlow::sendVerificationKey()
                                                        err->matrix_error.error,
                                                        static_cast<int>(err->status_code));
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
                 req.relates_to = this->relation;
+                (model_.value())->sendMessage(req);
         }
 }
 //! sends the mac of the keys
@@ -618,8 +653,9 @@ DeviceVerificationFlow::sendVerificationMac()
                             else
                                     this->isMacVerified = true;
                     });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg) {
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
                 req.relates_to = this->relation;
+                (model_.value())->sendMessage(req);
         }
 }
 //! Completes the verification flow

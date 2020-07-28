@@ -106,13 +106,20 @@ Page {
 		}
 		Connections {
 			target: TimelineManager
-			function onNewDeviceVerificationRequest(flow,transactionId,userId,deviceId) {
+			function onNewDeviceVerificationRequest(flow,transactionId,userId,deviceId,isRequest) {
 				flow.userId = userId;
 				flow.sender = false;
 				flow.deviceId = deviceId;
-				flow.tranId = transactionId;
-				deviceVerificationList.add(flow.tranId);
-				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: flow});
+				switch(flow.type){
+					case DeviceVerificationFlow.ToDevice:
+					    flow.tranId = transactionId;
+						deviceVerificationList.add(flow.tranId);
+						break;
+					case DeviceVerificationFlow.RoomMsg:
+						deviceVerificationList.add(flow.tranId);
+						break;
+				}
+				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: flow,isRequest = isRequest});
 				dialog.show();
 			}
 		}

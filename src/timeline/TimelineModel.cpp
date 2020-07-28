@@ -139,6 +139,11 @@ struct RoomEventType
                 return qml_mtx_events::EventType::KeyVerificationAccept;
         }
         qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::KeyVerificationReady> &)
+        {
+                return qml_mtx_events::EventType::KeyVerificationReady;
+        }
+        qml_mtx_events::EventType operator()(
           const mtx::events::Event<mtx::events::msg::KeyVerificationCancel> &)
         {
                 return qml_mtx_events::EventType::KeyVerificationCancel;
@@ -637,30 +642,6 @@ TimelineModel::internalAddEvents(
                         continue;
                 }
 
-                if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>(
-                      &e)) {
-                        std::cout << "got a request" << std::endl;
-                }
-
-                if (auto cancelVerification =
-                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(
-                        &e)) {
-                        std::cout<<"it is happening"<<std::endl;
-                        if (cancelVerification->content.relates_to.has_value()) {
-                                QString event_id = QString::fromStdString(
-                                  cancelVerification->content.relates_to.value()
-                                    .in_reply_to.event_id);
-                                auto request =
-                                  std::find(eventOrder.begin(), eventOrder.end(), event_id);
-                                if (request != eventOrder.end()) {
-                                        auto event = events.value(event_id);
-                                        auto e     = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationRequest>>(&event);
-                                        std::cout<<json(*e)<<std::endl;
-                                }
-                        }
-                }
-
                 if (auto redaction =
                       std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
                         QString redacts = QString::fromStdString(redaction->redacts);
@@ -728,6 +709,55 @@ TimelineModel::internalAddEvents(
 
                         if (encInfo)
                                 emit newEncryptedImage(encInfo.value());
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>(
+                              &e_)) {
+                                last_verification_request_event = *msg;
+                        }
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(
+                              &e_)) {
+                                last_verification_cancel_event = *msg;
+                                ChatPage::instance()->recievedDeviceVerificationCancel(
+                                  msg->content);
+                        }
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept>>(
+                              &e_)) {
+                                ChatPage::instance()->recievedDeviceVerificationAccept(
+                                  msg->content);
+                        }
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey>>(&e_)) {
+                                ChatPage::instance()->recievedDeviceVerificationKey(msg->content);
+                        }
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac>>(&e_)) {
+                                ChatPage::instance()->recievedDeviceVerificationMac(msg->content);
+                        }
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady>>(
+                              &e_)) {
+                                ChatPage::instance()->recievedDeviceVerificationReady(msg->content);
+                        }
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone>>(&e_)) {
+                                ChatPage::instance()->recievedDeviceVerificationDone(msg->content);
+                        }
+
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart>>(
+                              &e_)) {
+                                ChatPage::instance()->recievedDeviceVerificationStart(msg->content,
+                                                                                      msg->sender);
+                        }
                 }
 
                 this->events.insert(id, e);
@@ -754,6 +784,13 @@ TimelineModel::internalAddEvents(
                           });
                 }
         }
+
+        if (last_verification_request_event.origin_server_ts >
+            last_verification_cancel_event.origin_server_ts) {
+                ChatPage::instance()->recievedRoomDeviceVerificationRequest(
+                  last_verification_request_event, this);
+        }
+
         return ids;
 }
 
@@ -1264,6 +1301,20 @@ struct SendMessageVisitor
 };
 
 void
+TimelineModel::processOnePendingMessage()
+{
+        if (pending.isEmpty())
+                return;
+
+        QString txn_id_qstr = pending.first();
+
+        auto event = events.value(txn_id_qstr);
+        std::cout << "Inside the process one pending message" << std::endl;
+        std::cout << std::visit([](auto &e) { return json(e); }, event).dump(2) << std::endl;
+        std::visit(SendMessageVisitor{txn_id_qstr, this}, event);
+}
+
+void
 TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 {
         std::visit(
@@ -1275,7 +1326,51 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
           },
           event);
 
-        std::visit(SendMessageVisitor{this}, event);
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady>>(&event)) {
+                std::visit(
+                  [](auto &msg) { msg.type = mtx::events::EventType::KeyVerificationReady; },
+                  event);
+        }
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart>>(&event)) {
+                std::visit(
+                  [](auto &msg) { msg.type = mtx::events::EventType::KeyVerificationStart; },
+                  event);
+        }
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey>>(&event)) {
+                std::visit([](auto &msg) { msg.type = mtx::events::EventType::KeyVerificationKey; },
+                           event);
+        }
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac>>(&event)) {
+                std::visit([](auto &msg) { msg.type = mtx::events::EventType::KeyVerificationMac; },
+                           event);
+        }
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone>>(&event)) {
+                std::visit(
+                  [](auto &msg) { msg.type = mtx::events::EventType::KeyVerificationDone; }, event);
+        }
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(&event)) {
+                std::visit(
+                  [](auto &msg) { msg.type = mtx::events::EventType::KeyVerificationCancel; },
+                  event);
+        }
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept>>(&event)) {
+                std::visit(
+                  [](auto &msg) { msg.type = mtx::events::EventType::KeyVerificationAccept; },
+                  event);
+        }
+
+        internalAddEvents({event});
+
+        QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
+        pending.push_back(txn_id_qstr);
+        if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event)) {
+                beginInsertRows(QModelIndex(), 0, 0);
+                this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
+                endInsertRows();
+        }
+        updateLastMessage();
+
+        emit nextPendingMessage();
 }
 
 bool

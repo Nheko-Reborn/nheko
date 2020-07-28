@@ -52,6 +52,7 @@ class TopRoomBar;
 class UserInfoWidget;
 class UserSettings;
 class NotificationsManager;
+class TimelineModel;
 
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
@@ -171,6 +172,9 @@ signals:
         void recievedDeviceVerificationRequest(
           const mtx::events::msg::KeyVerificationRequest &message,
           std::string sender);
+        void recievedRoomDeviceVerificationRequest(
+          const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
+          TimelineModel *model);
         void recievedDeviceVerificationCancel(
           const mtx::events::msg::KeyVerificationCancel &message);
         void recievedDeviceVerificationKey(const mtx::events::msg::KeyVerificationKey &message);
