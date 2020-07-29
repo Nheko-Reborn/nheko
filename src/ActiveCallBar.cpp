@@ -110,7 +110,7 @@ ActiveCallBar::setCallParty(
     const QString &avatarUrl)
 {
         callPartyLabel_->setText("  " +
-            (displayName.isEmpty() ? userid : displayName) + " -");
+            (displayName.isEmpty() ? userid : displayName) + " ");
 
         if (!avatarUrl.isEmpty())
           avatar_->setImage(avatarUrl);
@@ -142,7 +142,8 @@ ActiveCallBar::update(WebRTCSession::State state)
             show();
             callStartTime_ = QDateTime::currentSecsSinceEpoch();
             timer_->start(1000);
-            stateLabel_->setText("Voice call:");
+            stateLabel_->setPixmap(QIcon(":/icons/icons/ui/place-call.png").
+                pixmap(QSize(buttonSize_, buttonSize_)));
             durationLabel_->setText("00:00");
             durationLabel_->show();
             break;

@@ -479,9 +479,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                 connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
                                         callManager_.sendInvite(current_room_);
                                 });
-                                /*connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
-                                        showNotification("Video calls not yet implemented.");
-                                });*/
                                 utils::centerWidget(dialog, MainWindow::instance());
                                 dialog->show();
                         }

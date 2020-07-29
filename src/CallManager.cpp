@@ -1,3 +1,4 @@
+#include <cctype>
 #include <chrono>
 
 #include <QMediaPlaylist>
@@ -198,11 +199,23 @@ CallManager::handleEvent_(const mtx::events::collections::TimelineEvents &event)
 void
 CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 {
-  nhlog::ui()->debug("WebRTC: call id: {} - incoming CallInvite from {}",
-      callInviteEvent.content.call_id, callInviteEvent.sender);
+  const char video[] = "m=video";
+  const std::string &sdp = callInviteEvent.content.sdp;
+  bool isVideo = std::search(sdp.cbegin(), sdp.cend(), std::cbegin(video), std::cend(video) - 1,
+    [](unsigned char c1, unsigned char c2) {return std::tolower(c1) == std::tolower(c2);})
+      != sdp.cend();
+
+  nhlog::ui()->debug(std::string("WebRTC: call id: {} - incoming ") + (isVideo ? "video" : "voice") +
+      " CallInvite from {}", callInviteEvent.content.call_id, callInviteEvent.sender);
 
   if (callInviteEvent.content.call_id.empty())
     return;
+
+  if (isVideo) {
+    emit newMessage(QString::fromStdString(callInviteEvent.room_id),
+        CallHangUp{callInviteEvent.content.call_id, 0, CallHangUp::Reason::InviteTimeOut});
+    return;
+  }
 
   auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
   if (onActiveCall() || roomInfo.member_count != 2) {

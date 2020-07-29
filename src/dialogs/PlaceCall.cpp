@@ -40,13 +40,11 @@ PlaceCall::PlaceCall(
 
         voiceBtn_ = new QPushButton(tr("Voice Call"), this);
         voiceBtn_->setDefault(true);
-        //videoBtn_  = new QPushButton(tr("Video Call"), this);
         cancelBtn_ = new QPushButton(tr("Cancel"), this);
 
         buttonLayout->addStretch(1);
         buttonLayout->addWidget(avatar);
         buttonLayout->addWidget(voiceBtn_);
-        //buttonLayout->addWidget(videoBtn_);
         buttonLayout->addWidget(cancelBtn_);
 
         QString name = displayName.isEmpty() ? callee : displayName;
@@ -59,10 +57,6 @@ PlaceCall::PlaceCall(
                 emit voice();
                 emit close();
         });
-        /*connect(videoBtn_, &QPushButton::clicked, this, [this]() {
-                emit video();
-                emit close();
-        });*/
         connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
                 emit cancel();
                 emit close();

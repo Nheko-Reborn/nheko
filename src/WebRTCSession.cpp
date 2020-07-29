@@ -64,13 +64,13 @@ WebRTCSession::init(std::string *errorMessage)
 
   // GStreamer Plugins:
   // Base:            audioconvert, audioresample, opus, playback, volume
-  // Good:            autodetect, rtpmanager, vpx
+  // Good:            autodetect, rtpmanager
   // Bad:             dtls, srtp, webrtc
   // libnice [GLib]:  nice
   initialised_ = true;
   std::string strError = gstVersion + ": Missing plugins: ";
   const gchar *needed[] = {"audioconvert", "audioresample", "autodetect", "dtls", "nice",
-    "opus", "playback", "rtpmanager", "srtp", "vpx", "volume", "webrtc", nullptr};
+    "opus", "playback", "rtpmanager", "srtp", "volume", "webrtc", nullptr};
   GstRegistry *registry = gst_registry_get();
   for (guint i = 0; i < g_strv_length((gchar**)needed); i++) {
     GstPlugin *plugin = gst_registry_find_plugin(registry, needed[i]);
@@ -462,10 +462,9 @@ linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe
   gst_caps_unref(caps);
 
   GstPad *queuepad = nullptr;
-  GstElement *queue = gst_element_factory_make("queue", nullptr);
-
   if (g_str_has_prefix(name, "audio")) {
     nhlog::ui()->debug("WebRTC: received incoming audio stream");
+    GstElement *queue = gst_element_factory_make("queue", nullptr);
     GstElement *convert = gst_element_factory_make("audioconvert", nullptr);
     GstElement *resample = gst_element_factory_make("audioresample", nullptr);
     GstElement *sink = gst_element_factory_make("autoaudiosink", nullptr);
@@ -475,17 +474,6 @@ linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe
     gst_element_sync_state_with_parent(resample);
     gst_element_sync_state_with_parent(sink);
     gst_element_link_many(queue, convert, resample, sink, nullptr);
-    queuepad = gst_element_get_static_pad(queue, "sink");
-  }
-  else if (g_str_has_prefix(name, "video")) {
-    nhlog::ui()->debug("WebRTC: received incoming video stream");
-    GstElement *convert = gst_element_factory_make("videoconvert", nullptr);
-    GstElement *sink = gst_element_factory_make("autovideosink", nullptr);
-    gst_bin_add_many(GST_BIN(pipe), queue, convert, sink, nullptr);
-    gst_element_sync_state_with_parent(queue);
-    gst_element_sync_state_with_parent(convert);
-    gst_element_sync_state_with_parent(sink);
-    gst_element_link_many(queue, convert, sink, nullptr);
     queuepad = gst_element_get_static_pad(queue, "sink");
   }
 
