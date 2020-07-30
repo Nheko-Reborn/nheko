@@ -75,7 +75,7 @@ WebRTCSession::init(std::string *errorMessage)
   for (guint i = 0; i < g_strv_length((gchar**)needed); i++) {
     GstPlugin *plugin = gst_registry_find_plugin(registry, needed[i]);
     if (!plugin) {
-      strError += needed[i];
+      strError += std::string(needed[i]) + " ";
       initialised_ = false;
       continue;
     }
