@@ -1,4 +1,6 @@
+#include <algorithm>
 #include <cctype>
+#include <cstdint>
 #include <chrono>
 
 #include <QMediaPlaylist>
@@ -74,21 +76,23 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
             });
 
   connect(&turnServerTimer_, &QTimer::timeout, this, &CallManager::retrieveTurnServer);
-  turnServerTimer_.start(2000);
 
   connect(this, &CallManager::turnServerRetrieved, this,
       [this](const mtx::responses::TurnServer &res)
             {
               nhlog::net()->info("TURN server(s) retrieved from homeserver:");
               nhlog::net()->info("username: {}", res.username);
-              nhlog::net()->info("ttl: {}", res.ttl);
+              nhlog::net()->info("ttl: {} seconds", res.ttl);
               for (const auto &u : res.uris)
                 nhlog::net()->info("uri: {}", u);
 
               // Request new credentials close to expiry
               // See https://tools.ietf.org/html/draft-uberti-behave-turn-rest-00
               turnURIs_ = getTurnURIs(res);
-              turnServerTimer_.setInterval(res.ttl * 1000 * 0.9);
+              uint32_t ttl = std::max(res.ttl, UINT32_C(3600));
+              if (res.ttl < 3600)
+                nhlog::net()->warn("Setting ttl to 1 hour");
+              turnServerTimer_.setInterval(ttl * 1000 * 0.9);
       });
 
   connect(&session_, &WebRTCSession::stateChanged, this,
@@ -347,6 +351,13 @@ CallManager::endCall()
   roomid_.clear();
   callid_.clear();
   remoteICECandidates_.clear();
+}
+
+void
+CallManager::refreshTurnServer()
+{
+  turnURIs_.clear();
+  turnServerTimer_.start(2000);
 }
 
 void

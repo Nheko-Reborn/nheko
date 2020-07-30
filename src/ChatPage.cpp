@@ -723,6 +723,8 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 const bool isInitialized = cache::isInitialized();
                 const auto cacheVersion  = cache::formatVersion();
 
+                callManager_.refreshTurnServer();
+
                 if (!isInitialized) {
                         cache::setCurrentFormat();
                 } else {

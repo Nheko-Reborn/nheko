@@ -29,6 +29,7 @@ public:
         void sendInvite(const QString &roomid);
         void hangUp(mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
         bool onActiveCall();
+        void refreshTurnServer();
 
 public slots:
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
