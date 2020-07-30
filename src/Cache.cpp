@@ -2199,27 +2199,31 @@ Cache::firstPendingMessage(const std::string &room_id)
         auto txn     = lmdb::txn::begin(env_);
         auto pending = getPendingMessagesDb(txn, room_id);
 
-        auto pendingCursor = lmdb::cursor::open(txn, pending);
-        lmdb::val tsIgnored, pendingTxn;
-        while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
-                auto eventsDb = getEventsDb(txn, room_id);
-                lmdb::val event;
-                if (!lmdb::dbi_get(txn, eventsDb, pendingTxn, event)) {
-                        lmdb::dbi_del(txn, pending, tsIgnored, pendingTxn);
-                        continue;
-                }
+        {
+                auto pendingCursor = lmdb::cursor::open(txn, pending);
+                lmdb::val tsIgnored, pendingTxn;
+                while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
+                        auto eventsDb = getEventsDb(txn, room_id);
+                        lmdb::val event;
+                        if (!lmdb::dbi_get(txn, eventsDb, pendingTxn, event)) {
+                                lmdb::dbi_del(txn, pending, tsIgnored, pendingTxn);
+                                continue;
+                        }
 
-                try {
-                        mtx::events::collections::TimelineEvent te;
-                        mtx::events::collections::from_json(
-                          json::parse(std::string_view(event.data(), event.size())), te);
+                        try {
+                                mtx::events::collections::TimelineEvent te;
+                                mtx::events::collections::from_json(
+                                  json::parse(std::string_view(event.data(), event.size())), te);
 
-                        txn.commit();
-                        return te;
-                } catch (std::exception &e) {
-                        nhlog::db()->error("Failed to parse message from cache {}", e.what());
-                        lmdb::dbi_del(txn, pending, tsIgnored, pendingTxn);
-                        continue;
+                                pendingCursor.close();
+                                txn.commit();
+                                return te;
+                        } catch (std::exception &e) {
+                                nhlog::db()->error("Failed to parse message from cache {}",
+                                                   e.what());
+                                lmdb::dbi_del(txn, pending, tsIgnored, pendingTxn);
+                                continue;
+                        }
                 }
         }
 
@@ -2231,13 +2235,16 @@ Cache::firstPendingMessage(const std::string &room_id)
 void
 Cache::removePendingStatus(const std::string &room_id, const std::string &txn_id)
 {
-        auto txn           = lmdb::txn::begin(env_);
-        auto pending       = getPendingMessagesDb(txn, room_id);
-        auto pendingCursor = lmdb::cursor::open(txn, pending);
-        lmdb::val tsIgnored, pendingTxn;
-        while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
-                if (std::string_view(pendingTxn.data(), pendingTxn.size()) == txn_id)
-                        lmdb::cursor_del(pendingCursor);
+        auto txn     = lmdb::txn::begin(env_);
+        auto pending = getPendingMessagesDb(txn, room_id);
+
+        {
+                auto pendingCursor = lmdb::cursor::open(txn, pending);
+                lmdb::val tsIgnored, pendingTxn;
+                while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
+                        if (std::string_view(pendingTxn.data(), pendingTxn.size()) == txn_id)
+                                lmdb::cursor_del(pendingCursor);
+                }
         }
 
         txn.commit();
