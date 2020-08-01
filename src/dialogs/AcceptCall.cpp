@@ -57,8 +57,8 @@ AcceptCall::AcceptCall(const QString &caller,
 
         const int iconSize        = 24;
         QLabel *callTypeIndicator = new QLabel(this);
-        QPixmap callIndicator(":/icons/icons/ui/place-call.png");
-        callTypeIndicator->setPixmap(callIndicator.scaled(iconSize * 2, iconSize * 2));
+        callTypeIndicator->setPixmap(
+          QIcon(":/icons/icons/ui/place-call.png").pixmap(QSize(iconSize * 2, iconSize * 2)));
 
         QLabel *callTypeLabel = new QLabel("Voice Call", this);
         labelFont.setPointSizeF(f.pointSizeF() * 1.1);
