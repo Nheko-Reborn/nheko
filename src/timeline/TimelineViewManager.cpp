@@ -139,6 +139,10 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &ChatPage::decryptSidebarChanged,
                 this,
                 &TimelineViewManager::updateEncryptedDescriptions);
+        connect(dynamic_cast<ChatPage *>(parent), &ChatPage::loggedOut, this, [this]() {
+                isInitialSync_ = true;
+                emit initialSyncChanged(true);
+        });
 }
 
 void
