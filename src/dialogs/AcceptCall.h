@@ -12,12 +12,11 @@ class AcceptCall : public QWidget
         Q_OBJECT
 
 public:
-        AcceptCall(
-            const QString &caller,
-            const QString &displayName,
-            const QString &roomName,
-            const QString &avatarUrl,
-            QWidget *parent = nullptr);
+        AcceptCall(const QString &caller,
+                   const QString &displayName,
+                   const QString &roomName,
+                   const QString &avatarUrl,
+                   QWidget *parent = nullptr);
 
 signals:
         void accept();

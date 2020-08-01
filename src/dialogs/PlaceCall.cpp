@@ -10,12 +10,12 @@
 
 namespace dialogs {
 
-PlaceCall::PlaceCall(
-    const QString &callee,
-    const QString &displayName,
-    const QString &roomName,
-    const QString &avatarUrl,
-    QWidget *parent) : QWidget(parent)
+PlaceCall::PlaceCall(const QString &callee,
+                     const QString &displayName,
+                     const QString &roomName,
+                     const QString &avatarUrl,
+                     QWidget *parent)
+  : QWidget(parent)
 {
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
@@ -34,11 +34,13 @@ PlaceCall::PlaceCall(
         f.setPointSizeF(f.pointSizeF());
         auto avatar = new Avatar(this, QFontMetrics(f).height() * 3);
         if (!avatarUrl.isEmpty())
-          avatar->setImage(avatarUrl);
+                avatar->setImage(avatarUrl);
         else
-          avatar->setLetter(utils::firstChar(roomName));
-
-        voiceBtn_ = new QPushButton(tr("Voice Call"), this);
+                avatar->setLetter(utils::firstChar(roomName));
+        const int iconSize = 24;
+        voiceBtn_          = new QPushButton(tr("Voice"), this);
+        voiceBtn_->setIcon(QIcon(":/icons/icons/ui/place-call.png"));
+        voiceBtn_->setIconSize(QSize(iconSize, iconSize));
         voiceBtn_->setDefault(true);
         cancelBtn_ = new QPushButton(tr("Cancel"), this);
 
@@ -47,7 +49,7 @@ PlaceCall::PlaceCall(
         buttonLayout->addWidget(voiceBtn_);
         buttonLayout->addWidget(cancelBtn_);
 
-        QString name = displayName.isEmpty() ? callee : displayName;
+        QString name  = displayName.isEmpty() ? callee : displayName;
         QLabel *label = new QLabel("Place a call to " + name + "?", this);
 
         layout->addWidget(label);

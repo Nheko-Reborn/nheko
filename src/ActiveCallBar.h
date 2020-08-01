@@ -19,11 +19,10 @@ public:
 
 public slots:
         void update(WebRTCSession::State);
-        void setCallParty(
-            const QString &userid,
-            const QString &displayName,
-            const QString &roomName,
-            const QString &avatarUrl);
+        void setCallParty(const QString &userid,
+                          const QString &displayName,
+                          const QString &roomName,
+                          const QString &avatarUrl);
 
 private:
         QHBoxLayout *layout_    = nullptr;

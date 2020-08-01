@@ -460,9 +460,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 if (callManager_.onActiveCall()) {
                         callManager_.hangUp();
                 } else {
-                        if (auto roomInfo =
-                            cache::singleRoomInfo(current_room_.toStdString());
-                              roomInfo.member_count != 2) {
+                        if (auto roomInfo = cache::singleRoomInfo(current_room_.toStdString());
+                            roomInfo.member_count != 2) {
                                 showNotification("Voice calls are limited to 1:1 rooms.");
                         } else {
                                 std::vector<RoomMember> members(
@@ -471,11 +470,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   members.front().user_id == utils::localUser() ? members.back()
                                                                                 : members.front();
                                 auto dialog = new dialogs::PlaceCall(
-                                    callee.user_id,
-                                    callee.display_name,
-                                    QString::fromStdString(roomInfo.name),
-                                    QString::fromStdString(roomInfo.avatar_url),
-                                    MainWindow::instance());
+                                  callee.user_id,
+                                  callee.display_name,
+                                  QString::fromStdString(roomInfo.name),
+                                  QString::fromStdString(roomInfo.avatar_url),
+                                  MainWindow::instance());
                                 connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
                                         callManager_.sendInvite(current_room_);
                                 });

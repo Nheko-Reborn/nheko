@@ -796,9 +796,11 @@ TimelineModel::internalAddEvents(
                                 } else if (std::holds_alternative<mtx::events::RoomEvent<
                                              mtx::events::msg::CallCandidates>>(e_) ||
                                            std::holds_alternative<
-                                             mtx::events::RoomEvent<mtx::events::msg::CallAnswer>>( e_) ||
+                                             mtx::events::RoomEvent<mtx::events::msg::CallAnswer>>(
+                                             e_) ||
                                            std::holds_alternative<
-                                             mtx::events::RoomEvent<mtx::events::msg::CallHangUp>>( e_)) {
+                                             mtx::events::RoomEvent<mtx::events::msg::CallHangUp>>(
+                                             e_)) {
                                         emit newCallEvent(e_);
                                 }
                         }

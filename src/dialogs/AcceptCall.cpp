@@ -1,4 +1,5 @@
 #include <QLabel>
+#include <QPixmap>
 #include <QPushButton>
 #include <QString>
 #include <QVBoxLayout>
@@ -10,12 +11,12 @@
 
 namespace dialogs {
 
-AcceptCall::AcceptCall(
-    const QString &caller,
-    const QString &displayName,
-    const QString &roomName,
-    const QString &avatarUrl,
-    QWidget *parent) : QWidget(parent)
+AcceptCall::AcceptCall(const QString &caller,
+                       const QString &displayName,
+                       const QString &roomName,
+                       const QString &avatarUrl,
+                       QWidget *parent)
+  : QWidget(parent)
 {
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
@@ -39,8 +40,8 @@ AcceptCall::AcceptCall(
         if (!displayName.isEmpty() && displayName != caller) {
                 displayNameLabel = new QLabel(displayName, this);
                 labelFont.setPointSizeF(f.pointSizeF() * 2);
-                displayNameLabel ->setFont(labelFont);
-                displayNameLabel ->setAlignment(Qt::AlignCenter);
+                displayNameLabel->setFont(labelFont);
+                displayNameLabel->setAlignment(Qt::AlignCenter);
         }
 
         QLabel *callerLabel = new QLabel(caller, this);
@@ -48,19 +49,23 @@ AcceptCall::AcceptCall(
         callerLabel->setFont(labelFont);
         callerLabel->setAlignment(Qt::AlignCenter);
 
-        QLabel *voiceCallLabel = new QLabel("Voice Call", this);
-        labelFont.setPointSizeF(f.pointSizeF() * 1.1);
-        voiceCallLabel->setFont(labelFont);
-        voiceCallLabel->setAlignment(Qt::AlignCenter);
-
         auto avatar = new Avatar(this, QFontMetrics(f).height() * 6);
         if (!avatarUrl.isEmpty())
-          avatar->setImage(avatarUrl);
+                avatar->setImage(avatarUrl);
         else
-          avatar->setLetter(utils::firstChar(roomName));
+                avatar->setLetter(utils::firstChar(roomName));
 
-        const int iconSize = 24;
-        auto buttonLayout = new QHBoxLayout();
+        const int iconSize        = 24;
+        QLabel *callTypeIndicator = new QLabel(this);
+        QPixmap callIndicator(":/icons/icons/ui/place-call.png");
+        callTypeIndicator->setPixmap(callIndicator.scaled(iconSize * 2, iconSize * 2));
+
+        QLabel *callTypeLabel = new QLabel("Voice Call", this);
+        labelFont.setPointSizeF(f.pointSizeF() * 1.1);
+        callTypeLabel->setFont(labelFont);
+        callTypeLabel->setAlignment(Qt::AlignCenter);
+
+        auto buttonLayout = new QHBoxLayout;
         buttonLayout->setSpacing(20);
         acceptBtn_ = new QPushButton(tr("Accept"), this);
         acceptBtn_->setDefault(true);
@@ -74,10 +79,11 @@ AcceptCall::AcceptCall(
         buttonLayout->addWidget(rejectBtn_);
 
         if (displayNameLabel)
-          layout->addWidget(displayNameLabel, 0, Qt::AlignCenter);
+                layout->addWidget(displayNameLabel, 0, Qt::AlignCenter);
         layout->addWidget(callerLabel, 0, Qt::AlignCenter);
-        layout->addWidget(voiceCallLabel, 0, Qt::AlignCenter);
         layout->addWidget(avatar, 0, Qt::AlignCenter);
+        layout->addWidget(callTypeIndicator, 0, Qt::AlignCenter);
+        layout->addWidget(callTypeLabel, 0, Qt::AlignCenter);
         layout->addLayout(buttonLayout);
 
         connect(acceptBtn_, &QPushButton::clicked, this, [this]() {

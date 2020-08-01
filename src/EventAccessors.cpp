@@ -72,12 +72,19 @@ struct CallType
         template<class T>
         std::string operator()(const T &e)
         {
-                if constexpr (std::is_same_v<mtx::events::RoomEvent<mtx::events::msg::CallInvite>, T>) {
-                  const char video[] = "m=video";
-                  const std::string &sdp = e.content.sdp;
-                  return std::search(sdp.cbegin(), sdp.cend(), std::cbegin(video), std::cend(video) - 1,
-                    [](unsigned char c1, unsigned char c2) {return std::tolower(c1) == std::tolower(c2);})
-                      != sdp.cend() ? "video" : "voice";
+                if constexpr (std::is_same_v<mtx::events::RoomEvent<mtx::events::msg::CallInvite>,
+                                             T>) {
+                        const char video[]     = "m=video";
+                        const std::string &sdp = e.content.sdp;
+                        return std::search(sdp.cbegin(),
+                                           sdp.cend(),
+                                           std::cbegin(video),
+                                           std::cend(video) - 1,
+                                           [](unsigned char c1, unsigned char c2) {
+                                                   return std::tolower(c1) == std::tolower(c2);
+                                           }) != sdp.cend()
+                                 ? "video"
+                                 : "voice";
                 }
                 return std::string();
         }
