@@ -1,6 +1,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
+#include <QMessageBox>
 #include <QShortcut>
 #include <QVBoxLayout>
 
@@ -96,6 +97,14 @@ UserProfile::UserProfile(QWidget *parent)
 
                 if (utils::localUser() != user_id)
                         req.invite = {user_id.toStdString()};
+
+                if (QMessageBox::question(
+                      this,
+                      tr("Confirm DM"),
+                      tr("Do you really want to invite %1 (%2) to a direct chat?")
+                        .arg(cache::displayName(roomId_, user_id))
+                        .arg(user_id)) != QMessageBox::Yes)
+                        return;
 
                 emit ChatPage::instance()->createRoom(req);
         });
@@ -198,6 +207,8 @@ void
 UserProfile::init(const QString &userId, const QString &roomId)
 {
         resetToDefaults();
+
+        this->roomId_ = roomId;
 
         auto displayName = cache::displayName(roomId, userId);
 

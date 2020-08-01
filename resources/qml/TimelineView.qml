@@ -245,6 +245,7 @@ Page {
                         width: contentWidth * 1.2
 
                         horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
 						background: Rectangle {
 							radius: parent.height / 2
 							color: colors.base
