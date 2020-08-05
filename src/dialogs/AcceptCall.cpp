@@ -1,11 +1,14 @@
+#include <QComboBox>
 #include <QLabel>
-#include <QPixmap>
 #include <QPushButton>
 #include <QString>
 #include <QVBoxLayout>
 
+#include "ChatPage.h"
 #include "Config.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "dialogs/AcceptCall.h"
 #include "ui/Avatar.h"
 
@@ -15,9 +18,25 @@ AcceptCall::AcceptCall(const QString &caller,
                        const QString &displayName,
                        const QString &roomName,
                        const QString &avatarUrl,
+                       QSharedPointer<UserSettings> settings,
                        QWidget *parent)
   : QWidget(parent)
 {
+        std::string errorMessage;
+        if (!WebRTCSession::instance().init(&errorMessage)) {
+                emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
+                emit close();
+                return;
+        }
+        audioDevices_ = WebRTCSession::instance().getAudioSourceNames(
+          settings->defaultAudioSource().toStdString());
+        if (audioDevices_.empty()) {
+                emit ChatPage::instance()->showNotification(
+                  "Incoming call: No audio sources found.");
+                emit close();
+                return;
+        }
+
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
         setWindowModality(Qt::WindowModal);
@@ -55,7 +74,7 @@ AcceptCall::AcceptCall(const QString &caller,
         else
                 avatar->setLetter(utils::firstChar(roomName));
 
-        const int iconSize        = 24;
+        const int iconSize        = 22;
         QLabel *callTypeIndicator = new QLabel(this);
         callTypeIndicator->setPixmap(
           QIcon(":/icons/icons/ui/place-call.png").pixmap(QSize(iconSize * 2, iconSize * 2)));
@@ -66,7 +85,7 @@ AcceptCall::AcceptCall(const QString &caller,
         callTypeLabel->setAlignment(Qt::AlignCenter);
 
         auto buttonLayout = new QHBoxLayout;
-        buttonLayout->setSpacing(20);
+        buttonLayout->setSpacing(18);
         acceptBtn_ = new QPushButton(tr("Accept"), this);
         acceptBtn_->setDefault(true);
         acceptBtn_->setIcon(QIcon(":/icons/icons/ui/place-call.png"));
@@ -78,6 +97,19 @@ AcceptCall::AcceptCall(const QString &caller,
         buttonLayout->addWidget(acceptBtn_);
         buttonLayout->addWidget(rejectBtn_);
 
+        auto deviceLayout = new QHBoxLayout;
+        auto audioLabel   = new QLabel(this);
+        audioLabel->setPixmap(
+          QIcon(":/icons/icons/ui/microphone-unmute.png").pixmap(QSize(iconSize, iconSize)));
+
+        auto deviceList = new QComboBox(this);
+        for (const auto &d : audioDevices_)
+                deviceList->addItem(QString::fromStdString(d));
+
+        deviceLayout->addStretch();
+        deviceLayout->addWidget(audioLabel);
+        deviceLayout->addWidget(deviceList);
+
         if (displayNameLabel)
                 layout->addWidget(displayNameLabel, 0, Qt::AlignCenter);
         layout->addWidget(callerLabel, 0, Qt::AlignCenter);
@@ -85,8 +117,12 @@ AcceptCall::AcceptCall(const QString &caller,
         layout->addWidget(callTypeIndicator, 0, Qt::AlignCenter);
         layout->addWidget(callTypeLabel, 0, Qt::AlignCenter);
         layout->addLayout(buttonLayout);
+        layout->addLayout(deviceLayout);
 
-        connect(acceptBtn_, &QPushButton::clicked, this, [this]() {
+        connect(acceptBtn_, &QPushButton::clicked, this, [this, deviceList, settings]() {
+                WebRTCSession::instance().setAudioSource(deviceList->currentIndex());
+                settings->setDefaultAudioSource(
+                  QString::fromStdString(audioDevices_[deviceList->currentIndex()]));
                 emit accept();
                 emit close();
         });

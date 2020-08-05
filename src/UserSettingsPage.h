@@ -73,6 +73,8 @@ class UserSettings : public QObject
         Q_PROPERTY(Presence presence READ presence WRITE setPresence NOTIFY presenceChanged)
         Q_PROPERTY(
           bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
+        Q_PROPERTY(QString defaultAudioSource READ defaultAudioSource WRITE setDefaultAudioSource
+                     NOTIFY defaultAudioSourceChanged)
 
 public:
         UserSettings();
@@ -110,6 +112,7 @@ public:
         void setDecryptSidebar(bool state);
         void setPresence(Presence state);
         void setUseStunServer(bool state);
+        void setDefaultAudioSource(const QString &deviceName);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -136,6 +139,7 @@ public:
         QString emojiFont() const { return emojiFont_; }
         Presence presence() const { return presence_; }
         bool useStunServer() const { return useStunServer_; }
+        QString defaultAudioSource() const { return defaultAudioSource_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -159,6 +163,7 @@ signals:
         void emojiFontChanged(QString state);
         void presenceChanged(Presence state);
         void useStunServerChanged(bool state);
+        void defaultAudioSourceChanged(const QString &deviceName);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -187,6 +192,7 @@ private:
         QString emojiFont_;
         Presence presence_;
         bool useStunServer_;
+        QString defaultAudioSource_;
 };
 
 class HorizontalLine : public QFrame
@@ -244,6 +250,7 @@ private:
         Toggle *decryptSidebar_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
+        QLabel *defaultAudioSourceValue_;
 
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;

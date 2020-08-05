@@ -474,6 +474,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   callee.display_name,
                                   QString::fromStdString(roomInfo.name),
                                   QString::fromStdString(roomInfo.avatar_url),
+                                  userSettings_,
                                   MainWindow::instance());
                                 connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
                                         callManager_.sendInvite(current_room_);

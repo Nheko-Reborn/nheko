@@ -264,6 +264,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                                               caller.display_name,
                                               QString::fromStdString(roomInfo.name),
                                               QString::fromStdString(roomInfo.avatar_url),
+                                              settings_,
                                               MainWindow::instance());
         connect(dialog, &dialogs::AcceptCall::accept, this, [this, callInviteEvent]() {
                 MainWindow::instance()->hideOverlay();

@@ -7,6 +7,7 @@
 
 #include "mtx/events/voip.hpp"
 
+typedef struct _GList GList;
 typedef struct _GstElement GstElement;
 
 class WebRTCSession : public QObject
@@ -46,6 +47,9 @@ public:
         void setStunServer(const std::string &stunServer) { stunServer_ = stunServer; }
         void setTurnServers(const std::vector<std::string> &uris) { turnServers_ = uris; }
 
+        std::vector<std::string> getAudioSourceNames(const std::string &defaultDevice);
+        void setAudioSource(int audioDeviceIndex) { audioSourceIndex_ = audioDeviceIndex; }
+
 signals:
         void offerCreated(const std::string &sdp,
                           const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
@@ -66,9 +70,12 @@ private:
         GstElement *webrtc_ = nullptr;
         std::string stunServer_;
         std::vector<std::string> turnServers_;
+        GList *audioSources_  = nullptr;
+        int audioSourceIndex_ = -1;
 
         bool startPipeline(int opusPayloadType);
         bool createPipeline(int opusPayloadType);
+        void refreshDevices();
 
 public:
         WebRTCSession(WebRTCSession const &) = delete;

@@ -487,23 +487,74 @@ WebRTCSession::startPipeline(int opusPayloadType)
         return true;
 }
 
-#define RTP_CAPS_OPUS "application/x-rtp,media=audio,encoding-name=OPUS,payload="
-
 bool
 WebRTCSession::createPipeline(int opusPayloadType)
 {
-        std::string pipeline("webrtcbin bundle-policy=max-bundle name=webrtcbin "
-                             "autoaudiosrc ! volume name=srclevel ! audioconvert ! "
-                             "audioresample ! queue ! opusenc ! rtpopuspay ! "
-                             "queue ! " RTP_CAPS_OPUS +
-                             std::to_string(opusPayloadType) + " ! webrtcbin.");
+        int nSources = audioSources_ ? g_list_length(audioSources_) : 0;
+        if (nSources == 0) {
+                nhlog::ui()->error("WebRTC: no audio sources");
+                return false;
+        }
 
-        webrtc_       = nullptr;
-        GError *error = nullptr;
-        pipe_         = gst_parse_launch(pipeline.c_str(), &error);
-        if (error) {
-                nhlog::ui()->error("WebRTC: failed to parse pipeline: {}", error->message);
-                g_error_free(error);
+        if (audioSourceIndex_ < 0 || audioSourceIndex_ >= nSources) {
+                nhlog::ui()->error("WebRTC: invalid audio source index");
+                return false;
+        }
+
+        GstElement *source = gst_device_create_element(
+          GST_DEVICE_CAST(g_list_nth_data(audioSources_, audioSourceIndex_)), nullptr);
+        GstElement *volume     = gst_element_factory_make("volume", "srclevel");
+        GstElement *convert    = gst_element_factory_make("audioconvert", nullptr);
+        GstElement *resample   = gst_element_factory_make("audioresample", nullptr);
+        GstElement *queue1     = gst_element_factory_make("queue", nullptr);
+        GstElement *opusenc    = gst_element_factory_make("opusenc", nullptr);
+        GstElement *rtp        = gst_element_factory_make("rtpopuspay", nullptr);
+        GstElement *queue2     = gst_element_factory_make("queue", nullptr);
+        GstElement *capsfilter = gst_element_factory_make("capsfilter", nullptr);
+
+        GstCaps *rtpcaps = gst_caps_new_simple("application/x-rtp",
+                                               "media",
+                                               G_TYPE_STRING,
+                                               "audio",
+                                               "encoding-name",
+                                               G_TYPE_STRING,
+                                               "OPUS",
+                                               "payload",
+                                               G_TYPE_INT,
+                                               opusPayloadType,
+                                               nullptr);
+        g_object_set(capsfilter, "caps", rtpcaps, nullptr);
+        gst_caps_unref(rtpcaps);
+
+        GstElement *webrtcbin = gst_element_factory_make("webrtcbin", "webrtcbin");
+        g_object_set(webrtcbin, "bundle-policy", GST_WEBRTC_BUNDLE_POLICY_MAX_BUNDLE, nullptr);
+
+        pipe_ = gst_pipeline_new(nullptr);
+        gst_bin_add_many(GST_BIN(pipe_),
+                         source,
+                         volume,
+                         convert,
+                         resample,
+                         queue1,
+                         opusenc,
+                         rtp,
+                         queue2,
+                         capsfilter,
+                         webrtcbin,
+                         nullptr);
+
+        if (!gst_element_link_many(source,
+                                   volume,
+                                   convert,
+                                   resample,
+                                   queue1,
+                                   opusenc,
+                                   rtp,
+                                   queue2,
+                                   capsfilter,
+                                   webrtcbin,
+                                   nullptr)) {
+                nhlog::ui()->error("WebRTC: failed to link pipeline elements");
                 end();
                 return false;
         }
@@ -540,4 +591,43 @@ WebRTCSession::end()
         webrtc_ = nullptr;
         if (state_ != State::DISCONNECTED)
                 emit stateChanged(State::DISCONNECTED);
+}
+
+void
+WebRTCSession::refreshDevices()
+{
+        if (!initialised_)
+                return;
+
+        static GstDeviceMonitor *monitor = nullptr;
+        if (!monitor) {
+                monitor       = gst_device_monitor_new();
+                GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
+                gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
+                gst_caps_unref(caps);
+        }
+        g_list_free_full(audioSources_, g_object_unref);
+        audioSources_ = gst_device_monitor_get_devices(monitor);
+}
+
+std::vector<std::string>
+WebRTCSession::getAudioSourceNames(const std::string &defaultDevice)
+{
+        if (!initialised_)
+                return {};
+
+        refreshDevices();
+        std::vector<std::string> ret;
+        ret.reserve(g_list_length(audioSources_));
+        for (GList *l = audioSources_; l != nullptr; l = l->next) {
+                gchar *name = gst_device_get_display_name(GST_DEVICE_CAST(l->data));
+                ret.emplace_back(name);
+                g_free(name);
+                if (ret.back() == defaultDevice) {
+                        // move default device to top of the list
+                        std::swap(audioSources_->data, l->data);
+                        std::swap(ret.front(), ret.back());
+                }
+        }
+        return ret;
 }

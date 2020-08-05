@@ -77,7 +77,8 @@ UserSettings::load()
         presence_ =
           settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
             .value<Presence>();
-        useStunServer_ = settings.value("user/use_stun_server", false).toBool();
+        useStunServer_      = settings.value("user/use_stun_server", false).toBool();
+        defaultAudioSource_ = settings.value("user/default_audio_source", QString()).toString();
 
         applyTheme();
 }
@@ -291,6 +292,16 @@ UserSettings::setUseStunServer(bool useStunServer)
 }
 
 void
+UserSettings::setDefaultAudioSource(const QString &defaultAudioSource)
+{
+        if (defaultAudioSource == defaultAudioSource_)
+                return;
+        defaultAudioSource_ = defaultAudioSource;
+        emit defaultAudioSourceChanged(defaultAudioSource);
+        save();
+}
+
+void
 UserSettings::applyTheme()
 {
         QFile stylefile;
@@ -376,6 +387,7 @@ UserSettings::save()
         settings.setValue("emoji_font_family", emojiFont_);
         settings.setValue("presence", QVariant::fromValue(presence_));
         settings.setValue("use_stun_server", useStunServer_);
+        settings.setValue("default_audio_source", defaultAudioSource_);
 
         settings.endGroup();
 
@@ -500,6 +512,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         callsLabel->setAlignment(Qt::AlignBottom);
         callsLabel->setFont(font);
         useStunServer_ = new Toggle{this};
+
+        defaultAudioSourceValue_ = new QLabel(this);
+        defaultAudioSourceValue_->setFont(font);
 
         auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
         encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
@@ -634,9 +649,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         formLayout_->addRow(callsLabel);
         formLayout_->addRow(new HorizontalLine{this});
-        boxWrap(tr("Allow Fallback Call Assist Server"),
+        boxWrap(tr("Allow fallback call assist server"),
                 useStunServer_,
                 tr("Will use turn.matrix.org as assist when your home server does not offer one."));
+        boxWrap(tr("Default audio source device"), defaultAudioSourceValue_);
 
         formLayout_->addRow(encryptionLabel_);
         formLayout_->addRow(new HorizontalLine{this});
@@ -797,6 +813,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
         useStunServer_->setState(!settings_->useStunServer());
+        defaultAudioSourceValue_->setText(settings_->defaultAudioSource());
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));
