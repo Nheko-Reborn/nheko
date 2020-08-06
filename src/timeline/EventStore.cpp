@@ -379,103 +379,96 @@ EventStore::decryptEvent(const IdIndex &idx,
         index.session_id = e.content.session_id;
         index.sender_key = e.content.sender_key;
 
-        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
-        dummy.origin_server_ts = e.origin_server_ts;
-        dummy.event_id         = e.event_id;
-        dummy.sender           = e.sender;
-        dummy.content.body =
-          tr("-- Encrypted Event (No keys found for decryption) --",
-             "Placeholder, when the message was not decrypted yet or can't be decrypted.")
-            .toStdString();
-
         auto asCacheEntry = [&idx](mtx::events::collections::TimelineEvents &&event) {
                 auto event_ptr = new mtx::events::collections::TimelineEvents(std::move(event));
                 decryptedEvents_.insert(idx, event_ptr);
                 return event_ptr;
         };
 
-        try {
-                if (!cache::client()->inboundMegolmSessionExists(index)) {
+        auto decryptionResult = olm::decryptEvent(index, e);
+
+        if (decryptionResult.error) {
+                mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
+                dummy.origin_server_ts = e.origin_server_ts;
+                dummy.event_id         = e.event_id;
+                dummy.sender           = e.sender;
+                switch (*decryptionResult.error) {
+                case olm::DecryptionErrorCode::MissingSession:
+                        dummy.content.body =
+                          tr("-- Encrypted Event (No keys found for decryption) --",
+                             "Placeholder, when the message was not decrypted yet or can't be "
+                             "decrypted.")
+                            .toStdString();
                         nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
                                               index.room_id,
                                               index.session_id,
                                               e.sender);
-                        // TODO: request megolm session_id & session_key from the sender.
-                        return asCacheEntry(std::move(dummy));
+                        // TODO: Check if this actually works and look in key backup
+                        olm::send_key_request_for(room_id_, e);
+                        break;
+                case olm::DecryptionErrorCode::DbError:
+                        nhlog::db()->critical(
+                          "failed to retrieve megolm session with index ({}, {}, {})",
+                          index.room_id,
+                          index.session_id,
+                          index.sender_key,
+                          decryptionResult.error_message.value_or(""));
+                        dummy.content.body =
+                          tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
+                             "Placeholder, when the message can't be decrypted, because the DB "
+                             "access "
+                             "failed.")
+                            .toStdString();
+                        break;
+                case olm::DecryptionErrorCode::DecryptionFailed:
+                        nhlog::crypto()->critical(
+                          "failed to decrypt message with index ({}, {}, {}): {}",
+                          index.room_id,
+                          index.session_id,
+                          index.sender_key,
+                          decryptionResult.error_message.value_or(""));
+                        dummy.content.body =
+                          tr("-- Decryption Error (%1) --",
+                             "Placeholder, when the message can't be decrypted. In this case, the "
+                             "Olm "
+                             "decrytion returned an error, which is passed as %1.")
+                            .arg(
+                              QString::fromStdString(decryptionResult.error_message.value_or("")))
+                            .toStdString();
+                        break;
+                case olm::DecryptionErrorCode::ParsingFailed:
+                        dummy.content.body =
+                          tr("-- Encrypted Event (Unknown event type) --",
+                             "Placeholder, when the message was decrypted, but we couldn't parse "
+                             "it, because "
+                             "Nheko/mtxclient don't support that event type yet.")
+                            .toStdString();
+                        break;
+                case olm::DecryptionErrorCode::ReplayAttack:
+                        nhlog::crypto()->critical(
+                          "Reply attack while decryptiong event {} in room {} from {}!",
+                          e.event_id,
+                          room_id_,
+                          index.sender_key);
+                        dummy.content.body =
+                          tr("-- Reply attack! This message index was reused! --").toStdString();
+                        break;
+                case olm::DecryptionErrorCode::UnknownFingerprint:
+                        // TODO: don't fail, just show in UI.
+                        nhlog::crypto()->critical("Message by unverified fingerprint {}",
+                                                  index.sender_key);
+                        dummy.content.body =
+                          tr("-- Message by unverified device! --").toStdString();
+                        break;
                 }
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failed to check megolm session's existence: {}", e.what());
-                dummy.content.body = tr("-- Decryption Error (failed to communicate with DB) --",
-                                        "Placeholder, when the message can't be decrypted, because "
-                                        "the DB access failed when trying to lookup the session.")
-                                       .toStdString();
                 return asCacheEntry(std::move(dummy));
         }
 
-        std::string msg_str;
-        try {
-                auto session = cache::client()->getInboundMegolmSession(index);
-                auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
-                msg_str      = std::string((char *)res.data.data(), res.data.size());
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
-                                      index.room_id,
-                                      index.session_id,
-                                      index.sender_key,
-                                      e.what());
-                dummy.content.body =
-                  tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
-                     "Placeholder, when the message can't be decrypted, because the DB access "
-                     "failed.")
-                    .toStdString();
-                return asCacheEntry(std::move(dummy));
-        } catch (const mtx::crypto::olm_exception &e) {
-                nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
-                                          index.room_id,
-                                          index.session_id,
-                                          index.sender_key,
-                                          e.what());
-                dummy.content.body =
-                  tr("-- Decryption Error (%1) --",
-                     "Placeholder, when the message can't be decrypted. In this case, the Olm "
-                     "decrytion returned an error, which is passed as %1.")
-                    .arg(e.what())
-                    .toStdString();
-                return asCacheEntry(std::move(dummy));
-        }
+        auto encInfo = mtx::accessors::file(decryptionResult.event.value());
+        if (encInfo)
+                emit newEncryptedImage(encInfo.value());
 
-        // Add missing fields for the event.
-        json body                = json::parse(msg_str);
-        body["event_id"]         = e.event_id;
-        body["sender"]           = e.sender;
-        body["origin_server_ts"] = e.origin_server_ts;
-        body["unsigned"]         = e.unsigned_data;
-
-        // relations are unencrypted in content...
-        if (json old_ev = e; old_ev["content"].count("m.relates_to") != 0)
-                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
-
-        json event_array = json::array();
-        event_array.push_back(body);
-
-        std::vector<mtx::events::collections::TimelineEvents> temp_events;
-        mtx::responses::utils::parse_timeline_events(event_array, temp_events);
-
-        if (temp_events.size() == 1) {
-                auto encInfo = mtx::accessors::file(temp_events[0]);
-
-                if (encInfo)
-                        emit newEncryptedImage(encInfo.value());
-
-                return asCacheEntry(std::move(temp_events[0]));
-        }
-
-        dummy.content.body =
-          tr("-- Encrypted Event (Unknown event type) --",
-             "Placeholder, when the message was decrypted, but we couldn't parse it, because "
-             "Nheko/mtxclient don't support that event type yet.")
-            .toStdString();
-        return asCacheEntry(std::move(dummy));
+        return asCacheEntry(std::move(decryptionResult.event.value()));
 }
 
 mtx::events::collections::TimelineEvents *

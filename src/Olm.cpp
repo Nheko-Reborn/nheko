@@ -3,6 +3,7 @@
 #include "Olm.h"
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"
@@ -551,4 +552,50 @@ send_megolm_key_to_device(const std::string &user_id,
           });
 }
 
+DecryptionResult
+decryptEvent(const MegolmSessionIndex &index,
+             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event)
+{
+        try {
+                if (!cache::client()->inboundMegolmSessionExists(index)) {
+                        return {DecryptionErrorCode::MissingSession, std::nullopt, std::nullopt};
+                }
+        } catch (const lmdb::error &e) {
+                return {DecryptionErrorCode::DbError, e.what(), std::nullopt};
+        }
+
+        // TODO: Lookup index,event_id,origin_server_ts tuple for replay attack errors
+        // TODO: Verify sender_key
+
+        std::string msg_str;
+        try {
+                auto session = cache::client()->getInboundMegolmSession(index);
+                auto res = olm::client()->decrypt_group_message(session, event.content.ciphertext);
+                msg_str  = std::string((char *)res.data.data(), res.data.size());
+        } catch (const lmdb::error &e) {
+                return {DecryptionErrorCode::DbError, e.what(), std::nullopt};
+        } catch (const mtx::crypto::olm_exception &e) {
+                return {DecryptionErrorCode::DecryptionFailed, e.what(), std::nullopt};
+        }
+
+        // Add missing fields for the event.
+        json body                = json::parse(msg_str);
+        body["event_id"]         = event.event_id;
+        body["sender"]           = event.sender;
+        body["origin_server_ts"] = event.origin_server_ts;
+        body["unsigned"]         = event.unsigned_data;
+
+        // relations are unencrypted in content...
+        if (json old_ev = event; old_ev["content"].count("m.relates_to") != 0)
+                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
+
+        mtx::events::collections::TimelineEvent te;
+        try {
+                mtx::events::collections::from_json(body, te);
+        } catch (std::exception &e) {
+                return {DecryptionErrorCode::ParsingFailed, e.what(), std::nullopt};
+        }
+
+        return {std::nullopt, std::nullopt, std::move(te.data)};
+}
 } // namespace olm
