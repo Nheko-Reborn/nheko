@@ -5,7 +5,8 @@ TextEdit {
 	textFormat: TextEdit.RichText
 	readOnly: true
 	wrapMode: Text.Wrap
-	selectByMouse: ma.containsMouse // try to make scrollable by finger but selectable by mouse
+	selectByMouse: true
+	activeFocusOnPress: false
 	color: colors.text
 
 	onLinkActivated: {
@@ -23,7 +24,6 @@ TextEdit {
 		id: ma
 		anchors.fill: parent
 		propagateComposedEvents: true
-		hoverEnabled: true
 		acceptedButtons: Qt.NoButton
 		cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
 	}
