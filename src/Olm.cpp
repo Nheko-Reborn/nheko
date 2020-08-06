@@ -317,32 +317,36 @@ send_key_request_for(const std::string &room_id,
         using namespace mtx::events;
 
         nhlog::crypto()->debug("sending key request: {}", json(e).dump(2));
-        auto payload = json{{"action", "request"},
-                            {"request_id", http::client()->generate_txn_id()},
-                            {"requesting_device_id", http::client()->device_id()},
-                            {"body",
-                             {{"algorithm", MEGOLM_ALGO},
-                              {"room_id", room_id},
-                              {"sender_key", e.content.sender_key},
-                              {"session_id", e.content.session_id}}}};
 
-        json body;
-        body["messages"][e.sender]                      = json::object();
-        body["messages"][e.sender][e.content.device_id] = payload;
+        mtx::events::msg::KeyRequest request;
+        request.action               = mtx::events::msg::RequestAction::Request;
+        request.algorithm            = MEGOLM_ALGO;
+        request.room_id              = room_id;
+        request.sender_key           = e.content.sender_key;
+        request.session_id           = e.content.session_id;
+        request.request_id           = "key_request." + http::client()->generate_txn_id();
+        request.requesting_device_id = http::client()->device_id();
 
-        nhlog::crypto()->debug("m.room_key_request: {}", body.dump(2));
+        nhlog::crypto()->debug("m.room_key_request: {}", json(request).dump(2));
 
-        http::client()->send_to_device("m.room_key_request", body, [e](mtx::http::RequestErr err) {
-                if (err) {
-                        nhlog::net()->warn("failed to send "
-                                           "send_to_device "
-                                           "message: {}",
-                                           err->matrix_error.error);
-                }
+        std::map<mtx::identifiers::User, std::map<std::string, decltype(request)>> body;
+        body[mtx::identifiers::parse<mtx::identifiers::User>(e.sender)][e.content.device_id] =
+          request;
+        body[http::client()->user_id()]["*"] = request;
 
-                nhlog::net()->info(
-                  "m.room_key_request sent to {}:{}", e.sender, e.content.device_id);
-        });
+        http::client()->send_to_device(
+          http::client()->generate_txn_id(), body, [e](mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to send "
+                                             "send_to_device "
+                                             "message: {}",
+                                             err->matrix_error.error);
+                  }
+
+                  nhlog::net()->info("m.room_key_request sent to {}:{} and your own devices",
+                                     e.sender,
+                                     e.content.device_id);
+          });
 }
 
 void
