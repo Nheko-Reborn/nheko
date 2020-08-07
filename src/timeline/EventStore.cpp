@@ -529,6 +529,12 @@ EventStore::fetchMore()
 
         http::client()->messages(
           opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
+                  if (cache::client()->previousBatchToken(room_id_) != opts.from) {
+                          nhlog::net()->warn("Cache cleared while fetching more messages, dropping "
+                                             "/messages response");
+                          emit fetchedMore();
+                          return;
+                  }
                   if (err) {
                           nhlog::net()->error("failed to call /messages ({}): {} - {} - {}",
                                               opts.room_id,
