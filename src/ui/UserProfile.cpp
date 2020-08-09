@@ -5,13 +5,15 @@
 #include "Logging.h"
 #include "Utils.h"
 #include "mtx/responses/crypto.hpp"
+#include "timeline/TimelineModel.h"
 
 #include <iostream> // only for debugging
 
-UserProfile::UserProfile(QString roomid, QString userid, QObject *parent)
+UserProfile::UserProfile(QString roomid, QString userid, TimelineModel *parent)
   : QObject(parent)
   , roomid_(roomid)
   , userid_(userid)
+  , model(parent)
 {
         fetchDeviceList(this->userid_);
 }
@@ -185,27 +187,43 @@ UserProfile::startChat()
         emit ChatPage::instance()->createRoom(req);
 }
 
-void
-UserProfile::verifyUser()
+DeviceVerificationFlow *
+UserProfile::createFlow(bool isVerifyUser)
 {
-        std::cout << "Checking if to start to device verification or room message verification"
-                  << std::endl;
-        auto joined_rooms = cache::joinedRooms();
-        auto room_infos   = cache::getRoomInfo(joined_rooms);
+        if (!isVerifyUser)
+                return (new DeviceVerificationFlow(this, DeviceVerificationFlow::Type::ToDevice));
+        else {
+                std::cout << "CHECKING IF IT TO START ROOM_VERIFICATION OR TO_DEVICE VERIFICATION"
+                          << std::endl;
+                auto joined_rooms = cache::joinedRooms();
+                auto room_infos   = cache::getRoomInfo(joined_rooms);
 
-        for (std::string room_id : joined_rooms) {
-                if ((room_infos[QString::fromStdString(room_id)].member_count == 2) &&
-                    cache::isRoomEncrypted(room_id)) {
-                        auto room_members = cache::roomMembers(room_id);
-                        if (std::find(room_members.begin(),
-                                      room_members.end(),
-                                      (this->userid()).toStdString()) != room_members.end()) {
-                                std::cout << "FOUND A ENCRYPTED ROOM WITH THIS USER : " << room_id
+                for (std::string room_id : joined_rooms) {
+                        if ((room_infos[QString::fromStdString(room_id)].member_count == 2) &&
+                            cache::isRoomEncrypted(room_id)) {
+                                auto room_members = cache::roomMembers(room_id);
+                                if (std::find(room_members.begin(),
+                                              room_members.end(),
+                                              (this->userid()).toStdString()) !=
+                                    room_members.end()) {
+                                        std::cout
+                                          << "FOUND A ENCRYPTED ROOM WITH THIS USER : " << room_id
                                           << std::endl;
-                                return;
+                                        if (this->roomid_.toStdString() == room_id) {
+                                                auto newflow = new DeviceVerificationFlow(
+                                                  this, DeviceVerificationFlow::Type::RoomMsg);
+                                                newflow->setModel(this->model);
+                                                return (std::move(newflow));
+                                        } else {
+                                                std::cout << "FOUND A ENCRYPTED ROOM BUT CURRENTLY "
+                                                             "NOT IN THAT ROOM : "
+                                                          << room_id << std::endl;
+                                        }
+                                }
                         }
                 }
-        }
 
-        std::cout << "DIDN'T FIND A ENCRYPTED ROOM WITH THIS USER" << std::endl;
+                std::cout << "DIDN'T FIND A ENCRYPTED ROOM WITH THIS USER" << std::endl;
+                return (new DeviceVerificationFlow(this, DeviceVerificationFlow::Type::ToDevice));
+        }
 }

@@ -22,6 +22,11 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
         this->sas           = olm::client()->sas_init();
         this->isMacVerified = false;
 
+        connect(this->model_,
+                &TimelineModel::updateFlowEventId,
+                this,
+                [this](std::string event_id) { this->relation.in_reply_to.event_id = event_id; });
+
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
                 this->cancelVerification(DeviceVerificationFlow::Error::Timeout);
@@ -222,6 +227,9 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
                         } else if (msg.relates_to.has_value()) {
+                                // this is just a workaround
+                                this->relation.in_reply_to.event_id =
+                                  msg.relates_to.value().in_reply_to.event_id;
                                 if (msg.relates_to.value().in_reply_to.event_id !=
                                     this->relation.in_reply_to.event_id)
                                         return;
@@ -343,11 +351,8 @@ DeviceVerificationFlow::setType(Type type)
 void
 DeviceVerificationFlow::setSender(bool sender_)
 {
-        this->sender = sender_;
-        if (this->sender == true && this->type == DeviceVerificationFlow::Type::ToDevice)
-                this->transaction_id = http::client()->generate_txn_id();
-        else if (this->sender == true && this->type == DeviceVerificationFlow::Type::RoomMsg)
-                this->relation.in_reply_to.event_id = http::client()->generate_txn_id();
+        this->sender         = sender_;
+        this->transaction_id = http::client()->generate_txn_id();
 }
 
 void
@@ -380,19 +385,16 @@ DeviceVerificationFlow::acceptVerificationRequest()
 
                 body[this->toClient][this->deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationAccept,
-                                   mtx::events::EventType::KeyVerificationAccept>(
-                    this->transaction_id, body, [](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn(
-                                      "failed to accept verification request: {} {}",
-                                      err->matrix_error.error,
-                                      static_cast<int>(err->status_code));
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationAccept>(
+                  this->transaction_id, body, [](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to accept verification request: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_.value())->sendMessage(req);
+                (model_)->sendMessage(req);
         }
 }
 //! responds verification request
@@ -410,18 +412,16 @@ DeviceVerificationFlow::sendVerificationReady()
 
                 body[this->toClient][this->deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationReady,
-                                   mtx::events::EventType::KeyVerificationReady>(
-                    this->transaction_id, body, [](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn("failed to send verification ready: {} {}",
-                                                       err->matrix_error.error,
-                                                       static_cast<int>(err->status_code));
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationReady>(
+                  this->transaction_id, body, [](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to send verification ready: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_.value())->sendMessage(req);
+                (model_)->sendMessage(req);
         }
 }
 //! accepts a verification
@@ -436,18 +436,16 @@ DeviceVerificationFlow::sendVerificationDone()
 
                 body[this->toClient][this->deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationDone,
-                                   mtx::events::EventType::KeyVerificationDone>(
-                    this->transaction_id, body, [](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn("failed to send verification done: {} {}",
-                                                       err->matrix_error.error,
-                                                       static_cast<int>(err->status_code));
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationDone>(
+                  this->transaction_id, body, [](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to send verification done: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_.value())->sendMessage(req);
+                (model_)->sendMessage(req);
         }
 }
 //! starts the verification flow
@@ -470,19 +468,16 @@ DeviceVerificationFlow::startVerificationRequest()
                 this->canonical_json                               = nlohmann::json(req);
                 body[this->toClient][this->deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationStart,
-                                   mtx::events::EventType::KeyVerificationStart>(
-                    this->transaction_id, body, [body](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn(
-                                      "failed to start verification request: {} {}",
-                                      err->matrix_error.error,
-                                      static_cast<int>(err->status_code));
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationStart>(
+                  this->transaction_id, body, [body](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to start verification request: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_.value())->sendMessage(req);
+                (model_)->sendMessage(req);
         }
 }
 //! sends a verification request
@@ -505,17 +500,20 @@ DeviceVerificationFlow::sendVerificationRequest()
 
                 body[this->toClient][this->deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationRequest,
-                                   mtx::events::EventType::KeyVerificationRequest>(
-                    this->transaction_id, body, [](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn("failed to send verification request: {} {}",
-                                                       err->matrix_error.error,
-                                                       static_cast<int>(err->status_code));
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
-                (model_.value())->sendMessage(req);
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationRequest>(
+                  this->transaction_id, body, [](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to send verification request: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
+                req.to      = this->userId.toStdString();
+                req.msgtype = "m.key.verification.request";
+                req.body = "User is requesting to verify keys with you. However, your client does "
+                           "not support this method, so you will need to use the legacy method of "
+                           "key verification.";
+                (model_)->sendMessage(req);
         }
 }
 //! cancels a verification flow
@@ -552,21 +550,18 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
 
                 body[this->toClient][deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationCancel,
-                                   mtx::events::EventType::KeyVerificationCancel>(
-                    this->transaction_id, body, [this](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn(
-                                      "failed to cancel verification request: {} {}",
-                                      err->matrix_error.error,
-                                      static_cast<int>(err->status_code));
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationCancel>(
+                  this->transaction_id, body, [this](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to cancel verification request: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
 
-                            this->deleteLater();
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                          this->deleteLater();
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_.value())->sendMessage(req);
+                (model_)->sendMessage(req);
         }
 
         // TODO : Handle Blocking user better
@@ -595,18 +590,16 @@ DeviceVerificationFlow::sendVerificationKey()
 
                 body[this->toClient][deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationKey,
-                                   mtx::events::EventType::KeyVerificationKey>(
-                    this->transaction_id, body, [](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn("failed to send verification key: {} {}",
-                                                       err->matrix_error.error,
-                                                       static_cast<int>(err->status_code));
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationKey>(
+                  this->transaction_id, body, [](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to send verification key: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_.value())->sendMessage(req);
+                (model_)->sendMessage(req);
         }
 }
 //! sends the mac of the keys
@@ -639,23 +632,21 @@ DeviceVerificationFlow::sendVerificationMac()
                 req.transaction_id                           = this->transaction_id;
                 body[this->toClient][deviceId.toStdString()] = req;
 
-                http::client()
-                  ->send_to_device<mtx::events::msg::KeyVerificationMac,
-                                   mtx::events::EventType::KeyVerificationMac>(
-                    this->transaction_id, body, [this](mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->warn("failed to send verification MAC: {} {}",
-                                                       err->matrix_error.error,
-                                                       static_cast<int>(err->status_code));
+                http::client()->send_to_device<mtx::events::msg::KeyVerificationMac>(
+                  this->transaction_id, body, [this](mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->warn("failed to send verification MAC: {} {}",
+                                                     err->matrix_error.error,
+                                                     static_cast<int>(err->status_code));
 
-                            if (this->isMacVerified == true)
-                                    this->acceptDevice();
-                            else
-                                    this->isMacVerified = true;
-                    });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_.has_value()) {
+                          if (this->isMacVerified == true)
+                                  this->acceptDevice();
+                          else
+                                  this->isMacVerified = true;
+                  });
+        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_.value())->sendMessage(req);
+                (model_)->sendMessage(req);
         }
 }
 //! Completes the verification flow

@@ -186,12 +186,11 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , room_id_(room_id)
   , manager_(manager)
 {
-        connect(
-          this,
-          &TimelineModel::redactionFailed,
-          this,
-          [](const QString &msg) { emit ChatPage::instance()->showNotification(msg); },
-          Qt::QueuedConnection);
+        connect(this,
+                &TimelineModel::redactionFailed,
+                this,
+                [](const QString &msg) { emit ChatPage::instance()->showNotification(msg); },
+                Qt::QueuedConnection);
 
         connect(this,
                 &TimelineModel::newMessageToSend,
@@ -200,17 +199,17 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 Qt::QueuedConnection);
         connect(this, &TimelineModel::addPendingMessageToStore, &events, &EventStore::addPending);
 
-        connect(
-          &events,
-          &EventStore::dataChanged,
-          this,
-          [this](int from, int to) {
-                  nhlog::ui()->debug(
-                    "data changed {} to {}", events.size() - to - 1, events.size() - from - 1);
-                  emit dataChanged(index(events.size() - to - 1, 0),
-                                   index(events.size() - from - 1, 0));
-          },
-          Qt::QueuedConnection);
+        connect(&events,
+                &EventStore::dataChanged,
+                this,
+                [this](int from, int to) {
+                        nhlog::ui()->debug("data changed {} to {}",
+                                           events.size() - to - 1,
+                                           events.size() - from - 1);
+                        emit dataChanged(index(events.size() - to - 1, 0),
+                                         index(events.size() - from - 1, 0));
+                },
+                Qt::QueuedConnection);
 
         connect(&events, &EventStore::beginInsertRows, this, [this](int from, int to) {
                 int first = events.size() - to;
@@ -232,6 +231,12 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::newEncryptedImage, this, &TimelineModel::newEncryptedImage);
         connect(
           &events, &EventStore::fetchedMore, this, [this]() { setPaginationInProgress(false); });
+        connect(&events,
+                &EventStore::startDMVerification,
+                this,
+                [this](mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> msg) {
+                        ChatPage::instance()->recievedRoomDeviceVerificationRequest(msg, this);
+                });
 }
 
 QHash<int, QByteArray>
@@ -613,187 +618,6 @@ TimelineModel::updateLastMessage()
         }
 }
 
-std::vector<QString>
-TimelineModel::internalAddEvents(
-  const std::vector<mtx::events::collections::TimelineEvents> &timeline)
-{
-        std::vector<QString> ids;
-        for (auto e : timeline) {
-                QString id = QString::fromStdString(mtx::accessors::event_id(e));
-
-                if (this->events.contains(id)) {
-                        this->events.insert(id, e);
-                        int idx = idToIndex(id);
-                        emit dataChanged(index(idx, 0), index(idx, 0));
-                        continue;
-                }
-
-                QString txid = QString::fromStdString(mtx::accessors::transaction_id(e));
-                if (this->pending.removeOne(txid)) {
-                        this->events.insert(id, e);
-                        this->events.remove(txid);
-                        int idx = idToIndex(txid);
-                        if (idx < 0) {
-                                nhlog::ui()->warn("Received index out of range");
-                                continue;
-                        }
-                        eventOrder[idx] = id;
-                        emit dataChanged(index(idx, 0), index(idx, 0));
-                        continue;
-                }
-
-                if (auto redaction =
-                      std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&e)) {
-                        QString redacts = QString::fromStdString(redaction->redacts);
-                        auto redacted   = std::find(eventOrder.begin(), eventOrder.end(), redacts);
-
-                        auto event = events.value(redacts);
-                        if (auto reaction =
-                              std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
-                                &event)) {
-                                QString reactedTo =
-                                  QString::fromStdString(reaction->content.relates_to.event_id);
-                                reactions[reactedTo].removeReaction(*reaction);
-                                int idx = idToIndex(reactedTo);
-                                if (idx >= 0)
-                                        emit dataChanged(index(idx, 0), index(idx, 0));
-                        }
-
-                        if (redacted != eventOrder.end()) {
-                                auto redactedEvent = std::visit(
-                                  [](const auto &ev)
-                                    -> mtx::events::RoomEvent<mtx::events::msg::Redacted> {
-                                          mtx::events::RoomEvent<mtx::events::msg::Redacted>
-                                            replacement                = {};
-                                          replacement.event_id         = ev.event_id;
-                                          replacement.room_id          = ev.room_id;
-                                          replacement.sender           = ev.sender;
-                                          replacement.origin_server_ts = ev.origin_server_ts;
-                                          replacement.type             = ev.type;
-                                          return replacement;
-                                  },
-                                  e);
-                                events.insert(redacts, redactedEvent);
-
-                                int row = (int)std::distance(eventOrder.begin(), redacted);
-                                emit dataChanged(index(row, 0), index(row, 0));
-                        }
-
-                        continue; // don't insert redaction into timeline
-                }
-
-                if (auto reaction =
-                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&e)) {
-                        QString reactedTo =
-                          QString::fromStdString(reaction->content.relates_to.event_id);
-                        events.insert(id, e);
-
-                        // remove local echo
-                        if (!txid.isEmpty()) {
-                                auto rCopy     = *reaction;
-                                rCopy.event_id = txid.toStdString();
-                                reactions[reactedTo].removeReaction(rCopy);
-                        }
-
-                        reactions[reactedTo].addReaction(room_id_.toStdString(), *reaction);
-                        int idx = idToIndex(reactedTo);
-                        if (idx >= 0)
-                                emit dataChanged(index(idx, 0), index(idx, 0));
-                        continue; // don't insert reaction into timeline
-                }
-
-                if (auto event =
-                      std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&e)) {
-                        auto e_      = decryptEvent(*event).event;
-                        auto encInfo = mtx::accessors::file(e_);
-
-                        if (encInfo)
-                                emit newEncryptedImage(encInfo.value());
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>(
-                              &e_)) {
-                                last_verification_request_event = *msg;
-                        }
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(
-                              &e_)) {
-                                last_verification_cancel_event = *msg;
-                                ChatPage::instance()->recievedDeviceVerificationCancel(
-                                  msg->content);
-                        }
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept>>(
-                              &e_)) {
-                                ChatPage::instance()->recievedDeviceVerificationAccept(
-                                  msg->content);
-                        }
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey>>(&e_)) {
-                                ChatPage::instance()->recievedDeviceVerificationKey(msg->content);
-                        }
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac>>(&e_)) {
-                                ChatPage::instance()->recievedDeviceVerificationMac(msg->content);
-                        }
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady>>(
-                              &e_)) {
-                                ChatPage::instance()->recievedDeviceVerificationReady(msg->content);
-                        }
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone>>(&e_)) {
-                                ChatPage::instance()->recievedDeviceVerificationDone(msg->content);
-                        }
-
-                        if (auto msg = std::get_if<
-                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart>>(
-                              &e_)) {
-                                ChatPage::instance()->recievedDeviceVerificationStart(msg->content,
-                                                                                      msg->sender);
-                        }
-                }
-
-                this->events.insert(id, e);
-                ids.push_back(id);
-
-                auto replyTo  = mtx::accessors::in_reply_to_event(e);
-                auto qReplyTo = QString::fromStdString(replyTo);
-                if (!replyTo.empty() && !events.contains(qReplyTo)) {
-                        http::client()->get_event(
-                          this->room_id_.toStdString(),
-                          replyTo,
-                          [this, id, replyTo](
-                            const mtx::events::collections::TimelineEvents &timeline,
-                            mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::net()->error(
-                                            "Failed to retrieve event with id {}, which was "
-                                            "requested to show the replyTo for event {}",
-                                            replyTo,
-                                            id.toStdString());
-                                          return;
-                                  }
-                                  emit eventFetched(id, timeline);
-                          });
-                }
-        }
-
-        if (last_verification_request_event.origin_server_ts >
-            last_verification_cancel_event.origin_server_ts) {
-                ChatPage::instance()->recievedRoomDeviceVerificationRequest(
-                  last_verification_request_event, this);
-        }
-
-        return ids;
-}
-
 void
 TimelineModel::setCurrentIndex(int index)
 {
@@ -979,15 +803,18 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
         }
 }
 
+template<typename T>
 void
-TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json content)
+TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg)
 {
         const auto room_id = room_id_.toStdString();
 
         using namespace mtx::events;
         using namespace mtx::identifiers;
 
-        json doc = {{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
+        json doc = {
+          {"type", to_string(msg.type)}, {"content", json(msg.content)}, {"room_id", room_id}};
+        std::cout << doc.dump(2) << std::endl;
 
         try {
                 // Check if we have already an outbound megolm session then we can use.
@@ -995,7 +822,7 @@ TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json con
                         mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
                         event.content =
                           olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
-                        event.event_id         = txn_id;
+                        event.event_id         = msg.event_id;
                         event.room_id          = room_id;
                         event.sender           = http::client()->user_id().to_string();
                         event.type             = mtx::events::EventType::RoomEncrypted;
@@ -1030,25 +857,26 @@ TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json con
                 const auto members = cache::roomMembers(room_id);
                 nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
 
-                auto keeper = std::make_shared<StateKeeper>([room_id, doc, txn_id, this]() {
-                        try {
-                                mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
-                                event.content = olm::encrypt_group_message(
-                                  room_id, http::client()->device_id(), doc);
-                                event.event_id         = txn_id;
-                                event.room_id          = room_id;
-                                event.sender           = http::client()->user_id().to_string();
-                                event.type             = mtx::events::EventType::RoomEncrypted;
-                                event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
+                auto keeper =
+                  std::make_shared<StateKeeper>([room_id, doc, txn_id = msg.event_id, this]() {
+                          try {
+                                  mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
+                                  event.content = olm::encrypt_group_message(
+                                    room_id, http::client()->device_id(), doc);
+                                  event.event_id         = txn_id;
+                                  event.room_id          = room_id;
+                                  event.sender           = http::client()->user_id().to_string();
+                                  event.type             = mtx::events::EventType::RoomEncrypted;
+                                  event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
 
-                                emit this->addPendingMessageToStore(event);
-                        } catch (const lmdb::error &e) {
-                                nhlog::db()->critical("failed to save megolm outbound session: {}",
-                                                      e.what());
-                                emit ChatPage::instance()->showNotification(
-                                  tr("Failed to encrypt event, sending aborted!"));
-                        }
-                });
+                                  emit this->addPendingMessageToStore(event);
+                          } catch (const lmdb::error &e) {
+                                  nhlog::db()->critical(
+                                    "failed to save megolm outbound session: {}", e.what());
+                                  emit ChatPage::instance()->showNotification(
+                                    tr("Failed to encrypt event, sending aborted!"));
+                          }
+                  });
 
                 mtx::requests::QueryKeys req;
                 for (const auto &member : members)
@@ -1056,7 +884,7 @@ TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json con
 
                 http::client()->query_keys(
                   req,
-                  [keeper = std::move(keeper), megolm_payload, txn_id, this](
+                  [keeper = std::move(keeper), megolm_payload, txn_id = msg.event_id, this](
                     const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("failed to query device keys: {} {}",
@@ -1265,6 +1093,40 @@ struct SendMessageVisitor
           : model_(model)
         {}
 
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg)
+        {
+                emit model_->updateFlowEventId(msg.event_id);
+                model_->sendEncryptedMessage(msg);
+        }
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady> &msg)
+        {
+                model_->sendEncryptedMessage(msg);
+        }
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart> &msg)
+        {
+                model_->sendEncryptedMessage(msg);
+        }
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept> &msg)
+        {
+                model_->sendEncryptedMessage(msg);
+        }
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac> &msg)
+        {
+                model_->sendEncryptedMessage(msg);
+        }
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey> &msg)
+        {
+                model_->sendEncryptedMessage(msg);
+        }
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone> &msg)
+        {
+                model_->sendEncryptedMessage(msg);
+        }
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel> &msg)
+        {
+                model_->sendEncryptedMessage(msg);
+        }
+
         // Do-nothing operator for all unhandled events
         template<typename T>
         void operator()(const mtx::events::Event<T> &)
@@ -1280,7 +1142,7 @@ struct SendMessageVisitor
                         if (encInfo)
                                 emit model_->newEncryptedImage(encInfo.value());
 
-                        model_->sendEncryptedMessage(msg.event_id, nlohmann::json(msg.content));
+                        model_->sendEncryptedMessage(msg);
                 } else {
                         emit model_->addPendingMessageToStore(msg);
                 }
@@ -1299,20 +1161,6 @@ struct SendMessageVisitor
 
         TimelineModel *model_;
 };
-
-void
-TimelineModel::processOnePendingMessage()
-{
-        if (pending.isEmpty())
-                return;
-
-        QString txn_id_qstr = pending.first();
-
-        auto event = events.value(txn_id_qstr);
-        std::cout << "Inside the process one pending message" << std::endl;
-        std::cout << std::visit([](auto &e) { return json(e); }, event).dump(2) << std::endl;
-        std::visit(SendMessageVisitor{txn_id_qstr, this}, event);
-}
 
 void
 TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
@@ -1359,18 +1207,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
                   event);
         }
 
-        internalAddEvents({event});
-
-        QString txn_id_qstr = QString::fromStdString(mtx::accessors::event_id(event));
-        pending.push_back(txn_id_qstr);
-        if (!std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(&event)) {
-                beginInsertRows(QModelIndex(), 0, 0);
-                this->eventOrder.insert(this->eventOrder.begin(), txn_id_qstr);
-                endInsertRows();
-        }
-        updateLastMessage();
-
-        emit nextPendingMessage();
+        std::visit(SendMessageVisitor{this}, event);
 }
 
 bool

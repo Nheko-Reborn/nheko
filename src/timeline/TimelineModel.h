@@ -9,12 +9,8 @@
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
-<<<<<<< HEAD
 #include "EventStore.h"
-=======
-#include "ReactionsModel.h"
 #include "ui/UserProfile.h"
->>>>>>> Refactor UserProfile
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -271,8 +267,13 @@ signals:
 
         void openProfile(UserProfile *profile);
 
+        void newMessageToSend(mtx::events::collections::TimelineEvents event);
+        void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
+        void updateFlowEventId(std::string event_id);
+
 private:
-        void sendEncryptedMessage(const std::string txn_id, nlohmann::json content);
+        template<typename T>
+        void sendEncryptedMessage(mtx::events::RoomEvent<T> msg);
         void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
                                const std::map<std::string, std::string> &room_key,
                                const std::map<std::string, DevicePublicKeys> &pks,
@@ -297,11 +298,6 @@ private:
         std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;
-        // probably not the best way to do
-        mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>
-          last_verification_request_event;
-        mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>
-          last_verification_cancel_event;
 
         friend struct SendMessageVisitor;
 };

@@ -35,13 +35,8 @@ Flow {
 			ToolTip.text: modelData.users
 
 			onClicked: {
-<<<<<<< HEAD
 				console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + modelData.selfReactedEvent)
-				timelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key)
-=======
-				console.debug("Picked " + model.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + model.selfReactedEvent)
-				TimelineManager.reactToMessage(reactionFlow.roomId, reactionFlow.eventId, model.key, model.selfReactedEvent)
->>>>>>> Fix presence indicator
+				TimelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key)
 			}
 
 

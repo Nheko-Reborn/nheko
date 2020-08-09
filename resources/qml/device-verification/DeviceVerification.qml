@@ -100,7 +100,9 @@ ApplicationWindow {
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
-						onClicked: { stack.replace(awaitingVerificationRequestAccept); flow.startVerificationRequest(); }
+						onClicked: { 
+							stack.replace(awaitingVerificationRequestAccept); 
+							isRequest?flow.sendVerificationRequest():flow.startVerificationRequest(); }
 					}
 				}
 			}

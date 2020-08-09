@@ -126,6 +126,6 @@ private:
         // for room messages
         std::optional<std::string> room_id;
         std::optional<std::string> event_id;
-        std::optional<TimelineModel *> model_;
+        TimelineModel *model_;
         mtx::common::ReplyRelatesTo relation;
 };

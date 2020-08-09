@@ -48,7 +48,7 @@ Item {
 			// fancy reply, if this is a reply
 			Reply {
 				visible: model.replyTo
-				modelData: chat.model.getDump(model.replyTo)
+				modelData: chat.model.getDump(model.replyTo,model.id)
 				userColor: TimelineManager.userColor(modelData.userId, colors.window)
 			}
 

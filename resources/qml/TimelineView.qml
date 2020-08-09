@@ -388,13 +388,8 @@ Page {
 						anchors.rightMargin: 20
 						anchors.bottom: parent.bottom
 
-<<<<<<< HEAD
 						modelData: chat.model ? chat.model.getDump(chat.model.reply, chat.model.id) : {}
-						userColor: timelineManager.userColor(modelData.userId, colors.window)
-=======
-						modelData: chat.model ? chat.model.getDump(chat.model.reply) : {}
 						userColor: TimelineManager.userColor(modelData.userId, colors.window)
->>>>>>> Fix presence indicator
 					}
 
 					ImageButton {

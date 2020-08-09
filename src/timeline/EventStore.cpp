@@ -5,6 +5,7 @@
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "ChatPage.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
@@ -31,41 +32,38 @@ EventStore::EventStore(std::string room_id, QObject *)
                 this->last  = range->last;
         }
 
-        connect(
-          this,
-          &EventStore::eventFetched,
-          this,
-          [this](std::string id,
-                 std::string relatedTo,
-                 mtx::events::collections::TimelineEvents timeline) {
-                  cache::client()->storeEvent(room_id_, id, {timeline});
+        connect(this,
+                &EventStore::eventFetched,
+                this,
+                [this](std::string id,
+                       std::string relatedTo,
+                       mtx::events::collections::TimelineEvents timeline) {
+                        cache::client()->storeEvent(room_id_, id, {timeline});
 
-                  if (!relatedTo.empty()) {
-                          auto idx = idToIndex(relatedTo);
-                          if (idx)
-                                  emit dataChanged(*idx, *idx);
-                  }
-          },
-          Qt::QueuedConnection);
+                        if (!relatedTo.empty()) {
+                                auto idx = idToIndex(relatedTo);
+                                if (idx)
+                                        emit dataChanged(*idx, *idx);
+                        }
+                },
+                Qt::QueuedConnection);
 
-        connect(
-          this,
-          &EventStore::oldMessagesRetrieved,
-          this,
-          [this](const mtx::responses::Messages &res) {
-                  //
-                  uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
-                  if (newFirst == first)
-                          fetchMore();
-                  else {
-                          emit beginInsertRows(toExternalIdx(newFirst),
-                                               toExternalIdx(this->first - 1));
-                          this->first = newFirst;
-                          emit endInsertRows();
-                          emit fetchedMore();
-                  }
-          },
-          Qt::QueuedConnection);
+        connect(this,
+                &EventStore::oldMessagesRetrieved,
+                this,
+                [this](const mtx::responses::Messages &res) {
+                        uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
+                        if (newFirst == first)
+                                fetchMore();
+                        else {
+                                emit beginInsertRows(toExternalIdx(newFirst),
+                                                     toExternalIdx(this->first - 1));
+                                this->first = newFirst;
+                                emit endInsertRows();
+                                emit fetchedMore();
+                        }
+                },
+                Qt::QueuedConnection);
 
         connect(this, &EventStore::processPending, this, [this]() {
                 if (!current_txn.empty()) {
@@ -116,48 +114,46 @@ EventStore::EventStore(std::string room_id, QObject *)
                   event->data);
         });
 
-        connect(
-          this,
-          &EventStore::messageFailed,
-          this,
-          [this](std::string txn_id) {
-                  if (current_txn == txn_id) {
-                          current_txn_error_count++;
-                          if (current_txn_error_count > 10) {
-                                  nhlog::ui()->debug("failing txn id '{}'", txn_id);
-                                  cache::client()->removePendingStatus(room_id_, txn_id);
-                                  current_txn_error_count = 0;
-                          }
-                  }
-                  QTimer::singleShot(1000, this, [this]() {
-                          nhlog::ui()->debug("timeout");
-                          this->current_txn = "";
-                          emit processPending();
-                  });
-          },
-          Qt::QueuedConnection);
+        connect(this,
+                &EventStore::messageFailed,
+                this,
+                [this](std::string txn_id) {
+                        if (current_txn == txn_id) {
+                                current_txn_error_count++;
+                                if (current_txn_error_count > 10) {
+                                        nhlog::ui()->debug("failing txn id '{}'", txn_id);
+                                        cache::client()->removePendingStatus(room_id_, txn_id);
+                                        current_txn_error_count = 0;
+                                }
+                        }
+                        QTimer::singleShot(1000, this, [this]() {
+                                nhlog::ui()->debug("timeout");
+                                this->current_txn = "";
+                                emit processPending();
+                        });
+                },
+                Qt::QueuedConnection);
 
-        connect(
-          this,
-          &EventStore::messageSent,
-          this,
-          [this](std::string txn_id, std::string event_id) {
-                  nhlog::ui()->debug("sent {}", txn_id);
+        connect(this,
+                &EventStore::messageSent,
+                this,
+                [this](std::string txn_id, std::string event_id) {
+                        nhlog::ui()->debug("sent {}", txn_id);
 
-                  http::client()->read_event(
-                    room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
-                            if (err) {
-                                    nhlog::net()->warn(
-                                      "failed to read_event ({}, {})", room_id_, event_id);
-                            }
-                    });
+                        http::client()->read_event(
+                          room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn(
+                                            "failed to read_event ({}, {})", room_id_, event_id);
+                                  }
+                          });
 
-                  cache::client()->removePendingStatus(room_id_, txn_id);
-                  this->current_txn             = "";
-                  this->current_txn_error_count = 0;
-                  emit processPending();
-          },
-          Qt::QueuedConnection);
+                        cache::client()->removePendingStatus(room_id_, txn_id);
+                        this->current_txn             = "";
+                        this->current_txn_error_count = 0;
+                        emit processPending();
+                },
+                Qt::QueuedConnection);
 }
 
 void
@@ -244,6 +240,58 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                                 events_.remove(index);
                                 emit dataChanged(toExternalIdx(*idx), toExternalIdx(*idx));
                         }
+                }
+
+                // decrypting and checking some encrypted messages
+                if (auto encrypted =
+                      std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                        &event)) {
+                        auto event = decryptEvent({room_id_, encrypted->event_id}, *encrypted);
+                        if (std::visit(
+                              [](auto e) { return (e.sender != utils::localUser().toStdString()); },
+                              *event)) {
+                                if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                      mtx::events::msg::KeyVerificationRequest>>(event)) {
+                                        last_verification_request_event = *msg;
+                                } else if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                             mtx::events::msg::KeyVerificationCancel>>(event)) {
+                                        last_verification_cancel_event = *msg;
+                                        ChatPage::instance()->recievedDeviceVerificationCancel(
+                                          msg->content);
+                                } else if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                             mtx::events::msg::KeyVerificationAccept>>(event)) {
+                                        ChatPage::instance()->recievedDeviceVerificationAccept(
+                                          msg->content);
+                                } else if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                             mtx::events::msg::KeyVerificationKey>>(event)) {
+                                        ChatPage::instance()->recievedDeviceVerificationKey(
+                                          msg->content);
+                                } else if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                             mtx::events::msg::KeyVerificationMac>>(event)) {
+                                        ChatPage::instance()->recievedDeviceVerificationMac(
+                                          msg->content);
+                                } else if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                             mtx::events::msg::KeyVerificationReady>>(event)) {
+                                        ChatPage::instance()->recievedDeviceVerificationReady(
+                                          msg->content);
+                                } else if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                             mtx::events::msg::KeyVerificationDone>>(event)) {
+                                        ChatPage::instance()->recievedDeviceVerificationDone(
+                                          msg->content);
+                                } else if (auto msg = std::get_if<mtx::events::RoomEvent<
+                                             mtx::events::msg::KeyVerificationStart>>(event)) {
+                                        ChatPage::instance()->recievedDeviceVerificationStart(
+                                          msg->content, msg->sender);
+                                }
+                        }
+                }
+        }
+
+        if (last_verification_request_event.has_value()) {
+                if (last_verification_request_event.value().origin_server_ts >
+                    last_verification_cancel_event.origin_server_ts) {
+                        emit startDMVerification(last_verification_request_event.value());
+                        last_verification_request_event = {};
                 }
         }
 }
@@ -425,7 +473,8 @@ EventStore::decryptEvent(const IdIndex &idx,
                                       e.what());
                 dummy.content.body =
                   tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
-                     "Placeholder, when the message can't be decrypted, because the DB access "
+                     "Placeholder, when the message can't be decrypted, because the DB "
+                     "access "
                      "failed.")
                     .toStdString();
                 return asCacheEntry(std::move(dummy));
@@ -437,7 +486,8 @@ EventStore::decryptEvent(const IdIndex &idx,
                                           e.what());
                 dummy.content.body =
                   tr("-- Decryption Error (%1) --",
-                     "Placeholder, when the message can't be decrypted. In this case, the Olm "
+                     "Placeholder, when the message can't be decrypted. In this case, the "
+                     "Olm "
                      "decrytion returned an error, which is passed as %1.")
                     .arg(e.what())
                     .toStdString();
@@ -470,11 +520,11 @@ EventStore::decryptEvent(const IdIndex &idx,
                 return asCacheEntry(std::move(temp_events[0]));
         }
 
-        dummy.content.body =
-          tr("-- Encrypted Event (Unknown event type) --",
-             "Placeholder, when the message was decrypted, but we couldn't parse it, because "
-             "Nheko/mtxclient don't support that event type yet.")
-            .toStdString();
+        dummy.content.body = tr("-- Encrypted Event (Unknown event type) --",
+                                "Placeholder, when the message was decrypted, but we "
+                                "couldn't parse it, because "
+                                "Nheko/mtxclient don't support that event type yet.")
+                               .toStdString();
         return asCacheEntry(std::move(dummy));
 }
 
@@ -502,7 +552,8 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
                                           mtx::http::RequestErr err) {
                                   if (err) {
                                           nhlog::net()->error(
-                                            "Failed to retrieve event with id {}, which was "
+                                            "Failed to retrieve event with id {}, which "
+                                            "was "
                                             "requested to show the replyTo for event {}",
                                             relatedTo,
                                             id);

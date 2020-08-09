@@ -90,7 +90,12 @@ ApplicationWindow{
 					verticalAlignment: Text.AlignVCenter
 				}
 				onClicked: {
-					profile.verifyUser();
+					var newFlow = profile.createFlow(true);
+					newFlow.userId = profile.userid;
+					newFlow.sender = true;
+					deviceVerificationList.add(newFlow.tranId);
+					var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest: true});
+					dialog.show();
 				}
 			}
 
@@ -192,14 +197,16 @@ ApplicationWindow{
 								id: verifyButton
 								text:(model.verificationStatus != VerificationStatus.VERIFIED)?"Verify":"Unverify"
 								onClicked: {
-									var newFlow = deviceVerificationFlow.createObject(userProfileDialog,
-									{userId : profile.userid, sender: true, deviceId : model.deviceId});
+									var newFlow = profile.createFlow(false);
+									newFlow.userId = profile.userid;
+									newFlow.sender = true;
+									newFlow.deviceId = model.deviceId;
 									if(model.verificationStatus == VerificationStatus.VERIFIED){
 										newFlow.unverify();
 										deviceVerificationList.updateProfile(newFlow.userId);
 									}else{
 										deviceVerificationList.add(newFlow.tranId);
-										var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow});
+										var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest:false});
 										dialog.show();
 									}
 								}
