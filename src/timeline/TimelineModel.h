@@ -242,6 +242,7 @@ public slots:
                 }
         }
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
+        void clearTimeline() { events.clearTimeline(); }
 
 private slots:
         void addPendingMessage(mtx::events::collections::TimelineEvents event);

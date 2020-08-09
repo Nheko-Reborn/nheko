@@ -176,6 +176,26 @@ EventStore::addPending(mtx::events::collections::TimelineEvents event)
 }
 
 void
+EventStore::clearTimeline()
+{
+        emit beginResetModel();
+
+        cache::client()->clearTimeline(room_id_);
+        auto range = cache::client()->getTimelineRange(room_id_);
+        if (range) {
+                nhlog::db()->info("Range {} {}", range->last, range->first);
+                this->last  = range->last;
+                this->first = range->first;
+        } else {
+                this->first = std::numeric_limits<uint64_t>::max();
+                this->last  = std::numeric_limits<uint64_t>::max();
+        }
+        nhlog::ui()->info("Range {} {}", this->last, this->first);
+
+        emit endResetModel();
+}
+
+void
 EventStore::handleSync(const mtx::responses::Timeline &events)
 {
         if (this->thread() != QThread::currentThread())

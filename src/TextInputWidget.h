@@ -156,6 +156,7 @@ private slots:
 signals:
         void sendTextMessage(const QString &msg);
         void sendEmoteMessage(QString msg);
+        void clearRoomTimeline();
         void heightChanged(int height);
 
         void uploadMedia(const QSharedPointer<QIODevice> data,

@@ -155,6 +155,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 trySync();
         });
 
+        connect(text_input_,
+                &TextInputWidget::clearRoomTimeline,
+                view_manager_,
+                &TimelineViewManager::clearCurrentRoomTimeline);
+
         connect(
           new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
                   if (isVisible())

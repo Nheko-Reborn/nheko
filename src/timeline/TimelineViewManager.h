@@ -92,6 +92,12 @@ public slots:
                                uint64_t dsize);
         void updateEncryptedDescriptions();
 
+        void clearCurrentRoomTimeline()
+        {
+                if (timeline_)
+                        timeline_->clearTimeline();
+        }
+
 private:
 #ifdef USE_QUICK_VIEW
         QQuickView *view;

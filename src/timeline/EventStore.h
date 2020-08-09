@@ -101,6 +101,7 @@ signals:
 
 public slots:
         void addPending(mtx::events::collections::TimelineEvents event);
+        void clearTimeline();
 
 private:
         mtx::events::collections::TimelineEvents *decryptEvent(
