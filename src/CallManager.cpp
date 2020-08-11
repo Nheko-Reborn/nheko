@@ -230,9 +230,9 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                                            return std::tolower(c1) == std::tolower(c2);
                                    }) != sdp.cend();
 
-        nhlog::ui()->debug(std::string("WebRTC: call id: {} - incoming ") +
-                             (isVideo ? "video" : "voice") + " CallInvite from {}",
+        nhlog::ui()->debug("WebRTC: call id: {} - incoming {} CallInvite from {}",
                            callInviteEvent.content.call_id,
+			   (isVideo ? "video" : "voice"),
                            callInviteEvent.sender);
 
         if (callInviteEvent.content.call_id.empty())
