@@ -19,7 +19,7 @@ ActiveCallBar::ActiveCallBar(QWidget *parent)
 {
         setAutoFillBackground(true);
         auto p = palette();
-        p.setColor(backgroundRole(), QColorConstants::Svg::limegreen);
+        p.setColor(backgroundRole(), QColor(46, 204, 113));
         setPalette(p);
 
         QFont f;
