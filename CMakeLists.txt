@@ -427,8 +427,7 @@ else()
 endif()
 
 include(FindPkgConfig)
-pkg_check_modules(GST_SDP REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.14) 
-pkg_check_modules(GST_WEBRTC REQUIRED IMPORTED_TARGET gstreamer-webrtc-1.0>=1.14) 
+pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.14 gstreamer-webrtc-1.0>=1.14) 
 
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
@@ -595,8 +594,6 @@ target_link_libraries(nheko PRIVATE
 	lmdbxx::lmdbxx
 	liblmdb::lmdb
 	tweeny
-	PkgConfig::GST_SDP
-	PkgConfig::GST_WEBRTC
 	SingleApplication::SingleApplication)
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
@@ -604,6 +601,11 @@ target_precompile_headers(nheko
 	PRIVATE
 	  <string>
 	)
+endif()
+
+if (TARGET PkgConfig::GSTREAMER)
+	target_link_libraries(nheko PRIVATE PkgConfig::GSTREAMER)
+	target_compile_definitions(nheko PRIVATE GSTREAMER_AVAILABLE)
 endif()
 
 if(MSVC)

@@ -3,6 +3,7 @@
 #include "Logging.h"
 #include "WebRTCSession.h"
 
+#ifdef GSTREAMER_AVAILABLE
 extern "C"
 {
 #include "gst/gst.h"
@@ -11,6 +12,7 @@ extern "C"
 #define GST_USE_UNSTABLE_API
 #include "gst/webrtc/webrtc.h"
 }
+#endif
 
 Q_DECLARE_METATYPE(WebRTCSession::State)
 
@@ -24,6 +26,7 @@ WebRTCSession::WebRTCSession()
 bool
 WebRTCSession::init(std::string *errorMessage)
 {
+#ifdef GSTREAMER_AVAILABLE
         if (initialised_)
                 return true;
 
@@ -81,10 +84,14 @@ WebRTCSession::init(std::string *errorMessage)
                         *errorMessage = strError;
         }
         return initialised_;
+#else
+        (void)errorMessage;
+        return false;
+#endif
 }
 
+#ifdef GSTREAMER_AVAILABLE
 namespace {
-
 bool isoffering_;
 std::string localsdp_;
 std::vector<mtx::events::msg::CallCandidates::Candidate> localcandidates_;
@@ -631,3 +638,62 @@ WebRTCSession::getAudioSourceNames(const std::string &defaultDevice)
         }
         return ret;
 }
+#else
+
+bool
+WebRTCSession::createOffer()
+{
+        return false;
+}
+
+bool
+WebRTCSession::acceptOffer(const std::string &)
+{
+        return false;
+}
+
+bool
+WebRTCSession::acceptAnswer(const std::string &)
+{
+        return false;
+}
+
+void
+WebRTCSession::acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &)
+{}
+
+bool
+WebRTCSession::startPipeline(int)
+{
+        return false;
+}
+
+bool
+WebRTCSession::createPipeline(int)
+{
+        return false;
+}
+
+bool
+WebRTCSession::toggleMuteAudioSrc(bool &)
+{
+        return false;
+}
+
+void
+WebRTCSession::end()
+{
+}
+
+void
+WebRTCSession::refreshDevices()
+{
+}
+
+std::vector<std::string>
+WebRTCSession::getAudioSourceNames(const std::string &)
+{
+        return {};
+}
+
+#endif

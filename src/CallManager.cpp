@@ -201,9 +201,13 @@ CallManager::onActiveCall()
 void
 CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
+#ifdef GSTREAMER_AVAILABLE
         if (handleEvent_<CallInvite>(event) || handleEvent_<CallCandidates>(event) ||
             handleEvent_<CallAnswer>(event) || handleEvent_<CallHangUp>(event))
                 return;
+#else
+        (void)event;
+#endif
 }
 
 template<typename T>
