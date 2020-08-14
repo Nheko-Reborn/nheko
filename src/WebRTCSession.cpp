@@ -682,13 +682,11 @@ WebRTCSession::toggleMuteAudioSrc(bool &)
 
 void
 WebRTCSession::end()
-{
-}
+{}
 
 void
 WebRTCSession::refreshDevices()
-{
-}
+{}
 
 std::vector<std::string>
 WebRTCSession::getAudioSourceNames(const std::string &)

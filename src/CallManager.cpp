@@ -236,7 +236,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 
         nhlog::ui()->debug("WebRTC: call id: {} - incoming {} CallInvite from {}",
                            callInviteEvent.content.call_id,
-			   (isVideo ? "video" : "voice"),
+                           (isVideo ? "video" : "voice"),
                            callInviteEvent.sender);
 
         if (callInviteEvent.content.call_id.empty())
