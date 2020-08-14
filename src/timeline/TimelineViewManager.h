@@ -18,6 +18,7 @@
 
 class MxcImageProvider;
 class BlurhashProvider;
+class CallManager;
 class ColorImageProvider;
 class UserSettings;
 
@@ -31,7 +32,9 @@ class TimelineViewManager : public QObject
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
 
 public:
-        TimelineViewManager(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
+        TimelineViewManager(QSharedPointer<UserSettings> userSettings,
+                            CallManager *callManager,
+                            QWidget *parent = nullptr);
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
@@ -98,6 +101,11 @@ public slots:
                                const QString &url,
                                const QString &mime,
                                uint64_t dsize);
+        void queueCallMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
+        void queueCallMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);
+        void queueCallMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
+        void queueCallMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
+
         void updateEncryptedDescriptions();
 
 private:
@@ -113,7 +121,8 @@ private:
         BlurhashProvider *blurhashProvider;
 
         QHash<QString, QSharedPointer<TimelineModel>> models;
-        TimelineModel *timeline_ = nullptr;
+        TimelineModel *timeline_  = nullptr;
+        CallManager *callManager_ = nullptr;
 
         bool isInitialSync_ = true;
 

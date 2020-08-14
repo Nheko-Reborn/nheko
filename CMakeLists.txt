@@ -225,6 +225,7 @@ configure_file(cmake/nheko.h config/nheko.h)
 #
 set(SRC_FILES
 	# Dialogs
+	src/dialogs/AcceptCall.cpp
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
@@ -233,6 +234,7 @@ set(SRC_FILES
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
 	src/dialogs/MemberList.cpp
+	src/dialogs/PlaceCall.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
@@ -276,9 +278,11 @@ set(SRC_FILES
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
 
+	src/ActiveCallBar.cpp
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
+	src/CallManager.cpp
 	src/ChatPage.cpp
 	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
@@ -304,6 +308,7 @@ set(SRC_FILES
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
 	src/Utils.cpp
+	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
 	src/popups/PopupItem.cpp
 	src/popups/SuggestionsPopup.cpp
@@ -335,7 +340,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        eddd95a896fad0c51fc800741d82bbc43fc6d41e
+		GIT_TAG        744018c86a8094acbda9821d6d7b5a890d4aac47
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -421,6 +426,9 @@ else()
 	find_package(Tweeny REQUIRED)
 endif()
 
+include(FindPkgConfig)
+pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.14 gstreamer-webrtc-1.0>=1.14) 
+
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
 add_subdirectory(third_party/SingleApplication-3.1.3.1/)
@@ -429,6 +437,7 @@ feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAG
 
 qt5_wrap_cpp(MOC_HEADERS
 	# Dialogs
+	src/dialogs/AcceptCall.h
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
@@ -437,6 +446,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
 	src/dialogs/MemberList.h
+	src/dialogs/PlaceCall.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
@@ -480,9 +490,11 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	src/notifications/Manager.h
 
+	src/ActiveCallBar.h
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
 	src/Cache_p.h
+	src/CallManager.h
 	src/ChatPage.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
@@ -502,6 +514,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/TrayIcon.h
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h
+	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/popups/PopupItem.h
 	src/popups/SuggestionsPopup.h
@@ -588,6 +601,11 @@ target_precompile_headers(nheko
 	PRIVATE
 	  <string>
 	)
+endif()
+
+if (TARGET PkgConfig::GSTREAMER)
+	target_link_libraries(nheko PRIVATE PkgConfig::GSTREAMER)
+	target_compile_definitions(nheko PRIVATE GSTREAMER_AVAILABLE)
 endif()
 
 if(MSVC)

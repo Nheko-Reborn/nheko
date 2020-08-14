@@ -404,6 +404,21 @@ Example: https://server.my:8787</translation>
         <source>%1 created and configured room: %2</source>
         <translation>%1 created and configured room: %2</translation>
     </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 placed a %2 call.</source>
+        <translation>%1 placed a %2 call.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 answered the call.</source>
+        <translation>%1 answered the call.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 ended the call.</source>
+        <translation>%1 ended the call.</translation>
+    </message>
 </context>
 <context>
     <name>Placeholder</name>
@@ -1795,6 +1810,36 @@ Media size: %2
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 sent an encrypted message</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You placed a call</source>
+        <translation>You placed a call</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 placed a call</source>
+        <translation>%1 placed a call</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You answered a call</source>
+        <translation>You answered a call</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 answered a call</source>
+        <translation>%1 answered a call</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You ended a call</source>
+        <translation>You ended a call</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 ended a call</source>
+        <translation>%1 ended a call</translation>
     </message>
 </context>
 <context>

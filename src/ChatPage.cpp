@@ -22,6 +22,7 @@
 #include <QShortcut>
 #include <QtConcurrent>
 
+#include "ActiveCallBar.h"
 #include "AvatarProvider.h"
 #include "Cache.h"
 #include "Cache_p.h"
@@ -40,11 +41,13 @@
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "ui/OverlayModal.h"
 #include "ui/Theme.h"
 
 #include "notifications/Manager.h"
 
+#include "dialogs/PlaceCall.h"
 #include "dialogs/ReadReceipts.h"
 #include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
@@ -68,6 +71,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , isConnected_(true)
   , userSettings_{userSettings}
   , notificationsManager(this)
+  , callManager_(userSettings)
 {
         setObjectName("chatPage");
 
@@ -123,10 +127,16 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->setMargin(0);
 
         top_bar_      = new TopRoomBar(this);
-        view_manager_ = new TimelineViewManager(userSettings_, this);
+        view_manager_ = new TimelineViewManager(userSettings_, &callManager_, this);
 
         contentLayout_->addWidget(top_bar_);
         contentLayout_->addWidget(view_manager_->getWidget());
+
+        activeCallBar_ = new ActiveCallBar(this);
+        contentLayout_->addWidget(activeCallBar_);
+        activeCallBar_->hide();
+        connect(
+          &callManager_, &CallManager::newCallParty, activeCallBar_, &ActiveCallBar::setCallParty);
 
         // Splitter
         splitter->addWidget(sideBar_);
@@ -446,6 +456,35 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   roomid, filename, encryptedFile, url, mime, dsize);
                 });
 
+        connect(text_input_, &TextInputWidget::callButtonPress, this, [this]() {
+                if (callManager_.onActiveCall()) {
+                        callManager_.hangUp();
+                } else {
+                        if (auto roomInfo = cache::singleRoomInfo(current_room_.toStdString());
+                            roomInfo.member_count != 2) {
+                                showNotification("Voice calls are limited to 1:1 rooms.");
+                        } else {
+                                std::vector<RoomMember> members(
+                                  cache::getMembers(current_room_.toStdString()));
+                                const RoomMember &callee =
+                                  members.front().user_id == utils::localUser() ? members.back()
+                                                                                : members.front();
+                                auto dialog = new dialogs::PlaceCall(
+                                  callee.user_id,
+                                  callee.display_name,
+                                  QString::fromStdString(roomInfo.name),
+                                  QString::fromStdString(roomInfo.avatar_url),
+                                  userSettings_,
+                                  MainWindow::instance());
+                                connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
+                                        callManager_.sendInvite(current_room_);
+                                });
+                                utils::centerWidget(dialog, MainWindow::instance());
+                                dialog->show();
+                        }
+                }
+        });
+
         connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
 
         connect(
@@ -577,6 +616,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
 
+        connectCallMessage<mtx::events::msg::CallInvite>();
+        connectCallMessage<mtx::events::msg::CallCandidates>();
+        connectCallMessage<mtx::events::msg::CallAnswer>();
+        connectCallMessage<mtx::events::msg::CallHangUp>();
+
         instance_ = this;
 }
 
@@ -678,6 +722,8 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
                 const bool isInitialized = cache::isInitialized();
                 const auto cacheVersion  = cache::formatVersion();
+
+                callManager_.refreshTurnServer();
 
                 if (!isInitialized) {
                         cache::setCurrentFormat();
@@ -1469,4 +1515,14 @@ ChatPage::initiateLogout()
         });
 
         emit showOverlayProgressBar();
+}
+
+template<typename T>
+void
+ChatPage::connectCallMessage()
+{
+        connect(&callManager_,
+                qOverload<const QString &, const T &>(&CallManager::newMessage),
+                view_manager_,
+                qOverload<const QString &, const T &>(&TimelineViewManager::queueCallMessage));
 }

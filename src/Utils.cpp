@@ -35,14 +35,13 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
         const auto username = cache::displayName(room_id, sender);
         const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
-        return DescInfo{
-          QString::fromStdString(msg.event_id),
-          sender,
-          utils::messageDescription<T>(
-            username, QString::fromStdString(msg.content.body).trimmed(), sender == localUser),
-          utils::descriptiveTime(ts),
-          msg.origin_server_ts,
-          ts};
+        return DescInfo{QString::fromStdString(msg.event_id),
+                        sender,
+                        utils::messageDescription<T>(
+                          username, utils::event_body(event).trimmed(), sender == localUser),
+                        utils::descriptiveTime(ts),
+                        msg.origin_server_ts,
+                        ts};
 }
 
 QString
@@ -156,14 +155,17 @@ utils::getMessageDescription(const TimelineEvent &event,
                              const QString &localUser,
                              const QString &room_id)
 {
-        using Audio     = mtx::events::RoomEvent<mtx::events::msg::Audio>;
-        using Emote     = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-        using File      = mtx::events::RoomEvent<mtx::events::msg::File>;
-        using Image     = mtx::events::RoomEvent<mtx::events::msg::Image>;
-        using Notice    = mtx::events::RoomEvent<mtx::events::msg::Notice>;
-        using Text      = mtx::events::RoomEvent<mtx::events::msg::Text>;
-        using Video     = mtx::events::RoomEvent<mtx::events::msg::Video>;
-        using Encrypted = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
+        using Audio      = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+        using Emote      = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+        using File       = mtx::events::RoomEvent<mtx::events::msg::File>;
+        using Image      = mtx::events::RoomEvent<mtx::events::msg::Image>;
+        using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+        using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
+        using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
+        using CallInvite = mtx::events::RoomEvent<mtx::events::msg::CallInvite>;
+        using CallAnswer = mtx::events::RoomEvent<mtx::events::msg::CallAnswer>;
+        using CallHangUp = mtx::events::RoomEvent<mtx::events::msg::CallHangUp>;
+        using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
         if (std::holds_alternative<Audio>(event)) {
                 return createDescriptionInfo<Audio>(event, localUser, room_id);
@@ -179,6 +181,12 @@ utils::getMessageDescription(const TimelineEvent &event,
                 return createDescriptionInfo<Text>(event, localUser, room_id);
         } else if (std::holds_alternative<Video>(event)) {
                 return createDescriptionInfo<Video>(event, localUser, room_id);
+        } else if (std::holds_alternative<CallInvite>(event)) {
+                return createDescriptionInfo<CallInvite>(event, localUser, room_id);
+        } else if (std::holds_alternative<CallAnswer>(event)) {
+                return createDescriptionInfo<CallAnswer>(event, localUser, room_id);
+        } else if (std::holds_alternative<CallHangUp>(event)) {
+                return createDescriptionInfo<CallHangUp>(event, localUser, room_id);
         } else if (std::holds_alternative<mtx::events::Sticker>(event)) {
                 return createDescriptionInfo<mtx::events::Sticker>(event, localUser, room_id);
         } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {

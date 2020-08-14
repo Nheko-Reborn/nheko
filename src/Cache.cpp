@@ -1364,6 +1364,9 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 
                 if (!(obj["event"]["type"] == "m.room.message" ||
                       obj["event"]["type"] == "m.sticker" ||
+                      obj["event"]["type"] == "m.call.invite" ||
+                      obj["event"]["type"] == "m.call.answer" ||
+                      obj["event"]["type"] == "m.call.hangup" ||
                       obj["event"]["type"] == "m.room.encrypted"))
                         continue;
 
