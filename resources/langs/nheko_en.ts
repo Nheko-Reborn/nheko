@@ -198,7 +198,7 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
         <location line="+139"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Search</translation>
     </message>
     <message>
         <location line="-42"/>
