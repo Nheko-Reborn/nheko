@@ -633,7 +633,7 @@ TextInputWidget::showUploadSpinner()
         topLayout_->removeWidget(sendFileBtn_);
         sendFileBtn_->hide();
 
-        topLayout_->insertWidget(0, spinner_);
+        topLayout_->insertWidget(1, spinner_);
         spinner_->start();
 }
 
@@ -641,7 +641,7 @@ void
 TextInputWidget::hideUploadSpinner()
 {
         topLayout_->removeWidget(spinner_);
-        topLayout_->insertWidget(0, sendFileBtn_);
+        topLayout_->insertWidget(1, sendFileBtn_);
         sendFileBtn_->show();
         spinner_->stop();
 }
