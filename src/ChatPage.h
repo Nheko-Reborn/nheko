@@ -35,11 +35,13 @@
 #include <QWidget>
 
 #include "CacheStructs.h"
+#include "CallManager.h"
 #include "CommunitiesList.h"
 #include "Utils.h"
 #include "notifications/Manager.h"
 #include "popups/UserMentions.h"
 
+class ActiveCallBar;
 class OverlayModal;
 class QuickSwitcher;
 class RoomList;
@@ -50,7 +52,6 @@ class TimelineViewManager;
 class TopRoomBar;
 class UserInfoWidget;
 class UserSettings;
-class NotificationsManager;
 
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
@@ -218,6 +219,9 @@ private:
 
         void showNotificationsDialog(const QPoint &point);
 
+        template<typename T>
+        void connectCallMessage();
+
         QHBoxLayout *topLayout_;
         Splitter *splitter;
 
@@ -237,6 +241,7 @@ private:
 
         TopRoomBar *top_bar_;
         TextInputWidget *text_input_;
+        ActiveCallBar *activeCallBar_;
 
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;
@@ -254,6 +259,7 @@ private:
         QSharedPointer<UserSettings> userSettings_;
 
         NotificationsManager notificationsManager;
+        CallManager callManager_;
 };
 
 template<class Collection>

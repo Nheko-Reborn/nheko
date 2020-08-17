@@ -97,6 +97,24 @@ Item {
 			}
 		}
 		DelegateChoice {
+			roleValue: MtxEvent.CallInvite
+			NoticeMessage {
+				text: qsTr("%1 placed a %2 call.").arg(model.data.userName).arg(model.data.callType)
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.CallAnswer
+			NoticeMessage {
+				text: qsTr("%1 answered the call.").arg(model.data.userName)
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.CallHangUp
+			NoticeMessage {
+				text: qsTr("%1 ended the call.").arg(model.data.userName)
+			}
+		}
+		DelegateChoice {
 			// TODO: make a more complex formatter for the power levels.
 			roleValue: MtxEvent.PowerLevels
 			NoticeMessage {

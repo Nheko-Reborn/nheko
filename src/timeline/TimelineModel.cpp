@@ -121,6 +121,21 @@ struct RoomEventType
         {
                 return qml_mtx_events::EventType::Redacted;
         }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::CallInvite> &)
+        {
+                return qml_mtx_events::EventType::CallInvite;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::CallAnswer> &)
+        {
+                return qml_mtx_events::EventType::CallAnswer;
+        }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::CallHangUp> &)
+        {
+                return qml_mtx_events::EventType::CallHangUp;
+        }
         // ::EventType::Type operator()(const Event<mtx::events::msg::Location> &e) { return
         // ::EventType::LocationMessage; }
 };
@@ -224,6 +239,7 @@ TimelineModel::roleNames() const
           {RoomId, "roomId"},
           {RoomName, "roomName"},
           {RoomTopic, "roomTopic"},
+          {CallType, "callType"},
           {Dump, "dump"},
         };
 }
@@ -375,6 +391,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return QVariant(QString::fromStdString(room_name(event)));
         case RoomTopic:
                 return QVariant(QString::fromStdString(room_topic(event)));
+        case CallType:
+                return QVariant(QString::fromStdString(call_type(event)));
         case Dump: {
                 QVariantMap m;
                 auto names = roleNames();
@@ -405,6 +423,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[ReplyTo], data(event, static_cast<int>(ReplyTo)));
                 m.insert(names[RoomName], data(event, static_cast<int>(RoomName)));
                 m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
+                m.insert(names[CallType], data(event, static_cast<int>(CallType)));
 
                 return QVariant(m);
         }
@@ -501,8 +520,32 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 
         events.handleSync(timeline);
 
-        if (!timeline.events.empty())
-                updateLastMessage();
+        using namespace mtx::events;
+        for (auto e : timeline.events) {
+                if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
+                        MegolmSessionIndex index;
+                        index.room_id    = room_id_.toStdString();
+                        index.session_id = encryptedEvent->content.session_id;
+                        index.sender_key = encryptedEvent->content.sender_key;
+
+                        auto result = olm::decryptEvent(index, *encryptedEvent);
+                        if (result.event)
+                                e = result.event.value();
+                }
+
+                if (std::holds_alternative<RoomEvent<msg::CallCandidates>>(e) ||
+                    std::holds_alternative<RoomEvent<msg::CallInvite>>(e) ||
+                    std::holds_alternative<RoomEvent<msg::CallAnswer>>(e) ||
+                    std::holds_alternative<RoomEvent<msg::CallHangUp>>(e))
+                        std::visit(
+                          [this](auto &event) {
+                                  event.room_id = room_id_.toStdString();
+                                  if (event.sender != http::client()->user_id().to_string())
+                                          emit newCallEvent(event);
+                          },
+                          e);
+        }
+        updateLastMessage();
 }
 
 template<typename T>
@@ -523,6 +566,23 @@ isMessage(const mtx::events::Event<T> &)
 template<typename T>
 auto
 isMessage(const mtx::events::EncryptedEvent<T> &)
+{
+        return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &)
+{
+        return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &)
+{
+        return true;
+}
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &)
 {
         return true;
 }
@@ -758,14 +818,17 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
 }
 
 void
-TimelineModel::sendEncryptedMessage(const std::string txn_id, nlohmann::json content)
+TimelineModel::sendEncryptedMessageEvent(const std::string &txn_id,
+                                         nlohmann::json content,
+                                         mtx::events::EventType eventType)
 {
         const auto room_id = room_id_.toStdString();
 
         using namespace mtx::events;
         using namespace mtx::identifiers;
 
-        json doc = {{"type", "m.room.message"}, {"content", content}, {"room_id", room_id}};
+        json doc = {
+          {"type", mtx::events::to_string(eventType)}, {"content", content}, {"room_id", room_id}};
 
         try {
                 // Check if we have already an outbound megolm session then we can use.
@@ -1043,25 +1106,34 @@ struct SendMessageVisitor
           : model_(model)
         {}
 
-        // Do-nothing operator for all unhandled events
-        template<typename T>
-        void operator()(const mtx::events::Event<T> &)
-        {}
-        // Operator for m.room.message events that contain a msgtype in their content
-        template<typename T,
-                 std::enable_if_t<std::is_same<decltype(T::msgtype), std::string>::value, int> = 0>
-        void operator()(const mtx::events::RoomEvent<T> &msg)
-
+        template<typename T, mtx::events::EventType Event>
+        void sendRoomEvent(mtx::events::RoomEvent<T> msg)
         {
                 if (cache::isRoomEncrypted(model_->room_id_.toStdString())) {
                         auto encInfo = mtx::accessors::file(msg);
                         if (encInfo)
                                 emit model_->newEncryptedImage(encInfo.value());
 
-                        model_->sendEncryptedMessage(msg.event_id, nlohmann::json(msg.content));
+                        model_->sendEncryptedMessageEvent(
+                          msg.event_id, nlohmann::json(msg.content), Event);
                 } else {
+                        msg.type = Event;
                         emit model_->addPendingMessageToStore(msg);
                 }
+        }
+
+
+        // Do-nothing operator for all unhandled events
+        template<typename T>
+        void operator()(const mtx::events::Event<T> &)
+        {}
+
+        // Operator for m.room.message events that contain a msgtype in their content
+        template<typename T,
+                 std::enable_if_t<std::is_same<decltype(T::msgtype), std::string>::value, int> = 0>
+        void operator()(mtx::events::RoomEvent<T> msg)
+        {
+                sendRoomEvent<T, mtx::events::EventType::RoomMessage>(msg);
         }
 
         // Special operator for reactions, which are a type of m.room.message, but need to be
@@ -1073,6 +1145,30 @@ struct SendMessageVisitor
         {
                 msg.type = mtx::events::EventType::Reaction;
                 emit model_->addPendingMessageToStore(msg);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallInvite, mtx::events::EventType::CallInvite>(
+                  event);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallCandidates> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallCandidates,
+                              mtx::events::EventType::CallCandidates>(event);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallAnswer, mtx::events::EventType::CallAnswer>(
+                  event);
+        }
+
+        void operator()(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &event)
+        {
+                sendRoomEvent<mtx::events::msg::CallHangUp, mtx::events::EventType::CallHangUp>(
+                  event);
         }
 
         TimelineModel *model_;

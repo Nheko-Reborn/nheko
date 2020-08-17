@@ -1586,7 +1586,8 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                 }
 
                 if (!(obj["type"] == "m.room.message" || obj["type"] == "m.sticker" ||
-                      obj["type"] == "m.room.encrypted"))
+                      obj["type"] == "m.call.invite" || obj["type"] == "m.call.answer" ||
+                      obj["type"] == "m.call.hangup" || obj["type"] == "m.room.encrypted"))
                         continue;
 
                 mtx::events::collections::TimelineEvent te;

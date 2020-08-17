@@ -17,7 +17,7 @@ TextEdit {
 			timelineManager.setHistoryView(match[1])
 			chat.positionViewAtIndex(chat.model.idToIndex(match[2]), ListView.Contain)
 		}
-		else Qt.openUrlExternally(link)
+		else timelineManager.openLink(link)
 	}
 	MouseArea
 	{

@@ -31,6 +31,9 @@ std::string
 room_topic(const mtx::events::collections::TimelineEvents &event);
 
 std::string
+call_type(const mtx::events::collections::TimelineEvents &event);
+
+std::string
 body(const mtx::events::collections::TimelineEvents &event);
 
 std::string
