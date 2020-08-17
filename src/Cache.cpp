@@ -33,6 +33,7 @@
 #include "Cache_p.h"
 #include "EventAccessors.h"
 #include "Logging.h"
+#include "Olm.h"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
@@ -91,6 +92,33 @@ Q_DECLARE_METATYPE(RoomInfo)
 
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
+}
+
+static bool
+isHiddenEvent(mtx::events::collections::TimelineEvents e, const std::string &room_id)
+{
+        using namespace mtx::events;
+        if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
+                MegolmSessionIndex index;
+                index.room_id    = room_id;
+                index.session_id = encryptedEvent->content.session_id;
+                index.sender_key = encryptedEvent->content.sender_key;
+
+                auto result = olm::decryptEvent(index, *encryptedEvent);
+                if (!result.error)
+                        e = result.event.value();
+        }
+
+        static constexpr std::initializer_list<EventType> hiddenEvents = {
+          EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
+
+        return std::visit(
+          [](const auto &ev) {
+                  return std::any_of(hiddenEvents.begin(),
+                                     hiddenEvents.end(),
+                                     [ev](EventType type) { return type == ev.type; });
+          },
+          e);
 }
 
 Cache::Cache(const QString &userId, QObject *parent)
@@ -2406,7 +2434,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
 
                         // TODO(Nico): Allow blacklisting more event types in UI
-                        if (event["type"] != "m.reaction" && event["type"] != "m.dummy") {
+                        if (!isHiddenEvent(e, room_id)) {
                                 ++msgIndex;
                                 lmdb::cursor_put(msgCursor.handle(),
                                                  lmdb::val(&msgIndex, sizeof(msgIndex)),
@@ -2489,7 +2517,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                 lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
 
                 // TODO(Nico): Allow blacklisting more event types in UI
-                if (event["type"] != "m.reaction" && event["type"] != "m.dummy") {
+                if (!isHiddenEvent(e, room_id)) {
                         --msgIndex;
                         lmdb::dbi_put(
                           txn, order2msgDb, lmdb::val(&msgIndex, sizeof(msgIndex)), event_id);

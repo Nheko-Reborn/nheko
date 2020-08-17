@@ -115,6 +115,12 @@ Item {
 			}
 		}
 		DelegateChoice {
+			roleValue: MtxEvent.CallCandidates
+			NoticeMessage {
+				text: qsTr("Negotiating call...")
+			}
+		}
+		DelegateChoice {
 			// TODO: make a more complex formatter for the power levels.
 			roleValue: MtxEvent.PowerLevels
 			NoticeMessage {

@@ -42,6 +42,8 @@ enum EventType
         CallAnswer,
         /// m.call.hangup
         CallHangUp,
+        /// m.call.candidates
+        CallCandidates,
         /// m.room.canonical_alias
         CanonicalAlias,
         /// m.room.create

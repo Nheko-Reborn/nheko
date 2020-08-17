@@ -136,6 +136,11 @@ struct RoomEventType
         {
                 return qml_mtx_events::EventType::CallHangUp;
         }
+        qml_mtx_events::EventType operator()(
+          const mtx::events::Event<mtx::events::msg::CallCandidates> &)
+        {
+                return qml_mtx_events::EventType::CallCandidates;
+        }
         // ::EventType::Type operator()(const Event<mtx::events::msg::Location> &e) { return
         // ::EventType::LocationMessage; }
 };
@@ -1121,7 +1126,6 @@ struct SendMessageVisitor
                         emit model_->addPendingMessageToStore(msg);
                 }
         }
-
 
         // Do-nothing operator for all unhandled events
         template<typename T>
