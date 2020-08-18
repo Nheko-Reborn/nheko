@@ -194,13 +194,12 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
                  TimelineModel *model) {
                   if (!(this->dvList->exist(QString::fromStdString(message.event_id)))) {
-                          auto flow =
-                            new DeviceVerificationFlow(this, DeviceVerificationFlow::Type::RoomMsg);
+                          auto flow = new DeviceVerificationFlow(
+                            this, DeviceVerificationFlow::Type::RoomMsg, model);
                           if (std::find(message.content.methods.begin(),
                                         message.content.methods.end(),
                                         mtx::events::msg::VerificationMethods::SASv1) !=
                               message.content.methods.end()) {
-                                  flow->setModel(model);
                                   flow->setEventId(message.event_id);
                                   emit newDeviceVerificationRequest(
                                     std::move(flow),
@@ -241,42 +240,48 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           &ChatPage::recievedDeviceVerificationStart,
           this,
           [this](const mtx::events::msg::KeyVerificationStart &msg, std::string sender) {
-                  if (!(this->dvList->exist(QString::fromStdString(msg.transaction_id.value())))) {
-                          auto flow            = new DeviceVerificationFlow(this);
-                          flow->canonical_json = nlohmann::json(msg);
-                          if ((std::find(msg.key_agreement_protocols.begin(),
-                                         msg.key_agreement_protocols.end(),
-                                         "curve25519-hkdf-sha256") !=
-                               msg.key_agreement_protocols.end()) &&
-                              (std::find(msg.hashes.begin(), msg.hashes.end(), "sha256") !=
-                               msg.hashes.end()) &&
-                              (std::find(msg.message_authentication_codes.begin(),
-                                         msg.message_authentication_codes.end(),
-                                         "hmac-sha256") !=
-                               msg.message_authentication_codes.end())) {
-                                  if (std::find(msg.short_authentication_string.begin(),
-                                                msg.short_authentication_string.end(),
-                                                mtx::events::msg::SASMethods::Emoji) !=
-                                      msg.short_authentication_string.end()) {
-                                          flow->setMethod(DeviceVerificationFlow::Method::Emoji);
-                                  } else if (std::find(msg.short_authentication_string.begin(),
+                  if (msg.transaction_id.has_value()) {
+                          if (!(this->dvList->exist(
+                                QString::fromStdString(msg.transaction_id.value())))) {
+                                  auto flow            = new DeviceVerificationFlow(this);
+                                  flow->canonical_json = nlohmann::json(msg);
+                                  if ((std::find(msg.key_agreement_protocols.begin(),
+                                                 msg.key_agreement_protocols.end(),
+                                                 "curve25519-hkdf-sha256") !=
+                                       msg.key_agreement_protocols.end()) &&
+                                      (std::find(msg.hashes.begin(), msg.hashes.end(), "sha256") !=
+                                       msg.hashes.end()) &&
+                                      (std::find(msg.message_authentication_codes.begin(),
+                                                 msg.message_authentication_codes.end(),
+                                                 "hmac-sha256") !=
+                                       msg.message_authentication_codes.end())) {
+                                          if (std::find(msg.short_authentication_string.begin(),
+                                                        msg.short_authentication_string.end(),
+                                                        mtx::events::msg::SASMethods::Emoji) !=
+                                              msg.short_authentication_string.end()) {
+                                                  flow->setMethod(
+                                                    DeviceVerificationFlow::Method::Emoji);
+                                          } else if (std::find(
+                                                       msg.short_authentication_string.begin(),
                                                        msg.short_authentication_string.end(),
                                                        mtx::events::msg::SASMethods::Decimal) !=
-                                             msg.short_authentication_string.end()) {
-                                          flow->setMethod(DeviceVerificationFlow::Method::Decimal);
+                                                     msg.short_authentication_string.end()) {
+                                                  flow->setMethod(
+                                                    DeviceVerificationFlow::Method::Decimal);
+                                          } else {
+                                                  flow->cancelVerification(
+                                                    DeviceVerificationFlow::Error::UnknownMethod);
+                                                  return;
+                                          }
+                                          emit newDeviceVerificationRequest(
+                                            std::move(flow),
+                                            QString::fromStdString(msg.transaction_id.value()),
+                                            QString::fromStdString(sender),
+                                            QString::fromStdString(msg.from_device));
                                   } else {
                                           flow->cancelVerification(
                                             DeviceVerificationFlow::Error::UnknownMethod);
-                                          return;
                                   }
-                                  emit newDeviceVerificationRequest(
-                                    std::move(flow),
-                                    QString::fromStdString(msg.transaction_id.value()),
-                                    QString::fromStdString(sender),
-                                    QString::fromStdString(msg.from_device));
-                          } else {
-                                  flow->cancelVerification(
-                                    DeviceVerificationFlow::Error::UnknownMethod);
                           }
                   }
           });

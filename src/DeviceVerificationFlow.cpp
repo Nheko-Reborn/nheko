@@ -8,24 +8,31 @@
 #include <QDateTime>
 #include <QTimer>
 
-#include <iostream>
-
 static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
 namespace msgs = mtx::events::msg;
 
-DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow::Type flow_type)
+DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
+                                               DeviceVerificationFlow::Type flow_type,
+                                               TimelineModel *model)
   : type(flow_type)
+  , model_(model)
 {
         timeout = new QTimer(this);
         timeout->setSingleShot(true);
         this->sas           = olm::client()->sas_init();
         this->isMacVerified = false;
 
-        connect(this->model_,
-                &TimelineModel::updateFlowEventId,
-                this,
-                [this](std::string event_id) { this->relation.in_reply_to.event_id = event_id; });
+        if (model) {
+                connect(this->model_,
+                        &TimelineModel::updateFlowEventId,
+                        this,
+                        [this](std::string event_id) {
+                                this->relation.rel_type = mtx::common::RelationType::Reference;
+                                this->relation.event_id = event_id;
+                                this->transaction_id    = event_id;
+                        });
+        }
 
         connect(timeout, &QTimer::timeout, this, [this]() {
                 emit timedout();
@@ -42,8 +49,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                           if (msg.transaction_id.value() != this->transaction_id)
                                   return;
                   } else if (msg.relates_to.has_value()) {
-                          if (msg.relates_to.value().in_reply_to.event_id !=
-                              this->relation.in_reply_to.event_id)
+                          if (msg.relates_to.value().event_id != this->relation.event_id)
                                   return;
                   }
                   if ((std::find(msg.key_agreement_protocols.begin(),
@@ -69,8 +75,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                                     DeviceVerificationFlow::Error::UnknownMethod);
                                   return;
                           }
-                          this->acceptVerificationRequest();
                           this->canonical_json = nlohmann::json(msg);
+                          this->acceptVerificationRequest();
                   } else {
                           this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
                   }
@@ -84,8 +90,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
                         } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().in_reply_to.event_id !=
-                                    this->relation.in_reply_to.event_id)
+                                if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
                         if ((msg.key_agreement_protocol == "curve25519-hkdf-sha256") &&
@@ -116,8 +121,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
                         } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().in_reply_to.event_id !=
-                                    this->relation.in_reply_to.event_id)
+                                if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
                         emit verificationCanceled();
@@ -131,8 +135,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
                         } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().in_reply_to.event_id !=
-                                    this->relation.in_reply_to.event_id)
+                                if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
                         this->sas->set_their_key(msg.key);
@@ -157,6 +160,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                         } else if (this->method == DeviceVerificationFlow::Method::Decimal) {
                                 this->sasList = this->sas->generate_bytes_decimal(info);
                         }
+
                         if (this->sender == false) {
                                 emit this->verificationRequestAccepted(this->method);
                                 this->sendVerificationKey();
@@ -181,8 +185,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                           if (msg.transaction_id.value() != this->transaction_id)
                                   return;
                   } else if (msg.relates_to.has_value()) {
-                          if (msg.relates_to.value().in_reply_to.event_id !=
-                              this->relation.in_reply_to.event_id)
+                          if (msg.relates_to.value().event_id != this->relation.event_id)
                                   return;
                   }
                   std::string info = "MATRIX_KEY_VERIFICATION_MAC" + this->toClient.to_string() +
@@ -227,12 +230,11 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
                         } else if (msg.relates_to.has_value()) {
-                                // this is just a workaround
-                                this->relation.in_reply_to.event_id =
-                                  msg.relates_to.value().in_reply_to.event_id;
-                                if (msg.relates_to.value().in_reply_to.event_id !=
-                                    this->relation.in_reply_to.event_id)
+                                if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
+                                else {
+                                        this->deviceId = QString::fromStdString(msg.from_device);
+                                }
                         }
                         this->startVerificationRequest();
                 });
@@ -245,8 +247,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *, DeviceVerificationFlow
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
                         } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().in_reply_to.event_id !=
-                                    this->relation.in_reply_to.event_id)
+                                if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
                         this->acceptDevice();
@@ -298,12 +299,6 @@ DeviceVerificationFlow::getSasList()
 }
 
 void
-DeviceVerificationFlow::setModel(TimelineModel *&model)
-{
-        this->model_ = model;
-}
-
-void
 DeviceVerificationFlow::setTransactionId(QString transaction_id_)
 {
         this->transaction_id = transaction_id_.toStdString();
@@ -351,15 +346,17 @@ DeviceVerificationFlow::setType(Type type)
 void
 DeviceVerificationFlow::setSender(bool sender_)
 {
-        this->sender         = sender_;
-        this->transaction_id = http::client()->generate_txn_id();
+        this->sender = sender_;
+        if (this->sender)
+                this->transaction_id = http::client()->generate_txn_id();
 }
 
 void
 DeviceVerificationFlow::setEventId(std::string event_id)
 {
-        this->relation.in_reply_to.event_id = event_id;
-        this->transaction_id                = event_id;
+        this->relation.rel_type = mtx::common::RelationType::Reference;
+        this->relation.event_id = event_id;
+        this->transaction_id    = event_id;
 }
 
 //! accepts a verification
@@ -476,7 +473,8 @@ DeviceVerificationFlow::startVerificationRequest()
                                                      static_cast<int>(err->status_code));
                   });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to = this->relation;
+                req.relates_to       = this->relation;
+                this->canonical_json = nlohmann::json(req);
                 (model_)->sendMessage(req);
         }
 }
@@ -562,6 +560,7 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
                 (model_)->sendMessage(req);
+                this->deleteLater();
         }
 
         // TODO : Handle Blocking user better

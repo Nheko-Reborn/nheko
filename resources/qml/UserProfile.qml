@@ -14,7 +14,7 @@ ApplicationWindow{
 	height: 650
 	width: 420
 	modality: Qt.WindowModal
-	Layout.alignment: Qt.AlignHCenter
+	Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 	palette: colors
 
 	Connections{

@@ -211,8 +211,9 @@ UserProfile::createFlow(bool isVerifyUser)
                                           << std::endl;
                                         if (this->roomid_.toStdString() == room_id) {
                                                 auto newflow = new DeviceVerificationFlow(
-                                                  this, DeviceVerificationFlow::Type::RoomMsg);
-                                                newflow->setModel(this->model);
+                                                  this,
+                                                  DeviceVerificationFlow::Type::RoomMsg,
+                                                  this->model);
                                                 return (std::move(newflow));
                                         } else {
                                                 std::cout << "FOUND A ENCRYPTED ROOM BUT CURRENTLY "

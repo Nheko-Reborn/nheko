@@ -100,6 +100,7 @@ signals:
         void messageFailed(std::string txn_id);
         void startDMVerification(
           mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg);
+        void updateFlowEventId(std::string event_id);
 
 public slots:
         void addPending(mtx::events::collections::TimelineEvents event);

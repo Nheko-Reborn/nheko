@@ -22,8 +22,6 @@
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
 
-#include <iostream>
-
 Q_DECLARE_METATYPE(QModelIndex)
 
 namespace std {
@@ -237,6 +235,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 [this](mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> msg) {
                         ChatPage::instance()->recievedRoomDeviceVerificationRequest(msg, this);
                 });
+        connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
+                this->updateFlowEventId(event_id);
+        });
 }
 
 QHash<int, QByteArray>
@@ -814,7 +815,6 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg)
 
         json doc = {
           {"type", to_string(msg.type)}, {"content", json(msg.content)}, {"room_id", room_id}};
-        std::cout << doc.dump(2) << std::endl;
 
         try {
                 // Check if we have already an outbound megolm session then we can use.
@@ -1095,7 +1095,6 @@ struct SendMessageVisitor
 
         void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg)
         {
-                emit model_->updateFlowEventId(msg.event_id);
                 model_->sendEncryptedMessage(msg);
         }
         void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady> &msg)

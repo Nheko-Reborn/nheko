@@ -52,7 +52,8 @@ public:
 
         DeviceVerificationFlow(
           QObject *parent              = nullptr,
-          DeviceVerificationFlow::Type = DeviceVerificationFlow::Type::ToDevice);
+          DeviceVerificationFlow::Type = DeviceVerificationFlow::Type::ToDevice,
+          TimelineModel *model         = nullptr);
         // getters
         QString getTransactionId();
         QString getUserId();
@@ -62,7 +63,6 @@ public:
         std::vector<int> getSasList();
         bool getSender();
         // setters
-        void setModel(TimelineModel *&model);
         void setTransactionId(QString transaction_id_);
         void setUserId(QString userID);
         void setDeviceId(QString deviceID);
@@ -127,5 +127,5 @@ private:
         std::optional<std::string> room_id;
         std::optional<std::string> event_id;
         TimelineModel *model_;
-        mtx::common::ReplyRelatesTo relation;
+        mtx::common::ReactionRelatesTo relation;
 };

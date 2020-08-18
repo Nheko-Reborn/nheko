@@ -95,8 +95,8 @@ EventStore::EventStore(std::string room_id, QObject *)
                                     room_id_,
                                     txn_id,
                                     e.content,
-                                    [this, txn_id](const mtx::responses::EventId &event_id,
-                                                   mtx::http::RequestErr err) {
+                                    [this, txn_id, e](const mtx::responses::EventId &event_id,
+                                                      mtx::http::RequestErr err) {
                                             if (err) {
                                                     const int status_code =
                                                       static_cast<int>(err->status_code);
@@ -108,7 +108,21 @@ EventStore::EventStore(std::string room_id, QObject *)
                                                     emit messageFailed(txn_id);
                                                     return;
                                             }
+
                                             emit messageSent(txn_id, event_id.event_id.to_string());
+                                            if constexpr (mtx::events::message_content_to_type<
+                                                            decltype(e.content)> ==
+                                                          mtx::events::EventType::RoomEncrypted) {
+                                                    auto event =
+                                                      decryptEvent({room_id_, e.event_id}, e);
+                                                    if (auto dec =
+                                                          std::get_if<mtx::events::RoomEvent<
+                                                            mtx::events::msg::
+                                                              KeyVerificationRequest>>(event)) {
+                                                            emit updateFlowEventId(
+                                                              event_id.event_id.to_string());
+                                                    }
+                                            }
                                     });
                   },
                   event->data);
@@ -318,12 +332,12 @@ EventStore::reactions(const std::string &event_id)
 
                 if (auto reaction = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
                       related_event)) {
-                        auto &agg = aggregation[reaction->content.relates_to.key];
+                        auto &agg = aggregation[reaction->content.relates_to.key.value()];
 
                         if (agg.count == 0) {
                                 Reaction temp{};
                                 temp.key_ =
-                                  QString::fromStdString(reaction->content.relates_to.key);
+                                  QString::fromStdString(reaction->content.relates_to.key.value());
                                 reactions.push_back(temp);
                         }
 
