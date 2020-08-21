@@ -32,6 +32,8 @@ Item {
 		source: model.data.url.replace("mxc://", "image://MxcImage/")
 		asynchronous: true
 		fillMode: Image.PreserveAspectFit
+		smooth: true
+		mipmap: true
 
 		MouseArea {
 			enabled: model.data.type == MtxEvent.ImageMessage && img.status == Image.Ready
