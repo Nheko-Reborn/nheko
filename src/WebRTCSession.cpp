@@ -223,18 +223,19 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
 {
         nhlog::ui()->debug("WebRTC: local candidate: (m-line:{}):{}", mlineIndex, candidate);
 
+#if GST_CHECK_VERSION(1, 17, 0)
+        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
+        return;
+#else
         if (WebRTCSession::instance().state() >= WebRTCSession::State::OFFERSENT) {
                 emit WebRTCSession::instance().newICECandidate(
                   {"audio", (uint16_t)mlineIndex, candidate});
                 return;
         }
 
-        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
-
         // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers
         // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.17.
         // Use a 100ms timeout in the meantime
-#if !GST_CHECK_VERSION(1, 17, 0)
         static guint timerid = 0;
         if (timerid)
                 g_source_remove(timerid);
@@ -446,6 +447,7 @@ WebRTCSession::startPipeline(int opusPayloadType)
                 nhlog::ui()->info("WebRTC: setting STUN server: {}", stunServer_);
                 g_object_set(webrtc_, "stun-server", stunServer_.c_str(), nullptr);
         }
+
 
         for (const auto &uri : turnServers_) {
                 nhlog::ui()->info("WebRTC: setting TURN server: {}", uri);
