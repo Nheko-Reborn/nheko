@@ -52,6 +52,8 @@
 
 #include "blurhash.hpp"
 
+#include <iostream> // only for debugging
+
 // TODO: Needs to be updated with an actual secret.
 static const std::string STORAGE_SECRET_KEY("secret");
 
@@ -1445,4 +1447,37 @@ ChatPage::initiateLogout()
         });
 
         emit showOverlayProgressBar();
+}
+
+void
+ChatPage::query_keys(
+  const mtx::requests::QueryKeys &req,
+  std::function<void(const mtx::responses::QueryKeys &, mtx::http::RequestErr)> cb)
+{
+        std::string user_id = req.device_keys.begin()->first;
+        auto cache_         = cache::getUserCache(user_id);
+
+        if (cache_.has_value()) {
+                if (cache_.value().isUpdated) {
+                        cb(cache_.value().keys, {});
+                } else {
+                        http::client()->query_keys(
+                          req,
+                          [cb, user_id](const mtx::responses::QueryKeys &res,
+                                        mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn("failed to query device keys: {},{}",
+                                                             err->matrix_error.errcode,
+                                                             static_cast<int>(err->status_code));
+                                          return;
+                                  }
+                                  std::cout << "Over here " << user_id << std::endl;
+                                  cache::setUserCache(std::move(user_id),
+                                                      std::move(UserCache{res, true}));
+                                  cb(res, err);
+                          });
+                }
+        } else {
+                http::client()->query_keys(req, cb);
+        }
 }

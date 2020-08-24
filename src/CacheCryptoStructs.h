@@ -71,9 +71,12 @@ struct UserCache
 {
         //! map of public key key_ids and their public_key
         mtx::responses::QueryKeys keys;
+        //! if the current cache is updated or not
+        bool isUpdated = false;
 
-        UserCache(mtx::responses::QueryKeys res)
+        UserCache(mtx::responses::QueryKeys res, bool isUpdated_ = false)
           : keys(res)
+          , isUpdated(isUpdated_)
         {}
         UserCache() {}
 };

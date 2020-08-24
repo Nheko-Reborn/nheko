@@ -89,6 +89,9 @@ public:
         //! Show the room/group list (if it was visible).
         void showSideBars();
         void initiateLogout();
+        void query_keys(
+          const mtx::requests::QueryKeys &req,
+          std::function<void(const mtx::responses::QueryKeys &, mtx::http::RequestErr)> cb);
         void focusMessageInput();
 
         QString status() const;

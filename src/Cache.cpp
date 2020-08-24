@@ -111,6 +111,24 @@ Cache::Cache(const QString &userId, QObject *parent)
   , localUserId_{userId}
 {
         setup();
+        connect(this,
+                &Cache::updateUserCacheFlag,
+                this,
+                [this](const std::string &user_id) {
+                        std::optional<UserCache> cache_ = getUserCache(user_id);
+                        if (cache_.has_value()) {
+                                cache_.value().isUpdated = false;
+                                setUserCache(user_id, cache_.value());
+                        } else {
+                                setUserCache(user_id, UserCache{});
+                        }
+                },
+                Qt::QueuedConnection);
+        connect(this,
+                &Cache::deleteLeftUsers,
+                this,
+                [this](const std::string &user_id) { deleteUserCache(user_id); },
+                Qt::QueuedConnection);
 }
 
 void
@@ -1011,7 +1029,7 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         savePresence(txn, res.presence);
 
-        // updateUserCache(res.device_lists);
+        updateUserCache(res.device_lists);
 
         removeLeftRooms(txn, res.rooms.leave);
 
@@ -2889,13 +2907,15 @@ Cache::statusMessage(const std::string &user_id)
 void
 to_json(json &j, const UserCache &info)
 {
-        j["keys"] = info.keys;
+        j["keys"]      = info.keys;
+        j["isUpdated"] = info.isUpdated;
 }
 
 void
 from_json(const json &j, UserCache &info)
 {
-        info.keys = j.at("keys").get<mtx::responses::QueryKeys>();
+        info.keys      = j.at("keys").get<mtx::responses::QueryKeys>();
+        info.isUpdated = j.at("isUpdated").get<bool>();
 }
 
 std::optional<UserCache>
@@ -2935,26 +2955,12 @@ Cache::setUserCache(const std::string &user_id, const UserCache &body)
 void
 Cache::updateUserCache(const mtx::responses::DeviceLists body)
 {
-        for (auto user_id : body.changed) {
-                mtx::requests::QueryKeys req;
-                req.device_keys[user_id] = {};
-
-                http::client()->query_keys(
-                  req,
-                  [user_id, this](const mtx::responses::QueryKeys res, mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn("failed to query device keys: {},{}",
-                                                     err->matrix_error.errcode,
-                                                     static_cast<int>(err->status_code));
-                                  return;
-                          }
-
-                          setUserCache(user_id, UserCache{std::move(res)});
-                  });
+        for (std::string user_id : body.changed) {
+                emit updateUserCacheFlag(user_id);
         }
 
         for (std::string user_id : body.left) {
-                deleteUserCache(user_id);
+                emit deleteLeftUsers(user_id);
         }
 }
 
