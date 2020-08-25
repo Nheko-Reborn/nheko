@@ -122,6 +122,7 @@ Avatar::paintEvent(QPaintEvent *)
 
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
         QRectF r     = rect();
         const int hs = size_ / 2;
