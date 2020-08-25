@@ -787,6 +787,7 @@ Cache::runMigrations()
            }},
         };
 
+        nhlog::db()->info("Running migrations, this may take a while!");
         for (const auto &[target_version, migration] : migrations) {
                 if (target_version > stored_version)
                         if (!migration()) {
@@ -794,6 +795,7 @@ Cache::runMigrations()
                                 return false;
                         }
         }
+        nhlog::db()->info("Migrations finished.");
 
         setCurrentFormat();
         return true;
