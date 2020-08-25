@@ -168,7 +168,10 @@ Cache::setup()
         }
 
         try {
-                env_.open(statePath.toStdString().c_str());
+                // NOTE(Nico): We may want to use (MDB_MAPASYNC | MDB_WRITEMAP) in the future, but
+                // it can really mess up our database, so we shouldn't. For now, hopefully
+                // NOMETASYNC is fast enough.
+                env_.open(statePath.toStdString().c_str(), MDB_NOMETASYNC);
         } catch (const lmdb::error &e) {
                 if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
                         throw std::runtime_error("LMDB initialization failed" +
