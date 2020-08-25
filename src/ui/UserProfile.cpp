@@ -93,8 +93,8 @@ UserProfile::fetchDeviceList(const QString &userID)
         req.device_keys[userID.toStdString()] = {};
         ChatPage::instance()->query_keys(
           req,
-          [user_id = userID.toStdString(), local_user_id = localUser.toStdString(), this](
-            const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
+          [user_id = userID.toStdString(), this](const mtx::responses::QueryKeys &res,
+                                                 mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {},{}",
                                              err->matrix_error.errcode,
@@ -108,46 +108,16 @@ UserProfile::fetchDeviceList(const QString &userID)
                           return;
                   }
 
-                  auto devices = res.device_keys.at(user_id);
-                  std::vector<DeviceInfo> deviceInfo;
-                  auto device_verified = cache::getVerifiedCache(user_id);
-
-                  for (const auto &d : devices) {
-                          auto device = d.second;
-
-                          // TODO: Verify signatures and ignore those that don't pass.
-                          verification::Status verified = verification::Status::UNVERIFIED;
-                          isUserVerified                = device_verified->is_user_verified;
-                          if (device_verified.has_value()) {
-                                  if (std::find(device_verified->cross_verified.begin(),
-                                                device_verified->cross_verified.end(),
-                                                d.first) != device_verified->cross_verified.end())
-                                          verified = verification::Status::VERIFIED;
-                                  if (std::find(device_verified->device_verified.begin(),
-                                                device_verified->device_verified.end(),
-                                                d.first) != device_verified->device_verified.end())
-                                          verified = verification::Status::VERIFIED;
-                                  if (std::find(device_verified->device_blocked.begin(),
-                                                device_verified->device_blocked.end(),
-                                                d.first) != device_verified->device_blocked.end())
-                                          verified = verification::Status::BLOCKED;
-                          }
-
-                          deviceInfo.push_back(
-                            {QString::fromStdString(d.first),
-                             QString::fromStdString(device.unsigned_info.device_display_name),
-                             verified});
-                  }
-
                   // Finding if the User is Verified or not based on the Signatures
                   mtx::requests::QueryKeys req;
-                  req.device_keys[local_user_id] = {};
+                  req.device_keys[utils::localUser().toStdString()] = {};
 
                   ChatPage::instance()->query_keys(
                     req,
-                    [&local_user_id, &user_id, other_res = res, this](
-                      const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
+                    [user_id, other_res = res, this](const mtx::responses::QueryKeys &res,
+                                                     mtx::http::RequestErr err) {
                             using namespace mtx;
+                            std::string local_user_id = utils::localUser().toStdString();
 
                             if (err) {
                                     nhlog::net()->warn("failed to query device keys: {},{}",
@@ -156,52 +126,135 @@ UserProfile::fetchDeviceList(const QString &userID)
                                     return;
                             }
 
+                            if (res.device_keys.empty() ||
+                                (res.device_keys.find(local_user_id) == res.device_keys.end())) {
+                                    nhlog::net()->warn("no devices retrieved {}", user_id);
+                                    return;
+                            }
+
+                            std::vector<DeviceInfo> deviceInfo;
+                            auto devices         = other_res.device_keys.at(user_id);
+                            auto device_verified = cache::getVerifiedCache(user_id);
+
+                            if (device_verified.has_value()) {
+                                    isUserVerified = device_verified.value().is_user_verified;
+                            }
+
                             std::optional<crypto::CrossSigningKeys> lmk, lsk, luk, mk, sk, uk;
 
-                            if (res.master_keys.find(local_user_id) != res.master_keys.end())
+                            if (!res.master_keys.empty())
                                     lmk = res.master_keys.at(local_user_id);
-                            if (res.user_signing_keys.find(local_user_id) !=
-                                res.user_signing_keys.end())
+                            if (!res.user_signing_keys.empty())
                                     luk = res.user_signing_keys.at(local_user_id);
-                            if (res.self_signing_keys.find(local_user_id) !=
-                                res.self_signing_keys.end())
+                            if (!res.self_signing_keys.empty())
                                     lsk = res.self_signing_keys.at(local_user_id);
-                            if (other_res.master_keys.find(user_id) != other_res.master_keys.end())
+                            if (!other_res.master_keys.empty())
                                     mk = other_res.master_keys.at(user_id);
-                            if (other_res.user_signing_keys.find(user_id) !=
-                                other_res.user_signing_keys.end())
+                            if (!other_res.user_signing_keys.empty())
                                     uk = other_res.user_signing_keys.at(user_id);
-                            if (other_res.self_signing_keys.find(user_id) !=
-                                other_res.self_signing_keys.end())
+                            if (!other_res.self_signing_keys.empty())
                                     sk = other_res.self_signing_keys.at(user_id);
 
                             // First checking if the user is verified
-                            if (lmk.has_value() && luk.has_value()) {
-                                    bool is_user_verified = false;
-                                    for (auto sign_key : lmk.value().keys) {
-                                            if (!luk.value().signatures.empty()) {
-                                                    for (auto signature :
-                                                         luk.value().signatures.at(local_user_id)) {
-                                                            is_user_verified =
-                                                              is_user_verified ||
+                            if (luk.has_value() && mk.has_value()) {
+                                    // iterating through the public key of local user_signing keys
+                                    for (auto sign_key : luk.value().keys) {
+                                            // checking if the signatures are empty as "at" could
+                                            // cause exceptions
+                                            if (!mk.value().signatures.empty()) {
+                                                    auto signs =
+                                                      mk.value().signatures.at(local_user_id);
+                                                    try {
+                                                            isUserVerified =
+                                                              isUserVerified ||
                                                               (olm::client()->ed25519_verify_sig(
                                                                 sign_key.second,
-                                                                json(luk.value()),
-                                                                signature.second));
+                                                                json(mk.value()),
+                                                                signs.at(sign_key.first)));
+                                                    } catch (std::out_of_range) {
+                                                            isUserVerified =
+                                                              isUserVerified || false;
                                                     }
                                             }
                                     }
-                                    std::cout << (isUserVerified ? "Yes" : "No") << std::endl;
                             }
+
+                            for (const auto &d : devices) {
+                                    auto device = d.second;
+                                    verification::Status verified =
+                                      verification::Status::UNVERIFIED;
+
+                                    if (device_verified.has_value()) {
+                                            if (std::find(device_verified->cross_verified.begin(),
+                                                          device_verified->cross_verified.end(),
+                                                          d.first) !=
+                                                device_verified->cross_verified.end())
+                                                    verified = verification::Status::VERIFIED;
+                                            if (std::find(device_verified->device_verified.begin(),
+                                                          device_verified->device_verified.end(),
+                                                          d.first) !=
+                                                device_verified->device_verified.end())
+                                                    verified = verification::Status::VERIFIED;
+                                            if (std::find(device_verified->device_blocked.begin(),
+                                                          device_verified->device_blocked.end(),
+                                                          d.first) !=
+                                                device_verified->device_blocked.end())
+                                                    verified = verification::Status::BLOCKED;
+                                    } else if (isUserVerified) {
+                                            device_verified = DeviceVerifiedCache{};
+                                    }
+
+                                    // won't check for already verified devices
+                                    if (verified != verification::Status::VERIFIED &&
+                                        isUserVerified) {
+                                            if ((sk.has_value()) && (!device.signatures.empty())) {
+                                                    for (auto sign_key : sk.value().keys) {
+                                                            auto signs =
+                                                              device.signatures.at(user_id);
+                                                            try {
+                                                                    if (olm::client()
+                                                                          ->ed25519_verify_sig(
+                                                                            sign_key.second,
+                                                                            json(device),
+                                                                            signs.at(
+                                                                              sign_key.first))) {
+                                                                            verified =
+                                                                              verification::Status::
+                                                                                VERIFIED;
+                                                                            device_verified.value()
+                                                                              .cross_verified
+                                                                              .push_back(d.first);
+                                                                    }
+                                                            } catch (std::out_of_range) {
+                                                            }
+                                                    }
+                                            }
+                                    }
+
+                                    if (device_verified.has_value()) {
+                                            device_verified.value().is_user_verified =
+                                              isUserVerified;
+                                            cache::setVerifiedCache(user_id,
+                                                                    device_verified.value());
+                                    }
+
+                                    deviceInfo.push_back(
+                                      {QString::fromStdString(d.first),
+                                       QString::fromStdString(
+                                         device.unsigned_info.device_display_name),
+                                       verified});
+                            }
+
+                            std::cout << (isUserVerified ? "Yes" : "No") << std::endl;
+
+                            std::sort(deviceInfo.begin(),
+                                      deviceInfo.end(),
+                                      [](const DeviceInfo &a, const DeviceInfo &b) {
+                                              return a.device_id > b.device_id;
+                                      });
+
+                            this->deviceList_.queueReset(std::move(deviceInfo));
                     });
-
-                  std::sort(deviceInfo.begin(),
-                            deviceInfo.end(),
-                            [](const DeviceInfo &a, const DeviceInfo &b) {
-                                    return a.device_id > b.device_id;
-                            });
-
-                  this->deviceList_.queueReset(std::move(deviceInfo));
           });
 }
 
