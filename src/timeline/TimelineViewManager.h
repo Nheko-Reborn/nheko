@@ -66,13 +66,7 @@ public slots:
 
         void setHistoryView(const QString &room_id);
         void updateColorPalette();
-        void queueReactionMessage(const QString &roomId,
-                                  const QString &reactedEvent,
-                                  const QString &reaction);
-        void reactToMessage(const QString &roomId,
-                            const QString &reactedEvent,
-                            const QString &reactionKey,
-                            const QString &selfReactedEvent);
+        void queueReactionMessage(const QString &reactedEvent, const QString &reactionKey);
         void queueTextMessage(const QString &msg);
         void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
@@ -107,6 +101,12 @@ public slots:
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
 
         void updateEncryptedDescriptions();
+
+        void clearCurrentRoomTimeline()
+        {
+                if (timeline_)
+                        timeline_->clearTimeline();
+        }
 
 private:
 #ifdef USE_QUICK_VIEW

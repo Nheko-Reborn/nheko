@@ -173,11 +173,12 @@ main(int argc, char *argv[])
         QString lang = QLocale::system().name();
 
         QTranslator qtTranslator;
-        qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        qtTranslator.load(
+          QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
         app.installTranslator(&qtTranslator);
 
         QTranslator appTranslator;
-        appTranslator.load("nheko_" + lang, ":/translations");
+        appTranslator.load(QLocale(), "nheko", "_", ":/translations");
         app.installTranslator(&appTranslator);
 
         MainWindow w;

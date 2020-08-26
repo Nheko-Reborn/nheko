@@ -11,6 +11,8 @@ import "./delegates"
 import "./emoji"
 
 Page {
+	id: timelineRoot
+
 	property var colors: currentActivePalette
 	property var systemInactive: SystemPalette { colorGroup: SystemPalette.Disabled }
 	property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
@@ -25,34 +27,39 @@ Page {
 		id: fontMetrics
 	}
 
-    EmojiPicker {
-        id: emojiPopup
-        width: 7 * 52 + 20
-        height: 6 * 52 
-        colors: palette
-        model: EmojiProxyModel {
-            category: EmojiCategory.People
-            sourceModel: EmojiModel {}
-        }
-    }
+	EmojiPicker {
+		id: emojiPopup
+		width: 7 * 52 + 20
+		height: 6 * 52 
+		colors: palette
+		model: EmojiProxyModel {
+			category: EmojiCategory.People
+			sourceModel: EmojiModel {}
+		}
+	}
 
 	Menu {
 		id: messageContextMenu
 		modal: true
 
-		function show(eventId_, eventType_, isEncrypted_, showAt) {
+		function show(eventId_, eventType_, isEncrypted_, showAt_, position) {
 			eventId = eventId_
 			eventType = eventType_
 			isEncrypted = isEncrypted_
-			popup(showAt)
+
+			if (position)
+			popup(position, showAt_)
+			else
+			popup(showAt_)
 		}
 
 		property string eventId
 		property int eventType
 		property bool isEncrypted
+
 		MenuItem {
 			text: qsTr("React")
-			onClicked: chat.model.reactAction(messageContextMenu.eventId)
+			onClicked: emojiPopup.show(messageContextMenu.parent, messageContextMenu.eventId)
 		}
 		MenuItem {
 			text: qsTr("Reply")
@@ -87,8 +94,6 @@ Page {
 		}
 	}
 
-	id: timelineRoot
-
 	Rectangle {
 		anchors.fill: parent
 		color: colors.window
@@ -113,7 +118,7 @@ Page {
 		ListView {
 			id: chat
 
-			visible: timelineManager.timeline != null
+			visible: !!timelineManager.timeline
 
 			cacheBuffer: 400
 
@@ -181,7 +186,7 @@ Page {
 
 				id: wrapper
 				property Item section
-				anchors.horizontalCenter: parent.horizontalCenter
+				anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 				width: chat.delegateMaxWidth
 				height: section ? section.height + timelinerow.height : timelinerow.height
 				color: "transparent"
@@ -205,14 +210,13 @@ Page {
 					}
 				}
 
-				Binding {
-					target: chat.model
-					property: "currentIndex"
-					when: y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height
-					value: index
-					delayed: true
+				Connections {
+					target: chat
+					function onMovementEnded() {
+						if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
+							chat.model.currentIndex = index;
+					}
 				}
-
 			}
 
 			section {
@@ -296,13 +300,13 @@ Page {
 				}
 			}
 
-            footer:  BusyIndicator {
-                anchors.horizontalCenter: parent.horizontalCenter
-                running: chat.model && chat.model.paginationInProgress
-                height: 50
-                width: 50
-                z: 3
-            }
+			footer:  BusyIndicator {
+				anchors.horizontalCenter: parent.horizontalCenter
+				running: chat.model && chat.model.paginationInProgress
+				height: 50
+				width: 50
+				z: 3
+			}
 		}
 
 		Rectangle {
@@ -354,7 +358,7 @@ Page {
 						anchors.rightMargin: 20
 						anchors.bottom: parent.bottom
 
-						modelData: chat.model ? chat.model.getDump(chat.model.reply) : {}
+						modelData: chat.model ? chat.model.getDump(chat.model.reply, chat.model.id) : {}
 						userColor: timelineManager.userColor(modelData.userId, colors.window)
 					}
 

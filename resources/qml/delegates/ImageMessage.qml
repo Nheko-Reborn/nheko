@@ -9,8 +9,8 @@ Item {
 	property double divisor: model.isReply ? 4 : 2
 	property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
-	height: tooHigh ? timelineRoot.height / divisor : tempHeight
-	width: tooHigh ? (timelineRoot.height / divisor) / model.data.proportionalHeight : tempWidth
+	height: Math.round(tooHigh ? timelineRoot.height / divisor : tempHeight)
+	width: Math.round(tooHigh ? (timelineRoot.height / divisor) / model.data.proportionalHeight : tempWidth)
 
 	Image {
 		id: blurhash

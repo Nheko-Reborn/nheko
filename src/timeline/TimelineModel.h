@@ -9,7 +9,7 @@
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
-#include "ReactionsModel.h"
+#include "EventStore.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -42,6 +42,8 @@ enum EventType
         CallAnswer,
         /// m.call.hangup
         CallHangUp,
+        /// m.call.candidates
+        CallCandidates,
         /// m.room.canonical_alias
         CanonicalAlias,
         /// m.room.create
@@ -177,7 +179,7 @@ public:
         QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-        QVariant data(const QString &id, int role) const;
+        QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
 
         bool canFetchMore(const QModelIndex &) const override;
         void fetchMore(const QModelIndex &) override;
@@ -204,6 +206,15 @@ public:
         Q_INVOKABLE void cacheMedia(QString eventId);
         Q_INVOKABLE bool saveMedia(QString eventId) const;
 
+        std::vector<::Reaction> reactions(const std::string &event_id)
+        {
+                auto list = events.reactions(event_id);
+                std::vector<::Reaction> vec;
+                for (const auto &r : list)
+                        vec.push_back(r.value<Reaction>());
+                return vec;
+        }
+
         void updateLastMessage();
         void addEvents(const mtx::responses::Timeline &events);
         template<class T>
@@ -214,7 +225,7 @@ public slots:
         void setCurrentIndex(int index);
         int currentIndex() const { return idToIndex(currentId); }
         void markEventsAsRead(const std::vector<QString> &event_ids);
-        QVariantMap getDump(QString eventId) const;
+        QVariantMap getDump(QString eventId, QString relatedTo) const;
         void updateTypingUsers(const std::vector<QString> &users)
         {
                 if (this->typingUsers_ != users) {
@@ -240,36 +251,26 @@ public slots:
                 }
         }
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
+        void clearTimeline() { events.clearTimeline(); }
 
 private slots:
-        // Add old events at the top of the timeline.
-        void addBackwardsEvents(const mtx::responses::Messages &msgs);
-        void processOnePendingMessage();
         void addPendingMessage(mtx::events::collections::TimelineEvents event);
 
 signals:
-        void oldMessagesRetrieved(const mtx::responses::Messages &res);
-        void messageFailed(QString txn_id);
-        void messageSent(QString txn_id, QString event_id);
         void currentIndexChanged(int index);
         void redactionFailed(QString id);
         void eventRedacted(QString id);
-        void nextPendingMessage();
-        void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void mediaCached(QString mxcUrl, QString cacheUrl);
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
-        void eventFetched(QString requestingEvent, mtx::events::collections::TimelineEvents event);
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
 
+        void newMessageToSend(mtx::events::collections::TimelineEvents event);
+        void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
+
 private:
-        DecryptionResult decryptEvent(
-          const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e) const;
-        std::vector<QString> internalAddEvents(
-          const std::vector<mtx::events::collections::TimelineEvents> &timeline,
-          bool emitCallEvents);
         void sendEncryptedMessageEvent(const std::string &txn_id,
                                        nlohmann::json content,
                                        mtx::events::EventType);
@@ -283,16 +284,12 @@ private:
 
         void setPaginationInProgress(const bool paginationInProgress);
 
-        QHash<QString, mtx::events::collections::TimelineEvents> events;
         QSet<QString> read;
-        QList<QString> pending;
-        std::vector<QString> eventOrder;
-        std::map<QString, ReactionsModel> reactions;
+
+        mutable EventStore events;
 
         QString room_id_;
-        QString prev_batch_token_;
 
-        bool isInitialSync          = true;
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;
 
