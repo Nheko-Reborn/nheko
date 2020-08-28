@@ -223,18 +223,19 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
 {
         nhlog::ui()->debug("WebRTC: local candidate: (m-line:{}):{}", mlineIndex, candidate);
 
+#if GST_CHECK_VERSION(1, 17, 0)
+        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
+        return;
+#else
         if (WebRTCSession::instance().state() >= WebRTCSession::State::OFFERSENT) {
                 emit WebRTCSession::instance().newICECandidate(
                   {"audio", (uint16_t)mlineIndex, candidate});
                 return;
         }
 
-        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
-
         // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers
         // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.17.
         // Use a 100ms timeout in the meantime
-#if !GST_CHECK_VERSION(1, 17, 0)
         static guint timerid = 0;
         if (timerid)
                 g_source_remove(timerid);
@@ -282,11 +283,11 @@ linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe
                 GstElement *resample = gst_element_factory_make("audioresample", nullptr);
                 GstElement *sink     = gst_element_factory_make("autoaudiosink", nullptr);
                 gst_bin_add_many(GST_BIN(pipe), queue, convert, resample, sink, nullptr);
+                gst_element_link_many(queue, convert, resample, sink, nullptr);
                 gst_element_sync_state_with_parent(queue);
                 gst_element_sync_state_with_parent(convert);
                 gst_element_sync_state_with_parent(resample);
                 gst_element_sync_state_with_parent(sink);
-                gst_element_link_many(queue, convert, resample, sink, nullptr);
                 queuepad = gst_element_get_static_pad(queue, "sink");
         }
 

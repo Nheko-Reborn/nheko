@@ -683,27 +683,29 @@ void
 TextInputWidget::command(QString command, QString args)
 {
         if (command == "me") {
-                sendEmoteMessage(args);
+                emit sendEmoteMessage(args);
         } else if (command == "join") {
-                sendJoinRoomRequest(args);
+                emit sendJoinRoomRequest(args);
         } else if (command == "invite") {
-                sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "kick") {
-                sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "ban") {
-                sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "unban") {
-                sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "roomnick") {
-                changeRoomNick(args);
+                emit changeRoomNick(args);
         } else if (command == "shrug") {
-                sendTextMessage("¯\\_(ツ)_/¯");
+                emit sendTextMessage("¯\\_(ツ)_/¯");
         } else if (command == "fliptable") {
-                sendTextMessage("(╯°□°)╯︵ ┻━┻");
+                emit sendTextMessage("(╯°□°)╯︵ ┻━┻");
         } else if (command == "unfliptable") {
-                sendTextMessage(" ┯━┯╭( º _ º╭)");
+                emit sendTextMessage(" ┯━┯╭( º _ º╭)");
         } else if (command == "sovietflip") {
-                sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
+                emit sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
+        } else if (command == "clear-timeline") {
+                emit clearRoomTimeline();
         }
 }
 
@@ -735,7 +737,7 @@ TextInputWidget::showUploadSpinner()
         topLayout_->removeWidget(sendFileBtn_);
         sendFileBtn_->hide();
 
-        topLayout_->insertWidget(0, spinner_);
+        topLayout_->insertWidget(1, spinner_);
         spinner_->start();
 }
 
@@ -743,7 +745,7 @@ void
 TextInputWidget::hideUploadSpinner()
 {
         topLayout_->removeWidget(spinner_);
-        topLayout_->insertWidget(0, sendFileBtn_);
+        topLayout_->insertWidget(1, sendFileBtn_);
         sendFileBtn_->show();
         spinner_->stop();
 }

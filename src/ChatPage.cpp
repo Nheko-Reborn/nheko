@@ -165,6 +165,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 trySync();
         });
 
+        connect(text_input_,
+                &TextInputWidget::clearRoomTimeline,
+                view_manager_,
+                &TimelineViewManager::clearCurrentRoomTimeline);
+
         connect(
           new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
                   if (isVisible())
@@ -254,7 +259,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
         connect(room_list_, &RoomList::acceptInvite, this, [this](const QString &room_id) {
-                view_manager_->addRoom(room_id);
                 joinRoom(room_id);
                 room_list_->removeRoom(room_id, currentRoom() == room_id);
         });
@@ -323,17 +327,15 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                       .toStdString();
                   member.membership = mtx::events::state::Membership::Join;
 
-                  http::client()
-                    ->send_state_event<mtx::events::state::Member,
-                                       mtx::events::EventType::RoomMember>(
-                      currentRoom().toStdString(),
-                      http::client()->user_id().to_string(),
-                      member,
-                      [](mtx::responses::EventId, mtx::http::RequestErr err) {
-                              if (err)
-                                      nhlog::net()->error("Failed to set room displayname: {}",
-                                                          err->matrix_error.error);
-                      });
+                  http::client()->send_state_event(
+                    currentRoom().toStdString(),
+                    http::client()->user_id().to_string(),
+                    member,
+                    [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                            if (err)
+                                    nhlog::net()->error("Failed to set room displayname: {}",
+                                                        err->matrix_error.error);
+                    });
           });
 
         connect(
@@ -584,12 +586,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   emit notificationsRetrieved(std::move(res));
                           });
         });
-        connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync, Qt::QueuedConnection);
-        connect(this,
-                &ChatPage::syncTags,
-                communitiesList_,
-                &CommunitiesList::syncTags,
-                Qt::QueuedConnection);
+        connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
+        connect(this, &ChatPage::syncTags, communitiesList_, &CommunitiesList::syncTags);
         connect(
           this, &ChatPage::syncTopBar, this, [this](const std::map<QString, RoomInfo> &updates) {
                   if (updates.find(currentRoom()) != updates.end())
@@ -613,6 +611,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           this,
           [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
           Qt::QueuedConnection);
+
+        connect(this,
+                &ChatPage::newSyncResponse,
+                this,
+                &ChatPage::handleSyncResponse,
+                Qt::QueuedConnection);
 
         connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
 
@@ -841,43 +845,39 @@ ChatPage::loadStateFromCache()
 
         nhlog::db()->info("restoring state from cache");
 
+        try {
+                cache::restoreSessions();
+                olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
+
+                cache::populateMembers();
+
+                emit initializeEmptyViews(cache::roomMessages());
+                emit initializeRoomList(cache::roomInfo());
+                emit initializeMentions(cache::getTimelineMentions());
+                emit syncTags(cache::roomInfo().toStdMap());
+
+                cache::calculateRoomReadStatus();
+
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
+                emit dropToLoginPageCb(tr("Failed to restore OLM account. Please login again."));
+                return;
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to restore cache: {}", e.what());
+                emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
+                return;
+        } catch (const json::exception &e) {
+                nhlog::db()->critical("failed to parse cache data: {}", e.what());
+                return;
+        }
+
+        nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+        nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
+
         getProfileInfo();
 
-        QtConcurrent::run([this]() {
-                try {
-                        cache::restoreSessions();
-                        olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
-
-                        cache::populateMembers();
-
-                        emit initializeEmptyViews(cache::roomMessages());
-                        emit initializeRoomList(cache::roomInfo());
-                        emit initializeMentions(cache::getTimelineMentions());
-                        emit syncTags(cache::roomInfo().toStdMap());
-
-                        cache::calculateRoomReadStatus();
-
-                } catch (const mtx::crypto::olm_exception &e) {
-                        nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
-                        emit dropToLoginPageCb(
-                          tr("Failed to restore OLM account. Please login again."));
-                        return;
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->critical("failed to restore cache: {}", e.what());
-                        emit dropToLoginPageCb(
-                          tr("Failed to restore save data. Please login again."));
-                        return;
-                } catch (const json::exception &e) {
-                        nhlog::db()->critical("failed to parse cache data: {}", e.what());
-                        return;
-                }
-
-                nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
-                nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
-
-                // Start receiving events.
-                emit trySyncCb();
-        });
+        // Start receiving events.
+        emit trySyncCb();
 }
 
 void
@@ -1056,6 +1056,45 @@ ChatPage::startInitialSync()
 }
 
 void
+ChatPage::handleSyncResponse(mtx::responses::Sync res)
+{
+        nhlog::net()->debug("sync completed: {}", res.next_batch);
+
+        // Ensure that we have enough one-time keys available.
+        ensureOneTimeKeyCount(res.device_one_time_keys_count);
+
+        // TODO: fine grained error handling
+        try {
+                cache::saveState(res);
+                olm::handle_to_device_messages(res.to_device.events);
+
+                auto updates = cache::roomUpdates(res);
+
+                emit syncTopBar(updates);
+                emit syncRoomlist(updates);
+
+                emit syncUI(res.rooms);
+
+                emit syncTags(cache::roomTagUpdates(res));
+
+                // if we process a lot of syncs (1 every 200ms), this means we clean the
+                // db every 100s
+                static int syncCounter = 0;
+                if (syncCounter++ >= 500) {
+                        cache::deleteOldData();
+                        syncCounter = 0;
+                }
+        } catch (const lmdb::map_full_error &e) {
+                nhlog::db()->error("lmdb is full: {}", e.what());
+                cache::deleteOldData();
+        } catch (const lmdb::error &e) {
+                nhlog::db()->error("saving sync response: {}", e.what());
+        }
+
+        emit trySyncCb();
+}
+
+void
 ChatPage::trySync()
 {
         mtx::http::SyncOpts opts;
@@ -1072,7 +1111,14 @@ ChatPage::trySync()
         }
 
         http::client()->sync(
-          opts, [this](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+          opts,
+          [this, since = cache::nextBatchToken()](const mtx::responses::Sync &res,
+                                                  mtx::http::RequestErr err) {
+                  if (since != cache::nextBatchToken()) {
+                          nhlog::net()->warn("Duplicate sync, dropping");
+                          return;
+                  }
+
                   if (err) {
                           const auto error      = QString::fromStdString(err->matrix_error.error);
                           const auto msg        = tr("Please try to login again: %1").arg(error);
@@ -1094,40 +1140,7 @@ ChatPage::trySync()
                           return;
                   }
 
-                  nhlog::net()->debug("sync completed: {}", res.next_batch);
-
-                  // Ensure that we have enough one-time keys available.
-                  ensureOneTimeKeyCount(res.device_one_time_keys_count);
-
-                  // TODO: fine grained error handling
-                  try {
-                          cache::saveState(res);
-                          olm::handle_to_device_messages(res.to_device.events);
-
-                          auto updates = cache::roomUpdates(res);
-
-                          emit syncTopBar(updates);
-                          emit syncRoomlist(updates);
-
-                          emit syncUI(res.rooms);
-
-                          emit syncTags(cache::roomTagUpdates(res));
-
-                          // if we process a lot of syncs (1 every 200ms), this means we clean the
-                          // db every 100s
-                          static int syncCounter = 0;
-                          if (syncCounter++ >= 500) {
-                                  cache::deleteOldData();
-                                  syncCounter = 0;
-                          }
-                  } catch (const lmdb::map_full_error &e) {
-                          nhlog::db()->error("lmdb is full: {}", e.what());
-                          cache::deleteOldData();
-                  } catch (const lmdb::error &e) {
-                          nhlog::db()->error("saving sync response: {}", e.what());
-                  }
-
-                  emit trySyncCb();
+                  emit newSyncResponse(res);
           });
 }
 

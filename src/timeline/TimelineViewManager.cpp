@@ -340,33 +340,36 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
 }
 
 void
-TimelineViewManager::reactToMessage(const QString &roomId,
-                                    const QString &reactedEvent,
-                                    const QString &reactionKey,
-                                    const QString &selfReactedEvent)
+TimelineViewManager::queueReactionMessage(const QString &reactedEvent, const QString &reactionKey)
 {
+        if (!timeline_)
+                return;
+
+        auto reactions = timeline_->reactions(reactedEvent.toStdString());
+
+        QString selfReactedEvent;
+        for (const auto &reaction : reactions) {
+                if (reactionKey == reaction.key_) {
+                        selfReactedEvent = reaction.selfReactedEvent_;
+                        break;
+                }
+        }
+
+        if (selfReactedEvent.startsWith("m"))
+                return;
+
         // If selfReactedEvent is empty, that means we haven't previously reacted
         if (selfReactedEvent.isEmpty()) {
-                queueReactionMessage(roomId, reactedEvent, reactionKey);
+                mtx::events::msg::Reaction reaction;
+                reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
+                reaction.relates_to.event_id = reactedEvent.toStdString();
+                reaction.relates_to.key      = reactionKey.toStdString();
+
+                timeline_->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
                 // Otherwise, we have previously reacted and the reaction should be redacted
         } else {
-                auto model = models.value(roomId);
-                model->redactEvent(selfReactedEvent);
+                timeline_->redactEvent(selfReactedEvent);
         }
-}
-
-void
-TimelineViewManager::queueReactionMessage(const QString &roomId,
-                                          const QString &reactedEvent,
-                                          const QString &reactionKey)
-{
-        mtx::events::msg::Reaction reaction;
-        reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
-        reaction.relates_to.event_id = reactedEvent.toStdString();
-        reaction.relates_to.key      = reactionKey.toStdString();
-
-        auto model = models.value(roomId);
-        model->sendMessageEvent(reaction, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -384,10 +387,13 @@ TimelineViewManager::queueImageMessage(const QString &roomid,
         image.info.size     = dsize;
         image.info.blurhash = blurhash.toStdString();
         image.body          = filename.toStdString();
-        image.url           = url.toStdString();
         image.info.h        = dimensions.height();
         image.info.w        = dimensions.width();
-        image.file          = file;
+
+        if (file)
+                image.file = file;
+        else
+                image.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {
@@ -411,8 +417,11 @@ TimelineViewManager::queueFileMessage(
         file.info.mimetype = mime.toStdString();
         file.info.size     = dsize;
         file.body          = filename.toStdString();
-        file.url           = url.toStdString();
-        file.file          = encryptedFile;
+
+        if (encryptedFile)
+                file.file = encryptedFile;
+        else
+                file.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {
@@ -436,7 +445,11 @@ TimelineViewManager::queueAudioMessage(const QString &roomid,
         audio.info.size     = dsize;
         audio.body          = filename.toStdString();
         audio.url           = url.toStdString();
-        audio.file          = file;
+
+        if (file)
+                audio.file = file;
+        else
+                audio.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {
@@ -459,8 +472,11 @@ TimelineViewManager::queueVideoMessage(const QString &roomid,
         video.info.mimetype = mime.toStdString();
         video.info.size     = dsize;
         video.body          = filename.toStdString();
-        video.url           = url.toStdString();
-        video.file          = file;
+
+        if (file)
+                video.file = file;
+        else
+                video.url = url.toStdString();
 
         auto model = models.value(roomid);
         if (!model->reply().isEmpty()) {

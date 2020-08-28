@@ -67,6 +67,12 @@ Item {
 			}
 		}
 		DelegateChoice {
+			roleValue: MtxEvent.Redaction
+			Pill {
+				text: qsTr("redacted")
+			}
+		}
+		DelegateChoice {
 			roleValue: MtxEvent.Encryption
 			Pill {
 				text: qsTr("Encryption enabled")
@@ -106,6 +112,12 @@ Item {
 			roleValue: MtxEvent.CallHangUp
 			NoticeMessage {
 				text: qsTr("%1 ended the call.").arg(model.data.userName)
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.CallCandidates
+			NoticeMessage {
+				text: qsTr("Negotiating call...")
 			}
 		}
 		DelegateChoice {

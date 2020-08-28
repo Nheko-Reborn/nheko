@@ -7,9 +7,29 @@
 #include <mtx/events/encrypted.hpp>
 #include <mtxclient/crypto/client.hpp>
 
+#include <CacheCryptoStructs.h>
+
 constexpr auto OLM_ALGO = "m.olm.v1.curve25519-aes-sha2";
 
 namespace olm {
+
+enum class DecryptionErrorCode
+{
+        MissingSession, // Session was not found, retrieve from backup or request from other devices
+                        // and try again
+        DbError,        // DB read failed
+        DecryptionFailed,   // libolm error
+        ParsingFailed,      // Failed to parse the actual event
+        ReplayAttack,       // Megolm index reused
+        UnknownFingerprint, // Unknown device Fingerprint
+};
+
+struct DecryptionResult
+{
+        std::optional<DecryptionErrorCode> error;
+        std::optional<std::string> error_message;
+        std::optional<mtx::events::collections::TimelineEvents> event;
+};
 
 struct OlmMessage
 {
@@ -64,6 +84,10 @@ mtx::events::msg::Encrypted
 encrypt_group_message(const std::string &room_id,
                       const std::string &device_id,
                       nlohmann::json body);
+
+DecryptionResult
+decryptEvent(const MegolmSessionIndex &index,
+             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event);
 
 void
 mark_keys_as_published();
