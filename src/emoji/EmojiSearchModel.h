@@ -5,8 +5,6 @@
 #include <QDebug>
 #include <QEvent>
 #include <QSortFilterProxyModel>
-#include <qabstractitemmodel.h>
-#include <qsortfilterproxymodel.h>
 
 namespace emoji {
 
@@ -28,10 +26,7 @@ public:
                 }
                 return QSortFilterProxyModel::data(index, role);
         }
-        /*int rowCount(const QModelIndex &parent) const override {
-        auto row_count = QSortFilterProxyModel::rowCount(parent);
-        return (row_count < 7) ? row_count : 7;
-    }*/
+
 private:
         QString toShortcode(QString shortname) const
         {

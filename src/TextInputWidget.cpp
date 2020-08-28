@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QAbstractItemView>
 #include <QAbstractTextDocumentLayout>
 #include <QBuffer>
 #include <QClipboard>
@@ -36,7 +37,6 @@
 #include "TextInputWidget.h"
 #include "Utils.h"
 #include "emoji/EmojiSearchModel.h"
-#include "emoji/KeyboardSelector.h"
 #include "emoji/Provider.h"
 #include "ui/FlatButton.h"
 #include "ui/LoadingIndicator.h"
@@ -250,7 +250,6 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 QTextEdit::keyPressEvent(event);
                 emoji_popup_open_ = true;
                 emoji_completion_model_->setFilterRegExp(wordUnderCursor());
-                // completer_->setCompletionPrefix(wordUnderCursor());
                 completer_->popup()->setCurrentIndex(completer_->completionModel()->index(0, 0));
                 completer_->complete(completerRect());
                 break;
@@ -310,9 +309,7 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
                 if (emoji_popup_open_) {
                         // Update completion
-
                         emoji_completion_model_->setFilterRegExp(wordUnderCursor());
-                        // completer_->setCompletionPrefix(wordUnderCursor());
                         completer_->popup()->setCurrentIndex(
                           completer_->completionModel()->index(0, 0));
                         completer_->complete(completerRect());

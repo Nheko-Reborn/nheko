@@ -11,12 +11,15 @@ class Emoji(object):
         self.code = repr(code.encode('utf-8'))[1:].strip("'")
         self.shortname = shortname
 
+def to_shortcode(shortname):
+    return shortname.replace(" ", "-").replace(":", "-")
+
 def generate_code(emojis, category):
     tmpl = Template('''
 const std::vector<Emoji> emoji::Provider::{{ category }} = {
     // {{ category.capitalize() }}
     {%- for e in emoji %}
-        Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::EmojiCategory::{{ category.capitalize() }}},
+        Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", "{{ to_shortcode(e.shortname) }}", emoji::EmojiCategory::{{ category.capitalize() }}},
     {%- endfor %}
 };
     ''')
@@ -30,7 +33,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
-    Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::EmojiCategory::{{ c[0].capitalize() }}},
+    Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", "{{ to_shortcode(e.shortname) }}", emoji::EmojiCategory::{{ c[0].capitalize() }}},
     {%- endfor %}
     {%- endfor %}
 };
