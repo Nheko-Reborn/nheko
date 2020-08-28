@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <deque>
 #include <optional>
 
@@ -33,8 +34,10 @@
 
 struct SearchResult;
 
+class CompletionModel;
 class FlatButton;
 class LoadingIndicator;
+class QCompleter;
 
 class FilteredTextEdit : public QTextEdit
 {
@@ -80,8 +83,11 @@ protected:
         }
 
 private:
+        bool emoji_popup_open_ = false;
+        CompletionModel *emoji_completion_model_;
         std::deque<QString> true_history_, working_history_;
         size_t history_index_;
+        QCompleter *completer_;
         QTimer *typingTimer_;
 
         SuggestionsPopup suggestionsPopup_;
@@ -103,12 +109,27 @@ private:
         {
                 return pos == atTriggerPosition_ + anchorWidth(anchor);
         }
-
+		QRect completerRect();
         QString query()
         {
                 auto cursor = textCursor();
                 cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
                 return cursor.selectedText();
+        }
+        QString wordUnderCursor()
+        {
+        	auto tc = textCursor();
+        	auto editor_text = toPlainText();
+        	// Text before cursor
+        	auto text = editor_text.chopped(editor_text.length() - tc.position());
+			// Revert to find the first space (last before cursor in the original)
+			std::reverse(text.begin(), text.end());
+			auto space_idx = text.indexOf(" ");
+			if (space_idx > -1)
+				text.chop(text.length() - space_idx);
+			// Revert back
+			std::reverse(text.begin(), text.end());
+			return text;
         }
 
         dialogs::PreviewUploadOverlay previewDialog_;
@@ -116,6 +137,7 @@ private:
         //! Latest position of the '@' character that triggers the username completer.
         int atTriggerPosition_ = -1;
 
+		void insertCompletion(QString completion);
         void textChanged();
         void uploadData(const QByteArray data, const QString &media, const QString &filename);
         void afterCompletion(int);
