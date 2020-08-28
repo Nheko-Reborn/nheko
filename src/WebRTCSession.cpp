@@ -283,11 +283,11 @@ linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe
                 GstElement *resample = gst_element_factory_make("audioresample", nullptr);
                 GstElement *sink     = gst_element_factory_make("autoaudiosink", nullptr);
                 gst_bin_add_many(GST_BIN(pipe), queue, convert, resample, sink, nullptr);
+                gst_element_link_many(queue, convert, resample, sink, nullptr);
                 gst_element_sync_state_with_parent(queue);
                 gst_element_sync_state_with_parent(convert);
                 gst_element_sync_state_with_parent(resample);
                 gst_element_sync_state_with_parent(sink);
-                gst_element_link_many(queue, convert, resample, sink, nullptr);
                 queuepad = gst_element_get_static_pad(queue, "sink");
         }
 
@@ -447,7 +447,6 @@ WebRTCSession::startPipeline(int opusPayloadType)
                 nhlog::ui()->info("WebRTC: setting STUN server: {}", stunServer_);
                 g_object_set(webrtc_, "stun-server", stunServer_.c_str(), nullptr);
         }
-
 
         for (const auto &uri : turnServers_) {
                 nhlog::ui()->info("WebRTC: setting TURN server: {}", uri);
