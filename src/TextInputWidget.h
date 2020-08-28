@@ -109,7 +109,7 @@ private:
         {
                 return pos == atTriggerPosition_ + anchorWidth(anchor);
         }
-		QRect completerRect();
+        QRect completerRect();
         QString query()
         {
                 auto cursor = textCursor();
@@ -118,18 +118,18 @@ private:
         }
         QString wordUnderCursor()
         {
-        	auto tc = textCursor();
-        	auto editor_text = toPlainText();
-        	// Text before cursor
-        	auto text = editor_text.chopped(editor_text.length() - tc.position());
-			// Revert to find the first space (last before cursor in the original)
-			std::reverse(text.begin(), text.end());
-			auto space_idx = text.indexOf(" ");
-			if (space_idx > -1)
-				text.chop(text.length() - space_idx);
-			// Revert back
-			std::reverse(text.begin(), text.end());
-			return text;
+                auto tc          = textCursor();
+                auto editor_text = toPlainText();
+                // Text before cursor
+                auto text = editor_text.chopped(editor_text.length() - tc.position());
+                // Revert to find the first space (last before cursor in the original)
+                std::reverse(text.begin(), text.end());
+                auto space_idx = text.indexOf(" ");
+                if (space_idx > -1)
+                        text.chop(text.length() - space_idx);
+                // Revert back
+                std::reverse(text.begin(), text.end());
+                return text;
         }
 
         dialogs::PreviewUploadOverlay previewDialog_;
@@ -137,7 +137,7 @@ private:
         //! Latest position of the '@' character that triggers the username completer.
         int atTriggerPosition_ = -1;
 
-		void insertCompletion(QString completion);
+        void insertCompletion(QString completion);
         void textChanged();
         void uploadData(const QByteArray data, const QString &media, const QString &filename);
         void afterCompletion(int);
