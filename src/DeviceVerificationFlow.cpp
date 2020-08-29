@@ -7,6 +7,7 @@
 
 #include <QDateTime>
 #include <QTimer>
+#include <iostream>
 
 static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
@@ -75,7 +76,14 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                     DeviceVerificationFlow::Error::UnknownMethod);
                                   return;
                           }
-                          this->canonical_json = nlohmann::json(msg);
+                          if (!sender)
+                                  this->canonical_json = nlohmann::json(msg);
+                          else {
+                                  if (utils::localUser().toStdString() <
+                                      this->toClient.to_string()) {
+                                          this->canonical_json = nlohmann::json(msg);
+                                  }
+                          }
                           this->acceptVerificationRequest();
                   } else {
                           this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
@@ -124,6 +132,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                 if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
+                        this->deleteLater();
                         emit verificationCanceled();
                 });
 
@@ -226,6 +235,11 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::recievedDeviceVerificationReady,
                 this,
                 [this](const mtx::events::msg::KeyVerificationReady &msg) {
+                        if (!sender) {
+                                this->deleteLater();
+                                emit verificationCanceled();
+                                return;
+                        }
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;

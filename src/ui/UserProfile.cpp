@@ -161,16 +161,17 @@ UserProfile::fetchDeviceList(const QString &userID)
                                     for (auto sign_key : luk.value().keys) {
                                             // checking if the signatures are empty as "at" could
                                             // cause exceptions
-                                            if (!mk.value().signatures.empty()) {
-                                                    auto signs =
-                                                      mk.value().signatures.at(local_user_id);
+                                            auto signs = mk->signatures;
+                                            if (!signs.empty() &&
+                                                signs.find(local_user_id) != signs.end()) {
+                                                    auto sign = signs.at(local_user_id);
                                                     try {
                                                             isUserVerified =
                                                               isUserVerified ||
                                                               (olm::client()->ed25519_verify_sig(
                                                                 sign_key.second,
                                                                 json(mk.value()),
-                                                                signs.at(sign_key.first)));
+                                                                sign.at(sign_key.first)));
                                                     } catch (std::out_of_range) {
                                                             isUserVerified =
                                                               isUserVerified || false;

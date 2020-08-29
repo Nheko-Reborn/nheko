@@ -298,6 +298,13 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                                           msg->content, msg->sender);
                                 }
                         }
+                        // only the key.verification.ready sent by localuser's other device is of
+                        // significance as it is used for detecting accepted request
+                        if (auto msg = std::get_if<
+                              mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady>>(
+                              event)) {
+                                ChatPage::instance()->recievedDeviceVerificationReady(msg->content);
+                        }
                 }
         }
 

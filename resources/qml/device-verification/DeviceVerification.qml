@@ -579,7 +579,6 @@ ApplicationWindow {
 						onClicked: {
 							dialog.close();
 							deviceVerificationList.remove(flow.tranId);
-							delete flow;
 						}
 					}
 				}

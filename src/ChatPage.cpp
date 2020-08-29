@@ -52,8 +52,6 @@
 
 #include "blurhash.hpp"
 
-#include <iostream> // only for debugging
-
 // TODO: Needs to be updated with an actual secret.
 static const std::string STORAGE_SECRET_KEY("secret");
 
@@ -1471,7 +1469,6 @@ ChatPage::query_keys(
                                                              static_cast<int>(err->status_code));
                                           return;
                                   }
-                                  std::cout << "Over here " << user_id << std::endl;
                                   cache::setUserCache(std::move(user_id),
                                                       std::move(UserCache{res, true}));
                                   cb(res, err);
