@@ -250,15 +250,18 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 QTextEdit::keyPressEvent(event);
                 emoji_popup_open_ = true;
                 emoji_completion_model_->setFilterRegExp(wordUnderCursor());
-                completer_->popup()->setCurrentIndex(completer_->completionModel()->index(0, 0));
-                completer_->complete(completerRect());
                 break;
         }
         case Qt::Key_Return:
         case Qt::Key_Enter:
                 if (emoji_popup_open_) {
-                        event->ignore();
-                        return;
+                        if (!completer_->popup()->currentIndex().isValid()) {
+                        	// No completion to select, do normal behavior
+                        	completer_->popup()->hide();
+                        	emoji_popup_open_ = false;
+                        } 
+                    	else
+                    		event->ignore(); 
                 }
 
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
@@ -307,11 +310,9 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 if (isModifier)
                         return;
 
-                if (emoji_popup_open_) {
+                if (emoji_popup_open_ && wordUnderCursor().length() > 2) {
                         // Update completion
                         emoji_completion_model_->setFilterRegExp(wordUnderCursor());
-                        completer_->popup()->setCurrentIndex(
-                          completer_->completionModel()->index(0, 0));
                         completer_->complete(completerRect());
                 }
 
