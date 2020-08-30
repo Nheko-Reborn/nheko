@@ -211,7 +211,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         // relations shouldn't be encrypted...
         mtx::common::ReplyRelatesTo relation;
-        mtx::common::ReactionRelatesTo r_relation;
+        mtx::common::RelatesTo r_relation;
 
         if (body["content"].contains("m.relates_to") &&
             body["content"]["m.relates_to"].contains("m.in_reply_to")) {

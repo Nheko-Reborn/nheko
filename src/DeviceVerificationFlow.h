@@ -127,5 +127,5 @@ private:
         std::optional<std::string> room_id;
         std::optional<std::string> event_id;
         TimelineModel *model_;
-        mtx::common::ReactionRelatesTo relation;
+        mtx::common::RelatesTo relation;
 };
