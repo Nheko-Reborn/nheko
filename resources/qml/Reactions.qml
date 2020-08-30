@@ -14,7 +14,6 @@ Flow {
 	property real highlightLight: colors.highlight.hslLightness
 
 	property string eventId
-	property string roomId
 
 	anchors.left: parent.left
 	anchors.right: parent.right
@@ -35,7 +34,7 @@ Flow {
 			ToolTip.text: modelData.users
 
 			onClicked: {
-				console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + modelData.selfReactedEvent)
+				console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent)
 				TimelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key)
 			}
 
@@ -57,7 +56,7 @@ Flow {
 				Text {
 					anchors.baseline: reactionCounter.baseline
 					id: reactionText
-					text: textMetrics.elidedText + (textMetrics.elidedText == model.key ? "" : "…")
+					text: textMetrics.elidedText + (textMetrics.elidedText == modelData.key ? "" : "…")
 					font.family: Settings.emojiFont
 					color: reaction.hovered ? colors.highlight : colors.text
 					maximumLineCount: 1

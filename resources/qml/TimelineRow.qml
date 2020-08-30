@@ -64,7 +64,6 @@ Item {
 			Reactions {
 				id: reactionRow
 				reactions: model.reactions
-				roomId: model.roomId
 				eventId: model.id
 			}
 		}

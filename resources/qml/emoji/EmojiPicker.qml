@@ -104,7 +104,7 @@ Popup {
                 onClicked: {
                     console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id)
                     emojiPopup.close()
-                    TimelineManager.queueReactionMessage(emojiPopup.room_id, emojiPopup.event_id, model.unicode)
+                    TimelineManager.queueReactionMessage(emojiPopup.event_id, model.unicode)
                 }
             }
 
