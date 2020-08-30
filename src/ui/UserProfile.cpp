@@ -172,7 +172,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                                                                 sign_key.second,
                                                                 json(mk.value()),
                                                                 sign.at(sign_key.first)));
-                                                    } catch (std::out_of_range) {
+                                                    } catch (std::out_of_range &) {
                                                             isUserVerified =
                                                               isUserVerified || false;
                                                     }
@@ -226,7 +226,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                                                                               .cross_verified
                                                                               .push_back(d.first);
                                                                     }
-                                                            } catch (std::out_of_range) {
+                                                            } catch (std::out_of_range &) {
                                                             }
                                                     }
                                             }
