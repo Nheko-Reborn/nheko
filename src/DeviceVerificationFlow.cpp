@@ -165,6 +165,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         }
 
                         if (this->method == DeviceVerificationFlow::Method::Emoji) {
+                                std::cout<<info<<std::endl;
                                 this->sasList = this->sas->generate_bytes_emoji(info);
                         } else if (this->method == DeviceVerificationFlow::Method::Decimal) {
                                 this->sasList = this->sas->generate_bytes_decimal(info);
@@ -235,7 +236,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::recievedDeviceVerificationReady,
                 this,
                 [this](const mtx::events::msg::KeyVerificationReady &msg) {
-                        if (!sender) {
+                        if (!sender && msg.from_device != http::client()->device_id()) {
                                 this->deleteLater();
                                 emit verificationCanceled();
                                 return;
@@ -243,7 +244,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
-                        } else if (msg.relates_to.has_value()) {
+                        } else if ((msg.relates_to.has_value() && sender)) {
                                 if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                                 else {
@@ -405,7 +406,7 @@ DeviceVerificationFlow::acceptVerificationRequest()
                   });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationAccept);
         }
 }
 //! responds verification request
@@ -432,7 +433,7 @@ DeviceVerificationFlow::sendVerificationReady()
                   });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationReady);
         }
 }
 //! accepts a verification
@@ -456,7 +457,7 @@ DeviceVerificationFlow::sendVerificationDone()
                   });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationDone);
         }
 }
 //! starts the verification flow
@@ -489,7 +490,7 @@ DeviceVerificationFlow::startVerificationRequest()
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to       = this->relation;
                 this->canonical_json = nlohmann::json(req);
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationStart);
         }
 }
 //! sends a verification request
@@ -525,7 +526,7 @@ DeviceVerificationFlow::sendVerificationRequest()
                 req.body = "User is requesting to verify keys with you. However, your client does "
                            "not support this method, so you will need to use the legacy method of "
                            "key verification.";
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationRequest);
         }
 }
 //! cancels a verification flow
@@ -573,7 +574,7 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
                   });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationCancel);
                 this->deleteLater();
         }
 
@@ -612,7 +613,7 @@ DeviceVerificationFlow::sendVerificationKey()
                   });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationKey);
         }
 }
 //! sends the mac of the keys
@@ -659,7 +660,7 @@ DeviceVerificationFlow::sendVerificationMac()
                   });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to = this->relation;
-                (model_)->sendMessage(req);
+                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationMac);
         }
 }
 //! Completes the verification flow

@@ -7,7 +7,8 @@ TextEdit {
 	textFormat: TextEdit.RichText
 	readOnly: true
 	wrapMode: Text.Wrap
-	selectByMouse: ma.containsMouse // try to make scrollable by finger but selectable by mouse
+	selectByMouse: true
+	activeFocusOnPress: false
 	color: colors.text
 
 	onLinkActivated: {
@@ -18,14 +19,13 @@ TextEdit {
 			TimelineManager.setHistoryView(match[1])
 			chat.positionViewAtIndex(chat.model.idToIndex(match[2]), ListView.Contain)
 		}
-		else Qt.openUrlExternally(link)
+		else timelineManager.openLink(link)
 	}
 	MouseArea
 	{
 		id: ma
 		anchors.fill: parent
 		propagateComposedEvents: true
-		hoverEnabled: true
 		acceptedButtons: Qt.NoButton
 		cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
 	}

@@ -186,6 +186,26 @@ EventStore::addPending(mtx::events::collections::TimelineEvents event)
 }
 
 void
+EventStore::clearTimeline()
+{
+        emit beginResetModel();
+
+        cache::client()->clearTimeline(room_id_);
+        auto range = cache::client()->getTimelineRange(room_id_);
+        if (range) {
+                nhlog::db()->info("Range {} {}", range->last, range->first);
+                this->last  = range->last;
+                this->first = range->first;
+        } else {
+                this->first = std::numeric_limits<uint64_t>::max();
+                this->last  = std::numeric_limits<uint64_t>::max();
+        }
+        nhlog::ui()->info("Range {} {}", this->last, this->first);
+
+        emit endResetModel();
+}
+
+void
 EventStore::handleSync(const mtx::responses::Timeline &events)
 {
         if (this->thread() != QThread::currentThread())
@@ -448,36 +468,89 @@ EventStore::decryptEvent(const IdIndex &idx,
         index.session_id = e.content.session_id;
         index.sender_key = e.content.sender_key;
 
-        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
-        dummy.origin_server_ts = e.origin_server_ts;
-        dummy.event_id         = e.event_id;
-        dummy.sender           = e.sender;
-        dummy.content.body =
-          tr("-- Encrypted Event (No keys found for decryption) --",
-             "Placeholder, when the message was not decrypted yet or can't be decrypted.")
-            .toStdString();
-
         auto asCacheEntry = [&idx](mtx::events::collections::TimelineEvents &&event) {
                 auto event_ptr = new mtx::events::collections::TimelineEvents(std::move(event));
                 decryptedEvents_.insert(idx, event_ptr);
                 return event_ptr;
         };
 
-        try {
-                if (!cache::client()->inboundMegolmSessionExists(index)) {
+        auto decryptionResult = olm::decryptEvent(index, e);
+
+        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
+        dummy.origin_server_ts = e.origin_server_ts;
+        dummy.event_id         = e.event_id;
+        dummy.sender           = e.sender;
+
+        if (decryptionResult.error) {
+                switch (*decryptionResult.error) {
+                case olm::DecryptionErrorCode::MissingSession:
+                        dummy.content.body =
+                          tr("-- Encrypted Event (No keys found for decryption) --",
+                             "Placeholder, when the message was not decrypted yet or can't be "
+                             "decrypted.")
+                            .toStdString();
                         nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
                                               index.room_id,
                                               index.session_id,
                                               e.sender);
-                        // TODO: request megolm session_id & session_key from the sender.
-                        return asCacheEntry(std::move(dummy));
+                        // TODO: Check if this actually works and look in key backup
+                        olm::send_key_request_for(room_id_, e);
+                        break;
+                case olm::DecryptionErrorCode::DbError:
+                        nhlog::db()->critical(
+                          "failed to retrieve megolm session with index ({}, {}, {})",
+                          index.room_id,
+                          index.session_id,
+                          index.sender_key,
+                          decryptionResult.error_message.value_or(""));
+                        dummy.content.body =
+                          tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
+                             "Placeholder, when the message can't be decrypted, because the DB "
+                             "access "
+                             "failed.")
+                            .toStdString();
+                        break;
+                case olm::DecryptionErrorCode::DecryptionFailed:
+                        nhlog::crypto()->critical(
+                          "failed to decrypt message with index ({}, {}, {}): {}",
+                          index.room_id,
+                          index.session_id,
+                          index.sender_key,
+                          decryptionResult.error_message.value_or(""));
+                        dummy.content.body =
+                          tr("-- Decryption Error (%1) --",
+                             "Placeholder, when the message can't be decrypted. In this case, the "
+                             "Olm "
+                             "decrytion returned an error, which is passed as %1.")
+                            .arg(
+                              QString::fromStdString(decryptionResult.error_message.value_or("")))
+                            .toStdString();
+                        break;
+                case olm::DecryptionErrorCode::ParsingFailed:
+                        dummy.content.body =
+                          tr("-- Encrypted Event (Unknown event type) --",
+                             "Placeholder, when the message was decrypted, but we couldn't parse "
+                             "it, because "
+                             "Nheko/mtxclient don't support that event type yet.")
+                            .toStdString();
+                        break;
+                case olm::DecryptionErrorCode::ReplayAttack:
+                        nhlog::crypto()->critical(
+                          "Reply attack while decryptiong event {} in room {} from {}!",
+                          e.event_id,
+                          room_id_,
+                          index.sender_key);
+                        dummy.content.body =
+                          tr("-- Reply attack! This message index was reused! --").toStdString();
+                        break;
+                case olm::DecryptionErrorCode::UnknownFingerprint:
+                        // TODO: don't fail, just show in UI.
+                        nhlog::crypto()->critical("Message by unverified fingerprint {}",
+                                                  index.sender_key);
+                        dummy.content.body =
+                          tr("-- Message by unverified device! --").toStdString();
+                        break;
                 }
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failed to check megolm session's existence: {}", e.what());
-                dummy.content.body = tr("-- Decryption Error (failed to communicate with DB) --",
-                                        "Placeholder, when the message can't be decrypted, because "
-                                        "the DB access failed when trying to lookup the session.")
-                                       .toStdString();
                 return asCacheEntry(std::move(dummy));
         }
 
@@ -547,6 +620,11 @@ EventStore::decryptEvent(const IdIndex &idx,
                                 "Nheko/mtxclient don't support that event type yet.")
                                .toStdString();
         return asCacheEntry(std::move(dummy));
+        auto encInfo = mtx::accessors::file(decryptionResult.event.value());
+        if (encInfo)
+                emit newEncryptedImage(encInfo.value());
+
+        return asCacheEntry(std::move(decryptionResult.event.value()));
 }
 
 mtx::events::collections::TimelineEvents *
@@ -608,6 +686,12 @@ EventStore::fetchMore()
 
         http::client()->messages(
           opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
+                  if (cache::client()->previousBatchToken(room_id_) != opts.from) {
+                          nhlog::net()->warn("Cache cleared while fetching more messages, dropping "
+                                             "/messages response");
+                          emit fetchedMore();
+                          return;
+                  }
                   if (err) {
                           nhlog::net()->error("failed to call /messages ({}): {} - {} - {}",
                                               opts.room_id,

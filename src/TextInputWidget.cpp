@@ -453,6 +453,15 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         topLayout_->setSpacing(0);
         topLayout_->setContentsMargins(13, 1, 13, 0);
 
+#ifdef GSTREAMER_AVAILABLE
+        callBtn_ = new FlatButton(this);
+        changeCallButtonState(WebRTCSession::State::DISCONNECTED);
+        connect(&WebRTCSession::instance(),
+                &WebRTCSession::stateChanged,
+                this,
+                &TextInputWidget::changeCallButtonState);
+#endif
+
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");
 
@@ -521,6 +530,9 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         emojiBtn_->setIcon(emoji_icon);
         emojiBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
+#ifdef GSTREAMER_AVAILABLE
+        topLayout_->addWidget(callBtn_);
+#endif
         topLayout_->addWidget(sendFileBtn_);
         topLayout_->addWidget(input_);
         topLayout_->addWidget(emojiBtn_);
@@ -528,6 +540,9 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         setLayout(topLayout_);
 
+#ifdef GSTREAMER_AVAILABLE
+        connect(callBtn_, &FlatButton::clicked, this, &TextInputWidget::callButtonPress);
+#endif
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
         connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
@@ -566,27 +581,29 @@ void
 TextInputWidget::command(QString command, QString args)
 {
         if (command == "me") {
-                sendEmoteMessage(args);
+                emit sendEmoteMessage(args);
         } else if (command == "join") {
-                sendJoinRoomRequest(args);
+                emit sendJoinRoomRequest(args);
         } else if (command == "invite") {
-                sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "kick") {
-                sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "ban") {
-                sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "unban") {
-                sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "roomnick") {
-                changeRoomNick(args);
+                emit changeRoomNick(args);
         } else if (command == "shrug") {
-                sendTextMessage("¯\\_(ツ)_/¯");
+                emit sendTextMessage("¯\\_(ツ)_/¯");
         } else if (command == "fliptable") {
-                sendTextMessage("(╯°□°)╯︵ ┻━┻");
+                emit sendTextMessage("(╯°□°)╯︵ ┻━┻");
         } else if (command == "unfliptable") {
-                sendTextMessage(" ┯━┯╭( º _ º╭)");
+                emit sendTextMessage(" ┯━┯╭( º _ º╭)");
         } else if (command == "sovietflip") {
-                sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
+                emit sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
+        } else if (command == "clear-timeline") {
+                emit clearRoomTimeline();
         }
 }
 
@@ -618,7 +635,7 @@ TextInputWidget::showUploadSpinner()
         topLayout_->removeWidget(sendFileBtn_);
         sendFileBtn_->hide();
 
-        topLayout_->insertWidget(0, spinner_);
+        topLayout_->insertWidget(1, spinner_);
         spinner_->start();
 }
 
@@ -626,7 +643,7 @@ void
 TextInputWidget::hideUploadSpinner()
 {
         topLayout_->removeWidget(spinner_);
-        topLayout_->insertWidget(0, sendFileBtn_);
+        topLayout_->insertWidget(1, sendFileBtn_);
         sendFileBtn_->show();
         spinner_->stop();
 }
@@ -651,4 +668,20 @@ TextInputWidget::paintEvent(QPaintEvent *)
         QPainter p(this);
 
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+TextInputWidget::changeCallButtonState(WebRTCSession::State state)
+{
+        QIcon icon;
+        if (state == WebRTCSession::State::ICEFAILED ||
+            state == WebRTCSession::State::DISCONNECTED) {
+                callBtn_->setToolTip(tr("Place a call"));
+                icon.addFile(":/icons/icons/ui/place-call.png");
+        } else {
+                callBtn_->setToolTip(tr("Hang up"));
+                icon.addFile(":/icons/icons/ui/end-call.png");
+        }
+        callBtn_->setIcon(icon);
+        callBtn_->setIconSize(QSize(ButtonHeight * 1.1, ButtonHeight * 1.1));
 }

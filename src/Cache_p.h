@@ -218,6 +218,9 @@ public:
           const std::string &room_id);
         void removePendingStatus(const std::string &room_id, const std::string &txn_id);
 
+        //! clear timeline keeping only the latest batch
+        void clearTimeline(const std::string &room_id);
+
         //! Remove old unused data.
         void deleteOldMessages();
         void deleteOldData() noexcept;

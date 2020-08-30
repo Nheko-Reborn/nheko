@@ -53,9 +53,9 @@ namespace strings {
 const QString url_html = "<a href=\"\\1\">\\1</a>";
 const QRegularExpression url_regex(
   // match an URL, that is not quoted, i.e.
-  // vvvvvv match quote via negative lookahead/lookbehind                    vv
-  //       vvvv atomic match url -> fail if there is a " before or after          vvv
-  R"((?<!")(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s<>'"]+[^!,\.\s<>'"\]\)\:]))(?!"))");
+  // vvvvvv match quote via negative lookahead/lookbehind                              vv
+  //          vvvv atomic match url -> fail if there is a " before or after        vvv
+  R"((?<!["'])(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s<>'"]+[^!,\.\s<>'"\]\)\:]))(?!["']))");
 }
 
 // Window geometry.

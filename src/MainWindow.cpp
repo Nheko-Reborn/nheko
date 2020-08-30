@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QLayout>
+#include <QMessageBox>
 #include <QPluginLoader>
 #include <QSettings>
 #include <QShortcut>
@@ -35,6 +36,7 @@
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "WelcomePage.h"
 #include "ui/LoadingIndicator.h"
 #include "ui/OverlayModal.h"
@@ -285,6 +287,14 @@ MainWindow::showChatPage()
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
+        if (WebRTCSession::instance().state() != WebRTCSession::State::DISCONNECTED) {
+                if (QMessageBox::question(this, "nheko", "A call is in progress. Quit?") !=
+                    QMessageBox::Yes) {
+                        event->ignore();
+                        return;
+                }
+        }
+
         if (!qApp->isSavingSession() && isVisible() && pageSupportsTray() &&
             userSettings_->tray()) {
                 event->ignore();
@@ -424,8 +434,17 @@ void
 MainWindow::openLogoutDialog()
 {
         auto dialog = new dialogs::Logout(this);
-        connect(
-          dialog, &dialogs::Logout::loggingOut, this, [this]() { chat_page_->initiateLogout(); });
+        connect(dialog, &dialogs::Logout::loggingOut, this, [this]() {
+                if (WebRTCSession::instance().state() != WebRTCSession::State::DISCONNECTED) {
+                        if (QMessageBox::question(
+                              this, "nheko", "A call is in progress. Log out?") !=
+                            QMessageBox::Yes) {
+                                return;
+                        }
+                        WebRTCSession::instance().end();
+                }
+                chat_page_->initiateLogout();
+        });
 
         showDialog(dialog);
 }

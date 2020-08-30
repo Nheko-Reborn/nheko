@@ -35,6 +35,7 @@
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "Olm.h"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
@@ -93,6 +94,33 @@ Q_DECLARE_METATYPE(RoomInfo)
 
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
+}
+
+static bool
+isHiddenEvent(mtx::events::collections::TimelineEvents e, const std::string &room_id)
+{
+        using namespace mtx::events;
+        if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
+                MegolmSessionIndex index;
+                index.room_id    = room_id;
+                index.session_id = encryptedEvent->content.session_id;
+                index.sender_key = encryptedEvent->content.sender_key;
+
+                auto result = olm::decryptEvent(index, *encryptedEvent);
+                if (!result.error)
+                        e = result.event.value();
+        }
+
+        static constexpr std::initializer_list<EventType> hiddenEvents = {
+          EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
+
+        return std::visit(
+          [](const auto &ev) {
+                  return std::any_of(hiddenEvents.begin(),
+                                     hiddenEvents.end(),
+                                     [ev](EventType type) { return type == ev.type; });
+          },
+          e);
 }
 
 Cache::Cache(const QString &userId, QObject *parent)
@@ -160,7 +188,10 @@ Cache::setup()
         }
 
         try {
-                env_.open(statePath.toStdString().c_str());
+                // NOTE(Nico): We may want to use (MDB_MAPASYNC | MDB_WRITEMAP) in the future, but
+                // it can really mess up our database, so we shouldn't. For now, hopefully
+                // NOMETASYNC is fast enough.
+                env_.open(statePath.toStdString().c_str(), MDB_NOMETASYNC);
         } catch (const lmdb::error &e) {
                 if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
                         throw std::runtime_error("LMDB initialization failed" +
@@ -776,6 +807,7 @@ Cache::runMigrations()
            }},
         };
 
+        nhlog::db()->info("Running migrations, this may take a while!");
         for (const auto &[target_version, migration] : migrations) {
                 if (target_version > stored_version)
                         if (!migration()) {
@@ -783,6 +815,7 @@ Cache::runMigrations()
                                 return false;
                         }
         }
+        nhlog::db()->info("Migrations finished.");
 
         setCurrentFormat();
         return true;
@@ -1608,7 +1641,8 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                 }
 
                 if (!(obj["type"] == "m.room.message" || obj["type"] == "m.sticker" ||
-                      obj["type"] == "m.room.encrypted"))
+                      obj["type"] == "m.call.invite" || obj["type"] == "m.call.answer" ||
+                      obj["type"] == "m.call.hangup" || obj["type"] == "m.room.encrypted"))
                         continue;
 
                 mtx::events::collections::TimelineEvent te;
@@ -2326,6 +2360,11 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
 
                 lmdb::val event_id = event_id_val;
 
+                json orderEntry        = json::object();
+                orderEntry["event_id"] = event_id_val;
+                if (first && !res.prev_batch.empty())
+                        orderEntry["prev_batch"] = res.prev_batch;
+
                 lmdb::val txn_order;
                 if (!txn_id.empty() &&
                     lmdb::dbi_get(txn, evToOrderDb, lmdb::val(txn_id), txn_order)) {
@@ -2339,7 +2378,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                                 lmdb::dbi_del(txn, msg2orderDb, lmdb::val(txn_id));
                         }
 
-                        lmdb::dbi_put(txn, orderDb, txn_order, event_id);
+                        lmdb::dbi_put(txn, orderDb, txn_order, lmdb::val(orderEntry.dump()));
                         lmdb::dbi_put(txn, evToOrderDb, event_id, txn_order);
                         lmdb::dbi_del(txn, evToOrderDb, lmdb::val(txn_id));
 
@@ -2411,10 +2450,6 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
 
                         ++index;
 
-                        json orderEntry        = json::object();
-                        orderEntry["event_id"] = event_id_val;
-                        if (first && !res.prev_batch.empty())
-                                orderEntry["prev_batch"] = res.prev_batch;
                         first = false;
 
                         nhlog::db()->debug("saving '{}'", orderEntry.dump());
@@ -2426,7 +2461,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
 
                         // TODO(Nico): Allow blacklisting more event types in UI
-                        if (event["type"] != "m.reaction" && event["type"] != "m.dummy") {
+                        if (!isHiddenEvent(e, room_id)) {
                                 ++msgIndex;
                                 lmdb::cursor_put(msgCursor.handle(),
                                                  lmdb::val(&msgIndex, sizeof(msgIndex)),
@@ -2462,6 +2497,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         auto relationsDb = getRelationsDb(txn, room_id);
 
         auto orderDb     = getEventOrderDb(txn, room_id);
+        auto evToOrderDb = getEventToOrderDb(txn, room_id);
         auto msg2orderDb = getMessageToOrderDb(txn, room_id);
         auto order2msgDb = getOrderToMessageDb(txn, room_id);
 
@@ -2505,9 +2541,10 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
 
                 lmdb::dbi_put(
                   txn, orderDb, lmdb::val(&index, sizeof(index)), lmdb::val(orderEntry.dump()));
+                lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
 
                 // TODO(Nico): Allow blacklisting more event types in UI
-                if (event["type"] != "m.reaction" && event["type"] != "m.dummy") {
+                if (!isHiddenEvent(e, room_id)) {
                         --msgIndex;
                         lmdb::dbi_put(
                           txn, order2msgDb, lmdb::val(&msgIndex, sizeof(msgIndex)), event_id);
@@ -2536,6 +2573,94 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         txn.commit();
 
         return msgIndex;
+}
+
+void
+Cache::clearTimeline(const std::string &room_id)
+{
+        auto txn         = lmdb::txn::begin(env_);
+        auto eventsDb    = getEventsDb(txn, room_id);
+        auto relationsDb = getRelationsDb(txn, room_id);
+
+        auto orderDb     = getEventOrderDb(txn, room_id);
+        auto evToOrderDb = getEventToOrderDb(txn, room_id);
+        auto msg2orderDb = getMessageToOrderDb(txn, room_id);
+        auto order2msgDb = getOrderToMessageDb(txn, room_id);
+
+        lmdb::val indexVal, val;
+        auto cursor = lmdb::cursor::open(txn, orderDb);
+
+        bool start                   = true;
+        bool passed_pagination_token = false;
+        while (cursor.get(indexVal, val, start ? MDB_LAST : MDB_PREV)) {
+                start = false;
+                json obj;
+
+                try {
+                        obj = json::parse(std::string_view(val.data(), val.size()));
+                } catch (std::exception &) {
+                        // workaround bug in the initial db format, where we sometimes didn't store
+                        // json...
+                        obj = {{"event_id", std::string(val.data(), val.size())}};
+                }
+
+                if (passed_pagination_token) {
+                        if (obj.count("event_id") != 0) {
+                                lmdb::val event_id = obj["event_id"].get<std::string>();
+                                lmdb::dbi_del(txn, evToOrderDb, event_id);
+                                lmdb::dbi_del(txn, eventsDb, event_id);
+
+                                lmdb::dbi_del(txn, relationsDb, event_id);
+
+                                lmdb::val order{};
+                                bool exists = lmdb::dbi_get(txn, msg2orderDb, event_id, order);
+                                if (exists) {
+                                        lmdb::dbi_del(txn, order2msgDb, order);
+                                        lmdb::dbi_del(txn, msg2orderDb, event_id);
+                                }
+                        }
+                        lmdb::cursor_del(cursor);
+                } else {
+                        if (obj.count("prev_batch") != 0)
+                                passed_pagination_token = true;
+                }
+        }
+
+        auto msgCursor = lmdb::cursor::open(txn, order2msgDb);
+        start          = true;
+        while (msgCursor.get(indexVal, val, start ? MDB_LAST : MDB_PREV)) {
+                start = false;
+
+                lmdb::val eventId;
+                bool innerStart = true;
+                bool found      = false;
+                while (cursor.get(indexVal, eventId, innerStart ? MDB_LAST : MDB_PREV)) {
+                        innerStart = false;
+
+                        json obj;
+                        try {
+                                obj = json::parse(std::string_view(eventId.data(), eventId.size()));
+                        } catch (std::exception &) {
+                                obj = {{"event_id", std::string(eventId.data(), eventId.size())}};
+                        }
+
+                        if (obj["event_id"] == std::string(val.data(), val.size())) {
+                                found = true;
+                                break;
+                        }
+                }
+
+                if (!found)
+                        break;
+        }
+
+        do {
+                lmdb::cursor_del(msgCursor);
+        } while (msgCursor.get(indexVal, val, MDB_PREV));
+
+        cursor.close();
+        msgCursor.close();
+        txn.commit();
 }
 
 mtx::responses::Notifications
@@ -2676,11 +2801,13 @@ Cache::deleteOldMessages()
         auto room_ids = getRoomIds(txn);
 
         for (const auto &room_id : room_ids) {
-                auto orderDb  = getEventOrderDb(txn, room_id);
-                auto o2m      = getOrderToMessageDb(txn, room_id);
-                auto m2o      = getMessageToOrderDb(txn, room_id);
-                auto eventsDb = getEventsDb(txn, room_id);
-                auto cursor   = lmdb::cursor::open(txn, orderDb);
+                auto orderDb     = getEventOrderDb(txn, room_id);
+                auto evToOrderDb = getEventToOrderDb(txn, room_id);
+                auto o2m         = getOrderToMessageDb(txn, room_id);
+                auto m2o         = getMessageToOrderDb(txn, room_id);
+                auto eventsDb    = getEventsDb(txn, room_id);
+                auto relationsDb = getRelationsDb(txn, room_id);
+                auto cursor      = lmdb::cursor::open(txn, orderDb);
 
                 uint64_t first, last;
                 if (cursor.get(indexVal, val, MDB_LAST)) {
@@ -2700,13 +2827,16 @@ Cache::deleteOldMessages()
 
                 bool start = true;
                 while (cursor.get(indexVal, val, start ? MDB_FIRST : MDB_NEXT) &&
-                       message_count-- < MAX_RESTORED_MESSAGES) {
+                       message_count-- > MAX_RESTORED_MESSAGES) {
                         start    = false;
                         auto obj = json::parse(std::string_view(val.data(), val.size()));
 
                         if (obj.count("event_id") != 0) {
                                 lmdb::val event_id = obj["event_id"].get<std::string>();
+                                lmdb::dbi_del(txn, evToOrderDb, event_id);
                                 lmdb::dbi_del(txn, eventsDb, event_id);
+
+                                lmdb::dbi_del(txn, relationsDb, event_id);
 
                                 lmdb::val order{};
                                 bool exists = lmdb::dbi_get(txn, m2o, event_id, order);

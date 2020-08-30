@@ -75,6 +75,14 @@ sudo eselect repository enable matrix
 sudo emerge -a nheko
 ```
 
+#### Nix(os)
+
+```bash
+nix-env -iA nixpkgs.nheko
+# or
+nix-shell -p nheko --run nheko
+```
+
 #### Alpine Linux (and postmarketOS)
 
 Make sure you have the testing repositories from `edge` enabled. Note that this is not needed on postmarketOS.

@@ -77,6 +77,8 @@ UserSettings::load()
         presence_ =
           settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
             .value<Presence>();
+        useStunServer_      = settings.value("user/use_stun_server", false).toBool();
+        defaultAudioSource_ = settings.value("user/default_audio_source", QString()).toString();
 
         applyTheme();
 }
@@ -280,6 +282,26 @@ UserSettings::setTheme(QString theme)
 }
 
 void
+UserSettings::setUseStunServer(bool useStunServer)
+{
+        if (useStunServer == useStunServer_)
+                return;
+        useStunServer_ = useStunServer;
+        emit useStunServerChanged(useStunServer);
+        save();
+}
+
+void
+UserSettings::setDefaultAudioSource(const QString &defaultAudioSource)
+{
+        if (defaultAudioSource == defaultAudioSource_)
+                return;
+        defaultAudioSource_ = defaultAudioSource;
+        emit defaultAudioSourceChanged(defaultAudioSource);
+        save();
+}
+
+void
 UserSettings::applyTheme()
 {
         QFile stylefile;
@@ -364,6 +386,8 @@ UserSettings::save()
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
         settings.setValue("presence", QVariant::fromValue(presence_));
+        settings.setValue("use_stun_server", useStunServer_);
+        settings.setValue("default_audio_source", defaultAudioSource_);
 
         settings.endGroup();
 
@@ -429,6 +453,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         markdown_                 = new Toggle{this};
         desktopNotifications_     = new Toggle{this};
         alertOnNotification_      = new Toggle{this};
+        useStunServer_            = new Toggle{this};
         scaleFactorCombo_         = new QComboBox{this};
         fontSizeCombo_            = new QComboBox{this};
         fontSelectionCombo_       = new QComboBox{this};
@@ -481,6 +506,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         timelineMaxWidthSpin_->setMinimum(0);
         timelineMaxWidthSpin_->setMaximum(100'000'000);
         timelineMaxWidthSpin_->setSingleStep(10);
+
+        auto callsLabel = new QLabel{tr("CALLS"), this};
+        callsLabel->setFixedHeight(callsLabel->minimumHeight() + LayoutTopMargin);
+        callsLabel->setAlignment(Qt::AlignBottom);
+        callsLabel->setFont(font);
+        useStunServer_ = new Toggle{this};
+
+        defaultAudioSourceValue_ = new QLabel(this);
+        defaultAudioSourceValue_->setFont(font);
 
         auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
         encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
@@ -612,6 +646,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 #endif
 
         boxWrap(tr("Theme"), themeCombo_);
+
+        formLayout_->addRow(callsLabel);
+        formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Allow fallback call assist server"),
+                useStunServer_,
+                tr("Will use turn.matrix.org as assist when your home server does not offer one."));
+        boxWrap(tr("Default audio source device"), defaultAudioSourceValue_);
+
         formLayout_->addRow(encryptionLabel_);
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Device ID"), deviceIdValue_);
@@ -724,6 +766,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setEnlargeEmojiOnlyMessages(!disabled);
         });
 
+        connect(useStunServer_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setUseStunServer(!disabled);
+        });
+
         connect(timelineMaxWidthSpin_,
                 qOverload<int>(&QSpinBox::valueChanged),
                 this,
@@ -766,6 +812,8 @@ UserSettingsPage::showEvent(QShowEvent *)
         enlargeEmojiOnlyMessages_->setState(!settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
+        useStunServer_->setState(!settings_->useStunServer());
+        defaultAudioSourceValue_->setText(settings_->defaultAudioSource());
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));

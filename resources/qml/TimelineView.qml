@@ -21,7 +21,6 @@ Page {
 	property real highlightHue: colors.highlight.hslHue
 	property real highlightSat: colors.highlight.hslSaturation
 	property real highlightLight: colors.highlight.hslLightness
-	property variant userProfile
 
 	palette: colors
 
@@ -287,6 +286,7 @@ Page {
                         width: contentWidth * 1.2
 
                         horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
 						background: Rectangle {
 							radius: parent.height / 2
 							color: colors.base

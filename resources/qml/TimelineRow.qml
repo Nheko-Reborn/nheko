@@ -130,6 +130,7 @@ Item {
 		Label {
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			text: model.timestamp.toLocaleTimeString("HH:mm")
+			width: Math.max(implicitWidth, text.length*fontMetrics.maximumCharacterWidth)
 			color: inactiveColors.text
 
 			MouseArea{
