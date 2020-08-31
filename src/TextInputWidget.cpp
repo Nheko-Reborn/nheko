@@ -129,10 +129,10 @@ void
 FilteredTextEdit::insertCompletion(QString completion)
 {
         // Paint the current word and replace it with 'completion'
-        auto cur_word = wordUnderCursor();
+        auto cur_text = textAfterPosition(trigger_pos_);
         auto tc       = textCursor();
-        tc.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, cur_word.length());
-        tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, cur_word.length());
+        tc.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, cur_text.length());
+        tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, cur_text.length());
         tc.insertText(completion);
         setTextCursor(tc);
 }
@@ -248,8 +248,8 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         }
         case Qt::Key_Colon: {
                 QTextEdit::keyPressEvent(event);
+                trigger_pos_      = textCursor().position() - 1;
                 emoji_popup_open_ = true;
-                emoji_completion_model_->setFilterRegExp(wordUnderCursor());
                 break;
         }
         case Qt::Key_Return:
@@ -311,15 +311,15 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 if (isModifier)
                         return;
 
-                if (emoji_popup_open_ && wordUnderCursor().length() > 2) {
+                if (emoji_popup_open_ && textAfterPosition(trigger_pos_).length() > 2) {
                         // Update completion
-                        emoji_completion_model_->setFilterRegExp(wordUnderCursor());
+                        emoji_completion_model_->setFilterRegExp(textAfterPosition(trigger_pos_));
                         completer_->complete(completerRect());
                 }
 
                 if (emoji_popup_open_ &&
                     (completer_->completionCount() < 1 ||
-                     !wordUnderCursor().contains(QRegExp(":[^\r\n\t\f\v :]+$")))) {
+                     !textAfterPosition(trigger_pos_).contains(QRegExp(":[^\r\n\t\f\v :]+$")))) {
                         // No completions for this word or another word than the completer was
                         // started with
                         emoji_popup_open_ = false;
@@ -441,7 +441,8 @@ FilteredTextEdit::completerRect()
         // Move left edge to the beginning of the word
         auto cursor = textCursor();
         auto rect   = cursorRect();
-        cursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, wordUnderCursor().length());
+        cursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 
+        		textAfterPosition(trigger_pos_).length());
         auto cursor_global_x  = viewport()->mapToGlobal(cursorRect(cursor).topLeft()).x();
         auto rect_global_left = viewport()->mapToGlobal(rect.bottomLeft()).x();
         auto dx               = qAbs(rect_global_left - cursor_global_x);

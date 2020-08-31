@@ -86,6 +86,7 @@ private:
         bool emoji_popup_open_ = false;
         CompletionModel *emoji_completion_model_;
         std::deque<QString> true_history_, working_history_;
+        int trigger_pos_; // Where emoji completer was triggered
         size_t history_index_;
         QCompleter *completer_;
         QTimer *typingTimer_;
@@ -116,7 +117,14 @@ private:
                 cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
                 return cursor.selectedText();
         }
-        QString wordUnderCursor()
+        QString textAfterPosition(int pos)
+        {
+                auto tc = textCursor();
+                tc.setPosition(pos);
+                tc.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+                return tc.selectedText();
+        }
+        /*QString wordUnderCursor()
         {
                 auto tc          = textCursor();
                 auto editor_text = toPlainText();
@@ -130,7 +138,7 @@ private:
                 // Revert back
                 std::reverse(text.begin(), text.end());
                 return text;
-        }
+        }*/
 
         dialogs::PreviewUploadOverlay previewDialog_;
 
