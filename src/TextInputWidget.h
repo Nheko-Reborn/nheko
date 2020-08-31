@@ -33,8 +33,10 @@
 
 struct SearchResult;
 
+class CompletionModel;
 class FlatButton;
 class LoadingIndicator;
+class QCompleter;
 
 class FilteredTextEdit : public QTextEdit
 {
@@ -80,8 +82,12 @@ protected:
         }
 
 private:
+        bool emoji_popup_open_ = false;
+        CompletionModel *emoji_completion_model_;
         std::deque<QString> true_history_, working_history_;
+        int trigger_pos_; // Where emoji completer was triggered
         size_t history_index_;
+        QCompleter *completer_;
         QTimer *typingTimer_;
 
         SuggestionsPopup suggestionsPopup_;
@@ -103,12 +109,19 @@ private:
         {
                 return pos == atTriggerPosition_ + anchorWidth(anchor);
         }
-
+        QRect completerRect();
         QString query()
         {
                 auto cursor = textCursor();
                 cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
                 return cursor.selectedText();
+        }
+        QString textAfterPosition(int pos)
+        {
+                auto tc = textCursor();
+                tc.setPosition(pos);
+                tc.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+                return tc.selectedText();
         }
 
         dialogs::PreviewUploadOverlay previewDialog_;
@@ -116,6 +129,7 @@ private:
         //! Latest position of the '@' character that triggers the username completer.
         int atTriggerPosition_ = -1;
 
+        void insertCompletion(QString completion);
         void textChanged();
         void uploadData(const QByteArray data, const QString &media, const QString &filename);
         void afterCompletion(int);
