@@ -27,8 +27,6 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QtConcurrent>
-#include <qnamespace.h>
-#include <qregexp.h>
 
 #include "Cache.h"
 #include "ChatPage.h"
@@ -317,9 +315,9 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                         completer_->complete(completerRect());
                 }
 
-                if (emoji_popup_open_ &&
-                    (completer_->completionCount() < 1 ||
-                     !textAfterPosition(trigger_pos_).contains(QRegExp(":[^\r\n\t\f\v :]+$")))) {
+                if (emoji_popup_open_ && (completer_->completionCount() < 1 ||
+                                          !textAfterPosition(trigger_pos_)
+                                             .contains(QRegularExpression(":[^\r\n\t\f\v :]+$")))) {
                         // No completions for this word or another word than the completer was
                         // started with
                         emoji_popup_open_ = false;
@@ -441,8 +439,8 @@ FilteredTextEdit::completerRect()
         // Move left edge to the beginning of the word
         auto cursor = textCursor();
         auto rect   = cursorRect();
-        cursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 
-        		textAfterPosition(trigger_pos_).length());
+        cursor.movePosition(
+          QTextCursor::Left, QTextCursor::MoveAnchor, textAfterPosition(trigger_pos_).length());
         auto cursor_global_x  = viewport()->mapToGlobal(cursorRect(cursor).topLeft()).x();
         auto rect_global_left = viewport()->mapToGlobal(rect.bottomLeft()).x();
         auto dx               = qAbs(rect_global_left - cursor_global_x);
