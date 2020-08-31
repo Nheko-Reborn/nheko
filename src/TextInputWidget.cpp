@@ -256,12 +256,13 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Enter:
                 if (emoji_popup_open_) {
                         if (!completer_->popup()->currentIndex().isValid()) {
-                        	// No completion to select, do normal behavior
-                        	completer_->popup()->hide();
-                        	emoji_popup_open_ = false;
-                        } 
-                    	else
-                    		event->ignore(); 
+                                // No completion to select, do normal behavior
+                                completer_->popup()->hide();
+                                emoji_popup_open_ = false;
+                        } else {
+                                event->ignore();
+                                return;
+                        }
                 }
 
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
