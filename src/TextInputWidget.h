@@ -31,7 +31,7 @@
 
 struct SearchResult;
 
-class CompletionModel;
+class CompletionProxyModel;
 class FlatButton;
 class LoadingIndicator;
 class QCompleter;
@@ -72,7 +72,7 @@ protected:
 
 private:
         bool emoji_popup_open_ = false;
-        CompletionModel *emoji_completion_model_;
+        CompletionProxyModel *emoji_completion_model_;
         std::deque<QString> true_history_, working_history_;
         int trigger_pos_; // Where emoji completer was triggered
         size_t history_index_;

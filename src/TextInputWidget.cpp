@@ -30,7 +30,7 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
-#include "CompletionModel.h"
+#include "CompletionProxyModel.h"
 #include "Logging.h"
 #include "TextInputWidget.h"
 #include "Utils.h"
@@ -70,7 +70,7 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
         completer_->setWidget(this);
         auto model = new emoji::EmojiSearchModel(this);
         model->sort(0, Qt::AscendingOrder);
-        completer_->setModel((emoji_completion_model_ = new CompletionModel(model, this)));
+        completer_->setModel((emoji_completion_model_ = new CompletionProxyModel(model, this)));
         completer_->setModelSorting(QCompleter::UnsortedModel);
         completer_->popup()->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         completer_->popup()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
