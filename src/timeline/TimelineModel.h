@@ -197,7 +197,6 @@ public:
         Q_INVOKABLE QString formatGuestAccessEvent(QString id);
         Q_INVOKABLE QString formatPowerLevelEvent(QString id);
 
-        Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid) const;

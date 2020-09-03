@@ -167,8 +167,9 @@ Page {
 
 						width: avatarSize
 						height: avatarSize
-						url: chat.model.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
-						displayName: chat.model.roomName
+
+						url: chat.model ? chat.model.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
+						displayName: chat.model ? chat.model.roomName : qsTr("No room selected")
 
 						MouseArea {
 							anchors.fill: parent
@@ -182,7 +183,8 @@ Page {
 						Layout.row: 0
 
 						font.pointSize: fontMetrics.font.pointSize * 1.1
-						text: chat.model.roomName
+
+						text: chat.model ? chat.model.roomName : qsTr("No room selected")
 
 						MouseArea {
 							anchors.fill: parent
@@ -193,9 +195,10 @@ Page {
 						Layout.fillWidth: true
 						Layout.column: 2
 						Layout.row: 1
-						text: chat.model.roomTopic
 						Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
 						clip: true
+
+						text: chat.model ? chat.model.roomTopic : ""
 					}
 
 					ImageButton {
@@ -387,7 +390,7 @@ Page {
 
 						Label { 
 							id: userName
-							text: chat.model.escapeEmoji(modelData.userName)
+							text: timelineManager.escapeEmoji(modelData.userName)
 							color: timelineManager.userColor(modelData.userId, colors.window)
 							textFormat: Text.RichText
 

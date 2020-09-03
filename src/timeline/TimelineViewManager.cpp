@@ -206,6 +206,12 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         }
 }
 
+QString
+TimelineViewManager::escapeEmoji(QString str) const
+{
+        return utils::replaceEmoji(str);
+}
+
 void
 TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
 {

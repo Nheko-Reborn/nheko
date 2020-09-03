@@ -719,12 +719,6 @@ TimelineModel::formatDateSeparator(QDate date) const
         return date.toString(fmt);
 }
 
-QString
-TimelineModel::escapeEmoji(QString str) const
-{
-        return utils::replaceEmoji(str);
-}
-
 void
 TimelineModel::viewRawMessage(QString id) const
 {
@@ -1389,7 +1383,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
         QStringList uidWithoutLast;
 
         auto formatUser = [this, bg](const QString &user_id) -> QString {
-                auto uncoloredUsername = escapeEmoji(displayName(user_id));
+                auto uncoloredUsername = utils::replaceEmoji(displayName(user_id));
                 QString prefix =
                   QString("<font color=\"%1\">").arg(manager_->userColor(user_id, bg).name());
 
@@ -1439,7 +1433,7 @@ TimelineModel::formatJoinRuleEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         switch (event->content.join_rule) {
         case mtx::events::state::JoinRule::Public:
@@ -1464,7 +1458,7 @@ TimelineModel::formatGuestAccessEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         switch (event->content.guest_access) {
         case mtx::events::state::AccessState::CanJoin:
@@ -1489,7 +1483,7 @@ TimelineModel::formatHistoryVisibilityEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         switch (event->content.history_visibility) {
         case mtx::events::state::Visibility::WorldReadable:
@@ -1522,7 +1516,7 @@ TimelineModel::formatPowerLevelEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         // TODO: power levels rendering is actually a bit complex. work on this later.
         return tr("%1 has changed the room's permissions.").arg(name);
@@ -1551,7 +1545,7 @@ TimelineModel::formatMemberEvent(QString id)
         }
 
         QString user = QString::fromStdString(event->state_key);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
         QString rendered;
 
         // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
