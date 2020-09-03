@@ -50,6 +50,8 @@ Rectangle {
 		anchors.bottom: avatar.bottom
 		anchors.right: avatar.right
 
+		visible: !!userid
+
 		height: avatar.height / 6
 		width: height
 		radius: settings.avatarCircles ? height / 2 : height / 4

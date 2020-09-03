@@ -200,7 +200,8 @@ MainWindow::adjustSideBars()
         const uint64_t timelineWidth     = chat_page_->timelineWidth();
         const uint64_t minAvailableWidth = sz.collapsePoint + sz.groups;
 
-        if (timelineWidth < minAvailableWidth && !chat_page_->isSideBarExpanded()) {
+        nhlog::ui()->info("timelineWidth: {}, min {}", timelineWidth, minAvailableWidth);
+        if (timelineWidth < minAvailableWidth) {
                 chat_page_->hideSideBars();
         } else {
                 chat_page_->showSideBars();

@@ -518,6 +518,25 @@ TimelineModel::fetchMore(const QModelIndex &)
 }
 
 void
+TimelineModel::syncState(const mtx::responses::State &s)
+{
+        using namespace mtx::events;
+
+        for (const auto &e : s.events) {
+                if (std::holds_alternative<StateEvent<state::Avatar>>(e))
+                        emit roomAvatarUrlChanged();
+                else if (std::holds_alternative<StateEvent<state::Name>>(e))
+                        emit roomNameChanged();
+                else if (std::holds_alternative<StateEvent<state::Topic>>(e))
+                        emit roomTopicChanged();
+                else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
+                        emit roomAvatarUrlChanged();
+                        emit roomNameChanged();
+                }
+        }
+}
+
+void
 TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
         if (timeline.events.empty())
@@ -526,6 +545,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         events.handleSync(timeline);
 
         using namespace mtx::events;
+
         for (auto e : timeline.events) {
                 if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
                         MegolmSessionIndex index;
@@ -549,6 +569,16 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                                           emit newCallEvent(event);
                           },
                           e);
+                else if (std::holds_alternative<StateEvent<state::Avatar>>(e))
+                        emit roomAvatarUrlChanged();
+                else if (std::holds_alternative<StateEvent<state::Name>>(e))
+                        emit roomNameChanged();
+                else if (std::holds_alternative<StateEvent<state::Topic>>(e))
+                        emit roomTopicChanged();
+                else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
+                        emit roomAvatarUrlChanged();
+                        emit roomNameChanged();
+                }
         }
         updateLastMessage();
 }
@@ -1593,4 +1623,38 @@ TimelineModel::formatMemberEvent(QString id)
         }
 
         return rendered;
+}
+
+QString
+TimelineModel::roomName() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return QString::fromStdString(info[room_id_].name);
+}
+
+QString
+TimelineModel::roomAvatarUrl() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return QString::fromStdString(info[room_id_].avatar_url);
+}
+
+QString
+TimelineModel::roomTopic() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return utils::replaceEmoji(utils::linkifyMessage(
+                  utils::escapeBlacklistedHtml(QString::fromStdString(info[room_id_].topic))));
 }

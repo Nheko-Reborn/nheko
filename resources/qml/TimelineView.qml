@@ -115,6 +115,112 @@ Page {
 			z: 3
 		}
 
+		ColumnLayout {
+			anchors.fill: parent
+			Rectangle {
+				id: topBar
+
+				Layout.fillWidth: true
+				implicitHeight: topLayout.height + 16
+				z: 3
+
+				color: colors.base
+
+				GridLayout {
+					id: topLayout
+
+					anchors.left: parent.left
+					anchors.right: parent.right
+					anchors.margins: 8
+					anchors.verticalCenter: parent.verticalCenter
+
+					//Layout.margins: 8
+
+					ImageButton {
+						id: backToRoomsButton
+
+						Layout.column: 0
+						Layout.row: 0
+						Layout.rowSpan: 2
+						Layout.alignment: Qt.AlignVCenter
+
+						visible: timelineManager.isNarrowView
+
+						image: ":/icons/icons/ui/angle-pointing-to-left.png"
+
+						ToolTip.visible: hovered
+						ToolTip.text: qsTr("Back to room list")
+
+						onClicked: timelineManager.backToRooms()
+					}
+
+					Avatar {
+						Layout.column: 1
+						Layout.row: 0
+						Layout.rowSpan: 2
+						Layout.alignment: Qt.AlignVCenter
+
+						width: avatarSize
+						height: avatarSize
+						url: chat.model.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+						displayName: chat.model.roomName
+					}
+
+					Label {
+						Layout.fillWidth: true
+						Layout.column: 2
+						Layout.row: 0
+
+						font.pointSize: fontMetrics.font.pointSize * 1.1
+						text: chat.model.roomName
+					}
+					MatrixText {
+						Layout.fillWidth: true
+						Layout.column: 2
+						Layout.row: 1
+						text: chat.model.roomTopic
+						Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
+						clip: true
+					}
+
+					ImageButton {
+						id: roomOptionsButton
+
+						Layout.column: 3
+						Layout.row: 0
+						Layout.rowSpan: 2
+						Layout.alignment: Qt.AlignVCenter
+
+						image: ":/icons/icons/ui/vertical-ellipsis.png"
+
+						ToolTip.visible: hovered
+						ToolTip.text: qsTr("Room options")
+
+						onClicked: roomOptionsMenu.popup(roomOptionsButton)
+
+						Menu {
+							id: roomOptionsMenu
+							MenuItem {
+								text: qsTr("Invite users")
+								onTriggered: timelineManager.openInviteUsersDialog();
+							}
+							MenuItem {
+								text: qsTr("Members")
+								onTriggered: timelineManager.openMemberListDialog();
+							}
+							MenuItem {
+								text: qsTr("Leave room")
+								onTriggered: timelineManager.openLeaveRoomDialog();
+							}
+							MenuItem {
+								text: qsTr("Settings")
+								onTriggered: timelineManager.openRoomSettings();
+							}
+						}
+					}
+				}
+			}
+
 		ListView {
 			id: chat
 
@@ -122,13 +228,8 @@ Page {
 
 			cacheBuffer: 400
 
-			anchors.horizontalCenter: parent.horizontalCenter
-			anchors.top: parent.top
-			anchors.bottom: chatFooter.top
-			width: parent.width
-
-			anchors.leftMargin: 4
-			anchors.rightMargin: scrollbar.width
+			Layout.fillWidth: true
+			Layout.fillHeight: true
 
 			model: timelineManager.timeline
 
@@ -167,10 +268,6 @@ Page {
 
 			ScrollBar.vertical: ScrollBar {
 				id: scrollbar
-				parent: chat.parent
-				anchors.top: chat.top
-				anchors.right: chat.right
-				anchors.bottom: chat.bottom
 			}
 
 			spacing: 4
@@ -178,9 +275,9 @@ Page {
 
 			onCountChanged: if (atYEnd) model.currentIndex = 0 // Mark last event as read, since we are at the bottom
 
-			property int delegateMaxWidth: (settings.timelineMaxWidth > 100 && (parent.width - settings.timelineMaxWidth) > 32) ? settings.timelineMaxWidth : (parent.width - 32)
+			property int delegateMaxWidth: (settings.timelineMaxWidth > 100 && (parent.width - settings.timelineMaxWidth) > scrollbar.width*2) ? settings.timelineMaxWidth : (parent.width - scrollbar.width*2)
 
-			delegate: Rectangle {
+			delegate: Item {
 				// This would normally be previousSection, but our model's order is inverted.
 				property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
 
@@ -189,7 +286,6 @@ Page {
 				anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 				width: chat.delegateMaxWidth
 				height: section ? section.height + timelinerow.height : timelinerow.height
-				color: "transparent"
 
 				TimelineRow {
 					id: timelinerow
@@ -309,16 +405,12 @@ Page {
 			}
 		}
 
-		Rectangle {
+		Item {
 			id: chatFooter
 
-			height: Math.max(fontMetrics.height * 1.2, footerContent.height)
-			anchors.left: parent.left
-			anchors.right: parent.right
-			anchors.bottom: parent.bottom
+			implicitHeight: Math.max(fontMetrics.height * 1.2, footerContent.height)
+			Layout.fillWidth: true
 			z: 3
-
-			color: "transparent"
 
 			Column {
 				id: footerContent
@@ -381,5 +473,6 @@ Page {
 				}
 			}
 		}
+	}
 	}
 }
