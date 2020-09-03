@@ -260,6 +260,7 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
 
         Components components{};
         std::vector<Color> values;
+        values.reserve(blurhash.size() / 2);
         try {
                 components = unpackComponents(decode83(blurhash.substr(0, 1)));
 
@@ -277,7 +278,7 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
                 return {};
         }
 
-        i.image.reserve(height * width * 3);
+        i.image.reserve(height * width * bytesPerPixel);
 
         for (size_t y = 0; y < height; y++) {
                 for (size_t x = 0; x < width; x++) {
