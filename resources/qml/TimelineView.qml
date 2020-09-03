@@ -126,6 +126,11 @@ Page {
 
 				color: colors.base
 
+				MouseArea {
+					anchors.fill: parent
+					onClicked: timelineManager.openRoomSettings();
+				}
+
 				GridLayout {
 					id: topLayout
 
@@ -164,6 +169,11 @@ Page {
 						height: avatarSize
 						url: chat.model.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
 						displayName: chat.model.roomName
+
+						MouseArea {
+							anchors.fill: parent
+							onClicked: timelineManager.openRoomSettings();
+						}
 					}
 
 					Label {
@@ -173,6 +183,11 @@ Page {
 
 						font.pointSize: fontMetrics.font.pointSize * 1.1
 						text: chat.model.roomName
+
+						MouseArea {
+							anchors.fill: parent
+							onClicked: timelineManager.openRoomSettings();
+						}
 					}
 					MatrixText {
 						Layout.fillWidth: true

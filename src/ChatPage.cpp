@@ -225,6 +225,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
         });
 
+        connect(room_list_, &RoomList::roomChanged, this, [this](QString room_id) {
+                this->current_room_ = room_id;
+        });
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);

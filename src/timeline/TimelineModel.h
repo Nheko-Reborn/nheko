@@ -260,6 +260,7 @@ public slots:
         QString roomName() const;
         QString roomTopic() const;
         QString roomAvatarUrl() const;
+        QString roomId() const { return room_id_; }
 
 private slots:
         void addPendingMessage(mtx::events::collections::TimelineEvents event);

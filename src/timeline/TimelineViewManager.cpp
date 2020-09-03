@@ -253,17 +253,17 @@ TimelineViewManager::openInviteUsersDialog()
 void
 TimelineViewManager::openMemberListDialog() const
 {
-        MainWindow::instance()->openMemberListDialog();
+        MainWindow::instance()->openMemberListDialog(timeline_->roomId());
 }
 void
 TimelineViewManager::openLeaveRoomDialog() const
 {
-        MainWindow::instance()->openLeaveRoomDialog();
+        MainWindow::instance()->openLeaveRoomDialog(timeline_->roomId());
 }
 void
 TimelineViewManager::openRoomSettings() const
 {
-        MainWindow::instance()->openRoomSettings();
+        MainWindow::instance()->openRoomSettings(timeline_->roomId());
 }
 
 void
