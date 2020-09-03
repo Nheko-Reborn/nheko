@@ -53,7 +53,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                 this,
                 [this](const mtx::responses::Messages &res) {
                         uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
-                        if (newFirst == first)
+                        if (newFirst == first && !res.chunk.empty())
                                 fetchMore();
                         else {
                                 emit beginInsertRows(toExternalIdx(newFirst),
