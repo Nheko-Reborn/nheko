@@ -1,11 +1,14 @@
 #include "blurhash.hpp"
 
-#define _USE_MATH_DEFINES
 #include <algorithm>
 #include <array>
 #include <cassert>
 #include <cmath>
 #include <stdexcept>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #ifdef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
@@ -248,7 +251,7 @@ multiplyBasisFunction(Components components, int width, int height, unsigned cha
 
 namespace blurhash {
 Image
-decode(std::string_view blurhash, size_t width, size_t height)
+decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPixel)
 {
         Image i{};
 
@@ -292,6 +295,9 @@ decode(std::string_view blurhash, size_t width, size_t height)
                         i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.r)));
                         i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.g)));
                         i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.b)));
+
+                        for (size_t p = 3; p < bytesPerPixel; p++)
+                                i.image.push_back(255);
                 }
         }
 
