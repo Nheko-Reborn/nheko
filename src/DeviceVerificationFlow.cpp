@@ -165,7 +165,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         }
 
                         if (this->method == DeviceVerificationFlow::Method::Emoji) {
-                                std::cout<<info<<std::endl;
+                                std::cout << info << std::endl;
                                 this->sasList = this->sas->generate_bytes_emoji(info);
                         } else if (this->method == DeviceVerificationFlow::Method::Decimal) {
                                 this->sasList = this->sas->generate_bytes_decimal(info);

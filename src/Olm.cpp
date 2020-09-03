@@ -139,6 +139,51 @@ handle_olm_message(const OlmMessage &msg)
                 auto payload = try_olm_decryption(msg.sender_key, cipher.second);
 
                 if (!payload.is_null()) {
+                        std::string msg_type = payload["type"];
+
+                        if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
+                                ChatPage::instance()->recievedDeviceVerificationAccept(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationRequest)) {
+                                ChatPage::instance()->recievedDeviceVerificationRequest(
+                                  payload["content"], payload["sender"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationCancel)) {
+                                ChatPage::instance()->recievedDeviceVerificationCancel(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationKey)) {
+                                ChatPage::instance()->recievedDeviceVerificationKey(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationMac)) {
+                                ChatPage::instance()->recievedDeviceVerificationMac(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationStart)) {
+                                ChatPage::instance()->recievedDeviceVerificationStart(
+                                  payload["content"], payload["sender"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationReady)) {
+                                ChatPage::instance()->recievedDeviceVerificationReady(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationDone)) {
+                                ChatPage::instance()->recievedDeviceVerificationDone(
+                                  payload["content"]);
+                                return;
+                        }
+                }
+
+                if (!payload.is_null()) {
                         nhlog::crypto()->debug("decrypted olm payload: {}", payload.dump(2));
                         create_inbound_megolm_session(msg.sender, msg.sender_key, payload);
                         return;

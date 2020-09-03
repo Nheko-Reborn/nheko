@@ -879,7 +879,7 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
         using namespace mtx::identifiers;
 
         json doc = {{"type", mtx::events::to_string(eventType)},
-                    {"content", msg.content},
+                    {"content", json(msg.content)},
                     {"room_id", room_id}};
 
         try {
