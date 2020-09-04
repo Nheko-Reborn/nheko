@@ -59,7 +59,7 @@ public:
                 connect(this, &DeviceInfoModel::queueReset, this, &DeviceInfoModel::reset);
         };
         QHash<int, QByteArray> roleNames() const override;
-        int rowCount(const QModelIndex &parent = QModelIndex()) const
+        int rowCount(const QModelIndex &parent = QModelIndex()) const override
         {
                 (void)parent;
                 return (int)deviceList_.size();

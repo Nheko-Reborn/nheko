@@ -19,7 +19,7 @@ TextEdit {
 			TimelineManager.setHistoryView(match[1])
 			chat.positionViewAtIndex(chat.model.idToIndex(match[2]), ListView.Contain)
 		}
-		else timelineManager.openLink(link)
+		else TimelineManager.openLink(link)
 	}
 	MouseArea
 	{

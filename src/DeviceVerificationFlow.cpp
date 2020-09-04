@@ -28,10 +28,10 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 connect(this->model_,
                         &TimelineModel::updateFlowEventId,
                         this,
-                        [this](std::string event_id) {
+                        [this](std::string event_id_) {
                                 this->relation.rel_type = mtx::common::RelationType::Reference;
-                                this->relation.event_id = event_id;
-                                this->transaction_id    = event_id;
+                                this->relation.event_id = event_id_;
+                                this->transaction_id    = event_id_;
                         });
         }
 
@@ -60,7 +60,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                        msg.hashes.end()) &&
                       (std::find(msg.message_authentication_codes.begin(),
                                  msg.message_authentication_codes.end(),
-                                 "hmac-sha256") != msg.message_authentication_codes.end())) {
+                                 "hkdf-hmac-sha256") != msg.message_authentication_codes.end())) {
                           if (std::find(msg.short_authentication_string.begin(),
                                         msg.short_authentication_string.end(),
                                         mtx::events::msg::SASMethods::Decimal) !=
@@ -236,11 +236,15 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::recievedDeviceVerificationReady,
                 this,
                 [this](const mtx::events::msg::KeyVerificationReady &msg) {
-                        if (!sender && msg.from_device != http::client()->device_id()) {
-                                this->deleteLater();
-                                emit verificationCanceled();
+                        if (!sender) {
+                                if (msg.from_device != http::client()->device_id()) {
+                                        this->deleteLater();
+                                        emit verificationCanceled();
+                                }
+
                                 return;
                         }
+
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
@@ -353,9 +357,9 @@ DeviceVerificationFlow::setMethod(DeviceVerificationFlow::Method method_)
 }
 
 void
-DeviceVerificationFlow::setType(Type type)
+DeviceVerificationFlow::setType(Type type_)
 {
-        this->type = type;
+        this->type = type_;
 }
 
 void
@@ -367,11 +371,11 @@ DeviceVerificationFlow::setSender(bool sender_)
 }
 
 void
-DeviceVerificationFlow::setEventId(std::string event_id)
+DeviceVerificationFlow::setEventId(std::string event_id_)
 {
         this->relation.rel_type = mtx::common::RelationType::Reference;
-        this->relation.event_id = event_id;
-        this->transaction_id    = event_id;
+        this->relation.event_id = event_id_;
+        this->transaction_id    = event_id_;
 }
 
 //! accepts a verification

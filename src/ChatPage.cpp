@@ -606,11 +606,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(
           this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync, Qt::QueuedConnection);
         connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync, Qt::QueuedConnection);
-        connect(this,
-                &ChatPage::tryDelayedSyncCb,
-                this,
-                [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
-                Qt::QueuedConnection);
+        connect(
+          this,
+          &ChatPage::tryDelayedSyncCb,
+          this,
+          [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
+          Qt::QueuedConnection);
 
         connect(this,
                 &ChatPage::newSyncResponse,

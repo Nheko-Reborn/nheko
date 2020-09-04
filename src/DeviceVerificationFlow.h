@@ -10,7 +10,7 @@ class QTimer;
 
 using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
 
-struct TimelineModel;
+class TimelineModel;
 
 class DeviceVerificationFlow : public QObject
 {
