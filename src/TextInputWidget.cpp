@@ -30,6 +30,7 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
+#include "CompletionModelRoles.h"
 #include "CompletionProxyModel.h"
 #include "Logging.h"
 #include "TextInputWidget.h"
@@ -71,6 +72,7 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
         auto model = new emoji::EmojiSearchModel(this);
         model->sort(0, Qt::AscendingOrder);
         completer_->setModel((emoji_completion_model_ = new CompletionProxyModel(model, this)));
+        emoji_completion_model_->setFilterRole(CompletionModel::SearchRole);
         completer_->setModelSorting(QCompleter::UnsortedModel);
         completer_->popup()->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         completer_->popup()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -79,8 +81,8 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                 QOverload<const QModelIndex &>::of(&QCompleter::activated),
                 [this](auto &index) {
                         emoji_popup_open_ = false;
-                        auto emoji        = index.data(emoji::EmojiModel::Unicode).toString();
-                        insertCompletion(emoji);
+                        auto text         = index.data(CompletionModel::CompletionRole).toString();
+                        insertCompletion(text);
                 });
 
         typingTimer_ = new QTimer(this);
@@ -311,7 +313,9 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
                 if (emoji_popup_open_ && textAfterPosition(trigger_pos_).length() > 2) {
                         // Update completion
-                        emoji_completion_model_->setFilterRegExp(textAfterPosition(trigger_pos_));
+                        // Don't include the trigger token in the search
+                        emoji_completion_model_->setFilterWildcard(
+                          textAfterPosition(trigger_pos_).remove(0, 1));
                         completer_->complete(completerRect());
                 }
 
