@@ -132,6 +132,7 @@ Nheko can use bundled version for most of those libraries automatically, if the 
 To use them, you can enable the hunter integration by passing `-DHUNTER_ENABLED=ON`.
 It is probably wise to link those dependencies statically by passing `-DBUILD_SHARED_LIBS=OFF`
 You can select which bundled dependencies you want to use py passing various `-DUSE_BUNDLED_*` flags. By default all dependencies are bundled *if* you enable hunter.
+If you are trying to link `mtxclient` library without hunter make sure the library version(commit) as mentioned in the `CMakeList.txt` is used, as not always nheko `master` is as updated to that of `mtxclient` library's `master`.
 
 The bundle flags are currently:
 
