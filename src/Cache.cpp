@@ -1031,7 +1031,7 @@ Cache::saveState(const mtx::responses::Sync &res)
                 updatedInfo.version = getRoomVersion(txn, statesdb).toStdString();
 
                 // Process the account_data associated with this room
-                if (!res.account_data.events.empty()) {
+                if (!room.second.account_data.events.empty()) {
                         auto accountDataDb = getAccountDataDb(txn, room.first);
 
                         bool has_new_tags = false;
