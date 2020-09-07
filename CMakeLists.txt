@@ -303,6 +303,7 @@ set(SRC_FILES
 	src/TrayIcon.cpp
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
+	src/UsersModel.cpp
 	src/Utils.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
