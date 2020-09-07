@@ -895,14 +895,22 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
                                 }
 
                                 if (userSettings_->hasDesktopNotifications()) {
-                                        notificationsManager.postNotification(
-                                          room_id,
-                                          QString::fromStdString(event_id),
-                                          QString::fromStdString(
-                                            cache::singleRoomInfo(item.room_id).name),
-                                          cache::displayName(room_id, user_id),
-                                          utils::event_body(item.event),
-                                          cache::getRoomAvatar(room_id));
+                                        auto info = cache::singleRoomInfo(item.room_id);
+
+                                        AvatarProvider::resolve(
+                                          QString::fromStdString(info.avatar_url),
+                                          96,
+                                          this,
+                                          [this, room_id, event_id, item, user_id, info](
+                                            QPixmap image) {
+                                                  notificationsManager.postNotification(
+                                                    room_id,
+                                                    QString::fromStdString(event_id),
+                                                    QString::fromStdString(info.name),
+                                                    cache::displayName(room_id, user_id),
+                                                    utils::event_body(item.event),
+                                                    image.toImage());
+                                          });
                                 }
                         }
                 } catch (const lmdb::error &e) {
