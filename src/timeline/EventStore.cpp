@@ -280,71 +280,18 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                         }
                 }
 
+                handle_room_verification(event);
+
                 // decrypting and checking some encrypted messages
                 if (auto encrypted =
                       std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                         &event)) {
-                        auto d_event = decryptEvent({room_id_, encrypted->event_id}, *encrypted);
+                        mtx::events::collections::TimelineEvents *d_event =
+                          decryptEvent({room_id_, encrypted->event_id}, *encrypted);
                         if (std::visit(
                               [](auto e) { return (e.sender != utils::localUser().toStdString()); },
                               *d_event)) {
-                                if (std::get_if<mtx::events::RoomEvent<
-                                      mtx::events::msg::KeyVerificationRequest>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationRequest>>(d_event);
-                                        last_verification_request_event = *msg;
-                                        continue;
-                                } else if (std::get_if<mtx::events::RoomEvent<
-                                             mtx::events::msg::KeyVerificationCancel>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationCancel>>(d_event);
-                                        last_verification_cancel_event = *msg;
-                                        ChatPage::instance()->recievedDeviceVerificationCancel(
-                                          msg->content);
-                                        continue;
-                                } else if (std::get_if<mtx::events::RoomEvent<
-                                             mtx::events::msg::KeyVerificationAccept>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationAccept>>(d_event);
-                                        ChatPage::instance()->recievedDeviceVerificationAccept(
-                                          msg->content);
-                                        continue;
-                                } else if (std::get_if<mtx::events::RoomEvent<
-                                             mtx::events::msg::KeyVerificationKey>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationKey>>(d_event);
-                                        ChatPage::instance()->recievedDeviceVerificationKey(
-                                          msg->content);
-                                        continue;
-                                } else if (std::get_if<mtx::events::RoomEvent<
-                                             mtx::events::msg::KeyVerificationMac>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationMac>>(d_event);
-                                        ChatPage::instance()->recievedDeviceVerificationMac(
-                                          msg->content);
-                                        continue;
-                                } else if (std::get_if<mtx::events::RoomEvent<
-                                             mtx::events::msg::KeyVerificationReady>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationReady>>(d_event);
-                                        ChatPage::instance()->recievedDeviceVerificationReady(
-                                          msg->content);
-                                        continue;
-                                } else if (std::get_if<mtx::events::RoomEvent<
-                                             mtx::events::msg::KeyVerificationDone>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationDone>>(d_event);
-                                        ChatPage::instance()->recievedDeviceVerificationDone(
-                                          msg->content);
-                                        continue;
-                                } else if (std::get_if<mtx::events::RoomEvent<
-                                             mtx::events::msg::KeyVerificationStart>>(d_event)) {
-                                        auto msg = std::get_if<mtx::events::RoomEvent<
-                                          mtx::events::msg::KeyVerificationStart>>(d_event);
-                                        ChatPage::instance()->recievedDeviceVerificationStart(
-                                          msg->content, msg->sender);
-                                        continue;
-                                }
+                                handle_room_verification(*d_event);
                         } else {
                                 // only the key.verification.ready sent by localuser's other device
                                 // is of significance as it is used for detecting accepted request
@@ -365,6 +312,60 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                         emit startDMVerification(last_verification_request_event.value());
                         last_verification_request_event = {};
                 }
+        }
+}
+
+void
+EventStore::handle_room_verification(mtx::events::collections::TimelineEvents event)
+{
+        if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>(&event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>(event);
+                last_verification_request_event = msg;
+                return;
+        } else if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(
+                     &event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>>(event);
+                last_verification_cancel_event = msg;
+                ChatPage::instance()->recievedDeviceVerificationCancel(msg.content);
+                return;
+        } else if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept>>(
+                     &event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept>>(event);
+                ChatPage::instance()->recievedDeviceVerificationAccept(msg.content);
+                return;
+        } else if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey>>(
+                     &event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey>>(event);
+                ChatPage::instance()->recievedDeviceVerificationKey(msg.content);
+                return;
+        } else if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac>>(
+                     &event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac>>(event);
+                ChatPage::instance()->recievedDeviceVerificationMac(msg.content);
+                return;
+        } else if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady>>(
+                     &event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady>>(event);
+                ChatPage::instance()->recievedDeviceVerificationReady(msg.content);
+                return;
+        } else if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone>>(
+                     &event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone>>(event);
+                ChatPage::instance()->recievedDeviceVerificationDone(msg.content);
+                return;
+        } else if (std::get_if<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart>>(
+                     &event)) {
+                auto msg =
+                  std::get<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart>>(event);
+                ChatPage::instance()->recievedDeviceVerificationStart(msg.content, msg.sender);
+                return;
         }
 }
 
