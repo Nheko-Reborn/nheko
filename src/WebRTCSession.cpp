@@ -233,6 +233,8 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
                 return;
         }
 
+        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
+
         // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers
         // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.17.
         // Use a 100ms timeout in the meantime
