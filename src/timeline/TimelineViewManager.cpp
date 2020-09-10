@@ -140,8 +140,12 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           0,
           "UserProfileModel",
           "UserProfile needs to be instantiated on the C++ side");
-        qmlRegisterSingletonInstance("im.nheko", 1, 0, "TimelineManager", this);
-        qmlRegisterSingletonInstance("im.nheko", 1, 0, "Settings", settings.data());
+        qmlRegisterSingletonType<TimelineViewManager>(
+          "im.nheko", 1, 0, "TimelineManager", [this](QQmlEngine *, QJSEngine *) { return this; });
+        qmlRegisterSingletonType<UserSettings>(
+          "im.nheko", 1, 0, "Settings", [this](QQmlEngine *, QJSEngine *) {
+                  return this->settings.data();
+          });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
         qRegisterMetaType<std::vector<DeviceInfo>>();
