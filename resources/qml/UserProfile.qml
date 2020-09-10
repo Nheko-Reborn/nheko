@@ -94,7 +94,7 @@ ApplicationWindow{
 					newFlow.userId = profile.userid;
 					newFlow.sender = true;
 					deviceVerificationList.add(newFlow.tranId);
-					var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest: true});
+					var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest: true,tran_id: newFlow.tranId});
 					dialog.show();
 				}
 			}
@@ -206,7 +206,7 @@ ApplicationWindow{
 										deviceVerificationList.updateProfile(newFlow.userId);
 									}else{
 										deviceVerificationList.add(newFlow.tranId);
-										var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest:false});
+										var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest:false,tran_id: newFlow.tranId});
 										dialog.show();
 									}
 								}

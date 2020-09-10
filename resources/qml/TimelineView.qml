@@ -118,7 +118,7 @@ Page {
 						deviceVerificationList.add(flow.tranId);
 						break;
 				}
-				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: flow,isRequest = isRequest});
+				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: flow,isRequest: isRequest,tran_id: flow.tranId});
 				dialog.show();
 			}
 		}

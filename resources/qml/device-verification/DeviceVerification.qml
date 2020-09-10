@@ -24,6 +24,7 @@ ApplicationWindow {
 
 	property var flow
 	property bool isRequest
+	property var tran_id
 
 	Connections {
 		target: flow
@@ -82,6 +83,7 @@ ApplicationWindow {
                         }
 						onClicked: { 
 							dialog.close(); 
+							deviceVerificationList.remove(tran_id);
 							delete flow; 
 						}
 					}
@@ -141,7 +143,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close();
 							flow.cancelVerification(DeviceVerificationFlow.User);
-							deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(tran_id);
 						}
 					}
 					Item {
@@ -205,7 +207,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification(DeviceVerificationFlow.User);
-							deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(tran_id);
 						}
 					}
 					Item {
@@ -267,7 +269,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
-							deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(tran_id);
 						}
 					}
 					Item {
@@ -426,7 +428,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
-							deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(tran_id);
 						}
 					}
 					Item {
@@ -487,8 +489,7 @@ ApplicationWindow {
 						onClicked: { 
 							dialog.close(); 
 							flow.cancelVerification(DeviceVerificationFlow.User); 
-							deviceVerificationList.remove(flow.tranId);
-							delete flow;
+							deviceVerificationList.remove(tran_id);
 						}
 					}
 					Item {
@@ -534,7 +535,7 @@ ApplicationWindow {
                         }
 						onClicked: {
 							dialog.close()
-							deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(tran_id);
 							delete flow;
 						}
 					}
@@ -578,7 +579,7 @@ ApplicationWindow {
                         }
 						onClicked: {
 							dialog.close();
-							deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(tran_id);
 						}
 					}
 				}
@@ -622,7 +623,7 @@ ApplicationWindow {
 						text: qsTr("Close")
 						onClicked: {
 							dialog.close()
-							deviceVerificationList.remove(flow.tranId);
+							deviceVerificationList.remove(tran_id);
 							delete flow;
 						}
 					}
