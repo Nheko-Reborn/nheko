@@ -176,7 +176,7 @@ createAnswer(GstPromise *promise, gpointer webrtc)
         g_signal_emit_by_name(webrtc, "create-answer", nullptr, promise);
 }
 
-#if GST_CHECK_VERSION(1, 17, 0)
+#if GST_CHECK_VERSION(1, 18, 0)
 void
 iceGatheringStateChanged(GstElement *webrtc,
                          GParamSpec *pspec G_GNUC_UNUSED,
@@ -223,7 +223,7 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
 {
         nhlog::ui()->debug("WebRTC: local candidate: (m-line:{}):{}", mlineIndex, candidate);
 
-#if GST_CHECK_VERSION(1, 17, 0)
+#if GST_CHECK_VERSION(1, 18, 0)
         localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
         return;
 #else
@@ -233,8 +233,10 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
                 return;
         }
 
+        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
+
         // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers
-        // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.17.
+        // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.18.
         // Use a 100ms timeout in the meantime
         static guint timerid = 0;
         if (timerid)
@@ -472,7 +474,7 @@ WebRTCSession::startPipeline(int opusPayloadType)
         gst_element_set_state(pipe_, GST_STATE_READY);
         g_signal_connect(webrtc_, "pad-added", G_CALLBACK(addDecodeBin), pipe_);
 
-#if GST_CHECK_VERSION(1, 17, 0)
+#if GST_CHECK_VERSION(1, 18, 0)
         // capture ICE gathering completion
         g_signal_connect(
           webrtc_, "notify::ice-gathering-state", G_CALLBACK(iceGatheringStateChanged), nullptr);
