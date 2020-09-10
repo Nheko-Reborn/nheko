@@ -82,9 +82,9 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
 						onClicked: { 
-							dialog.close(); 
 							deviceVerificationList.remove(tran_id);
-							delete flow; 
+							flow.deleteFlow();
+							dialog.destroy();  
 						}
 					}
 					Item {
@@ -141,9 +141,9 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
 						onClicked: { 
-							dialog.close();
 							flow.cancelVerification(DeviceVerificationFlow.User);
 							deviceVerificationList.remove(tran_id);
+							dialog.destroy();
 						}
 					}
 					Item {
@@ -205,9 +205,9 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
 						onClicked: { 
-							dialog.close(); 
 							flow.cancelVerification(DeviceVerificationFlow.User);
 							deviceVerificationList.remove(tran_id);
+							dialog.destroy();
 						}
 					}
 					Item {
@@ -266,10 +266,10 @@ ApplicationWindow {
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
-						onClicked: { 
-							dialog.close(); 
+						onClicked: {
 							flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
 							deviceVerificationList.remove(tran_id);
+							dialog.destroy();
 						}
 					}
 					Item {
@@ -425,10 +425,10 @@ ApplicationWindow {
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
-						onClicked: { 
-							dialog.close(); 
+						onClicked: {  
 							flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
 							deviceVerificationList.remove(tran_id);
+							dialog.destroy();
 						}
 					}
 					Item {
@@ -487,9 +487,9 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
 						onClicked: { 
-							dialog.close(); 
 							flow.cancelVerification(DeviceVerificationFlow.User); 
 							deviceVerificationList.remove(tran_id);
+							dialog.destroy();
 						}
 					}
 					Item {
@@ -534,9 +534,9 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
 						onClicked: {
-							dialog.close()
 							deviceVerificationList.remove(tran_id);
-							delete flow;
+							flow.deleteFlow();
+							dialog.destroy();
 						}
 					}
 				}
@@ -578,8 +578,8 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
 						onClicked: {
-							dialog.close();
 							deviceVerificationList.remove(tran_id);
+							dialog.destroy();
 						}
 					}
 				}
@@ -622,9 +622,9 @@ ApplicationWindow {
                         }
 						text: qsTr("Close")
 						onClicked: {
-							dialog.close()
 							deviceVerificationList.remove(tran_id);
-							delete flow;
+							flow.deleteFlow();
+							dialog.destroy()
 						}
 					}
 				}

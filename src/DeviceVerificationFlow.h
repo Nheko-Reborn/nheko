@@ -105,6 +105,7 @@ signals:
         void timedout();
         void verificationCanceled();
         void refreshProfile();
+        void deleteFlow();
 
 private:
         // general

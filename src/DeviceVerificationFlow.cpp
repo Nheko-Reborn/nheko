@@ -41,6 +41,10 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 this->deleteLater();
         });
 
+        connect(this,&DeviceVerificationFlow::deleteFlow,this,[this](){
+                this->deleteLater();
+        });
+
         connect(
           ChatPage::instance(),
           &ChatPage::recievedDeviceVerificationStart,
