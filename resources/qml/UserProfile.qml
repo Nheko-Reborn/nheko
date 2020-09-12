@@ -33,7 +33,7 @@ ApplicationWindow{
 		DeviceVerificationFlow {}
 	}
 
-	background: Item{
+	Item{
 		id: userProfileItem
 		width: userProfileDialog.width
 		height: userProfileDialog.height
@@ -66,9 +66,9 @@ ApplicationWindow{
 				Layout.alignment: Qt.AlignHCenter
 			}
 
-			Label {
+			TextEdit {
 				text: profile.userid
-				fontSizeMode: Text.HorizontalFit
+				selectByMouse: true
 				font.pixelSize: 15
 				color: colors.text
 				Layout.alignment: Qt.AlignHCenter
