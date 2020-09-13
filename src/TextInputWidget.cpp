@@ -246,7 +246,8 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         }
         case Qt::Key_Colon: {
                 QTextEdit::keyPressEvent(event);
-                trigger_pos_      = textCursor().position() - 1;
+                trigger_pos_ = textCursor().position() - 1;
+                emoji_completion_model_->setFilterRegExp("");
                 emoji_popup_open_ = true;
                 break;
         }
