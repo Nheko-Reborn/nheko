@@ -9,7 +9,7 @@ Rectangle {
 	id: bg
 	radius: 10
 	color: colors.dark
-	height: content.height + 24
+	height: Math.round(content.height + 24)
 	width: parent ? parent.width : undefined
 
 	Column { 

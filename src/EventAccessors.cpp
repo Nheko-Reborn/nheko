@@ -248,6 +248,20 @@ struct EventInReplyTo
         }
 };
 
+struct EventRelatesTo
+{
+        template<class Content>
+        using related_ev_id_t = decltype(Content::relates_to.event_id);
+        template<class T>
+        std::string operator()(const mtx::events::Event<T> &e)
+        {
+                if constexpr (is_detected<related_ev_id_t, T>::value) {
+                        return e.content.relates_to.event_id;
+                }
+                return "";
+        }
+};
+
 struct EventTransactionId
 {
         template<class T>
@@ -408,6 +422,11 @@ std::string
 mtx::accessors::in_reply_to_event(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit(EventInReplyTo{}, event);
+}
+std::string
+mtx::accessors::relates_to_event_id(const mtx::events::collections::TimelineEvents &event)
+{
+        return std::visit(EventRelatesTo{}, event);
 }
 
 std::string

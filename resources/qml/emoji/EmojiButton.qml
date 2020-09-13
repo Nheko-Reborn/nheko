@@ -8,11 +8,10 @@ import "../"
 ImageButton {
     property var colors: currentActivePalette
     property var emojiPicker
-    property string room_id
     property string event_id
 
     image: ":/icons/icons/ui/smile.png"
     id: emojiButton
-    onClicked: emojiPicker.visible ? emojiPicker.close() : emojiPicker.show(emojiButton, room_id, event_id)
+    onClicked: emojiPicker.visible ? emojiPicker.close() : emojiPicker.show(emojiButton, event_id)
 
 }

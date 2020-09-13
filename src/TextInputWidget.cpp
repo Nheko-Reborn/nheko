@@ -15,9 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QAbstractItemView>
 #include <QAbstractTextDocumentLayout>
 #include <QBuffer>
 #include <QClipboard>
+#include <QCompleter>
 #include <QFileDialog>
 #include <QMimeData>
 #include <QMimeDatabase>
@@ -28,9 +30,12 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
+#include "CompletionModel.h"
 #include "Logging.h"
 #include "TextInputWidget.h"
 #include "Utils.h"
+#include "emoji/EmojiSearchModel.h"
+#include "emoji/Provider.h"
 #include "ui/FlatButton.h"
 #include "ui/LoadingIndicator.h"
 
@@ -60,6 +65,23 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
         working_history_.push_back("");
         connect(this, &QTextEdit::textChanged, this, &FilteredTextEdit::textChanged);
         setAcceptRichText(false);
+
+        completer_ = new QCompleter(this);
+        completer_->setWidget(this);
+        auto model = new emoji::EmojiSearchModel(this);
+        model->sort(0, Qt::AscendingOrder);
+        completer_->setModel((emoji_completion_model_ = new CompletionModel(model, this)));
+        completer_->setModelSorting(QCompleter::UnsortedModel);
+        completer_->popup()->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        completer_->popup()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+        connect(completer_,
+                QOverload<const QModelIndex &>::of(&QCompleter::activated),
+                [this](auto &index) {
+                        emoji_popup_open_ = false;
+                        auto emoji        = index.data(emoji::EmojiModel::Unicode).toString();
+                        insertCompletion(emoji);
+                });
 
         typingTimer_ = new QTimer(this);
         typingTimer_->setInterval(1000);
@@ -99,6 +121,18 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
         });
 
         previewDialog_.hide();
+}
+
+void
+FilteredTextEdit::insertCompletion(QString completion)
+{
+        // Paint the current word and replace it with 'completion'
+        auto cur_text = textAfterPosition(trigger_pos_);
+        auto tc       = textCursor();
+        tc.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, cur_text.length());
+        tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, cur_text.length());
+        tc.insertText(completion);
+        setTextCursor(tc);
 }
 
 void
@@ -167,6 +201,21 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 }
         }
 
+        if (emoji_popup_open_) {
+                auto fake_key = (event->key() == Qt::Key_Backtab) ? Qt::Key_Up : Qt::Key_Down;
+                switch (event->key()) {
+                case Qt::Key_Backtab:
+                case Qt::Key_Tab: {
+                        // Simulate up/down arrow press
+                        auto ev = new QKeyEvent(QEvent::KeyPress, fake_key, Qt::NoModifier);
+                        QCoreApplication::postEvent(completer_->popup(), ev);
+                        return;
+                }
+                default:
+                        break;
+                }
+        }
+
         switch (event->key()) {
         case Qt::Key_At:
                 atTriggerPosition_ = textCursor().position();
@@ -195,8 +244,26 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
                 break;
         }
+        case Qt::Key_Colon: {
+                QTextEdit::keyPressEvent(event);
+                trigger_pos_ = textCursor().position() - 1;
+                emoji_completion_model_->setFilterRegExp("");
+                emoji_popup_open_ = true;
+                break;
+        }
         case Qt::Key_Return:
         case Qt::Key_Enter:
+                if (emoji_popup_open_) {
+                        if (!completer_->popup()->currentIndex().isValid()) {
+                                // No completion to select, do normal behavior
+                                completer_->popup()->hide();
+                                emoji_popup_open_ = false;
+                        } else {
+                                event->ignore();
+                                return;
+                        }
+                }
+
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
                         stopTyping();
                         submit();
@@ -242,6 +309,21 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
                 if (isModifier)
                         return;
+
+                if (emoji_popup_open_ && textAfterPosition(trigger_pos_).length() > 2) {
+                        // Update completion
+                        emoji_completion_model_->setFilterRegExp(textAfterPosition(trigger_pos_));
+                        completer_->complete(completerRect());
+                }
+
+                if (emoji_popup_open_ && (completer_->completionCount() < 1 ||
+                                          !textAfterPosition(trigger_pos_)
+                                             .contains(QRegularExpression(":[^\r\n\t\f\v :]+$")))) {
+                        // No completions for this word or another word than the completer was
+                        // started with
+                        emoji_popup_open_ = false;
+                        completer_->popup()->hide();
+                }
 
                 if (textCursor().position() == 0) {
                         resetAnchor();
@@ -350,6 +432,29 @@ FilteredTextEdit::stopTyping()
 {
         typingTimer_->stop();
         emit stoppedTyping();
+}
+
+QRect
+FilteredTextEdit::completerRect()
+{
+        // Move left edge to the beginning of the word
+        auto cursor = textCursor();
+        auto rect   = cursorRect();
+        cursor.movePosition(
+          QTextCursor::Left, QTextCursor::MoveAnchor, textAfterPosition(trigger_pos_).length());
+        auto cursor_global_x  = viewport()->mapToGlobal(cursorRect(cursor).topLeft()).x();
+        auto rect_global_left = viewport()->mapToGlobal(rect.bottomLeft()).x();
+        auto dx               = qAbs(rect_global_left - cursor_global_x);
+        rect.moveLeft(rect.left() - dx);
+
+        auto item_height = completer_->popup()->sizeHintForRow(0);
+        auto max_height  = item_height * completer_->maxVisibleItems();
+        auto height      = (completer_->completionCount() > completer_->maxVisibleItems())
+                        ? max_height
+                        : completer_->completionCount() * item_height;
+        rect.setWidth(completer_->popup()->sizeHintForColumn(0));
+        rect.moveBottom(-height);
+        return rect;
 }
 
 QSize
@@ -581,27 +686,29 @@ void
 TextInputWidget::command(QString command, QString args)
 {
         if (command == "me") {
-                sendEmoteMessage(args);
+                emit sendEmoteMessage(args);
         } else if (command == "join") {
-                sendJoinRoomRequest(args);
+                emit sendJoinRoomRequest(args);
         } else if (command == "invite") {
-                sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "kick") {
-                sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "ban") {
-                sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "unban") {
-                sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
+                emit sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (command == "roomnick") {
-                changeRoomNick(args);
+                emit changeRoomNick(args);
         } else if (command == "shrug") {
-                sendTextMessage("¯\\_(ツ)_/¯");
+                emit sendTextMessage("¯\\_(ツ)_/¯");
         } else if (command == "fliptable") {
-                sendTextMessage("(╯°□°)╯︵ ┻━┻");
+                emit sendTextMessage("(╯°□°)╯︵ ┻━┻");
         } else if (command == "unfliptable") {
-                sendTextMessage(" ┯━┯╭( º _ º╭)");
+                emit sendTextMessage(" ┯━┯╭( º _ º╭)");
         } else if (command == "sovietflip") {
-                sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
+                emit sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
+        } else if (command == "clear-timeline") {
+                emit clearRoomTimeline();
         }
 }
 
@@ -633,7 +740,7 @@ TextInputWidget::showUploadSpinner()
         topLayout_->removeWidget(sendFileBtn_);
         sendFileBtn_->hide();
 
-        topLayout_->insertWidget(0, spinner_);
+        topLayout_->insertWidget(1, spinner_);
         spinner_->start();
 }
 
@@ -641,7 +748,7 @@ void
 TextInputWidget::hideUploadSpinner()
 {
         topLayout_->removeWidget(spinner_);
-        topLayout_->insertWidget(0, sendFileBtn_);
+        topLayout_->insertWidget(1, sendFileBtn_);
         sendFileBtn_->show();
         spinner_->stop();
 }

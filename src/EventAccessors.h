@@ -56,6 +56,8 @@ mimetype(const mtx::events::collections::TimelineEvents &event);
 std::string
 in_reply_to_event(const mtx::events::collections::TimelineEvents &event);
 std::string
+relates_to_event_id(const mtx::events::collections::TimelineEvents &event);
+std::string
 transaction_id(const mtx::events::collections::TimelineEvents &event);
 
 int64_t

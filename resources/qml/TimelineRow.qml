@@ -8,22 +8,25 @@ import im.nheko 1.0
 import "./delegates"
 import "./emoji"
 
-MouseArea {
+Item {
 	anchors.left: parent.left
 	anchors.right: parent.right
 	height: row.height
-	propagateComposedEvents: true
-	preventStealing: true
-	hoverEnabled: true
 
-	acceptedButtons: Qt.LeftButton | Qt.RightButton
-	onClicked: {
-		if (mouse.button === Qt.RightButton)
-		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
-	}
-	onPressAndHold: {
-		if (mouse.source === Qt.MouseEventNotSynthesized)
-		messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
+	MouseArea {
+		anchors.fill: parent
+		propagateComposedEvents: true
+		preventStealing: true
+		hoverEnabled: true
+
+		acceptedButtons: Qt.AllButtons
+		onClicked: {
+			if (mouse.button === Qt.RightButton)
+			messageContextMenu.show(model.id, model.type, model.isEncrypted, row)
+		}
+		onPressAndHold: {
+			messageContextMenu.show(model.id, model.type, model.isEncrypted, row, mapToItem(timelineRoot, mouse.x, mouse.y))
+		}
 	}
 	Rectangle {
 		color: (settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
@@ -45,7 +48,7 @@ MouseArea {
 			// fancy reply, if this is a reply
 			Reply {
 				visible: model.replyTo
-				modelData: chat.model.getDump(model.replyTo)
+				modelData: chat.model.getDump(model.replyTo, model.id)
 				userColor: timelineManager.userColor(modelData.userId, colors.window)
 			}
 
@@ -90,7 +93,6 @@ MouseArea {
 			ToolTip.visible: hovered
 			ToolTip.text: qsTr("React")
 			emojiPicker: emojiPopup
-			room_id: model.roomId
 			event_id: model.id
 		}
 		ImageButton {
@@ -128,6 +130,7 @@ MouseArea {
 		Label {
 			Layout.alignment: Qt.AlignRight | Qt.AlignTop
 			text: model.timestamp.toLocaleTimeString("HH:mm")
+			width: Math.max(implicitWidth, text.length*fontMetrics.maximumCharacterWidth)
 			color: inactiveColors.text
 
 			MouseArea{

@@ -6,6 +6,7 @@ TextEdit {
 	readOnly: true
 	wrapMode: Text.Wrap
 	selectByMouse: true
+	activeFocusOnPress: false
 	color: colors.text
 
 	onLinkActivated: {

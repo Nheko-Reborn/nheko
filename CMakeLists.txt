@@ -252,7 +252,8 @@ set(SRC_FILES
 
 
 	# Timeline
-	src/timeline/ReactionsModel.cpp
+	src/timeline/EventStore.cpp
+	src/timeline/Reaction.cpp
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
 	src/timeline/DelegateChooser.cpp
@@ -340,7 +341,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        744018c86a8094acbda9821d6d7b5a890d4aac47
+		GIT_TAG        d8666a3f1a5b709b78ccea2b545d540a8cb502ca
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -463,7 +464,8 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/emoji/Provider.h
 
 	# Timeline
-	src/timeline/ReactionsModel.h
+	src/timeline/EventStore.h
+	src/timeline/Reaction.h
 	src/timeline/TimelineViewManager.h
 	src/timeline/TimelineModel.h
 	src/timeline/DelegateChooser.h

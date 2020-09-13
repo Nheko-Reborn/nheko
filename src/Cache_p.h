@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <limits>
 #include <optional>
 
 #include <QDateTime>
@@ -37,9 +38,6 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
-
-int
-numeric_key_comparison(const MDB_val *a, const MDB_val *b);
 
 class Cache : public QObject
 {
@@ -172,6 +170,47 @@ public:
         //! Add all notifications containing a user mention to the db.
         void saveTimelineMentions(const mtx::responses::Notifications &res);
 
+        //! retrieve events in timeline and related functions
+        struct Messages
+        {
+                mtx::responses::Timeline timeline;
+                uint64_t next_index;
+                bool end_of_cache = false;
+        };
+        Messages getTimelineMessages(lmdb::txn &txn,
+                                     const std::string &room_id,
+                                     uint64_t index = std::numeric_limits<uint64_t>::max(),
+                                     bool forward   = false);
+
+        std::optional<mtx::events::collections::TimelineEvent> getEvent(
+          const std::string &room_id,
+          const std::string &event_id);
+        void storeEvent(const std::string &room_id,
+                        const std::string &event_id,
+                        const mtx::events::collections::TimelineEvent &event);
+        std::vector<std::string> relatedEvents(const std::string &room_id,
+                                               const std::string &event_id);
+
+        struct TimelineRange
+        {
+                uint64_t first, last;
+        };
+        std::optional<TimelineRange> getTimelineRange(const std::string &room_id);
+        std::optional<uint64_t> getTimelineIndex(const std::string &room_id,
+                                                 std::string_view event_id);
+        std::optional<std::string> getTimelineEventId(const std::string &room_id, uint64_t index);
+
+        std::string previousBatchToken(const std::string &room_id);
+        uint64_t saveOldMessages(const std::string &room_id, const mtx::responses::Messages &res);
+        void savePendingMessage(const std::string &room_id,
+                                const mtx::events::collections::TimelineEvent &message);
+        std::optional<mtx::events::collections::TimelineEvent> firstPendingMessage(
+          const std::string &room_id);
+        void removePendingStatus(const std::string &room_id, const std::string &txn_id);
+
+        //! clear timeline keeping only the latest batch
+        void clearTimeline(const std::string &room_id);
+
         //! Remove old unused data.
         void deleteOldMessages();
         void deleteOldData() noexcept;
@@ -249,8 +288,6 @@ private:
         void saveTimelineMessages(lmdb::txn &txn,
                                   const std::string &room_id,
                                   const mtx::responses::Timeline &res);
-
-        mtx::responses::Timeline getTimelineMessages(lmdb::txn &txn, const std::string &room_id);
 
         //! Remove a room from the cache.
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);
@@ -402,13 +439,46 @@ private:
                 return lmdb::dbi::open(txn, "pending_receipts", MDB_CREATE);
         }
 
-        lmdb::dbi getMessagesDb(lmdb::txn &txn, const std::string &room_id)
+        lmdb::dbi getEventsDb(lmdb::txn &txn, const std::string &room_id)
         {
-                auto db =
-                  lmdb::dbi::open(txn, std::string(room_id + "/messages").c_str(), MDB_CREATE);
-                lmdb::dbi_set_compare(txn, db, numeric_key_comparison);
+                return lmdb::dbi::open(txn, std::string(room_id + "/events").c_str(), MDB_CREATE);
+        }
 
-                return db;
+        lmdb::dbi getEventOrderDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/event_order").c_str(), MDB_CREATE | MDB_INTEGERKEY);
+        }
+
+        // inverse of EventOrderDb
+        lmdb::dbi getEventToOrderDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/event2order").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getMessageToOrderDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/msg2order").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getOrderToMessageDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/order2msg").c_str(), MDB_CREATE | MDB_INTEGERKEY);
+        }
+
+        lmdb::dbi getPendingMessagesDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/pending").c_str(), MDB_CREATE | MDB_INTEGERKEY);
+        }
+
+        lmdb::dbi getRelationsDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/related").c_str(), MDB_CREATE | MDB_DUPSORT);
         }
 
         lmdb::dbi getInviteStatesDb(lmdb::txn &txn, const std::string &room_id)
