@@ -426,8 +426,12 @@ WebRTCSession::acceptICECandidates(
                 for (const auto &c : candidates) {
                         nhlog::ui()->debug(
                           "WebRTC: remote candidate: (m-line:{}):{}", c.sdpMLineIndex, c.candidate);
-                        g_signal_emit_by_name(
-                          webrtc_, "add-ice-candidate", c.sdpMLineIndex, c.candidate.c_str());
+                        if (!c.candidate.empty()) {
+                                g_signal_emit_by_name(webrtc_,
+                                                      "add-ice-candidate",
+                                                      c.sdpMLineIndex,
+                                                      c.candidate.c_str());
+                        }
                 }
         }
 }
