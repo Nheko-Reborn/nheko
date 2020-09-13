@@ -70,8 +70,8 @@ ApplicationWindow{
 			id: verifyUserButton
 			text: "Verify"
 			Layout.alignment: Qt.AlignHCenter
-			enabled: profile.isUserVerified?false:true
-			visible: profile.isUserVerified?false:true
+			enabled: profile.isUserVerified
+			visible: profile.isUserVerified
 
 			onClicked: {
 				var newFlow = profile.createFlow(true);
@@ -92,9 +92,7 @@ ApplicationWindow{
 				hoverEnabled: true
 				ToolTip.visible: hovered
 				ToolTip.text: qsTr("Ban the user")
-				onClicked : {
-					profile.banUser()
-				}
+				onClicked: profile.banUser()
 			}
 			// ImageButton{
 			//     image:":/icons/icons/ui/volume-off-indicator.png"
@@ -113,18 +111,14 @@ ApplicationWindow{
 				hoverEnabled: true
 				ToolTip.visible: hovered
 				ToolTip.text: qsTr("Start a private chat")
-				onClicked : {
-					profile.startChat()
-				}
+				onClicked: profile.startChat()
 			}
 			ImageButton{
 				image:":/icons/icons/ui/round-remove-button.png"
 				hoverEnabled: true
 				ToolTip.visible: hovered
 				ToolTip.text: qsTr("Kick the user")
-				onClicked : {
-					profile.kickUser()
-				}
+				onClicked: profile.kickUser()
 			}
 		}
 
@@ -152,8 +146,8 @@ ApplicationWindow{
 						Layout.alignment: Qt.AlignLeft
 
 						elide: Text.ElideRight
-						color: colors.text
 						font.bold: true
+						color: colors.text
 						text: model.deviceId
 					}
 					Text{
@@ -161,7 +155,7 @@ ApplicationWindow{
 						Layout.alignment: Qt.AlignRight
 
 						elide: Text.ElideRight
-						color:colors.text
+						color: colors.text
 						text: model.deviceName
 					}
 				}
