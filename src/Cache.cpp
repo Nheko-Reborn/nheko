@@ -139,26 +139,24 @@ Cache::Cache(const QString &userId, QObject *parent)
   , localUserId_{userId}
 {
         setup();
-        connect(
-          this,
-          &Cache::updateUserCacheFlag,
-          this,
-          [this](const std::string &user_id) {
-                  std::optional<UserCache> cache_ = getUserCache(user_id);
-                  if (cache_.has_value()) {
-                          cache_.value().isUpdated = false;
-                          setUserCache(user_id, cache_.value());
-                  } else {
-                          setUserCache(user_id, UserCache{});
-                  }
-          },
-          Qt::QueuedConnection);
-        connect(
-          this,
-          &Cache::deleteLeftUsers,
-          this,
-          [this](const std::string &user_id) { deleteUserCache(user_id); },
-          Qt::QueuedConnection);
+        connect(this,
+                &Cache::updateUserCacheFlag,
+                this,
+                [this](const std::string &user_id) {
+                        std::optional<UserCache> cache_ = getUserCache(user_id);
+                        if (cache_.has_value()) {
+                                cache_.value().isUpdated = false;
+                                setUserCache(user_id, cache_.value());
+                        } else {
+                                setUserCache(user_id, UserCache{});
+                        }
+                },
+                Qt::QueuedConnection);
+        connect(this,
+                &Cache::deleteLeftUsers,
+                this,
+                [this](const std::string &user_id) { deleteUserCache(user_id); },
+                Qt::QueuedConnection);
 }
 
 void

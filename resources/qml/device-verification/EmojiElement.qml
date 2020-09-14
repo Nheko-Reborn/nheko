@@ -1,4 +1,5 @@
 import QtQuick 2.3
+import QtQuick.Controls 2.10
 import QtQuick.Layouts 1.10
 
 Rectangle {

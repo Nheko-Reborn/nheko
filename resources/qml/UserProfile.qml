@@ -70,8 +70,8 @@ ApplicationWindow{
 			id: verifyUserButton
 			text: "Verify"
 			Layout.alignment: Qt.AlignHCenter
-			enabled: profile.isUserVerified
-			visible: profile.isUserVerified
+			enabled: !profile.isUserVerified
+			visible: !profile.isUserVerified
 
 			onClicked: {
 				var newFlow = profile.createFlow(true);
