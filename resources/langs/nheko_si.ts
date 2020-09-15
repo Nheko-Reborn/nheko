@@ -238,11 +238,6 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided, a random string is used for privacy purposes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+6"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
@@ -484,11 +479,6 @@ Example: https://server.my:8787</source>
         <location line="+3"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Tag:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
