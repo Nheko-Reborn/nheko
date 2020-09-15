@@ -6,7 +6,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1359"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa liitusid jututoaga.</translation>
     </message>
 </context>
 <context>
@@ -14,13 +14,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+229"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutse saatmine kasutajale ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+926"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsutud kasutaja: %1</translation>
     </message>
     <message>
         <location line="-474"/>
@@ -30,7 +30,7 @@
     <message>
         <location line="+439"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jututuba on loodud.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -45,7 +45,7 @@
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Väljamüksatud kasutaja: %1</translation>
     </message>
     <message>
         <location line="+14"/>
