@@ -64,10 +64,11 @@ private slots:
 private:
         WebRTCSession();
 
-        bool initialised_   = false;
-        State state_        = State::DISCONNECTED;
-        GstElement *pipe_   = nullptr;
-        GstElement *webrtc_ = nullptr;
+        bool initialised_        = false;
+        State state_             = State::DISCONNECTED;
+        GstElement *pipe_        = nullptr;
+        GstElement *webrtc_      = nullptr;
+        unsigned int busWatchId_ = 0;
         std::string stunServer_;
         std::vector<std::string> turnServers_;
         GList *audioSources_  = nullptr;
