@@ -495,7 +495,7 @@ WebRTCSession::startPipeline(int opusPayloadType)
         }
 
         GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipe_));
-        gst_bus_add_watch(bus, newBusMessage, this);
+        busWatchId_ = gst_bus_add_watch(bus, newBusMessage, this);
         gst_object_unref(bus);
         emit stateChanged(State::INITIATED);
         return true;
@@ -601,6 +601,8 @@ WebRTCSession::end()
                 gst_element_set_state(pipe_, GST_STATE_NULL);
                 gst_object_unref(pipe_);
                 pipe_ = nullptr;
+                g_source_remove(busWatchId_);
+                busWatchId_ = 0;
         }
         webrtc_ = nullptr;
         if (state_ != State::DISCONNECTED)
