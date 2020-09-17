@@ -304,7 +304,6 @@ set(SRC_FILES
 	src/SideBarActions.cpp
 	src/Splitter.cpp
 	src/TextInputWidget.cpp
-	src/TopRoomBar.cpp
 	src/TrayIcon.cpp
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
@@ -341,7 +340,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        d8666a3f1a5b709b78ccea2b545d540a8cb502ca
+		GIT_TAG        ac680e971d437eb2135ef994dcb58c0bbb5bdf61
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -512,7 +511,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/SideBarActions.h
 	src/Splitter.h
 	src/TextInputWidget.h
-	src/TopRoomBar.h
 	src/TrayIcon.h
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h

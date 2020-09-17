@@ -37,7 +37,7 @@ Item {
 
 		Text { 
 			id: userName
-			text: chat.model ? chat.model.escapeEmoji(reply.modelData.userName) : ""
+			text: timelineManager.escapeEmoji(reply.modelData.userName)
 			color: replyComponent.userColor
 			textFormat: Text.RichText
 

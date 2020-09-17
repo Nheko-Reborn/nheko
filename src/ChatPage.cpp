@@ -37,7 +37,6 @@
 #include "SideBarActions.h"
 #include "Splitter.h"
 #include "TextInputWidget.h"
-#include "TopRoomBar.h"
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -126,10 +125,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->setSpacing(0);
         contentLayout_->setMargin(0);
 
-        top_bar_      = new TopRoomBar(this);
         view_manager_ = new TimelineViewManager(userSettings_, &callManager_, this);
 
-        contentLayout_->addWidget(top_bar_);
         contentLayout_->addWidget(view_manager_->getWidget());
 
         activeCallBar_ = new ActiveCallBar(this);
@@ -181,30 +178,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                           room_list_->previousRoom();
           });
 
-        connect(top_bar_, &TopRoomBar::mentionsClicked, this, [this](const QPoint &mentionsPos) {
-                if (user_mentions_popup_->isVisible()) {
-                        user_mentions_popup_->hide();
-                } else {
-                        showNotificationsDialog(mentionsPos);
-                        http::client()->notifications(
-                          1000,
-                          "",
-                          "highlight",
-                          [this, mentionsPos](const mtx::responses::Notifications &res,
-                                              mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::net()->warn(
-                                            "failed to retrieve notifications: {} ({})",
-                                            err->matrix_error.error,
-                                            static_cast<int>(err->status_code));
-                                          return;
-                                  }
-
-                                  emit highlightedNotifsRetrieved(std::move(res), mentionsPos);
-                          });
-                }
-        });
-
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
         connect(&connectivityTimer_, &QTimer::timeout, this, [=]() {
                 if (http::client()->access_token().empty()) {
@@ -226,8 +199,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
 
-        connect(top_bar_, &TopRoomBar::showRoomList, splitter, &Splitter::showFullRoomList);
-        connect(top_bar_, &TopRoomBar::inviteUsers, this, [this](QStringList users) {
+        connect(
+          view_manager_, &TimelineViewManager::showRoomList, splitter, &Splitter::showFullRoomList);
+        connect(view_manager_, &TimelineViewManager::inviteUsers, this, [this](QStringList users) {
                 const auto room_id = current_room_.toStdString();
 
                 for (int ii = 0; ii < users.size(); ++ii) {
@@ -251,8 +225,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
         });
 
+        connect(room_list_, &RoomList::roomChanged, this, [this](QString room_id) {
+                this->current_room_ = room_id;
+        });
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
-        connect(room_list_, &RoomList::roomChanged, this, &ChatPage::changeTopRoomInfo);
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
         connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
         connect(
@@ -487,8 +463,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
         });
 
-        connect(room_list_, &RoomList::roomAvatarChanged, this, &ChatPage::updateTopBarAvatar);
-
         connect(
           this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
 
@@ -588,11 +562,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         });
         connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
         connect(this, &ChatPage::syncTags, communitiesList_, &CommunitiesList::syncTags);
-        connect(
-          this, &ChatPage::syncTopBar, this, [this](const std::map<QString, RoomInfo> &updates) {
-                  if (updates.find(currentRoom()) != updates.end())
-                          changeTopRoomInfo(currentRoom());
-          });
 
         // Callbacks to update the user info (top left corner of the page).
         connect(this, &ChatPage::setUserAvatar, user_info_widget_, &UserInfoWidget::setAvatar);
@@ -657,7 +626,6 @@ void
 ChatPage::resetUI()
 {
         room_list_->clear();
-        top_bar_->reset();
         user_info_widget_->reset();
         view_manager_->clearAll();
 
@@ -784,46 +752,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         getProfileInfo();
         tryInitialSync();
-}
-
-void
-ChatPage::updateTopBarAvatar(const QString &roomid, const QString &img)
-{
-        if (current_room_ != roomid)
-                return;
-
-        top_bar_->updateRoomAvatar(img);
-}
-
-void
-ChatPage::changeTopRoomInfo(const QString &room_id)
-{
-        if (room_id.isEmpty()) {
-                nhlog::ui()->warn("cannot switch to empty room_id");
-                return;
-        }
-
-        try {
-                auto room_info = cache::getRoomInfo({room_id.toStdString()});
-
-                if (room_info.find(room_id) == room_info.end())
-                        return;
-
-                const auto name       = QString::fromStdString(room_info[room_id].name);
-                const auto avatar_url = QString::fromStdString(room_info[room_id].avatar_url);
-
-                top_bar_->updateRoomName(name);
-                top_bar_->updateRoomTopic(QString::fromStdString(room_info[room_id].topic));
-
-                top_bar_->updateRoomAvatarFromName(name);
-                if (!avatar_url.isEmpty())
-                        top_bar_->updateRoomAvatar(avatar_url);
-
-        } catch (const lmdb::error &e) {
-                nhlog::ui()->error("failed to change top bar room info: {}", e.what());
-        }
-
-        current_room_ = room_id;
 }
 
 void
@@ -967,14 +895,22 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
                                 }
 
                                 if (userSettings_->hasDesktopNotifications()) {
-                                        notificationsManager.postNotification(
-                                          room_id,
-                                          QString::fromStdString(event_id),
-                                          QString::fromStdString(
-                                            cache::singleRoomInfo(item.room_id).name),
-                                          cache::displayName(room_id, user_id),
-                                          utils::event_body(item.event),
-                                          cache::getRoomAvatar(room_id));
+                                        auto info = cache::singleRoomInfo(item.room_id);
+
+                                        AvatarProvider::resolve(
+                                          QString::fromStdString(info.avatar_url),
+                                          96,
+                                          this,
+                                          [this, room_id, event_id, item, user_id, info](
+                                            QPixmap image) {
+                                                  notificationsManager.postNotification(
+                                                    room_id,
+                                                    QString::fromStdString(event_id),
+                                                    QString::fromStdString(info.name),
+                                                    cache::displayName(room_id, user_id),
+                                                    utils::event_body(item.event),
+                                                    image.toImage());
+                                          });
                                 }
                         }
                 } catch (const lmdb::error &e) {
@@ -1070,7 +1006,6 @@ ChatPage::handleSyncResponse(mtx::responses::Sync res)
 
                 auto updates = cache::roomUpdates(res);
 
-                emit syncTopBar(updates);
                 emit syncRoomlist(updates);
 
                 emit syncUI(res.rooms);
@@ -1481,9 +1416,12 @@ ChatPage::getProfileInfo()
 void
 ChatPage::hideSideBars()
 {
-        communitiesList_->hide();
-        sideBar_->hide();
-        top_bar_->enableBackButton();
+        // Don't hide side bar, if we are currently only showing the side bar!
+        if (view_manager_->getWidget()->isVisible()) {
+                communitiesList_->hide();
+                sideBar_->hide();
+        }
+        view_manager_->enableBackButton();
 }
 
 void
@@ -1493,22 +1431,18 @@ ChatPage::showSideBars()
                 communitiesList_->show();
 
         sideBar_->show();
-        top_bar_->disableBackButton();
+        view_manager_->disableBackButton();
+        content_->show();
 }
 
 uint64_t
 ChatPage::timelineWidth()
 {
-        int sidebarWidth = sideBar_->size().width();
-        sidebarWidth += communitiesList_->size().width();
+        int sidebarWidth = sideBar_->minimumSize().width();
+        sidebarWidth += communitiesList_->minimumSize().width();
+        nhlog::ui()->info("timelineWidth: {}", size().width() - sidebarWidth);
 
         return size().width() - sidebarWidth;
-}
-bool
-ChatPage::isSideBarExpanded()
-{
-        const auto sz = splitter::calculateSidebarSizes(QFont{});
-        return sideBar_->size().width() > sz.normal;
 }
 
 void

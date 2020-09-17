@@ -289,6 +289,14 @@ private:
                                   const std::string &room_id,
                                   const mtx::responses::Timeline &res);
 
+        //! retrieve a specific event from account data
+        //! pass empty room_id for global account data
+        std::optional<mtx::events::collections::RoomAccountDataEvents>
+        getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::string &room_id);
+        bool isHiddenEvent(lmdb::txn &txn,
+                           mtx::events::collections::TimelineEvents e,
+                           const std::string &room_id);
+
         //! Remove a room from the cache.
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);
         template<class T>
@@ -496,6 +504,12 @@ private:
         lmdb::dbi getStatesDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(txn, std::string(room_id + "/state").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getAccountDataDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                return lmdb::dbi::open(
+                  txn, std::string(room_id + "/account_data").c_str(), MDB_CREATE);
         }
 
         lmdb::dbi getMembersDb(lmdb::txn &txn, const std::string &room_id)

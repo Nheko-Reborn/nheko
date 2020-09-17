@@ -34,10 +34,12 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
 {
         const auto cacheKey = QString("%1_size_%2").arg(avatarUrl).arg(size);
 
-        if (avatarUrl.isEmpty())
-                return;
-
         QPixmap pixmap;
+        if (avatarUrl.isEmpty()) {
+                callback(pixmap);
+                return;
+        }
+
         if (avatar_cache.find(cacheKey, &pixmap)) {
                 callback(pixmap);
                 return;
@@ -75,10 +77,9 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                                              opts.mxc_url,
                                              mtx::errors::to_string(err->matrix_error.errcode),
                                              err->matrix_error.error);
-                          return;
+                  } else {
+                          cache::saveImage(cacheKey.toStdString(), res);
                   }
-
-                  cache::saveImage(cacheKey.toStdString(), res);
 
                   emit proxy->avatarDownloaded(QByteArray(res.data(), res.size()));
           });

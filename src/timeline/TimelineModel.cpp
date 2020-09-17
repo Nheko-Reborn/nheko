@@ -518,6 +518,25 @@ TimelineModel::fetchMore(const QModelIndex &)
 }
 
 void
+TimelineModel::syncState(const mtx::responses::State &s)
+{
+        using namespace mtx::events;
+
+        for (const auto &e : s.events) {
+                if (std::holds_alternative<StateEvent<state::Avatar>>(e))
+                        emit roomAvatarUrlChanged();
+                else if (std::holds_alternative<StateEvent<state::Name>>(e))
+                        emit roomNameChanged();
+                else if (std::holds_alternative<StateEvent<state::Topic>>(e))
+                        emit roomTopicChanged();
+                else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
+                        emit roomAvatarUrlChanged();
+                        emit roomNameChanged();
+                }
+        }
+}
+
+void
 TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
         if (timeline.events.empty())
@@ -526,6 +545,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         events.handleSync(timeline);
 
         using namespace mtx::events;
+
         for (auto e : timeline.events) {
                 if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
                         MegolmSessionIndex index;
@@ -549,6 +569,16 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                                           emit newCallEvent(event);
                           },
                           e);
+                else if (std::holds_alternative<StateEvent<state::Avatar>>(e))
+                        emit roomAvatarUrlChanged();
+                else if (std::holds_alternative<StateEvent<state::Name>>(e))
+                        emit roomNameChanged();
+                else if (std::holds_alternative<StateEvent<state::Topic>>(e))
+                        emit roomTopicChanged();
+                else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
+                        emit roomAvatarUrlChanged();
+                        emit roomNameChanged();
+                }
         }
         updateLastMessage();
 }
@@ -687,12 +717,6 @@ TimelineModel::formatDateSeparator(QDate date) const
         }
 
         return date.toString(fmt);
-}
-
-QString
-TimelineModel::escapeEmoji(QString str) const
-{
-        return utils::replaceEmoji(str);
 }
 
 void
@@ -1359,7 +1383,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
         QStringList uidWithoutLast;
 
         auto formatUser = [this, bg](const QString &user_id) -> QString {
-                auto uncoloredUsername = escapeEmoji(displayName(user_id));
+                auto uncoloredUsername = utils::replaceEmoji(displayName(user_id));
                 QString prefix =
                   QString("<font color=\"%1\">").arg(manager_->userColor(user_id, bg).name());
 
@@ -1409,7 +1433,7 @@ TimelineModel::formatJoinRuleEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         switch (event->content.join_rule) {
         case mtx::events::state::JoinRule::Public:
@@ -1434,7 +1458,7 @@ TimelineModel::formatGuestAccessEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         switch (event->content.guest_access) {
         case mtx::events::state::AccessState::CanJoin:
@@ -1459,7 +1483,7 @@ TimelineModel::formatHistoryVisibilityEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         switch (event->content.history_visibility) {
         case mtx::events::state::Visibility::WorldReadable:
@@ -1492,7 +1516,7 @@ TimelineModel::formatPowerLevelEvent(QString id)
                 return "";
 
         QString user = QString::fromStdString(event->sender);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
 
         // TODO: power levels rendering is actually a bit complex. work on this later.
         return tr("%1 has changed the room's permissions.").arg(name);
@@ -1521,7 +1545,7 @@ TimelineModel::formatMemberEvent(QString id)
         }
 
         QString user = QString::fromStdString(event->state_key);
-        QString name = escapeEmoji(displayName(user));
+        QString name = utils::replaceEmoji(displayName(user));
         QString rendered;
 
         // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
@@ -1593,4 +1617,38 @@ TimelineModel::formatMemberEvent(QString id)
         }
 
         return rendered;
+}
+
+QString
+TimelineModel::roomName() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return QString::fromStdString(info[room_id_].name);
+}
+
+QString
+TimelineModel::roomAvatarUrl() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return QString::fromStdString(info[room_id_].avatar_url);
+}
+
+QString
+TimelineModel::roomTopic() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return utils::replaceEmoji(utils::linkifyMessage(
+                  utils::escapeBlacklistedHtml(QString::fromStdString(info[room_id_].topic))));
 }

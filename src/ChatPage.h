@@ -49,7 +49,6 @@ class SideBarActions;
 class Splitter;
 class TextInputWidget;
 class TimelineViewManager;
-class TopRoomBar;
 class UserInfoWidget;
 class UserSettings;
 
@@ -82,7 +81,6 @@ public:
 
         //! Calculate the width of the message timeline.
         uint64_t timelineWidth();
-        bool isSideBarExpanded();
         //! Hide the room & group list (if it was visible).
         void hideSideBars();
         //! Show the room/group list (if it was visible).
@@ -150,7 +148,6 @@ signals:
         void syncUI(const mtx::responses::Rooms &rooms);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
         void syncTags(const std::map<QString, RoomInfo> &updates);
-        void syncTopBar(const std::map<QString, RoomInfo> &updates);
         void dropToLoginPageCb(const QString &msg);
 
         void notifyMessage(const QString &roomid,
@@ -167,8 +164,6 @@ signals:
 
 private slots:
         void showUnreadMessageNotification(int count);
-        void updateTopBarAvatar(const QString &roomid, const QString &img);
-        void changeTopRoomInfo(const QString &room_id);
         void logout();
         void removeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
@@ -239,7 +234,6 @@ private:
         TimelineViewManager *view_manager_;
         SideBarActions *sidebarActions_;
 
-        TopRoomBar *top_bar_;
         TextInputWidget *text_input_;
         ActiveCallBar *activeCallBar_;
 
