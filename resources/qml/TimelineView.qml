@@ -450,7 +450,7 @@ Page {
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
                     color: "transparent"
-                    height: fontMetrics.height
+                    height: fontMetrics.height + 10
                     Label {
                         id: typingDisplay
                         anchors.left: parent.left
