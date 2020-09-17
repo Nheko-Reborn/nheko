@@ -324,18 +324,33 @@ Page {
 				id: footerContent
 				anchors.left: parent.left
 				anchors.right: parent.right
-
-				Label {
-					id: typingDisplay
-					anchors.left: parent.left
-					anchors.right: parent.right
-					anchors.leftMargin: 10
-					anchors.rightMargin: 10
-
-					color: colors.text
-					text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
-					textFormat: Text.RichText
-				}
+                Rectangle {
+                    id: typingRect
+                    Connections {
+                        target: chat.model
+                        onTypingUsersChanged: {
+                            if (chat.model && chat.model.formatTypingUsers(chat.model.typingUsers,
+                                                                           colors.window) === "")
+                                typingRect.color = "transparent"
+                            else
+                                typingRect.color = colors.window
+                        }
+                    }
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.leftMargin: 10
+                    anchors.rightMargin: 10
+                    color: "transparent"
+                    height: fontMetrics.height
+                    Label {
+                        id: typingDisplay
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        color: colors.text
+                        text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
+                        textFormat: Text.RichText
+                    }
+                }
 
 				Rectangle {
 					anchors.left: parent.left
