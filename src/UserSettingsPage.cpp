@@ -513,9 +513,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         callsLabel->setFont(font);
         useStunServer_ = new Toggle{this};
 
-        defaultAudioSourceValue_ = new QLabel(this);
-        defaultAudioSourceValue_->setFont(font);
-
         auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
         encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
         encryptionLabel_->setAlignment(Qt::AlignBottom);
@@ -652,7 +649,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Allow fallback call assist server"),
                 useStunServer_,
                 tr("Will use turn.matrix.org as assist when your home server does not offer one."));
-        boxWrap(tr("Default audio source device"), defaultAudioSourceValue_);
 
         formLayout_->addRow(encryptionLabel_);
         formLayout_->addRow(new HorizontalLine{this});
@@ -813,7 +809,6 @@ UserSettingsPage::showEvent(QShowEvent *)
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
         useStunServer_->setState(!settings_->useStunServer());
-        defaultAudioSourceValue_->setText(settings_->defaultAudioSource());
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));

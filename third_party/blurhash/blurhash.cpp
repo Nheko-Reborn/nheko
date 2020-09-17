@@ -260,6 +260,7 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
 
         Components components{};
         std::vector<Color> values;
+        values.reserve(blurhash.size() / 2);
         try {
                 components = unpackComponents(decode83(blurhash.substr(0, 1)));
 
@@ -277,7 +278,7 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
                 return {};
         }
 
-        i.image.reserve(height * width * 3);
+        i.image.reserve(height * width * bytesPerPixel);
 
         for (size_t y = 0; y < height; y++) {
                 for (size_t x = 0; x < width; x++) {
@@ -344,7 +345,7 @@ encode(unsigned char *image, size_t width, size_t height, int components_x, int 
                 }
 
                 int quantisedMaximumValue = encodeMaxAC(actualMaximumValue);
-                maximumValue = ((float)quantisedMaximumValue + 1) / 166;
+                maximumValue              = ((float)quantisedMaximumValue + 1) / 166;
                 h += leftPad(encode83(quantisedMaximumValue), 1);
         } else {
                 maximumValue = 1;
@@ -406,7 +407,7 @@ TEST_CASE("AC")
 {
         auto h = "00%#MwS|WCWEM{R*bbWBbH"sv;
         for (size_t i = 0; i < h.size(); i += 2) {
-                auto s = h.substr(i, 2);
+                auto s           = h.substr(i, 2);
                 const auto maxAC = 0.289157f;
                 CHECK(leftPad(encode83(encodeAC(decodeAC(decode83(s), maxAC), maxAC)), 2) == s);
         }

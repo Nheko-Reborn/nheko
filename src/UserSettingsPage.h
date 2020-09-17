@@ -250,7 +250,6 @@ private:
         Toggle *decryptSidebar_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
-        QLabel *defaultAudioSourceValue_;
 
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;
