@@ -7,7 +7,6 @@
 
 #include "mtx/events/voip.hpp"
 
-typedef struct _GList GList;
 typedef struct _GstElement GstElement;
 
 class WebRTCSession : public QObject
@@ -71,12 +70,12 @@ private:
         unsigned int busWatchId_ = 0;
         std::string stunServer_;
         std::vector<std::string> turnServers_;
-        GList *audioSources_  = nullptr;
         int audioSourceIndex_ = -1;
 
         bool startPipeline(int opusPayloadType);
         bool createPipeline(int opusPayloadType);
         void refreshDevices();
+        void startDeviceMonitor();
 
 public:
         WebRTCSession(WebRTCSession const &) = delete;
