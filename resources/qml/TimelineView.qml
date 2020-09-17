@@ -439,8 +439,7 @@ Page {
                     Connections {
                         target: chat.model
                         onTypingUsersChanged: {
-                            if (chat.model && chat.model.formatTypingUsers(chat.model.typingUsers,
-                                                                           colors.window) === "")
+                            if (chat.model && chat.model.typingUsers < 1)
                                 typingRect.color = "transparent"
                             else
                                 typingRect.color = colors.window
