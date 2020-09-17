@@ -21,9 +21,7 @@ WebRTCSession::WebRTCSession()
 {
         qRegisterMetaType<WebRTCSession::State>();
         connect(this, &WebRTCSession::stateChanged, this, &WebRTCSession::setState);
-#if defined(GSTREAMER_AVAILABLE) && GST_CHECK_VERSION(1, 18, 0)
         init();
-#endif
 }
 
 bool
