@@ -438,14 +438,14 @@ Page {
                     id: typingRect
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.leftMargin: 10
-                    anchors.rightMargin: 10
                     color: (chat.model && chat.model.typingUsers.length > 0) ? colors.window : "transparent"
-                    height: fontMetrics.height + 10
+                    height: chatFooter.height
                     Label {
                         id: typingDisplay
                         anchors.left: parent.left
+                        anchors.leftMargin: 10
                         anchors.right: parent.right
+                        anchors.rightMargin: 10
                         color: colors.text
                         text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
                         textFormat: Text.RichText
