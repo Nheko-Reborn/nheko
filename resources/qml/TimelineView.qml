@@ -436,20 +436,11 @@ Page {
 				anchors.right: parent.right
                 Rectangle {
                     id: typingRect
-                    Connections {
-                        target: chat.model
-                        onTypingUsersChanged: {
-                            if (chat.model && chat.model.typingUsers < 1)
-                                typingRect.color = "transparent"
-                            else
-                                typingRect.color = colors.window
-                        }
-                    }
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
-                    color: "transparent"
+                    color: (chat.model && chat.model.typingUsers.length > 0) ? colors.window : "transparent"
                     height: fontMetrics.height + 10
                     Label {
                         id: typingDisplay
