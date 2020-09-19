@@ -322,7 +322,7 @@
     </message>
     <message>
         <location line="+13"/>
-        <source>-- Reply attack! This message index was reused! --</source>
+        <source>-- Replay attack! This message index was reused! --</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -322,7 +322,7 @@
     </message>
     <message>
         <location line="+13"/>
-        <source>-- Reply attack! This message index was reused! --</source>
+        <source>-- Replay attack! This message index was reused! --</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1040,7 +1040,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">部屋を出る</translation>
     </message>
     <message>
         <location line="+4"/>
