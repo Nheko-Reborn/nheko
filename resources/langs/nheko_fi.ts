@@ -710,8 +710,8 @@ Example: https://server.my:8787</source>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>%1%2 kirjoittaa</numerusform>
-            <numerusform>%1 ja %2 kirjoittavat</numerusform>
+            <numerusform>%1%2 kirjoittaa.</numerusform>
+            <numerusform>%1 ja %2 kirjoittavat.</numerusform>
         </translation>
     </message>
     <message>
