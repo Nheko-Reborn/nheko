@@ -1091,27 +1091,27 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Status:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Set presence automatically</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Online</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Unavailable</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Offline</translation>
     </message>
 </context>
 <context>
@@ -1139,28 +1139,29 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="-63"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>CALLS</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keep the application running in the background after closing the client window.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Start the application in the background without showing the client window.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Change the appearance of user avatars in chats.
+OFF - square, ON - Circle.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show a column containing groups and tags next to the room list.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1171,7 +1172,8 @@ OFF - square, ON - Circle.</source>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Decrypt the messages shown in the sidebar.
+Only affects messages in encrypted chats.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1181,17 +1183,17 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show buttons to quickly reply, react or access additional options next to each message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Limit width of timeline</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1202,7 +1204,8 @@ Only affects messages in encrypted chats.</source>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show who is typing in a room.
+This will also enable or disable sending typing notifications to other</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1225,7 +1228,8 @@ If this is on, rooms which have active notifications (the small circle with a nu
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show if your message was read.
+Status is displayed next to timestamps.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1236,7 +1240,8 @@ Status is displayed next to timestamps.</source>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Allow using markdown in messages.
+When disabled, all messages are sent as a plain text.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1246,12 +1251,12 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Notify about received message when the client is not currently focused.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Alert on notification</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1262,22 +1267,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Highlight message on hover</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Change the background color of messages when you hover over them.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Large Emoji in timeline</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Make font size larger if messages with only a few emojis are displayed.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1287,7 +1292,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Change the scale factor of the whole user interface.</translation>
     </message>
     <message>
         <location line="+4"/>
