@@ -35,12 +35,12 @@
     <message>
         <location line="+26"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita kutse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa tõesti soovid saata kutset kasutajale %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -50,12 +50,12 @@
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita väljamüksamine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa tõesti soovid müksata kasutaja %1 (%2) jututoast välja?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -70,7 +70,7 @@
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita suhtluskeeld</translation>
     </message>
     <message>
         <location line="+1"/>
