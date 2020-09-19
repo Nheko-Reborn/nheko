@@ -25,7 +25,7 @@
     <message>
         <location line="-474"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Puhverdatud andmete muutmine sobivaks rakenduse praeguse versiooniga ei õnnestunud. Sellel võib olla erinevaid põhjuseid. Palun saada meile veateade ja seni kasuta vanemat rakenduse versiooni. Aga kui sa soovid proovida, siis kustuta puhverdatud andmed käsitsi.</translation>
     </message>
     <message>
         <location line="+439"/>
@@ -35,12 +35,12 @@
     <message>
         <location line="+30"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja %1 kutsumine %2 jututuppa ei õnnestunud: %3</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja %1 välja müksamine %2 jututoast ei õnnestunud: %3</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -50,32 +50,32 @@
     <message>
         <location line="+14"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajale %1 suhtluskeelu seadmine %2 jututoas ei õnnestunud: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Suhtluskeeld kasutajale: %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajalt %1 suhtluskeelu eemaldamine %2 jututoas ei õnnestunud: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Suhtluskeeld eemaldatud: %1</translation>
     </message>
     <message>
         <location line="-828"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
         <location line="+296"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Puhvri versiooniuuendus ebaõnnestus!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -90,12 +90,12 @@
     <message>
         <location line="+111"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>OLM konto taastamine ei õnnestunud. Palun logi uuesti sisse.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvestatud andmete taastamine ei õnnestunud. Palun logi uuesti sisse.</translation>
     </message>
     <message>
         <location line="+156"/>
@@ -106,17 +106,17 @@
         <location line="+54"/>
         <location line="+252"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun proovi uuesti sisse logida: %1</translation>
     </message>
     <message>
         <location line="-187"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoaga liitumine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa liitusid selle jututoaga</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -179,17 +179,17 @@
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema</translation>
     </message>
 </context>
 <context>
@@ -198,7 +198,7 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
         <location line="+139"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -246,7 +246,7 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -259,7 +259,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda</translation>
     </message>
 </context>
 <context>
@@ -267,12 +267,12 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+90"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix&apos;i kasutajatunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>näiteks @kadri:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -285,12 +285,12 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+21"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme nimi</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -307,7 +307,7 @@ Example: https://server.my:8787</source>
         <location line="+16"/>
         <location line="+191"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGI SISSE</translation>
     </message>
     <message>
         <location line="-100"/>
@@ -442,62 +442,62 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajanimi ei tohi olla tühi ning võib sisaldada vaid a-z, 0-9, ., _, =, -, / tähemärke.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun vali tutvaline salasõna. Täpsemad nõuded salasõnale sõltuvad sinu koduserveri seadistustest.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Korda salasõna</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>See on server, kus sa oma kasutajakonto registreerid. Kuna Matrix on hajutatud suhtlusvõrk, siis esmalt pead leidma sulle sobiliku koduserveri või panema püsti täitsa oma enda koduserveri.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTREERI</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Selline registreerimise töövoog pole toetatud!</translation>
     </message>
     <message>
         <location line="+135"/>
         <source>Invalid username</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigane kasutajanimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna pole piisavalt pikk (vähemalt 8 tähemärki)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõnad ei klapi omavahel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigane koduserveri nimi</translation>
     </message>
 </context>
 <context>
@@ -505,7 +505,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/Cache.cpp" line="+984"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>salvestatud versiooni ei leidu</translation>
     </message>
 </context>
 <context>
@@ -513,7 +513,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -565,12 +565,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+173"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Nõustu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei nõustu</translation>
     </message>
 </context>
 <context>
@@ -578,7 +578,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+40"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja seadistused</translation>
     </message>
     <message>
         <location line="+7"/>
