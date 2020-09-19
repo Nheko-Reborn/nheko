@@ -35,12 +35,12 @@
     <message>
         <location line="+26"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm invite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you really want to invite %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -50,12 +50,12 @@
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm kick</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you really want to kick %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -70,12 +70,12 @@
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm ban</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you really want to ban %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -90,12 +90,12 @@
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm unban</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you really want to unban %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -195,7 +195,7 @@
         <location line="+2"/>
         <source>Server Notices</source>
         <comment>Tag translation for m.server_notice</comment>
-        <translation type="unfinished"></translation>
+        <translation>Server Notices</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -243,42 +243,42 @@
     <message>
         <location line="-42"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>People</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Nature</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Food</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Activity</translation>
+        <translation>Activity</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Travel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Objects</translation>
+        <translation>Objects</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symbols</translation>
+        <translation>Symbols</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
     </message>
 </context>
 <context>
@@ -291,7 +291,7 @@
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>This message is not encrypted!</translation>
     </message>
 </context>
 <context>
@@ -300,25 +300,25 @@
         <location filename="../../src/timeline/EventStore.cpp" line="+418"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished">-- Encrypted Event (No keys found for decryption) --</translation>
+        <translation>-- Encrypted Event (No keys found for decryption) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished">-- Decryption Error (failed to retrieve megolm keys from db) --</translation>
+        <translation>-- Decryption Error (failed to retrieve megolm keys from db) --</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished">-- Decryption Error (%1) --</translation>
+        <translation>-- Decryption Error (%1) --</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished">-- Encrypted Event (Unknown event type) --</translation>
+        <translation>-- Encrypted Event (Unknown event type) --</translation>
     </message>
     <message>
         <location line="+13"/>
