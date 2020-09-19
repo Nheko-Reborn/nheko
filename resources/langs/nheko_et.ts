@@ -482,7 +482,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+7"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 helistas.</translation>
     </message>
     <message>
         <location line="+1"/>
