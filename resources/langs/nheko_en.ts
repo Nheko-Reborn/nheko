@@ -323,12 +323,12 @@
     <message>
         <location line="+13"/>
         <source>-- Replay attack! This message index was reused! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Replay attack! This message index was reused! --</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>-- Message by unverified device! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Message by unverified device! --</translation>
     </message>
 </context>
 <context>
@@ -375,7 +375,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -485,22 +485,22 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+7"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 placed a voice call.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 placed a video call.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 placed a call.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Negotiating call...</source>
-        <translation type="unfinished"></translation>
+        <translation>Negotiating call…</translation>
     </message>
     <message>
         <location line="-12"/>
@@ -615,49 +615,49 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tag room as:</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favourite</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>Low Priority</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>Server Notice</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
-        <translation type="unfinished"></translation>
+        <translation>Adds or removes the specified tag.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation type="unfinished"></translation>
+        <translation>New tag…</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
+        <translation>New Tag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tag:</source>
         <comment>Tag name prompt</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tag:</translation>
     </message>
     <message>
         <location line="+173"/>
@@ -757,12 +757,12 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+64"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Place a call</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Hang up</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
@@ -783,7 +783,7 @@ Example: https://server.my:8787</translation>
         <location line="+101"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to encrypt event, sending aborted!</translation>
     </message>
     <message>
         <location line="+195"/>
@@ -882,7 +882,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 changed some profile info.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -956,7 +956,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>React</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -974,7 +974,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+61"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>React</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1019,38 +1019,38 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+53"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Back to room list</translation>
     </message>
     <message>
         <location line="+15"/>
         <location line="+15"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>No room selected</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room options</source>
-        <translation type="unfinished">Room options</translation>
+        <translation>Room options</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Invite users</translation>
+        <translation>Invite users</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Members</source>
-        <translation type="unfinished">Members</translation>
+        <translation>Members</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Leave room</source>
-        <translation type="unfinished">Leave room</translation>
+        <translation>Leave room</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Settings</source>
-        <translation type="unfinished">Settings</translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location line="+253"/>
@@ -1081,12 +1081,12 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Set custom status message</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Custom status message</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1442,7 +1442,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
         <source>Accept</source>
-        <translation type="unfinished">Accept</translation>
+        <translation>Accept</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1583,7 +1583,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
