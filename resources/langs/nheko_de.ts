@@ -500,12 +500,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat den Anruf angenommen.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat den Anruf beendet.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1947,17 +1947,17 @@ Medien-Größe: %2
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Du hast angerufen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat angerufen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>du hast einen Anruf angenommen</translation>
     </message>
     <message>
         <location line="+3"/>
