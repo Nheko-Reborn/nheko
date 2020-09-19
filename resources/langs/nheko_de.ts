@@ -1957,22 +1957,22 @@ Medien-Größe: %2
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation>du hast einen Anruf angenommen</translation>
+        <translation>Du hast einen Anruf angenommen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat einen Anruf angenommen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Du hast einen Anruf beendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat einen Anruf beendet</translation>
     </message>
 </context>
 <context>
