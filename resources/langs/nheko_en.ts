@@ -1312,12 +1312,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Allow fallback call assist server</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Will use turn.matrix.org as assist when your home server does not offer one.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1452,7 +1452,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+5"/>
         <source>Reject</source>
-        <translation type="unfinished"></translation>
+        <translation>Reject</translation>
     </message>
 </context>
 <context>
@@ -1583,7 +1583,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1813,12 +1813,12 @@ Media size: %2
     <message>
         <location line="+14"/>
         <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm DM</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you really want to invite %1 (%2) to a direct chat?</translation>
     </message>
     <message>
         <location line="+54"/>
