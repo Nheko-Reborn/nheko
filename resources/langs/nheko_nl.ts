@@ -4,7 +4,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1359"/>
+        <location filename="../../src/Cache.cpp" line="+1658"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12,33 +12,53 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+229"/>
+        <location filename="../../src/ChatPage.cpp" line="+218"/>
         <source>Failed to invite user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+926"/>
+        <location line="+947"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-474"/>
+        <location line="-458"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+439"/>
+        <location line="+415"/>
         <source>Room %1 created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+26"/>
+        <source>Confirm invite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to invite %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+15"/>
+        <source>Confirm kick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to kick %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to kick %1 to %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -48,7 +68,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+10"/>
+        <source>Confirm ban</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to ban %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,7 +88,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+10"/>
+        <source>Confirm unban</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to unban %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -68,12 +108,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-828"/>
+        <location line="-874"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+296"/>
+        <location line="+334"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,28 +128,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+111"/>
+        <location line="+67"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+54"/>
-        <location line="+252"/>
+        <location line="+99"/>
+        <location line="+251"/>
         <source>Please try to login again: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-187"/>
+        <location line="-219"/>
         <source>Failed to join room: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -255,6 +295,43 @@
     </message>
 </context>
 <context>
+    <name>EventStore</name>
+    <message>
+        <location filename="../../src/timeline/EventStore.cpp" line="+418"/>
+        <source>-- Encrypted Event (No keys found for decryption) --</source>
+        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>-- Decryption Error (%1) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>-- Encrypted Event (Unknown event type) --</source>
+        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>-- Reply attack! This message index was reused! --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Message by unverified device! --</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>InviteeItem</name>
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
@@ -367,6 +444,7 @@ Example: https://server.my:8787</source>
     <name>MessageDelegate</name>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+66"/>
+        <location line="+6"/>
         <source>redacted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -398,6 +476,36 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+6"/>
         <source>%1 created and configured room: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 placed a voice call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>%1 placed a video call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>%1 placed a call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 answered the call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 ended the call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Negotiating call...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -488,7 +596,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+984"/>
+        <location filename="../../src/Cache.cpp" line="+1443"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -612,13 +720,13 @@ Example: https://server.my:8787</source>
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+460"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+574"/>
         <source>Send a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+145"/>
+        <location filename="../../src/TextInputWidget.h" line="+160"/>
         <source>Write a message...</source>
         <translation>Typ een bericht...</translation>
     </message>
@@ -633,7 +741,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+94"/>
         <source>Select a file</source>
         <translation>Kies een bestand</translation>
     </message>
@@ -641,6 +749,16 @@ Example: https://server.my:8787</source>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Alle bestanden (*)</translation>
+    </message>
+    <message>
+        <location line="+64"/>
+        <source>Place a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Hang up</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
@@ -651,30 +769,20 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+891"/>
-        <source>-- Decryption Error (failed to communicate with DB) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+99"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+805"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+488"/>
+        <location line="+114"/>
+        <location line="+17"/>
+        <location line="+101"/>
+        <location line="+5"/>
+        <source>Failed to encrypt event, sending aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+195"/>
         <source>Save image</source>
         <translation type="unfinished">Afbeelding opslaan</translation>
     </message>
@@ -693,20 +801,8 @@ Example: https://server.my:8787</source>
         <source>Save file</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="-643"/>
-        <source>-- Encrypted Event (No keys found for decryption) --</source>
-        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+82"/>
-        <source>-- Encrypted Event (Unknown event type) --</source>
-        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished"></translation>
-    </message>
     <message numerus="yes">
-        <location line="+693"/>
+        <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -760,7 +856,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+33"/>
         <source>%1 was invited.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -825,12 +921,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1281"/>
+        <location line="-943"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1283"/>
+        <location line="+945"/>
         <source>Rejected the knock from %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -854,12 +950,12 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+91"/>
+        <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+16"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -872,7 +968,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+54"/>
+        <location filename="../qml/TimelineView.qml" line="+61"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -912,47 +1008,50 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+12"/>
         <source>No room open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+271"/>
-        <source>Close</source>
+        <location line="+53"/>
+        <source>Back to room list</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>TopRoomBar</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+86"/>
+        <location line="+15"/>
+        <location line="+15"/>
+        <source>No room selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
         <source>Room options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Mentions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+7"/>
         <source>Invite users</source>
-        <translation>Gebruikers uitnodigen</translation>
+        <translation type="unfinished">Gebruikers uitnodigen</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
         <source>Members</source>
-        <translation>Leden</translation>
+        <translation type="unfinished">Leden</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>Leave room</source>
-        <translation>Kamer verlaten</translation>
+        <translation type="unfinished">Kamer verlaten</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>Settings</source>
-        <translation>Instellingen</translation>
+        <translation type="unfinished">Instellingen</translation>
+    </message>
+    <message>
+        <location line="+253"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1014,7 +1113,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+535"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+566"/>
         <source>Minimize to tray</source>
         <translation>Minimaliseren naar systeemvak</translation>
     </message>
@@ -1034,7 +1133,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-63"/>
+        <source>CALLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+58"/>
         <source>Keep the application running in the background after closing the client window.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1197,7 +1301,17 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Thema</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
+        <source>Allow fallback call assist server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Device ID</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1207,7 +1321,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-113"/>
+        <location line="-120"/>
         <source>Session Keys</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1227,22 +1341,22 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-78"/>
         <source>GENERAL</source>
         <translation>ALGEMEEN</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+172"/>
         <source>Emoji Font Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+191"/>
         <source>Open Sessions File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1314,8 +1428,21 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+147"/>
+        <location filename="../../src/Utils.cpp" line="+146"/>
         <source>Yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::AcceptCall</name>
+    <message>
+        <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
+        <source>Accept</source>
+        <translation type="unfinished">Accepteren</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Reject</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1440,6 +1567,19 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
         <translation>Uitloggen. Weet je het zeker?</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::PlaceCall</name>
+    <message>
+        <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
+        <source>Voice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuleren</translation>
     </message>
 </context>
 <context>
@@ -1640,7 +1780,7 @@ Mediagrootte: %2
 <context>
     <name>dialogs::UserProfile</name>
     <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
+        <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
         <source>Ban the user from the room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1660,7 +1800,17 @@ Mediagrootte: %2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+14"/>
+        <source>Confirm DM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to invite %1 (%2) to a direct chat?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1711,7 +1861,7 @@ Mediagrootte: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+103"/>
+        <location filename="../../src/Utils.h" line="+106"/>
         <source>You sent an audio clip</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1788,6 +1938,36 @@ Mediagrootte: %2
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You placed a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 placed a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You answered a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 answered a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You ended a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 ended a call</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
