@@ -1205,7 +1205,7 @@ Only affects messages in encrypted chats.</translation>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation>Show who is typing in a room.
-This will also enable or disable sending typing notifications to other</translation>
+This will also enable or disable sending typing notifications to others.</translation>
     </message>
     <message>
         <location line="+3"/>
