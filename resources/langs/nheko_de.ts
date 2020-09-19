@@ -198,22 +198,22 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
         <location line="+139"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Leute</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Natur</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Essen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -223,7 +223,7 @@
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Reisen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -251,7 +251,7 @@
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation>Diese Nachricht ist nicht verschlüsselt!</translation>
+        <translation>Diese Nachricht ist unverschlüsselt!</translation>
     </message>
 </context>
 <context>
