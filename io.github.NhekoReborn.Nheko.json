@@ -146,7 +146,7 @@
       "name": "mtxclient",
       "sources": [
         {
-          "commit": "0665c8baf4af0ce192adb8ca97761b63b681d569",
+          "commit": "f84611f129b46746a4b586acaba54fc31a303bc6",
           "type": "git",
           "url": "https://github.com/Nheko-Reborn/mtxclient.git"
         }

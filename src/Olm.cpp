@@ -581,9 +581,11 @@ send_megolm_key_to_device(const std::string &user_id,
                                     ->create_room_key_event(UserId(user_id), pks.ed25519, payload)
                                     .dump();
 
+                  mtx::requests::ClaimKeys claim_keys;
+                  claim_keys.one_time_keys[user_id][device_id] = mtx::crypto::SIGNED_CURVE25519;
+
                   http::client()->claim_keys(
-                    user_id,
-                    {device_id},
+                    claim_keys,
                     [room_key, user_id, device_id, pks](const mtx::responses::ClaimKeys &res,
                                                         mtx::http::RequestErr err) {
                             if (err) {
