@@ -434,12 +434,13 @@ Page {
 				id: footerContent
 				anchors.left: parent.left
 				anchors.right: parent.right
+				anchors.bottom: parent.bottom
                 Rectangle {
                     id: typingRect
                     anchors.left: parent.left
                     anchors.right: parent.right
                     color: (chat.model && chat.model.typingUsers.length > 0) ? colors.window : "transparent"
-                    height: chatFooter.height
+                    height: typingDisplay.height
                     Label {
                         id: typingDisplay
                         anchors.left: parent.left
