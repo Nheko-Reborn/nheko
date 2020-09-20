@@ -25,7 +25,7 @@
     <message>
         <location line="-458"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation>Migrieren des Caches auf die aktuelle Version fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte lege einen Bugreport an und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du das Cache manuell entfernen.</translation>
+        <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du das Cache manuell löschen.</translation>
     </message>
     <message>
         <location line="+415"/>
@@ -125,7 +125,7 @@
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Das Cache auf der Festplatte wurde mit einer neueren Nheko version angelegt. Bitte aktualisiere Nheko oder entferne das Cache.</translation>
+        <translation>Der Cache auf der Festplatte wurde mit einer neueren Nheko - Version angelegt. Bitte aktualisiere Nheko oder entferne den Cache.</translation>
     </message>
     <message>
         <location line="+67"/>
