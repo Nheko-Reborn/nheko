@@ -75,7 +75,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa tõesti soovid kasutajale %1 (%2) seada suhtluskeeldu?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -90,12 +90,12 @@
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita suhtluskeelu eemaldamine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa tõesti soovid kasutajalt %1 (%2) eemaldada suhtluskeelu?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -195,7 +195,7 @@
         <location line="+2"/>
         <source>Server Notices</source>
         <comment>Tag translation for m.server_notice</comment>
-        <translation type="unfinished"></translation>
+        <translation>Serveriteated</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -243,42 +243,42 @@
     <message>
         <location line="-42"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Inimesed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Loodus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Toit</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Tegevused</translation>
+        <translation>Tegevused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Reisimine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Esemed</translation>
+        <translation>Esemed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Sümbolid</translation>
+        <translation>Sümbolid</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Lipud</translation>
+        <translation>Lipud</translation>
     </message>
 </context>
 <context>
@@ -291,7 +291,7 @@
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>See sõnum on krüptimata!</translation>
     </message>
 </context>
 <context>
@@ -300,35 +300,35 @@
         <location filename="../../src/timeline/EventStore.cpp" line="+418"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished">-- Krüptitud sündmus (Dekrüptimisvõtmeid ei leidunud) --</translation>
+        <translation>-- Krüptitud sündmus (Dekrüptimisvõtmeid ei leidunud) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished">-- Dekrüptimise viga (megolm&apos;i võtmete laadimine andmebaasist ei õnnestunud) --</translation>
+        <translation>-- Dekrüptimise viga (megolm&apos;i võtmete laadimine andmebaasist ei õnnestunud) --</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished">-- Dekrüptimise viga (%1) --</translation>
+        <translation>-- Dekrüptimise viga (%1) --</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished">-- Krüptitud sündmus (Tundmatu sündmuse tüüp) --</translation>
+        <translation>-- Krüptitud sündmus (Tundmatu sündmuse tüüp) --</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>-- Replay attack! This message index was reused! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Kordusel põhinev rünne! Selle sõnumi indeksit on uuesti kasutatud! --</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>-- Message by unverified device! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Sõnum verifitseerimata seadmest! --</translation>
     </message>
 </context>
 <context>
@@ -357,7 +357,10 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu kasutajanimi sisselogimiseks. Matrix&apos;i kasutajatunnus algab @ märgiga ning sellele järgneb kasutajanimi. Seejärel peale koolonit
+on sinu koduserveri nimi. Kui sinu koduserver ei toeta .well-known nimelahendust, siis sa võid lisada ka koduserveri aadressi.
+Näiteks @kadri:server.minu
+Kui Nheko ei suuda tuvastada sinu koduserverit, siis ta kuvab sulle andmevälja selle sisestamiseks.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -372,7 +375,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle seadme nimi, mida näidetakse verifitseerimise ajal teisele kasutajatele. Kui sa ise nime ei pane, siis kasutame automaatselt pandud nime.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -487,17 +490,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+1"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alustas videokõnet.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 helistas.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Negotiating call...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendan kõnet…</translation>
     </message>
     <message>
         <location line="-12"/>
@@ -612,49 +615,49 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa jututoale silt:</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lemmik</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vähetähtis</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>Serveriteade</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lisab või eemaldab selle sildi.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uus silt…</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uus silt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tag:</source>
         <comment>Tag name prompt</comment>
-        <translation type="unfinished"></translation>
+        <translation>Silt:</translation>
     </message>
     <message>
         <location line="+173"/>
@@ -754,12 +757,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+64"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Helista</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Lõpeta kõne</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
@@ -780,7 +783,7 @@ Näiteks: https://server.minu:8787</translation>
         <location line="+101"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sündmuse krüptimine ei õnnestunud, katkestame saatmise!</translation>
     </message>
     <message>
         <location line="+195"/>
@@ -879,7 +882,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis oma profiili.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -953,7 +956,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reageeri</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -971,7 +974,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+61"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reageeri</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1016,38 +1019,38 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+53"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi jututubade loendisse</translation>
     </message>
     <message>
         <location line="+15"/>
         <location line="+15"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututuba on valimata</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room options</source>
-        <translation type="unfinished">Jututoa valikud</translation>
+        <translation>Jututoa valikud</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Kutsu kasutajaid</translation>
+        <translation>Kutsu kasutajaid</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Members</source>
-        <translation type="unfinished">Liikmed</translation>
+        <translation>Liikmed</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Leave room</source>
-        <translation type="unfinished">Lahku jututoast</translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Settings</source>
-        <translation type="unfinished">Seadistused</translation>
+        <translation>Seadistused</translation>
     </message>
     <message>
         <location line="+253"/>
@@ -1078,37 +1081,37 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjuta kohandatud olekuteade</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Kohandatud olekuteade</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Olek:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Määra oma võrguolek automaatselt</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrgus</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Pole kättesaadav</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Pole võrgus</translation>
     </message>
 </context>
 <context>
@@ -1136,28 +1139,29 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="-63"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>KÕNED</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Peale akna sulgemist jäta rakendus taustal tööle.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Käivita rakendus taustal ilma kliendiakna kuvamiseta.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda vestlustes kuvatavate tunnuspiltide kuju.
+Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita jututubade loendi kõrval veergu rühmade ja siltidega.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1168,7 +1172,8 @@ OFF - square, ON - Circle.</source>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekrüpti külgpaanis kuvatavaid sõnumeid.
+Kehtib vaid läbivalt krüptitud vestluste puhul.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1178,17 +1183,17 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita iga sõnumi kõrval nuppe, mis võimaldavad kiiresti vastata, reageerida või teha sõnumiga muid toiminguid.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Piira ajajoone laiust</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista sõnumite suurim laius pikslites ajajoonel. See parandab loetavust suurel ekraanil, kui Nheko on avatud täisvaates.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1199,7 +1204,8 @@ Only affects messages in encrypted chats.</source>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita, kes jututoas parasjagu kirjutab.
+Samaga lülitatakse sisse või välja ka sinu kirjutamisteatiste saatmine teistele kasutajatele.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1222,7 +1228,8 @@ If this is on, rooms which have active notifications (the small circle with a nu
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita, kas sinu sõnum sai loetud.
+Lugemise olekut kuvatakse ajatempli kõrval.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1233,7 +1240,8 @@ Status is displayed next to timestamps.</source>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba Markdown-vormingu kasutamine sõnumite koostamisel.
+Kui Markdown ei ole kasutusel, siis saadetakse kõik sõnumid vormindamata tekstina.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1243,12 +1251,12 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita saabunud sõnumi teavitust, kui Nheko ei ole parasjagu fookuses.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna teavitustest märku</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1259,22 +1267,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Üle sõnumi liikumisel too ta esile</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Üle sõnumite liikudes muuda nende taustavärvi.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Suured emojid ajajoonel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tee sõnumi font suuremaks, kui sõnumis on vaid mõned emojid.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1284,7 +1292,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda kogu kasutajaliidese suurust.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1304,12 +1312,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba kõnehõlbustusserveri kasutamist</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kui sinu koduserver ei paku välja sobilikku kõnehõlbustusserverit, siis kasuta turn.matrix.org teenust.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1439,12 +1447,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
         <source>Accept</source>
-        <translation type="unfinished">Nõustu</translation>
+        <translation>Nõustu</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Reject</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära võta vastu</translation>
     </message>
 </context>
 <context>
@@ -1575,12 +1583,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Häälkõne</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Loobu</translation>
     </message>
 </context>
 <context>
@@ -1810,7 +1818,7 @@ Meedia suurus: %2
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa tõesti soovid saata otsevestluse kutset kasutajale %1 (%2)?</translation>
     </message>
     <message>
         <location line="+54"/>
