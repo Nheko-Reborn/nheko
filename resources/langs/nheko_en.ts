@@ -1217,7 +1217,9 @@ This will also enable or disable sending typing notifications to others.</transl
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Display rooms with new messages first.
+If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
+If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1262,7 +1264,8 @@ When disabled, all messages are sent as a plain text.</translation>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show an alert when a message is received.
+This usually causes the application icon in the task bar to animate in some fashion.</translation>
     </message>
     <message>
         <location line="+2"/>
