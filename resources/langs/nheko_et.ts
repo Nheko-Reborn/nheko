@@ -1217,7 +1217,9 @@ Samaga lülitatakse sisse või välja ka sinu kirjutamisteatiste saatmine teiste
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuva uute sõnumitega jututoad esimesena.
+Kui see valik on välja lülitatud, siis jututoad järjestatakse viimati saanunud sõnumi ajatempli alusel.
+Kui see valik on sisse lülitatud, siis teavitustega jututoad (pisike ümmargune numbrifa ikoon) järjestatakse esimesena. Sinu poolt summutatud jututoad järjestatakse ikkagi ajatempli alusel, sest sa ei pea neid teistega võrreldes piisavalt tähtsaks.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1262,7 +1264,8 @@ Kui Markdown ei ole kasutusel, siis saadetakse kõik sõnumid vormindamata tekst
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumi saabumisel näita teavitust.
+See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti animatsiooniga sulle märku.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1813,7 +1816,7 @@ Meedia suurus: %2
     <message>
         <location line="+14"/>
         <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita otsevestlus</translation>
     </message>
     <message>
         <location line="+1"/>
