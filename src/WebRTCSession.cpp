@@ -1,5 +1,5 @@
-#include <cctype>
 #include <QQmlEngine>
+#include <cctype>
 
 #include "Logging.h"
 #include "WebRTCSession.h"
@@ -21,15 +21,10 @@ using webrtc::State;
 
 WebRTCSession::WebRTCSession()
   : QObject()
-{ 
+{
         qRegisterMetaType<webrtc::State>();
         qmlRegisterUncreatableMetaObject(
-            webrtc::staticMetaObject,
-            "im.nheko",
-            1,
-            0,
-            "WebRTCState",
-            "Can't instantiate enum");
+          webrtc::staticMetaObject, "im.nheko", 1, 0, "WebRTCState", "Can't instantiate enum");
 
         connect(this, &WebRTCSession::stateChanged, this, &WebRTCSession::setState);
         init();
@@ -257,12 +252,10 @@ iceGatheringStateChanged(GstElement *webrtc,
                 nhlog::ui()->debug("WebRTC: GstWebRTCICEGatheringState -> Complete");
                 if (isoffering_) {
                         emit WebRTCSession::instance().offerCreated(localsdp_, localcandidates_);
-                        emit WebRTCSession::instance().stateChanged(
-                          State::OFFERSENT);
+                        emit WebRTCSession::instance().stateChanged(State::OFFERSENT);
                 } else {
                         emit WebRTCSession::instance().answerCreated(localsdp_, localcandidates_);
-                        emit WebRTCSession::instance().stateChanged(
-                          State::ANSWERSENT);
+                        emit WebRTCSession::instance().stateChanged(State::ANSWERSENT);
                 }
         }
 }
@@ -366,8 +359,7 @@ linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe
                 if (GST_PAD_LINK_FAILED(gst_pad_link(newpad, queuepad)))
                         nhlog::ui()->error("WebRTC: unable to link new pad");
                 else {
-                        emit WebRTCSession::instance().stateChanged(
-                          State::CONNECTED);
+                        emit WebRTCSession::instance().stateChanged(State::CONNECTED);
                 }
                 gst_object_unref(queuepad);
         }

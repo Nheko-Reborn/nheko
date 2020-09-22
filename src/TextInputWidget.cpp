@@ -779,8 +779,7 @@ void
 TextInputWidget::changeCallButtonState(webrtc::State state)
 {
         QIcon icon;
-        if (state == webrtc::State::ICEFAILED ||
-            state == webrtc::State::DISCONNECTED) {
+        if (state == webrtc::State::ICEFAILED || state == webrtc::State::DISCONNECTED) {
                 callBtn_->setToolTip(tr("Place a call"));
                 icon.addFile(":/icons/icons/ui/place-call.png");
         } else {

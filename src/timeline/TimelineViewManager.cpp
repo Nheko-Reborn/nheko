@@ -141,8 +141,10 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 isInitialSync_ = true;
                 emit initialSyncChanged(true);
         });
-        connect(
-          &WebRTCSession::instance(), &WebRTCSession::stateChanged, this, &TimelineViewManager::callStateChanged);
+        connect(&WebRTCSession::instance(),
+                &WebRTCSession::stateChanged,
+                this,
+                &TimelineViewManager::callStateChanged);
 }
 
 void
