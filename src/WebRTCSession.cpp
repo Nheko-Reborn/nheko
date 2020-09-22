@@ -1,4 +1,5 @@
 #include <cctype>
+#include <QQmlEngine>
 
 #include "Logging.h"
 #include "WebRTCSession.h"
@@ -14,12 +15,22 @@ extern "C"
 }
 #endif
 
-Q_DECLARE_METATYPE(WebRTCSession::State)
+Q_DECLARE_METATYPE(webrtc::State)
+
+using webrtc::State;
 
 WebRTCSession::WebRTCSession()
   : QObject()
-{
-        qRegisterMetaType<WebRTCSession::State>();
+{ 
+        qRegisterMetaType<webrtc::State>();
+        qmlRegisterUncreatableMetaObject(
+            webrtc::staticMetaObject,
+            "im.nheko",
+            1,
+            0,
+            "WebRTCState",
+            "Can't instantiate enum");
+
         connect(this, &WebRTCSession::stateChanged, this, &WebRTCSession::setState);
         init();
 }
@@ -247,11 +258,11 @@ iceGatheringStateChanged(GstElement *webrtc,
                 if (isoffering_) {
                         emit WebRTCSession::instance().offerCreated(localsdp_, localcandidates_);
                         emit WebRTCSession::instance().stateChanged(
-                          WebRTCSession::State::OFFERSENT);
+                          State::OFFERSENT);
                 } else {
                         emit WebRTCSession::instance().answerCreated(localsdp_, localcandidates_);
                         emit WebRTCSession::instance().stateChanged(
-                          WebRTCSession::State::ANSWERSENT);
+                          State::ANSWERSENT);
                 }
         }
 }
@@ -264,10 +275,10 @@ onICEGatheringCompletion(gpointer timerid)
         *(guint *)(timerid) = 0;
         if (isoffering_) {
                 emit WebRTCSession::instance().offerCreated(localsdp_, localcandidates_);
-                emit WebRTCSession::instance().stateChanged(WebRTCSession::State::OFFERSENT);
+                emit WebRTCSession::instance().stateChanged(State::OFFERSENT);
         } else {
                 emit WebRTCSession::instance().answerCreated(localsdp_, localcandidates_);
-                emit WebRTCSession::instance().stateChanged(WebRTCSession::State::ANSWERSENT);
+                emit WebRTCSession::instance().stateChanged(State::ANSWERSENT);
         }
         return FALSE;
 }
@@ -285,7 +296,7 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
         localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
         return;
 #else
-        if (WebRTCSession::instance().state() >= WebRTCSession::State::OFFERSENT) {
+        if (WebRTCSession::instance().state() >= State::OFFERSENT) {
                 emit WebRTCSession::instance().newICECandidate(
                   {"audio", (uint16_t)mlineIndex, candidate});
                 return;
@@ -314,11 +325,11 @@ iceConnectionStateChanged(GstElement *webrtc,
         switch (newState) {
         case GST_WEBRTC_ICE_CONNECTION_STATE_CHECKING:
                 nhlog::ui()->debug("WebRTC: GstWebRTCICEConnectionState -> Checking");
-                emit WebRTCSession::instance().stateChanged(WebRTCSession::State::CONNECTING);
+                emit WebRTCSession::instance().stateChanged(State::CONNECTING);
                 break;
         case GST_WEBRTC_ICE_CONNECTION_STATE_FAILED:
                 nhlog::ui()->error("WebRTC: GstWebRTCICEConnectionState -> Failed");
-                emit WebRTCSession::instance().stateChanged(WebRTCSession::State::ICEFAILED);
+                emit WebRTCSession::instance().stateChanged(State::ICEFAILED);
                 break;
         default:
                 break;
@@ -356,7 +367,7 @@ linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe
                         nhlog::ui()->error("WebRTC: unable to link new pad");
                 else {
                         emit WebRTCSession::instance().stateChanged(
-                          WebRTCSession::State::CONNECTED);
+                          State::CONNECTED);
                 }
                 gst_object_unref(queuepad);
         }
@@ -633,21 +644,17 @@ WebRTCSession::createPipeline(int opusPayloadType)
 }
 
 bool
-WebRTCSession::toggleMuteAudioSrc(bool &isMuted)
+WebRTCSession::toggleMuteAudioSource()
 {
         if (state_ < State::INITIATED)
                 return false;
 
         GstElement *srclevel = gst_bin_get_by_name(GST_BIN(pipe_), "srclevel");
-        if (!srclevel)
-                return false;
-
         gboolean muted;
         g_object_get(srclevel, "mute", &muted, nullptr);
         g_object_set(srclevel, "mute", !muted, nullptr);
         gst_object_unref(srclevel);
-        isMuted = !muted;
-        return true;
+        return !muted;
 }
 
 void
@@ -778,7 +785,7 @@ WebRTCSession::createPipeline(int)
 }
 
 bool
-WebRTCSession::toggleMuteAudioSrc(bool &)
+WebRTCSession::toggleMuteAudioSource()
 {
         return false;
 }

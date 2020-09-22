@@ -288,7 +288,7 @@ MainWindow::showChatPage()
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
-        if (WebRTCSession::instance().state() != WebRTCSession::State::DISCONNECTED) {
+        if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
                 if (QMessageBox::question(this, "nheko", "A call is in progress. Quit?") !=
                     QMessageBox::Yes) {
                         event->ignore();
@@ -440,7 +440,7 @@ MainWindow::openLogoutDialog()
 {
         auto dialog = new dialogs::Logout(this);
         connect(dialog, &dialogs::Logout::loggingOut, this, [this]() {
-                if (WebRTCSession::instance().state() != WebRTCSession::State::DISCONNECTED) {
+                if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
                         if (QMessageBox::question(
                               this, "nheko", "A call is in progress. Log out?") !=
                             QMessageBox::Yes) {

@@ -41,10 +41,6 @@ signals:
         void newMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
         void turnServerRetrieved(const mtx::responses::TurnServer &);
-        void newCallParty(const QString &userid,
-                          const QString &displayName,
-                          const QString &roomName,
-                          const QString &avatarUrl);
 
 private slots:
         void retrieveTurnServer();

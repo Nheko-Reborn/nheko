@@ -279,7 +279,6 @@ set(SRC_FILES
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
 
-	src/ActiveCallBar.cpp
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
@@ -491,7 +490,6 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	src/notifications/Manager.h
 
-	src/ActiveCallBar.h
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
 	src/Cache_p.h

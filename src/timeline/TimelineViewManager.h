@@ -13,6 +13,7 @@
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 
@@ -33,6 +34,8 @@ class TimelineViewManager : public QObject
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
         Q_PROPERTY(
           bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
+        Q_PROPERTY(
+          webrtc::State callState READ callState NOTIFY callStateChanged)
 
 public:
         TimelineViewManager(QSharedPointer<UserSettings> userSettings,
@@ -48,6 +51,8 @@ public:
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
+        webrtc::State callState() const { return WebRTCSession::instance().state(); }
+        Q_INVOKABLE bool toggleMuteAudioSource() { return WebRTCSession::instance().toggleMuteAudioSource(); }
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
@@ -72,6 +77,7 @@ signals:
         void inviteUsers(QStringList users);
         void showRoomList();
         void narrowViewChanged();
+        void callStateChanged(webrtc::State);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

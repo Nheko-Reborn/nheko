@@ -52,7 +52,7 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
                   emit newMessage(roomid_, CallInvite{callid_, sdp, 0, timeoutms_});
                   emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
                   QTimer::singleShot(timeoutms_, this, [this]() {
-                          if (session_.state() == WebRTCSession::State::OFFERSENT) {
+                          if (session_.state() == webrtc::State::OFFERSENT) {
                                   hangUp(CallHangUp::Reason::InviteTimeOut);
                                   emit ChatPage::instance()->showNotification(
                                     "The remote side failed to pick up.");
@@ -99,13 +99,13 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
                         turnServerTimer_.setInterval(ttl * 1000 * 0.9);
                 });
 
-        connect(&session_, &WebRTCSession::stateChanged, this, [this](WebRTCSession::State state) {
+        connect(&session_, &WebRTCSession::stateChanged, this, [this](webrtc::State state) {
                 switch (state) {
-                case WebRTCSession::State::DISCONNECTED:
+                case webrtc::State::DISCONNECTED:
                         playRingtone("qrc:/media/media/callend.ogg", false);
                         clear();
                         break;
-                case WebRTCSession::State::ICEFAILED: {
+                case webrtc::State::ICEFAILED: {
                         QString error("Call connection failed.");
                         if (turnURIs_.empty())
                                 error += " Your homeserver has no configured TURN server.";
@@ -152,13 +152,6 @@ CallManager::sendInvite(const QString &roomid)
 
         generateCallID();
         nhlog::ui()->debug("WebRTC: call id: {} - creating invite", callid_);
-        std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
-        const RoomMember &callee =
-          members.front().user_id == utils::localUser() ? members.back() : members.front();
-        emit newCallParty(callee.user_id,
-                          callee.display_name,
-                          QString::fromStdString(roomInfo.name),
-                          QString::fromStdString(roomInfo.avatar_url));
         playRingtone("qrc:/media/media/ringback.ogg", true);
         if (!session_.createOffer()) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
@@ -195,7 +188,7 @@ CallManager::hangUp(CallHangUp::Reason reason)
 bool
 CallManager::onActiveCall()
 {
-        return session_.state() != WebRTCSession::State::DISCONNECTED;
+        return session_.state() != webrtc::State::DISCONNECTED;
 }
 
 void
@@ -259,11 +252,6 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
         const RoomMember &caller =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
-        emit newCallParty(caller.user_id,
-                          caller.display_name,
-                          QString::fromStdString(roomInfo.name),
-                          QString::fromStdString(roomInfo.avatar_url));
-
         auto dialog = new dialogs::AcceptCall(caller.user_id,
                                               caller.display_name,
                                               QString::fromStdString(roomInfo.name),
