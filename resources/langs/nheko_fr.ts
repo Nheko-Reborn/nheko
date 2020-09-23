@@ -40,7 +40,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation>Voulez-vous vraiment inviter %1 (%2)?</translation>
+        <translation>Voulez-vous vraiment inviter %1 (%2) ?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -201,12 +201,12 @@
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation>(étiquette)</translation>
+        <translation> (étiquette)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation>(communauté)</translation>
+        <translation> (communauté)</translation>
     </message>
 </context>
 <context>
@@ -359,7 +359,7 @@ Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
         <translation>Votre nom de connexion. Un mxid doit commencer par un « @ » suivi de l&apos;identifiant. L&apos;identifiant doit être suivi du nom de serveur, séparé de celui-ci par « : ».
 Vous pouvez également spécifier l&apos;adresse de votre serveur ici, si votre serveur ne supporte pas l&apos;identification .well-known.
-Exemple: @utilisateur:monserveur.example.com
+Exemple : @utilisateur :monserveur.example.com
 Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos;indiquer manuellement.</translation>
     </message>
     <message>
@@ -382,7 +382,7 @@ Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>L&apos;adresse qui peut être utilisée pour joindre l&apos;API client de votre serveur.
-Exemple: https://monserveur.example.com:8787</translation>
+Exemple : https ://monserveur.example.com :8787</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -518,7 +518,7 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation>Évènement non implémenté :</translation>
+        <translation>Évènement non implémenté : </translation>
     </message>
 </context>
 <context>
@@ -539,7 +539,7 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location line="+3"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation>Le nom d&apos;utilisateur ne doit pas être vide, et ne peut contenir que les caractères  a à z,  0 à 9, et « . _ = - / ».</translation>
+        <translation>Le nom d&apos;utilisateur ne doit pas être vide, et ne peut contenir que les caractères a à z, 0 à 9, et « . _ = - / ».</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -872,7 +872,7 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation>%1 a changé son son.</translation>
+        <translation>%1 a changé son nom.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -917,38 +917,38 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a été banni.</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ne frappe plus au salon.</translation>
     </message>
     <message>
         <location line="-943"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez rejoint ce salon.</translation>
     </message>
     <message>
         <location line="+945"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a été rejeté après avoir frappé au salon.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 a quitté le salon après l&apos;avoir déjà quitté !</translation>
     </message>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Raison : %1</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a frappé au salon.</translation>
     </message>
 </context>
 <context>
@@ -956,17 +956,17 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Réagir</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Répondre</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
 </context>
 <context>
@@ -974,88 +974,88 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+61"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Réagir</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Réponse</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Accusés de lecture</translation>
+        <translation>Accusés de lecture</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Marquer comme lu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir le message brut</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir le message déchiffré brut</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Redact message</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer le message</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer sous</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun salon ouvert</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Revenir à la liste des salons</translation>
     </message>
     <message>
         <location line="+15"/>
         <location line="+15"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de salon sélectionné</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options du salon</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Inviter des utilisateurs</translation>
+        <translation>Inviter des utilisateurs</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Members</source>
-        <translation type="unfinished">Membres</translation>
+        <translation>Membres</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Leave room</source>
-        <translation type="unfinished">Quitter le salon</translation>
+        <translation>Quitter le salon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Settings</source>
-        <translation type="unfinished">Paramètres</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location line="+253"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1076,42 +1076,42 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+95"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Se déconnecter</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un message de statut personnalisé</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Message de statut personnalisé</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Statut :</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer la présence automatiquement</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>En ligne</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Non disponible</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Hors ligne</translation>
     </message>
 </context>
 <context>
@@ -1134,64 +1134,66 @@ Exemple: https://monserveur.example.com:8787</translation>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Avatars circulaires</translation>
     </message>
     <message>
         <location line="-63"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>APPELS</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserver l&apos;application en arrière plan après la fermeture de la fenêtre du client.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer l&apos;application en arrière plan sans montrer la fenêtre du client.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Change l&apos;apparence des avatars des utilisateurs dans les discussions.
+OFF – carré, ON – cercle.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche une colonne contenant les groupes et tags à côté de la liste des salons.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Déchiffrer les messages dans la liste des salons</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Déchiffre les messages montrés dans la liste des salons.
+Cela n&apos;affecte que les messages des salons chiffrés.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer les boutons dans la discussion</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Montre les boutons de réponse, réaction ou options additionnelles près de chaque message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Limiter la largeur de l&apos;historique</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Règle la largeur maximale des messages dans la discussion (en pixels). Cela peut aider la lisibilité sur les écrans larges, quand Nheko est maximisé.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1202,19 +1204,23 @@ Only affects messages in encrypted chats.</source>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Montre qui écrit un message dans un salon.
+Ceci activera ou désactivera également l&apos;envoi de notifications similaires de votre part.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Trier les salons par statut de lecture</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Montre les salons qui contiennent de nouveaux messages en premier.
+Si non activé, la liste des salons sera uniquement trié en fonction de la date du dernier message.
+Si activé, les salons qui ont des notifications actives (le petit cercle avec un chiffre dedans) seront affichés en premier.
+Les salons que vous avez rendu silencieux seront toujours triés par date du dernier message, car ceux-ci sont considérés comme moins importants.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1225,79 +1231,82 @@ If this is on, rooms which have active notifications (the small circle with a nu
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Montre si votre message a été lu.
+Le statut est montré près de la date des messages.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Composer les messages au format Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorise l&apos;utilisation de markdown dans les messages.
+Lorsque désactivé, tous les messages sont envoyés en texte brut.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifier sur le bureau</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifie des messages reçus lorsque la fenêtre du client n&apos;est pas focalisée.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Alerter sur notification</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alerte lorsqu&apos;un message est reçu.
+Cela met l&apos;application en évidence dans la barre des tâches.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Surligner les messages survolés</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Change l&apos;arrière plan des messages lorsqu&apos;ils sont survolés avec la souris.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Grandes émoticônes dans la discussion</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Augmente la taille de la police lors de l&apos;affichage de messages contenant uniquement quelques emojis.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Facteur d&apos;échelle</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Agrandit l&apos;interface entière de ce facteur.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de police</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de police</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1307,42 +1316,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoriser le serveur de secours pour les appels</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cela utilisera le serveur turn.matrix.org pour vous aider à rejoindre les appels si votre serveur ne propose pas de fonctionnalité TURN afin de traverser les pare-feu et NAT restrictifs.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant de l&apos;appareil</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Empreinte de l&apos;appareil</translation>
     </message>
     <message>
         <location line="-120"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Clés de session</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTER</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTER</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>CHIFFREMENT</translation>
     </message>
     <message>
         <location line="-78"/>
@@ -1352,17 +1361,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+30"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>INTERFACE</translation>
     </message>
     <message>
         <location line="+172"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de Police Emoji</translation>
     </message>
     <message>
         <location line="+191"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir fichier de sessions</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1376,34 +1385,34 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+2"/>
         <location line="+2"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location line="-74"/>
         <location line="+32"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe du fichier</translation>
     </message>
     <message>
         <location line="-31"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez la clé secrète pour déchiffrer le fichier  :</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+32"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mot de passe ne peut être vide</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez une clé secrète pour chiffrer vos clés de session  :</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier où sauvegarder les clés de session exportées</translation>
     </message>
 </context>
 <context>
@@ -1434,7 +1443,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/Utils.cpp" line="+146"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier</translation>
     </message>
 </context>
 <context>
@@ -1442,12 +1451,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
         <source>Accept</source>
-        <translation type="unfinished">Accepter</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Reject</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejeter</translation>
     </message>
 </context>
 <context>
@@ -1455,12 +1464,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un salon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1498,22 +1507,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir la solution de repli dans le navigateur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrez la solution de repli, suivez les étapes et confirmez après les avoir terminées.</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1530,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1534,12 +1543,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejoindre</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1552,7 +1561,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1565,7 +1574,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1578,12 +1587,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Voix</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -1613,12 +1622,12 @@ Taille du média : %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1636,7 +1645,7 @@ Taille du média : %2
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1644,12 +1653,12 @@ Taille du média : %2
     <message>
         <location line="-46"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aujourd&apos;hui %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier %1</translation>
     </message>
 </context>
 <context>
@@ -1657,22 +1666,22 @@ Taille du média : %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
         <source>Settings</source>
-        <translation type="unfinished">Paramètres</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant interne</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version de salon</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1717,68 +1726,72 @@ Taille du média : %2
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffrement</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffrement bout-à-bout</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le chiffrement est actuellement expérimental, et des choses inattendues peuvent se produire.
+Veuillez noter qu&apos;il n&apos;est pas possible de le désactiver ultérieurement.</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Répondre aux requêtes de clés</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisit si le client doit répondre automatiquement ou non avec les clés de session
+lorsqu&apos;elles lui sont demandées. Utiliser avec précaution, il s&apos;agit d&apos;une mesure
+temporaire pour valider l&apos;implémentation du chiffrement de bout en bout en
+attendant que la vérification des appareils soit opérationnelle.</translation>
     </message>
     <message numerus="yes">
         <location line="+51"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n membre</numerusform>
+            <numerusform>%n membres</numerusform>
         </translation>
     </message>
     <message>
         <location line="+140"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;activation du chiffrement  : %1</translation>
     </message>
     <message>
         <location line="+147"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner un avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Tous les types de fichiers (*)</translation>
+        <translation>Tous les types de fichiers (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier sélectionné n&apos;est pas une image</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de la lecture du fichier  : %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;envoi de l&apos;image  : %s</translation>
     </message>
 </context>
 <context>
@@ -1786,37 +1799,37 @@ Taille du média : %2
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
         <source>Ban the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Bannir l&apos;utilisateur du salon</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Ignore messages from this user</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorer les messages de cet utilisateur</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Kick the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Expulser l&apos;utilisateur de ce salon</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Start a conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer une conversation</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer message privé</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous vraiment inviter %1 (%2) dans un chat privé  ?</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Appareils</translation>
     </message>
 </context>
 <context>
@@ -1867,112 +1880,112 @@ Taille du média : %2
     <message>
         <location filename="../../src/Utils.h" line="+106"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé un message audio</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé un message audio</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé une image</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé une image</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé un fichier</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé un fichier</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé une vidéo</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé une vidéo</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé un autocollant</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé un autocollant</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé une notification</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé une notification</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous  : %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1  : %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé un message chiffré</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé un message chiffré</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez appelé</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a appelé</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez répondu à un appel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a répondu à un appel</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez terminé un appel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a terminé un appel</translation>
     </message>
 </context>
 <context>
@@ -1980,12 +1993,12 @@ Taille du média : %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce salon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les salons</translation>
     </message>
 </context>
 <context>
@@ -1993,7 +2006,7 @@ Taille du média : %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type du message inconnu</translation>
     </message>
 </context>
 </TS>
