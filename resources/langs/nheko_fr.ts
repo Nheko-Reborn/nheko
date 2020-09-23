@@ -6,7 +6,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1658"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez rejoint ce salon.</translation>
     </message>
 </context>
 <context>
@@ -14,164 +14,164 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+218"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec lors de l&apos;invitation de %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+947"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a été invité(e)</translation>
     </message>
     <message>
         <location line="-458"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>La migration du cache vers la version actuelle a échoué. Cela peut arriver pour différentes raisons. Signalez le problème et essayez d&apos;utiliser une ancienne version en attendant. Vous pouvez également supprimer le cache manuellement.</translation>
     </message>
     <message>
         <location line="+415"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salon %1 créé.</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer l&apos;invitation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous vraiment inviter %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;invitation de %1 dans %2 : %3</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer l&apos;expulsion</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous vraiment expulser %1 (%2) ?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 n&apos;a pas pu être expulsé de %2 : %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;utilisateur %1 a été expulsé.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer le bannissement</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous vraiment bannir %1 (%2) ?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;utilisateur %1 n&apos;a pas pu être banni de %2 : %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;utilisateur %1 a été banni.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer l&apos;annulation du bannissement</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous vraiment annuler le bannissement de %1 (%2) ?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;annulation du bannissement de %1 dans %2 : %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 n&apos;est plus banni(e)</translation>
     </message>
     <message>
         <location line="-874"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;envoi du média. Veuillez réessayer.</translation>
     </message>
     <message>
         <location line="+334"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la migration du cache !</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version du cache incompatible</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le cache sur votre disque est plus récent que cette version de Nheko ne supporte. Veuillez mettre à jour ou supprimer votre cache.</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la restauration du compte OLM. Veuillez vous reconnecter.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la restauration des données sauvegardées. Veuillez vous reconnecter.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la configuration des clés de chiffrement. Réponse du serveur : %1 %2. Veuillez réessayer plus tard.</translation>
     </message>
     <message>
         <location line="+99"/>
         <location line="+251"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez vous reconnecter : %1</translation>
     </message>
     <message>
         <location line="-219"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de rejoindre le salon : %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez rejoint le salon</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de supprimer l&apos;invitation : %1</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la création du salon : %1</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de quitter le salon : %1</translation>
     </message>
 </context>
 <context>
@@ -179,34 +179,34 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les salons</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Salons favoris</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Salons basse priorité</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server Notices</source>
         <comment>Tag translation for m.server_notice</comment>
-        <translation type="unfinished"></translation>
+        <translation>Notifications du serveur</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation>(étiquette)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation>(communauté)</translation>
     </message>
 </context>
 <context>
@@ -214,12 +214,12 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+72"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -238,47 +238,47 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
         <location line="+139"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Chercher</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Personnes</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Nature</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Nourriture</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Activités</translation>
+        <translation>Activités</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Voyage</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Objets</translation>
+        <translation>Objets</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symboles</translation>
+        <translation>Symboles</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Drapeaux</translation>
+        <translation>Drapeaux</translation>
     </message>
 </context>
 <context>
@@ -286,12 +286,12 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffré</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce message n&apos;est pas chiffré !</translation>
     </message>
 </context>
 <context>
@@ -300,35 +300,35 @@
         <location filename="../../src/timeline/EventStore.cpp" line="+418"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Évènement chiffré (pas de clé trouvé pour le déchiffrement) --</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Échec du déchiffrement (échec de la récupération des clés megolm depuis la base de données) --</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Erreur de déchiffrement (%1) --</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Évènement chiffré (type d&apos;évènement inconnu) --</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>-- Replay attack! This message index was reused! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Attaque par rejeu (replay attack) ! Cet index de message a été réutilisé ! --</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>-- Message by unverified device! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Message d&apos;un appareil non vérifié  --</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Retirer</translation>
     </message>
 </context>
 <context>
@@ -357,7 +357,10 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre nom de connexion. Un mxid doit commencer par un « @ » suivi de l&apos;identifiant. L&apos;identifiant doit être suivi du nom de serveur, séparé de celui-ci par « : ».
+Vous pouvez également spécifier l&apos;adresse de votre serveur ici, si votre serveur ne supporte pas l&apos;identification .well-known.
+Exemple: @utilisateur:monserveur.example.com
+Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos;indiquer manuellement.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -367,18 +370,19 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+5"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de l&apos;appareil</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un nom pour cet appareil, qui sera montré aux autres utilisateurs lorsque ceux-ci le vérifieront. Si aucun n&apos;est fourni, un nom par défaut est utilisé.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;adresse qui peut être utilisée pour joindre l&apos;API client de votre serveur.
+Exemple: https://monserveur.example.com:8787</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -389,32 +393,32 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-100"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la découverte automatique. Réponse mal formatée reçue.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la découverte automatique. Erreur inconnue lors de la demande de .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les chemins requis n&apos;ont pas été trouvés. Possible qu&apos;il ne s&apos;agisse pas d&apos;un serveur Matrix.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Réponse mal formée reçue. Vérifiez que le nom de domaine du serveur est valide.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur inconnue est survenue. Vérifiez que le nom de domaine du serveur est valide.</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>CONNEXION SSO</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -424,7 +428,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+52"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la connexion SSO</translation>
     </message>
 </context>
 <context>
@@ -437,7 +441,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -446,67 +450,67 @@ Example: https://server.my:8787</source>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+66"/>
         <location line="+6"/>
         <source>redacted</source>
-        <translation type="unfinished"></translation>
+        <translation>effacé</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffrement activé</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>room name changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>nom du salon changé en : %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>nom du salon retiré</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>topic changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>sujet changé pour : %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>sujet retiré</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a créé et configuré le salon : %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a effectué un appel vocal.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a effectué un appel vidéo.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a appelé.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a répondu à l&apos;appel.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>1% a terminé l&apos;appel.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Negotiating call...</source>
-        <translation type="unfinished"></translation>
+        <translation>Négociation de l&apos;appel…</translation>
     </message>
 </context>
 <context>
@@ -514,7 +518,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>Évènement non implémenté :</translation>
     </message>
 </context>
 <context>
@@ -535,7 +539,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom d&apos;utilisateur ne doit pas être vide, et ne peut contenir que les caractères  a à z,  0 à 9, et « . _ = - / ».</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -545,7 +549,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez choisir un mot de passe fort. Les demandes exactes sur la robustesse du mot de passe peuvent dépendre de votre serveur.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -555,12 +559,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Serveur</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un serveur qui autorise les créations de compte. Matrix étant décentralisé, vous devez tout d&apos;abord trouver un serveur sur lequel vous pouvez vous inscrire, ou bien héberger le vôtre.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -570,7 +574,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+55"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de méthode d&apos;inscription supportée !</translation>
     </message>
     <message>
         <location line="+135"/>
@@ -598,7 +602,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/Cache.cpp" line="+1443"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>pas de version enregistrée</translation>
     </message>
 </context>
 <context>
@@ -611,49 +615,49 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiqueter le salon comme :</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favori</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>Basse priorité</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>Notification du serveur</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ajoute ou retire l&apos;étiquette spécifiée.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle étiquette…</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle étiquette</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tag:</source>
         <comment>Tag name prompt</comment>
-        <translation type="unfinished"></translation>
+        <translation>Étiquette :</translation>
     </message>
     <message>
         <location line="+173"/>
@@ -671,7 +675,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+40"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres utilisateur</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -686,12 +690,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Commencer une discussion</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuaire des salons</translation>
     </message>
 </context>
 <context>
@@ -699,22 +703,22 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+14"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyé</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Reçu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Lu</translation>
     </message>
 </context>
 <context>
@@ -722,23 +726,23 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/TextInputWidget.cpp" line="+574"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer un fichier</translation>
     </message>
     <message>
         <location line="+13"/>
         <location filename="../../src/TextInputWidget.h" line="+160"/>
         <source>Write a message...</source>
-        <translation>Écrivez un message...</translation>
+        <translation>Écrivez un message…</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer un message</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji</translation>
     </message>
     <message>
         <location line="+94"/>
@@ -753,17 +757,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+64"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Appeler</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Raccrocher</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
         <source>Connection lost. Nheko is trying to re-connect...</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion perdue. Nheko essaye de se reconnecter…</translation>
     </message>
 </context>
 <context>
@@ -771,7 +775,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/timeline/TimelineModel.cpp" line="+805"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la suppression du message : %1</translation>
     </message>
     <message>
         <location line="+114"/>
@@ -779,136 +783,136 @@ Example: https://server.my:8787</source>
         <location line="+101"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec du chiffrement de l&apos;évènement, envoi abandonné !</translation>
     </message>
     <message>
         <location line="+195"/>
         <source>Save image</source>
-        <translation type="unfinished">Enregistrer l&apos;image</translation>
+        <translation>Enregistrer l&apos;image</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer la vidéo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer l&apos;audio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer le fichier</translation>
     </message>
     <message numerus="yes">
         <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 est en train d&apos;écrire.</numerusform>
+            <numerusform>%1 et %2 sont en train d&apos;écrire.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rendu le salon ouvert au public.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rendu le rendu le salon joignable uniquement sur invitation.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rendu le salon ouvert aux invités.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a fermé le salon aux invités.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rendu l&apos;historique du salon lisible par tout le monde. Les évènement peuvent maintenant être lus par des personnes externes au salon.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rendu l&apos;historique du salon visible aux membre à partir de cet instant.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rendu l&apos;historique visible aux membres à partir de leur invitation.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rendu l&apos;historique du salon visible à partir de l&apos;instant où un membre le rejoint.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a changé les permissions du salon.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>%1 was invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a été invité(e).</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changed their display name and avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a changé son nom et avatar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a changé son son.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a changé son avatar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a changé ses informations de profil.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rejoint le salon.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rejeté son invitation.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 n&apos;est plus invité.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a quitté le salon.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a été expulsé.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 n&apos;est plus banni.</translation>
     </message>
     <message>
         <location line="+14"/>
