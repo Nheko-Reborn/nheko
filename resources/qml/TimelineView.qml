@@ -147,6 +147,130 @@ Page {
 			z: 3
 		}
 
+		ColumnLayout {
+			anchors.fill: parent
+			Rectangle {
+				id: topBar
+
+				Layout.fillWidth: true
+				implicitHeight: topLayout.height + 16
+				z: 3
+
+				color: colors.base
+
+				MouseArea {
+					anchors.fill: parent
+					onClicked: TimelineManager.openRoomSettings();
+				}
+
+				GridLayout {
+					id: topLayout
+
+					anchors.left: parent.left
+					anchors.right: parent.right
+					anchors.margins: 8
+					anchors.verticalCenter: parent.verticalCenter
+
+					//Layout.margins: 8
+
+					ImageButton {
+						id: backToRoomsButton
+
+						Layout.column: 0
+						Layout.row: 0
+						Layout.rowSpan: 2
+						Layout.alignment: Qt.AlignVCenter
+
+						visible: TimelineManager.isNarrowView
+
+						image: ":/icons/icons/ui/angle-pointing-to-left.png"
+
+						ToolTip.visible: hovered
+						ToolTip.text: qsTr("Back to room list")
+
+						onClicked: TimelineManager.backToRooms()
+					}
+
+					Avatar {
+						Layout.column: 1
+						Layout.row: 0
+						Layout.rowSpan: 2
+						Layout.alignment: Qt.AlignVCenter
+
+						width: avatarSize
+						height: avatarSize
+
+						url: chat.model ? chat.model.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
+						displayName: chat.model ? chat.model.roomName : qsTr("No room selected")
+
+						MouseArea {
+							anchors.fill: parent
+							onClicked: TimelineManager.openRoomSettings();
+						}
+					}
+
+					Label {
+						Layout.fillWidth: true
+						Layout.column: 2
+						Layout.row: 0
+
+						font.pointSize: fontMetrics.font.pointSize * 1.1
+
+						text: chat.model ? chat.model.roomName : qsTr("No room selected")
+
+						MouseArea {
+							anchors.fill: parent
+							onClicked: TimelineManager.openRoomSettings();
+						}
+					}
+					MatrixText {
+						Layout.fillWidth: true
+						Layout.column: 2
+						Layout.row: 1
+						Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
+						clip: true
+
+						text: chat.model ? chat.model.roomTopic : ""
+					}
+
+					ImageButton {
+						id: roomOptionsButton
+
+						Layout.column: 3
+						Layout.row: 0
+						Layout.rowSpan: 2
+						Layout.alignment: Qt.AlignVCenter
+
+						image: ":/icons/icons/ui/vertical-ellipsis.png"
+
+						ToolTip.visible: hovered
+						ToolTip.text: qsTr("Room options")
+
+						onClicked: roomOptionsMenu.popup(roomOptionsButton)
+
+						Menu {
+							id: roomOptionsMenu
+							MenuItem {
+								text: qsTr("Invite users")
+								onTriggered: TimelineManager.openInviteUsersDialog();
+							}
+							MenuItem {
+								text: qsTr("Members")
+								onTriggered: TimelineManager.openMemberListDialog();
+							}
+							MenuItem {
+								text: qsTr("Leave room")
+								onTriggered: TimelineManager.openLeaveRoomDialog();
+							}
+							MenuItem {
+								text: qsTr("Settings")
+								onTriggered: TimelineManager.openRoomSettings();
+							}
+						}
+					}
+				}
+			}
+
 		ListView {
 			id: chat
 
@@ -154,13 +278,8 @@ Page {
 
 			cacheBuffer: 400
 
-			anchors.horizontalCenter: parent.horizontalCenter
-			anchors.top: parent.top
-			anchors.bottom: chatFooter.top
-			width: parent.width
-
-			anchors.leftMargin: 4
-			anchors.rightMargin: scrollbar.width
+			Layout.fillWidth: true
+			Layout.fillHeight: true
 
 			model: TimelineManager.timeline
 
@@ -199,10 +318,6 @@ Page {
 
 			ScrollBar.vertical: ScrollBar {
 				id: scrollbar
-				parent: chat.parent
-				anchors.top: chat.top
-				anchors.right: chat.right
-				anchors.bottom: chat.bottom
 			}
 
 			spacing: 4
@@ -210,9 +325,9 @@ Page {
 
 			onCountChanged: if (atYEnd) model.currentIndex = 0 // Mark last event as read, since we are at the bottom
 
-			property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > 32) ? Settings.timelineMaxWidth : (parent.width - 32)
+			property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width*2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width*2)
 
-			delegate: Rectangle {
+			delegate: Item {
 				// This would normally be previousSection, but our model's order is inverted.
 				property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
 
@@ -221,7 +336,6 @@ Page {
 				anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 				width: chat.delegateMaxWidth
 				height: section ? section.height + timelinerow.height : timelinerow.height
-				color: "transparent"
 
 				TimelineRow {
 					id: timelinerow
@@ -314,7 +428,7 @@ Page {
 
 						Label { 
 							id: userName
-							text: chat.model.escapeEmoji(modelData.userName)
+							text: TimelineManager.escapeEmoji(modelData.userName)
 							color: TimelineManager.userColor(modelData.userId, colors.window)
 							textFormat: Text.RichText
 
@@ -339,33 +453,35 @@ Page {
 			}
 		}
 
-		Rectangle {
+		Item {
 			id: chatFooter
 
-			height: Math.max(fontMetrics.height * 1.2, footerContent.height)
-			anchors.left: parent.left
-			anchors.right: parent.right
-			anchors.bottom: parent.bottom
+			implicitHeight: Math.max(fontMetrics.height * 1.2, footerContent.height)
+			Layout.fillWidth: true
 			z: 3
-
-			color: "transparent"
 
 			Column {
 				id: footerContent
 				anchors.left: parent.left
 				anchors.right: parent.right
-
-				Label {
-					id: typingDisplay
-					anchors.left: parent.left
-					anchors.right: parent.right
-					anchors.leftMargin: 10
-					anchors.rightMargin: 10
-
-					color: colors.text
-					text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
-					textFormat: Text.RichText
-				}
+				anchors.bottom: parent.bottom
+                Rectangle {
+                    id: typingRect
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    color: (chat.model && chat.model.typingUsers.length > 0) ? colors.window : "transparent"
+                    height: typingDisplay.height
+                    Label {
+                        id: typingDisplay
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
+                        anchors.right: parent.right
+                        anchors.rightMargin: 10
+                        color: colors.text
+                        text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
+                        textFormat: Text.RichText
+                    }
+                }
 
 				Rectangle {
 					anchors.left: parent.left
@@ -411,5 +527,6 @@ Page {
 				}
 			}
 		}
+	}
 	}
 }

@@ -17,13 +17,16 @@ MxcImageResponse::run()
                 auto data = cache::image(fileName);
                 if (!data.isNull()) {
                         m_image = utils::readImage(&data);
-                        m_image = m_image.scaled(
-                          m_requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-                        m_image.setText("mxc url", "mxc://" + m_id);
 
                         if (!m_image.isNull()) {
-                                emit finished();
-                                return;
+                                m_image = m_image.scaled(
+                                  m_requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                                m_image.setText("mxc url", "mxc://" + m_id);
+
+                                if (!m_image.isNull()) {
+                                        emit finished();
+                                        return;
+                                }
                         }
                 }
 
@@ -34,7 +37,7 @@ MxcImageResponse::run()
                 opts.method  = "crop";
                 http::client()->get_thumbnail(
                   opts, [this, fileName](const std::string &res, mtx::http::RequestErr err) {
-                          if (err) {
+                          if (err || res.empty()) {
                                   nhlog::net()->error("Failed to download image {}",
                                                       m_id.toStdString());
                                   m_error = "Failed download";
@@ -46,6 +49,10 @@ MxcImageResponse::run()
                           auto data = QByteArray(res.data(), res.size());
                           cache::saveImage(fileName, data);
                           m_image = utils::readImage(&data);
+                          if (!m_image.isNull()) {
+                                  m_image = m_image.scaled(
+                                    m_requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                          }
                           m_image.setText("mxc url", "mxc://" + m_id);
 
                           emit finished();

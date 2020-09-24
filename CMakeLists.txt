@@ -305,7 +305,6 @@ set(SRC_FILES
 	src/SideBarActions.cpp
 	src/Splitter.cpp
 	src/TextInputWidget.cpp
-	src/TopRoomBar.cpp
 	src/TrayIcon.cpp
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
@@ -514,7 +513,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/SideBarActions.h
 	src/Splitter.h
 	src/TextInputWidget.h
-	src/TopRoomBar.h
 	src/TrayIcon.h
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h

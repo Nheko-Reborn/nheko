@@ -573,7 +573,7 @@ EventStore::decryptEvent(const IdIndex &idx,
                           room_id_,
                           index.sender_key);
                         dummy.content.body =
-                          tr("-- Reply attack! This message index was reused! --").toStdString();
+                          tr("-- Replay attack! This message index was reused! --").toStdString();
                         break;
                 case olm::DecryptionErrorCode::UnknownFingerprint:
                         // TODO: don't fail, just show in UI.

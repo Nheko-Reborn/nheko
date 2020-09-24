@@ -41,7 +41,7 @@ Item {
 			Text {
 				id: filename
 				Layout.fillWidth: true
-				text: model.data.body
+				text: model.data.filename
 				textFormat: Text.PlainText
 				elide: Text.ElideRight
 				color: colors.text

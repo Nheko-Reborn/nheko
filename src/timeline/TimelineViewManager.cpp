@@ -13,6 +13,7 @@
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
 #include "Logging.h"
+#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
@@ -102,7 +103,7 @@ TimelineViewManager::userStatus(QString id) const
 
 TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings,
                                          CallManager *callManager,
-                                         QWidget *parent)
+                                         ChatPage *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
   , blurhashProvider(new BlurhashProvider())
@@ -189,11 +190,8 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         view->engine()->addImageProvider("blurhash", blurhashProvider);
         view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
 
-        connect(dynamic_cast<ChatPage *>(parent),
-                &ChatPage::themeChanged,
-                this,
-                &TimelineViewManager::updateColorPalette);
-        connect(dynamic_cast<ChatPage *>(parent),
+        connect(parent, &ChatPage::themeChanged, this, &TimelineViewManager::updateColorPalette);
+        connect(parent,
                 &ChatPage::decryptSidebarChanged,
                 this,
                 &TimelineViewManager::updateEncryptedDescriptions);
@@ -295,7 +293,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                           }
                   }
           });
-        connect(dynamic_cast<ChatPage *>(parent), &ChatPage::loggedOut, this, [this]() {
+        connect(parent, &ChatPage::loggedOut, this, [this]() {
                 isInitialSync_ = true;
                 emit initialSyncChanged(true);
         });
@@ -313,6 +311,7 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
                                 &TimelineModel::newCallEvent,
                                 callManager_,
                                 &CallManager::syncEvent);
+                room_model->syncState(room.state);
                 room_model->addEvents(room.timeline);
                 if (!isInitialSync_)
                         disconnect(room_model.data(),
@@ -363,6 +362,12 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         }
 }
 
+QString
+TimelineViewManager::escapeEmoji(QString str) const
+{
+        return utils::replaceEmoji(str);
+}
+
 void
 TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
 {
@@ -399,6 +404,28 @@ void
 TimelineViewManager::openLink(QString link) const
 {
         QDesktopServices::openUrl(link);
+}
+
+void
+TimelineViewManager::openInviteUsersDialog()
+{
+        MainWindow::instance()->openInviteUsersDialog(
+          [this](const QStringList &invitees) { emit inviteUsers(invitees); });
+}
+void
+TimelineViewManager::openMemberListDialog() const
+{
+        MainWindow::instance()->openMemberListDialog(timeline_->roomId());
+}
+void
+TimelineViewManager::openLeaveRoomDialog() const
+{
+        MainWindow::instance()->openLeaveRoomDialog(timeline_->roomId());
+}
+void
+TimelineViewManager::openRoomSettings() const
+{
+        MainWindow::instance()->openRoomSettings(timeline_->roomId());
 }
 
 void

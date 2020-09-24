@@ -146,6 +146,9 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
         Q_PROPERTY(
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+        Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
+        Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
+        Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager,
@@ -203,7 +206,6 @@ public:
         Q_INVOKABLE QString formatGuestAccessEvent(QString id);
         Q_INVOKABLE QString formatPowerLevelEvent(QString id);
 
-        Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid);
@@ -226,6 +228,7 @@ public:
 
         void updateLastMessage();
         void addEvents(const mtx::responses::Timeline &events);
+        void syncState(const mtx::responses::State &state);
         template<class T>
         void sendMessageEvent(const T &content, mtx::events::EventType eventType);
         RelatedInfo relatedInfo(QString id);
@@ -262,6 +265,11 @@ public slots:
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
         void clearTimeline() { events.clearTimeline(); }
 
+        QString roomName() const;
+        QString roomTopic() const;
+        QString roomAvatarUrl() const;
+        QString roomId() const { return room_id_; }
+
 private slots:
         void addPendingMessage(mtx::events::collections::TimelineEvents event);
 
@@ -281,6 +289,10 @@ signals:
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
         void updateFlowEventId(std::string event_id);
+
+        void roomNameChanged();
+        void roomTopicChanged();
+        void roomAvatarUrlChanged();
 
 private:
         template<typename T>

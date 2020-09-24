@@ -16,7 +16,7 @@ Rectangle {
 
 	Label {
 		anchors.fill: parent
-		text: chat.model.escapeEmoji(String.fromCodePoint(displayName.codePointAt(0)))
+		text: TimelineManager.escapeEmoji(String.fromCodePoint(displayName.codePointAt(0)))
 		textFormat: Text.RichText
 		font.pixelSize: avatar.height/2
 		verticalAlignment: Text.AlignVCenter
@@ -51,6 +51,8 @@ Rectangle {
 	Rectangle {
 		anchors.bottom: avatar.bottom
 		anchors.right: avatar.right
+
+		visible: !!userid
 
 		height: avatar.height / 6
 		width: height

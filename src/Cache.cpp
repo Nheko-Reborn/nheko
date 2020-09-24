@@ -96,8 +96,10 @@ namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
 
-static bool
-isHiddenEvent(mtx::events::collections::TimelineEvents e, const std::string &room_id)
+bool
+Cache::isHiddenEvent(lmdb::txn &txn,
+                     mtx::events::collections::TimelineEvents e,
+                     const std::string &room_id)
 {
         using namespace mtx::events;
         if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
@@ -111,13 +113,27 @@ isHiddenEvent(mtx::events::collections::TimelineEvents e, const std::string &roo
                         e = result.event.value();
         }
 
-        static constexpr std::initializer_list<EventType> hiddenEvents = {
+        mtx::events::account_data::nheko_extensions::HiddenEvents hiddenEvents;
+        hiddenEvents.hidden_event_types = {
           EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
 
+        if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, ""))
+                hiddenEvents = std::move(
+                  std::get<
+                    mtx::events::Event<mtx::events::account_data::nheko_extensions::HiddenEvents>>(
+                    *temp)
+                    .content);
+        if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, room_id))
+                hiddenEvents = std::move(
+                  std::get<
+                    mtx::events::Event<mtx::events::account_data::nheko_extensions::HiddenEvents>>(
+                    *temp)
+                    .content);
+
         return std::visit(
-          [](const auto &ev) {
-                  return std::any_of(hiddenEvents.begin(),
-                                     hiddenEvents.end(),
+          [hiddenEvents](const auto &ev) {
+                  return std::any_of(hiddenEvents.hidden_event_types.begin(),
+                                     hiddenEvents.hidden_event_types.end(),
                                      [ev](EventType type) { return type == ev.type; });
           },
           e);
@@ -646,6 +662,7 @@ Cache::removeRoom(lmdb::txn &txn, const std::string &roomid)
 {
         lmdb::dbi_del(txn, roomsDb_, lmdb::val(roomid), nullptr);
         lmdb::dbi_drop(txn, getStatesDb(txn, roomid), true);
+        lmdb::dbi_drop(txn, getAccountDataDb(txn, roomid), true);
         lmdb::dbi_drop(txn, getMembersDb(txn, roomid), true);
 }
 
@@ -1004,6 +1021,19 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         setNextBatchToken(txn, res.next_batch);
 
+        if (!res.account_data.events.empty()) {
+                auto accountDataDb = getAccountDataDb(txn, "");
+                for (const auto &ev : res.account_data.events)
+                        std::visit(
+                          [&txn, &accountDataDb](const auto &event) {
+                                  lmdb::dbi_put(txn,
+                                                accountDataDb,
+                                                lmdb::val(to_string(event.type)),
+                                                lmdb::val(json(event).dump()));
+                          },
+                          ev);
+        }
+
         // Save joined rooms
         for (const auto &room : res.rooms.join) {
                 auto statesdb  = getStatesDb(txn, room.first);
@@ -1023,30 +1053,43 @@ Cache::saveState(const mtx::responses::Sync &res)
                 updatedInfo.version = getRoomVersion(txn, statesdb).toStdString();
 
                 // Process the account_data associated with this room
-                bool has_new_tags = false;
-                for (const auto &evt : room.second.account_data.events) {
-                        // for now only fetch tag events
-                        if (std::holds_alternative<Event<account_data::Tags>>(evt)) {
-                                auto tags_evt = std::get<Event<account_data::Tags>>(evt);
-                                has_new_tags  = true;
-                                for (const auto &tag : tags_evt.content.tags) {
-                                        updatedInfo.tags.push_back(tag.first);
+                if (!room.second.account_data.events.empty()) {
+                        auto accountDataDb = getAccountDataDb(txn, room.first);
+
+                        bool has_new_tags = false;
+                        for (const auto &evt : room.second.account_data.events) {
+                                std::visit(
+                                  [&txn, &accountDataDb](const auto &event) {
+                                          lmdb::dbi_put(txn,
+                                                        accountDataDb,
+                                                        lmdb::val(to_string(event.type)),
+                                                        lmdb::val(json(event).dump()));
+                                  },
+                                  evt);
+
+                                // for tag events
+                                if (std::holds_alternative<Event<account_data::Tags>>(evt)) {
+                                        auto tags_evt = std::get<Event<account_data::Tags>>(evt);
+                                        has_new_tags  = true;
+                                        for (const auto &tag : tags_evt.content.tags) {
+                                                updatedInfo.tags.push_back(tag.first);
+                                        }
                                 }
                         }
-                }
-                if (!has_new_tags) {
-                        // retrieve the old tags, they haven't changed
-                        lmdb::val data;
-                        if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
-                                try {
-                                        RoomInfo tmp =
-                                          json::parse(std::string_view(data.data(), data.size()));
-                                        updatedInfo.tags = tmp.tags;
-                                } catch (const json::exception &e) {
-                                        nhlog::db()->warn(
-                                          "failed to parse room info: room_id ({}), {}",
-                                          room.first,
-                                          std::string(data.data(), data.size()));
+                        if (!has_new_tags) {
+                                // retrieve the old tags, they haven't changed
+                                lmdb::val data;
+                                if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
+                                        try {
+                                                RoomInfo tmp = json::parse(
+                                                  std::string_view(data.data(), data.size()));
+                                                updatedInfo.tags = tmp.tags;
+                                        } catch (const json::exception &e) {
+                                                nhlog::db()->warn(
+                                                  "failed to parse room info: room_id ({}), {}",
+                                                  room.first,
+                                                  std::string(data.data(), data.size()));
+                                        }
                                 }
                         }
                 }
@@ -2463,7 +2506,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
 
                         // TODO(Nico): Allow blacklisting more event types in UI
-                        if (!isHiddenEvent(e, room_id)) {
+                        if (!isHiddenEvent(txn, e, room_id)) {
                                 ++msgIndex;
                                 lmdb::cursor_put(msgCursor.handle(),
                                                  lmdb::val(&msgIndex, sizeof(msgIndex)),
@@ -2546,7 +2589,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                 lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
 
                 // TODO(Nico): Allow blacklisting more event types in UI
-                if (!isHiddenEvent(e, room_id)) {
+                if (!isHiddenEvent(txn, e, room_id)) {
                         --msgIndex;
                         lmdb::dbi_put(
                           txn, order2msgDb, lmdb::val(&msgIndex, sizeof(msgIndex)), event_id);
@@ -2862,6 +2905,24 @@ Cache::deleteOldData() noexcept
         } catch (const lmdb::error &e) {
                 nhlog::db()->error("failed to delete old messages: {}", e.what());
         }
+}
+
+std::optional<mtx::events::collections::RoomAccountDataEvents>
+Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::string &room_id)
+{
+        try {
+                auto db = getAccountDataDb(txn, room_id);
+
+                lmdb::val data;
+                if (lmdb::dbi_get(txn, db, lmdb::val(to_string(type)), data)) {
+                        mtx::responses::utils::RoomAccountDataEvents events;
+                        mtx::responses::utils::parse_room_account_data_events(
+                          std::string_view(data.data(), data.size()), events);
+                        return events.front();
+                }
+        } catch (...) {
+        }
+        return std::nullopt;
 }
 
 bool

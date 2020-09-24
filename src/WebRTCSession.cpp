@@ -21,6 +21,7 @@ WebRTCSession::WebRTCSession()
 {
         qRegisterMetaType<WebRTCSession::State>();
         connect(this, &WebRTCSession::stateChanged, this, &WebRTCSession::setState);
+        init();
 }
 
 bool
@@ -78,7 +79,11 @@ WebRTCSession::init(std::string *errorMessage)
                 gst_object_unref(plugin);
         }
 
-        if (!initialised_) {
+        if (initialised_) {
+#if GST_CHECK_VERSION(1, 18, 0)
+                startDeviceMonitor();
+#endif
+        } else {
                 nhlog::ui()->error(strError);
                 if (errorMessage)
                         *errorMessage = strError;
@@ -95,12 +100,65 @@ namespace {
 bool isoffering_;
 std::string localsdp_;
 std::vector<mtx::events::msg::CallCandidates::Candidate> localcandidates_;
+std::vector<std::pair<std::string, GstDevice *>> audioSources_;
+
+void
+addDevice(GstDevice *device)
+{
+        if (device) {
+                gchar *name = gst_device_get_display_name(device);
+                nhlog::ui()->debug("WebRTC: device added: {}", name);
+                audioSources_.push_back({name, device});
+                g_free(name);
+        }
+}
+
+#if GST_CHECK_VERSION(1, 18, 0)
+void
+removeDevice(GstDevice *device, bool changed)
+{
+        if (device) {
+                if (auto it = std::find_if(audioSources_.begin(),
+                                           audioSources_.end(),
+                                           [device](const auto &s) { return s.second == device; });
+                    it != audioSources_.end()) {
+                        nhlog::ui()->debug(std::string("WebRTC: device ") +
+                                             (changed ? "changed: " : "removed: ") + "{}",
+                                           it->first);
+                        gst_object_unref(device);
+                        audioSources_.erase(it);
+                }
+        }
+}
+#endif
 
 gboolean
 newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data)
 {
         WebRTCSession *session = static_cast<WebRTCSession *>(user_data);
         switch (GST_MESSAGE_TYPE(msg)) {
+#if GST_CHECK_VERSION(1, 18, 0)
+        case GST_MESSAGE_DEVICE_ADDED: {
+                GstDevice *device;
+                gst_message_parse_device_added(msg, &device);
+                addDevice(device);
+                break;
+        }
+        case GST_MESSAGE_DEVICE_REMOVED: {
+                GstDevice *device;
+                gst_message_parse_device_removed(msg, &device);
+                removeDevice(device, false);
+                break;
+        }
+        case GST_MESSAGE_DEVICE_CHANGED: {
+                GstDevice *device;
+                GstDevice *oldDevice;
+                gst_message_parse_device_changed(msg, &device, &oldDevice);
+                removeDevice(oldDevice, true);
+                addDevice(device);
+                break;
+        }
+#endif
         case GST_MESSAGE_EOS:
                 nhlog::ui()->error("WebRTC: end of stream");
                 session->end();
@@ -176,7 +234,7 @@ createAnswer(GstPromise *promise, gpointer webrtc)
         g_signal_emit_by_name(webrtc, "create-answer", nullptr, promise);
 }
 
-#if GST_CHECK_VERSION(1, 17, 0)
+#if GST_CHECK_VERSION(1, 18, 0)
 void
 iceGatheringStateChanged(GstElement *webrtc,
                          GParamSpec *pspec G_GNUC_UNUSED,
@@ -223,7 +281,7 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
 {
         nhlog::ui()->debug("WebRTC: local candidate: (m-line:{}):{}", mlineIndex, candidate);
 
-#if GST_CHECK_VERSION(1, 17, 0)
+#if GST_CHECK_VERSION(1, 18, 0)
         localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
         return;
 #else
@@ -233,8 +291,10 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
                 return;
         }
 
+        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
+
         // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers
-        // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.17.
+        // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.18.
         // Use a 100ms timeout in the meantime
         static guint timerid = 0;
         if (timerid)
@@ -423,8 +483,12 @@ WebRTCSession::acceptICECandidates(
                 for (const auto &c : candidates) {
                         nhlog::ui()->debug(
                           "WebRTC: remote candidate: (m-line:{}):{}", c.sdpMLineIndex, c.candidate);
-                        g_signal_emit_by_name(
-                          webrtc_, "add-ice-candidate", c.sdpMLineIndex, c.candidate.c_str());
+                        if (!c.candidate.empty()) {
+                                g_signal_emit_by_name(webrtc_,
+                                                      "add-ice-candidate",
+                                                      c.sdpMLineIndex,
+                                                      c.candidate.c_str());
+                        }
                 }
         }
 }
@@ -471,7 +535,7 @@ WebRTCSession::startPipeline(int opusPayloadType)
         gst_element_set_state(pipe_, GST_STATE_READY);
         g_signal_connect(webrtc_, "pad-added", G_CALLBACK(addDecodeBin), pipe_);
 
-#if GST_CHECK_VERSION(1, 17, 0)
+#if GST_CHECK_VERSION(1, 18, 0)
         // capture ICE gathering completion
         g_signal_connect(
           webrtc_, "notify::ice-gathering-state", G_CALLBACK(iceGatheringStateChanged), nullptr);
@@ -488,7 +552,7 @@ WebRTCSession::startPipeline(int opusPayloadType)
         }
 
         GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipe_));
-        gst_bus_add_watch(bus, newBusMessage, this);
+        busWatchId_ = gst_bus_add_watch(bus, newBusMessage, this);
         gst_object_unref(bus);
         emit stateChanged(State::INITIATED);
         return true;
@@ -497,19 +561,18 @@ WebRTCSession::startPipeline(int opusPayloadType)
 bool
 WebRTCSession::createPipeline(int opusPayloadType)
 {
-        int nSources = audioSources_ ? g_list_length(audioSources_) : 0;
-        if (nSources == 0) {
+        if (audioSources_.empty()) {
                 nhlog::ui()->error("WebRTC: no audio sources");
                 return false;
         }
 
-        if (audioSourceIndex_ < 0 || audioSourceIndex_ >= nSources) {
+        if (audioSourceIndex_ < 0 || (size_t)audioSourceIndex_ >= audioSources_.size()) {
                 nhlog::ui()->error("WebRTC: invalid audio source index");
                 return false;
         }
 
-        GstElement *source = gst_device_create_element(
-          GST_DEVICE_CAST(g_list_nth_data(audioSources_, audioSourceIndex_)), nullptr);
+        GstElement *source =
+          gst_device_create_element(audioSources_[audioSourceIndex_].second, nullptr);
         GstElement *volume     = gst_element_factory_make("volume", "srclevel");
         GstElement *convert    = gst_element_factory_make("audioconvert", nullptr);
         GstElement *resample   = gst_element_factory_make("audioresample", nullptr);
@@ -594,11 +657,39 @@ WebRTCSession::end()
                 gst_element_set_state(pipe_, GST_STATE_NULL);
                 gst_object_unref(pipe_);
                 pipe_ = nullptr;
+                g_source_remove(busWatchId_);
+                busWatchId_ = 0;
         }
         webrtc_ = nullptr;
         if (state_ != State::DISCONNECTED)
                 emit stateChanged(State::DISCONNECTED);
 }
+
+#if GST_CHECK_VERSION(1, 18, 0)
+void
+WebRTCSession::startDeviceMonitor()
+{
+        if (!initialised_)
+                return;
+
+        static GstDeviceMonitor *monitor = nullptr;
+        if (!monitor) {
+                monitor       = gst_device_monitor_new();
+                GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
+                gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
+                gst_caps_unref(caps);
+
+                GstBus *bus = gst_device_monitor_get_bus(monitor);
+                gst_bus_add_watch(bus, newBusMessage, nullptr);
+                gst_object_unref(bus);
+                if (!gst_device_monitor_start(monitor)) {
+                        nhlog::ui()->error("WebRTC: failed to start device monitor");
+                        return;
+                }
+        }
+}
+
+#else
 
 void
 WebRTCSession::refreshDevices()
@@ -613,31 +704,42 @@ WebRTCSession::refreshDevices()
                 gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
                 gst_caps_unref(caps);
         }
-        g_list_free_full(audioSources_, g_object_unref);
-        audioSources_ = gst_device_monitor_get_devices(monitor);
+
+        std::for_each(audioSources_.begin(), audioSources_.end(), [](const auto &s) {
+                gst_object_unref(s.second);
+        });
+        audioSources_.clear();
+        GList *devices = gst_device_monitor_get_devices(monitor);
+        if (devices) {
+                audioSources_.reserve(g_list_length(devices));
+                for (GList *l = devices; l != nullptr; l = l->next)
+                        addDevice(GST_DEVICE_CAST(l->data));
+                g_list_free(devices);
+        }
 }
+#endif
 
 std::vector<std::string>
 WebRTCSession::getAudioSourceNames(const std::string &defaultDevice)
 {
-        if (!initialised_)
-                return {};
-
+#if !GST_CHECK_VERSION(1, 18, 0)
         refreshDevices();
+#endif
+        // move default device to top of the list
+        if (auto it = std::find_if(audioSources_.begin(),
+                                   audioSources_.end(),
+                                   [&](const auto &s) { return s.first == defaultDevice; });
+            it != audioSources_.end())
+                std::swap(audioSources_.front(), *it);
+
         std::vector<std::string> ret;
-        ret.reserve(g_list_length(audioSources_));
-        for (GList *l = audioSources_; l != nullptr; l = l->next) {
-                gchar *name = gst_device_get_display_name(GST_DEVICE_CAST(l->data));
-                ret.emplace_back(name);
-                g_free(name);
-                if (ret.back() == defaultDevice) {
-                        // move default device to top of the list
-                        std::swap(audioSources_->data, l->data);
-                        std::swap(ret.front(), ret.back());
-                }
-        }
+        ret.reserve(audioSources_.size());
+        std::for_each(audioSources_.cbegin(), audioSources_.cend(), [&](const auto &s) {
+                ret.push_back(s.first);
+        });
         return ret;
 }
+
 #else
 
 bool
@@ -686,6 +788,10 @@ WebRTCSession::end()
 
 void
 WebRTCSession::refreshDevices()
+{}
+
+void
+WebRTCSession::startDeviceMonitor()
 {}
 
 std::vector<std::string>

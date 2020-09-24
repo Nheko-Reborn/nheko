@@ -22,6 +22,7 @@ class BlurhashProvider;
 class CallManager;
 class ColorImageProvider;
 class UserSettings;
+class ChatPage;
 
 class DeviceVerificationList : public QObject
 {
@@ -45,11 +46,13 @@ class TimelineViewManager : public QObject
           TimelineModel *timeline MEMBER timeline_ READ activeTimeline NOTIFY activeTimelineChanged)
         Q_PROPERTY(
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
+        Q_PROPERTY(
+          bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
 
 public:
         TimelineViewManager(QSharedPointer<UserSettings> userSettings,
                             CallManager *callManager,
-                            QWidget *parent = nullptr);
+                            ChatPage *parent = nullptr);
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
@@ -59,13 +62,20 @@ public:
 
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
+        bool isNarrowView() const { return isNarrowView_; }
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
+        Q_INVOKABLE QString escapeEmoji(QString str) const;
 
         Q_INVOKABLE QString userPresence(QString id) const;
         Q_INVOKABLE QString userStatus(QString id) const;
 
         Q_INVOKABLE void openLink(QString link) const;
+
+        Q_INVOKABLE void openInviteUsersDialog();
+        Q_INVOKABLE void openMemberListDialog() const;
+        Q_INVOKABLE void openLeaveRoomDialog() const;
+        Q_INVOKABLE void openRoomSettings() const;
 
 signals:
         void clearRoomMessageCount(QString roomid);
@@ -79,6 +89,9 @@ signals:
                                           QString userId,
                                           QString deviceId,
                                           bool isRequest = false);
+        void inviteUsers(QStringList users);
+        void showRoomList();
+        void narrowViewChanged();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -128,6 +141,23 @@ public slots:
                         timeline_->clearTimeline();
         }
 
+        void enableBackButton()
+        {
+                if (isNarrowView_)
+                        return;
+                isNarrowView_ = true;
+                emit narrowViewChanged();
+        }
+        void disableBackButton()
+        {
+                if (!isNarrowView_)
+                        return;
+                isNarrowView_ = false;
+                emit narrowViewChanged();
+        }
+
+        void backToRooms() { emit showRoomList(); }
+
 private:
 #ifdef USE_QUICK_VIEW
         QQuickView *view;
@@ -145,6 +175,7 @@ private:
         CallManager *callManager_ = nullptr;
 
         bool isInitialSync_ = true;
+        bool isNarrowView_  = false;
 
         QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;

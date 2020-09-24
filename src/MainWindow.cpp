@@ -200,7 +200,8 @@ MainWindow::adjustSideBars()
         const uint64_t timelineWidth     = chat_page_->timelineWidth();
         const uint64_t minAvailableWidth = sz.collapsePoint + sz.groups;
 
-        if (timelineWidth < minAvailableWidth && !chat_page_->isSideBarExpanded()) {
+        nhlog::ui()->info("timelineWidth: {}, min {}", timelineWidth, minAvailableWidth);
+        if (timelineWidth < minAvailableWidth) {
                 chat_page_->hideSideBars();
         } else {
                 chat_page_->showSideBars();
@@ -330,9 +331,7 @@ MainWindow::hasActiveUser()
 void
 MainWindow::openRoomSettings(const QString &room_id)
 {
-        const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
-
-        auto dialog = new dialogs::RoomSettings(roomToSearch, this);
+        auto dialog = new dialogs::RoomSettings(room_id, this);
 
         showDialog(dialog);
 }
@@ -340,8 +339,7 @@ MainWindow::openRoomSettings(const QString &room_id)
 void
 MainWindow::openMemberListDialog(const QString &room_id)
 {
-        const auto roomToSearch = room_id.isEmpty() ? chat_page_->currentRoom() : "";
-        auto dialog             = new dialogs::MemberList(roomToSearch, this);
+        auto dialog = new dialogs::MemberList(room_id, this);
 
         showDialog(dialog);
 }
@@ -349,11 +347,9 @@ MainWindow::openMemberListDialog(const QString &room_id)
 void
 MainWindow::openLeaveRoomDialog(const QString &room_id)
 {
-        auto roomToLeave = room_id.isEmpty() ? chat_page_->currentRoom() : room_id;
-
         auto dialog = new dialogs::LeaveRoom(this);
-        connect(dialog, &dialogs::LeaveRoom::leaving, this, [this, roomToLeave]() {
-                chat_page_->leaveRoom(roomToLeave);
+        connect(dialog, &dialogs::LeaveRoom::leaving, this, [this, room_id]() {
+                chat_page_->leaveRoom(room_id);
         });
 
         showDialog(dialog);
