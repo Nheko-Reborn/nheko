@@ -790,7 +790,13 @@ WebRTCSession::createPipeline(int)
 }
 
 bool
-WebRTCSession::toggleMuteAudioSource()
+WebRTCSession::isMicMuted() const
+{
+        return false;
+}
+
+bool
+WebRTCSession::toggleMicMute()
 {
         return false;
 }
