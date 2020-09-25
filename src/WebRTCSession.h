@@ -47,7 +47,8 @@ public:
         bool acceptAnswer(const std::string &sdp);
         void acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
 
-        bool toggleMuteAudioSource();
+        bool isMicMuted() const;
+        bool toggleMicMute();
         void end();
 
         void setStunServer(const std::string &stunServer) { stunServer_ = stunServer; }

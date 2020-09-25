@@ -10,6 +10,7 @@
 #include <mtx/responses.hpp>
 
 #include "Cache.h"
+#include "CallManager.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -19,7 +20,6 @@
 
 class MxcImageProvider;
 class BlurhashProvider;
-class CallManager;
 class ColorImageProvider;
 class UserSettings;
 class ChatPage;
@@ -35,6 +35,9 @@ class TimelineViewManager : public QObject
         Q_PROPERTY(
           bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
         Q_PROPERTY(webrtc::State callState READ callState NOTIFY callStateChanged)
+        Q_PROPERTY(QString callPartyName READ callPartyName NOTIFY callPartyChanged)
+        Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY callPartyChanged)
+        Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
 
 public:
         TimelineViewManager(QSharedPointer<UserSettings> userSettings,
@@ -51,10 +54,10 @@ public:
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
         webrtc::State callState() const { return WebRTCSession::instance().state(); }
-        Q_INVOKABLE bool toggleMuteAudioSource()
-        {
-                return WebRTCSession::instance().toggleMuteAudioSource();
-        }
+        QString callPartyName() const { return callManager_->callPartyName(); }
+        QString callPartyAvatarUrl() const { return callManager_->callPartyAvatarUrl(); }
+        bool isMicMuted() const { return WebRTCSession::instance().isMicMuted(); }
+        Q_INVOKABLE void toggleMicMute();
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
@@ -80,6 +83,8 @@ signals:
         void showRoomList();
         void narrowViewChanged();
         void callStateChanged(webrtc::State);
+        void callPartyChanged();
+        void micMuteChanged();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

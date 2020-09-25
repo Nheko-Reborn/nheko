@@ -7,7 +7,6 @@
 #include <QString>
 
 #include "BlurhashProvider.h"
-#include "CallManager.h"
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
@@ -145,6 +144,8 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &WebRTCSession::stateChanged,
                 this,
                 &TimelineViewManager::callStateChanged);
+        connect(
+          callManager_, &CallManager::newCallParty, this, &TimelineViewManager::callPartyChanged);
 }
 
 void
@@ -214,6 +215,13 @@ QString
 TimelineViewManager::escapeEmoji(QString str) const
 {
         return utils::replaceEmoji(str);
+}
+
+void
+TimelineViewManager::toggleMicMute()
+{
+        WebRTCSession::instance().toggleMicMute();
+        emit micMuteChanged();
 }
 
 void

@@ -636,7 +636,20 @@ WebRTCSession::createPipeline(int opusPayloadType)
 }
 
 bool
-WebRTCSession::toggleMuteAudioSource()
+WebRTCSession::isMicMuted() const
+{
+        if (state_ < State::INITIATED)
+                return false;
+
+        GstElement *srclevel = gst_bin_get_by_name(GST_BIN(pipe_), "srclevel");
+        gboolean muted;
+        g_object_get(srclevel, "mute", &muted, nullptr);
+        gst_object_unref(srclevel);
+        return muted;
+}
+
+bool
+WebRTCSession::toggleMicMute()
 {
         if (state_ < State::INITIATED)
                 return false;

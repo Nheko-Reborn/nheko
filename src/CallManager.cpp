@@ -152,6 +152,12 @@ CallManager::sendInvite(const QString &roomid)
 
         generateCallID();
         nhlog::ui()->debug("WebRTC: call id: {} - creating invite", callid_);
+        std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
+        const RoomMember &callee =
+          members.front().user_id == utils::localUser() ? members.back() : members.front();
+        callPartyName_      = callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
+        callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
+        emit newCallParty();
         playRingtone("qrc:/media/media/ringback.ogg", true);
         if (!session_.createOffer()) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
@@ -186,7 +192,7 @@ CallManager::hangUp(CallHangUp::Reason reason)
 }
 
 bool
-CallManager::onActiveCall()
+CallManager::onActiveCall() const
 {
         return session_.state() != webrtc::State::DISCONNECTED;
 }
@@ -252,6 +258,9 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
         const RoomMember &caller =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
+        callPartyName_      = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
+        callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
+        emit newCallParty();
         auto dialog = new dialogs::AcceptCall(caller.user_id,
                                               caller.display_name,
                                               QString::fromStdString(roomInfo.name),
@@ -364,6 +373,8 @@ void
 CallManager::clear()
 {
         roomid_.clear();
+        callPartyName_.clear();
+        callPartyAvatarUrl_.clear();
         callid_.clear();
         remoteICECandidates_.clear();
 }
