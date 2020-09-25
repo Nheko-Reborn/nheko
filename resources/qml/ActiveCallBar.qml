@@ -92,9 +92,10 @@ Rectangle {
 		ImageButton {
 			width: 24
 			height: 24
-			src: timelineManager.isMicMuted ?
-				"qrc:/icons/icons/ui/microphone-unmute.png" :
-				"qrc:/icons/icons/ui/microphone-mute.png"
+			buttonTextColor: "#000000"
+			image: timelineManager.isMicMuted ?
+				":/icons/icons/ui/microphone-unmute.png" :
+				":/icons/icons/ui/microphone-mute.png"
 
 			hoverEnabled: true
 			ToolTip.visible: hovered
