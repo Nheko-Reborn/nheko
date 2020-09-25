@@ -9,23 +9,30 @@
 
 typedef struct _GstElement GstElement;
 
+namespace webrtc {
+Q_NAMESPACE
+
+enum class State
+{
+        DISCONNECTED,
+        ICEFAILED,
+        INITIATING,
+        INITIATED,
+        OFFERSENT,
+        ANSWERSENT,
+        CONNECTING,
+        CONNECTED
+
+};
+Q_ENUM_NS(State)
+
+}
+
 class WebRTCSession : public QObject
 {
         Q_OBJECT
 
 public:
-        enum class State
-        {
-                DISCONNECTED,
-                ICEFAILED,
-                INITIATING,
-                INITIATED,
-                OFFERSENT,
-                ANSWERSENT,
-                CONNECTING,
-                CONNECTED
-        };
-
         static WebRTCSession &instance()
         {
                 static WebRTCSession instance;
@@ -33,14 +40,15 @@ public:
         }
 
         bool init(std::string *errorMessage = nullptr);
-        State state() const { return state_; }
+        webrtc::State state() const { return state_; }
 
         bool createOffer();
         bool acceptOffer(const std::string &sdp);
         bool acceptAnswer(const std::string &sdp);
         void acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
 
-        bool toggleMuteAudioSrc(bool &isMuted);
+        bool isMicMuted() const;
+        bool toggleMicMute();
         void end();
 
         void setStunServer(const std::string &stunServer) { stunServer_ = stunServer; }
@@ -55,16 +63,16 @@ signals:
         void answerCreated(const std::string &sdp,
                            const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
         void newICECandidate(const mtx::events::msg::CallCandidates::Candidate &);
-        void stateChanged(WebRTCSession::State); // explicit qualifier necessary for Qt
+        void stateChanged(webrtc::State);
 
 private slots:
-        void setState(State state) { state_ = state; }
+        void setState(webrtc::State state) { state_ = state; }
 
 private:
         WebRTCSession();
 
         bool initialised_        = false;
-        State state_             = State::DISCONNECTED;
+        webrtc::State state_     = webrtc::State::DISCONNECTED;
         GstElement *pipe_        = nullptr;
         GstElement *webrtc_      = nullptr;
         unsigned int busWatchId_ = 0;

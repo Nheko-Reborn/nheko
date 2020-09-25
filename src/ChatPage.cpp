@@ -22,7 +22,6 @@
 #include <QShortcut>
 #include <QtConcurrent>
 
-#include "ActiveCallBar.h"
 #include "AvatarProvider.h"
 #include "Cache.h"
 #include "Cache_p.h"
@@ -40,7 +39,6 @@
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
 #include "ui/OverlayModal.h"
 #include "ui/Theme.h"
 
@@ -128,12 +126,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         view_manager_ = new TimelineViewManager(userSettings_, &callManager_, this);
 
         contentLayout_->addWidget(view_manager_->getWidget());
-
-        activeCallBar_ = new ActiveCallBar(this);
-        contentLayout_->addWidget(activeCallBar_);
-        activeCallBar_->hide();
-        connect(
-          &callManager_, &CallManager::newCallParty, activeCallBar_, &ActiveCallBar::setCallParty);
 
         // Splitter
         splitter->addWidget(sideBar_);
