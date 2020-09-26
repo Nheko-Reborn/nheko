@@ -511,7 +511,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         callsLabel->setFixedHeight(callsLabel->minimumHeight() + LayoutTopMargin);
         callsLabel->setAlignment(Qt::AlignBottom);
         callsLabel->setFont(font);
-        useStunServer_ = new Toggle{this};
 
         auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
         encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
