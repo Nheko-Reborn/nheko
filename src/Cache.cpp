@@ -91,6 +91,7 @@ Q_DECLARE_METATYPE(RoomMember)
 Q_DECLARE_METATYPE(mtx::responses::Timeline)
 Q_DECLARE_METATYPE(RoomSearchResult)
 Q_DECLARE_METATYPE(RoomInfo)
+Q_DECLARE_METATYPE(mtx::responses::QueryKeys)
 
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
@@ -155,26 +156,7 @@ Cache::Cache(const QString &userId, QObject *parent)
   , localUserId_{userId}
 {
         setup();
-        connect(
-          this,
-          &Cache::updateUserCacheFlag,
-          this,
-          [this](const std::string &user_id) {
-                  std::optional<UserCache> cache_ = getUserCache(user_id);
-                  if (cache_.has_value()) {
-                          cache_.value().isUpdated = false;
-                          setUserCache(user_id, cache_.value());
-                  } else {
-                          setUserCache(user_id, UserCache{});
-                  }
-          },
-          Qt::QueuedConnection);
-        connect(
-          this,
-          &Cache::deleteLeftUsers,
-          this,
-          [this](const std::string &user_id) { deleteUserCache(user_id); },
-          Qt::QueuedConnection);
+        connect(this, &Cache::userKeysUpdate, this, &Cache::updateUserKeys, Qt::QueuedConnection);
 }
 
 void
@@ -1017,6 +999,8 @@ Cache::saveState(const mtx::responses::Sync &res)
         using namespace mtx::events;
         auto user_id = this->localUserId_.toStdString();
 
+        auto currentBatchToken = nextBatchToken();
+
         auto txn = lmdb::txn::begin(env_);
 
         setNextBatchToken(txn, res.next_batch);
@@ -1033,6 +1017,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                           },
                           ev);
         }
+
+        auto userKeyCacheDb = getUserKeysDb(txn);
 
         // Save joined rooms
         for (const auto &room : res.rooms.join) {
@@ -1107,7 +1093,8 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         savePresence(txn, res.presence);
 
-        updateUserCache(res.device_lists);
+        markUserKeysOutOfDate(txn, userKeyCacheDb, res.device_lists.changed, currentBatchToken);
+        deleteUserKeys(txn, userKeyCacheDb, res.device_lists.left);
 
         removeLeftRooms(txn, res.rooms.leave);
 
@@ -3098,126 +3085,246 @@ Cache::statusMessage(const std::string &user_id)
 }
 
 void
-to_json(json &j, const UserCache &info)
+to_json(json &j, const UserKeyCache &info)
 {
-        j["keys"]      = info.keys;
-        j["isUpdated"] = info.isUpdated;
+        j["device_keys"]       = info.device_keys;
+        j["master_keys"]       = info.master_keys;
+        j["user_signing_keys"] = info.user_signing_keys;
+        j["self_signing_keys"] = info.self_signing_keys;
+        j["updated_at"]        = info.updated_at;
+        j["last_changed"]      = info.last_changed;
 }
 
 void
-from_json(const json &j, UserCache &info)
+from_json(const json &j, UserKeyCache &info)
 {
-        info.keys      = j.at("keys").get<mtx::responses::QueryKeys>();
-        info.isUpdated = j.at("isUpdated").get<bool>();
+        info.device_keys = j.value("device_keys", std::map<std::string, mtx::crypto::DeviceKeys>{});
+        info.master_keys = j.value("master_keys", mtx::crypto::CrossSigningKeys{});
+        info.user_signing_keys = j.value("user_signing_keys", mtx::crypto::CrossSigningKeys{});
+        info.self_signing_keys = j.value("self_signing_keys", mtx::crypto::CrossSigningKeys{});
+        info.updated_at        = j.value("updated_at", "");
+        info.last_changed      = j.value("last_changed", "");
 }
 
-std::optional<UserCache>
-Cache::getUserCache(const std::string &user_id)
+std::optional<UserKeyCache>
+Cache::userKeys(const std::string &user_id)
 {
-        lmdb::val verifiedVal;
+        lmdb::val keys;
 
-        auto txn = lmdb::txn::begin(env_);
-        auto db  = getUserCacheDb(txn);
-        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
+        try {
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                auto db  = getUserKeysDb(txn);
+                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), keys);
 
-        txn.commit();
-
-        UserCache verified_state;
-        if (res) {
-                verified_state = json::parse(std::string(verifiedVal.data(), verifiedVal.size()));
-                return verified_state;
-        } else {
+                if (res) {
+                        return json::parse(std::string_view(keys.data(), keys.size()))
+                          .get<UserKeyCache>();
+                } else {
+                        return {};
+                }
+        } catch (std::exception &) {
                 return {};
         }
 }
 
-//! be careful when using make sure is_user_verified is not changed
-int
-Cache::setUserCache(const std::string &user_id, const UserCache &body)
+void
+Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery)
 {
         auto txn = lmdb::txn::begin(env_);
-        auto db  = getUserCacheDb(txn);
+        auto db  = getUserKeysDb(txn);
 
-        auto res = lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(body).dump()));
+        std::map<std::string, UserKeyCache> updates;
 
-        txn.commit();
+        for (const auto &[user, keys] : keyQuery.device_keys)
+                updates[user].device_keys = keys;
+        for (const auto &[user, keys] : keyQuery.master_keys)
+                updates[user].master_keys = keys;
+        for (const auto &[user, keys] : keyQuery.user_signing_keys)
+                updates[user].user_signing_keys = keys;
+        for (const auto &[user, keys] : keyQuery.self_signing_keys)
+                updates[user].self_signing_keys = keys;
 
-        return res;
-}
+        for (auto &[user, update] : updates) {
+                lmdb::val oldKeys;
+                auto res = lmdb::dbi_get(txn, db, lmdb::val(user), oldKeys);
 
-void
-Cache::updateUserCache(const mtx::responses::DeviceLists body)
-{
-        for (std::string user_id : body.changed) {
-                emit updateUserCacheFlag(user_id);
+                if (res) {
+                        auto last_changed =
+                          json::parse(std::string_view(oldKeys.data(), oldKeys.size()))
+                            .get<UserKeyCache>()
+                            .last_changed;
+                        // skip if we are tracking this and expect it to be up to date with the last
+                        // sync token
+                        if (!last_changed.empty() && last_changed != sync_token)
+                                continue;
+                }
+                lmdb::dbi_put(txn, db, lmdb::val(user), lmdb::val(json(update).dump()));
         }
 
-        for (std::string user_id : body.left) {
-                emit deleteLeftUsers(user_id);
-        }
-}
-
-int
-Cache::deleteUserCache(const std::string &user_id)
-{
-        auto txn = lmdb::txn::begin(env_);
-        auto db  = getUserCacheDb(txn);
-        auto res = lmdb::dbi_del(txn, db, lmdb::val(user_id), nullptr);
-
         txn.commit();
-
-        return res;
 }
 
 void
-to_json(json &j, const DeviceVerifiedCache &info)
+Cache::deleteUserKeys(lmdb::txn &txn, lmdb::dbi &db, const std::vector<std::string> &user_ids)
 {
-        j["is_user_verified"] = info.is_user_verified;
-        j["cross_verified"]   = info.cross_verified;
-        j["device_verified"]  = info.device_verified;
-        j["device_blocked"]   = info.device_blocked;
+        for (const auto &user_id : user_ids)
+                lmdb::dbi_del(txn, db, lmdb::val(user_id), nullptr);
 }
 
 void
-from_json(const json &j, DeviceVerifiedCache &info)
+Cache::markUserKeysOutOfDate(lmdb::txn &txn,
+                             lmdb::dbi &db,
+                             const std::vector<std::string> &user_ids,
+                             const std::string &sync_token)
 {
-        info.is_user_verified = j.at("is_user_verified");
-        info.cross_verified   = j.at("cross_verified").get<std::vector<std::string>>();
-        info.device_verified  = j.at("device_verified").get<std::vector<std::string>>();
-        info.device_blocked   = j.at("device_blocked").get<std::vector<std::string>>();
+        mtx::requests::QueryKeys query;
+        query.token = sync_token;
+
+        for (const auto &user : user_ids) {
+                lmdb::val oldKeys;
+                auto res = lmdb::dbi_get(txn, db, lmdb::val(user), oldKeys);
+
+                if (!res)
+                        continue;
+
+                auto cacheEntry =
+                  json::parse(std::string_view(oldKeys.data(), oldKeys.size())).get<UserKeyCache>();
+                cacheEntry.last_changed = sync_token;
+                lmdb::dbi_put(txn, db, lmdb::val(user), lmdb::val(json(cacheEntry).dump()));
+
+                query.device_keys[user] = {};
+        }
+
+        if (!query.device_keys.empty())
+                http::client()->query_keys(query,
+                                           [this, sync_token](const mtx::responses::QueryKeys &keys,
+                                                              mtx::http::RequestErr err) {
+                                                   if (err) {
+                                                           nhlog::net()->warn(
+                                                             "failed to query device keys: {} {}",
+                                                             err->matrix_error.error,
+                                                             static_cast<int>(err->status_code));
+                                                           return;
+                                                   }
+
+                                                   emit userKeysUpdate(sync_token, keys);
+                                           });
 }
 
-std::optional<DeviceVerifiedCache>
-Cache::getVerifiedCache(const std::string &user_id)
+void
+to_json(json &j, const VerificationCache &info)
+{
+        j["verified_master_key"] = info.verified_master_key;
+        j["cross_verified"]      = info.cross_verified;
+        j["device_verified"]     = info.device_verified;
+        j["device_blocked"]      = info.device_blocked;
+}
+
+void
+from_json(const json &j, VerificationCache &info)
+{
+        info.verified_master_key = j.at("verified_master_key");
+        info.cross_verified      = j.at("cross_verified").get<std::vector<std::string>>();
+        info.device_verified     = j.at("device_verified").get<std::vector<std::string>>();
+        info.device_blocked      = j.at("device_blocked").get<std::vector<std::string>>();
+}
+
+std::optional<VerificationCache>
+Cache::verificationStatus(const std::string &user_id)
 {
         lmdb::val verifiedVal;
 
         auto txn = lmdb::txn::begin(env_);
-        auto db  = getDeviceVerifiedDb(txn);
-        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
+        auto db  = getVerificationDb(txn);
 
-        txn.commit();
-
-        DeviceVerifiedCache verified_state;
-        if (res) {
-                verified_state = json::parse(std::string(verifiedVal.data(), verifiedVal.size()));
-                return verified_state;
-        } else {
+        try {
+                VerificationCache verified_state;
+                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
+                if (res) {
+                        verified_state =
+                          json::parse(std::string_view(verifiedVal.data(), verifiedVal.size()));
+                        return verified_state;
+                } else {
+                        return {};
+                }
+        } catch (std::exception &) {
                 return {};
         }
 }
 
-int
-Cache::setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body)
+void
+Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
 {
+        lmdb::val val;
+
         auto txn = lmdb::txn::begin(env_);
-        auto db  = getDeviceVerifiedDb(txn);
+        auto db  = getVerificationDb(txn);
 
-        auto res = lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(body).dump()));
+        try {
+                VerificationCache verified_state;
+                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), val);
+                if (res) {
+                        verified_state = json::parse(std::string_view(val.data(), val.size()));
+                }
 
-        txn.commit();
+                for (const auto &device : verified_state.device_verified)
+                        if (device == key)
+                                return;
 
-        return res;
+                verified_state.device_verified.push_back(key);
+                lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(verified_state).dump()));
+                txn.commit();
+        } catch (std::exception &) {
+        }
+}
+
+void
+Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
+{
+        lmdb::val val;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getVerificationDb(txn);
+
+        try {
+                VerificationCache verified_state;
+                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), val);
+                if (res) {
+                        verified_state = json::parse(std::string_view(val.data(), val.size()));
+                }
+
+                verified_state.device_verified.erase(
+                  std::remove(verified_state.device_verified.begin(),
+                              verified_state.device_verified.end(),
+                              key),
+                  verified_state.device_verified.end());
+
+                lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(verified_state).dump()));
+                txn.commit();
+        } catch (std::exception &) {
+        }
+}
+
+void
+Cache::markMasterKeyVerified(const std::string &user_id, const std::string &key)
+{
+        lmdb::val val;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getVerificationDb(txn);
+
+        try {
+                VerificationCache verified_state;
+                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), val);
+                if (res) {
+                        verified_state = json::parse(std::string_view(val.data(), val.size()));
+                }
+
+                verified_state.verified_master_key = key;
+                lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(verified_state).dump()));
+                txn.commit();
+        } catch (std::exception &) {
+        }
 }
 
 void
@@ -3401,47 +3508,49 @@ statusMessage(const std::string &user_id)
 {
         return instance_->statusMessage(user_id);
 }
-std::optional<UserCache>
-getUserCache(const std::string &user_id)
-{
-        return instance_->getUserCache(user_id);
-}
-
-void
-updateUserCache(const mtx::responses::DeviceLists body)
-{
-        instance_->updateUserCache(body);
-}
-
-int
-setUserCache(const std::string &user_id, const UserCache &body)
-{
-        return instance_->setUserCache(user_id, body);
-}
-
-int
-deleteUserCache(const std::string &user_id)
-{
-        return instance_->deleteUserCache(user_id);
-}
-
-std::optional<DeviceVerifiedCache>
-getVerifiedCache(const std::string &user_id)
-{
-        return instance_->getVerifiedCache(user_id);
-}
-
-int
-setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body)
-{
-        return instance_->setVerifiedCache(user_id, body);
-}
 
 //! Load saved data for the display names & avatars.
 void
 populateMembers()
 {
         instance_->populateMembers();
+}
+
+// user cache stores user keys
+std::optional<UserKeyCache>
+userKeys(const std::string &user_id)
+{
+        return instance_->userKeys(user_id);
+}
+void
+updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery)
+{
+        instance_->updateUserKeys(sync_token, keyQuery);
+}
+
+// device & user verification cache
+std::optional<VerificationCache>
+verificationStatus(const std::string &user_id)
+{
+        return instance_->verificationStatus(user_id);
+}
+
+void
+markDeviceVerified(const std::string &user_id, const std::string &key)
+{
+        instance_->markDeviceVerified(user_id, key);
+}
+
+void
+markDeviceUnverified(const std::string &user_id, const std::string &key)
+{
+        instance_->markDeviceUnverified(user_id, key);
+}
+
+void
+markMasterKeyVerified(const std::string &user_id, const std::string &key)
+{
+        instance_->markMasterKeyVerified(user_id, key);
 }
 
 std::vector<std::string>

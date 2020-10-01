@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Olm.h"
-
-#include "MatrixClient.h"
-#include "mtx/responses/crypto.hpp"
 #include <QObject>
+
+#include <mtx/responses/crypto.hpp>
+
+#include "CacheCryptoStructs.h"
+#include "MatrixClient.h"
+#include "Olm.h"
 
 class QTimer;
 
@@ -71,9 +73,7 @@ public:
         void setSender(bool sender_);
         void setEventId(std::string event_id);
 
-        void callback_fn(const mtx::responses::QueryKeys &res,
-                         mtx::http::RequestErr err,
-                         std::string user_id);
+        void callback_fn(const UserKeyCache &res, mtx::http::RequestErr err, std::string user_id);
 
         nlohmann::json canonical_json;
 

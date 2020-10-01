@@ -67,52 +67,38 @@ struct OlmSessionStorage
 };
 
 // this will store the keys of the user with whom a encrypted room is shared with
-struct UserCache
+struct UserKeyCache
 {
-        //! map of public key key_ids and their public_key
-        mtx::responses::QueryKeys keys;
-        //! if the current cache is updated or not
-        bool isUpdated = false;
-
-        UserCache(mtx::responses::QueryKeys res, bool isUpdated_ = false)
-          : keys(res)
-          , isUpdated(isUpdated_)
-        {}
-        UserCache() {}
+        //! Device id to device keys
+        std::map<std::string, mtx::crypto::DeviceKeys> device_keys;
+        //! corss signing keys
+        mtx::crypto::CrossSigningKeys master_keys, user_signing_keys, self_signing_keys;
+        //! Sync token when nheko last fetched the keys
+        std::string updated_at;
+        //! Sync token when the keys last changed. updated != last_changed means they are outdated.
+        std::string last_changed;
 };
 
 void
-to_json(nlohmann::json &j, const UserCache &info);
+to_json(nlohmann::json &j, const UserKeyCache &info);
 void
-from_json(const nlohmann::json &j, UserCache &info);
+from_json(const nlohmann::json &j, UserKeyCache &info);
 
 // the reason these are stored in a seperate cache rather than storing it in the user cache is
-// UserCache stores only keys of users with which encrypted room is shared
-struct DeviceVerifiedCache
+// UserKeyCache stores only keys of users with which encrypted room is shared
+struct VerificationCache
 {
         //! list of verified device_ids with device-verification
         std::vector<std::string> device_verified;
-        //! list of verified device_ids with cross-signing
+        //! list of verified device_ids with cross-signing, calculated from master key
         std::vector<std::string> cross_verified;
         //! list of devices the user blocks
         std::vector<std::string> device_blocked;
-        //! this stores if the user is verified (with cross-signing)
-        bool is_user_verified = false;
-
-        DeviceVerifiedCache(std::vector<std::string> device_verified_,
-                            std::vector<std::string> cross_verified_,
-                            std::vector<std::string> device_blocked_,
-                            bool is_user_verified_ = false)
-          : device_verified(device_verified_)
-          , cross_verified(cross_verified_)
-          , device_blocked(device_blocked_)
-          , is_user_verified(is_user_verified_)
-        {}
-
-        DeviceVerifiedCache() {}
+        //! The verified master key.
+        std::string verified_master_key;
 };
 
 void
-to_json(nlohmann::json &j, const DeviceVerifiedCache &info);
+to_json(nlohmann::json &j, const VerificationCache &info);
 void
-from_json(const nlohmann::json &j, DeviceVerifiedCache &info);
+from_json(const nlohmann::json &j, VerificationCache &info);

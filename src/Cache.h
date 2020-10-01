@@ -60,25 +60,21 @@ presenceState(const std::string &user_id);
 std::string
 statusMessage(const std::string &user_id);
 
-//! user Cache
-std::optional<UserCache>
-getUserCache(const std::string &user_id);
-
+// user cache stores user keys
+std::optional<UserKeyCache>
+userKeys(const std::string &user_id);
 void
-updateUserCache(const mtx::responses::DeviceLists body);
+updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery);
 
-int
-setUserCache(const std::string &user_id, const UserCache &body);
-
-int
-deleteUserCache(const std::string &user_id);
-
-//! verified Cache
-std::optional<DeviceVerifiedCache>
-getVerifiedCache(const std::string &user_id);
-
-int
-setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body);
+// device & user verification cache
+std::optional<VerificationCache>
+verificationStatus(const std::string &user_id);
+void
+markDeviceVerified(const std::string &user_id, const std::string &key);
+void
+markDeviceUnverified(const std::string &user_id, const std::string &key);
+void
+markMasterKeyVerified(const std::string &user_id, const std::string &key);
 
 //! Load saved data for the display names & avatars.
 void

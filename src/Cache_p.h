@@ -55,14 +55,22 @@ public:
         std::string statusMessage(const std::string &user_id);
 
         // user cache stores user keys
-        std::optional<UserCache> getUserCache(const std::string &user_id);
-        void updateUserCache(const mtx::responses::DeviceLists body);
-        int setUserCache(const std::string &user_id, const UserCache &body);
-        int deleteUserCache(const std::string &user_id);
+        std::optional<UserKeyCache> userKeys(const std::string &user_id);
+        void updateUserKeys(const std::string &sync_token,
+                            const mtx::responses::QueryKeys &keyQuery);
+        void markUserKeysOutOfDate(lmdb::txn &txn,
+                                   lmdb::dbi &db,
+                                   const std::vector<std::string> &user_ids,
+                                   const std::string &sync_token);
+        void deleteUserKeys(lmdb::txn &txn,
+                            lmdb::dbi &db,
+                            const std::vector<std::string> &user_ids);
 
-        // device verified cache
-        std::optional<DeviceVerifiedCache> getVerifiedCache(const std::string &user_id);
-        int setVerifiedCache(const std::string &user_id, const DeviceVerifiedCache &body);
+        // device & user verification cache
+        std::optional<VerificationCache> verificationStatus(const std::string &user_id);
+        void markDeviceVerified(const std::string &user_id, const std::string &key);
+        void markDeviceUnverified(const std::string &user_id, const std::string &key);
+        void markMasterKeyVerified(const std::string &user_id, const std::string &key);
 
         static void removeDisplayName(const QString &room_id, const QString &user_id);
         static void removeAvatarUrl(const QString &room_id, const QString &user_id);
@@ -272,8 +280,8 @@ signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void roomReadStatus(const std::map<QString, bool> &status);
         void removeNotification(const QString &room_id, const QString &event_id);
-        void updateUserCacheFlag(const std::string &user_id);
-        void deleteLeftUsers(const std::string &user_id);
+        void userKeysUpdate(const std::string &sync_token,
+                            const mtx::responses::QueryKeys &keyQuery);
 
 private:
         //! Save an invited room.
@@ -539,12 +547,12 @@ private:
                 return lmdb::dbi::open(txn, "presence", MDB_CREATE);
         }
 
-        lmdb::dbi getUserCacheDb(lmdb::txn &txn)
+        lmdb::dbi getUserKeysDb(lmdb::txn &txn)
         {
-                return lmdb::dbi::open(txn, "user_cache", MDB_CREATE);
+                return lmdb::dbi::open(txn, "user_key", MDB_CREATE);
         }
 
-        lmdb::dbi getDeviceVerifiedDb(lmdb::txn &txn)
+        lmdb::dbi getVerificationDb(lmdb::txn &txn)
         {
                 return lmdb::dbi::open(txn, "verified", MDB_CREATE);
         }

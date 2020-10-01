@@ -328,22 +328,14 @@ DeviceVerificationFlow::setTransactionId(QString transaction_id_)
 void
 DeviceVerificationFlow::setUserId(QString userID)
 {
-        this->userId    = userID;
-        this->toClient  = mtx::identifiers::parse<mtx::identifiers::User>(userID.toStdString());
-        auto user_cache = cache::getUserCache(userID.toStdString());
+        this->userId   = userID;
+        this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(userID.toStdString());
 
-        if (user_cache.has_value()) {
-                this->callback_fn(user_cache->keys, {}, userID.toStdString());
-        } else {
-                mtx::requests::QueryKeys req;
-                req.device_keys[userID.toStdString()] = {};
-                http::client()->query_keys(
-                  req,
-                  [user_id = userID.toStdString(), this](const mtx::responses::QueryKeys &res,
-                                                         mtx::http::RequestErr err) {
-                          this->callback_fn(res, err, user_id);
-                  });
-        }
+        auto user_id = userID.toStdString();
+        ChatPage::instance()->query_keys(
+          user_id, [user_id, this](const UserKeyCache &res, mtx::http::RequestErr err) {
+                  this->callback_fn(res, err, user_id);
+          });
 }
 
 void
@@ -622,30 +614,52 @@ DeviceVerificationFlow::sendVerificationKey()
                 (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationKey);
         }
 }
+
+mtx::events::msg::KeyVerificationMac
+key_verification_mac(mtx::crypto::SAS *sas,
+                     mtx::identifiers::User sender,
+                     const std::string &senderDevice,
+                     mtx::identifiers::User receiver,
+                     const std::string &receiverDevice,
+                     const std::string &transactionId,
+                     std::map<std::string, std::string> keys)
+{
+        mtx::events::msg::KeyVerificationMac req;
+
+        std::string info = "MATRIX_KEY_VERIFICATION_MAC" + sender.to_string() + senderDevice +
+                           receiver.to_string() + receiverDevice + transactionId;
+
+        std::string key_list;
+        bool first = true;
+        for (const auto &[key_id, key] : keys) {
+                req.mac[key_id] = sas->calculate_mac(key, info + key_id);
+
+                if (!first)
+                        key_list += ",";
+                key_list += key_id;
+                first = false;
+        }
+
+        req.keys = sas->calculate_mac(key_list, info + "KEY_IDS");
+
+        return req;
+}
+
 //! sends the mac of the keys
 void
 DeviceVerificationFlow::sendVerificationMac()
 {
-        mtx::events::msg::KeyVerificationMac req;
+        std::map<std::string, std::string> key_list;
+        key_list["ed25519:" + http::client()->device_id()] = olm::client()->identity_keys().ed25519;
 
-        std::string info = "MATRIX_KEY_VERIFICATION_MAC" + http::client()->user_id().to_string() +
-                           http::client()->device_id() + this->toClient.to_string() +
-                           this->deviceId.toStdString() + this->transaction_id;
-
-        //! this vector stores the type of the key and the key
-        std::vector<std::pair<std::string, std::string>> key_list;
-        key_list.push_back(make_pair("ed25519", olm::client()->identity_keys().ed25519));
-        std::sort(key_list.begin(), key_list.end());
-        for (auto x : key_list) {
-                req.mac.insert(
-                  std::make_pair(x.first + ":" + http::client()->device_id(),
-                                 this->sas->calculate_mac(
-                                   x.second, info + x.first + ":" + http::client()->device_id())));
-                req.keys += x.first + ":" + http::client()->device_id() + ",";
-        }
-
-        req.keys =
-          this->sas->calculate_mac(req.keys.substr(0, req.keys.size() - 1), info + "KEY_IDS");
+        mtx::events::msg::KeyVerificationMac req =
+          key_verification_mac(sas.get(),
+                               http::client()->user_id(),
+                               http::client()->device_id(),
+                               this->toClient,
+                               this->deviceId.toStdString(),
+                               this->transaction_id,
+                               key_list);
 
         if (this->type == DeviceVerificationFlow::Type::ToDevice) {
                 mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationMac> body;
@@ -673,27 +687,16 @@ DeviceVerificationFlow::sendVerificationMac()
 void
 DeviceVerificationFlow::acceptDevice()
 {
-        auto verified_cache = cache::getVerifiedCache(this->userId.toStdString());
-        if (verified_cache.has_value()) {
-                verified_cache->device_verified.push_back(this->deviceId.toStdString());
-                verified_cache->device_blocked.erase(
-                  std::remove(verified_cache->device_blocked.begin(),
-                              verified_cache->device_blocked.end(),
-                              this->deviceId.toStdString()),
-                  verified_cache->device_blocked.end());
-        } else {
-                cache::setVerifiedCache(
-                  this->userId.toStdString(),
-                  DeviceVerifiedCache{{this->deviceId.toStdString()}, {}, {}});
-        }
+        cache::markDeviceVerified(this->userId.toStdString(), this->deviceId.toStdString());
 
         emit deviceVerified();
         emit refreshProfile();
         this->deleteLater();
 }
+
 //! callback function to keep track of devices
 void
-DeviceVerificationFlow::callback_fn(const mtx::responses::QueryKeys &res,
+DeviceVerificationFlow::callback_fn(const UserKeyCache &res,
                                     mtx::http::RequestErr err,
                                     std::string user_id)
 {
@@ -704,35 +707,22 @@ DeviceVerificationFlow::callback_fn(const mtx::responses::QueryKeys &res,
                 return;
         }
 
-        if (res.device_keys.empty() || (res.device_keys.find(user_id) == res.device_keys.end())) {
+        if (res.device_keys.empty() ||
+            (res.device_keys.find(deviceId.toStdString()) == res.device_keys.end())) {
                 nhlog::net()->warn("no devices retrieved {}", user_id);
                 return;
         }
 
-        for (auto x : res.device_keys) {
-                for (auto y : x.second) {
-                        auto z = y.second;
-                        if (z.user_id == user_id && z.device_id == this->deviceId.toStdString()) {
-                                for (auto a : z.keys) {
-                                        // TODO: Verify Signatures
-                                        this->device_keys[a.first] = a.second;
-                                }
-                        }
-                }
+        for (const auto &[algorithm, key] : res.device_keys.at(deviceId.toStdString()).keys) {
+                // TODO: Verify Signatures
+                this->device_keys[algorithm] = key;
         }
 }
 
 void
 DeviceVerificationFlow::unverify()
 {
-        auto verified_cache = cache::getVerifiedCache(this->userId.toStdString());
-        if (verified_cache.has_value()) {
-                auto it = std::remove(verified_cache->device_verified.begin(),
-                                      verified_cache->device_verified.end(),
-                                      this->deviceId.toStdString());
-                verified_cache->device_verified.erase(it);
-                cache::setVerifiedCache(this->userId.toStdString(), verified_cache.value());
-        }
+        cache::markDeviceUnverified(this->userId.toStdString(), this->deviceId.toStdString());
 
         emit refreshProfile();
 }

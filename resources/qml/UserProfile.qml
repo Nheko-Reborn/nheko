@@ -136,7 +136,7 @@ ApplicationWindow{
 			model: profile.deviceList
 
 			delegate: RowLayout{
-				width: parent.width
+				width: devicelist.width
 				spacing: 4
 
 				ColumnLayout{

@@ -1466,35 +1466,43 @@ ChatPage::initiateLogout()
 }
 
 void
-ChatPage::query_keys(
-  const mtx::requests::QueryKeys &req,
-  std::function<void(const mtx::responses::QueryKeys &, mtx::http::RequestErr)> cb)
+ChatPage::query_keys(const std::string &user_id,
+                     std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
 {
-        std::string user_id = req.device_keys.begin()->first;
-        auto cache_         = cache::getUserCache(user_id);
+        auto cache_ = cache::userKeys(user_id);
 
         if (cache_.has_value()) {
-                if (cache_.value().isUpdated) {
-                        cb(cache_.value().keys, {});
-                } else {
-                        http::client()->query_keys(
-                          req,
-                          [cb, user_id](const mtx::responses::QueryKeys &res,
-                                        mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::net()->warn("failed to query device keys: {},{}",
-                                                             err->matrix_error.errcode,
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
-                                  cache::setUserCache(std::move(user_id),
-                                                      std::move(UserCache{res, true}));
-                                  cb(res, err);
-                          });
+                if (!cache_->updated_at.empty() && cache_->updated_at == cache_->last_changed) {
+                        cb(cache_.value(), {});
+                        return;
                 }
-        } else {
-                http::client()->query_keys(req, cb);
         }
+
+        mtx::requests::QueryKeys req;
+        req.device_keys[user_id] = {};
+
+        std::string last_changed;
+        if (cache_)
+                last_changed = cache_->last_changed;
+        req.token = last_changed;
+
+        http::client()->query_keys(req,
+                                   [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
+                                                               mtx::http::RequestErr err) {
+                                           if (err) {
+                                                   nhlog::net()->warn(
+                                                     "failed to query device keys: {},{}",
+                                                     err->matrix_error.errcode,
+                                                     static_cast<int>(err->status_code));
+                                                   cb({}, err);
+                                                   return;
+                                           }
+
+                                           cache::updateUserKeys(last_changed, res);
+
+                                           auto keys = cache::userKeys(user_id);
+                                           cb(keys.value_or(UserKeyCache{}), err);
+                                   });
 }
 
 template<typename T>
