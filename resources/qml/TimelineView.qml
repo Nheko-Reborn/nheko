@@ -213,6 +213,7 @@ Page {
 						Layout.fillWidth: true
 						Layout.column: 2
 						Layout.row: 0
+						color: colors.text
 
 						font.pointSize: fontMetrics.font.pointSize * 1.1
 
