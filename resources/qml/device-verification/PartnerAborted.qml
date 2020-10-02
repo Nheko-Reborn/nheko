@@ -23,15 +23,7 @@ Pane {
 			Button {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Close")
-				palette {
-                    button: "white"
-                }
-				contentItem: Text {
-                    text: parent.text
-                    color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
+
 				onClicked: {
 					deviceVerificationList.remove(tran_id);
 					dialog.destroy();

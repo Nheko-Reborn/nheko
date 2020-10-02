@@ -25,15 +25,7 @@ Pane {
 			Button {
 				Layout.alignment: Qt.AlignLeft
 				text: qsTr("Deny")
-				palette {
-                    button: "white"
-                }
-				contentItem: Text {
-                    text: parent.text
-                    color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
+
 				onClicked: { 
 					flow.cancelVerification(DeviceVerificationFlow.User);
 					deviceVerificationList.remove(tran_id);
@@ -46,18 +38,10 @@ Pane {
 			Button {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Accept")
-				palette {
-                    button: "white"
-                }
-				contentItem: Text {
-                    text: parent.text
-                    color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
+
 				onClicked: { 
 					stack.replace(awaitingVerificationRequestAccept); 
-					isRequest?flow.sendVerificationReady():flow.acceptVerificationRequest(); 
+					flow.sender ?flow.sendVerificationReady():flow.acceptVerificationRequest(); 
 				}
 			}
 		}

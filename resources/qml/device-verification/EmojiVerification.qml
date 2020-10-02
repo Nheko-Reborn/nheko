@@ -123,15 +123,7 @@ Pane {
 			Button {
 				Layout.alignment: Qt.AlignLeft
 				text: qsTr("They do not match!")
-				palette {
-                    button: "white"
-                }
-				contentItem: Text {
-                    text: parent.text
-                    color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
+
 				onClicked: {  
 					flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
 					deviceVerificationList.remove(tran_id);
@@ -144,15 +136,7 @@ Pane {
 			Button {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("They match!")
-				palette {
-                    button: "white"
-                }
-				contentItem: Text {
-                    text: parent.text
-                    color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
+
 				onClicked: { stack.replace(awaitingVerificationConfirmation); flow.sendVerificationMac(); }
 			}
 		}

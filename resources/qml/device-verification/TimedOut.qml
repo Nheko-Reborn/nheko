@@ -21,18 +21,9 @@ Pane {
 				Layout.fillWidth: true
 			}
 			Button {
-				id: timedOutCancel
 				Layout.alignment: Qt.AlignRight
-				palette {
-                    button: "white"
-                }
-				contentItem: Text {
-                    text: parent.text
-                    color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
 				text: qsTr("Close")
+
 				onClicked: {
 					deviceVerificationList.remove(tran_id);
 					flow.deleteFlow();
