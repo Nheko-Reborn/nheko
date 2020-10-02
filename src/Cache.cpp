@@ -687,11 +687,14 @@ Cache::nextBatchToken() const
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         lmdb::val token;
 
-        lmdb::dbi_get(txn, syncStateDb_, NEXT_BATCH_KEY, token);
+        auto result = lmdb::dbi_get(txn, syncStateDb_, NEXT_BATCH_KEY, token);
 
         txn.commit();
 
-        return std::string(token.data(), token.size());
+        if (result)
+                return std::string(token.data(), token.size());
+        else
+                return "";
 }
 
 void
