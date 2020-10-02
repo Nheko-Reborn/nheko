@@ -138,6 +138,17 @@ handle_olm_message(const OlmMessage &msg)
 
                 auto payload = try_olm_decryption(msg.sender_key, cipher.second);
 
+                if (payload.is_null()) {
+                        // Check for PRE_KEY message
+                        if (cipher.second.type == 0) {
+                                payload = handle_pre_key_olm_message(
+                                  msg.sender, msg.sender_key, cipher.second);
+                        } else {
+                                nhlog::crypto()->error("Undecryptable olm message!");
+                                continue;
+                        }
+                }
+
                 if (!payload.is_null()) {
                         std::string msg_type = payload["type"];
 
@@ -180,26 +191,23 @@ handle_olm_message(const OlmMessage &msg)
                                 ChatPage::instance()->recievedDeviceVerificationDone(
                                   payload["content"]);
                                 return;
+                        } else if (msg_type == to_string(mtx::events::EventType::RoomKey)) {
+                                mtx::events::DeviceEvent<mtx::events::msg::RoomKey> roomKey =
+                                  payload;
+                                create_inbound_megolm_session(roomKey, msg.sender_key);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::ForwardedRoomKey)) {
+                                mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey>
+                                  roomKey = payload;
+                                import_inbound_megolm_session(roomKey);
+                                return;
                         }
                 }
-
-                if (!payload.is_null()) {
-                        nhlog::crypto()->debug("decrypted olm payload: {}", payload.dump(2));
-                        create_inbound_megolm_session(msg.sender, msg.sender_key, payload);
-                        return;
-                }
-
-                // Not a PRE_KEY message
-                if (cipher.second.type != 0) {
-                        // TODO: log that it should have matched something
-                        return;
-                }
-
-                handle_pre_key_olm_message(msg.sender, msg.sender_key, cipher.second);
         }
 }
 
-void
+nlohmann::json
 handle_pre_key_olm_message(const std::string &sender,
                            const std::string &sender_key,
                            const mtx::events::msg::OlmCipherContent &content)
@@ -217,14 +225,14 @@ handle_pre_key_olm_message(const std::string &sender,
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to create inbound session with {}: {}", sender, e.what());
-                return;
+                return {};
         }
 
         if (!mtx::crypto::matches_inbound_session_from(
               inbound_session.get(), sender_key, content.body)) {
                 nhlog::crypto()->warn("inbound olm session doesn't match sender's key ({})",
                                       sender);
-                return;
+                return {};
         }
 
         mtx::crypto::BinaryBuf output;
@@ -234,7 +242,7 @@ handle_pre_key_olm_message(const std::string &sender,
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to decrypt olm message {}: {}", content.body, e.what());
-                return;
+                return {};
         }
 
         auto plaintext = json::parse(std::string((char *)output.data(), output.size()));
@@ -247,7 +255,7 @@ handle_pre_key_olm_message(const std::string &sender,
                   "failed to save inbound olm session from {}: {}", sender, e.what());
         }
 
-        create_inbound_megolm_session(sender, sender_key, plaintext);
+        return plaintext;
 }
 
 mtx::events::msg::Encrypted
@@ -323,10 +331,12 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
                 }
 
                 try {
-                        return json::parse(std::string((char *)text.data(), text.size()));
+                        return json::parse(std::string_view((char *)text.data(), text.size()));
                 } catch (const json::exception &e) {
-                        nhlog::crypto()->critical("failed to parse the decrypted session msg: {}",
-                                                  e.what());
+                        nhlog::crypto()->critical(
+                          "failed to parse the decrypted session msg: {} {}",
+                          e.what(),
+                          std::string_view((char *)text.data(), text.size()));
                 }
         }
 
@@ -334,29 +344,17 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
 }
 
 void
-create_inbound_megolm_session(const std::string &sender,
-                              const std::string &sender_key,
-                              const nlohmann::json &payload)
+create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::RoomKey> &roomKey,
+                              const std::string &sender_key)
 {
-        std::string room_id, session_id, session_key;
-
-        try {
-                room_id     = payload.at("content").at("room_id");
-                session_id  = payload.at("content").at("session_id");
-                session_key = payload.at("content").at("session_key");
-        } catch (const nlohmann::json::exception &e) {
-                nhlog::crypto()->critical(
-                  "failed to parse plaintext olm message: {} {}", e.what(), payload.dump(2));
-                return;
-        }
-
         MegolmSessionIndex index;
-        index.room_id    = room_id;
-        index.session_id = session_id;
+        index.room_id    = roomKey.content.room_id;
+        index.session_id = roomKey.content.session_id;
         index.sender_key = sender_key;
 
         try {
-                auto megolm_session = olm::client()->init_inbound_group_session(session_key);
+                auto megolm_session =
+                  olm::client()->init_inbound_group_session(roomKey.content.session_key);
                 cache::saveInboundMegolmSession(index, std::move(megolm_session));
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
@@ -366,7 +364,34 @@ create_inbound_megolm_session(const std::string &sender,
                 return;
         }
 
-        nhlog::crypto()->info("established inbound megolm session ({}, {})", room_id, sender);
+        nhlog::crypto()->info(
+          "established inbound megolm session ({}, {})", roomKey.content.room_id, roomKey.sender);
+}
+
+void
+import_inbound_megolm_session(
+  const mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey> &roomKey)
+{
+        MegolmSessionIndex index;
+        index.room_id    = roomKey.content.room_id;
+        index.session_id = roomKey.content.session_id;
+        index.sender_key = roomKey.content.sender_key;
+
+        try {
+                auto megolm_session =
+                  olm::client()->import_inbound_group_session(roomKey.content.session_key);
+                cache::saveInboundMegolmSession(index, std::move(megolm_session));
+        } catch (const lmdb::error &e) {
+                nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
+                return;
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to import inbound megolm session: {}", e.what());
+                return;
+        }
+
+        // TODO(Nico): Reload messages encrypted with this key.
+        nhlog::crypto()->info(
+          "established inbound megolm session ({}, {})", roomKey.content.room_id, roomKey.sender);
 }
 
 void
@@ -493,12 +518,6 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         }
 
         if (!utils::respondsToKeyRequests(req.content.room_id)) {
-                nhlog::crypto()->debug("ignoring all key requests for room {}",
-                                       req.content.room_id);
-
-                nhlog::crypto()->debug("ignoring all key requests for room {}",
-                                       req.content.room_id);
-
                 nhlog::crypto()->debug("ignoring all key requests for room {}",
                                        req.content.room_id);
                 return;
