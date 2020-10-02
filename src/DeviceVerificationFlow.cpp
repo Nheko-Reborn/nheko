@@ -498,14 +498,13 @@ DeviceVerificationFlow::sendVerificationRequest()
         mtx::events::msg::KeyVerificationRequest req;
 
         req.from_device = http::client()->device_id();
-        req.methods.resize(1);
-        req.methods[0] = mtx::events::msg::VerificationMethods::SASv1;
+        req.methods     = {mtx::events::msg::VerificationMethods::SASv1};
 
         if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-                QDateTime CurrentTime = QDateTime::currentDateTimeUtc();
+                QDateTime currentTime = QDateTime::currentDateTimeUtc();
 
                 req.transaction_id = this->transaction_id;
-                req.timestamp      = (uint64_t)CurrentTime.toTime_t();
+                req.timestamp      = (uint64_t)currentTime.toMSecsSinceEpoch();
 
                 mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationRequest> body;
 

@@ -6,7 +6,6 @@ import im.nheko 1.0
 
 ApplicationWindow {
 	property var flow
-	property bool isRequest
 	property var tran_id
 
 	title: stack.currentItem.title

@@ -64,7 +64,7 @@ Pane {
                 }
 				onClicked: { 
 					stack.replace(awaitingVerificationRequestAccept); 
-					isRequest?flow.sendVerificationRequest():flow.startVerificationRequest(); }
+					flow.sender ?flow.sendVerificationRequest():flow.startVerificationRequest(); }
 			}
 		}
 	}

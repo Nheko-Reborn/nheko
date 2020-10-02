@@ -111,7 +111,7 @@ private:
         // general
         QString userId;
         QString deviceId;
-        Method method;
+        Method method = Method::Emoji;
         Type type;
         bool sender;
         QTimer *timeout = nullptr;
