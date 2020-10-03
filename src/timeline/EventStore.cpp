@@ -390,7 +390,8 @@ EventStore::reactions(const std::string &event_id)
                         continue;
 
                 if (auto reaction = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
-                      related_event)) {
+                      related_event);
+                    reaction && reaction->content.relates_to.key) {
                         auto &agg = aggregation[reaction->content.relates_to.key.value()];
 
                         if (agg.count == 0) {
