@@ -709,6 +709,8 @@ TextInputWidget::command(QString command, QString args)
                 emit sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
         } else if (command == "clear-timeline") {
                 emit clearRoomTimeline();
+        } else if (command == "rotate-megolm-session") {
+                emit rotateMegolmSession();
         }
 }
 

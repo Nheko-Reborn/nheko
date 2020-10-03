@@ -168,6 +168,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 view_manager_,
                 &TimelineViewManager::clearCurrentRoomTimeline);
 
+        connect(text_input_, &TextInputWidget::rotateMegolmSession, this, [this]() {
+                cache::dropOutboundMegolmSession(current_room_.toStdString());
+        });
+
         connect(
           new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
                   if (isVisible())

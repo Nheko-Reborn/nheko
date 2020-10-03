@@ -373,6 +373,25 @@ Cache::updateOutboundMegolmSession(const std::string &room_id, int message_index
 }
 
 void
+Cache::dropOutboundMegolmSession(const std::string &room_id)
+{
+        using namespace mtx::crypto;
+
+        if (!outboundMegolmSessionExists(room_id))
+                return;
+
+        {
+                std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
+                session_storage.group_outbound_session_data.erase(room_id);
+                session_storage.group_outbound_sessions.erase(room_id);
+
+                auto txn = lmdb::txn::begin(env_);
+                lmdb::dbi_del(txn, outboundMegolmSessionDb_, lmdb::val(room_id), nullptr);
+                txn.commit();
+        }
+}
+
+void
 Cache::saveOutboundMegolmSession(const std::string &room_id,
                                  const OutboundGroupSessionData &data,
                                  mtx::crypto::OutboundGroupSessionPtr session)
@@ -3888,6 +3907,11 @@ void
 updateOutboundMegolmSession(const std::string &room_id, int message_index)
 {
         instance_->updateOutboundMegolmSession(room_id, message_index);
+}
+void
+dropOutboundMegolmSession(const std::string &room_id)
+{
+        instance_->dropOutboundMegolmSession(room_id);
 }
 
 void

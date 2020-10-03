@@ -251,6 +251,7 @@ public:
         OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
         bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
         void updateOutboundMegolmSession(const std::string &room_id, int message_index);
+        void dropOutboundMegolmSession(const std::string &room_id);
 
         void importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys);
         mtx::crypto::ExportedSessionKeys exportSessionKeys();

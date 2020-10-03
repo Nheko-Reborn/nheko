@@ -1120,6 +1120,12 @@ TimelineModel::handleClaimedKeys(
 
                         nhlog::net()->debug("{} : \n {}", device_id, rd.second.dump(2));
 
+                        if (rd.second.empty() || !rd.second.begin()->contains("key")) {
+                                nhlog::net()->warn("Skipping device {} as it has no key.",
+                                                   device_id);
+                                continue;
+                        }
+
                         // TODO: Verify signatures
                         auto otk = rd.second.begin()->at("key");
 
