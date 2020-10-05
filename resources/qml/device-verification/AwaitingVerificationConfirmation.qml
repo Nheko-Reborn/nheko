@@ -27,9 +27,8 @@ Pane {
 				text: qsTr("Cancel")
 
 				onClicked: { 
-					flow.cancelVerification(DeviceVerificationFlow.User); 
-					deviceVerificationList.remove(tran_id);
-					dialog.destroy();
+					flow.cancel();
+					dialog.close();
 				}
 			}
 			Item {

@@ -21,6 +21,7 @@ Q_ENUM_NS(Status)
 
 class DeviceVerificationFlow;
 class TimelineModel;
+class TimelineViewManager;
 
 class DeviceInfo
 {
@@ -84,7 +85,10 @@ class UserProfile : public QObject
         Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
         Q_PROPERTY(bool isUserVerified READ getUserStatus CONSTANT)
 public:
-        UserProfile(QString roomid, QString userid, TimelineModel *parent = nullptr);
+        UserProfile(QString roomid,
+                    QString userid,
+                    TimelineViewManager *manager_,
+                    TimelineModel *parent = nullptr);
 
         DeviceInfoModel *deviceList();
 
@@ -93,7 +97,8 @@ public:
         QString avatarUrl();
         bool getUserStatus();
 
-        Q_INVOKABLE DeviceVerificationFlow *createFlow(bool isVerifyUser);
+        Q_INVOKABLE void verify(QString device = "");
+        Q_INVOKABLE void unverify(QString device = "");
         Q_INVOKABLE void fetchDeviceList(const QString &userID);
         Q_INVOKABLE void banUser();
         // Q_INVOKABLE void ignoreUser();
@@ -105,6 +110,7 @@ private:
         std::optional<std::string> cross_verified;
         DeviceInfoModel deviceList_;
         bool isUserVerified = false;
+        TimelineViewManager *manager;
         TimelineModel *model;
 
         void callback_fn(const mtx::responses::QueryKeys &res,

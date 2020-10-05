@@ -3,7 +3,7 @@ import QtQuick.Controls 2.10
 import QtQuick.Layouts 1.10
 
 Pane {
-	property string title: qsTr("Verification aborted!")
+	property string title: qsTr("Successful Verification")
 	ColumnLayout {
 		spacing: 16
 		Label {
@@ -12,7 +12,7 @@ Pane {
 			Layout.fillWidth: true
 			wrapMode: Text.Wrap
 			id: content
-			text: qsTr("Verification canceled by the other party!")
+			text: qsTr("Verification successful! Both sides verified their devices!")
 			color:colors.text
 			verticalAlignment: Text.AlignVCenter
 		}
@@ -24,10 +24,7 @@ Pane {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Close")
 
-				onClicked: {
-					deviceVerificationList.remove(tran_id);
-					dialog.destroy();
-				}
+				onClicked: dialog.close();
 			}
 		}
 	}

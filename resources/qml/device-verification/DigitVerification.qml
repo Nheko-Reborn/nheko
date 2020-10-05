@@ -6,10 +6,7 @@ import im.nheko 1.0
 
 Pane {
 	property string title: qsTr("Verification Code")
-	Component {
-		id: awaitingVerificationConfirmation
-		AwaitingVerificationConfirmation {}
-	}
+
 	ColumnLayout {
 		spacing: 16
 		Label {
@@ -45,9 +42,8 @@ Pane {
 				text: qsTr("They do not match!")
 
 				onClicked: {
-					flow.cancelVerification(DeviceVerificationFlow.MismatchedSAS);
-					deviceVerificationList.remove(tran_id);
-					dialog.destroy();
+					flow.cancel();
+					dialog.close();
 				}
 			}
 			Item {
@@ -57,7 +53,7 @@ Pane {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("They match!")
 
-				onClicked: { stack.replace(awaitingVerificationConfirmation); flow.sendVerificationMac(); }
+				onClicked: flow.next();
 			}
 		}
 	}

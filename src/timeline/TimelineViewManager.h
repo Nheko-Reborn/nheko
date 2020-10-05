@@ -24,20 +24,6 @@ class ColorImageProvider;
 class UserSettings;
 class ChatPage;
 
-class DeviceVerificationList : public QObject
-{
-        Q_OBJECT
-public:
-        Q_INVOKABLE void add(QString tran_id);
-        Q_INVOKABLE void remove(QString tran_id);
-        Q_INVOKABLE bool exist(QString tran_id);
-signals:
-        void updateProfile(QString userId);
-
-private:
-        QVector<QString> deviceVerificationList;
-};
-
 class TimelineViewManager : public QObject
 {
         Q_OBJECT
@@ -77,6 +63,9 @@ public:
         Q_INVOKABLE void openLeaveRoomDialog() const;
         Q_INVOKABLE void openRoomSettings() const;
 
+        void verifyUser(QString userid);
+        void verifyDevice(QString userid, QString deviceid);
+
 signals:
         void clearRoomMessageCount(QString roomid);
         void updateRoomsLastMessage(QString roomid, const DescInfo &info);
@@ -84,11 +73,7 @@ signals:
         void initialSyncChanged(bool isInitialSync);
         void replyingEventChanged(QString replyingEvent);
         void replyClosed();
-        void newDeviceVerificationRequest(DeviceVerificationFlow *flow,
-                                          QString transactionId,
-                                          QString userId,
-                                          QString deviceId,
-                                          bool isRequest = false);
+        void newDeviceVerificationRequest(DeviceVerificationFlow *flow);
         void inviteUsers(QStringList users);
         void showRoomList();
         void narrowViewChanged();
@@ -180,7 +165,7 @@ private:
         QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;
 
-        DeviceVerificationList *dvList;
+        QHash<QString, QSharedPointer<DeviceVerificationFlow>> dvList;
 };
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationAccept)
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationCancel)

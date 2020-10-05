@@ -141,16 +141,13 @@
         <file>qml/delegates/Pill.qml</file>
         <file>qml/delegates/Placeholder.qml</file>
         <file>qml/delegates/Reply.qml</file>
-        <file>qml/device-verification/AcceptNewVerificationRequest.qml</file>
-        <file>qml/device-verification/AwaitingVerificationConfirmation.qml</file>
-        <file>qml/device-verification/AwaitingVerificationRequest.qml</file>
+        <file>qml/device-verification/Waiting.qml</file>
         <file>qml/device-verification/DeviceVerification.qml</file>
         <file>qml/device-verification/DigitVerification.qml</file>
         <file>qml/device-verification/EmojiVerification.qml</file>
         <file>qml/device-verification/NewVerificationRequest.qml</file>
-        <file>qml/device-verification/PartnerAborted.qml</file>
-        <file>qml/device-verification/TimedOut.qml</file>
-        <file>qml/device-verification/VerificationSuccess.qml</file>
+        <file>qml/device-verification/Failed.qml</file>
+        <file>qml/device-verification/Success.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

@@ -12,7 +12,14 @@ Pane {
 			Layout.fillWidth: true
 			wrapMode: Text.Wrap
 			id: content
-			text: qsTr("Device verification timed out.")
+			text: switch (flow.error) {
+				case VerificationStatus.UnknownMethod: return qsTr("Device verification timed out.")
+				case VerificationStatus.MismatchedCommitment: return qsTr("Device verification timed out.")
+				case VerificationStatus.MismatchedSAS: return qsTr("Device verification timed out.")
+				case VerificationStatus.KeyMismatch: return qsTr("Device verification timed out.")
+				case VerificationStatus.Timeout: return qsTr("Device verification timed out.")
+				case VerificationStatus.OutOfOrder: return qsTr("Device verification timed out.")
+			}
 			color:colors.text
 			verticalAlignment: Text.AlignVCenter
 		}
@@ -27,7 +34,7 @@ Pane {
 				onClicked: {
 					deviceVerificationList.remove(tran_id);
 					flow.deleteFlow();
-					dialog.destroy()
+					dialog.close()
 				}
 			}
 		}

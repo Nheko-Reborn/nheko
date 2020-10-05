@@ -254,7 +254,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 &EventStore::startDMVerification,
                 this,
                 [this](mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> msg) {
-                        ChatPage::instance()->recievedRoomDeviceVerificationRequest(msg, this);
+                        ChatPage::instance()->receivedRoomDeviceVerificationRequest(msg, this);
                 });
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
@@ -793,7 +793,7 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
 void
 TimelineModel::openUserProfile(QString userid)
 {
-        emit openProfile(new UserProfile(room_id_, userid, this));
+        emit openProfile(new UserProfile(room_id_, userid, manager_, this));
 }
 
 void

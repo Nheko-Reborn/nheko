@@ -18,36 +18,31 @@ ApplicationWindow {
 	height: stack.implicitHeight
 	width: stack.implicitWidth
 
+	StackView {
+		id: stack
+		initialItem: newVerificationRequest
+		implicitWidth: currentItem.implicitWidth
+		implicitHeight: currentItem.implicitHeight
+	}
+
 	Component{
 		id: newVerificationRequest
 		NewVerificationRequest {}
 	}
 
-	Component{
-		id: acceptNewVerificationRequest
-		AcceptNewVerificationRequest {}
-	}
-
-	StackView {
-		id: stack
-		initialItem: flow.sender == true?newVerificationRequest:acceptNewVerificationRequest
-		implicitWidth: currentItem.implicitWidth
-		implicitHeight: currentItem.implicitHeight
+	Component {
+		id: waiting
+		Waiting {}
 	}
 
 	Component {
-		id: partnerAborted
-		PartnerAborted {}
+		id: success
+		Success {}
 	}
 
 	Component {
-		id: timedout
-		TimedOut {}
-	}
-
-	Component {
-		id: verificationSuccess
-		VerificationSuccess {}
+		id: failed
+		Failed {}
 	}
 
 	Component {
@@ -60,19 +55,42 @@ ApplicationWindow {
 		EmojiVerification {}
 	}
 
-	Connections {
-		target: flow
-		onVerificationCanceled: stack.replace(partnerAborted)
-		onTimedout: stack.replace(timedout)
-		onDeviceVerified: stack.replace(verificationSuccess)
+	Item {
+	state: flow.state
 
-		onVerificationRequestAccepted: switch(method) {
-			case DeviceVerificationFlow.Decimal: stack.replace(digitVerification); break;
-			case DeviceVerificationFlow.Emoji: stack.replace(emojiVerification); break;
+	states: [
+		State {
+			name: "PromptStartVerification"
+			StateChangeScript { script: stack.replace(newVerificationRequest) }
+		},
+		State {
+			name: "CompareEmoji"
+			StateChangeScript { script: stack.replace(emojiVerification) }
+		},
+		State {
+			name: "CompareNumber"
+			StateChangeScript { script: stack.replace(digitVerification) }
+		},
+		State {
+			name: "WaitingForKeys"
+			StateChangeScript { script: stack.replace(waiting) }
+		},
+		State {
+			name: "WaitingForOtherToAccept"
+			StateChangeScript { script: stack.replace(waiting) }
+		},
+		State {
+			name: "WaitingForMac"
+			StateChangeScript { script: stack.replace(waiting) }
+		},
+		State {
+			name: "Success"
+			StateChangeScript { script: stack.replace(success) }
+		},
+		State {
+			name: "Failed"
+			StateChangeScript { script: stack.replace(failed); }
 		}
-
-		onRefreshProfile: {
-			deviceVerificationList.updateProfile(flow.userId);
-		}
-	}
+	]
+}
 }

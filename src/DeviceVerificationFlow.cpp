@@ -15,14 +15,42 @@ namespace msgs = mtx::events::msg;
 
 DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                DeviceVerificationFlow::Type flow_type,
-                                               TimelineModel *model)
-  : type(flow_type)
+                                               TimelineModel *model,
+                                               QString userID,
+                                               QString deviceId_)
+  : sender(false)
+  , type(flow_type)
+  , deviceId(deviceId_)
   , model_(model)
 {
         timeout = new QTimer(this);
         timeout->setSingleShot(true);
         this->sas           = olm::client()->sas_init();
         this->isMacVerified = false;
+
+        auto user_id   = userID.toStdString();
+        this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(user_id);
+        ChatPage::instance()->query_keys(
+          user_id, [user_id, this](const UserKeyCache &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to query device keys: {},{}",
+                                             err->matrix_error.errcode,
+                                             static_cast<int>(err->status_code));
+                          return;
+                  }
+
+                  if (!this->deviceId.isEmpty() &&
+                      (res.device_keys.find(deviceId.toStdString()) == res.device_keys.end())) {
+                          nhlog::net()->warn("no devices retrieved {}", user_id);
+                          return;
+                  }
+
+                  for (const auto &[algorithm, key] :
+                       res.device_keys.at(deviceId.toStdString()).keys) {
+                          // TODO: Verify Signatures
+                          this->device_keys[algorithm] = key;
+                  }
+          });
 
         if (model) {
                 connect(this->model_,
@@ -36,64 +64,15 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
         }
 
         connect(timeout, &QTimer::timeout, this, [this]() {
-                emit timedout();
                 this->cancelVerification(DeviceVerificationFlow::Error::Timeout);
-                this->deleteLater();
         });
 
-        connect(this, &DeviceVerificationFlow::deleteFlow, this, [this]() { this->deleteLater(); });
-
-        connect(
-          ChatPage::instance(),
-          &ChatPage::recievedDeviceVerificationStart,
-          this,
-          [this](const mtx::events::msg::KeyVerificationStart &msg, std::string) {
-                  if (msg.transaction_id.has_value()) {
-                          if (msg.transaction_id.value() != this->transaction_id)
-                                  return;
-                  } else if (msg.relates_to.has_value()) {
-                          if (msg.relates_to.value().event_id != this->relation.event_id)
-                                  return;
-                  }
-                  if ((std::find(msg.key_agreement_protocols.begin(),
-                                 msg.key_agreement_protocols.end(),
-                                 "curve25519-hkdf-sha256") != msg.key_agreement_protocols.end()) &&
-                      (std::find(msg.hashes.begin(), msg.hashes.end(), "sha256") !=
-                       msg.hashes.end()) &&
-                      (std::find(msg.message_authentication_codes.begin(),
-                                 msg.message_authentication_codes.end(),
-                                 "hkdf-hmac-sha256") != msg.message_authentication_codes.end())) {
-                          if (std::find(msg.short_authentication_string.begin(),
-                                        msg.short_authentication_string.end(),
-                                        mtx::events::msg::SASMethods::Decimal) !=
-                              msg.short_authentication_string.end()) {
-                                  this->method = DeviceVerificationFlow::Method::Emoji;
-                          } else if (std::find(msg.short_authentication_string.begin(),
-                                               msg.short_authentication_string.end(),
-                                               mtx::events::msg::SASMethods::Emoji) !=
-                                     msg.short_authentication_string.end()) {
-                                  this->method = DeviceVerificationFlow::Method::Decimal;
-                          } else {
-                                  this->cancelVerification(
-                                    DeviceVerificationFlow::Error::UnknownMethod);
-                                  return;
-                          }
-                          if (!sender)
-                                  this->canonical_json = nlohmann::json(msg);
-                          else {
-                                  if (utils::localUser().toStdString() <
-                                      this->toClient.to_string()) {
-                                          this->canonical_json = nlohmann::json(msg);
-                                  }
-                          }
-                          this->acceptVerificationRequest();
-                  } else {
-                          this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
-                  }
-          });
-
         connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationAccept,
+                &ChatPage::receivedDeviceVerificationStart,
+                this,
+                &DeviceVerificationFlow::handleStartMessage);
+        connect(ChatPage::instance(),
+                &ChatPage::receivedDeviceVerificationAccept,
                 this,
                 [this](const mtx::events::msg::KeyVerificationAccept &msg) {
                         if (msg.transaction_id.has_value()) {
@@ -111,9 +90,9 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                               msg.short_authentication_string.end(),
                                               mtx::events::msg::SASMethods::Emoji) !=
                                     msg.short_authentication_string.end()) {
-                                        this->method = DeviceVerificationFlow::Method::Emoji;
+                                        this->method = mtx::events::msg::SASMethods::Emoji;
                                 } else {
-                                        this->method = DeviceVerificationFlow::Method::Decimal;
+                                        this->method = mtx::events::msg::SASMethods::Decimal;
                                 }
                                 this->mac_method = msg.message_authentication_code;
                                 this->sendVerificationKey();
@@ -124,7 +103,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 });
 
         connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationCancel,
+                &ChatPage::receivedDeviceVerificationCancel,
                 this,
                 [this](const mtx::events::msg::KeyVerificationCancel &msg) {
                         if (msg.transaction_id.has_value()) {
@@ -134,12 +113,13 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                 if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
-                        this->deleteLater();
-                        emit verificationCanceled();
+                        error_ = User;
+                        emit errorChanged();
+                        setState(Failed);
                 });
 
         connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationKey,
+                &ChatPage::receivedDeviceVerificationKey,
                 this,
                 [this](const mtx::events::msg::KeyVerificationKey &msg) {
                         if (msg.transaction_id.has_value()) {
@@ -149,6 +129,19 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                 if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
+
+                        if (sender) {
+                                if (state_ != WaitingForOtherToAccept) {
+                                        this->cancelVerification(OutOfOrder);
+                                        return;
+                                }
+                        } else {
+                                if (state_ != WaitingForKeys) {
+                                        this->cancelVerification(OutOfOrder);
+                                        return;
+                                }
+                        }
+
                         this->sas->set_their_key(msg.key);
                         std::string info;
                         if (this->sender == true) {
@@ -166,31 +159,30 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                        "|" + this->transaction_id;
                         }
 
-                        if (this->method == DeviceVerificationFlow::Method::Emoji) {
-                                std::cout << info << std::endl;
-                                this->sasList = this->sas->generate_bytes_emoji(info);
-                        } else if (this->method == DeviceVerificationFlow::Method::Decimal) {
-                                this->sasList = this->sas->generate_bytes_decimal(info);
-                        }
-
                         if (this->sender == false) {
-                                emit this->verificationRequestAccepted(this->method);
                                 this->sendVerificationKey();
                         } else {
-                                if (this->commitment ==
+                                if (this->commitment !=
                                     mtx::crypto::bin2base64_unpadded(
                                       mtx::crypto::sha256(msg.key + this->canonical_json.dump()))) {
-                                        emit this->verificationRequestAccepted(this->method);
-                                } else {
                                         this->cancelVerification(
                                           DeviceVerificationFlow::Error::MismatchedCommitment);
+                                        return;
                                 }
+                        }
+
+                        if (this->method == mtx::events::msg::SASMethods::Emoji) {
+                                this->sasList = this->sas->generate_bytes_emoji(info);
+                                setState(CompareEmoji);
+                        } else if (this->method == mtx::events::msg::SASMethods::Decimal) {
+                                this->sasList = this->sas->generate_bytes_decimal(info);
+                                setState(CompareNumber);
                         }
                 });
 
         connect(
           ChatPage::instance(),
-          &ChatPage::recievedDeviceVerificationMac,
+          &ChatPage::receivedDeviceVerificationMac,
           this,
           [this](const mtx::events::msg::KeyVerificationMac &msg) {
                   if (msg.transaction_id.has_value()) {
@@ -222,26 +214,22 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   }
                   key_string = key_string.substr(0, key_string.length() - 1);
                   if (msg.keys == this->sas->calculate_mac(key_string, info + "KEY_IDS")) {
-                          // uncomment this in future to be compatible with the
-                          // MSC2366 this->sendVerificationDone(); and remove the
-                          // below line
-                          if (this->isMacVerified == true) {
-                                  this->acceptDevice();
-                          } else
-                                  this->isMacVerified = true;
+                          this->isMacVerified = true;
+                          this->acceptDevice();
                   } else {
                           this->cancelVerification(DeviceVerificationFlow::Error::KeyMismatch);
                   }
           });
 
         connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationReady,
+                &ChatPage::receivedDeviceVerificationReady,
                 this,
                 [this](const mtx::events::msg::KeyVerificationReady &msg) {
                         if (!sender) {
                                 if (msg.from_device != http::client()->device_id()) {
-                                        this->deleteLater();
-                                        emit verificationCanceled();
+                                        error_ = User;
+                                        emit errorChanged();
+                                        setState(Failed);
                                 }
 
                                 return;
@@ -261,7 +249,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 });
 
         connect(ChatPage::instance(),
-                &ChatPage::recievedDeviceVerificationDone,
+                &ChatPage::receivedDeviceVerificationDone,
                 this,
                 [this](const mtx::events::msg::KeyVerificationDone &msg) {
                         if (msg.transaction_id.has_value()) {
@@ -271,40 +259,91 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                 if (msg.relates_to.value().event_id != this->relation.event_id)
                                         return;
                         }
-                        this->acceptDevice();
+                        nhlog::ui()->info("Flow done on other side");
                 });
 
         timeout->start(TIMEOUT);
 }
 
 QString
-DeviceVerificationFlow::getTransactionId()
+DeviceVerificationFlow::state()
 {
-        return QString::fromStdString(this->transaction_id);
+        switch (state_) {
+        case PromptStartVerification:
+                return "PromptStartVerification";
+        case CompareEmoji:
+                return "CompareEmoji";
+        case CompareNumber:
+                return "CompareNumber";
+        case WaitingForKeys:
+                return "WaitingForKeys";
+        case WaitingForOtherToAccept:
+                return "WaitingForOtherToAccept";
+        case WaitingForMac:
+                return "WaitingForMac";
+        case Success:
+                return "Success";
+        case Failed:
+                return "Failed";
+        default:
+                return "";
+        }
+}
+
+void
+DeviceVerificationFlow::next()
+{
+        if (sender) {
+                switch (state_) {
+                case PromptStartVerification:
+                        sendVerificationRequest();
+                        break;
+                case CompareEmoji:
+                case CompareNumber:
+                        sendVerificationMac();
+                        break;
+                case WaitingForKeys:
+                case WaitingForOtherToAccept:
+                case WaitingForMac:
+                case Success:
+                case Failed:
+                        nhlog::db()->error("verification: Invalid state transition!");
+                        break;
+                }
+        } else {
+                switch (state_) {
+                case PromptStartVerification:
+                        if (canonical_json.is_null())
+                                sendVerificationReady();
+                        else // legacy path without request and ready
+                                acceptVerificationRequest();
+                        break;
+                case CompareEmoji:
+                        [[fallthrough]];
+                case CompareNumber:
+                        sendVerificationMac();
+                        break;
+                case WaitingForKeys:
+                case WaitingForOtherToAccept:
+                case WaitingForMac:
+                case Success:
+                case Failed:
+                        nhlog::db()->error("verification: Invalid state transition!");
+                        break;
+                }
+        }
 }
 
 QString
 DeviceVerificationFlow::getUserId()
 {
-        return this->userId;
+        return QString::fromStdString(this->toClient.to_string());
 }
 
 QString
 DeviceVerificationFlow::getDeviceId()
 {
         return this->deviceId;
-}
-
-DeviceVerificationFlow::Method
-DeviceVerificationFlow::getMethod()
-{
-        return this->method;
-}
-
-DeviceVerificationFlow::Type
-DeviceVerificationFlow::getType()
-{
-        return this->type;
 }
 
 bool
@@ -320,56 +359,58 @@ DeviceVerificationFlow::getSasList()
 }
 
 void
-DeviceVerificationFlow::setTransactionId(QString transaction_id_)
-{
-        this->transaction_id = transaction_id_.toStdString();
-}
-
-void
-DeviceVerificationFlow::setUserId(QString userID)
-{
-        this->userId   = userID;
-        this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(userID.toStdString());
-
-        auto user_id = userID.toStdString();
-        ChatPage::instance()->query_keys(
-          user_id, [user_id, this](const UserKeyCache &res, mtx::http::RequestErr err) {
-                  this->callback_fn(res, err, user_id);
-          });
-}
-
-void
-DeviceVerificationFlow::setDeviceId(QString deviceID)
-{
-        this->deviceId = deviceID;
-}
-
-void
-DeviceVerificationFlow::setMethod(DeviceVerificationFlow::Method method_)
-{
-        this->method = method_;
-}
-
-void
-DeviceVerificationFlow::setType(Type type_)
-{
-        this->type = type_;
-}
-
-void
-DeviceVerificationFlow::setSender(bool sender_)
-{
-        this->sender = sender_;
-        if (this->sender)
-                this->transaction_id = http::client()->generate_txn_id();
-}
-
-void
 DeviceVerificationFlow::setEventId(std::string event_id_)
 {
         this->relation.rel_type = mtx::common::RelationType::Reference;
         this->relation.event_id = event_id_;
         this->transaction_id    = event_id_;
+}
+
+void
+DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificationStart &msg,
+                                           std::string)
+{
+        if (msg.transaction_id.has_value()) {
+                if (msg.transaction_id.value() != this->transaction_id)
+                        return;
+        } else if (msg.relates_to.has_value()) {
+                if (msg.relates_to.value().event_id != this->relation.event_id)
+                        return;
+        }
+        if ((std::find(msg.key_agreement_protocols.begin(),
+                       msg.key_agreement_protocols.end(),
+                       "curve25519-hkdf-sha256") != msg.key_agreement_protocols.end()) &&
+            (std::find(msg.hashes.begin(), msg.hashes.end(), "sha256") != msg.hashes.end()) &&
+            (std::find(msg.message_authentication_codes.begin(),
+                       msg.message_authentication_codes.end(),
+                       "hkdf-hmac-sha256") != msg.message_authentication_codes.end())) {
+                if (std::find(msg.short_authentication_string.begin(),
+                              msg.short_authentication_string.end(),
+                              mtx::events::msg::SASMethods::Emoji) !=
+                    msg.short_authentication_string.end()) {
+                        this->method = mtx::events::msg::SASMethods::Emoji;
+                } else if (std::find(msg.short_authentication_string.begin(),
+                                     msg.short_authentication_string.end(),
+                                     mtx::events::msg::SASMethods::Decimal) !=
+                           msg.short_authentication_string.end()) {
+                        this->method = mtx::events::msg::SASMethods::Decimal;
+                } else {
+                        this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+                        return;
+                }
+                if (!sender)
+                        this->canonical_json = nlohmann::json(msg);
+                else {
+                        if (utils::localUser().toStdString() < this->toClient.to_string()) {
+                                this->canonical_json = nlohmann::json(msg);
+                        }
+                }
+
+                if (state_ != PromptStartVerification)
+                        this->acceptVerificationRequest();
+        } else {
+                this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+        }
 }
 
 //! accepts a verification
@@ -382,30 +423,15 @@ DeviceVerificationFlow::acceptVerificationRequest()
         req.key_agreement_protocol      = "curve25519-hkdf-sha256";
         req.hash                        = "sha256";
         req.message_authentication_code = "hkdf-hmac-sha256";
-        if (this->method == DeviceVerificationFlow::Method::Emoji)
+        if (this->method == mtx::events::msg::SASMethods::Emoji)
                 req.short_authentication_string = {mtx::events::msg::SASMethods::Emoji};
-        else if (this->method == DeviceVerificationFlow::Method::Decimal)
+        else if (this->method == mtx::events::msg::SASMethods::Decimal)
                 req.short_authentication_string = {mtx::events::msg::SASMethods::Decimal};
         req.commitment = mtx::crypto::bin2base64_unpadded(
           mtx::crypto::sha256(this->sas->public_key() + this->canonical_json.dump()));
 
-        if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-                mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationAccept> body;
-                req.transaction_id = this->transaction_id;
-
-                body[this->toClient][this->deviceId.toStdString()] = req;
-
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationAccept>(
-                  this->transaction_id, body, [](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to accept verification request: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                  });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to = this->relation;
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationAccept);
-        }
+        send(req);
+        setState(WaitingForKeys);
 }
 //! responds verification request
 void
@@ -416,23 +442,8 @@ DeviceVerificationFlow::sendVerificationReady()
         req.from_device = http::client()->device_id();
         req.methods     = {mtx::events::msg::VerificationMethods::SASv1};
 
-        if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-                req.transaction_id = this->transaction_id;
-                mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationReady> body;
-
-                body[this->toClient][this->deviceId.toStdString()] = req;
-
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationReady>(
-                  this->transaction_id, body, [](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to send verification ready: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                  });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to = this->relation;
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationReady);
-        }
+        send(req);
+        setState(WaitingForKeys);
 }
 //! accepts a verification
 void
@@ -440,23 +451,7 @@ DeviceVerificationFlow::sendVerificationDone()
 {
         mtx::events::msg::KeyVerificationDone req;
 
-        if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-                mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationDone> body;
-                req.transaction_id = this->transaction_id;
-
-                body[this->toClient][this->deviceId.toStdString()] = req;
-
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationDone>(
-                  this->transaction_id, body, [](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to send verification done: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                  });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to = this->relation;
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationDone);
-        }
+        send(req);
 }
 //! starts the verification flow
 void
@@ -474,22 +469,14 @@ DeviceVerificationFlow::startVerificationRequest()
 
         if (this->type == DeviceVerificationFlow::Type::ToDevice) {
                 mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationStart> body;
-                req.transaction_id                                 = this->transaction_id;
-                this->canonical_json                               = nlohmann::json(req);
-                body[this->toClient][this->deviceId.toStdString()] = req;
-
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationStart>(
-                  this->transaction_id, body, [body](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to start verification request: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                  });
+                req.transaction_id   = this->transaction_id;
+                this->canonical_json = nlohmann::json(req);
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
                 req.relates_to       = this->relation;
                 this->canonical_json = nlohmann::json(req);
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationStart);
         }
+        send(req);
+        setState(WaitingForOtherToAccept);
 }
 //! sends a verification request
 void
@@ -503,28 +490,18 @@ DeviceVerificationFlow::sendVerificationRequest()
         if (this->type == DeviceVerificationFlow::Type::ToDevice) {
                 QDateTime currentTime = QDateTime::currentDateTimeUtc();
 
-                req.transaction_id = this->transaction_id;
-                req.timestamp      = (uint64_t)currentTime.toMSecsSinceEpoch();
+                req.timestamp = (uint64_t)currentTime.toMSecsSinceEpoch();
 
-                mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationRequest> body;
-
-                body[this->toClient][this->deviceId.toStdString()] = req;
-
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationRequest>(
-                  this->transaction_id, body, [](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to send verification request: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                  });
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.to      = this->userId.toStdString();
+                req.to      = this->toClient.to_string();
                 req.msgtype = "m.key.verification.request";
                 req.body = "User is requesting to verify keys with you. However, your client does "
                            "not support this method, so you will need to use the legacy method of "
                            "key verification.";
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationRequest);
         }
+
+        send(req);
+        setState(WaitingForOtherToAccept);
 }
 //! cancels a verification flow
 void
@@ -534,7 +511,7 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
 
         if (error_code == DeviceVerificationFlow::Error::UnknownMethod) {
                 req.code   = "m.unknown_method";
-                req.reason = "unknown method recieved";
+                req.reason = "unknown method received";
         } else if (error_code == DeviceVerificationFlow::Error::MismatchedCommitment) {
                 req.code   = "m.mismatched_commitment";
                 req.reason = "commitment didn't match";
@@ -550,42 +527,16 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
         } else if (error_code == DeviceVerificationFlow::Error::User) {
                 req.code   = "m.user";
                 req.reason = "user cancelled the verification";
+        } else if (error_code == DeviceVerificationFlow::Error::OutOfOrder) {
+                req.code   = "m.unexpected_message";
+                req.reason = "received messages out of order";
         }
 
-        emit this->verificationCanceled();
+        this->error_ = error_code;
+        emit errorChanged();
+        this->setState(Failed);
 
-        if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-                req.transaction_id = this->transaction_id;
-                mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationCancel> body;
-
-                body[this->toClient][deviceId.toStdString()] = req;
-
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationCancel>(
-                  this->transaction_id, body, [this](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to cancel verification request: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-
-                          this->deleteLater();
-                  });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to = this->relation;
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationCancel);
-                this->deleteLater();
-        }
-
-        // TODO : Handle Blocking user better
-        // auto verified_cache = cache::getVerifiedCache(this->userId.toStdString());
-        //     if (verified_cache.has_value()) {
-        //             verified_cache->device_blocked.push_back(this->deviceId.toStdString());
-        //             cache::setVerifiedCache(this->userId.toStdString(),
-        //                                     verified_cache.value());
-        //     } else {
-        //             cache::setVerifiedCache(
-        //               this->userId.toStdString(),
-        //               DeviceVerifiedCache{{}, {}, {this->deviceId.toStdString()}});
-        //     }
+        send(req);
 }
 //! sends the verification key
 void
@@ -595,23 +546,7 @@ DeviceVerificationFlow::sendVerificationKey()
 
         req.key = this->sas->public_key();
 
-        if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-                mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationKey> body;
-                req.transaction_id = this->transaction_id;
-
-                body[this->toClient][deviceId.toStdString()] = req;
-
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationKey>(
-                  this->transaction_id, body, [](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to send verification key: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                  });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to = this->relation;
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationKey);
-        }
+        send(req);
 }
 
 mtx::events::msg::KeyVerificationMac
@@ -660,68 +595,102 @@ DeviceVerificationFlow::sendVerificationMac()
                                this->transaction_id,
                                key_list);
 
-        if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-                mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationMac> body;
-                req.transaction_id                           = this->transaction_id;
-                body[this->toClient][deviceId.toStdString()] = req;
+        send(req);
 
-                http::client()->send_to_device<mtx::events::msg::KeyVerificationMac>(
-                  this->transaction_id, body, [this](mtx::http::RequestErr err) {
-                          if (err)
-                                  nhlog::net()->warn("failed to send verification MAC: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-
-                          if (this->isMacVerified == true)
-                                  this->acceptDevice();
-                          else
-                                  this->isMacVerified = true;
-                  });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to = this->relation;
-                (model_)->sendMessageEvent(req, mtx::events::EventType::KeyVerificationMac);
-        }
+        setState(WaitingForMac);
+        acceptDevice();
 }
 //! Completes the verification flow
 void
 DeviceVerificationFlow::acceptDevice()
 {
-        cache::markDeviceVerified(this->userId.toStdString(), this->deviceId.toStdString());
-
-        emit deviceVerified();
-        emit refreshProfile();
-        this->deleteLater();
-}
-
-//! callback function to keep track of devices
-void
-DeviceVerificationFlow::callback_fn(const UserKeyCache &res,
-                                    mtx::http::RequestErr err,
-                                    std::string user_id)
-{
-        if (err) {
-                nhlog::net()->warn("failed to query device keys: {},{}",
-                                   err->matrix_error.errcode,
-                                   static_cast<int>(err->status_code));
-                return;
-        }
-
-        if (res.device_keys.empty() ||
-            (res.device_keys.find(deviceId.toStdString()) == res.device_keys.end())) {
-                nhlog::net()->warn("no devices retrieved {}", user_id);
-                return;
-        }
-
-        for (const auto &[algorithm, key] : res.device_keys.at(deviceId.toStdString()).keys) {
-                // TODO: Verify Signatures
-                this->device_keys[algorithm] = key;
+        if (!isMacVerified) {
+                setState(WaitingForMac);
+        } else if (state_ == WaitingForMac) {
+                cache::markDeviceVerified(this->toClient.to_string(), this->deviceId.toStdString());
+                this->sendVerificationDone();
+                setState(Success);
         }
 }
 
 void
 DeviceVerificationFlow::unverify()
 {
-        cache::markDeviceUnverified(this->userId.toStdString(), this->deviceId.toStdString());
+        cache::markDeviceUnverified(this->toClient.to_string(), this->deviceId.toStdString());
 
         emit refreshProfile();
+}
+
+QSharedPointer<DeviceVerificationFlow>
+DeviceVerificationFlow::NewInRoomVerification(QObject *parent_,
+                                              TimelineModel *timelineModel_,
+                                              const mtx::events::msg::KeyVerificationRequest &msg,
+                                              QString other_user_,
+                                              QString event_id_)
+{
+        QSharedPointer<DeviceVerificationFlow> flow(
+          new DeviceVerificationFlow(parent_, Type::RoomMsg, timelineModel_, other_user_, ""));
+
+        flow->event_id = event_id_.toStdString();
+
+        if (std::find(msg.methods.begin(),
+                      msg.methods.end(),
+                      mtx::events::msg::VerificationMethods::SASv1) == msg.methods.end()) {
+                flow->cancelVerification(UnknownMethod);
+        }
+
+        return flow;
+}
+QSharedPointer<DeviceVerificationFlow>
+DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
+                                                const mtx::events::msg::KeyVerificationRequest &msg,
+                                                QString other_user_,
+                                                QString txn_id_)
+{
+        QSharedPointer<DeviceVerificationFlow> flow(new DeviceVerificationFlow(
+          parent_, Type::ToDevice, nullptr, other_user_, QString::fromStdString(msg.from_device)));
+        flow->transaction_id = txn_id_.toStdString();
+
+        if (std::find(msg.methods.begin(),
+                      msg.methods.end(),
+                      mtx::events::msg::VerificationMethods::SASv1) == msg.methods.end()) {
+                flow->cancelVerification(UnknownMethod);
+        }
+
+        return flow;
+}
+QSharedPointer<DeviceVerificationFlow>
+DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
+                                                const mtx::events::msg::KeyVerificationStart &msg,
+                                                QString other_user_,
+                                                QString txn_id_)
+{
+        QSharedPointer<DeviceVerificationFlow> flow(new DeviceVerificationFlow(
+          parent_, Type::ToDevice, nullptr, other_user_, QString::fromStdString(msg.from_device)));
+        flow->transaction_id = txn_id_.toStdString();
+
+        flow->handleStartMessage(msg, "");
+
+        return flow;
+}
+QSharedPointer<DeviceVerificationFlow>
+DeviceVerificationFlow::InitiateUserVerification(QObject *parent_,
+                                                 TimelineModel *timelineModel_,
+                                                 QString userid)
+{
+        QSharedPointer<DeviceVerificationFlow> flow(
+          new DeviceVerificationFlow(parent_, Type::RoomMsg, timelineModel_, userid, ""));
+        flow->sender = true;
+        return flow;
+}
+QSharedPointer<DeviceVerificationFlow>
+DeviceVerificationFlow::InitiateDeviceVerification(QObject *parent_, QString userid, QString device)
+{
+        QSharedPointer<DeviceVerificationFlow> flow(
+          new DeviceVerificationFlow(parent_, Type::ToDevice, nullptr, userid, device));
+
+        flow->sender         = true;
+        flow->transaction_id = http::client()->generate_txn_id();
+
+        return flow;
 }

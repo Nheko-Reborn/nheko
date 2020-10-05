@@ -169,22 +169,22 @@ signals:
         void decryptSidebarChanged();
 
         //! Signals for device verificaiton
-        void recievedDeviceVerificationAccept(
+        void receivedDeviceVerificationAccept(
           const mtx::events::msg::KeyVerificationAccept &message);
-        void recievedDeviceVerificationRequest(
+        void receivedDeviceVerificationRequest(
           const mtx::events::msg::KeyVerificationRequest &message,
           std::string sender);
-        void recievedRoomDeviceVerificationRequest(
+        void receivedRoomDeviceVerificationRequest(
           const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
           TimelineModel *model);
-        void recievedDeviceVerificationCancel(
+        void receivedDeviceVerificationCancel(
           const mtx::events::msg::KeyVerificationCancel &message);
-        void recievedDeviceVerificationKey(const mtx::events::msg::KeyVerificationKey &message);
-        void recievedDeviceVerificationMac(const mtx::events::msg::KeyVerificationMac &message);
-        void recievedDeviceVerificationStart(const mtx::events::msg::KeyVerificationStart &message,
+        void receivedDeviceVerificationKey(const mtx::events::msg::KeyVerificationKey &message);
+        void receivedDeviceVerificationMac(const mtx::events::msg::KeyVerificationMac &message);
+        void receivedDeviceVerificationStart(const mtx::events::msg::KeyVerificationStart &message,
                                              std::string sender);
-        void recievedDeviceVerificationReady(const mtx::events::msg::KeyVerificationReady &message);
-        void recievedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
+        void receivedDeviceVerificationReady(const mtx::events::msg::KeyVerificationReady &message);
+        void receivedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
 
 private slots:
         void showUnreadMessageNotification(int count);

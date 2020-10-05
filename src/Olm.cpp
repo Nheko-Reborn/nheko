@@ -80,40 +80,40 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
                         auto message = std::get<
                           mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationAccept>>(msg);
-                        ChatPage::instance()->recievedDeviceVerificationAccept(message.content);
+                        ChatPage::instance()->receivedDeviceVerificationAccept(message.content);
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationRequest)) {
                         auto message = std::get<
                           mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationRequest>>(msg);
-                        ChatPage::instance()->recievedDeviceVerificationRequest(message.content,
+                        ChatPage::instance()->receivedDeviceVerificationRequest(message.content,
                                                                                 message.sender);
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationCancel)) {
                         auto message = std::get<
                           mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationCancel>>(msg);
-                        ChatPage::instance()->recievedDeviceVerificationCancel(message.content);
+                        ChatPage::instance()->receivedDeviceVerificationCancel(message.content);
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationKey)) {
                         auto message =
                           std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationKey>>(
                             msg);
-                        ChatPage::instance()->recievedDeviceVerificationKey(message.content);
+                        ChatPage::instance()->receivedDeviceVerificationKey(message.content);
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationMac)) {
                         auto message =
                           std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationMac>>(
                             msg);
-                        ChatPage::instance()->recievedDeviceVerificationMac(message.content);
+                        ChatPage::instance()->receivedDeviceVerificationMac(message.content);
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationStart)) {
                         auto message = std::get<
                           mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationStart>>(msg);
-                        ChatPage::instance()->recievedDeviceVerificationStart(message.content,
+                        ChatPage::instance()->receivedDeviceVerificationStart(message.content,
                                                                               message.sender);
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationReady)) {
                         auto message = std::get<
                           mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationReady>>(msg);
-                        ChatPage::instance()->recievedDeviceVerificationReady(message.content);
+                        ChatPage::instance()->receivedDeviceVerificationReady(message.content);
                 } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationDone)) {
                         auto message =
                           std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationDone>>(
                             msg);
-                        ChatPage::instance()->recievedDeviceVerificationDone(message.content);
+                        ChatPage::instance()->receivedDeviceVerificationDone(message.content);
                 } else {
                         nhlog::crypto()->warn("unhandled event: {}", j_msg.dump(2));
                 }
@@ -153,42 +153,42 @@ handle_olm_message(const OlmMessage &msg)
                         std::string msg_type = payload["type"];
 
                         if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
-                                ChatPage::instance()->recievedDeviceVerificationAccept(
+                                ChatPage::instance()->receivedDeviceVerificationAccept(
                                   payload["content"]);
                                 return;
                         } else if (msg_type ==
                                    to_string(mtx::events::EventType::KeyVerificationRequest)) {
-                                ChatPage::instance()->recievedDeviceVerificationRequest(
+                                ChatPage::instance()->receivedDeviceVerificationRequest(
                                   payload["content"], payload["sender"]);
                                 return;
                         } else if (msg_type ==
                                    to_string(mtx::events::EventType::KeyVerificationCancel)) {
-                                ChatPage::instance()->recievedDeviceVerificationCancel(
+                                ChatPage::instance()->receivedDeviceVerificationCancel(
                                   payload["content"]);
                                 return;
                         } else if (msg_type ==
                                    to_string(mtx::events::EventType::KeyVerificationKey)) {
-                                ChatPage::instance()->recievedDeviceVerificationKey(
+                                ChatPage::instance()->receivedDeviceVerificationKey(
                                   payload["content"]);
                                 return;
                         } else if (msg_type ==
                                    to_string(mtx::events::EventType::KeyVerificationMac)) {
-                                ChatPage::instance()->recievedDeviceVerificationMac(
+                                ChatPage::instance()->receivedDeviceVerificationMac(
                                   payload["content"]);
                                 return;
                         } else if (msg_type ==
                                    to_string(mtx::events::EventType::KeyVerificationStart)) {
-                                ChatPage::instance()->recievedDeviceVerificationStart(
+                                ChatPage::instance()->receivedDeviceVerificationStart(
                                   payload["content"], payload["sender"]);
                                 return;
                         } else if (msg_type ==
                                    to_string(mtx::events::EventType::KeyVerificationReady)) {
-                                ChatPage::instance()->recievedDeviceVerificationReady(
+                                ChatPage::instance()->receivedDeviceVerificationReady(
                                   payload["content"]);
                                 return;
                         } else if (msg_type ==
                                    to_string(mtx::events::EventType::KeyVerificationDone)) {
-                                ChatPage::instance()->recievedDeviceVerificationDone(
+                                ChatPage::instance()->receivedDeviceVerificationDone(
                                   payload["content"]);
                                 return;
                         } else if (msg_type == to_string(mtx::events::EventType::RoomKey)) {

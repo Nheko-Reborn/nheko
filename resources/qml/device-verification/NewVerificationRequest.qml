@@ -2,12 +2,11 @@ import QtQuick 2.3
 import QtQuick.Controls 2.10
 import QtQuick.Layouts 1.10
 
+import im.nheko 1.0
+
 Pane {
-	property string title: qsTr("Sending Device Verification Request")
-	Component {
-		id: awaitingVerificationRequestAccept
-		AwaitingVerificationRequest {}
-	}
+	property string title: flow.sender ? qsTr("Send Device Verification Request") : qsTr("Recieved Device Verification Request")
+
 	ColumnLayout {
 		spacing: 16
 		Label {
@@ -15,28 +14,20 @@ Pane {
 			Layout.fillHeight: true
 			Layout.fillWidth: true
 			wrapMode: Text.Wrap
-			text: qsTr("A new device was added.")
-			color:colors.text
-			verticalAlignment: Text.AlignVCenter
-		}
-		Label {
-			Layout.maximumWidth: 400
-			Layout.fillHeight: true
-			Layout.fillWidth: true
-			wrapMode: Text.Wrap
-			text: qsTr("The device may have been added by you signing in from another client or physical device. To ensure that no malicious user can eavesdrop on your encrypted communications, you should verify the new device.")
+			text: flow.sender ?
+			    qsTr("To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.")
+			    : qsTr("The device was requested to be verified")
 			color:colors.text
 			verticalAlignment: Text.AlignVCenter
 		}
 		RowLayout {
 			Button {
 				Layout.alignment: Qt.AlignLeft
-				text: qsTr("Cancel")
+				text: flow.sender ? qsTr("Cancel") : qsTr("Deny")
 
 				onClicked: { 
-					deviceVerificationList.remove(tran_id);
-					flow.deleteFlow();
-					dialog.destroy();  
+					flow.cancel();
+					dialog.close();
 				}
 			}
 			Item {
@@ -44,12 +35,10 @@ Pane {
 			}
 			Button {
 				Layout.alignment: Qt.AlignRight
-				text: qsTr("Start verification")
+				text: flow.sender ? qsTr("Start verification") : qsTr("Accept")
 
-				onClicked: { 
-					stack.replace(awaitingVerificationRequestAccept); 
-					flow.sender ?flow.sendVerificationRequest():flow.startVerificationRequest(); }
-				}
+				onClicked: flow.next();
 			}
 		}
 	}
+}

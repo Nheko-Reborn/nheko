@@ -29,22 +29,6 @@ Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 namespace msgs = mtx::events::msg;
 
 void
-DeviceVerificationList::add(QString tran_id)
-{
-        this->deviceVerificationList.push_back(tran_id);
-}
-void
-DeviceVerificationList::remove(QString tran_id)
-{
-        this->deviceVerificationList.removeOne(tran_id);
-}
-bool
-DeviceVerificationList::exist(QString tran_id)
-{
-        return this->deviceVerificationList.contains(tran_id);
-}
-
-void
 TimelineViewManager::updateEncryptedDescriptions()
 {
         auto decrypt = settings->decryptSidebar();
@@ -134,7 +118,8 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
 
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
-        qmlRegisterType<DeviceVerificationFlow>("im.nheko", 1, 0, "DeviceVerificationFlow");
+        qmlRegisterUncreatableType<DeviceVerificationFlow>(
+          "im.nheko", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
         qmlRegisterUncreatableType<UserProfile>(
           "im.nheko",
           1,
@@ -163,7 +148,6 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                                          0,
                                          "EmojiCategory",
                                          "Error: Only enums");
-        this->dvList = new DeviceVerificationList;
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView();
@@ -183,7 +167,6 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         });
 #endif
         container->setMinimumSize(200, 200);
-        view->rootContext()->setContextProperty("deviceVerificationList", this->dvList);
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
@@ -197,102 +180,55 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &TimelineViewManager::updateEncryptedDescriptions);
         connect(
           dynamic_cast<ChatPage *>(parent),
-          &ChatPage::recievedRoomDeviceVerificationRequest,
+          &ChatPage::receivedRoomDeviceVerificationRequest,
           this,
           [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
                  TimelineModel *model) {
-                  if (!(this->dvList->exist(QString::fromStdString(message.event_id)))) {
-                          auto flow = new DeviceVerificationFlow(
-                            this, DeviceVerificationFlow::Type::RoomMsg, model);
-                          if (std::find(message.content.methods.begin(),
-                                        message.content.methods.end(),
-                                        mtx::events::msg::VerificationMethods::SASv1) !=
-                              message.content.methods.end()) {
-                                  flow->setEventId(message.event_id);
-                                  emit newDeviceVerificationRequest(
-                                    std::move(flow),
-                                    QString::fromStdString(message.event_id),
-                                    QString::fromStdString(message.sender),
-                                    QString::fromStdString(message.content.from_device),
-                                    true);
-                          } else {
-                                  flow->cancelVerification(
-                                    DeviceVerificationFlow::Error::UnknownMethod);
+                  auto event_id = QString::fromStdString(message.event_id);
+                  if (!this->dvList.contains(event_id)) {
+                          if (auto flow = DeviceVerificationFlow::NewInRoomVerification(
+                                this,
+                                model,
+                                message.content,
+                                QString::fromStdString(message.sender),
+                                event_id)) {
+                                  dvList[event_id] = flow;
+                                  emit newDeviceVerificationRequest(flow.data());
                           }
                   }
           });
-        connect(
-          dynamic_cast<ChatPage *>(parent),
-          &ChatPage::recievedDeviceVerificationRequest,
-          this,
-          [this](const mtx::events::msg::KeyVerificationRequest &msg, std::string sender) {
-                  if (!(this->dvList->exist(QString::fromStdString(msg.transaction_id.value())))) {
-                          auto flow = new DeviceVerificationFlow(this);
-                          if (std::find(msg.methods.begin(),
-                                        msg.methods.end(),
-                                        mtx::events::msg::VerificationMethods::SASv1) !=
-                              msg.methods.end()) {
-                                  emit newDeviceVerificationRequest(
-                                    std::move(flow),
-                                    QString::fromStdString(msg.transaction_id.value()),
-                                    QString::fromStdString(sender),
-                                    QString::fromStdString(msg.from_device));
-                          } else {
-                                  flow->cancelVerification(
-                                    DeviceVerificationFlow::Error::UnknownMethod);
-                          }
-                  }
-          });
-        connect(
-          dynamic_cast<ChatPage *>(parent),
-          &ChatPage::recievedDeviceVerificationStart,
-          this,
-          [this](const mtx::events::msg::KeyVerificationStart &msg, std::string sender) {
-                  if (msg.transaction_id.has_value()) {
-                          if (!(this->dvList->exist(
-                                QString::fromStdString(msg.transaction_id.value())))) {
-                                  auto flow            = new DeviceVerificationFlow(this);
-                                  flow->canonical_json = nlohmann::json(msg);
-                                  if ((std::find(msg.key_agreement_protocols.begin(),
-                                                 msg.key_agreement_protocols.end(),
-                                                 "curve25519-hkdf-sha256") !=
-                                       msg.key_agreement_protocols.end()) &&
-                                      (std::find(msg.hashes.begin(), msg.hashes.end(), "sha256") !=
-                                       msg.hashes.end()) &&
-                                      (std::find(msg.message_authentication_codes.begin(),
-                                                 msg.message_authentication_codes.end(),
-                                                 "hmac-sha256") !=
-                                       msg.message_authentication_codes.end())) {
-                                          if (std::find(msg.short_authentication_string.begin(),
-                                                        msg.short_authentication_string.end(),
-                                                        mtx::events::msg::SASMethods::Emoji) !=
-                                              msg.short_authentication_string.end()) {
-                                                  flow->setMethod(
-                                                    DeviceVerificationFlow::Method::Emoji);
-                                          } else if (std::find(
-                                                       msg.short_authentication_string.begin(),
-                                                       msg.short_authentication_string.end(),
-                                                       mtx::events::msg::SASMethods::Decimal) !=
-                                                     msg.short_authentication_string.end()) {
-                                                  flow->setMethod(
-                                                    DeviceVerificationFlow::Method::Decimal);
-                                          } else {
-                                                  flow->cancelVerification(
-                                                    DeviceVerificationFlow::Error::UnknownMethod);
-                                                  return;
-                                          }
-                                          emit newDeviceVerificationRequest(
-                                            std::move(flow),
-                                            QString::fromStdString(msg.transaction_id.value()),
-                                            QString::fromStdString(sender),
-                                            QString::fromStdString(msg.from_device));
-                                  } else {
-                                          flow->cancelVerification(
-                                            DeviceVerificationFlow::Error::UnknownMethod);
-                                  }
-                          }
-                  }
-          });
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::receivedDeviceVerificationRequest,
+                this,
+                [this](const mtx::events::msg::KeyVerificationRequest &msg, std::string sender) {
+                        if (!msg.transaction_id)
+                                return;
+
+                        auto txnid = QString::fromStdString(msg.transaction_id.value());
+                        if (!this->dvList.contains(txnid)) {
+                                if (auto flow = DeviceVerificationFlow::NewToDeviceVerification(
+                                      this, msg, QString::fromStdString(sender), txnid)) {
+                                        dvList[txnid] = flow;
+                                        emit newDeviceVerificationRequest(flow.data());
+                                }
+                        }
+                });
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::receivedDeviceVerificationStart,
+                this,
+                [this](const mtx::events::msg::KeyVerificationStart &msg, std::string sender) {
+                        if (!msg.transaction_id)
+                                return;
+
+                        auto txnid = QString::fromStdString(msg.transaction_id.value());
+                        if (!this->dvList.contains(txnid)) {
+                                if (auto flow = DeviceVerificationFlow::NewToDeviceVerification(
+                                      this, msg, QString::fromStdString(sender), txnid)) {
+                                        dvList[txnid] = flow;
+                                        emit newDeviceVerificationRequest(flow.data());
+                                }
+                        }
+                });
         connect(parent, &ChatPage::loggedOut, this, [this]() {
                 isInitialSync_ = true;
                 emit initialSyncChanged(true);
@@ -426,6 +362,46 @@ void
 TimelineViewManager::openRoomSettings() const
 {
         MainWindow::instance()->openRoomSettings(timeline_->roomId());
+}
+
+void
+TimelineViewManager::verifyUser(QString userid)
+{
+        auto joined_rooms = cache::joinedRooms();
+        auto room_infos   = cache::getRoomInfo(joined_rooms);
+
+        for (std::string room_id : joined_rooms) {
+                if ((room_infos[QString::fromStdString(room_id)].member_count == 2) &&
+                    cache::isRoomEncrypted(room_id)) {
+                        auto room_members = cache::roomMembers(room_id);
+                        if (std::find(room_members.begin(),
+                                      room_members.end(),
+                                      (userid).toStdString()) != room_members.end()) {
+                                auto model = models.value(QString::fromStdString(room_id));
+                                auto flow  = DeviceVerificationFlow::InitiateUserVerification(
+                                  this, model.data(), userid);
+                                connect(model.data(),
+                                        &TimelineModel::updateFlowEventId,
+                                        this,
+                                        [this, flow](std::string eventId) {
+                                                dvList[QString::fromStdString(eventId)] = flow;
+                                        });
+                                emit newDeviceVerificationRequest(flow.data());
+                                return;
+                        }
+                }
+        }
+
+        emit ChatPage::instance()->showNotification(
+          tr("No share room with this user found. Create an "
+             "encrypted room with this user and try again."));
+}
+void
+TimelineViewManager::verifyDevice(QString userid, QString deviceid)
+{
+        auto flow = DeviceVerificationFlow::InitiateDeviceVerification(this, userid, deviceid);
+        this->dvList[flow->transactionId()] = flow;
+        emit newDeviceVerificationRequest(flow.data());
 }
 
 void

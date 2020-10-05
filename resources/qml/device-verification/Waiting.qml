@@ -14,12 +14,18 @@ Pane {
 			Layout.fillWidth: true
 			wrapMode: Text.Wrap
 			id: content
-			text: qsTr("Waiting for other side to accept the verification request.")
+			text: switch (flow.state) {
+				case "WaitingForOtherToAccept": return qsTr("Waiting for other side to accept the verification request.")
+				case "WaitingForKeys": return qsTr("Waiting for other side to continue the verification request.")
+				case "WaitingForMac": return qsTr("Waiting for other side to complete the verification request.")
+			}
+
 			color:colors.text
 			verticalAlignment: Text.AlignVCenter
 		}
 		BusyIndicator {
 			Layout.alignment: Qt.AlignHCenter
+			palette: color
 		}
 		RowLayout {
 			Button {
@@ -27,9 +33,8 @@ Pane {
 				text: qsTr("Cancel")
 
 				onClicked: { 
-					flow.cancelVerification(DeviceVerificationFlow.User);
-					deviceVerificationList.remove(tran_id);
-					dialog.destroy();
+					flow.cancel();
+					dialog.close();
 				}
 			}
 			Item {

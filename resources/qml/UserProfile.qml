@@ -15,23 +15,11 @@ ApplicationWindow{
 	width: 420
 	minimumHeight: 420
 
-	modality: Qt.WindowModal
 	palette: colors
-
-	Connections{
-		target: deviceVerificationList
-		function onUpdateProfile() {
-			profile.fetchDeviceList(profile.userid)
-		}
-	}
 
 	Component {
 		id: deviceVerificationDialog
 		DeviceVerification {}
-	}
-	Component{
-		id: deviceVerificationFlow
-		DeviceVerificationFlow {}
 	}
 
 	ColumnLayout{
@@ -73,14 +61,7 @@ ApplicationWindow{
 			enabled: !profile.isUserVerified
 			visible: !profile.isUserVerified
 
-			onClicked: {
-				var newFlow = profile.createFlow(true);
-				newFlow.userId = profile.userid;
-				newFlow.sender = true;
-				deviceVerificationList.add(newFlow.tranId);
-				var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest: true,tran_id: newFlow.tranId});
-				dialog.show();
-			}
+			onClicked: profile.verify()
 		}
 
 		RowLayout {
@@ -172,17 +153,11 @@ ApplicationWindow{
 					id: verifyButton
 					text: (model.verificationStatus != VerificationStatus.VERIFIED)?"Verify":"Unverify"
 					onClicked: {
-						var newFlow = profile.createFlow(false);
-						newFlow.userId = profile.userid;
-						newFlow.sender = true;
-						newFlow.deviceId = model.deviceId;
 						if(model.verificationStatus == VerificationStatus.VERIFIED){
-							newFlow.unverify();
+							profile.unverify(model.deviceId)
 							deviceVerificationList.updateProfile(newFlow.userId);
 						}else{
-							deviceVerificationList.add(newFlow.tranId);
-							var dialog = deviceVerificationDialog.createObject(userProfileDialog, {flow: newFlow,isRequest:false,tran_id: newFlow.tranId});
-							dialog.show();
+							profile.verify(model.deviceId);
 						}
 					}
 				}
