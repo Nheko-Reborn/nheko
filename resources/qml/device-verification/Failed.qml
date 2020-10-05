@@ -2,23 +2,29 @@ import QtQuick 2.3
 import QtQuick.Controls 2.10
 import QtQuick.Layouts 1.10
 
+import im.nheko 1.0
+
 Pane {
-	property string title: qsTr("Verification timed out")
+	property string title: qsTr("Verification failed")
 	ColumnLayout {
 		spacing: 16
 		Text {
+			id: content
+
 			Layout.maximumWidth: 400
 			Layout.fillHeight: true
 			Layout.fillWidth: true
+
 			wrapMode: Text.Wrap
-			id: content
 			text: switch (flow.error) {
-				case VerificationStatus.UnknownMethod: return qsTr("Device verification timed out.")
-				case VerificationStatus.MismatchedCommitment: return qsTr("Device verification timed out.")
-				case VerificationStatus.MismatchedSAS: return qsTr("Device verification timed out.")
-				case VerificationStatus.KeyMismatch: return qsTr("Device verification timed out.")
-				case VerificationStatus.Timeout: return qsTr("Device verification timed out.")
-				case VerificationStatus.OutOfOrder: return qsTr("Device verification timed out.")
+				case DeviceVerificationFlow.UnknownMethod: return qsTr("Other client does not support our verification protocol.")
+				case DeviceVerificationFlow.MismatchedCommitment:
+				case DeviceVerificationFlow.MismatchedSAS:
+				case DeviceVerificationFlow.KeyMismatch: return qsTr("Key mismatch detected!")
+				case DeviceVerificationFlow.Timeout: return qsTr("Device verification timed out.")
+				case DeviceVerificationFlow.User: return qsTr("Other party canceled the verification.")
+				case DeviceVerificationFlow.OutOfOrder: return qsTr("Device verification timed out.")
+				default: return "Unknown verification error.";
 			}
 			color:colors.text
 			verticalAlignment: Text.AlignVCenter
@@ -31,11 +37,7 @@ Pane {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Close")
 
-				onClicked: {
-					deviceVerificationList.remove(tran_id);
-					flow.deleteFlow();
-					dialog.close()
-				}
+				onClicked: dialog.close()
 			}
 		}
 	}

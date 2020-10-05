@@ -396,6 +396,18 @@ TimelineViewManager::verifyUser(QString userid)
           tr("No share room with this user found. Create an "
              "encrypted room with this user and try again."));
 }
+
+void
+TimelineViewManager::removeVerificationFlow(DeviceVerificationFlow *flow)
+{
+        for (auto it = dvList.keyValueBegin(); it != dvList.keyValueEnd(); ++it) {
+                if (it->second == flow) {
+                        dvList.remove(it->first);
+                        return;
+                }
+        }
+}
+
 void
 TimelineViewManager::verifyDevice(QString userid, QString deviceid)
 {

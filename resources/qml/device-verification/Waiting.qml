@@ -20,12 +20,12 @@ Pane {
 				case "WaitingForMac": return qsTr("Waiting for other side to complete the verification request.")
 			}
 
-			color:colors.text
+			color: colors.text
 			verticalAlignment: Text.AlignVCenter
 		}
 		BusyIndicator {
 			Layout.alignment: Qt.AlignHCenter
-			palette: color
+			palette: colors
 		}
 		RowLayout {
 			Button {

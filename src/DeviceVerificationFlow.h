@@ -58,7 +58,7 @@ class DeviceVerificationFlow : public QObject
         Q_OBJECT
         // Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
         Q_PROPERTY(QString state READ state NOTIFY stateChanged)
-        Q_PROPERTY(Error error READ error CONSTANT)
+        Q_PROPERTY(Error error READ error NOTIFY errorChanged)
         Q_PROPERTY(QString userId READ getUserId CONSTANT)
         Q_PROPERTY(QString deviceId READ getDeviceId CONSTANT)
         Q_PROPERTY(bool sender READ getSender CONSTANT)
@@ -203,7 +203,7 @@ private:
         mtx::common::RelatesTo relation;
 
         State state_ = PromptStartVerification;
-        Error error_;
+        Error error_ = UnknownMethod;
 
         bool isMacVerified = false;
 

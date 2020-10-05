@@ -62,6 +62,7 @@ public:
         Q_INVOKABLE void openMemberListDialog() const;
         Q_INVOKABLE void openLeaveRoomDialog() const;
         Q_INVOKABLE void openRoomSettings() const;
+        Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 
         void verifyUser(QString userid);
         void verifyDevice(QString userid, QString deviceid);

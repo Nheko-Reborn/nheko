@@ -64,7 +64,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
         }
 
         connect(timeout, &QTimer::timeout, this, [this]() {
-                this->cancelVerification(DeviceVerificationFlow::Error::Timeout);
+                if (state_ != Success && state_ != Failed)
+                        this->cancelVerification(DeviceVerificationFlow::Error::Timeout);
         });
 
         connect(ChatPage::instance(),
@@ -114,7 +115,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                         return;
                         }
                         error_ = User;
-                        emit errorChanged();
+                        Emit errorChanged();
                         setState(Failed);
                 });
 
