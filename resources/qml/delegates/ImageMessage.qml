@@ -34,9 +34,12 @@ Item {
 		fillMode: Image.PreserveAspectFit
 
 		MouseArea {
+            hoverEnabled: true
 			enabled: model.data.type == MtxEvent.ImageMessage && img.status == Image.Ready
 			anchors.fill: parent
 			onClicked: timelineManager.openImageOverlay(model.data.url, model.data.id)
+            ToolTip.visible: hovered
+            ToolTip.text: model.data.id
 		}
 	}
 }
