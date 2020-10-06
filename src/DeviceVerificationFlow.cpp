@@ -13,6 +13,15 @@ static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
 namespace msgs = mtx::events::msg;
 
+static mtx::events::msg::KeyVerificationMac
+key_verification_mac(mtx::crypto::SAS *sas,
+                     mtx::identifiers::User sender,
+                     const std::string &senderDevice,
+                     mtx::identifiers::User receiver,
+                     const std::string &receiverDevice,
+                     const std::string &transactionId,
+                     std::map<std::string, std::string> keys);
+
 DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                DeviceVerificationFlow::Type flow_type,
                                                TimelineModel *model,
@@ -45,11 +54,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                           return;
                   }
 
-                  for (const auto &[algorithm, key] :
-                       res.device_keys.at(deviceId.toStdString()).keys) {
-                          // TODO: Verify Signatures
-                          this->device_keys[algorithm] = key;
-                  }
+                  this->their_keys = res;
           });
 
         if (model) {
@@ -115,7 +120,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                         return;
                         }
                         error_ = User;
-                        Emit errorChanged();
+                        emit errorChanged();
                         setState(Failed);
                 });
 
@@ -160,6 +165,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                        "|" + this->transaction_id;
                         }
 
+                        nhlog::ui()->info("Info is: '{}'", info);
+
                         if (this->sender == false) {
                                 this->sendVerificationKey();
                         } else {
@@ -193,28 +200,40 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                           if (msg.relates_to.value().event_id != this->relation.event_id)
                                   return;
                   }
-                  std::string info = "MATRIX_KEY_VERIFICATION_MAC" + this->toClient.to_string() +
-                                     this->deviceId.toStdString() +
-                                     http::client()->user_id().to_string() +
-                                     http::client()->device_id() + this->transaction_id;
 
-                  std::vector<std::string> key_list;
+                  std::map<std::string, std::string> key_list;
                   std::string key_string;
-                  for (auto mac : msg.mac) {
-                          key_string += mac.first + ",";
-                          if (device_keys[mac.first] != "") {
-                                  if (mac.second ==
-                                      this->sas->calculate_mac(this->device_keys[mac.first],
-                                                               info + mac.first)) {
-                                  } else {
-                                          this->cancelVerification(
-                                            DeviceVerificationFlow::Error::KeyMismatch);
-                                          return;
-                                  }
+                  for (const auto &mac : msg.mac) {
+                          for (const auto &[deviceid, key] : their_keys.device_keys)
+                                  if (key.keys.count(mac.first))
+                                          key_list[mac.first] = key.keys.at(mac.first);
+
+                          if (their_keys.master_keys.keys.count(mac.first))
+                                  key_list[mac.first] = their_keys.master_keys.keys[mac.first];
+                          if (their_keys.user_signing_keys.keys.count(mac.first))
+                                  key_list[mac.first] =
+                                    their_keys.user_signing_keys.keys[mac.first];
+                          if (their_keys.self_signing_keys.keys.count(mac.first))
+                                  key_list[mac.first] =
+                                    their_keys.self_signing_keys.keys[mac.first];
+                  }
+                  auto macs = key_verification_mac(sas.get(),
+                                                   toClient,
+                                                   this->deviceId.toStdString(),
+                                                   http::client()->user_id(),
+                                                   http::client()->device_id(),
+                                                   this->transaction_id,
+                                                   key_list);
+
+                  for (const auto &[key, mac] : macs.mac) {
+                          if (mac != msg.mac.at(key)) {
+                                  this->cancelVerification(
+                                    DeviceVerificationFlow::Error::KeyMismatch);
+                                  return;
                           }
                   }
-                  key_string = key_string.substr(0, key_string.length() - 1);
-                  if (msg.keys == this->sas->calculate_mac(key_string, info + "KEY_IDS")) {
+
+                  if (msg.keys == macs.keys) {
                           this->isMacVerified = true;
                           this->acceptDevice();
                   } else {
@@ -630,9 +649,13 @@ DeviceVerificationFlow::NewInRoomVerification(QObject *parent_,
                                               QString event_id_)
 {
         QSharedPointer<DeviceVerificationFlow> flow(
-          new DeviceVerificationFlow(parent_, Type::RoomMsg, timelineModel_, other_user_, ""));
+          new DeviceVerificationFlow(parent_,
+                                     Type::RoomMsg,
+                                     timelineModel_,
+                                     other_user_,
+                                     QString::fromStdString(msg.from_device)));
 
-        flow->event_id = event_id_.toStdString();
+        flow->setEventId(event_id_.toStdString());
 
         if (std::find(msg.methods.begin(),
                       msg.methods.end(),

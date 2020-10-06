@@ -56,7 +56,6 @@ using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
 class DeviceVerificationFlow : public QObject
 {
         Q_OBJECT
-        // Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
         Q_PROPERTY(QString state READ state NOTIFY stateChanged)
         Q_PROPERTY(Error error READ error NOTIFY errorChanged)
         Q_PROPERTY(QString userId READ getUserId CONSTANT)
@@ -179,11 +178,7 @@ private:
         //! Completes the verification flow
         void acceptDevice();
 
-        // for to_device messages
         std::string transaction_id;
-        // for room messages
-        std::optional<std::string> room_id;
-        std::optional<std::string> event_id;
 
         bool sender;
         Type type;
@@ -198,7 +193,7 @@ private:
         nlohmann::json canonical_json;
 
         std::vector<int> sasList;
-        std::map<std::string, std::string> device_keys;
+        UserKeyCache their_keys;
         TimelineModel *model_;
         mtx::common::RelatesTo relation;
 

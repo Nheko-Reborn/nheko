@@ -7,6 +7,8 @@ import im.nheko 1.0
 ApplicationWindow {
 	property var flow
 
+	onClosing: TimelineManager.removeVerificationFlow(flow)
+
 	title: stack.currentItem.title
 	id: dialog
 

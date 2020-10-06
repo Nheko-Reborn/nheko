@@ -99,7 +99,7 @@ signals:
         void messageSent(std::string txn_id, std::string event_id);
         void messageFailed(std::string txn_id);
         void startDMVerification(
-          mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg);
+          const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg);
         void updateFlowEventId(std::string event_id);
 
 public slots:
@@ -123,10 +123,4 @@ private:
 
         std::string current_txn;
         int current_txn_error_count = 0;
-
-        // probably not the best way to do
-        std::optional<mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest>>
-          last_verification_request_event;
-        mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel>
-          last_verification_cancel_event;
 };
