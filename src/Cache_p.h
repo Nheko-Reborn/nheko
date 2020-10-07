@@ -67,10 +67,9 @@ public:
                             const std::vector<std::string> &user_ids);
 
         // device & user verification cache
-        std::optional<VerificationCache> verificationStatus(const std::string &user_id);
-        void markDeviceVerified(const std::string &user_id, const std::string &key);
-        void markDeviceUnverified(const std::string &user_id, const std::string &key);
-        void markMasterKeyVerified(const std::string &user_id, const std::string &key);
+        VerificationStatus verificationStatus(const std::string &user_id);
+        void markDeviceVerified(const std::string &user_id, const std::string &device);
+        void markDeviceUnverified(const std::string &user_id, const std::string &device);
 
         static void removeDisplayName(const QString &room_id, const QString &user_id);
         static void removeAvatarUrl(const QString &room_id, const QString &user_id);
@@ -283,6 +282,7 @@ signals:
         void removeNotification(const QString &room_id, const QString &event_id);
         void userKeysUpdate(const std::string &sync_token,
                             const mtx::responses::QueryKeys &keyQuery);
+        void verificationStatusChanged(const std::string &userid);
 
 private:
         //! Save an invited room.
@@ -576,6 +576,8 @@ private:
                 return QString::fromStdString(event.state_key);
         }
 
+        std::optional<VerificationCache> verificationCache(const std::string &user_id);
+
         void setNextBatchToken(lmdb::txn &txn, const std::string &token);
         void setNextBatchToken(lmdb::txn &txn, const QString &token);
 
@@ -600,6 +602,7 @@ private:
         static QHash<QString, QString> AvatarUrls;
 
         OlmSessionStorage session_storage;
+        VerificationStorage verification_storage;
 };
 
 namespace cache {

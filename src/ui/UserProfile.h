@@ -74,6 +74,8 @@ public slots:
 
 private:
         std::vector<DeviceInfo> deviceList_;
+
+        friend class UserProfile;
 };
 
 class UserProfile : public QObject
@@ -83,7 +85,7 @@ class UserProfile : public QObject
         Q_PROPERTY(QString userid READ userid CONSTANT)
         Q_PROPERTY(QString avatarUrl READ avatarUrl CONSTANT)
         Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
-        Q_PROPERTY(bool isUserVerified READ getUserStatus CONSTANT)
+        Q_PROPERTY(bool isUserVerified READ getUserStatus NOTIFY userStatusChanged)
 public:
         UserProfile(QString roomid,
                     QString userid,
@@ -105,9 +107,11 @@ public:
         Q_INVOKABLE void kickUser();
         Q_INVOKABLE void startChat();
 
+signals:
+        void userStatusChanged();
+
 private:
         QString roomid_, userid_;
-        std::optional<std::string> cross_verified;
         DeviceInfoModel deviceList_;
         bool isUserVerified = false;
         TimelineViewManager *manager;

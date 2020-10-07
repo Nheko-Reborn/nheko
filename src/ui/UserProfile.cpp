@@ -1,5 +1,5 @@
 #include "UserProfile.h"
-#include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "DeviceVerificationFlow.h"
 #include "Logging.h"
@@ -7,8 +7,6 @@
 #include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
-
-#include <iostream> // only for debugging
 
 UserProfile::UserProfile(QString roomid,
                          QString userid,
@@ -21,6 +19,31 @@ UserProfile::UserProfile(QString roomid,
   , model(parent)
 {
         fetchDeviceList(this->userid_);
+
+        connect(cache::client(),
+                &Cache::verificationStatusChanged,
+                this,
+                [this](const std::string &user_id) {
+                        if (user_id != this->userid_.toStdString())
+                                return;
+
+                        auto status = cache::verificationStatus(user_id);
+                        if (!status)
+                                return;
+                        this->isUserVerified = status->user_verified;
+                        emit userStatusChanged();
+
+                        for (auto &deviceInfo : deviceList_.deviceList_) {
+                                deviceInfo.verification_status =
+                                  std::find(status->verified_devices.begin(),
+                                            status->verified_devices.end(),
+                                            deviceInfo.device_id.toStdString()) ==
+                                      status->verified_devices.end()
+                                    ? verification::UNVERIFIED
+                                    : verification::VERIFIED;
+                        }
+                        deviceList_.reset(deviceList_.deviceList_);
+                });
 }
 
 QHash<int, QByteArray>
@@ -126,107 +149,27 @@ UserProfile::fetchDeviceList(const QString &userID)
                             }
 
                             std::vector<DeviceInfo> deviceInfo;
-                            auto devices         = other_user_keys.device_keys;
-                            auto device_verified = cache::verificationStatus(other_user_id);
+                            auto devices = other_user_keys.device_keys;
+                            auto verificationStatus =
+                              cache::client()->verificationStatus(other_user_id);
 
-                            if (device_verified.has_value()) {
-                                    // TODO: properly check cross-signing signatures here
-                                    isUserVerified = !device_verified->verified_master_key.empty();
-                            }
-
-                            std::optional<crypto::CrossSigningKeys> lmk, lsk, luk, mk, sk, uk;
-
-                            lmk = res.master_keys;
-                            luk = res.user_signing_keys;
-                            lsk = res.self_signing_keys;
-                            mk  = other_user_keys.master_keys;
-                            uk  = other_user_keys.user_signing_keys;
-                            sk  = other_user_keys.self_signing_keys;
-
-                            // First checking if the user is verified
-                            if (luk.has_value() && mk.has_value()) {
-                                    // iterating through the public key of local user_signing keys
-                                    for (auto sign_key : luk.value().keys) {
-                                            // checking if the signatures are empty as "at" could
-                                            // cause exceptions
-                                            auto signs = mk->signatures;
-                                            if (!signs.empty() &&
-                                                signs.find(local_user_id) != signs.end()) {
-                                                    auto sign = signs.at(local_user_id);
-                                                    try {
-                                                            isUserVerified =
-                                                              isUserVerified ||
-                                                              (olm::client()->ed25519_verify_sig(
-                                                                sign_key.second,
-                                                                json(mk.value()),
-                                                                sign.at(sign_key.first)));
-                                                    } catch (std::out_of_range &) {
-                                                            isUserVerified =
-                                                              isUserVerified || false;
-                                                    }
-                                            }
-                                    }
-                            }
+                            isUserVerified = verificationStatus.user_verified;
+                            emit userStatusChanged();
 
                             for (const auto &d : devices) {
                                     auto device = d.second;
                                     verification::Status verified =
                                       verification::Status::UNVERIFIED;
 
-                                    if (device_verified.has_value()) {
-                                            if (std::find(device_verified->cross_verified.begin(),
-                                                          device_verified->cross_verified.end(),
-                                                          d.first) !=
-                                                device_verified->cross_verified.end())
-                                                    verified = verification::Status::VERIFIED;
-                                            if (std::find(device_verified->device_verified.begin(),
-                                                          device_verified->device_verified.end(),
-                                                          d.first) !=
-                                                device_verified->device_verified.end())
-                                                    verified = verification::Status::VERIFIED;
-                                            if (std::find(device_verified->device_blocked.begin(),
-                                                          device_verified->device_blocked.end(),
-                                                          d.first) !=
-                                                device_verified->device_blocked.end())
-                                                    verified = verification::Status::BLOCKED;
-                                    } else if (isUserVerified) {
-                                            device_verified = VerificationCache{};
-                                    }
-
-                                    // won't check for already verified devices
-                                    if (verified != verification::Status::VERIFIED &&
-                                        isUserVerified) {
-                                            if ((sk.has_value()) && (!device.signatures.empty())) {
-                                                    for (auto sign_key : sk.value().keys) {
-                                                            auto signs =
-                                                              device.signatures.at(other_user_id);
-                                                            try {
-                                                                    if (olm::client()
-                                                                          ->ed25519_verify_sig(
-                                                                            sign_key.second,
-                                                                            json(device),
-                                                                            signs.at(
-                                                                              sign_key.first))) {
-                                                                            verified =
-                                                                              verification::Status::
-                                                                                VERIFIED;
-                                                                            device_verified.value()
-                                                                              .cross_verified
-                                                                              .push_back(d.first);
-                                                                    }
-                                                            } catch (std::out_of_range &) {
-                                                            }
-                                                    }
-                                            }
-                                    }
-
-                                    // TODO(Nico): properly show cross-signing
-                                    // if (device_verified.has_value()) {
-                                    //        device_verified.value().is_user_verified =
-                                    //          isUserVerified;
-                                    //        cache::setVerifiedCache(user_id,
-                                    //                                device_verified.value());
-                                    //}
+                                    if (std::find(verificationStatus.verified_devices.begin(),
+                                                  verificationStatus.verified_devices.end(),
+                                                  device.device_id) !=
+                                          verificationStatus.verified_devices.end() &&
+                                        mtx::crypto::verify_identity_signature(
+                                          device,
+                                          DeviceId(device.device_id),
+                                          UserId(other_user_id)))
+                                            verified = verification::Status::VERIFIED;
 
                                     deviceInfo.push_back(
                                       {QString::fromStdString(d.first),
@@ -234,14 +177,6 @@ UserProfile::fetchDeviceList(const QString &userID)
                                          device.unsigned_info.device_display_name),
                                        verified});
                             }
-
-                            std::cout << (isUserVerified ? "Yes" : "No") << std::endl;
-
-                            std::sort(deviceInfo.begin(),
-                                      deviceInfo.end(),
-                                      [](const DeviceInfo &a, const DeviceInfo &b) {
-                                              return a.device_id > b.device_id;
-                                      });
 
                             this->deviceList_.queueReset(std::move(deviceInfo));
                     });

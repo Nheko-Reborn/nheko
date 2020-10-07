@@ -1031,7 +1031,7 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
 
                                           try {
                                                   if (!mtx::crypto::verify_identity_signature(
-                                                        json(dev.second), device_id, user_id)) {
+                                                        dev.second, device_id, user_id)) {
                                                           nhlog::crypto()->warn(
                                                             "failed to verify identity keys: {}",
                                                             json(dev.second).dump(2));

@@ -66,6 +66,23 @@ struct OlmSessionStorage
         std::mutex group_inbound_mtx;
 };
 
+//! Verification status of a single user
+struct VerificationStatus
+{
+        //! True, if the users master key is verified
+        bool user_verified = false;
+        //! List of all devices marked as verified
+        std::vector<std::string> verified_devices;
+};
+
+//! In memory cache of verification status
+struct VerificationStorage
+{
+        //! mapping of user to verification status
+        std::map<std::string, VerificationStatus> status;
+        std::mutex verification_storage_mtx;
+};
+
 // this will store the keys of the user with whom a encrypted room is shared with
 struct UserKeyCache
 {
@@ -90,12 +107,8 @@ struct VerificationCache
 {
         //! list of verified device_ids with device-verification
         std::vector<std::string> device_verified;
-        //! list of verified device_ids with cross-signing, calculated from master key
-        std::vector<std::string> cross_verified;
         //! list of devices the user blocks
         std::vector<std::string> device_blocked;
-        //! The verified master key.
-        std::string verified_master_key;
 };
 
 void

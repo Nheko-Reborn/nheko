@@ -3184,6 +3184,28 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
         }
 
         txn.commit();
+
+        std::map<std::string, VerificationStatus> tmp;
+        const auto local_user = utils::localUser().toStdString();
+
+        {
+                std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
+                for (auto &[user_id, update] : updates) {
+                        if (user_id == local_user) {
+                                std::swap(tmp, verification_storage.status);
+                        } else {
+                                verification_storage.status.erase(user_id);
+                        }
+                }
+        }
+        for (auto &[user_id, update] : updates) {
+                if (user_id == local_user) {
+                        for (const auto &[user, status] : tmp)
+                                emit verificationStatusChanged(user);
+                } else {
+                        emit verificationStatusChanged(user_id);
+                }
+        }
 }
 
 void
@@ -3236,23 +3258,19 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
 void
 to_json(json &j, const VerificationCache &info)
 {
-        j["verified_master_key"] = info.verified_master_key;
-        j["cross_verified"]      = info.cross_verified;
-        j["device_verified"]     = info.device_verified;
-        j["device_blocked"]      = info.device_blocked;
+        j["device_verified"] = info.device_verified;
+        j["device_blocked"]  = info.device_blocked;
 }
 
 void
 from_json(const json &j, VerificationCache &info)
 {
-        info.verified_master_key = j.at("verified_master_key");
-        info.cross_verified      = j.at("cross_verified").get<std::vector<std::string>>();
-        info.device_verified     = j.at("device_verified").get<std::vector<std::string>>();
-        info.device_blocked      = j.at("device_blocked").get<std::vector<std::string>>();
+        info.device_verified = j.at("device_verified").get<std::vector<std::string>>();
+        info.device_blocked  = j.at("device_blocked").get<std::vector<std::string>>();
 }
 
 std::optional<VerificationCache>
-Cache::verificationStatus(const std::string &user_id)
+Cache::verificationCache(const std::string &user_id)
 {
         lmdb::val verifiedVal;
 
@@ -3298,6 +3316,23 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
                 txn.commit();
         } catch (std::exception &) {
         }
+
+        const auto local_user = utils::localUser().toStdString();
+        std::map<std::string, VerificationStatus> tmp;
+        {
+                std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
+                if (user_id == local_user) {
+                        std::swap(tmp, verification_storage.status);
+                } else {
+                        verification_storage.status.erase(user_id);
+                }
+        }
+        if (user_id == local_user) {
+                for (const auto &[user, status] : tmp)
+                        emit verificationStatusChanged(user);
+        } else {
+                emit verificationStatusChanged(user_id);
+        }
 }
 
 void
@@ -3325,27 +3360,112 @@ Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
                 txn.commit();
         } catch (std::exception &) {
         }
+
+        const auto local_user = utils::localUser().toStdString();
+        std::map<std::string, VerificationStatus> tmp;
+        {
+                std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
+                if (user_id == local_user) {
+                        std::swap(tmp, verification_storage.status);
+                } else {
+                        verification_storage.status.erase(user_id);
+                }
+        }
+        if (user_id == local_user) {
+                for (const auto &[user, status] : tmp)
+                        emit verificationStatusChanged(user);
+        } else {
+                emit verificationStatusChanged(user_id);
+        }
 }
 
-void
-Cache::markMasterKeyVerified(const std::string &user_id, const std::string &key)
+VerificationStatus
+Cache::verificationStatus(const std::string &user_id)
 {
-        lmdb::val val;
+        std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
+        if (verification_storage.status.count(user_id))
+                return verification_storage.status.at(user_id);
 
-        auto txn = lmdb::txn::begin(env_);
-        auto db  = getVerificationDb(txn);
+        VerificationStatus status;
+
+        if (auto verifCache = verificationCache(user_id)) {
+                status.verified_devices = verifCache->device_verified;
+        }
+
+        const auto local_user = utils::localUser().toStdString();
+
+        if (user_id == local_user)
+                status.verified_devices.push_back(http::client()->device_id());
+
+        verification_storage.status[user_id] = status;
+
+        auto verifyAtLeastOneSig = [](const auto &toVerif,
+                                      const std::map<std::string, std::string> &keys,
+                                      const std::string &keyOwner) {
+                if (!toVerif.signatures.count(keyOwner))
+                        return false;
+
+                for (const auto &[key_id, signature] : toVerif.signatures.at(keyOwner)) {
+                        if (!keys.count(key_id))
+                                continue;
+
+                        if (mtx::crypto::ed25519_verify_signature(
+                              keys.at(key_id), json(toVerif), signature))
+                                return true;
+                }
+                return false;
+        };
 
         try {
-                VerificationCache verified_state;
-                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), val);
-                if (res) {
-                        verified_state = json::parse(std::string_view(val.data(), val.size()));
+                // for local user verify this device_key -> our master_key -> our self_signing_key
+                // -> our device_keys
+                //
+                // for other user verify this device_key -> our master_key -> our user_signing_key
+                // -> their master_key -> their self_signing_key -> their device_keys
+                //
+                // This means verifying the other user adds 2 extra steps,verifying our user_signing
+                // key and their master key
+                auto ourKeys   = userKeys(local_user);
+                auto theirKeys = userKeys(user_id);
+                if (!ourKeys || !theirKeys)
+                        return status;
+
+                if (!mtx::crypto::ed25519_verify_signature(
+                      olm::client()->identity_keys().ed25519,
+                      json(ourKeys->master_keys),
+                      ourKeys->master_keys.signatures.at(local_user)
+                        .at("ed25519:" + http::client()->device_id())))
+                        return status;
+
+                auto master_keys = ourKeys->master_keys.keys;
+
+                if (user_id != local_user) {
+                        if (!verifyAtLeastOneSig(
+                              ourKeys->user_signing_keys, master_keys, local_user))
+                                return status;
+
+                        if (!verifyAtLeastOneSig(
+                              theirKeys->master_keys, ourKeys->user_signing_keys.keys, local_user))
+                                return status;
+
+                        master_keys = theirKeys->master_keys.keys;
                 }
 
-                verified_state.verified_master_key = key;
-                lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(verified_state).dump()));
-                txn.commit();
+                status.user_verified = true;
+
+                if (!verifyAtLeastOneSig(theirKeys->self_signing_keys, master_keys, user_id))
+                        return status;
+
+                for (const auto &[device, device_key] : theirKeys->device_keys) {
+                        if (verifyAtLeastOneSig(
+                              device_key, theirKeys->self_signing_keys.keys, user_id))
+                                status.verified_devices.push_back(device_key.device_id);
+                }
+
+                verification_storage.status[user_id] = status;
+                return status;
         } catch (std::exception &) {
+                return status;
         }
 }
 
@@ -3551,28 +3671,22 @@ updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &k
 }
 
 // device & user verification cache
-std::optional<VerificationCache>
+std::optional<VerificationStatus>
 verificationStatus(const std::string &user_id)
 {
         return instance_->verificationStatus(user_id);
 }
 
 void
-markDeviceVerified(const std::string &user_id, const std::string &key)
+markDeviceVerified(const std::string &user_id, const std::string &device)
 {
-        instance_->markDeviceVerified(user_id, key);
+        instance_->markDeviceVerified(user_id, device);
 }
 
 void
-markDeviceUnverified(const std::string &user_id, const std::string &key)
+markDeviceUnverified(const std::string &user_id, const std::string &device)
 {
-        instance_->markDeviceUnverified(user_id, key);
-}
-
-void
-markMasterKeyVerified(const std::string &user_id, const std::string &key)
-{
-        instance_->markMasterKeyVerified(user_id, key);
+        instance_->markDeviceUnverified(user_id, device);
 }
 
 std::vector<std::string>

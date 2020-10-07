@@ -67,14 +67,12 @@ void
 updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery);
 
 // device & user verification cache
-std::optional<VerificationCache>
+std::optional<VerificationStatus>
 verificationStatus(const std::string &user_id);
 void
-markDeviceVerified(const std::string &user_id, const std::string &key);
+markDeviceVerified(const std::string &user_id, const std::string &device);
 void
-markDeviceUnverified(const std::string &user_id, const std::string &key);
-void
-markMasterKeyVerified(const std::string &user_id, const std::string &key);
+markDeviceUnverified(const std::string &user_id, const std::string &device);
 
 //! Load saved data for the display names & avatars.
 void

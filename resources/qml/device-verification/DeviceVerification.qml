@@ -1,6 +1,6 @@
-import QtQuick 2.3
+import QtQuick 2.10
 import QtQuick.Controls 2.10
-import QtQuick.Window 2.2
+import QtQuick.Window 2.10
 
 import im.nheko 1.0
 

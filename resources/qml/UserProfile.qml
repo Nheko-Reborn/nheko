@@ -56,7 +56,7 @@ ApplicationWindow{
 
 		Button {
 			id: verifyUserButton
-			text: "Verify"
+			text: qsTr("Verify")
 			Layout.alignment: Qt.AlignHCenter
 			enabled: !profile.isUserVerified
 			visible: !profile.isUserVerified
@@ -155,7 +155,6 @@ ApplicationWindow{
 					onClicked: {
 						if(model.verificationStatus == VerificationStatus.VERIFIED){
 							profile.unverify(model.deviceId)
-							deviceVerificationList.updateProfile(newFlow.userId);
 						}else{
 							profile.verify(model.deviceId);
 						}
