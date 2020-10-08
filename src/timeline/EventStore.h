@@ -98,6 +98,9 @@ signals:
         void processPending();
         void messageSent(std::string txn_id, std::string event_id);
         void messageFailed(std::string txn_id);
+        void startDMVerification(
+          const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg);
+        void updateFlowEventId(std::string event_id);
 
 public slots:
         void addPending(mtx::events::collections::TimelineEvents event);
@@ -107,6 +110,7 @@ private:
         mtx::events::collections::TimelineEvents *decryptEvent(
           const IdIndex &idx,
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
+        void handle_room_verification(mtx::events::collections::TimelineEvents event);
 
         std::string room_id_;
 

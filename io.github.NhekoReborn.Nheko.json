@@ -73,9 +73,9 @@
       ],
       "sources": [
         {
-          "sha256": "3dbcbfd8c07e25f5e0d662b194d3a7772ef214358c49ada23c044c4747ce8b19",
+          "sha256": "5197b3147cfcfaa67dd564db7b878e4a4b3d9f3443801722b3915cdeced656cb",
           "type": "archive",
-          "url": "https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz"
+          "url": "https://github.com/gabime/spdlog/archive/v1.8.1.tar.gz"
         }
       ]
     },
@@ -146,7 +146,7 @@
       "name": "mtxclient",
       "sources": [
         {
-          "commit": "21a55ba65d0712a441fbef2af2ede66771430247",
+          "commit": "ad5575bc24089dc385e97d9ace026414b618775c",
           "type": "git",
           "url": "https://github.com/Nheko-Reborn/mtxclient.git"
         }

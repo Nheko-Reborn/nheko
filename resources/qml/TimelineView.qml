@@ -9,6 +9,7 @@ import im.nheko.EmojiModel 1.0
 
 import "./delegates"
 import "./emoji"
+import "./device-verification"
 
 Page {
 	id: timelineRoot
@@ -90,7 +91,7 @@ Page {
 			visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
 			height: visible ? implicitHeight : 0
 			text: qsTr("Save as")
-			onTriggered: timelineManager.timeline.saveMedia(messageContextMenu.eventId)
+			onTriggered: TimelineManager.timeline.saveMedia(messageContextMenu.eventId)
 		}
 	}
 
@@ -98,8 +99,27 @@ Page {
 		anchors.fill: parent
 		color: colors.window
 
+		Component {
+			id: deviceVerificationDialog
+			DeviceVerification {}
+		}
+		Connections {
+			target: TimelineManager
+			function onNewDeviceVerificationRequest(flow,transactionId,userId,deviceId,isRequest) {
+				var dialog = deviceVerificationDialog.createObject(timelineRoot, {flow: flow});
+				dialog.show();
+			}
+		}
+		Connections {
+			target: TimelineManager.timeline
+			function onOpenProfile(profile) {
+				var userProfile = userProfileComponent.createObject(timelineRoot,{profile: profile});
+				userProfile.show();
+			}
+		}
+
 		Label {
-			visible: !timelineManager.timeline && !timelineManager.isInitialSync
+			visible: !TimelineManager.timeline && !TimelineManager.isInitialSync
 			anchors.centerIn: parent
 			text: qsTr("No room open")
 			font.pointSize: 24
@@ -109,7 +129,7 @@ Page {
 		BusyIndicator {
 			visible: running
 			anchors.centerIn: parent
-			running: timelineManager.isInitialSync
+			running: TimelineManager.isInitialSync
 			height: 200
 			width: 200
 			z: 3
@@ -128,7 +148,7 @@ Page {
 
 				MouseArea {
 					anchors.fill: parent
-					onClicked: timelineManager.openRoomSettings();
+					onClicked: TimelineManager.openRoomSettings();
 				}
 
 				GridLayout {
@@ -149,14 +169,14 @@ Page {
 						Layout.rowSpan: 2
 						Layout.alignment: Qt.AlignVCenter
 
-						visible: timelineManager.isNarrowView
+						visible: TimelineManager.isNarrowView
 
 						image: ":/icons/icons/ui/angle-pointing-to-left.png"
 
 						ToolTip.visible: hovered
 						ToolTip.text: qsTr("Back to room list")
 
-						onClicked: timelineManager.backToRooms()
+						onClicked: TimelineManager.backToRooms()
 					}
 
 					Avatar {
@@ -173,7 +193,7 @@ Page {
 
 						MouseArea {
 							anchors.fill: parent
-							onClicked: timelineManager.openRoomSettings();
+							onClicked: TimelineManager.openRoomSettings();
 						}
 					}
 
@@ -181,6 +201,7 @@ Page {
 						Layout.fillWidth: true
 						Layout.column: 2
 						Layout.row: 0
+						color: colors.text
 
 						font.pointSize: fontMetrics.font.pointSize * 1.1
 
@@ -188,7 +209,7 @@ Page {
 
 						MouseArea {
 							anchors.fill: parent
-							onClicked: timelineManager.openRoomSettings();
+							onClicked: TimelineManager.openRoomSettings();
 						}
 					}
 					MatrixText {
@@ -220,19 +241,19 @@ Page {
 							id: roomOptionsMenu
 							MenuItem {
 								text: qsTr("Invite users")
-								onTriggered: timelineManager.openInviteUsersDialog();
+								onTriggered: TimelineManager.openInviteUsersDialog();
 							}
 							MenuItem {
 								text: qsTr("Members")
-								onTriggered: timelineManager.openMemberListDialog();
+								onTriggered: TimelineManager.openMemberListDialog();
 							}
 							MenuItem {
 								text: qsTr("Leave room")
-								onTriggered: timelineManager.openLeaveRoomDialog();
+								onTriggered: TimelineManager.openLeaveRoomDialog();
 							}
 							MenuItem {
 								text: qsTr("Settings")
-								onTriggered: timelineManager.openRoomSettings();
+								onTriggered: TimelineManager.openRoomSettings();
 							}
 						}
 					}
@@ -242,14 +263,14 @@ Page {
 		ListView {
 			id: chat
 
-			visible: !!timelineManager.timeline
+			visible: TimelineManager.timeline != null
 
 			cacheBuffer: 400
 
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 
-			model: timelineManager.timeline
+			model: TimelineManager.timeline
 
 			boundsBehavior: Flickable.StopAtBounds
 
@@ -293,7 +314,7 @@ Page {
 
 			onCountChanged: if (atYEnd) model.currentIndex = 0 // Mark last event as read, since we are at the bottom
 
-			property int delegateMaxWidth: (settings.timelineMaxWidth > 100 && (parent.width - settings.timelineMaxWidth) > scrollbar.width*2) ? settings.timelineMaxWidth : (parent.width - scrollbar.width*2)
+			property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width*2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width*2)
 
 			delegate: Item {
 				// This would normally be previousSection, but our model's order is inverted.
@@ -333,6 +354,11 @@ Page {
 				}
 			}
 
+			Component{
+				id: userProfileComponent
+				UserProfile{}
+			}
+
 			section {
 				property: "section"
 			}
@@ -369,6 +395,7 @@ Page {
 							color: colors.base
 						}
 					}
+
 					Row {
 						height: userName.height
 						spacing: 8
@@ -390,25 +417,17 @@ Page {
 
 						Label { 
 							id: userName
-							text: timelineManager.escapeEmoji(modelData.userName)
-							color: timelineManager.userColor(modelData.userId, colors.window)
+							text: TimelineManager.escapeEmoji(modelData.userName)
+							color: TimelineManager.userColor(modelData.userId, colors.window)
 							textFormat: Text.RichText
 
 							MouseArea {
 								anchors.fill: parent
-								onClicked: chat.model.openUserProfile(section.split(" ")[0])
+								Layout.alignment: Qt.AlignHCenter
+								onClicked: chat.model.openUserProfile(modelData.userId)
 								cursorShape: Qt.PointingHandCursor
 								propagateComposedEvents: true
 							}
-						}
-
-						Label {
-							color: colors.buttonText
-							text: timelineManager.userStatus(modelData.userId)
-							textFormat: Text.PlainText
-							elide: Text.ElideRight
-							width: chat.delegateMaxWidth - parent.spacing*2 - userName.implicitWidth - avatarSize
-							font.italic: true
 						}
 					}
 				}
@@ -475,7 +494,7 @@ Page {
 						anchors.bottom: parent.bottom
 
 						modelData: chat.model ? chat.model.getDump(chat.model.reply, chat.model.id) : {}
-						userColor: timelineManager.userColor(modelData.userId, colors.window)
+						userColor: TimelineManager.userColor(modelData.userId, colors.window)
 					}
 
 					ImageButton {

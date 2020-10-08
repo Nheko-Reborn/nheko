@@ -19,6 +19,7 @@
 
 #include <atomic>
 #include <optional>
+#include <stack>
 #include <variant>
 
 #include <mtx/common.hpp>
@@ -34,6 +35,7 @@
 #include <QTimer>
 #include <QWidget>
 
+#include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
 #include "CallManager.h"
 #include "CommunitiesList.h"
@@ -50,6 +52,8 @@ class TextInputWidget;
 class TimelineViewManager;
 class UserInfoWidget;
 class UserSettings;
+class NotificationsManager;
+class TimelineModel;
 
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
@@ -85,6 +89,8 @@ public:
         //! Show the room/group list (if it was visible).
         void showSideBars();
         void initiateLogout();
+        void query_keys(const std::string &req,
+                        std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb);
         void focusMessageInput();
 
         QString status() const;
@@ -160,6 +166,24 @@ signals:
         void retrievedPresence(const QString &statusMsg, mtx::presence::PresenceState state);
         void themeChanged();
         void decryptSidebarChanged();
+
+        //! Signals for device verificaiton
+        void receivedDeviceVerificationAccept(
+          const mtx::events::msg::KeyVerificationAccept &message);
+        void receivedDeviceVerificationRequest(
+          const mtx::events::msg::KeyVerificationRequest &message,
+          std::string sender);
+        void receivedRoomDeviceVerificationRequest(
+          const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
+          TimelineModel *model);
+        void receivedDeviceVerificationCancel(
+          const mtx::events::msg::KeyVerificationCancel &message);
+        void receivedDeviceVerificationKey(const mtx::events::msg::KeyVerificationKey &message);
+        void receivedDeviceVerificationMac(const mtx::events::msg::KeyVerificationMac &message);
+        void receivedDeviceVerificationStart(const mtx::events::msg::KeyVerificationStart &message,
+                                             std::string sender);
+        void receivedDeviceVerificationReady(const mtx::events::msg::KeyVerificationReady &message);
+        void receivedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
 
 private slots:
         void showUnreadMessageNotification(int count);

@@ -329,15 +329,6 @@ MainWindow::hasActiveUser()
 }
 
 void
-MainWindow::openUserProfile(const QString &user_id, const QString &room_id)
-{
-        auto dialog = new dialogs::UserProfile(this);
-        dialog->init(user_id, room_id);
-
-        showDialog(dialog);
-}
-
-void
 MainWindow::openRoomSettings(const QString &room_id)
 {
         auto dialog = new dialogs::RoomSettings(room_id, this);

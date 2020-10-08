@@ -33,5 +33,4 @@ private:
                 return shortname.replace(" ", "-").replace(":", "-").replace("--", "-").toLower();
         }
 };
-
 }

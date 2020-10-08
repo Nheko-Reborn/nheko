@@ -11,6 +11,7 @@
 
 #include "Cache.h"
 #include "CallManager.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -71,6 +72,10 @@ public:
         Q_INVOKABLE void openMemberListDialog() const;
         Q_INVOKABLE void openLeaveRoomDialog() const;
         Q_INVOKABLE void openRoomSettings() const;
+        Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
+
+        void verifyUser(QString userid);
+        void verifyDevice(QString userid, QString deviceid);
 
 signals:
         void clearRoomMessageCount(QString roomid);
@@ -79,6 +84,7 @@ signals:
         void initialSyncChanged(bool isInitialSync);
         void replyingEventChanged(QString replyingEvent);
         void replyClosed();
+        void newDeviceVerificationRequest(DeviceVerificationFlow *flow);
         void inviteUsers(QStringList users);
         void showRoomList();
         void narrowViewChanged();
@@ -172,4 +178,14 @@ private:
 
         QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;
+
+        QHash<QString, QSharedPointer<DeviceVerificationFlow>> dvList;
 };
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationAccept)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationCancel)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationDone)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationKey)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationMac)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationReady)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationRequest)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationStart)

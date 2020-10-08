@@ -26,6 +26,7 @@
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
+#include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -158,6 +159,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &TextInputWidget::clearRoomTimeline,
                 view_manager_,
                 &TimelineViewManager::clearCurrentRoomTimeline);
+
+        connect(text_input_, &TextInputWidget::rotateMegolmSession, this, [this]() {
+                cache::dropOutboundMegolmSession(current_room_.toStdString());
+        });
 
         connect(
           new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
@@ -1454,6 +1459,46 @@ ChatPage::initiateLogout()
         });
 
         emit showOverlayProgressBar();
+}
+
+void
+ChatPage::query_keys(const std::string &user_id,
+                     std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
+{
+        auto cache_ = cache::userKeys(user_id);
+
+        if (cache_.has_value()) {
+                if (!cache_->updated_at.empty() && cache_->updated_at == cache_->last_changed) {
+                        cb(cache_.value(), {});
+                        return;
+                }
+        }
+
+        mtx::requests::QueryKeys req;
+        req.device_keys[user_id] = {};
+
+        std::string last_changed;
+        if (cache_)
+                last_changed = cache_->last_changed;
+        req.token = last_changed;
+
+        http::client()->query_keys(req,
+                                   [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
+                                                               mtx::http::RequestErr err) {
+                                           if (err) {
+                                                   nhlog::net()->warn(
+                                                     "failed to query device keys: {},{}",
+                                                     err->matrix_error.errcode,
+                                                     static_cast<int>(err->status_code));
+                                                   cb({}, err);
+                                                   return;
+                                           }
+
+                                           cache::updateUserKeys(last_changed, res);
+
+                                           auto keys = cache::userKeys(user_id);
+                                           cb(keys.value_or(UserKeyCache{}), err);
+                                   });
 }
 
 template<typename T>

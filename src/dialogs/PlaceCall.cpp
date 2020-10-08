@@ -100,5 +100,4 @@ PlaceCall::PlaceCall(const QString &callee,
                 emit close();
         });
 }
-
 }

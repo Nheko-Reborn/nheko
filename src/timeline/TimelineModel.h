@@ -10,6 +10,7 @@
 
 #include "CacheCryptoStructs.h"
 #include "EventStore.h"
+#include "ui/UserProfile.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -87,6 +88,14 @@ enum EventType
         VideoMessage,
         Redacted,
         UnknownMessage,
+        KeyVerificationRequest,
+        KeyVerificationStart,
+        KeyVerificationMac,
+        KeyVerificationAccept,
+        KeyVerificationCancel,
+        KeyVerificationKey,
+        KeyVerificationDone,
+        KeyVerificationReady
 };
 Q_ENUM_NS(EventType)
 
@@ -199,7 +208,7 @@ public:
 
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
-        Q_INVOKABLE void openUserProfile(QString userid) const;
+        Q_INVOKABLE void openUserProfile(QString userid);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);
@@ -275,23 +284,25 @@ signals:
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
 
+        void openProfile(UserProfile *profile);
+
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
+        void updateFlowEventId(std::string event_id);
 
         void roomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
 
 private:
-        void sendEncryptedMessageEvent(const std::string &txn_id,
-                                       nlohmann::json content,
-                                       mtx::events::EventType);
-        void handleClaimedKeys(std::shared_ptr<StateKeeper> keeper,
-                               const std::map<std::string, std::string> &room_key,
-                               const std::map<std::string, DevicePublicKeys> &pks,
-                               const std::string &user_id,
-                               const mtx::responses::ClaimKeys &res,
-                               mtx::http::RequestErr err);
+        template<typename T>
+        void sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType);
+        void handleClaimedKeys(
+          std::shared_ptr<StateKeeper> keeper,
+          const std::map<std::string, std::map<std::string, std::string>> &room_keys,
+          const std::map<std::string, std::map<std::string, DevicePublicKeys>> &pks,
+          const mtx::responses::ClaimKeys &res,
+          mtx::http::RequestErr err);
         void readEvent(const std::string &id);
 
         void setPaginationInProgress(const bool paginationInProgress);

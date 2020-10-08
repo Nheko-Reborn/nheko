@@ -36,8 +36,8 @@ Item {
 		DelegateChoice {
 			roleValue: MtxEvent.EmoteMessage
 			NoticeMessage {
-				formatted: timelineManager.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
-				color: timelineManager.userColor(modelData.userId, colors.window)
+				formatted: TimelineManager.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
+				color: TimelineManager.userColor(modelData.userId, colors.window)
 			}
 		}
 		DelegateChoice {
@@ -128,31 +128,85 @@ Item {
 			// TODO: make a more complex formatter for the power levels.
 			roleValue: MtxEvent.PowerLevels
 			NoticeMessage {
-				text: timelineManager.timeline.formatPowerLevelEvent(model.data.id)
+				text: TimelineManager.timeline.formatPowerLevelEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.RoomJoinRules
 			NoticeMessage {
-				text: timelineManager.timeline.formatJoinRuleEvent(model.data.id)
+				text: TimelineManager.timeline.formatJoinRuleEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.RoomHistoryVisibility
 			NoticeMessage {
-				text: timelineManager.timeline.formatHistoryVisibilityEvent(model.data.id)
+				text: TimelineManager.timeline.formatHistoryVisibilityEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.RoomGuestAccess
 			NoticeMessage {
-				text: timelineManager.timeline.formatGuestAccessEvent(model.data.id)
+				text: TimelineManager.timeline.formatGuestAccessEvent(model.data.id)
 			}
 		}
 		DelegateChoice {
 			roleValue: MtxEvent.Member
 			NoticeMessage {
-				text: timelineManager.timeline.formatMemberEvent(model.data.id);
+				text: TimelineManager.timeline.formatMemberEvent(model.data.id);
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationRequest
+			NoticeMessage {
+				text: "KeyVerificationRequest";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationStart
+			NoticeMessage {
+				text: "KeyVerificationStart";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationReady
+			NoticeMessage {
+				text: "KeyVerificationReady";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationCancel
+			NoticeMessage {
+				text: "KeyVerificationCancel";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationKey
+			NoticeMessage {
+				text: "KeyVerificationKey";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationMac
+			NoticeMessage {
+				text: "KeyVerificationMac";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationDone
+			NoticeMessage {
+				text: "KeyVerificationDone";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationDone
+			NoticeMessage {
+				text: "KeyVerificationDone";
+			}
+		}
+		DelegateChoice {
+			roleValue: MtxEvent.KeyVerificationAccept
+			NoticeMessage {
+				text: "KeyVerificationAccept";
 			}
 		}
 		DelegateChoice {

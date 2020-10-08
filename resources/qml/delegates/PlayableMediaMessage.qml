@@ -106,7 +106,7 @@ Rectangle {
 					anchors.fill: parent
 					onClicked: {
 						switch (button.state) {
-							case "": timelineManager.timeline.cacheMedia(model.data.id); break;
+							case "": TimelineManager.timeline.cacheMedia(model.data.id); break;
 							case "stopped":
 							media.play(); console.log("play");
 							button.state = "playing"
@@ -127,7 +127,7 @@ Rectangle {
 				}
 
 				Connections {
-					target: timelineManager.timeline
+					target: TimelineManager.timeline
 					onMediaCached: {
 						if (mxcUrl == model.data.url) {
 							media.source = "file://" + cacheUrl

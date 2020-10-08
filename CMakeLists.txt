@@ -142,9 +142,9 @@ if (APPLE)
 endif(APPLE)
 
 if (Qt5Widgets_FOUND)
-	if (Qt5Widgets_VERSION VERSION_LESS 5.9.0)
+	if (Qt5Widgets_VERSION VERSION_LESS 5.10.0)
 		message(STATUS "Qt version ${Qt5Widgets_VERSION}")
-		message(WARNING "Minimum supported Qt5 version is 5.9!")
+		message(WARNING "Minimum supported Qt5 version is 5.10!")
 	endif()
 endif(Qt5Widgets_FOUND)
 
@@ -239,7 +239,6 @@ set(SRC_FILES
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
 	src/dialogs/RoomSettings.cpp
-	src/dialogs/UserProfile.cpp
 
 	# Emoji
 	src/emoji/Category.cpp
@@ -278,6 +277,7 @@ set(SRC_FILES
 	src/ui/ToggleButton.cpp
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
+	src/ui/UserProfile.cpp
 
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
@@ -287,6 +287,7 @@ set(SRC_FILES
 	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
 	src/CommunitiesListItem.cpp
+	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
 	src/InviteeItem.cpp
 	src/Logging.cpp
@@ -339,7 +340,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        21a55ba65d0712a441fbef2af2ede66771430247 
+		GIT_TAG        ad5575bc24089dc385e97d9ace026414b618775c
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -451,7 +452,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/ReCaptcha.h
 	src/dialogs/ReadReceipts.h
 	src/dialogs/RoomSettings.h
-	src/dialogs/UserProfile.h
 
 	# Emoji
 	src/emoji/Category.h
@@ -487,6 +487,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/ToggleButton.h
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
+	src/ui/UserProfile.h
 
 	src/notifications/Manager.h
 
@@ -497,6 +498,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ChatPage.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
+	src/DeviceVerificationFlow.h
 	src/InviteeItem.h
 	src/LoginPage.h
 	src/MainWindow.h

@@ -6,7 +6,7 @@ import im.nheko 1.0
 
 Rectangle {
 	id: activeCallBar
-	visible: timelineManager.callState != WebRTCState.DISCONNECTED
+	visible: TimelineManager.callState != WebRTCState.DISCONNECTED
 	color: "#2ECC71"
 	implicitHeight: rowLayout.height + 8
 
@@ -21,13 +21,13 @@ Rectangle {
 			width: avatarSize
 			height: avatarSize
 
-			url: timelineManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-			displayName: timelineManager.callPartyName
+			url: TimelineManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
+			displayName: TimelineManager.callPartyName
 		}
 
 		Label {
 			font.pointSize: fontMetrics.font.pointSize * 1.1
-			text: "  " + timelineManager.callPartyName + " "
+			text: "  " + TimelineManager.callPartyName + " "
 		}
 
 		Image {
@@ -42,7 +42,7 @@ Rectangle {
 		}
 
 		Connections {
-			target: timelineManager
+			target: TimelineManager
 			function onCallStateChanged(state) {
 				switch (state) {
 					case WebRTCState.INITIATING:
@@ -69,7 +69,7 @@ Rectangle {
 			id: callTimer
 			property int startTime
 			interval: 1000
-			running: timelineManager.callState == WebRTCState.CONNECTED
+			running: TimelineManager.callState == WebRTCState.CONNECTED
 			repeat: true
 			onTriggered: {
 				var d = new Date()
@@ -93,15 +93,15 @@ Rectangle {
 			width: 24
 			height: 24
 			buttonTextColor: "#000000"
-			image: timelineManager.isMicMuted ?
+			image: TimelineManager.isMicMuted ?
 				":/icons/icons/ui/microphone-unmute.png" :
 				":/icons/icons/ui/microphone-mute.png"
 
 			hoverEnabled: true
 			ToolTip.visible: hovered
-			ToolTip.text: timelineManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
+			ToolTip.text: TimelineManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
 
-			onClicked: timelineManager.toggleMicMute()
+			onClicked: TimelineManager.toggleMicMute()
 		}
 
 		Item {

@@ -418,7 +418,6 @@ getPayloadType(const std::string &sdp, const std::string &name)
         }
         return -1;
 }
-
 }
 
 bool

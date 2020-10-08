@@ -73,7 +73,7 @@ Popup {
                 contentItem: Text {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    font.family: settings.emojiFont
+                    font.family: Settings.emojiFont
                     
                     font.pixelSize: 36
                     text: model.unicode
@@ -104,7 +104,7 @@ Popup {
                 onClicked: {
                     console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id)
                     emojiPopup.close()
-                    timelineManager.queueReactionMessage(emojiPopup.event_id, model.unicode)
+                    TimelineManager.queueReactionMessage(emojiPopup.event_id, model.unicode)
                 }
             }
 
