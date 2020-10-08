@@ -211,7 +211,7 @@ private:
                         body[this->toClient][deviceId.toStdString()] = msg;
 
                         http::client()->send_to_device<T>(
-                          this->transaction_id, body, [this](mtx::http::RequestErr err) {
+                          this->transaction_id, body, [](mtx::http::RequestErr err) {
                                   if (err)
                                           nhlog::net()->warn(
                                             "failed to send verification to_device message: {} {}",

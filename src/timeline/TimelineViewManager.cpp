@@ -128,9 +128,11 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
 
         static auto self = this;
         qmlRegisterSingletonType<TimelineViewManager>(
-          "im.nheko", 1, 0, "TimelineManager", [](QQmlEngine *, QJSEngine *) { return self; });
+          "im.nheko", 1, 0, "TimelineManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return self;
+          });
         qmlRegisterSingletonType<UserSettings>(
-          "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) {
+          "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
                   return self->settings.data();
           });
 
