@@ -223,9 +223,11 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   std::map<std::string, std::string> key_list;
                   std::string key_string;
                   for (const auto &mac : msg.mac) {
-                          for (const auto &[deviceid, key] : their_keys.device_keys)
+                          for (const auto &[deviceid, key] : their_keys.device_keys) {
+                                  (void)deviceid;
                                   if (key.keys.count(mac.first))
                                           key_list[mac.first] = key.keys.at(mac.first);
+                          }
 
                           if (their_keys.master_keys.keys.count(mac.first))
                                   key_list[mac.first] = their_keys.master_keys.keys[mac.first];
