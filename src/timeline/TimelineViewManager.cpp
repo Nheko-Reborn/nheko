@@ -125,11 +125,13 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           0,
           "UserProfileModel",
           "UserProfile needs to be instantiated on the C++ side");
+
+        static auto self = this;
         qmlRegisterSingletonType<TimelineViewManager>(
-          "im.nheko", 1, 0, "TimelineManager", [this](QQmlEngine *, QJSEngine *) { return this; });
+          "im.nheko", 1, 0, "TimelineManager", [](QQmlEngine *, QJSEngine *) { return self; });
         qmlRegisterSingletonType<UserSettings>(
-          "im.nheko", 1, 0, "Settings", [this](QQmlEngine *, QJSEngine *) {
-                  return this->settings.data();
+          "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) {
+                  return self->settings.data();
           });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
@@ -413,8 +415,8 @@ void
 TimelineViewManager::removeVerificationFlow(DeviceVerificationFlow *flow)
 {
         for (auto it = dvList.keyValueBegin(); it != dvList.keyValueEnd(); ++it) {
-                if (it->second == flow) {
-                        dvList.remove(it->first);
+                if ((*it).second == flow) {
+                        dvList.remove((*it).first);
                         return;
                 }
         }

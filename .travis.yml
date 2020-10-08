@@ -63,21 +63,21 @@ matrix:
           env:
               - CXX=g++-8
               - CC=gcc-8
-              - QT_PKG=59
+              - QT_PKG=510
           addons:
               apt:
                   sources: 
                     - ubuntu-toolchain-r-test
-                    - sourceline: 'ppa:beineri/opt-qt597-xenial'
+                    - sourceline: 'ppa:beineri/opt-qt-5.10.1-xenial'
                   packages: 
                     - g++-8 
                     - ninja-build
-                    - qt59base
-                    - qt59tools
-                    - qt59svg
-                    - qt59multimedia
-                    - qt59quickcontrols2
-                    - qt59graphicaleffects
+                    - qt510base
+                    - qt510tools
+                    - qt510svg
+                    - qt510multimedia
+                    - qt510quickcontrols2
+                    - qt510graphicaleffects
                     - liblmdb-dev
                     - libgl1-mesa-dev # needed for missing gl.h
         - os: linux
@@ -85,23 +85,23 @@ matrix:
           env:
               - CXX=clang++-6.0
               - CC=clang-6.0
-              - QT_PKG=59
+              - QT_PKG=510
           addons:
               apt:
                   sources: 
                     - ubuntu-toolchain-r-test
                     - llvm-toolchain-xenial-6.0
-                    - sourceline: 'ppa:beineri/opt-qt597-xenial'
+                    - sourceline: 'ppa:beineri/opt-qt-5.10.1-xenial'
                   packages: 
                     - clang++-6.0
                     - g++-7 
                     - ninja-build
-                    - qt59base
-                    - qt59tools
-                    - qt59svg
-                    - qt59multimedia
-                    - qt59quickcontrols2
-                    - qt59graphicaleffects
+                    - qt510base
+                    - qt510tools
+                    - qt510svg
+                    - qt510multimedia
+                    - qt510quickcontrols2
+                    - qt510graphicaleffects
                     - liblmdb-dev
                     - libgl1-mesa-dev # needed for missing gl.h
         - os: linux

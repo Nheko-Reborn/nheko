@@ -142,9 +142,9 @@ if (APPLE)
 endif(APPLE)
 
 if (Qt5Widgets_FOUND)
-	if (Qt5Widgets_VERSION VERSION_LESS 5.9.0)
+	if (Qt5Widgets_VERSION VERSION_LESS 5.10.0)
 		message(STATUS "Qt version ${Qt5Widgets_VERSION}")
-		message(WARNING "Minimum supported Qt5 version is 5.9!")
+		message(WARNING "Minimum supported Qt5 version is 5.10!")
 	endif()
 endif(Qt5Widgets_FOUND)
 
