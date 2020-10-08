@@ -73,9 +73,9 @@
       ],
       "sources": [
         {
-          "sha256": "3dbcbfd8c07e25f5e0d662b194d3a7772ef214358c49ada23c044c4747ce8b19",
+          "sha256": "5197b3147cfcfaa67dd564db7b878e4a4b3d9f3443801722b3915cdeced656cb",
           "type": "archive",
-          "url": "https://github.com/gabime/spdlog/archive/v1.1.0.tar.gz"
+          "url": "https://github.com/gabime/spdlog/archive/v1.8.1.tar.gz"
         }
       ]
     },
