@@ -16,7 +16,7 @@ Rectangle {
 
 	Label {
 		anchors.fill: parent
-		text: TimelineManager.escapeEmoji(String.fromCodePoint(displayName.codePointAt(0)))
+		text: TimelineManager.escapeEmoji(displayName ? String.fromCodePoint(displayName.codePointAt(0)) : "")
 		textFormat: Text.RichText
 		font.pixelSize: avatar.height/2
 		verticalAlignment: Text.AlignVCenter

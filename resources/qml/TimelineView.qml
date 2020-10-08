@@ -516,6 +516,11 @@ Page {
 				}
 			}
 		}
+
+		ActiveCallBar {
+			Layout.fillWidth: true
+			z: 3
+		}
 	}
 	}
 }

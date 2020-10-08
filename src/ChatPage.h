@@ -43,7 +43,6 @@
 #include "notifications/Manager.h"
 #include "popups/UserMentions.h"
 
-class ActiveCallBar;
 class OverlayModal;
 class QuickSwitcher;
 class RoomList;
@@ -259,7 +258,6 @@ private:
         SideBarActions *sidebarActions_;
 
         TextInputWidget *text_input_;
-        ActiveCallBar *activeCallBar_;
 
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;

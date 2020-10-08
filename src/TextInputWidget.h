@@ -164,7 +164,7 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void changeCallButtonState(WebRTCSession::State);
+        void changeCallButtonState(webrtc::State);
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
