@@ -3191,6 +3191,7 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
         {
                 std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
                 for (auto &[user_id, update] : updates) {
+                        (void)update;
                         if (user_id == local_user) {
                                 std::swap(tmp, verification_storage.status);
                         } else {
@@ -3199,9 +3200,12 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                 }
         }
         for (auto &[user_id, update] : updates) {
+                (void)update;
                 if (user_id == local_user) {
-                        for (const auto &[user, status] : tmp)
+                        for (const auto &[user, status] : tmp) {
+                                (void)status;
                                 emit verificationStatusChanged(user);
+                        }
                 } else {
                         emit verificationStatusChanged(user_id);
                 }
@@ -3328,8 +3332,10 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
                 }
         }
         if (user_id == local_user) {
-                for (const auto &[user, status] : tmp)
+                for (const auto &[user, status] : tmp) {
+                        (void)status;
                         emit verificationStatusChanged(user);
+                }
         } else {
                 emit verificationStatusChanged(user_id);
         }
@@ -3372,8 +3378,10 @@ Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
                 }
         }
         if (user_id == local_user) {
-                for (const auto &[user, status] : tmp)
+                for (const auto &[user, status] : tmp) {
+                        (void)status;
                         emit verificationStatusChanged(user);
+                }
         } else {
                 emit verificationStatusChanged(user_id);
         }
@@ -3457,6 +3465,7 @@ Cache::verificationStatus(const std::string &user_id)
                         return status;
 
                 for (const auto &[device, device_key] : theirKeys->device_keys) {
+                        (void)device;
                         if (verifyAtLeastOneSig(
                               device_key, theirKeys->self_signing_keys.keys, user_id))
                                 status.verified_devices.push_back(device_key.device_id);
