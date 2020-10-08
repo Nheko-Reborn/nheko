@@ -234,6 +234,55 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   }
 
                   if (msg.keys == macs.keys) {
+                          mtx::requests::KeySignaturesUpload req;
+                          if (utils::localUser().toStdString() == this->toClient.to_string()) {
+                                  // self verification, sign master key with device key, if we
+                                  // verified it
+                                  for (const auto &mac : msg.mac) {
+                                          if (their_keys.master_keys.keys.count(mac.first)) {
+                                                  json j = their_keys.master_keys;
+                                                  j.erase("signatures");
+                                                  j.erase("unsigned");
+                                                  mtx::crypto::CrossSigningKeys master_key = j;
+                                                  master_key
+                                                    .signatures[utils::localUser().toStdString()]
+                                                               ["ed25519:" +
+                                                                http::client()->device_id()] =
+                                                    olm::client()->sign_message(j.dump());
+                                                  req.signatures[utils::localUser().toStdString()]
+                                                                [master_key.keys.at(mac.first)] =
+                                                    master_key;
+                                          }
+                                  }
+                                  // TODO(Nico): Sign their device key with self signing key
+                          } else {
+                                  // TODO(Nico): Sign their master key with user signing key
+                          }
+
+                          if (!req.signatures.empty()) {
+                                  http::client()->keys_signatures_upload(
+                                    req,
+                                    [](const mtx::responses::KeySignaturesUpload &res,
+                                       mtx::http::RequestErr err) {
+                                            if (err) {
+                                                    nhlog::net()->error(
+                                                      "failed to upload signatures: {},{}",
+                                                      err->matrix_error.errcode,
+                                                      static_cast<int>(err->status_code));
+                                            }
+
+                                            for (const auto &[user_id, tmp] : res.errors)
+                                                    for (const auto &[key_id, e] : tmp)
+                                                            nhlog::net()->error(
+                                                              "signature error for user {} and key "
+                                                              "id {}: {}, {}",
+                                                              user_id,
+                                                              key_id,
+                                                              e.errcode,
+                                                              e.error);
+                                    });
+                          }
+
                           this->isMacVerified = true;
                           this->acceptDevice();
                   } else {

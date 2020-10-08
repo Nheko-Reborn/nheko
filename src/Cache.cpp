@@ -3591,6 +3591,7 @@ init(const QString &user_id)
         qRegisterMetaType<QMap<QString, RoomInfo>>();
         qRegisterMetaType<std::map<QString, RoomInfo>>();
         qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
+        qRegisterMetaType<mtx::responses::QueryKeys>();
 
         instance_ = std::make_unique<Cache>(user_id);
 }
