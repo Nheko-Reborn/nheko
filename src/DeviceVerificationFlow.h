@@ -185,6 +185,9 @@ private:
         mtx::identifiers::User toClient;
         QString deviceId;
 
+        // public part of our master key, when trusted or empty
+        std::string our_trusted_master_key;
+
         mtx::events::msg::SASMethods method = mtx::events::msg::SASMethods::Emoji;
         QTimer *timeout                     = nullptr;
         sas_ptr sas;

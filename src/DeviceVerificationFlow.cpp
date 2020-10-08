@@ -57,6 +57,25 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   this->their_keys = res;
           });
 
+        ChatPage::instance()->query_keys(
+          http::client()->user_id().to_string(),
+          [this](const UserKeyCache &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to query device keys: {},{}",
+                                             err->matrix_error.errcode,
+                                             static_cast<int>(err->status_code));
+                          return;
+                  }
+
+                  if (res.master_keys.keys.empty())
+                          return;
+
+                  if (auto status =
+                        cache::verificationStatus(http::client()->user_id().to_string());
+                      status && status->user_verified)
+                          this->our_trusted_master_key = res.master_keys.keys.begin()->second;
+          });
+
         if (model) {
                 connect(this->model_,
                         &TimelineModel::updateFlowEventId,
@@ -654,6 +673,10 @@ DeviceVerificationFlow::sendVerificationMac()
 {
         std::map<std::string, std::string> key_list;
         key_list["ed25519:" + http::client()->device_id()] = olm::client()->identity_keys().ed25519;
+
+        // send our master key, if we trust it
+        if (!this->our_trusted_master_key.empty())
+                key_list["ed25519:" + our_trusted_master_key] = our_trusted_master_key;
 
         mtx::events::msg::KeyVerificationMac req =
           key_verification_mac(sas.get(),
