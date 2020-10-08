@@ -112,9 +112,9 @@ EventStore::EventStore(std::string room_id, QObject *)
                                             }
 
                                             emit messageSent(txn_id, event_id.event_id.to_string());
-                                            if constexpr (mtx::events::message_content_to_type<
-                                                            decltype(e.content)> ==
-                                                          mtx::events::EventType::RoomEncrypted) {
+                                            if constexpr (std::is_same_v<
+                                                            decltype(e.content),
+                                                            mtx::events::msg::Encrypted>) {
                                                     auto event =
                                                       decryptEvent({room_id_, e.event_id}, e);
                                                     if (auto dec =
