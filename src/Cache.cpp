@@ -1580,7 +1580,15 @@ Cache::roomInfo(bool withInvites)
 std::string
 Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
 {
-        auto orderDb = getOrderToMessageDb(txn, room_id);
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getOrderToMessageDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
 
         lmdb::val indexVal, val;
 
@@ -1626,8 +1634,17 @@ Cache::getTimelineRange(const std::string &room_id)
 std::optional<uint64_t>
 Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
 {
-        auto txn     = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto orderDb = getMessageToOrderDb(txn, room_id);
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getOrderToMessageDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
 
         lmdb::val indexVal{event_id.data(), event_id.size()}, val;
 
@@ -1642,8 +1659,16 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
 std::optional<std::string>
 Cache::getTimelineEventId(const std::string &room_id, uint64_t index)
 {
-        auto txn     = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto orderDb = getOrderToMessageDb(txn, room_id);
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getOrderToMessageDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
 
         lmdb::val indexVal{&index, sizeof(index)}, val;
 
@@ -1658,8 +1683,24 @@ Cache::getTimelineEventId(const std::string &room_id, uint64_t index)
 DescInfo
 Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 {
-        auto orderDb  = getOrderToMessageDb(txn, room_id);
-        auto eventsDb = getEventsDb(txn, room_id);
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getOrderToMessageDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
+        lmdb::dbi eventsDb{0};
+        try {
+                eventsDb = getEventsDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
         if (orderDb.size(txn) == 0)
                 return DescInfo{};
 
