@@ -59,6 +59,7 @@ Popup {
             cellHeight: 52
             boundsBehavior: Flickable.StopAtBounds
             clip: true
+            currentIndex: -1 // prevent sorting from stealing focus
 
             // Individual emoji
             delegate: AbstractButton {
