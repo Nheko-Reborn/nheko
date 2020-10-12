@@ -1638,7 +1638,7 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
 
         lmdb::dbi orderDb{0};
         try {
-                orderDb = getOrderToMessageDb(txn, room_id);
+                orderDb = getMessageToOrderDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
                 nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
                                    room_id,
