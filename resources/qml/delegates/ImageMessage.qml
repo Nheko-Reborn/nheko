@@ -31,11 +31,40 @@ Item {
         fillMode: Image.PreserveAspectFit
 
         MouseArea {
+            id: mouseArea
             enabled: model.data.type == MtxEvent.ImageMessage && img.status == Image.Ready
+            hoverEnabled: true
             anchors.fill: parent
             onClicked: TimelineManager.openImageOverlay(model.data.url, model.data.id)
         }
 
-    }
+        Item {
+            id: overlay
+        
+            anchors.fill: parent
+            visible: mouseArea.containsMouse
+            
+            Rectangle {
+                id: container
+                width: parent.width
+                implicitHeight: imgcaption.implicitHeight
+                anchors.bottom: overlay.bottom 
+                color: "black"
+                opacity: 0.75
 
+                Text {
+                    id: imgcaption
+
+                    anchors.fill: parent
+                    elide: Text.ElideMiddle
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
+                    text: model.data.filename ? model.data.filename : model.data.body
+                    font.pointSize: 11
+                    color: "white"
+                }
+            }
+        }
+    }
 }
