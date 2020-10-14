@@ -456,7 +456,7 @@
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished">Sulge</translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -681,7 +681,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">Nõustu</translation>
+        <translation>Nõustu</translation>
     </message>
 </context>
 <context>
@@ -907,7 +907,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished">Sulge</translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -1659,7 +1659,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
 </context>
 <context>
