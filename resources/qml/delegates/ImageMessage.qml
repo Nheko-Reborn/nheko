@@ -61,10 +61,10 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
                     text: model.data.filename ? model.data.filename : model.data.body
-                    font.pointSize: 11
                     color: "white"
                 }
             }
         }
+        
     }
 }
