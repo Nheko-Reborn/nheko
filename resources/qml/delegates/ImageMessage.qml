@@ -43,28 +43,28 @@ Item {
         
             anchors.fill: parent
             visible: mouseArea.containsMouse
-            
+
             Rectangle {
                 id: container
+                
                 width: parent.width
                 implicitHeight: imgcaption.implicitHeight
                 anchors.bottom: overlay.bottom 
-                color: "black"
+                color: colors.window
                 opacity: 0.75
+            }
 
-                Text {
-                    id: imgcaption
-
-                    anchors.fill: parent
-                    elide: Text.ElideMiddle
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
-                    text: model.data.filename ? model.data.filename : model.data.body
-                    color: "white"
-                }
+            Text {
+                id: imgcaption
+                
+                anchors.fill: container
+                elide: Text.ElideMiddle
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
+                text: model.data.filename ? model.data.filename : model.data.body
+                color: colors.text
             }
         }
-        
     }
 }
