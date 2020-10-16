@@ -41,9 +41,7 @@ class TimelineViewManager : public QObject
         Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
 
 public:
-        TimelineViewManager(QSharedPointer<UserSettings> userSettings,
-                            CallManager *callManager,
-                            ChatPage *parent = nullptr);
+        TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
@@ -176,7 +174,6 @@ private:
         bool isInitialSync_ = true;
         bool isNarrowView_  = false;
 
-        QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;
 
         QHash<QString, QSharedPointer<DeviceVerificationFlow>> dvList;

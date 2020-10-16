@@ -73,6 +73,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 {
         setObjectName("chatPage");
 
+        instance_ = this;
+
         qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
         qRegisterMetaType<std::optional<RelatedInfo>>();
         qRegisterMetaType<mtx::presence::PresenceState>();
@@ -124,7 +126,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->setSpacing(0);
         contentLayout_->setMargin(0);
 
-        view_manager_ = new TimelineViewManager(userSettings_, &callManager_, this);
+        view_manager_ = new TimelineViewManager(&callManager_, this);
 
         contentLayout_->addWidget(view_manager_->getWidget());
 
@@ -590,8 +592,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connectCallMessage<mtx::events::msg::CallCandidates>();
         connectCallMessage<mtx::events::msg::CallAnswer>();
         connectCallMessage<mtx::events::msg::CallHangUp>();
-
-        instance_ = this;
 }
 
 void

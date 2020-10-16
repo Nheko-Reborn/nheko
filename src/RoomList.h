@@ -104,5 +104,4 @@ private:
         QString selectedRoom_;
 
         bool isSortPending_ = false;
-        QSharedPointer<UserSettings> settings;
 };
