@@ -500,12 +500,14 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         }
 
         // Check that the requested session_id and the one we have saved match.
-        const auto session = cache::getOutboundMegolmSession(req.content.room_id);
-        if (req.content.session_id != session.data.session_id) {
-                nhlog::crypto()->warn("session id of retrieved session doesn't match the request: "
-                                      "requested({}), ours({})",
-                                      req.content.session_id,
-                                      session.data.session_id);
+        MegolmSessionIndex index{};
+        index.room_id    = req.content.room_id;
+        index.session_id = req.content.session_id;
+        index.sender_key = olm::client()->identity_keys().curve25519;
+
+        const auto session = cache::getInboundMegolmSession(index);
+        if (!session) {
+                nhlog::crypto()->warn("No session with id {} in db", req.content.session_id);
                 return;
         }
 
@@ -523,13 +525,14 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 return;
         }
 
+        auto session_key = mtx::crypto::export_session(session);
         //
         // Prepare the m.room_key event.
         //
         auto payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
                             {"room_id", req.content.room_id},
                             {"session_id", req.content.session_id},
-                            {"session_key", session.data.session_key}};
+                            {"session_key", session_key}};
 
         send_megolm_key_to_device(req.sender, req.content.requesting_device_id, payload);
 }
