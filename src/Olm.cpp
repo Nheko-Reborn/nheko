@@ -9,6 +9,7 @@
 #include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 
 static const std::string STORAGE_SECRET_KEY("secret");
@@ -519,7 +520,20 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 return;
         }
 
-        if (!utils::respondsToKeyRequests(req.content.room_id)) {
+        // check if device is verified
+        auto verificationStatus = cache::verificationStatus(req.sender);
+        bool verifiedDevice     = false;
+        if (verificationStatus &&
+            ChatPage::instance()->userSettings()->shareKeysWithTrustedUsers()) {
+                for (const auto &dev : verificationStatus->verified_devices) {
+                        if (dev == req.content.requesting_device_id) {
+                                verifiedDevice = true;
+                                break;
+                        }
+                }
+        }
+
+        if (!utils::respondsToKeyRequests(req.content.room_id) && !verifiedDevice) {
                 nhlog::crypto()->debug("ignoring all key requests for room {}",
                                        req.content.room_id);
                 return;

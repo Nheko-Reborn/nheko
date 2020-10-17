@@ -72,8 +72,10 @@ UserSettings::load()
         font_                = settings.value("user/font_family", "default").toString();
         avatarCircles_       = settings.value("user/avatar_circles", true).toBool();
         decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
-        emojiFont_           = settings.value("user/emoji_font_family", "default").toString();
-        baseFontSize_        = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+        shareKeysWithTrustedUsers_ =
+          settings.value("user/share_keys_with_trusted_users", true).toBool();
+        emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
+        baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
         presence_ =
           settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
             .value<Presence>();
@@ -292,6 +294,16 @@ UserSettings::setUseStunServer(bool useStunServer)
 }
 
 void
+UserSettings::setShareKeysWithTrustedUsers(bool shareKeys)
+{
+        if (shareKeys == shareKeysWithTrustedUsers_)
+                return;
+        shareKeysWithTrustedUsers_ = shareKeys;
+        emit shareKeysWithTrustedUsersChanged(shareKeys);
+        save();
+}
+
+void
 UserSettings::setDefaultAudioSource(const QString &defaultAudioSource)
 {
         if (defaultAudioSource == defaultAudioSource_)
@@ -374,6 +386,7 @@ UserSettings::save()
 
         settings.setValue("avatar_circles", avatarCircles_);
         settings.setValue("decrypt_sidebar", decryptSidebar_);
+        settings.setValue("share_keys_with_trusted_users", shareKeysWithTrustedUsers_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
         settings.setValue("minor_events", sortByImportance_);
@@ -439,26 +452,27 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
         general_->setFont(font);
 
-        trayToggle_               = new Toggle{this};
-        startInTrayToggle_        = new Toggle{this};
-        avatarCircles_            = new Toggle{this};
-        decryptSidebar_           = new Toggle(this);
-        groupViewToggle_          = new Toggle{this};
-        timelineButtonsToggle_    = new Toggle{this};
-        typingNotifications_      = new Toggle{this};
-        messageHoverHighlight_    = new Toggle{this};
-        enlargeEmojiOnlyMessages_ = new Toggle{this};
-        sortByImportance_         = new Toggle{this};
-        readReceipts_             = new Toggle{this};
-        markdown_                 = new Toggle{this};
-        desktopNotifications_     = new Toggle{this};
-        alertOnNotification_      = new Toggle{this};
-        useStunServer_            = new Toggle{this};
-        scaleFactorCombo_         = new QComboBox{this};
-        fontSizeCombo_            = new QComboBox{this};
-        fontSelectionCombo_       = new QComboBox{this};
-        emojiFontSelectionCombo_  = new QComboBox{this};
-        timelineMaxWidthSpin_     = new QSpinBox{this};
+        trayToggle_                = new Toggle{this};
+        startInTrayToggle_         = new Toggle{this};
+        avatarCircles_             = new Toggle{this};
+        decryptSidebar_            = new Toggle(this);
+        shareKeysWithTrustedUsers_ = new Toggle(this);
+        groupViewToggle_           = new Toggle{this};
+        timelineButtonsToggle_     = new Toggle{this};
+        typingNotifications_       = new Toggle{this};
+        messageHoverHighlight_     = new Toggle{this};
+        enlargeEmojiOnlyMessages_  = new Toggle{this};
+        sortByImportance_          = new Toggle{this};
+        readReceipts_              = new Toggle{this};
+        markdown_                  = new Toggle{this};
+        desktopNotifications_      = new Toggle{this};
+        alertOnNotification_       = new Toggle{this};
+        useStunServer_             = new Toggle{this};
+        scaleFactorCombo_          = new QComboBox{this};
+        fontSizeCombo_             = new QComboBox{this};
+        fontSelectionCombo_        = new QComboBox{this};
+        emojiFontSelectionCombo_   = new QComboBox{this};
+        timelineMaxWidthSpin_      = new QSpinBox{this};
 
         if (!settings_->tray())
                 startInTrayToggle_->setDisabled(true);
@@ -653,6 +667,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Device ID"), deviceIdValue_);
         boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
+        boxWrap(
+          tr("Share keys with trusted users"),
+          shareKeysWithTrustedUsers_,
+          tr("Automatically replies to key requests from other users, if they are verified."));
         formLayout_->addRow(new HorizontalLine{this});
         formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
 
