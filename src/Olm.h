@@ -108,6 +108,6 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
 void
 send_megolm_key_to_device(const std::string &user_id,
                           const std::string &device_id,
-                          const json &payload);
+                          const mtx::events::msg::ForwardedRoomKey &payload);
 
 } // namespace olm

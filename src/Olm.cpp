@@ -1,7 +1,7 @@
+#include "Olm.h"
+
 #include <QObject>
 #include <variant>
-
-#include "Olm.h"
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -494,9 +494,6 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 nhlog::crypto()->warn("requested session not found in room: {}",
                                       req.content.room_id);
 
-                nhlog::crypto()->warn("requested session not found in room: {}",
-                                      req.content.room_id);
-
                 return;
         }
 
@@ -528,6 +525,7 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 for (const auto &dev : verificationStatus->verified_devices) {
                         if (dev == req.content.requesting_device_id) {
                                 verifiedDevice = true;
+                                nhlog::crypto()->debug("Verified device: {}", dev);
                                 break;
                         }
                 }
@@ -543,18 +541,24 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         //
         // Prepare the m.room_key event.
         //
-        auto payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
-                            {"room_id", req.content.room_id},
-                            {"session_id", req.content.session_id},
-                            {"session_key", session_key}};
+        mtx::events::msg::ForwardedRoomKey forward_key{};
+        forward_key.algorithm   = MEGOLM_ALGO;
+        forward_key.room_id     = index.room_id;
+        forward_key.session_id  = index.session_id;
+        forward_key.session_key = session_key;
+        forward_key.sender_key  = index.sender_key;
 
-        send_megolm_key_to_device(req.sender, req.content.requesting_device_id, payload);
+        // TODO(Nico): Figure out if this is correct
+        forward_key.sender_claimed_ed25519_key      = olm::client()->identity_keys().ed25519;
+        forward_key.forwarding_curve25519_key_chain = {};
+
+        send_megolm_key_to_device(req.sender, req.content.requesting_device_id, forward_key);
 }
 
 void
 send_megolm_key_to_device(const std::string &user_id,
                           const std::string &device_id,
-                          const json &payload)
+                          const mtx::events::msg::ForwardedRoomKey &payload)
 {
         mtx::requests::QueryKeys req;
         req.device_keys[user_id] = {device_id};
@@ -613,17 +617,13 @@ send_megolm_key_to_device(const std::string &user_id,
                           return;
                   }
 
-                  auto room_key = olm::client()
-                                    ->create_room_key_event(UserId(user_id), pks.ed25519, payload)
-                                    .dump();
-
                   mtx::requests::ClaimKeys claim_keys;
                   claim_keys.one_time_keys[user_id][device_id] = mtx::crypto::SIGNED_CURVE25519;
 
                   http::client()->claim_keys(
                     claim_keys,
-                    [room_key, user_id, device_id, pks](const mtx::responses::ClaimKeys &res,
-                                                        mtx::http::RequestErr err) {
+                    [payload, user_id, device_id, pks](const mtx::responses::ClaimKeys &res,
+                                                       mtx::http::RequestErr err) {
                             if (err) {
                                     nhlog::net()->warn("claim keys error: {} {} {}",
                                                        err->matrix_error.error,
@@ -665,8 +665,12 @@ send_megolm_key_to_device(const std::string &user_id,
                                     auto olm_session = olm::client()->create_outbound_session(
                                       pks.curve25519, device.begin()->at("key"));
 
-                                    device_msg = olm::client()->create_olm_encrypted_content(
-                                      olm_session.get(), room_key, pks.curve25519);
+                                    mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey>
+                                      room_key;
+                                    room_key.content = payload;
+                                    room_key.type    = mtx::events::EventType::ForwardedRoomKey;
+                                    device_msg       = olm::client()->create_olm_encrypted_content(
+                                      olm_session.get(), json(room_key).dump(), pks.curve25519);
 
                                     cache::saveOlmSession(pks.curve25519, std::move(olm_session));
                             } catch (const json::exception &e) {
@@ -682,7 +686,7 @@ send_megolm_key_to_device(const std::string &user_id,
                             body["messages"][user_id][device_id] = device_msg;
 
                             nhlog::net()->info(
-                              "sending m.room_key event to {}:{}", user_id, device_id);
+                              "sending m.forwarded_room_key event to {}:{}", user_id, device_id);
                             http::client()->send_to_device(
                               "m.room.encrypted", body, [user_id](mtx::http::RequestErr err) {
                                       if (err) {
@@ -692,7 +696,8 @@ send_megolm_key_to_device(const std::string &user_id,
                                                                  err->matrix_error.error);
                                       }
 
-                                      nhlog::net()->info("m.room_key send to {}", user_id);
+                                      nhlog::net()->info("m.forwarded_room_key send to {}",
+                                                         user_id);
                               });
                     });
           });
