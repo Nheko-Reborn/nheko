@@ -159,6 +159,7 @@ Page {
         }
 
         ColumnLayout {
+            visible: TimelineManager.timeline != null
             anchors.fill: parent
 
             Rectangle {
@@ -287,7 +288,6 @@ Page {
 
                 property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width * 2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width * 2)
 
-                visible: TimelineManager.timeline != null
                 cacheBuffer: 400
                 Layout.fillWidth: true
                 Layout.fillHeight: true
