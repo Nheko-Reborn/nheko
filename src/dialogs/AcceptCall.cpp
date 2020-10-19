@@ -131,5 +131,4 @@ AcceptCall::AcceptCall(const QString &caller,
                 emit close();
         });
 }
-
 }

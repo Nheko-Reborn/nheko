@@ -2,9 +2,55 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="et">
 <context>
+    <name>ActiveCallBar</name>
+    <message>
+        <location filename="../qml/ActiveCallBar.qml" line="+49"/>
+        <source>Initiating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Calling...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Connecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Unmute Mic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Mute Mic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AwaitingVerificationConfirmation</name>
+    <message>
+        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
+        <source>Awaiting Confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Waiting for other side to complete verification.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1359"/>
+        <location filename="../../src/Cache.cpp" line="+1732"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid selle jututoaga.</translation>
     </message>
@@ -12,35 +58,55 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+229"/>
+        <location filename="../../src/ChatPage.cpp" line="+215"/>
         <source>Failed to invite user: %1</source>
         <translation>Kutse saatmine kasutajale ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+926"/>
+        <location line="+947"/>
         <source>Invited user: %1</source>
         <translation>Kutsutud kasutaja: %1</translation>
     </message>
     <message>
-        <location line="-474"/>
+        <location line="-458"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Puhverdatud andmete muutmine sobivaks rakenduse praeguse versiooniga ei õnnestunud. Sellel võib olla erinevaid põhjuseid. Palun saada meile veateade ja seni kasuta vanemat rakenduse versiooni. Aga kui sa soovid proovida, siis kustuta puhverdatud andmed käsitsi.</translation>
     </message>
     <message>
-        <location line="+439"/>
+        <location line="+415"/>
         <source>Room %1 created.</source>
         <translation>%1 jututuba on loodud.</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <location line="+26"/>
+        <source>Confirm invite</source>
+        <translation>Kinnita kutse</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+1"/>
+        <source>Do you really want to invite %1 (%2)?</source>
+        <translation>Kas sa tõesti soovid saata kutset kasutajale %1 (%2)?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Failed to invite %1 to %2: %3</source>
+        <translation>Kasutaja %1 kutsumine %2 jututuppa ei õnnestunud: %3</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Confirm kick</source>
+        <translation>Kinnita väljamüksamine</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to kick %1 (%2)?</source>
+        <translation>Kas sa tõesti soovid müksata kasutaja %1 (%2) jututoast välja?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja %1 välja müksamine %2 jututoast ei õnnestunud: %3</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -48,34 +114,54 @@
         <translation>Väljamüksatud kasutaja: %1</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+10"/>
+        <source>Confirm ban</source>
+        <translation>Kinnita suhtluskeeld</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to ban %1 (%2)?</source>
+        <translation>Kas sa tõesti soovid kasutajale %1 (%2) seada suhtluskeeldu?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajale %1 suhtluskeelu seadmine %2 jututoas ei õnnestunud: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Suhtluskeeld kasutajale: %1</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+10"/>
+        <source>Confirm unban</source>
+        <translation>Kinnita suhtluskeelu eemaldamine</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to unban %1 (%2)?</source>
+        <translation>Kas sa tõesti soovid kasutajalt %1 (%2) eemaldada suhtluskeelu?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajalt %1 suhtluskeelu eemaldamine %2 jututoas ei õnnestunud: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Suhtluskeeld eemaldatud: %1</translation>
     </message>
     <message>
-        <location line="-828"/>
+        <location line="-874"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
-        <location line="+296"/>
+        <location line="+334"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Puhvri versiooniuuendus ebaõnnestus!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -88,50 +174,50 @@
         <translation>Sinu andmekandjale salvestatud puhvri versioon on uuem, kui käesolev Nheko versioon kasutada oskab. Palun tee Nheko uuendus või kustuta puhverdatud andmed.</translation>
     </message>
     <message>
-        <location line="+111"/>
+        <location line="+67"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>OLM konto taastamine ei õnnestunud. Palun logi uuesti sisse.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvestatud andmete taastamine ei õnnestunud. Palun logi uuesti sisse.</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptovõtmete kasutusele võtmine ei õnnestunud. Koduserveri vastus päringule: %1 %2. Palun proovi hiljem uuesti.</translation>
     </message>
     <message>
-        <location line="+54"/>
-        <location line="+252"/>
+        <location line="+99"/>
+        <location line="+251"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun proovi uuesti sisse logida: %1</translation>
     </message>
     <message>
-        <location line="-187"/>
+        <location line="-219"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoaga liitumine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa liitusid selle jututoaga</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutse tagasivõtmine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa loomine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoast lahkumine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -139,33 +225,56 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik jututoad</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Eelistatud jututoad</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Vähetähtsad jututoad</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server Notices</source>
         <comment>Tag translation for m.server_notice</comment>
-        <translation type="unfinished"></translation>
+        <translation>Serveriteated</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (silt)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
+        <translation> (kogukond)</translation>
+    </message>
+</context>
+<context>
+    <name>DigitVerification</name>
+    <message>
+        <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
+        <source>Verification Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>They do not match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>They match!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -174,84 +283,180 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+72"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Rakenda</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema</translation>
     </message>
 </context>
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
-        <location line="+139"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+112"/>
+        <location line="+181"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi</translation>
     </message>
     <message>
-        <location line="-42"/>
+        <location line="-66"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Inimesed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Loodus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Toit</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Tegevused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Reisimine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Esemed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Sümbolid</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
+        <translation>Lipud</translation>
+    </message>
+</context>
+<context>
+    <name>EmojiVerification</name>
+    <message>
+        <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
+        <source>Verification Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+376"/>
+        <source>They do not match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>They match!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
+        <translation>See sõnum on krüptimata!</translation>
+    </message>
+</context>
+<context>
+    <name>EventStore</name>
+    <message>
+        <location filename="../../src/timeline/EventStore.cpp" line="+503"/>
+        <source>-- Encrypted Event (No keys found for decryption) --</source>
+        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
+        <translation>-- Krüptitud sündmus (Dekrüptimisvõtmeid ei leidunud) --</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <location line="+62"/>
+        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
+        <translation>-- Dekrüptimise viga (megolm&apos;i võtmete laadimine andmebaasist ei õnnestunud) --</translation>
+    </message>
+    <message>
+        <location line="-48"/>
+        <location line="+61"/>
+        <source>-- Decryption Error (%1) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
+        <translation>-- Dekrüptimise viga (%1) --</translation>
+    </message>
+    <message>
+        <location line="-51"/>
+        <source>-- Encrypted Event (Unknown event type) --</source>
+        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
+        <translation>-- Krüptitud sündmus (Tundmatu sündmuse tüüp) --</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>-- Replay attack! This message index was reused! --</source>
+        <translation>-- Kordusel põhinev rünne! Selle sõnumi indeksit on uuesti kasutatud! --</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Message by unverified device! --</source>
+        <translation>-- Sõnum verifitseerimata seadmest! --</translation>
+    </message>
+</context>
+<context>
+    <name>Failed</name>
+    <message>
+        <location filename="../qml/device-verification/Failed.qml" line="+7"/>
+        <source>Verification failed</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Other client does not support our verification protocol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Key mismatch detected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+4"/>
+        <source>Device verification timed out.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Other party canceled the verification.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Close</source>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -259,7 +464,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda</translation>
     </message>
 </context>
 <context>
@@ -267,12 +472,12 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+90"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix&apos;i kasutajatunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>näiteks @kadri:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -280,74 +485,78 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu kasutajanimi sisselogimiseks. Matrix&apos;i kasutajatunnus algab @ märgiga ning sellele järgneb kasutajanimi. Seejärel peale koolonit
+on sinu koduserveri nimi. Kui sinu koduserver ei toeta .well-known nimelahendust, siis sa võid lisada ka koduserveri aadressi.
+Näiteks @kadri:server.minu
+Kui Nheko ei suuda tuvastada sinu koduserverit, siis ta kuvab sulle andmevälja selle sisestamiseks.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle seadme nimi, mida näidetakse verifitseerimise ajal teisele kasutajatele. Kui sa ise nime ei pane, siis kasutame automaatselt pandud nime.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Aadress, mida sinu koduserveri kliendipoole API kasutab.
+Näiteks: https://server.minu:8787</translation>
     </message>
     <message>
         <location line="+16"/>
         <location line="+191"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGI SISSE</translation>
     </message>
     <message>
         <location line="-100"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserveri automaatne tuvastamine ei õnnestunud: päringuvastus oli vigane.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserveri automaatne tuvastamine ei õnnestunud: tundmatu viga .well-known päringu tegemisel.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Protokolli järgi nõutavaid lõpppunkte ei leidunud. Ilmselt pole tegemist Matrix&apos;i serveriga.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Päringule sain tagasi vigase vastuse. Palun kontrolli, et koduserveri domeen oleks õige.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekkis teadmata viga. Palun kontrolli, et koduserveri domeen on õige.</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>ÜHEKORDNE SISSELOGIMINE</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühi salasõna</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühekordne sisselogimine ei õnnestunud</translation>
     </message>
 </context>
 <context>
@@ -355,28 +564,29 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+90"/>
         <source>Room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa liikmed</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobib</translation>
     </message>
 </context>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+66"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
+        <location line="+9"/>
         <source>redacted</source>
         <translation>muudetud</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>Encryption enabled</source>
         <translation>Krüptimine on kasutusel</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>room name changed to: %1</source>
         <translation>jututoa uus nimi on: %1</translation>
     </message>
@@ -386,7 +596,7 @@ Example: https://server.my:8787</source>
         <translation>eemaldas jututoa nime</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>topic changed to: %1</source>
         <translation>jututoa uus teema on: %1</translation>
     </message>
@@ -396,24 +606,82 @@ Example: https://server.my:8787</source>
         <translation>teema on eemaldatud</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lõi ja seadistas jututoa: %2</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>%1 placed a %2 call.</source>
-        <translation type="unfinished"></translation>
+        <location line="+12"/>
+        <source>%1 placed a voice call.</source>
+        <translation>%1 helistas.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+2"/>
+        <source>%1 placed a video call.</source>
+        <translation>%1 alustas videokõnet.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 placed a call.</source>
+        <translation>%1 helistas.</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Negotiating call...</source>
+        <translation>Ühendan kõnet…</translation>
+    </message>
+    <message>
+        <location line="-18"/>
         <source>%1 answered the call.</source>
+        <translation>%1 vastas kõnele.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>%1 ended the call.</source>
+        <translation>%1 lõpetas kõne.</translation>
+    </message>
+</context>
+<context>
+    <name>NewVerificationRequest</name>
+    <message>
+        <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
+        <source>Send Device Verification Request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>%1 ended the call.</source>
+        <location line="+0"/>
+        <source>Recieved Device Verification Request</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>The device was requested to be verified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Start verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Accept</source>
+        <translation>Nõustu</translation>
     </message>
 </context>
 <context>
@@ -421,7 +689,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>implementeerimata sündmus: </translation>
     </message>
 </context>
 <context>
@@ -429,7 +697,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
         <source>Search for a room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi jututuba…</translation>
     </message>
 </context>
 <context>
@@ -437,75 +705,75 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+88"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajanimi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajanimi ei tohi olla tühi ning võib sisaldada vaid a-z, 0-9, ., _, =, -, / tähemärke.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun vali tutvaline salasõna. Täpsemad nõuded salasõnale sõltuvad sinu koduserveri seadistustest.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Korda salasõna</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>See on server, kus sa oma kasutajakonto registreerid. Kuna Matrix on hajutatud suhtlusvõrk, siis esmalt pead leidma sulle sobiliku koduserveri või panema püsti täitsa oma enda koduserveri.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTREERI</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Selline registreerimise töövoog pole toetatud!</translation>
     </message>
     <message>
         <location line="+135"/>
         <source>Invalid username</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigane kasutajanimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna pole piisavalt pikk (vähemalt 8 tähemärki)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõnad ei klapi omavahel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigane koduserveri nimi</translation>
     </message>
 </context>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+984"/>
+        <location filename="../../src/Cache.cpp" line="+1815"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>salvestatud versiooni ei leidu</translation>
     </message>
 </context>
 <context>
@@ -513,64 +781,64 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa jututoale silt:</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lemmik</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vähetähtis</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>Serveriteade</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lisab või eemaldab selle sildi.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uus silt…</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uus silt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tag:</source>
         <comment>Tag name prompt</comment>
-        <translation type="unfinished"></translation>
+        <translation>Silt:</translation>
     </message>
     <message>
         <location line="+173"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Nõustu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei nõustu</translation>
     </message>
 </context>
 <context>
@@ -578,7 +846,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+40"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja seadistused</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -604,36 +872,54 @@ Example: https://server.my:8787</source>
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../qml/StatusIndicator.qml" line="+14"/>
+        <location filename="../qml/StatusIndicator.qml" line="+17"/>
         <source>Failed</source>
         <translation>Ebaõnnestus</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Sent</source>
         <translation>Saadetud</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Received</source>
         <translation>Vastuvõetud</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Read</source>
         <translation>Loetud</translation>
     </message>
 </context>
 <context>
+    <name>Success</name>
+    <message>
+        <location filename="../qml/device-verification/Success.qml" line="+6"/>
+        <source>Successful Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Verification successful! Both sides verified their devices!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Close</source>
+        <translation>Sulge</translation>
+    </message>
+</context>
+<context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+460"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+574"/>
         <source>Send a file</source>
         <translation>Saada fail</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+145"/>
+        <location filename="../../src/TextInputWidget.h" line="+160"/>
         <source>Write a message...</source>
         <translation>Kirjuta sõnum…</translation>
     </message>
@@ -648,7 +934,7 @@ Example: https://server.my:8787</source>
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+96"/>
         <source>Select a file</source>
         <translation>Vali fail</translation>
     </message>
@@ -656,6 +942,16 @@ Example: https://server.my:8787</source>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Kõik failid (*)</translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>Place a call</source>
+        <translation>Helista</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Hang up</source>
+        <translation>Lõpeta kõne</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
@@ -666,30 +962,20 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+891"/>
-        <source>-- Decryption Error (failed to communicate with DB) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation>-- Dekrüptimise viga (ei õnnestu suhelda andmebaasiga) --</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation>-- Dekrüptimise viga (megolm&apos;i võtmete laadimine andmebaasist ei õnnestunud) --</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
-        <translation>-- Dekrüptimise viga (%1) --</translation>
-    </message>
-    <message>
-        <location line="+99"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
         <source>Message redaction failed: %1</source>
         <translation>Sõnumi ümbersõnastamine ebaõnnestus: %1</translation>
     </message>
     <message>
-        <location line="+488"/>
+        <location line="+125"/>
+        <location line="+17"/>
+        <location line="+88"/>
+        <location line="+5"/>
+        <source>Failed to encrypt event, sending aborted!</source>
+        <translation>Sündmuse krüptimine ei õnnestunud, katkestame saatmise!</translation>
+    </message>
+    <message>
+        <location line="+236"/>
         <source>Save image</source>
         <translation>Salvesta pilt</translation>
     </message>
@@ -708,20 +994,8 @@ Example: https://server.my:8787</source>
         <source>Save file</source>
         <translation>Salvesta fail</translation>
     </message>
-    <message>
-        <location line="-643"/>
-        <source>-- Encrypted Event (No keys found for decryption) --</source>
-        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation>-- Krüptitud sündmus (Dekrüptimisvõtmeid ei leidunud) --</translation>
-    </message>
-    <message>
-        <location line="+82"/>
-        <source>-- Encrypted Event (Unknown event type) --</source>
-        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation>-- Krüptitud sündmus (Tundmatu sündmuse tüüp) --</translation>
-    </message>
     <message numerus="yes">
-        <location line="+693"/>
+        <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -775,7 +1049,7 @@ Example: https://server.my:8787</source>
         <translation>%1 muutis selle jututoa õigusi.</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+33"/>
         <source>%1 was invited.</source>
         <translation>%1 sai kutse.</translation>
     </message>
@@ -797,7 +1071,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis oma profiili.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -837,23 +1111,23 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-11"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis oma koputust jututoa uksele.</translation>
     </message>
     <message>
-        <location line="-1281"/>
+        <location line="-982"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa liitusid jututoaga.</translation>
     </message>
     <message>
-        <location line="+1283"/>
+        <location line="+984"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lükkas tagasi %1 koputuse jututoa uksele.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 lahkus jututoast peale seda, kui ta juba oli lahkunud!</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -869,17 +1143,17 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+91"/>
+        <location filename="../qml/TimelineRow.qml" line="+95"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reageeri</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+15"/>
         <source>Reply</source>
         <translation>Vasta</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+14"/>
         <source>Options</source>
         <translation>Valikud</translation>
     </message>
@@ -887,75 +1161,73 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+54"/>
+        <location filename="../qml/TimelineView.qml" line="+66"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reageeri</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Reply</source>
         <translation>Vasta</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Read receipts</source>
         <translation>Lugemisteatised</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Mark as read</source>
         <translation>Märgi loetuks</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Näita sõnumi lähtekoodi</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>View decrypted raw message</source>
         <translation>Näita sõnumi dekrüptitud lähtekoodi</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Redact message</source>
         <translation>Muuda sõnumit</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Save as</source>
         <translation>Salvesta kui</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+43"/>
         <source>No room open</source>
         <translation>Ühtegi jututuba pole avatud</translation>
     </message>
     <message>
-        <location line="+271"/>
-        <source>Close</source>
-        <translation>Sulge</translation>
+        <location line="+50"/>
+        <source>Back to room list</source>
+        <translation>Tagasi jututubade loendisse</translation>
     </message>
-</context>
-<context>
-    <name>TopRoomBar</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+86"/>
+        <location line="+12"/>
+        <location line="+15"/>
+        <source>No room selected</source>
+        <translation>Jututuba on valimata</translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Room options</source>
         <translation>Jututoa valikud</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Mentions</source>
-        <translation>Mainimised</translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+7"/>
         <source>Invite users</source>
         <translation>Kutsu kasutajaid</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>Members</source>
         <translation>Liikmed</translation>
     </message>
@@ -968,6 +1240,19 @@ Example: https://server.my:8787</source>
         <location line="+5"/>
         <source>Settings</source>
         <translation>Seadistused</translation>
+    </message>
+    <message>
+        <location line="+286"/>
+        <source>Close</source>
+        <translation>Sulge</translation>
+    </message>
+</context>
+<context>
+    <name>TimelineViewManager</name>
+    <message>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+412"/>
+        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -993,43 +1278,66 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjuta kohandatud olekuteade</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Kohandatud olekuteade</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Olek:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Määra oma võrguolek automaatselt</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrgus</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Pole kättesaadav</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
+        <translation>Pole võrgus</translation>
+    </message>
+</context>
+<context>
+    <name>UserProfile</name>
+    <message>
+        <location filename="../qml/UserProfile.qml" line="+60"/>
+        <source>Verify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Ban the user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Start a private chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Kick the user</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+535"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+565"/>
         <source>Minimize to tray</source>
         <translation>Vähenda tegumiribale</translation>
     </message>
@@ -1041,225 +1349,248 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Rühmade küljepaan</translation>
     </message>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Ümmargused tunnuspildid</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-62"/>
+        <source>CALLS</source>
+        <translation>KÕNED</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Peale akna sulgemist jäta rakendus taustal tööle.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Käivita rakendus taustal ilma kliendiakna kuvamiseta.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda vestlustes kuvatavate tunnuspiltide kuju.
+Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita jututubade loendi kõrval veergu rühmade ja siltidega.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekrüpti sõnumid külgribal</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekrüpti külgpaanis kuvatavaid sõnumeid.
+Kehtib vaid läbivalt krüptitud vestluste puhul.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita ajajoonel nuppe</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita iga sõnumi kõrval nuppe, mis võimaldavad kiiresti vastata, reageerida või teha sõnumiga muid toiminguid.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Piira ajajoone laiust</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista sõnumite suurim laius pikslites ajajoonel. See parandab loetavust suurel ekraanil, kui Nheko on avatud täisvaates.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjutamisteatised</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita, kes jututoas parasjagu kirjutab.
+Samaga lülitatakse sisse või välja ka sinu kirjutamisteatiste saatmine teistele kasutajatele.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjesta jututoad lugemata tubade alusel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuva uute sõnumitega jututoad esimesena.
+Kui see valik on välja lülitatud, siis jututoad järjestatakse viimati saanunud sõnumi ajatempli alusel.
+Kui see valik on sisse lülitatud, siis teavitustega jututoad (pisike ümmargune numbrifa ikoon) järjestatakse esimesena. Sinu poolt summutatud jututoad järjestatakse ikkagi ajatempli alusel, sest sa ei pea neid teistega võrreldes piisavalt tähtsaks.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lugemisteatised</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita, kas sinu sõnum sai loetud.
+Lugemise olekut kuvatakse ajatempli kõrval.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada sõnumid Markdown-vormindusena</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba Markdown-vormingu kasutamine sõnumite koostamisel.
+Kui Markdown ei ole kasutusel, siis saadetakse kõik sõnumid vormindamata tekstina.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Töölauakeskkonna teavitused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita saabunud sõnumi teavitust, kui Nheko ei ole parasjagu fookuses.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna teavitustest märku</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumi saabumisel näita teavitust.
+See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti animatsiooniga sulle märku.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Üle sõnumi liikumisel too ta esile</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Üle sõnumite liikudes muuda nende taustavärvi.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Suured emojid ajajoonel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tee sõnumi font suuremaks, kui sõnumis on vaid mõned emojid.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Mastaabitegur</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda kogu kasutajaliidese suurust.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondi suurus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondiperekond</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
+        <source>Allow fallback call assist server</source>
+        <translation>Luba kõnehõlbustusserveri kasutamist</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
+        <translation>Kui sinu koduserver ei paku välja sobilikku kõnehõlbustusserverit, siis kasuta turn.matrix.org teenust.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme tunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme sõrmejälg</translation>
     </message>
     <message>
-        <location line="-113"/>
+        <location line="-120"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Sessioonivõtmed</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORDI</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EKSPORDI</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>KRÜPTIMINE</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-77"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ÜLDISED SEADISTUSED</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>LIIDES</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+171"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondiperekond emojide jaoks</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+191"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava sessioonide fail</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1273,34 +1604,62 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+2"/>
         <location line="+2"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Viga</translation>
     </message>
     <message>
         <location line="-74"/>
         <location line="+32"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Faili salasõna</translation>
     </message>
     <message>
         <location line="-31"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Faili dekrüptimiseks sisesta salafraas:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+32"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna ei saa olla tühi</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Oma sessioonivõtmete krüptimiseks sisesta salafraas:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
+        <translation>Fail, kuhu salvestad eksporditavad sessiooni krüptovõtmed</translation>
+    </message>
+</context>
+<context>
+    <name>Waiting</name>
+    <message>
+        <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
+        <source>Waiting for other party</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Waiting for other side to accept the verification request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Waiting for other side to continue the verification request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Waiting for other side to complete the verification request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Cancel</source>
+        <translation>Tühista</translation>
     </message>
 </context>
 <context>
@@ -1308,30 +1667,43 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+47"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tere tulemast nheko kasutajaks! Töölauarakendus Matrix&apos;i protokolli jaoks.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Head suhtlemist!</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTREERU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGI SISSE</translation>
     </message>
 </context>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+147"/>
+        <location filename="../../src/Utils.cpp" line="+146"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Eile</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::AcceptCall</name>
+    <message>
+        <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
+        <source>Accept</source>
+        <translation>Nõustu</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Reject</source>
+        <translation>Ära võta vastu</translation>
     </message>
 </context>
 <context>
@@ -1339,42 +1711,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo jututuba</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa nähtavus</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa tüüp</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsevestlus</translation>
     </message>
 </context>
 <context>
@@ -1382,22 +1754,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava kasutaja registreerimise tagavaravariant veebibrauseris</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava kasutaja registreerimise tagavaravariant, läbi kõik sammud ja kinnita seda, kui kõik valmis on.</translation>
     </message>
 </context>
 <context>
@@ -1405,12 +1777,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajatunnus, kellele soovid kutset saata</translation>
     </message>
 </context>
 <context>
@@ -1418,17 +1790,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa tunnus või alias</translation>
     </message>
 </context>
 <context>
@@ -1436,12 +1808,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa oled kindel, et soovid lahkuda?</translation>
     </message>
 </context>
 <context>
@@ -1449,12 +1821,25 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Logime nüüd välja. Kas sa oled kindel?</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::PlaceCall</name>
+    <message>
+        <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
+        <source>Voice</source>
+        <translation>Häälkõne</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cancel</source>
+        <translation>Loobu</translation>
     </message>
 </context>
 <context>
@@ -1462,19 +1847,21 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Lae üles</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Meedia tüüp: %1
+Meedia suurus: %2
+</translation>
     </message>
 </context>
 <context>
@@ -1482,17 +1869,17 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta reCAPTCHA küsimustele ja vajuta kinnita-nuppu</translation>
     </message>
 </context>
 <context>
@@ -1500,12 +1887,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lugemisteatised</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -1513,12 +1900,12 @@ Media size: %2
     <message>
         <location line="-46"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Täna %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eile %1</translation>
     </message>
 </context>
 <context>
@@ -1526,156 +1913,168 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadistused</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Teave</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisemine tunnus</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa versioon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Teavitused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Summutatud</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaid mainimised</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik sõnumid</translation>
     </message>
     <message>
         <location line="+97"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligipääs jututuppa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik (sealhulgas külalised)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik, kes teavad jututoa aadressi (aga mitte külalised)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsutud kasutajad</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Läbiv krüptimine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine on nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta krüptovõtmete päringutele</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas klient peaks automaatselt vastama või mitte vastama sessioonivõtmete päringule.
+ Kasuta seda võimalust ettevaatlikult. Tegemist on ajutise lahendusega läbiva krüptimise
+ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.</translation>
     </message>
     <message numerus="yes">
         <location line="+51"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n kasutaja</numerusform>
+            <numerusform>%n kasutajat</numerusform>
         </translation>
     </message>
     <message>
         <location line="+140"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise kasutuselevõtmine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+147"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali tunnuspilt</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik failid (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitud fail ei ole pildifail</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Viga faili lugemisel: %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Viga faili üleslaadimisel: %1</translation>
     </message>
 </context>
 <context>
     <name>dialogs::UserProfile</name>
     <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
+        <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
         <source>Ban the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sea kasutajale siin jututoas suhtluskeeld</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Ignore messages from this user</source>
-        <translation type="unfinished"></translation>
+        <translation>Eira selle kasutaja sõnumeid</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Kick the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Müksa see kasutaja jututoast välja</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Start a conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta vestlust</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+14"/>
+        <source>Confirm DM</source>
+        <translation>Kinnita otsevestlus</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to invite %1 (%2) to a direct chat?</source>
+        <translation>Kas sa tõesti soovid saata otsevestluse kutset kasutajale %1 (%2)?</translation>
+    </message>
+    <message>
+        <location line="+54"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadmed</translation>
     </message>
 </context>
 <context>
@@ -1683,17 +2082,17 @@ Media size: %2
     <message>
         <location filename="../../src/emoji/Panel.cpp" line="+122"/>
         <source>Smileys &amp; People</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigurnäod ja inimesed</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Animals &amp; Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Loomad ja loodus</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Food &amp; Drink</source>
-        <translation type="unfinished"></translation>
+        <translation>Toit ja jook</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1703,7 +2102,7 @@ Media size: %2
     <message>
         <location line="+4"/>
         <source>Travel &amp; Places</source>
-        <translation type="unfinished"></translation>
+        <translation>Reisimine ja kohad</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1724,114 +2123,114 @@ Media size: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+103"/>
+        <location filename="../../src/Utils.h" line="+106"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid helifaili</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis helifaili</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid pildi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis pildi</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid faili</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis faili</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid video</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis video</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid kleepsu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis kleepsu</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid teavituse</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis teavituse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sina: %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid krüptitud sõnumi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis krüptitud sõnumi</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa helistasid</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 helistas</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa vastasid kõnele</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastas kõnele</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa lõpetasid kõne</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lõpetas kõne</translation>
     </message>
 </context>
 <context>
@@ -1839,12 +2238,12 @@ Media size: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>See jututuba</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik jututoad</translation>
     </message>
 </context>
 <context>
@@ -1852,7 +2251,7 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tundmatu sõnumitüüp</translation>
     </message>
 </context>
 </TS>

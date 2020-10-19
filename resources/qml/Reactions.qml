@@ -1,93 +1,95 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.2
+import im.nheko 1.0
 
 // This class is for showing Reactions in the timeline row, not for
 // adding new reactions via the emoji picker
 Flow {
-	id: reactionFlow
+    id: reactionFlow
 
-	// highlight colors for selfReactedEvent background
-	property real highlightHue: colors.highlight.hslHue
-	property real highlightSat: colors.highlight.hslSaturation
-	property real highlightLight: colors.highlight.hslLightness
+    // highlight colors for selfReactedEvent background
+    property real highlightHue: colors.highlight.hslHue
+    property real highlightSat: colors.highlight.hslSaturation
+    property real highlightLight: colors.highlight.hslLightness
+    property string eventId
+    property alias reactions: repeater.model
 
-	property string eventId
-	property string roomId
+    anchors.left: parent.left
+    anchors.right: parent.right
+    spacing: 4
 
-	anchors.left: parent.left
-	anchors.right: parent.right
-	spacing: 4
+    Repeater {
+        id: repeater
 
-	property alias reactions: repeater.model
+        delegate: AbstractButton {
+            id: reaction
 
-	Repeater {
-		id: repeater
+            hoverEnabled: true
+            implicitWidth: contentItem.childrenRect.width + contentItem.leftPadding * 2
+            implicitHeight: contentItem.childrenRect.height
+            ToolTip.visible: hovered
+            ToolTip.text: modelData.users
+            onClicked: {
+                console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent);
+                TimelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key);
+            }
 
-		delegate: AbstractButton {
-			id: reaction
-			hoverEnabled: true
-			implicitWidth: contentItem.childrenRect.width + contentItem.leftPadding*2
-			implicitHeight: contentItem.childrenRect.height
+            contentItem: Row {
+                anchors.centerIn: parent
+                spacing: reactionText.implicitHeight / 4
+                leftPadding: reactionText.implicitHeight / 2
+                rightPadding: reactionText.implicitHeight / 2
 
-			ToolTip.visible: hovered
-			ToolTip.text: modelData.users
+                TextMetrics {
+                    id: textMetrics
 
-			onClicked: {
-				console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + " in room " + reactionFlow.roomId + ". selfReactedEvent: " + modelData.selfReactedEvent)
-				timelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key)
-			}
+                    font.family: Settings.emojiFont
+                    elide: Text.ElideRight
+                    elideWidth: 150
+                    text: modelData.key
+                }
 
+                Text {
+                    id: reactionText
 
-			contentItem: Row {
-				anchors.centerIn: parent
-				spacing: reactionText.implicitHeight/4
-				leftPadding: reactionText.implicitHeight / 2
-				rightPadding: reactionText.implicitHeight / 2
+                    anchors.baseline: reactionCounter.baseline
+                    text: textMetrics.elidedText + (textMetrics.elidedText == modelData.key ? "" : "…")
+                    font.family: Settings.emojiFont
+                    color: reaction.hovered ? colors.highlight : colors.text
+                    maximumLineCount: 1
+                }
 
-				TextMetrics {
-					id: textMetrics
-					font.family: settings.emojiFont
-					elide: Text.ElideRight
-					elideWidth: 150
-					text: modelData.key
-				}
+                Rectangle {
+                    id: divider
 
-				Text {
-					anchors.baseline: reactionCounter.baseline
-					id: reactionText
-					text: textMetrics.elidedText + (textMetrics.elidedText == modelData.key ? "" : "…")
-					font.family: settings.emojiFont
-					color: reaction.hovered ? colors.highlight : colors.text
-					maximumLineCount: 1
-				}
+                    height: Math.floor(reactionCounter.implicitHeight * 1.4)
+                    width: 1
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
+                }
 
-				Rectangle {
-					id: divider
-					height: Math.floor(reactionCounter.implicitHeight * 1.4)
-					width: 1
-					color: (reaction.hovered || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
-				}
+                Text {
+                    id: reactionCounter
 
-				Text {
-					anchors.verticalCenter: divider.verticalCenter
-					id: reactionCounter
-					text: modelData.count
-					font: reaction.font
-					color: reaction.hovered ? colors.highlight : colors.text
-				}
-			}
+                    anchors.verticalCenter: divider.verticalCenter
+                    text: modelData.count
+                    font: reaction.font
+                    color: reaction.hovered ? colors.highlight : colors.text
+                }
 
-			background: Rectangle {
-				anchors.centerIn: parent
+            }
 
-				implicitWidth: reaction.implicitWidth
-				implicitHeight: reaction.implicitHeight
-				border.color: (reaction.hovered  || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
-				color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.20) : colors.base
-				border.width: 1
-				radius: reaction.height / 2.0
-			}
-		}
-	}
+            background: Rectangle {
+                anchors.centerIn: parent
+                implicitWidth: reaction.implicitWidth
+                implicitHeight: reaction.implicitHeight
+                border.color: (reaction.hovered || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
+                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : colors.base
+                border.width: 1
+                radius: reaction.height / 2
+            }
+
+        }
+
+    }
+
 }
-

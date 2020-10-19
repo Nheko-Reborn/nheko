@@ -29,7 +29,9 @@ public:
         void sendInvite(const QString &roomid);
         void hangUp(
           mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
-        bool onActiveCall();
+        bool onActiveCall() const;
+        QString callPartyName() const { return callPartyName_; }
+        QString callPartyAvatarUrl() const { return callPartyAvatarUrl_; }
         void refreshTurnServer();
 
 public slots:
@@ -40,11 +42,8 @@ signals:
         void newMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
+        void newCallParty();
         void turnServerRetrieved(const mtx::responses::TurnServer &);
-        void newCallParty(const QString &userid,
-                          const QString &displayName,
-                          const QString &roomName,
-                          const QString &avatarUrl);
 
 private slots:
         void retrieveTurnServer();
@@ -52,6 +51,8 @@ private slots:
 private:
         WebRTCSession &session_;
         QString roomid_;
+        QString callPartyName_;
+        QString callPartyAvatarUrl_;
         std::string callid_;
         const uint32_t timeoutms_ = 120000;
         std::vector<mtx::events::msg::CallCandidates::Candidate> remoteICECandidates_;

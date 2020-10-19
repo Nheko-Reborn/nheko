@@ -122,6 +122,7 @@
         <file>qtquickcontrols2.conf</file>
 
         <file>qml/TimelineView.qml</file>
+        <file>qml/ActiveCallBar.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/ImageButton.qml</file>
         <file>qml/MatrixText.qml</file>
@@ -132,6 +133,7 @@
         <file>qml/TimelineRow.qml</file>
         <file>qml/emoji/EmojiButton.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
+        <file>qml/UserProfile.qml</file>
         <file>qml/delegates/MessageDelegate.qml</file>
         <file>qml/delegates/TextMessage.qml</file>
         <file>qml/delegates/NoticeMessage.qml</file>
@@ -141,6 +143,13 @@
         <file>qml/delegates/Pill.qml</file>
         <file>qml/delegates/Placeholder.qml</file>
         <file>qml/delegates/Reply.qml</file>
+        <file>qml/device-verification/Waiting.qml</file>
+        <file>qml/device-verification/DeviceVerification.qml</file>
+        <file>qml/device-verification/DigitVerification.qml</file>
+        <file>qml/device-verification/EmojiVerification.qml</file>
+        <file>qml/device-verification/NewVerificationRequest.qml</file>
+        <file>qml/device-verification/Failed.qml</file>
+        <file>qml/device-verification/Success.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

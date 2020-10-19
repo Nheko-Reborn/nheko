@@ -35,7 +35,6 @@
 
 RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
-  , settings(userSettings)
 {
         topLayout_ = new QVBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -76,7 +75,7 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 void
 RoomList::addRoom(const QString &room_id, const RoomInfo &info)
 {
-        auto room_item = new RoomInfoListItem(room_id, info, settings, scrollArea_);
+        auto room_item = new RoomInfoListItem(room_id, info, scrollArea_);
         room_item->setRoomName(QString::fromStdString(std::move(info.name)));
 
         connect(room_item, &RoomInfoListItem::clicked, this, &RoomList::highlightSelectedRoom);
@@ -84,7 +83,7 @@ RoomList::addRoom(const QString &room_id, const RoomInfo &info)
                 MainWindow::instance()->openLeaveRoomDialog(room_id);
         });
 
-        QSharedPointer<RoomInfoListItem> roomWidget(room_item);
+        QSharedPointer<RoomInfoListItem> roomWidget(room_item, &QObject::deleteLater);
         rooms_.emplace(room_id, roomWidget);
         rooms_sort_cache_.push_back(roomWidget);
 
@@ -164,11 +163,6 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
 
         // prevent flickering and save time sorting over and over again
         setUpdatesEnabled(false);
-        disconnect(settings.data(),
-                   &UserSettings::roomSortingChanged,
-                   this,
-                   &RoomList::sortRoomsByLastMessage);
-
         for (auto it = info.begin(); it != info.end(); it++) {
                 if (it.value().is_invite)
                         addInvitedRoom(it.key(), it.value());
@@ -179,10 +173,6 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
         for (auto it = info.begin(); it != info.end(); it++)
                 updateRoomDescription(it.key(), it.value().msgInfo);
 
-        connect(settings.data(),
-                &UserSettings::roomSortingChanged,
-                this,
-                &RoomList::sortRoomsByLastMessage);
         setUpdatesEnabled(true);
 
         if (rooms_.empty())
@@ -505,7 +495,7 @@ RoomList::updateRoom(const QString &room_id, const RoomInfo &info)
 void
 RoomList::addInvitedRoom(const QString &room_id, const RoomInfo &info)
 {
-        auto room_item = new RoomInfoListItem(room_id, info, settings, scrollArea_);
+        auto room_item = new RoomInfoListItem(room_id, info, scrollArea_);
 
         connect(room_item, &RoomInfoListItem::acceptInvite, this, &RoomList::acceptInvite);
         connect(room_item, &RoomInfoListItem::declineInvite, this, &RoomList::declineInvite);

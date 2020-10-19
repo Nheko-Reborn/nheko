@@ -288,7 +288,7 @@ MainWindow::showChatPage()
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
-        if (WebRTCSession::instance().state() != WebRTCSession::State::DISCONNECTED) {
+        if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
                 if (QMessageBox::question(this, "nheko", "A call is in progress. Quit?") !=
                     QMessageBox::Yes) {
                         event->ignore();
@@ -326,15 +326,6 @@ MainWindow::hasActiveUser()
 
         return settings.contains("auth/access_token") && settings.contains("auth/home_server") &&
                settings.contains("auth/user_id");
-}
-
-void
-MainWindow::openUserProfile(const QString &user_id, const QString &room_id)
-{
-        auto dialog = new dialogs::UserProfile(this);
-        dialog->init(user_id, room_id);
-
-        showDialog(dialog);
 }
 
 void
@@ -440,7 +431,7 @@ MainWindow::openLogoutDialog()
 {
         auto dialog = new dialogs::Logout(this);
         connect(dialog, &dialogs::Logout::loggingOut, this, [this]() {
-                if (WebRTCSession::instance().state() != WebRTCSession::State::DISCONNECTED) {
+                if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
                         if (QMessageBox::question(
                               this, "nheko", "A call is in progress. Log out?") !=
                             QMessageBox::Yes) {

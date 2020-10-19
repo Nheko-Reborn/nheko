@@ -560,7 +560,7 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
 #ifdef GSTREAMER_AVAILABLE
         callBtn_ = new FlatButton(this);
-        changeCallButtonState(WebRTCSession::State::DISCONNECTED);
+        changeCallButtonState(webrtc::State::DISCONNECTED);
         connect(&WebRTCSession::instance(),
                 &WebRTCSession::stateChanged,
                 this,
@@ -709,6 +709,8 @@ TextInputWidget::command(QString command, QString args)
                 emit sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
         } else if (command == "clear-timeline") {
                 emit clearRoomTimeline();
+        } else if (command == "rotate-megolm-session") {
+                emit rotateMegolmSession();
         }
 }
 
@@ -776,11 +778,10 @@ TextInputWidget::paintEvent(QPaintEvent *)
 }
 
 void
-TextInputWidget::changeCallButtonState(WebRTCSession::State state)
+TextInputWidget::changeCallButtonState(webrtc::State state)
 {
         QIcon icon;
-        if (state == WebRTCSession::State::ICEFAILED ||
-            state == WebRTCSession::State::DISCONNECTED) {
+        if (state == webrtc::State::ICEFAILED || state == webrtc::State::DISCONNECTED) {
                 callBtn_->setToolTip(tr("Place a call"));
                 icon.addFile(":/icons/icons/ui/place-call.png");
         } else {

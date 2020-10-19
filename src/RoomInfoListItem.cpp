@@ -203,10 +203,7 @@ RoomInfoListItem::init(QWidget *parent)
         });
 }
 
-RoomInfoListItem::RoomInfoListItem(QString room_id,
-                                   const RoomInfo &info,
-                                   QSharedPointer<UserSettings> userSettings,
-                                   QWidget *parent)
+RoomInfoListItem::RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent)
   : QWidget(parent)
   , roomType_{info.is_invite ? RoomType::Invited : RoomType::Joined}
   , roomId_(std::move(room_id))
@@ -214,7 +211,6 @@ RoomInfoListItem::RoomInfoListItem(QString room_id,
   , isPressed_(false)
   , unreadMsgCount_(0)
   , unreadHighlightedMsgCount_(0)
-  , settings(userSettings)
 {
         init(parent);
 }
@@ -451,7 +447,7 @@ RoomInfoListItem::calculateImportance() const
         // returns ImportanceDisabled or Invite
         if (isInvite()) {
                 return Invite;
-        } else if (!settings->sortByImportance()) {
+        } else if (!ChatPage::instance()->userSettings()->sortByImportance()) {
                 return ImportanceDisabled;
         } else if (unreadHighlightedMsgCount_) {
                 return NewMentions;

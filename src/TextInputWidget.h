@@ -164,7 +164,7 @@ public slots:
         void openFileSelection();
         void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
-        void changeCallButtonState(WebRTCSession::State);
+        void changeCallButtonState(webrtc::State);
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
@@ -186,6 +186,7 @@ signals:
         void sendBanRoomRequest(const QString &userid, const QString &reason);
         void sendUnbanRoomRequest(const QString &userid, const QString &reason);
         void changeRoomNick(const QString &displayname);
+        void rotateMegolmSession();
 
         void startedTyping();
         void stoppedTyping();

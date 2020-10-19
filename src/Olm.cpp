@@ -1,11 +1,15 @@
-#include <variant>
-
 #include "Olm.h"
+
+#include <QObject>
+#include <variant>
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "ChatPage.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 
 static const std::string STORAGE_SECRET_KEY("secret");
@@ -28,7 +32,6 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
 {
         if (msgs.empty())
                 return;
-
         nhlog::crypto()->info("received {} to_device messages", msgs.size());
         nlohmann::json j_msg;
 
@@ -53,6 +56,10 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                                 nhlog::crypto()->warn("validation error for olm message: {} {}",
                                                       e.what(),
                                                       j_msg.dump(2));
+
+                                nhlog::crypto()->warn("validation error for olm message: {} {}",
+                                                      e.what(),
+                                                      j_msg.dump(2));
                         }
 
                 } else if (msg_type == to_string(mtx::events::EventType::RoomKeyRequest)) {
@@ -71,6 +78,43 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                                   e.what(),
                                   j_msg.dump(2));
                         }
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
+                        auto message = std::get<
+                          mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationAccept>>(msg);
+                        ChatPage::instance()->receivedDeviceVerificationAccept(message.content);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationRequest)) {
+                        auto message = std::get<
+                          mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationRequest>>(msg);
+                        ChatPage::instance()->receivedDeviceVerificationRequest(message.content,
+                                                                                message.sender);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationCancel)) {
+                        auto message = std::get<
+                          mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationCancel>>(msg);
+                        ChatPage::instance()->receivedDeviceVerificationCancel(message.content);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationKey)) {
+                        auto message =
+                          std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationKey>>(
+                            msg);
+                        ChatPage::instance()->receivedDeviceVerificationKey(message.content);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationMac)) {
+                        auto message =
+                          std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationMac>>(
+                            msg);
+                        ChatPage::instance()->receivedDeviceVerificationMac(message.content);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationStart)) {
+                        auto message = std::get<
+                          mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationStart>>(msg);
+                        ChatPage::instance()->receivedDeviceVerificationStart(message.content,
+                                                                              message.sender);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationReady)) {
+                        auto message = std::get<
+                          mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationReady>>(msg);
+                        ChatPage::instance()->receivedDeviceVerificationReady(message.content);
+                } else if (msg_type == to_string(mtx::events::EventType::KeyVerificationDone)) {
+                        auto message =
+                          std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationDone>>(
+                            msg);
+                        ChatPage::instance()->receivedDeviceVerificationDone(message.content);
                 } else {
                         nhlog::crypto()->warn("unhandled event: {}", j_msg.dump(2));
                 }
@@ -95,23 +139,76 @@ handle_olm_message(const OlmMessage &msg)
 
                 auto payload = try_olm_decryption(msg.sender_key, cipher.second);
 
+                if (payload.is_null()) {
+                        // Check for PRE_KEY message
+                        if (cipher.second.type == 0) {
+                                payload = handle_pre_key_olm_message(
+                                  msg.sender, msg.sender_key, cipher.second);
+                        } else {
+                                nhlog::crypto()->error("Undecryptable olm message!");
+                                continue;
+                        }
+                }
+
                 if (!payload.is_null()) {
-                        nhlog::crypto()->debug("decrypted olm payload: {}", payload.dump(2));
-                        create_inbound_megolm_session(msg.sender, msg.sender_key, payload);
-                        return;
-                }
+                        std::string msg_type = payload["type"];
 
-                // Not a PRE_KEY message
-                if (cipher.second.type != 0) {
-                        // TODO: log that it should have matched something
-                        return;
+                        if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
+                                ChatPage::instance()->receivedDeviceVerificationAccept(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationRequest)) {
+                                ChatPage::instance()->receivedDeviceVerificationRequest(
+                                  payload["content"], payload["sender"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationCancel)) {
+                                ChatPage::instance()->receivedDeviceVerificationCancel(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationKey)) {
+                                ChatPage::instance()->receivedDeviceVerificationKey(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationMac)) {
+                                ChatPage::instance()->receivedDeviceVerificationMac(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationStart)) {
+                                ChatPage::instance()->receivedDeviceVerificationStart(
+                                  payload["content"], payload["sender"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationReady)) {
+                                ChatPage::instance()->receivedDeviceVerificationReady(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::KeyVerificationDone)) {
+                                ChatPage::instance()->receivedDeviceVerificationDone(
+                                  payload["content"]);
+                                return;
+                        } else if (msg_type == to_string(mtx::events::EventType::RoomKey)) {
+                                mtx::events::DeviceEvent<mtx::events::msg::RoomKey> roomKey =
+                                  payload;
+                                create_inbound_megolm_session(roomKey, msg.sender_key);
+                                return;
+                        } else if (msg_type ==
+                                   to_string(mtx::events::EventType::ForwardedRoomKey)) {
+                                mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey>
+                                  roomKey = payload;
+                                import_inbound_megolm_session(roomKey);
+                                return;
+                        }
                 }
-
-                handle_pre_key_olm_message(msg.sender, msg.sender_key, cipher.second);
         }
 }
 
-void
+nlohmann::json
 handle_pre_key_olm_message(const std::string &sender,
                            const std::string &sender_key,
                            const mtx::events::msg::OlmCipherContent &content)
@@ -129,14 +226,14 @@ handle_pre_key_olm_message(const std::string &sender,
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to create inbound session with {}: {}", sender, e.what());
-                return;
+                return {};
         }
 
         if (!mtx::crypto::matches_inbound_session_from(
               inbound_session.get(), sender_key, content.body)) {
                 nhlog::crypto()->warn("inbound olm session doesn't match sender's key ({})",
                                       sender);
-                return;
+                return {};
         }
 
         mtx::crypto::BinaryBuf output;
@@ -146,7 +243,7 @@ handle_pre_key_olm_message(const std::string &sender,
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to decrypt olm message {}: {}", content.body, e.what());
-                return;
+                return {};
         }
 
         auto plaintext = json::parse(std::string((char *)output.data(), output.size()));
@@ -159,7 +256,7 @@ handle_pre_key_olm_message(const std::string &sender,
                   "failed to save inbound olm session from {}: {}", sender, e.what());
         }
 
-        create_inbound_megolm_session(sender, sender_key, plaintext);
+        return plaintext;
 }
 
 mtx::events::msg::Encrypted
@@ -169,9 +266,14 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         // relations shouldn't be encrypted...
         mtx::common::ReplyRelatesTo relation;
+        mtx::common::RelatesTo r_relation;
+
         if (body["content"].contains("m.relates_to") &&
             body["content"]["m.relates_to"].contains("m.in_reply_to")) {
                 relation = body["content"]["m.relates_to"];
+                body["content"].erase("m.relates_to");
+        } else if (body["content"]["m.relates_to"].contains("event_id")) {
+                r_relation = body["content"]["m.relates_to"];
                 body["content"].erase("m.relates_to");
         }
 
@@ -181,12 +283,13 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         // Prepare the m.room.encrypted event.
         msg::Encrypted data;
-        data.ciphertext = std::string((char *)payload.data(), payload.size());
-        data.sender_key = olm::client()->identity_keys().curve25519;
-        data.session_id = res.data.session_id;
-        data.device_id  = device_id;
-        data.algorithm  = MEGOLM_ALGO;
-        data.relates_to = relation;
+        data.ciphertext   = std::string((char *)payload.data(), payload.size());
+        data.sender_key   = olm::client()->identity_keys().curve25519;
+        data.session_id   = res.data.session_id;
+        data.device_id    = device_id;
+        data.algorithm    = MEGOLM_ALGO;
+        data.relates_to   = relation;
+        data.r_relates_to = r_relation;
 
         auto message_index = olm_outbound_group_session_message_index(res.session);
         nhlog::crypto()->debug("next message_index {}", message_index);
@@ -229,10 +332,12 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
                 }
 
                 try {
-                        return json::parse(std::string((char *)text.data(), text.size()));
+                        return json::parse(std::string_view((char *)text.data(), text.size()));
                 } catch (const json::exception &e) {
-                        nhlog::crypto()->critical("failed to parse the decrypted session msg: {}",
-                                                  e.what());
+                        nhlog::crypto()->critical(
+                          "failed to parse the decrypted session msg: {} {}",
+                          e.what(),
+                          std::string_view((char *)text.data(), text.size()));
                 }
         }
 
@@ -240,29 +345,17 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
 }
 
 void
-create_inbound_megolm_session(const std::string &sender,
-                              const std::string &sender_key,
-                              const nlohmann::json &payload)
+create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::RoomKey> &roomKey,
+                              const std::string &sender_key)
 {
-        std::string room_id, session_id, session_key;
-
-        try {
-                room_id     = payload.at("content").at("room_id");
-                session_id  = payload.at("content").at("session_id");
-                session_key = payload.at("content").at("session_key");
-        } catch (const nlohmann::json::exception &e) {
-                nhlog::crypto()->critical(
-                  "failed to parse plaintext olm message: {} {}", e.what(), payload.dump(2));
-                return;
-        }
-
         MegolmSessionIndex index;
-        index.room_id    = room_id;
-        index.session_id = session_id;
+        index.room_id    = roomKey.content.room_id;
+        index.session_id = roomKey.content.session_id;
         index.sender_key = sender_key;
 
         try {
-                auto megolm_session = olm::client()->init_inbound_group_session(session_key);
+                auto megolm_session =
+                  olm::client()->init_inbound_group_session(roomKey.content.session_key);
                 cache::saveInboundMegolmSession(index, std::move(megolm_session));
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
@@ -272,7 +365,34 @@ create_inbound_megolm_session(const std::string &sender,
                 return;
         }
 
-        nhlog::crypto()->info("established inbound megolm session ({}, {})", room_id, sender);
+        nhlog::crypto()->info(
+          "established inbound megolm session ({}, {})", roomKey.content.room_id, roomKey.sender);
+}
+
+void
+import_inbound_megolm_session(
+  const mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey> &roomKey)
+{
+        MegolmSessionIndex index;
+        index.room_id    = roomKey.content.room_id;
+        index.session_id = roomKey.content.session_id;
+        index.sender_key = roomKey.content.sender_key;
+
+        try {
+                auto megolm_session =
+                  olm::client()->import_inbound_group_session(roomKey.content.session_key);
+                cache::saveInboundMegolmSession(index, std::move(megolm_session));
+        } catch (const lmdb::error &e) {
+                nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
+                return;
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to import inbound megolm session: {}", e.what());
+                return;
+        }
+
+        // TODO(Nico): Reload messages encrypted with this key.
+        nhlog::crypto()->info(
+          "established inbound megolm session ({}, {})", roomKey.content.room_id, roomKey.sender);
 }
 
 void
@@ -373,16 +493,19 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         if (!cache::outboundMegolmSessionExists(req.content.room_id)) {
                 nhlog::crypto()->warn("requested session not found in room: {}",
                                       req.content.room_id);
+
                 return;
         }
 
         // Check that the requested session_id and the one we have saved match.
-        const auto session = cache::getOutboundMegolmSession(req.content.room_id);
-        if (req.content.session_id != session.data.session_id) {
-                nhlog::crypto()->warn("session id of retrieved session doesn't match the request: "
-                                      "requested({}), ours({})",
-                                      req.content.session_id,
-                                      session.data.session_id);
+        MegolmSessionIndex index{};
+        index.room_id    = req.content.room_id;
+        index.session_id = req.content.session_id;
+        index.sender_key = olm::client()->identity_keys().curve25519;
+
+        const auto session = cache::getInboundMegolmSession(index);
+        if (!session) {
+                nhlog::crypto()->warn("No session with id {} in db", req.content.session_id);
                 return;
         }
 
@@ -394,27 +517,48 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 return;
         }
 
-        if (!utils::respondsToKeyRequests(req.content.room_id)) {
+        // check if device is verified
+        auto verificationStatus = cache::verificationStatus(req.sender);
+        bool verifiedDevice     = false;
+        if (verificationStatus &&
+            ChatPage::instance()->userSettings()->shareKeysWithTrustedUsers()) {
+                for (const auto &dev : verificationStatus->verified_devices) {
+                        if (dev == req.content.requesting_device_id) {
+                                verifiedDevice = true;
+                                nhlog::crypto()->debug("Verified device: {}", dev);
+                                break;
+                        }
+                }
+        }
+
+        if (!utils::respondsToKeyRequests(req.content.room_id) && !verifiedDevice) {
                 nhlog::crypto()->debug("ignoring all key requests for room {}",
                                        req.content.room_id);
                 return;
         }
 
+        auto session_key = mtx::crypto::export_session(session);
         //
         // Prepare the m.room_key event.
         //
-        auto payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
-                            {"room_id", req.content.room_id},
-                            {"session_id", req.content.session_id},
-                            {"session_key", session.data.session_key}};
+        mtx::events::msg::ForwardedRoomKey forward_key{};
+        forward_key.algorithm   = MEGOLM_ALGO;
+        forward_key.room_id     = index.room_id;
+        forward_key.session_id  = index.session_id;
+        forward_key.session_key = session_key;
+        forward_key.sender_key  = index.sender_key;
 
-        send_megolm_key_to_device(req.sender, req.content.requesting_device_id, payload);
+        // TODO(Nico): Figure out if this is correct
+        forward_key.sender_claimed_ed25519_key      = olm::client()->identity_keys().ed25519;
+        forward_key.forwarding_curve25519_key_chain = {};
+
+        send_megolm_key_to_device(req.sender, req.content.requesting_device_id, forward_key);
 }
 
 void
 send_megolm_key_to_device(const std::string &user_id,
                           const std::string &device_id,
-                          const json &payload)
+                          const mtx::events::msg::ForwardedRoomKey &payload)
 {
         mtx::requests::QueryKeys req;
         req.device_keys[user_id] = {device_id};
@@ -473,15 +617,13 @@ send_megolm_key_to_device(const std::string &user_id,
                           return;
                   }
 
-                  auto room_key = olm::client()
-                                    ->create_room_key_event(UserId(user_id), pks.ed25519, payload)
-                                    .dump();
+                  mtx::requests::ClaimKeys claim_keys;
+                  claim_keys.one_time_keys[user_id][device_id] = mtx::crypto::SIGNED_CURVE25519;
 
                   http::client()->claim_keys(
-                    user_id,
-                    {device_id},
-                    [room_key, user_id, device_id, pks](const mtx::responses::ClaimKeys &res,
-                                                        mtx::http::RequestErr err) {
+                    claim_keys,
+                    [payload, user_id, device_id, pks](const mtx::responses::ClaimKeys &res,
+                                                       mtx::http::RequestErr err) {
                             if (err) {
                                     nhlog::net()->warn("claim keys error: {} {} {}",
                                                        err->matrix_error.error,
@@ -523,8 +665,12 @@ send_megolm_key_to_device(const std::string &user_id,
                                     auto olm_session = olm::client()->create_outbound_session(
                                       pks.curve25519, device.begin()->at("key"));
 
-                                    device_msg = olm::client()->create_olm_encrypted_content(
-                                      olm_session.get(), room_key, pks.curve25519);
+                                    mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey>
+                                      room_key;
+                                    room_key.content = payload;
+                                    room_key.type    = mtx::events::EventType::ForwardedRoomKey;
+                                    device_msg       = olm::client()->create_olm_encrypted_content(
+                                      olm_session.get(), json(room_key).dump(), pks.curve25519);
 
                                     cache::saveOlmSession(pks.curve25519, std::move(olm_session));
                             } catch (const json::exception &e) {
@@ -540,7 +686,7 @@ send_megolm_key_to_device(const std::string &user_id,
                             body["messages"][user_id][device_id] = device_msg;
 
                             nhlog::net()->info(
-                              "sending m.room_key event to {}:{}", user_id, device_id);
+                              "sending m.forwarded_room_key event to {}:{}", user_id, device_id);
                             http::client()->send_to_device(
                               "m.room.encrypted", body, [user_id](mtx::http::RequestErr err) {
                                       if (err) {
@@ -550,7 +696,8 @@ send_megolm_key_to_device(const std::string &user_id,
                                                                  err->matrix_error.error);
                                       }
 
-                                      nhlog::net()->info("m.room_key send to {}", user_id);
+                                      nhlog::net()->info("m.forwarded_room_key send to {}",
+                                                         user_id);
                               });
                     });
           });

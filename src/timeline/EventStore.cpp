@@ -5,6 +5,7 @@
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "ChatPage.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
@@ -53,9 +54,8 @@ EventStore::EventStore(std::string room_id, QObject *)
           &EventStore::oldMessagesRetrieved,
           this,
           [this](const mtx::responses::Messages &res) {
-                  //
                   uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
-                  if (newFirst == first && !res.chunk.empty())
+                  if (newFirst == first)
                           fetchMore();
                   else {
                           emit beginInsertRows(toExternalIdx(newFirst),
@@ -97,8 +97,8 @@ EventStore::EventStore(std::string room_id, QObject *)
                                     room_id_,
                                     txn_id,
                                     e.content,
-                                    [this, txn_id](const mtx::responses::EventId &event_id,
-                                                   mtx::http::RequestErr err) {
+                                    [this, txn_id, e](const mtx::responses::EventId &event_id,
+                                                      mtx::http::RequestErr err) {
                                             if (err) {
                                                     const int status_code =
                                                       static_cast<int>(err->status_code);
@@ -110,7 +110,21 @@ EventStore::EventStore(std::string room_id, QObject *)
                                                     emit messageFailed(txn_id);
                                                     return;
                                             }
+
                                             emit messageSent(txn_id, event_id.event_id.to_string());
+                                            if constexpr (std::is_same_v<
+                                                            decltype(e.content),
+                                                            mtx::events::msg::Encrypted>) {
+                                                    auto event =
+                                                      decryptEvent({room_id_, e.event_id}, e);
+                                                    if (auto dec =
+                                                          std::get_if<mtx::events::RoomEvent<
+                                                            mtx::events::msg::
+                                                              KeyVerificationRequest>>(event)) {
+                                                            emit updateFlowEventId(
+                                                              event_id.event_id.to_string());
+                                                    }
+                                            }
                                     });
                   },
                   event->data);
@@ -265,7 +279,76 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                                 emit dataChanged(toExternalIdx(*idx), toExternalIdx(*idx));
                         }
                 }
+
+                // decrypting and checking some encrypted messages
+                if (auto encrypted =
+                      std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                        &event)) {
+                        mtx::events::collections::TimelineEvents *d_event =
+                          decryptEvent({room_id_, encrypted->event_id}, *encrypted);
+                        if (std::visit(
+                              [](auto e) { return (e.sender != utils::localUser().toStdString()); },
+                              *d_event)) {
+                                handle_room_verification(*d_event);
+                        }
+                        // else {
+                        //        // only the key.verification.ready sent by localuser's other
+                        //        device
+                        //        // is of significance as it is used for detecting accepted request
+                        //        if (std::get_if<mtx::events::RoomEvent<
+                        //              mtx::events::msg::KeyVerificationReady>>(d_event)) {
+                        //                auto msg = std::get_if<mtx::events::RoomEvent<
+                        //                  mtx::events::msg::KeyVerificationReady>>(d_event);
+                        //                ChatPage::instance()->receivedDeviceVerificationReady(
+                        //                  msg->content);
+                        //        }
+                        //}
+                }
         }
+}
+
+namespace {
+template<class... Ts>
+struct overloaded : Ts...
+{
+        using Ts::operator()...;
+};
+template<class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
+}
+
+void
+EventStore::handle_room_verification(mtx::events::collections::TimelineEvents event)
+{
+        std::visit(
+          overloaded{
+            [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg) {
+                    emit startDMVerification(msg);
+            },
+            [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel> &msg) {
+                    ChatPage::instance()->receivedDeviceVerificationCancel(msg.content);
+            },
+            [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept> &msg) {
+                    ChatPage::instance()->receivedDeviceVerificationAccept(msg.content);
+            },
+            [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey> &msg) {
+                    ChatPage::instance()->receivedDeviceVerificationKey(msg.content);
+            },
+            [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac> &msg) {
+                    ChatPage::instance()->receivedDeviceVerificationMac(msg.content);
+            },
+            [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady> &msg) {
+                    ChatPage::instance()->receivedDeviceVerificationReady(msg.content);
+            },
+            [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone> &msg) {
+                    ChatPage::instance()->receivedDeviceVerificationDone(msg.content);
+            },
+            [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart> &msg) {
+                    ChatPage::instance()->receivedDeviceVerificationStart(msg.content, msg.sender);
+            },
+            [](const auto &) {},
+          },
+          event);
 }
 
 QVariantList
@@ -289,13 +372,14 @@ EventStore::reactions(const std::string &event_id)
                         continue;
 
                 if (auto reaction = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
-                      related_event)) {
-                        auto &agg = aggregation[reaction->content.relates_to.key];
+                      related_event);
+                    reaction && reaction->content.relates_to.key) {
+                        auto &agg = aggregation[reaction->content.relates_to.key.value()];
 
                         if (agg.count == 0) {
                                 Reaction temp{};
                                 temp.key_ =
-                                  QString::fromStdString(reaction->content.relates_to.key);
+                                  QString::fromStdString(reaction->content.relates_to.key.value());
                                 reactions.push_back(temp);
                         }
 
@@ -407,11 +491,12 @@ EventStore::decryptEvent(const IdIndex &idx,
 
         auto decryptionResult = olm::decryptEvent(index, e);
 
+        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
+        dummy.origin_server_ts = e.origin_server_ts;
+        dummy.event_id         = e.event_id;
+        dummy.sender           = e.sender;
+
         if (decryptionResult.error) {
-                mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
-                dummy.origin_server_ts = e.origin_server_ts;
-                dummy.event_id         = e.event_id;
-                dummy.sender           = e.sender;
                 switch (*decryptionResult.error) {
                 case olm::DecryptionErrorCode::MissingSession:
                         dummy.content.body =
@@ -471,7 +556,7 @@ EventStore::decryptEvent(const IdIndex &idx,
                           room_id_,
                           index.sender_key);
                         dummy.content.body =
-                          tr("-- Reply attack! This message index was reused! --").toStdString();
+                          tr("-- Replay attack! This message index was reused! --").toStdString();
                         break;
                 case olm::DecryptionErrorCode::UnknownFingerprint:
                         // TODO: don't fail, just show in UI.
@@ -482,6 +567,66 @@ EventStore::decryptEvent(const IdIndex &idx,
                         break;
                 }
                 return asCacheEntry(std::move(dummy));
+        }
+
+        std::string msg_str;
+        try {
+                auto session = cache::client()->getInboundMegolmSession(index);
+                auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
+                msg_str      = std::string((char *)res.data.data(), res.data.size());
+        } catch (const lmdb::error &e) {
+                nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
+                                      index.room_id,
+                                      index.session_id,
+                                      index.sender_key,
+                                      e.what());
+                dummy.content.body =
+                  tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
+                     "Placeholder, when the message can't be decrypted, because the DB "
+                     "access "
+                     "failed.")
+                    .toStdString();
+                return asCacheEntry(std::move(dummy));
+        } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
+                                          index.room_id,
+                                          index.session_id,
+                                          index.sender_key,
+                                          e.what());
+                dummy.content.body =
+                  tr("-- Decryption Error (%1) --",
+                     "Placeholder, when the message can't be decrypted. In this case, the "
+                     "Olm "
+                     "decrytion returned an error, which is passed as %1.")
+                    .arg(e.what())
+                    .toStdString();
+                return asCacheEntry(std::move(dummy));
+        }
+
+        // Add missing fields for the event.
+        json body                = json::parse(msg_str);
+        body["event_id"]         = e.event_id;
+        body["sender"]           = e.sender;
+        body["origin_server_ts"] = e.origin_server_ts;
+        body["unsigned"]         = e.unsigned_data;
+
+        // relations are unencrypted in content...
+        if (json old_ev = e; old_ev["content"].count("m.relates_to") != 0)
+                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
+
+        json event_array = json::array();
+        event_array.push_back(body);
+
+        std::vector<mtx::events::collections::TimelineEvents> temp_events;
+        mtx::responses::utils::parse_timeline_events(event_array, temp_events);
+
+        if (temp_events.size() == 1) {
+                auto encInfo = mtx::accessors::file(temp_events[0]);
+
+                if (encInfo)
+                        emit newEncryptedImage(encInfo.value());
+
+                return asCacheEntry(std::move(temp_events[0]));
         }
 
         auto encInfo = mtx::accessors::file(decryptionResult.event.value());
@@ -515,7 +660,8 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
                                           mtx::http::RequestErr err) {
                                   if (err) {
                                           nhlog::net()->error(
-                                            "Failed to retrieve event with id {}, which was "
+                                            "Failed to retrieve event with id {}, which "
+                                            "was "
                                             "requested to show the replyTo for event {}",
                                             relatedTo,
                                             id);

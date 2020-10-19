@@ -304,4 +304,3 @@ Column {
 		color: colors.text
 	}
 }
-

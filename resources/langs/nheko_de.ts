@@ -2,9 +2,55 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de">
 <context>
+    <name>ActiveCallBar</name>
+    <message>
+        <location filename="../qml/ActiveCallBar.qml" line="+49"/>
+        <source>Initiating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Calling...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Connecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Unmute Mic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Mute Mic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AwaitingVerificationConfirmation</name>
+    <message>
+        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
+        <source>Awaiting Confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Waiting for other side to complete verification.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+</context>
+<context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1359"/>
+        <location filename="../../src/Cache.cpp" line="+1732"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
@@ -12,33 +58,53 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+229"/>
+        <location filename="../../src/ChatPage.cpp" line="+215"/>
         <source>Failed to invite user: %1</source>
         <translation>Nutzer konnte nicht eingeladen werden: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+926"/>
+        <location line="+947"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
     <message>
-        <location line="-474"/>
+        <location line="-458"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation>Migrieren des Caches auf die aktuelle Version fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte lege einen Bugreport an und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du das Cache manuell entfernen.</translation>
+        <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du das Cache manuell löschen.</translation>
     </message>
     <message>
-        <location line="+439"/>
+        <location line="+415"/>
         <source>Room %1 created.</source>
         <translation>Raum %1 erzeugt.</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+26"/>
+        <source>Confirm invite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to invite %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
         <translation>Einladung von %1 in Raum %2 fehlgeschlagen: %3</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+15"/>
+        <source>Confirm kick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to kick %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to kick %1 to %2: %3</source>
         <translation>%1 konnte nicht aus %2 gekickt werden: %3</translation>
     </message>
@@ -48,7 +114,17 @@
         <translation>%1 wurde gekickt.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+10"/>
+        <source>Confirm ban</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to ban %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
         <translation>%1 konnte nicht aus %2 verbannt werden: %3</translation>
     </message>
@@ -58,7 +134,17 @@
         <translation>%1 wurde gebannt.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+10"/>
+        <source>Confirm unban</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to unban %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
         <translation>Verbannung von %1 aus %2 konnte nicht aufgehoben werden: %3</translation>
     </message>
@@ -68,12 +154,12 @@
         <translation>Verbannung von %1 wurde aufgehoben.</translation>
     </message>
     <message>
-        <location line="-828"/>
+        <location line="-874"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
-        <location line="+296"/>
+        <location line="+334"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration fehlgeschlagen!</translation>
     </message>
@@ -85,31 +171,31 @@
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Das Cache auf der Festplatte wurde mit einer neueren Nheko version angelegt. Bitte aktualisiere Nheko oder entferne das Cache.</translation>
+        <translation>Der Cache auf der Festplatte wurde mit einer neueren Nheko - Version angelegt. Bitte aktualisiere Nheko oder entferne den Cache.</translation>
     </message>
     <message>
-        <location line="+111"/>
+        <location line="+67"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Wiederherstellung des OLM Accounts fehlgeschlagen. Bitte logge dich erneut ein.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
         <translation>Gespeicherte Nachrichten konnten nicht wiederhergestellt werden. Bitte melde Dich erneut an.</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
     <message>
-        <location line="+54"/>
-        <location line="+252"/>
+        <location line="+99"/>
+        <location line="+251"/>
         <source>Please try to login again: %1</source>
         <translation>Bitte melde dich erneut an: %1</translation>
     </message>
     <message>
-        <location line="-187"/>
+        <location line="-219"/>
         <source>Failed to join room: %1</source>
         <translation>Konnte Raum nicht betreten: %1</translation>
     </message>
@@ -170,6 +256,29 @@
     </message>
 </context>
 <context>
+    <name>DigitVerification</name>
+    <message>
+        <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
+        <source>Verification Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>They do not match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>They match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditModal</name>
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+72"/>
@@ -195,25 +304,25 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
-        <location line="+139"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+112"/>
+        <location line="+181"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche</translation>
     </message>
     <message>
-        <location line="-42"/>
+        <location line="-66"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Leute</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Natur</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Essen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -223,7 +332,7 @@
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Reisen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -242,16 +351,112 @@
     </message>
 </context>
 <context>
+    <name>EmojiVerification</name>
+    <message>
+        <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
+        <source>Verification Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+376"/>
+        <source>They do not match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>They match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
         <source>Encrypted</source>
         <translation>Verschlüsselt</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation>Diese Nachricht ist nicht verschlüsselt!</translation>
+        <translation>Diese Nachricht ist unverschlüsselt!</translation>
+    </message>
+</context>
+<context>
+    <name>EventStore</name>
+    <message>
+        <location filename="../../src/timeline/EventStore.cpp" line="+503"/>
+        <source>-- Encrypted Event (No keys found for decryption) --</source>
+        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
+        <translation type="unfinished">-- Verschlüsseltes Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <location line="+62"/>
+        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
+        <translation type="unfinished">-- Entschlüsselungsfehler (Fehler bei Suche nach megolm Schlüsseln in Datenbank) --</translation>
+    </message>
+    <message>
+        <location line="-48"/>
+        <location line="+61"/>
+        <source>-- Decryption Error (%1) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
+        <translation type="unfinished">-- Entschlüsselungsfehler (%1) --</translation>
+    </message>
+    <message>
+        <location line="-51"/>
+        <source>-- Encrypted Event (Unknown event type) --</source>
+        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
+        <translation type="unfinished">-- Verschlüsseltes Event (Unbekannter Eventtyp) --</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>-- Replay attack! This message index was reused! --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Message by unverified device! --</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Failed</name>
+    <message>
+        <location filename="../qml/device-verification/Failed.qml" line="+7"/>
+        <source>Verification failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Other client does not support our verification protocol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Key mismatch detected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+4"/>
+        <source>Device verification timed out.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Other party canceled the verification.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Close</source>
+        <translation type="unfinished">Schließen</translation>
     </message>
 </context>
 <context>
@@ -370,17 +575,18 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+66"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
+        <location line="+9"/>
         <source>redacted</source>
         <translation>gelöscht</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>Encryption enabled</source>
         <translation>Verschlüsselung aktiviert</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>room name changed to: %1</source>
         <translation>Raumname wurde gändert auf: %1</translation>
     </message>
@@ -390,7 +596,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Raumname wurde entfernt</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>topic changed to: %1</source>
         <translation>Raumthema wurde geändert auf: %1</translation>
     </message>
@@ -400,9 +606,82 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Raumthema wurde entfernt.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>%1 created and configured room: %2</source>
         <translation>%1 hat den Raum erstellt: %2</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>%1 placed a voice call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 placed a video call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 placed a call.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 answered the call.</source>
+        <translation>%1 hat den Anruf angenommen.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>%1 ended the call.</source>
+        <translation>%1 hat den Anruf beendet.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Negotiating call...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewVerificationRequest</name>
+    <message>
+        <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
+        <source>Send Device Verification Request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Recieved Device Verification Request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>The device was requested to be verified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Start verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Accept</source>
+        <translation type="unfinished">Akzeptieren</translation>
     </message>
 </context>
 <context>
@@ -492,7 +771,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+984"/>
+        <location filename="../../src/Cache.cpp" line="+1815"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -593,36 +872,54 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../qml/StatusIndicator.qml" line="+14"/>
+        <location filename="../qml/StatusIndicator.qml" line="+17"/>
         <source>Failed</source>
         <translation>Fehlgeschlagen</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Sent</source>
         <translation>Gesendet</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Received</source>
         <translation>Empfangen</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Read</source>
         <translation>Gelesen</translation>
     </message>
 </context>
 <context>
+    <name>Success</name>
+    <message>
+        <location filename="../qml/device-verification/Success.qml" line="+6"/>
+        <source>Successful Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Verification successful! Both sides verified their devices!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Close</source>
+        <translation type="unfinished">Schließen</translation>
+    </message>
+</context>
+<context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+460"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+574"/>
         <source>Send a file</source>
         <translation>Versende Datei</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+145"/>
+        <location filename="../../src/TextInputWidget.h" line="+160"/>
         <source>Write a message...</source>
         <translation>Schreibe eine Nachricht…</translation>
     </message>
@@ -637,7 +934,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+96"/>
         <source>Select a file</source>
         <translation>Datei auswählen</translation>
     </message>
@@ -645,6 +942,16 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Alle Dateien (*)</translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>Place a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Hang up</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
@@ -655,30 +962,20 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+891"/>
-        <source>-- Decryption Error (failed to communicate with DB) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed when trying to lookup the session.</comment>
-        <translation>-- Entschlüsselungsfehler (Fehler bei Kommunikation mit Datenbank) --</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation>-- Entschlüsselungsfehler (Fehler bei Suche nach megolm Schlüsseln in Datenbank) --</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed ad %1.</comment>
-        <translation>-- Entschlüsselungsfehler (%1) --</translation>
-    </message>
-    <message>
-        <location line="+99"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
     <message>
-        <location line="+488"/>
+        <location line="+125"/>
+        <location line="+17"/>
+        <location line="+88"/>
+        <location line="+5"/>
+        <source>Failed to encrypt event, sending aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+236"/>
         <source>Save image</source>
         <translation>Bild speichern</translation>
     </message>
@@ -697,20 +994,8 @@ Beispiel: https://mein.server:8787</translation>
         <source>Save file</source>
         <translation>Datei speichern</translation>
     </message>
-    <message>
-        <location line="-643"/>
-        <source>-- Encrypted Event (No keys found for decryption) --</source>
-        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation>-- Verschlüsseltes Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
-    </message>
-    <message>
-        <location line="+82"/>
-        <source>-- Encrypted Event (Unknown event type) --</source>
-        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation>-- Verschlüsseltes Event (Unbekannter Eventtyp) --</translation>
-    </message>
     <message numerus="yes">
-        <location line="+693"/>
+        <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -764,7 +1049,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>%1 hat die Berechtigungen dieses Raums bearbeitet.</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+33"/>
         <source>%1 was invited.</source>
         <translation>%1 wurde eingeladen.</translation>
     </message>
@@ -829,12 +1114,12 @@ Beispiel: https://mein.server:8787</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-1281"/>
+        <location line="-982"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+1283"/>
+        <location line="+984"/>
         <source>Rejected the knock from %1.</source>
         <translation>Hat das Anklopfen von %1 abgewiesen.</translation>
     </message>
@@ -858,17 +1143,17 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+91"/>
+        <location filename="../qml/TimelineRow.qml" line="+95"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+15"/>
         <source>Reply</source>
         <translation>Antworten</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+14"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
@@ -876,87 +1161,98 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+54"/>
+        <location filename="../qml/TimelineView.qml" line="+66"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Reply</source>
         <translation>Antworten</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Read receipts</source>
         <translation>Lesebestätigungen</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Mark as read</source>
         <translation>Als gelesen markieren</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Zeige rohen Nachrichteninhalt</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>View decrypted raw message</source>
         <translation>Zeige rohen, entschlüsselten Nachrichteninhalt</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Redact message</source>
         <translation>Nachricht löschen</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Save as</source>
         <translation>Speichern unter...</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+43"/>
         <source>No room open</source>
         <translation>Kein Raum geöffnet</translation>
     </message>
     <message>
-        <location line="+271"/>
+        <location line="+50"/>
+        <source>Back to room list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+15"/>
+        <source>No room selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Room options</source>
+        <translation type="unfinished">Raumoptionen</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Invite users</source>
+        <translation type="unfinished">Benutzer einladen</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Members</source>
+        <translation type="unfinished">Teilnehmer</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Leave room</source>
+        <translation type="unfinished">Raum verlassen</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Settings</source>
+        <translation type="unfinished">Einstellungen</translation>
+    </message>
+    <message>
+        <location line="+286"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
 </context>
 <context>
-    <name>TopRoomBar</name>
+    <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/TopRoomBar.cpp" line="+86"/>
-        <source>Room options</source>
-        <translation>Raumoptionen</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Mentions</source>
-        <translation>Erwähnungen</translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>Invite users</source>
-        <translation>Benutzer einladen</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Members</source>
-        <translation>Teilnehmer</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Leave room</source>
-        <translation>Raum verlassen</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Settings</source>
-        <translation>Einstellungen</translation>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+412"/>
+        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1016,9 +1312,32 @@ Beispiel: https://mein.server:8787</translation>
     </message>
 </context>
 <context>
+    <name>UserProfile</name>
+    <message>
+        <location filename="../qml/UserProfile.qml" line="+60"/>
+        <source>Verify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Ban the user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Start a private chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Kick the user</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+535"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+565"/>
         <source>Minimize to tray</source>
         <translation>Ins Benachrichtigungsfeld minimieren</translation>
     </message>
@@ -1038,7 +1357,12 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Runde Profilbilder</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-62"/>
+        <source>CALLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Keep the application running in the background after closing the client window.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1201,7 +1525,17 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Erscheinungsbild</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
+        <source>Allow fallback call assist server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Device ID</source>
         <translation>Geräte-ID</translation>
     </message>
@@ -1211,7 +1545,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Gerätefingerabdruck</translation>
     </message>
     <message>
-        <location line="-113"/>
+        <location line="-120"/>
         <source>Session Keys</source>
         <translation>Sitzungsschlüssel</translation>
     </message>
@@ -1231,22 +1565,22 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>VERSCHLÜSSELUNG</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-77"/>
         <source>GENERAL</source>
         <translation>ALLGEMEINES</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>INTERFACE</source>
         <translation>OBERFLÄCHE</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+171"/>
         <source>Emoji Font Family</source>
         <translation>Emojischriftart</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+191"/>
         <source>Open Sessions File</source>
         <translation>Öffne Sessions Datei</translation>
     </message>
@@ -1293,6 +1627,34 @@ This usually causes the application icon in the task bar to animate in some fash
     </message>
 </context>
 <context>
+    <name>Waiting</name>
+    <message>
+        <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
+        <source>Waiting for other party</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Waiting for other side to accept the verification request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Waiting for other side to continue the verification request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Waiting for other side to complete the verification request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+</context>
+<context>
     <name>WelcomePage</name>
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+47"/>
@@ -1318,9 +1680,22 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+147"/>
+        <location filename="../../src/Utils.cpp" line="+146"/>
         <source>Yesterday</source>
         <translation>Gestern</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::AcceptCall</name>
+    <message>
+        <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
+        <source>Accept</source>
+        <translation type="unfinished">Akzeptieren</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Reject</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1444,6 +1819,19 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
         <translation>Willst du dich wirklich abmelden?</translation>
+    </message>
+</context>
+<context>
+    <name>dialogs::PlaceCall</name>
+    <message>
+        <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
+        <source>Voice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -1644,7 +2032,7 @@ Medien-Größe: %2
 <context>
     <name>dialogs::UserProfile</name>
     <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+63"/>
+        <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
         <source>Ban the user from the room</source>
         <translation>Banne den Nutzer aus diesem Raum</translation>
     </message>
@@ -1664,7 +2052,17 @@ Medien-Größe: %2
         <translation>Gespräch beginnen</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+14"/>
+        <source>Confirm DM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to invite %1 (%2) to a direct chat?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
         <source>Devices</source>
         <translation>Geräte</translation>
     </message>
@@ -1715,7 +2113,7 @@ Medien-Größe: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+103"/>
+        <location filename="../../src/Utils.h" line="+106"/>
         <source>You sent an audio clip</source>
         <translation>Du hast eine Audiodatei gesendet.</translation>
     </message>
@@ -1793,6 +2191,36 @@ Medien-Größe: %2
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 hat eine verschlüsselte Nachricht gesendet.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You placed a call</source>
+        <translation>Du hast angerufen</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 placed a call</source>
+        <translation>%1 hat angerufen</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You answered a call</source>
+        <translation>Du hast einen Anruf angenommen</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 answered a call</source>
+        <translation>%1 hat einen Anruf angenommen</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>You ended a call</source>
+        <translation>Du hast einen Anruf beendet</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 ended a call</source>
+        <translation>%1 hat einen Anruf beendet</translation>
     </message>
 </context>
 <context>

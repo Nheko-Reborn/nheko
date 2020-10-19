@@ -64,10 +64,7 @@ class RoomInfoListItem : public QWidget
         Q_PROPERTY(QColor btnTextColor READ btnTextColor WRITE setBtnTextColor)
 
 public:
-        RoomInfoListItem(QString room_id,
-                         const RoomInfo &info,
-                         QSharedPointer<UserSettings> userSettings,
-                         QWidget *parent = nullptr);
+        RoomInfoListItem(QString room_id, const RoomInfo &info, QWidget *parent = nullptr);
 
         void updateUnreadMessageCount(int count, int highlightedCount);
         void clearUnreadMessageCount() { updateUnreadMessageCount(0, 0); };
@@ -220,6 +217,4 @@ private:
 
         QColor bubbleBgColor_;
         QColor bubbleFgColor_;
-
-        QSharedPointer<UserSettings> settings;
 };

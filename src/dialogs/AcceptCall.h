@@ -33,5 +33,4 @@ private:
         QPushButton *rejectBtn_;
         std::vector<std::string> audioDevices_;
 };
-
 }

@@ -75,6 +75,8 @@ class UserSettings : public QObject
           bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
         Q_PROPERTY(QString defaultAudioSource READ defaultAudioSource WRITE setDefaultAudioSource
                      NOTIFY defaultAudioSourceChanged)
+        Q_PROPERTY(bool shareKeysWithTrustedUsers READ shareKeysWithTrustedUsers WRITE
+                     setShareKeysWithTrustedUsers NOTIFY shareKeysWithTrustedUsersChanged)
 
 public:
         UserSettings();
@@ -113,6 +115,7 @@ public:
         void setPresence(Presence state);
         void setUseStunServer(bool state);
         void setDefaultAudioSource(const QString &deviceName);
+        void setShareKeysWithTrustedUsers(bool state);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -140,6 +143,7 @@ public:
         Presence presence() const { return presence_; }
         bool useStunServer() const { return useStunServer_; }
         QString defaultAudioSource() const { return defaultAudioSource_; }
+        bool shareKeysWithTrustedUsers() const { return shareKeysWithTrustedUsers_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -164,6 +168,7 @@ signals:
         void presenceChanged(Presence state);
         void useStunServerChanged(bool state);
         void defaultAudioSourceChanged(const QString &deviceName);
+        void shareKeysWithTrustedUsersChanged(bool state);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -186,6 +191,7 @@ private:
         bool hasAlertOnNotification_;
         bool avatarCircles_;
         bool decryptSidebar_;
+        bool shareKeysWithTrustedUsers_;
         int timelineMaxWidth_;
         double baseFontSize_;
         QString font_;
@@ -248,6 +254,7 @@ private:
         Toggle *avatarCircles_;
         Toggle *useStunServer_;
         Toggle *decryptSidebar_;
+        Toggle *shareKeysWithTrustedUsers_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
 

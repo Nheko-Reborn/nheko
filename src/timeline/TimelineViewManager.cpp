@@ -4,10 +4,10 @@
 #include <QMetaType>
 #include <QPalette>
 #include <QQmlContext>
+#include <QQmlEngine>
 #include <QString>
 
 #include "BlurhashProvider.h"
-#include "CallManager.h"
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
@@ -20,12 +20,17 @@
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 
+#include <iostream> //only for debugging
+
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
+Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
+
+namespace msgs = mtx::events::msg;
 
 void
 TimelineViewManager::updateEncryptedDescriptions()
 {
-        auto decrypt = settings->decryptSidebar();
+        auto decrypt = ChatPage::instance()->userSettings()->decryptSidebar();
         QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
         for (i = models.begin(); i != models.end(); ++i) {
                 auto ptr = i.value();
@@ -42,10 +47,10 @@ TimelineViewManager::updateColorPalette()
 {
         userColors.clear();
 
-        if (settings->theme() == "light") {
+        if (ChatPage::instance()->userSettings()->theme() == "light") {
                 view->rootContext()->setContextProperty("currentActivePalette", QPalette());
                 view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
-        } else if (settings->theme() == "dark") {
+        } else if (ChatPage::instance()->userSettings()->theme() == "dark") {
                 view->rootContext()->setContextProperty("currentActivePalette", QPalette());
                 view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
         } else {
@@ -66,33 +71,71 @@ TimelineViewManager::userColor(QString id, QColor background)
 QString
 TimelineViewManager::userPresence(QString id) const
 {
-        return QString::fromStdString(
-          mtx::presence::to_string(cache::presenceState(id.toStdString())));
+        if (id.isEmpty())
+                return "";
+        else
+                return QString::fromStdString(
+                  mtx::presence::to_string(cache::presenceState(id.toStdString())));
 }
+
 QString
 TimelineViewManager::userStatus(QString id) const
 {
         return QString::fromStdString(cache::statusMessage(id.toStdString()));
 }
 
-TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings,
-                                         CallManager *callManager,
-                                         ChatPage *parent)
+TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
   , blurhashProvider(new BlurhashProvider())
   , callManager_(callManager)
-  , settings(userSettings)
 {
+        qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationDone>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationKey>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationMac>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
+        qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
+
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
                                          1,
                                          0,
                                          "MtxEvent",
                                          "Can't instantiate enum!");
+        qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
+                                         "im.nheko",
+                                         1,
+                                         0,
+                                         "VerificationStatus",
+                                         "Can't instantiate enum!");
+
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
+        qmlRegisterUncreatableType<DeviceVerificationFlow>(
+          "im.nheko", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
+        qmlRegisterUncreatableType<UserProfile>(
+          "im.nheko",
+          1,
+          0,
+          "UserProfileModel",
+          "UserProfile needs to be instantiated on the C++ side");
+
+        static auto self = this;
+        qmlRegisterSingletonType<TimelineViewManager>(
+          "im.nheko", 1, 0, "TimelineManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return self;
+          });
+        qmlRegisterSingletonType<UserSettings>(
+          "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return ChatPage::instance()->userSettings().data();
+          });
+
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
+        qRegisterMetaType<std::vector<DeviceInfo>>();
+
         qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterType<emoji::EmojiProxyModel>("im.nheko.EmojiModel", 1, 0, "EmojiProxyModel");
         qmlRegisterUncreatableType<QAbstractItemModel>(
@@ -124,8 +167,6 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
         });
 #endif
         container->setMinimumSize(200, 200);
-        view->rootContext()->setContextProperty("timelineManager", this);
-        view->rootContext()->setContextProperty("settings", settings.data());
         updateColorPalette();
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
@@ -137,10 +178,67 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
                 &ChatPage::decryptSidebarChanged,
                 this,
                 &TimelineViewManager::updateEncryptedDescriptions);
+        connect(
+          dynamic_cast<ChatPage *>(parent),
+          &ChatPage::receivedRoomDeviceVerificationRequest,
+          this,
+          [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
+                 TimelineModel *model) {
+                  auto event_id = QString::fromStdString(message.event_id);
+                  if (!this->dvList.contains(event_id)) {
+                          if (auto flow = DeviceVerificationFlow::NewInRoomVerification(
+                                this,
+                                model,
+                                message.content,
+                                QString::fromStdString(message.sender),
+                                event_id)) {
+                                  dvList[event_id] = flow;
+                                  emit newDeviceVerificationRequest(flow.data());
+                          }
+                  }
+          });
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::receivedDeviceVerificationRequest,
+                this,
+                [this](const mtx::events::msg::KeyVerificationRequest &msg, std::string sender) {
+                        if (!msg.transaction_id)
+                                return;
+
+                        auto txnid = QString::fromStdString(msg.transaction_id.value());
+                        if (!this->dvList.contains(txnid)) {
+                                if (auto flow = DeviceVerificationFlow::NewToDeviceVerification(
+                                      this, msg, QString::fromStdString(sender), txnid)) {
+                                        dvList[txnid] = flow;
+                                        emit newDeviceVerificationRequest(flow.data());
+                                }
+                        }
+                });
+        connect(dynamic_cast<ChatPage *>(parent),
+                &ChatPage::receivedDeviceVerificationStart,
+                this,
+                [this](const mtx::events::msg::KeyVerificationStart &msg, std::string sender) {
+                        if (!msg.transaction_id)
+                                return;
+
+                        auto txnid = QString::fromStdString(msg.transaction_id.value());
+                        if (!this->dvList.contains(txnid)) {
+                                if (auto flow = DeviceVerificationFlow::NewToDeviceVerification(
+                                      this, msg, QString::fromStdString(sender), txnid)) {
+                                        dvList[txnid] = flow;
+                                        emit newDeviceVerificationRequest(flow.data());
+                                }
+                        }
+                });
         connect(parent, &ChatPage::loggedOut, this, [this]() {
                 isInitialSync_ = true;
                 emit initialSyncChanged(true);
         });
+        connect(&WebRTCSession::instance(),
+                &WebRTCSession::stateChanged,
+                this,
+                &TimelineViewManager::callStateChanged);
+        connect(
+          callManager_, &CallManager::newCallParty, this, &TimelineViewManager::callPartyChanged);
 }
 
 void
@@ -183,7 +281,8 @@ TimelineViewManager::addRoom(const QString &room_id)
 {
         if (!models.contains(room_id)) {
                 QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
-                newRoom->setDecryptDescription(settings->decryptSidebar());
+                newRoom->setDecryptDescription(
+                  ChatPage::instance()->userSettings()->decryptSidebar());
 
                 connect(newRoom.data(),
                         &TimelineModel::newEncryptedImage,
@@ -210,6 +309,13 @@ QString
 TimelineViewManager::escapeEmoji(QString str) const
 {
         return utils::replaceEmoji(str);
+}
+
+void
+TimelineViewManager::toggleMicMute()
+{
+        WebRTCSession::instance().toggleMicMute();
+        emit micMuteChanged();
 }
 
 void
@@ -273,6 +379,58 @@ TimelineViewManager::openRoomSettings() const
 }
 
 void
+TimelineViewManager::verifyUser(QString userid)
+{
+        auto joined_rooms = cache::joinedRooms();
+        auto room_infos   = cache::getRoomInfo(joined_rooms);
+
+        for (std::string room_id : joined_rooms) {
+                if ((room_infos[QString::fromStdString(room_id)].member_count == 2) &&
+                    cache::isRoomEncrypted(room_id)) {
+                        auto room_members = cache::roomMembers(room_id);
+                        if (std::find(room_members.begin(),
+                                      room_members.end(),
+                                      (userid).toStdString()) != room_members.end()) {
+                                auto model = models.value(QString::fromStdString(room_id));
+                                auto flow  = DeviceVerificationFlow::InitiateUserVerification(
+                                  this, model.data(), userid);
+                                connect(model.data(),
+                                        &TimelineModel::updateFlowEventId,
+                                        this,
+                                        [this, flow](std::string eventId) {
+                                                dvList[QString::fromStdString(eventId)] = flow;
+                                        });
+                                emit newDeviceVerificationRequest(flow.data());
+                                return;
+                        }
+                }
+        }
+
+        emit ChatPage::instance()->showNotification(
+          tr("No share room with this user found. Create an "
+             "encrypted room with this user and try again."));
+}
+
+void
+TimelineViewManager::removeVerificationFlow(DeviceVerificationFlow *flow)
+{
+        for (auto it = dvList.keyValueBegin(); it != dvList.keyValueEnd(); ++it) {
+                if ((*it).second == flow) {
+                        dvList.remove((*it).first);
+                        return;
+                }
+        }
+}
+
+void
+TimelineViewManager::verifyDevice(QString userid, QString deviceid)
+{
+        auto flow = DeviceVerificationFlow::InitiateDeviceVerification(this, userid, deviceid);
+        this->dvList[flow->transactionId()] = flow;
+        emit newDeviceVerificationRequest(flow.data());
+}
+
+void
 TimelineViewManager::updateReadReceipts(const QString &room_id,
                                         const std::vector<QString> &event_ids)
 {
@@ -301,7 +459,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
 
-        if (settings->markdown()) {
+        if (ChatPage::instance()->userSettings()->markdown()) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
 
                 // Don't send formatted_body, when we don't need to
@@ -329,7 +487,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
 
                 // NOTE(Nico): rich replies always need a formatted_body!
                 text.format = "org.matrix.custom.html";
-                if (settings->markdown())
+                if (ChatPage::instance()->userSettings()->markdown())
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
                             .toStdString();
@@ -352,7 +510,8 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
         mtx::events::msg::Emote emote;
         emote.body = msg.trimmed().toStdString();
 
-        if (html != msg.trimmed().toHtmlEscaped() && settings->markdown()) {
+        if (html != msg.trimmed().toHtmlEscaped() &&
+            ChatPage::instance()->userSettings()->markdown()) {
                 emote.formatted_body = html.toStdString();
                 emote.format         = "org.matrix.custom.html";
         }

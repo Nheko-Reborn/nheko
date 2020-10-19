@@ -10,15 +10,17 @@
 #include <mtx/responses.hpp>
 
 #include "Cache.h"
+#include "CallManager.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
-class CallManager;
 class ColorImageProvider;
 class UserSettings;
 class ChatPage;
@@ -33,11 +35,13 @@ class TimelineViewManager : public QObject
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
         Q_PROPERTY(
           bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
+        Q_PROPERTY(webrtc::State callState READ callState NOTIFY callStateChanged)
+        Q_PROPERTY(QString callPartyName READ callPartyName NOTIFY callPartyChanged)
+        Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY callPartyChanged)
+        Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
 
 public:
-        TimelineViewManager(QSharedPointer<UserSettings> userSettings,
-                            CallManager *callManager,
-                            ChatPage *parent = nullptr);
+        TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
@@ -48,6 +52,11 @@ public:
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
+        webrtc::State callState() const { return WebRTCSession::instance().state(); }
+        QString callPartyName() const { return callManager_->callPartyName(); }
+        QString callPartyAvatarUrl() const { return callManager_->callPartyAvatarUrl(); }
+        bool isMicMuted() const { return WebRTCSession::instance().isMicMuted(); }
+        Q_INVOKABLE void toggleMicMute();
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
@@ -61,6 +70,10 @@ public:
         Q_INVOKABLE void openMemberListDialog() const;
         Q_INVOKABLE void openLeaveRoomDialog() const;
         Q_INVOKABLE void openRoomSettings() const;
+        Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
+
+        void verifyUser(QString userid);
+        void verifyDevice(QString userid, QString deviceid);
 
 signals:
         void clearRoomMessageCount(QString roomid);
@@ -69,9 +82,13 @@ signals:
         void initialSyncChanged(bool isInitialSync);
         void replyingEventChanged(QString replyingEvent);
         void replyClosed();
+        void newDeviceVerificationRequest(DeviceVerificationFlow *flow);
         void inviteUsers(QStringList users);
         void showRoomList();
         void narrowViewChanged();
+        void callStateChanged(webrtc::State);
+        void callPartyChanged();
+        void micMuteChanged();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -157,6 +174,15 @@ private:
         bool isInitialSync_ = true;
         bool isNarrowView_  = false;
 
-        QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;
+
+        QHash<QString, QSharedPointer<DeviceVerificationFlow>> dvList;
 };
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationAccept)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationCancel)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationDone)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationKey)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationMac)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationReady)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationRequest)
+Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationStart)

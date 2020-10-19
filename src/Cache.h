@@ -60,6 +60,20 @@ presenceState(const std::string &user_id);
 std::string
 statusMessage(const std::string &user_id);
 
+// user cache stores user keys
+std::optional<UserKeyCache>
+userKeys(const std::string &user_id);
+void
+updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery);
+
+// device & user verification cache
+std::optional<VerificationStatus>
+verificationStatus(const std::string &user_id);
+void
+markDeviceVerified(const std::string &user_id, const std::string &device);
+void
+markDeviceUnverified(const std::string &user_id, const std::string &device);
+
 //! Load saved data for the display names & avatars.
 void
 populateMembers();
@@ -255,6 +269,8 @@ bool
 outboundMegolmSessionExists(const std::string &room_id) noexcept;
 void
 updateOutboundMegolmSession(const std::string &room_id, int message_index);
+void
+dropOutboundMegolmSession(const std::string &room_id);
 
 void
 importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys);

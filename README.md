@@ -174,7 +174,7 @@ sudo pacman -S qt5-base \
 ##### Gentoo Linux
 
 ```bash
-sudo emerge -a ">=dev-qt/qtgui-5.9.0" media-libs/fontconfig
+sudo emerge -a ">=dev-qt/qtgui-5.10.0" media-libs/fontconfig
 ```
 
 ##### Ubuntu 20.04

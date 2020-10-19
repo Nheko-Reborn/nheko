@@ -54,6 +54,23 @@ public:
         mtx::presence::PresenceState presenceState(const std::string &user_id);
         std::string statusMessage(const std::string &user_id);
 
+        // user cache stores user keys
+        std::optional<UserKeyCache> userKeys(const std::string &user_id);
+        void updateUserKeys(const std::string &sync_token,
+                            const mtx::responses::QueryKeys &keyQuery);
+        void markUserKeysOutOfDate(lmdb::txn &txn,
+                                   lmdb::dbi &db,
+                                   const std::vector<std::string> &user_ids,
+                                   const std::string &sync_token);
+        void deleteUserKeys(lmdb::txn &txn,
+                            lmdb::dbi &db,
+                            const std::vector<std::string> &user_ids);
+
+        // device & user verification cache
+        VerificationStatus verificationStatus(const std::string &user_id);
+        void markDeviceVerified(const std::string &user_id, const std::string &device);
+        void markDeviceUnverified(const std::string &user_id, const std::string &device);
+
         static void removeDisplayName(const QString &room_id, const QString &user_id);
         static void removeAvatarUrl(const QString &room_id, const QString &user_id);
 
@@ -233,6 +250,7 @@ public:
         OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
         bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
         void updateOutboundMegolmSession(const std::string &room_id, int message_index);
+        void dropOutboundMegolmSession(const std::string &room_id);
 
         void importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys);
         mtx::crypto::ExportedSessionKeys exportSessionKeys();
@@ -262,6 +280,9 @@ signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void roomReadStatus(const std::map<QString, bool> &status);
         void removeNotification(const QString &room_id, const QString &event_id);
+        void userKeysUpdate(const std::string &sync_token,
+                            const mtx::responses::QueryKeys &keyQuery);
+        void verificationStatusChanged(const std::string &userid);
 
 private:
         //! Save an invited room.
@@ -527,6 +548,16 @@ private:
                 return lmdb::dbi::open(txn, "presence", MDB_CREATE);
         }
 
+        lmdb::dbi getUserKeysDb(lmdb::txn &txn)
+        {
+                return lmdb::dbi::open(txn, "user_key", MDB_CREATE);
+        }
+
+        lmdb::dbi getVerificationDb(lmdb::txn &txn)
+        {
+                return lmdb::dbi::open(txn, "verified", MDB_CREATE);
+        }
+
         //! Retrieves or creates the database that stores the open OLM sessions between our device
         //! and the given curve25519 key which represents another device.
         //!
@@ -544,6 +575,8 @@ private:
 
                 return QString::fromStdString(event.state_key);
         }
+
+        std::optional<VerificationCache> verificationCache(const std::string &user_id);
 
         void setNextBatchToken(lmdb::txn &txn, const std::string &token);
         void setNextBatchToken(lmdb::txn &txn, const QString &token);
@@ -569,6 +602,7 @@ private:
         static QHash<QString, QString> AvatarUrls;
 
         OlmSessionStorage session_storage;
+        VerificationStorage verification_storage;
 };
 
 namespace cache {
