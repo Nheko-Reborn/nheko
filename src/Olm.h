@@ -96,11 +96,9 @@ mark_keys_as_published();
 
 //! Request the encryption keys from sender's device for the given event.
 void
-request_keys(const std::string &room_id, const std::string &event_id);
-
-void
-send_key_request_for(const std::string &room_id,
-                     const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &);
+send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
+                     const std::string &request_id,
+                     bool cancel = false);
 
 void
 handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyRequest> &);

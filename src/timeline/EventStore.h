@@ -104,6 +104,7 @@ signals:
 
 public slots:
         void addPending(mtx::events::collections::TimelineEvents event);
+        void receivedSessionKey(const std::string &session_id);
         void clearTimeline();
 
 private:
@@ -120,6 +121,13 @@ private:
         static QCache<IdIndex, mtx::events::collections::TimelineEvents> decryptedEvents_;
         static QCache<Index, mtx::events::collections::TimelineEvents> events_;
         static QCache<IdIndex, mtx::events::collections::TimelineEvents> events_by_id_;
+
+        struct PendingKeyRequests
+        {
+                std::string request_id;
+                std::vector<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>> events;
+        };
+        std::map<std::string, PendingKeyRequests> pending_key_requests;
 
         std::string current_txn;
         int current_txn_error_count = 0;

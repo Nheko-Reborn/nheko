@@ -264,6 +264,10 @@ public slots:
         }
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
         void clearTimeline() { events.clearTimeline(); }
+        void receivedSessionKey(const std::string &session_key)
+        {
+                events.receivedSessionKey(session_key);
+        }
 
         QString roomName() const;
         QString roomTopic() const;

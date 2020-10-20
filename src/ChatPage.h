@@ -107,6 +107,8 @@ public slots:
         void banUser(QString userid, QString reason);
         void unbanUser(QString userid, QString reason);
 
+        void receivedSessionKey(const std::string &room_id, const std::string &session_id);
+
 signals:
         void connectionLost();
         void connectionRestored();

@@ -388,9 +388,10 @@ import_inbound_megolm_session(
                 return;
         }
 
-        // TODO(Nico): Reload messages encrypted with this key.
         nhlog::crypto()->info(
           "established inbound megolm session ({}, {})", roomKey.content.room_id, roomKey.sender);
+
+        ChatPage::instance()->receivedSessionKey(index.room_id, index.session_id);
 }
 
 void
@@ -401,48 +402,24 @@ mark_keys_as_published()
 }
 
 void
-request_keys(const std::string &room_id, const std::string &event_id)
-{
-        nhlog::crypto()->info("requesting keys for event {} at {}", event_id, room_id);
-
-        http::client()->get_event(
-          room_id,
-          event_id,
-          [event_id, room_id](const mtx::events::collections::TimelineEvents &res,
-                              mtx::http::RequestErr err) {
-                  using namespace mtx::events;
-
-                  if (err) {
-                          nhlog::net()->warn(
-                            "failed to retrieve event {} from {}", event_id, room_id);
-                          return;
-                  }
-
-                  if (!std::holds_alternative<EncryptedEvent<msg::Encrypted>>(res)) {
-                          nhlog::net()->info(
-                            "retrieved event is not encrypted: {} from {}", event_id, room_id);
-                          return;
-                  }
-
-                  olm::send_key_request_for(room_id, std::get<EncryptedEvent<msg::Encrypted>>(res));
-          });
-}
-
-void
-send_key_request_for(const std::string &room_id,
-                     const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e)
+send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
+                     const std::string &request_id,
+                     bool cancel)
 {
         using namespace mtx::events;
 
-        nhlog::crypto()->debug("sending key request: {}", json(e).dump(2));
+        nhlog::crypto()->debug("sending key request: sender_key {}, session_id {}",
+                               e.content.sender_key,
+                               e.content.session_id);
 
         mtx::events::msg::KeyRequest request;
-        request.action               = mtx::events::msg::RequestAction::Request;
+        request.action = !cancel ? mtx::events::msg::RequestAction::Request
+                                 : mtx::events::msg::RequestAction::Cancellation;
         request.algorithm            = MEGOLM_ALGO;
-        request.room_id              = room_id;
+        request.room_id              = e.room_id;
         request.sender_key           = e.content.sender_key;
         request.session_id           = e.content.session_id;
-        request.request_id           = "key_request." + http::client()->generate_txn_id();
+        request.request_id           = request_id;
         request.requesting_device_id = http::client()->device_id();
 
         nhlog::crypto()->debug("m.room_key_request: {}", json(request).dump(2));
