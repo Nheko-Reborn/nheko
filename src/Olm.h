@@ -110,9 +110,11 @@ send_megolm_key_to_device(const std::string &user_id,
                           const std::string &device_id,
                           const mtx::events::msg::ForwardedRoomKey &payload);
 
-//! Send encrypted to device messages, targets is a map from userid to device ids or "*"
+//! Send encrypted to device messages, targets is a map from userid to device ids or {} for all
+//! devices
 void
 send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::string>> targets,
-                                  const mtx::events::collections::DeviceEvents &event);
+                                  const mtx::events::collections::DeviceEvents &event,
+                                  bool force_new_session = false);
 
 } // namespace olm
