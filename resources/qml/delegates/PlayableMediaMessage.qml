@@ -47,7 +47,7 @@ Column {
                     anchors.fill: parent
                     hoverEnabled: true
                     enabled: !mediaCachedObserver.mediaCached
-                    onClicked: timelineManager.timeline.cacheMedia(model.data.id)
+                    onClicked: TimelineManager.timeline.cacheMedia(model.data.id)
                 }
             }
             MediaPlayer {
@@ -60,7 +60,7 @@ Column {
                 property bool mediaCached: false
 
                 id: mediaCachedObserver
-                target: timelineManager.timeline
+                target: TimelineManager.timeline
                 onMediaCached: {
                     if (mxcUrl == model.data.url) {
                         mediaCached = true
