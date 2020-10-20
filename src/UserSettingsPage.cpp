@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QFileDialog>
+#include <QFontComboBox>
 #include <QFormLayout>
 #include <QInputDialog>
 #include <QLabel>
@@ -470,7 +471,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         useStunServer_             = new Toggle{this};
         scaleFactorCombo_          = new QComboBox{this};
         fontSizeCombo_             = new QComboBox{this};
-        fontSelectionCombo_        = new QComboBox{this};
+        fontSelectionCombo_        = new QFontComboBox{this};
         emojiFontSelectionCombo_   = new QComboBox{this};
         timelineMaxWidthSpin_      = new QSpinBox{this};
 
@@ -490,10 +491,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 fontSizeCombo_->addItem(QString("%1 ").arg(QString::number(option)));
 
         QFontDatabase fontDb;
-        auto fontFamilies = fontDb.families();
-        for (const auto &family : fontFamilies) {
-                fontSelectionCombo_->addItem(family);
-        }
 
         // TODO: Is there a way to limit to just emojis, rather than
         // all emoji fonts?

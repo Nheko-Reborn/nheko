@@ -27,6 +27,7 @@ class Toggle;
 class QLabel;
 class QFormLayout;
 class QComboBox;
+class QFontComboBox;
 class QSpinBox;
 class QHBoxLayout;
 class QVBoxLayout;
@@ -261,7 +262,7 @@ private:
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;
         QComboBox *fontSizeCombo_;
-        QComboBox *fontSelectionCombo_;
+        QFontComboBox *fontSelectionCombo_;
         QComboBox *emojiFontSelectionCombo_;
 
         QSpinBox *timelineMaxWidthSpin_;
