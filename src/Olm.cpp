@@ -246,6 +246,8 @@ handle_pre_key_olm_message(const std::string &sender,
         nhlog::crypto()->debug("decrypted message: \n {}", plaintext.dump(2));
 
         try {
+                nhlog::crypto()->debug("New olm session: {}",
+                                       mtx::crypto::session_id(inbound_session.get()));
                 cache::saveOlmSession(
                   sender_key, std::move(inbound_session), QDateTime::currentMSecsSinceEpoch());
         } catch (const lmdb::error &e) {
@@ -315,6 +317,8 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
 
                 try {
                         text = olm::client()->decrypt_message(session->get(), msg.type, msg.body);
+                        nhlog::crypto()->debug("Updated olm session: {}",
+                                               mtx::crypto::session_id(session->get()));
                         cache::saveOlmSession(
                           id, std::move(session.value()), QDateTime::currentMSecsSinceEpoch());
                 } catch (const mtx::crypto::olm_exception &e) {
@@ -651,6 +655,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                             .get<mtx::events::msg::OlmEncrypted>();
 
                         try {
+                                nhlog::crypto()->debug("Updated olm session: {}",
+                                                       mtx::crypto::session_id(session->get()));
                                 cache::saveOlmSession(d.keys.at("curve25519:" + device),
                                                       std::move(*session),
                                                       QDateTime::currentMSecsSinceEpoch());
@@ -722,6 +728,9 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                             .get<mtx::events::msg::OlmEncrypted>();
 
                                         try {
+                                                nhlog::crypto()->debug(
+                                                  "Updated olm session: {}",
+                                                  mtx::crypto::session_id(session.get()));
                                                 cache::saveOlmSession(
                                                   id_key,
                                                   std::move(session),
