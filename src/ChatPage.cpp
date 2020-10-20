@@ -1250,6 +1250,12 @@ ChatPage::unbanUser(QString userid, QString reason)
 }
 
 void
+ChatPage::receivedSessionKey(const std::string &room_id, const std::string &session_id)
+{
+        view_manager_->receivedSessionKey(room_id, session_id);
+}
+
+void
 ChatPage::sendTypingNotifications()
 {
         if (!userSettings_->typingNotifications())

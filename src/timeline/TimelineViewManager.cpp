@@ -441,6 +441,15 @@ TimelineViewManager::updateReadReceipts(const QString &room_id,
 }
 
 void
+TimelineViewManager::receivedSessionKey(const std::string &room_id, const std::string &session_id)
+{
+        auto room = models.find(QString::fromStdString(room_id));
+        if (room != models.end()) {
+                room.value()->receivedSessionKey(session_id);
+        }
+}
+
+void
 TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
 {
         for (const auto &e : msgs) {

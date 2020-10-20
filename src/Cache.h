@@ -292,11 +292,15 @@ inboundMegolmSessionExists(const MegolmSessionIndex &index);
 // Olm Sessions
 //
 void
-saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
+saveOlmSession(const std::string &curve25519,
+               mtx::crypto::OlmSessionPtr session,
+               uint64_t timestamp);
 std::vector<std::string>
 getOlmSessions(const std::string &curve25519);
 std::optional<mtx::crypto::OlmSessionPtr>
 getOlmSession(const std::string &curve25519, const std::string &session_id);
+std::optional<mtx::crypto::OlmSessionPtr>
+getLatestOlmSession(const std::string &curve25519);
 
 void
 saveOlmAccount(const std::string &pickled);
