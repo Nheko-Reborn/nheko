@@ -266,10 +266,14 @@ public:
         //
         // Olm Sessions
         //
-        void saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
+        void saveOlmSession(const std::string &curve25519,
+                            mtx::crypto::OlmSessionPtr session,
+                            uint64_t timestamp);
         std::vector<std::string> getOlmSessions(const std::string &curve25519);
         std::optional<mtx::crypto::OlmSessionPtr> getOlmSession(const std::string &curve25519,
                                                                 const std::string &session_id);
+        std::optional<mtx::crypto::OlmSessionPtr> getLatestOlmSession(
+          const std::string &curve25519);
 
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
@@ -565,7 +569,7 @@ private:
         lmdb::dbi getOlmSessionsDb(lmdb::txn &txn, const std::string &curve25519_key)
         {
                 return lmdb::dbi::open(
-                  txn, std::string("olm_sessions/" + curve25519_key).c_str(), MDB_CREATE);
+                  txn, std::string("olm_sessions.v2/" + curve25519_key).c_str(), MDB_CREATE);
         }
 
         QString getDisplayName(const mtx::events::StateEvent<mtx::events::state::Member> &event)

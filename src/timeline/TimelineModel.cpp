@@ -1138,7 +1138,8 @@ TimelineModel::handleClaimedKeys(
                           pks.at(user_id).at(device_id).curve25519);
 
                         try {
-                                cache::saveOlmSession(id_key, std::move(s));
+                                cache::saveOlmSession(
+                                  id_key, std::move(s), QDateTime::currentMSecsSinceEpoch());
                         } catch (const lmdb::error &e) {
                                 nhlog::db()->critical("failed to save outbound olm session: {}",
                                                       e.what());

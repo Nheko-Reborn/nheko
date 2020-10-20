@@ -123,4 +123,5 @@ private:
 
         std::string current_txn;
         int current_txn_error_count = 0;
+        bool noMoreMessages         = false;
 };

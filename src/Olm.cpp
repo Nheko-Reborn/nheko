@@ -47,16 +47,12 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
 
                 if (msg_type == to_string(mtx::events::EventType::RoomEncrypted)) {
                         try {
-                                OlmMessage olm_msg = j_msg;
+                                olm::OlmMessage olm_msg = j_msg;
                                 handle_olm_message(std::move(olm_msg));
                         } catch (const nlohmann::json::exception &e) {
                                 nhlog::crypto()->warn(
                                   "parsing error for olm message: {} {}", e.what(), j_msg.dump(2));
                         } catch (const std::invalid_argument &e) {
-                                nhlog::crypto()->warn("validation error for olm message: {} {}",
-                                                      e.what(),
-                                                      j_msg.dump(2));
-
                                 nhlog::crypto()->warn("validation error for olm message: {} {}",
                                                       e.what(),
                                                       j_msg.dump(2));
@@ -250,7 +246,8 @@ handle_pre_key_olm_message(const std::string &sender,
         nhlog::crypto()->debug("decrypted message: \n {}", plaintext.dump(2));
 
         try {
-                cache::saveOlmSession(sender_key, std::move(inbound_session));
+                cache::saveOlmSession(
+                  sender_key, std::move(inbound_session), QDateTime::currentMSecsSinceEpoch());
         } catch (const lmdb::error &e) {
                 nhlog::db()->warn(
                   "failed to save inbound olm session from {}: {}", sender, e.what());
@@ -318,7 +315,8 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
 
                 try {
                         text = olm::client()->decrypt_message(session->get(), msg.type, msg.body);
-                        cache::saveOlmSession(id, std::move(session.value()));
+                        cache::saveOlmSession(
+                          id, std::move(session.value()), QDateTime::currentMSecsSinceEpoch());
                 } catch (const mtx::crypto::olm_exception &e) {
                         nhlog::crypto()->debug("failed to decrypt olm message ({}, {}) with {}: {}",
                                                msg.type,
@@ -672,7 +670,9 @@ send_megolm_key_to_device(const std::string &user_id,
                                     device_msg       = olm::client()->create_olm_encrypted_content(
                                       olm_session.get(), json(room_key).dump(), pks.curve25519);
 
-                                    cache::saveOlmSession(pks.curve25519, std::move(olm_session));
+                                    cache::saveOlmSession(pks.curve25519,
+                                                          std::move(olm_session),
+                                                          QDateTime::currentMSecsSinceEpoch());
                             } catch (const json::exception &e) {
                                     nhlog::crypto()->warn("creating outbound session: {}",
                                                           e.what());
@@ -749,4 +749,14 @@ decryptEvent(const MegolmSessionIndex &index,
 
         return {std::nullopt, std::nullopt, std::move(te.data)};
 }
+
+//! Send encrypted to device messages, targets is a map from userid to device ids or "*"
+void
+send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::string>> targets,
+                                  const mtx::events::collections::DeviceEvents &event)
+{
+        (void)targets;
+        (void)event;
+}
+
 } // namespace olm
