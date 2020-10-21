@@ -272,7 +272,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(room_list_,
                 SIGNAL(totalUnreadMessageCountUpdated(int)),
                 this,
-                SLOT(showUnreadMessageNotification(int)));
+                SIGNAL(unreadMessages(int)));
 
         connect(text_input_,
                 &TextInputWidget::sendTextMessage,
@@ -626,7 +626,7 @@ ChatPage::resetUI()
         user_info_widget_->reset();
         view_manager_->clearAll();
 
-        showUnreadMessageNotification(0);
+        emit unreadMessages(0);
 }
 
 void
@@ -749,18 +749,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         getProfileInfo();
         tryInitialSync();
-}
-
-void
-ChatPage::showUnreadMessageNotification(int count)
-{
-        emit unreadMessages(count);
-
-        // TODO: Make the default title a const.
-        if (count == 0)
-                emit changeWindowTitle("nheko");
-        else
-                emit changeWindowTitle(QString("nheko (%1)").arg(count));
 }
 
 void

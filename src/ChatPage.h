@@ -130,7 +130,7 @@ signals:
 
         void contentLoaded();
         void closing();
-        void changeWindowTitle(const QString &msg);
+        void changeWindowTitle(const int);
         void unreadMessages(int count);
         void showNotification(const QString &msg);
         void showLoginPage(const QString &msg);
@@ -188,7 +188,6 @@ signals:
         void receivedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
 
 private slots:
-        void showUnreadMessageNotification(int count);
         void logout();
         void removeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
