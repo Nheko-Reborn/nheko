@@ -44,16 +44,6 @@ displayName(const QString &room_id, const QString &user_id);
 QString
 avatarUrl(const QString &room_id, const QString &user_id);
 
-void
-removeDisplayName(const QString &room_id, const QString &user_id);
-void
-removeAvatarUrl(const QString &room_id, const QString &user_id);
-
-void
-insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name);
-void
-insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url);
-
 // presence
 mtx::presence::PresenceState
 presenceState(const std::string &user_id);
@@ -74,9 +64,6 @@ markDeviceVerified(const std::string &user_id, const std::string &device);
 void
 markDeviceUnverified(const std::string &user_id, const std::string &device);
 
-//! Load saved data for the display names & avatars.
-void
-populateMembers();
 std::vector<std::string>
 joinedRooms();
 

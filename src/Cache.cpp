@@ -2280,34 +2280,22 @@ Cache::joinedRooms()
         return room_ids;
 }
 
-void
-Cache::populateMembers()
+std::optional<MemberInfo>
+Cache::getMember(const std::string &room_id, const std::string &user_id)
 {
-        auto rooms = joinedRooms();
-        nhlog::db()->info("loading {} rooms", rooms.size());
+        try {
+                auto txn = lmdb::txn::begin(env_);
 
-        auto txn = lmdb::txn::begin(env_);
+                auto membersdb = getMembersDb(txn, room_id);
 
-        for (const auto &room : rooms) {
-                const auto roomid = QString::fromStdString(room);
-
-                auto membersdb = getMembersDb(txn, room);
-                auto cursor    = lmdb::cursor::open(txn, membersdb);
-
-                std::string user_id, info;
-                while (cursor.get(user_id, info, MDB_NEXT)) {
-                        MemberInfo m = json::parse(info);
-
-                        const auto userid = QString::fromStdString(user_id);
-
-                        insertDisplayName(roomid, userid, QString::fromStdString(m.name));
-                        insertAvatarUrl(roomid, userid, QString::fromStdString(m.avatar_url));
+                lmdb::val info;
+                if (lmdb::dbi_get(txn, membersdb, lmdb::val(user_id), info)) {
+                        MemberInfo m = json::parse(std::string_view(info.data(), info.size()));
+                        return m;
                 }
-
-                cursor.close();
+        } catch (...) {
         }
-
-        txn.commit();
+        return std::nullopt;
 }
 
 std::vector<RoomSearchResult>
@@ -3145,15 +3133,12 @@ Cache::roomMembers(const std::string &room_id)
         return members;
 }
 
-QHash<QString, QString> Cache::DisplayNames;
-QHash<QString, QString> Cache::AvatarUrls;
-
 QString
 Cache::displayName(const QString &room_id, const QString &user_id)
 {
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        if (DisplayNames.contains(fmt))
-                return DisplayNames[fmt];
+        if (auto info = getMember(room_id.toStdString(), user_id.toStdString());
+            info && !info->name.empty())
+                return QString::fromStdString(info->name);
 
         return user_id;
 }
@@ -3161,9 +3146,8 @@ Cache::displayName(const QString &room_id, const QString &user_id)
 std::string
 Cache::displayName(const std::string &room_id, const std::string &user_id)
 {
-        auto fmt = QString::fromStdString(room_id + " " + user_id);
-        if (DisplayNames.contains(fmt))
-                return DisplayNames[fmt].toStdString();
+        if (auto info = getMember(room_id, user_id); info && !info->name.empty())
+                return info->name;
 
         return user_id;
 }
@@ -3171,41 +3155,11 @@ Cache::displayName(const std::string &room_id, const std::string &user_id)
 QString
 Cache::avatarUrl(const QString &room_id, const QString &user_id)
 {
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        if (AvatarUrls.contains(fmt))
-                return AvatarUrls[fmt];
+        if (auto info = getMember(room_id.toStdString(), user_id.toStdString());
+            info && !info->avatar_url.empty())
+                return QString::fromStdString(info->avatar_url);
 
-        return QString();
-}
-
-void
-Cache::insertDisplayName(const QString &room_id,
-                         const QString &user_id,
-                         const QString &display_name)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        DisplayNames.insert(fmt, display_name);
-}
-
-void
-Cache::removeDisplayName(const QString &room_id, const QString &user_id)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        DisplayNames.remove(fmt);
-}
-
-void
-Cache::insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        AvatarUrls.insert(fmt, avatar_url);
-}
-
-void
-Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        AvatarUrls.remove(fmt);
+        return "";
 }
 
 mtx::presence::PresenceState
@@ -3793,28 +3747,6 @@ avatarUrl(const QString &room_id, const QString &user_id)
         return instance_->avatarUrl(room_id, user_id);
 }
 
-void
-removeDisplayName(const QString &room_id, const QString &user_id)
-{
-        instance_->removeDisplayName(room_id, user_id);
-}
-void
-removeAvatarUrl(const QString &room_id, const QString &user_id)
-{
-        instance_->removeAvatarUrl(room_id, user_id);
-}
-
-void
-insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name)
-{
-        instance_->insertDisplayName(room_id, user_id, display_name);
-}
-void
-insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
-{
-        instance_->insertAvatarUrl(room_id, user_id, avatar_url);
-}
-
 mtx::presence::PresenceState
 presenceState(const std::string &user_id)
 {
@@ -3824,13 +3756,6 @@ std::string
 statusMessage(const std::string &user_id)
 {
         return instance_->statusMessage(user_id);
-}
-
-//! Load saved data for the display names & avatars.
-void
-populateMembers()
-{
-        instance_->populateMembers();
 }
 
 // user cache stores user keys

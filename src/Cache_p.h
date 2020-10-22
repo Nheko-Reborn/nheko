@@ -46,9 +46,9 @@ class Cache : public QObject
 public:
         Cache(const QString &userId, QObject *parent = nullptr);
 
-        static std::string displayName(const std::string &room_id, const std::string &user_id);
-        static QString displayName(const QString &room_id, const QString &user_id);
-        static QString avatarUrl(const QString &room_id, const QString &user_id);
+        std::string displayName(const std::string &room_id, const std::string &user_id);
+        QString displayName(const QString &room_id, const QString &user_id);
+        QString avatarUrl(const QString &room_id, const QString &user_id);
 
         // presence
         mtx::presence::PresenceState presenceState(const std::string &user_id);
@@ -71,18 +71,6 @@ public:
         void markDeviceVerified(const std::string &user_id, const std::string &device);
         void markDeviceUnverified(const std::string &user_id, const std::string &device);
 
-        static void removeDisplayName(const QString &room_id, const QString &user_id);
-        static void removeAvatarUrl(const QString &room_id, const QString &user_id);
-
-        static void insertDisplayName(const QString &room_id,
-                                      const QString &user_id,
-                                      const QString &display_name);
-        static void insertAvatarUrl(const QString &room_id,
-                                    const QString &user_id,
-                                    const QString &avatar_url);
-
-        //! Load saved data for the display names & avatars.
-        void populateMembers();
         std::vector<std::string> joinedRooms();
 
         QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
@@ -308,6 +296,8 @@ private:
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
         QString getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
 
+        std::optional<MemberInfo> getMember(const std::string &room_id, const std::string &user_id);
+
         std::string getLastEventId(lmdb::txn &txn, const std::string &room_id);
         DescInfo getLastMessageInfo(lmdb::txn &txn, const std::string &room_id);
         void saveTimelineMessages(lmdb::txn &txn,
@@ -364,24 +354,11 @@ private:
                                               lmdb::val(e->state_key),
                                               lmdb::val(json(tmp).dump()));
 
-                                insertDisplayName(QString::fromStdString(room_id),
-                                                  QString::fromStdString(e->state_key),
-                                                  QString::fromStdString(display_name));
-
-                                insertAvatarUrl(QString::fromStdString(room_id),
-                                                QString::fromStdString(e->state_key),
-                                                QString::fromStdString(e->content.avatar_url));
-
                                 break;
                         }
                         default: {
                                 lmdb::dbi_del(
                                   txn, membersdb, lmdb::val(e->state_key), lmdb::val(""));
-
-                                removeDisplayName(QString::fromStdString(room_id),
-                                                  QString::fromStdString(e->state_key));
-                                removeAvatarUrl(QString::fromStdString(room_id),
-                                                QString::fromStdString(e->state_key));
 
                                 break;
                         }
@@ -601,9 +578,6 @@ private:
 
         QString localUserId_;
         QString cacheDirectory_;
-
-        static QHash<QString, QString> DisplayNames;
-        static QHash<QString, QString> AvatarUrls;
 
         OlmSessionStorage session_storage;
         VerificationStorage verification_storage;

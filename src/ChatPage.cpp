@@ -774,8 +774,6 @@ ChatPage::loadStateFromCache()
                 cache::restoreSessions();
                 olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
-                cache::populateMembers();
-
                 emit initializeEmptyViews(cache::roomMessages());
                 emit initializeRoomList(cache::roomInfo());
                 emit initializeMentions(cache::getTimelineMentions());
