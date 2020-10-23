@@ -299,6 +299,7 @@ UserSettings::setShareKeysWithTrustedUsers(bool shareKeys)
 {
         if (shareKeys == shareKeysWithTrustedUsers_)
                 return;
+
         shareKeysWithTrustedUsers_ = shareKeys;
         emit shareKeysWithTrustedUsersChanged(shareKeys);
         save();
@@ -736,6 +737,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 emit decryptSidebarChanged();
         });
 
+        connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setShareKeysWithTrustedUsers(!disabled);
+        });
+
         connect(avatarCircles_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setAvatarCircles(!disabled);
         });
@@ -810,6 +815,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         startInTrayToggle_->setState(!settings_->startInTray());
         groupViewToggle_->setState(!settings_->groupView());
         decryptSidebar_->setState(!settings_->decryptSidebar());
+        shareKeysWithTrustedUsers_->setState(!settings_->shareKeysWithTrustedUsers());
         avatarCircles_->setState(!settings_->avatarCircles());
         typingNotifications_->setState(!settings_->typingNotifications());
         sortByImportance_->setState(!settings_->sortByImportance());
