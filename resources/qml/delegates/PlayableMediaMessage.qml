@@ -7,8 +7,8 @@ import im.nheko 1.0
 
 Column { 
     id: content
-    width: parent.width - 24
-    anchors.centerIn: parent
+    width: parent ? parent.width: undefined
+    height: Math.round(videoContainer.height + 24)
 
     Rectangle {
         id: videoContainer
