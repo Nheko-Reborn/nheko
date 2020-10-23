@@ -54,8 +54,11 @@ EventStore::EventStore(std::string room_id, QObject *)
           &EventStore::oldMessagesRetrieved,
           this,
           [this](const mtx::responses::Messages &res) {
-                  if (cache::client()->previousBatchToken(room_id_) == res.end)
+                  if (cache::client()->previousBatchToken(room_id_) == res.end) {
                           noMoreMessages = true;
+                          emit fetchedMore();
+                          return;
+                  }
 
                   uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
                   if (newFirst == first)

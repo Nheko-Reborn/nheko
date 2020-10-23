@@ -2712,8 +2712,19 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                 }
         }
 
-        if (res.chunk.empty())
+        if (res.chunk.empty()) {
+                if (lmdb::dbi_get(txn, orderDb, lmdb::val(&index, sizeof(index)), val)) {
+                        auto orderEntry = json::parse(std::string_view(val.data(), val.size()));
+                        orderEntry["prev_batch"] = res.end;
+                        lmdb::dbi_put(txn,
+                                      orderDb,
+                                      lmdb::val(&index, sizeof(index)),
+                                      lmdb::val(orderEntry.dump()));
+                        nhlog::db()->debug("saving '{}'", orderEntry.dump());
+                        txn.commit();
+                }
                 return index;
+        }
 
         std::string event_id_val;
         for (const auto &e : res.chunk) {
