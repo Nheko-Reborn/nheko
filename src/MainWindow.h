@@ -62,7 +62,7 @@ class MainWindow : public QMainWindow
         Q_OBJECT
 
 public:
-        explicit MainWindow(QWidget *parent = nullptr);
+        explicit MainWindow(const QString name, QWidget *parent = nullptr);
 
         static MainWindow *instance() { return instance_; };
         void saveCurrentWindowSize();
@@ -113,6 +113,8 @@ private slots:
         void showOverlayProgressBar();
         void removeOverlayProgressBar();
 
+        virtual void setWindowTitle(int notificationCount);
+
 private:
         bool loadJdenticonPlugin();
 
@@ -147,4 +149,6 @@ private:
         LoadingIndicator *spinner_ = nullptr;
 
         JdenticonInterface *jdenticonInteface_ = nullptr;
+
+        QString profile_;
 };

@@ -104,10 +104,37 @@ createCacheDirectory()
 int
 main(int argc, char *argv[])
 {
-        // needed for settings so need to register before any settings are read to prevent warings
+        // needed for settings so need to register before any settings are read to prevent warnings
         qRegisterMetaType<UserSettings::Presence>();
 
-        QCoreApplication::setApplicationName("nheko");
+        // This is some hacky programming, but it's necessary (AFAIK?) to get the unique config name parsed
+        // before the app name is set.
+        QString appName{"nheko"};
+        for (int i = 0; i < argc; ++i)
+        {
+                if (QString{argv[i]}.startsWith("--profile="))
+                {
+                        QString q{argv[i]};
+                        q.remove("--profile=");
+                        appName += "-" + q;
+                }
+                else if (QString{argv[i]}.startsWith("--p="))
+                {
+                        QString q{argv[i]};
+                        q.remove("-p=");
+                        appName += "-" + q;
+                }
+                else if (QString{argv[i]} == "--profile" || QString{argv[i]} == "-p")
+                {
+                        if (i < argc -1) // if i is less than argc - 1, we still have a parameter left to process as the name
+                        {
+                                ++i; // the next arg is the name, so increment
+                                appName += "-" + QString {argv[i]};
+                        }
+                }
+        }
+        
+        QCoreApplication::setApplicationName(appName);
         QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
@@ -137,6 +164,15 @@ main(int argc, char *argv[])
         parser.addVersionOption();
         QCommandLineOption debugOption("debug", "Enable debug output");
         parser.addOption(debugOption);
+
+        // This option is not actually parsed via Qt due to the need to parse it before the app
+        // name is set. It only exists to keep Qt from complaining about the --profile/-p
+        // option and thereby crashing the app.
+        QCommandLineOption configName(QStringList() << "p" << "profile",
+                QCoreApplication::tr("Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko."), 
+                QCoreApplication::tr("profile"), QCoreApplication::tr("profile name"));
+        parser.addOption(configName);
+        
         parser.process(app);
 
         app.setWindowIcon(QIcon(":/logos/nheko.png"));
@@ -181,7 +217,7 @@ main(int argc, char *argv[])
         appTranslator.load(QLocale(), "nheko", "_", ":/translations");
         app.installTranslator(&appTranslator);
 
-        MainWindow w;
+        MainWindow w{ (appName == "nheko" ? "" : appName.remove("nheko-")) };
 
         // Move the MainWindow to the center
         w.move(screenCenter(w.width(), w.height()));

@@ -36,6 +36,7 @@
 #include <QString>
 #include <QTextStream>
 #include <QtQml>
+#include <QCoreApplication>
 
 #include "Cache.h"
 #include "Config.h"
@@ -446,6 +447,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         font.setPointSizeF(font.pointSizeF() * 1.1);
 
         auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version).arg(nheko::build_os));
+        if (QCoreApplication::applicationName() != "nheko")
+                versionInfo->setText(versionInfo->text() + " | " + tr("profile: %1").arg(QCoreApplication::applicationName()));
         versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
         topBarLayout_ = new QHBoxLayout;
