@@ -2284,7 +2284,7 @@ std::optional<MemberInfo>
 Cache::getMember(const std::string &room_id, const std::string &user_id)
 {
         try {
-                auto txn = lmdb::txn::begin(env_);
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
                 auto membersdb = getMembersDb(txn, room_id);
 
