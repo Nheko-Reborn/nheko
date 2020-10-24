@@ -6,7 +6,7 @@ TextEdit {
     textFormat: TextEdit.RichText
     readOnly: true
     wrapMode: Text.Wrap
-    selectByMouse: true
+    selectByMouse: !Settings.mobileMode
     color: colors.text
     onLinkActivated: {
         if (/^https:\/\/matrix.to\/#\/(@.*)$/.test(link)) {

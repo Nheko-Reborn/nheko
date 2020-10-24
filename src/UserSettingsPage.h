@@ -67,6 +67,7 @@ class UserSettings : public QObject
                      decryptSidebarChanged)
         Q_PROPERTY(int timelineMaxWidth READ timelineMaxWidth WRITE setTimelineMaxWidth NOTIFY
                      timelineMaxWidthChanged)
+        Q_PROPERTY(bool mobileMode READ mobileMode WRITE setMobileMode NOTIFY mobileModeChanged)
         Q_PROPERTY(double fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
         Q_PROPERTY(QString font READ font WRITE setFontFamily NOTIFY fontChanged)
         Q_PROPERTY(
@@ -99,6 +100,7 @@ public:
         void setEnlargeEmojiOnlyMessages(bool state);
         void setTray(bool state);
         void setStartInTray(bool state);
+        void setMobileMode(bool mode);
         void setFontSize(double size);
         void setFontFamily(QString family);
         void setEmojiFontFamily(QString family);
@@ -130,6 +132,7 @@ public:
         bool typingNotifications() const { return typingNotifications_; }
         bool sortByImportance() const { return sortByImportance_; }
         bool buttonsInTimeline() const { return buttonsInTimeline_; }
+        bool mobileMode() const { return mobileMode_; }
         bool readReceipts() const { return readReceipts_; }
         bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
         bool hasAlertOnNotification() const { return hasAlertOnNotification_; }
@@ -163,6 +166,7 @@ signals:
         void avatarCirclesChanged(bool state);
         void decryptSidebarChanged(bool state);
         void timelineMaxWidthChanged(int state);
+        void mobileModeChanged(bool mode);
         void fontSizeChanged(double state);
         void fontChanged(QString state);
         void emojiFontChanged(QString state);
@@ -193,6 +197,7 @@ private:
         bool avatarCircles_;
         bool decryptSidebar_;
         bool shareKeysWithTrustedUsers_;
+        bool mobileMode_;
         int timelineMaxWidth_;
         double baseFontSize_;
         QString font_;
@@ -256,6 +261,7 @@ private:
         Toggle *useStunServer_;
         Toggle *decryptSidebar_;
         Toggle *shareKeysWithTrustedUsers_;
+        Toggle *mobileMode_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
 

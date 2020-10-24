@@ -75,6 +75,7 @@ UserSettings::load()
         decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
         shareKeysWithTrustedUsers_ =
           settings.value("user/share_keys_with_trusted_users", true).toBool();
+        mobileMode_   = settings.value("user/mobile_mode", false).toBool();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
         presence_ =
@@ -120,6 +121,16 @@ UserSettings::setStartInTray(bool state)
                 return;
         startInTray_ = state;
         emit startInTrayChanged(state);
+        save();
+}
+
+void
+UserSettings::setMobileMode(bool state)
+{
+        if (state == mobileMode_)
+                return;
+        mobileMode_ = state;
+        emit mobileModeChanged(state);
         save();
 }
 
@@ -389,6 +400,7 @@ UserSettings::save()
         settings.setValue("avatar_circles", avatarCircles_);
         settings.setValue("decrypt_sidebar", decryptSidebar_);
         settings.setValue("share_keys_with_trusted_users", shareKeysWithTrustedUsers_);
+        settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
         settings.setValue("minor_events", sortByImportance_);
@@ -470,6 +482,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         desktopNotifications_      = new Toggle{this};
         alertOnNotification_       = new Toggle{this};
         useStunServer_             = new Toggle{this};
+        mobileMode_                = new Toggle{this};
         scaleFactorCombo_          = new QComboBox{this};
         fontSizeCombo_             = new QComboBox{this};
         fontSelectionCombo_        = new QFontComboBox{this};
@@ -637,6 +650,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
+        boxWrap(tr("Mobile mode"),
+                mobileMode_,
+                tr("Will prevent text selection in the timeline to make scrolling easier."));
 #if !defined(Q_OS_MAC)
         boxWrap(tr("Scale factor"),
                 scaleFactorCombo_,
@@ -726,6 +742,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setStartInTray(!disabled);
+        });
+
+        connect(mobileMode_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setMobileMode(!disabled);
         });
 
         connect(groupViewToggle_, &Toggle::toggled, this, [this](bool disabled) {
@@ -820,6 +840,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         typingNotifications_->setState(!settings_->typingNotifications());
         sortByImportance_->setState(!settings_->sortByImportance());
         timelineButtonsToggle_->setState(!settings_->buttonsInTimeline());
+        mobileMode_->setState(!settings_->mobileMode());
         readReceipts_->setState(!settings_->readReceipts());
         markdown_->setState(!settings_->markdown());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
