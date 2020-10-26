@@ -50,7 +50,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1732"/>
+        <location filename="../../src/Cache.cpp" line="+1843"/>
         <source>You joined this room.</source>
         <translation>Sei entrato in questa stanza.</translation>
     </message>
@@ -58,23 +58,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+215"/>
+        <location filename="../../src/ChatPage.cpp" line="+217"/>
         <source>Failed to invite user: %1</source>
         <translation>Impossibile invitare l&apos;utente: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+947"/>
+        <location line="+931"/>
         <source>Invited user: %1</source>
         <translation>Invitato utente: %1</translation>
     </message>
     <message>
-        <location line="-458"/>
+        <location line="-444"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrazione della cache alla versione corrente fallita. Questo può avere diverse cause. Per favore apri una issue e nel frattempo prova ad usare una versione più vecchia. In alternativa puoi provare a cancellare la cache manualmente.</translation>
     </message>
     <message>
-        <location line="+415"/>
+        <location line="+401"/>
         <source>Room %1 created.</source>
         <translation>Stanza %1 creata.</translation>
     </message>
@@ -154,12 +154,12 @@
         <translation>Rimosso il ban dall&apos;utente: %1</translation>
     </message>
     <message>
-        <location line="-874"/>
+        <location line="-858"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Impossibile inviare il file multimediale. Per favore riprova.</translation>
     </message>
     <message>
-        <location line="+334"/>
+        <location line="+332"/>
         <source>Cache migration failed!</source>
         <translation>Migrazione della cache fallita!</translation>
     </message>
@@ -174,7 +174,7 @@
         <translation>La cache sul tuo disco è più nuova di quella supportata da questa versione di Nheko. Per favore aggiorna o pulisci la tua cache.</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+53"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Impossibile ripristinare l&apos;account OLM. Per favore accedi nuovamente.</translation>
     </message>
@@ -190,12 +190,12 @@
     </message>
     <message>
         <location line="+99"/>
-        <location line="+251"/>
+        <location line="+257"/>
         <source>Please try to login again: %1</source>
         <translation>Per favore prova ad accedere nuovamente: %1</translation>
     </message>
     <message>
-        <location line="-219"/>
+        <location line="-225"/>
         <source>Failed to join room: %1</source>
         <translation>Impossibile accedere alla stanza: %1</translation>
     </message>
@@ -304,7 +304,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+112"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+113"/>
         <location line="+181"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
@@ -389,13 +389,13 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+503"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+519"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished">-- Evento Criptato (Chiavi per la decriptazione non trovate) --</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+32"/>
         <location line="+62"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
@@ -642,6 +642,14 @@ Esempio: https://server.mio:8787</translation>
     </message>
 </context>
 <context>
+    <name>MessageInput</name>
+    <message>
+        <location filename="../qml/MessageInput.qml" line="+47"/>
+        <source>Write a message...</source>
+        <translation type="unfinished">Scrivi un messaggio…</translation>
+    </message>
+</context>
+<context>
     <name>NewVerificationRequest</name>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
@@ -690,6 +698,24 @@ Esempio: https://server.mio:8787</translation>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
         <translation> event non implementato:</translation>
+    </message>
+</context>
+<context>
+    <name>QCoreApplication</name>
+    <message>
+        <location filename="../../src/main.cpp" line="+172"/>
+        <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>profile name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -769,9 +795,17 @@ Esempio: https://server.mio:8787</translation>
     </message>
 </context>
 <context>
+    <name>ReplyPopup</name>
+    <message>
+        <location filename="../qml/ReplyPopup.qml" line="+43"/>
+        <source>Close</source>
+        <translation type="unfinished">Chiudi</translation>
+    </message>
+</context>
+<context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1815"/>
+        <location filename="../../src/Cache.cpp" line="+1780"/>
         <source>no version stored</source>
         <translation>nessuna versione memorizzata</translation>
     </message>
@@ -831,7 +865,7 @@ Esempio: https://server.mio:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+173"/>
+        <location line="+169"/>
         <source>Accept</source>
         <translation>Accetta</translation>
     </message>
@@ -913,7 +947,7 @@ Esempio: https://server.mio:8787</translation>
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+574"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+577"/>
         <source>Send a file</source>
         <translation>Invia un file</translation>
     </message>
@@ -967,15 +1001,14 @@ Esempio: https://server.mio:8787</translation>
         <translation>Oscuramento del messaggio fallito: %1</translation>
     </message>
     <message>
-        <location line="+125"/>
-        <location line="+17"/>
-        <location line="+88"/>
+        <location line="+130"/>
+        <location line="+8"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+156"/>
         <source>Save image</source>
         <translation>Salva immagine</translation>
     </message>
@@ -1114,12 +1147,12 @@ Esempio: https://server.mio:8787</translation>
         <translation>%1 ha oscurato la sua bussata.</translation>
     </message>
     <message>
-        <location line="-982"/>
+        <location line="-810"/>
         <source>You joined this room.</source>
         <translation>Sei entrato in questa stanza.</translation>
     </message>
     <message>
-        <location line="+984"/>
+        <location line="+812"/>
         <source>Rejected the knock from %1.</source>
         <translation>Rifiutata la bussata di %1.</translation>
     </message>
@@ -1161,7 +1194,7 @@ Esempio: https://server.mio:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+66"/>
+        <location filename="../qml/TimelineView.qml" line="+75"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1205,8 +1238,19 @@ Esempio: https://server.mio:8787</translation>
         <source>No room open</source>
         <translation>Nessuna stanza aperta</translation>
     </message>
+</context>
+<context>
+    <name>TimelineViewManager</name>
     <message>
-        <location line="+50"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+410"/>
+        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TopBar</name>
+    <message>
+        <location filename="../qml/TopBar.qml" line="+41"/>
         <source>Back to room list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1240,19 +1284,6 @@ Esempio: https://server.mio:8787</translation>
         <location line="+5"/>
         <source>Settings</source>
         <translation type="unfinished">Impostazioni</translation>
-    </message>
-    <message>
-        <location line="+286"/>
-        <source>Close</source>
-        <translation>Chiudi</translation>
-    </message>
-</context>
-<context>
-    <name>TimelineViewManager</name>
-    <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+412"/>
-        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1337,7 +1368,7 @@ Esempio: https://server.mio:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+565"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
         <source>Minimize to tray</source>
         <translation>Minimizza nella tray</translation>
     </message>
@@ -1357,7 +1388,12 @@ Esempio: https://server.mio:8787</translation>
         <translation>Avatar Circolari</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-149"/>
+        <source>profile: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
         <source>CALLS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1500,7 +1536,17 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
+        <source>Mobile mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Will prevent text selection in the timeline to make scrolling easier.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Scale factor</source>
         <translation>Fattore di scala</translation>
     </message>
@@ -1545,7 +1591,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Impronta digitale del dispositivo</translation>
     </message>
     <message>
-        <location line="-120"/>
+        <location line="-123"/>
         <source>Session Keys</source>
         <translation>Chiavi di Sessione</translation>
     </message>
@@ -1565,22 +1611,32 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>CRITTOGRAFIA</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-75"/>
         <source>GENERAL</source>
         <translation>GENERALE</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+32"/>
         <source>INTERFACE</source>
         <translation>INTERFACCIA</translation>
     </message>
     <message>
-        <location line="+171"/>
+        <location line="+170"/>
         <source>Emoji Font Family</source>
         <translation>Famiglia dei caratteri delle Emoji</translation>
     </message>
     <message>
-        <location line="+191"/>
+        <location line="+18"/>
+        <source>Share keys with trusted users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Automatically replies to key requests from other users, if they are verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+185"/>
         <source>Open Sessions File</source>
         <translation>Apri File delle Sessioni</translation>
     </message>
