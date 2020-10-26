@@ -218,8 +218,8 @@ Page {
             ReplyPopup {
             }
 
-            MessageInput {
-            }
+            //MessageInput {
+            //}
 
         }
 
