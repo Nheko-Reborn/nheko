@@ -13,7 +13,7 @@ Rectangle {
     width: 48
     height: 48
     radius: Settings.avatarCircles ? height / 2 : 3
-    color: colors.base
+    color: colors.alternateBase
 
     Label {
         anchors.fill: parent

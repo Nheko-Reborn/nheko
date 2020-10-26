@@ -48,7 +48,7 @@ Item {
             Reply {
                 visible: model.replyTo
                 modelData: chat.model.getDump(model.replyTo, model.id)
-                userColor: TimelineManager.userColor(modelData.userId, colors.window)
+                userColor: TimelineManager.userColor(modelData.userId, colors.base)
             }
 
             // actual message content
