@@ -57,7 +57,6 @@ Page {
         property string eventId
         property int eventType
         property bool isEncrypted
-        property var room: TimelineManager.timeline
 
         function show(eventId_, eventType_, isEncrypted_, showAt_, position) {
             eventId = eventId_;
@@ -78,12 +77,12 @@ Page {
 
         MenuItem {
             text: qsTr("Reply")
-            onClicked: room.replyAction(messageContextMenu.eventId)
+            onClicked: TimelineManager.timeline.replyAction(messageContextMenu.eventId)
         }
 
         MenuItem {
             text: qsTr("Read receipts")
-            onTriggered: room.readReceiptsAction(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
         }
 
         MenuItem {
@@ -92,19 +91,19 @@ Page {
 
         MenuItem {
             text: qsTr("View raw message")
-            onTriggered: room.viewRawMessage(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.viewRawMessage(messageContextMenu.eventId)
         }
 
         MenuItem {
             visible: messageContextMenu.isEncrypted
             height: visible ? implicitHeight : 0
             text: qsTr("View decrypted raw message")
-            onTriggered: room.viewDecryptedRawMessage(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.viewDecryptedRawMessage(messageContextMenu.eventId)
         }
 
         MenuItem {
             text: qsTr("Redact message")
-            onTriggered: room.redactEvent(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.redactEvent(messageContextMenu.eventId)
         }
 
         MenuItem {
