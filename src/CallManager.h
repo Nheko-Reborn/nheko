@@ -5,7 +5,6 @@
 
 #include <QMediaPlayer>
 #include <QObject>
-#include <QSharedPointer>
 #include <QString>
 #include <QTimer>
 
@@ -16,7 +15,6 @@ namespace mtx::responses {
 struct TurnServer;
 }
 
-class UserSettings;
 class WebRTCSession;
 
 class CallManager : public QObject
@@ -24,7 +22,7 @@ class CallManager : public QObject
         Q_OBJECT
 
 public:
-        CallManager(QSharedPointer<UserSettings>);
+        CallManager();
 
         void sendInvite(const QString &roomid, bool isVideo);
         void hangUp(
@@ -59,7 +57,6 @@ private:
         std::vector<mtx::events::msg::CallCandidates::Candidate> remoteICECandidates_;
         std::vector<std::string> turnURIs_;
         QTimer turnServerTimer_;
-        QSharedPointer<UserSettings> settings_;
         QMediaPlayer player_;
 
         template<typename T>

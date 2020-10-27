@@ -69,7 +69,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , isConnected_(true)
   , userSettings_{userSettings}
   , notificationsManager(this)
-  , callManager_(userSettings)
 {
         setObjectName("chatPage");
 

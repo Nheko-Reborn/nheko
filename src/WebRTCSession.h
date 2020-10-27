@@ -4,13 +4,11 @@
 #include <vector>
 
 #include <QObject>
-#include <QSharedPointer>
 
 #include "mtx/events/voip.hpp"
 
 typedef struct _GstElement GstElement;
 class QQuickItem;
-class UserSettings;
 
 namespace webrtc {
 Q_NAMESPACE
@@ -57,7 +55,6 @@ public:
         bool toggleMicMute();
         void end();
 
-        void setSettings(QSharedPointer<UserSettings> settings) { settings_ = settings; }
         void setTurnServers(const std::vector<std::string> &uris) { turnServers_ = uris; }
 
         void refreshDevices();
@@ -95,7 +92,6 @@ private:
         GstElement *pipe_           = nullptr;
         GstElement *webrtc_         = nullptr;
         unsigned int busWatchId_    = 0;
-        QSharedPointer<UserSettings> settings_;
         std::vector<std::string> turnServers_;
 
         bool init(std::string *errorMessage = nullptr);

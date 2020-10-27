@@ -9,6 +9,7 @@
 #include <string_view>
 #include <utility>
 
+#include "ChatPage.h"
 #include "Logging.h"
 #include "UserSettingsPage.h"
 #include "WebRTCSession.h"
@@ -847,7 +848,7 @@ WebRTCSession::startPipeline(int opusPayloadType, int vp8PayloadType)
 
         webrtc_ = gst_bin_get_by_name(GST_BIN(pipe_), "webrtcbin");
 
-        if (settings_->useStunServer()) {
+        if (ChatPage::instance()->userSettings()->useStunServer()) {
                 nhlog::ui()->info("WebRTC: setting STUN server: {}", STUN_SERVER);
                 g_object_set(webrtc_, "stun-server", STUN_SERVER, nullptr);
         }
@@ -902,15 +903,17 @@ WebRTCSession::startPipeline(int opusPayloadType, int vp8PayloadType)
 bool
 WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
 {
-        auto it = std::find_if(audioSources_.cbegin(), audioSources_.cend(), [this](const auto &s) {
-                return s.name == settings_->microphone().toStdString();
-        });
+        std::string microphoneSetting =
+          ChatPage::instance()->userSettings()->microphone().toStdString();
+        auto it =
+          std::find_if(audioSources_.cbegin(),
+                       audioSources_.cend(),
+                       [&microphoneSetting](const auto &s) { return s.name == microphoneSetting; });
         if (it == audioSources_.cend()) {
-                nhlog::ui()->error("WebRTC: unknown microphone: {}",
-                                   settings_->microphone().toStdString());
+                nhlog::ui()->error("WebRTC: unknown microphone: {}", microphoneSetting);
                 return false;
         }
-        nhlog::ui()->debug("WebRTC: microphone: {}", it->name);
+        nhlog::ui()->debug("WebRTC: microphone: {}", microphoneSetting);
 
         GstElement *source     = gst_device_create_element(it->device, nullptr);
         GstElement *volume     = gst_element_factory_make("volume", "srclevel");
@@ -977,21 +980,24 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
         if (videoSources_.empty())
                 return !isOffering_;
 
-        auto it = std::find_if(videoSources_.cbegin(), videoSources_.cend(), [this](const auto &s) {
-                return s.name == settings_->camera().toStdString();
-        });
+        std::string cameraSetting = ChatPage::instance()->userSettings()->camera().toStdString();
+        auto it                   = std::find_if(videoSources_.cbegin(),
+                               videoSources_.cend(),
+                               [&cameraSetting](const auto &s) { return s.name == cameraSetting; });
         if (it == videoSources_.cend()) {
-                nhlog::ui()->error("WebRTC: unknown camera: {}", settings_->camera().toStdString());
+                nhlog::ui()->error("WebRTC: unknown camera: {}", cameraSetting);
                 return false;
         }
 
-        std::string resSetting = settings_->cameraResolution().toStdString();
+        std::string resSetting =
+          ChatPage::instance()->userSettings()->cameraResolution().toStdString();
         const std::string &res = resSetting.empty() ? it->caps.front().resolution : resSetting;
-        std::string frSetting  = settings_->cameraFrameRate().toStdString();
+        std::string frSetting =
+          ChatPage::instance()->userSettings()->cameraFrameRate().toStdString();
         const std::string &fr = frSetting.empty() ? it->caps.front().frameRates.front() : frSetting;
         auto resolution       = tokenise(res, 'x');
         auto frameRate        = tokenise(fr, '/');
-        nhlog::ui()->debug("WebRTC: camera: {}", it->name);
+        nhlog::ui()->debug("WebRTC: camera: {}", cameraSetting);
         nhlog::ui()->debug("WebRTC: camera resolution: {}x{}", resolution.first, resolution.second);
         nhlog::ui()->debug("WebRTC: camera frame rate: {}/{}", frameRate.first, frameRate.second);
 

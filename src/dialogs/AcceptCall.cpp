@@ -18,7 +18,6 @@ AcceptCall::AcceptCall(const QString &caller,
                        const QString &displayName,
                        const QString &roomName,
                        const QString &avatarUrl,
-                       QSharedPointer<UserSettings> settings,
                        bool isVideo,
                        QWidget *parent)
   : QWidget(parent)
@@ -35,8 +34,10 @@ AcceptCall::AcceptCall(const QString &caller,
                 emit close();
                 return;
         }
+
         session->refreshDevices();
-        microphones_ = session->getDeviceNames(false, settings->microphone().toStdString());
+        microphones_ = session->getDeviceNames(
+          false, ChatPage::instance()->userSettings()->microphone().toStdString());
         if (microphones_.empty()) {
                 emit ChatPage::instance()->showNotification(
                   tr("Incoming call: No microphone found."));
@@ -44,7 +45,8 @@ AcceptCall::AcceptCall(const QString &caller,
                 return;
         }
         if (isVideo)
-                cameras_ = session->getDeviceNames(true, settings->camera().toStdString());
+                cameras_ = session->getDeviceNames(
+                  true, ChatPage::instance()->userSettings()->camera().toStdString());
 
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
@@ -131,11 +133,11 @@ AcceptCall::AcceptCall(const QString &caller,
         if (cameraCombo_)
                 layout->addWidget(cameraCombo_);
 
-        connect(acceptBtn_, &QPushButton::clicked, this, [this, settings, session]() {
-                settings->setMicrophone(
+        connect(acceptBtn_, &QPushButton::clicked, this, [this]() {
+                ChatPage::instance()->userSettings()->setMicrophone(
                   QString::fromStdString(microphones_[microphoneCombo_->currentIndex()]));
                 if (cameraCombo_) {
-                        settings->setCamera(
+                        ChatPage::instance()->userSettings()->setCamera(
                           QString::fromStdString(cameras_[cameraCombo_->currentIndex()]));
                 }
                 emit accept();

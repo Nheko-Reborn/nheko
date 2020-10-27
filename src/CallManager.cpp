@@ -12,7 +12,6 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
-#include "UserSettingsPage.h"
 #include "WebRTCSession.h"
 #include "dialogs/AcceptCall.h"
 
@@ -30,17 +29,14 @@ std::vector<std::string>
 getTurnURIs(const mtx::responses::TurnServer &turnServer);
 }
 
-CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
+CallManager::CallManager()
   : QObject()
   , session_(WebRTCSession::instance())
   , turnServerTimer_(this)
-  , settings_(userSettings)
 {
         qRegisterMetaType<std::vector<mtx::events::msg::CallCandidates::Candidate>>();
         qRegisterMetaType<mtx::events::msg::CallCandidates::Candidate>();
         qRegisterMetaType<mtx::responses::TurnServer>();
-
-        session_.setSettings(userSettings);
 
         connect(
           &session_,
@@ -265,7 +261,6 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                                               caller.display_name,
                                               QString::fromStdString(roomInfo.name),
                                               QString::fromStdString(roomInfo.avatar_url),
-                                              settings_,
                                               isVideo,
                                               MainWindow::instance());
         connect(dialog, &dialogs::AcceptCall::accept, this, [this, callInviteEvent, isVideo]() {

@@ -3,13 +3,11 @@
 #include <string>
 #include <vector>
 
-#include <QSharedPointer>
 #include <QWidget>
 
 class QComboBox;
 class QPushButton;
 class QString;
-class UserSettings;
 
 namespace dialogs {
 
@@ -22,7 +20,6 @@ public:
                    const QString &displayName,
                    const QString &roomName,
                    const QString &avatarUrl,
-                   QSharedPointer<UserSettings> settings,
                    bool isVideo,
                    QWidget *parent = nullptr);
 
