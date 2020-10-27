@@ -83,7 +83,7 @@ Flow {
                 implicitWidth: reaction.implicitWidth
                 implicitHeight: reaction.implicitHeight
                 border.color: (reaction.hovered || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
-                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : colors.base
+                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : colors.window
                 border.width: 1
                 radius: reaction.height / 2
             }

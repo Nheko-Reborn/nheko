@@ -46,9 +46,9 @@ class Cache : public QObject
 public:
         Cache(const QString &userId, QObject *parent = nullptr);
 
-        static std::string displayName(const std::string &room_id, const std::string &user_id);
-        static QString displayName(const QString &room_id, const QString &user_id);
-        static QString avatarUrl(const QString &room_id, const QString &user_id);
+        std::string displayName(const std::string &room_id, const std::string &user_id);
+        QString displayName(const QString &room_id, const QString &user_id);
+        QString avatarUrl(const QString &room_id, const QString &user_id);
 
         // presence
         mtx::presence::PresenceState presenceState(const std::string &user_id);
@@ -71,18 +71,6 @@ public:
         void markDeviceVerified(const std::string &user_id, const std::string &device);
         void markDeviceUnverified(const std::string &user_id, const std::string &device);
 
-        static void removeDisplayName(const QString &room_id, const QString &user_id);
-        static void removeAvatarUrl(const QString &room_id, const QString &user_id);
-
-        static void insertDisplayName(const QString &room_id,
-                                      const QString &user_id,
-                                      const QString &display_name);
-        static void insertAvatarUrl(const QString &room_id,
-                                    const QString &user_id,
-                                    const QString &avatar_url);
-
-        //! Load saved data for the display names & avatars.
-        void populateMembers();
         std::vector<std::string> joinedRooms();
 
         QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
@@ -266,10 +254,14 @@ public:
         //
         // Olm Sessions
         //
-        void saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
+        void saveOlmSession(const std::string &curve25519,
+                            mtx::crypto::OlmSessionPtr session,
+                            uint64_t timestamp);
         std::vector<std::string> getOlmSessions(const std::string &curve25519);
         std::optional<mtx::crypto::OlmSessionPtr> getOlmSession(const std::string &curve25519,
                                                                 const std::string &session_id);
+        std::optional<mtx::crypto::OlmSessionPtr> getLatestOlmSession(
+          const std::string &curve25519);
 
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
@@ -303,6 +295,8 @@ private:
         QString getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
         QString getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
+
+        std::optional<MemberInfo> getMember(const std::string &room_id, const std::string &user_id);
 
         std::string getLastEventId(lmdb::txn &txn, const std::string &room_id);
         DescInfo getLastMessageInfo(lmdb::txn &txn, const std::string &room_id);
@@ -360,24 +354,11 @@ private:
                                               lmdb::val(e->state_key),
                                               lmdb::val(json(tmp).dump()));
 
-                                insertDisplayName(QString::fromStdString(room_id),
-                                                  QString::fromStdString(e->state_key),
-                                                  QString::fromStdString(display_name));
-
-                                insertAvatarUrl(QString::fromStdString(room_id),
-                                                QString::fromStdString(e->state_key),
-                                                QString::fromStdString(e->content.avatar_url));
-
                                 break;
                         }
                         default: {
                                 lmdb::dbi_del(
                                   txn, membersdb, lmdb::val(e->state_key), lmdb::val(""));
-
-                                removeDisplayName(QString::fromStdString(room_id),
-                                                  QString::fromStdString(e->state_key));
-                                removeAvatarUrl(QString::fromStdString(room_id),
-                                                QString::fromStdString(e->state_key));
 
                                 break;
                         }
@@ -565,7 +546,7 @@ private:
         lmdb::dbi getOlmSessionsDb(lmdb::txn &txn, const std::string &curve25519_key)
         {
                 return lmdb::dbi::open(
-                  txn, std::string("olm_sessions/" + curve25519_key).c_str(), MDB_CREATE);
+                  txn, std::string("olm_sessions.v2/" + curve25519_key).c_str(), MDB_CREATE);
         }
 
         QString getDisplayName(const mtx::events::StateEvent<mtx::events::state::Member> &event)
@@ -597,9 +578,6 @@ private:
 
         QString localUserId_;
         QString cacheDirectory_;
-
-        static QHash<QString, QString> DisplayNames;
-        static QHash<QString, QString> AvatarUrls;
 
         OlmSessionStorage session_storage;
         VerificationStorage verification_storage;

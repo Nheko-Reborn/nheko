@@ -8,7 +8,7 @@ Rectangle {
     id: bg
 
     radius: 10
-    color: colors.dark
+    color: colors.alternateBase
     height: Math.round(content.height + 24)
     width: parent ? parent.width : undefined
 

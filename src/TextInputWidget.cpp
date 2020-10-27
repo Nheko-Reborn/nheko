@@ -165,6 +165,9 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 MacHelper::showEmojiWindow();
 #endif
 
+        if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_U)
+                QTextEdit::setText("");
+
         if (!isModifier) {
                 if (!typingTimer_->isActive())
                         emit startedTyping();

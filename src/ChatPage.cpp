@@ -73,6 +73,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 {
         setObjectName("chatPage");
 
+        instance_ = this;
+
         qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
         qRegisterMetaType<std::optional<RelatedInfo>>();
         qRegisterMetaType<mtx::presence::PresenceState>();
@@ -124,7 +126,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->setSpacing(0);
         contentLayout_->setMargin(0);
 
-        view_manager_ = new TimelineViewManager(userSettings_, &callManager_, this);
+        view_manager_ = new TimelineViewManager(&callManager_, this);
 
         contentLayout_->addWidget(view_manager_->getWidget());
 
@@ -270,7 +272,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(room_list_,
                 SIGNAL(totalUnreadMessageCountUpdated(int)),
                 this,
-                SLOT(showUnreadMessageNotification(int)));
+                SIGNAL(unreadMessages(int)));
 
         connect(text_input_,
                 &TextInputWidget::sendTextMessage,
@@ -593,8 +595,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connectCallMessage<mtx::events::msg::CallCandidates>();
         connectCallMessage<mtx::events::msg::CallAnswer>();
         connectCallMessage<mtx::events::msg::CallHangUp>();
-
-        instance_ = this;
 }
 
 void
@@ -629,7 +629,7 @@ ChatPage::resetUI()
         user_info_widget_->reset();
         view_manager_->clearAll();
 
-        showUnreadMessageNotification(0);
+        emit unreadMessages(0);
 }
 
 void
@@ -755,18 +755,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 }
 
 void
-ChatPage::showUnreadMessageNotification(int count)
-{
-        emit unreadMessages(count);
-
-        // TODO: Make the default title a const.
-        if (count == 0)
-                emit changeWindowTitle("nheko");
-        else
-                emit changeWindowTitle(QString("nheko (%1)").arg(count));
-}
-
-void
 ChatPage::loadStateFromCache()
 {
         emit contentLoaded();
@@ -776,8 +764,6 @@ ChatPage::loadStateFromCache()
         try {
                 cache::restoreSessions();
                 olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
-
-                cache::populateMembers();
 
                 emit initializeEmptyViews(cache::roomMessages());
                 emit initializeRoomList(cache::roomInfo());
@@ -1250,6 +1236,12 @@ ChatPage::unbanUser(QString userid, QString reason)
                           emit showNotification(tr("Unbanned user: %1").arg(userid));
           },
           reason.trimmed().toStdString());
+}
+
+void
+ChatPage::receivedSessionKey(const std::string &room_id, const std::string &session_id)
+{
+        view_manager_->receivedSessionKey(room_id, session_id);
 }
 
 void

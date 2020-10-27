@@ -107,6 +107,8 @@ public slots:
         void banUser(QString userid, QString reason);
         void unbanUser(QString userid, QString reason);
 
+        void receivedSessionKey(const std::string &room_id, const std::string &session_id);
+
 signals:
         void connectionLost();
         void connectionRestored();
@@ -128,7 +130,7 @@ signals:
 
         void contentLoaded();
         void closing();
-        void changeWindowTitle(const QString &msg);
+        void changeWindowTitle(const int);
         void unreadMessages(int count);
         void showNotification(const QString &msg);
         void showLoginPage(const QString &msg);
@@ -186,7 +188,6 @@ signals:
         void receivedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
 
 private slots:
-        void showUnreadMessageNotification(int count);
         void logout();
         void removeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);

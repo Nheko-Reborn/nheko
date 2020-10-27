@@ -54,6 +54,12 @@ EventStore::EventStore(std::string room_id, QObject *)
           &EventStore::oldMessagesRetrieved,
           this,
           [this](const mtx::responses::Messages &res) {
+                  if (cache::client()->previousBatchToken(room_id_) == res.end) {
+                          noMoreMessages = true;
+                          emit fetchedMore();
+                          return;
+                  }
+
                   uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
                   if (newFirst == first)
                           fetchMore();
@@ -210,6 +216,28 @@ EventStore::clearTimeline()
 }
 
 void
+EventStore::receivedSessionKey(const std::string &session_id)
+{
+        if (!pending_key_requests.count(session_id))
+                return;
+
+        auto request = pending_key_requests.at(session_id);
+        pending_key_requests.erase(session_id);
+
+        olm::send_key_request_for(request.events.front(), request.request_id, true);
+
+        for (const auto &e : request.events) {
+                auto idx = idToIndex(e.event_id);
+                if (idx) {
+                        decryptedEvents_.remove({room_id_, e.event_id});
+                        events_by_id_.remove({room_id_, e.event_id});
+                        events_.remove({room_id_, toInternalIdx(*idx)});
+                        emit dataChanged(*idx, *idx);
+                }
+        }
+}
+
+void
 EventStore::handleSync(const mtx::responses::Timeline &events)
 {
         if (this->thread() != QThread::currentThread())
@@ -291,18 +319,6 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                               *d_event)) {
                                 handle_room_verification(*d_event);
                         }
-                        // else {
-                        //        // only the key.verification.ready sent by localuser's other
-                        //        device
-                        //        // is of significance as it is used for detecting accepted request
-                        //        if (std::get_if<mtx::events::RoomEvent<
-                        //              mtx::events::msg::KeyVerificationReady>>(d_event)) {
-                        //                auto msg = std::get_if<mtx::events::RoomEvent<
-                        //                  mtx::events::msg::KeyVerificationReady>>(d_event);
-                        //                ChatPage::instance()->receivedDeviceVerificationReady(
-                        //                  msg->content);
-                        //        }
-                        //}
                 }
         }
 }
@@ -498,7 +514,7 @@ EventStore::decryptEvent(const IdIndex &idx,
 
         if (decryptionResult.error) {
                 switch (*decryptionResult.error) {
-                case olm::DecryptionErrorCode::MissingSession:
+                case olm::DecryptionErrorCode::MissingSession: {
                         dummy.content.body =
                           tr("-- Encrypted Event (No keys found for decryption) --",
                              "Placeholder, when the message was not decrypted yet or can't be "
@@ -509,8 +525,21 @@ EventStore::decryptEvent(const IdIndex &idx,
                                               index.session_id,
                                               e.sender);
                         // TODO: Check if this actually works and look in key backup
-                        olm::send_key_request_for(room_id_, e);
+                        auto copy    = e;
+                        copy.room_id = room_id_;
+                        if (pending_key_requests.count(e.content.session_id)) {
+                                pending_key_requests.at(e.content.session_id)
+                                  .events.push_back(copy);
+                        } else {
+                                PendingKeyRequests request;
+                                request.request_id =
+                                  "key_request." + http::client()->generate_txn_id();
+                                request.events.push_back(copy);
+                                olm::send_key_request_for(copy, request.request_id);
+                                pending_key_requests[e.content.session_id] = request;
+                        }
                         break;
+                }
                 case olm::DecryptionErrorCode::DbError:
                         nhlog::db()->critical(
                           "failed to retrieve megolm session with index ({}, {}, {})",
@@ -687,6 +716,9 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
 void
 EventStore::fetchMore()
 {
+        if (noMoreMessages)
+                return;
+
         mtx::http::MessagesOpts opts;
         opts.room_id = room_id_;
         opts.from    = cache::client()->previousBatchToken(room_id_);

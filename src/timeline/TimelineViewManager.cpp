@@ -30,7 +30,7 @@ namespace msgs = mtx::events::msg;
 void
 TimelineViewManager::updateEncryptedDescriptions()
 {
-        auto decrypt = settings->decryptSidebar();
+        auto decrypt = ChatPage::instance()->userSettings()->decryptSidebar();
         QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
         for (i = models.begin(); i != models.end(); ++i) {
                 auto ptr = i.value();
@@ -47,10 +47,10 @@ TimelineViewManager::updateColorPalette()
 {
         userColors.clear();
 
-        if (settings->theme() == "light") {
+        if (ChatPage::instance()->userSettings()->theme() == "light") {
                 view->rootContext()->setContextProperty("currentActivePalette", QPalette());
                 view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
-        } else if (settings->theme() == "dark") {
+        } else if (ChatPage::instance()->userSettings()->theme() == "dark") {
                 view->rootContext()->setContextProperty("currentActivePalette", QPalette());
                 view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
         } else {
@@ -84,14 +84,11 @@ TimelineViewManager::userStatus(QString id) const
         return QString::fromStdString(cache::statusMessage(id.toStdString()));
 }
 
-TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettings,
-                                         CallManager *callManager,
-                                         ChatPage *parent)
+TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *parent)
   : imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
   , blurhashProvider(new BlurhashProvider())
   , callManager_(callManager)
-  , settings(userSettings)
 {
         qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
@@ -133,7 +130,7 @@ TimelineViewManager::TimelineViewManager(QSharedPointer<UserSettings> userSettin
           });
         qmlRegisterSingletonType<UserSettings>(
           "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
-                  return self->settings.data();
+                  return ChatPage::instance()->userSettings().data();
           });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
@@ -295,7 +292,8 @@ TimelineViewManager::addRoom(const QString &room_id)
 {
         if (!models.contains(room_id)) {
                 QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
-                newRoom->setDecryptDescription(settings->decryptSidebar());
+                newRoom->setDecryptDescription(
+                  ChatPage::instance()->userSettings()->decryptSidebar());
 
                 connect(newRoom.data(),
                         &TimelineModel::newEncryptedImage,
@@ -454,6 +452,15 @@ TimelineViewManager::updateReadReceipts(const QString &room_id,
 }
 
 void
+TimelineViewManager::receivedSessionKey(const std::string &room_id, const std::string &session_id)
+{
+        auto room = models.find(QString::fromStdString(room_id));
+        if (room != models.end()) {
+                room.value()->receivedSessionKey(session_id);
+        }
+}
+
+void
 TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
 {
         for (const auto &e : msgs) {
@@ -472,7 +479,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
 
-        if (settings->markdown()) {
+        if (ChatPage::instance()->userSettings()->markdown()) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
 
                 // Don't send formatted_body, when we don't need to
@@ -500,7 +507,7 @@ TimelineViewManager::queueTextMessage(const QString &msg)
 
                 // NOTE(Nico): rich replies always need a formatted_body!
                 text.format = "org.matrix.custom.html";
-                if (settings->markdown())
+                if (ChatPage::instance()->userSettings()->markdown())
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
                             .toStdString();
@@ -523,7 +530,8 @@ TimelineViewManager::queueEmoteMessage(const QString &msg)
         mtx::events::msg::Emote emote;
         emote.body = msg.trimmed().toStdString();
 
-        if (html != msg.trimmed().toHtmlEscaped() && settings->markdown()) {
+        if (html != msg.trimmed().toHtmlEscaped() &&
+            ChatPage::instance()->userSettings()->markdown()) {
                 emote.formatted_body = html.toStdString();
                 emote.format         = "org.matrix.custom.html";
         }

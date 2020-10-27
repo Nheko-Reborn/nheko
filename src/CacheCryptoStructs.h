@@ -66,6 +66,16 @@ struct OlmSessionStorage
         std::mutex group_inbound_mtx;
 };
 
+struct StoredOlmSession
+{
+        std::uint64_t last_message_ts = 0;
+        std::string pickled_session;
+};
+void
+to_json(nlohmann::json &obj, const StoredOlmSession &msg);
+void
+from_json(const nlohmann::json &obj, StoredOlmSession &msg);
+
 //! Verification status of a single user
 struct VerificationStatus
 {

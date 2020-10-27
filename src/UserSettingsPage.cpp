@@ -17,7 +17,9 @@
 
 #include <QApplication>
 #include <QComboBox>
+#include <QCoreApplication>
 #include <QFileDialog>
+#include <QFontComboBox>
 #include <QFormLayout>
 #include <QInputDialog>
 #include <QLabel>
@@ -73,8 +75,11 @@ UserSettings::load()
         font_                = settings.value("user/font_family", "default").toString();
         avatarCircles_       = settings.value("user/avatar_circles", true).toBool();
         decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
-        emojiFont_           = settings.value("user/emoji_font_family", "default").toString();
-        baseFontSize_        = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+        shareKeysWithTrustedUsers_ =
+          settings.value("user/share_keys_with_trusted_users", true).toBool();
+        mobileMode_   = settings.value("user/mobile_mode", false).toBool();
+        emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
+        baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
         presence_ =
           settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
             .value<Presence>();
@@ -121,6 +126,16 @@ UserSettings::setStartInTray(bool state)
                 return;
         startInTray_ = state;
         emit startInTrayChanged(state);
+        save();
+}
+
+void
+UserSettings::setMobileMode(bool state)
+{
+        if (state == mobileMode_)
+                return;
+        mobileMode_ = state;
+        emit mobileModeChanged(state);
         save();
 }
 
@@ -296,6 +311,17 @@ UserSettings::setUseStunServer(bool useStunServer)
 }
 
 void
+UserSettings::setShareKeysWithTrustedUsers(bool shareKeys)
+{
+        if (shareKeys == shareKeysWithTrustedUsers_)
+                return;
+
+        shareKeysWithTrustedUsers_ = shareKeys;
+        emit shareKeysWithTrustedUsersChanged(shareKeys);
+        save();
+}
+
+void
 UserSettings::setMicrophone(QString microphone)
 {
         if (microphone == microphone_)
@@ -347,17 +373,18 @@ UserSettings::applyTheme()
                   /*windowText*/ QColor("#333"),
                   /*button*/ QColor("#333"),
                   /*light*/ QColor(0xef, 0xef, 0xef),
-                  /*dark*/ QColor(220, 220, 220),
-                  /*mid*/ QColor(110, 110, 110),
+                  /*dark*/ QColor(110, 110, 110),
+                  /*mid*/ QColor(220, 220, 220),
                   /*text*/ QColor("#333"),
                   /*bright_text*/ QColor("#333"),
-                  /*base*/ QColor("#eee"),
+                  /*base*/ QColor("#fff"),
                   /*window*/ QColor("white"));
+                lightActive.setColor(QPalette::AlternateBase, QColor("#eee"));
                 lightActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
                 lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
                 lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
                 lightActive.setColor(QPalette::Link, QColor("#0077b5"));
-                lightActive.setColor(QPalette::ButtonText, QColor(Qt::gray));
+                lightActive.setColor(QPalette::ButtonText, QColor("#495057"));
                 QApplication::setPalette(lightActive);
         } else if (this->theme() == "dark") {
                 stylefile.setFileName(":/styles/styles/nheko-dark.qss");
@@ -365,17 +392,18 @@ UserSettings::applyTheme()
                   /*windowText*/ QColor("#caccd1"),
                   /*button*/ QColor(0xff, 0xff, 0xff),
                   /*light*/ QColor("#caccd1"),
-                  /*dark*/ QColor("#2d3139"),
-                  /*mid*/ QColor(110, 110, 110),
+                  /*dark*/ QColor(110, 110, 110),
+                  /*mid*/ QColor("#202228"),
                   /*text*/ QColor("#caccd1"),
                   /*bright_text*/ QColor(0xff, 0xff, 0xff),
-                  /*base*/ QColor("#2d3139"),
-                  /*window*/ QColor("#202228"));
+                  /*base*/ QColor("#202228"),
+                  /*window*/ QColor("#2d3139"));
+                darkActive.setColor(QPalette::AlternateBase, QColor("#2d3139"));
                 darkActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
                 darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
                 darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
                 darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ButtonText, QColor(0x90, 0x90, 0x90));
+                darkActive.setColor(QPalette::ButtonText, "#727274");
                 QApplication::setPalette(darkActive);
         } else {
                 stylefile.setFileName(":/styles/styles/system.qss");
@@ -408,6 +436,8 @@ UserSettings::save()
 
         settings.setValue("avatar_circles", avatarCircles_);
         settings.setValue("decrypt_sidebar", decryptSidebar_);
+        settings.setValue("share_keys_with_trusted_users", shareKeysWithTrustedUsers_);
+        settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
         settings.setValue("minor_events", sortByImportance_);
@@ -456,6 +486,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         font.setPointSizeF(font.pointSizeF() * 1.1);
 
         auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version).arg(nheko::build_os));
+        if (QCoreApplication::applicationName() != "nheko")
+                versionInfo->setText(versionInfo->text() + " | " +
+                                     tr("profile: %1").arg(QCoreApplication::applicationName()));
         versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
         topBarLayout_ = new QHBoxLayout;
@@ -476,30 +509,32 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
         general_->setFont(font);
 
-        trayToggle_               = new Toggle{this};
-        startInTrayToggle_        = new Toggle{this};
-        avatarCircles_            = new Toggle{this};
-        decryptSidebar_           = new Toggle(this);
-        groupViewToggle_          = new Toggle{this};
-        timelineButtonsToggle_    = new Toggle{this};
-        typingNotifications_      = new Toggle{this};
-        messageHoverHighlight_    = new Toggle{this};
-        enlargeEmojiOnlyMessages_ = new Toggle{this};
-        sortByImportance_         = new Toggle{this};
-        readReceipts_             = new Toggle{this};
-        markdown_                 = new Toggle{this};
-        desktopNotifications_     = new Toggle{this};
-        alertOnNotification_      = new Toggle{this};
-        useStunServer_            = new Toggle{this};
-        scaleFactorCombo_         = new QComboBox{this};
-        fontSizeCombo_            = new QComboBox{this};
-        fontSelectionCombo_       = new QComboBox{this};
-        emojiFontSelectionCombo_  = new QComboBox{this};
-        microphoneCombo_          = new QComboBox{this};
-        cameraCombo_              = new QComboBox{this};
-        cameraResolutionCombo_    = new QComboBox{this};
-        cameraFrameRateCombo_     = new QComboBox{this};
-        timelineMaxWidthSpin_     = new QSpinBox{this};
+        trayToggle_                = new Toggle{this};
+        startInTrayToggle_         = new Toggle{this};
+        avatarCircles_             = new Toggle{this};
+        decryptSidebar_            = new Toggle(this);
+        shareKeysWithTrustedUsers_ = new Toggle(this);
+        groupViewToggle_           = new Toggle{this};
+        timelineButtonsToggle_     = new Toggle{this};
+        typingNotifications_       = new Toggle{this};
+        messageHoverHighlight_     = new Toggle{this};
+        enlargeEmojiOnlyMessages_  = new Toggle{this};
+        sortByImportance_          = new Toggle{this};
+        readReceipts_              = new Toggle{this};
+        markdown_                  = new Toggle{this};
+        desktopNotifications_      = new Toggle{this};
+        alertOnNotification_       = new Toggle{this};
+        useStunServer_             = new Toggle{this};
+        mobileMode_                = new Toggle{this};
+        scaleFactorCombo_          = new QComboBox{this};
+        fontSizeCombo_             = new QComboBox{this};
+        fontSelectionCombo_        = new QFontComboBox{this};
+        emojiFontSelectionCombo_   = new QComboBox{this};
+        microphoneCombo_           = new QComboBox{this};
+        cameraCombo_               = new QComboBox{this};
+        cameraResolutionCombo_     = new QComboBox{this};
+        cameraFrameRateCombo_      = new QComboBox{this};
+        timelineMaxWidthSpin_      = new QSpinBox{this};
 
         if (!settings_->tray())
                 startInTrayToggle_->setDisabled(true);
@@ -517,10 +552,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 fontSizeCombo_->addItem(QString("%1 ").arg(QString::number(option)));
 
         QFontDatabase fontDb;
-        auto fontFamilies = fontDb.families();
-        for (const auto &family : fontFamilies) {
-                fontSelectionCombo_->addItem(family);
-        }
 
         // TODO: Is there a way to limit to just emojis, rather than
         // all emoji fonts?
@@ -666,6 +697,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
+        boxWrap(tr("Mobile mode"),
+                mobileMode_,
+                tr("Will prevent text selection in the timeline to make scrolling easier."));
 #if !defined(Q_OS_MAC)
         boxWrap(tr("Scale factor"),
                 scaleFactorCombo_,
@@ -702,6 +736,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Device ID"), deviceIdValue_);
         boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
+        boxWrap(
+          tr("Share keys with trusted users"),
+          shareKeysWithTrustedUsers_,
+          tr("Automatically replies to key requests from other users, if they are verified."));
         formLayout_->addRow(new HorizontalLine{this});
         formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
 
@@ -793,6 +831,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setStartInTray(!disabled);
         });
 
+        connect(mobileMode_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setMobileMode(!disabled);
+        });
+
         connect(groupViewToggle_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setGroupView(!disabled);
         });
@@ -800,6 +842,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(decryptSidebar_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setDecryptSidebar(!disabled);
                 emit decryptSidebarChanged();
+        });
+
+        connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setShareKeysWithTrustedUsers(!disabled);
         });
 
         connect(avatarCircles_, &Toggle::toggled, this, [this](bool disabled) {
@@ -876,10 +922,12 @@ UserSettingsPage::showEvent(QShowEvent *)
         startInTrayToggle_->setState(!settings_->startInTray());
         groupViewToggle_->setState(!settings_->groupView());
         decryptSidebar_->setState(!settings_->decryptSidebar());
+        shareKeysWithTrustedUsers_->setState(!settings_->shareKeysWithTrustedUsers());
         avatarCircles_->setState(!settings_->avatarCircles());
         typingNotifications_->setState(!settings_->typingNotifications());
         sortByImportance_->setState(!settings_->sortByImportance());
         timelineButtonsToggle_->setState(!settings_->buttonsInTimeline());
+        mobileMode_->setState(!settings_->mobileMode());
         readReceipts_->setState(!settings_->readReceipts());
         markdown_->setState(!settings_->markdown());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());

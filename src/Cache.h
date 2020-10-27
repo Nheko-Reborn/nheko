@@ -44,16 +44,6 @@ displayName(const QString &room_id, const QString &user_id);
 QString
 avatarUrl(const QString &room_id, const QString &user_id);
 
-void
-removeDisplayName(const QString &room_id, const QString &user_id);
-void
-removeAvatarUrl(const QString &room_id, const QString &user_id);
-
-void
-insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name);
-void
-insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url);
-
 // presence
 mtx::presence::PresenceState
 presenceState(const std::string &user_id);
@@ -74,9 +64,6 @@ markDeviceVerified(const std::string &user_id, const std::string &device);
 void
 markDeviceUnverified(const std::string &user_id, const std::string &device);
 
-//! Load saved data for the display names & avatars.
-void
-populateMembers();
 std::vector<std::string>
 joinedRooms();
 
@@ -292,11 +279,15 @@ inboundMegolmSessionExists(const MegolmSessionIndex &index);
 // Olm Sessions
 //
 void
-saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
+saveOlmSession(const std::string &curve25519,
+               mtx::crypto::OlmSessionPtr session,
+               uint64_t timestamp);
 std::vector<std::string>
 getOlmSessions(const std::string &curve25519);
 std::optional<mtx::crypto::OlmSessionPtr>
 getOlmSession(const std::string &curve25519, const std::string &session_id);
+std::optional<mtx::crypto::OlmSessionPtr>
+getLatestOlmSession(const std::string &curve25519);
 
 void
 saveOlmAccount(const std::string &pickled);

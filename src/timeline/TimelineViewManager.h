@@ -42,9 +42,7 @@ class TimelineViewManager : public QObject
         Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
 
 public:
-        TimelineViewManager(QSharedPointer<UserSettings> userSettings,
-                            CallManager *callManager,
-                            ChatPage *parent = nullptr);
+        TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
@@ -98,6 +96,7 @@ signals:
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
+        void receivedSessionKey(const std::string &room_id, const std::string &session_id);
         void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
 
         void setHistoryView(const QString &room_id);
@@ -180,7 +179,6 @@ private:
         bool isInitialSync_ = true;
         bool isNarrowView_  = false;
 
-        QSharedPointer<UserSettings> settings;
         QHash<QString, QColor> userColors;
 
         QHash<QString, QSharedPointer<DeviceVerificationFlow>> dvList;

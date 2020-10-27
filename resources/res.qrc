@@ -122,6 +122,11 @@
         <file>qtquickcontrols2.conf</file>
 
         <file>qml/TimelineView.qml</file>
+        <file>qml/TopBar.qml</file>
+        <file>qml/MessageView.qml</file>
+        <file>qml/MessageInput.qml</file>
+        <file>qml/TypingIndicator.qml</file>
+        <file>qml/ReplyPopup.qml</file>
         <file>qml/ActiveCallBar.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/ImageButton.qml</file>

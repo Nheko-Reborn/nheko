@@ -8,7 +8,7 @@ Rectangle {
 
     visible: TimelineManager.callState != WebRTCState.DISCONNECTED
     color: "#2ECC71"
-    implicitHeight: rowLayout.height + 8
+    implicitHeight: visible ? rowLayout.height + 8 : 0
 
     MouseArea {
         anchors.fill: parent

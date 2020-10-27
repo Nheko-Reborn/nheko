@@ -205,9 +205,7 @@ TextField {
     qproperty-labelColor: #caccd1;
 }
 
-SideBarActions,
-TopRoomBar
-{
+SideBarActions {
     border: none;
     border-top: 1px solid #202228;
     background-color: #2d3139;
@@ -215,7 +213,6 @@ TopRoomBar
 
 TextInputWidget {
     border: none;
-    border-top: 1px solid #2d3139;
 }
 
 TextInputWidget,

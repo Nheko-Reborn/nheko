@@ -930,11 +930,12 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
                 const auto session_id  = mtx::crypto::session_id(outbound_session.get());
                 const auto session_key = mtx::crypto::session_key(outbound_session.get());
 
-                // TODO: needs to be moved in the lib.
-                auto megolm_payload = json{{"algorithm", "m.megolm.v1.aes-sha2"},
-                                           {"room_id", room_id},
-                                           {"session_id", session_id},
-                                           {"session_key", session_key}};
+                mtx::events::DeviceEvent<mtx::events::msg::RoomKey> megolm_payload;
+                megolm_payload.content.algorithm   = "m.megolm.v1.aes-sha2";
+                megolm_payload.content.room_id     = room_id;
+                megolm_payload.content.session_id  = session_id;
+                megolm_payload.content.session_key = session_key;
+                megolm_payload.type                = mtx::events::EventType::RoomKey;
 
                 // Saving the new megolm session.
                 // TODO: Maybe it's too early to save.
@@ -958,122 +959,29 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
                 const auto members = cache::roomMembers(room_id);
                 nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
 
-                auto keeper =
-                  std::make_shared<StateKeeper>([room_id, doc, txn_id = msg.event_id, this]() {
-                          try {
-                                  mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
-                                  event.content = olm::encrypt_group_message(
-                                    room_id, http::client()->device_id(), doc);
-                                  event.event_id         = txn_id;
-                                  event.room_id          = room_id;
-                                  event.sender           = http::client()->user_id().to_string();
-                                  event.type             = mtx::events::EventType::RoomEncrypted;
-                                  event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
-
-                                  emit this->addPendingMessageToStore(event);
-                          } catch (const lmdb::error &e) {
-                                  nhlog::db()->critical(
-                                    "failed to save megolm outbound session: {}", e.what());
-                                  emit ChatPage::instance()->showNotification(
-                                    tr("Failed to encrypt event, sending aborted!"));
-                          }
-                  });
-
-                mtx::requests::QueryKeys req;
+                std::map<std::string, std::vector<std::string>> targets;
                 for (const auto &member : members)
-                        req.device_keys[member] = {};
+                        targets[member] = {};
 
-                http::client()->query_keys(
-                  req,
-                  [keeper = std::move(keeper), megolm_payload, txn_id = msg.event_id, this](
-                    const mtx::responses::QueryKeys &res, mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn("failed to query device keys: {} {}",
-                                                     err->matrix_error.error,
-                                                     static_cast<int>(err->status_code));
-                                  emit ChatPage::instance()->showNotification(
-                                    tr("Failed to encrypt event, sending aborted!"));
-                                  return;
-                          }
+                olm::send_encrypted_to_device_messages(targets, megolm_payload);
 
-                          mtx::requests::ClaimKeys claim_keys;
+                try {
+                        mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
+                        event.content =
+                          olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
+                        event.event_id         = msg.event_id;
+                        event.room_id          = room_id;
+                        event.sender           = http::client()->user_id().to_string();
+                        event.type             = mtx::events::EventType::RoomEncrypted;
+                        event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
 
-                          // Mapping from user id to a device_id with valid identity keys to the
-                          // generated room_key event used for sharing the megolm session.
-                          std::map<std::string, std::map<std::string, std::string>> room_key_msgs;
-                          std::map<std::string, std::map<std::string, DevicePublicKeys>> deviceKeys;
-
-                          for (const auto &user : res.device_keys) {
-                                  for (const auto &dev : user.second) {
-                                          const auto user_id   = ::UserId(dev.second.user_id);
-                                          const auto device_id = DeviceId(dev.second.device_id);
-
-                                          if (user_id.get() ==
-                                                http::client()->user_id().to_string() &&
-                                              device_id.get() == http::client()->device_id())
-                                                  continue;
-
-                                          const auto device_keys = dev.second.keys;
-                                          const auto curveKey    = "curve25519:" + device_id.get();
-                                          const auto edKey       = "ed25519:" + device_id.get();
-
-                                          if ((device_keys.find(curveKey) == device_keys.end()) ||
-                                              (device_keys.find(edKey) == device_keys.end())) {
-                                                  nhlog::net()->debug(
-                                                    "ignoring malformed keys for device {}",
-                                                    device_id.get());
-                                                  continue;
-                                          }
-
-                                          DevicePublicKeys pks;
-                                          pks.ed25519    = device_keys.at(edKey);
-                                          pks.curve25519 = device_keys.at(curveKey);
-
-                                          try {
-                                                  if (!mtx::crypto::verify_identity_signature(
-                                                        dev.second, device_id, user_id)) {
-                                                          nhlog::crypto()->warn(
-                                                            "failed to verify identity keys: {}",
-                                                            json(dev.second).dump(2));
-                                                          continue;
-                                                  }
-                                          } catch (const json::exception &e) {
-                                                  nhlog::crypto()->warn(
-                                                    "failed to parse device key json: {}",
-                                                    e.what());
-                                                  continue;
-                                          } catch (const mtx::crypto::olm_exception &e) {
-                                                  nhlog::crypto()->warn(
-                                                    "failed to verify device key json: {}",
-                                                    e.what());
-                                                  continue;
-                                          }
-
-                                          auto room_key = olm::client()
-                                                            ->create_room_key_event(
-                                                              user_id, pks.ed25519, megolm_payload)
-                                                            .dump();
-
-                                          room_key_msgs[user_id].emplace(device_id, room_key);
-                                          deviceKeys[user_id].emplace(device_id, pks);
-                                          claim_keys.one_time_keys[user.first][device_id] =
-                                            mtx::crypto::SIGNED_CURVE25519;
-
-                                          nhlog::net()->info("{}", device_id.get());
-                                          nhlog::net()->info("  curve25519 {}", pks.curve25519);
-                                          nhlog::net()->info("  ed25519 {}", pks.ed25519);
-                                  }
-                          }
-
-                          http::client()->claim_keys(claim_keys,
-                                                     std::bind(&TimelineModel::handleClaimedKeys,
-                                                               this,
-                                                               keeper,
-                                                               room_key_msgs,
-                                                               deviceKeys,
-                                                               std::placeholders::_1,
-                                                               std::placeholders::_2));
-                  });
+                        emit this->addPendingMessageToStore(event);
+                } catch (const lmdb::error &e) {
+                        nhlog::db()->critical("failed to save megolm outbound session: {}",
+                                              e.what());
+                        emit ChatPage::instance()->showNotification(
+                          tr("Failed to encrypt event, sending aborted!"));
+                }
 
                 // TODO: Let the user know about the errors.
         } catch (const lmdb::error &e) {
@@ -1087,86 +995,6 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
                 emit ChatPage::instance()->showNotification(
                   tr("Failed to encrypt event, sending aborted!"));
         }
-}
-
-void
-TimelineModel::handleClaimedKeys(
-  std::shared_ptr<StateKeeper> keeper,
-  const std::map<std::string, std::map<std::string, std::string>> &room_keys,
-  const std::map<std::string, std::map<std::string, DevicePublicKeys>> &pks,
-  const mtx::responses::ClaimKeys &res,
-  mtx::http::RequestErr err)
-{
-        if (err) {
-                nhlog::net()->warn("claim keys error: {} {} {}",
-                                   err->matrix_error.error,
-                                   err->parse_error,
-                                   static_cast<int>(err->status_code));
-                return;
-        }
-
-        // Payload with all the to_device message to be sent.
-        nlohmann::json body;
-
-        for (const auto &[user_id, retrieved_devices] : res.one_time_keys) {
-                nhlog::net()->debug("claimed keys for {}", user_id);
-                if (retrieved_devices.size() == 0) {
-                        nhlog::net()->debug("no one-time keys found for user_id: {}", user_id);
-                        return;
-                }
-
-                for (const auto &rd : retrieved_devices) {
-                        const auto device_id = rd.first;
-
-                        nhlog::net()->debug("{} : \n {}", device_id, rd.second.dump(2));
-
-                        if (rd.second.empty() || !rd.second.begin()->contains("key")) {
-                                nhlog::net()->warn("Skipping device {} as it has no key.",
-                                                   device_id);
-                                continue;
-                        }
-
-                        // TODO: Verify signatures
-                        auto otk = rd.second.begin()->at("key");
-
-                        auto id_key = pks.at(user_id).at(device_id).curve25519;
-                        auto s      = olm::client()->create_outbound_session(id_key, otk);
-
-                        auto device_msg = olm::client()->create_olm_encrypted_content(
-                          s.get(),
-                          room_keys.at(user_id).at(device_id),
-                          pks.at(user_id).at(device_id).curve25519);
-
-                        try {
-                                cache::saveOlmSession(id_key, std::move(s));
-                        } catch (const lmdb::error &e) {
-                                nhlog::db()->critical("failed to save outbound olm session: {}",
-                                                      e.what());
-                        } catch (const mtx::crypto::olm_exception &e) {
-                                nhlog::crypto()->critical(
-                                  "failed to pickle outbound olm session: {}", e.what());
-                        }
-
-                        body["messages"][user_id][device_id] = device_msg;
-                }
-
-                nhlog::net()->info("send_to_device: {}", user_id);
-        }
-
-        http::client()->send_to_device(
-          mtx::events::to_string(mtx::events::EventType::RoomEncrypted),
-          http::client()->generate_txn_id(),
-          body,
-          [keeper](mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to send "
-                                             "send_to_device "
-                                             "message: {}",
-                                             err->matrix_error.error);
-                  }
-
-                  (void)keeper;
-          });
 }
 
 struct SendMessageVisitor
