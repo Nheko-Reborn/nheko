@@ -1,5 +1,7 @@
 #include "MxcImageProvider.h"
 
+#include <mtxclient/crypto/client.hpp>
+
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"

@@ -7,11 +7,11 @@
 #include <QWidget>
 
 #include <mtx/common.hpp>
-#include <mtx/responses.hpp>
+#include <mtx/responses/messages.hpp>
+#include <mtx/responses/sync.hpp>
 
 #include "Cache.h"
 #include "CallManager.h"
-#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -24,6 +24,7 @@ class BlurhashProvider;
 class ColorImageProvider;
 class UserSettings;
 class ChatPage;
+class DeviceVerificationFlow;
 
 class TimelineViewManager : public QObject
 {

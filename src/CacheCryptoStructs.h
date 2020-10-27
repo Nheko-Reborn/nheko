@@ -3,10 +3,8 @@
 #include <map>
 #include <mutex>
 
-//#include <nlohmann/json.hpp>
-
-#include <mtx/responses.hpp>
-#include <mtxclient/crypto/client.hpp>
+#include <mtx/responses/crypto.hpp>
+#include <mtxclient/crypto/objects.hpp>
 
 // Extra information associated with an outbound megolm session.
 struct OutboundGroupSessionData

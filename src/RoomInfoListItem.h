@@ -22,7 +22,7 @@
 #include <QSharedPointer>
 #include <QWidget>
 
-#include <mtx/responses.hpp>
+#include <mtx/responses/sync.hpp>
 
 #include "CacheStructs.h"
 #include "UserSettingsPage.h"

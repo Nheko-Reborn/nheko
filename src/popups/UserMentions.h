@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mtx/responses.hpp>
+#include <mtx/responses/notifications.hpp>
 
 #include <QMap>
 #include <QString>

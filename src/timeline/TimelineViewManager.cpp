@@ -11,6 +11,7 @@
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"

@@ -13,6 +13,7 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 #include "WebRTCSession.h"
 #include "dialogs/AcceptCall.h"
 
@@ -33,8 +34,8 @@ std::vector<std::string>
 getTurnURIs(const mtx::responses::TurnServer &turnServer);
 }
 
-CallManager::CallManager(QSharedPointer<UserSettings> userSettings)
-  : QObject()
+CallManager::CallManager(QSharedPointer<UserSettings> userSettings, QObject *parent)
+  : QObject(parent)
   , session_(WebRTCSession::instance())
   , turnServerTimer_(this)
   , settings_(userSettings)

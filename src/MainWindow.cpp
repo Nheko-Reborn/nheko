@@ -23,6 +23,7 @@
 #include <QShortcut>
 
 #include <mtx/requests.hpp>
+#include <mtx/responses/login.hpp>
 
 #include "Cache.h"
 #include "ChatPage.h"
@@ -54,8 +55,8 @@
 MainWindow *MainWindow::instance_ = nullptr;
 
 MainWindow::MainWindow(const QString profile, QWidget *parent)
-  : QMainWindow(parent),
-    profile_{ profile }
+  : QMainWindow(parent)
+  , profile_{profile}
 {
         setWindowTitle(0);
         setObjectName("MainWindow");
@@ -104,8 +105,7 @@ MainWindow::MainWindow(const QString profile, QWidget *parent)
         connect(chat_page_, &ChatPage::closing, this, &MainWindow::showWelcomePage);
         connect(
           chat_page_, &ChatPage::showOverlayProgressBar, this, &MainWindow::showOverlayProgressBar);
-        connect(
-          chat_page_, &ChatPage::unreadMessages, this, &MainWindow::setWindowTitle);
+        connect(chat_page_, &ChatPage::unreadMessages, this, &MainWindow::setWindowTitle);
         connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
         connect(chat_page_, &ChatPage::showLoginPage, this, [this](const QString &msg) {
                 login_page_->loginError(msg);
@@ -185,8 +185,7 @@ MainWindow::setWindowTitle(int notificationCount)
         QString name = "nheko";
         if (!profile_.isEmpty())
                 name += " | " + profile_;
-        if (notificationCount > 0)
-        {
+        if (notificationCount > 0) {
                 name.append(QString{" (%1)"}.arg(notificationCount));
         }
         QMainWindow::setWindowTitle(name);

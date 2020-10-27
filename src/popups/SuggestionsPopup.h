@@ -22,7 +22,7 @@ public:
 
                 const auto &widget = qobject_cast<Item *>(item->widget());
                 emit itemSelected(
-                  cache::displayName(ChatPage::instance()->currentRoom(), widget->selectedText()));
+                  displayName(ChatPage::instance()->currentRoom(), widget->selectedText()));
 
                 resetSelection();
         }
@@ -47,6 +47,7 @@ signals:
         void itemSelected(const QString &user);
 
 private:
+        QString displayName(QString roomid, QString userid);
         void hoverSelection();
         void resetSelection() { selectedItem_ = -1; }
         void selectFirstItem() { selectedItem_ = 0; }

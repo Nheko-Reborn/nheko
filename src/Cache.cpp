@@ -3377,6 +3377,46 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
 }
 
 void
+Cache::query_keys(const std::string &user_id,
+                  std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
+{
+        auto cache_ = cache::userKeys(user_id);
+
+        if (cache_.has_value()) {
+                if (!cache_->updated_at.empty() && cache_->updated_at == cache_->last_changed) {
+                        cb(cache_.value(), {});
+                        return;
+                }
+        }
+
+        mtx::requests::QueryKeys req;
+        req.device_keys[user_id] = {};
+
+        std::string last_changed;
+        if (cache_)
+                last_changed = cache_->last_changed;
+        req.token = last_changed;
+
+        http::client()->query_keys(req,
+                                   [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
+                                                               mtx::http::RequestErr err) {
+                                           if (err) {
+                                                   nhlog::net()->warn(
+                                                     "failed to query device keys: {},{}",
+                                                     err->matrix_error.errcode,
+                                                     static_cast<int>(err->status_code));
+                                                   cb({}, err);
+                                                   return;
+                                           }
+
+                                           cache::updateUserKeys(last_changed, res);
+
+                                           auto keys = cache::userKeys(user_id);
+                                           cb(keys.value_or(UserKeyCache{}), err);
+                                   });
+}
+
+void
 to_json(json &j, const VerificationCache &info)
 {
         j["device_verified"] = info.device_verified;
