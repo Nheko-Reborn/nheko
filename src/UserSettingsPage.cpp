@@ -655,9 +655,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
-        boxWrap(tr("Mobile mode"),
+        boxWrap(tr("Touchscreen mode"),
                 mobileMode_,
-                tr("Will prevent text selection in the timeline to make scrolling easier."));
+                tr("Will prevent text selection in the timeline to make touch scrolling easier."));
 #if !defined(Q_OS_MAC)
         boxWrap(tr("Scale factor"),
                 scaleFactorCombo_,
