@@ -21,9 +21,9 @@ Pane {
                 case "WaitingForOtherToAccept":
                     return qsTr("Waiting for other side to accept the verification request.");
                 case "WaitingForKeys":
-                    return qsTr("Waiting for other side to continue the verification request.");
+                    return qsTr("Waiting for other side to continue the verification process.");
                 case "WaitingForMac":
-                    return qsTr("Waiting for other side to complete the verification request.");
+                    return qsTr("Waiting for other side to complete the verification process.");
                 }
             }
             color: colors.text
