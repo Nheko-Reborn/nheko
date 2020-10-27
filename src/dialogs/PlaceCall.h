@@ -6,6 +6,7 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+class QComboBox;
 class QPushButton;
 class QString;
 class UserSettings;
@@ -26,11 +27,18 @@ public:
 
 signals:
         void voice();
+        void video();
         void cancel();
 
 private:
-        QPushButton *voiceBtn_;
-        QPushButton *cancelBtn_;
-        std::vector<std::string> audioDevices_;
+        const int iconSize_         = 18;
+        QPushButton *voiceBtn_      = nullptr;
+        QPushButton *videoBtn_      = nullptr;
+        QPushButton *cancelBtn_     = nullptr;
+        QComboBox *microphoneCombo_ = nullptr;
+        QComboBox *cameraCombo_     = nullptr;
+        std::vector<std::string> microphones_;
+        std::vector<std::string> cameras_;
 };
+
 }

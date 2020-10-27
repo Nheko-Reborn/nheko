@@ -26,7 +26,7 @@ class CallManager : public QObject
 public:
         CallManager(QSharedPointer<UserSettings>);
 
-        void sendInvite(const QString &roomid);
+        void sendInvite(const QString &roomid, bool isVideo);
         void hangUp(
           mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
         bool onActiveCall() const;
@@ -43,6 +43,7 @@ signals:
         void newMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
         void newCallParty();
+        void newVideoCallState();
         void turnServerRetrieved(const mtx::responses::TurnServer &);
 
 private slots:
@@ -67,7 +68,7 @@ private:
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallCandidates> &);
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &);
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &);
-        void answerInvite(const mtx::events::msg::CallInvite &);
+        void answerInvite(const mtx::events::msg::CallInvite &, bool isVideo);
         void generateCallID();
         void clear();
         void endCall();

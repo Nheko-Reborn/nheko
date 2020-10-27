@@ -4,10 +4,13 @@
 #include <vector>
 
 #include <QObject>
+#include <QSharedPointer>
 
 #include "mtx/events/voip.hpp"
 
 typedef struct _GstElement GstElement;
+class QQuickItem;
+class UserSettings;
 
 namespace webrtc {
 Q_NAMESPACE
@@ -39,10 +42,13 @@ public:
                 return instance;
         }
 
-        bool init(std::string *errorMessage = nullptr);
+        bool havePlugins(bool isVideo, std::string *errorMessage = nullptr);
         webrtc::State state() const { return state_; }
+        bool isVideo() const { return isVideo_; }
+        bool isOffering() const { return isOffering_; }
+        bool isRemoteVideoRecvOnly() const { return isRemoteVideoRecvOnly_; }
 
-        bool createOffer();
+        bool createOffer(bool isVideo);
         bool acceptOffer(const std::string &sdp);
         bool acceptAnswer(const std::string &sdp);
         void acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
@@ -51,11 +57,18 @@ public:
         bool toggleMicMute();
         void end();
 
-        void setStunServer(const std::string &stunServer) { stunServer_ = stunServer; }
+        void setSettings(QSharedPointer<UserSettings> settings) { settings_ = settings; }
         void setTurnServers(const std::vector<std::string> &uris) { turnServers_ = uris; }
 
-        std::vector<std::string> getAudioSourceNames(const std::string &defaultDevice);
-        void setAudioSource(int audioDeviceIndex) { audioSourceIndex_ = audioDeviceIndex; }
+        void refreshDevices();
+        std::vector<std::string> getDeviceNames(bool isVideo,
+                                                const std::string &defaultDevice) const;
+        std::vector<std::string> getResolutions(const std::string &cameraName) const;
+        std::vector<std::string> getFrameRates(const std::string &cameraName,
+                                               const std::string &resolution) const;
+
+        void setVideoItem(QQuickItem *item) { videoItem_ = item; }
+        QQuickItem *getVideoItem() const { return videoItem_; }
 
 signals:
         void offerCreated(const std::string &sdp,
@@ -71,18 +84,24 @@ private slots:
 private:
         WebRTCSession();
 
-        bool initialised_        = false;
-        webrtc::State state_     = webrtc::State::DISCONNECTED;
-        GstElement *pipe_        = nullptr;
-        GstElement *webrtc_      = nullptr;
-        unsigned int busWatchId_ = 0;
-        std::string stunServer_;
+        bool initialised_           = false;
+        bool haveVoicePlugins_      = false;
+        bool haveVideoPlugins_      = false;
+        webrtc::State state_        = webrtc::State::DISCONNECTED;
+        bool isVideo_               = false;
+        bool isOffering_            = false;
+        bool isRemoteVideoRecvOnly_ = false;
+        QQuickItem *videoItem_      = nullptr;
+        GstElement *pipe_           = nullptr;
+        GstElement *webrtc_         = nullptr;
+        unsigned int busWatchId_    = 0;
+        QSharedPointer<UserSettings> settings_;
         std::vector<std::string> turnServers_;
-        int audioSourceIndex_ = -1;
 
-        bool startPipeline(int opusPayloadType);
-        bool createPipeline(int opusPayloadType);
-        void refreshDevices();
+        bool init(std::string *errorMessage = nullptr);
+        bool startPipeline(int opusPayloadType, int vp8PayloadType);
+        bool createPipeline(int opusPayloadType, int vp8PayloadType);
+        bool addVideoPipeline(int vp8PayloadType);
         void startDeviceMonitor();
 
 public:

@@ -74,6 +74,7 @@
         <file>icons/ui/end-call.png</file>
         <file>icons/ui/microphone-mute.png</file>
         <file>icons/ui/microphone-unmute.png</file>
+        <file>icons/ui/video-call.png</file>
 
         <file>icons/emoji-categories/people.png</file>
         <file>icons/emoji-categories/people@2x.png</file>
@@ -130,6 +131,7 @@
         <file>qml/Reactions.qml</file>
         <file>qml/ScrollHelper.qml</file>
         <file>qml/TimelineRow.qml</file>
+        <file>qml/VideoCall.qml</file>
         <file>qml/emoji/EmojiButton.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/UserProfile.qml</file>

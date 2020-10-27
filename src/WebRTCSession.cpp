@@ -1,7 +1,16 @@
 #include <QQmlEngine>
+#include <QQuickItem>
+#include <algorithm>
 #include <cctype>
+#include <charconv>
+#include <cstdlib>
+#include <cstring>
+#include <optional>
+#include <string_view>
+#include <utility>
 
 #include "Logging.h"
+#include "UserSettingsPage.h"
 #include "WebRTCSession.h"
 
 #ifdef GSTREAMER_AVAILABLE
@@ -14,6 +23,9 @@ extern "C"
 #include "gst/webrtc/webrtc.h"
 }
 #endif
+
+// https://github.com/vector-im/riot-web/issues/10173
+constexpr std::string_view STUN_SERVER = "stun://turn.matrix.org:3478";
 
 Q_DECLARE_METATYPE(webrtc::State)
 
@@ -39,7 +51,7 @@ WebRTCSession::init(std::string *errorMessage)
 
         GError *error = nullptr;
         if (!gst_init_check(nullptr, nullptr, &error)) {
-                std::string strError = std::string("WebRTC: failed to initialise GStreamer: ");
+                std::string strError("WebRTC: failed to initialise GStreamer: ");
                 if (error) {
                         strError += error->message;
                         g_error_free(error);
@@ -50,51 +62,14 @@ WebRTCSession::init(std::string *errorMessage)
                 return false;
         }
 
+        initialised_   = true;
         gchar *version = gst_version_string();
-        std::string gstVersion(version);
+        nhlog::ui()->info("WebRTC: initialised {}", version);
         g_free(version);
-        nhlog::ui()->info("WebRTC: initialised " + gstVersion);
-
-        // GStreamer Plugins:
-        // Base:            audioconvert, audioresample, opus, playback, volume
-        // Good:            autodetect, rtpmanager
-        // Bad:             dtls, srtp, webrtc
-        // libnice [GLib]:  nice
-        initialised_          = true;
-        std::string strError  = gstVersion + ": Missing plugins: ";
-        const gchar *needed[] = {"audioconvert",
-                                 "audioresample",
-                                 "autodetect",
-                                 "dtls",
-                                 "nice",
-                                 "opus",
-                                 "playback",
-                                 "rtpmanager",
-                                 "srtp",
-                                 "volume",
-                                 "webrtc",
-                                 nullptr};
-        GstRegistry *registry = gst_registry_get();
-        for (guint i = 0; i < g_strv_length((gchar **)needed); i++) {
-                GstPlugin *plugin = gst_registry_find_plugin(registry, needed[i]);
-                if (!plugin) {
-                        strError += std::string(needed[i]) + " ";
-                        initialised_ = false;
-                        continue;
-                }
-                gst_object_unref(plugin);
-        }
-
-        if (initialised_) {
 #if GST_CHECK_VERSION(1, 18, 0)
-                startDeviceMonitor();
+        startDeviceMonitor();
 #endif
-        } else {
-                nhlog::ui()->error(strError);
-                if (errorMessage)
-                        *errorMessage = strError;
-        }
-        return initialised_;
+        return true;
 #else
         (void)errorMessage;
         return false;
@@ -103,37 +78,154 @@ WebRTCSession::init(std::string *errorMessage)
 
 #ifdef GSTREAMER_AVAILABLE
 namespace {
-bool isoffering_;
+
+struct AudioSource
+{
+        std::string name;
+        GstDevice *device;
+};
+
+struct VideoSource
+{
+        struct Caps
+        {
+                std::string resolution;
+                std::vector<std::string> frameRates;
+        };
+        std::string name;
+        GstDevice *device;
+        std::vector<Caps> caps;
+};
+
 std::string localsdp_;
 std::vector<mtx::events::msg::CallCandidates::Candidate> localcandidates_;
-std::vector<std::pair<std::string, GstDevice *>> audioSources_;
+bool haveAudioStream_;
+bool haveVideoStream_;
+std::vector<AudioSource> audioSources_;
+std::vector<VideoSource> videoSources_;
+
+using FrameRate = std::pair<int, int>;
+std::optional<FrameRate>
+getFrameRate(const GValue *value)
+{
+        if (GST_VALUE_HOLDS_FRACTION(value)) {
+                gint num = gst_value_get_fraction_numerator(value);
+                gint den = gst_value_get_fraction_denominator(value);
+                return FrameRate{num, den};
+        }
+        return std::nullopt;
+}
+
+void
+addFrameRate(std::vector<std::string> &rates, const FrameRate &rate)
+{
+        constexpr double minimumFrameRate = 15.0;
+        if (static_cast<double>(rate.first) / rate.second >= minimumFrameRate)
+                rates.push_back(std::to_string(rate.first) + "/" + std::to_string(rate.second));
+}
+
+std::pair<int, int>
+tokenise(std::string_view str, char delim)
+{
+        std::pair<int, int> ret;
+        auto pos = str.find_first_of(delim);
+        auto s   = str.data();
+        std::from_chars(s, s + pos, ret.first);
+        std::from_chars(s + pos + 1, s + str.size(), ret.second);
+        return ret;
+}
 
 void
 addDevice(GstDevice *device)
 {
-        if (device) {
-                gchar *name = gst_device_get_display_name(device);
-                nhlog::ui()->debug("WebRTC: device added: {}", name);
+        if (!device)
+                return;
+
+        gchar *name  = gst_device_get_display_name(device);
+        gchar *type  = gst_device_get_device_class(device);
+        bool isVideo = !std::strncmp(type, "Video", 5);
+        g_free(type);
+        nhlog::ui()->debug("WebRTC: {} device added: {}", isVideo ? "video" : "audio", name);
+        if (!isVideo) {
                 audioSources_.push_back({name, device});
                 g_free(name);
+                return;
         }
+
+        GstCaps *gstcaps = gst_device_get_caps(device);
+        if (!gstcaps) {
+                nhlog::ui()->debug("WebRTC: unable to get caps for {}", name);
+                g_free(name);
+                return;
+        }
+
+        VideoSource source{name, device, {}};
+        g_free(name);
+        guint nCaps = gst_caps_get_size(gstcaps);
+        for (guint i = 0; i < nCaps; ++i) {
+                GstStructure *structure = gst_caps_get_structure(gstcaps, i);
+                const gchar *name       = gst_structure_get_name(structure);
+                if (!std::strcmp(name, "video/x-raw")) {
+                        gint widthpx, heightpx;
+                        if (gst_structure_get(structure,
+                                              "width",
+                                              G_TYPE_INT,
+                                              &widthpx,
+                                              "height",
+                                              G_TYPE_INT,
+                                              &heightpx,
+                                              nullptr)) {
+                                VideoSource::Caps caps;
+                                caps.resolution =
+                                  std::to_string(widthpx) + "x" + std::to_string(heightpx);
+                                const GValue *value =
+                                  gst_structure_get_value(structure, "framerate");
+                                if (auto fr = getFrameRate(value); fr)
+                                        addFrameRate(caps.frameRates, *fr);
+                                else if (GST_VALUE_HOLDS_LIST(value)) {
+                                        guint nRates = gst_value_list_get_size(value);
+                                        for (guint j = 0; j < nRates; ++j) {
+                                                const GValue *rate =
+                                                  gst_value_list_get_value(value, j);
+                                                if (auto fr = getFrameRate(rate); fr)
+                                                        addFrameRate(caps.frameRates, *fr);
+                                        }
+                                }
+                                if (!caps.frameRates.empty())
+                                        source.caps.push_back(std::move(caps));
+                        }
+                }
+        }
+        gst_caps_unref(gstcaps);
+        videoSources_.push_back(std::move(source));
 }
 
 #if GST_CHECK_VERSION(1, 18, 0)
+template<typename T>
+bool
+removeDevice(T &sources, GstDevice *device, bool changed)
+{
+        if (auto it = std::find_if(sources.begin(),
+                                   sources.end(),
+                                   [device](const auto &s) { return s.device == device; });
+            it != sources.end()) {
+                nhlog::ui()->debug(std::string("WebRTC: device ") +
+                                     (changed ? "changed: " : "removed: ") + "{}",
+                                   it->name);
+                gst_object_unref(device);
+                sources.erase(it);
+                return true;
+        }
+        return false;
+}
+
 void
 removeDevice(GstDevice *device, bool changed)
 {
         if (device) {
-                if (auto it = std::find_if(audioSources_.begin(),
-                                           audioSources_.end(),
-                                           [device](const auto &s) { return s.second == device; });
-                    it != audioSources_.end()) {
-                        nhlog::ui()->debug(std::string("WebRTC: device ") +
-                                             (changed ? "changed: " : "removed: ") + "{}",
-                                           it->first);
-                        gst_object_unref(device);
-                        audioSources_.erase(it);
-                }
+                if (removeDevice(audioSources_, device, changed) ||
+                    removeDevice(videoSources_, device, changed))
+                        return;
         }
 }
 #endif
@@ -194,7 +286,7 @@ parseSDP(const std::string &sdp, GstWebRTCSDPType type)
                 return gst_webrtc_session_description_new(type, msg);
         } else {
                 nhlog::ui()->error("WebRTC: failed to parse remote session description");
-                gst_object_unref(msg);
+                gst_sdp_message_free(msg);
                 return nullptr;
         }
 }
@@ -250,7 +342,7 @@ iceGatheringStateChanged(GstElement *webrtc,
         g_object_get(webrtc, "ice-gathering-state", &newState, nullptr);
         if (newState == GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE) {
                 nhlog::ui()->debug("WebRTC: GstWebRTCICEGatheringState -> Complete");
-                if (isoffering_) {
+                if (WebRTCSession::instance().isOffering()) {
                         emit WebRTCSession::instance().offerCreated(localsdp_, localcandidates_);
                         emit WebRTCSession::instance().stateChanged(State::OFFERSENT);
                 } else {
@@ -266,7 +358,7 @@ gboolean
 onICEGatheringCompletion(gpointer timerid)
 {
         *(guint *)(timerid) = 0;
-        if (isoffering_) {
+        if (WebRTCSession::instance().isOffering()) {
                 emit WebRTCSession::instance().offerCreated(localsdp_, localcandidates_);
                 emit WebRTCSession::instance().stateChanged(State::OFFERSENT);
         } else {
@@ -286,25 +378,25 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
         nhlog::ui()->debug("WebRTC: local candidate: (m-line:{}):{}", mlineIndex, candidate);
 
 #if GST_CHECK_VERSION(1, 18, 0)
-        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
+        localcandidates_.push_back({std::string() /*max-bundle*/, (uint16_t)mlineIndex, candidate});
         return;
 #else
         if (WebRTCSession::instance().state() >= State::OFFERSENT) {
                 emit WebRTCSession::instance().newICECandidate(
-                  {"audio", (uint16_t)mlineIndex, candidate});
+                  {std::string() /*max-bundle*/, (uint16_t)mlineIndex, candidate});
                 return;
         }
 
-        localcandidates_.push_back({"audio", (uint16_t)mlineIndex, candidate});
+        localcandidates_.push_back({std::string() /*max-bundle*/, (uint16_t)mlineIndex, candidate});
 
         // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers
         // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.18.
-        // Use a 100ms timeout in the meantime
+        // Use a 1s timeout in the meantime
         static guint timerid = 0;
         if (timerid)
                 g_source_remove(timerid);
 
-        timerid = g_timeout_add(100, onICEGatheringCompletion, &timerid);
+        timerid = g_timeout_add(1000, onICEGatheringCompletion, &timerid);
 #endif
 }
 
@@ -329,40 +421,166 @@ iceConnectionStateChanged(GstElement *webrtc,
         }
 }
 
-void
-linkNewPad(GstElement *decodebin G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe)
+// https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/issues/1164
+struct KeyFrameRequestData
 {
-        GstCaps *caps = gst_pad_get_current_caps(newpad);
-        if (!caps)
+        GstElement *pipe      = nullptr;
+        GstElement *decodebin = nullptr;
+        gint packetsLost      = 0;
+        guint timerid         = 0;
+        std::string statsField;
+} keyFrameRequestData_;
+
+void
+sendKeyFrameRequest()
+{
+        GstPad *sinkpad = gst_element_get_static_pad(keyFrameRequestData_.decodebin, "sink");
+        if (!gst_pad_push_event(sinkpad,
+                                gst_event_new_custom(GST_EVENT_CUSTOM_UPSTREAM,
+                                                     gst_structure_new_empty("GstForceKeyUnit"))))
+                nhlog::ui()->error("WebRTC: key frame request failed");
+        else
+                nhlog::ui()->debug("WebRTC: sent key frame request");
+
+        gst_object_unref(sinkpad);
+}
+
+void
+testPacketLoss_(GstPromise *promise, gpointer G_GNUC_UNUSED)
+{
+        const GstStructure *reply = gst_promise_get_reply(promise);
+        gint packetsLost          = 0;
+        GstStructure *rtpStats;
+        if (!gst_structure_get(reply,
+                               keyFrameRequestData_.statsField.c_str(),
+                               GST_TYPE_STRUCTURE,
+                               &rtpStats,
+                               nullptr)) {
+                nhlog::ui()->error("WebRTC: get-stats: no field: {}",
+                                   keyFrameRequestData_.statsField);
+                gst_promise_unref(promise);
                 return;
+        }
+        gst_structure_get_int(rtpStats, "packets-lost", &packetsLost);
+        gst_structure_free(rtpStats);
+        gst_promise_unref(promise);
+        if (packetsLost > keyFrameRequestData_.packetsLost) {
+                nhlog::ui()->debug("WebRTC: inbound video lost packet count: {}", packetsLost);
+                keyFrameRequestData_.packetsLost = packetsLost;
+                sendKeyFrameRequest();
+        }
+}
 
-        const gchar *name = gst_structure_get_name(gst_caps_get_structure(caps, 0));
-        gst_caps_unref(caps);
+gboolean
+testPacketLoss(gpointer G_GNUC_UNUSED)
+{
+        if (keyFrameRequestData_.pipe) {
+                GstElement *webrtc =
+                  gst_bin_get_by_name(GST_BIN(keyFrameRequestData_.pipe), "webrtcbin");
+                GstPromise *promise =
+                  gst_promise_new_with_change_func(testPacketLoss_, nullptr, nullptr);
+                g_signal_emit_by_name(webrtc, "get-stats", nullptr, promise);
+                gst_object_unref(webrtc);
+                return TRUE;
+        }
+        return FALSE;
+}
 
-        GstPad *queuepad = nullptr;
-        if (g_str_has_prefix(name, "audio")) {
+#if GST_CHECK_VERSION(1, 18, 0)
+void
+setWaitForKeyFrame(GstBin *decodebin G_GNUC_UNUSED, GstElement *element, gpointer G_GNUC_UNUSED)
+{
+        if (!std::strcmp(
+              gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(gst_element_get_factory(element))),
+              "rtpvp8depay"))
+                g_object_set(element, "wait-for-keyframe", TRUE, nullptr);
+}
+#endif
+
+void
+linkNewPad(GstElement *decodebin, GstPad *newpad, GstElement *pipe)
+{
+        GstPad *sinkpad               = gst_element_get_static_pad(decodebin, "sink");
+        GstCaps *sinkcaps             = gst_pad_get_current_caps(sinkpad);
+        const GstStructure *structure = gst_caps_get_structure(sinkcaps, 0);
+
+        gchar *mediaType = nullptr;
+        guint ssrc       = 0;
+        gst_structure_get(
+          structure, "media", G_TYPE_STRING, &mediaType, "ssrc", G_TYPE_UINT, &ssrc, nullptr);
+        gst_caps_unref(sinkcaps);
+        gst_object_unref(sinkpad);
+
+        WebRTCSession *session = &WebRTCSession::instance();
+        GstElement *queue      = gst_element_factory_make("queue", nullptr);
+        if (!std::strcmp(mediaType, "audio")) {
                 nhlog::ui()->debug("WebRTC: received incoming audio stream");
-                GstElement *queue    = gst_element_factory_make("queue", nullptr);
+                haveAudioStream_     = true;
                 GstElement *convert  = gst_element_factory_make("audioconvert", nullptr);
                 GstElement *resample = gst_element_factory_make("audioresample", nullptr);
                 GstElement *sink     = gst_element_factory_make("autoaudiosink", nullptr);
+
                 gst_bin_add_many(GST_BIN(pipe), queue, convert, resample, sink, nullptr);
                 gst_element_link_many(queue, convert, resample, sink, nullptr);
                 gst_element_sync_state_with_parent(queue);
                 gst_element_sync_state_with_parent(convert);
                 gst_element_sync_state_with_parent(resample);
                 gst_element_sync_state_with_parent(sink);
-                queuepad = gst_element_get_static_pad(queue, "sink");
+        } else if (!std::strcmp(mediaType, "video")) {
+                nhlog::ui()->debug("WebRTC: received incoming video stream");
+                if (!session->getVideoItem()) {
+                        g_free(mediaType);
+                        gst_object_unref(queue);
+                        nhlog::ui()->error("WebRTC: video call item not set");
+                        return;
+                }
+                haveVideoStream_ = true;
+                keyFrameRequestData_.statsField =
+                  std::string("rtp-inbound-stream-stats_") + std::to_string(ssrc);
+                GstElement *videoconvert   = gst_element_factory_make("videoconvert", nullptr);
+                GstElement *glupload       = gst_element_factory_make("glupload", nullptr);
+                GstElement *glcolorconvert = gst_element_factory_make("glcolorconvert", nullptr);
+                GstElement *qmlglsink      = gst_element_factory_make("qmlglsink", nullptr);
+                GstElement *glsinkbin      = gst_element_factory_make("glsinkbin", nullptr);
+                g_object_set(qmlglsink, "widget", session->getVideoItem(), nullptr);
+                g_object_set(glsinkbin, "sink", qmlglsink, nullptr);
+
+                gst_bin_add_many(
+                  GST_BIN(pipe), queue, videoconvert, glupload, glcolorconvert, glsinkbin, nullptr);
+                gst_element_link_many(
+                  queue, videoconvert, glupload, glcolorconvert, glsinkbin, nullptr);
+                gst_element_sync_state_with_parent(queue);
+                gst_element_sync_state_with_parent(videoconvert);
+                gst_element_sync_state_with_parent(glupload);
+                gst_element_sync_state_with_parent(glcolorconvert);
+                gst_element_sync_state_with_parent(glsinkbin);
+        } else {
+                g_free(mediaType);
+                gst_object_unref(queue);
+                nhlog::ui()->error("WebRTC: unknown pad type: {}", GST_PAD_NAME(newpad));
+                return;
         }
 
+        GstPad *queuepad = gst_element_get_static_pad(queue, "sink");
         if (queuepad) {
                 if (GST_PAD_LINK_FAILED(gst_pad_link(newpad, queuepad)))
                         nhlog::ui()->error("WebRTC: unable to link new pad");
                 else {
-                        emit WebRTCSession::instance().stateChanged(State::CONNECTED);
+                        if (!session->isVideo() ||
+                            (haveAudioStream_ &&
+                             (haveVideoStream_ || session->isRemoteVideoRecvOnly()))) {
+                                emit session->stateChanged(State::CONNECTED);
+                                if (haveVideoStream_) {
+                                        keyFrameRequestData_.pipe      = pipe;
+                                        keyFrameRequestData_.decodebin = decodebin;
+                                        keyFrameRequestData_.timerid =
+                                          g_timeout_add_seconds(3, testPacketLoss, nullptr);
+                                }
+                        }
                 }
                 gst_object_unref(queuepad);
         }
+        g_free(mediaType);
 }
 
 void
@@ -373,7 +591,12 @@ addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe)
 
         nhlog::ui()->debug("WebRTC: received incoming stream");
         GstElement *decodebin = gst_element_factory_make("decodebin", nullptr);
+        // hardware decoding needs investigation; eg rendering fails if vaapi plugin installed
+        g_object_set(decodebin, "force-sw-decoders", TRUE, nullptr);
         g_signal_connect(decodebin, "pad-added", G_CALLBACK(linkNewPad), pipe);
+#if GST_CHECK_VERSION(1, 18, 0)
+        g_signal_connect(decodebin, "element-added", G_CALLBACK(setWaitForKeyFrame), pipe);
+#endif
         gst_bin_add(GST_BIN(pipe), decodebin);
         gst_element_sync_state_with_parent(decodebin);
         GstPad *sinkpad = gst_element_get_static_pad(decodebin, "sink");
@@ -382,51 +605,134 @@ addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe)
         gst_object_unref(sinkpad);
 }
 
-std::string::const_iterator
-findName(const std::string &sdp, const std::string &name)
+bool
+strstr_(std::string_view str1, std::string_view str2)
 {
-        return std::search(
-          sdp.cbegin(),
-          sdp.cend(),
-          name.cbegin(),
-          name.cend(),
-          [](unsigned char c1, unsigned char c2) { return std::tolower(c1) == std::tolower(c2); });
-}
-
-int
-getPayloadType(const std::string &sdp, const std::string &name)
-{
-        // eg a=rtpmap:111 opus/48000/2
-        auto e = findName(sdp, name);
-        if (e == sdp.cend()) {
-                nhlog::ui()->error("WebRTC: remote offer - " + name + " attribute missing");
-                return -1;
-        }
-
-        if (auto s = sdp.rfind(':', e - sdp.cbegin()); s == std::string::npos) {
-                nhlog::ui()->error("WebRTC: remote offer - unable to determine " + name +
-                                   " payload type");
-                return -1;
-        } else {
-                ++s;
-                try {
-                        return std::stoi(std::string(sdp, s, e - sdp.cbegin() - s));
-                } catch (...) {
-                        nhlog::ui()->error("WebRTC: remote offer - unable to determine " + name +
-                                           " payload type");
-                }
-        }
-        return -1;
-}
+        return std::search(str1.cbegin(),
+                           str1.cend(),
+                           str2.cbegin(),
+                           str2.cend(),
+                           [](unsigned char c1, unsigned char c2) {
+                                   return std::tolower(c1) == std::tolower(c2);
+                           }) != str1.cend();
 }
 
 bool
-WebRTCSession::createOffer()
+getMediaAttributes(const GstSDPMessage *sdp,
+                   const char *mediaType,
+                   const char *encoding,
+                   int &payloadType,
+                   bool &recvOnly)
 {
-        isoffering_ = true;
+        payloadType = -1;
+        recvOnly    = false;
+        for (guint mlineIndex = 0; mlineIndex < gst_sdp_message_medias_len(sdp); ++mlineIndex) {
+                const GstSDPMedia *media = gst_sdp_message_get_media(sdp, mlineIndex);
+                if (!std::strcmp(gst_sdp_media_get_media(media), mediaType)) {
+                        recvOnly = gst_sdp_media_get_attribute_val(media, "recvonly") != nullptr;
+                        const gchar *rtpval = nullptr;
+                        for (guint n = 0; n == 0 || rtpval; ++n) {
+                                rtpval = gst_sdp_media_get_attribute_val_n(media, "rtpmap", n);
+                                if (rtpval && strstr_(rtpval, encoding)) {
+                                        payloadType = std::atoi(rtpval);
+                                        break;
+                                }
+                        }
+                        return true;
+                }
+        }
+        return false;
+}
+
+template<typename T>
+std::vector<std::string>
+deviceNames(T &sources, const std::string &defaultDevice)
+{
+        std::vector<std::string> ret;
+        ret.reserve(sources.size());
+        std::transform(sources.cbegin(),
+                       sources.cend(),
+                       std::back_inserter(ret),
+                       [](const auto &s) { return s.name; });
+
+        // move default device to top of the list
+        if (auto it = std::find_if(ret.begin(),
+                                   ret.end(),
+                                   [&defaultDevice](const auto &s) { return s == defaultDevice; });
+            it != ret.end())
+                std::swap(ret.front(), *it);
+
+        return ret;
+}
+
+}
+
+bool
+WebRTCSession::havePlugins(bool isVideo, std::string *errorMessage)
+{
+        if (!initialised_ && !init(errorMessage))
+                return false;
+        if (!isVideo && haveVoicePlugins_)
+                return true;
+        if (isVideo && haveVideoPlugins_)
+                return true;
+
+        const gchar *voicePlugins[] = {"audioconvert",
+                                       "audioresample",
+                                       "autodetect",
+                                       "dtls",
+                                       "nice",
+                                       "opus",
+                                       "playback",
+                                       "rtpmanager",
+                                       "srtp",
+                                       "volume",
+                                       "webrtc",
+                                       nullptr};
+
+        const gchar *videoPlugins[] = {"opengl", "qmlgl", "rtp", "videoconvert", "vpx", nullptr};
+
+        std::string strError("Missing GStreamer plugins: ");
+        const gchar **needed  = isVideo ? videoPlugins : voicePlugins;
+        bool &havePlugins     = isVideo ? haveVideoPlugins_ : haveVoicePlugins_;
+        havePlugins           = true;
+        GstRegistry *registry = gst_registry_get();
+        for (guint i = 0; i < g_strv_length((gchar **)needed); i++) {
+                GstPlugin *plugin = gst_registry_find_plugin(registry, needed[i]);
+                if (!plugin) {
+                        havePlugins = false;
+                        strError += std::string(needed[i]) + " ";
+                        continue;
+                }
+                gst_object_unref(plugin);
+        }
+        if (!havePlugins) {
+                nhlog::ui()->error(strError);
+                if (errorMessage)
+                        *errorMessage = strError;
+                return false;
+        }
+
+        if (isVideo) {
+                // load qmlglsink to register GStreamer's GstGLVideoItem QML type
+                GstElement *qmlglsink = gst_element_factory_make("qmlglsink", nullptr);
+                gst_object_unref(qmlglsink);
+        }
+        return true;
+}
+
+bool
+WebRTCSession::createOffer(bool isVideo)
+{
+        isOffering_            = true;
+        isVideo_               = isVideo;
+        isRemoteVideoRecvOnly_ = false;
+        videoItem_             = nullptr;
+        haveAudioStream_       = false;
+        haveVideoStream_       = false;
         localsdp_.clear();
         localcandidates_.clear();
-        return startPipeline(111); // a dynamic opus payload type
+        return startPipeline(111, isVideo ? 96 : -1); // dynamic payload types
 }
 
 bool
@@ -436,19 +742,42 @@ WebRTCSession::acceptOffer(const std::string &sdp)
         if (state_ != State::DISCONNECTED)
                 return false;
 
-        isoffering_ = false;
+        isOffering_            = false;
+        isRemoteVideoRecvOnly_ = false;
+        videoItem_             = nullptr;
+        haveAudioStream_       = false;
+        haveVideoStream_       = false;
         localsdp_.clear();
         localcandidates_.clear();
-
-        int opusPayloadType = getPayloadType(sdp, "opus");
-        if (opusPayloadType == -1)
-                return false;
 
         GstWebRTCSessionDescription *offer = parseSDP(sdp, GST_WEBRTC_SDP_TYPE_OFFER);
         if (!offer)
                 return false;
 
-        if (!startPipeline(opusPayloadType)) {
+        int opusPayloadType;
+        bool recvOnly;
+        if (getMediaAttributes(offer->sdp, "audio", "opus", opusPayloadType, recvOnly)) {
+                if (opusPayloadType == -1) {
+                        nhlog::ui()->error("WebRTC: remote audio offer - no opus encoding");
+                        gst_webrtc_session_description_free(offer);
+                        return false;
+                }
+        } else {
+                nhlog::ui()->error("WebRTC: remote offer - no audio media");
+                gst_webrtc_session_description_free(offer);
+                return false;
+        }
+
+        int vp8PayloadType;
+        isVideo_ =
+          getMediaAttributes(offer->sdp, "video", "vp8", vp8PayloadType, isRemoteVideoRecvOnly_);
+        if (isVideo_ && vp8PayloadType == -1) {
+                nhlog::ui()->error("WebRTC: remote video offer - no vp8 encoding");
+                gst_webrtc_session_description_free(offer);
+                return false;
+        }
+
+        if (!startPipeline(opusPayloadType, vp8PayloadType)) {
                 gst_webrtc_session_description_free(offer);
                 return false;
         }
@@ -471,6 +800,13 @@ WebRTCSession::acceptAnswer(const std::string &sdp)
         if (!answer) {
                 end();
                 return false;
+        }
+
+        if (isVideo_) {
+                int unused;
+                if (!getMediaAttributes(
+                      answer->sdp, "video", "vp8", unused, isRemoteVideoRecvOnly_))
+                        isRemoteVideoRecvOnly_ = true;
         }
 
         g_signal_emit_by_name(webrtc_, "set-remote-description", answer, nullptr);
@@ -497,21 +833,23 @@ WebRTCSession::acceptICECandidates(
 }
 
 bool
-WebRTCSession::startPipeline(int opusPayloadType)
+WebRTCSession::startPipeline(int opusPayloadType, int vp8PayloadType)
 {
         if (state_ != State::DISCONNECTED)
                 return false;
 
         emit stateChanged(State::INITIATING);
 
-        if (!createPipeline(opusPayloadType))
+        if (!createPipeline(opusPayloadType, vp8PayloadType)) {
+                end();
                 return false;
+        }
 
         webrtc_ = gst_bin_get_by_name(GST_BIN(pipe_), "webrtcbin");
 
-        if (!stunServer_.empty()) {
-                nhlog::ui()->info("WebRTC: setting STUN server: {}", stunServer_);
-                g_object_set(webrtc_, "stun-server", stunServer_.c_str(), nullptr);
+        if (settings_->useStunServer()) {
+                nhlog::ui()->info("WebRTC: setting STUN server: {}", STUN_SERVER);
+                g_object_set(webrtc_, "stun-server", STUN_SERVER, nullptr);
         }
 
         for (const auto &uri : turnServers_) {
@@ -523,7 +861,7 @@ WebRTCSession::startPipeline(int opusPayloadType)
                 nhlog::ui()->warn("WebRTC: no TURN server provided");
 
         // generate the offer when the pipeline goes to PLAYING
-        if (isoffering_)
+        if (isOffering_)
                 g_signal_connect(
                   webrtc_, "on-negotiation-needed", G_CALLBACK(::createOffer), nullptr);
 
@@ -562,20 +900,19 @@ WebRTCSession::startPipeline(int opusPayloadType)
 }
 
 bool
-WebRTCSession::createPipeline(int opusPayloadType)
+WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
 {
-        if (audioSources_.empty()) {
-                nhlog::ui()->error("WebRTC: no audio sources");
+        auto it = std::find_if(audioSources_.cbegin(), audioSources_.cend(), [this](const auto &s) {
+                return s.name == settings_->microphone().toStdString();
+        });
+        if (it == audioSources_.cend()) {
+                nhlog::ui()->error("WebRTC: unknown microphone: {}",
+                                   settings_->microphone().toStdString());
                 return false;
         }
+        nhlog::ui()->debug("WebRTC: microphone: {}", it->name);
 
-        if (audioSourceIndex_ < 0 || (size_t)audioSourceIndex_ >= audioSources_.size()) {
-                nhlog::ui()->error("WebRTC: invalid audio source index");
-                return false;
-        }
-
-        GstElement *source =
-          gst_device_create_element(audioSources_[audioSourceIndex_].second, nullptr);
+        GstElement *source     = gst_device_create_element(it->device, nullptr);
         GstElement *volume     = gst_element_factory_make("volume", "srclevel");
         GstElement *convert    = gst_element_factory_make("audioconvert", nullptr);
         GstElement *resample   = gst_element_factory_make("audioresample", nullptr);
@@ -627,10 +964,103 @@ WebRTCSession::createPipeline(int opusPayloadType)
                                    capsfilter,
                                    webrtcbin,
                                    nullptr)) {
-                nhlog::ui()->error("WebRTC: failed to link pipeline elements");
-                end();
+                nhlog::ui()->error("WebRTC: failed to link audio pipeline elements");
                 return false;
         }
+        return isVideo_ ? addVideoPipeline(vp8PayloadType) : true;
+}
+
+bool
+WebRTCSession::addVideoPipeline(int vp8PayloadType)
+{
+        // allow incoming video calls despite localUser having no webcam
+        if (videoSources_.empty())
+                return !isOffering_;
+
+        auto it = std::find_if(videoSources_.cbegin(), videoSources_.cend(), [this](const auto &s) {
+                return s.name == settings_->camera().toStdString();
+        });
+        if (it == videoSources_.cend()) {
+                nhlog::ui()->error("WebRTC: unknown camera: {}", settings_->camera().toStdString());
+                return false;
+        }
+
+        std::string resSetting = settings_->cameraResolution().toStdString();
+        const std::string &res = resSetting.empty() ? it->caps.front().resolution : resSetting;
+        std::string frSetting  = settings_->cameraFrameRate().toStdString();
+        const std::string &fr = frSetting.empty() ? it->caps.front().frameRates.front() : frSetting;
+        auto resolution       = tokenise(res, 'x');
+        auto frameRate        = tokenise(fr, '/');
+        nhlog::ui()->debug("WebRTC: camera: {}", it->name);
+        nhlog::ui()->debug("WebRTC: camera resolution: {}x{}", resolution.first, resolution.second);
+        nhlog::ui()->debug("WebRTC: camera frame rate: {}/{}", frameRate.first, frameRate.second);
+
+        GstElement *source     = gst_device_create_element(it->device, nullptr);
+        GstElement *capsfilter = gst_element_factory_make("capsfilter", nullptr);
+        GstCaps *caps          = gst_caps_new_simple("video/x-raw",
+                                            "width",
+                                            G_TYPE_INT,
+                                            resolution.first,
+                                            "height",
+                                            G_TYPE_INT,
+                                            resolution.second,
+                                            "framerate",
+                                            GST_TYPE_FRACTION,
+                                            frameRate.first,
+                                            frameRate.second,
+                                            nullptr);
+        g_object_set(capsfilter, "caps", caps, nullptr);
+        gst_caps_unref(caps);
+
+        GstElement *convert = gst_element_factory_make("videoconvert", nullptr);
+        GstElement *queue1  = gst_element_factory_make("queue", nullptr);
+        GstElement *vp8enc  = gst_element_factory_make("vp8enc", nullptr);
+        g_object_set(vp8enc, "deadline", 1, nullptr);
+        g_object_set(vp8enc, "error-resilient", 1, nullptr);
+
+        GstElement *rtp           = gst_element_factory_make("rtpvp8pay", nullptr);
+        GstElement *queue2        = gst_element_factory_make("queue", nullptr);
+        GstElement *rtpcapsfilter = gst_element_factory_make("capsfilter", nullptr);
+        GstCaps *rtpcaps          = gst_caps_new_simple("application/x-rtp",
+                                               "media",
+                                               G_TYPE_STRING,
+                                               "video",
+                                               "encoding-name",
+                                               G_TYPE_STRING,
+                                               "VP8",
+                                               "payload",
+                                               G_TYPE_INT,
+                                               vp8PayloadType,
+                                               nullptr);
+        g_object_set(rtpcapsfilter, "caps", rtpcaps, nullptr);
+        gst_caps_unref(rtpcaps);
+
+        gst_bin_add_many(GST_BIN(pipe_),
+                         source,
+                         capsfilter,
+                         convert,
+                         queue1,
+                         vp8enc,
+                         rtp,
+                         queue2,
+                         rtpcapsfilter,
+                         nullptr);
+
+        GstElement *webrtcbin = gst_bin_get_by_name(GST_BIN(pipe_), "webrtcbin");
+        if (!gst_element_link_many(source,
+                                   capsfilter,
+                                   convert,
+                                   queue1,
+                                   vp8enc,
+                                   rtp,
+                                   queue2,
+                                   rtpcapsfilter,
+                                   webrtcbin,
+                                   nullptr)) {
+                nhlog::ui()->error("WebRTC: failed to link video pipeline elements");
+                return false;
+        }
+        gst_object_unref(webrtcbin);
         return true;
 }
 
@@ -665,6 +1095,7 @@ void
 WebRTCSession::end()
 {
         nhlog::ui()->debug("WebRTC: ending session");
+        keyFrameRequestData_ = KeyFrameRequestData{};
         if (pipe_) {
                 gst_element_set_state(pipe_, GST_STATE_NULL);
                 gst_object_unref(pipe_);
@@ -672,7 +1103,11 @@ WebRTCSession::end()
                 g_source_remove(busWatchId_);
                 busWatchId_ = 0;
         }
-        webrtc_ = nullptr;
+        webrtc_                = nullptr;
+        isVideo_               = false;
+        isOffering_            = false;
+        isRemoteVideoRecvOnly_ = false;
+        videoItem_             = nullptr;
         if (state_ != State::DISCONNECTED)
                 emit stateChanged(State::DISCONNECTED);
 }
@@ -690,6 +1125,9 @@ WebRTCSession::startDeviceMonitor()
                 GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
                 gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
                 gst_caps_unref(caps);
+                caps = gst_caps_new_empty_simple("video/x-raw");
+                gst_device_monitor_add_filter(monitor, "Video/Source", caps);
+                gst_caps_unref(caps);
 
                 GstBus *bus = gst_device_monitor_get_bus(monitor);
                 gst_bus_add_watch(bus, newBusMessage, nullptr);
@@ -700,12 +1138,14 @@ WebRTCSession::startDeviceMonitor()
                 }
         }
 }
-
-#else
+#endif
 
 void
 WebRTCSession::refreshDevices()
 {
+#if GST_CHECK_VERSION(1, 18, 0)
+        return;
+#else
         if (!initialised_)
                 return;
 
@@ -715,47 +1155,77 @@ WebRTCSession::refreshDevices()
                 GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
                 gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
                 gst_caps_unref(caps);
+                caps = gst_caps_new_empty_simple("video/x-raw");
+                gst_device_monitor_add_filter(monitor, "Video/Source", caps);
+                gst_caps_unref(caps);
         }
 
-        std::for_each(audioSources_.begin(), audioSources_.end(), [](const auto &s) {
-                gst_object_unref(s.second);
-        });
-        audioSources_.clear();
+        auto clearDevices = [](auto &sources) {
+                std::for_each(
+                  sources.begin(), sources.end(), [](auto &s) { gst_object_unref(s.device); });
+                sources.clear();
+        };
+        clearDevices(audioSources_);
+        clearDevices(videoSources_);
+
         GList *devices = gst_device_monitor_get_devices(monitor);
         if (devices) {
-                audioSources_.reserve(g_list_length(devices));
                 for (GList *l = devices; l != nullptr; l = l->next)
                         addDevice(GST_DEVICE_CAST(l->data));
                 g_list_free(devices);
         }
-}
 #endif
+}
 
 std::vector<std::string>
-WebRTCSession::getAudioSourceNames(const std::string &defaultDevice)
+WebRTCSession::getDeviceNames(bool isVideo, const std::string &defaultDevice) const
 {
-#if !GST_CHECK_VERSION(1, 18, 0)
-        refreshDevices();
-#endif
-        // move default device to top of the list
-        if (auto it = std::find_if(audioSources_.begin(),
-                                   audioSources_.end(),
-                                   [&](const auto &s) { return s.first == defaultDevice; });
-            it != audioSources_.end())
-                std::swap(audioSources_.front(), *it);
+        return isVideo ? deviceNames(videoSources_, defaultDevice)
+                       : deviceNames(audioSources_, defaultDevice);
+}
 
+std::vector<std::string>
+WebRTCSession::getResolutions(const std::string &cameraName) const
+{
         std::vector<std::string> ret;
-        ret.reserve(audioSources_.size());
-        std::for_each(audioSources_.cbegin(), audioSources_.cend(), [&](const auto &s) {
-                ret.push_back(s.first);
-        });
+        if (auto it = std::find_if(videoSources_.cbegin(),
+                                   videoSources_.cend(),
+                                   [&cameraName](const auto &s) { return s.name == cameraName; });
+            it != videoSources_.cend()) {
+                ret.reserve(it->caps.size());
+                for (const auto &c : it->caps)
+                        ret.push_back(c.resolution);
+        }
         return ret;
+}
+
+std::vector<std::string>
+WebRTCSession::getFrameRates(const std::string &cameraName, const std::string &resolution) const
+{
+        if (auto i = std::find_if(videoSources_.cbegin(),
+                                  videoSources_.cend(),
+                                  [&](const auto &s) { return s.name == cameraName; });
+            i != videoSources_.cend()) {
+                if (auto j =
+                      std::find_if(i->caps.cbegin(),
+                                   i->caps.cend(),
+                                   [&](const auto &s) { return s.resolution == resolution; });
+                    j != i->caps.cend())
+                        return j->frameRates;
+        }
+        return {};
 }
 
 #else
 
 bool
-WebRTCSession::createOffer()
+WebRTCSession::havePlugins(bool, std::string *)
+{
+        return false;
+}
+
+bool
+WebRTCSession::createOffer(bool)
 {
         return false;
 }
@@ -777,18 +1247,6 @@ WebRTCSession::acceptICECandidates(const std::vector<mtx::events::msg::CallCandi
 {}
 
 bool
-WebRTCSession::startPipeline(int)
-{
-        return false;
-}
-
-bool
-WebRTCSession::createPipeline(int)
-{
-        return false;
-}
-
-bool
 WebRTCSession::isMicMuted() const
 {
         return false;
@@ -808,14 +1266,21 @@ void
 WebRTCSession::refreshDevices()
 {}
 
-void
-WebRTCSession::startDeviceMonitor()
-{}
-
 std::vector<std::string>
-WebRTCSession::getAudioSourceNames(const std::string &)
+WebRTCSession::getDeviceNames(bool, const std::string &) const
 {
         return {};
 }
 
+std::vector<std::string>
+WebRTCSession::getResolutions(const std::string &) const
+{
+        return {};
+}
+
+std::vector<std::string>
+WebRTCSession::getFrameRates(const std::string &, const std::string &) const
+{
+        return {};
+}
 #endif

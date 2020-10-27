@@ -42,6 +42,7 @@
 #include "Olm.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "ui/FlatButton.h"
 #include "ui/ToggleButton.h"
 
@@ -77,8 +78,11 @@ UserSettings::load()
         presence_ =
           settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
             .value<Presence>();
-        useStunServer_      = settings.value("user/use_stun_server", false).toBool();
-        defaultAudioSource_ = settings.value("user/default_audio_source", QString()).toString();
+        microphone_       = settings.value("user/microphone", QString()).toString();
+        camera_           = settings.value("user/camera", QString()).toString();
+        cameraResolution_ = settings.value("user/camera_resolution", QString()).toString();
+        cameraFrameRate_  = settings.value("user/camera_frame_rate", QString()).toString();
+        useStunServer_    = settings.value("user/use_stun_server", false).toBool();
 
         applyTheme();
 }
@@ -292,12 +296,42 @@ UserSettings::setUseStunServer(bool useStunServer)
 }
 
 void
-UserSettings::setDefaultAudioSource(const QString &defaultAudioSource)
+UserSettings::setMicrophone(QString microphone)
 {
-        if (defaultAudioSource == defaultAudioSource_)
+        if (microphone == microphone_)
                 return;
-        defaultAudioSource_ = defaultAudioSource;
-        emit defaultAudioSourceChanged(defaultAudioSource);
+        microphone_ = microphone;
+        emit microphoneChanged(microphone);
+        save();
+}
+
+void
+UserSettings::setCamera(QString camera)
+{
+        if (camera == camera_)
+                return;
+        camera_ = camera;
+        emit cameraChanged(camera);
+        save();
+}
+
+void
+UserSettings::setCameraResolution(QString resolution)
+{
+        if (resolution == cameraResolution_)
+                return;
+        cameraResolution_ = resolution;
+        emit cameraResolutionChanged(resolution);
+        save();
+}
+
+void
+UserSettings::setCameraFrameRate(QString frameRate)
+{
+        if (frameRate == cameraFrameRate_)
+                return;
+        cameraFrameRate_ = frameRate;
+        emit cameraFrameRateChanged(frameRate);
         save();
 }
 
@@ -386,8 +420,11 @@ UserSettings::save()
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
         settings.setValue("presence", QVariant::fromValue(presence_));
+        settings.setValue("microphone", microphone_);
+        settings.setValue("camera", camera_);
+        settings.setValue("camera_resolution", cameraResolution_);
+        settings.setValue("camera_frame_rate", cameraFrameRate_);
         settings.setValue("use_stun_server", useStunServer_);
-        settings.setValue("default_audio_source", defaultAudioSource_);
 
         settings.endGroup();
 
@@ -458,6 +495,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         fontSizeCombo_            = new QComboBox{this};
         fontSelectionCombo_       = new QComboBox{this};
         emojiFontSelectionCombo_  = new QComboBox{this};
+        microphoneCombo_          = new QComboBox{this};
+        cameraCombo_              = new QComboBox{this};
+        cameraResolutionCombo_    = new QComboBox{this};
+        cameraFrameRateCombo_     = new QComboBox{this};
         timelineMaxWidthSpin_     = new QSpinBox{this};
 
         if (!settings_->tray())
@@ -645,6 +686,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         formLayout_->addRow(callsLabel);
         formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Microphone"), microphoneCombo_);
+        boxWrap(tr("Camera"), cameraCombo_);
+        boxWrap(tr("Camera resolution"), cameraResolutionCombo_);
+        boxWrap(tr("Camera frame rate"), cameraFrameRateCombo_);
+        microphoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        cameraCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        cameraResolutionCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        cameraFrameRateCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         boxWrap(tr("Allow fallback call assist server"),
                 useStunServer_,
                 tr("Will use turn.matrix.org as assist when your home server does not offer one."));
@@ -698,6 +747,38 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(emojiFontSelectionCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
+
+        connect(microphoneCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &microphone) { settings_->setMicrophone(microphone); });
+
+        connect(cameraCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &camera) {
+                        settings_->setCamera(camera);
+                        std::vector<std::string> resolutions =
+                          WebRTCSession::instance().getResolutions(camera.toStdString());
+                        cameraResolutionCombo_->clear();
+                        for (const auto &resolution : resolutions)
+                                cameraResolutionCombo_->addItem(QString::fromStdString(resolution));
+                });
+
+        connect(cameraResolutionCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &resolution) {
+                        settings_->setCameraResolution(resolution);
+                        std::vector<std::string> frameRates =
+                          WebRTCSession::instance().getFrameRates(settings_->camera().toStdString(),
+                                                                  resolution.toStdString());
+                        cameraFrameRateCombo_->clear();
+                        for (const auto &frameRate : frameRates)
+                                cameraFrameRateCombo_->addItem(QString::fromStdString(frameRate));
+                });
+
+        connect(cameraFrameRateCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &frameRate) { settings_->setCameraFrameRate(frameRate); });
+
         connect(trayToggle_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setTray(!disabled);
                 if (disabled) {
@@ -807,6 +888,26 @@ UserSettingsPage::showEvent(QShowEvent *)
         enlargeEmojiOnlyMessages_->setState(!settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
+
+        WebRTCSession::instance().refreshDevices();
+        auto mics =
+          WebRTCSession::instance().getDeviceNames(false, settings_->microphone().toStdString());
+        microphoneCombo_->clear();
+        for (const auto &m : mics)
+                microphoneCombo_->addItem(QString::fromStdString(m));
+
+        auto cameraResolution = settings_->cameraResolution();
+        auto cameraFrameRate  = settings_->cameraFrameRate();
+
+        auto cameras =
+          WebRTCSession::instance().getDeviceNames(true, settings_->camera().toStdString());
+        cameraCombo_->clear();
+        for (const auto &c : cameras)
+                cameraCombo_->addItem(QString::fromStdString(c));
+
+        utils::restoreCombobox(cameraResolutionCombo_, cameraResolution);
+        utils::restoreCombobox(cameraFrameRateCombo_, cameraFrameRate);
+
         useStunServer_->setState(!settings_->useStunServer());
 
         deviceFingerprintValue_->setText(

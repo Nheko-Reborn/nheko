@@ -6,6 +6,7 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+class QComboBox;
 class QPushButton;
 class QString;
 class UserSettings;
@@ -22,6 +23,7 @@ public:
                    const QString &roomName,
                    const QString &avatarUrl,
                    QSharedPointer<UserSettings> settings,
+                   bool isVideo,
                    QWidget *parent = nullptr);
 
 signals:
@@ -29,8 +31,12 @@ signals:
         void reject();
 
 private:
-        QPushButton *acceptBtn_;
-        QPushButton *rejectBtn_;
-        std::vector<std::string> audioDevices_;
+        QPushButton *acceptBtn_     = nullptr;
+        QPushButton *rejectBtn_     = nullptr;
+        QComboBox *microphoneCombo_ = nullptr;
+        QComboBox *cameraCombo_     = nullptr;
+        std::vector<std::string> microphones_;
+        std::vector<std::string> cameras_;
 };
+
 }

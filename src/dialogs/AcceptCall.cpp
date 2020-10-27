@@ -19,23 +19,32 @@ AcceptCall::AcceptCall(const QString &caller,
                        const QString &roomName,
                        const QString &avatarUrl,
                        QSharedPointer<UserSettings> settings,
+                       bool isVideo,
                        QWidget *parent)
   : QWidget(parent)
 {
         std::string errorMessage;
-        if (!WebRTCSession::instance().init(&errorMessage)) {
+        WebRTCSession *session = &WebRTCSession::instance();
+        if (!session->havePlugins(false, &errorMessage)) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 emit close();
                 return;
         }
-        audioDevices_ = WebRTCSession::instance().getAudioSourceNames(
-          settings->defaultAudioSource().toStdString());
-        if (audioDevices_.empty()) {
-                emit ChatPage::instance()->showNotification(
-                  "Incoming call: No audio sources found.");
+        if (isVideo && !session->havePlugins(true, &errorMessage)) {
+                emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 emit close();
                 return;
         }
+        session->refreshDevices();
+        microphones_ = session->getDeviceNames(false, settings->microphone().toStdString());
+        if (microphones_.empty()) {
+                emit ChatPage::instance()->showNotification(
+                  tr("Incoming call: No microphone found."));
+                emit close();
+                return;
+        }
+        if (isVideo)
+                cameras_ = session->getDeviceNames(true, settings->camera().toStdString());
 
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
@@ -77,9 +86,10 @@ AcceptCall::AcceptCall(const QString &caller,
         const int iconSize        = 22;
         QLabel *callTypeIndicator = new QLabel(this);
         callTypeIndicator->setPixmap(
-          QIcon(":/icons/icons/ui/place-call.png").pixmap(QSize(iconSize * 2, iconSize * 2)));
+          QIcon(isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png")
+            .pixmap(QSize(iconSize * 2, iconSize * 2)));
 
-        QLabel *callTypeLabel = new QLabel("Voice Call", this);
+        QLabel *callTypeLabel = new QLabel(isVideo ? tr("Video Call") : tr("Voice Call"), this);
         labelFont.setPointSizeF(f.pointSizeF() * 1.1);
         callTypeLabel->setFont(labelFont);
         callTypeLabel->setAlignment(Qt::AlignCenter);
@@ -88,7 +98,8 @@ AcceptCall::AcceptCall(const QString &caller,
         buttonLayout->setSpacing(18);
         acceptBtn_ = new QPushButton(tr("Accept"), this);
         acceptBtn_->setDefault(true);
-        acceptBtn_->setIcon(QIcon(":/icons/icons/ui/place-call.png"));
+        acceptBtn_->setIcon(
+          QIcon(isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"));
         acceptBtn_->setIconSize(QSize(iconSize, iconSize));
 
         rejectBtn_ = new QPushButton(tr("Reject"), this);
@@ -97,18 +108,17 @@ AcceptCall::AcceptCall(const QString &caller,
         buttonLayout->addWidget(acceptBtn_);
         buttonLayout->addWidget(rejectBtn_);
 
-        auto deviceLayout = new QHBoxLayout;
-        auto audioLabel   = new QLabel(this);
-        audioLabel->setPixmap(
-          QIcon(":/icons/icons/ui/microphone-unmute.png").pixmap(QSize(iconSize, iconSize)));
+        microphoneCombo_ = new QComboBox(this);
+        for (const auto &m : microphones_)
+                microphoneCombo_->addItem(QIcon(":/icons/icons/ui/microphone-unmute.png"),
+                                          QString::fromStdString(m));
 
-        auto deviceList = new QComboBox(this);
-        for (const auto &d : audioDevices_)
-                deviceList->addItem(QString::fromStdString(d));
-
-        deviceLayout->addStretch();
-        deviceLayout->addWidget(audioLabel);
-        deviceLayout->addWidget(deviceList);
+        if (!cameras_.empty()) {
+                cameraCombo_ = new QComboBox(this);
+                for (const auto &c : cameras_)
+                        cameraCombo_->addItem(QIcon(":/icons/icons/ui/video-call.png"),
+                                              QString::fromStdString(c));
+        }
 
         if (displayNameLabel)
                 layout->addWidget(displayNameLabel, 0, Qt::AlignCenter);
@@ -117,12 +127,17 @@ AcceptCall::AcceptCall(const QString &caller,
         layout->addWidget(callTypeIndicator, 0, Qt::AlignCenter);
         layout->addWidget(callTypeLabel, 0, Qt::AlignCenter);
         layout->addLayout(buttonLayout);
-        layout->addLayout(deviceLayout);
+        layout->addWidget(microphoneCombo_);
+        if (cameraCombo_)
+                layout->addWidget(cameraCombo_);
 
-        connect(acceptBtn_, &QPushButton::clicked, this, [this, deviceList, settings]() {
-                WebRTCSession::instance().setAudioSource(deviceList->currentIndex());
-                settings->setDefaultAudioSource(
-                  QString::fromStdString(audioDevices_[deviceList->currentIndex()]));
+        connect(acceptBtn_, &QPushButton::clicked, this, [this, settings, session]() {
+                settings->setMicrophone(
+                  QString::fromStdString(microphones_[microphoneCombo_->currentIndex()]));
+                if (cameraCombo_) {
+                        settings->setCamera(
+                          QString::fromStdString(cameras_[cameraCombo_->currentIndex()]));
+                }
                 emit accept();
                 emit close();
         });
@@ -131,4 +146,5 @@ AcceptCall::AcceptCall(const QString &caller,
                 emit close();
         });
 }
+
 }

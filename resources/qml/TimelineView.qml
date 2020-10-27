@@ -4,7 +4,7 @@ import "./emoji"
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
+import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
@@ -282,144 +282,157 @@ Page {
 
             }
 
-            ListView {
-                id: chat
+            StackLayout {
+                id: stackLayout
+                currentIndex: 0
 
-                property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width * 2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width * 2)
-
-                visible: TimelineManager.timeline != null
-                cacheBuffer: 400
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                model: TimelineManager.timeline
-                boundsBehavior: Flickable.StopAtBounds
-                pixelAligned: true
-                spacing: 4
-                verticalLayoutDirection: ListView.BottomToTop
-                onCountChanged: {
-                    if (atYEnd)
-                        model.currentIndex = 0;
-
-                } // Mark last event as read, since we are at the bottom
-
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                }
-
-                Shortcut {
-                    sequence: StandardKey.MoveToPreviousPage
-                    onActivated: {
-                        chat.contentY = chat.contentY - chat.height / 2;
-                        chat.returnToBounds();
+                Connections {
+                    target: TimelineManager
+                    function onActiveTimelineChanged() {
+                        stackLayout.currentIndex = 0;
                     }
                 }
 
-                Shortcut {
-                    sequence: StandardKey.MoveToNextPage
-                    onActivated: {
-                        chat.contentY = chat.contentY + chat.height / 2;
-                        chat.returnToBounds();
-                    }
-                }
+                ListView {
+                    id: chat
 
-                Shortcut {
-                    sequence: StandardKey.Cancel
-                    onActivated: chat.model.reply = undefined
-                }
+                    property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width * 2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width * 2)
 
-                Shortcut {
-                    sequence: "Alt+Up"
-                    onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply ? chat.model.idToIndex(chat.model.reply) + 1 : 0)
-                }
+                    visible: TimelineManager.timeline != null
+                    cacheBuffer: 400
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    model: TimelineManager.timeline
+                    boundsBehavior: Flickable.StopAtBounds
+                    pixelAligned: true
+                    spacing: 4
+                    verticalLayoutDirection: ListView.BottomToTop
+                    onCountChanged: {
+                        if (atYEnd)
+                            model.currentIndex = 0;
 
-                Shortcut {
-                    sequence: "Alt+Down"
-                    onActivated: {
-                        var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
-                        chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : undefined;
-                    }
-                }
+                    } // Mark last event as read, since we are at the bottom
 
-                Component {
-                    id: userProfileComponent
-
-                    UserProfile {
+                    ScrollHelper {
+                        flickable: parent
+                        anchors.fill: parent
                     }
 
-                }
+                    Shortcut {
+                        sequence: StandardKey.MoveToPreviousPage
+                        onActivated: {
+                            chat.contentY = chat.contentY - chat.height / 2;
+                            chat.returnToBounds();
+                        }
+                    }
 
-                section {
-                    property: "section"
-                }
+                    Shortcut {
+                        sequence: StandardKey.MoveToNextPage
+                        onActivated: {
+                            chat.contentY = chat.contentY + chat.height / 2;
+                            chat.returnToBounds();
+                        }
+                    }
 
-                Component {
-                    id: sectionHeader
+                    Shortcut {
+                        sequence: StandardKey.Cancel
+                        onActivated: chat.model.reply = undefined
+                    }
 
-                    Column {
-                        property var modelData
-                        property string section
-                        property string nextSection
+                    Shortcut {
+                        sequence: "Alt+Up"
+                        onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply ? chat.model.idToIndex(chat.model.reply) + 1 : 0)
+                    }
 
-                        topPadding: 4
-                        bottomPadding: 4
-                        spacing: 8
-                        visible: !!modelData
-                        width: parent.width
-                        height: (section.includes(" ") ? dateBubble.height + 8 + userName.height : userName.height) + 8
+                    Shortcut {
+                        sequence: "Alt+Down"
+                        onActivated: {
+                            var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
+                            chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : undefined;
+                        }
+                    }
 
-                        Label {
-                            id: dateBubble
+                    Component {
+                        id: userProfileComponent
 
-                            anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                            visible: section.includes(" ")
-                            text: chat.model.formatDateSeparator(modelData.timestamp)
-                            color: colors.text
-                            height: fontMetrics.height * 1.4
-                            width: contentWidth * 1.2
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-
-                            background: Rectangle {
-                                radius: parent.height / 2
-                                color: colors.base
-                            }
-
+                        UserProfile {
                         }
 
-                        Row {
-                            height: userName.height
+                    }
+
+                    section {
+                        property: "section"
+                    }
+
+                    Component {
+                        id: sectionHeader
+
+                        Column {
+                            property var modelData
+                            property string section
+                            property string nextSection
+
+                            topPadding: 4
+                            bottomPadding: 4
                             spacing: 8
-
-                            Avatar {
-                                width: avatarSize
-                                height: avatarSize
-                                url: chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/")
-                                displayName: modelData.userName
-                                userid: modelData.userId
-
-                                MouseArea {
-                                    anchors.fill: parent
-                                    onClicked: chat.model.openUserProfile(modelData.userId)
-                                    cursorShape: Qt.PointingHandCursor
-                                    propagateComposedEvents: true
-                                }
-
-                            }
+                            visible: !!modelData
+                            width: parent.width
+                            height: (section.includes(" ") ? dateBubble.height + 8 + userName.height : userName.height) + 8
 
                             Label {
-                                id: userName
+                                id: dateBubble
 
-                                text: TimelineManager.escapeEmoji(modelData.userName)
-                                color: TimelineManager.userColor(modelData.userId, colors.window)
-                                textFormat: Text.RichText
+                                anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
+                                visible: section.includes(" ")
+                                text: chat.model.formatDateSeparator(modelData.timestamp)
+                                color: colors.text
+                                height: fontMetrics.height * 1.4
+                                width: contentWidth * 1.2
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
 
-                                MouseArea {
-                                    anchors.fill: parent
-                                    Layout.alignment: Qt.AlignHCenter
-                                    onClicked: chat.model.openUserProfile(modelData.userId)
-                                    cursorShape: Qt.PointingHandCursor
-                                    propagateComposedEvents: true
+                                background: Rectangle {
+                                    radius: parent.height / 2
+                                    color: colors.base
+                                }
+
+                            }
+
+                            Row {
+                                height: userName.height
+                                spacing: 8
+
+                                Avatar {
+                                    width: avatarSize
+                                    height: avatarSize
+                                    url: chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/")
+                                    displayName: modelData.userName
+                                    userid: modelData.userId
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: chat.model.openUserProfile(modelData.userId)
+                                        cursorShape: Qt.PointingHandCursor
+                                        propagateComposedEvents: true
+                                    }
+
+                                }
+
+                                Label {
+                                    id: userName
+
+                                    text: TimelineManager.escapeEmoji(modelData.userName)
+                                    color: TimelineManager.userColor(modelData.userId, colors.window)
+                                    textFormat: Text.RichText
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        Layout.alignment: Qt.AlignHCenter
+                                        onClicked: chat.model.openUserProfile(modelData.userId)
+                                        cursorShape: Qt.PointingHandCursor
+                                        propagateComposedEvents: true
+                                    }
+
                                 }
 
                             }
@@ -428,62 +441,67 @@ Page {
 
                     }
 
-                }
-
-                ScrollBar.vertical: ScrollBar {
-                    id: scrollbar
-                }
-
-                delegate: Item {
-                    id: wrapper
-
-                    // This would normally be previousSection, but our model's order is inverted.
-                    property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
-                    property Item section
-
-                    anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                    width: chat.delegateMaxWidth
-                    height: section ? section.height + timelinerow.height : timelinerow.height
-                    onSectionBoundaryChanged: {
-                        if (sectionBoundary) {
-                            var properties = {
-                                "modelData": model.dump,
-                                "section": ListView.section,
-                                "nextSection": ListView.nextSection
-                            };
-                            section = sectionHeader.createObject(wrapper, properties);
-                        } else {
-                            section.destroy();
-                            section = null;
-                        }
+                    ScrollBar.vertical: ScrollBar {
+                        id: scrollbar
                     }
 
-                    TimelineRow {
-                        id: timelinerow
+                    delegate: Item {
+                        id: wrapper
 
-                        y: section ? section.y + section.height : 0
-                    }
+                        // This would normally be previousSection, but our model's order is inverted.
+                        property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
+                        property Item section
 
-                    Connections {
-                        function onMovementEnded() {
-                            if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
-                                chat.model.currentIndex = index;
-
+                        anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
+                        width: chat.delegateMaxWidth
+                        height: section ? section.height + timelinerow.height : timelinerow.height
+                        onSectionBoundaryChanged: {
+                            if (sectionBoundary) {
+                                var properties = {
+                                    "modelData": model.dump,
+                                    "section": ListView.section,
+                                    "nextSection": ListView.nextSection
+                                };
+                                section = sectionHeader.createObject(wrapper, properties);
+                            } else {
+                                section.destroy();
+                                section = null;
+                            }
                         }
 
-                        target: chat
+                        TimelineRow {
+                            id: timelinerow
+
+                            y: section ? section.y + section.height : 0
+                        }
+
+                        Connections {
+                            function onMovementEnded() {
+                                if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
+                                    chat.model.currentIndex = index;
+
+                            }
+
+                            target: chat
+                        }
+
+                    }
+
+                    footer: BusyIndicator {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        running: chat.model && chat.model.paginationInProgress
+                        height: 50
+                        width: 50
+                        z: 3
                     }
 
                 }
 
-                footer: BusyIndicator {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    running: chat.model && chat.model.paginationInProgress
-                    height: 50
-                    width: 50
-                    z: 3
+                Loader {
+                    id: videoCallLoader
+                    source: TimelineManager.onVideoCall ? "VideoCall.qml" : ""
+                    onLoaded: TimelineManager.setVideoCallItem()
                 }
-
             }
 
             Item {
