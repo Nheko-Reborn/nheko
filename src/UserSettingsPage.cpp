@@ -687,7 +687,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Device ID"), deviceIdValue_);
         boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
         boxWrap(
-          tr("Share keys with trusted users"),
+          tr("Share keys with verified users and devices"),
           shareKeysWithTrustedUsers_,
           tr("Automatically replies to key requests from other users, if they are verified."));
         formLayout_->addRow(new HorizontalLine{this});
