@@ -1169,7 +1169,7 @@ ChatPage::leaveRoom(const QString &room_id)
 {
         http::client()->leave_room(
           room_id.toStdString(),
-          [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
+          [this, room_id](const mtx::responses::Empty &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to leave room: %1")
