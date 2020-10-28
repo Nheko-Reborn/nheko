@@ -407,8 +407,8 @@ TimelineViewManager::verifyUser(QString userid)
         }
 
         emit ChatPage::instance()->showNotification(
-          tr("No share room with this user found. Create an "
-             "encrypted room with this user and try again."));
+          tr("No encrypted private chat found with this user. Create an "
+             "encrypted private chat with this user and try again."));
 }
 
 void
