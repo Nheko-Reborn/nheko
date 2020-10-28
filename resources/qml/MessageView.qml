@@ -28,6 +28,7 @@ ListView {
     ScrollHelper {
         flickable: parent
         anchors.fill: parent
+        enabled: !Settings.mobileMode
     }
 
     Shortcut {
