@@ -11,12 +11,12 @@
     <message>
         <location line="+3"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Soitetaan…</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhdistetään…</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -44,7 +44,7 @@
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
 </context>
 <context>
@@ -327,7 +327,7 @@
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Aktiviteetti</translation>
+        <translation>Aktiviteetti</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -337,17 +337,17 @@
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Esineet</translation>
+        <translation>Esineet</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symbolit</translation>
+        <translation>Symbolit</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Liput</translation>
+        <translation>Liput</translation>
     </message>
 </context>
 <context>
@@ -392,27 +392,27 @@
         <location filename="../../src/timeline/EventStore.cpp" line="+519"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished">-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
+        <translation>-- Salattu viesti (salauksen purkuavaimia ei löydetty) --</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+62"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished">-- Virhe purkaessa salausta (megolm-avaimien hakeminen tietokannasta epäonnistui) --</translation>
+        <translation>-- Virhe purkaessa salausta (megolm-avaimien hakeminen tietokannasta epäonnistui) --</translation>
     </message>
     <message>
         <location line="-48"/>
         <location line="+61"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished">-- Virhe purkaessa salausta (%1) --</translation>
+        <translation>-- Virhe purkaessa salausta (%1) --</translation>
     </message>
     <message>
         <location line="-51"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished">-- Salattu viesti (tuntematon viestityyppi) --</translation>
+        <translation>-- Salattu viesti (tuntematon viestityyppi) --</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -456,7 +456,7 @@
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished">Sulje</translation>
+        <translation>Sulje</translation>
     </message>
 </context>
 <context>
@@ -642,7 +642,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageInput.qml" line="+47"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Kirjoita viesti…</translation>
+        <translation>Kirjoita viesti…</translation>
     </message>
 </context>
 <context>
@@ -670,7 +670,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -685,7 +685,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">Hyväksy</translation>
+        <translation>Hyväksy</translation>
     </message>
 </context>
 <context>
@@ -795,7 +795,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished">Sulje</translation>
+        <translation>Sulje</translation>
     </message>
 </context>
 <context>
@@ -937,7 +937,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished">Sulje</translation>
+        <translation>Sulje</translation>
     </message>
 </context>
 <context>
@@ -994,7 +994,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished">Viestin poisto epäonnistui: %1</translation>
+        <translation>Viestin muokkaus epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+130"/>
@@ -1006,7 +1006,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+156"/>
         <source>Save image</source>
-        <translation type="unfinished">Tallenna kuva</translation>
+        <translation>Tallenna kuva</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1202,7 +1202,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lukukuittaukset</translation>
+        <translation>Lukukuittaukset</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1259,27 +1259,27 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+27"/>
         <source>Room options</source>
-        <translation type="unfinished">Huonevaihtoehdot</translation>
+        <translation>Huoneen asetukset</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Kutsu käyttäjiä</translation>
+        <translation>Kutsu käyttäjiä</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished">Jäsenet</translation>
+        <translation>Jäsenet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Poistu huoneesta</translation>
+        <translation>Poistu huoneesta</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">Asetukset</translation>
+        <translation>Asetukset</translation>
     </message>
 </context>
 <context>
@@ -1703,7 +1703,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
 </context>
 <context>
@@ -1742,12 +1742,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
         <source>Accept</source>
-        <translation type="unfinished">Hyväksy</translation>
+        <translation>Hyväksy</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Reject</source>
-        <translation type="unfinished"></translation>
+        <translation>Hylkää</translation>
     </message>
 </context>
 <context>
@@ -1803,12 +1803,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished">Vahvista</translation>
+        <translation>Vahvista</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1883,7 +1883,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
 </context>
 <context>
@@ -2069,12 +2069,12 @@ Median koko: %2
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Valittu tiedosto ei ole kuva</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virhe lukiessa tiedostoa: %1</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -2169,112 +2169,112 @@ Median koko: %2
     <message>
         <location filename="../../src/Utils.h" line="+106"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit äänileikkeen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti äänileikkeen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit kuvan</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti kuvan</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit tiedoston</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti tiedoston</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit videotiedoston</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti videotiedoston</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit tarran</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti tarran</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit ilmoituksen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti ilmoituksen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinä: %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit salatun viestin</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti salatun viestin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Soitit puhelun</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 soitti puhelun</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastasit puheluun</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastasi puheluun</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Lopetit puhelun</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lopetti puhelun</translation>
     </message>
 </context>
 <context>
@@ -2282,12 +2282,12 @@ Median koko: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki huoneet</translation>
     </message>
 </context>
 <context>
@@ -2295,7 +2295,7 @@ Median koko: %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuntematon viestityyppi</translation>
     </message>
 </context>
 </TS>
