@@ -22,7 +22,7 @@ class CallManager : public QObject
         Q_OBJECT
 
 public:
-        CallManager();
+        CallManager(QObject *);
 
         void sendInvite(const QString &roomid, bool isVideo);
         void hangUp(

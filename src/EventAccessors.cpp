@@ -1,5 +1,7 @@
 #include "EventAccessors.h"
 
+#include <nlohmann/json.hpp>
+
 #include <algorithm>
 #include <cctype>
 #include <type_traits>

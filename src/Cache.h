@@ -28,10 +28,17 @@
 #include <lmdb++.h>
 #endif
 
-#include <mtx/responses.hpp>
+#include <mtx/events/event_type.hpp>
+#include <mtx/events/presence.hpp>
+#include <mtx/responses/crypto.hpp>
+#include <mtxclient/crypto/types.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
+
+namespace mtx::responses {
+struct Notifications;
+}
 
 namespace cache {
 void
@@ -94,8 +101,6 @@ getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
 std::vector<RoomMember>
 getMembers(const std::string &room_id, std::size_t startIndex = 0, std::size_t len = 30);
 
-void
-saveState(const mtx::responses::Sync &res);
 bool
 isInitialized();
 
@@ -127,9 +132,6 @@ setCurrentFormat();
 //! migrates db to the current format
 bool
 runMigrations();
-
-std::map<QString, mtx::responses::Timeline>
-roomMessages();
 
 QMap<QString, mtx::responses::Notifications>
 getTimelineMentions();
@@ -182,22 +184,8 @@ saveImage(const QString &url, const QByteArray &data);
 
 RoomInfo
 singleRoomInfo(const std::string &room_id);
-std::vector<std::string>
-roomsWithStateUpdates(const mtx::responses::Sync &res);
-std::vector<std::string>
-roomsWithTagUpdates(const mtx::responses::Sync &res);
 std::map<QString, RoomInfo>
 getRoomInfo(const std::vector<std::string> &rooms);
-inline std::map<QString, RoomInfo>
-roomUpdates(const mtx::responses::Sync &sync)
-{
-        return getRoomInfo(roomsWithStateUpdates(sync));
-}
-inline std::map<QString, RoomInfo>
-roomTagUpdates(const mtx::responses::Sync &sync)
-{
-        return getRoomInfo(roomsWithTagUpdates(sync));
-}
 
 //! Calculates which the read status of a room.
 //! Whether all the events in the timeline have been read.

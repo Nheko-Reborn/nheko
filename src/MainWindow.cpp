@@ -23,6 +23,7 @@
 #include <QShortcut>
 
 #include <mtx/requests.hpp>
+#include <mtx/responses/login.hpp>
 
 #include "Cache.h"
 #include "ChatPage.h"

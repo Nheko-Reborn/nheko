@@ -19,6 +19,12 @@ SuggestionsPopup::SuggestionsPopup(QWidget *parent)
         layout_->setSpacing(0);
 }
 
+QString
+SuggestionsPopup::displayName(QString room, QString user)
+{
+        return cache::displayName(room, user);
+}
+
 void
 SuggestionsPopup::addRooms(const std::vector<RoomSearchResult> &rooms)
 {

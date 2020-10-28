@@ -117,7 +117,7 @@ UserProfile::fetchDeviceList(const QString &userID)
 {
         auto localUser = utils::localUser();
 
-        ChatPage::instance()->query_keys(
+        cache::client()->query_keys(
           userID.toStdString(),
           [other_user_id = userID.toStdString(), this](const UserKeyCache &other_user_keys,
                                                        mtx::http::RequestErr err) {
@@ -129,7 +129,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                   }
 
                   // Finding if the User is Verified or not based on the Signatures
-                  ChatPage::instance()->query_keys(
+                  cache::client()->query_keys(
                     utils::localUser().toStdString(),
                     [other_user_id, other_user_keys, this](const UserKeyCache &res,
                                                            mtx::http::RequestErr err) {

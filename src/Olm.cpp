@@ -1,6 +1,7 @@
 #include "Olm.h"
 
 #include <QObject>
+#include <nlohmann/json.hpp>
 #include <variant>
 
 #include "Cache.h"
@@ -20,6 +21,21 @@ auto client_ = std::make_unique<mtx::crypto::OlmClient>();
 }
 
 namespace olm {
+void
+from_json(const nlohmann::json &obj, OlmMessage &msg)
+{
+        if (obj.at("type") != "m.room.encrypted")
+                throw std::invalid_argument("invalid type for olm message");
+
+        if (obj.at("content").at("algorithm") != OLM_ALGO)
+                throw std::invalid_argument("invalid algorithm for olm message");
+
+        msg.sender     = obj.at("sender");
+        msg.sender_key = obj.at("content").at("sender_key");
+        msg.ciphertext = obj.at("content")
+                           .at("ciphertext")
+                           .get<std::map<std::string, mtx::events::msg::OlmCipherContent>>();
+}
 
 mtx::crypto::OlmClient *
 client()
@@ -419,8 +435,8 @@ send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
                                e.content.session_id);
 
         mtx::events::msg::KeyRequest request;
-        request.action = !cancel ? mtx::events::msg::RequestAction::Request
-                                 : mtx::events::msg::RequestAction::Cancellation;
+        request.action               = !cancel ? mtx::events::msg::RequestAction::Request
+                                               : mtx::events::msg::RequestAction::Cancellation;
         request.algorithm            = MEGOLM_ALGO;
         request.room_id              = e.room_id;
         request.sender_key           = e.content.sender_key;

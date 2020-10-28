@@ -1006,11 +1006,7 @@ UserSettingsPage::importSessionKeys()
                 auto sessions =
                   mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
                 cache::importSessionKeys(std::move(sessions));
-        } catch (const mtx::crypto::sodium_exception &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const lmdb::error &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const nlohmann::json::exception &e) {
+        } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         }
 }
@@ -1058,11 +1054,7 @@ UserSettingsPage::exportSessionKeys()
                 QTextStream out(&file);
                 out << prefix << newline << b64 << newline << suffix;
                 file.close();
-        } catch (const mtx::crypto::sodium_exception &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const lmdb::error &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const nlohmann::json::exception &e) {
+        } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         }
 }

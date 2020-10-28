@@ -40,21 +40,8 @@ struct OlmMessage
         std::map<RecipientKey, mtx::events::msg::OlmCipherContent> ciphertext;
 };
 
-inline void
-from_json(const nlohmann::json &obj, OlmMessage &msg)
-{
-        if (obj.at("type") != "m.room.encrypted")
-                throw std::invalid_argument("invalid type for olm message");
-
-        if (obj.at("content").at("algorithm") != OLM_ALGO)
-                throw std::invalid_argument("invalid algorithm for olm message");
-
-        msg.sender     = obj.at("sender");
-        msg.sender_key = obj.at("content").at("sender_key");
-        msg.ciphertext = obj.at("content")
-                           .at("ciphertext")
-                           .get<std::map<std::string, mtx::events::msg::OlmCipherContent>>();
-}
+void
+from_json(const nlohmann::json &obj, OlmMessage &msg);
 
 mtx::crypto::OlmClient *
 client();

@@ -6,27 +6,27 @@
     <message>
         <location filename="../qml/ActiveCallBar.qml" line="+49"/>
         <source>Initiating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Alustan kõnet…</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Helistan…</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendan…</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita mikrofon sisse</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita mikrofon välja</translation>
     </message>
 </context>
 <context>
@@ -34,17 +34,17 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan kinnitust</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan et teine osapool lõpetaks verifitseerimise.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -260,22 +260,22 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimise kood</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun võrdle järgmiseid numbreid. Sa peaks nägema samu numbreid mõlema osapoole seadmes. Kui nad omavahel ei klapi, siis palun vajuta verifitseerimise katkestamiseks „Nad ei klapi“ nuppu!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nad ei klapi!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Mõlemad on samad!</translation>
     </message>
 </context>
 <context>
@@ -355,22 +355,22 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimise kood</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun võrdle järgmiseid emojisid. Sa peaks nägema samu emojisid mõlema osapoole seadmes. Kui nad on erinevad, siis palun vajuta verifitseerimise katkestamiseks „Nad ei klapi“ nuppu!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nad ei klapi!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Mõlemal pool on ühesugused emojid!</translation>
     </message>
 </context>
 <context>
@@ -430,28 +430,28 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+7"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimine ei õnnestunud</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teise osapoole rakendus ei toeta siinkasutatavat verifitseerimisprotokolli.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuvastasin, et krüptovõtmed ei klapi omavahel!</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme verifitseerimine aegus.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teine osapool katkestas verifitseerimise.</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -646,7 +646,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/MessageInput.qml" line="+47"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Kirjuta sõnum…</translation>
+        <translation>Kirjuta sõnum…</translation>
     </message>
 </context>
 <context>
@@ -654,37 +654,37 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
         <source>Send Device Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada soov seadme verifitseerimiseks</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Recieved Device Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Saabus soov seadme verifitseerimiseks</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagamaks et mitte ainsamgi kõrvaline osapoole ei saa sinu krüptitud suhtlust pealt kuulata, võid sa selle seadme verifitseerida.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>The device was requested to be verified</source>
-        <translation type="unfinished"></translation>
+        <translation>Me soovime selle seadme verifitseerimist.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Keeldu</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta verifitseerimist</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -705,17 +705,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+172"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo unikaalne profiil, mis võimaldab sul logida samaaegselt sisse erinevatele kasutajakontodele ning käivitada mitu Nheko programmiakent.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiil</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiili nimi</translation>
     </message>
 </context>
 <context>
@@ -799,7 +799,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished">Sulge</translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -931,12 +931,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+6"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimine õnnestus</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimine õnnestus! Mõlema osapoole seadmed on nüüd verifitseeritud!</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1244,7 +1244,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineViewManager.cpp" line="+410"/>
         <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle kasutajaga pole sul ühist jututuba. Loo temaga krüptitud jututuba ja proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1252,38 +1252,38 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+41"/>
         <source>Back to room list</source>
-        <translation type="unfinished">Tagasi jututubade loendisse</translation>
+        <translation>Tagasi jututubade loendisse</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+15"/>
         <source>No room selected</source>
-        <translation type="unfinished">Jututuba on valimata</translation>
+        <translation>Jututuba on valimata</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Room options</source>
-        <translation type="unfinished">Jututoa valikud</translation>
+        <translation>Jututoa valikud</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Kutsu kasutajaid</translation>
+        <translation>Kutsu kasutajaid</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished">Liikmed</translation>
+        <translation>Liikmed</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Lahku jututoast</translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">Seadistused</translation>
+        <translation>Seadistused</translation>
     </message>
 </context>
 <context>
@@ -1347,22 +1347,22 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+60"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseeri</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Ban the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Sea kasutajale suhtluskeeld</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Start a private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta privaatset vestlust</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Müksa kasutaja välja</translation>
     </message>
 </context>
 <context>
@@ -1390,7 +1390,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="-149"/>
         <source>profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiil: %1</translation>
     </message>
     <message>
         <location line="+87"/>
@@ -1546,12 +1546,12 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+4"/>
         <source>Mobile mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutiseadme vaade</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selleks, et ajajoone sirvimine oleks kiirem, ei ole teksti valimine lubatud.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1636,12 +1636,12 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+18"/>
         <source>Share keys with trusted users</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaga krüptovõtmeid usaldusväärsete kasutajatega</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta verifitseeritud kasutajate krüptovõtmete päringutele automaatselt.</translation>
     </message>
     <message>
         <location line="+185"/>
@@ -1695,22 +1695,22 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
         <source>Waiting for other party</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan teise osapoole järgi…</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool nõustuks verifitseerimispäringuga…</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool jätkaks verifitseerimist…</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool lõpetaks verifitseerimise…</translation>
     </message>
     <message>
         <location line="+15"/>
