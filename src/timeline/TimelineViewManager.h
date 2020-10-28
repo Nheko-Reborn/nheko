@@ -7,11 +7,11 @@
 #include <QWidget>
 
 #include <mtx/common.hpp>
-#include <mtx/responses.hpp>
+#include <mtx/responses/messages.hpp>
+#include <mtx/responses/sync.hpp>
 
 #include "Cache.h"
 #include "CallManager.h"
-#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -24,6 +24,7 @@ class BlurhashProvider;
 class ColorImageProvider;
 class UserSettings;
 class ChatPage;
+class DeviceVerificationFlow;
 
 class TimelineViewManager : public QObject
 {
@@ -93,7 +94,7 @@ signals:
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void receivedSessionKey(const std::string &room_id, const std::string &session_id);
-        void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
+        void initWithMessages(const std::vector<QString> &roomIds);
 
         void setHistoryView(const QString &room_id);
         void updateColorPalette();

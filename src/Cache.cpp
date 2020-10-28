@@ -1469,22 +1469,22 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
         return room_info;
 }
 
-std::map<QString, mtx::responses::Timeline>
-Cache::roomMessages()
+std::vector<QString>
+Cache::roomIds()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        std::map<QString, mtx::responses::Timeline> msgs;
+        std::vector<QString> rooms;
         std::string room_id, unused;
 
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, unused, MDB_NEXT))
-                msgs.emplace(QString::fromStdString(room_id), mtx::responses::Timeline());
+                rooms.push_back(QString::fromStdString(room_id));
 
         roomsCursor.close();
         txn.commit();
 
-        return msgs;
+        return rooms;
 }
 
 QMap<QString, mtx::responses::Notifications>
@@ -3377,6 +3377,46 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
 }
 
 void
+Cache::query_keys(const std::string &user_id,
+                  std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
+{
+        auto cache_ = cache::userKeys(user_id);
+
+        if (cache_.has_value()) {
+                if (!cache_->updated_at.empty() && cache_->updated_at == cache_->last_changed) {
+                        cb(cache_.value(), {});
+                        return;
+                }
+        }
+
+        mtx::requests::QueryKeys req;
+        req.device_keys[user_id] = {};
+
+        std::string last_changed;
+        if (cache_)
+                last_changed = cache_->last_changed;
+        req.token = last_changed;
+
+        http::client()->query_keys(req,
+                                   [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
+                                                               mtx::http::RequestErr err) {
+                                           if (err) {
+                                                   nhlog::net()->warn(
+                                                     "failed to query device keys: {},{}",
+                                                     err->matrix_error.errcode,
+                                                     static_cast<int>(err->status_code));
+                                                   cb({}, err);
+                                                   return;
+                                           }
+
+                                           cache::updateUserKeys(last_changed, res);
+
+                                           auto keys = cache::userKeys(user_id);
+                                           cb(keys.value_or(UserKeyCache{}), err);
+                                   });
+}
+
+void
 to_json(json &j, const VerificationCache &info)
 {
         j["device_verified"] = info.device_verified;
@@ -3927,10 +3967,10 @@ setCurrentFormat()
         instance_->setCurrentFormat();
 }
 
-std::map<QString, mtx::responses::Timeline>
-roomMessages()
+std::vector<QString>
+roomIds()
 {
-        return instance_->roomMessages();
+        return instance_->roomIds();
 }
 
 QMap<QString, mtx::responses::Notifications>

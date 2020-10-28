@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QComboBox>
+#include <QCoreApplication>
 #include <QFileDialog>
 #include <QFontComboBox>
 #include <QFormLayout>
@@ -36,7 +37,6 @@
 #include <QString>
 #include <QTextStream>
 #include <QtQml>
-#include <QCoreApplication>
 
 #include "Cache.h"
 #include "Config.h"
@@ -450,7 +450,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version).arg(nheko::build_os));
         if (QCoreApplication::applicationName() != "nheko")
-                versionInfo->setText(versionInfo->text() + " | " + tr("profile: %1").arg(QCoreApplication::applicationName()));
+                versionInfo->setText(versionInfo->text() + " | " +
+                                     tr("profile: %1").arg(QCoreApplication::applicationName()));
         versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
         topBarLayout_ = new QHBoxLayout;
@@ -904,11 +905,7 @@ UserSettingsPage::importSessionKeys()
                 auto sessions =
                   mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
                 cache::importSessionKeys(std::move(sessions));
-        } catch (const mtx::crypto::sodium_exception &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const lmdb::error &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const nlohmann::json::exception &e) {
+        } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         }
 }
@@ -956,11 +953,7 @@ UserSettingsPage::exportSessionKeys()
                 QTextStream out(&file);
                 out << prefix << newline << b64 << newline << suffix;
                 file.close();
-        } catch (const mtx::crypto::sodium_exception &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const lmdb::error &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const nlohmann::json::exception &e) {
+        } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         }
 }

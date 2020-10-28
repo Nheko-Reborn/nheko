@@ -33,8 +33,11 @@
 #endif
 #include <nlohmann/json.hpp>
 
-#include <mtx/responses.hpp>
+#include <mtx/responses/messages.hpp>
+#include <mtx/responses/notifications.hpp>
+#include <mtx/responses/sync.hpp>
 #include <mtxclient/crypto/client.hpp>
+#include <mtxclient/http/client.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
@@ -65,6 +68,8 @@ public:
         void deleteUserKeys(lmdb::txn &txn,
                             lmdb::dbi &db,
                             const std::vector<std::string> &user_ids);
+        void query_keys(const std::string &user_id,
+                        std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb);
 
         // device & user verification cache
         VerificationStatus verificationStatus(const std::string &user_id);
@@ -113,8 +118,7 @@ public:
         void setCurrentFormat();
         bool runMigrations();
 
-        std::map<QString, mtx::responses::Timeline> roomMessages();
-
+        std::vector<QString> roomIds();
         QMap<QString, mtx::responses::Notifications> getTimelineMentions();
 
         //! Retrieve all the user ids from a room.

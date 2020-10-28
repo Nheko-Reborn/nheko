@@ -3,6 +3,7 @@
 #include <QObject>
 
 #include <mtx/responses/crypto.hpp>
+#include <nlohmann/json.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "Logging.h"

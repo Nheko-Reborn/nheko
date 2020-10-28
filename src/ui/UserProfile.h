@@ -5,8 +5,6 @@
 #include <QString>
 #include <QVector>
 
-#include "MatrixClient.h"
-
 namespace verification {
 Q_NAMESPACE
 
@@ -116,8 +114,4 @@ private:
         bool isUserVerified = false;
         TimelineViewManager *manager;
         TimelineModel *model;
-
-        void callback_fn(const mtx::responses::QueryKeys &res,
-                         mtx::http::RequestErr err,
-                         std::string user_id);
 };

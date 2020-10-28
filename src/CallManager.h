@@ -24,7 +24,7 @@ class CallManager : public QObject
         Q_OBJECT
 
 public:
-        CallManager(QSharedPointer<UserSettings>);
+        CallManager(QSharedPointer<UserSettings>, QObject *);
 
         void sendInvite(const QString &roomid);
         void hangUp(

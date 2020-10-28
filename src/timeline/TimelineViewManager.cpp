@@ -11,6 +11,7 @@
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -450,13 +451,10 @@ TimelineViewManager::receivedSessionKey(const std::string &room_id, const std::s
 }
 
 void
-TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
+TimelineViewManager::initWithMessages(const std::vector<QString> &roomIds)
 {
-        for (const auto &e : msgs) {
-                addRoom(e.first);
-
-                models.value(e.first)->addEvents(e.second);
-        }
+        for (const auto &roomId : roomIds)
+                addRoom(roomId);
 }
 
 void
