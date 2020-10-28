@@ -1469,22 +1469,22 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
         return room_info;
 }
 
-std::map<QString, mtx::responses::Timeline>
-Cache::roomMessages()
+std::vector<QString>
+Cache::roomIds()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        std::map<QString, mtx::responses::Timeline> msgs;
+        std::vector<QString> rooms;
         std::string room_id, unused;
 
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, unused, MDB_NEXT))
-                msgs.emplace(QString::fromStdString(room_id), mtx::responses::Timeline());
+                rooms.push_back(QString::fromStdString(room_id));
 
         roomsCursor.close();
         txn.commit();
 
-        return msgs;
+        return rooms;
 }
 
 QMap<QString, mtx::responses::Notifications>
@@ -3967,10 +3967,10 @@ setCurrentFormat()
         instance_->setCurrentFormat();
 }
 
-std::map<QString, mtx::responses::Timeline>
-roomMessages()
+std::vector<QString>
+roomIds()
 {
-        return instance_->roomMessages();
+        return instance_->roomIds();
 }
 
 QMap<QString, mtx::responses::Notifications>

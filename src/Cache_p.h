@@ -118,8 +118,7 @@ public:
         void setCurrentFormat();
         bool runMigrations();
 
-        std::map<QString, mtx::responses::Timeline> roomMessages();
-
+        std::vector<QString> roomIds();
         QMap<QString, mtx::responses::Notifications> getTimelineMentions();
 
         //! Retrieve all the user ids from a room.
