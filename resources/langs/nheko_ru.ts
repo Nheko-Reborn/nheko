@@ -642,7 +642,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageInput.qml" line="+47"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Написать сообщение...</translation>
+        <translation>Написать сообщение…</translation>
     </message>
 </context>
 <context>
@@ -719,7 +719,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
         <source>Search for a room...</source>
-        <translation>Поиск комнаты...</translation>
+        <translation>Поиск комнаты…</translation>
     </message>
 </context>
 <context>
@@ -951,7 +951,7 @@ Example: https://server.my:8787</source>
         <location line="+13"/>
         <location filename="../../src/TextInputWidget.h" line="+160"/>
         <source>Write a message...</source>
-        <translation>Написать сообщение...</translation>
+        <translation>Написать сообщение…</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -986,7 +986,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
         <source>Connection lost. Nheko is trying to re-connect...</source>
-        <translation>Соединение потеряно. Nheko пытается переподключиться...</translation>
+        <translation>Соединение потеряно. Nheko пытается переподключиться…</translation>
     </message>
 </context>
 <context>
