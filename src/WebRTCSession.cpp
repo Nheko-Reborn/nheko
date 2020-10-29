@@ -1106,8 +1106,10 @@ WebRTCSession::end()
                 gst_element_set_state(pipe_, GST_STATE_NULL);
                 gst_object_unref(pipe_);
                 pipe_ = nullptr;
-                g_source_remove(busWatchId_);
-                busWatchId_ = 0;
+                if (busWatchId_) {
+                        g_source_remove(busWatchId_);
+                        busWatchId_ = 0;
+                }
         }
         webrtc_                = nullptr;
         isVideo_               = false;
