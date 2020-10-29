@@ -2,7 +2,6 @@
 #include <QQuickItem>
 #include <algorithm>
 #include <cctype>
-#include <charconv>
 #include <cstdlib>
 #include <cstring>
 #include <optional>
@@ -129,10 +128,9 @@ std::pair<int, int>
 tokenise(std::string_view str, char delim)
 {
         std::pair<int, int> ret;
+        ret.first = std::atoi(str.data());
         auto pos = str.find_first_of(delim);
-        auto s   = str.data();
-        std::from_chars(s, s + pos, ret.first);
-        std::from_chars(s + pos + 1, s + str.size(), ret.second);
+        ret.second = std::atoi(str.data() + pos + 1);
         return ret;
 }
 
