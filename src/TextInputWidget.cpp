@@ -370,7 +370,7 @@ FilteredTextEdit::insertFromMimeData(const QMimeData *source)
         const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
         const auto video   = formats.filter("video/", Qt::CaseInsensitive);
 
-        if (source->hasImage()) {
+        if (!image.empty() && source->hasImage()) {
                 QImage img = qvariant_cast<QImage>(source->imageData());
                 previewDialog_.setPreview(img, image.front());
         } else if (!audio.empty()) {
