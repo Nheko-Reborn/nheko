@@ -100,7 +100,7 @@ PlaceCall::PlaceCall(const QString &callee,
         if (videoBtn_)
                 layout->addWidget(cameraCombo_);
 
-        connect(voiceBtn_, &QPushButton::clicked, this, [this, settings, session]() {
+        connect(voiceBtn_, &QPushButton::clicked, this, [this, settings]() {
                 settings->setMicrophone(
                   QString::fromStdString(microphones_[microphoneCombo_->currentIndex()]));
                 emit voice();
