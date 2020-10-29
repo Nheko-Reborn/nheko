@@ -607,7 +607,7 @@ addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe)
 }
 
 bool
-strstr_(std::string_view str1, std::string_view str2)
+contains(std::string_view str1, std::string_view str2)
 {
         return std::search(str1.cbegin(),
                            str1.cend(),
@@ -634,7 +634,7 @@ getMediaAttributes(const GstSDPMessage *sdp,
                         const gchar *rtpval = nullptr;
                         for (guint n = 0; n == 0 || rtpval; ++n) {
                                 rtpval = gst_sdp_media_get_attribute_val_n(media, "rtpmap", n);
-                                if (rtpval && strstr_(rtpval, encoding)) {
+                                if (rtpval && contains(rtpval, encoding)) {
                                         payloadType = std::atoi(rtpval);
                                         break;
                                 }
@@ -733,7 +733,13 @@ WebRTCSession::createOffer(bool isVideo)
         haveVideoStream_       = false;
         localsdp_.clear();
         localcandidates_.clear();
-        return startPipeline(111, isVideo ? 96 : -1); // dynamic payload types
+
+        // opus and vp8 rtp payload types must be defined dynamically
+        // therefore from the range [96-127]
+        // see for example https://tools.ietf.org/html/rfc7587
+        constexpr int opusPayloadType = 111;
+        constexpr int vp8PayloadType = 96;
+        return startPipeline(opusPayloadType, vp8PayloadType);
 }
 
 bool
