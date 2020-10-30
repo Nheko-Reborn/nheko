@@ -72,7 +72,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , isConnected_(true)
   , userSettings_{userSettings}
   , notificationsManager(this)
-  , callManager_(new CallManager(userSettings, this))
+  , callManager_(new CallManager(this))
 {
         setObjectName("chatPage");
 
@@ -442,7 +442,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 } else {
                         if (auto roomInfo = cache::singleRoomInfo(current_room_.toStdString());
                             roomInfo.member_count != 2) {
-                                showNotification("Voice calls are limited to 1:1 rooms.");
+                                showNotification("Calls are limited to 1:1 rooms.");
                         } else {
                                 std::vector<RoomMember> members(
                                   cache::getMembers(current_room_.toStdString()));
@@ -457,7 +457,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   userSettings_,
                                   MainWindow::instance());
                                 connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
-                                        callManager_->sendInvite(current_room_);
+                                        callManager_->sendInvite(current_room_, false);
+                                });
+                                connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
+                                        callManager_->sendInvite(current_room_, true);
                                 });
                                 utils::centerWidget(dialog, MainWindow::instance());
                                 dialog->show();

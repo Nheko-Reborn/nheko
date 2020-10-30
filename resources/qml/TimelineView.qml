@@ -4,7 +4,7 @@ import "./emoji"
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
+import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
@@ -190,9 +190,26 @@ Page {
                     anchors.fill: parent
                     spacing: 0
 
-                    MessageView {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                    StackLayout {
+                        id: stackLayout
+                        currentIndex: 0
+
+                        Connections {
+                            target: TimelineManager
+                            function onActiveTimelineChanged() {
+                                stackLayout.currentIndex = 0;
+                            }
+                        }
+
+                        MessageView {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+
+                        Loader {
+                            source: TimelineManager.onVideoCall ? "VideoCall.qml" : ""
+                            onLoaded: TimelineManager.setVideoCallItem()
+                        }
                     }
 
                     TypingIndicator {

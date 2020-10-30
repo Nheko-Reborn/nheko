@@ -12,7 +12,6 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
-#include "UserSettingsPage.h"
 #include "Utils.h"
 #include "WebRTCSession.h"
 #include "dialogs/AcceptCall.h"
@@ -26,19 +25,15 @@ Q_DECLARE_METATYPE(mtx::responses::TurnServer)
 using namespace mtx::events;
 using namespace mtx::events::msg;
 
-// https://github.com/vector-im/riot-web/issues/10173
-#define STUN_SERVER "stun://turn.matrix.org:3478"
-
 namespace {
 std::vector<std::string>
 getTurnURIs(const mtx::responses::TurnServer &turnServer);
 }
 
-CallManager::CallManager(QSharedPointer<UserSettings> userSettings, QObject *parent)
+CallManager::CallManager(QObject *parent)
   : QObject(parent)
   , session_(WebRTCSession::instance())
   , turnServerTimer_(this)
-  , settings_(userSettings)
 {
         qRegisterMetaType<std::vector<mtx::events::msg::CallCandidates::Candidate>>();
         qRegisterMetaType<mtx::events::msg::CallCandidates::Candidate>();
@@ -129,30 +124,29 @@ CallManager::CallManager(QSharedPointer<UserSettings> userSettings, QObject *par
 }
 
 void
-CallManager::sendInvite(const QString &roomid)
+CallManager::sendInvite(const QString &roomid, bool isVideo)
 {
         if (onActiveCall())
                 return;
 
         auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
         if (roomInfo.member_count != 2) {
-                emit ChatPage::instance()->showNotification(
-                  "Voice calls are limited to 1:1 rooms.");
+                emit ChatPage::instance()->showNotification("Calls are limited to 1:1 rooms.");
                 return;
         }
 
         std::string errorMessage;
-        if (!session_.init(&errorMessage)) {
+        if (!session_.havePlugins(false, &errorMessage) ||
+            (isVideo && !session_.havePlugins(true, &errorMessage))) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 return;
         }
 
         roomid_ = roomid;
-        session_.setStunServer(settings_->useStunServer() ? STUN_SERVER : "");
         session_.setTurnServers(turnURIs_);
-
         generateCallID();
-        nhlog::ui()->debug("WebRTC: call id: {} - creating invite", callid_);
+        nhlog::ui()->debug(
+          "WebRTC: call id: {} - creating {} invite", callid_, isVideo ? "video" : "voice");
         std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
         const RoomMember &callee =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
@@ -160,10 +154,12 @@ CallManager::sendInvite(const QString &roomid)
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
         emit newCallParty();
         playRingtone("qrc:/media/media/ringback.ogg", true);
-        if (!session_.createOffer()) {
+        if (!session_.createOffer(isVideo)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 endCall();
         }
+        if (isVideo)
+                emit newVideoCallState();
 }
 
 namespace {
@@ -243,7 +239,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                 return;
 
         auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
-        if (onActiveCall() || roomInfo.member_count != 2 || isVideo) {
+        if (onActiveCall() || roomInfo.member_count != 2) {
                 emit newMessage(QString::fromStdString(callInviteEvent.room_id),
                                 CallHangUp{callInviteEvent.content.call_id,
                                            0,
@@ -266,11 +262,11 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                                               caller.display_name,
                                               QString::fromStdString(roomInfo.name),
                                               QString::fromStdString(roomInfo.avatar_url),
-                                              settings_,
+                                              isVideo,
                                               MainWindow::instance());
-        connect(dialog, &dialogs::AcceptCall::accept, this, [this, callInviteEvent]() {
+        connect(dialog, &dialogs::AcceptCall::accept, this, [this, callInviteEvent, isVideo]() {
                 MainWindow::instance()->hideOverlay();
-                answerInvite(callInviteEvent.content);
+                answerInvite(callInviteEvent.content, isVideo);
         });
         connect(dialog, &dialogs::AcceptCall::reject, this, [this]() {
                 MainWindow::instance()->hideOverlay();
@@ -280,19 +276,18 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 }
 
 void
-CallManager::answerInvite(const CallInvite &invite)
+CallManager::answerInvite(const CallInvite &invite, bool isVideo)
 {
         stopRingtone();
         std::string errorMessage;
-        if (!session_.init(&errorMessage)) {
+        if (!session_.havePlugins(false, &errorMessage) ||
+            (isVideo && !session_.havePlugins(true, &errorMessage))) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 hangUp();
                 return;
         }
 
-        session_.setStunServer(settings_->useStunServer() ? STUN_SERVER : "");
         session_.setTurnServers(turnURIs_);
-
         if (!session_.acceptOffer(invite.sdp)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 hangUp();
@@ -300,6 +295,8 @@ CallManager::answerInvite(const CallInvite &invite)
         }
         session_.acceptICECandidates(remoteICECandidates_);
         remoteICECandidates_.clear();
+        if (isVideo)
+                emit newVideoCallState();
 }
 
 void
@@ -385,7 +382,10 @@ CallManager::endCall()
 {
         stopRingtone();
         clear();
+        bool isVideo = session_.isVideo();
         session_.end();
+        if (isVideo)
+                emit newVideoCallState();
 }
 
 void

@@ -73,10 +73,14 @@ class UserSettings : public QObject
         Q_PROPERTY(
           QString emojiFont READ emojiFont WRITE setEmojiFontFamily NOTIFY emojiFontChanged)
         Q_PROPERTY(Presence presence READ presence WRITE setPresence NOTIFY presenceChanged)
+        Q_PROPERTY(QString microphone READ microphone WRITE setMicrophone NOTIFY microphoneChanged)
+        Q_PROPERTY(QString camera READ camera WRITE setCamera NOTIFY cameraChanged)
+        Q_PROPERTY(QString cameraResolution READ cameraResolution WRITE setCameraResolution NOTIFY
+                     cameraResolutionChanged)
+        Q_PROPERTY(QString cameraFrameRate READ cameraFrameRate WRITE setCameraFrameRate NOTIFY
+                     cameraFrameRateChanged)
         Q_PROPERTY(
           bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
-        Q_PROPERTY(QString defaultAudioSource READ defaultAudioSource WRITE setDefaultAudioSource
-                     NOTIFY defaultAudioSourceChanged)
         Q_PROPERTY(bool shareKeysWithTrustedUsers READ shareKeysWithTrustedUsers WRITE
                      setShareKeysWithTrustedUsers NOTIFY shareKeysWithTrustedUsersChanged)
 
@@ -116,8 +120,11 @@ public:
         void setAvatarCircles(bool state);
         void setDecryptSidebar(bool state);
         void setPresence(Presence state);
+        void setMicrophone(QString microphone);
+        void setCamera(QString camera);
+        void setCameraResolution(QString resolution);
+        void setCameraFrameRate(QString frameRate);
         void setUseStunServer(bool state);
-        void setDefaultAudioSource(const QString &deviceName);
         void setShareKeysWithTrustedUsers(bool state);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
@@ -145,8 +152,11 @@ public:
         QString font() const { return font_; }
         QString emojiFont() const { return emojiFont_; }
         Presence presence() const { return presence_; }
+        QString microphone() const { return microphone_; }
+        QString camera() const { return camera_; }
+        QString cameraResolution() const { return cameraResolution_; }
+        QString cameraFrameRate() const { return cameraFrameRate_; }
         bool useStunServer() const { return useStunServer_; }
-        QString defaultAudioSource() const { return defaultAudioSource_; }
         bool shareKeysWithTrustedUsers() const { return shareKeysWithTrustedUsers_; }
 
 signals:
@@ -171,8 +181,11 @@ signals:
         void fontChanged(QString state);
         void emojiFontChanged(QString state);
         void presenceChanged(Presence state);
+        void microphoneChanged(QString microphone);
+        void cameraChanged(QString camera);
+        void cameraResolutionChanged(QString resolution);
+        void cameraFrameRateChanged(QString frameRate);
         void useStunServerChanged(bool state);
-        void defaultAudioSourceChanged(const QString &deviceName);
         void shareKeysWithTrustedUsersChanged(bool state);
 
 private:
@@ -203,8 +216,11 @@ private:
         QString font_;
         QString emojiFont_;
         Presence presence_;
+        QString microphone_;
+        QString camera_;
+        QString cameraResolution_;
+        QString cameraFrameRate_;
         bool useStunServer_;
-        QString defaultAudioSource_;
 };
 
 class HorizontalLine : public QFrame
@@ -270,6 +286,10 @@ private:
         QComboBox *fontSizeCombo_;
         QFontComboBox *fontSelectionCombo_;
         QComboBox *emojiFontSelectionCombo_;
+        QComboBox *microphoneCombo_;
+        QComboBox *cameraCombo_;
+        QComboBox *cameraResolutionCombo_;
+        QComboBox *cameraFrameRateCombo_;
 
         QSpinBox *timelineMaxWidthSpin_;
 

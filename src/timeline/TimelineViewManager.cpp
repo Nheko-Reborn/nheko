@@ -240,6 +240,17 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                 &TimelineViewManager::callStateChanged);
         connect(
           callManager_, &CallManager::newCallParty, this, &TimelineViewManager::callPartyChanged);
+        connect(callManager_,
+                &CallManager::newVideoCallState,
+                this,
+                &TimelineViewManager::videoCallChanged);
+}
+
+void
+TimelineViewManager::setVideoCallItem()
+{
+        WebRTCSession::instance().setVideoItem(
+          view->rootObject()->findChild<QQuickItem *>("videoCallItem"));
 }
 
 void

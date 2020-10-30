@@ -5,7 +5,6 @@
 
 #include <QMediaPlayer>
 #include <QObject>
-#include <QSharedPointer>
 #include <QString>
 #include <QTimer>
 
@@ -16,7 +15,6 @@ namespace mtx::responses {
 struct TurnServer;
 }
 
-class UserSettings;
 class WebRTCSession;
 
 class CallManager : public QObject
@@ -24,9 +22,9 @@ class CallManager : public QObject
         Q_OBJECT
 
 public:
-        CallManager(QSharedPointer<UserSettings>, QObject *);
+        CallManager(QObject *);
 
-        void sendInvite(const QString &roomid);
+        void sendInvite(const QString &roomid, bool isVideo);
         void hangUp(
           mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
         bool onActiveCall() const;
@@ -43,6 +41,7 @@ signals:
         void newMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
         void newCallParty();
+        void newVideoCallState();
         void turnServerRetrieved(const mtx::responses::TurnServer &);
 
 private slots:
@@ -58,7 +57,6 @@ private:
         std::vector<mtx::events::msg::CallCandidates::Candidate> remoteICECandidates_;
         std::vector<std::string> turnURIs_;
         QTimer turnServerTimer_;
-        QSharedPointer<UserSettings> settings_;
         QMediaPlayer player_;
 
         template<typename T>
@@ -67,7 +65,7 @@ private:
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallCandidates> &);
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &);
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &);
-        void answerInvite(const mtx::events::msg::CallInvite &);
+        void answerInvite(const mtx::events::msg::CallInvite &, bool isVideo);
         void generateCallID();
         void clear();
         void endCall();
