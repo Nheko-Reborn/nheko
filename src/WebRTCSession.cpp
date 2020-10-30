@@ -128,8 +128,8 @@ std::pair<int, int>
 tokenise(std::string_view str, char delim)
 {
         std::pair<int, int> ret;
-        ret.first = std::atoi(str.data());
-        auto pos = str.find_first_of(delim);
+        ret.first  = std::atoi(str.data());
+        auto pos   = str.find_first_of(delim);
         ret.second = std::atoi(str.data() + pos + 1);
         return ret;
 }
@@ -594,7 +594,7 @@ addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe)
         g_object_set(decodebin, "force-sw-decoders", TRUE, nullptr);
         g_signal_connect(decodebin, "pad-added", G_CALLBACK(linkNewPad), pipe);
 #if GST_CHECK_VERSION(1, 18, 0)
-        g_signal_connect(decodebin, "element-added", G_CALLBACK(setWaitForKeyFrame), pipe);
+        g_signal_connect(decodebin, "element-added", G_CALLBACK(setWaitForKeyFrame), nullptr);
 #endif
         gst_bin_add(GST_BIN(pipe), decodebin);
         gst_element_sync_state_with_parent(decodebin);
@@ -736,7 +736,7 @@ WebRTCSession::createOffer(bool isVideo)
         // therefore from the range [96-127]
         // see for example https://tools.ietf.org/html/rfc7587
         constexpr int opusPayloadType = 111;
-        constexpr int vp8PayloadType = 96;
+        constexpr int vp8PayloadType  = 96;
         return startPipeline(opusPayloadType, vp8PayloadType);
 }
 
