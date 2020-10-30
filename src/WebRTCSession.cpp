@@ -25,7 +25,7 @@ extern "C"
 #endif
 
 // https://github.com/vector-im/riot-web/issues/10173
-[[maybe_unused]] constexpr std::string_view STUN_SERVER = "stun://turn.matrix.org:3478";
+#define STUN_SERVER "stun://turn.matrix.org:3478"
 
 Q_DECLARE_METATYPE(webrtc::State)
 
