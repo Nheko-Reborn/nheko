@@ -3,6 +3,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 
+import im.nheko 1.0
+
 Rectangle {
     color: colors.window
     Layout.fillWidth: true
@@ -44,16 +46,36 @@ Rectangle {
             Layout.fillWidth: true
 
             TextArea {
+                id: textArea
+
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: colors.buttonText
                 color: colors.text
                 wrapMode: TextEdit.Wrap
 
+                onTextChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onCursorPositionChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+
+                Keys.onPressed: {
+                    if (event.matches(StandardKey.Paste)) {
+                        TimelineManager.timeline.input.paste(false) || textArea.paste()
+                        event.accepted = true
+                    }
+                    else if (event.matches(StandardKey.InsertParagraphSeparator)) {
+                        TimelineManager.timeline.input.send()
+                        textArea.clear()
+                        event.accepted = true
+                    }
+                }
+
                 MouseArea {
                     // workaround for wrong cursor shape on some platforms
                     anchors.fill: parent
-                    acceptedButtons: Qt.NoButton
+                    acceptedButtons: Qt.MiddleButton
                     cursorShape: Qt.IBeamCursor
+                    onClicked: TimelineManager.timeline.input.paste(true) || textArea.paste()
                 }
 
                 background: Rectangle {

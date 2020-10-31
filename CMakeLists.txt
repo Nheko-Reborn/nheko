@@ -252,6 +252,7 @@ set(SRC_FILES
 
 	# Timeline
 	src/timeline/EventStore.cpp
+	src/timeline/InputBar.cpp
 	src/timeline/Reaction.cpp
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
@@ -463,6 +464,7 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	# Timeline
 	src/timeline/EventStore.h
+	src/timeline/InputBar.h
 	src/timeline/Reaction.h
 	src/timeline/TimelineViewManager.h
 	src/timeline/TimelineModel.h

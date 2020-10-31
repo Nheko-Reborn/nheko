@@ -234,8 +234,8 @@ Page {
             ReplyPopup {
             }
 
-            //MessageInput {
-            //}
+            MessageInput {
+            }
 
         }
 
