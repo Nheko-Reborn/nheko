@@ -703,7 +703,7 @@ TextInputWidget::command(QString command, QString args)
         } else if (command == "roomnick") {
                 emit changeRoomNick(args);
         } else if (command == "shrug") {
-                emit sendTextMessage("¯\\_(ツ)_/¯");
+                emit sendTextMessage("¯\\_(ツ)_/¯" + (args.isEmpty() ? "" : " " + args));
         } else if (command == "fliptable") {
                 emit sendTextMessage("(╯°□°)╯︵ ┻━┻");
         } else if (command == "unfliptable") {
