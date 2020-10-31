@@ -697,9 +697,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
-        boxWrap(tr("Mobile mode"),
+        boxWrap(tr("Touchscreen mode"),
                 mobileMode_,
-                tr("Will prevent text selection in the timeline to make scrolling easier."));
+                tr("Will prevent text selection in the timeline to make touch scrolling easier."));
 #if !defined(Q_OS_MAC)
         boxWrap(tr("Scale factor"),
                 scaleFactorCombo_,
@@ -737,7 +737,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Device ID"), deviceIdValue_);
         boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
         boxWrap(
-          tr("Share keys with trusted users"),
+          tr("Share keys with verified users and devices"),
           shareKeysWithTrustedUsers_,
           tr("Automatically replies to key requests from other users, if they are verified."));
         formLayout_->addRow(new HorizontalLine{this});
