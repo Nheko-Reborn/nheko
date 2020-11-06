@@ -233,17 +233,11 @@ QLineEdit {
 
 TextInputWidget {
     border: none;
-    border-top: 1px solid #dcdcdc;
 }
 
 SideBarActions {
     border: none;
     border-top: 1px solid #dcdcdc;
-}
-
-TopRoomBar {
-    border: none;
-    border-bottom: 1px solid #dcdcdc;
 }
 
 Toggle {

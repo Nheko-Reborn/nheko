@@ -28,10 +28,17 @@
 #include <lmdb++.h>
 #endif
 
-#include <mtx/responses.hpp>
+#include <mtx/events/event_type.hpp>
+#include <mtx/events/presence.hpp>
+#include <mtx/responses/crypto.hpp>
+#include <mtxclient/crypto/types.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
+
+namespace mtx::responses {
+struct Notifications;
+}
 
 namespace cache {
 void
@@ -43,16 +50,6 @@ QString
 displayName(const QString &room_id, const QString &user_id);
 QString
 avatarUrl(const QString &room_id, const QString &user_id);
-
-void
-removeDisplayName(const QString &room_id, const QString &user_id);
-void
-removeAvatarUrl(const QString &room_id, const QString &user_id);
-
-void
-insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name);
-void
-insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url);
 
 // presence
 mtx::presence::PresenceState
@@ -74,9 +71,6 @@ markDeviceVerified(const std::string &user_id, const std::string &device);
 void
 markDeviceUnverified(const std::string &user_id, const std::string &device);
 
-//! Load saved data for the display names & avatars.
-void
-populateMembers();
 std::vector<std::string>
 joinedRooms();
 
@@ -107,8 +101,6 @@ getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
 std::vector<RoomMember>
 getMembers(const std::string &room_id, std::size_t startIndex = 0, std::size_t len = 30);
 
-void
-saveState(const mtx::responses::Sync &res);
 bool
 isInitialized();
 
@@ -140,9 +132,6 @@ setCurrentFormat();
 //! migrates db to the current format
 bool
 runMigrations();
-
-std::map<QString, mtx::responses::Timeline>
-roomMessages();
 
 QMap<QString, mtx::responses::Notifications>
 getTimelineMentions();
@@ -195,22 +184,8 @@ saveImage(const QString &url, const QByteArray &data);
 
 RoomInfo
 singleRoomInfo(const std::string &room_id);
-std::vector<std::string>
-roomsWithStateUpdates(const mtx::responses::Sync &res);
-std::vector<std::string>
-roomsWithTagUpdates(const mtx::responses::Sync &res);
 std::map<QString, RoomInfo>
 getRoomInfo(const std::vector<std::string> &rooms);
-inline std::map<QString, RoomInfo>
-roomUpdates(const mtx::responses::Sync &sync)
-{
-        return getRoomInfo(roomsWithStateUpdates(sync));
-}
-inline std::map<QString, RoomInfo>
-roomTagUpdates(const mtx::responses::Sync &sync)
-{
-        return getRoomInfo(roomsWithTagUpdates(sync));
-}
 
 //! Calculates which the read status of a room.
 //! Whether all the events in the timeline have been read.
@@ -292,11 +267,15 @@ inboundMegolmSessionExists(const MegolmSessionIndex &index);
 // Olm Sessions
 //
 void
-saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session);
+saveOlmSession(const std::string &curve25519,
+               mtx::crypto::OlmSessionPtr session,
+               uint64_t timestamp);
 std::vector<std::string>
 getOlmSessions(const std::string &curve25519);
 std::optional<mtx::crypto::OlmSessionPtr>
 getOlmSession(const std::string &curve25519, const std::string &session_id);
+std::optional<mtx::crypto::OlmSessionPtr>
+getLatestOlmSession(const std::string &curve25519);
 
 void
 saveOlmAccount(const std::string &pickled);

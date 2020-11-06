@@ -28,11 +28,9 @@ UserMentionsWidget > TimelineItem {
 SideBarActions,
 TextInputWidget {
     border: none;
-    border-top: 1px solid palette(mid);
 }
 
-UserInfoWidget,
-TopRoomBar {
+UserInfoWidget {
     border: none;
     border-bottom: 1px solid palette(mid);
 }

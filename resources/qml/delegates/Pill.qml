@@ -9,7 +9,7 @@ Label {
 
     background: Rectangle {
         radius: parent.height / 2
-        color: colors.dark
+        color: colors.alternateBase
     }
 
 }

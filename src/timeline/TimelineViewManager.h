@@ -7,11 +7,11 @@
 #include <QWidget>
 
 #include <mtx/common.hpp>
-#include <mtx/responses.hpp>
+#include <mtx/responses/messages.hpp>
+#include <mtx/responses/sync.hpp>
 
 #include "Cache.h"
 #include "CallManager.h"
-#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -24,6 +24,7 @@ class BlurhashProvider;
 class ColorImageProvider;
 class UserSettings;
 class ChatPage;
+class DeviceVerificationFlow;
 
 class TimelineViewManager : public QObject
 {
@@ -36,6 +37,7 @@ class TimelineViewManager : public QObject
         Q_PROPERTY(
           bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
         Q_PROPERTY(webrtc::State callState READ callState NOTIFY callStateChanged)
+        Q_PROPERTY(bool onVideoCall READ onVideoCall NOTIFY videoCallChanged)
         Q_PROPERTY(QString callPartyName READ callPartyName NOTIFY callPartyChanged)
         Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY callPartyChanged)
         Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
@@ -53,6 +55,8 @@ public:
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
         webrtc::State callState() const { return WebRTCSession::instance().state(); }
+        bool onVideoCall() const { return WebRTCSession::instance().isVideo(); }
+        Q_INVOKABLE void setVideoCallItem();
         QString callPartyName() const { return callManager_->callPartyName(); }
         QString callPartyAvatarUrl() const { return callManager_->callPartyAvatarUrl(); }
         bool isMicMuted() const { return WebRTCSession::instance().isMicMuted(); }
@@ -87,12 +91,14 @@ signals:
         void showRoomList();
         void narrowViewChanged();
         void callStateChanged(webrtc::State);
+        void videoCallChanged();
         void callPartyChanged();
         void micMuteChanged();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
-        void initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs);
+        void receivedSessionKey(const std::string &room_id, const std::string &session_id);
+        void initWithMessages(const std::vector<QString> &roomIds);
 
         void setHistoryView(const QString &room_id);
         void updateColorPalette();

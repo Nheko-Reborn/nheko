@@ -5,6 +5,7 @@
 #include "Splitter.h"
 
 #include <mtx/responses/groups.hpp>
+#include <nlohmann/json.hpp>
 
 #include <QLabel>
 

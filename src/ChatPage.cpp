@@ -22,9 +22,12 @@
 #include <QShortcut>
 #include <QtConcurrent>
 
+#include <mtx/responses.hpp>
+
 #include "AvatarProvider.h"
 #include "Cache.h"
 #include "Cache_p.h"
+#include "CallManager.h"
 #include "ChatPage.h"
 #include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
@@ -69,7 +72,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , isConnected_(true)
   , userSettings_{userSettings}
   , notificationsManager(this)
-  , callManager_(userSettings)
+  , callManager_(new CallManager(this))
 {
         setObjectName("chatPage");
 
@@ -126,7 +129,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         contentLayout_->setSpacing(0);
         contentLayout_->setMargin(0);
 
-        view_manager_ = new TimelineViewManager(&callManager_, this);
+        view_manager_ = new TimelineViewManager(callManager_, this);
 
         contentLayout_->addWidget(view_manager_->getWidget());
 
@@ -272,7 +275,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(room_list_,
                 SIGNAL(totalUnreadMessageCountUpdated(int)),
                 this,
-                SLOT(showUnreadMessageNotification(int)));
+                SIGNAL(unreadMessages(int)));
 
         connect(text_input_,
                 &TextInputWidget::sendTextMessage,
@@ -434,12 +437,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 });
 
         connect(text_input_, &TextInputWidget::callButtonPress, this, [this]() {
-                if (callManager_.onActiveCall()) {
-                        callManager_.hangUp();
+                if (callManager_->onActiveCall()) {
+                        callManager_->hangUp();
                 } else {
                         if (auto roomInfo = cache::singleRoomInfo(current_room_.toStdString());
                             roomInfo.member_count != 2) {
-                                showNotification("Voice calls are limited to 1:1 rooms.");
+                                showNotification("Calls are limited to 1:1 rooms.");
                         } else {
                                 std::vector<RoomMember> members(
                                   cache::getMembers(current_room_.toStdString()));
@@ -454,7 +457,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                                   userSettings_,
                                   MainWindow::instance());
                                 connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
-                                        callManager_.sendInvite(current_room_);
+                                        callManager_->sendInvite(current_room_, false);
+                                });
+                                connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
+                                        callManager_->sendInvite(current_room_, true);
                                 });
                                 utils::centerWidget(dialog, MainWindow::instance());
                                 dialog->show();
@@ -626,7 +632,7 @@ ChatPage::resetUI()
         user_info_widget_->reset();
         view_manager_->clearAll();
 
-        showUnreadMessageNotification(0);
+        emit unreadMessages(0);
 }
 
 void
@@ -692,7 +698,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 const bool isInitialized = cache::isInitialized();
                 const auto cacheVersion  = cache::formatVersion();
 
-                callManager_.refreshTurnServer();
+                callManager_->refreshTurnServer();
 
                 if (!isInitialized) {
                         cache::setCurrentFormat();
@@ -752,18 +758,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 }
 
 void
-ChatPage::showUnreadMessageNotification(int count)
-{
-        emit unreadMessages(count);
-
-        // TODO: Make the default title a const.
-        if (count == 0)
-                emit changeWindowTitle("nheko");
-        else
-                emit changeWindowTitle(QString("nheko (%1)").arg(count));
-}
-
-void
 ChatPage::loadStateFromCache()
 {
         emit contentLoaded();
@@ -774,9 +768,7 @@ ChatPage::loadStateFromCache()
                 cache::restoreSessions();
                 olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
-                cache::populateMembers();
-
-                emit initializeEmptyViews(cache::roomMessages());
+                emit initializeEmptyViews(cache::client()->roomIds());
                 emit initializeRoomList(cache::roomInfo());
                 emit initializeMentions(cache::getTimelineMentions());
                 emit syncTags(cache::roomInfo().toStdMap());
@@ -983,13 +975,64 @@ ChatPage::startInitialSync()
         opts.set_presence = currentPresence();
 
         http::client()->sync(
-          opts,
-          std::bind(
-            &ChatPage::initialSyncHandler, this, std::placeholders::_1, std::placeholders::_2));
+          opts, [this](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+                  // TODO: Initial Sync should include mentions as well...
+
+                  if (err) {
+                          const auto error      = QString::fromStdString(err->matrix_error.error);
+                          const auto msg        = tr("Please try to login again: %1").arg(error);
+                          const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
+                          const int status_code = static_cast<int>(err->status_code);
+
+                          nhlog::net()->error("initial sync error: {} {}", status_code, err_code);
+
+                          // non http related errors
+                          if (status_code <= 0 || status_code >= 600) {
+                                  startInitialSync();
+                                  return;
+                          }
+
+                          switch (status_code) {
+                          case 502:
+                          case 504:
+                          case 524: {
+                                  startInitialSync();
+                                  return;
+                          }
+                          default: {
+                                  emit dropToLoginPageCb(msg);
+                                  return;
+                          }
+                          }
+                  }
+
+                  nhlog::net()->info("initial sync completed");
+
+                  try {
+                          cache::client()->saveState(res);
+
+                          olm::handle_to_device_messages(res.to_device.events);
+
+                          emit initializeViews(std::move(res.rooms));
+                          emit initializeRoomList(cache::roomInfo());
+                          emit initializeMentions(cache::getTimelineMentions());
+
+                          cache::calculateRoomReadStatus();
+                          emit syncTags(cache::roomInfo().toStdMap());
+                  } catch (const lmdb::error &e) {
+                          nhlog::db()->error("failed to save state after initial sync: {}",
+                                             e.what());
+                          startInitialSync();
+                          return;
+                  }
+
+                  emit trySyncCb();
+                  emit contentLoaded();
+          });
 }
 
 void
-ChatPage::handleSyncResponse(mtx::responses::Sync res)
+ChatPage::handleSyncResponse(const mtx::responses::Sync &res)
 {
         nhlog::net()->debug("sync completed: {}", res.next_batch);
 
@@ -998,16 +1041,16 @@ ChatPage::handleSyncResponse(mtx::responses::Sync res)
 
         // TODO: fine grained error handling
         try {
-                cache::saveState(res);
+                cache::client()->saveState(res);
                 olm::handle_to_device_messages(res.to_device.events);
 
-                auto updates = cache::roomUpdates(res);
+                auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
 
                 emit syncRoomlist(updates);
 
                 emit syncUI(res.rooms);
 
-                emit syncTags(cache::roomTagUpdates(res));
+                emit syncTags(cache::getRoomInfo(cache::client()->roomsWithTagUpdates(res)));
 
                 // if we process a lot of syncs (1 every 200ms), this means we clean the
                 // db every 100s
@@ -1082,7 +1125,7 @@ ChatPage::joinRoom(const QString &room)
         const auto room_id = room.toStdString();
 
         http::client()->join_room(
-          room_id, [this, room_id](const nlohmann::json &, mtx::http::RequestErr err) {
+          room_id, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to join room: %1")
@@ -1128,7 +1171,8 @@ void
 ChatPage::leaveRoom(const QString &room_id)
 {
         http::client()->leave_room(
-          room_id.toStdString(), [this, room_id](const json &, mtx::http::RequestErr err) {
+          room_id.toStdString(),
+          [this, room_id](const mtx::responses::Empty &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to leave room: %1")
@@ -1250,6 +1294,12 @@ ChatPage::unbanUser(QString userid, QString reason)
 }
 
 void
+ChatPage::receivedSessionKey(const std::string &room_id, const std::string &session_id)
+{
+        view_manager_->receivedSessionKey(room_id, session_id);
+}
+
+void
 ChatPage::sendTypingNotifications()
 {
         if (!userSettings_->typingNotifications())
@@ -1295,62 +1345,6 @@ ChatPage::currentPresence() const
         default:
                 return mtx::presence::online;
         }
-}
-
-void
-ChatPage::initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err)
-{
-        // TODO: Initial Sync should include mentions as well...
-
-        if (err) {
-                const auto error      = QString::fromStdString(err->matrix_error.error);
-                const auto msg        = tr("Please try to login again: %1").arg(error);
-                const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
-                const int status_code = static_cast<int>(err->status_code);
-
-                nhlog::net()->error("initial sync error: {} {}", status_code, err_code);
-
-                // non http related errors
-                if (status_code <= 0 || status_code >= 600) {
-                        startInitialSync();
-                        return;
-                }
-
-                switch (status_code) {
-                case 502:
-                case 504:
-                case 524: {
-                        startInitialSync();
-                        return;
-                }
-                default: {
-                        emit dropToLoginPageCb(msg);
-                        return;
-                }
-                }
-        }
-
-        nhlog::net()->info("initial sync completed");
-
-        try {
-                cache::saveState(res);
-
-                olm::handle_to_device_messages(res.to_device.events);
-
-                emit initializeViews(std::move(res.rooms));
-                emit initializeRoomList(cache::roomInfo());
-                emit initializeMentions(cache::getTimelineMentions());
-
-                cache::calculateRoomReadStatus();
-                emit syncTags(cache::roomInfo().toStdMap());
-        } catch (const lmdb::error &e) {
-                nhlog::db()->error("failed to save state after initial sync: {}", e.what());
-                startInitialSync();
-                return;
-        }
-
-        emit trySyncCb();
-        emit contentLoaded();
 }
 
 void
@@ -1461,51 +1455,11 @@ ChatPage::initiateLogout()
         emit showOverlayProgressBar();
 }
 
-void
-ChatPage::query_keys(const std::string &user_id,
-                     std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
-{
-        auto cache_ = cache::userKeys(user_id);
-
-        if (cache_.has_value()) {
-                if (!cache_->updated_at.empty() && cache_->updated_at == cache_->last_changed) {
-                        cb(cache_.value(), {});
-                        return;
-                }
-        }
-
-        mtx::requests::QueryKeys req;
-        req.device_keys[user_id] = {};
-
-        std::string last_changed;
-        if (cache_)
-                last_changed = cache_->last_changed;
-        req.token = last_changed;
-
-        http::client()->query_keys(req,
-                                   [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
-                                                               mtx::http::RequestErr err) {
-                                           if (err) {
-                                                   nhlog::net()->warn(
-                                                     "failed to query device keys: {},{}",
-                                                     err->matrix_error.errcode,
-                                                     static_cast<int>(err->status_code));
-                                                   cb({}, err);
-                                                   return;
-                                           }
-
-                                           cache::updateUserKeys(last_changed, res);
-
-                                           auto keys = cache::userKeys(user_id);
-                                           cb(keys.value_or(UserKeyCache{}), err);
-                                   });
-}
-
 template<typename T>
 void
 ChatPage::connectCallMessage()
 {
-        connect(&callManager_,
+        connect(callManager_,
                 qOverload<const QString &, const T &>(&CallManager::newMessage),
                 view_manager_,
                 qOverload<const QString &, const T &>(&TimelineViewManager::queueCallMessage));

@@ -32,6 +32,7 @@ Item {
 
         MouseArea {
             id: mouseArea
+
             enabled: model.data.type == MtxEvent.ImageMessage && img.status == Image.Ready
             hoverEnabled: true
             anchors.fill: parent
@@ -40,23 +41,23 @@ Item {
 
         Item {
             id: overlay
-        
+
             anchors.fill: parent
             visible: mouseArea.containsMouse
 
             Rectangle {
                 id: container
-                
+
                 width: parent.width
                 implicitHeight: imgcaption.implicitHeight
-                anchors.bottom: overlay.bottom 
+                anchors.bottom: overlay.bottom
                 color: colors.window
                 opacity: 0.75
             }
 
             Text {
                 id: imgcaption
-                
+
                 anchors.fill: container
                 elide: Text.ElideMiddle
                 horizontalAlignment: Text.AlignHCenter
@@ -65,6 +66,9 @@ Item {
                 text: model.data.filename ? model.data.filename : model.data.body
                 color: colors.text
             }
+
         }
+
     }
+
 }

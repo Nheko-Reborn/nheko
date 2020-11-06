@@ -340,7 +340,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        ad5575bc24089dc385e97d9ace026414b618775c
+		GIT_TAG        ed6315563409ce9d47978ff2a2d771b863e375c5
 		)
 	FetchContent_MakeAvailable(MatrixClient)
 else()
@@ -600,6 +600,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
 target_precompile_headers(nheko
 	PRIVATE
 	  <string>
+	  <algorithm>
 	)
 endif()
 

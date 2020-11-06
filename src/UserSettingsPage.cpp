@@ -17,7 +17,9 @@
 
 #include <QApplication>
 #include <QComboBox>
+#include <QCoreApplication>
 #include <QFileDialog>
+#include <QFontComboBox>
 #include <QFormLayout>
 #include <QInputDialog>
 #include <QLabel>
@@ -42,6 +44,7 @@
 #include "Olm.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 #include "ui/FlatButton.h"
 #include "ui/ToggleButton.h"
 
@@ -74,13 +77,17 @@ UserSettings::load()
         decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
         shareKeysWithTrustedUsers_ =
           settings.value("user/share_keys_with_trusted_users", true).toBool();
+        mobileMode_   = settings.value("user/mobile_mode", false).toBool();
         emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
         presence_ =
           settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
             .value<Presence>();
-        useStunServer_      = settings.value("user/use_stun_server", false).toBool();
-        defaultAudioSource_ = settings.value("user/default_audio_source", QString()).toString();
+        microphone_       = settings.value("user/microphone", QString()).toString();
+        camera_           = settings.value("user/camera", QString()).toString();
+        cameraResolution_ = settings.value("user/camera_resolution", QString()).toString();
+        cameraFrameRate_  = settings.value("user/camera_frame_rate", QString()).toString();
+        useStunServer_    = settings.value("user/use_stun_server", false).toBool();
 
         applyTheme();
 }
@@ -119,6 +126,16 @@ UserSettings::setStartInTray(bool state)
                 return;
         startInTray_ = state;
         emit startInTrayChanged(state);
+        save();
+}
+
+void
+UserSettings::setMobileMode(bool state)
+{
+        if (state == mobileMode_)
+                return;
+        mobileMode_ = state;
+        emit mobileModeChanged(state);
         save();
 }
 
@@ -298,18 +315,49 @@ UserSettings::setShareKeysWithTrustedUsers(bool shareKeys)
 {
         if (shareKeys == shareKeysWithTrustedUsers_)
                 return;
+
         shareKeysWithTrustedUsers_ = shareKeys;
         emit shareKeysWithTrustedUsersChanged(shareKeys);
         save();
 }
 
 void
-UserSettings::setDefaultAudioSource(const QString &defaultAudioSource)
+UserSettings::setMicrophone(QString microphone)
 {
-        if (defaultAudioSource == defaultAudioSource_)
+        if (microphone == microphone_)
                 return;
-        defaultAudioSource_ = defaultAudioSource;
-        emit defaultAudioSourceChanged(defaultAudioSource);
+        microphone_ = microphone;
+        emit microphoneChanged(microphone);
+        save();
+}
+
+void
+UserSettings::setCamera(QString camera)
+{
+        if (camera == camera_)
+                return;
+        camera_ = camera;
+        emit cameraChanged(camera);
+        save();
+}
+
+void
+UserSettings::setCameraResolution(QString resolution)
+{
+        if (resolution == cameraResolution_)
+                return;
+        cameraResolution_ = resolution;
+        emit cameraResolutionChanged(resolution);
+        save();
+}
+
+void
+UserSettings::setCameraFrameRate(QString frameRate)
+{
+        if (frameRate == cameraFrameRate_)
+                return;
+        cameraFrameRate_ = frameRate;
+        emit cameraFrameRateChanged(frameRate);
         save();
 }
 
@@ -325,17 +373,18 @@ UserSettings::applyTheme()
                   /*windowText*/ QColor("#333"),
                   /*button*/ QColor("#333"),
                   /*light*/ QColor(0xef, 0xef, 0xef),
-                  /*dark*/ QColor(220, 220, 220),
-                  /*mid*/ QColor(110, 110, 110),
+                  /*dark*/ QColor(110, 110, 110),
+                  /*mid*/ QColor(220, 220, 220),
                   /*text*/ QColor("#333"),
                   /*bright_text*/ QColor("#333"),
-                  /*base*/ QColor("#eee"),
+                  /*base*/ QColor("#fff"),
                   /*window*/ QColor("white"));
+                lightActive.setColor(QPalette::AlternateBase, QColor("#eee"));
                 lightActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
                 lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
                 lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
                 lightActive.setColor(QPalette::Link, QColor("#0077b5"));
-                lightActive.setColor(QPalette::ButtonText, QColor(Qt::gray));
+                lightActive.setColor(QPalette::ButtonText, QColor("#495057"));
                 QApplication::setPalette(lightActive);
         } else if (this->theme() == "dark") {
                 stylefile.setFileName(":/styles/styles/nheko-dark.qss");
@@ -343,17 +392,18 @@ UserSettings::applyTheme()
                   /*windowText*/ QColor("#caccd1"),
                   /*button*/ QColor(0xff, 0xff, 0xff),
                   /*light*/ QColor("#caccd1"),
-                  /*dark*/ QColor("#2d3139"),
-                  /*mid*/ QColor(110, 110, 110),
+                  /*dark*/ QColor(110, 110, 110),
+                  /*mid*/ QColor("#202228"),
                   /*text*/ QColor("#caccd1"),
                   /*bright_text*/ QColor(0xff, 0xff, 0xff),
-                  /*base*/ QColor("#2d3139"),
-                  /*window*/ QColor("#202228"));
+                  /*base*/ QColor("#202228"),
+                  /*window*/ QColor("#2d3139"));
+                darkActive.setColor(QPalette::AlternateBase, QColor("#2d3139"));
                 darkActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
                 darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
                 darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
                 darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ButtonText, QColor(0x90, 0x90, 0x90));
+                darkActive.setColor(QPalette::ButtonText, "#727274");
                 QApplication::setPalette(darkActive);
         } else {
                 stylefile.setFileName(":/styles/styles/system.qss");
@@ -387,6 +437,7 @@ UserSettings::save()
         settings.setValue("avatar_circles", avatarCircles_);
         settings.setValue("decrypt_sidebar", decryptSidebar_);
         settings.setValue("share_keys_with_trusted_users", shareKeysWithTrustedUsers_);
+        settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
         settings.setValue("minor_events", sortByImportance_);
@@ -399,8 +450,11 @@ UserSettings::save()
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
         settings.setValue("presence", QVariant::fromValue(presence_));
+        settings.setValue("microphone", microphone_);
+        settings.setValue("camera", camera_);
+        settings.setValue("camera_resolution", cameraResolution_);
+        settings.setValue("camera_frame_rate", cameraFrameRate_);
         settings.setValue("use_stun_server", useStunServer_);
-        settings.setValue("default_audio_source", defaultAudioSource_);
 
         settings.endGroup();
 
@@ -432,6 +486,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         font.setPointSizeF(font.pointSizeF() * 1.1);
 
         auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version).arg(nheko::build_os));
+        if (QCoreApplication::applicationName() != "nheko")
+                versionInfo->setText(versionInfo->text() + " | " +
+                                     tr("profile: %1").arg(QCoreApplication::applicationName()));
         versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
         topBarLayout_ = new QHBoxLayout;
@@ -468,10 +525,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         desktopNotifications_      = new Toggle{this};
         alertOnNotification_       = new Toggle{this};
         useStunServer_             = new Toggle{this};
+        mobileMode_                = new Toggle{this};
         scaleFactorCombo_          = new QComboBox{this};
         fontSizeCombo_             = new QComboBox{this};
-        fontSelectionCombo_        = new QComboBox{this};
+        fontSelectionCombo_        = new QFontComboBox{this};
         emojiFontSelectionCombo_   = new QComboBox{this};
+        microphoneCombo_           = new QComboBox{this};
+        cameraCombo_               = new QComboBox{this};
+        cameraResolutionCombo_     = new QComboBox{this};
+        cameraFrameRateCombo_      = new QComboBox{this};
         timelineMaxWidthSpin_      = new QSpinBox{this};
 
         if (!settings_->tray())
@@ -490,10 +552,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 fontSizeCombo_->addItem(QString("%1 ").arg(QString::number(option)));
 
         QFontDatabase fontDb;
-        auto fontFamilies = fontDb.families();
-        for (const auto &family : fontFamilies) {
-                fontSelectionCombo_->addItem(family);
-        }
 
         // TODO: Is there a way to limit to just emojis, rather than
         // all emoji fonts?
@@ -639,6 +697,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(uiLabel_);
         formLayout_->addRow(new HorizontalLine{this});
 
+        boxWrap(tr("Touchscreen mode"),
+                mobileMode_,
+                tr("Will prevent text selection in the timeline to make touch scrolling easier."));
 #if !defined(Q_OS_MAC)
         boxWrap(tr("Scale factor"),
                 scaleFactorCombo_,
@@ -659,6 +720,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         formLayout_->addRow(callsLabel);
         formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Microphone"), microphoneCombo_);
+        boxWrap(tr("Camera"), cameraCombo_);
+        boxWrap(tr("Camera resolution"), cameraResolutionCombo_);
+        boxWrap(tr("Camera frame rate"), cameraFrameRateCombo_);
+        microphoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        cameraCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        cameraResolutionCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        cameraFrameRateCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         boxWrap(tr("Allow fallback call assist server"),
                 useStunServer_,
                 tr("Will use turn.matrix.org as assist when your home server does not offer one."));
@@ -668,7 +737,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Device ID"), deviceIdValue_);
         boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
         boxWrap(
-          tr("Share keys with trusted users"),
+          tr("Share keys with verified users and devices"),
           shareKeysWithTrustedUsers_,
           tr("Automatically replies to key requests from other users, if they are verified."));
         formLayout_->addRow(new HorizontalLine{this});
@@ -716,6 +785,38 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(emojiFontSelectionCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
+
+        connect(microphoneCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &microphone) { settings_->setMicrophone(microphone); });
+
+        connect(cameraCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &camera) {
+                        settings_->setCamera(camera);
+                        std::vector<std::string> resolutions =
+                          WebRTCSession::instance().getResolutions(camera.toStdString());
+                        cameraResolutionCombo_->clear();
+                        for (const auto &resolution : resolutions)
+                                cameraResolutionCombo_->addItem(QString::fromStdString(resolution));
+                });
+
+        connect(cameraResolutionCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &resolution) {
+                        settings_->setCameraResolution(resolution);
+                        std::vector<std::string> frameRates =
+                          WebRTCSession::instance().getFrameRates(settings_->camera().toStdString(),
+                                                                  resolution.toStdString());
+                        cameraFrameRateCombo_->clear();
+                        for (const auto &frameRate : frameRates)
+                                cameraFrameRateCombo_->addItem(QString::fromStdString(frameRate));
+                });
+
+        connect(cameraFrameRateCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &frameRate) { settings_->setCameraFrameRate(frameRate); });
+
         connect(trayToggle_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setTray(!disabled);
                 if (disabled) {
@@ -730,6 +831,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setStartInTray(!disabled);
         });
 
+        connect(mobileMode_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setMobileMode(!disabled);
+        });
+
         connect(groupViewToggle_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setGroupView(!disabled);
         });
@@ -737,6 +842,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(decryptSidebar_, &Toggle::toggled, this, [this](bool disabled) {
                 settings_->setDecryptSidebar(!disabled);
                 emit decryptSidebarChanged();
+        });
+
+        connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool disabled) {
+                settings_->setShareKeysWithTrustedUsers(!disabled);
         });
 
         connect(avatarCircles_, &Toggle::toggled, this, [this](bool disabled) {
@@ -813,10 +922,12 @@ UserSettingsPage::showEvent(QShowEvent *)
         startInTrayToggle_->setState(!settings_->startInTray());
         groupViewToggle_->setState(!settings_->groupView());
         decryptSidebar_->setState(!settings_->decryptSidebar());
+        shareKeysWithTrustedUsers_->setState(!settings_->shareKeysWithTrustedUsers());
         avatarCircles_->setState(!settings_->avatarCircles());
         typingNotifications_->setState(!settings_->typingNotifications());
         sortByImportance_->setState(!settings_->sortByImportance());
         timelineButtonsToggle_->setState(!settings_->buttonsInTimeline());
+        mobileMode_->setState(!settings_->mobileMode());
         readReceipts_->setState(!settings_->readReceipts());
         markdown_->setState(!settings_->markdown());
         desktopNotifications_->setState(!settings_->hasDesktopNotifications());
@@ -825,6 +936,26 @@ UserSettingsPage::showEvent(QShowEvent *)
         enlargeEmojiOnlyMessages_->setState(!settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
+
+        WebRTCSession::instance().refreshDevices();
+        auto mics =
+          WebRTCSession::instance().getDeviceNames(false, settings_->microphone().toStdString());
+        microphoneCombo_->clear();
+        for (const auto &m : mics)
+                microphoneCombo_->addItem(QString::fromStdString(m));
+
+        auto cameraResolution = settings_->cameraResolution();
+        auto cameraFrameRate  = settings_->cameraFrameRate();
+
+        auto cameras =
+          WebRTCSession::instance().getDeviceNames(true, settings_->camera().toStdString());
+        cameraCombo_->clear();
+        for (const auto &c : cameras)
+                cameraCombo_->addItem(QString::fromStdString(c));
+
+        utils::restoreCombobox(cameraResolutionCombo_, cameraResolution);
+        utils::restoreCombobox(cameraFrameRateCombo_, cameraFrameRate);
+
         useStunServer_->setState(!settings_->useStunServer());
 
         deviceFingerprintValue_->setText(
@@ -875,11 +1006,7 @@ UserSettingsPage::importSessionKeys()
                 auto sessions =
                   mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
                 cache::importSessionKeys(std::move(sessions));
-        } catch (const mtx::crypto::sodium_exception &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const lmdb::error &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const nlohmann::json::exception &e) {
+        } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         }
 }
@@ -927,11 +1054,7 @@ UserSettingsPage::exportSessionKeys()
                 QTextStream out(&file);
                 out << prefix << newline << b64 << newline << suffix;
                 file.close();
-        } catch (const mtx::crypto::sodium_exception &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const lmdb::error &e) {
-                QMessageBox::warning(this, tr("Error"), e.what());
-        } catch (const nlohmann::json::exception &e) {
+        } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         }
 }

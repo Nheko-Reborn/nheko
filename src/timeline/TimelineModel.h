@@ -264,6 +264,10 @@ public slots:
         }
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
         void clearTimeline() { events.clearTimeline(); }
+        void receivedSessionKey(const std::string &session_key)
+        {
+                events.receivedSessionKey(session_key);
+        }
 
         QString roomName() const;
         QString roomTopic() const;
@@ -297,12 +301,6 @@ signals:
 private:
         template<typename T>
         void sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType);
-        void handleClaimedKeys(
-          std::shared_ptr<StateKeeper> keeper,
-          const std::map<std::string, std::map<std::string, std::string>> &room_keys,
-          const std::map<std::string, std::map<std::string, DevicePublicKeys>> &pks,
-          const mtx::responses::ClaimKeys &res,
-          mtx::http::RequestErr err);
         void readEvent(const std::string &id);
 
         void setPaginationInProgress(const bool paginationInProgress);

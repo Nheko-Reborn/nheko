@@ -11,6 +11,7 @@
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
 #include "DelegateChooser.h"
+#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -239,6 +240,17 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                 &TimelineViewManager::callStateChanged);
         connect(
           callManager_, &CallManager::newCallParty, this, &TimelineViewManager::callPartyChanged);
+        connect(callManager_,
+                &CallManager::newVideoCallState,
+                this,
+                &TimelineViewManager::videoCallChanged);
+}
+
+void
+TimelineViewManager::setVideoCallItem()
+{
+        WebRTCSession::instance().setVideoItem(
+          view->rootObject()->findChild<QQuickItem *>("videoCallItem"));
 }
 
 void
@@ -407,8 +419,8 @@ TimelineViewManager::verifyUser(QString userid)
         }
 
         emit ChatPage::instance()->showNotification(
-          tr("No share room with this user found. Create an "
-             "encrypted room with this user and try again."));
+          tr("No encrypted private chat found with this user. Create an "
+             "encrypted private chat with this user and try again."));
 }
 
 void
@@ -441,13 +453,19 @@ TimelineViewManager::updateReadReceipts(const QString &room_id,
 }
 
 void
-TimelineViewManager::initWithMessages(const std::map<QString, mtx::responses::Timeline> &msgs)
+TimelineViewManager::receivedSessionKey(const std::string &room_id, const std::string &session_id)
 {
-        for (const auto &e : msgs) {
-                addRoom(e.first);
-
-                models.value(e.first)->addEvents(e.second);
+        auto room = models.find(QString::fromStdString(room_id));
+        if (room != models.end()) {
+                room.value()->receivedSessionKey(session_id);
         }
+}
+
+void
+TimelineViewManager::initWithMessages(const std::vector<QString> &roomIds)
+{
+        for (const auto &roomId : roomIds)
+                addRoom(roomId);
 }
 
 void

@@ -1,8 +1,10 @@
 #include "DeviceVerificationFlow.h"
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
+#include "Utils.h"
 #include "timeline/TimelineModel.h"
 
 #include <QDateTime>
@@ -39,7 +41,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
 
         auto user_id   = userID.toStdString();
         this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(user_id);
-        ChatPage::instance()->query_keys(
+        cache::client()->query_keys(
           user_id, [user_id, this](const UserKeyCache &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {},{}",
@@ -57,7 +59,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   this->their_keys = res;
           });
 
-        ChatPage::instance()->query_keys(
+        cache::client()->query_keys(
           http::client()->user_id().to_string(),
           [this](const UserKeyCache &res, mtx::http::RequestErr err) {
                   if (err) {

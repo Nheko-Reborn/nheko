@@ -2,7 +2,6 @@ import QtQuick 2.10
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.5
 import QtMultimedia 5.6
-
 import im.nheko 1.0
 
 ColumnLayout { 

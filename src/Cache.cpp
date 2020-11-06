@@ -40,7 +40,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2020.07.05");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2020.10.20");
 static const std::string SECRET("secret");
 
 static lmdb::val NEXT_BATCH_KEY("next_batch");
@@ -437,7 +437,9 @@ Cache::getOutboundMegolmSession(const std::string &room_id)
 //
 
 void
-Cache::saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session)
+Cache::saveOlmSession(const std::string &curve25519,
+                      mtx::crypto::OlmSessionPtr session,
+                      uint64_t timestamp)
 {
         using namespace mtx::crypto;
 
@@ -447,7 +449,11 @@ Cache::saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr 
         const auto pickled    = pickle<SessionObject>(session.get(), SECRET);
         const auto session_id = mtx::crypto::session_id(session.get());
 
-        lmdb::dbi_put(txn, db, lmdb::val(session_id), lmdb::val(pickled));
+        StoredOlmSession stored_session;
+        stored_session.pickled_session = pickled;
+        stored_session.last_message_ts = timestamp;
+
+        lmdb::dbi_put(txn, db, lmdb::val(session_id), lmdb::val(json(stored_session).dump()));
 
         txn.commit();
 }
@@ -466,11 +472,42 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
         txn.commit();
 
         if (found) {
-                auto data = std::string(pickled.data(), pickled.size());
-                return unpickle<SessionObject>(data, SECRET);
+                std::string_view raw(pickled.data(), pickled.size());
+                auto data = json::parse(raw).get<StoredOlmSession>();
+                return unpickle<SessionObject>(data.pickled_session, SECRET);
         }
 
         return std::nullopt;
+}
+
+std::optional<mtx::crypto::OlmSessionPtr>
+Cache::getLatestOlmSession(const std::string &curve25519)
+{
+        using namespace mtx::crypto;
+
+        auto txn = lmdb::txn::begin(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
+
+        std::string session_id, pickled_session;
+        std::vector<std::string> res;
+
+        std::optional<StoredOlmSession> currentNewest;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(session_id, pickled_session, MDB_NEXT)) {
+                auto data =
+                  json::parse(std::string_view(pickled_session.data(), pickled_session.size()))
+                    .get<StoredOlmSession>();
+                if (!currentNewest || currentNewest->last_message_ts < data.last_message_ts)
+                        currentNewest = data;
+        }
+        cursor.close();
+
+        txn.commit();
+
+        return currentNewest
+                 ? std::optional(unpickle<SessionObject>(currentNewest->pickled_session, SECRET))
+                 : std::nullopt;
 }
 
 std::vector<std::string>
@@ -826,6 +863,80 @@ Cache::runMigrations()
                    }
 
                    nhlog::db()->info("Successfully deleted pending receipts database.");
+                   return true;
+           }},
+          {"2020.10.20",
+           [this]() {
+                   try {
+                           using namespace mtx::crypto;
+
+                           auto txn = lmdb::txn::begin(env_);
+
+                           auto mainDb = lmdb::dbi::open(txn, nullptr);
+
+                           std::string dbName, ignored;
+                           auto olmDbCursor = lmdb::cursor::open(txn, mainDb);
+                           while (olmDbCursor.get(dbName, ignored, MDB_NEXT)) {
+                                   // skip every db but olm session dbs
+                                   nhlog::db()->debug("Db {}", dbName);
+                                   if (dbName.find("olm_sessions/") != 0)
+                                           continue;
+
+                                   nhlog::db()->debug("Migrating {}", dbName);
+
+                                   auto olmDb = lmdb::dbi::open(txn, dbName.c_str());
+
+                                   std::string session_id, session_value;
+
+                                   std::vector<std::pair<std::string, StoredOlmSession>> sessions;
+
+                                   auto cursor = lmdb::cursor::open(txn, olmDb);
+                                   while (cursor.get(session_id, session_value, MDB_NEXT)) {
+                                           nhlog::db()->debug("session_id {}, session_value {}",
+                                                              session_id,
+                                                              session_value);
+                                           StoredOlmSession session;
+                                           bool invalid = false;
+                                           for (auto c : session_value)
+                                                   if (!isprint(c)) {
+                                                           invalid = true;
+                                                           break;
+                                                   }
+                                           if (invalid)
+                                                   continue;
+
+                                           nhlog::db()->debug("Not skipped");
+
+                                           session.pickled_session = session_value;
+                                           sessions.emplace_back(session_id, session);
+                                   }
+                                   cursor.close();
+
+                                   olmDb.drop(txn, true);
+
+                                   auto newDbName = dbName;
+                                   newDbName.erase(0, sizeof("olm_sessions") - 1);
+                                   newDbName = "olm_sessions.v2" + newDbName;
+
+                                   auto newDb = lmdb::dbi::open(txn, newDbName.c_str(), MDB_CREATE);
+
+                                   for (const auto &[key, value] : sessions) {
+                                           nhlog::db()->debug("{}\n{}", key, json(value).dump());
+                                           lmdb::dbi_put(txn,
+                                                         newDb,
+                                                         lmdb::val(key),
+                                                         lmdb::val(json(value).dump()));
+                                   }
+                           }
+                           olmDbCursor.close();
+
+                           txn.commit();
+                   } catch (const lmdb::error &) {
+                           nhlog::db()->critical("Failed to migrate olm sessions,");
+                           return false;
+                   }
+
+                   nhlog::db()->info("Successfully migrated olm sessions.");
                    return true;
            }},
         };
@@ -1358,22 +1469,22 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
         return room_info;
 }
 
-std::map<QString, mtx::responses::Timeline>
-Cache::roomMessages()
+std::vector<QString>
+Cache::roomIds()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        std::map<QString, mtx::responses::Timeline> msgs;
+        std::vector<QString> rooms;
         std::string room_id, unused;
 
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, unused, MDB_NEXT))
-                msgs.emplace(QString::fromStdString(room_id), mtx::responses::Timeline());
+                rooms.push_back(QString::fromStdString(room_id));
 
         roomsCursor.close();
         txn.commit();
 
-        return msgs;
+        return rooms;
 }
 
 QMap<QString, mtx::responses::Notifications>
@@ -2169,34 +2280,22 @@ Cache::joinedRooms()
         return room_ids;
 }
 
-void
-Cache::populateMembers()
+std::optional<MemberInfo>
+Cache::getMember(const std::string &room_id, const std::string &user_id)
 {
-        auto rooms = joinedRooms();
-        nhlog::db()->info("loading {} rooms", rooms.size());
+        try {
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        auto txn = lmdb::txn::begin(env_);
+                auto membersdb = getMembersDb(txn, room_id);
 
-        for (const auto &room : rooms) {
-                const auto roomid = QString::fromStdString(room);
-
-                auto membersdb = getMembersDb(txn, room);
-                auto cursor    = lmdb::cursor::open(txn, membersdb);
-
-                std::string user_id, info;
-                while (cursor.get(user_id, info, MDB_NEXT)) {
-                        MemberInfo m = json::parse(info);
-
-                        const auto userid = QString::fromStdString(user_id);
-
-                        insertDisplayName(roomid, userid, QString::fromStdString(m.name));
-                        insertAvatarUrl(roomid, userid, QString::fromStdString(m.avatar_url));
+                lmdb::val info;
+                if (lmdb::dbi_get(txn, membersdb, lmdb::val(user_id), info)) {
+                        MemberInfo m = json::parse(std::string_view(info.data(), info.size()));
+                        return m;
                 }
-
-                cursor.close();
+        } catch (...) {
         }
-
-        txn.commit();
+        return std::nullopt;
 }
 
 std::vector<RoomSearchResult>
@@ -2613,8 +2712,19 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                 }
         }
 
-        if (res.chunk.empty())
+        if (res.chunk.empty()) {
+                if (lmdb::dbi_get(txn, orderDb, lmdb::val(&index, sizeof(index)), val)) {
+                        auto orderEntry = json::parse(std::string_view(val.data(), val.size()));
+                        orderEntry["prev_batch"] = res.end;
+                        lmdb::dbi_put(txn,
+                                      orderDb,
+                                      lmdb::val(&index, sizeof(index)),
+                                      lmdb::val(orderEntry.dump()));
+                        nhlog::db()->debug("saving '{}'", orderEntry.dump());
+                        txn.commit();
+                }
                 return index;
+        }
 
         std::string event_id_val;
         for (const auto &e : res.chunk) {
@@ -3034,15 +3144,12 @@ Cache::roomMembers(const std::string &room_id)
         return members;
 }
 
-QHash<QString, QString> Cache::DisplayNames;
-QHash<QString, QString> Cache::AvatarUrls;
-
 QString
 Cache::displayName(const QString &room_id, const QString &user_id)
 {
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        if (DisplayNames.contains(fmt))
-                return DisplayNames[fmt];
+        if (auto info = getMember(room_id.toStdString(), user_id.toStdString());
+            info && !info->name.empty())
+                return QString::fromStdString(info->name);
 
         return user_id;
 }
@@ -3050,9 +3157,8 @@ Cache::displayName(const QString &room_id, const QString &user_id)
 std::string
 Cache::displayName(const std::string &room_id, const std::string &user_id)
 {
-        auto fmt = QString::fromStdString(room_id + " " + user_id);
-        if (DisplayNames.contains(fmt))
-                return DisplayNames[fmt].toStdString();
+        if (auto info = getMember(room_id, user_id); info && !info->name.empty())
+                return info->name;
 
         return user_id;
 }
@@ -3060,41 +3166,11 @@ Cache::displayName(const std::string &room_id, const std::string &user_id)
 QString
 Cache::avatarUrl(const QString &room_id, const QString &user_id)
 {
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        if (AvatarUrls.contains(fmt))
-                return AvatarUrls[fmt];
+        if (auto info = getMember(room_id.toStdString(), user_id.toStdString());
+            info && !info->avatar_url.empty())
+                return QString::fromStdString(info->avatar_url);
 
-        return QString();
-}
-
-void
-Cache::insertDisplayName(const QString &room_id,
-                         const QString &user_id,
-                         const QString &display_name)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        DisplayNames.insert(fmt, display_name);
-}
-
-void
-Cache::removeDisplayName(const QString &room_id, const QString &user_id)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        DisplayNames.remove(fmt);
-}
-
-void
-Cache::insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        AvatarUrls.insert(fmt, avatar_url);
-}
-
-void
-Cache::removeAvatarUrl(const QString &room_id, const QString &user_id)
-{
-        auto fmt = QString("%1 %2").arg(room_id).arg(user_id);
-        AvatarUrls.remove(fmt);
+        return "";
 }
 
 mtx::presence::PresenceState
@@ -3298,6 +3374,46 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
 
                                                    emit userKeysUpdate(sync_token, keys);
                                            });
+}
+
+void
+Cache::query_keys(const std::string &user_id,
+                  std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
+{
+        auto cache_ = cache::userKeys(user_id);
+
+        if (cache_.has_value()) {
+                if (!cache_->updated_at.empty() && cache_->updated_at == cache_->last_changed) {
+                        cb(cache_.value(), {});
+                        return;
+                }
+        }
+
+        mtx::requests::QueryKeys req;
+        req.device_keys[user_id] = {};
+
+        std::string last_changed;
+        if (cache_)
+                last_changed = cache_->last_changed;
+        req.token = last_changed;
+
+        http::client()->query_keys(req,
+                                   [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
+                                                               mtx::http::RequestErr err) {
+                                           if (err) {
+                                                   nhlog::net()->warn(
+                                                     "failed to query device keys: {},{}",
+                                                     err->matrix_error.errcode,
+                                                     static_cast<int>(err->status_code));
+                                                   cb({}, err);
+                                                   return;
+                                           }
+
+                                           cache::updateUserKeys(last_changed, res);
+
+                                           auto keys = cache::userKeys(user_id);
+                                           cb(keys.value_or(UserKeyCache{}), err);
+                                   });
 }
 
 void
@@ -3629,6 +3745,19 @@ from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
         msg.sender_key = obj.at("sender_key");
 }
 
+void
+to_json(nlohmann::json &obj, const StoredOlmSession &msg)
+{
+        obj["ts"] = msg.last_message_ts;
+        obj["s"]  = msg.pickled_session;
+}
+void
+from_json(const nlohmann::json &obj, StoredOlmSession &msg)
+{
+        msg.last_message_ts = obj.at("ts").get<uint64_t>();
+        msg.pickled_session = obj.at("s").get<std::string>();
+}
+
 namespace cache {
 void
 init(const QString &user_id)
@@ -3669,28 +3798,6 @@ avatarUrl(const QString &room_id, const QString &user_id)
         return instance_->avatarUrl(room_id, user_id);
 }
 
-void
-removeDisplayName(const QString &room_id, const QString &user_id)
-{
-        instance_->removeDisplayName(room_id, user_id);
-}
-void
-removeAvatarUrl(const QString &room_id, const QString &user_id)
-{
-        instance_->removeAvatarUrl(room_id, user_id);
-}
-
-void
-insertDisplayName(const QString &room_id, const QString &user_id, const QString &display_name)
-{
-        instance_->insertDisplayName(room_id, user_id, display_name);
-}
-void
-insertAvatarUrl(const QString &room_id, const QString &user_id, const QString &avatar_url)
-{
-        instance_->insertAvatarUrl(room_id, user_id, avatar_url);
-}
-
 mtx::presence::PresenceState
 presenceState(const std::string &user_id)
 {
@@ -3700,13 +3807,6 @@ std::string
 statusMessage(const std::string &user_id)
 {
         return instance_->statusMessage(user_id);
-}
-
-//! Load saved data for the display names & avatars.
-void
-populateMembers()
-{
-        instance_->populateMembers();
 }
 
 // user cache stores user keys
@@ -3867,10 +3967,10 @@ setCurrentFormat()
         instance_->setCurrentFormat();
 }
 
-std::map<QString, mtx::responses::Timeline>
-roomMessages()
+std::vector<QString>
+roomIds()
 {
-        return instance_->roomMessages();
+        return instance_->roomIds();
 }
 
 QMap<QString, mtx::responses::Notifications>
@@ -4114,9 +4214,11 @@ inboundMegolmSessionExists(const MegolmSessionIndex &index)
 // Olm Sessions
 //
 void
-saveOlmSession(const std::string &curve25519, mtx::crypto::OlmSessionPtr session)
+saveOlmSession(const std::string &curve25519,
+               mtx::crypto::OlmSessionPtr session,
+               uint64_t timestamp)
 {
-        instance_->saveOlmSession(curve25519, std::move(session));
+        instance_->saveOlmSession(curve25519, std::move(session), timestamp);
 }
 std::vector<std::string>
 getOlmSessions(const std::string &curve25519)
@@ -4127,6 +4229,11 @@ std::optional<mtx::crypto::OlmSessionPtr>
 getOlmSession(const std::string &curve25519, const std::string &session_id)
 {
         return instance_->getOlmSession(curve25519, session_id);
+}
+std::optional<mtx::crypto::OlmSessionPtr>
+getLatestOlmSession(const std::string &curve25519)
+{
+        return instance_->getLatestOlmSession(curve25519);
 }
 
 void

@@ -23,9 +23,10 @@
 #include <variant>
 
 #include <mtx/common.hpp>
-#include <mtx/requests.hpp>
-#include <mtx/responses.hpp>
-#include <mtxclient/http/errors.hpp>
+#include <mtx/events.hpp>
+#include <mtx/events/encrypted.hpp>
+#include <mtx/events/member.hpp>
+#include <mtx/events/presence.hpp>
 
 #include <QFrame>
 #include <QHBoxLayout>
@@ -37,11 +38,8 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
-#include "CallManager.h"
 #include "CommunitiesList.h"
-#include "Utils.h"
 #include "notifications/Manager.h"
-#include "popups/UserMentions.h"
 
 class OverlayModal;
 class QuickSwitcher;
@@ -54,13 +52,25 @@ class UserInfoWidget;
 class UserSettings;
 class NotificationsManager;
 class TimelineModel;
+class CallManager;
 
 constexpr int CONSENSUS_TIMEOUT      = 1000;
 constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
 constexpr int TYPING_REFRESH_TIMEOUT = 10000;
 
-namespace mtx::http {
-using RequestErr = const std::optional<mtx::http::ClientError> &;
+namespace mtx::requests {
+struct CreateRoom;
+}
+namespace mtx::responses {
+struct Notifications;
+struct Sync;
+struct Timeline;
+struct Rooms;
+struct LeftRoom;
+}
+
+namespace popups {
+class UserMentions;
 }
 
 class ChatPage : public QWidget
@@ -89,8 +99,6 @@ public:
         //! Show the room/group list (if it was visible).
         void showSideBars();
         void initiateLogout();
-        void query_keys(const std::string &req,
-                        std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb);
         void focusMessageInput();
 
         QString status() const;
@@ -106,6 +114,8 @@ public slots:
         void kickUser(QString userid, QString reason);
         void banUser(QString userid, QString reason);
         void unbanUser(QString userid, QString reason);
+
+        void receivedSessionKey(const std::string &room_id, const std::string &session_id);
 
 signals:
         void connectionLost();
@@ -128,7 +138,7 @@ signals:
 
         void contentLoaded();
         void closing();
-        void changeWindowTitle(const QString &msg);
+        void changeWindowTitle(const int);
         void unreadMessages(int count);
         void showNotification(const QString &msg);
         void showLoginPage(const QString &msg);
@@ -143,12 +153,12 @@ signals:
         void trySyncCb();
         void tryDelayedSyncCb();
         void tryInitialSyncCb();
-        void newSyncResponse(mtx::responses::Sync res);
+        void newSyncResponse(const mtx::responses::Sync &res);
         void leftRoom(const QString &room_id);
 
         void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
-        void initializeEmptyViews(const std::map<QString, mtx::responses::Timeline> &msgs);
+        void initializeEmptyViews(const std::vector<QString> &roomIds);
         void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
         void syncUI(const mtx::responses::Rooms &rooms);
         void syncRoomlist(const std::map<QString, RoomInfo> &updates);
@@ -186,21 +196,17 @@ signals:
         void receivedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
 
 private slots:
-        void showUnreadMessageNotification(int count);
         void logout();
         void removeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
 
         void joinRoom(const QString &room);
         void sendTypingNotifications();
-        void handleSyncResponse(mtx::responses::Sync res);
+        void handleSyncResponse(const mtx::responses::Sync &res);
 
 private:
         static ChatPage *instance_;
 
-        //! Handler callback for initial sync. It doesn't run on the main thread so all
-        //! communication with the GUI should be done through signals.
-        void initialSyncHandler(const mtx::responses::Sync &res, mtx::http::RequestErr err);
         void startInitialSync();
         void tryInitialSync();
         void trySync();
@@ -275,7 +281,7 @@ private:
         QSharedPointer<UserSettings> userSettings_;
 
         NotificationsManager notificationsManager;
-        CallManager callManager_;
+        CallManager *callManager_;
 };
 
 template<class Collection>

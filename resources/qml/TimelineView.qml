@@ -4,7 +4,7 @@ import "./emoji"
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
+import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
@@ -43,6 +43,14 @@ Page {
 
     }
 
+    Component {
+        id: userProfileComponent
+
+        UserProfile {
+        }
+
+    }
+
     Menu {
         id: messageContextMenu
 
@@ -69,12 +77,12 @@ Page {
 
         MenuItem {
             text: qsTr("Reply")
-            onClicked: chat.model.replyAction(messageContextMenu.eventId)
+            onClicked: TimelineManager.timeline.replyAction(messageContextMenu.eventId)
         }
 
         MenuItem {
             text: qsTr("Read receipts")
-            onTriggered: chat.model.readReceiptsAction(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
         }
 
         MenuItem {
@@ -83,19 +91,19 @@ Page {
 
         MenuItem {
             text: qsTr("View raw message")
-            onTriggered: chat.model.viewRawMessage(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.viewRawMessage(messageContextMenu.eventId)
         }
 
         MenuItem {
             visible: messageContextMenu.isEncrypted
             height: visible ? implicitHeight : 0
             text: qsTr("View decrypted raw message")
-            onTriggered: chat.model.viewDecryptedRawMessage(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.viewDecryptedRawMessage(messageContextMenu.eventId)
         }
 
         MenuItem {
             text: qsTr("Redact message")
-            onTriggered: chat.model.redactEvent(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.redactEvent(messageContextMenu.eventId)
         }
 
         MenuItem {
@@ -159,407 +167,52 @@ Page {
         }
 
         ColumnLayout {
+            visible: TimelineManager.timeline != null
             anchors.fill: parent
+            spacing: 0
+
+            TopBar {
+            }
 
             Rectangle {
-                id: topBar
-
                 Layout.fillWidth: true
-                implicitHeight: topLayout.height + 16
+                height: 1
                 z: 3
-                color: colors.base
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: TimelineManager.openRoomSettings()
-                }
-
-                GridLayout {
-                    //Layout.margins: 8
-
-                    id: topLayout
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: 8
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    ImageButton {
-                        id: backToRoomsButton
-
-                        Layout.column: 0
-                        Layout.row: 0
-                        Layout.rowSpan: 2
-                        Layout.alignment: Qt.AlignVCenter
-                        visible: TimelineManager.isNarrowView
-                        image: ":/icons/icons/ui/angle-pointing-to-left.png"
-                        ToolTip.visible: hovered
-                        ToolTip.text: qsTr("Back to room list")
-                        onClicked: TimelineManager.backToRooms()
-                    }
-
-                    Avatar {
-                        Layout.column: 1
-                        Layout.row: 0
-                        Layout.rowSpan: 2
-                        Layout.alignment: Qt.AlignVCenter
-                        width: avatarSize
-                        height: avatarSize
-                        url: chat.model ? chat.model.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
-                        displayName: chat.model ? chat.model.roomName : qsTr("No room selected")
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: TimelineManager.openRoomSettings()
-                        }
-
-                    }
-
-                    Label {
-                        Layout.fillWidth: true
-                        Layout.column: 2
-                        Layout.row: 0
-                        color: colors.text
-                        font.pointSize: fontMetrics.font.pointSize * 1.1
-                        text: chat.model ? chat.model.roomName : qsTr("No room selected")
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: TimelineManager.openRoomSettings()
-                        }
-
-                    }
-
-                    MatrixText {
-                        Layout.fillWidth: true
-                        Layout.column: 2
-                        Layout.row: 1
-                        Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
-                        clip: true
-                        text: chat.model ? chat.model.roomTopic : ""
-                    }
-
-                    ImageButton {
-                        id: roomOptionsButton
-
-                        Layout.column: 3
-                        Layout.row: 0
-                        Layout.rowSpan: 2
-                        Layout.alignment: Qt.AlignVCenter
-                        image: ":/icons/icons/ui/vertical-ellipsis.png"
-                        ToolTip.visible: hovered
-                        ToolTip.text: qsTr("Room options")
-                        onClicked: roomOptionsMenu.popup(roomOptionsButton)
-
-                        Menu {
-                            id: roomOptionsMenu
-
-                            MenuItem {
-                                text: qsTr("Invite users")
-                                onTriggered: TimelineManager.openInviteUsersDialog()
-                            }
-
-                            MenuItem {
-                                text: qsTr("Members")
-                                onTriggered: TimelineManager.openMemberListDialog()
-                            }
-
-                            MenuItem {
-                                text: qsTr("Leave room")
-                                onTriggered: TimelineManager.openLeaveRoomDialog()
-                            }
-
-                            MenuItem {
-                                text: qsTr("Settings")
-                                onTriggered: TimelineManager.openRoomSettings()
-                            }
-
-                        }
-
-                    }
-
-                }
-
+                color: colors.mid
             }
 
-            ListView {
-                id: chat
-
-                property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width * 2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width * 2)
-
-                visible: TimelineManager.timeline != null
-                cacheBuffer: 400
+            Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                model: TimelineManager.timeline
-                boundsBehavior: Flickable.StopAtBounds
-                pixelAligned: true
-                spacing: 4
-                verticalLayoutDirection: ListView.BottomToTop
-                onCountChanged: {
-                    if (atYEnd)
-                        model.currentIndex = 0;
+                color: colors.base
 
-                } // Mark last event as read, since we are at the bottom
-
-                ScrollHelper {
-                    flickable: parent
+                ColumnLayout {
                     anchors.fill: parent
-                }
+                    spacing: 0
 
-                Shortcut {
-                    sequence: StandardKey.MoveToPreviousPage
-                    onActivated: {
-                        chat.contentY = chat.contentY - chat.height / 2;
-                        chat.returnToBounds();
-                    }
-                }
+                    StackLayout {
+                        id: stackLayout
+                        currentIndex: 0
 
-                Shortcut {
-                    sequence: StandardKey.MoveToNextPage
-                    onActivated: {
-                        chat.contentY = chat.contentY + chat.height / 2;
-                        chat.returnToBounds();
-                    }
-                }
-
-                Shortcut {
-                    sequence: StandardKey.Cancel
-                    onActivated: chat.model.reply = undefined
-                }
-
-                Shortcut {
-                    sequence: "Alt+Up"
-                    onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply ? chat.model.idToIndex(chat.model.reply) + 1 : 0)
-                }
-
-                Shortcut {
-                    sequence: "Alt+Down"
-                    onActivated: {
-                        var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
-                        chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : undefined;
-                    }
-                }
-
-                Component {
-                    id: userProfileComponent
-
-                    UserProfile {
-                    }
-
-                }
-
-                section {
-                    property: "section"
-                }
-
-                Component {
-                    id: sectionHeader
-
-                    Column {
-                        property var modelData
-                        property string section
-                        property string nextSection
-
-                        topPadding: 4
-                        bottomPadding: 4
-                        spacing: 8
-                        visible: !!modelData
-                        width: parent.width
-                        height: (section.includes(" ") ? dateBubble.height + 8 + userName.height : userName.height) + 8
-
-                        Label {
-                            id: dateBubble
-
-                            anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                            visible: section.includes(" ")
-                            text: chat.model.formatDateSeparator(modelData.timestamp)
-                            color: colors.text
-                            height: fontMetrics.height * 1.4
-                            width: contentWidth * 1.2
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-
-                            background: Rectangle {
-                                radius: parent.height / 2
-                                color: colors.base
+                        Connections {
+                            target: TimelineManager
+                            function onActiveTimelineChanged() {
+                                stackLayout.currentIndex = 0;
                             }
-
                         }
 
-                        Row {
-                            height: userName.height
-                            spacing: 8
-
-                            Avatar {
-                                width: avatarSize
-                                height: avatarSize
-                                url: chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/")
-                                displayName: modelData.userName
-                                userid: modelData.userId
-
-                                MouseArea {
-                                    anchors.fill: parent
-                                    onClicked: chat.model.openUserProfile(modelData.userId)
-                                    cursorShape: Qt.PointingHandCursor
-                                    propagateComposedEvents: true
-                                }
-
-                            }
-
-                            Label {
-                                id: userName
-
-                                text: TimelineManager.escapeEmoji(modelData.userName)
-                                color: TimelineManager.userColor(modelData.userId, colors.window)
-                                textFormat: Text.RichText
-
-                                MouseArea {
-                                    anchors.fill: parent
-                                    Layout.alignment: Qt.AlignHCenter
-                                    onClicked: chat.model.openUserProfile(modelData.userId)
-                                    cursorShape: Qt.PointingHandCursor
-                                    propagateComposedEvents: true
-                                }
-
-                            }
-
+                        MessageView {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
 
-                    }
-
-                }
-
-                ScrollBar.vertical: ScrollBar {
-                    id: scrollbar
-                }
-
-                delegate: Item {
-                    id: wrapper
-
-                    // This would normally be previousSection, but our model's order is inverted.
-                    property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
-                    property Item section
-
-                    anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                    width: chat.delegateMaxWidth
-                    height: section ? section.height + timelinerow.height : timelinerow.height
-                    onSectionBoundaryChanged: {
-                        if (sectionBoundary) {
-                            var properties = {
-                                "modelData": model.dump,
-                                "section": ListView.section,
-                                "nextSection": ListView.nextSection
-                            };
-                            section = sectionHeader.createObject(wrapper, properties);
-                        } else {
-                            section.destroy();
-                            section = null;
+                        Loader {
+                            source: TimelineManager.onVideoCall ? "VideoCall.qml" : ""
+                            onLoaded: TimelineManager.setVideoCallItem()
                         }
                     }
 
-                    TimelineRow {
-                        id: timelinerow
-
-                        y: section ? section.y + section.height : 0
-                    }
-
-                    Connections {
-                        function onMovementEnded() {
-                            if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
-                                chat.model.currentIndex = index;
-
-                        }
-
-                        target: chat
-                    }
-
-                }
-
-                footer: BusyIndicator {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    running: chat.model && chat.model.paginationInProgress
-                    height: 50
-                    width: 50
-                    z: 3
-                }
-
-            }
-
-            Item {
-                id: chatFooter
-
-                implicitHeight: Math.max(fontMetrics.height * 1.2, footerContent.height)
-                Layout.fillWidth: true
-                z: 3
-
-                Column {
-                    id: footerContent
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-
-                    Rectangle {
-                        id: typingRect
-
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        color: (chat.model && chat.model.typingUsers.length > 0) ? colors.window : "transparent"
-                        height: typingDisplay.height
-
-                        Label {
-                            id: typingDisplay
-
-                            anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            anchors.right: parent.right
-                            anchors.rightMargin: 10
-                            color: colors.text
-                            text: chat.model ? chat.model.formatTypingUsers(chat.model.typingUsers, colors.window) : ""
-                            textFormat: Text.RichText
-                        }
-
-                    }
-
-                    Rectangle {
-                        id: replyPopup
-
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        visible: chat.model && chat.model.reply
-                        // Height of child, plus margins, plus border
-                        height: replyPreview.height + 10
-                        color: colors.base
-
-                        Reply {
-                            id: replyPreview
-
-                            anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            anchors.right: closeReplyButton.left
-                            anchors.rightMargin: 20
-                            anchors.bottom: parent.bottom
-                            modelData: chat.model ? chat.model.getDump(chat.model.reply, chat.model.id) : {
-                            }
-                            userColor: TimelineManager.userColor(modelData.userId, colors.window)
-                        }
-
-                        ImageButton {
-                            id: closeReplyButton
-
-                            anchors.right: parent.right
-                            anchors.rightMargin: 15
-                            anchors.top: replyPreview.top
-                            hoverEnabled: true
-                            width: 16
-                            height: 16
-                            image: ":/icons/icons/ui/remove-symbol.png"
-                            ToolTip.visible: closeReplyButton.hovered
-                            ToolTip.text: qsTr("Close")
-                            onClicked: chat.model.reply = undefined
-                        }
-
+                    TypingIndicator {
                     }
 
                 }
@@ -570,6 +223,19 @@ Page {
                 Layout.fillWidth: true
                 z: 3
             }
+
+            Rectangle {
+                Layout.fillWidth: true
+                z: 3
+                height: 1
+                color: colors.mid
+            }
+
+            ReplyPopup {
+            }
+
+            //MessageInput {
+            //}
 
         }
 

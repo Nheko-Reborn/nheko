@@ -3,10 +3,8 @@
 #include <map>
 #include <mutex>
 
-//#include <nlohmann/json.hpp>
-
-#include <mtx/responses.hpp>
-#include <mtxclient/crypto/client.hpp>
+#include <mtx/responses/crypto.hpp>
+#include <mtxclient/crypto/objects.hpp>
 
 // Extra information associated with an outbound megolm session.
 struct OutboundGroupSessionData
@@ -65,6 +63,16 @@ struct OlmSessionStorage
         std::mutex group_outbound_mtx;
         std::mutex group_inbound_mtx;
 };
+
+struct StoredOlmSession
+{
+        std::uint64_t last_message_ts = 0;
+        std::string pickled_session;
+};
+void
+to_json(nlohmann::json &obj, const StoredOlmSession &msg);
+void
+from_json(const nlohmann::json &obj, StoredOlmSession &msg);
 
 //! Verification status of a single user
 struct VerificationStatus

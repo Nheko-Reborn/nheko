@@ -165,6 +165,9 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 MacHelper::showEmojiWindow();
 #endif
 
+        if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_U)
+                QTextEdit::setText("");
+
         if (!isModifier) {
                 if (!typingTimer_->isActive())
                         emit startedTyping();
@@ -367,7 +370,7 @@ FilteredTextEdit::insertFromMimeData(const QMimeData *source)
         const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
         const auto video   = formats.filter("video/", Qt::CaseInsensitive);
 
-        if (source->hasImage()) {
+        if (!image.empty() && source->hasImage()) {
                 QImage img = qvariant_cast<QImage>(source->imageData());
                 previewDialog_.setPreview(img, image.front());
         } else if (!audio.empty()) {
@@ -700,7 +703,7 @@ TextInputWidget::command(QString command, QString args)
         } else if (command == "roomnick") {
                 emit changeRoomNick(args);
         } else if (command == "shrug") {
-                emit sendTextMessage("¯\\_(ツ)_/¯");
+                emit sendTextMessage("¯\\_(ツ)_/¯" + (args.isEmpty() ? "" : " " + args));
         } else if (command == "fliptable") {
                 emit sendTextMessage("(╯°□°)╯︵ ┻━┻");
         } else if (command == "unfliptable") {

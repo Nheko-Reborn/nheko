@@ -65,7 +65,7 @@ Item {
     }
 
     Rectangle {
-        color: colors.dark
+        color: colors.alternateBase
         z: -1
         radius: 10
         height: row.height + 24

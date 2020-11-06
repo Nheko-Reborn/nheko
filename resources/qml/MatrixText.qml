@@ -6,8 +6,7 @@ TextEdit {
     textFormat: TextEdit.RichText
     readOnly: true
     wrapMode: Text.Wrap
-    selectByMouse: true
-    activeFocusOnPress: false
+    selectByMouse: !Settings.mobileMode
     color: colors.text
     onLinkActivated: {
         if (/^https:\/\/matrix.to\/#\/(@.*)$/.test(link)) {
@@ -29,7 +28,6 @@ TextEdit {
         id: ma
 
         anchors.fill: parent
-        propagateComposedEvents: true
         acceptedButtons: Qt.NoButton
         cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
     }

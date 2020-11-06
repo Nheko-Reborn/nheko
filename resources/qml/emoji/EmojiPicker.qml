@@ -161,7 +161,7 @@ Popup {
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 1
-            color: emojiPopup.colors.dark
+            color: emojiPopup.colors.alternateBase
         }
 
         // Category picker row
@@ -281,7 +281,7 @@ Popup {
                 Layout.preferredWidth: 1
                 implicitWidth: 1
                 height: parent.height
-                color: emojiPopup.colors.dark
+                color: emojiPopup.colors.alternateBase
             }
 
             // Search Button is special

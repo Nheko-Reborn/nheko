@@ -23,18 +23,20 @@ PlaceCall::PlaceCall(const QString &callee,
   : QWidget(parent)
 {
         std::string errorMessage;
-        if (!WebRTCSession::instance().init(&errorMessage)) {
+        WebRTCSession *session = &WebRTCSession::instance();
+        if (!session->havePlugins(false, &errorMessage)) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 emit close();
                 return;
         }
-        audioDevices_ = WebRTCSession::instance().getAudioSourceNames(
-          settings->defaultAudioSource().toStdString());
-        if (audioDevices_.empty()) {
-                emit ChatPage::instance()->showNotification("No audio sources found.");
+        session->refreshDevices();
+        microphones_ = session->getDeviceNames(false, settings->microphone().toStdString());
+        if (microphones_.empty()) {
+                emit ChatPage::instance()->showNotification(tr("No microphone found."));
                 emit close();
                 return;
         }
+        cameras_ = session->getDeviceNames(true, settings->camera().toStdString());
 
         setAutoFillBackground(true);
         setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
@@ -56,48 +58,74 @@ PlaceCall::PlaceCall(const QString &callee,
                 avatar->setImage(avatarUrl);
         else
                 avatar->setLetter(utils::firstChar(roomName));
-        const int iconSize = 18;
-        voiceBtn_          = new QPushButton(tr("Voice"), this);
+
+        voiceBtn_ = new QPushButton(tr("Voice"), this);
         voiceBtn_->setIcon(QIcon(":/icons/icons/ui/place-call.png"));
-        voiceBtn_->setIconSize(QSize(iconSize, iconSize));
+        voiceBtn_->setIconSize(QSize(iconSize_, iconSize_));
         voiceBtn_->setDefault(true);
+
+        if (!cameras_.empty()) {
+                videoBtn_ = new QPushButton(tr("Video"), this);
+                videoBtn_->setIcon(QIcon(":/icons/icons/ui/video-call.png"));
+                videoBtn_->setIconSize(QSize(iconSize_, iconSize_));
+        }
         cancelBtn_ = new QPushButton(tr("Cancel"), this);
 
         buttonLayout->addWidget(avatar);
         buttonLayout->addStretch();
         buttonLayout->addWidget(voiceBtn_);
+        if (videoBtn_)
+                buttonLayout->addWidget(videoBtn_);
         buttonLayout->addWidget(cancelBtn_);
 
         QString name  = displayName.isEmpty() ? callee : displayName;
-        QLabel *label = new QLabel("Place a call to " + name + "?", this);
+        QLabel *label = new QLabel(tr("Place a call to ") + name + "?", this);
 
-        auto deviceLayout = new QHBoxLayout;
-        auto audioLabel   = new QLabel(this);
-        audioLabel->setPixmap(QIcon(":/icons/icons/ui/microphone-unmute.png")
-                                .pixmap(QSize(iconSize * 1.2, iconSize * 1.2)));
+        microphoneCombo_ = new QComboBox(this);
+        for (const auto &m : microphones_)
+                microphoneCombo_->addItem(QIcon(":/icons/icons/ui/microphone-unmute.png"),
+                                          QString::fromStdString(m));
 
-        auto deviceList = new QComboBox(this);
-        for (const auto &d : audioDevices_)
-                deviceList->addItem(QString::fromStdString(d));
-
-        deviceLayout->addStretch();
-        deviceLayout->addWidget(audioLabel);
-        deviceLayout->addWidget(deviceList);
+        if (videoBtn_) {
+                cameraCombo_ = new QComboBox(this);
+                for (const auto &c : cameras_)
+                        cameraCombo_->addItem(QIcon(":/icons/icons/ui/video-call.png"),
+                                              QString::fromStdString(c));
+        }
 
         layout->addWidget(label);
         layout->addLayout(buttonLayout);
-        layout->addLayout(deviceLayout);
+        layout->addStretch();
+        layout->addWidget(microphoneCombo_);
+        if (videoBtn_)
+                layout->addWidget(cameraCombo_);
 
-        connect(voiceBtn_, &QPushButton::clicked, this, [this, deviceList, settings]() {
-                WebRTCSession::instance().setAudioSource(deviceList->currentIndex());
-                settings->setDefaultAudioSource(
-                  QString::fromStdString(audioDevices_[deviceList->currentIndex()]));
+        connect(voiceBtn_, &QPushButton::clicked, this, [this, settings]() {
+                settings->setMicrophone(
+                  QString::fromStdString(microphones_[microphoneCombo_->currentIndex()]));
                 emit voice();
                 emit close();
         });
+        if (videoBtn_)
+                connect(videoBtn_, &QPushButton::clicked, this, [this, settings, session]() {
+                        std::string error;
+                        if (!session->havePlugins(true, &error)) {
+                                emit ChatPage::instance()->showNotification(
+                                  QString::fromStdString(error));
+                                emit close();
+                                return;
+                        }
+                        settings->setMicrophone(
+                          QString::fromStdString(microphones_[microphoneCombo_->currentIndex()]));
+                        settings->setCamera(
+                          QString::fromStdString(cameras_[cameraCombo_->currentIndex()]));
+                        emit video();
+                        emit close();
+                });
         connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
                 emit cancel();
                 emit close();
         });
 }
+
 }

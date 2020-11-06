@@ -6,27 +6,27 @@
     <message>
         <location filename="../qml/ActiveCallBar.qml" line="+49"/>
         <source>Initiating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Initiating…</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Calling…</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Connecting…</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Unmute Mic</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Mute Mic</translation>
     </message>
 </context>
 <context>
@@ -34,23 +34,23 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Awaiting Confirmation</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Waiting for other side to complete verification.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1732"/>
+        <location filename="../../src/Cache.cpp" line="+1843"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
@@ -58,23 +58,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+215"/>
+        <location filename="../../src/ChatPage.cpp" line="+217"/>
         <source>Failed to invite user: %1</source>
         <translation>Failed to invite user: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+947"/>
+        <location line="+931"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-458"/>
+        <location line="-444"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
     </message>
     <message>
-        <location line="+415"/>
+        <location line="+401"/>
         <source>Room %1 created.</source>
         <translation>Room %1 created.</translation>
     </message>
@@ -154,12 +154,12 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="-874"/>
+        <location line="-858"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Failed to upload media. Please try again.</translation>
     </message>
     <message>
-        <location line="+334"/>
+        <location line="+332"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration failed!</translation>
     </message>
@@ -174,7 +174,7 @@
         <translation>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+53"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Failed to restore OLM account. Please login again.</translation>
     </message>
@@ -190,12 +190,12 @@
     </message>
     <message>
         <location line="+99"/>
-        <location line="+251"/>
+        <location line="+257"/>
         <source>Please try to login again: %1</source>
         <translation>Please try to login again: %1</translation>
     </message>
     <message>
-        <location line="-219"/>
+        <location line="-225"/>
         <source>Failed to join room: %1</source>
         <translation>Failed to join room: %1</translation>
     </message>
@@ -260,22 +260,22 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification Code</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Please verify the following digits.  You should see the same numbers on both sides.  If they differ, please press &apos;They do not match!&apos; to abort verification!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>They do not match!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>They match!</translation>
     </message>
 </context>
 <context>
@@ -304,7 +304,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+112"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+113"/>
         <location line="+181"/>
         <source>Search</source>
         <translation>Search</translation>
@@ -355,22 +355,22 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification Code</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>They do not match!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>They match!</translation>
     </message>
 </context>
 <context>
@@ -389,13 +389,13 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+503"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+519"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Encrypted Event (No keys found for decryption) --</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+32"/>
         <location line="+62"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
@@ -430,33 +430,33 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+7"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification failed</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Other client does not support our verification protocol.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Key mismatch detected!</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Device verification timed out.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Other party canceled the verification.</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
@@ -642,46 +642,54 @@ Example: https://server.my:8787</translation>
     </message>
 </context>
 <context>
+    <name>MessageInput</name>
+    <message>
+        <location filename="../qml/MessageInput.qml" line="+47"/>
+        <source>Write a message...</source>
+        <translation>Write a message…</translation>
+    </message>
+</context>
+<context>
     <name>NewVerificationRequest</name>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
         <source>Send Device Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Send Device Verification Request</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Recieved Device Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Received Device Verification Request</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>The device was requested to be verified</source>
-        <translation type="unfinished"></translation>
+        <translation>The device was requested to be verified.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Deny</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Start verification</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">Accept</translation>
+        <translation>Accept</translation>
     </message>
 </context>
 <context>
@@ -690,6 +698,24 @@ Example: https://server.my:8787</translation>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
         <translation>unimplemented event: </translation>
+    </message>
+</context>
+<context>
+    <name>QCoreApplication</name>
+    <message>
+        <location filename="../../src/main.cpp" line="+172"/>
+        <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
+        <translation>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>profile</source>
+        <translation>profile</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>profile name</source>
+        <translation>profile name</translation>
     </message>
 </context>
 <context>
@@ -769,9 +795,17 @@ Example: https://server.my:8787</translation>
     </message>
 </context>
 <context>
+    <name>ReplyPopup</name>
+    <message>
+        <location filename="../qml/ReplyPopup.qml" line="+43"/>
+        <source>Close</source>
+        <translation>Close</translation>
+    </message>
+</context>
+<context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1815"/>
+        <location filename="../../src/Cache.cpp" line="+1780"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -831,7 +865,7 @@ Example: https://server.my:8787</translation>
         <translation>Tag:</translation>
     </message>
     <message>
-        <location line="+173"/>
+        <location line="+169"/>
         <source>Accept</source>
         <translation>Accept</translation>
     </message>
@@ -897,23 +931,23 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+6"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Successful Verification</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification successful!  Both sides verified their devices!</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
     <name>TextInputWidget</name>
     <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+574"/>
+        <location filename="../../src/TextInputWidget.cpp" line="+577"/>
         <source>Send a file</source>
         <translation>Send a file</translation>
     </message>
@@ -967,15 +1001,14 @@ Example: https://server.my:8787</translation>
         <translation>Message redaction failed: %1</translation>
     </message>
     <message>
-        <location line="+125"/>
-        <location line="+17"/>
-        <location line="+88"/>
+        <location line="+130"/>
+        <location line="+8"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Failed to encrypt event, sending aborted!</translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+156"/>
         <source>Save image</source>
         <translation>Save image</translation>
     </message>
@@ -1114,12 +1147,12 @@ Example: https://server.my:8787</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-982"/>
+        <location line="-810"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+984"/>
+        <location line="+812"/>
         <source>Rejected the knock from %1.</source>
         <translation>Rejected the knock from %1.</translation>
     </message>
@@ -1161,7 +1194,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+66"/>
+        <location filename="../qml/TimelineView.qml" line="+75"/>
         <source>React</source>
         <translation>React</translation>
     </message>
@@ -1205,8 +1238,19 @@ Example: https://server.my:8787</translation>
         <source>No room open</source>
         <translation>No room open</translation>
     </message>
+</context>
+<context>
+    <name>TimelineViewManager</name>
     <message>
-        <location line="+50"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+410"/>
+        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
+        <translation>No shared room with this user found.  Create an encrypted room with this user and try again.</translation>
+    </message>
+</context>
+<context>
+    <name>TopBar</name>
+    <message>
+        <location filename="../qml/TopBar.qml" line="+41"/>
         <source>Back to room list</source>
         <translation>Back to room list</translation>
     </message>
@@ -1240,19 +1284,6 @@ Example: https://server.my:8787</translation>
         <location line="+5"/>
         <source>Settings</source>
         <translation>Settings</translation>
-    </message>
-    <message>
-        <location line="+286"/>
-        <source>Close</source>
-        <translation>Close</translation>
-    </message>
-</context>
-<context>
-    <name>TimelineViewManager</name>
-    <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+412"/>
-        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1316,28 +1347,28 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+60"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verify</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Ban the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Ban the user</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Start a private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Start a private chat</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Kick the user</translation>
     </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+565"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
         <source>Minimize to tray</source>
         <translation>Minimize to tray</translation>
     </message>
@@ -1357,7 +1388,12 @@ Example: https://server.my:8787</translation>
         <translation>Circular Avatars</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-149"/>
+        <source>profile: %1</source>
+        <translation>profile: %1</translation>
+    </message>
+    <message>
+        <location line="+87"/>
         <source>CALLS</source>
         <translation>CALLS</translation>
     </message>
@@ -1508,7 +1544,17 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Make font size larger if messages with only a few emojis are displayed.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
+        <source>Mobile mode</source>
+        <translation>Mobile mode</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Will prevent text selection in the timeline to make scrolling easier.</source>
+        <translation>Will prevent text selection in the timeline to make scrolling easier.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Scale factor</source>
         <translation>Scale factor</translation>
     </message>
@@ -1553,7 +1599,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Device Fingerprint</translation>
     </message>
     <message>
-        <location line="-120"/>
+        <location line="-123"/>
         <source>Session Keys</source>
         <translation>Session Keys</translation>
     </message>
@@ -1573,22 +1619,32 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>ENCRYPTION</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-75"/>
         <source>GENERAL</source>
         <translation>GENERAL</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+32"/>
         <source>INTERFACE</source>
         <translation>INTERFACE</translation>
     </message>
     <message>
-        <location line="+171"/>
+        <location line="+170"/>
         <source>Emoji Font Family</source>
         <translation>Emoji Font Family</translation>
     </message>
     <message>
-        <location line="+191"/>
+        <location line="+18"/>
+        <source>Share keys with trusted users</source>
+        <translation>Share keys with trusted users</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Automatically replies to key requests from other users, if they are verified.</source>
+        <translation>Automatically replies to key requests from other users, if they are verified.</translation>
+    </message>
+    <message>
+        <location line="+185"/>
         <source>Open Sessions File</source>
         <translation>Open Sessions File</translation>
     </message>
@@ -1639,27 +1695,27 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
         <source>Waiting for other party</source>
-        <translation type="unfinished"></translation>
+        <translation>Waiting for other party…</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Waiting for other side to accept the verification request…</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Waiting for other side to continue the verification request…</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Waiting for other side to complete the verification request…</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
