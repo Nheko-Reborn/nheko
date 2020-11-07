@@ -392,7 +392,7 @@
         <location filename="../../src/timeline/EventStore.cpp" line="+519"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation>-- Évènement chiffré (pas de clé trouvé pour le déchiffrement) --</translation>
+        <translation>-- Évènement chiffré (pas de clé trouvée pour le déchiffrement) --</translation>
     </message>
     <message>
         <location line="+32"/>
