@@ -104,6 +104,22 @@ Rectangle {
         }
 
         ImageButton {
+            visible: TimelineManager.onVideoCall
+            width: 24
+            height: 24
+            buttonTextColor: "#000000"
+            image: ":/icons/icons/ui/toggle-camera-view.png"
+            hoverEnabled: true
+            ToolTip.visible: hovered
+            ToolTip.text: "Toggle camera view"
+            onClicked: TimelineManager.toggleCameraView()
+        }
+
+        Item {
+            implicitWidth: 8
+        }
+
+        ImageButton {
             width: 24
             height: 24
             buttonTextColor: "#000000"

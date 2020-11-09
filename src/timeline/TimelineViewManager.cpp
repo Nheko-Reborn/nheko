@@ -331,6 +331,12 @@ TimelineViewManager::toggleMicMute()
 }
 
 void
+TimelineViewManager::toggleCameraView()
+{
+        WebRTCSession::instance().toggleCameraView();
+}
+
+void
 TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
 {
         QQuickImageResponse *imgResponse =
