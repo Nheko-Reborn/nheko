@@ -109,6 +109,7 @@ public:
 public slots:
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
+        void joinRoom(const QString &room);
 
         void inviteUser(QString userid, QString reason);
         void kickUser(QString userid, QString reason);
@@ -200,7 +201,6 @@ private slots:
         void removeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
 
-        void joinRoom(const QString &room);
         void sendTypingNotifications();
         void handleSyncResponse(const mtx::responses::Sync &res);
 

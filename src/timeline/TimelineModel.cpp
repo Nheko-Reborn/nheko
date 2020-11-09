@@ -1567,4 +1567,3 @@ TimelineModel::roomTopic() const
                 return utils::replaceEmoji(utils::linkifyMessage(
                   utils::escapeBlacklistedHtml(QString::fromStdString(info[room_id_].topic))));
 }
-

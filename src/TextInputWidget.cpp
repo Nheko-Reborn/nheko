@@ -486,36 +486,7 @@ FilteredTextEdit::minimumSizeHint() const
 
 void
 FilteredTextEdit::submit()
-{
-        if (toPlainText().trimmed().isEmpty())
-                return;
-
-        if (true_history_.size() == INPUT_HISTORY_SIZE)
-                true_history_.pop_back();
-        true_history_.push_front(toPlainText());
-        working_history_ = true_history_;
-        working_history_.push_front("");
-        history_index_ = 0;
-
-        QString text = toPlainText();
-
-        if (text.startsWith('/')) {
-                int command_end = text.indexOf(' ');
-                if (command_end == -1)
-                        command_end = text.size();
-                auto name = text.mid(1, command_end - 1);
-                auto args = text.mid(command_end + 1);
-                if (name.isEmpty() || name == "/") {
-                        message(args);
-                } else {
-                        command(name, args);
-                }
-        } else {
-                message(std::move(text));
-        }
-
-        clear();
-}
+{}
 
 void
 FilteredTextEdit::textChanged()
@@ -653,8 +624,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 #endif
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
-        connect(input_, &FilteredTextEdit::message, this, &TextInputWidget::sendTextMessage);
-        connect(input_, &FilteredTextEdit::command, this, &TextInputWidget::command);
         connect(input_, &FilteredTextEdit::media, this, &TextInputWidget::uploadMedia);
         connect(emojiBtn_,
                 SIGNAL(emojiSelected(const QString &)),
@@ -683,38 +652,6 @@ TextInputWidget::addSelectedEmoji(const QString &emoji)
         input_->setCurrentCharFormat(charfmt);
 
         input_->show();
-}
-
-void
-TextInputWidget::command(QString command, QString args)
-{
-        if (command == "me") {
-                emit sendEmoteMessage(args);
-        } else if (command == "join") {
-                emit sendJoinRoomRequest(args);
-        } else if (command == "invite") {
-                emit sendInviteRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
-        } else if (command == "kick") {
-                emit sendKickRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
-        } else if (command == "ban") {
-                emit sendBanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
-        } else if (command == "unban") {
-                emit sendUnbanRoomRequest(args.section(' ', 0, 0), args.section(' ', 1, -1));
-        } else if (command == "roomnick") {
-                emit changeRoomNick(args);
-        } else if (command == "shrug") {
-                emit sendTextMessage("¯\\_(ツ)_/¯" + (args.isEmpty() ? "" : " " + args));
-        } else if (command == "fliptable") {
-                emit sendTextMessage("(╯°□°)╯︵ ┻━┻");
-        } else if (command == "unfliptable") {
-                emit sendTextMessage(" ┯━┯╭( º _ º╭)");
-        } else if (command == "sovietflip") {
-                emit sendTextMessage("ノ┬─┬ノ ︵ ( \\o°o)\\");
-        } else if (command == "clear-timeline") {
-                emit clearRoomTimeline();
-        } else if (command == "rotate-megolm-session") {
-                emit rotateMegolmSession();
-        }
 }
 
 void

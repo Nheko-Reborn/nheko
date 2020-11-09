@@ -160,15 +160,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 trySync();
         });
 
-        connect(text_input_,
-                &TextInputWidget::clearRoomTimeline,
-                view_manager_,
-                &TimelineViewManager::clearCurrentRoomTimeline);
-
-        connect(text_input_, &TextInputWidget::rotateMegolmSession, this, [this]() {
-                cache::dropOutboundMegolmSession(current_room_.toStdString());
-        });
-
         connect(
           new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
                   if (isVisible())
@@ -276,45 +267,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 SIGNAL(totalUnreadMessageCountUpdated(int)),
                 this,
                 SIGNAL(unreadMessages(int)));
-
-        connect(text_input_,
-                &TextInputWidget::sendTextMessage,
-                view_manager_,
-                &TimelineViewManager::queueTextMessage);
-
-        connect(text_input_,
-                &TextInputWidget::sendEmoteMessage,
-                view_manager_,
-                &TimelineViewManager::queueEmoteMessage);
-
-        connect(text_input_, &TextInputWidget::sendJoinRoomRequest, this, &ChatPage::joinRoom);
-
-        // invites and bans via quick command
-        connect(text_input_, &TextInputWidget::sendInviteRoomRequest, this, &ChatPage::inviteUser);
-        connect(text_input_, &TextInputWidget::sendKickRoomRequest, this, &ChatPage::kickUser);
-        connect(text_input_, &TextInputWidget::sendBanRoomRequest, this, &ChatPage::banUser);
-        connect(text_input_, &TextInputWidget::sendUnbanRoomRequest, this, &ChatPage::unbanUser);
-
-        connect(
-          text_input_, &TextInputWidget::changeRoomNick, this, [this](const QString &displayName) {
-                  mtx::events::state::Member member;
-                  member.display_name = displayName.toStdString();
-                  member.avatar_url =
-                    cache::avatarUrl(currentRoom(),
-                                     QString::fromStdString(http::client()->user_id().to_string()))
-                      .toStdString();
-                  member.membership = mtx::events::state::Membership::Join;
-
-                  http::client()->send_state_event(
-                    currentRoom().toStdString(),
-                    http::client()->user_id().to_string(),
-                    member,
-                    [](mtx::responses::EventId, mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->error("Failed to set room displayname: {}",
-                                                        err->matrix_error.error);
-                    });
-          });
 
         connect(
           text_input_,

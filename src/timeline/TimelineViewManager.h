@@ -104,8 +104,6 @@ public slots:
         void setHistoryView(const QString &room_id);
         void updateColorPalette();
         void queueReactionMessage(const QString &reactedEvent, const QString &reactionKey);
-        void queueTextMessage(const QString &msg);
-        void queueEmoteMessage(const QString &msg);
         void queueImageMessage(const QString &roomid,
                                const QString &filename,
                                const std::optional<mtx::crypto::EncryptedFile> &file,
@@ -138,12 +136,6 @@ public slots:
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
 
         void updateEncryptedDescriptions();
-
-        void clearCurrentRoomTimeline()
-        {
-                if (timeline_)
-                        timeline_->clearTimeline();
-        }
 
         void enableBackButton()
         {

@@ -58,9 +58,14 @@ Rectangle {
                 onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
 
+                Connections {
+                    target: TimelineManager.timeline.input
+                    function onInsertText(text_) { textArea.insert(textArea.cursorPosition, text_); }
+                }
+
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
-                        TimelineManager.timeline.input.paste(false) || textArea.paste()
+                        TimelineManager.timeline.input.paste(false)
                         event.accepted = true
                     }
                     else if (event.matches(StandardKey.InsertParagraphSeparator)) {
@@ -75,7 +80,7 @@ Rectangle {
                     anchors.fill: parent
                     acceptedButtons: Qt.MiddleButton
                     cursorShape: Qt.IBeamCursor
-                    onClicked: TimelineManager.timeline.input.paste(true) || textArea.paste()
+                    onClicked: TimelineManager.timeline.input.paste(true)
                 }
 
                 background: Rectangle {

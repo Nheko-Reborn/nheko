@@ -170,9 +170,6 @@ private slots:
         void addSelectedEmoji(const QString &emoji);
 
 signals:
-        void sendTextMessage(const QString &msg);
-        void sendEmoteMessage(QString msg);
-        void clearRoomTimeline();
         void heightChanged(int height);
 
         void uploadMedia(const QSharedPointer<QIODevice> data,
@@ -186,7 +183,6 @@ signals:
         void sendBanRoomRequest(const QString &userid, const QString &reason);
         void sendUnbanRoomRequest(const QString &userid, const QString &reason);
         void changeRoomNick(const QString &displayname);
-        void rotateMegolmSession();
 
         void startedTyping();
         void stoppedTyping();
@@ -197,7 +193,6 @@ protected:
 
 private:
         void showUploadSpinner();
-        void command(QString name, QString args);
 
         QHBoxLayout *topLayout_;
         FilteredTextEdit *input_;
