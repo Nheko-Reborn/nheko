@@ -61,6 +61,7 @@ public:
         QString callPartyAvatarUrl() const { return callManager_->callPartyAvatarUrl(); }
         bool isMicMuted() const { return WebRTCSession::instance().isMicMuted(); }
         Q_INVOKABLE void toggleMicMute();
+        Q_INVOKABLE void toggleCameraView();
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;

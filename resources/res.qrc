@@ -74,6 +74,7 @@
         <file>icons/ui/end-call.png</file>
         <file>icons/ui/microphone-mute.png</file>
         <file>icons/ui/microphone-unmute.png</file>
+        <file>icons/ui/toggle-camera-view.png</file>
         <file>icons/ui/video-call.png</file>
 
         <file>icons/emoji-categories/people.png</file>

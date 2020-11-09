@@ -53,6 +53,7 @@ public:
 
         bool isMicMuted() const;
         bool toggleMicMute();
+        void toggleCameraView();
         void end();
 
         void setTurnServers(const std::vector<std::string> &uris) { turnServers_ = uris; }
