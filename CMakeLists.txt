@@ -449,7 +449,7 @@ pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.14 gstreamer-we
 
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
-add_subdirectory(third_party/SingleApplication-3.1.3.1/)
+add_subdirectory(third_party/SingleApplication-3.2.0-dc8042b/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

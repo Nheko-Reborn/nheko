@@ -107,29 +107,7 @@ main(int argc, char *argv[])
         // needed for settings so need to register before any settings are read to prevent warnings
         qRegisterMetaType<UserSettings::Presence>();
 
-        // This is some hacky programming, but it's necessary (AFAIK?) to get the unique config name
-        // parsed before the app name is set.
-        QString appName{"nheko"};
-        for (int i = 0; i < argc; ++i) {
-                if (QString{argv[i]}.startsWith("--profile=")) {
-                        QString q{argv[i]};
-                        q.remove("--profile=");
-                        appName += "-" + q;
-                } else if (QString{argv[i]}.startsWith("--p=")) {
-                        QString q{argv[i]};
-                        q.remove("-p=");
-                        appName += "-" + q;
-                } else if (QString{argv[i]} == "--profile" || QString{argv[i]} == "-p") {
-                        if (i < argc - 1) // if i is less than argc - 1, we still have a parameter
-                                          // left to process as the name
-                        {
-                                ++i; // the next arg is the name, so increment
-                                appName += "-" + QString{argv[i]};
-                        }
-                }
-        }
-
-        QCoreApplication::setApplicationName(appName);
+        QCoreApplication::setApplicationName("nheko");
         QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");
         QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
@@ -147,12 +125,36 @@ main(int argc, char *argv[])
         }
 #endif
 
+        // This is some hacky programming, but it's necessary (AFAIK?) to get the unique config name
+        // parsed before the SingleApplication userdata is set.
+        QString userdata{""};
+        for (int i = 0; i < argc; ++i) {
+                if (QString{argv[i]}.startsWith("--profile=")) {
+                        QString q{argv[i]};
+                        q.remove("--profile=");
+                        userdata = q;
+                } else if (QString{argv[i]}.startsWith("--p=")) {
+                        QString q{argv[i]};
+                        q.remove("-p=");
+                        userdata = q;
+                } else if (QString{argv[i]} == "--profile" || QString{argv[i]} == "-p") {
+                        if (i < argc - 1) // if i is less than argc - 1, we still have a parameter
+                                          // left to process as the name
+                        {
+                                ++i; // the next arg is the name, so increment
+                                userdata = QString{argv[i]};
+                        }
+                }
+        }
+
         SingleApplication app(argc,
                               argv,
                               false,
                               SingleApplication::Mode::User |
                                 SingleApplication::Mode::ExcludeAppPath |
-                                SingleApplication::Mode::ExcludeAppVersion);
+                                SingleApplication::Mode::ExcludeAppVersion,
+                              100,
+                              userdata);
 
         QCommandLineParser parser;
         parser.addHelpOption();
@@ -194,14 +196,17 @@ main(int argc, char *argv[])
                 std::exit(1);
         }
 
-        QSettings settings;
+        UserSettings settings;
+
+        if (parser.isSet(configName))
+                settings.setProfile(parser.value(configName));
 
         QFont font;
-        QString userFontFamily = settings.value("user/font_family", "").toString();
+        QString userFontFamily = settings.font();
         if (!userFontFamily.isEmpty()) {
                 font.setFamily(userFontFamily);
         }
-        font.setPointSizeF(settings.value("user/font_size", font.pointSizeF()).toDouble());
+        font.setPointSizeF(settings.fontSize());
 
         app.setFont(font);
 
@@ -216,13 +221,12 @@ main(int argc, char *argv[])
         appTranslator.load(QLocale(), "nheko", "_", ":/translations");
         app.installTranslator(&appTranslator);
 
-        MainWindow w{(appName == "nheko" ? "" : appName.remove("nheko-"))};
+        MainWindow w;
 
         // Move the MainWindow to the center
         w.move(screenCenter(w.width(), w.height()));
 
-        if (!settings.value("user/window/start_in_tray", false).toBool() ||
-            !settings.value("user/window/tray", true).toBool())
+        if (!settings.startInTray() && !settings.tray())
                 w.show();
 
         QObject::connect(&app, &QApplication::aboutToQuit, &w, [&w]() {

@@ -21,6 +21,7 @@
 
 #include <QByteArray>
 #include <QCoreApplication>
+#include <QCryptographicHash>
 #include <QFile>
 #include <QHash>
 #include <QMap>
@@ -41,6 +42,7 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Olm.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 
 //! Should be changed when a breaking change occurs in the cache format.
@@ -165,17 +167,15 @@ Cache::Cache(const QString &userId, QObject *parent)
 void
 Cache::setup()
 {
+        UserSettings settings;
+
         nhlog::db()->debug("setting up cache");
 
-        auto statePath = QString("%1/%2")
-                           .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                           .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()));
-
-        cacheDirectory_ = QString("%1/%2")
+        cacheDirectory_ = QString("%1/%2%3")
                             .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                            .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()));
+                            .arg(QString::fromUtf8(localUserId_.toUtf8().toHex())).arg(QString::fromUtf8(settings.profile().toUtf8().toHex()));
 
-        bool isInitial = !QFile::exists(statePath);
+        bool isInitial = !QFile::exists(cacheDirectory_);
 
         env_ = lmdb::env::create();
         env_.set_mapsize(DB_SIZE);
@@ -184,9 +184,9 @@ Cache::setup()
         if (isInitial) {
                 nhlog::db()->info("initializing LMDB");
 
-                if (!QDir().mkpath(statePath)) {
+                if (!QDir().mkpath(cacheDirectory_)) {
                         throw std::runtime_error(
-                          ("Unable to create state directory:" + statePath).toStdString().c_str());
+                          ("Unable to create state directory:" + cacheDirectory_).toStdString().c_str());
                 }
         }
 
@@ -194,7 +194,7 @@ Cache::setup()
                 // NOTE(Nico): We may want to use (MDB_MAPASYNC | MDB_WRITEMAP) in the future, but
                 // it can really mess up our database, so we shouldn't. For now, hopefully
                 // NOMETASYNC is fast enough.
-                env_.open(statePath.toStdString().c_str(), MDB_NOMETASYNC | MDB_NOSYNC);
+                env_.open(cacheDirectory_.toStdString().c_str(), MDB_NOMETASYNC | MDB_NOSYNC);
         } catch (const lmdb::error &e) {
                 if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
                         throw std::runtime_error("LMDB initialization failed" +
@@ -203,15 +203,14 @@ Cache::setup()
 
                 nhlog::db()->warn("resetting cache due to LMDB version mismatch: {}", e.what());
 
-                QDir stateDir(statePath);
+                QDir stateDir(cacheDirectory_);
 
                 for (const auto &file : stateDir.entryList(QDir::NoDotAndDotDot)) {
                         if (!stateDir.remove(file))
                                 throw std::runtime_error(
                                   ("Unable to delete file " + file).toStdString().c_str());
                 }
-
-                env_.open(statePath.toStdString().c_str());
+                env_.open(cacheDirectory_.toStdString().c_str());
         }
 
         auto txn         = lmdb::txn::begin(env_);
@@ -577,10 +576,14 @@ Cache::restoreOlmAccount()
 void
 Cache::storeSecret(const std::string &name, const std::string &secret)
 {
+      UserSettings settings;
         QKeychain::WritePasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey(QString::fromStdString(name));
+        job.setKey(
+          "matrix." +
+          QString(QCryptographicHash::hash(settings.profile().toUtf8(), QCryptographicHash::Sha256)) +
+          "." + name.c_str());
         job.setTextData(QString::fromStdString(secret));
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
@@ -598,10 +601,14 @@ Cache::storeSecret(const std::string &name, const std::string &secret)
 void
 Cache::deleteSecret(const std::string &name)
 {
+        UserSettings settings;
         QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey(QString::fromStdString(name));
+        job.setKey(
+          "matrix." +
+          QString(QCryptographicHash::hash(settings.profile().toUtf8(), QCryptographicHash::Sha256)) +
+          "." + name.c_str());
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();
@@ -613,10 +620,14 @@ Cache::deleteSecret(const std::string &name)
 std::optional<std::string>
 Cache::secret(const std::string &name)
 {
+        UserSettings settings;
         QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey(QString::fromStdString(name));
+        job.setKey(
+          "matrix." +
+          QString(QCryptographicHash::hash(settings.profile().toUtf8(), QCryptographicHash::Sha256)) +
+          "." + name.c_str());
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();
