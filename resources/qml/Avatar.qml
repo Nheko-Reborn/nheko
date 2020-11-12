@@ -33,7 +33,7 @@ Rectangle {
         asynchronous: true
         fillMode: Image.PreserveAspectCrop
         mipmap: true
-        smooth: false
+        smooth: true
         sourceSize.width: avatar.width
         sourceSize.height: avatar.height
         layer.enabled: true

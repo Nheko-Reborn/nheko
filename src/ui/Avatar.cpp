@@ -121,7 +121,9 @@ Avatar::paintEvent(QPaintEvent *)
         bool rounded = QSettings().value("user/avatar_circles", true).toBool();
 
         QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
+
+        painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform |
+                               QPainter::TextAntialiasing);
 
         QRectF r     = rect();
         const int hs = size_ / 2;
