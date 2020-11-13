@@ -453,8 +453,8 @@ FilteredTextEdit::completerRect()
         auto item_height = completer_->popup()->sizeHintForRow(0);
         auto max_height  = item_height * completer_->maxVisibleItems();
         auto height      = (completer_->completionCount() > completer_->maxVisibleItems())
-                        ? max_height
-                        : completer_->completionCount() * item_height;
+                             ? max_height
+                             : completer_->completionCount() * item_height;
         rect.setWidth(completer_->popup()->sizeHintForColumn(0));
         rect.moveBottom(-height);
         return rect;
