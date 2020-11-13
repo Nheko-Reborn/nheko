@@ -83,6 +83,7 @@ UserSettings::load()
         presence_ =
           settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
             .value<Presence>();
+        ringtone_         = settings.value("user/ringtone", "Default").toString();
         microphone_       = settings.value("user/microphone", QString()).toString();
         camera_           = settings.value("user/camera", QString()).toString();
         cameraResolution_ = settings.value("user/camera_resolution", QString()).toString();
@@ -322,6 +323,16 @@ UserSettings::setShareKeysWithTrustedUsers(bool shareKeys)
 }
 
 void
+UserSettings::setRingtone(QString ringtone)
+{
+        if (ringtone == ringtone_)
+                return;
+        ringtone_ = ringtone;
+        emit ringtoneChanged(ringtone);
+        save();
+}
+
+void
 UserSettings::setMicrophone(QString microphone)
 {
         if (microphone == microphone_)
@@ -450,6 +461,7 @@ UserSettings::save()
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
         settings.setValue("presence", QVariant::fromValue(presence_));
+        settings.setValue("ringtone", ringtone_);
         settings.setValue("microphone", microphone_);
         settings.setValue("camera", camera_);
         settings.setValue("camera_resolution", cameraResolution_);
@@ -530,6 +542,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         fontSizeCombo_             = new QComboBox{this};
         fontSelectionCombo_        = new QFontComboBox{this};
         emojiFontSelectionCombo_   = new QComboBox{this};
+        ringtoneCombo_             = new QComboBox{this};
         microphoneCombo_           = new QComboBox{this};
         cameraCombo_               = new QComboBox{this};
         cameraResolutionCombo_     = new QComboBox{this};
@@ -720,14 +733,26 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         formLayout_->addRow(callsLabel);
         formLayout_->addRow(new HorizontalLine{this});
+        boxWrap(tr("Ringtone"),
+                ringtoneCombo_,
+                tr("Set the notification sound to play when a call invite arrives"));
         boxWrap(tr("Microphone"), microphoneCombo_);
         boxWrap(tr("Camera"), cameraCombo_);
         boxWrap(tr("Camera resolution"), cameraResolutionCombo_);
         boxWrap(tr("Camera frame rate"), cameraFrameRateCombo_);
+
+        ringtoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        ringtoneCombo_->addItem("Mute");
+        ringtoneCombo_->addItem("Default");
+        ringtoneCombo_->addItem("Other...");
+        const QString &ringtone = settings_->ringtone();
+        if (!ringtone.isEmpty() && ringtone != "Mute" && ringtone != "Default")
+                ringtoneCombo_->addItem(ringtone);
         microphoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         cameraCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         cameraResolutionCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         cameraFrameRateCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+
         boxWrap(tr("Allow fallback call assist server"),
                 useStunServer_,
                 tr("Will use turn.matrix.org as assist when your home server does not offer one."));
@@ -785,6 +810,34 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(emojiFontSelectionCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
+
+        connect(ringtoneCombo_,
+                static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+                [this](const QString &ringtone) {
+                        if (ringtone == "Other...") {
+                                QString homeFolder =
+                                  QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+                                auto filepath = QFileDialog::getOpenFileName(
+                                  this, tr("Select a file"), homeFolder, tr("All Files (*)"));
+                                if (!filepath.isEmpty()) {
+                                        const auto &oldSetting = settings_->ringtone();
+                                        if (oldSetting != "Mute" && oldSetting != "Default")
+                                                ringtoneCombo_->removeItem(
+                                                  ringtoneCombo_->findText(oldSetting));
+                                        settings_->setRingtone(filepath);
+                                        ringtoneCombo_->addItem(filepath);
+                                        ringtoneCombo_->setCurrentText(filepath);
+                                } else {
+                                        ringtoneCombo_->setCurrentText(settings_->ringtone());
+                                }
+                        } else if (ringtone == "Mute" || ringtone == "Default") {
+                                const auto &oldSetting = settings_->ringtone();
+                                if (oldSetting != "Mute" && oldSetting != "Default")
+                                        ringtoneCombo_->removeItem(
+                                          ringtoneCombo_->findText(oldSetting));
+                                settings_->setRingtone(ringtone);
+                        }
+                });
 
         connect(microphoneCombo_,
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
@@ -916,6 +969,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         utils::restoreCombobox(fontSizeCombo_, QString::number(settings_->fontSize()) + " ");
         utils::restoreCombobox(scaleFactorCombo_, QString::number(utils::scaleFactor()));
         utils::restoreCombobox(themeCombo_, settings_->theme());
+        utils::restoreCombobox(ringtoneCombo_, settings_->ringtone());
 
         // FIXME: Toggle treats true as "off"
         trayToggle_->setState(!settings_->tray());

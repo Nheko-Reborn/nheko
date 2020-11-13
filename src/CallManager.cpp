@@ -98,7 +98,7 @@ CallManager::CallManager(QObject *parent)
         connect(&session_, &WebRTCSession::stateChanged, this, [this](webrtc::State state) {
                 switch (state) {
                 case webrtc::State::DISCONNECTED:
-                        playRingtone("qrc:/media/media/callend.ogg", false);
+                        playRingtone(QUrl("qrc:/media/media/callend.ogg"), false);
                         clear();
                         break;
                 case webrtc::State::ICEFAILED: {
@@ -120,6 +120,24 @@ CallManager::CallManager(QObject *parent)
                 [this](QMediaPlayer::MediaStatus status) {
                         if (status == QMediaPlayer::LoadedMedia)
                                 player_.play();
+                });
+
+        connect(&player_,
+                QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+                [this](QMediaPlayer::Error error) {
+                        stopRingtone();
+                        switch (error) {
+                        case QMediaPlayer::FormatError:
+                        case QMediaPlayer::ResourceError:
+                                nhlog::ui()->error("WebRTC: valid ringtone file not found");
+                                break;
+                        case QMediaPlayer::AccessDeniedError:
+                                nhlog::ui()->error("WebRTC: access to ringtone file denied");
+                                break;
+                        default:
+                                nhlog::ui()->error("WebRTC: unable to play ringtone");
+                                break;
+                        }
                 });
 }
 
@@ -153,7 +171,7 @@ CallManager::sendInvite(const QString &roomid, bool isVideo)
         callPartyName_      = callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
         emit newCallParty();
-        playRingtone("qrc:/media/media/ringback.ogg", true);
+        playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
         if (!session_.createOffer(isVideo)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 endCall();
@@ -247,7 +265,11 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                 return;
         }
 
-        playRingtone("qrc:/media/media/ring.ogg", true);
+        const QString &ringtone = ChatPage::instance()->userSettings()->ringtone();
+        if (ringtone != "Mute")
+                playRingtone(ringtone == "Default" ? QUrl("qrc:/media/media/ring.ogg")
+                                                   : QUrl::fromLocalFile(ringtone),
+                             true);
         roomid_ = QString::fromStdString(callInviteEvent.room_id);
         callid_ = callInviteEvent.content.call_id;
         remoteICECandidates_.clear();
@@ -409,13 +431,13 @@ CallManager::retrieveTurnServer()
 }
 
 void
-CallManager::playRingtone(const QString &ringtone, bool repeat)
+CallManager::playRingtone(const QUrl &ringtone, bool repeat)
 {
         static QMediaPlaylist playlist;
         playlist.clear();
         playlist.setPlaybackMode(repeat ? QMediaPlaylist::CurrentItemInLoop
                                         : QMediaPlaylist::CurrentItemOnce);
-        playlist.addMedia(QUrl(ringtone));
+        playlist.addMedia(ringtone);
         player_.setVolume(100);
         player_.setPlaylist(&playlist);
 }

@@ -15,6 +15,7 @@ namespace mtx::responses {
 struct TurnServer;
 }
 
+class QUrl;
 class WebRTCSession;
 
 class CallManager : public QObject
@@ -69,6 +70,6 @@ private:
         void generateCallID();
         void clear();
         void endCall();
-        void playRingtone(const QString &ringtone, bool repeat);
+        void playRingtone(const QUrl &ringtone, bool repeat);
         void stopRingtone();
 };

@@ -73,6 +73,7 @@ class UserSettings : public QObject
         Q_PROPERTY(
           QString emojiFont READ emojiFont WRITE setEmojiFontFamily NOTIFY emojiFontChanged)
         Q_PROPERTY(Presence presence READ presence WRITE setPresence NOTIFY presenceChanged)
+        Q_PROPERTY(QString ringtone READ ringtone WRITE setRingtone NOTIFY ringtoneChanged)
         Q_PROPERTY(QString microphone READ microphone WRITE setMicrophone NOTIFY microphoneChanged)
         Q_PROPERTY(QString camera READ camera WRITE setCamera NOTIFY cameraChanged)
         Q_PROPERTY(QString cameraResolution READ cameraResolution WRITE setCameraResolution NOTIFY
@@ -120,6 +121,7 @@ public:
         void setAvatarCircles(bool state);
         void setDecryptSidebar(bool state);
         void setPresence(Presence state);
+        void setRingtone(QString ringtone);
         void setMicrophone(QString microphone);
         void setCamera(QString camera);
         void setCameraResolution(QString resolution);
@@ -152,6 +154,7 @@ public:
         QString font() const { return font_; }
         QString emojiFont() const { return emojiFont_; }
         Presence presence() const { return presence_; }
+        QString ringtone() const { return ringtone_; }
         QString microphone() const { return microphone_; }
         QString camera() const { return camera_; }
         QString cameraResolution() const { return cameraResolution_; }
@@ -181,6 +184,7 @@ signals:
         void fontChanged(QString state);
         void emojiFontChanged(QString state);
         void presenceChanged(Presence state);
+        void ringtoneChanged(QString ringtone);
         void microphoneChanged(QString microphone);
         void cameraChanged(QString camera);
         void cameraResolutionChanged(QString resolution);
@@ -216,6 +220,7 @@ private:
         QString font_;
         QString emojiFont_;
         Presence presence_;
+        QString ringtone_;
         QString microphone_;
         QString camera_;
         QString cameraResolution_;
@@ -286,6 +291,7 @@ private:
         QComboBox *fontSizeCombo_;
         QFontComboBox *fontSelectionCombo_;
         QComboBox *emojiFontSelectionCombo_;
+        QComboBox *ringtoneCombo_;
         QComboBox *microphoneCombo_;
         QComboBox *cameraCombo_;
         QComboBox *cameraResolutionCombo_;
