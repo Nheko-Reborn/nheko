@@ -50,7 +50,9 @@ Rectangle {
         }
 
         Connections {
-            function onCallStateChanged(state) {
+            target: TimelineManager
+
+            onCallStateChanged: {
                 switch (state) {
                 case WebRTCState.INITIATING:
                     callStateLabel.text = qsTr("Initiating...");
@@ -73,8 +75,6 @@ Rectangle {
                     stackLayout.currentIndex = 0;
                 }
             }
-
-            target: TimelineManager
         }
 
         Timer {

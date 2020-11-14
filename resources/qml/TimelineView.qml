@@ -128,25 +128,25 @@ Page {
         }
 
         Connections {
-            function onNewDeviceVerificationRequest(flow, transactionId, userId, deviceId, isRequest) {
+            target: TimelineManager
+
+            onNewDeviceVerificationRequest: {
                 var dialog = deviceVerificationDialog.createObject(timelineRoot, {
                     "flow": flow
                 });
                 dialog.show();
             }
-
-            target: TimelineManager
         }
 
         Connections {
-            function onOpenProfile(profile) {
+            target: TimelineManager.timeline
+            
+            onOpenProfile: {
                 var userProfile = userProfileComponent.createObject(timelineRoot, {
                     "profile": profile
                 });
                 userProfile.show();
             }
-
-            target: TimelineManager.timeline
         }
 
         Label {
