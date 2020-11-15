@@ -88,10 +88,6 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
         typingTimer_->setSingleShot(true);
 
         connect(typingTimer_, &QTimer::timeout, this, &FilteredTextEdit::stopTyping);
-        connect(&previewDialog_,
-                &dialogs::PreviewUploadOverlay::confirmUpload,
-                this,
-                &FilteredTextEdit::uploadData);
 
         connect(this, &FilteredTextEdit::resultsRetrieved, this, &FilteredTextEdit::showResults);
         connect(
@@ -355,81 +351,6 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
         }
 }
 
-bool
-FilteredTextEdit::canInsertFromMimeData(const QMimeData *source) const
-{
-        return (source->hasImage() || QTextEdit::canInsertFromMimeData(source));
-}
-
-void
-FilteredTextEdit::insertFromMimeData(const QMimeData *source)
-{
-        qInfo() << "Got mime formats: \n" << source->formats();
-        const auto formats = source->formats().filter("/");
-        const auto image   = formats.filter("image/", Qt::CaseInsensitive);
-        const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
-        const auto video   = formats.filter("video/", Qt::CaseInsensitive);
-
-        if (!image.empty() && source->hasImage()) {
-                QImage img = qvariant_cast<QImage>(source->imageData());
-                previewDialog_.setPreview(img, image.front());
-        } else if (!audio.empty()) {
-                showPreview(source, audio);
-        } else if (!video.empty()) {
-                showPreview(source, video);
-        } else if (source->hasUrls()) {
-                // Generic file path for any platform.
-                QString path;
-                for (auto &&u : source->urls()) {
-                        if (u.isLocalFile()) {
-                                path = u.toLocalFile();
-                                break;
-                        }
-                }
-
-                if (!path.isEmpty() && QFileInfo{path}.exists()) {
-                        previewDialog_.setPreview(path);
-                } else {
-                        qWarning()
-                          << "Clipboard does not contain any valid file paths:" << source->urls();
-                }
-        } else if (source->hasFormat("x-special/gnome-copied-files")) {
-                // Special case for X11 users. See "Notes for X11 Users" in source.
-                // Source: http://doc.qt.io/qt-5/qclipboard.html
-
-                // This MIME type returns a string with multiple lines separated by '\n'. The first
-                // line is the command to perform with the clipboard (not useful to us). The
-                // following lines are the file URIs.
-                //
-                // Source: the nautilus source code in file 'src/nautilus-clipboard.c' in function
-                // nautilus_clipboard_get_uri_list_from_selection_data()
-                // https://github.com/GNOME/nautilus/blob/master/src/nautilus-clipboard.c
-
-                auto data = source->data("x-special/gnome-copied-files").split('\n');
-                if (data.size() < 2) {
-                        qWarning() << "MIME format is malformed, cannot perform paste.";
-                        return;
-                }
-
-                QString path;
-                for (int i = 1; i < data.size(); ++i) {
-                        QUrl url{data[i]};
-                        if (url.isLocalFile()) {
-                                path = url.toLocalFile();
-                                break;
-                        }
-                }
-
-                if (!path.isEmpty()) {
-                        previewDialog_.setPreview(path);
-                } else {
-                        qWarning() << "Clipboard does not contain any valid file paths:" << data;
-                }
-        } else {
-                QTextEdit::insertFromMimeData(source);
-        }
-}
-
 void
 FilteredTextEdit::stopTyping()
 {
@@ -492,28 +413,6 @@ void
 FilteredTextEdit::textChanged()
 {
         working_history_[history_index_] = toPlainText();
-}
-
-void
-FilteredTextEdit::uploadData(const QByteArray data,
-                             const QString &mediaType,
-                             const QString &filename)
-{
-        QSharedPointer<QBuffer> buffer{new QBuffer{this}};
-        buffer->setData(data);
-
-        emit startedUpload();
-
-        emit media(buffer, mediaType, filename);
-}
-
-void
-FilteredTextEdit::showPreview(const QMimeData *source, const QStringList &formats)
-{
-        // Retrieve data as MIME type.
-        auto const &mime = formats.first();
-        QByteArray data  = source->data(mime);
-        previewDialog_.setPreview(data, mime);
 }
 
 TextInputWidget::TextInputWidget(QWidget *parent)
@@ -624,7 +523,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 #endif
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
-        connect(input_, &FilteredTextEdit::media, this, &TextInputWidget::uploadMedia);
         connect(emojiBtn_,
                 SIGNAL(emojiSelected(const QString &)),
                 this,
@@ -633,9 +531,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         connect(input_, &FilteredTextEdit::startedTyping, this, &TextInputWidget::startedTyping);
 
         connect(input_, &FilteredTextEdit::stoppedTyping, this, &TextInputWidget::stoppedTyping);
-
-        connect(
-          input_, &FilteredTextEdit::startedUpload, this, &TextInputWidget::showUploadSpinner);
 }
 
 void
@@ -652,47 +547,6 @@ TextInputWidget::addSelectedEmoji(const QString &emoji)
         input_->setCurrentCharFormat(charfmt);
 
         input_->show();
-}
-
-void
-TextInputWidget::openFileSelection()
-{
-        const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-        const auto fileName =
-          QFileDialog::getOpenFileName(this, tr("Select a file"), homeFolder, tr("All Files (*)"));
-
-        if (fileName.isEmpty())
-                return;
-
-        QMimeDatabase db;
-        QMimeType mime = db.mimeTypeForFile(fileName, QMimeDatabase::MatchContent);
-
-        const auto format = mime.name().split("/")[0];
-
-        QSharedPointer<QFile> file{new QFile{fileName, this}};
-
-        emit uploadMedia(file, format, QFileInfo(fileName).fileName());
-
-        showUploadSpinner();
-}
-
-void
-TextInputWidget::showUploadSpinner()
-{
-        topLayout_->removeWidget(sendFileBtn_);
-        sendFileBtn_->hide();
-
-        topLayout_->insertWidget(1, spinner_);
-        spinner_->start();
-}
-
-void
-TextInputWidget::hideUploadSpinner()
-{
-        topLayout_->removeWidget(spinner_);
-        topLayout_->insertWidget(1, sendFileBtn_);
-        sendFileBtn_->show();
-        spinner_->stop();
 }
 
 void

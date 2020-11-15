@@ -57,9 +57,6 @@ signals:
         void startedTyping();
         void stoppedTyping();
         void startedUpload();
-        void message(QString msg);
-        void command(QString name, QString args);
-        void media(QSharedPointer<QIODevice> data, QString mimeClass, const QString &filename);
 
         //! Trigger the suggestion popup.
         void showSuggestions(const QString &query);
@@ -73,8 +70,6 @@ public slots:
 
 protected:
         void keyPressEvent(QKeyEvent *event) override;
-        bool canInsertFromMimeData(const QMimeData *source) const override;
-        void insertFromMimeData(const QMimeData *source) override;
         void focusOutEvent(QFocusEvent *event) override
         {
                 suggestionsPopup_.hide();
@@ -131,9 +126,7 @@ private:
 
         void insertCompletion(QString completion);
         void textChanged();
-        void uploadData(const QByteArray data, const QString &media, const QString &filename);
         void afterCompletion(int);
-        void showPreview(const QMimeData *source, const QStringList &formats);
 };
 
 class TextInputWidget : public QWidget
@@ -161,8 +154,6 @@ public:
         }
 
 public slots:
-        void openFileSelection();
-        void hideUploadSpinner();
         void focusLineEdit() { input_->setFocus(); }
         void changeCallButtonState(webrtc::State);
 
@@ -172,9 +163,6 @@ private slots:
 signals:
         void heightChanged(int height);
 
-        void uploadMedia(const QSharedPointer<QIODevice> data,
-                         QString mimeClass,
-                         const QString &filename);
         void callButtonPress();
 
         void sendJoinRoomRequest(const QString &room);
@@ -192,8 +180,6 @@ protected:
         void paintEvent(QPaintEvent *) override;
 
 private:
-        void showUploadSpinner();
-
         QHBoxLayout *topLayout_;
         FilteredTextEdit *input_;
 

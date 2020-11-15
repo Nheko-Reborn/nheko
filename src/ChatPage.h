@@ -126,17 +126,6 @@ signals:
         void highlightedNotifsRetrieved(const mtx::responses::Notifications &,
                                         const QPoint widgetPos);
 
-        void uploadFailed(const QString &msg);
-        void mediaUploaded(const QString &roomid,
-                           const QString &filename,
-                           const std::optional<mtx::crypto::EncryptedFile> &file,
-                           const QString &url,
-                           const QString &mimeClass,
-                           const QString &mime,
-                           qint64 dsize,
-                           const QSize &dimensions,
-                           const QString &blurhash);
-
         void contentLoaded();
         void closing();
         void changeWindowTitle(const int);

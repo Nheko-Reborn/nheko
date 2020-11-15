@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
-
 import im.nheko 1.0
 
 Rectangle {
@@ -36,6 +35,20 @@ Rectangle {
             image: ":/icons/icons/ui/paper-clip-outline.png"
             Layout.topMargin: 8
             Layout.bottomMargin: 8
+            onClicked: TimelineManager.timeline.input.openFileSelection()
+
+            Rectangle {
+                anchors.fill: parent
+                color: colors.window
+                visible: TimelineManager.timeline.input.uploading
+
+                NhekoBusyIndicator {
+                    anchors.fill: parent
+                    running: parent.visible
+                }
+
+            }
+
         }
 
         ScrollView {
@@ -52,27 +65,27 @@ Rectangle {
                 placeholderTextColor: colors.buttonText
                 color: colors.text
                 wrapMode: TextEdit.Wrap
-
                 onTextChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onCursorPositionChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
-
-                Connections {
-                    target: TimelineManager.timeline.input
-                    function onInsertText(text_) { textArea.insert(textArea.cursorPosition, text_); }
-                }
-
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
-                        TimelineManager.timeline.input.paste(false)
-                        event.accepted = true
+                        TimelineManager.timeline.input.paste(false);
+                        event.accepted = true;
+                    } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
+                        TimelineManager.timeline.input.send();
+                        textArea.clear();
+                        event.accepted = true;
                     }
-                    else if (event.matches(StandardKey.InsertParagraphSeparator)) {
-                        TimelineManager.timeline.input.send()
-                        textArea.clear()
-                        event.accepted = true
+                }
+
+                Connections {
+                    function onInsertText(text_) {
+                        textArea.insert(textArea.cursorPosition, text_);
                     }
+
+                    target: TimelineManager.timeline.input
                 }
 
                 MouseArea {
@@ -110,6 +123,10 @@ Rectangle {
             Layout.topMargin: 8
             Layout.bottomMargin: 8
             Layout.rightMargin: 16
+            onClicked: {
+                TimelineManager.timeline.input.send();
+                textArea.clear();
+            }
         }
 
     }

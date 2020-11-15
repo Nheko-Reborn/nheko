@@ -192,13 +192,15 @@ Page {
 
                     StackLayout {
                         id: stackLayout
+
                         currentIndex: 0
 
                         Connections {
-                            target: TimelineManager
                             function onActiveTimelineChanged() {
                                 stackLayout.currentIndex = 0;
                             }
+
+                            target: TimelineManager
                         }
 
                         MessageView {
@@ -210,6 +212,7 @@ Page {
                             source: TimelineManager.onVideoCall ? "VideoCall.qml" : ""
                             onLoaded: TimelineManager.setVideoCallItem()
                         }
+
                     }
 
                     TypingIndicator {

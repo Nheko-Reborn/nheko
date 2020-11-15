@@ -132,6 +132,7 @@
         <file>qml/Avatar.qml</file>
         <file>qml/ImageButton.qml</file>
         <file>qml/MatrixText.qml</file>
+        <file>qml/NhekoBusyIndicator.qml</file>
         <file>qml/StatusIndicator.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
         <file>qml/Reactions.qml</file>

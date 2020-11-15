@@ -150,7 +150,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
-        Q_PROPERTY(InputBar *input READ input)
+        Q_PROPERTY(InputBar *input READ input CONSTANT)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager,
