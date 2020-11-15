@@ -88,9 +88,7 @@ Rectangle {
                 }
 
                 Connections {
-                    function onInsertText(text_) {
-                        textArea.insert(textArea.cursorPosition, text_);
-                    }
+                    onInsertText: textArea.insert(textArea.cursorPosition, text);
 
                     target: TimelineManager.timeline.input
                 }
