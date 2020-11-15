@@ -244,6 +244,26 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                 &CallManager::newVideoCallState,
                 this,
                 &TimelineViewManager::videoCallChanged);
+
+        connect(&WebRTCSession::instance(),
+                &WebRTCSession::stateChanged,
+                this,
+                &TimelineViewManager::onCallChanged);
+}
+
+bool
+TimelineViewManager::isOnCall() const
+{
+        return callManager_->onActiveCall();
+}
+bool
+TimelineViewManager::callsSupported() const
+{
+#ifdef GSTREAMER_AVAILABLE
+        return true;
+#else
+        return false;
+#endif
 }
 
 void
@@ -506,122 +526,6 @@ TimelineViewManager::queueReactionMessage(const QString &reactedEvent, const QSt
                 timeline_->redactEvent(selfReactedEvent);
         }
 }
-
-void
-TimelineViewManager::queueImageMessage(const QString &roomid,
-                                       const QString &filename,
-                                       const std::optional<mtx::crypto::EncryptedFile> &file,
-                                       const QString &url,
-                                       const QString &mime,
-                                       uint64_t dsize,
-                                       const QSize &dimensions,
-                                       const QString &blurhash)
-{
-        mtx::events::msg::Image image;
-        image.info.mimetype = mime.toStdString();
-        image.info.size     = dsize;
-        image.info.blurhash = blurhash.toStdString();
-        image.body          = filename.toStdString();
-        image.info.h        = dimensions.height();
-        image.info.w        = dimensions.width();
-
-        if (file)
-                image.file = file;
-        else
-                image.url = url.toStdString();
-
-        auto model = models.value(roomid);
-        if (!model->reply().isEmpty()) {
-                image.relates_to.in_reply_to.event_id = model->reply().toStdString();
-                model->resetReply();
-        }
-
-        model->sendMessageEvent(image, mtx::events::EventType::RoomMessage);
-}
-
-void
-TimelineViewManager::queueFileMessage(
-  const QString &roomid,
-  const QString &filename,
-  const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
-  const QString &url,
-  const QString &mime,
-  uint64_t dsize)
-{
-        mtx::events::msg::File file;
-        file.info.mimetype = mime.toStdString();
-        file.info.size     = dsize;
-        file.body          = filename.toStdString();
-
-        if (encryptedFile)
-                file.file = encryptedFile;
-        else
-                file.url = url.toStdString();
-
-        auto model = models.value(roomid);
-        if (!model->reply().isEmpty()) {
-                file.relates_to.in_reply_to.event_id = model->reply().toStdString();
-                model->resetReply();
-        }
-
-        model->sendMessageEvent(file, mtx::events::EventType::RoomMessage);
-}
-
-void
-TimelineViewManager::queueAudioMessage(const QString &roomid,
-                                       const QString &filename,
-                                       const std::optional<mtx::crypto::EncryptedFile> &file,
-                                       const QString &url,
-                                       const QString &mime,
-                                       uint64_t dsize)
-{
-        mtx::events::msg::Audio audio;
-        audio.info.mimetype = mime.toStdString();
-        audio.info.size     = dsize;
-        audio.body          = filename.toStdString();
-        audio.url           = url.toStdString();
-
-        if (file)
-                audio.file = file;
-        else
-                audio.url = url.toStdString();
-
-        auto model = models.value(roomid);
-        if (!model->reply().isEmpty()) {
-                audio.relates_to.in_reply_to.event_id = model->reply().toStdString();
-                model->resetReply();
-        }
-
-        model->sendMessageEvent(audio, mtx::events::EventType::RoomMessage);
-}
-
-void
-TimelineViewManager::queueVideoMessage(const QString &roomid,
-                                       const QString &filename,
-                                       const std::optional<mtx::crypto::EncryptedFile> &file,
-                                       const QString &url,
-                                       const QString &mime,
-                                       uint64_t dsize)
-{
-        mtx::events::msg::Video video;
-        video.info.mimetype = mime.toStdString();
-        video.info.size     = dsize;
-        video.body          = filename.toStdString();
-
-        if (file)
-                video.file = file;
-        else
-                video.url = url.toStdString();
-
-        auto model = models.value(roomid);
-        if (!model->reply().isEmpty()) {
-                video.relates_to.in_reply_to.event_id = model->reply().toStdString();
-                model->resetReply();
-        }
-
-        model->sendMessageEvent(video, mtx::events::EventType::RoomMessage);
-}
-
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
                                       const mtx::events::msg::CallInvite &callInvite)

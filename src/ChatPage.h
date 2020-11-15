@@ -88,6 +88,7 @@ public:
         static ChatPage *instance() { return instance_; }
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
+        CallManager *callManager() { return callManager_; }
         void deleteConfigs();
 
         CommunitiesList *communitiesList() { return communitiesList_; }

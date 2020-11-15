@@ -6,8 +6,8 @@ BusyIndicator {
     id: control
 
     contentItem: Item {
-        implicitWidth: Math.min(parent.height, parent.width)
-        implicitHeight: implicitWidth
+        implicitWidth: 64
+        implicitHeight: 64
 
         Item {
             id: item

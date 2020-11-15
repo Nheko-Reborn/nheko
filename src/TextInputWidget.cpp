@@ -431,15 +431,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         topLayout_->setSpacing(0);
         topLayout_->setContentsMargins(13, 1, 13, 0);
 
-#ifdef GSTREAMER_AVAILABLE
-        callBtn_ = new FlatButton(this);
-        changeCallButtonState(webrtc::State::DISCONNECTED);
-        connect(&WebRTCSession::instance(),
-                &WebRTCSession::stateChanged,
-                this,
-                &TextInputWidget::changeCallButtonState);
-#endif
-
         QIcon send_file_icon;
         send_file_icon.addFile(":/icons/icons/ui/paper-clip-outline.png");
 
@@ -508,9 +499,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         emojiBtn_->setIcon(emoji_icon);
         emojiBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
-#ifdef GSTREAMER_AVAILABLE
-        topLayout_->addWidget(callBtn_);
-#endif
         topLayout_->addWidget(sendFileBtn_);
         topLayout_->addWidget(input_);
         topLayout_->addWidget(emojiBtn_);
@@ -518,9 +506,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         setLayout(topLayout_);
 
-#ifdef GSTREAMER_AVAILABLE
-        connect(callBtn_, &FlatButton::clicked, this, &TextInputWidget::callButtonPress);
-#endif
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
         connect(emojiBtn_,
@@ -569,19 +554,4 @@ TextInputWidget::paintEvent(QPaintEvent *)
         QPainter p(this);
 
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-void
-TextInputWidget::changeCallButtonState(webrtc::State state)
-{
-        QIcon icon;
-        if (state == webrtc::State::ICEFAILED || state == webrtc::State::DISCONNECTED) {
-                callBtn_->setToolTip(tr("Place a call"));
-                icon.addFile(":/icons/icons/ui/place-call.png");
-        } else {
-                callBtn_->setToolTip(tr("Hang up"));
-                icon.addFile(":/icons/icons/ui/end-call.png");
-        }
-        callBtn_->setIcon(icon);
-        callBtn_->setIconSize(QSize(ButtonHeight * 1.1, ButtonHeight * 1.1));
 }

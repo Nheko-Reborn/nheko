@@ -268,38 +268,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 this,
                 SIGNAL(unreadMessages(int)));
 
-        connect(text_input_, &TextInputWidget::callButtonPress, this, [this]() {
-                if (callManager_->onActiveCall()) {
-                        callManager_->hangUp();
-                } else {
-                        if (auto roomInfo = cache::singleRoomInfo(current_room_.toStdString());
-                            roomInfo.member_count != 2) {
-                                showNotification("Calls are limited to 1:1 rooms.");
-                        } else {
-                                std::vector<RoomMember> members(
-                                  cache::getMembers(current_room_.toStdString()));
-                                const RoomMember &callee =
-                                  members.front().user_id == utils::localUser() ? members.back()
-                                                                                : members.front();
-                                auto dialog = new dialogs::PlaceCall(
-                                  callee.user_id,
-                                  callee.display_name,
-                                  QString::fromStdString(roomInfo.name),
-                                  QString::fromStdString(roomInfo.avatar_url),
-                                  userSettings_,
-                                  MainWindow::instance());
-                                connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
-                                        callManager_->sendInvite(current_room_, false);
-                                });
-                                connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
-                                        callManager_->sendInvite(current_room_, true);
-                                });
-                                utils::centerWidget(dialog, MainWindow::instance());
-                                dialog->show();
-                        }
-                }
-        });
-
         connect(
           this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
 

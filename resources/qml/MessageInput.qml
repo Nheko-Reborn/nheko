@@ -17,14 +17,18 @@ Rectangle {
         spacing: 16
 
         ImageButton {
+            visible: TimelineManager.callsSupported
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
             height: 22
-            image: ":/icons/icons/ui/place-call.png"
+            image: TimelineManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
+            ToolTip.visible: hovered
+            ToolTip.text: TimelineManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
             Layout.topMargin: 8
             Layout.bottomMargin: 8
             Layout.leftMargin: 16
+            onClicked: TimelineManager.timeline.input.callButton()
         }
 
         ImageButton {
@@ -35,7 +39,10 @@ Rectangle {
             image: ":/icons/icons/ui/paper-clip-outline.png"
             Layout.topMargin: 8
             Layout.bottomMargin: 8
+            Layout.leftMargin: TimelineManager.callsSupported ? 0 : 16
             onClicked: TimelineManager.timeline.input.openFileSelection()
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Send a file")
 
             Rectangle {
                 anchors.fill: parent
@@ -112,6 +119,8 @@ Rectangle {
             image: ":/icons/icons/ui/smile.png"
             Layout.topMargin: 8
             Layout.bottomMargin: 8
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Emoji")
         }
 
         ImageButton {
@@ -123,6 +132,8 @@ Rectangle {
             Layout.topMargin: 8
             Layout.bottomMargin: 8
             Layout.rightMargin: 16
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Send")
             onClicked: {
                 TimelineManager.timeline.input.send();
                 textArea.clear();

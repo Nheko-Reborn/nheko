@@ -26,7 +26,6 @@
 #include <QTextEdit>
 #include <QWidget>
 
-#include "WebRTCSession.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/PickButton.h"
 #include "popups/SuggestionsPopup.h"
@@ -155,15 +154,12 @@ public:
 
 public slots:
         void focusLineEdit() { input_->setFocus(); }
-        void changeCallButtonState(webrtc::State);
 
 private slots:
         void addSelectedEmoji(const QString &emoji);
 
 signals:
         void heightChanged(int height);
-
-        void callButtonPress();
 
         void sendJoinRoomRequest(const QString &room);
         void sendInviteRoomRequest(const QString &userid, const QString &reason);
@@ -185,7 +181,6 @@ private:
 
         LoadingIndicator *spinner_;
 
-        FlatButton *callBtn_;
         FlatButton *sendFileBtn_;
         FlatButton *sendMessageBtn_;
         emoji::PickButton *emojiBtn_;
