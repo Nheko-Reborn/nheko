@@ -34,7 +34,10 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
           // that warning, which is useless, since sometimes you need the pixel size to match the
           // text to the size of the outer element for example. This is done in the avatar and
           // without that you get one warning for every Avatar displayed, which is stupid!
-          msg.endsWith("Both point size and pixel size set. Using pixel size."))
+          msg.endsWith("Both point size and pixel size set. Using pixel size.") ||
+          // The new syntax breaks rebinding on Qt < 5.15. Until we can drop that, we still need it.
+          msg.endsWith("QML Connections: Implicitly defined onFoo properties in Connections are "
+                       "deprecated. Use this syntax instead: function onFoo(<arguments>) { ... }"))
                 return;
 
         switch (type) {
