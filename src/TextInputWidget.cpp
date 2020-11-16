@@ -486,52 +486,17 @@ TextInputWidget::TextInputWidget(QWidget *parent)
         sendMessageBtn_->setIcon(send_message_icon);
         sendMessageBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
 
-        emojiBtn_ = new emoji::PickButton(this);
-        emojiBtn_->setToolTip(tr("Emoji"));
-
-#if defined(Q_OS_MAC)
-        // macOS has a native emoji picker.
-        emojiBtn_->hide();
-#endif
-
-        QIcon emoji_icon;
-        emoji_icon.addFile(":/icons/icons/ui/smile.png");
-        emojiBtn_->setIcon(emoji_icon);
-        emojiBtn_->setIconSize(QSize(ButtonHeight, ButtonHeight));
-
         topLayout_->addWidget(sendFileBtn_);
         topLayout_->addWidget(input_);
-        topLayout_->addWidget(emojiBtn_);
         topLayout_->addWidget(sendMessageBtn_);
 
         setLayout(topLayout_);
 
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
-        connect(emojiBtn_,
-                SIGNAL(emojiSelected(const QString &)),
-                this,
-                SLOT(addSelectedEmoji(const QString &)));
-
         connect(input_, &FilteredTextEdit::startedTyping, this, &TextInputWidget::startedTyping);
 
         connect(input_, &FilteredTextEdit::stoppedTyping, this, &TextInputWidget::stoppedTyping);
-}
-
-void
-TextInputWidget::addSelectedEmoji(const QString &emoji)
-{
-        QTextCursor cursor = input_->textCursor();
-
-        QTextCharFormat charfmt;
-        input_->setCurrentCharFormat(charfmt);
-
-        input_->insertPlainText(emoji);
-        cursor.movePosition(QTextCursor::End);
-
-        input_->setCurrentCharFormat(charfmt);
-
-        input_->show();
 }
 
 void

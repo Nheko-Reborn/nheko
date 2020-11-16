@@ -72,7 +72,9 @@ Page {
 
         MenuItem {
             text: qsTr("React")
-            onClicked: emojiPopup.show(messageContextMenu.parent, messageContextMenu.eventId)
+            onClicked: emojiPopup.show(messageContextMenu.parent, function(emoji) {
+                TimelineManager.queueReactionMessage(messageContextMenu.eventId, emoji);
+            })
         }
 
         MenuItem {

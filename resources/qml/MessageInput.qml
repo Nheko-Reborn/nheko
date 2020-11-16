@@ -88,8 +88,7 @@ Rectangle {
                 }
 
                 Connections {
-                    onInsertText: textArea.insert(textArea.cursorPosition, text);
-
+                    onInsertText: textArea.insert(textArea.cursorPosition, text)
                     target: TimelineManager.timeline.input
                 }
 
@@ -110,6 +109,8 @@ Rectangle {
         }
 
         ImageButton {
+            id: emojiButton
+
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             hoverEnabled: true
             width: 22
@@ -119,6 +120,9 @@ Rectangle {
             Layout.bottomMargin: 8
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+                textArea.insert(textArea.cursorPosition, emoji);
+            })
         }
 
         ImageButton {

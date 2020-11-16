@@ -27,7 +27,6 @@
 #include <QWidget>
 
 #include "dialogs/PreviewUploadOverlay.h"
-#include "emoji/PickButton.h"
 #include "popups/SuggestionsPopup.h"
 
 struct SearchResult;
@@ -155,9 +154,6 @@ public:
 public slots:
         void focusLineEdit() { input_->setFocus(); }
 
-private slots:
-        void addSelectedEmoji(const QString &emoji);
-
 signals:
         void heightChanged(int height);
 
@@ -183,7 +179,5 @@ private:
 
         FlatButton *sendFileBtn_;
         FlatButton *sendMessageBtn_;
-        emoji::PickButton *emojiBtn_;
-
         QColor borderColor_;
 };
