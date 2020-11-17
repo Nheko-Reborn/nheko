@@ -141,9 +141,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         text_input_ = new TextInputWidget(this);
         contentLayout_->addWidget(text_input_);
 
-        typingRefresher_ = new QTimer(this);
-        typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
-
         connect(this, &ChatPage::connectionLost, this, [this]() {
                 nhlog::net()->info("connectivity lost");
                 isConnected_ = false;
@@ -221,9 +218,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(room_list_, &RoomList::roomChanged, this, [this](QString room_id) {
                 this->current_room_ = room_id;
         });
-        connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
-        connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
         connect(
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
@@ -235,27 +230,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(room_list_, &RoomList::declineInvite, this, [this](const QString &room_id) {
                 leaveRoom(room_id);
                 room_list_->removeRoom(room_id, currentRoom() == room_id);
-        });
-
-        connect(
-          text_input_, &TextInputWidget::startedTyping, this, &ChatPage::sendTypingNotifications);
-        connect(typingRefresher_, &QTimer::timeout, this, &ChatPage::sendTypingNotifications);
-        connect(text_input_, &TextInputWidget::stoppedTyping, this, [this]() {
-                if (!userSettings_->typingNotifications())
-                        return;
-
-                typingRefresher_->stop();
-
-                if (current_room_.isEmpty())
-                        return;
-
-                http::client()->stop_typing(
-                  current_room_.toStdString(), [](mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn("failed to stop typing notifications: {}",
-                                                     err->matrix_error.error);
-                          }
-                  });
         });
 
         connect(view_manager_,
@@ -433,12 +407,6 @@ ChatPage::resetUI()
         view_manager_->clearAll();
 
         emit unreadMessages(0);
-}
-
-void
-ChatPage::focusMessageInput()
-{
-        this->text_input_->focusLineEdit();
 }
 
 void
@@ -1097,21 +1065,6 @@ void
 ChatPage::receivedSessionKey(const std::string &room_id, const std::string &session_id)
 {
         view_manager_->receivedSessionKey(room_id, session_id);
-}
-
-void
-ChatPage::sendTypingNotifications()
-{
-        if (!userSettings_->typingNotifications())
-                return;
-
-        http::client()->start_typing(
-          current_room_.toStdString(), 10'000, [](mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to send typing notification: {}",
-                                             err->matrix_error.error);
-                  }
-          });
 }
 
 QString

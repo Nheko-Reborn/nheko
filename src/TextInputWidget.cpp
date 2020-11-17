@@ -83,12 +83,6 @@ FilteredTextEdit::FilteredTextEdit(QWidget *parent)
                         insertCompletion(emoji);
                 });
 
-        typingTimer_ = new QTimer(this);
-        typingTimer_->setInterval(1000);
-        typingTimer_->setSingleShot(true);
-
-        connect(typingTimer_, &QTimer::timeout, this, &FilteredTextEdit::stopTyping);
-
         connect(this, &FilteredTextEdit::resultsRetrieved, this, &FilteredTextEdit::showResults);
         connect(
           &suggestionsPopup_, &SuggestionsPopup::itemSelected, this, [this](const QString &text) {
@@ -163,13 +157,6 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
         if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_U)
                 QTextEdit::setText("");
-
-        if (!isModifier) {
-                if (!typingTimer_->isActive())
-                        emit startedTyping();
-
-                typingTimer_->start();
-        }
 
         // calculate the new query
         if (textCursor().position() < atTriggerPosition_ || !isAnchorValid()) {
@@ -264,7 +251,6 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
                 }
 
                 if (!(event->modifiers() & Qt::ShiftModifier)) {
-                        stopTyping();
                         submit();
                 } else {
                         QTextEdit::keyPressEvent(event);
@@ -349,13 +335,6 @@ FilteredTextEdit::keyPressEvent(QKeyEvent *event)
 
                 break;
         }
-}
-
-void
-FilteredTextEdit::stopTyping()
-{
-        typingTimer_->stop();
-        emit stoppedTyping();
 }
 
 QRect
@@ -494,15 +473,6 @@ TextInputWidget::TextInputWidget(QWidget *parent)
 
         connect(sendMessageBtn_, &FlatButton::clicked, input_, &FilteredTextEdit::submit);
         connect(sendFileBtn_, SIGNAL(clicked()), this, SLOT(openFileSelection()));
-        connect(input_, &FilteredTextEdit::startedTyping, this, &TextInputWidget::startedTyping);
-
-        connect(input_, &FilteredTextEdit::stoppedTyping, this, &TextInputWidget::stoppedTyping);
-}
-
-void
-TextInputWidget::stopTyping()
-{
-        input_->stopTyping();
 }
 
 void

@@ -100,7 +100,6 @@ public:
         //! Show the room/group list (if it was visible).
         void showSideBars();
         void initiateLogout();
-        void focusMessageInput();
 
         QString status() const;
         void setStatus(const QString &status);
@@ -191,7 +190,6 @@ private slots:
         void removeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
 
-        void sendTypingNotifications();
         void handleSyncResponse(const mtx::responses::Sync &res);
 
 private:
@@ -264,8 +262,6 @@ private:
         UserInfoWidget *user_info_widget_;
 
         popups::UserMentions *user_mentions_popup_;
-
-        QTimer *typingRefresher_;
 
         // Global user settings.
         QSharedPointer<UserSettings> userSettings_;

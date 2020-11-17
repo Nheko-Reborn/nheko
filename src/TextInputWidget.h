@@ -43,8 +43,6 @@ class FilteredTextEdit : public QTextEdit
 public:
         explicit FilteredTextEdit(QWidget *parent = nullptr);
 
-        void stopTyping();
-
         QSize sizeHint() const override;
         QSize minimumSizeHint() const override;
 
@@ -52,8 +50,6 @@ public:
 
 signals:
         void heightChanged(int height);
-        void startedTyping();
-        void stoppedTyping();
         void startedUpload();
 
         //! Trigger the suggestion popup.
@@ -81,7 +77,6 @@ private:
         int trigger_pos_; // Where emoji completer was triggered
         size_t history_index_;
         QCompleter *completer_;
-        QTimer *typingTimer_;
 
         SuggestionsPopup suggestionsPopup_;
 
@@ -136,8 +131,6 @@ class TextInputWidget : public QWidget
 public:
         TextInputWidget(QWidget *parent = nullptr);
 
-        void stopTyping();
-
         QColor borderColor() const { return borderColor_; }
         void setBorderColor(QColor &color) { borderColor_ = color; }
         void disableInput()
@@ -163,9 +156,6 @@ signals:
         void sendBanRoomRequest(const QString &userid, const QString &reason);
         void sendUnbanRoomRequest(const QString &userid, const QString &reason);
         void changeRoomNick(const QString &displayname);
-
-        void startedTyping();
-        void stoppedTyping();
 
 protected:
         void focusInEvent(QFocusEvent *event) override;

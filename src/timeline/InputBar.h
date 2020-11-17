@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QTimer>
 #include <deque>
 
 #include <mtx/common.hpp>
@@ -19,7 +20,14 @@ public:
         InputBar(TimelineModel *parent)
           : QObject()
           , room(parent)
-        {}
+        {
+                typingRefresh_.setInterval(10'000);
+                typingRefresh_.setSingleShot(true);
+                typingTimeout_.setInterval(5'000);
+                typingTimeout_.setSingleShot(true);
+                connect(&typingRefresh_, &QTimer::timeout, this, &InputBar::startTyping);
+                connect(&typingTimeout_, &QTimer::timeout, this, &InputBar::stopTyping);
+        }
 
 public slots:
         void send();
@@ -28,6 +36,10 @@ public slots:
         void openFileSelection();
         bool uploading() const { return uploading_; }
         void callButton();
+
+private slots:
+        void startTyping();
+        void stopTyping();
 
 signals:
         void insertText(QString text);
@@ -69,6 +81,8 @@ private:
                 }
         }
 
+        QTimer typingRefresh_;
+        QTimer typingTimeout_;
         TimelineModel *room;
         QString text;
         std::deque<QString> history_;

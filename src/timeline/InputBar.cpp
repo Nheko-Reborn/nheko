@@ -114,6 +114,11 @@ InputBar::paste(bool fromMouse)
 void
 InputBar::updateState(int selectionStart_, int selectionEnd_, int cursorPosition_, QString text_)
 {
+        if (text_.isEmpty())
+                stopTyping();
+        else
+                startTyping();
+
         selectionStart = selectionStart_;
         selectionEnd   = selectionEnd_;
         cursorPosition = cursorPosition_;
@@ -555,4 +560,40 @@ InputBar::callButton()
                         dialog->show();
                 }
         }
+}
+
+void
+InputBar::startTyping()
+{
+        if (!typingRefresh_.isActive()) {
+                typingRefresh_.start();
+
+                if (ChatPage::instance()->userSettings()->typingNotifications()) {
+                        http::client()->start_typing(
+                          room->roomId().toStdString(), 10'000, [](mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn(
+                                            "failed to send typing notification: {}",
+                                            err->matrix_error.error);
+                                  }
+                          });
+                }
+        }
+        typingTimeout_.start();
+}
+void
+InputBar::stopTyping()
+{
+        typingRefresh_.stop();
+        typingTimeout_.stop();
+
+        if (!ChatPage::instance()->userSettings()->typingNotifications())
+                return;
+
+        http::client()->stop_typing(room->roomId().toStdString(), [](mtx::http::RequestErr err) {
+                if (err) {
+                        nhlog::net()->warn("failed to stop typing notifications: {}",
+                                           err->matrix_error.error);
+                }
+        });
 }
