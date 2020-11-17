@@ -119,39 +119,77 @@ InputBar::updateState(int selectionStart_, int selectionEnd_, int cursorPosition
         else
                 startTyping();
 
+        if (text_ != text()) {
+                if (history_.empty())
+                        history_.push_front(text_);
+                else
+                        history_.front() = text_;
+                history_index_ = 0;
+        }
+
         selectionStart = selectionStart_;
         selectionEnd   = selectionEnd_;
         cursorPosition = cursorPosition_;
-        text           = text_;
+}
+
+QString
+InputBar::text() const
+{
+        if (history_index_ < history_.size())
+                return history_.at(history_index_);
+
+        return "";
+}
+
+QString
+InputBar::previousText()
+{
+        history_index_++;
+        if (history_index_ >= INPUT_HISTORY_SIZE)
+                history_index_ = INPUT_HISTORY_SIZE;
+        else if (text().isEmpty())
+                history_index_--;
+
+        return text();
+}
+
+QString
+InputBar::nextText()
+{
+        history_index_--;
+        if (history_index_ >= INPUT_HISTORY_SIZE)
+                history_index_ = 0;
+
+        return text();
 }
 
 void
 InputBar::send()
 {
-        if (text.trimmed().isEmpty())
+        if (text().trimmed().isEmpty())
                 return;
 
-        if (history_.size() == INPUT_HISTORY_SIZE)
-                history_.pop_back();
-        history_.push_front(text);
-        history_index_ = 0;
-
-        if (text.startsWith('/')) {
-                int command_end = text.indexOf(' ');
+        if (text().startsWith('/')) {
+                int command_end = text().indexOf(' ');
                 if (command_end == -1)
-                        command_end = text.size();
-                auto name = text.mid(1, command_end - 1);
-                auto args = text.mid(command_end + 1);
+                        command_end = text().size();
+                auto name = text().mid(1, command_end - 1);
+                auto args = text().mid(command_end + 1);
                 if (name.isEmpty() || name == "/") {
                         message(args);
                 } else {
                         command(name, args);
                 }
         } else {
-                message(text);
+                message(text());
         }
 
-        nhlog::ui()->debug("Send: {}", text.toStdString());
+        nhlog::ui()->debug("Send: {}", text().toStdString());
+
+        if (history_.size() == INPUT_HISTORY_SIZE)
+                history_.pop_back();
+        history_.push_front("");
+        history_index_ = 0;
 }
 
 void

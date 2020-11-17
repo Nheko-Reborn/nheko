@@ -84,7 +84,10 @@ Rectangle {
                         TimelineManager.timeline.input.send();
                         textArea.clear();
                         event.accepted = true;
-                    }
+                    } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P)
+                        textArea.text = TimelineManager.timeline.input.previousText();
+                    else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N)
+                        textArea.text = TimelineManager.timeline.input.nextText();
                 }
 
                 Connections {

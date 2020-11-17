@@ -30,6 +30,10 @@ public:
         }
 
 public slots:
+        QString text() const;
+        QString previousText();
+        QString nextText();
+
         void send();
         void paste(bool fromMouse);
         void updateState(int selectionStart, int selectionEnd, int cursorPosition, QString text);
@@ -84,7 +88,6 @@ private:
         QTimer typingRefresh_;
         QTimer typingTimeout_;
         TimelineModel *room;
-        QString text;
         std::deque<QString> history_;
         std::size_t history_index_ = 0;
         int selectionStart = 0, selectionEnd = 0, cursorPosition = 0;
