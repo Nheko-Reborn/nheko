@@ -130,6 +130,16 @@ CommunitiesList::addCommunity(const std::string &group_id)
         communities_.emplace(id, QSharedPointer<CommunitiesListItem>(list_item));
         contentsLayout_->insertWidget(contentsLayout_->count() - 1, list_item);
 
+        connect(list_item,
+                &CommunitiesListItem::clicked,
+                this,
+                &CommunitiesList::highlightSelectedCommunity);
+
+        if (group_id.empty() || group_id.front() != '+')
+                return;
+
+        nhlog::ui()->debug("Add community: {}", group_id);
+
         connect(this,
                 &CommunitiesList::groupProfileRetrieved,
                 this,
@@ -152,10 +162,6 @@ CommunitiesList::addCommunity(const std::string &group_id)
 
                         communities_.at(id)->setRooms(rooms);
                 });
-        connect(list_item,
-                &CommunitiesListItem::clicked,
-                this,
-                &CommunitiesList::highlightSelectedCommunity);
 
         http::client()->group_profile(
           group_id, [id, this](const mtx::responses::GroupProfile &res, mtx::http::RequestErr err) {
