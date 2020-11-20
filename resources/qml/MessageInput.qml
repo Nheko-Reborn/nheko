@@ -129,7 +129,7 @@ Rectangle {
                         event.accepted = true;
                     }
                     if (popup.opened)
-                        popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
+                        popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition) + event.text);
 
                 }
 

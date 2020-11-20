@@ -90,27 +90,27 @@ public:
                   sourceModel()->data(source_left, CompletionModel::SearchRole).toString();
                 auto left2 =
                   sourceModel()->data(source_left, CompletionModel::SearchRole2).toString();
-                auto left = left1.toLower().indexOf(searchString);
+                auto left = (size_t)left1.toLower().indexOf(searchString);
                 // utils::levenshtein_distance(searchString, left1.toLower().toStdString());
                 if (!left2.isEmpty()) {
                         // left = std::min(
                         //  utils::levenshtein_distance(searchString,
                         //  left2.toLower().toStdString()), left);
-                        left = std::min(left2.toLower().indexOf(searchString), left);
+                        left = std::min((size_t)left2.toLower().indexOf(searchString), left);
                 }
 
                 auto right1 =
                   sourceModel()->data(source_right, CompletionModel::SearchRole).toString();
                 auto right2 =
                   sourceModel()->data(source_right, CompletionModel::SearchRole2).toString();
-                auto right = right1.toLower().indexOf(searchString);
+                auto right = (size_t)right1.toLower().indexOf(searchString);
                 // auto right =
                 //  utils::levenshtein_distance(searchString, right1.toLower().toStdString());
                 if (!right2.isEmpty()) {
                         // right = std::min(
                         //  utils::levenshtein_distance(searchString,
                         //  right2.toLower().toStdString()), right);
-                        right = std::min(right2.toLower().indexOf(searchString), right);
+                        right = std::min((size_t)right2.toLower().indexOf(searchString), right);
                 }
 
                 return left < right;
