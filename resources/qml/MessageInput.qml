@@ -68,28 +68,72 @@ Rectangle {
             TextArea {
                 id: textArea
 
+                property int completerTriggeredAt: -1
+
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: colors.buttonText
                 color: colors.text
                 wrapMode: TextEdit.Wrap
                 onTextChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
-                onCursorPositionChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onCursorPositionChanged: {
+                    TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
+                    if (cursorPosition < completerTriggeredAt) {
+                        completerTriggeredAt = -1;
+                        popup.close();
+                    }
+                }
                 onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                // Ensure that we get escape key press events first.
+                Keys.onShortcutOverride: event.accepted = (completerTriggeredAt != -1 && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
                         TimelineManager.timeline.input.paste(false);
                         event.accepted = true;
+                    } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
+                        textArea.clear();
+                    } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P) {
+                        textArea.text = TimelineManager.timeline.input.previousText();
+                    } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
+                        textArea.text = TimelineManager.timeline.input.nextText();
+                    } else if (event.key == Qt.Key_At) {
+                        completerTriggeredAt = cursorPosition + 1;
+                        popup.completerName = "user";
+                        popup.open();
+                    } else if (event.key == Qt.Key_Escape && popup.opened) {
+                        completerTriggeredAt = -1;
+                        event.accepted = true;
+                        popup.close();
+                    } else if (event.matches(StandardKey.InsertParagraphSeparator) && popup.opened) {
+                        var currentCompletion = popup.currentCompletion();
+                        popup.close();
+                        if (currentCompletion) {
+                            textArea.remove(completerTriggeredAt - 1, cursorPosition);
+                            textArea.insert(cursorPosition, currentCompletion);
+                            event.accepted = true;
+                            return ;
+                        }
+                    } else if (event.key == Qt.Key_Tab && popup.opened) {
+                        event.accepted = true;
+                        popup.down();
+                    } else if (event.key == Qt.Key_Up && popup.opened) {
+                        event.accepted = true;
+                        popup.up();
+                    } else if (event.key == Qt.Key_Down && popup.opened) {
+                        event.accepted = true;
+                        popup.down();
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         TimelineManager.timeline.input.send();
                         textArea.clear();
                         event.accepted = true;
-                    } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U)
-                        textArea.clear();
-                    else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P)
-                        textArea.text = TimelineManager.timeline.input.previousText();
-                    else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N)
-                        textArea.text = TimelineManager.timeline.input.nextText();
+                    }
+                }
+
+                Completer {
+                    id: popup
+
+                    x: textArea.positionToRectangle(textArea.completerTriggeredAt).x
+                    y: textArea.positionToRectangle(textArea.completerTriggeredAt).y - height
                 }
 
                 Connections {

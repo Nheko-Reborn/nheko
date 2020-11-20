@@ -41,6 +41,8 @@ public slots:
         bool uploading() const { return uploading_; }
         void callButton();
 
+        QObject *completerFor(QString completerName);
+
 private slots:
         void startTyping();
         void stopTyping();

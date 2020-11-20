@@ -163,6 +163,12 @@ InputBar::nextText()
         return text();
 }
 
+QObject *
+InputBar::completerFor(QString completerName)
+{
+        return nullptr;
+}
+
 void
 InputBar::send()
 {
