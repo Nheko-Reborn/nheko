@@ -299,7 +299,6 @@ set(SRC_FILES
 	src/SSOHandler.cpp
 	src/SideBarActions.cpp
 	src/Splitter.cpp
-	src/TextInputWidget.cpp
 	src/TrayIcon.cpp
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
@@ -505,7 +504,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/SSOHandler.h
 	src/SideBarActions.h
 	src/Splitter.h
-	src/TextInputWidget.h
 	src/TrayIcon.h
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h

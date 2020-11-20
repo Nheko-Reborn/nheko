@@ -39,7 +39,6 @@
 #include "RoomList.h"
 #include "SideBarActions.h"
 #include "Splitter.h"
-#include "TextInputWidget.h"
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -138,18 +137,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         splitter->addWidget(content_);
         splitter->restoreSizes(parent->width());
 
-        text_input_ = new TextInputWidget(this);
-        contentLayout_->addWidget(text_input_);
-
         connect(this, &ChatPage::connectionLost, this, [this]() {
                 nhlog::net()->info("connectivity lost");
                 isConnected_ = false;
                 http::client()->shutdown();
-                text_input_->disableInput();
         });
         connect(this, &ChatPage::connectionRestored, this, [this]() {
                 nhlog::net()->info("trying to re-connect");
-                text_input_->enableInput();
                 isConnected_ = true;
 
                 // Drop all pending connections.
@@ -573,7 +567,6 @@ ChatPage::showQuickSwitcher()
         connect(dialog, &QuickSwitcher::roomSelected, room_list_, &RoomList::highlightSelectedRoom);
         connect(dialog, &QuickSwitcher::closing, this, [this]() {
                 MainWindow::instance()->hideOverlay();
-                text_input_->setFocus(Qt::FocusReason::PopupFocusReason);
         });
 
         MainWindow::instance()->showTransparentOverlayModal(dialog);

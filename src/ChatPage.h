@@ -46,7 +46,6 @@ class QuickSwitcher;
 class RoomList;
 class SideBarActions;
 class Splitter;
-class TextInputWidget;
 class TimelineViewManager;
 class UserInfoWidget;
 class UserSettings;
@@ -250,8 +249,6 @@ private:
 
         TimelineViewManager *view_manager_;
         SideBarActions *sidebarActions_;
-
-        TextInputWidget *text_input_;
 
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;
