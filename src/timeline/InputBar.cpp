@@ -14,12 +14,14 @@
 #include "Cache.h"
 #include "CallManager.h"
 #include "ChatPage.h"
+#include "CompletionProxyModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Olm.h"
 #include "TimelineModel.h"
 #include "UserSettingsPage.h"
+#include "UsersModel.h"
 #include "Utils.h"
 #include "dialogs/PlaceCall.h"
 #include "dialogs/PreviewUploadOverlay.h"
@@ -166,6 +168,12 @@ InputBar::nextText()
 QObject *
 InputBar::completerFor(QString completerName)
 {
+        if (completerName == "user") {
+                auto userModel = new UsersModel(room->roomId().toStdString());
+                auto proxy     = new CompletionProxyModel(userModel);
+                userModel->setParent(proxy);
+                return proxy;
+        }
         return nullptr;
 }
 

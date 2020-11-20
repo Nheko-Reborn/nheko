@@ -2,23 +2,25 @@
 
 #include <QAbstractListModel>
 
-class RoomMember;
-
 class UsersModel : public QAbstractListModel
 {
 public:
         enum Roles
         {
-                Avatar = Qt::UserRole // QImage avatar
+                AvatarUrl = Qt::UserRole,
+                DisplayName,
         };
 
         UsersModel(const std::string &roomId, QObject *parent = nullptr);
+        QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override
         {
-                return (parent == QModelIndex()) ? roomMembers_.size() : 0;
+                (void)parent;
+                return roomMembers_.size();
         }
         QVariant data(const QModelIndex &index, int role) const override;
 
 private:
-        std::vector<RoomMember> roomMembers_;
+        std::string room_id;
+        std::vector<std::string> roomMembers_;
 };

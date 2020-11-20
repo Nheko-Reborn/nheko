@@ -77,14 +77,13 @@ Rectangle {
                 onTextChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onCursorPositionChanged: {
                     TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-                    if (cursorPosition < completerTriggeredAt) {
+                    if (cursorPosition <= completerTriggeredAt) {
                         completerTriggeredAt = -1;
                         popup.close();
                     }
                 }
                 onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
-                // Ensure that we get escape key press events first.
                 Keys.onShortcutOverride: event.accepted = (completerTriggeredAt != -1 && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
@@ -97,18 +96,20 @@ Rectangle {
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
                         textArea.text = TimelineManager.timeline.input.nextText();
                     } else if (event.key == Qt.Key_At) {
-                        completerTriggeredAt = cursorPosition + 1;
+                        completerTriggeredAt = cursorPosition;
                         popup.completerName = "user";
                         popup.open();
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completerTriggeredAt = -1;
+                        popup.completerName = "";
                         event.accepted = true;
                         popup.close();
                     } else if (event.matches(StandardKey.InsertParagraphSeparator) && popup.opened) {
                         var currentCompletion = popup.currentCompletion();
+                        popup.completerName = "";
                         popup.close();
                         if (currentCompletion) {
-                            textArea.remove(completerTriggeredAt - 1, cursorPosition);
+                            textArea.remove(completerTriggeredAt, cursorPosition);
                             textArea.insert(cursorPosition, currentCompletion);
                             event.accepted = true;
                             return ;
@@ -128,6 +129,17 @@ Rectangle {
                         event.accepted = true;
                     }
                 }
+
+                Connections {
+                    onTimelineChanged: {
+                        textArea.clear();
+                        textArea.append(TimelineManager.timeline.input.text());
+                        textArea.completerTriggeredAt = -1;
+                        popup.completerName = "";
+                    }
+                    target: TimelineManager
+                }
+                // Ensure that we get escape key press events first.
 
                 Completer {
                     id: popup

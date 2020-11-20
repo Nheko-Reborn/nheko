@@ -34,10 +34,16 @@ Popup {
     onCompleterNameChanged: {
         if (completerName)
             completer = TimelineManager.timeline.input.completerFor(completerName);
-
+        else
+            completer = undefined;
     }
     padding: 0
     onAboutToShow: currentIndex = -1
+
+    Connections {
+        onTimelineChanged: completer = null
+        target: TimelineManager
+    }
 
     ColumnLayout {
         anchors.fill: parent

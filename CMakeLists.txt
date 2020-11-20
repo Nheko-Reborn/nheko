@@ -492,6 +492,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ChatPage.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
+	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
 	src/InviteeItem.h
 	src/LoginPage.h
@@ -508,6 +509,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/TrayIcon.h
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h
+	src/UsersModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/popups/PopupItem.h
