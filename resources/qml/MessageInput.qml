@@ -99,6 +99,10 @@ Rectangle {
                         completerTriggeredAt = cursorPosition;
                         popup.completerName = "user";
                         popup.open();
+                    } else if (event.key == Qt.Key_Colon) {
+                        completerTriggeredAt = cursorPosition;
+                        popup.completerName = "emoji";
+                        popup.open();
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completerTriggeredAt = -1;
                         popup.completerName = "";

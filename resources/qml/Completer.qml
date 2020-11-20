@@ -56,24 +56,60 @@ Popup {
 
             delegate: Rectangle {
                 color: model.index == popup.currentIndex ? colors.window : colors.base
-                height: del.implicitHeight + 4
-                width: del.implicitWidth + 4
+                height: chooser.childrenRect.height + 4
+                width: chooser.childrenRect.width + 4
 
-                RowLayout {
-                    id: del
+                DelegateChooser {
+                    id: chooser
 
+                    roleValue: popup.completerName
                     anchors.centerIn: parent
 
-                    Avatar {
-                        height: 24
-                        width: 24
-                        displayName: model.displayName
-                        url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    DelegateChoice {
+                        roleValue: "user"
+
+                        RowLayout {
+                            id: del
+
+                            anchors.centerIn: parent
+
+                            Avatar {
+                                height: 24
+                                width: 24
+                                displayName: model.displayName
+                                url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            }
+
+                            Label {
+                                text: model.displayName
+                                color: colors.text
+                            }
+
+                        }
+
                     }
 
-                    Label {
-                        text: model.displayName
-                        color: colors.text
+                    DelegateChoice {
+                        roleValue: "emoji"
+
+                        RowLayout {
+                            id: del
+
+                            anchors.centerIn: parent
+
+                            Label {
+                                text: model.unicode
+                                color: colors.text
+                                font: Settings.emojiFont
+                            }
+
+                            Label {
+                                text: model.shortName
+                                color: colors.text
+                            }
+
+                        }
+
                     }
 
                 }

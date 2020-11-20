@@ -3,6 +3,8 @@
 #include <Cache.h>
 #include <MatrixClient.h>
 
+#include "CompletionModelRoles.h"
+
 using namespace emoji;
 
 QHash<int, QByteArray>
@@ -35,10 +37,12 @@ EmojiModel::data(const QModelIndex &index, int role) const
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {
                 case Qt::DisplayRole:
+                case CompletionModel::CompletionRole:
                 case static_cast<int>(EmojiModel::Roles::Unicode):
                         return Provider::emoji[index.row()].unicode;
 
                 case Qt::ToolTipRole:
+                case CompletionModel::SearchRole:
                 case static_cast<int>(EmojiModel::Roles::ShortName):
                         return Provider::emoji[index.row()].shortName;
 
