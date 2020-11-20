@@ -8,6 +8,10 @@ UsersModel::UsersModel(const std::string &roomId, QObject *parent)
   , room_id(roomId)
 {
         roomMembers_ = cache::roomMembers(roomId);
+        for (const auto &m : roomMembers_) {
+                displayNames.push_back(QString::fromStdString(cache::displayName(room_id, m)));
+                userids.push_back(QString::fromStdString(m));
+        }
 }
 
 QHash<int, QByteArray>
@@ -31,10 +35,9 @@ UsersModel::data(const QModelIndex &index, int role) const
                 case CompletionModel::SearchRole:
                 case Qt::DisplayRole:
                 case Roles::DisplayName:
-                        return QString::fromStdString(
-                          cache::displayName(room_id, roomMembers_[index.row()]));
+                        return displayNames[index.row()];
                 case CompletionModel::SearchRole2:
-                        return QString::fromStdString(roomMembers_[index.row()]);
+                        return userids[index.row()];
                 case Roles::AvatarUrl:
                         return cache::avatarUrl(QString::fromStdString(room_id),
                                                 QString::fromStdString(roomMembers_[index.row()]));

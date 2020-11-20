@@ -128,6 +128,9 @@ Rectangle {
                         textArea.clear();
                         event.accepted = true;
                     }
+                    if (popup.opened)
+                        popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
+
                 }
 
                 Connections {

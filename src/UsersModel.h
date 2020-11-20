@@ -23,4 +23,6 @@ public:
 private:
         std::string room_id;
         std::vector<std::string> roomMembers_;
+        std::vector<QString> displayNames;
+        std::vector<QString> userids;
 };
