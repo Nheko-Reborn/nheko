@@ -9,7 +9,7 @@ import im.nheko 1.0
 ListView {
     id: chat
 
-    property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width * 2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width * 2)
+    property int delegateMaxWidth: (Settings.timelineMaxWidth > 100 && (parent.width - Settings.timelineMaxWidth) > scrollbar.width * 2) ? Settings.timelineMaxWidth : (parent.width - scrollbar.width * 2 - 8)
 
     Layout.fillWidth: true
     Layout.fillHeight: true
