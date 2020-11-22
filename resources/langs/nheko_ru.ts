@@ -4,29 +4,29 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/ActiveCallBar.qml" line="+49"/>
+        <location filename="../qml/ActiveCallBar.qml" line="+58"/>
         <source>Initiating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Инициирование...</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Звонок...</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключение...</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+65"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить Микрофон</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Выключить Микрофон</translation>
     </message>
 </context>
 <context>
@@ -34,17 +34,17 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание Подтверждения</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание подтверждения у собеседника.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -52,126 +52,126 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1843"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы присоединились к этой комнате.</translation>
     </message>
 </context>
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+217"/>
+        <location filename="../../src/ChatPage.cpp" line="+220"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось пригласить пользователя: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+931"/>
+        <location line="+986"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Приглашённый пользователь: %1</translation>
     </message>
     <message>
-        <location line="-444"/>
+        <location line="-496"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Миграция кэша для текущей версии не удалась. Это может происходить по разным причинам. Пожалуйста сообщите о проблеме и попробуйте временно использовать старую версию. Так-же вы можете попробовать удалить кэш самостоятельно.</translation>
     </message>
     <message>
-        <location line="+401"/>
+        <location line="+452"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Комната %1 создана.</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтвердите приглашение</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы точно хотите пригласить %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось пригласить %1 в %2: %3</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтвердите удаление</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы точно хотите выгнать %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось выгнать %1 из %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Выгнанный пользователь: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтвердите блокировку</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы точно хотите заблокировать %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось заблокировать %1 в %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалённый пользователь: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтвердите разблокировку</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы точно хотите разблокировать %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось разблокировать %1 в %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Разблокированный пользователь: %1</translation>
     </message>
     <message>
-        <location line="-858"/>
+        <location line="-913"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось загрузить медиа. Пожалуйста попробуйте ещё раз</translation>
     </message>
     <message>
-        <location line="+332"/>
+        <location line="+335"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Миграция кэша не удалась!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Не совместимая версия кэша</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш кэш новее, чем эта версия Nheko поддерживает. Пожалуйста обновитесь или отчистите ваш кэш.</translation>
     </message>
     <message>
         <location line="+53"/>
@@ -189,25 +189,25 @@
         <translation>Не удалось настроить ключи шифрования. Ответ сервера:%1 %2. Пожалуйста, попробуйте позже.</translation>
     </message>
     <message>
-        <location line="+99"/>
-        <location line="+257"/>
+        <location line="+34"/>
+        <location line="+116"/>
         <source>Please try to login again: %1</source>
         <translation>Повторите попытку входа: %1</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="+32"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось присоединиться к комнате: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы присоединились к комнате</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось отменить приглашение: %1</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -215,7 +215,7 @@
         <translation>Не удалось создать комнату: %1</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Failed to leave room: %1</source>
         <translation>Не удалось покинуть комнату: %1</translation>
     </message>
@@ -241,7 +241,7 @@
         <location line="+2"/>
         <source>Server Notices</source>
         <comment>Tag translation for m.server_notice</comment>
-        <translation type="unfinished"></translation>
+        <translation>Серверные Оповещения</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -260,28 +260,28 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Код для Верификации</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста сверьте следующие цифры. Вы должны увидеть одинаковые числа у себя и у собеседника. Если они разные, пожалуйста нажмите &apos;Они не совпадают!&apos; для отмены верификации!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Они не совпадают!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Они совпадают!</translation>
     </message>
 </context>
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+72"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
@@ -307,47 +307,47 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+113"/>
         <location line="+181"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location line="-66"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Люди</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Природа</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Еда</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Активности</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Путешествие</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Предметы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Символы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Флаги</translation>
     </message>
 </context>
 <context>
@@ -355,22 +355,22 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Код Верификации</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста сверьте данные эмоджи. Вы должны видеть одинаковые эможди у себя и у собеседника. Если они разные, пожалуйста нажмите &apos; Они не совпадают!&apos; для отмены верификации!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Они не совпадают!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Они совпадают!</translation>
     </message>
 </context>
 <context>
@@ -378,51 +378,51 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Зашифровано</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Это сообщение не зашифровано!</translation>
     </message>
 </context>
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+519"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+522"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Зашифрованное событие (Нет найдено ключей для дешифрования) --</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+62"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Ошибка дешифрования (Не удалось получить megolm-ключи для бд) --</translation>
     </message>
     <message>
         <location line="-48"/>
         <location line="+61"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Ошибка Дешифрования (%1) --</translation>
     </message>
     <message>
         <location line="-51"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Шифрованое Событие (Неизвестный тип события) --</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>-- Replay attack! This message index was reused! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Атака повтором! Индекс этого сообщение был использован снова! --</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>-- Message by unverified device! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Сообщение от неверифицированного устройства! --</translation>
     </message>
 </context>
 <context>
@@ -430,33 +430,33 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+7"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Верификация не удалась</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Другой клиент не поддерживает наш протокол верификации.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Обнаружено несовпадение ключей!</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Время для верификации устройста закончилось.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Другая сторона отменила верификацию.</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished">Закрыть</translation>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -485,7 +485,10 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш логин. Идентификатор Matrix должен начинаться с @ продолжая пользовательским идентификатором. После создание пользовательского идентификатора, вы должны ввести адрес сервера после двоеточия :.
+Так-же вы можете поместить адрес домашнего сервера тут, если ваш сервер не поддерживает обычный поиск.
+Пример: @user:server.my
+Если Nheko не удалось определить ваш домашний сервер, то вам покажется поле, куда можно ввести адрес сервера вручную.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -500,13 +503,14 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя устройства, которое будет отображаться для других, когда верифицируют ваше устройство. Если не предоставить имя устройста,то будет использоваться имя по умолчанию.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес который будет использоваться для связи клиентского API вашего домашнего сервера.
+Пример: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -552,7 +556,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+52"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>SSO вход не удался</translation>
     </message>
 </context>
 <context>
@@ -565,7 +569,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>ОК</translation>
     </message>
 </context>
 <context>
@@ -574,62 +578,62 @@ Example: https://server.my:8787</source>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
         <location line="+9"/>
         <source>redacted</source>
-        <translation type="unfinished"></translation>
+        <translation>редактировано</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Encryption enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Шифрование включено</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>room name changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>имя комнаты изменено на: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>название комнаты убрано</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>topic changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>тема изменена на: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>тема убрана</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 создал и настроил комнату: %2</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 начал голосовой звонок.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 начал видео звонок.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 начал вызов.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ответил на звонок.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 завершил вызов.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -650,42 +654,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
         <source>Send Device Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправлен Запрос Верификации Устройства</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Recieved Device Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Получен Запрос Верификации Устройства</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Чтобы убедиться в отсутствии злоумышленников вторгнувшихся в зашифрованное общение, вы можете верифицировать устройство.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>The device was requested to be verified</source>
-        <translation type="unfinished"></translation>
+        <translation>Была запрошена верификация устройства</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Отклонить</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Начать верификацию</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">Принять</translation>
+        <translation>Принять</translation>
     </message>
 </context>
 <context>
@@ -693,25 +697,25 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>не реализованное событие</translation>
     </message>
 </context>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+172"/>
+        <location filename="../../src/main.cpp" line="+169"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>профиль</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="+1"/>
         <source>profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>имя профиля</translation>
     </message>
 </context>
 <context>
@@ -732,7 +736,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя пользователя не должно быть пустым и должно содержать только символы a-z, 0-9, ., _, =, -, and /.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -752,7 +756,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Домашний сервер</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -795,13 +799,13 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished">Закрыть</translation>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1780"/>
+        <location filename="../../src/Cache.cpp" line="+1820"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -816,7 +820,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Тэгировать комнату как:</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -846,7 +850,7 @@ Example: https://server.my:8787</source>
         <location line="+38"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation type="unfinished"></translation>
+        <translation>Добавить новый тег для комнаты</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -904,22 +908,22 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+17"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалоcь</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправлено</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Получено</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Прочитано</translation>
     </message>
 </context>
 <context>
@@ -927,17 +931,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+6"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Верификация прошла успешно</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Верификация прошла успешно! Обе стороны верефицировали свои устройства!</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished">Закрыть</translation>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -961,7 +965,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Эмоджи</translation>
     </message>
     <message>
         <location line="+96"/>
@@ -976,12 +980,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+63"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Позвонить</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Завершить звонок</translation>
     </message>
     <message>
         <location filename="../../src/TextInputWidget.h" line="-5"/>
@@ -994,34 +998,34 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished">Ошибка редактирования сообщения: %1</translation>
+        <translation>Ошибка редактирования сообщения: %1</translation>
     </message>
     <message>
         <location line="+130"/>
         <location line="+8"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось зашифровать сообщение, отправка отменена!</translation>
     </message>
     <message>
         <location line="+156"/>
         <source>Save image</source>
-        <translation type="unfinished">Сохранить изображение</translation>
+        <translation>Сохранить изображение</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить видео</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить аудио</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить файл</translation>
     </message>
     <message numerus="yes">
         <location line="+129"/>
@@ -1036,7 +1040,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 сделал комнату публичной.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1046,72 +1050,72 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 сделал комнату открытой для гостей.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 закрыл комнату для доступа гостям.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 сделал историю сообщений видимой для всех. События могут быть прочитаны неприсоединившимися к комнате.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 сделал историю сообщений видимо для участников с этого момента.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 сделал историю сообщений видимой для участников, с момента их приглашения.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 сделал историю сообщений видимой для участников, с момента того, как они присоединились к комнате.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 поменял разрешения для комнаты.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>%1 was invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 был приглашен.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changed their display name and avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 поменял своё отобржаемое имя и аватар.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 поменял свое отобржаемое имя.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 поменял свой аватар.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 поменял информацию в профиле.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 присоединился.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отклонил приглашение.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1121,22 +1125,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 покинул комнату.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 был выгнан.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Разблокирован %1.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 был заблокирован.</translation>
     </message>
     <message>
         <location line="-11"/>
@@ -1146,7 +1150,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-810"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы присоединились к этой комнате.</translation>
     </message>
     <message>
         <location line="+812"/>
@@ -1162,7 +1166,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Причина: %1</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -1175,60 +1179,60 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+95"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Отреагировать</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Ответить</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Опции</translation>
     </message>
 </context>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+75"/>
+        <location filename="../qml/TimelineView.qml" line="+74"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Отреагировать</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Ответить</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Подтверждать прочтение</translation>
+        <translation>Посмотреть получателей</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Пометить как прочианное</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотреть сырое сообщение</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмототреть дешифрованое сырое сообщение</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Redact message</source>
-        <translation type="unfinished"></translation>
+        <translation>Редиктировать сообщение</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить как</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -1239,48 +1243,48 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+410"/>
-        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+428"/>
+        <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+41"/>
+        <location filename="../qml/TopBar.qml" line="+43"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Вернуться к списку комнат</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+15"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Комнаты не выбраны</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Room options</source>
-        <translation type="unfinished">Настройки комнаты</translation>
+        <translation>Настройки комнаты</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Пригласить пользователей</translation>
+        <translation>Пригласить пользователей</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished">Участники</translation>
+        <translation>Участники</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Покинуть комнату</translation>
+        <translation>Покинуть комнату</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">Настройки</translation>
+        <translation>Настройки</translation>
     </message>
 </context>
 <context>
@@ -1306,17 +1310,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить статус</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Статус</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Статус: </translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1326,17 +1330,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>В сети</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Не доступен</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Не в сети</translation>
     </message>
 </context>
 <context>
@@ -1344,28 +1348,28 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/UserProfile.qml" line="+60"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Верифицировать</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Ban the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Заблокировать пользователя</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Start a private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать приватный чат</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Выгнать пользователя</translation>
     </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+650"/>
         <source>Minimize to tray</source>
         <translation>Сворачивать в системную панель</translation>
     </message>
@@ -1382,17 +1386,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Округлый Аватар</translation>
     </message>
     <message>
-        <location line="-149"/>
+        <location line="-154"/>
         <source>profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>профиль: %1</translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+92"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>ЗВОНКИ</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -1472,7 +1476,7 @@ If this is on, rooms which have active notifications (the small circle with a nu
     <message>
         <location line="+7"/>
         <source>Read receipts</source>
-        <translation>Подтверждать прочтение</translation>
+        <translation>Просмотр получателей</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1533,17 +1537,12 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Mobile mode</source>
+        <location line="+56"/>
+        <source>Share keys with verified users and devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Will prevent text selection in the timeline to make scrolling easier.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="-48"/>
         <source>Scale factor</source>
         <translation>Масштаб</translation>
     </message>
@@ -1569,6 +1568,36 @@ This usually causes the application icon in the task bar to animate in some fash
     </message>
     <message>
         <location line="+4"/>
+        <source>Ringtone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set the notification sound to play when a call invite arrives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Microphone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Camera resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Camera frame rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Allow fallback call assist server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1588,7 +1617,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Отпечаток устройства</translation>
     </message>
     <message>
-        <location line="-123"/>
+        <location line="-143"/>
         <source>Session Keys</source>
         <translation>Ключи сеанса</translation>
     </message>
@@ -1608,32 +1637,47 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>ШИФРОВАНИЕ</translation>
     </message>
     <message>
-        <location line="-75"/>
+        <location line="-80"/>
         <source>GENERAL</source>
         <translation>ГЛАВНОЕ</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+37"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+170"/>
-        <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Share keys with trusted users</source>
+        <location line="+156"/>
+        <source>Touchscreen mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Emoji Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+54"/>
+        <source>Select a file</source>
+        <translation type="unfinished">Выберите файл</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All Files (*)</source>
+        <translation type="unfinished">Все файлы (*)</translation>
+    </message>
+    <message>
+        <location line="+212"/>
         <source>Open Sessions File</source>
         <translation>Открыть файл сеансов</translation>
     </message>
@@ -1641,31 +1685,27 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+4"/>
         <location line="+18"/>
         <location line="+9"/>
-        <location line="+2"/>
-        <location line="+2"/>
         <location line="+19"/>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+2"/>
-        <location line="+2"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+32"/>
+        <location line="-66"/>
+        <location line="+28"/>
         <source>File Password</source>
         <translatorcomment>Или введите пароль?</translatorcomment>
         <translation>Пароль файла</translation>
     </message>
     <message>
-        <location line="-31"/>
+        <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
         <translation>Введите парольную фразу для расшифрования файла:</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location line="+32"/>
+        <location line="+28"/>
         <source>The password cannot be empty</source>
         <translation>Пароль не может быть пустым</translation>
     </message>
@@ -1694,18 +1734,18 @@ This usually causes the application icon in the task bar to animate in some fash
     </message>
     <message>
         <location line="+2"/>
-        <source>Waiting for other side to continue the verification request.</source>
+        <source>Waiting for other side to continue the verification process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Waiting for other side to complete the verification request.</source>
+        <source>Waiting for other side to complete the verification process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1736,20 +1776,35 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/Utils.cpp" line="+146"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Вчера</translation>
     </message>
 </context>
 <context>
     <name>dialogs::AcceptCall</name>
     <message>
-        <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
-        <source>Accept</source>
-        <translation type="unfinished">Принять</translation>
+        <location filename="../../src/dialogs/AcceptCall.cpp" line="+43"/>
+        <source>Incoming call: No microphone found.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Reject</source>
+        <location line="+51"/>
+        <source>Video Call</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Voice Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Accept</source>
+        <translation>Принять</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Reject</source>
+        <translation>Отклонить</translation>
     </message>
 </context>
 <context>
@@ -1805,12 +1860,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished">Подтвердить</translation>
+        <translation>Подтвердить</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1878,13 +1933,28 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>dialogs::PlaceCall</name>
     <message>
-        <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
+        <location filename="../../src/dialogs/PlaceCall.cpp" line="+35"/>
+        <source>No microphone found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Voice</source>
+        <translation>Голосовой</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Place a call to </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1933,7 +2003,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
         <source>Read receipts</source>
-        <translation>Подтверждать прочтение</translation>
+        <translation>Просмотреть получателей</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1946,12 +2016,12 @@ Media size: %2
     <message>
         <location line="-46"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Сегодня %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Вчера %1</translation>
     </message>
 </context>
 <context>
@@ -1974,7 +2044,7 @@ Media size: %2
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Версия Комнаты</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2070,12 +2140,12 @@ Media size: %2
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбранный файл не является картинкой</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка во время прочтения файла: %1</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -2114,7 +2184,7 @@ Media size: %2
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы точно хотите пригласить %1 (%2) в личный чат?</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -2127,42 +2197,42 @@ Media size: %2
     <message>
         <location filename="../../src/emoji/Panel.cpp" line="+122"/>
         <source>Smileys &amp; People</source>
-        <translation type="unfinished"></translation>
+        <translation>Смайлы &amp; Люди</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Animals &amp; Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Животные &amp; Природа</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Food &amp; Drink</source>
-        <translation type="unfinished"></translation>
+        <translation>Еда &amp; Напитки</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Активность</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Travel &amp; Places</source>
-        <translation type="unfinished"></translation>
+        <translation>Путешествия &amp; Места</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Предметы</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Символы</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Флаги</translation>
     </message>
 </context>
 <context>
@@ -2170,112 +2240,112 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+106"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отправили аудио запись</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отправил аудио запись</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отправили картинку</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отправил картинку</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отправили файл</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отправил файл</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отправили видео</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отправил видео</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отправили стикер</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отправил стикер</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отправили оповещение</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отправил оповещение</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы: %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отправили зашифрованное сообщение</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отправил зашифрованное сообщение</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы начали звонок</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 начал звонок</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы ответили на звонок</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ответил на звонок</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы закончили разговор</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Закончил разговор</translation>
     </message>
 </context>
 <context>
@@ -2283,12 +2353,12 @@ Media size: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта Комната</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Все Комнаты</translation>
     </message>
 </context>
 <context>
@@ -2296,7 +2366,7 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный Тип Сообщения</translation>
     </message>
 </context>
 </TS>
