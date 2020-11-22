@@ -4,7 +4,7 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/ActiveCallBar.qml" line="+49"/>
+        <location filename="../qml/ActiveCallBar.qml" line="+58"/>
         <source>Initiating...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19,7 +19,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+65"/>
         <source>Unmute Mic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,28 +58,28 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+217"/>
+        <location filename="../../src/ChatPage.cpp" line="+220"/>
         <source>Failed to invite user: %1</source>
         <translation>ユーザーを招待できませんでした: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+931"/>
+        <location line="+986"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-444"/>
+        <location line="-496"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+401"/>
+        <location line="+452"/>
         <source>Room %1 created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>Confirm invite</source>
         <translation type="unfinished"></translation>
     </message>
@@ -154,12 +154,12 @@
         <translation>永久追放を解除されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-858"/>
+        <location line="-913"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>メディアをアップロードできませんでした。やり直して下さい。</translation>
     </message>
     <message>
-        <location line="+332"/>
+        <location line="+335"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,13 +189,13 @@
         <translation>暗号化鍵を設定できませんでした。サーバーの応答: %1 %2. 後でやり直して下さい。</translation>
     </message>
     <message>
-        <location line="+99"/>
-        <location line="+257"/>
+        <location line="+34"/>
+        <location line="+116"/>
         <source>Please try to login again: %1</source>
         <translation>もう一度ログインしてみて下さい: %1</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="+32"/>
         <source>Failed to join room: %1</source>
         <translation>部屋に参加できませんでした: %1</translation>
     </message>
@@ -215,7 +215,7 @@
         <translation>部屋を作成できませんでした: %1</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Failed to leave room: %1</source>
         <translation>部屋から出られませんでした: %1</translation>
     </message>
@@ -281,7 +281,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+72"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
         <source>Apply</source>
         <translation>適用</translation>
     </message>
@@ -389,7 +389,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+519"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+522"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished">-- 暗号化イベント (復号鍵が見つかりません) --</translation>
@@ -699,17 +699,17 @@ Example: https://server.my:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+172"/>
+        <location filename="../../src/main.cpp" line="+169"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="+1"/>
         <source>profile name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -801,7 +801,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1780"/>
+        <location filename="../../src/Cache.cpp" line="+1820"/>
         <source>no version stored</source>
         <translation>バージョンが保存されていません</translation>
     </message>
@@ -1189,7 +1189,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+75"/>
+        <location filename="../qml/TimelineView.qml" line="+74"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1237,15 +1237,15 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+410"/>
-        <source>No share room with this user found. Create an encrypted room with this user and try again.</source>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+428"/>
+        <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+41"/>
+        <location filename="../qml/TopBar.qml" line="+43"/>
         <source>Back to room list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1363,7 +1363,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+650"/>
         <source>Minimize to tray</source>
         <translation>トレイへ最小化</translation>
     </message>
@@ -1383,12 +1383,12 @@ Example: https://server.my:8787</source>
         <translation>円形アバター</translation>
     </message>
     <message>
-        <location line="-149"/>
+        <location line="-154"/>
         <source>profile: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+92"/>
         <source>CALLS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1531,17 +1531,12 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Mobile mode</source>
+        <location line="+56"/>
+        <source>Share keys with verified users and devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Will prevent text selection in the timeline to make scrolling easier.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="-48"/>
         <source>Scale factor</source>
         <translation>尺度係数</translation>
     </message>
@@ -1567,6 +1562,36 @@ This usually causes the application icon in the task bar to animate in some fash
     </message>
     <message>
         <location line="+4"/>
+        <source>Ringtone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set the notification sound to play when a call invite arrives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Microphone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Camera resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Camera frame rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Allow fallback call assist server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1586,7 +1611,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>デバイスの指紋</translation>
     </message>
     <message>
-        <location line="-123"/>
+        <location line="-143"/>
         <source>Session Keys</source>
         <translation>セッション鍵</translation>
     </message>
@@ -1606,32 +1631,47 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>暗号化</translation>
     </message>
     <message>
-        <location line="-75"/>
+        <location line="-80"/>
         <source>GENERAL</source>
         <translation>全般</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+37"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+170"/>
-        <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Share keys with trusted users</source>
+        <location line="+156"/>
+        <source>Touchscreen mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Emoji Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+54"/>
+        <source>Select a file</source>
+        <translation type="unfinished">ファイルを選択</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All Files (*)</source>
+        <translation type="unfinished">全てのファイル (*)</translation>
+    </message>
+    <message>
+        <location line="+212"/>
         <source>Open Sessions File</source>
         <translation>セッションファイルを開く</translation>
     </message>
@@ -1639,30 +1679,26 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+4"/>
         <location line="+18"/>
         <location line="+9"/>
-        <location line="+2"/>
-        <location line="+2"/>
         <location line="+19"/>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+2"/>
-        <location line="+2"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+32"/>
+        <location line="-66"/>
+        <location line="+28"/>
         <source>File Password</source>
         <translation>ファイルのパスワード</translation>
     </message>
     <message>
-        <location line="-31"/>
+        <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
         <translation>ファイルを復号するためのパスフレーズを入力して下さい:</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location line="+32"/>
+        <location line="+28"/>
         <source>The password cannot be empty</source>
         <translation>パスワードを空にはできません</translation>
     </message>
@@ -1691,12 +1727,12 @@ This usually causes the application icon in the task bar to animate in some fash
     </message>
     <message>
         <location line="+2"/>
-        <source>Waiting for other side to continue the verification request.</source>
+        <source>Waiting for other side to continue the verification process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Waiting for other side to complete the verification request.</source>
+        <source>Waiting for other side to complete the verification process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1739,12 +1775,27 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>dialogs::AcceptCall</name>
     <message>
-        <location filename="../../src/dialogs/AcceptCall.cpp" line="+89"/>
+        <location filename="../../src/dialogs/AcceptCall.cpp" line="+43"/>
+        <source>Incoming call: No microphone found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Video Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Voice Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Accept</source>
         <translation type="unfinished">容認</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Reject</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1875,14 +1926,29 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>dialogs::PlaceCall</name>
     <message>
-        <location filename="../../src/dialogs/PlaceCall.cpp" line="+60"/>
+        <location filename="../../src/dialogs/PlaceCall.cpp" line="+35"/>
+        <source>No microphone found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Voice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Cancel</source>
         <translation type="unfinished">キャンセル</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Place a call to </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
