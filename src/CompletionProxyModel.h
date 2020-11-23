@@ -2,22 +2,106 @@
 
 // Class for showing a limited amount of completions at a time
 
-#include <QSortFilterProxyModel>
+#include <QAbstractProxyModel>
 
 #include "CompletionModelRoles.h"
+#include "Logging.h"
 #include "Utils.h"
 
-class CompletionProxyModel : public QSortFilterProxyModel
+template<typename Key, typename Value>
+struct trie
+{
+        std::vector<Value> values;
+        std::map<Key, trie> next;
+
+        void insert(const QVector<Key> &keys, const Value &v)
+        {
+                auto t = this;
+                for (const auto k : keys) {
+                        t = &t->next[k];
+                }
+
+                t->values.push_back(v);
+        }
+
+        std::vector<Value> valuesAndSubvalues(size_t limit = -1) const
+        {
+                std::vector<Value> ret;
+                if (limit < 200)
+                        ret.reserve(limit);
+
+                for (const auto &v : values) {
+                        if (ret.size() >= limit)
+                                return ret;
+                        else
+                                ret.push_back(v);
+                }
+
+                for (const auto &[k, t] : next) {
+                        (void)k;
+                        if (ret.size() >= limit)
+                                return ret;
+                        else {
+                                auto temp = t.valuesAndSubvalues(limit - ret.size());
+                                ret.insert(ret.end(), temp.begin(), temp.end());
+                        }
+                }
+
+                return ret;
+        }
+
+        std::vector<Value> search(const QVector<Key> &keys, size_t limit) const
+        {
+                std::vector<Value> ret;
+                auto t = this;
+                int i  = 0;
+                for (; i < (int)keys.size(); i++) {
+                        if (auto e = t->next.find(keys[i]); e != t->next.end()) {
+                                t = &e->second;
+                        } else {
+                                t = nullptr;
+                                break;
+                        }
+                }
+
+                if (t) {
+                        ret = t->valuesAndSubvalues(limit);
+                }
+
+                return ret;
+        }
+};
+
+class CompletionProxyModel : public QAbstractProxyModel
 {
         Q_OBJECT
 
 public:
         CompletionProxyModel(QAbstractItemModel *model, QObject *parent = nullptr)
-          : QSortFilterProxyModel(parent)
+          : QAbstractProxyModel(parent)
         {
                 setSourceModel(model);
-                sort(0, Qt::AscendingOrder);
-                setFilterRole(CompletionModel::SearchRole);
+
+                for (int i = 0; i < sourceModel()->rowCount(); i++) {
+                        if (i < 7)
+                                mapping.push_back(i);
+
+                        auto string1 =
+                          sourceModel()
+                            ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
+                            .toString()
+                            .toLower();
+                        trie_.insert(string1.toUcs4(), i);
+
+                        auto string2 =
+                          sourceModel()
+                            ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
+                            .toString()
+                            .toLower();
+
+                        if (!string2.isEmpty())
+                                trie_.insert(string2.toUcs4(), i);
+                }
 
                 connect(
                   this,
@@ -32,6 +116,20 @@ public:
                   Qt::QueuedConnection);
         }
 
+        void invalidate()
+        {
+                auto key = searchString.toUcs4();
+                beginResetModel();
+                mapping = trie_.search(key, 7);
+                endResetModel();
+
+                std::string temp;
+                for (auto v : mapping) {
+                        temp += std::to_string(v) + ", ";
+                }
+                nhlog::ui()->debug("mapping: {}", temp);
+        };
+
         QHash<int, QByteArray> roleNames() const override
         {
                 return this->sourceModel()->roleNames();
@@ -39,82 +137,39 @@ public:
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const override
         {
-                auto row_count = QSortFilterProxyModel::rowCount(parent);
-                return (row_count < 7) ? row_count : 7;
+                (void)parent;
+                return (int)mapping.size();
         }
 
-        bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+        QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override
         {
-                if (searchString.size() < 1)
-                        return true;
-
-                auto source_index = sourceModel()->index(source_row, 0, source_parent);
-                auto role1        = sourceModel()
-                               ->data(source_index, CompletionModel::SearchRole)
-                               .toString()
-                               .toLower();
-
-                if (role1.contains(searchString))
-                        return true;
-                // auto score =
-                //  utils::levenshtein_distance(searchString, role1.toLower().toStdString());
-                // if ((size_t)role1.size() >= searchString.size() &&
-                //    ((size_t)score) < (size_t)role1.size() - searchString.size() + 2)
-                //        return true;
-
-                auto role2 = sourceModel()
-                               ->data(source_index, CompletionModel::SearchRole2)
-                               .toString()
-                               .toLower();
-                if (role2.contains(searchString))
-                        return true;
-                // if (!role2.isEmpty()) {
-                //        score =
-                //          utils::levenshtein_distance(searchString,
-                //          role2.toLower().toStdString());
-                //        if ((size_t)role2.size() >= searchString.size() &&
-                //            ((size_t)score) < (size_t)role2.size() - searchString.size() + 2)
-                //                return true;
-                //}
-
-                return false;
+                for (int i = 0; i < (int)mapping.size(); i++) {
+                        if (mapping[i] == sourceIndex.row()) {
+                                return index(i, 0);
+                        }
+                }
+                return QModelIndex();
         }
 
-        bool lessThan(const QModelIndex &source_left,
-                      const QModelIndex &source_right) const override
+        QModelIndex mapToSource(const QModelIndex &proxyIndex) const override
         {
-                if (searchString.size() < 1)
-                        return false;
+                auto row = proxyIndex.row();
+                if (row < 0 || row >= (int)mapping.size())
+                        return QModelIndex();
 
-                auto left1 =
-                  sourceModel()->data(source_left, CompletionModel::SearchRole).toString();
-                auto left2 =
-                  sourceModel()->data(source_left, CompletionModel::SearchRole2).toString();
-                auto left = (size_t)left1.toLower().indexOf(searchString);
-                // utils::levenshtein_distance(searchString, left1.toLower().toStdString());
-                if (!left2.isEmpty()) {
-                        // left = std::min(
-                        //  utils::levenshtein_distance(searchString,
-                        //  left2.toLower().toStdString()), left);
-                        left = std::min((size_t)left2.toLower().indexOf(searchString), left);
-                }
-
-                auto right1 =
-                  sourceModel()->data(source_right, CompletionModel::SearchRole).toString();
-                auto right2 =
-                  sourceModel()->data(source_right, CompletionModel::SearchRole2).toString();
-                auto right = (size_t)right1.toLower().indexOf(searchString);
-                // auto right =
-                //  utils::levenshtein_distance(searchString, right1.toLower().toStdString());
-                if (!right2.isEmpty()) {
-                        // right = std::min(
-                        //  utils::levenshtein_distance(searchString,
-                        //  right2.toLower().toStdString()), right);
-                        right = std::min((size_t)right2.toLower().indexOf(searchString), right);
-                }
-
-                return left < right;
+                return sourceModel()->index(mapping[row], 0);
         }
+
+        QModelIndex index(int row,
+                          int column,
+                          const QModelIndex &parent = QModelIndex()) const override
+        {
+                (void)parent;
+                return createIndex(row, column);
+        }
+
+        QModelIndex parent(const QModelIndex &) const override { return QModelIndex{}; }
+        int columnCount(const QModelIndex &) const override { return sourceModel()->columnCount(); }
 
 public slots:
         QVariant completionAt(int i) const
@@ -132,4 +187,6 @@ signals:
 
 private:
         QString searchString;
+        trie<uint, int> trie_;
+        std::vector<int> mapping;
 };

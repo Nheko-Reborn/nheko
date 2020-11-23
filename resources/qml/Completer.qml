@@ -55,7 +55,7 @@ Popup {
             model: completer
 
             delegate: Rectangle {
-                color: model.index == popup.currentIndex ? colors.window : colors.base
+                color: model.index == popup.currentIndex ? colors.window : colors.alternateBase
                 height: chooser.childrenRect.height + 4
                 width: chooser.childrenRect.width + 4
 
@@ -141,7 +141,7 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.base
+        color: colors.alternateBase
         implicitHeight: popup.contentHeight
         implicitWidth: popup.contentWidth
     }
