@@ -215,7 +215,7 @@ LoginPage::onMatrixIdEntered()
 
         if (!isMatrixIdValid()) {
                 matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
-                return ;
+                return;
         } else {
                 error_matrixid_label_->setText("");
         }
@@ -374,7 +374,7 @@ LoginPage::onLoginButtonClicked()
 
         if (!isMatrixIdValid()) {
                 matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
-                return ;
+                return;
         } else {
                 error_matrixid_label_->setText("");
         }
