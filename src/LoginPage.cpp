@@ -108,6 +108,14 @@ LoginPage::LoginPage(QWidget *parent)
         matrixidLayout_ = new QHBoxLayout();
         matrixidLayout_->addWidget(matrixid_input_, 0, Qt::AlignVCenter);
 
+        QFont font;
+
+        error_matrixid_label_ = new QLabel(this);
+        error_matrixid_label_->setFont(font);
+
+        matrixid_error_layout_ = new QVBoxLayout();
+        matrixid_error_layout_->addWidget(error_matrixid_label_, 0, Qt::AlignHCenter);
+
         password_input_ = new TextField(this);
         password_input_->setLabel(tr("Password"));
         password_input_->setEchoMode(QLineEdit::Password);
@@ -129,6 +137,7 @@ LoginPage::LoginPage(QWidget *parent)
         serverLayout_ = new QHBoxLayout();
         serverLayout_->addWidget(serverInput_, 0, Qt::AlignVCenter);
 
+        form_layout_->addLayout(matrixid_error_layout_);
         form_layout_->addLayout(matrixidLayout_);
         form_layout_->addWidget(password_input_);
         form_layout_->addWidget(deviceName_, Qt::AlignHCenter);
@@ -147,10 +156,9 @@ LoginPage::LoginPage(QWidget *parent)
         button_layout_->addWidget(login_button_);
         button_layout_->addStretch(1);
 
-        QFont font;
-
         error_label_ = new QLabel(this);
         error_label_->setFont(font);
+        error_label_->setWordWrap(true);
 
         top_layout_->addLayout(top_bar_layout_);
         top_layout_->addStretch(1);
@@ -183,6 +191,12 @@ LoginPage::loginError(const QString &msg)
         error_label_->setText(msg);
 }
 
+void
+LoginPage::matrixIdError(const QString &msg)
+{
+        error_matrixid_label_->setText(msg);
+}
+
 bool
 LoginPage::isMatrixIdValid()
 {
@@ -199,8 +213,11 @@ LoginPage::onMatrixIdEntered()
 
         User user;
 
-        if (isMatrixIdValid() == 0) {
-                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        if (!isMatrixIdValid()) {
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return ;
+        } else {
+                error_matrixid_label_->setText("");
         }
 
         try {
@@ -354,8 +371,12 @@ LoginPage::onLoginButtonClicked()
         error_label_->setText("");
 
         User user;
-        if (isMatrixIdValid() == 0) {
-                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+
+        if (!isMatrixIdValid()) {
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return ;
+        } else {
+                error_matrixid_label_->setText("");
         }
 
         try {

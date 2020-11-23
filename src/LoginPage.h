@@ -67,6 +67,7 @@ protected:
 public slots:
         // Displays errors produced during the login.
         void loginError(const QString &msg);
+        void matrixIdError(const QString &msg);
 
 private slots:
         // Callback for the back button.
@@ -105,6 +106,7 @@ private:
         }
 
         QVBoxLayout *top_layout_;
+        QVBoxLayout *matrixid_error_layout_;
 
         QHBoxLayout *top_bar_layout_;
         QHBoxLayout *logo_layout_;
@@ -112,6 +114,7 @@ private:
 
         QLabel *logo_;
         QLabel *error_label_;
+        QLabel *error_matrixid_label_;
 
         QHBoxLayout *serverLayout_;
         QHBoxLayout *matrixidLayout_;
