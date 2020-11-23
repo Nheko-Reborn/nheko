@@ -137,11 +137,13 @@ LoginPage::LoginPage(QWidget *parent)
         serverLayout_ = new QHBoxLayout();
         serverLayout_->addWidget(serverInput_, 0, Qt::AlignVCenter);
 
-        form_layout_->addLayout(matrixid_error_layout_);
         form_layout_->addLayout(matrixidLayout_);
+        form_layout_->addLayout(matrixid_error_layout_);
         form_layout_->addWidget(password_input_);
         form_layout_->addWidget(deviceName_, Qt::AlignHCenter);
         form_layout_->addLayout(serverLayout_);
+    
+        error_matrixid_label_->hide(); 
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);
@@ -194,7 +196,9 @@ LoginPage::loginError(const QString &msg)
 void
 LoginPage::matrixIdError(const QString &msg)
 {
+        error_matrixid_label_->show();
         error_matrixid_label_->setText(msg);
+        matrixid_input_->setValid(false);
 }
 
 bool
@@ -218,6 +222,8 @@ LoginPage::onMatrixIdEntered()
                 return;
         } else {
                 error_matrixid_label_->setText("");
+                error_matrixid_label_->hide();
+                matrixid_input_->setValid(true);
         }
 
         try {
@@ -377,6 +383,8 @@ LoginPage::onLoginButtonClicked()
                 return;
         } else {
                 error_matrixid_label_->setText("");
+                error_matrixid_label_->hide();
+                matrixid_input_->setValid(true);
         }
 
         try {
