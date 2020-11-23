@@ -112,6 +112,7 @@ LoginPage::LoginPage(QWidget *parent)
 
         error_matrixid_label_ = new QLabel(this);
         error_matrixid_label_->setFont(font);
+        error_matrixid_label_->setWordWrap(true);
 
         matrixid_error_layout_ = new QVBoxLayout();
         matrixid_error_layout_->addWidget(error_matrixid_label_, 0, Qt::AlignHCenter);
