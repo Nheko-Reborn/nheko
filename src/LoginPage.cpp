@@ -95,8 +95,6 @@ LoginPage::LoginPage(QWidget *parent)
              "address there, if your server doesn't support .well-known lookup.\nExample: "
              "@user:server.my\nIf Nheko fails to discover your homeserver, it will show you a "
              "field to enter the server manually."));
-        matrixid_input_->setValidator(
-          new QRegularExpressionValidator(QRegularExpression("@.+?:.{3,}"), this));
 
         spinner_ = new LoadingIndicator(this);
         spinner_->setFixedHeight(40);
@@ -153,7 +151,6 @@ LoginPage::LoginPage(QWidget *parent)
 
         error_label_ = new QLabel(this);
         error_label_->setFont(font);
-        error_label_->setWordWrap(true);
 
         top_layout_->addLayout(top_bar_layout_);
         top_layout_->addStretch(1);
@@ -186,12 +183,25 @@ LoginPage::loginError(const QString &msg)
         error_label_->setText(msg);
 }
 
+bool
+LoginPage::isMatrixIdValid()
+{
+        QRegularExpressionValidator v(QRegularExpression("@.+?:.{3,}"), this);
+        QString s = matrixid_input_->text();
+        int pos = 0;
+        return v.validate(s, pos);
+}
+
 void
 LoginPage::onMatrixIdEntered()
 {
         error_label_->setText("");
 
         User user;
+
+        if (isMatrixIdValid() == 0) {
+                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        }
 
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
@@ -344,6 +354,9 @@ LoginPage::onLoginButtonClicked()
         error_label_->setText("");
 
         User user;
+        if (isMatrixIdValid() == 0) {
+                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        }
 
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
