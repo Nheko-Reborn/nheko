@@ -142,8 +142,8 @@ LoginPage::LoginPage(QWidget *parent)
         form_layout_->addWidget(password_input_);
         form_layout_->addWidget(deviceName_, Qt::AlignHCenter);
         form_layout_->addLayout(serverLayout_);
-    
-        error_matrixid_label_->hide(); 
+
+        error_matrixid_label_->hide();
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);
