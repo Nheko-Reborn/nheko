@@ -106,7 +106,6 @@ private:
         }
 
         QVBoxLayout *top_layout_;
-        QVBoxLayout *matrixid_error_layout_;
 
         QHBoxLayout *top_bar_layout_;
         QHBoxLayout *logo_layout_;

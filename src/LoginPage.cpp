@@ -114,9 +114,6 @@ LoginPage::LoginPage(QWidget *parent)
         error_matrixid_label_->setFont(font);
         error_matrixid_label_->setWordWrap(true);
 
-        matrixid_error_layout_ = new QVBoxLayout();
-        matrixid_error_layout_->addWidget(error_matrixid_label_, 0, Qt::AlignHCenter);
-
         password_input_ = new TextField(this);
         password_input_->setLabel(tr("Password"));
         password_input_->setEchoMode(QLineEdit::Password);
@@ -139,7 +136,7 @@ LoginPage::LoginPage(QWidget *parent)
         serverLayout_->addWidget(serverInput_, 0, Qt::AlignVCenter);
 
         form_layout_->addLayout(matrixidLayout_);
-        form_layout_->addLayout(matrixid_error_layout_);
+        form_layout_->addWidget(error_matrixid_label_, 0, Qt::AlignHCenter);
         form_layout_->addWidget(password_input_);
         form_layout_->addWidget(deviceName_, Qt::AlignHCenter);
         form_layout_->addLayout(serverLayout_);
@@ -163,13 +160,15 @@ LoginPage::LoginPage(QWidget *parent)
         error_label_->setFont(font);
         error_label_->setWordWrap(true);
 
+        // FIXME: Moving this below the login button breaks word wrapping
+        form_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
+
         top_layout_->addLayout(top_bar_layout_);
         top_layout_->addStretch(1);
         top_layout_->addLayout(logo_layout_);
         top_layout_->addLayout(form_wrapper_);
         top_layout_->addStretch(1);
         top_layout_->addLayout(button_layout_);
-        top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
         top_layout_->addStretch(1);
 
         setLayout(top_layout_);
