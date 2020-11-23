@@ -188,7 +188,7 @@ LoginPage::isMatrixIdValid()
 {
         QRegularExpressionValidator v(QRegularExpression("@.+?:.{3,}"), this);
         QString s = matrixid_input_->text();
-        int pos = 0;
+        int pos   = 0;
         return v.validate(s, pos);
 }
 
