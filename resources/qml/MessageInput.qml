@@ -81,6 +81,9 @@ Rectangle {
                         completerTriggeredAt = -1;
                         popup.close();
                     }
+                    if (popup.opened)
+                        popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
+
                 }
                 onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
@@ -132,9 +135,6 @@ Rectangle {
                         textArea.clear();
                         event.accepted = true;
                     }
-                    if (popup.opened)
-                        popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition) + event.text);
-
                 }
 
                 Connections {
