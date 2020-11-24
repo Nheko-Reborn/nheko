@@ -32,6 +32,9 @@ UsersModel::data(const QModelIndex &index, int role) const
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {
                 case CompletionModel::CompletionRole:
+                        return QString("[%1](https://matrix.to/#/%2)")
+                          .arg(displayNames[index.row()])
+                          .arg(userids[index.row()]);
                 case CompletionModel::SearchRole:
                 case Qt::DisplayRole:
                 case Roles::DisplayName:
