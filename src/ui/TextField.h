@@ -30,6 +30,7 @@ public:
         void setLabelFontSize(qreal size);
         void setShowLabel(bool value);
         void setUnderlineColor(const QColor &color);
+        void setValid(bool valid);
 
         QColor inkColor() const;
         QColor labelColor() const;
@@ -37,6 +38,7 @@ public:
         QColor backgroundColor() const;
         QString label() const;
         bool hasLabel() const;
+        bool isValid() const;
         qreal labelFontSize() const;
 
 protected:
@@ -54,6 +56,7 @@ private:
         TextFieldLabel *label_;
         TextFieldStateMachine *state_machine_;
         bool show_label_;
+        bool is_valid_;
         qreal label_font_size_;
 };
 
