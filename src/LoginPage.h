@@ -115,8 +115,6 @@ private:
         QLabel *error_label_;
         QLabel *error_matrixid_label_;
 
-        QFontMetrics *error_font_metrics_;
-
         QHBoxLayout *serverLayout_;
         QHBoxLayout *matrixidLayout_;
         LoadingIndicator *spinner_;

@@ -162,8 +162,6 @@ LoginPage::LoginPage(QWidget *parent)
         error_label_->setFont(font);
         error_label_->setWordWrap(true);
 
-        error_font_metrics_ = new QFontMetrics(font);
-
         top_layout_->addLayout(top_bar_layout_);
         top_layout_->addStretch(1);
         top_layout_->addLayout(logo_layout_);
@@ -192,8 +190,9 @@ LoginPage::LoginPage(QWidget *parent)
 void
 LoginPage::loginError(const QString &msg)
 {
-        int width  = error_font_metrics_->boundingRect(msg).width();
-        int height = error_font_metrics_->boundingRect(msg).height();
+        auto rect  = QFontMetrics(font()).boundingRect(msg);
+        int width  = rect.width();
+        int height = rect.height();
         error_label_->setFixedHeight(qCeil(width / 200 * height));
         error_label_->setText(msg);
 }
