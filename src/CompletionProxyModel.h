@@ -57,13 +57,16 @@ struct trie
                 return ret;
         }
 
-        std::vector<Value> search(const QVector<Key> &keys,
+        std::vector<Value> search(const QVector<Key> &keys, //< TODO(Nico): replace this with a span
                                   size_t limit,
                                   size_t max_distance = 2) const
         {
                 std::vector<Value> ret;
                 if (!limit)
                         return ret;
+
+                if (keys.isEmpty())
+                        return valuesAndSubvalues(limit);
 
                 auto append = [&ret, limit](std::vector<Value> &&in) {
                         for (auto &&v : in) {
@@ -76,24 +79,11 @@ struct trie
                         }
                 };
 
-                {
-                        auto t = this;
-                        int i  = 0;
-                        for (; i < (int)keys.size(); i++) {
-                                if (auto e = t->next.find(keys[i]); e != t->next.end()) {
-                                        t = &e->second;
-                                } else {
-                                        t = nullptr;
-                                        break;
-                                }
-                        }
-
-                        if (t) {
-                                ret = t->valuesAndSubvalues(limit);
-                        }
+                if (auto e = this->next.find(keys[0]); e != this->next.end()) {
+                        append(e->second.search(keys.mid(1), limit, max_distance));
                 }
 
-                if (max_distance && keys.size() < static_cast<int>(limit) && keys.size() > 1) {
+                if (max_distance && ret.size() < limit) {
                         max_distance -= 1;
 
                         // swap chars case
@@ -123,13 +113,13 @@ struct trie
                                         break;
 
                                 // substitute
-                                append(this->search(keys.mid(1), limit - ret.size(), max_distance));
+                                append(t.search(keys.mid(1), limit - ret.size(), max_distance));
 
                                 if (ret.size() >= limit)
                                         break;
 
                                 // insert
-                                append(this->search(keys, limit - ret.size(), max_distance));
+                                append(t.search(keys, limit - ret.size(), max_distance));
                         }
                 }
 
