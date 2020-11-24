@@ -3,6 +3,7 @@
 // Class for showing a limited amount of completions at a time
 
 #include <QAbstractProxyModel>
+#include <QRegularExpression>
 
 #include "CompletionModelRoles.h"
 #include "Logging.h"
@@ -136,6 +137,7 @@ public:
           : QAbstractProxyModel(parent)
         {
                 setSourceModel(model);
+                QRegularExpression splitPoints("\\s+|-");
 
                 for (int i = 0; i < sourceModel()->rowCount(); i++) {
                         if (i < 7)
@@ -148,14 +150,23 @@ public:
                             .toLower();
                         trie_.insert(string1.toUcs4(), i);
 
+                        for (const auto &e : string1.split(splitPoints, Qt::SkipEmptyParts)) {
+                                trie_.insert(e.toUcs4(), i);
+                        }
+
                         auto string2 =
                           sourceModel()
                             ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
                             .toString()
                             .toLower();
 
-                        if (!string2.isEmpty())
+                        if (!string2.isEmpty()) {
                                 trie_.insert(string2.toUcs4(), i);
+                                for (const auto &e :
+                                     string2.split(splitPoints, Qt::SkipEmptyParts)) {
+                                        trie_.insert(e.toUcs4(), i);
+                                }
+                        }
                 }
 
                 connect(
