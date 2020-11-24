@@ -16,9 +16,11 @@
  */
 
 #include <QDesktopServices>
+#include <QFontMetrics>
 #include <QLabel>
 #include <QPainter>
 #include <QStyleOption>
+#include <QtMath>
 
 #include <mtx/identifiers.hpp>
 #include <mtx/requests.hpp>
@@ -160,8 +162,7 @@ LoginPage::LoginPage(QWidget *parent)
         error_label_->setFont(font);
         error_label_->setWordWrap(true);
 
-        // FIXME: Moving this below the login button breaks word wrapping
-        form_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
+        error_font_metrics_ = new QFontMetrics(font);
 
         top_layout_->addLayout(top_bar_layout_);
         top_layout_->addStretch(1);
@@ -169,6 +170,7 @@ LoginPage::LoginPage(QWidget *parent)
         top_layout_->addLayout(form_wrapper_);
         top_layout_->addStretch(1);
         top_layout_->addLayout(button_layout_);
+        top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
         top_layout_->addStretch(1);
 
         setLayout(top_layout_);
@@ -190,6 +192,9 @@ LoginPage::LoginPage(QWidget *parent)
 void
 LoginPage::loginError(const QString &msg)
 {
+        int width  = error_font_metrics_->boundingRect(msg).width();
+        int height = error_font_metrics_->boundingRect(msg).height();
+        error_label_->setFixedHeight(qCeil(width / 200 * height));
         error_label_->setText(msg);
 }
 
@@ -229,7 +234,8 @@ LoginPage::onMatrixIdEntered()
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &e) {
-                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return;
         }
 
         QString homeServer = QString::fromStdString(user.hostname());
@@ -340,7 +346,7 @@ LoginPage::onServerAddressEntered()
 void
 LoginPage::versionError(const QString &error)
 {
-        error_label_->setText(error);
+        loginError(error);
         serverInput_->show();
 
         spinner_->stop();
@@ -390,7 +396,8 @@ LoginPage::onLoginButtonClicked()
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &e) {
-                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return;
         }
 
         if (loginMethod == LoginMethod::Password) {
