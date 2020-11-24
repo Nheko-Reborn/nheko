@@ -3,11 +3,6 @@
 // Class for showing a limited amount of completions at a time
 
 #include <QAbstractProxyModel>
-#include <QRegularExpression>
-
-#include "CompletionModelRoles.h"
-#include "Logging.h"
-#include "Utils.h"
 
 template<typename Key, typename Value>
 struct trie
@@ -133,120 +128,26 @@ class CompletionProxyModel : public QAbstractProxyModel
         Q_OBJECT
 
 public:
-        CompletionProxyModel(QAbstractItemModel *model, QObject *parent = nullptr)
-          : QAbstractProxyModel(parent)
-        {
-                setSourceModel(model);
-                QRegularExpression splitPoints("\\s+|-");
+        CompletionProxyModel(QAbstractItemModel *model, QObject *parent = nullptr);
 
-                for (int i = 0; i < sourceModel()->rowCount(); i++) {
-                        if (i < 7)
-                                mapping.push_back(i);
+        void invalidate();
 
-                        auto string1 =
-                          sourceModel()
-                            ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
-                            .toString()
-                            .toLower();
-                        trie_.insert(string1.toUcs4(), i);
+        QHash<int, QByteArray> roleNames() const override;
+        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+        int columnCount(const QModelIndex &) const override;
 
-                        for (const auto &e : string1.split(splitPoints, Qt::SkipEmptyParts)) {
-                                trie_.insert(e.toUcs4(), i);
-                        }
-
-                        auto string2 =
-                          sourceModel()
-                            ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
-                            .toString()
-                            .toLower();
-
-                        if (!string2.isEmpty()) {
-                                trie_.insert(string2.toUcs4(), i);
-                                for (const auto &e :
-                                     string2.split(splitPoints, Qt::SkipEmptyParts)) {
-                                        trie_.insert(e.toUcs4(), i);
-                                }
-                        }
-                }
-
-                connect(
-                  this,
-                  &CompletionProxyModel::newSearchString,
-                  this,
-                  [this](QString s) {
-                          s.remove(":");
-                          s.remove("@");
-                          searchString = s.toLower();
-                          invalidate();
-                  },
-                  Qt::QueuedConnection);
-        }
-
-        void invalidate()
-        {
-                auto key = searchString.toUcs4();
-                beginResetModel();
-                mapping = trie_.search(key, 7);
-                endResetModel();
-
-                std::string temp;
-                for (auto v : mapping) {
-                        temp += std::to_string(v) + ", ";
-                }
-                nhlog::ui()->debug("mapping: {}", temp);
-        };
-
-        QHash<int, QByteArray> roleNames() const override
-        {
-                return this->sourceModel()->roleNames();
-        }
-
-        int rowCount(const QModelIndex &parent = QModelIndex()) const override
-        {
-                (void)parent;
-                return (int)mapping.size();
-        }
-
-        QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override
-        {
-                for (int i = 0; i < (int)mapping.size(); i++) {
-                        if (mapping[i] == sourceIndex.row()) {
-                                return index(i, 0);
-                        }
-                }
-                return QModelIndex();
-        }
-
-        QModelIndex mapToSource(const QModelIndex &proxyIndex) const override
-        {
-                auto row = proxyIndex.row();
-                if (row < 0 || row >= (int)mapping.size())
-                        return QModelIndex();
-
-                return sourceModel()->index(mapping[row], 0);
-        }
+        QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+        QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
         QModelIndex index(int row,
                           int column,
-                          const QModelIndex &parent = QModelIndex()) const override
-        {
-                (void)parent;
-                return createIndex(row, column);
-        }
-
-        QModelIndex parent(const QModelIndex &) const override { return QModelIndex{}; }
-        int columnCount(const QModelIndex &) const override { return sourceModel()->columnCount(); }
+                          const QModelIndex &parent = QModelIndex()) const override;
+        QModelIndex parent(const QModelIndex &) const override;
 
 public slots:
-        QVariant completionAt(int i) const
-        {
-                if (i >= 0 && i < rowCount())
-                        return data(index(i, 0), CompletionModel::CompletionRole);
-                else
-                        return {};
-        }
+        QVariant completionAt(int i) const;
 
-        void setSearchString(QString s) { emit newSearchString(s); }
+        void setSearchString(QString s);
 
 signals:
         void newSearchString(QString);

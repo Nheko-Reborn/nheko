@@ -283,6 +283,7 @@ set(SRC_FILES
 	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
 	src/CommunitiesListItem.cpp
+	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
 	src/InviteeItem.cpp
