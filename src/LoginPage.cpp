@@ -193,7 +193,7 @@ LoginPage::loginError(const QString &msg)
         auto rect  = QFontMetrics(font()).boundingRect(msg);
         int width  = rect.width();
         int height = rect.height();
-        error_label_->setFixedHeight(qCeil(width / 200 * height));
+        error_label_->setFixedHeight(qCeil(width / 200) * height);
         error_label_->setText(msg);
 }
 
@@ -211,7 +211,7 @@ LoginPage::isMatrixIdValid()
         QRegularExpressionValidator v(QRegularExpression("@.+?:.{3,}"), this);
         QString s = matrixid_input_->text();
         int pos   = 0;
-        return v.validate(s, pos);
+        return v.validate(s, pos) == QValidator::Acceptable;
 }
 
 void
