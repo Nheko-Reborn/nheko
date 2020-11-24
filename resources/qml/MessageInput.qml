@@ -70,6 +70,11 @@ Rectangle {
 
                 property int completerTriggeredAt: -1
 
+                function insertCompletion(completion) {
+                    textArea.remove(completerTriggeredAt, cursorPosition);
+                    textArea.insert(cursorPosition, completion);
+                }
+
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: colors.buttonText
                 color: colors.text
@@ -87,6 +92,7 @@ Rectangle {
                 }
                 onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                // Ensure that we get escape key press events first.
                 Keys.onShortcutOverride: event.accepted = (completerTriggeredAt != -1 && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
@@ -116,8 +122,7 @@ Rectangle {
                         popup.completerName = "";
                         popup.close();
                         if (currentCompletion) {
-                            textArea.remove(completerTriggeredAt, cursorPosition);
-                            textArea.insert(cursorPosition, currentCompletion);
+                            textArea.insertCompletion(currentCompletion);
                             event.accepted = true;
                             return ;
                         }
@@ -146,7 +151,11 @@ Rectangle {
                     }
                     target: TimelineManager
                 }
-                // Ensure that we get escape key press events first.
+
+                Connections {
+                    onCompletionClicked: textArea.insertCompletion(completion)
+                    target: popup
+                }
 
                 Completer {
                     id: popup

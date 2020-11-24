@@ -11,6 +11,8 @@ Popup {
     property var completer
     property bool bottomToTop: true
 
+    signal completionClicked(string completion)
+
     function up() {
         if (bottomToTop)
             down_();
@@ -75,6 +77,13 @@ Popup {
             color: model.index == popup.currentIndex ? colors.highlight : colors.base
             height: chooser.childrenRect.height + 4
             implicitWidth: chooser.childrenRect.width + 4
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: popup.currentIndex = model.index
+                onClicked: popup.completionClicked(completer.completionAt(model.index))
+            }
 
             DelegateChooser {
                 id: chooser
