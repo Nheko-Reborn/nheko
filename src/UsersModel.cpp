@@ -23,6 +23,7 @@ UsersModel::roleNames() const
           {CompletionModel::SearchRole2, "searchRole2"},
           {Roles::DisplayName, "displayName"},
           {Roles::AvatarUrl, "avatarUrl"},
+          {Roles::UserID, "userid"},
         };
 }
 
@@ -44,6 +45,8 @@ UsersModel::data(const QModelIndex &index, int role) const
                 case Roles::AvatarUrl:
                         return cache::avatarUrl(QString::fromStdString(room_id),
                                                 QString::fromStdString(roomMembers_[index.row()]));
+                case Roles::UserID:
+                        return userids[index.row()];
                 }
         }
         return {};

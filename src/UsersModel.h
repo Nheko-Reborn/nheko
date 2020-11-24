@@ -9,6 +9,7 @@ public:
         {
                 AvatarUrl = Qt::UserRole,
                 DisplayName,
+                UserID,
         };
 
         UsersModel(const std::string &roomId, QObject *parent = nullptr);

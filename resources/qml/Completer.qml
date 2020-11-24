@@ -111,6 +111,11 @@ Popup {
                             color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
                         }
 
+                        Label {
+                            text: "(" + model.userid + ")"
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.buttonText
+                        }
+
                     }
 
                 }
