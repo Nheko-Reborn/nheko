@@ -43,29 +43,94 @@ struct trie
                                 return ret;
                         else {
                                 auto temp = t.valuesAndSubvalues(limit - ret.size());
-                                ret.insert(ret.end(), temp.begin(), temp.end());
+                                for (auto &&v : temp) {
+                                        if (ret.size() >= limit)
+                                                return ret;
+
+                                        if (std::find(ret.begin(), ret.end(), v) == ret.end()) {
+                                                ret.push_back(std::move(v));
+                                        }
+                                }
                         }
                 }
 
                 return ret;
         }
 
-        std::vector<Value> search(const QVector<Key> &keys, size_t limit) const
+        std::vector<Value> search(const QVector<Key> &keys,
+                                  size_t limit,
+                                  size_t max_distance = 2) const
         {
                 std::vector<Value> ret;
-                auto t = this;
-                int i  = 0;
-                for (; i < (int)keys.size(); i++) {
-                        if (auto e = t->next.find(keys[i]); e != t->next.end()) {
-                                t = &e->second;
-                        } else {
-                                t = nullptr;
-                                break;
+                if (!limit)
+                        return ret;
+
+                auto append = [&ret, limit](std::vector<Value> &&in) {
+                        for (auto &&v : in) {
+                                if (ret.size() >= limit)
+                                        return;
+
+                                if (std::find(ret.begin(), ret.end(), v) == ret.end()) {
+                                        ret.push_back(std::move(v));
+                                }
+                        }
+                };
+
+                {
+                        auto t = this;
+                        int i  = 0;
+                        for (; i < (int)keys.size(); i++) {
+                                if (auto e = t->next.find(keys[i]); e != t->next.end()) {
+                                        t = &e->second;
+                                } else {
+                                        t = nullptr;
+                                        break;
+                                }
+                        }
+
+                        if (t) {
+                                ret = t->valuesAndSubvalues(limit);
                         }
                 }
 
-                if (t) {
-                        ret = t->valuesAndSubvalues(limit);
+                if (max_distance && keys.size() < static_cast<int>(limit) && keys.size() > 1) {
+                        max_distance -= 1;
+
+                        // swap chars case
+                        if (keys.size() >= 2) {
+                                auto t = this;
+                                for (int i = 1; i >= 0; i--) {
+                                        if (auto e = t->next.find(keys[i]); e != t->next.end()) {
+                                                t = &e->second;
+                                        } else {
+                                                t = nullptr;
+                                                break;
+                                        }
+                                }
+
+                                if (t) {
+                                        append(t->search(
+                                          keys.mid(2), (limit - ret.size()) * 2, max_distance));
+                                }
+                        }
+
+                        // delete character case
+                        append(this->search(keys.mid(1), (limit - ret.size()) * 2, max_distance));
+
+                        // substitute and insert cases
+                        for (const auto &[k, t] : this->next) {
+                                if (k == keys[0] || ret.size() >= limit)
+                                        break;
+
+                                // substitute
+                                append(this->search(keys.mid(1), limit - ret.size(), max_distance));
+
+                                if (ret.size() >= limit)
+                                        break;
+
+                                // insert
+                                append(this->search(keys, limit - ret.size(), max_distance));
+                        }
                 }
 
                 return ret;

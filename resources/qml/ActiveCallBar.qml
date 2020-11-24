@@ -53,7 +53,6 @@ Rectangle {
 
         Connections {
             target: TimelineManager
-
             onCallStateChanged: {
                 switch (state) {
                 case WebRTCState.INITIATING:

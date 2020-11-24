@@ -9,105 +9,120 @@ Popup {
     property int currentIndex: -1
     property string completerName
     property var completer
+    property bool bottomToTop: true
 
     function up() {
-        currentIndex = currentIndex - 1;
-        if (currentIndex == -2)
-            currentIndex = repeater.count - 1;
-
+        if (bottomToTop)
+            down_();
+        else
+            up_();
     }
 
     function down() {
+        if (bottomToTop)
+            up_();
+        else
+            down_();
+    }
+
+    function up_() {
+        currentIndex = currentIndex - 1;
+        if (currentIndex == -2)
+            currentIndex = listView.count - 1;
+
+    }
+
+    function down_() {
         currentIndex = currentIndex + 1;
-        if (currentIndex >= repeater.count)
+        if (currentIndex >= listView.count)
             currentIndex = -1;
 
     }
 
     function currentCompletion() {
-        if (currentIndex > -1 && currentIndex < repeater.count)
+        if (currentIndex > -1 && currentIndex < listView.count)
             return completer.completionAt(currentIndex);
         else
             return null;
     }
 
     onCompleterNameChanged: {
-        if (completerName)
+        if (completerName) {
             completer = TimelineManager.timeline.input.completerFor(completerName);
-        else
+            completer.setSearchString("");
+        } else {
             completer = undefined;
+        }
     }
     padding: 0
     onAboutToShow: currentIndex = -1
+    height: listView.contentHeight
 
     Connections {
         onTimelineChanged: completer = null
         target: TimelineManager
     }
 
-    ColumnLayout {
+    ListView {
+        id: listView
+
         anchors.fill: parent
-        spacing: 0
+        implicitWidth: contentItem.childrenRect.width
+        model: completer
+        verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
 
-        Repeater {
-            id: repeater
+        delegate: Rectangle {
+            color: model.index == popup.currentIndex ? colors.highlight : colors.base
+            height: chooser.childrenRect.height + 4
+            implicitWidth: chooser.childrenRect.width + 4
 
-            model: completer
+            DelegateChooser {
+                id: chooser
 
-            delegate: Rectangle {
-                color: model.index == popup.currentIndex ? colors.window : colors.alternateBase
-                height: chooser.childrenRect.height + 4
-                width: chooser.childrenRect.width + 4
+                roleValue: popup.completerName
+                anchors.centerIn: parent
 
-                DelegateChooser {
-                    id: chooser
+                DelegateChoice {
+                    roleValue: "user"
 
-                    roleValue: popup.completerName
-                    anchors.centerIn: parent
+                    RowLayout {
+                        id: del
 
-                    DelegateChoice {
-                        roleValue: "user"
+                        anchors.centerIn: parent
 
-                        RowLayout {
-                            id: del
+                        Avatar {
+                            height: 24
+                            width: 24
+                            displayName: model.displayName
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                        }
 
-                            anchors.centerIn: parent
-
-                            Avatar {
-                                height: 24
-                                width: 24
-                                displayName: model.displayName
-                                url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            }
-
-                            Label {
-                                text: model.displayName
-                                color: colors.text
-                            }
-
+                        Label {
+                            text: model.displayName
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
                         }
 
                     }
 
-                    DelegateChoice {
-                        roleValue: "emoji"
+                }
 
-                        RowLayout {
-                            id: del
+                DelegateChoice {
+                    roleValue: "emoji"
 
-                            anchors.centerIn: parent
+                    RowLayout {
+                        id: del
 
-                            Label {
-                                text: model.unicode
-                                color: colors.text
-                                font: Settings.emojiFont
-                            }
+                        anchors.centerIn: parent
 
-                            Label {
-                                text: model.shortName
-                                color: colors.text
-                            }
+                        Label {
+                            text: model.unicode
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                            font: Settings.emojiFont
+                        }
 
+                        Label {
+                            text: model.shortName
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
                         }
 
                     }
@@ -141,7 +156,7 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.alternateBase
+        color: colors.base
         implicitHeight: popup.contentHeight
         implicitWidth: popup.contentWidth
     }

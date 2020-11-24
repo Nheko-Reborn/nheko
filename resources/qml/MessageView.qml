@@ -182,7 +182,6 @@ ListView {
 
         Connections {
             target: chat
-
             onMovementEnded: {
                 if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
                     chat.model.currentIndex = index;

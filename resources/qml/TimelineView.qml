@@ -131,7 +131,6 @@ Page {
 
         Connections {
             target: TimelineManager
-
             onNewDeviceVerificationRequest: {
                 var dialog = deviceVerificationDialog.createObject(timelineRoot, {
                     "flow": flow
@@ -142,7 +141,6 @@ Page {
 
         Connections {
             target: TimelineManager.timeline
-            
             onOpenProfile: {
                 var userProfile = userProfileComponent.createObject(timelineRoot, {
                     "profile": profile
