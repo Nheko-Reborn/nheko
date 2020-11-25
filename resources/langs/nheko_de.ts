@@ -4,22 +4,7 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/ActiveCallBar.qml" line="+58"/>
-        <source>Initiating...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Calling...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Connecting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+65"/>
+        <location filename="../qml/ActiveCallBar.qml" line="+132"/>
         <source>Unmute Mic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -50,7 +35,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1843"/>
+        <location filename="../../src/Cache.cpp" line="+1850"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
@@ -58,23 +43,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+220"/>
+        <location filename="../../src/ChatPage.cpp" line="+201"/>
         <source>Failed to invite user: %1</source>
         <translation>Nutzer konnte nicht eingeladen werden: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+986"/>
+        <location line="+767"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
     <message>
-        <location line="-496"/>
+        <location line="-495"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du das Cache manuell löschen.</translation>
     </message>
     <message>
-        <location line="+452"/>
+        <location line="+451"/>
         <source>Room %1 created.</source>
         <translation>Raum %1 erzeugt.</translation>
     </message>
@@ -154,12 +139,7 @@
         <translation>Verbannung von %1 wurde aufgehoben.</translation>
     </message>
     <message>
-        <location line="-913"/>
-        <source>Failed to upload media. Please try again.</source>
-        <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
-    </message>
-    <message>
-        <location line="+335"/>
+        <location line="-577"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration fehlgeschlagen!</translation>
     </message>
@@ -174,7 +154,7 @@
         <translation>Der Cache auf der Festplatte wurde mit einer neueren Nheko - Version angelegt. Bitte aktualisiere Nheko oder entferne den Cache.</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+51"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Wiederherstellung des OLM Accounts fehlgeschlagen. Bitte logge dich erneut ein.</translation>
     </message>
@@ -184,7 +164,7 @@
         <translation>Gespeicherte Nachrichten konnten nicht wiederhergestellt werden. Bitte melde Dich erneut an.</translation>
     </message>
     <message>
-        <location line="+165"/>
+        <location line="+166"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
@@ -460,6 +440,24 @@
     </message>
 </context>
 <context>
+    <name>InputBar</name>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+228"/>
+        <source>Select a file</source>
+        <translation type="unfinished">Datei auswählen</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All Files (*)</source>
+        <translation type="unfinished">Alle Dateien (*)</translation>
+    </message>
+    <message>
+        <location line="+329"/>
+        <source>Failed to upload media. Please try again.</source>
+        <translation type="unfinished">Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
+    </message>
+</context>
+<context>
     <name>InviteeItem</name>
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
@@ -470,7 +468,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+90"/>
+        <location filename="../../src/LoginPage.cpp" line="+92"/>
         <source>Matrix ID</source>
         <translation>Matrix-ID</translation>
     </message>
@@ -491,7 +489,7 @@ Beispiel: @benutzer:dein.server
 Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem Server fragen.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+25"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
@@ -513,8 +511,8 @@ Example: https://server.my:8787</source>
 Beispiel: https://mein.server:8787</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <location line="+191"/>
+        <location line="+19"/>
+        <location line="+220"/>
         <source>LOGIN</source>
         <translation>ANMELDEN</translation>
     </message>
@@ -549,7 +547,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>SSO ANMELDUNG</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+35"/>
         <source>Empty password</source>
         <translation>Leeres Passwort</translation>
     </message>
@@ -644,9 +642,34 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+47"/>
+        <location filename="../qml/MessageInput.qml" line="+27"/>
+        <source>Hang up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Place a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Send a file</source>
+        <translation type="unfinished">Versende Datei</translation>
+    </message>
+    <message>
+        <location line="+40"/>
         <source>Write a message...</source>
         <translation type="unfinished">Schreibe eine Nachricht…</translation>
+    </message>
+    <message>
+        <location line="+144"/>
+        <source>Emoji</source>
+        <translation type="unfinished">Emoji</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -805,7 +828,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1820"/>
+        <location filename="../../src/Cache.cpp" line="+1794"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -945,58 +968,9 @@ Beispiel: https://mein.server:8787</translation>
     </message>
 </context>
 <context>
-    <name>TextInputWidget</name>
-    <message>
-        <location filename="../../src/TextInputWidget.cpp" line="+577"/>
-        <source>Send a file</source>
-        <translation>Versende Datei</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <location filename="../../src/TextInputWidget.h" line="+160"/>
-        <source>Write a message...</source>
-        <translation>Schreibe eine Nachricht…</translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>Send a message</source>
-        <translation>Versende eine Nachricht</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Emoji</source>
-        <translation>Emoji</translation>
-    </message>
-    <message>
-        <location line="+96"/>
-        <source>Select a file</source>
-        <translation>Datei auswählen</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>All Files (*)</source>
-        <translation>Alle Dateien (*)</translation>
-    </message>
-    <message>
-        <location line="+63"/>
-        <source>Place a call</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Hang up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/TextInputWidget.h" line="-5"/>
-        <source>Connection lost. Nheko is trying to re-connect...</source>
-        <translation>Verbindung verloren. Nheko versucht sie wieder aufzunehmen…</translation>
-    </message>
-</context>
-<context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+853"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+855"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
@@ -1147,12 +1121,12 @@ Beispiel: https://mein.server:8787</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-810"/>
+        <location line="-812"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+812"/>
+        <location line="+814"/>
         <source>Rejected the knock from %1.</source>
         <translation>Hat das Anklopfen von %1 abgewiesen.</translation>
     </message>
@@ -1199,7 +1173,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>Reply</source>
         <translation>Antworten</translation>
     </message>
@@ -1219,7 +1193,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Zeige rohen Nachrichteninhalt</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>View decrypted raw message</source>
         <translation>Zeige rohen, entschlüsselten Nachrichteninhalt</translation>
     </message>
@@ -1234,7 +1208,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Speichern unter...</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+41"/>
         <source>No room open</source>
         <translation>Kein Raum geöffnet</translation>
     </message>
@@ -1242,7 +1216,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+428"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1368,7 +1342,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+650"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+670"/>
         <source>Minimize to tray</source>
         <translation>Ins Benachrichtigungsfeld minimieren</translation>
     </message>
@@ -1388,12 +1362,12 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Runde Profilbilder</translation>
     </message>
     <message>
-        <location line="-154"/>
+        <location line="-174"/>
         <source>profile: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+112"/>
         <source>CALLS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1636,12 +1610,12 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>VERSCHLÜSSELUNG</translation>
     </message>
     <message>
-        <location line="-80"/>
+        <location line="-100"/>
         <source>GENERAL</source>
         <translation>ALLGEMEINES</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+57"/>
         <source>INTERFACE</source>
         <translation>OBERFLÄCHE</translation>
     </message>
@@ -1676,7 +1650,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished">Alle Dateien (*)</translation>
     </message>
     <message>
-        <location line="+212"/>
+        <location line="+217"/>
         <source>Open Sessions File</source>
         <translation>Öffne Sessions Datei</translation>
     </message>
@@ -1969,7 +1943,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+87"/>
         <source>Media type: %1
 Media size: %2
 </source>
@@ -2190,52 +2164,9 @@ Medien-Größe: %2
     </message>
 </context>
 <context>
-    <name>emoji::Panel</name>
-    <message>
-        <location filename="../../src/emoji/Panel.cpp" line="+122"/>
-        <source>Smileys &amp; People</source>
-        <translation>Smileys &amp; Personen</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Animals &amp; Nature</source>
-        <translation>Tiere &amp; Natur</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Food &amp; Drink</source>
-        <translation>Essen &amp; Trinken</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Activity</source>
-        <translation>Aktivitäten</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Travel &amp; Places</source>
-        <translation>Reisen &amp; Orte</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Objects</source>
-        <translation>Objekte</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Symbols</source>
-        <translation>Symbole</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Flags</source>
-        <translation>Flaggen</translation>
-    </message>
-</context>
-<context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+106"/>
+        <location filename="../../src/Utils.h" line="+108"/>
         <source>You sent an audio clip</source>
         <translation>Du hast eine Audiodatei gesendet.</translation>
     </message>
