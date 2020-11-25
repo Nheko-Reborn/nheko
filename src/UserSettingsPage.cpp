@@ -870,18 +870,18 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &frameRate) { settings_->setCameraFrameRate(frameRate); });
 
-        connect(trayToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setTray(!disabled);
-                if (disabled) {
-                        startInTrayToggle_->setDisabled(true);
-                } else {
+        connect(trayToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setTray(enabled);
+                if (enabled) {
                         startInTrayToggle_->setEnabled(true);
+                } else {
+                        startInTrayToggle_->setDisabled(true);
                 }
-                emit trayOptionChanged(!disabled);
+                emit trayOptionChanged(enabled);
         });
 
-        connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setStartInTray(!disabled);
+        connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setStartInTray(enabled);
         });
 
         connect(mobileMode_, &Toggle::toggled, this, [this](bool disabled) {
@@ -972,22 +972,22 @@ UserSettingsPage::showEvent(QShowEvent *)
         utils::restoreCombobox(ringtoneCombo_, settings_->ringtone());
 
         // FIXME: Toggle treats true as "off"
-        trayToggle_->setState(!settings_->tray());
-        startInTrayToggle_->setState(!settings_->startInTray());
-        groupViewToggle_->setState(!settings_->groupView());
-        decryptSidebar_->setState(!settings_->decryptSidebar());
-        shareKeysWithTrustedUsers_->setState(!settings_->shareKeysWithTrustedUsers());
-        avatarCircles_->setState(!settings_->avatarCircles());
-        typingNotifications_->setState(!settings_->typingNotifications());
-        sortByImportance_->setState(!settings_->sortByImportance());
-        timelineButtonsToggle_->setState(!settings_->buttonsInTimeline());
-        mobileMode_->setState(!settings_->mobileMode());
-        readReceipts_->setState(!settings_->readReceipts());
-        markdown_->setState(!settings_->markdown());
-        desktopNotifications_->setState(!settings_->hasDesktopNotifications());
-        alertOnNotification_->setState(!settings_->hasAlertOnNotification());
-        messageHoverHighlight_->setState(!settings_->messageHoverHighlight());
-        enlargeEmojiOnlyMessages_->setState(!settings_->enlargeEmojiOnlyMessages());
+        trayToggle_->setState(settings_->tray());
+        startInTrayToggle_->setState(settings_->startInTray());
+        groupViewToggle_->setState(settings_->groupView());
+        decryptSidebar_->setState(settings_->decryptSidebar());
+        shareKeysWithTrustedUsers_->setState(settings_->shareKeysWithTrustedUsers());
+        avatarCircles_->setState(settings_->avatarCircles());
+        typingNotifications_->setState(settings_->typingNotifications());
+        sortByImportance_->setState(settings_->sortByImportance());
+        timelineButtonsToggle_->setState(settings_->buttonsInTimeline());
+        mobileMode_->setState(settings_->mobileMode());
+        readReceipts_->setState(settings_->readReceipts());
+        markdown_->setState(settings_->markdown());
+        desktopNotifications_->setState(settings_->hasDesktopNotifications());
+        alertOnNotification_->setState(settings_->hasAlertOnNotification());
+        messageHoverHighlight_->setState(settings_->messageHoverHighlight());
+        enlargeEmojiOnlyMessages_->setState(settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
 
@@ -1010,7 +1010,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         utils::restoreCombobox(cameraResolutionCombo_, cameraResolution);
         utils::restoreCombobox(cameraFrameRateCombo_, cameraFrameRate);
 
-        useStunServer_->setState(!settings_->useStunServer());
+        useStunServer_->setState(settings_->useStunServer());
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));
