@@ -549,6 +549,24 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         cameraFrameRateCombo_      = new QComboBox{this};
         timelineMaxWidthSpin_      = new QSpinBox{this};
 
+        trayToggle_->setChecked(settings_->tray());
+        startInTrayToggle_->setChecked(settings_->startInTray());
+        avatarCircles_->setChecked(settings_->avatarCircles());
+        decryptSidebar_->setChecked(settings_->decryptSidebar());
+        shareKeysWithTrustedUsers_->setChecked(settings_->shareKeysWithTrustedUsers());
+        groupViewToggle_->setChecked(settings_->groupView());
+        timelineButtonsToggle_->setChecked(settings_->buttonsInTimeline());
+        typingNotifications_->setChecked(settings_->typingNotifications());
+        messageHoverHighlight_->setChecked(settings_->messageHoverHighlight());
+        enlargeEmojiOnlyMessages_->setChecked(settings_->enlargeEmojiOnlyMessages());
+        sortByImportance_->setChecked(settings_->sortByImportance());
+        readReceipts_->setChecked(settings_->readReceipts());
+        markdown_->setChecked(settings_->markdown());
+        desktopNotifications_->setChecked(settings_->hasDesktopNotifications());
+        alertOnNotification_->setChecked(settings_->hasAlertOnNotification());
+        useStunServer_->setChecked(settings_->useStunServer());
+        mobileMode_->setChecked(settings_->mobileMode());
+
         if (!settings_->tray()) {
                 startInTrayToggle_->setState(false);
                 startInTrayToggle_->setDisabled(true);
@@ -875,10 +893,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(trayToggle_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setTray(enabled);
                 if (enabled) {
+                        startInTrayToggle_->setChecked(false);
                         startInTrayToggle_->setEnabled(true);
+                        startInTrayToggle_->setState(false);
+                        settings_->setStartInTray(false);
                 } else {
+                        startInTrayToggle_->setChecked(false);
                         startInTrayToggle_->setState(false);
                         startInTrayToggle_->setDisabled(true);
+                        settings_->setStartInTray(false);
                 }
                 emit trayOptionChanged(enabled);
         });
