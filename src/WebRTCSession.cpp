@@ -2,10 +2,12 @@
 #include <QQuickItem>
 #include <algorithm>
 #include <cctype>
+#include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <optional>
 #include <string_view>
+#include <thread>
 #include <utility>
 
 #include "ChatPage.h"
@@ -854,6 +856,9 @@ WebRTCSession::acceptOffer(const std::string &sdp)
                 gst_webrtc_session_description_free(offer);
                 return false;
         }
+
+        // avoid a race that sometimes leaves the generated answer without media tracks (a=ssrc lines)
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // set-remote-description first, then create-answer
         GstPromise *promise = gst_promise_new_with_change_func(createAnswer, webrtc_, nullptr);
