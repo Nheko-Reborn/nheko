@@ -6,6 +6,8 @@
 #include "../Utils.h"
 #include "../ui/Avatar.h"
 #include "../ui/DropShadow.h"
+#include "ChatPage.h"
+#include "PopupItem.h"
 #include "SuggestionsPopup.h"
 
 SuggestionsPopup::SuggestionsPopup(QWidget *parent)
@@ -66,49 +68,24 @@ SuggestionsPopup::addRooms(const std::vector<RoomSearchResult> &rooms)
 }
 
 void
-SuggestionsPopup::addUsers(const std::vector<SearchResult> &users)
-{
-        if (users.empty()) {
-                hide();
-                return;
-        }
-
-        const size_t layoutCount = layout_->count();
-        const size_t userCount   = users.size();
-
-        // Remove the extra widgets from the layout.
-        if (userCount < layoutCount)
-                removeLayoutItemsAfter(userCount - 1);
-
-        for (size_t i = 0; i < userCount; ++i) {
-                auto item = layout_->itemAt(i);
-
-                // Create a new widget if there isn't already one in that
-                // layout position.
-                if (!item) {
-                        auto user = new UserItem(this, users.at(i).user_id);
-                        connect(user, &UserItem::clicked, this, &SuggestionsPopup::itemSelected);
-                        layout_->addWidget(user);
-                } else {
-                        // Update the current widget with the new data.
-                        auto userWidget = qobject_cast<UserItem *>(item->widget());
-                        if (userWidget)
-                                userWidget->updateItem(users.at(i).user_id);
-                }
-        }
-
-        resetSelection();
-        adjustSize();
-
-        selectNextSuggestion();
-}
-
-void
 SuggestionsPopup::hoverSelection()
 {
         resetHovering();
         setHovering(selectedItem_);
         update();
+}
+
+void
+SuggestionsPopup::selectHoveredSuggestion()
+{
+        const auto item = layout_->itemAt(selectedItem_);
+        if (!item)
+                return;
+
+        const auto &widget = qobject_cast<RoomItem *>(item->widget());
+        emit itemSelected(displayName(ChatPage::instance()->currentRoom(), widget->selectedText()));
+
+        resetSelection();
 }
 
 void
@@ -159,4 +136,24 @@ SuggestionsPopup::paintEvent(QPaintEvent *)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void
+SuggestionsPopup::selectLastItem()
+{
+        selectedItem_ = layout_->count() - 1;
+}
+
+void
+SuggestionsPopup::removeLayoutItemsAfter(size_t startingPos)
+{
+        size_t posToRemove = layout_->count() - 1;
+
+        QLayoutItem *item;
+        while (startingPos <= posToRemove && (item = layout_->takeAt(posToRemove)) != nullptr) {
+                delete item->widget();
+                delete item;
+
+                posToRemove = layout_->count() - 1;
+        }
 }
