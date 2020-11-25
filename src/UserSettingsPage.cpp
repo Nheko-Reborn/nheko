@@ -884,65 +884,65 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setStartInTray(enabled);
         });
 
-        connect(mobileMode_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setMobileMode(!disabled);
+        connect(mobileMode_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setMobileMode(enabled);
         });
 
-        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setGroupView(!disabled);
+        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setGroupView(enabled);
         });
 
-        connect(decryptSidebar_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setDecryptSidebar(!disabled);
+        connect(decryptSidebar_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setDecryptSidebar(enabled);
                 emit decryptSidebarChanged();
         });
 
-        connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setShareKeysWithTrustedUsers(!disabled);
+        connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setShareKeysWithTrustedUsers(enabled);
         });
 
-        connect(avatarCircles_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setAvatarCircles(!disabled);
+        connect(avatarCircles_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setAvatarCircles(enabled);
         });
 
-        connect(markdown_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setMarkdown(!disabled);
+        connect(markdown_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setMarkdown(enabled);
         });
 
-        connect(typingNotifications_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setTypingNotifications(!disabled);
+        connect(typingNotifications_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setTypingNotifications(enabled);
         });
 
-        connect(sortByImportance_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setSortByImportance(!disabled);
+        connect(sortByImportance_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setSortByImportance(enabled);
         });
 
-        connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setButtonsInTimeline(!disabled);
+        connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setButtonsInTimeline(enabled);
         });
 
-        connect(readReceipts_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setReadReceipts(!disabled);
+        connect(readReceipts_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setReadReceipts(enabled);
         });
 
-        connect(desktopNotifications_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setDesktopNotifications(!disabled);
+        connect(desktopNotifications_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setDesktopNotifications(enabled);
         });
 
-        connect(alertOnNotification_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setAlertOnNotification(!disabled);
+        connect(alertOnNotification_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setAlertOnNotification(enabled);
         });
 
-        connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setMessageHoverHighlight(!disabled);
+        connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setMessageHoverHighlight(enabled);
         });
 
-        connect(enlargeEmojiOnlyMessages_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setEnlargeEmojiOnlyMessages(!disabled);
+        connect(enlargeEmojiOnlyMessages_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setEnlargeEmojiOnlyMessages(enabled);
         });
 
-        connect(useStunServer_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setUseStunServer(!disabled);
+        connect(useStunServer_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setUseStunServer(enabled);
         });
 
         connect(timelineMaxWidthSpin_,

@@ -857,7 +857,8 @@ WebRTCSession::acceptOffer(const std::string &sdp)
                 return false;
         }
 
-        // avoid a race that sometimes leaves the generated answer without media tracks (a=ssrc lines)
+        // avoid a race that sometimes leaves the generated answer without media tracks (a=ssrc
+        // lines)
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // set-remote-description first, then create-answer
