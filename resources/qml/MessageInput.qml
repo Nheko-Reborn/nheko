@@ -178,6 +178,11 @@ Rectangle {
                     onClicked: TimelineManager.timeline.input.paste(true)
                 }
 
+                NhekoDropArea {
+                    anchors.fill: parent
+                    roomid: TimelineManager.timeline.roomId()
+                }
+
                 background: Rectangle {
                     color: colors.window
                 }

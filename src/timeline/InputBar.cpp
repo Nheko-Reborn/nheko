@@ -1,6 +1,7 @@
 #include "InputBar.h"
 
 #include <QClipboard>
+#include <QDropEvent>
 #include <QFileDialog>
 #include <QGuiApplication>
 #include <QMimeData>
@@ -44,6 +45,13 @@ InputBar::paste(bool fromMouse)
                 md = QGuiApplication::clipboard()->mimeData(QClipboard::Clipboard);
         }
 
+        if (md)
+                insertMimeData(md);
+}
+
+void
+InputBar::insertMimeData(const QMimeData *md)
+{
         if (!md)
                 return;
 

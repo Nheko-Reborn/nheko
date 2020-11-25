@@ -88,6 +88,7 @@ public:
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
         CallManager *callManager() { return callManager_; }
+        TimelineViewManager *timelineManager() { return view_manager_; }
         void deleteConfigs();
 
         CommunitiesList *communitiesList() { return communitiesList_; }

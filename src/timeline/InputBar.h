@@ -9,6 +9,7 @@
 
 class TimelineModel;
 class QMimeData;
+class QDropEvent;
 class QStringList;
 
 class InputBar : public QObject
@@ -36,6 +37,7 @@ public slots:
 
         void send();
         void paste(bool fromMouse);
+        void insertMimeData(const QMimeData *data);
         void updateState(int selectionStart, int selectionEnd, int cursorPosition, QString text);
         void openFileSelection();
         bool uploading() const { return uploading_; }

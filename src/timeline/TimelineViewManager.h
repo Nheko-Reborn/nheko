@@ -105,6 +105,15 @@ public slots:
         void initWithMessages(const std::vector<QString> &roomIds);
 
         void setHistoryView(const QString &room_id);
+        TimelineModel *getHistoryView(const QString &room_id)
+        {
+                auto room = models.find(room_id);
+                if (room != models.end())
+                        return room.value().data();
+                else
+                        return nullptr;
+        }
+
         void updateColorPalette();
         void queueReactionMessage(const QString &reactedEvent, const QString &reactionKey);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
