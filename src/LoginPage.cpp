@@ -16,9 +16,11 @@
  */
 
 #include <QDesktopServices>
+#include <QFontMetrics>
 #include <QLabel>
 #include <QPainter>
 #include <QStyleOption>
+#include <QtMath>
 
 #include <mtx/identifiers.hpp>
 #include <mtx/requests.hpp>
@@ -95,8 +97,6 @@ LoginPage::LoginPage(QWidget *parent)
              "address there, if your server doesn't support .well-known lookup.\nExample: "
              "@user:server.my\nIf Nheko fails to discover your homeserver, it will show you a "
              "field to enter the server manually."));
-        matrixid_input_->setValidator(
-          new QRegularExpressionValidator(QRegularExpression("@.+?:.{3,}"), this));
 
         spinner_ = new LoadingIndicator(this);
         spinner_->setFixedHeight(40);
@@ -109,6 +109,12 @@ LoginPage::LoginPage(QWidget *parent)
 
         matrixidLayout_ = new QHBoxLayout();
         matrixidLayout_->addWidget(matrixid_input_, 0, Qt::AlignVCenter);
+
+        QFont font;
+
+        error_matrixid_label_ = new QLabel(this);
+        error_matrixid_label_->setFont(font);
+        error_matrixid_label_->setWordWrap(true);
 
         password_input_ = new TextField(this);
         password_input_->setLabel(tr("Password"));
@@ -132,9 +138,12 @@ LoginPage::LoginPage(QWidget *parent)
         serverLayout_->addWidget(serverInput_, 0, Qt::AlignVCenter);
 
         form_layout_->addLayout(matrixidLayout_);
+        form_layout_->addWidget(error_matrixid_label_, 0, Qt::AlignHCenter);
         form_layout_->addWidget(password_input_);
         form_layout_->addWidget(deviceName_, Qt::AlignHCenter);
         form_layout_->addLayout(serverLayout_);
+
+        error_matrixid_label_->hide();
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);
@@ -148,8 +157,6 @@ LoginPage::LoginPage(QWidget *parent)
         button_layout_->addStretch(1);
         button_layout_->addWidget(login_button_);
         button_layout_->addStretch(1);
-
-        QFont font;
 
         error_label_ = new QLabel(this);
         error_label_->setFont(font);
@@ -183,7 +190,28 @@ LoginPage::LoginPage(QWidget *parent)
 void
 LoginPage::loginError(const QString &msg)
 {
+        auto rect  = QFontMetrics(font()).boundingRect(msg);
+        int width  = rect.width();
+        int height = rect.height();
+        error_label_->setFixedHeight(qCeil(width / 200) * height);
         error_label_->setText(msg);
+}
+
+void
+LoginPage::matrixIdError(const QString &msg)
+{
+        error_matrixid_label_->show();
+        error_matrixid_label_->setText(msg);
+        matrixid_input_->setValid(false);
+}
+
+bool
+LoginPage::isMatrixIdValid()
+{
+        QRegularExpressionValidator v(QRegularExpression("@.+?:.{3,}"), this);
+        QString s = matrixid_input_->text();
+        int pos   = 0;
+        return v.validate(s, pos) == QValidator::Acceptable;
 }
 
 void
@@ -193,10 +221,20 @@ LoginPage::onMatrixIdEntered()
 
         User user;
 
+        if (!isMatrixIdValid()) {
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return;
+        } else {
+                error_matrixid_label_->setText("");
+                error_matrixid_label_->hide();
+                matrixid_input_->setValid(true);
+        }
+
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &e) {
-                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return;
         }
 
         QString homeServer = QString::fromStdString(user.hostname());
@@ -307,7 +345,7 @@ LoginPage::onServerAddressEntered()
 void
 LoginPage::versionError(const QString &error)
 {
-        error_label_->setText(error);
+        loginError(error);
         serverInput_->show();
 
         spinner_->stop();
@@ -345,10 +383,20 @@ LoginPage::onLoginButtonClicked()
 
         User user;
 
+        if (!isMatrixIdValid()) {
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return;
+        } else {
+                error_matrixid_label_->setText("");
+                error_matrixid_label_->hide();
+                matrixid_input_->setValid(true);
+        }
+
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &e) {
-                return loginError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                return;
         }
 
         if (loginMethod == LoginMethod::Password) {

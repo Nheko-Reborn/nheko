@@ -72,7 +72,9 @@ Page {
 
         MenuItem {
             text: qsTr("React")
-            onClicked: emojiPopup.show(messageContextMenu.parent, messageContextMenu.eventId)
+            onClicked: emojiPopup.show(messageContextMenu.parent, function(emoji) {
+                TimelineManager.queueReactionMessage(messageContextMenu.eventId, emoji);
+            })
         }
 
         MenuItem {
@@ -95,6 +97,7 @@ Page {
         }
 
         MenuItem {
+            // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
             visible: messageContextMenu.isEncrypted
             height: visible ? implicitHeight : 0
             text: qsTr("View decrypted raw message")
@@ -129,7 +132,6 @@ Page {
 
         Connections {
             target: TimelineManager
-
             onNewDeviceVerificationRequest: {
                 var dialog = deviceVerificationDialog.createObject(timelineRoot, {
                     "flow": flow
@@ -140,7 +142,6 @@ Page {
 
         Connections {
             target: TimelineManager.timeline
-            
             onOpenProfile: {
                 var userProfile = userProfileComponent.createObject(timelineRoot, {
                     "profile": profile
@@ -192,13 +193,15 @@ Page {
 
                     StackLayout {
                         id: stackLayout
+
                         currentIndex: 0
 
                         Connections {
-                            target: TimelineManager
                             function onActiveTimelineChanged() {
                                 stackLayout.currentIndex = 0;
                             }
+
+                            target: TimelineManager
                         }
 
                         MessageView {
@@ -210,6 +213,7 @@ Page {
                             source: TimelineManager.onVideoCall ? "VideoCall.qml" : ""
                             onLoaded: TimelineManager.setVideoCallItem()
                         }
+
                     }
 
                     TypingIndicator {
@@ -234,8 +238,8 @@ Page {
             ReplyPopup {
             }
 
-            //MessageInput {
-            //}
+            MessageInput {
+            }
 
         }
 

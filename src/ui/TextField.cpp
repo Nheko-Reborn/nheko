@@ -69,6 +69,18 @@ TextField::hasLabel() const
         return show_label_;
 }
 
+bool
+TextField::isValid() const
+{
+        return is_valid_;
+}
+
+void
+TextField::setValid(bool valid)
+{
+        is_valid_ = valid;
+}
+
 void
 TextField::setLabelFontSize(qreal size)
 {
@@ -147,7 +159,7 @@ QColor
 TextField::underlineColor() const
 {
         if (!underline_color_.isValid()) {
-                if (hasAcceptableInput() || !isModified())
+                if ((hasAcceptableInput() && isValid()) || !isModified())
                         return QPalette().color(QPalette::Highlight);
                 else
                         return Qt::red;

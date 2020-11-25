@@ -10,6 +10,7 @@
 
 #include "CacheCryptoStructs.h"
 #include "EventStore.h"
+#include "InputBar.h"
 #include "ui/UserProfile.h"
 
 namespace mtx::http {
@@ -149,6 +150,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
+        Q_PROPERTY(InputBar *input READ input CONSTANT)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager,
@@ -271,6 +273,7 @@ public slots:
 
         QString roomName() const;
         QString roomTopic() const;
+        InputBar *input() { return &input_; }
         QString roomAvatarUrl() const;
         QString roomId() const { return room_id_; }
 
@@ -319,6 +322,8 @@ private:
         std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;
+
+        InputBar input_{this};
 
         friend struct SendMessageVisitor;
 };

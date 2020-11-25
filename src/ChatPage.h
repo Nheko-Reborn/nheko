@@ -46,7 +46,6 @@ class QuickSwitcher;
 class RoomList;
 class SideBarActions;
 class Splitter;
-class TextInputWidget;
 class TimelineViewManager;
 class UserInfoWidget;
 class UserSettings;
@@ -88,6 +87,8 @@ public:
         static ChatPage *instance() { return instance_; }
 
         QSharedPointer<UserSettings> userSettings() { return userSettings_; }
+        CallManager *callManager() { return callManager_; }
+        TimelineViewManager *timelineManager() { return view_manager_; }
         void deleteConfigs();
 
         CommunitiesList *communitiesList() { return communitiesList_; }
@@ -99,7 +100,6 @@ public:
         //! Show the room/group list (if it was visible).
         void showSideBars();
         void initiateLogout();
-        void focusMessageInput();
 
         QString status() const;
         void setStatus(const QString &status);
@@ -109,6 +109,7 @@ public:
 public slots:
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
+        void joinRoom(const QString &room);
 
         void inviteUser(QString userid, QString reason);
         void kickUser(QString userid, QString reason);
@@ -124,17 +125,6 @@ signals:
         void notificationsRetrieved(const mtx::responses::Notifications &);
         void highlightedNotifsRetrieved(const mtx::responses::Notifications &,
                                         const QPoint widgetPos);
-
-        void uploadFailed(const QString &msg);
-        void mediaUploaded(const QString &roomid,
-                           const QString &filename,
-                           const std::optional<mtx::crypto::EncryptedFile> &file,
-                           const QString &url,
-                           const QString &mimeClass,
-                           const QString &mime,
-                           qint64 dsize,
-                           const QSize &dimensions,
-                           const QString &blurhash);
 
         void contentLoaded();
         void closing();
@@ -200,8 +190,6 @@ private slots:
         void removeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
 
-        void joinRoom(const QString &room);
-        void sendTypingNotifications();
         void handleSyncResponse(const mtx::responses::Sync &res);
 
 private:
@@ -263,8 +251,6 @@ private:
         TimelineViewManager *view_manager_;
         SideBarActions *sidebarActions_;
 
-        TextInputWidget *text_input_;
-
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;
 
@@ -274,8 +260,6 @@ private:
         UserInfoWidget *user_info_widget_;
 
         popups::UserMentions *user_mentions_popup_;
-
-        QTimer *typingRefresher_;
 
         // Global user settings.
         QSharedPointer<UserSettings> userSettings_;

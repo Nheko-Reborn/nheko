@@ -60,7 +60,10 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
                 emit confirmUpload(data_, mediaType_, fileName_.text());
                 close();
         });
-        connect(&cancel_, &QPushButton::clicked, this, &PreviewUploadOverlay::close);
+        connect(&cancel_, &QPushButton::clicked, this, [this]() {
+                emit aborted();
+                close();
+        });
 }
 
 void
@@ -115,7 +118,7 @@ PreviewUploadOverlay::init()
 void
 PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64_t upload_size)
 {
-        if (mediaType_ == "image") {
+        if (mediaType_.split('/')[0] == "image") {
                 if (!image_.loadFromData(data_)) {
                         titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
                 } else {
@@ -151,7 +154,7 @@ PreviewUploadOverlay::setPreview(const QImage &src, const QString &mime)
         else
                 titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
 
-        mediaType_ = split[0];
+        mediaType_ = mime;
         filePath_  = "clipboard." + type;
         image_.convertFromImage(src);
         isImage_ = true;
@@ -167,7 +170,7 @@ PreviewUploadOverlay::setPreview(const QByteArray data, const QString &mime)
         auto const &type  = split[1];
 
         data_      = data;
-        mediaType_ = split[0];
+        mediaType_ = mime;
         filePath_  = "clipboard." + type;
         isImage_   = false;
 
@@ -199,7 +202,7 @@ PreviewUploadOverlay::setPreview(const QString &path)
 
         auto const &split = mime.name().split('/');
 
-        mediaType_ = split[0];
+        mediaType_ = mime.name();
         filePath_  = file.fileName();
         isImage_   = false;
 

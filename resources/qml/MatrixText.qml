@@ -5,6 +5,7 @@ import im.nheko 1.0
 TextEdit {
     textFormat: TextEdit.RichText
     readOnly: true
+    focus: false
     wrapMode: Text.Wrap
     selectByMouse: !Settings.mobileMode
     color: colors.text

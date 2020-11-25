@@ -241,17 +241,13 @@ set(SRC_FILES
 	src/dialogs/RoomSettings.cpp
 
 	# Emoji
-	src/emoji/Category.cpp
 	src/emoji/EmojiModel.cpp
-	src/emoji/ItemDelegate.cpp
-	src/emoji/Panel.cpp
-	src/emoji/PickButton.cpp
-	src/emoji/Provider.cpp
 	src/emoji/Provider_new.cpp
 
 
 	# Timeline
 	src/timeline/EventStore.cpp
+	src/timeline/InputBar.cpp
 	src/timeline/Reaction.cpp
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
@@ -261,22 +257,23 @@ set(SRC_FILES
 	src/ui/Avatar.cpp
 	src/ui/Badge.cpp
 	src/ui/DropShadow.cpp
-	src/ui/LoadingIndicator.cpp
-	src/ui/InfoMessage.cpp
 	src/ui/FlatButton.cpp
 	src/ui/FloatingButton.cpp
+	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
+	src/ui/LoadingIndicator.cpp
+	src/ui/NhekoDropArea.cpp
 	src/ui/OverlayModal.cpp
-	src/ui/SnackBar.cpp
+	src/ui/OverlayWidget.cpp
 	src/ui/RaisedButton.cpp
 	src/ui/Ripple.cpp
 	src/ui/RippleOverlay.cpp
-	src/ui/OverlayWidget.cpp
+	src/ui/SnackBar.cpp
 	src/ui/TextField.cpp
 	src/ui/TextLabel.cpp
-	src/ui/ToggleButton.cpp
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
+	src/ui/ToggleButton.cpp
 	src/ui/UserProfile.cpp
 
 	src/AvatarProvider.cpp
@@ -287,6 +284,7 @@ set(SRC_FILES
 	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
 	src/CommunitiesListItem.cpp
+	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
 	src/InviteeItem.cpp
@@ -303,10 +301,10 @@ set(SRC_FILES
 	src/SSOHandler.cpp
 	src/SideBarActions.cpp
 	src/Splitter.cpp
-	src/TextInputWidget.cpp
 	src/TrayIcon.cpp
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
+	src/UsersModel.cpp
 	src/Utils.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
@@ -454,15 +452,12 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/RoomSettings.h
 
 	# Emoji
-	src/emoji/Category.h
 	src/emoji/EmojiModel.h
-	src/emoji/ItemDelegate.h
-	src/emoji/Panel.h
-	src/emoji/PickButton.h
 	src/emoji/Provider.h
 
 	# Timeline
 	src/timeline/EventStore.h
+	src/timeline/InputBar.h
 	src/timeline/Reaction.h
 	src/timeline/TimelineViewManager.h
 	src/timeline/TimelineModel.h
@@ -477,6 +472,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Label.h
 	src/ui/FloatingButton.h
 	src/ui/Menu.h
+	src/ui/NhekoDropArea.h
 	src/ui/OverlayWidget.h
 	src/ui/SnackBar.h
 	src/ui/RaisedButton.h
@@ -498,6 +494,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ChatPage.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
+	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
 	src/InviteeItem.h
 	src/LoginPage.h
@@ -510,10 +507,10 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/SSOHandler.h
 	src/SideBarActions.h
 	src/Splitter.h
-	src/TextInputWidget.h
 	src/TrayIcon.h
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h
+	src/UsersModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/popups/PopupItem.h

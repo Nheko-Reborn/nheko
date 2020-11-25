@@ -41,6 +41,8 @@ class TimelineViewManager : public QObject
         Q_PROPERTY(QString callPartyName READ callPartyName NOTIFY callPartyChanged)
         Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY callPartyChanged)
         Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
+        Q_PROPERTY(bool isOnCall READ isOnCall NOTIFY onCallChanged)
+        Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
 
 public:
         TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
@@ -95,6 +97,7 @@ signals:
         void videoCallChanged();
         void callPartyChanged();
         void micMuteChanged();
+        void onCallChanged();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -102,48 +105,25 @@ public slots:
         void initWithMessages(const std::vector<QString> &roomIds);
 
         void setHistoryView(const QString &room_id);
+        TimelineModel *getHistoryView(const QString &room_id)
+        {
+                auto room = models.find(room_id);
+                if (room != models.end())
+                        return room.value().data();
+                else
+                        return nullptr;
+        }
+
         void updateColorPalette();
         void queueReactionMessage(const QString &reactedEvent, const QString &reactionKey);
-        void queueTextMessage(const QString &msg);
-        void queueEmoteMessage(const QString &msg);
-        void queueImageMessage(const QString &roomid,
-                               const QString &filename,
-                               const std::optional<mtx::crypto::EncryptedFile> &file,
-                               const QString &url,
-                               const QString &mime,
-                               uint64_t dsize,
-                               const QSize &dimensions,
-                               const QString &blurhash);
-        void queueFileMessage(const QString &roomid,
-                              const QString &filename,
-                              const std::optional<mtx::crypto::EncryptedFile> &file,
-                              const QString &url,
-                              const QString &mime,
-                              uint64_t dsize);
-        void queueAudioMessage(const QString &roomid,
-                               const QString &filename,
-                               const std::optional<mtx::crypto::EncryptedFile> &file,
-                               const QString &url,
-                               const QString &mime,
-                               uint64_t dsize);
-        void queueVideoMessage(const QString &roomid,
-                               const QString &filename,
-                               const std::optional<mtx::crypto::EncryptedFile> &file,
-                               const QString &url,
-                               const QString &mime,
-                               uint64_t dsize);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
 
         void updateEncryptedDescriptions();
-
-        void clearCurrentRoomTimeline()
-        {
-                if (timeline_)
-                        timeline_->clearTimeline();
-        }
+        bool isOnCall() const;
+        bool callsSupported() const;
 
         void enableBackButton()
         {

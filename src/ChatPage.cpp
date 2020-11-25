@@ -39,7 +39,6 @@
 #include "RoomList.h"
 #include "SideBarActions.h"
 #include "Splitter.h"
-#include "TextInputWidget.h"
 #include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -138,35 +137,18 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         splitter->addWidget(content_);
         splitter->restoreSizes(parent->width());
 
-        text_input_ = new TextInputWidget(this);
-        contentLayout_->addWidget(text_input_);
-
-        typingRefresher_ = new QTimer(this);
-        typingRefresher_->setInterval(TYPING_REFRESH_TIMEOUT);
-
         connect(this, &ChatPage::connectionLost, this, [this]() {
                 nhlog::net()->info("connectivity lost");
                 isConnected_ = false;
                 http::client()->shutdown();
-                text_input_->disableInput();
         });
         connect(this, &ChatPage::connectionRestored, this, [this]() {
                 nhlog::net()->info("trying to re-connect");
-                text_input_->enableInput();
                 isConnected_ = true;
 
                 // Drop all pending connections.
                 http::client()->shutdown();
                 trySync();
-        });
-
-        connect(text_input_,
-                &TextInputWidget::clearRoomTimeline,
-                view_manager_,
-                &TimelineViewManager::clearCurrentRoomTimeline);
-
-        connect(text_input_, &TextInputWidget::rotateMegolmSession, this, [this]() {
-                cache::dropOutboundMegolmSession(current_room_.toStdString());
         });
 
         connect(
@@ -230,9 +212,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(room_list_, &RoomList::roomChanged, this, [this](QString room_id) {
                 this->current_room_ = room_id;
         });
-        connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::stopTyping);
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
-        connect(room_list_, &RoomList::roomChanged, text_input_, &TextInputWidget::focusLineEdit);
         connect(
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
@@ -246,27 +226,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 room_list_->removeRoom(room_id, currentRoom() == room_id);
         });
 
-        connect(
-          text_input_, &TextInputWidget::startedTyping, this, &ChatPage::sendTypingNotifications);
-        connect(typingRefresher_, &QTimer::timeout, this, &ChatPage::sendTypingNotifications);
-        connect(text_input_, &TextInputWidget::stoppedTyping, this, [this]() {
-                if (!userSettings_->typingNotifications())
-                        return;
-
-                typingRefresher_->stop();
-
-                if (current_room_.isEmpty())
-                        return;
-
-                http::client()->stop_typing(
-                  current_room_.toStdString(), [](mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::net()->warn("failed to stop typing notifications: {}",
-                                                     err->matrix_error.error);
-                          }
-                  });
-        });
-
         connect(view_manager_,
                 &TimelineViewManager::updateRoomsLastMessage,
                 room_list_,
@@ -276,197 +235,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 SIGNAL(totalUnreadMessageCountUpdated(int)),
                 this,
                 SIGNAL(unreadMessages(int)));
-
-        connect(text_input_,
-                &TextInputWidget::sendTextMessage,
-                view_manager_,
-                &TimelineViewManager::queueTextMessage);
-
-        connect(text_input_,
-                &TextInputWidget::sendEmoteMessage,
-                view_manager_,
-                &TimelineViewManager::queueEmoteMessage);
-
-        connect(text_input_, &TextInputWidget::sendJoinRoomRequest, this, &ChatPage::joinRoom);
-
-        // invites and bans via quick command
-        connect(text_input_, &TextInputWidget::sendInviteRoomRequest, this, &ChatPage::inviteUser);
-        connect(text_input_, &TextInputWidget::sendKickRoomRequest, this, &ChatPage::kickUser);
-        connect(text_input_, &TextInputWidget::sendBanRoomRequest, this, &ChatPage::banUser);
-        connect(text_input_, &TextInputWidget::sendUnbanRoomRequest, this, &ChatPage::unbanUser);
-
-        connect(
-          text_input_, &TextInputWidget::changeRoomNick, this, [this](const QString &displayName) {
-                  mtx::events::state::Member member;
-                  member.display_name = displayName.toStdString();
-                  member.avatar_url =
-                    cache::avatarUrl(currentRoom(),
-                                     QString::fromStdString(http::client()->user_id().to_string()))
-                      .toStdString();
-                  member.membership = mtx::events::state::Membership::Join;
-
-                  http::client()->send_state_event(
-                    currentRoom().toStdString(),
-                    http::client()->user_id().to_string(),
-                    member,
-                    [](mtx::responses::EventId, mtx::http::RequestErr err) {
-                            if (err)
-                                    nhlog::net()->error("Failed to set room displayname: {}",
-                                                        err->matrix_error.error);
-                    });
-          });
-
-        connect(
-          text_input_,
-          &TextInputWidget::uploadMedia,
-          this,
-          [this](QSharedPointer<QIODevice> dev, QString mimeClass, const QString &fn) {
-                  if (!dev->open(QIODevice::ReadOnly)) {
-                          emit uploadFailed(
-                            QString("Error while reading media: %1").arg(dev->errorString()));
-                          return;
-                  }
-
-                  auto bin = dev->readAll();
-                  QMimeDatabase db;
-                  QMimeType mime = db.mimeTypeForData(bin);
-
-                  auto payload = std::string(bin.data(), bin.size());
-                  std::optional<mtx::crypto::EncryptedFile> encryptedFile;
-                  if (cache::isRoomEncrypted(current_room_.toStdString())) {
-                          mtx::crypto::BinaryBuf buf;
-                          std::tie(buf, encryptedFile) = mtx::crypto::encrypt_file(payload);
-                          payload                      = mtx::crypto::to_string(buf);
-                  }
-
-                  QSize dimensions;
-                  QString blurhash;
-                  if (mimeClass == "image") {
-                          QImage img = utils::readImage(&bin);
-
-                          dimensions = img.size();
-                          if (img.height() > 200 && img.width() > 360)
-                                  img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
-                          std::vector<unsigned char> data;
-                          for (int y = 0; y < img.height(); y++) {
-                                  for (int x = 0; x < img.width(); x++) {
-                                          auto p = img.pixel(x, y);
-                                          data.push_back(static_cast<unsigned char>(qRed(p)));
-                                          data.push_back(static_cast<unsigned char>(qGreen(p)));
-                                          data.push_back(static_cast<unsigned char>(qBlue(p)));
-                                  }
-                          }
-                          blurhash = QString::fromStdString(
-                            blurhash::encode(data.data(), img.width(), img.height(), 4, 3));
-                  }
-
-                  http::client()->upload(
-                    payload,
-                    encryptedFile ? "application/octet-stream" : mime.name().toStdString(),
-                    QFileInfo(fn).fileName().toStdString(),
-                    [this,
-                     room_id  = current_room_,
-                     filename = fn,
-                     encryptedFile,
-                     mimeClass,
-                     mime = mime.name(),
-                     size = payload.size(),
-                     dimensions,
-                     blurhash](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
-                            if (err) {
-                                    emit uploadFailed(
-                                      tr("Failed to upload media. Please try again."));
-                                    nhlog::net()->warn("failed to upload media: {} {} ({})",
-                                                       err->matrix_error.error,
-                                                       to_string(err->matrix_error.errcode),
-                                                       static_cast<int>(err->status_code));
-                                    return;
-                            }
-
-                            emit mediaUploaded(room_id,
-                                               filename,
-                                               encryptedFile,
-                                               QString::fromStdString(res.content_uri),
-                                               mimeClass,
-                                               mime,
-                                               size,
-                                               dimensions,
-                                               blurhash);
-                    });
-          });
-
-        connect(this, &ChatPage::uploadFailed, this, [this](const QString &msg) {
-                text_input_->hideUploadSpinner();
-                emit showNotification(msg);
-        });
-        connect(this,
-                &ChatPage::mediaUploaded,
-                this,
-                [this](QString roomid,
-                       QString filename,
-                       std::optional<mtx::crypto::EncryptedFile> encryptedFile,
-                       QString url,
-                       QString mimeClass,
-                       QString mime,
-                       qint64 dsize,
-                       QSize dimensions,
-                       QString blurhash) {
-                        text_input_->hideUploadSpinner();
-
-                        if (encryptedFile)
-                                encryptedFile->url = url.toStdString();
-
-                        if (mimeClass == "image")
-                                view_manager_->queueImageMessage(roomid,
-                                                                 filename,
-                                                                 encryptedFile,
-                                                                 url,
-                                                                 mime,
-                                                                 dsize,
-                                                                 dimensions,
-                                                                 blurhash);
-                        else if (mimeClass == "audio")
-                                view_manager_->queueAudioMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize);
-                        else if (mimeClass == "video")
-                                view_manager_->queueVideoMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize);
-                        else
-                                view_manager_->queueFileMessage(
-                                  roomid, filename, encryptedFile, url, mime, dsize);
-                });
-
-        connect(text_input_, &TextInputWidget::callButtonPress, this, [this]() {
-                if (callManager_->onActiveCall()) {
-                        callManager_->hangUp();
-                } else {
-                        if (auto roomInfo = cache::singleRoomInfo(current_room_.toStdString());
-                            roomInfo.member_count != 2) {
-                                showNotification("Calls are limited to 1:1 rooms.");
-                        } else {
-                                std::vector<RoomMember> members(
-                                  cache::getMembers(current_room_.toStdString()));
-                                const RoomMember &callee =
-                                  members.front().user_id == utils::localUser() ? members.back()
-                                                                                : members.front();
-                                auto dialog = new dialogs::PlaceCall(
-                                  callee.user_id,
-                                  callee.display_name,
-                                  QString::fromStdString(roomInfo.name),
-                                  QString::fromStdString(roomInfo.avatar_url),
-                                  userSettings_,
-                                  MainWindow::instance());
-                                connect(dialog, &dialogs::PlaceCall::voice, this, [this]() {
-                                        callManager_->sendInvite(current_room_, false);
-                                });
-                                connect(dialog, &dialogs::PlaceCall::video, this, [this]() {
-                                        callManager_->sendInvite(current_room_, true);
-                                });
-                                utils::centerWidget(dialog, MainWindow::instance());
-                                dialog->show();
-                        }
-                }
-        });
 
         connect(
           this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
@@ -636,12 +404,6 @@ ChatPage::resetUI()
 }
 
 void
-ChatPage::focusMessageInput()
-{
-        this->text_input_->focusLineEdit();
-}
-
-void
 ChatPage::deleteConfigs()
 {
         QSettings settings;
@@ -805,7 +567,6 @@ ChatPage::showQuickSwitcher()
         connect(dialog, &QuickSwitcher::roomSelected, room_list_, &RoomList::highlightSelectedRoom);
         connect(dialog, &QuickSwitcher::closing, this, [this]() {
                 MainWindow::instance()->hideOverlay();
-                text_input_->setFocus(Qt::FocusReason::PopupFocusReason);
         });
 
         MainWindow::instance()->showTransparentOverlayModal(dialog);
@@ -1297,21 +1058,6 @@ void
 ChatPage::receivedSessionKey(const std::string &room_id, const std::string &session_id)
 {
         view_manager_->receivedSessionKey(room_id, session_id);
-}
-
-void
-ChatPage::sendTypingNotifications()
-{
-        if (!userSettings_->typingNotifications())
-                return;
-
-        http::client()->start_typing(
-          current_room_.toStdString(), 10'000, [](mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to send typing notification: {}",
-                                             err->matrix_error.error);
-                  }
-          });
 }
 
 QString

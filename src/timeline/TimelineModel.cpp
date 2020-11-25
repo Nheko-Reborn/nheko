@@ -800,7 +800,6 @@ void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);
-        ChatPage::instance()->focusMessageInput();
 }
 
 RelatedInfo

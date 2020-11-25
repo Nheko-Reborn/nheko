@@ -24,12 +24,6 @@ struct RoomMember
         QImage avatar;
 };
 
-struct SearchResult
-{
-        QString user_id;
-        QString display_name;
-};
-
 //! Used to uniquely identify a list of read receipts.
 struct ReadReceiptKey
 {

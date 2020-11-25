@@ -85,8 +85,6 @@ constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
-Q_DECLARE_METATYPE(SearchResult)
-Q_DECLARE_METATYPE(std::vector<SearchResult>)
 Q_DECLARE_METATYPE(RoomMember)
 Q_DECLARE_METATYPE(mtx::responses::Timeline)
 Q_DECLARE_METATYPE(RoomSearchResult)
@@ -2334,39 +2332,6 @@ Cache::searchRooms(const std::string &query, std::uint8_t max_items)
         return results;
 }
 
-std::vector<SearchResult>
-Cache::searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
-{
-        std::multimap<int, std::pair<std::string, std::string>> items;
-
-        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto cursor = lmdb::cursor::open(txn, getMembersDb(txn, room_id));
-
-        std::string user_id, user_data;
-        while (cursor.get(user_id, user_data, MDB_NEXT)) {
-                const auto display_name = displayName(room_id, user_id);
-                const int score         = utils::levenshtein_distance(query, display_name);
-
-                items.emplace(score, std::make_pair(user_id, display_name));
-        }
-
-        auto end = items.begin();
-
-        if (items.size() >= max_items)
-                std::advance(end, max_items);
-        else if (items.size() > 0)
-                std::advance(end, items.size());
-
-        std::vector<SearchResult> results;
-        for (auto it = items.begin(); it != end; it++) {
-                const auto user = it->second;
-                results.push_back(SearchResult{QString::fromStdString(user.first),
-                                               QString::fromStdString(user.second)});
-        }
-
-        return results;
-}
-
 std::vector<RoomMember>
 Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
@@ -3762,8 +3727,6 @@ namespace cache {
 void
 init(const QString &user_id)
 {
-        qRegisterMetaType<SearchResult>();
-        qRegisterMetaType<std::vector<SearchResult>>();
         qRegisterMetaType<RoomMember>();
         qRegisterMetaType<RoomSearchResult>();
         qRegisterMetaType<RoomInfo>();
@@ -4075,11 +4038,6 @@ calculateRoomReadStatus()
         instance_->calculateRoomReadStatus();
 }
 
-std::vector<SearchResult>
-searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items)
-{
-        return instance_->searchUsers(room_id, query, max_items);
-}
 std::vector<RoomSearchResult>
 searchRooms(const std::string &query, std::uint8_t max_items)
 {

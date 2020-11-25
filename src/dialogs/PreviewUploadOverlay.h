@@ -40,6 +40,7 @@ public:
 
 signals:
         void confirmUpload(const QByteArray data, const QString &media, const QString &filename);
+        void aborted();
 
 private:
         void init();

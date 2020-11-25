@@ -2,6 +2,7 @@
 
 #include "EmojiModel.h"
 
+#include <CompletionModelRoles.h>
 #include <QDebug>
 #include <QEvent>
 #include <QSortFilterProxyModel>
@@ -19,12 +20,21 @@ public:
         }
         QVariant data(const QModelIndex &index, int role = Qt::UserRole + 1) const override
         {
-                if (role == Qt::DisplayRole) {
+                switch (role) {
+                case Qt::DisplayRole: {
                         auto emoji = QSortFilterProxyModel::data(index, role).toString();
                         return emoji + " :" +
                                toShortcode(data(index, EmojiModel::ShortName).toString()) + ":";
                 }
-                return QSortFilterProxyModel::data(index, role);
+                case CompletionModel::CompletionRole:
+                        return QSortFilterProxyModel::data(index, EmojiModel::Unicode);
+                case CompletionModel::SearchRole: {
+                        return toShortcode(
+                          QSortFilterProxyModel::data(index, EmojiModel::ShortName).toString());
+                }
+                default:
+                        return QSortFilterProxyModel::data(index, role);
+                }
         }
 
 private:

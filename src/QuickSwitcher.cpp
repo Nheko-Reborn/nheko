@@ -118,7 +118,7 @@ QuickSwitcher::QuickSwitcher(QWidget *parent)
         connect(roomSearch_, &RoomSearchInput::hiding, this, [this]() { popup_.hide(); });
         connect(roomSearch_, &QLineEdit::returnPressed, this, [this]() {
                 reset();
-                popup_.selectHoveredSuggestion<RoomItem>();
+                popup_.selectHoveredSuggestion();
         });
 }
 
