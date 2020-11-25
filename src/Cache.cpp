@@ -1164,9 +1164,7 @@ Cache::saveState(const mtx::responses::Sync &res)
                 RoomInfo updatedInfo;
                 updatedInfo.name  = getRoomName(txn, statesdb, membersdb).toStdString();
                 updatedInfo.topic = getRoomTopic(txn, statesdb).toStdString();
-                updatedInfo.avatar_url =
-                  getRoomAvatarUrl(txn, statesdb, membersdb, QString::fromStdString(room.first))
-                    .toStdString();
+                updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
                 updatedInfo.version = getRoomVersion(txn, statesdb).toStdString();
 
                 // Process the account_data associated with this room
@@ -1881,10 +1879,7 @@ Cache::invites()
 }
 
 QString
-Cache::getRoomAvatarUrl(lmdb::txn &txn,
-                        lmdb::dbi &statesdb,
-                        lmdb::dbi &membersdb,
-                        const QString &room_id)
+Cache::getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 {
         using namespace mtx::events;
         using namespace mtx::events::state;
@@ -1912,14 +1907,17 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn,
         auto cursor = lmdb::cursor::open(txn, membersdb);
         std::string user_id;
         std::string member_data;
+        std::string fallback_url;
 
         // Resolve avatar for 1-1 chats.
         while (cursor.get(user_id, member_data, MDB_NEXT)) {
-                if (user_id == localUserId_.toStdString())
-                        continue;
 
                 try {
                         MemberInfo m = json::parse(member_data);
+                        if (user_id == localUserId_.toStdString()) {
+                                fallback_url = m.avatar_url;
+                                continue;
+                        }
 
                         cursor.close();
                         return QString::fromStdString(m.avatar_url);
@@ -1931,7 +1929,7 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn,
         cursor.close();
 
         // Default case when there is only one member.
-        return avatarUrl(room_id, localUserId_);
+        return QString::fromStdString(fallback_url);
 }
 
 QString
@@ -2291,7 +2289,8 @@ Cache::getMember(const std::string &room_id, const std::string &user_id)
                         MemberInfo m = json::parse(std::string_view(info.data(), info.size()));
                         return m;
                 }
-        } catch (...) {
+        } catch (std::exception &e) {
+                nhlog::db()->warn("Failed to read member ({}): {}", user_id, e.what());
         }
         return std::nullopt;
 }
@@ -3841,9 +3840,9 @@ getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
         return instance_->getRoomTopic(txn, statesdb);
 }
 QString
-getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb, const QString &room_id)
+getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 {
-        return instance_->getRoomAvatarUrl(txn, statesdb, membersdb, room_id);
+        return instance_->getRoomAvatarUrl(txn, statesdb, membersdb);
 }
 
 QString

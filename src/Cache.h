@@ -92,7 +92,7 @@ QString
 getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
 //! Retrieve the room avatar's url if any.
 QString
-getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb, const QString &room_id);
+getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
 //! Retrieve the version of the room if any.
 QString
 getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
