@@ -22,7 +22,7 @@ Toggle::Toggle(QWidget *parent)
 void
 Toggle::setState(bool isEnabled)
 {
-        thumb_->setShift(isEnabled ? Position::Right : Position::Left);
+        thumb_->setShift(isEnabled ? Position::Left : Position::Right);
         setupProperties();
 }
 

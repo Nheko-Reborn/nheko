@@ -549,8 +549,28 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         cameraFrameRateCombo_      = new QComboBox{this};
         timelineMaxWidthSpin_      = new QSpinBox{this};
 
-        if (!settings_->tray())
+        trayToggle_->setChecked(settings_->tray());
+        startInTrayToggle_->setChecked(settings_->startInTray());
+        avatarCircles_->setChecked(settings_->avatarCircles());
+        decryptSidebar_->setChecked(settings_->decryptSidebar());
+        shareKeysWithTrustedUsers_->setChecked(settings_->shareKeysWithTrustedUsers());
+        groupViewToggle_->setChecked(settings_->groupView());
+        timelineButtonsToggle_->setChecked(settings_->buttonsInTimeline());
+        typingNotifications_->setChecked(settings_->typingNotifications());
+        messageHoverHighlight_->setChecked(settings_->messageHoverHighlight());
+        enlargeEmojiOnlyMessages_->setChecked(settings_->enlargeEmojiOnlyMessages());
+        sortByImportance_->setChecked(settings_->sortByImportance());
+        readReceipts_->setChecked(settings_->readReceipts());
+        markdown_->setChecked(settings_->markdown());
+        desktopNotifications_->setChecked(settings_->hasDesktopNotifications());
+        alertOnNotification_->setChecked(settings_->hasAlertOnNotification());
+        useStunServer_->setChecked(settings_->useStunServer());
+        mobileMode_->setChecked(settings_->mobileMode());
+
+        if (!settings_->tray()) {
+                startInTrayToggle_->setState(false);
                 startInTrayToggle_->setDisabled(true);
+        }
 
         avatarCircles_->setFixedSize(64, 48);
 
@@ -870,79 +890,85 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &frameRate) { settings_->setCameraFrameRate(frameRate); });
 
-        connect(trayToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setTray(!disabled);
-                if (disabled) {
-                        startInTrayToggle_->setDisabled(true);
-                } else {
+        connect(trayToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setTray(enabled);
+                if (enabled) {
+                        startInTrayToggle_->setChecked(false);
                         startInTrayToggle_->setEnabled(true);
+                        startInTrayToggle_->setState(false);
+                        settings_->setStartInTray(false);
+                } else {
+                        startInTrayToggle_->setChecked(false);
+                        startInTrayToggle_->setState(false);
+                        startInTrayToggle_->setDisabled(true);
+                        settings_->setStartInTray(false);
                 }
-                emit trayOptionChanged(!disabled);
+                emit trayOptionChanged(enabled);
         });
 
-        connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setStartInTray(!disabled);
+        connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setStartInTray(enabled);
         });
 
-        connect(mobileMode_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setMobileMode(!disabled);
+        connect(mobileMode_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setMobileMode(enabled);
         });
 
-        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setGroupView(!disabled);
+        connect(groupViewToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setGroupView(enabled);
         });
 
-        connect(decryptSidebar_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setDecryptSidebar(!disabled);
+        connect(decryptSidebar_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setDecryptSidebar(enabled);
                 emit decryptSidebarChanged();
         });
 
-        connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setShareKeysWithTrustedUsers(!disabled);
+        connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setShareKeysWithTrustedUsers(enabled);
         });
 
-        connect(avatarCircles_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setAvatarCircles(!disabled);
+        connect(avatarCircles_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setAvatarCircles(enabled);
         });
 
-        connect(markdown_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setMarkdown(!disabled);
+        connect(markdown_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setMarkdown(enabled);
         });
 
-        connect(typingNotifications_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setTypingNotifications(!disabled);
+        connect(typingNotifications_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setTypingNotifications(enabled);
         });
 
-        connect(sortByImportance_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setSortByImportance(!disabled);
+        connect(sortByImportance_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setSortByImportance(enabled);
         });
 
-        connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setButtonsInTimeline(!disabled);
+        connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setButtonsInTimeline(enabled);
         });
 
-        connect(readReceipts_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setReadReceipts(!disabled);
+        connect(readReceipts_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setReadReceipts(enabled);
         });
 
-        connect(desktopNotifications_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setDesktopNotifications(!disabled);
+        connect(desktopNotifications_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setDesktopNotifications(enabled);
         });
 
-        connect(alertOnNotification_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setAlertOnNotification(!disabled);
+        connect(alertOnNotification_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setAlertOnNotification(enabled);
         });
 
-        connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setMessageHoverHighlight(!disabled);
+        connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setMessageHoverHighlight(enabled);
         });
 
-        connect(enlargeEmojiOnlyMessages_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setEnlargeEmojiOnlyMessages(!disabled);
+        connect(enlargeEmojiOnlyMessages_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setEnlargeEmojiOnlyMessages(enabled);
         });
 
-        connect(useStunServer_, &Toggle::toggled, this, [this](bool disabled) {
-                settings_->setUseStunServer(!disabled);
+        connect(useStunServer_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setUseStunServer(enabled);
         });
 
         connect(timelineMaxWidthSpin_,
@@ -971,23 +997,22 @@ UserSettingsPage::showEvent(QShowEvent *)
         utils::restoreCombobox(themeCombo_, settings_->theme());
         utils::restoreCombobox(ringtoneCombo_, settings_->ringtone());
 
-        // FIXME: Toggle treats true as "off"
-        trayToggle_->setState(!settings_->tray());
-        startInTrayToggle_->setState(!settings_->startInTray());
-        groupViewToggle_->setState(!settings_->groupView());
-        decryptSidebar_->setState(!settings_->decryptSidebar());
-        shareKeysWithTrustedUsers_->setState(!settings_->shareKeysWithTrustedUsers());
-        avatarCircles_->setState(!settings_->avatarCircles());
-        typingNotifications_->setState(!settings_->typingNotifications());
-        sortByImportance_->setState(!settings_->sortByImportance());
-        timelineButtonsToggle_->setState(!settings_->buttonsInTimeline());
-        mobileMode_->setState(!settings_->mobileMode());
-        readReceipts_->setState(!settings_->readReceipts());
-        markdown_->setState(!settings_->markdown());
-        desktopNotifications_->setState(!settings_->hasDesktopNotifications());
-        alertOnNotification_->setState(!settings_->hasAlertOnNotification());
-        messageHoverHighlight_->setState(!settings_->messageHoverHighlight());
-        enlargeEmojiOnlyMessages_->setState(!settings_->enlargeEmojiOnlyMessages());
+        trayToggle_->setState(settings_->tray());
+        startInTrayToggle_->setState(settings_->startInTray());
+        groupViewToggle_->setState(settings_->groupView());
+        decryptSidebar_->setState(settings_->decryptSidebar());
+        shareKeysWithTrustedUsers_->setState(settings_->shareKeysWithTrustedUsers());
+        avatarCircles_->setState(settings_->avatarCircles());
+        typingNotifications_->setState(settings_->typingNotifications());
+        sortByImportance_->setState(settings_->sortByImportance());
+        timelineButtonsToggle_->setState(settings_->buttonsInTimeline());
+        mobileMode_->setState(settings_->mobileMode());
+        readReceipts_->setState(settings_->readReceipts());
+        markdown_->setState(settings_->markdown());
+        desktopNotifications_->setState(settings_->hasDesktopNotifications());
+        alertOnNotification_->setState(settings_->hasAlertOnNotification());
+        messageHoverHighlight_->setState(settings_->messageHoverHighlight());
+        enlargeEmojiOnlyMessages_->setState(settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
 
@@ -1010,7 +1035,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         utils::restoreCombobox(cameraResolutionCombo_, cameraResolution);
         utils::restoreCombobox(cameraFrameRateCombo_, cameraFrameRate);
 
-        useStunServer_->setState(!settings_->useStunServer());
+        useStunServer_->setState(settings_->useStunServer());
 
         deviceFingerprintValue_->setText(
           utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));
