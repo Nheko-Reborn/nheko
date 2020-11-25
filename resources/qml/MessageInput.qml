@@ -75,6 +75,13 @@ Rectangle {
                     textArea.insert(cursorPosition, completion);
                 }
 
+                function openCompleter(pos, type) {
+                    completerTriggeredAt = pos;
+                    popup.completerName = type;
+                    popup.open();
+                    popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
+                }
+
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: colors.buttonText
                 color: colors.text
@@ -106,12 +113,10 @@ Rectangle {
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
                         textArea.text = TimelineManager.timeline.input.nextText();
                     } else if (event.key == Qt.Key_At) {
-                        completerTriggeredAt = cursorPosition;
-                        popup.completerName = "user";
+                        textArea.openCompleter(cursorPosition, "user");
                         popup.open();
                     } else if (event.key == Qt.Key_Colon) {
-                        completerTriggeredAt = cursorPosition;
-                        popup.completerName = "emoji";
+                        textArea.openCompleter(cursorPosition, "emoji");
                         popup.open();
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completerTriggeredAt = -1;
@@ -132,9 +137,27 @@ Rectangle {
                         TimelineManager.timeline.input.send();
                         textArea.clear();
                         event.accepted = true;
-                    } else if (event.key == Qt.Key_Tab && popup.opened) {
+                    } else if (event.key == Qt.Key_Tab) {
                         event.accepted = true;
-                        popup.down();
+                        if (popup.opened) {
+                            popup.up();
+                        } else {
+                            var pos = cursorPosition - 1;
+                            while (pos > -1) {
+                                var t = textArea.getText(pos, pos + 1);
+                                console.log('"' + t + '"');
+                                if (t == '@' || t == ' ' || t == '\t') {
+                                    textArea.openCompleter(pos, "user");
+                                    return ;
+                                } else if (t == ':') {
+                                    textArea.openCompleter(pos, "emoji");
+                                    return ;
+                                }
+                                pos = pos - 1;
+                            }
+                            // At start of input
+                            textArea.openCompleter(0, "user");
+                        }
                     } else if (event.key == Qt.Key_Up && popup.opened) {
                         event.accepted = true;
                         popup.up();

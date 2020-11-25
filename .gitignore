@@ -57,6 +57,7 @@ ui_*.h
 # Vim
 *.swp
 *.swo
+*.swn
 
 #####=== CMake ===#####
 
