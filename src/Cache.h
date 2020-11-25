@@ -194,8 +194,6 @@ calculateRoomReadStatus(const std::string &room_id);
 void
 calculateRoomReadStatus();
 
-std::vector<SearchResult>
-searchUsers(const std::string &room_id, const std::string &query, std::uint8_t max_items = 5);
 std::vector<RoomSearchResult>
 searchRooms(const std::string &query, std::uint8_t max_items = 5);
 

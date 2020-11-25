@@ -59,14 +59,6 @@ class Provider
 public:
         // all emoji for QML purposes
         static const QVector<Emoji> emoji;
-        static const std::vector<Emoji> people;
-        static const std::vector<Emoji> nature;
-        static const std::vector<Emoji> food;
-        static const std::vector<Emoji> activity;
-        static const std::vector<Emoji> travel;
-        static const std::vector<Emoji> objects;
-        static const std::vector<Emoji> symbols;
-        static const std::vector<Emoji> flags;
 };
 
 } // namespace emoji

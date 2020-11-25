@@ -12,8 +12,11 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: if (TimelineManager.onVideoCall)
-                       stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
+        onClicked: {
+            if (TimelineManager.onVideoCall)
+                stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
+
+        }
     }
 
     RowLayout {
@@ -39,8 +42,7 @@ Rectangle {
         Image {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
-            source: TimelineManager.onVideoCall ?
-                        "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
+            source: TimelineManager.onVideoCall ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
         }
 
         Label {
@@ -51,7 +53,6 @@ Rectangle {
 
         Connections {
             target: TimelineManager
-
             onCallStateChanged: {
                 switch (state) {
                 case WebRTCState.INITIATING:
@@ -69,6 +70,7 @@ Rectangle {
                     callTimer.startTime = Math.floor(d.getTime() / 1000);
                     if (TimelineManager.onVideoCall)
                         stackLayout.currentIndex = 1;
+
                     break;
                 case WebRTCState.DISCONNECTED:
                     callStateLabel.text = "";

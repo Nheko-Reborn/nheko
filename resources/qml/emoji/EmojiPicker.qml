@@ -9,7 +9,7 @@ import im.nheko.EmojiModel 1.0
 Popup {
     id: emojiPopup
 
-    property string event_id
+    property var callback
     property var colors
     property alias model: gridView.model
     property var textArea
@@ -18,14 +18,14 @@ Popup {
     property real highlightSat: colors.highlight.hslSaturation
     property real highlightLight: colors.highlight.hslLightness
 
-    function show(showAt, event_id) {
-        console.debug("Showing emojiPicker for " + event_id);
+    function show(showAt, callback) {
+        console.debug("Showing emojiPicker");
         if (showAt) {
             parent = showAt;
             x = Math.round((showAt.width - width) / 2);
             y = showAt.height;
         }
-        emojiPopup.event_id = event_id;
+        emojiPopup.callback = callback;
         open();
     }
 
@@ -70,9 +70,9 @@ Popup {
                 ToolTip.visible: hovered
                 // TODO: maybe add favorites at some point?
                 onClicked: {
-                    console.debug("Picked " + model.unicode + "in response to " + emojiPopup.event_id);
+                    console.debug("Picked " + model.unicode);
                     emojiPopup.close();
-                    TimelineManager.queueReactionMessage(emojiPopup.event_id, model.unicode);
+                    callback(model.unicode);
                 }
 
                 // give the emoji a little oomf

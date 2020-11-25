@@ -12,5 +12,7 @@ ImageButton {
     property string event_id
 
     image: ":/icons/icons/ui/smile.png"
-    onClicked: emojiPicker.visible ? emojiPicker.close() : emojiPicker.show(emojiButton, event_id)
+    onClicked: emojiPicker.visible ? emojiPicker.close() : emojiPicker.show(emojiButton, function(emoji) {
+        TimelineManager.queueReactionMessage(event_id, emoji);
+    })
 }
