@@ -117,15 +117,20 @@ Rectangle {
                         popup.completerName = "";
                         event.accepted = true;
                         popup.close();
-                    } else if (event.matches(StandardKey.InsertParagraphSeparator) && popup.opened) {
-                        var currentCompletion = popup.currentCompletion();
-                        popup.completerName = "";
-                        popup.close();
-                        if (currentCompletion) {
-                            textArea.insertCompletion(currentCompletion);
-                            event.accepted = true;
-                            return ;
+                    } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
+                        if (popup.opened) {
+                            var currentCompletion = popup.currentCompletion();
+                            popup.completerName = "";
+                            popup.close();
+                            if (currentCompletion) {
+                                textArea.insertCompletion(currentCompletion);
+                                event.accepted = true;
+                                return ;
+                            }
                         }
+                        TimelineManager.timeline.input.send();
+                        textArea.clear();
+                        event.accepted = true;
                     } else if (event.key == Qt.Key_Tab && popup.opened) {
                         event.accepted = true;
                         popup.down();
@@ -135,10 +140,6 @@ Rectangle {
                     } else if (event.key == Qt.Key_Down && popup.opened) {
                         event.accepted = true;
                         popup.down();
-                    } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
-                        TimelineManager.timeline.input.send();
-                        textArea.clear();
-                        event.accepted = true;
                     }
                 }
 
