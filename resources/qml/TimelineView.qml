@@ -97,6 +97,7 @@ Page {
         }
 
         MenuItem {
+            // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
             visible: messageContextMenu.isEncrypted
             height: visible ? implicitHeight : 0
             text: qsTr("View decrypted raw message")

@@ -336,6 +336,7 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         if (room != models.end()) {
                 timeline_ = room.value().data();
                 emit activeTimelineChanged(timeline_);
+                container->setFocus();
                 nhlog::ui()->info("Activated room {}", room_id.toStdString());
         }
 }

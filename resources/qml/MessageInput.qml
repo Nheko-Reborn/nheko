@@ -79,6 +79,7 @@ Rectangle {
                 placeholderTextColor: colors.buttonText
                 color: colors.text
                 wrapMode: TextEdit.Wrap
+                focus: true
                 onTextChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onCursorPositionChanged: {
                     TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);

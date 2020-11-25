@@ -8,6 +8,7 @@ AbstractButton {
     property color highlightColor: colors.highlight
     property color buttonTextColor: colors.buttonText
 
+    focusPolicy: Qt.NoFocus
     width: 16
     height: 16
 
