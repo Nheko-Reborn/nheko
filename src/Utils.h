@@ -67,7 +67,9 @@ descriptiveTime(const QDateTime &then);
 //! Generate a message description from the event to be displayed
 //! in the RoomList.
 DescInfo
-getMessageDescription(const TimelineEvent &event, const QString &localUser, const QString &room_id);
+getMessageDescription(const TimelineEvent &event,
+                      const QString &localUser,
+                      const QString &displayName);
 
 //! Get the first character of a string, taking into account that
 //! surrogate pairs might be in use.

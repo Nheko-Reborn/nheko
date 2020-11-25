@@ -709,7 +709,10 @@ TimelineModel::updateLastMessage()
                         continue;
 
                 auto description = utils::getMessageDescription(
-                  *event, QString::fromStdString(http::client()->user_id().to_string()), room_id_);
+                  *event,
+                  QString::fromStdString(http::client()->user_id().to_string()),
+                  cache::displayName(room_id_,
+                                     QString::fromStdString(mtx::accessors::sender(*event))));
                 emit manager_->updateRoomsLastMessage(room_id_, description);
                 return;
         }

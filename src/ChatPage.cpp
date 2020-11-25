@@ -20,7 +20,6 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QShortcut>
-#include <QtConcurrent>
 
 #include <mtx/responses.hpp>
 
@@ -281,10 +280,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &ChatPage::setGroupViewState);
 
         connect(this, &ChatPage::initializeRoomList, room_list_, &RoomList::initialize);
-        connect(this,
-                &ChatPage::initializeViews,
-                view_manager_,
-                [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); });
+        connect(
+          this,
+          &ChatPage::initializeViews,
+          view_manager_,
+          [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); },
+          Qt::QueuedConnection);
         connect(this,
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
@@ -522,8 +523,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 void
 ChatPage::loadStateFromCache()
 {
-        emit contentLoaded();
-
         nhlog::db()->info("restoring state from cache");
 
         try {
@@ -554,6 +553,8 @@ ChatPage::loadStateFromCache()
         nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
         getProfileInfo();
+
+        emit contentLoaded();
 
         // Start receiving events.
         emit trySyncCb();

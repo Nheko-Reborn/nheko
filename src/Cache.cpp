@@ -1162,10 +1162,10 @@ Cache::saveState(const mtx::responses::Sync &res)
                 saveTimelineMessages(txn, room.first, room.second.timeline);
 
                 RoomInfo updatedInfo;
-                updatedInfo.name  = getRoomName(txn, statesdb, membersdb).toStdString();
-                updatedInfo.topic = getRoomTopic(txn, statesdb).toStdString();
+                updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
+                updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
                 updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
-                updatedInfo.version = getRoomVersion(txn, statesdb).toStdString();
+                updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
 
                 // Process the account_data associated with this room
                 if (!room.second.account_data.events.empty()) {
@@ -1808,6 +1808,17 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                                    e.what());
                 return {};
         }
+        auto membersdb{0};
+
+        try {
+                membersdb = getMembersDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
+
         if (orderDb.size(txn) == 0)
                 return DescInfo{};
 
@@ -1850,9 +1861,16 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                 mtx::events::collections::TimelineEvent te;
                 mtx::events::collections::from_json(obj, te);
 
+                lmdb::val info;
+                MemberInfo m;
+                if (lmdb::dbi_get(
+                      txn, membersdb, lmdb::val(obj["sender"].get<std::string>()), info)) {
+                        m = json::parse(std::string_view(info.data(), info.size()));
+                }
+
                 cursor.close();
                 return utils::getMessageDescription(
-                  te.data, local_user, QString::fromStdString(room_id));
+                  te.data, local_user, QString::fromStdString(m.name));
         }
         cursor.close();
 
@@ -1911,7 +1929,6 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersd
 
         // Resolve avatar for 1-1 chats.
         while (cursor.get(user_id, member_data, MDB_NEXT)) {
-
                 try {
                         MemberInfo m = json::parse(member_data);
                         if (user_id == localUserId_.toStdString()) {

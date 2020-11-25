@@ -27,12 +27,12 @@ QHash<QString, QString> authorColors_;
 
 template<class T, class Event>
 static DescInfo
-createDescriptionInfo(const Event &event, const QString &localUser, const QString &room_id)
+createDescriptionInfo(const Event &event, const QString &localUser, const QString &displayName)
 {
         const auto msg    = std::get<T>(event);
         const auto sender = QString::fromStdString(msg.sender);
 
-        const auto username = cache::displayName(room_id, sender);
+        const auto username = displayName;
         const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
 
         return DescInfo{QString::fromStdString(msg.event_id),
@@ -153,7 +153,7 @@ utils::descriptiveTime(const QDateTime &then)
 DescInfo
 utils::getMessageDescription(const TimelineEvent &event,
                              const QString &localUser,
-                             const QString &room_id)
+                             const QString &displayName)
 {
         using Audio      = mtx::events::RoomEvent<mtx::events::msg::Audio>;
         using Emote      = mtx::events::RoomEvent<mtx::events::msg::Emote>;
@@ -168,31 +168,31 @@ utils::getMessageDescription(const TimelineEvent &event,
         using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
         if (std::holds_alternative<Audio>(event)) {
-                return createDescriptionInfo<Audio>(event, localUser, room_id);
+                return createDescriptionInfo<Audio>(event, localUser, displayName);
         } else if (std::holds_alternative<Emote>(event)) {
-                return createDescriptionInfo<Emote>(event, localUser, room_id);
+                return createDescriptionInfo<Emote>(event, localUser, displayName);
         } else if (std::holds_alternative<File>(event)) {
-                return createDescriptionInfo<File>(event, localUser, room_id);
+                return createDescriptionInfo<File>(event, localUser, displayName);
         } else if (std::holds_alternative<Image>(event)) {
-                return createDescriptionInfo<Image>(event, localUser, room_id);
+                return createDescriptionInfo<Image>(event, localUser, displayName);
         } else if (std::holds_alternative<Notice>(event)) {
-                return createDescriptionInfo<Notice>(event, localUser, room_id);
+                return createDescriptionInfo<Notice>(event, localUser, displayName);
         } else if (std::holds_alternative<Text>(event)) {
-                return createDescriptionInfo<Text>(event, localUser, room_id);
+                return createDescriptionInfo<Text>(event, localUser, displayName);
         } else if (std::holds_alternative<Video>(event)) {
-                return createDescriptionInfo<Video>(event, localUser, room_id);
+                return createDescriptionInfo<Video>(event, localUser, displayName);
         } else if (std::holds_alternative<CallInvite>(event)) {
-                return createDescriptionInfo<CallInvite>(event, localUser, room_id);
+                return createDescriptionInfo<CallInvite>(event, localUser, displayName);
         } else if (std::holds_alternative<CallAnswer>(event)) {
-                return createDescriptionInfo<CallAnswer>(event, localUser, room_id);
+                return createDescriptionInfo<CallAnswer>(event, localUser, displayName);
         } else if (std::holds_alternative<CallHangUp>(event)) {
-                return createDescriptionInfo<CallHangUp>(event, localUser, room_id);
+                return createDescriptionInfo<CallHangUp>(event, localUser, displayName);
         } else if (std::holds_alternative<mtx::events::Sticker>(event)) {
-                return createDescriptionInfo<mtx::events::Sticker>(event, localUser, room_id);
+                return createDescriptionInfo<mtx::events::Sticker>(event, localUser, displayName);
         } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {
                 const auto sender = QString::fromStdString(msg->sender);
 
-                const auto username = cache::displayName(room_id, sender);
+                const auto username = displayName;
                 const auto ts       = QDateTime::fromMSecsSinceEpoch(msg->origin_server_ts);
 
                 DescInfo info;
