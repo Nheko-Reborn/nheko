@@ -9,6 +9,8 @@ Rectangle {
     property alias url: img.source
     property string userid
     property string displayName
+ 
+    property string usrUrl: TimelineManager.timeline.avatarUrl(userid)
 
     width: 48
     height: 48
@@ -49,6 +51,14 @@ Rectangle {
 
         }
 
+        MouseArea {
+            id: mouseArea
+
+            anchors.fill: parent
+            onClicked: {
+                TimelineManager.openImageOverlay(usrUrl, TimelineManager.timeline.data.id)
+            }
+        }
     }
 
     Rectangle {
