@@ -51,32 +51,33 @@ Rectangle {
             font.pointSize: fontMetrics.font.pointSize * 1.1
         }
 
-        Connections {
-            target: TimelineManager
-            onCallStateChanged: {
-                switch (state) {
-                case WebRTCState.INITIATING:
-                    callStateLabel.text = qsTr("Initiating...");
-                    break;
-                case WebRTCState.OFFERSENT:
-                    callStateLabel.text = qsTr("Calling...");
-                    break;
-                case WebRTCState.CONNECTING:
-                    callStateLabel.text = qsTr("Connecting...");
-                    break;
-                case WebRTCState.CONNECTED:
-                    callStateLabel.text = "00:00";
-                    var d = new Date();
-                    callTimer.startTime = Math.floor(d.getTime() / 1000);
-                    if (TimelineManager.onVideoCall)
-                        stackLayout.currentIndex = 1;
-
-                    break;
-                case WebRTCState.DISCONNECTED:
-                    callStateLabel.text = "";
-                    stackLayout.currentIndex = 0;
+        Item {
+            state: TimelineManager.callState
+            states: [
+                State {
+                    name: "OFFERSENT"; when: state == WebRTCState.OFFERSENT
+                    PropertyChanges { target: callStateLabel; text: "Calling..." }
+                },
+                State {
+                    name: "CONNECTING"; when: state == WebRTCState.CONNECTING
+                    PropertyChanges { target: callStateLabel; text: "Connecting..." }
+                },
+                State {
+                    name: "ANSWERSENT"; when: state == WebRTCState.ANSWERSENT
+                    PropertyChanges { target: callStateLabel; text: "Connecting..." }
+                },
+                State {
+                    name: "CONNECTED"; when: state == WebRTCState.CONNECTED
+                    PropertyChanges { target: callStateLabel; text: "00:00" }
+                    PropertyChanges { target: callTimer; startTime: Math.floor((new Date()).getTime() / 1000) }
+                    PropertyChanges { target: stackLayout; currentIndex: TimelineManager.onVideoCall ? 1 : 0 }
+                },
+                State {
+                    name: "DISCONNECTED"; when: state == WebRTCState.DISCONNECTED
+                    PropertyChanges { target: callStateLabel; text: "" }
+                    PropertyChanges { target: stackLayout; currentIndex: 0 }
                 }
-            }
+            ]
         }
 
         Timer {
