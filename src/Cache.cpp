@@ -50,7 +50,7 @@ static lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
 constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
 
 constexpr auto DB_SIZE    = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
-constexpr auto MAX_DBS    = 8092UL;
+constexpr auto MAX_DBS    = 32384UL;
 constexpr auto BATCH_SIZE = 100;
 
 //! Cache databases and their format.
