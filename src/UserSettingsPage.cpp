@@ -549,8 +549,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         cameraFrameRateCombo_      = new QComboBox{this};
         timelineMaxWidthSpin_      = new QSpinBox{this};
 
-        if (!settings_->tray())
+        if (!settings_->tray()) {
+                startInTrayToggle_->setState(false);
                 startInTrayToggle_->setDisabled(true);
+        }
 
         avatarCircles_->setFixedSize(64, 48);
 
@@ -875,6 +877,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 if (enabled) {
                         startInTrayToggle_->setEnabled(true);
                 } else {
+                        startInTrayToggle_->setState(false);
                         startInTrayToggle_->setDisabled(true);
                 }
                 emit trayOptionChanged(enabled);
@@ -971,7 +974,6 @@ UserSettingsPage::showEvent(QShowEvent *)
         utils::restoreCombobox(themeCombo_, settings_->theme());
         utils::restoreCombobox(ringtoneCombo_, settings_->ringtone());
 
-        // FIXME: Toggle treats true as "off"
         trayToggle_->setState(settings_->tray());
         startInTrayToggle_->setState(settings_->startInTray());
         groupViewToggle_->setState(settings_->groupView());
