@@ -571,8 +571,8 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
         <location line="+9"/>
-        <source>redacted</source>
-        <translation>編集済み</translation>
+        <source>removed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1194,8 +1194,8 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+5"/>
-        <source>Redact message</source>
-        <translation>メッセージを編集</translation>
+        <source>Remove message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>

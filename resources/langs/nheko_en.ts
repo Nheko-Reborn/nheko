@@ -573,13 +573,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
-        <location line="+9"/>
-        <source>redacted</source>
-        <translation>redacted</translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+123"/>
         <source>Encryption enabled</source>
         <translation>Encryption enabled</translation>
     </message>
@@ -634,7 +628,13 @@ Example: https://server.my:8787</translation>
         <translation>%1 answered the call.</translation>
     </message>
     <message>
+        <location line="-72"/>
         <location line="+9"/>
+        <source>removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
         <source>%1 ended the call.</source>
         <translation>%1 ended the call.</translation>
     </message>
@@ -1199,8 +1199,8 @@ Example: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>Redact message</source>
-        <translation>Redact message</translation>
+        <source>Remove message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>

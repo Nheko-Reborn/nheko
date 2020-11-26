@@ -576,7 +576,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
         <location line="+9"/>
-        <source>redacted</source>
+        <source>removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1205,7 +1205,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>Redact message</source>
+        <source>Remove message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -449,7 +449,7 @@
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kaikki Tiedostot (*)</translation>
     </message>
     <message>
         <location line="+329"/>
@@ -571,7 +571,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
         <location line="+9"/>
-        <source>redacted</source>
+        <source>removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1195,7 +1195,7 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+5"/>
-        <source>Redact message</source>
+        <source>Remove message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1643,7 +1643,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kaikki Tiedostot (*)</translation>
     </message>
     <message>
         <location line="+217"/>
