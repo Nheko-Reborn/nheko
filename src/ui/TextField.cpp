@@ -20,6 +20,7 @@ TextField::TextField(QWidget *parent)
         label_font_size_  = 15;
         show_label_       = false;
         background_color_ = pal.color(QPalette::Window);
+        is_valid_         = true;
 
         setFrame(false);
         setAttribute(Qt::WA_Hover);
