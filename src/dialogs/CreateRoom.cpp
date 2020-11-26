@@ -80,7 +80,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         directToggle_     = new Toggle(this);
         directToggle_->setActiveColor(QColor("#38A3D8"));
         directToggle_->setInactiveColor(QColor("gray"));
-        directToggle_->setState(true);
+        directToggle_->setState(false);
 
         auto directLayout = new QHBoxLayout;
         directLayout->setContentsMargins(0, 10, 0, 10);
@@ -133,8 +133,8 @@ CreateRoom::CreateRoom(QWidget *parent)
                         }
                 });
 
-        connect(directToggle_, &Toggle::toggled, this, [this](bool isDisabled) {
-                request_.is_direct = !isDisabled;
+        connect(directToggle_, &Toggle::toggled, this, [this](bool isEnabled) {
+                request_.is_direct = isEnabled;
         });
 }
 
