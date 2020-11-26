@@ -102,7 +102,7 @@ Item {
             roleValue: MtxEvent.Redacted
 
             Pill {
-                text: qsTr("redacted")
+                text: qsTr("removed")
             }
 
         }
@@ -111,7 +111,7 @@ Item {
             roleValue: MtxEvent.Redaction
 
             Pill {
-                text: qsTr("redacted")
+                text: qsTr("removed")
             }
 
         }

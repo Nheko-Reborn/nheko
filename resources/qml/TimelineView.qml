@@ -105,7 +105,7 @@ Page {
         }
 
         MenuItem {
-            text: qsTr("Redact message")
+            text: qsTr("Remove message")
             onTriggered: TimelineManager.timeline.redactEvent(messageContextMenu.eventId)
         }
 
