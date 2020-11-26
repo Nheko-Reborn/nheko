@@ -81,7 +81,6 @@ CreateRoom::CreateRoom(QWidget *parent)
         directToggle_->setActiveColor(QColor("#38A3D8"));
         directToggle_->setInactiveColor(QColor("gray"));
         directToggle_->setState(false);
-        directToggle_->setChecked(false);
 
         auto directLayout = new QHBoxLayout;
         directLayout->setContentsMargins(0, 10, 0, 10);
