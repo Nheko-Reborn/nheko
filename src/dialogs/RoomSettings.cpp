@@ -406,7 +406,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         auto encryptionLabel = new QLabel(tr("Encryption"), this);
         encryptionToggle_    = new Toggle(this);
         connect(encryptionToggle_, &Toggle::toggled, this, [this](bool isOn) {
-                if (isOn)
+                if (!isOn)
                         return;
 
                 QMessageBox msgBox;
@@ -421,14 +421,14 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
 
                 switch (ret) {
                 case QMessageBox::Ok: {
-                        encryptionToggle_->setState(false);
-                        encryptionToggle_->setEnabled(false);
+                        encryptionToggle_->setState(true);
+                        encryptionToggle_->setEnabled(true);
                         enableEncryption();
                         break;
                 }
                 default: {
-                        encryptionToggle_->setState(true);
-                        encryptionToggle_->setEnabled(true);
+                        encryptionToggle_->setState(false);
+                        encryptionToggle_->setEnabled(false);
                         break;
                 }
                 }
@@ -447,7 +447,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
              " E2E implementation until device verification is completed."));
         keyRequestsToggle_ = new Toggle(this);
         connect(keyRequestsToggle_, &Toggle::toggled, this, [this](bool isOn) {
-                utils::setKeyRequestsPreference(room_id_, !isOn);
+                utils::setKeyRequestsPreference(room_id_, isOn);
         });
 
         auto keyRequestsLayout = new QHBoxLayout;
@@ -458,12 +458,12 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
 
         // Disable encryption button.
         if (usesEncryption_) {
-                encryptionToggle_->setState(false);
-                encryptionToggle_->setEnabled(false);
-
-                keyRequestsToggle_->setState(!utils::respondsToKeyRequests(room_id_));
-        } else {
                 encryptionToggle_->setState(true);
+                encryptionToggle_->setEnabled(true);
+
+                keyRequestsToggle_->setState(utils::respondsToKeyRequests(room_id_));
+        } else {
+                encryptionToggle_->setState(false);
 
                 keyRequestsLabel->hide();
                 keyRequestsToggle_->hide();
@@ -543,8 +543,8 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addStretch(1);
 
         connect(this, &RoomSettings::enableEncryptionError, this, [this](const QString &msg) {
-                encryptionToggle_->setState(true);
-                encryptionToggle_->setEnabled(true);
+                encryptionToggle_->setState(false);
+                encryptionToggle_->setEnabled(false);
 
                 emit ChatPage::instance()->showNotification(msg);
         });
