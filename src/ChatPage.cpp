@@ -566,9 +566,8 @@ ChatPage::showQuickSwitcher()
         auto dialog = new QuickSwitcher(this);
 
         connect(dialog, &QuickSwitcher::roomSelected, room_list_, &RoomList::highlightSelectedRoom);
-        connect(dialog, &QuickSwitcher::closing, this, [this]() {
-                MainWindow::instance()->hideOverlay();
-        });
+        connect(
+          dialog, &QuickSwitcher::closing, this, []() { MainWindow::instance()->hideOverlay(); });
 
         MainWindow::instance()->showTransparentOverlayModal(dialog);
 }
