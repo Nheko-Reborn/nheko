@@ -22,8 +22,9 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *p
                                  .toLower();
                 trie_.insert(string1.toUcs4(), i);
 
-                for (const auto &e : string1.split(splitPoints, Qt::SkipEmptyParts)) {
-                        trie_.insert(e.toUcs4(), i);
+                for (const auto &e : string1.split(splitPoints)) {
+                        if (!e.isEmpty()) // NOTE(Nico): Use Qt::SkipEmptyParts in Qt 5.14
+                                trie_.insert(e.toUcs4(), i);
                 }
 
                 auto string2 = sourceModel()
@@ -33,8 +34,9 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *p
 
                 if (!string2.isEmpty()) {
                         trie_.insert(string2.toUcs4(), i);
-                        for (const auto &e : string2.split(splitPoints, Qt::SkipEmptyParts)) {
-                                trie_.insert(e.toUcs4(), i);
+                        for (const auto &e : string2.split(splitPoints)) {
+                                if (!e.isEmpty()) // NOTE(Nico): Use Qt::SkipEmptyParts in Qt 5.14
+                                        trie_.insert(e.toUcs4(), i);
                         }
                 }
         }
