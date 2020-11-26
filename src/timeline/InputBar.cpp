@@ -526,17 +526,17 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
                           dimensions = img.size();
                           if (img.height() > 200 && img.width() > 360)
                                   img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
-                          std::vector<unsigned char> data;
+                          std::vector<unsigned char> data_;
                           for (int y = 0; y < img.height(); y++) {
                                   for (int x = 0; x < img.width(); x++) {
                                           auto p = img.pixel(x, y);
-                                          data.push_back(static_cast<unsigned char>(qRed(p)));
-                                          data.push_back(static_cast<unsigned char>(qGreen(p)));
-                                          data.push_back(static_cast<unsigned char>(qBlue(p)));
+                                          data_.push_back(static_cast<unsigned char>(qRed(p)));
+                                          data_.push_back(static_cast<unsigned char>(qGreen(p)));
+                                          data_.push_back(static_cast<unsigned char>(qBlue(p)));
                                   }
                           }
                           blurhash = QString::fromStdString(
-                            blurhash::encode(data.data(), img.width(), img.height(), 4, 3));
+                            blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
                   }
 
                   http::client()->upload(
