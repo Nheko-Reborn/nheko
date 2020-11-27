@@ -604,8 +604,9 @@ EventStore::decryptEvent(const IdIndex &idx,
         std::string msg_str;
         try {
                 auto session = cache::client()->getInboundMegolmSession(index);
-                auto res     = olm::client()->decrypt_group_message(session, e.content.ciphertext);
-                msg_str      = std::string((char *)res.data.data(), res.data.size());
+                auto res =
+                  olm::client()->decrypt_group_message(session.get(), e.content.ciphertext);
+                msg_str = std::string((char *)res.data.data(), res.data.size());
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
                                       index.room_id,

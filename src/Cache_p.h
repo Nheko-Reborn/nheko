@@ -246,7 +246,8 @@ public:
         //
         void saveInboundMegolmSession(const MegolmSessionIndex &index,
                                       mtx::crypto::InboundGroupSessionPtr session);
-        OlmInboundGroupSession *getInboundMegolmSession(const MegolmSessionIndex &index);
+        mtx::crypto::InboundGroupSessionPtr getInboundMegolmSession(
+          const MegolmSessionIndex &index);
         bool inboundMegolmSessionExists(const MegolmSessionIndex &index);
 
         //

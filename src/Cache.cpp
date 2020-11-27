@@ -318,26 +318,46 @@ Cache::saveInboundMegolmSession(const MegolmSessionIndex &index,
         auto txn = lmdb::txn::begin(env_);
         lmdb::dbi_put(txn, inboundMegolmSessionDb_, lmdb::val(key), lmdb::val(pickled));
         txn.commit();
-
-        {
-                std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
-                session_storage.group_inbound_sessions[key] = std::move(session);
-        }
 }
 
-OlmInboundGroupSession *
+mtx::crypto::InboundGroupSessionPtr
 Cache::getInboundMegolmSession(const MegolmSessionIndex &index)
 {
-        std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
-        return session_storage.group_inbound_sessions[json(index).dump()].get();
+        using namespace mtx::crypto;
+
+        try {
+                auto txn        = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                std::string key = json(index).dump();
+                lmdb::val value;
+
+                if (lmdb::dbi_get(txn, inboundMegolmSessionDb_, lmdb::val(key), value)) {
+                        auto session = unpickle<InboundSessionObject>(
+                          std::string(value.data(), value.size()), SECRET);
+                        return session;
+                }
+        } catch (std::exception &e) {
+                nhlog::db()->error("Failed to get inbound megolm session {}", e.what());
+        }
+
+        return nullptr;
 }
 
 bool
 Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index)
 {
-        std::unique_lock<std::mutex> lock(session_storage.group_inbound_mtx);
-        return session_storage.group_inbound_sessions.find(json(index).dump()) !=
-               session_storage.group_inbound_sessions.end();
+        using namespace mtx::crypto;
+
+        try {
+                auto txn        = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                std::string key = json(index).dump();
+                lmdb::val value;
+
+                return lmdb::dbi_get(txn, inboundMegolmSessionDb_, lmdb::val(key), value);
+        } catch (std::exception &e) {
+                nhlog::db()->error("Failed to get inbound megolm session {}", e.what());
+        }
+
+        return false;
 }
 
 void
@@ -544,18 +564,6 @@ Cache::restoreSessions()
 
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         std::string key, value;
-
-        //
-        // Inbound Megolm Sessions
-        //
-        {
-                auto cursor = lmdb::cursor::open(txn, inboundMegolmSessionDb_);
-                while (cursor.get(key, value, MDB_NEXT)) {
-                        auto session = unpickle<InboundSessionObject>(value, SECRET);
-                        session_storage.group_inbound_sessions[key] = std::move(session);
-                }
-                cursor.close();
-        }
 
         //
         // Outbound Megolm Sessions
@@ -4173,7 +4181,7 @@ saveInboundMegolmSession(const MegolmSessionIndex &index,
 {
         instance_->saveInboundMegolmSession(index, std::move(session));
 }
-OlmInboundGroupSession *
+mtx::crypto::InboundGroupSessionPtr
 getInboundMegolmSession(const MegolmSessionIndex &index)
 {
         return instance_->getInboundMegolmSession(index);

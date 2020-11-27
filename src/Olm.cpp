@@ -534,7 +534,7 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 return;
         }
 
-        auto session_key = mtx::crypto::export_session(session);
+        auto session_key = mtx::crypto::export_session(session.get());
         //
         // Prepare the m.room_key event.
         //
@@ -584,8 +584,9 @@ decryptEvent(const MegolmSessionIndex &index,
         std::string msg_str;
         try {
                 auto session = cache::client()->getInboundMegolmSession(index);
-                auto res = olm::client()->decrypt_group_message(session, event.content.ciphertext);
-                msg_str  = std::string((char *)res.data.data(), res.data.size());
+                auto res =
+                  olm::client()->decrypt_group_message(session.get(), event.content.ciphertext);
+                msg_str = std::string((char *)res.data.data(), res.data.size());
         } catch (const lmdb::error &e) {
                 return {DecryptionErrorCode::DbError, e.what(), std::nullopt};
         } catch (const mtx::crypto::olm_exception &e) {
