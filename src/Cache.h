@@ -241,7 +241,8 @@ getOutboundMegolmSession(const std::string &room_id);
 bool
 outboundMegolmSessionExists(const std::string &room_id) noexcept;
 void
-updateOutboundMegolmSession(const std::string &room_id, int message_index);
+updateOutboundMegolmSession(const std::string &room_id,
+                            mtx::crypto::OutboundGroupSessionPtr &session);
 void
 dropOutboundMegolmSession(const std::string &room_id);
 
@@ -277,9 +278,7 @@ getLatestOlmSession(const std::string &curve25519);
 
 void
 saveOlmAccount(const std::string &pickled);
+
 std::string
 restoreOlmAccount();
-
-void
-restoreSessions();
 }

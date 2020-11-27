@@ -21,7 +21,7 @@ from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg);
 
 struct OutboundGroupSessionDataRef
 {
-        OlmOutboundGroupSession *session;
+        mtx::crypto::OutboundGroupSessionPtr session;
         OutboundGroupSessionData data;
 };
 
@@ -51,16 +51,6 @@ void
 to_json(nlohmann::json &obj, const MegolmSessionIndex &msg);
 void
 from_json(const nlohmann::json &obj, MegolmSessionIndex &msg);
-
-struct OlmSessionStorage
-{
-        // Megolm sessions
-        std::map<std::string, mtx::crypto::OutboundGroupSessionPtr> group_outbound_sessions;
-        std::map<std::string, OutboundGroupSessionData> group_outbound_session_data;
-
-        // Guards for accessing megolm sessions.
-        std::mutex group_outbound_mtx;
-};
 
 struct StoredOlmSession
 {

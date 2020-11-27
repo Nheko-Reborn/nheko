@@ -235,7 +235,8 @@ public:
                                        mtx::crypto::OutboundGroupSessionPtr session);
         OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
         bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
-        void updateOutboundMegolmSession(const std::string &room_id, int message_index);
+        void updateOutboundMegolmSession(const std::string &room_id,
+                                         mtx::crypto::OutboundGroupSessionPtr &session);
         void dropOutboundMegolmSession(const std::string &room_id);
 
         void importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys);
@@ -264,8 +265,6 @@ public:
 
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
-
-        void restoreSessions();
 
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -578,7 +577,6 @@ private:
         QString localUserId_;
         QString cacheDirectory_;
 
-        OlmSessionStorage session_storage;
         VerificationStorage verification_storage;
 };
 

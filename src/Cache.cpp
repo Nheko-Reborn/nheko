@@ -361,7 +361,8 @@ Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index)
 }
 
 void
-Cache::updateOutboundMegolmSession(const std::string &room_id, int message_index)
+Cache::updateOutboundMegolmSession(const std::string &room_id,
+                                   mtx::crypto::OutboundGroupSessionPtr &ptr)
 {
         using namespace mtx::crypto;
 
@@ -369,21 +370,14 @@ Cache::updateOutboundMegolmSession(const std::string &room_id, int message_index
                 return;
 
         OutboundGroupSessionData data;
-        OlmOutboundGroupSession *session;
-        {
-                std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-                data    = session_storage.group_outbound_session_data[room_id];
-                session = session_storage.group_outbound_sessions[room_id].get();
-
-                // Update with the current message.
-                data.message_index                                   = message_index;
-                session_storage.group_outbound_session_data[room_id] = data;
-        }
+        data.message_index = olm_outbound_group_session_message_index(ptr.get());
+        data.session_id    = mtx::crypto::session_id(ptr.get());
+        data.session_key   = mtx::crypto::session_key(ptr.get());
 
         // Save the updated pickled data for the session.
         json j;
         j["data"]    = data;
-        j["session"] = pickle<OutboundSessionObject>(session, SECRET);
+        j["session"] = pickle<OutboundSessionObject>(ptr.get(), SECRET);
 
         auto txn = lmdb::txn::begin(env_);
         lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
@@ -399,10 +393,6 @@ Cache::dropOutboundMegolmSession(const std::string &room_id)
                 return;
 
         {
-                std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-                session_storage.group_outbound_session_data.erase(room_id);
-                session_storage.group_outbound_sessions.erase(room_id);
-
                 auto txn = lmdb::txn::begin(env_);
                 lmdb::dbi_del(txn, outboundMegolmSessionDb_, lmdb::val(room_id), nullptr);
                 txn.commit();
@@ -424,30 +414,40 @@ Cache::saveOutboundMegolmSession(const std::string &room_id,
         auto txn = lmdb::txn::begin(env_);
         lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
         txn.commit();
-
-        {
-                std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-                session_storage.group_outbound_session_data[room_id] = data;
-                session_storage.group_outbound_sessions[room_id]     = std::move(session);
-        }
 }
 
 bool
 Cache::outboundMegolmSessionExists(const std::string &room_id) noexcept
 {
-        std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-        return (session_storage.group_outbound_sessions.find(room_id) !=
-                session_storage.group_outbound_sessions.end()) &&
-               (session_storage.group_outbound_session_data.find(room_id) !=
-                session_storage.group_outbound_session_data.end());
+        try {
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                lmdb::val value;
+                return lmdb::dbi_get(txn, outboundMegolmSessionDb_, lmdb::val(room_id), value);
+        } catch (std::exception &e) {
+                nhlog::db()->error("Failed to retrieve outbound Megolm Session: {}", e.what());
+                return false;
+        }
 }
 
 OutboundGroupSessionDataRef
 Cache::getOutboundMegolmSession(const std::string &room_id)
 {
-        std::unique_lock<std::mutex> lock(session_storage.group_outbound_mtx);
-        return OutboundGroupSessionDataRef{session_storage.group_outbound_sessions[room_id].get(),
-                                           session_storage.group_outbound_session_data[room_id]};
+        try {
+                using namespace mtx::crypto;
+
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                lmdb::val value;
+                lmdb::dbi_get(txn, outboundMegolmSessionDb_, lmdb::val(room_id), value);
+                auto obj = json::parse(std::string_view(value.data(), value.size()));
+
+                OutboundGroupSessionDataRef ref{};
+                ref.data    = obj.at("data").get<OutboundGroupSessionData>();
+                ref.session = unpickle<OutboundSessionObject>(obj.at("session"), SECRET);
+                return ref;
+        } catch (std::exception &e) {
+                nhlog::db()->error("Failed to retrieve outbound Megolm Session: {}", e.what());
+                return {};
+        }
 }
 
 //
@@ -555,44 +555,6 @@ Cache::saveOlmAccount(const std::string &data)
         auto txn = lmdb::txn::begin(env_);
         lmdb::dbi_put(txn, syncStateDb_, OLM_ACCOUNT_KEY, lmdb::val(data));
         txn.commit();
-}
-
-void
-Cache::restoreSessions()
-{
-        using namespace mtx::crypto;
-
-        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        std::string key, value;
-
-        //
-        // Outbound Megolm Sessions
-        //
-        {
-                auto cursor = lmdb::cursor::open(txn, outboundMegolmSessionDb_);
-                while (cursor.get(key, value, MDB_NEXT)) {
-                        json obj;
-
-                        try {
-                                obj = json::parse(value);
-
-                                session_storage.group_outbound_session_data[key] =
-                                  obj.at("data").get<OutboundGroupSessionData>();
-
-                                auto session =
-                                  unpickle<OutboundSessionObject>(obj.at("session"), SECRET);
-                                session_storage.group_outbound_sessions[key] = std::move(session);
-                        } catch (const nlohmann::json::exception &e) {
-                                nhlog::db()->critical(
-                                  "failed to parse outbound megolm session data: {}", e.what());
-                        }
-                }
-                cursor.close();
-        }
-
-        txn.commit();
-
-        nhlog::db()->info("sessions restored");
 }
 
 std::string
@@ -4151,9 +4113,10 @@ outboundMegolmSessionExists(const std::string &room_id) noexcept
         return instance_->outboundMegolmSessionExists(room_id);
 }
 void
-updateOutboundMegolmSession(const std::string &room_id, int message_index)
+updateOutboundMegolmSession(const std::string &room_id,
+                            mtx::crypto::OutboundGroupSessionPtr &session)
 {
-        instance_->updateOutboundMegolmSession(room_id, message_index);
+        instance_->updateOutboundMegolmSession(room_id, session);
 }
 void
 dropOutboundMegolmSession(const std::string &room_id)
@@ -4227,11 +4190,5 @@ std::string
 restoreOlmAccount()
 {
         return instance_->restoreOlmAccount();
-}
-
-void
-restoreSessions()
-{
-        return instance_->restoreSessions();
 }
 } // namespace cache

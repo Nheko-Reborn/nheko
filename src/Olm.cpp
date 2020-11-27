@@ -294,23 +294,23 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         // Always check before for existence.
         auto res     = cache::getOutboundMegolmSession(room_id);
-        auto payload = olm::client()->encrypt_group_message(res.session, body.dump());
+        auto payload = olm::client()->encrypt_group_message(res.session.get(), body.dump());
 
         // Prepare the m.room.encrypted event.
         msg::Encrypted data;
         data.ciphertext   = std::string((char *)payload.data(), payload.size());
         data.sender_key   = olm::client()->identity_keys().curve25519;
-        data.session_id   = res.data.session_id;
+        data.session_id   = mtx::crypto::session_id(res.session.get());
         data.device_id    = device_id;
         data.algorithm    = MEGOLM_ALGO;
         data.relates_to   = relation;
         data.r_relates_to = r_relation;
 
-        auto message_index = olm_outbound_group_session_message_index(res.session);
-        nhlog::crypto()->debug("next message_index {}", message_index);
+        res.data.message_index = olm_outbound_group_session_message_index(res.session.get());
+        nhlog::crypto()->debug("next message_index {}", res.data.message_index);
 
         // We need to re-pickle the session after we send a message to save the new message_index.
-        cache::updateOutboundMegolmSession(room_id, message_index);
+        cache::updateOutboundMegolmSession(room_id, res.session);
 
         return data;
 }
