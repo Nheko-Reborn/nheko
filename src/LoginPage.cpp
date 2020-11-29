@@ -193,7 +193,7 @@ LoginPage::loginError(const QString &msg)
         auto rect  = QFontMetrics(font()).boundingRect(msg);
         int width  = rect.width();
         int height = rect.height();
-        error_label_->setFixedHeight(qCeil(width / 200) * height);
+        error_label_->setFixedHeight(qCeil(width / 200.0) * height);
         error_label_->setText(msg);
 }
 
